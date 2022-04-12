@@ -57,7 +57,7 @@ namespace emu
         {
             const int port = 25860;
 
-            var testChar = new CharacterData
+            var testChar1 = new CharacterData
             {
                 MaxHP = 1234,
                 MaxMP = 5678,
@@ -95,11 +95,87 @@ namespace emu
                 Gloves = 0b00001100,
             };
 
+            var testChar2 = new CharacterData
+            {
+                MaxHP = 5555,
+                MaxMP = 5678,
+                Strength = 123,
+                Agility = 456,
+                Accuracy = 789,
+                Endurance = 12345,
+                Earth = 44,
+                Air = 55,
+                Water = 66,
+                Fire = 77,
+                PDef = 88,
+                MDef = 99,
+                Karma = KarmaTypes.Benign,
+                MaxSatiety = 4444,
+                TitleLevelMinusOne = 43,
+                DegreeLevelMinusOne = 32,
+                TitleXP = 1111,
+                DegreeXP = 2222,
+                CurrentSatiety = 3333,
+                CurrentHP = 55,
+                CurrentMP = 66,
+                AvailableTitleStats = 77,
+                AvailableDegreeStats = 88,
+                IsGenderFemale = false,
+                Name = "OwO",
+                FaceType = 0b01001100,
+                HairStyle = 0b01001100,
+                HairColor = 0b01001100,
+                Tattoo = 0b00001100,
+                Boots = 0b00001100,
+                Pants = 0b00001100,
+                Armor = 0b00001100,
+                Helmet = 0b00001100,
+                Gloves = 0b00001100,
+            };
+
+            var testChar3 = new CharacterData
+            {
+                MaxHP = 4444,
+                MaxMP = 5678,
+                Strength = 123,
+                Agility = 456,
+                Accuracy = 789,
+                Endurance = 12345,
+                Earth = 44,
+                Air = 55,
+                Water = 66,
+                Fire = 77,
+                PDef = 88,
+                MDef = 99,
+                Karma = KarmaTypes.Benign,
+                MaxSatiety = 4444,
+                TitleLevelMinusOne = 43,
+                DegreeLevelMinusOne = 32,
+                TitleXP = 1111,
+                DegreeXP = 2222,
+                CurrentSatiety = 3333,
+                CurrentHP = 55,
+                CurrentMP = 66,
+                AvailableTitleStats = 77,
+                AvailableDegreeStats = 88,
+                IsGenderFemale = true,
+                Name = "oNo",
+                FaceType = 0b10001100,
+                HairStyle = 0b10001100,
+                HairColor = 0b10001100,
+                Tattoo = 0b00001100,
+                Boots = 0b00001100,
+                Pants = 0b00001100,
+                Armor = 0b00001100,
+                Helmet = 0b00001100,
+                Gloves = 0b00001100,
+            };
+
             var clientData = new ClientInitialData
             {
-                Character1 = testChar,
-                Character2 = testChar,
-                Character3 = testChar
+                Character1 = testChar1,
+                Character2 = testChar2,
+                Character3 = testChar3
             };
             // var cli = BitHelper.ByteArrayToBinaryString(clientData.ToByteArray())[104..];
             //

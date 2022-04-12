@@ -14,8 +14,8 @@ public class ClientInitialData : Packet
     public byte[] ToByteArray()
     {
         var firstCharData = Character1?.ToByteArray();
-        var secondCharData = Character1?.ToByteArray();
-        var thirdCharData = Character1?.ToByteArray();
+        var secondCharData = Character2?.ToByteArray();
+        var thirdCharData = Character3?.ToByteArray();
 
         var clientInitialDataResult = new List<byte>();
         
