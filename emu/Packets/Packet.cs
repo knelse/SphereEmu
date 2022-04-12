@@ -16,7 +16,7 @@ public class Packet
 
     private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xf4, 0x01 };
 
-    public static byte[] ToByteArray(byte[]? content)
+    public static byte[] ToByteArray(byte[]? content = null)
     {
         if (content is null)
         {

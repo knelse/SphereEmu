@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using emu.DataModels;
 using emu.Helpers;
 
 namespace emu
@@ -11,189 +8,12 @@ namespace emu
     internal class Server
     {
         private const int BUFSIZE = 1024;
-
-        enum ServerConnectionState
-        {
-            NONE,
-            SERVER_INIT,
-            SERVER_CREDENTIALS,
-            SUBSCRIPTION_ERROR,
-            START_DATA_SENT_1,
-            START_DATA_SENT_2,
-        }
-
-        enum ClientConnectionState
-        {
-            NONE,
-            SERVER_INIT_OK,
-            SERVER_CREDENTIALS_OK,
-            LOGIN_DATA,
-        }
-
-        enum ServerSyncPacketType : byte
-        {
-            CONNECTION_LIMIT_REACHED = 0x64,
-            CONNECTION_CREATE_OK = 0xC8,
-            UNKNOWN_1 = 0x01,
-            UNKNOWN_2 = 0xF4,
-            EVERYTHING_ELSE = 0x2C
-        }
         
-        List <byte> readyToLoadInitialDataList = new List <byte>
-        {
-            0x0a, 0x00, (byte) ServerSyncPacketType.CONNECTION_CREATE_OK, 0x00, 0xdc, 0x07, 0x00, 0x00, 0x61, 0x5d
-        };
-        
-        List <byte> authServerResponseList = new List<byte>
-        {
-            0x38, 0x00, 0x2c, 0x01, 0x00, 0x28, 0x3c, 
-            0x55, 0x37, 0x08, 0x40, 0x20, 0x10, 0x98, 0x5f, 0x52, 0x1c, 0x35, 0x7c, 0x12, 
-            0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1a, 0x3b, 0x12, 0x01, 0x00, 
-            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
-            0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x8d, 0x9d, 0x01, 0x00, 0x00, 0x00
-        };
-
-        public static void Main (string[] args)
+        public static void Main ()
         {
             const int port = 25860;
 
-            var testChar1 = new CharacterData
-            {
-                MaxHP = 1234,
-                MaxMP = 5678,
-                Strength = 123,
-                Agility = 456,
-                Accuracy = 789,
-                Endurance = 12345,
-                Earth = 44,
-                Air = 55,
-                Water = 66,
-                Fire = 77,
-                PDef = 88,
-                MDef = 99,
-                Karma = KarmaTypes.Benign,
-                MaxSatiety = 4444,
-                TitleLevelMinusOne = 43,
-                DegreeLevelMinusOne = 32,
-                TitleXP = 1111,
-                DegreeXP = 2222,
-                CurrentSatiety = 3333,
-                CurrentHP = 55,
-                CurrentMP = 66,
-                AvailableTitleStats = 77,
-                AvailableDegreeStats = 88,
-                IsGenderFemale = false,
-                Name = "UwUwHaTsThIs",
-                FaceType = 0b00001100,
-                HairStyle = 0b00001100,
-                HairColor = 0b00001100,
-                Tattoo = 0b00001100,
-                Boots = 0b00001100,
-                Pants = 0b00001100,
-                Armor = 0b00001100,
-                Helmet = 0b00001100,
-                Gloves = 0b00001100,
-            };
-
-            var testChar2 = new CharacterData
-            {
-                MaxHP = 5555,
-                MaxMP = 5678,
-                Strength = 123,
-                Agility = 456,
-                Accuracy = 789,
-                Endurance = 12345,
-                Earth = 44,
-                Air = 55,
-                Water = 66,
-                Fire = 77,
-                PDef = 88,
-                MDef = 99,
-                Karma = KarmaTypes.Benign,
-                MaxSatiety = 4444,
-                TitleLevelMinusOne = 43,
-                DegreeLevelMinusOne = 32,
-                TitleXP = 1111,
-                DegreeXP = 2222,
-                CurrentSatiety = 3333,
-                CurrentHP = 55,
-                CurrentMP = 66,
-                AvailableTitleStats = 77,
-                AvailableDegreeStats = 88,
-                IsGenderFemale = false,
-                Name = "OwO",
-                FaceType = 0b01001100,
-                HairStyle = 0b01001100,
-                HairColor = 0b01001100,
-                Tattoo = 0b00001100,
-                Boots = 0b00001100,
-                Pants = 0b00001100,
-                Armor = 0b00001100,
-                Helmet = 0b00001100,
-                Gloves = 0b00001100,
-            };
-
-            var testChar3 = new CharacterData
-            {
-                MaxHP = 4444,
-                MaxMP = 5678,
-                Strength = 123,
-                Agility = 456,
-                Accuracy = 789,
-                Endurance = 12345,
-                Earth = 44,
-                Air = 55,
-                Water = 66,
-                Fire = 77,
-                PDef = 88,
-                MDef = 99,
-                Karma = KarmaTypes.Benign,
-                MaxSatiety = 4444,
-                TitleLevelMinusOne = 43,
-                DegreeLevelMinusOne = 32,
-                TitleXP = 1111,
-                DegreeXP = 2222,
-                CurrentSatiety = 3333,
-                CurrentHP = 55,
-                CurrentMP = 66,
-                AvailableTitleStats = 77,
-                AvailableDegreeStats = 88,
-                IsGenderFemale = true,
-                Name = "oNo",
-                FaceType = 0b10001100,
-                HairStyle = 0b10001100,
-                HairColor = 0b10001100,
-                Tattoo = 0b00001100,
-                Boots = 0b00001100,
-                Pants = 0b00001100,
-                Armor = 0b00001100,
-                Helmet = 0b00001100,
-                Gloves = 0b00001100,
-            };
-
-            var clientData = new ClientInitialData
-            {
-                Character1 = testChar1,
-                Character2 = testChar2,
-                Character3 = testChar3
-            };
-            // var cli = BitHelper.ByteArrayToBinaryString(clientData.ToByteArray())[104..];
-            //
-            // for (var i = 0; i < cli.Length; i+=8)
-            // {
-            //     Console.WriteLine(cli[i..(i+8)]);
-            // }
-            // var str =
-            //     "6c002c010046044f6f08406079e501bc0200000000000004000000000004000000000000000c9001000004000000000038010000c800e401bc020c001c00e8c0c8c8004ca59da5b10100000000000000000000000000e8c0c8c8c0c0c0c0c000c0c000fcffffff03000000006c002c010046044f6f08406079911fb4142800dc02a8ff67019c0094004000d8ff1b03d0051490018c00280108257d00000000000000901fb414b0002000e8ccc8cc04acb995b1cd9501000000000000000000000000e8ccc8ccc0c0c0c0c09cc1c000fcffffff03000000006c002c010046044f6f0840607949122413e8fff300e8ff3b013c0128001c00f0ff8b02880114900148003800880804000000000000008c10241318000000c0c0c0c80004919185c9e501000000000000000000000000c0c0c0c8c4c8c800c4c4c8d0c0fcffffff0300000000";
-            // var bytes = Convert.FromHexString(str);
-            //
-            // var outp = new StringBuilder();
-            // for (int i = 0; i < bytes.Length; i++)
-            // {
-            //     outp.AppendLine(Convert.ToString(bytes[i], 16).PadLeft(2, '0'));
-            // }
-            //
-            // File.WriteAllText("C:\\output.txt", outp.ToString());
+            var clientData = TestHelper.GetTestCharData();
 
             TcpListener? tcpListener = null;
             
@@ -203,423 +23,38 @@ namespace emu
             {
                 tcpListener = new TcpListener(IPAddress.Any, port);
                 tcpListener.Start();
-                // var udpClient = new UdpClient(port);
-                // udpClient.BeginReceive(DataReceived, udpClient);
             }
             catch (SocketException se)
             {
                 Console.WriteLine(se.Message);
                 Environment.Exit(se.ErrorCode);
             }
-            
+
             Console.WriteLine("Server up, waiting for connections...");
-            var subscriptionErrorResponse = new List<byte>
-            {
-                0x0e, 0x00, 0x2c, 0x01, 0x00, 0x64, 0x43, 0x22, 0x3c, 0x08, 0x40, 0xc0, 0x01, 0x00
-            };
-            
-            // var readyToLoadInitialData = 
-            //     "0a00c800dc070000615d";
-            // var serverCredResponse = 
-            //     "3800 2c01 0028 3c55 3708 4020 1098 5f52 1c35 7c12 0200 0000 0000 0000 001a 3b12 0100 ffff ffff ffff ffff 0000 0000 0000 0000 8d9d 0100 0000";
-            // var startDataResponse_1 =
-            //     "52002c01008232f6e408408010010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-            // var startDataResponse_2 =
-            //     "6c002c01008632f6e4084060794d02bc0204000400040008000400040008000400100010000c9001000004000000000038010000c8004c02bc020c001c00e8c0c8c8004ca59da5b10100000000000000000000000000e8c0c8c8c0c0c0c0c000c0c0d8fcffffff0300000000";
-            // var startDataResponse_3 =
-            //     "6c002c01008632f6e4084060794912d4140c0014010c00e001c00128006400f0ffa70e0c0c1490014800380088080400000000000000dc10a81218000000c0c0c0c80004919185c9e501000000000000000000000000c0c0c0c8c4c8c800c4c4c8d0c0fcffffff0300000000";
             
             // 1 SESSION
-            var readyToLoadInitialData_readable = 
-                "0a00 c800 1405 00001f42";
-            var serverCredResponse_readable =
+            const string readyToLoadInitialData_readable = "0a00 c800 1405 00001f42";
+            const string serverCredResponse_readable =
                 "3800 2c01 0000 044f 6f08 4020 1088 0e7d 1c35 7c12 0200 0000 0000 0000 001a 3b12 0100 ffff ffff ffff ffff 0000 0000 0000 0000 8d9d 0100 0000";
-            var startDataResponse_1_readable = 
+            //  "3800 2c01 0060 3f9e 6208 402010e0b2971c357c120200000000000000001a3b120100ffffffffffffffff00000000000000008d9d01000000"
+            const string startDataResponse_1_readable = 
                 "5200 2c01 0000 044f 6f08 4080 1001 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-            var startDataResponse_2_readable =
-                "6c00 2c01 0000 044f 6f08 4060 " +
-                "79ff d2bc 0200 0000 0000 0004 " +
-                "0000 0000 0004 0000 0000 0000 " +
-                "000c 9001 0000 0400 0000 0000 " +
-                "3801 0000 c800 e401 bc02 0c00 " +
-                "1c00 e8c0 c8c8 004c a59d a5b1 " +
-                "0100 0000 0000 0000 0000 0000 " +
-                "0000 e8c0 c8c8 c0c0 c0c0 c000 " +
-                "c0c0 00fc ffff ff03 0000 0000 " +
-                "6c00 2c01 0046 044f 6f08 4060 " +
-                "7991 1fb4 1428 00dc 02a8 ff67 " +
-                "019c 0094 0040 00d8 ff1b 03d0 " +
-                "0514 9001 8c00 2801 0825 7d00 " +
-                "0000 0000 0000 901f b414 b000 " +
-                "2000 e8cc c8cc 04ac b995 b1cd " +
-                "9501 0000 0000 0000 0000 0000 " +
-                "0000 e8cc c8cc c0c0 c0c0 c09c " +
-                "c1c0 00fc ffff ff03 0000 0000 " +
-                "6c00 2c01 0046 044f 6f08 4060 " +
-                "7949 1224 13e8 fff3 00e8 ff3b " +
-                "013c 0128 001c 00f0 ff8b 0288 " +
-                "0114 9001 4800 3800 8808 0400 " +
-                "0000 0000 0000 8c10 2413 1800 " +
-                "0000 c0c0 c0c8 0004 9191 85c9 " +
-                "e501 0000 0000 0000 0000 0000 " +
-                "0000 c0c0 c0c8 c4c8 c800 c4c4 " +
-                "c8d0 c0fc ffff ff03 0000 0000";
-
-            var startDataResponseBinary = @"
-01101100
-00000000
-00101100
-00000001
-00000000
-00000000
-00000100
-01001111
-01101111
-00001000
-01000000
-01100000
-01111001
-01100110
-11111111
-00111111
-11111111
-00000011
-11110000
-11000011
-01110000
-01111000
-00011100
-00000101
-11111111
-11111110
-11111111
-00111000
-00111000
-00000100
-00111100
-01111000
-00000000
-11111111
-11111111
-11111111
-11111111
-00010111
-11111100
-11111111
-10111111
-00000011
-11111100
-00000001
-10000100
-10000000
-10000000
-00010000
-00111000
-01111001
-00000000
-00111000
-00100000
-10100011
-11100111
-10000001
-10111100
-10000010
-10001110
-00011100
-00011110
-00011100
-11101110
-11000000
-11001000
-11001000
-00000101
-01001000
-10110101
-10011101
-10100101
-10110001
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-10100101
-11101010
-11000000
-11001000
-11001100
-11000100
-11010110
-11010000
-11110010
-11011000
-00000010
-11001100
-11001111
-00000000
-10111100
-11111111
-11110001
-11001111
-11111111
-11111111
-11111111
-11111111
-11111111
-01101100
-00000000
-00101100
-00000001
-00000000
-01000110
-00000100
-01001111
-01101111
-00001000
-01000000
-01100000
-01111001
-10010001
-00011111
-10110100
-00010100
-00101000
-00000000
-11011100
-00000010
-10101000
-11111111
-01100111
-00000001
-10011100
-00000000
-10010100
-00000000
-01000000
-00000000
-11011000
-11111111
-00011011
-00000011
-11010000
-00000101
-00010100
-10010000
-00000001
-10001100
-00000000
-00101000
-00000001
-00001000
-00100101
-01111101
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-10010000
-00011111
-10110100
-00010100
-10110000
-00000000
-00100000
-00000000
-11101000
-11001100
-11001000
-11001100
-00000100
-10101100
-10111001
-10010101
-10110001
-11001101
-10010101
-00000001
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-11101000
-11001100
-11001000
-11001100
-11000000
-11000000
-11000000
-11000000
-11000000
-10011100
-11000001
-11000000
-00000000
-11111100
-11111111
-11111111
-11111111
-00000011
-00000000
-00000000
-00000000
-00000000
-01101100
-00000000
-00101100
-00000001
-00000000
-01000110
-00000100
-01001111
-01101111
-00001000
-01000000
-01100000
-01111001
-01001001
-00010010
-00100100
-00010011
-11101000
-11111111
-11110011
-00000000
-11101000
-11111111
-00111011
-00000001
-00111100
-00000001
-00101000
-00000000
-00011100
-00000000
-11110000
-11111111
-10001011
-00000010
-10001000
-00000001
-00010100
-10010000
-00000001
-01001000
-00000000
-00111000
-00000000
-10001000
-00001000
-00000100
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-10001100
-00010000
-00100100
-00010011
-00011000
-00000000
-00000000
-00000000
-11000000
-11000000
-11000000
-11001000
-00000000
-00000100
-10010001
-10010001
-10000101
-11001001
-11100101
-00000001
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-11000000
-11000000
-11000000
-11001000
-11000100
-11001000
-11001000
-00000000
-11000100
-11000100
-11001000
-11010000
-11000000
-11111100
-11111111
-11111111
-11111111
-00000011
-00000000
-00000000
-00000000
-00000000
-";
-
-            // var startDataResponse_2_from_binary = new List<byte>();
-            // startDataResponseBinary = startDataResponseBinary.ReplaceLineEndings("\n").Replace("\n", "");
-            //
-            // for (var i = 0; i < startDataResponseBinary.Length; i+=8)
-            // {
-            //     var currByte = startDataResponseBinary[i..(i + 8)];
-            //     startDataResponse_2_from_binary.Add(Convert.ToByte(currByte, 2));
-            // }
-            
-            var transmissionEndPacket = 
-                "0400f401";
+           
+            var transmissionEndPacket = Packet.ToByteArray();
             var readyToLoadInitialData = readyToLoadInitialData_readable.Replace(" ", "");
             var serverCredResponse = serverCredResponse_readable.Replace(" ", "");
             var startDataResponse_1 = startDataResponse_1_readable.Replace(" ", "");
 
-            var pongPacket = "12002c01002d03890ab9dec7f7601f016000";
+            const string pongPacket = "12002c01002d03890ab9dec7f7601f016000";
             
             while (true)
             {
                 NetworkStream? ns = null;
-                var sb = new StringBuilder();
 
                 try
                 {
                     var client = tcpListener.AcceptTcpClient();
                     ns = client.GetStream();
-                    var clientState = ClientConnectionState.NONE;
-                    var serverState = ServerConnectionState.NONE;
                 
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Handling client...");
@@ -627,37 +62,28 @@ namespace emu
                 
                     Console.WriteLine("SRV: Ready to load initial data");
                     ns.Write(Convert.FromHexString(readyToLoadInitialData));
-                    serverState = ServerConnectionState.SERVER_INIT;
                 
-                    var pongThread = Task.Run(() =>
+                    Task.Run(() =>
                     {
                         while (ns.CanWrite)
                         {
                             ns.Write(Convert.FromHexString(pongPacket));
-                            //Console.WriteLine("SRV: Pong");
                             Thread.Sleep(2000);
                         }
                     });
                 
                     var rcvBuffer = new byte[BUFSIZE];
-                    var dataWritten = false;
                 
-                    var totalBytesReceived = 0;
-                
-                    var clientBytes = new List<byte>();
-                
-                    var bytesRcvd = 0;
-                
-                    while ((bytesRcvd = ns.Read(rcvBuffer, 0, rcvBuffer.Length)) == 0) {}
+                    while (ns.Read(rcvBuffer, 0, rcvBuffer.Length) == 0) {}
                     // client ack
                     Console.WriteLine("CLI: ack");
                     ns.Write(Convert.FromHexString(serverCredResponse));
                     Console.WriteLine("SRV: Credentials");
                 
-                    while ((bytesRcvd = ns.Read(rcvBuffer, 0, rcvBuffer.Length)) <= 12) {}
+                    while (ns.Read(rcvBuffer, 0, rcvBuffer.Length) <= 12) {}
                     // client login
                     Console.WriteLine("CLI: Login data");
-                    DumpLoginData(rcvBuffer);
+                    TestHelper.DumpLoginData(rcvBuffer);
                     
                     ns.Write(Convert.FromHexString(startDataResponse_1));
                     Console.WriteLine("SRV: Initial data 1");
@@ -665,20 +91,51 @@ namespace emu
                     ns.Write(clientData.ToByteArray());
                     Console.WriteLine("SRV: Initial data 2");
                     Thread.Sleep(50);
-                    ns.Write(Convert.FromHexString(transmissionEndPacket));
+                    ns.Write(transmissionEndPacket);
                     Console.WriteLine("SRV: transmission end");
-                
-                    var counter = 0;
-                
-                    while (counter < 20)
-                    {
-                        while ((bytesRcvd = ns.Read(rcvBuffer, 0, rcvBuffer.Length)) == 0)
-                        {
-                        }
                     
-                        counter++;
+                    while (ns.Read(rcvBuffer, 0, rcvBuffer.Length) < 0x15)
+                    {
                     }
-                
+                    Console.WriteLine("CLI: Enter game");
+
+                    const string enterGameResponse_1 =
+                        "47012c01009a044f6f0800c2602aed2c8d0d006e1d181919645035c53d5a8944d7c273c5616ba6be7ee16102f0000000000000000000000000000000000400000000000000000000000000040000000400000000000400000004000400040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000400f0000000000000000000000000000000000000000010000000000000000000000000000000000055000000403400000000000090010000002003400b00b400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000320004b23fd0122b2ff74406005811000000";
+                    
+                    ns.Write(Convert.FromHexString(enterGameResponse_1));
+                    Thread.Sleep(50);
+                    
+                    ns.Write(transmissionEndPacket);
+                    Thread.Sleep(50);
+
+                    const string enterGameResponse_2 =
+                        "8a002c0100aa044f6f08406102000a8280f029064000000050108407503100aa000080822044c88a0144030000140481c2560c800c0000a0200816b76200c80000000541b8c015036801000028080206af18400b000040411072000000000000000a82b0f32b0600b4c4045010041d60318040f6ffff10fd8a0100346c1006000000040000001a1b010172002c0100aa044f6f08406383acccccac6c8c6e8e8b0b0085c646a6a626e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc565aecc0ca007240624c88908640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063838c2dcc8d6c6e2c0cae8c8b0bc046a6a626e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f6f47c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063838c2dcc8d6c6e2c0caeec0b4d8e8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063838c2dcc8d6c6e2c0caeec0b0e8d8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063838c2dcc8d6c6e2c0caeec4b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f08406383ac4d6c8c8b0b200caeec4b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a54d6c0c40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f08406383aced8dac8c6d8e8b0be04b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e6e47c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f08406383aced8dac8c6dee0b4d8e8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f08406383aced8dac8c6dee0b0e8d8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f08406383aced8dac8c6dee4b8e8c8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063830c2e4c2eac6d8e8b0b808b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc565ccec6c47c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063830c2e4c2eac6d8e8bab2d4caf6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a54d8c";
+                    
+                    ns.Write(Convert.FromHexString(enterGameResponse_2));
+                    Thread.Sleep(50);
+
+                    const string enterGameResponse_3 =
+                        "0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063830c2e4c2eac6d8e8b4beeedad6d8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a54d8c0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100aa044f6f084063830c2e4c2eac6d8e8b6baeac8c6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc565ccec0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060077002c0100aa044f6f084063830caf0e8e2c8cae8c8b0ba08c6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d6c0a0ead4caecca50caf6c670a0ead4cae6c882dadcc8dcea50caf0c80c70724068429a929890a2406008429a929890a2406a0b12120000012002c010057e9f411315cf5c7530c016000c8002c0100ac3ff30b10802f809fe02946e0335ea92956ec8923f2989e2b0640649101e057788a11f88af5688a4bdaeb88a0cce68a0110596400f811a062043e9bb1a0626eef3aa2ecdfb96200441619007e46dd18814f6040a57850f98ec84671ae1800914506809f533746e013debf290eb0c32332ec9d2b0640649101e027ff8d11f80cb8798aff6df288784ee88a0110596400f8e97f63043ec3d19be27f9b3c225e1aba6200441619007e871454838f19b6a698ee3a91a81073aeb810140500c5d032000000bf002c0100ac3f87145443e10fdce0c66472c6001a01106e70635f74617665726e6b65657072000d0182aa6100809fa718025010841c7431006400008005a0fc22507e21f015580c7c051684648b42e485012c0e6081008b045928c06201160cb2688085832c1e6401018b085848c062021614b0a88085052c2e6081c9bdc8f80a2c3491171bb0e08045072c3c64f1010b105884c842041623b2209145092c4c6471620b145da4c0429573b14ab160b1458b2f5c6031030b1a58d4c0c24600c0002c0100ac3f9f62ac880f80842e0900000000000000004091450680020c788a0114b200e0ffffffbfc00201003f50313ac307404297040000000000000000a0c822034001063cc5000a130050100480503100050000808220048c8a012800000014044180540c40010000a0200803a562000a0000000541203815035000000028084201aa18800200004041100c54c500140000000a8270b02a06a00000005010040456310005000080822024b48a0128000000140441c1550c4001000000c5002c0100ac3fa06274464110165ec500140000000a82c0002b06a00000005010848658310005000080421600fcffffffff42c5f8151f00095d12000000000000000080228b4ce8232ac000a81840210b00feffffff7fa362fc8a0f80842e09000000000000000040914566f411156000540ca0900500ffffffff3f52317ec507404297040000000000000000a0c82253fa880a30002a0650c80280ffffffff5fa918bfe20320a14b020000000000000000506491397d440518001503286401c0ffffff3fbf002c0100ac3fa762fc8a0f80842e09000000000000000040914526f511156000540ca0900500ffffffff3f54317ec507404297040000000000000000a0c822b3fa880a30002a0650c80280ffffffff9faa18bfe20320a14b020000000000000000506491697d440518001503286401c0ffffffff6f558c5ff10190d02501000000000000000028b2c8bc3ea2020c808a0114b200e0ffffffffc72ac6aff80048e892000000000000000000145964621f51010640c5000a5900f0ffffff0fbf002c0100ac3fad62fc8a0f80842e09000000000000000040914566f611156000540ca0900500ffffffff3f57317ec507404297040000000000000000a0c82253fb880a30002a0650c80280ffff";
+                    
+                    ns.Write(Convert.FromHexString(enterGameResponse_3));
+                    Thread.Sleep(50);
+
+                    const string enterGameResponse_4 = "ffffdfab18bfe20320a14b020000000000000000506491b97d440518001503286401c0ffffffff0f568c5ff10190d02501000000000000000028b2c8e43ea2020c808a0114b200e0ffffffff172bc6aff80048e892000000000000000000145964761f51010640c5000a5900f0ffffff0fc9002c0100ac3fb26264860f80842e0900000000000000a04e91450680020c788a01142600a0200800b3620003000000054108a015031800000028088240ad18c000000040210b00feffffff7fb362a08f0f80842e090000000000000060509145264412156040560ca0c00201003f5a31d2c707404297040000000000000000a0c8227333890a30202b0650608100805fad18e8e30320a14b020000000000000010536491499244051890150328b04000c0cf560c60f10190d02501000000000000000028b2c80000c3002c0100ac3fb662004b01063cc5000a5900f0ffffffffbb1503327c002474490000000000000000b38a2c32001460c0530ca0300100852c00f8ffffffffe18ad12b3e0012ba24000000000000000000451619000a30e0290650c80280ffffffffc227604e00fcb6010c5000fc78c5e8151f00095d12000000000000000080228b0c000518f01403286401c0ffffff7fe1132e270080db000428007ebf62948c0f80842e0900000000000000004091450680020c788a01142600a0900500ffffffffc8002c0100ac3fc06288830f80842e0900000000000000004091450680020c788a01142600a0200800c26200960000000541081816035000000028088200b11880e80500404110068ac500640000000a8240602c06406a000050108482633100af000080822018208b01901a00001404e1c0590c000f0000e0272c8696f80048e892000000000000000000145964420f51010680c5000a5900f0ffffff5f60810080dfb018f8e203f2654b0210f73f06c0b6360650649199fd48518001603180421600fcffffff03c8002c0100ac3fc362e04be11dd4eebec8d2c2dae4d2dcce6260007ec462d0870f80842e0900000000000000404b9145e63d13156000580ca0900500ffffffffbf623174c707404297040000000000000000a0c822135f010a30002c0650c80280ffffffff9fb118f9e20320a14b0200000000000000005064910920e9528001603180421600fcffffffff8ec5b0171f10d85a124070113200fdc53180228b4c1e062ec000b01840210b00feffffff7fc862e48b0f80842e090000000000000000409145e6982405a7002c0100ac3fc862e44b010680c5000a5900f0ffffffff7316e35d7c002474490000000000000000008a2c325b9fa80003c06200852c00f8ffffffffed0ec0033eadc59a62d59d44a27aeab96220441619000a4f70390100f0e31d80077cdc3335c5dd3a8944f9d573c540882c3200149e00730200e0a73c000ff824706b8abb6713892cebe78a0110596400283cc2ffffffbf45410c70e119aa5f1d8a4884398698e42f8a01";
+                    
+                    ns.Write(Convert.FromHexString(enterGameResponse_4));
+                    Thread.Sleep(50);
+                    
+                    
+                    while (ns.Read(rcvBuffer, 0, rcvBuffer.Length) < 0x38)
+                    {
+                    }
+
+                    const string enterGameResponse_5 =
+                        "2b002c0100ac044f6f08400362202000a08143b0220000d0702840580d00007088040181bbd6114f31806610002c0100ac3f000004406198bde408";
+                    
+                    ns.Write(Convert.FromHexString(enterGameResponse_5));
+                    Thread.Sleep(50);
+                    
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Closing connection...");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -688,55 +145,9 @@ namespace emu
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                    ns.Close();
+                    ns?.Close();
                 }
             }
-        }
-
-        private static void DumpLoginData(byte[] rcvBuffer)
-        {
-            var clientLoginDataFile = File.Open("C:\\source\\client_login_dump", FileMode.Append);
-            var first2 = rcvBuffer[..2];
-            var next3 = rcvBuffer[2..5];
-            var next012c01 = rcvBuffer[5..8];
-            var next3_2 = rcvBuffer[8..11];
-            var next_7 = rcvBuffer[11..18];
-            var loginEnd = 18;
-
-            for (; loginEnd < rcvBuffer.Length; loginEnd++)
-            {
-                if (rcvBuffer[loginEnd] == 0)
-                {
-                    break;
-                }
-            }
-
-            var login = rcvBuffer[18..loginEnd];
-            var passwordEnd = loginEnd + 1;
-
-            for (; passwordEnd < rcvBuffer.Length; passwordEnd++)
-            {
-                if (rcvBuffer[passwordEnd] == 0)
-                {
-                    break;
-                }
-            }
-            var password = rcvBuffer[(loginEnd + 1)..passwordEnd];
-                    
-            //clientLoginDataFile.Write(Encoding.ASCII.GetBytes(Convert.ToHexString(rcvBuffer[..bytesRcvd]) + "\t" + Encoding.GetEncoding("windows-1251").GetString(rcvBuffer[..bytesRcvd]) + "\n"));
-                    
-            clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + Convert.ToHexString(login) + "\t" + "Password: " + Convert.ToHexString(password) + "\n"));
-
-            var loginDecode = new char[login.Length];
-            login[0] -= 2;
-
-            for (var i = 0; i < login.Length; i++)
-            {
-                loginDecode[i] = (char) (login[i] / 4  - 1 + 'A');
-            }
-            clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + new string(loginDecode) + "\n"));
-                    
-            clientLoginDataFile.Close();
         }
     }
 }
