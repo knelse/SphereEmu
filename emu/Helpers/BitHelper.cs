@@ -6,6 +6,22 @@ namespace emu.Helpers;
 /// </summary>
 public static class BitHelper
 {
+    public static string ToBinaryString(this byte b)
+    {
+        return Convert.ToString(b, 2).PadLeft(8, '0');
+    }
+    public static string ToBinaryString(this ushort us)
+    {
+        return Convert.ToString(us, 2).PadLeft(16, '0');
+    }
+    public static string ToBinaryString(this uint ui)
+    {
+        return Convert.ToString(ui, 2).PadLeft(32, '0');
+    }
+    public static string ToBinaryString(this long l)
+    {
+        return Convert.ToString(l, 2).PadLeft(64, '0');
+    }
     public static StringBuilder AppendBinaryPadTrim(this StringBuilder sb, byte val, bool reverse = false, 
         int padding = 8)
     {
@@ -82,7 +98,7 @@ public static class BitHelper
     //     return ByteArrayToBinaryString(tempArray);
     // }
     //
-    public static string ByteArrayToBinaryString(byte[] ba, bool noPadding = false)
+    public static string ByteArrayToBinaryString(byte[] ba, bool noPadding = false, bool addSpaces = false)
     {
         var hex = new StringBuilder(ba.Length * 2);
     
@@ -91,6 +107,11 @@ public static class BitHelper
             var str = Convert.ToString(val, 2);
             if (!noPadding) str = str.PadLeft(8, '0');
             hex.Append(str);
+
+            if (addSpaces)
+            {
+                hex.Append(' ');
+            }
         }
     
         return hex.ToString();
@@ -108,6 +129,20 @@ public static class BitHelper
         }
     
         return result;
+    }
+
+    public static byte[] ReadableBinaryStringToByteArray(string s)
+    {
+        var tempList = new List<byte>();
+        var cleanStr = s.ReplaceLineEndings("\n").Replace("\n", "");
+                    
+        for (var i = 0; i < cleanStr.Length; i+=8)
+        {
+            var currByte = cleanStr[i..(i + 8)];
+            tempList.Add(Convert.ToByte(currByte, 2));
+        }
+
+        return tempList.ToArray();
     }
     
     public static byte[] EncodeName(string name)
