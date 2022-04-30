@@ -70,11 +70,13 @@ public class EntitySpawnData
         sb.Append("11111000");
         sb.Append("00000001");
         var modeltype_str = ModelType.ToBinaryString();
-        sb.Append(modeltype_str[8..]);
-        sb.Append(modeltype_str[..8]);
+        sb.Append(modeltype_str[9..]);
+        sb.Append("1");
+        sb.Append(modeltype_str[1..9]);
+        // works for levels up to 128 /shrug
         var level_str = Level.ToBinaryString();
         sb.Append(level_str[2..]);
-        sb.Append("11");
+        sb.Append("01");
         sb.Append("111101");
         sb.Append(level_str[..2]);
         sb.Append("00000001");

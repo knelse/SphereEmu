@@ -614,19 +614,20 @@ public class TestHelper
     public static byte[] GetTestEntityData(int index)
     {
         var entityData = File.ReadAllLines("C:\\source\\entityData");
-        var yOffset = 20000 * (index % 90);
-        var zOffset = 2000 * (index / 90);
+        var yOffset = 100000 * (index % 2);
+        var zOffset = 7500 * (index / 2);
+        var xOffset = 500 * (index % 90);
         var entity = new EntitySpawnData
         {
             ID = (ushort) (index * 2 + 2),
             EntType = (ushort) (Convert.ToUInt16(entityData[1])),// + index),
-            X = Convert.ToUInt32(entityData[2]),
+            X = (uint) (Convert.ToUInt32(entityData[2]) + xOffset * 0),
             Y = (uint) (Convert.ToUInt32(entityData[3]) + yOffset),
             Z = (uint) (Convert.ToUInt32(entityData[4]) - zOffset),
             Angle = Convert.ToByte(entityData[5]),
             HP = Convert.ToUInt16(entityData[6]),
-            ModelType = Convert.ToUInt16(entityData[7]),
-            Level = Convert.ToByte(entityData[8]),
+            ModelType = (ushort) (Convert.ToUInt16(entityData[7])),// + index),
+            Level = (byte) (Convert.ToByte(entityData[8]) + index),
         };
 
         Console.WriteLine(entity.ToString());

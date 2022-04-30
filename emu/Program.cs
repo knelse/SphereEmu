@@ -288,25 +288,26 @@ namespace emu
                         //
                         // ns.Write(entity);
                         var index = 0;
-
-                        var bitmap = new Bitmap("C:\\Download\\poop.bmp");
-                        var colorMask = new bool [bitmap.Height, bitmap.Width];
-
-                        for (var i = 0; i < bitmap.Height; i++)
-                        {
-                            for (var j = 0; j < bitmap.Width; j++)
-                            {
-                                colorMask[i, j] = bitmap.GetPixel(i, j).R > 75;
-                            }
-                        }
                         
-                        while (index < 8100)
+                        // var bitmap = new Bitmap("C:\\Download\\vd.bmp");
+                        // var colorMask = new bool [bitmap.Height, bitmap.Width];
+                        //
+                        // for (var i = 0; i < bitmap.Height; i++)
+                        // {
+                        //     for (var j = 0; j < bitmap.Width; j++)
+                        //     {
+                        //         colorMask[i, j] = bitmap.GetPixel(i, j).R > 75;
+                        //     }
+                        // }
+                        
+                        while (index < 255)
                         {
-                            if (colorMask[index / 90, index % 90])
-                            {
+                            // if (colorMask[index / 90, index % 90])
+                            // {
+                            //Console.ReadLine();
                                 var entity = TestHelper.GetTestEntityData(index);
                                 ns.Write(entity);
-                            }
+                            // }
                             index++;
                             // if (index % 10 == 0) {
                             //     Thread.Sleep(1);
