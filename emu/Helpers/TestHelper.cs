@@ -1,5 +1,6 @@
 using System.Text;
 using emu.DataModels;
+using emu.Packets;
 
 namespace emu.Helpers;
 
@@ -235,7 +236,7 @@ public class TestHelper
         return str;
     }
 
-    public static byte[] GetEnterGameData_1(WorldCoords coords)
+    public static byte[] GetEnterGameData_1(WorldCoords coords, ushort playerIndex)
     {
         var sb = new StringBuilder();
 
@@ -244,9 +245,10 @@ public class TestHelper
 00101100
 00000001
 00000000
-10101100
-00000100
-01001111
+10101100");
+        sb.Append(Convert.ToString(BitHelper.GetSecondByte(playerIndex), 2).PadLeft(8, '0'));
+        sb.Append(Convert.ToString(BitHelper.GetFirstByte(playerIndex), 2).PadLeft(8, '0'));
+        sb.Append(@"
 01101111
 00001000
 00000000
@@ -274,7 +276,7 @@ public class TestHelper
         // Console.WriteLine(UIntToBinaryString(coords.worldX, true));
         // Console.WriteLine(UIntToBinaryString(coords.worldY, true));
         // Console.WriteLine(UIntToBinaryString(coords.worldZ, true));
-        // sb.Append(UIntToBinaryString(coords.worldX, true));
+        sb.Append(UIntToBinaryString(coords.worldX, true));
         //00011001 01000101 00100011 01100110 00001111
         //00001111 01100110 00100011 01000101
         //01000101 00100011 01100101 10001011
@@ -287,9 +289,9 @@ public class TestHelper
         var x_str = "00001111011001100010001101000101";
         //sb.Append(x_str[24..32] + x_str[16..24] + x_str[8..16] + x_str[..8]);
         //sb.Append("10100010110001000110011011110000");
-        // sb.Append(UIntToBinaryString(coords.worldY, true));
-        Console.WriteLine(sb.ToString());
-        // sb.Append(UIntToBinaryString(coords.worldZ, true));
+        sb.Append(UIntToBinaryString(coords.worldY, true));
+        // Console.WriteLine(sb.ToString());
+        sb.Append(UIntToBinaryString(coords.worldZ, true));
         //X: 11599.47656 Y: 11261.48242 Z: 11430.44336
 //01000101001000110110010110001000
 //01000011000111111010100010010010

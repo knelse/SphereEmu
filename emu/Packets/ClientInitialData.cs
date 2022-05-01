@@ -1,18 +1,19 @@
 using emu.DataModels;
+using emu.Helpers;
 
-namespace emu;
+namespace emu.Packets;
 
 public class ClientInitialData : Packet
 {
-    private readonly byte[] ClientValidationCode = { 0x04, 0x4f, 0x6f, 0x08, 0x40, 0x60 };
     public CharacterData? Character1;
     public CharacterData? Character2;
     public CharacterData? Character3;
 
     private static readonly byte[] FourBytesOfZeroes = { 0x00, 0x00, 0x00, 0x00 };
 
-    public byte[] ToByteArray()
+    public byte[] ToByteArray(ushort playerIndex)
     {
+        var clientValidationCode = new byte[] {BitHelper.GetSecondByte(playerIndex), BitHelper.GetFirstByte(playerIndex), 0x6f, 0x08, 0x40, 0x60 };
         var firstCharData = Character1?.ToByteArray();
         var secondCharData = Character2?.ToByteArray();
         var thirdCharData = Character3?.ToByteArray();
@@ -20,7 +21,7 @@ public class ClientInitialData : Packet
         var clientInitialDataResult = new List<byte>();
         
         var firstCharResult = new List<byte>();
-        firstCharResult.AddRange(ClientValidationCode);
+        firstCharResult.AddRange(clientValidationCode);
 
         if (firstCharData == null) return clientInitialDataResult.ToArray();
 
@@ -31,7 +32,7 @@ public class ClientInitialData : Packet
 
         if (secondCharData == null) return clientInitialDataResult.ToArray();
         var secondCharResult = new List<byte>();
-        secondCharResult.AddRange(ClientValidationCode);
+        secondCharResult.AddRange(clientValidationCode);
 
         secondCharResult.AddRange(secondCharData);
         secondCharResult.AddRange(FourBytesOfZeroes);
@@ -40,7 +41,7 @@ public class ClientInitialData : Packet
 
         if (thirdCharData == null) return clientInitialDataResult.ToArray();
         var thirdCharResult = new List<byte>();
-        thirdCharResult.AddRange(ClientValidationCode);
+        thirdCharResult.AddRange(clientValidationCode);
 
         thirdCharResult.AddRange(thirdCharData);
         thirdCharResult.AddRange(FourBytesOfZeroes);

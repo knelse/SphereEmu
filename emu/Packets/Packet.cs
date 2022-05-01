@@ -22,7 +22,6 @@ public class Packet
         {
             return EmptyPacketByteArray;
         }
-        
 
         var packetSize = (ushort) (content.Length + 4 + padZeros);
 
@@ -41,4 +40,9 @@ public class Packet
 
         return result;
     }
+
+    // public static byte[] ToByteArrayWithPlayerIndex(byte[] content, ushort playerIndex, int padZeros = 2)
+    // {
+    //     
+    // }
 }
