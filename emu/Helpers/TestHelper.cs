@@ -4,38 +4,6 @@ using emu.Packets;
 
 namespace emu.Helpers;
 
-public class WorldCoords
-{
-    public uint worldX;
-    public uint worldY;
-    public uint worldZ;
-
-    public override string ToString()
-    {
-        return "X: " + worldX + " Y: " + worldY + " Z: " + worldZ;
-    }
-
-    public WorldCoords(uint x, uint y, uint z)
-    {
-        worldX = x;
-        worldY = y;
-        worldZ = z;
-    }
-
-    public static WorldCoords ShipstoneTavern => new (2749818272, 579961153, 2748189146);
-    public static WorldCoords Shipstone => new(2730780400, 3266861995, 579147184);
-
-    public static WorldCoords AddOffsetFromShipstoneTavern(int x, int y, int z)
-    {
-        return new WorldCoords((uint)(ShipstoneTavern.worldX + x), (uint)(ShipstoneTavern.worldY + y), (uint)(ShipstoneTavern.worldZ + z));
-    }
-
-    public static WorldCoords AddOffsetFromShipstone(int x, int y, int z)
-    {
-        return new WorldCoords((uint)(Shipstone.worldX + x), (uint)(Shipstone.worldY + y), (uint)(Shipstone.worldZ + z));
-    }
-}
-
 public static class Extensions
 {
     public static string RemoveLineEndings(this string str)
@@ -264,58 +232,21 @@ public class TestHelper
 00011010
 10011000
 00011000
-00011001".ReplaceLineEndings("\n").Replace("\n", ""));
-        //10100010 11000100 01100110 11110000
-        //00010000 11111110 10100101 01001001 00010001
-        var result = "00010000 11111110 10100101 01001001 00010001";
-        var str = result.Replace(" ", "");
-        // sb.Append(Convert.ToString(x_tiny, 2).PadLeft(8, '0'));
-        // sb.Append(Convert.ToString(x_big, 2).PadLeft(8, '0'));
-        // sb.Append(Convert.ToString(x_med, 2).PadLeft(8, '0'));
-        // sb.Append(Convert.ToString(x_small, 2).PadLeft(8, '0'));
-        // Console.WriteLine(UIntToBinaryString(coords.worldX, true));
-        // Console.WriteLine(UIntToBinaryString(coords.worldY, true));
-        // Console.WriteLine(UIntToBinaryString(coords.worldZ, true));
-        sb.Append(UIntToBinaryString(coords.worldX, true));
-        //00011001 01000101 00100011 01100110 00001111
-        //00001111 01100110 00100011 01000101
-        //01000101 00100011 01100101 10001011
-        //     00011001 10001000 11010001 01010101
-        //serv 00001111 01100110 00100011 01000101 11010101     11011010 00011101 01000011
-        //ping 11101001 00001101 00000001 01100000 11010000     01100010 11011001 01001000 01010001 00100001 11101010 11000111 00010000 01001110 01011110 00001000 01010001 01111100 01101110 01101001 00010000 
-        //     11101001 00001101 00000001 01100000 11010000     01100010 11011001 01001000 01010001 00100001 11101010 11000111 00010000 01001110 01011110 00001000 01010001 01111100 01101110 01101001 00010000 
-        //var x = (float) Convert.ToUInt32(x_str [34..40] + x_str [24..32] + x_str [16..24] + x_str [8..16] + x_str[..2], 2) / 100000;
-
-        var x_str = "00001111011001100010001101000101";
-        //sb.Append(x_str[24..32] + x_str[16..24] + x_str[8..16] + x_str[..8]);
-        //sb.Append("10100010110001000110011011110000");
-        sb.Append(UIntToBinaryString(coords.worldY, true));
-        // Console.WriteLine(sb.ToString());
-        sb.Append(UIntToBinaryString(coords.worldZ, true));
-        //X: 11599.47656 Y: 11261.48242 Z: 11430.44336
-//01000101001000110110010110001000
-//01000011000111111010100010010010
-//01000100001000010111100011110000
-//
-        //ping 11010000 01100010 11011001 01001000 01010001 --- 00100001 11101010 11000111 00010000 01001110 01011110 00001000 01010001 01111100 01101110 01101001 00010000 
-        // Console.WriteLine(worldX_str);
-        // // var x = "0101001010000011";
-        // // Console.WriteLine(Convert.ToInt16(x, 2));
-        // var worldX_str = ShortToBinaryString(-20891);
-        // var worldY_str = ShortToBinaryString(coords.worldY);
-        // var worldZ_str = ShortToBinaryString(coords.worldZ);
-        // sb.Append(worldX_str[12..] + "0111");
-        // sb.Append(worldX_str[4..12]);
-        // sb.Append("1100" + worldX_str[..4]);
-        // sb.Append("10000010");
-        // sb.Append(worldY_str[12..] + "1010");
-        // sb.Append(worldY_str[4..12]);
-        // sb.Append("0100" + worldY_str[..4]);
-        // sb.Append("01100110");
-        // sb.Append(worldZ_str[12..] + "0001");
-        // sb.Append(worldZ_str[4..12]);
-        // sb.Append("1100" + worldZ_str[..4]);
-        sb.Append(@"11110001
+00011001");
+        var x = CoordsHelper.EncodeServerCoordinate(coords.x);
+        var y = CoordsHelper.EncodeServerCoordinate(coords.y);
+        var z = CoordsHelper.EncodeServerCoordinate(coords.z);
+        
+        sb.Append("00001111");
+        sb.Append(BitHelper.ByteArrayToBinaryString(x));
+        
+        sb.Append("00001111");
+        sb.Append(BitHelper.ByteArrayToBinaryString(y));
+        
+        sb.Append("00001111");
+        sb.Append(BitHelper.ByteArrayToBinaryString(z));
+        
+        sb.Append(@"11100100
 10111001
 10100101
 01000001
