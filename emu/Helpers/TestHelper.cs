@@ -236,21 +236,15 @@ public class TestHelper
         var x = CoordsHelper.EncodeServerCoordinate(coords.x);
         var y = CoordsHelper.EncodeServerCoordinate(coords.y);
         var z = CoordsHelper.EncodeServerCoordinate(coords.z);
-        
-        sb.Append("00001111");
+        var turn = CoordsHelper.EncodeServerCoordinate(coords.turn);
+        Console.WriteLine(BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(coords.y)));
+
         sb.Append(BitHelper.ByteArrayToBinaryString(x));
-        
-        sb.Append("00001111");
         sb.Append(BitHelper.ByteArrayToBinaryString(y));
-        
-        sb.Append("00001111");
         sb.Append(BitHelper.ByteArrayToBinaryString(z));
+        sb.Append(BitHelper.ByteArrayToBinaryString(turn));
         
-        sb.Append(@"11100100
-10111001
-10100101
-01000001
-00110111
+        sb.Append(@"00110111
 00001101
 01111001
 00000000

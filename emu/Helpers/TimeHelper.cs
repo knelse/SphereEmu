@@ -2,7 +2,7 @@ namespace emu.Helpers;
 
 public static class TimeHelper
 {
-    public static int UnixTimeOrigin = 1649722100;
+    public const int UnixTimeOrigin = 1649722100;
 
     public static DateTime GetCurrentSphereDateTime()
     {

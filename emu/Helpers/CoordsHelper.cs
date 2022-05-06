@@ -2,15 +2,17 @@ namespace emu.Helpers;
 
 public class WorldCoords
 {
-    public int x;
-    public int y;
-    public int z;
+    public double x;
+    public double y;
+    public double z;
+    public double turn;
 
-    public WorldCoords(int x1, int y1, int z1)
+    public WorldCoords(double x1, double y1, double z1, double turn1 = 0)
     {
         x = x1;
         y = y1;
         z = z1;
+        turn = turn1;
     }
 
     public static WorldCoords ShipstoneCenter => new WorldCoords( 2614, 157, 1293 );
@@ -19,39 +21,55 @@ public class WorldCoords
 }
 public static class CoordsHelper
 {
-    public static byte[] EncodeServerCoordinate(int a)
+    public static byte[] EncodeServerCoordinate(double a)
     {
-        if (a == 0)
-        {
-            a = 2;
-        }
-        else if (Math.Abs(a) <= 1)
-        {
-            // Seems to be the only edge cases for this, I'll figure it out later, +1 step is good enough
-            a = 2 * Math.Sign(a);
-        }
-
-        var a_normalized = Math.Abs(a);
-        var scale = 0b101;
+        var scale = 69;
+        
+        var a_abs = Math.Abs(a);
+        var a_temp = a_abs;
+        
         var steps = 0;
 
-        while (a_normalized < 2048)
+        if (((int)a_abs) == 0)
         {
-            a_normalized *= 2;
-            steps += 1;
+            scale = 58;
         }
 
-        scale -= (steps + 1) / 2;
-
-        if (scale < 0)
+        else if (a_temp < 2048)
         {
-            scale = 0;
+            while (a_temp < 2048)
+            {
+                a_temp *= 2;
+                steps += 1;
+            }
+
+            scale -= (steps + 1) / 2;
+
+            if (scale < 0)
+            {
+                scale = 58;
+            }
         }
-        
-        var a_firstByte = (byte)(((a_normalized & 0b1111) << 4) + 0b0110);
-        var a_secondByte = (byte)(((a_normalized >> 4) & 0b1111111) + (steps % 2 == 1 ? 0b10000000 : 0));
-        var a_thirdbyte = (byte)(((a < 0 ? 1 : 0) << 7) + (((a_normalized >> 11) % 2 == 1 ? 1 : 0) << 6) + scale);
-        return new[] { a_firstByte, a_secondByte, a_thirdbyte };
+        else
+        {
+            while (a_temp > 4096)
+            {
+                a_temp /= 2;
+                steps += 1;
+            }
+
+            scale += steps / 2;
+        }
+
+        var a_3 = (byte) (((a < 0 ? 1 : 0) << 7) + scale);
+        var mul = Math.Pow(2, ((int)Math.Log2(a_abs)));
+        var numToEncode = (int)(0b100000000000000000000000 * (a_abs / mul + 1));
+
+        var a_2 = (byte) (((numToEncode & 0b111111111111111100000000) >> 16) + (steps % 2 == 1 ? 0b10000000 : 0));
+        var a_1 = (byte)((numToEncode & 0b1111111100000000) >> 8);
+        var a_0 = (byte) (numToEncode & 0b11111111);
+
+        return new [] { a_0, a_1, a_2, a_3};
     }
     public static int DecodeServerCoordinate(byte[] a)
     {
@@ -82,7 +100,7 @@ public static class CoordsHelper
         
         var baseCoord = Math.Pow(2, x_scale - 127);
         var sign = (a[4] & 0b100000) > 0 ? -1 : 1;
-        return (((float)(((a[3] & 0b11111) << 18) + (a[2] << 10) + (a[1] << 2) +
-                      ((a[0] & 0b11000000) >> 6))) / 0b100000000000000000000000 * baseCoord + baseCoord) * sign;
+        return ((1 + ((float)(((a[3] & 0b11111) << 18) + (a[2] << 10) + (a[1] << 2) +
+                      ((a[0] & 0b11000000) >> 6))) / 0b100000000000000000000000) * baseCoord) * sign;
     }
 }

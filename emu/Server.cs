@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using emu.DataModels;
 using emu.Helpers;
 #pragma warning disable CS4014
@@ -61,6 +62,30 @@ namespace emu
         private static async Task HandleClientAsync(TcpClient client, ushort currentPlayerIndex)
         {
             NetworkStream? ns = null;
+            var coordsFilePath = "C:\\source\\clientCoordsSaved";
+            var fileCoords = Array.Empty<string>();
+            var startCoords = WorldCoords.UmradCenter;
+
+            if (File.Exists(coordsFilePath))
+            {
+                fileCoords = await File.ReadAllLinesAsync(coordsFilePath);
+            }
+
+            if (fileCoords.Length > 0)
+            {
+                try
+                {
+                    var x = double.Parse(fileCoords[0]);
+                    var y = double.Parse(fileCoords[1]);
+                    var z = double.Parse(fileCoords[2]);
+                    var turn = double.Parse(fileCoords[3]);
+                    startCoords = new WorldCoords(x, y, z, turn);
+                }
+                catch
+                {
+                    Console.WriteLine("Cannot load file coords");
+                }
+            }
 
             try
             {
@@ -76,7 +101,7 @@ namespace emu
                 });
                 var enterGameResponse_1 =
                     //Convert.FromHexString("4a012c010018{playerIndexStr}6f0800c2e0284d2e6c0e006e1a981819fb953b4560e61f43cb73af4455d93941370d7900f0000004000400040004000400040004000400040004000400040004000400040004000400000000000400000004000400040000000400040004000400040004000400040004000400000000000000000000000000000000000000000000000000000000000400040004000000000000000000040000000400f000000024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf00000000000090010000005cf1530b00b400000000002781d4089801c00600c00f40a9006809001301600080450000000000000000000000000000000000000000000000000000000000000000000000002800800200280000000000000000000000003200284401d01233fca14a531652809054b5170500");
-                    TestHelper.GetEnterGameData_1(new WorldCoords(512, 150, 500), currentPlayerIndex);
+                    TestHelper.GetEnterGameData_1(startCoords, currentPlayerIndex);
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Handling client " + playerIndexStr);
@@ -149,7 +174,6 @@ namespace emu
 
                 var enterGameResponse_4_1 =
                     $"9b002c0100ac{playerIndexStr}6f0840411076524901809698000a82a003af0ea010050010a254520080860d020000004000000040632320a0b14156666656364637c7c50580426323535313f31593c2029204a5038263e31233e3224323e38233a30010730212e44404328616a6e232576606d003120312e4440432861626f74556c6f665c6167606c2e3031203c294d4944405120300c294d494440512030072002c0100ac{playerIndexStr}6f084063838c2dcc8d6c6e2c0cae8c8b0bc046a6a626e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f6f47c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063838c2dcc8d6c6e2c0caeec0b4d8e8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063838c2dcc8d6c6e2c0caeec0b0e8d8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063838c2dcc8d6c6e2c0caeec4b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5050f0f0f40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f08406383ac4d6c8c8b0b200caeec4b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a54d6c0c40c5850e8f0e8008640c2d4cee8bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f08406383aced8dac8c6d8e8b0be04b8e8c8b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e6e47c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f08406383aced8dac8c6dee0b4d8e8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f08406383aced8dac8c6dee0b0e8d8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f08406383aced8dac8c6dee4b8e8c8b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a58d8c6d47c5a58d4e0e40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063830c2e4c2eac6d8e8b0b808b0b808b0ba026e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc565ccec6c47c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063830c2e4c2eac6d8e8bab2d4caf6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc5a54d8c0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063830c2e4c2eac6d8e8b4beeedad6d8e8b0b20e62b26850524094a0704c7c62566c6458646c60567";
-
                 var enterGameResponse_4_2 =
                     $"460120e60424c88908640c2d4cc5a54d8c0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a24060072002c0100ac{playerIndexStr}6f084063830c2e4c2eac6d8e8b6baeac8c6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d4cc565ccec0c40c5a54d8c0c40c5850e8f0ee08bac8cedcb8c2dec0c84c70724068429a929890a2406008429a929890a240600c8002c0100ac{playerIndexStr}6f084063830caf0e8e2c8cae8c8b0ba08c6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d6c0a0ead4caecca50caf6c670a0ead4cae6c882dadcc8dcea50caf0c80c70724068429a929890a2406008429a929890a2406a0b1212000b00018fe2c02863f0b8187cf622050b420804521f2c2602fb038a81a2c1089170979828542f960b110105830ea2d9ab1160eb2789005440f631111045948c5441653978a05052c2a211716b8b880054695065b002c0100ac{playerIndexStr}6f08c022a326b4d0445e6c4a2d3822058b0e5878340c161f3d840528ec22d46f21028b115990c8a2546d618ab638d1054a7969917ad1c204b0501de6110058acea2d589916ad2e0b1758ccc082c61635b4b01112002c0100dd179d8a50a1a741ae11016000";
 
@@ -272,14 +296,13 @@ namespace emu
                     var clientPingBytes = rcvBuffer[17..38];
 
                     var clientPingStr = Convert.ToHexString(rcvBuffer[9..38]);
-                    var clientPingBinaryStr = BitHelper.ByteArrayToBinaryString(clientPingBytes, false, true)[36..];
+                    var clientPingBinaryStr = BitHelper.ByteArrayToBinaryString(clientPingBytes, false, true);
 
-                    // if (clientPingBinaryStr[4] == '1')
-                    // {
-                    //     continue;
-                    // }
-                    
-                    // skip 21, take 5
+                    if (clientPingBinaryStr[0] == '0')
+                    {
+                        // random different packet, idk
+                        continue;
+                    }
                     
                     if (string.IsNullOrEmpty(oldClientPingStr))
                     {
@@ -306,8 +329,12 @@ namespace emu
                             var x = CoordsHelper.DecodeClientCoordinate(rcvBuffer[21..26]);
                             var y = CoordsHelper.DecodeClientCoordinate(rcvBuffer[25..30]);
                             var z = CoordsHelper.DecodeClientCoordinate(rcvBuffer[29..34]);
+                            var turn = CoordsHelper.DecodeClientCoordinate(rcvBuffer[33..38]);
                             Console.WriteLine();
-                            Console.WriteLine("X: " + x + " Y: " + y +  " Z: " + z);
+                            Console.WriteLine("X: " + (int) x + " Y: " + (int) y +  " Z: " + (int) z + " Turn: " + (int) turn);
+                            // var coordsFile = File.Open(coordsFilePath, FileMode.Create);
+                            // coordsFile.Write(Encoding.ASCII.GetBytes(x + "\n" + y + "\n" + z + "\n" + turn));
+                            // coordsFile.Close();
                             oldClientPingStr = clientPingBinaryStr;
                         }
                     }
