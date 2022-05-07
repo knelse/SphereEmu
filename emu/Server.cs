@@ -289,7 +289,6 @@ namespace emu
                     }
                 });
 
-                var pongStrStart = "12002c0100";
                 var oldClientPingStr = "";
                 Thread.Sleep(300);
 
@@ -307,10 +306,10 @@ namespace emu
                     {
                     }
 
-                    var clientPingBytes = rcvBuffer[17..38];
+                    var clientPingBytesForComparison = rcvBuffer[17..38];
 
-                    var clientPingStr = Convert.ToHexString(rcvBuffer[9..38]);
-                    var clientPingBinaryStr = BitHelper.ByteArrayToBinaryString(clientPingBytes, false, true);
+                    var clientPingBytesForPong = rcvBuffer[9..21];
+                    var clientPingBinaryStr = BitHelper.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
 
                     if (clientPingBinaryStr[0] == '0')
                     {
@@ -352,28 +351,36 @@ namespace emu
                             oldClientPingStr = clientPingBinaryStr;
                         }
                     }
-
-                    // var temp = Convert.FromHexString(clientPingStr[12..14])[0];
-                    // temp += 7;
-                    // var temp2 = Convert.FromHexString(clientPingStr[14..16])[0];
-                    // temp2 += 14;
-                    var topBit = Convert.FromHexString(clientPingStr[10..12])[0];
+                    var topByteToXor = clientPingBytesForPong[5];
 
                     if (shouldXorTopBit)
                     {
-                        topBit ^= 0b10000000;
+                        topByteToXor ^= 0b10000000;
                     }
 
                     if (pingCounter == 0)
                     {
-                        pingCounter = (ushort) ((Convert.FromHexString(clientPingStr[12..14])[0] << 8) + Convert.FromHexString(clientPingStr[14..16])[0]); 
+                        var first = (ushort) ((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
+                        first -= 0xE001;
+                        pingCounter = (ushort) (0xE001 + first / 12);
                     }
-                    var pongStr = pongStrStart + clientPingStr[..10] + 
-                    $"{topBit:X2}" + Convert.ToHexString(new[] {BitHelper.GetSecondByte(pingCounter), BitHelper.GetFirstByte(pingCounter)}) +
-                                  clientPingStr[16..24] + "00";
-                    await ns.WriteAsync(Convert.FromHexString(pongStr));
+
+                    var pong = new byte []
+                    {
+                        0x00, 0x00, 0x00, 0x00, 0x00, topByteToXor, BitHelper.GetFirstByte(pingCounter), 
+                        BitHelper.GetSecondByte(pingCounter), 0x00, 0x00, 0x00, 0x00, 0x00
+                    };
+                    Array.Copy(clientPingBytesForPong, pong, 5);
+                    Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
+                    await ns.WriteAsync( Packet.ToByteArray(pong, 1));
                     shouldXorTopBit = !shouldXorTopBit;
                     pingCounter++;
+
+                    //overflow
+                    if (pingCounter < 0xE001)
+                    {
+                        pingCounter = 0xE001;
+                    }
                 }
 
                 while (ns.CanRead)
