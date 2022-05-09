@@ -4,15 +4,7 @@ namespace emu;
 
 public class Packet
 {
-    protected ushort PacketSize;
     protected static ushort PacketValidationCodeOK = 0x2c01;
-    protected ushort PacketValidationCode;
-    
-    public static Packet EmptyPacket = new()
-    {
-        PacketSize = 0x04,
-        PacketValidationCode = 0xf401
-    };
 
     private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xf4, 0x01 };
 

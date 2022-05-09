@@ -17,7 +17,7 @@ public class EntitySpawnData
 
     public override string ToString()
     {
-        return $"{ID}\t{EntType}\t{X}\t{Y}\t{Z}\t{Angle}\t{HP}\t{ModelType}\t{Level}";
+        return $"Ent\t{ID}\t{EntType}\t{X}\t{Y}\t{Z}\t{Angle}\t{HP}\t{ModelType}\t{Level}";
     }
 
     public byte[] ToByteArray()
