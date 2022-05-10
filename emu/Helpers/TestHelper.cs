@@ -237,7 +237,6 @@ public class TestHelper
         var y = CoordsHelper.EncodeServerCoordinate(coords.y);
         var z = CoordsHelper.EncodeServerCoordinate(coords.z);
         var turn = CoordsHelper.EncodeServerCoordinate(coords.turn);
-        Console.WriteLine(BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(coords.y)));
 
         sb.Append(BitHelper.ByteArrayToBinaryString(x));
         sb.Append(BitHelper.ByteArrayToBinaryString(y));
