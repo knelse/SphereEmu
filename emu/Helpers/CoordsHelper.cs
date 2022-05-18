@@ -18,6 +18,11 @@ public class WorldCoords
     public static WorldCoords ShipstoneCenter => new WorldCoords( 2614, 157, 1293 );
     public static WorldCoords UmradCenter => new WorldCoords( -1993, -106, 457 );
     public static WorldCoords Test => new WorldCoords( -7, 19, 2987 );
+
+    public string ToDebugString()
+    {
+        return "X: " + (int) x + " Y: " + (int) y +  " Z: " + (int) z + " Turn: " + (int) turn;
+    }
 }
 public static class CoordsHelper
 {
@@ -102,5 +107,15 @@ public static class CoordsHelper
         var sign = (a[4] & 0b100000) > 0 ? -1 : 1;
         return ((1 + ((float)(((a[3] & 0b11111) << 18) + (a[2] << 10) + (a[1] << 2) +
                       ((a[0] & 0b11000000) >> 6))) / 0b100000000000000000000000) * baseCoord) * sign;
+    }
+
+    public static WorldCoords GetCoordsFromPingBytes(byte[] rcvBuffer)
+    {
+        var x = CoordsHelper.DecodeClientCoordinate(rcvBuffer[21..26]);
+        var y = CoordsHelper.DecodeClientCoordinate(rcvBuffer[25..30]);
+        var z = CoordsHelper.DecodeClientCoordinate(rcvBuffer[29..34]);
+        var turn = CoordsHelper.DecodeClientCoordinate(rcvBuffer[33..38]);
+
+        return new WorldCoords(x, y, z, turn);
     }
 }

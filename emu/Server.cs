@@ -14,6 +14,7 @@ namespace emu
         private static int playerIndex = 0x044f;
         private static readonly byte[] transmissionEndPacket = Packet.ToByteArray();
         private static int playerCount;
+        private static bool liveServerCoords = false;
 
         private static ushort getNewPlayerIndex()
         {
@@ -63,9 +64,9 @@ namespace emu
         private static async Task HandleClientAsync(TcpClient client, ushort currentPlayerIndex)
         {
             NetworkStream? ns = null;
-            var coordsFilePath = "C:\\source\\clientCoordsSaved";
+            var coordsFilePath = liveServerCoords ? "C:\\_sphereDumps\\currentWorldCoords" : "C:\\source\\clientCoordsSaved";
             var fileCoords = Array.Empty<string>();
-            var startCoords = WorldCoords.UmradCenter;
+            var startCoords = WorldCoords.ShipstoneCenter;
 
             if (File.Exists(coordsFilePath))
             {
@@ -101,7 +102,7 @@ namespace emu
                     BitHelper.GetFirstByte(currentPlayerIndex)
                 });
                 var enterGameResponse_1 =
-                    //Convert.FromHexString("4a012c010018{playerIndexStr}6f0800c2e0284d2e6c0e006e1a981819fb953b4560e61f43cb73af4455d93941370d7900f0000004000400040004000400040004000400040004000400040004000400040004000400000000000400000004000400040000000400040004000400040004000400040004000400000000000000000000000000000000000000000000000000000000000400040004000000000000000000040000000400f000000024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf00000000000090010000005cf1530b00b400000000002781d4089801c00600c00f40a9006809001301600080450000000000000000000000000000000000000000000000000000000000000000000000002800800200280000000000000000000000003200284401d01233fca14a531652809054b5170500");
+                    //Convert.FromHexString($"4a012c0100ac{playerIndexStr}6f0800c2e0284d2e6c0e006e1a981819fb953b4560e61f43cb73af4455d93941370d7900f0000004000400040004000400040004000400040004000400040004000400040004000400000000000400000004000400040000000400040004000400040004000400040004000400000000000000000000000000000000000000000000000000000000000400040004000000000000000000040000000400f000000024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf00000000000090010000005cf1530b00b400000000002781d4089801c00600c00f40a9006809001301600080450000000000000000000000000000000000000000000000000000000000000000000000002800800200280000000000000000000000003200284401d01233fca14a531652809054b5170500");
                     TestHelper.GetEnterGameData_1(startCoords, currentPlayerIndex);
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -166,6 +167,8 @@ namespace emu
                 Console.WriteLine("CLI: Enter game");
                 await ns.WriteAsync(enterGameResponse_1);
                 // await ns.WriteAsync(Convert.FromHexString(
+                    // "4A012C0100ac044f6f0800E260CDAD8C6DAE0C006E9D199959F46435C5255A894440EE73C50080C2407EC95502F0040000000000000000000000000000000000000000000000000000000400000000000000000004000000000004000400040000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400040000000000000000000400040000000400F0D007000000000000000000000000000000000000000000000000000000000000000000280000000000000000000000400B000000000000C4BB760B00B400000000000000E605000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002800800200000000000000000000000C00003200C0D503D0128B4CF2A3DC2C00298517000000"));
+                // await ns.WriteAsync(Convert.FromHexString(
                     // "4f012c0100ac044f6f0800c2e0284d2e6c0ea0a6d2ced2d8601a981819cc7353c540b2a6c31d2363c4c618a0bfe71b7900f0040004000400040004000400040004000400040004000400040004000400040004000400000004000400000004000400040000000400040004000400040004000400040004000400040004000400000000000000000000000000000000000000000000000400040004000000000000000400040000000400f0d0070024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf000000400b009001000000e4e1530b00b400000000e42681d4089001800600bc0f40a9006009001301600040450004004000000400000000000000000000000000000000000000000000000000000000002800800200280000000000000000000c00003200284401d0127374a24a531652809014b4170500"));
                 Interlocked.Increment(ref playerCount);
 
@@ -203,13 +206,17 @@ namespace emu
 // hp mp c5002c0100ac044f6f084063830caf0e8e2c8cae8c8b0ba08c6c8e8b0b20e62b26850524094a0704c7c62566c6458646c60567460120e60424c88908640c2d6c0a0ead4caecca50caf6c670a0ead4cae6c882dadcc8dcea50caf0c80c70724068429a929890a2406008429a929890a2406a0b1212000b000383a2d0246500b814ed162a08bb420804521f2c2603bb038881f2c10c2028b846cc1422180b058e8082c182d17cd3c0b07593cc802a207b38868a12ca4c2308ba939c882021695900b0b5c5c00
                 // await ns.WriteAsync(BitHelper.BinaryStringToByteArray(enterGame2Binary));
                 Thread.Sleep(100);
-                await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4));
+                await ns.WriteAsync(Convert.FromHexString(
+                    "BE002c0100ac044f6f08406102000A820000000000000000501004876757000500008082204C000000000000001404C122E81520DEB5FFBF2008178FB3002D0000000541C0909C05680100002808C246E52C00E60500404110642C6701140000000A823073390BA00000005010041CCC5980010000808220E40000000000000014046147731600688909A020083A9BB30070F5000021D29C05002808C284E92C400B0000404110004E6701E80300001A360803000000020000008D8D800072002c0100ac044f6f08406383ACCCCCAC6C8C6E8E8B0B000485C646A6A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC565AECC0CA007440624C88908640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063838C2DCC8D6C6E2C0CAE8C8B0B80C646A6A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5050F0F6F47C5850E8F0E8008640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063838C2DCC8D6C6E2C0CAEEC0B4D8E8B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5050F0F0F40C5850E8F0E8008640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063838C2DCC8D6C6E2C0CAEEC0B0E8D8B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5050F0F0F40C5850E8F0E8008640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063838C2DCC8D6C6E2C0CAEEC4B8E8C8B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5050F0F0F40C5850E8F0E8008640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f08406383AC4D6C8C8B0B200CAEEC4B8E8C8B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A54D6C0C40C5850E8F0E8008640C2D4CEE8BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f08406383ACED8DAC8C6D8E8B0BE04B8E8C8B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A58D8C6D47C5A58D4E6E47C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f08406383ACED8DAC8C6DEE0B4D8E8B0B808B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A58D8C6D47C5A58D4E0E40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f08406383ACED8DAC8C6DEE0B0E8D8B0B808B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A58D8C6D47C5A58D4E0E40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f08406383ACED8DAC8C6DEE4B8E8C8B0B808B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A58D8C6D47C5A58D4E0E40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063830C2E4C2EAC6D8E8B0B808B0B808B0BA0A626E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC565CCEC6C47C5A54D8C0C40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063830C2E4C"));
+                // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4));
                 Thread.Sleep(100);
-                await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_1));
+                await ns.WriteAsync(Convert.FromHexString(
+                    "2EAC6D8E8BAB2D4CAF6C8E8B0BA026E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A54D8C0C40C5A54D8C0C40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063830C2E4C2EAC6D8E8B4BEEEDAD6D8E8B0BA026E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC5A54D8C0C40C5A54D8C0C40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060072002c0100ac044f6f084063830C2E4C2EAC6D8E8B6BAEAC8C6C8E8B0BA026E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D4CC565CCEC0C40C5A54D8C0C40C5850E8F0EE08BAC8CEDCB8C2DEC0C84C70724068429A929890A2406008429A929890A24060077002c0100ac044f6f084063830CAF0E8E2C8CAE8C8B0BA08C6C8E8B0BA026E64B26850524094A0704C7C62566C6458646C605674601E00424C88908640C2D6C0A0EAD4CAECCA50CAF6C670A0EAD4CAE6C882DADCC8DCEA50CAF0C80C70724068429A929890A2406008429A929890A2406A0B12120000012002C010055E9F491309CE93E6416016000A0002c0100ac044f6f08C002107911103459086C2916035B8A05012C0A9117862A8B43F405B2C5221179A148B658045B30DA2C1A64E1208B075940A4091611C5838554B36031CDBDA0804525E5C2821617B0C0487E2C32B6140B4DE4C526D082D37FD1010B4FEFC5A7D802D46B114AB31081C5882C4864516AB430E5589CE80225E2B4484D69D10158A8C062156DC18AB5688558B8C862461634B0A891858D00"));
+                // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_1));
                 Thread.Sleep(100);
-                await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_2));
+                // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_2));
                 Thread.Sleep(100);
-                await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_3));
+                // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_3));
                 Thread.Sleep(100);
                 var enterGameResponse_5 =
                     $"2b002c0100ac{playerIndexStr}6f08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
@@ -225,7 +232,7 @@ namespace emu
                 {
                 }
                 
-                await WorldDataTest.SendWorldData(ns);
+                await WorldDataTest.SendWorldDataKnelse(ns);
 
                 Task.Run(async () =>
                 {
@@ -248,6 +255,21 @@ namespace emu
                         Thread.Sleep(6000);
                     }
                 });
+                // Task.Run(async () =>
+                // {
+                //     // local        1800e142cf022c01007c0b4f6f0840810c9ede0000343600
+                //     //              18001d4319022c010040014f6f0840810c9ede0000343600
+                //     //              1800244330022c010062014f6f0840810c9ede0000343600
+                //     // local helmet 1800f8bd03032c0100940f4f6f0840810c9ede0000020000
+                //     // remote       18004B2EA4022C01007008FE790840810CFCF30000343600
+                //     var moveItemSomewhere = "20002C0100ac044f6f0840411036000000000000000A82A001A3078079010000";
+                //
+                //     Console.ReadLine();
+                //
+                //     await ns.WriteAsync(Convert.FromHexString(moveItemSomewhere));
+                //
+                //     Console.WriteLine("---MOVED---");
+                // });
 
                 // Task.Run(async () =>
                 // {
@@ -259,35 +281,40 @@ namespace emu
                 //         $"1f002c010000{playerIndexStr}6f0840223e981c0280822090d84a030400000014248004"));
                 // });
 
-                // Task.Run(async () =>
-                // {
-                //     var index = 0;
-                //
-                //     // var bitmap = new Bitmap("C:\\Download\\vd.bmp");
-                //     // var colorMask = new bool [bitmap.Height, bitmap.Width];
-                //     //
-                //     // for (var i = 0; i < bitmap.Height; i++)
-                //     // {
-                //     //     for (var j = 0; j < bitmap.Width; j++)
-                //     //     {
-                //     //         colorMask[i, j] = bitmap.GetPixel(i, j).R > 75;
-                //     //     }
-                //     // }
-                //
-                //     while (index < 255)
-                //     {
-                //         // if (colorMask[index / 90, index % 90])
-                //         // {
-                //         //Console.ReadLine();
-                //         // var entity = TestHelper.GetTestEntityData(index);
-                //         // await ns.WriteAsync(entity);
-                //         // }
-                //         index++;
-                //         // if (index % 10 == 0) {
-                //         //     Thread.Sleep(1);
-                //         // }
-                //     }
-                // });
+                Task.Run(async () =>
+                {
+                    var index = 2;
+                
+                    // var bitmap = new Bitmap("C:\\Download\\vd.bmp");
+                    // var colorMask = new bool [bitmap.Height, bitmap.Width];
+                    //
+                    // for (var i = 0; i < bitmap.Height; i++)
+                    // {
+                    //     for (var j = 0; j < bitmap.Width; j++)
+                    //     {
+                    //         colorMask[i, j] = bitmap.GetPixel(i, j).R > 75;
+                    //     }
+                    // }
+                
+                    // while (index < 1)
+                    // {
+                        // if (colorMask[index / 90, index % 90])
+                        // {
+                        //Console.ReadLine();
+                        while (true)
+                        {
+                            Console.ReadLine();
+                            var entity = TestHelper.GetTestEntityData(index);
+                            await ns.WriteAsync(entity);
+                            index++;
+                        }
+                        // }
+                        // index++;
+                        // if (index % 10 == 0) {
+                        //     Thread.Sleep(1);
+                        // }
+                    // }
+                });
 
                 var oldClientPingStr = "";
                 Thread.Sleep(300);
@@ -319,7 +346,7 @@ namespace emu
                     
                     if (string.IsNullOrEmpty(oldClientPingStr))
                     {
-                        Console.WriteLine(clientPingBinaryStr.ToArray());
+                        // Console.WriteLine(clientPingBinaryStr.ToArray());
                         oldClientPingStr = clientPingBinaryStr;
                     }
                     
@@ -329,25 +356,28 @@ namespace emu
 
                         if (pingHasChanges != 0)
                         {
-                            for (var i = 0; i < clientPingBinaryStr.Length; i++)
+                            // for (var i = 0; i < clientPingBinaryStr.Length; i++)
+                            // {
+                            //     if (clientPingBinaryStr[i] != oldClientPingStr[i])
+                            //     {
+                            //         Console.ForegroundColor = ConsoleColor.Magenta;
+                            //     }
+                            //     Console.Write(clientPingBinaryStr[i]);
+                            //     Console.ForegroundColor = ConsoleColor.White;
+                            // }
+
+                            var coords = CoordsHelper.GetCoordsFromPingBytes(rcvBuffer);
+                            // Console.WriteLine();
+                            // Console.WriteLine(coords.ToDebugString());
+
+                            if (!liveServerCoords)
                             {
-                                if (clientPingBinaryStr[i] != oldClientPingStr[i])
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Magenta;
-                                }
-                                Console.Write(clientPingBinaryStr[i]);
-                                Console.ForegroundColor = ConsoleColor.White;
+                                var coordsFile = File.Open(coordsFilePath, FileMode.Create);
+                                coordsFile.Write(Encoding.ASCII.GetBytes(coords.x + "\n" + coords.y + "\n" + coords.z +
+                                                                         "\n" + coords.turn));
+                                coordsFile.Close();
                             }
 
-                            var x = CoordsHelper.DecodeClientCoordinate(rcvBuffer[21..26]);
-                            var y = CoordsHelper.DecodeClientCoordinate(rcvBuffer[25..30]);
-                            var z = CoordsHelper.DecodeClientCoordinate(rcvBuffer[29..34]);
-                            var turn = CoordsHelper.DecodeClientCoordinate(rcvBuffer[33..38]);
-                            Console.WriteLine();
-                            Console.WriteLine("X: " + (int) x + " Y: " + (int) y +  " Z: " + (int) z + " Turn: " + (int) turn);
-                            var coordsFile = File.Open(coordsFilePath, FileMode.Create);
-                            coordsFile.Write(Encoding.ASCII.GetBytes(x + "\n" + y + "\n" + z + "\n" + turn));
-                            coordsFile.Close();
                             oldClientPingStr = clientPingBinaryStr;
                         }
                     }
