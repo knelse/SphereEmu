@@ -13,7 +13,7 @@ public class ClientInitialData : Packet
 
     public byte[] ToByteArray(ushort playerIndex)
     {
-        var clientValidationCode = new byte[] {BitHelper.GetSecondByte(playerIndex), BitHelper.GetFirstByte(playerIndex), 0x6f, 0x08, 0x40, 0x60 };
+        var clientValidationCode = new byte[] {0x04, BitHelper.GetSecondByte(playerIndex), BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x60 };
         var firstCharData = Character1?.ToByteArray();
         var secondCharData = Character2?.ToByteArray();
         var thirdCharData = Character3?.ToByteArray();

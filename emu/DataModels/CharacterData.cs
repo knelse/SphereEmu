@@ -133,4 +133,9 @@ public class CharacterData
         return BitHelper.BinaryStringToByteArray(sbrev.ToString());
         
     }
+
+    public static byte[] GetEmptyCharacterData(ushort playerIndex)
+    {
+        return CommonPackets.CreateNewCharacterData(playerIndex);
+    }
 }

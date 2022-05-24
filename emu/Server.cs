@@ -1,9 +1,12 @@
 ﻿using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using emu.DataModels;
 using emu.Helpers;
+using Microsoft.Data.SqlClient;
+
 #pragma warning disable CS4014
 
 namespace emu
@@ -11,10 +14,11 @@ namespace emu
     internal class Server
     {
         private const int BUFSIZE = 1024;
-        private static int playerIndex = 0x044f;
+        private static int playerIndex = 0x4f6f;
         private static readonly byte[] transmissionEndPacket = Packet.ToByteArray();
         private static int playerCount;
         private static bool liveServerCoords = false;
+        private static SqlConnection? sqlConnection = null;
 
         private static ushort getNewPlayerIndex()
         {
@@ -45,6 +49,21 @@ namespace emu
             }
 
             Console.WriteLine("Server up, waiting for connections...");
+
+            try
+            {
+                sqlConnection = await Db.Startup.OpenAndGetSqlConnection();
+                Console.CancelKeyPress += async delegate(object? sender, ConsoleCancelEventArgs args)
+                {
+                    args.Cancel = true;
+                    await sqlConnection.CloseAsync();
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.Exit(ex.HResult);
+            }
             
             while (true)
             {
@@ -102,7 +121,7 @@ namespace emu
                     BitHelper.GetFirstByte(currentPlayerIndex)
                 });
                 var enterGameResponse_1 =
-                    //Convert.FromHexString($"4a012c0100ac{playerIndexStr}6f0800c2e0284d2e6c0e006e1a981819fb953b4560e61f43cb73af4455d93941370d7900f0000004000400040004000400040004000400040004000400040004000400040004000400000000000400000004000400040000000400040004000400040004000400040004000400000000000000000000000000000000000000000000000000000000000400040004000000000000000000040000000400f000000024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf00000000000090010000005cf1530b00b400000000002781d4089801c00600c00f40a9006809001301600080450000000000000000000000000000000000000000000000000000000000000000000000002800800200280000000000000000000000003200284401d01233fca14a531652809054b5170500");
+                    //Convert.FromHexString($"4a012c0100ac04{playerIndexStr}0800c2e0284d2e6c0e006e1a981819fb953b4560e61f43cb73af4455d93941370d7900f0000004000400040004000400040004000400040004000400040004000400040004000400000000000400000004000400040000000400040004000400040004000400040004000400000000000000000000000000000000000000000000000000000000000400040004000000000000000000040000000400f000000024000032005203d407405800e803803e00f401800400f4018004000c0680f7002800805700280800bf00000000000090010000005cf1530b00b400000000002781d4089801c00600c00f40a9006809001301600080450000000000000000000000000000000000000000000000000000000000000000000000002800800200280000000000000000000000003200284401d01233fca14a531652809054b5170500");
                     TestHelper.GetEnterGameData_1(startCoords, currentPlayerIndex);
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -136,7 +155,7 @@ namespace emu
                 Console.WriteLine("SRV: Initial data 2");
                 Thread.Sleep(50);
 
-                var ingameServerPing = $"10002c0100ac{playerIndexStr}6f08408193eee408";
+                var ingameServerPing = $"10002c0100ac04{playerIndexStr}08408193eee408";
                 
                 Task.Run(async () =>
                 {
@@ -219,11 +238,11 @@ namespace emu
                 // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_3));
                 Thread.Sleep(100);
                 var enterGameResponse_5 =
-                    $"2b002c0100ac{playerIndexStr}6f08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
+                    $"2b002c0100ac04{playerIndexStr}08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
                 await ns.WriteAsync(Convert.FromHexString(enterGameResponse_5));
                 Thread.Sleep(300);
 
-                var somedata = $"1b002c0100ac{playerIndexStr}6f084043424009a00183000000000000000000";
+                var somedata = $"1b002c0100ac04{playerIndexStr}084043424009a00183000000000000000000";
 
                 await ns.WriteAsync(Convert.FromHexString(somedata));
                 Thread.Sleep(50);
@@ -240,7 +259,7 @@ namespace emu
                     Thread.Sleep(1000);
                     while (ns.CanWrite)
                     {
-                        await ns.WriteAsync(Convert.FromHexString($"14002c0100ac{playerIndexStr}6f08c04260fed39010b01700"));
+                        await ns.WriteAsync(Convert.FromHexString($"14002c0100ac04{playerIndexStr}08c04260fed39010b01700"));
                         Thread.Sleep(3000);
                     }
                 });
@@ -251,7 +270,7 @@ namespace emu
                 
                     while (ns.CanWrite)
                     {
-                        await ns.WriteAsync(Convert.FromHexString($"13002c010000{playerIndexStr}6f08c042a0ffd39008b007"));
+                        await ns.WriteAsync(Convert.FromHexString($"13002c0100ac04{playerIndexStr}08c042a0ffd39008b007"));
                         Thread.Sleep(6000);
                     }
                 });
@@ -276,9 +295,9 @@ namespace emu
                 //     var time = TimeHelper.EncodeCurrentSphereDateTime();
                 //     await ns.WriteAsync(Convert.FromHexString(
                 //         // $"3e002c0100ee1dc9c478800f80842e0900000000000000004091450680020cc407031c0000000000000000000040d49e87d93408a6f007f60391e100f1c1"));
-                //         // $"1f002c010000{playerIndexStr}6f084022800ca00681822090d002010400000014248004"));
-                //         // $"3a002c010000{playerIndexStr}6f0840410a3870d406007e63c2dc47810550177ef1c10840223ef8a086018042095f00c042609ab040f94f2c52c3e8030000"));
-                //         $"1f002c010000{playerIndexStr}6f0840223e981c0280822090d84a030400000014248004"));
+                //         // $"1f002c0100ac04{playerIndexStr}084022800ca00681822090d002010400000014248004"));
+                //         // $"3a002c0100ac04{playerIndexStr}0840410a3870d406007e63c2dc47810550177ef1c10840223ef8a086018042095f00c042609ab040f94f2c52c3e8030000"));
+                //         $"1f002c0100ac04{playerIndexStr}0840223e981c0280822090d84a030400000014248004"));
                 // });
 
                 Task.Run(async () =>
