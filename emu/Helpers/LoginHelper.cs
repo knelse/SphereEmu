@@ -31,33 +31,68 @@ public class LoginHelper
         var password = rcvBuffer[(loginEnd + 1)..passwordEnd];
 
         var loginDecode = new char[login.Length];
-        login[0] -= 2;
+        login[0] -= 3;
 
         for (var i = 0; i < login.Length; i++)
         {
-            loginDecode[i] = (char)(login[i] / 4 - 1 + 'A');
+            if (login[i] % 2 == 0)
+            {
+                loginDecode[i] = (char)(login[i] / 4 - 1 + 'A');
+            }
+            else
+            {
+                loginDecode[i] = (char)(login[i] / 4 - 48 + '0');
+            }
         }
 
         var passwordDecode = new char[password.Length];
-        password[0] -= 2;
+        password[0] += 1;
 
         for (var i = 0; i < password.Length; i++)
         {
-            passwordDecode[i] = (char)(password[i] / 4 - 1 + 'A');
+            if (password[i] % 2 == 0)
+            {
+                passwordDecode[i] = (char)(password[i] / 4 - 1 + 'A');
+            }
+            else
+            {
+                passwordDecode[i] = (char)(password[i] / 4 - 48 + '0');
+            }
         }
+        
+        var pwdHash = GetHashedString(new string (passwordDecode));
 
-        return new Tuple<string, string>(new string(loginDecode), GetHashedString(new string (passwordDecode)));
+        return new Tuple<string, string>(new string(loginDecode), pwdHash);
     }
 
     public static string GetHashedString(string str)
     {
         var salt = new byte[16];
         RandomNumberGenerator.Fill(salt);
-        var pbkdf2 = new Rfc2898DeriveBytes(str, salt, 100000);
+        using var pbkdf2 = new Rfc2898DeriveBytes(str, salt, 100000);
         var hash = pbkdf2.GetBytes(20);
         var saltedHash = new byte[36];
         Array.Copy(salt, 0, saltedHash, 0, 16);
         Array.Copy(hash, 0, saltedHash, 16, 20);
         return Convert.ToBase64String(saltedHash);
+    }
+
+    public static bool EqualsHashed(string password, string hashedPassword)
+    {
+        var hashBytes = Convert.FromBase64String(hashedPassword);
+        var salt = new byte[16];
+        Array.Copy(hashBytes, 0, salt, 0, 16);
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
+        var hash = pbkdf2.GetBytes(20);
+
+        for (var i = 0; i < 20; i++)
+        {
+            if (hashBytes[i + 16] != hash[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

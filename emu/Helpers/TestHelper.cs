@@ -148,7 +148,7 @@ public class TestHelper
 
         for (; loginEnd < rcvBuffer.Length; loginEnd++)
         {
-            if (rcvBuffer[loginEnd] == 0)
+            if (rcvBuffer[loginEnd] == 0 || rcvBuffer[loginEnd] == 1)
             {
                 break;
             }
@@ -159,7 +159,7 @@ public class TestHelper
 
         for (; passwordEnd < rcvBuffer.Length; passwordEnd++)
         {
-            if (rcvBuffer[passwordEnd] == 0)
+            if (rcvBuffer[passwordEnd] == 0 || rcvBuffer[passwordEnd] == 1)
             {
                 break;
             }
@@ -171,16 +171,41 @@ public class TestHelper
 
         clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + Convert.ToHexString(login) + "\t" + "Password: " +
                                                           Convert.ToHexString(password) + "\n"));
+        
+        // clientLoginDataFile.Write(Encoding.ASCII.GetBytes(BitHelper.ByteArrayToBinaryString(rcvBuffer[18..]) + "\n"));
+        // clientLoginDataFile.Write(Encoding.ASCII.GetBytes(Convert.ToHexString(rcvBuffer[18..]) + "\n"));
 
         var loginDecode = new char[login.Length];
-        login[0] -= 2;
+        login[0] -= 3;
 
         for (var i = 0; i < login.Length; i++)
         {
-            loginDecode[i] = (char)(login[i] / 4 - 1 + 'A');
+            if (login[i] % 2 == 0)
+            {
+                loginDecode[i] = (char)(login[i] / 4 - 1 + 'A');
+            }
+            else
+            {
+                loginDecode[i] = (char)(login[i] / 4 - 48 + '0');
+            }
         }
 
-        clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + new string(loginDecode) + "\n"));
+        var passwordDecode = new char[password.Length];
+        password[0] += 1;
+
+        for (var i = 0; i < password.Length; i++)
+        {
+            if (password[i] % 2 == 0)
+            {
+                passwordDecode[i] = (char)(password[i] / 4 - 1 + 'A');
+            }
+            else
+            {
+                passwordDecode[i] = (char)(password[i] / 4 - 48 + '0');
+            }
+        }
+
+        clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + new string(loginDecode) + "\t" + new string(passwordDecode) + "\n"));
 
         clientLoginDataFile.Close();
     }

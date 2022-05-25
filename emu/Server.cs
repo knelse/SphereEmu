@@ -147,6 +147,7 @@ namespace emu
 
                 Console.WriteLine("CLI: Login data");
                 TestHelper.DumpLoginData(rcvBuffer);
+                LoginHelper.GetLoginAndPasswordHash(rcvBuffer);
 
                 await ns.WriteAsync(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 1");

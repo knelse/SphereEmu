@@ -1,4 +1,5 @@
 using emu.DataModels;
+using emu.Helpers;
 using emu.Packets;
 using Microsoft.Data.SqlClient;
 
@@ -6,14 +7,12 @@ namespace emu.Db;
 
 public class Login
 {
-    // public static async Task <ClientInitialData> LoginAndGetPlayerCharacters(SqlConnection sqlConnection, Tuple<string, string> loginAndPasswordHash, bool createOnNewLogin = true)
+    // public static async Task <ClientInitialData> LoginAndGetPlayerCharacters(SqlConnection sqlConnection, string login, string password, bool createOnNewLogin = true)
     // {
-    //     (var login, var passwordHash) = loginAndPasswordHash;
     //     await using var command = new SqlCommand($"SELECT TOP 1 [id], [pwd_hash] from dbo.players where [login] = {login}", sqlConnection);
     //
     //     await using var reader = await command.ExecuteReaderAsync();
     //
-    //     var found = false;
     //     var playerId = -1;
     //
     //     while (reader.Read())
@@ -21,7 +20,7 @@ public class Login
     //         playerId = reader.GetInt32(0);
     //         var dbPasswordHash = reader.GetString(1);
     //
-    //         if (!dbPasswordHash.Equals(passwordHash))
+    //         if (!LoginHelper.EqualsHashed(password, dbPasswordHash))
     //         {
     //             return null;
     //         }
