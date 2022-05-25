@@ -18,6 +18,7 @@ public class TestHelper
     {
         var testChar1 = new CharacterData
         {
+            PlayerIndex = 0x4f6f,
             MaxHP = 4065,
             MaxMP = 4416,
             Strength = 189,
@@ -43,19 +44,20 @@ public class TestHelper
             AvailableDegreeStats = 23,
             IsGenderFemale = false,
             Name = "Giras",
-            FaceType = 0b00001100,
-            HairStyle = 0b00001100,
-            HairColor = 0b00001100,
-            Tattoo = 0b00001100,
-            Boots = 0b00001100,
-            Pants = 0b00001100,
-            Armor = 0b00001100,
-            Helmet = 0b00001100,
-            Gloves = 0b00001100,
+            FaceType = 0b00111010,
+            HairStyle = 0b00110000,
+            HairColor = 0b00110010,
+            Tattoo = 0b00110010,
+            Boots = 0b00110000,
+            Pants = 0b00110000,
+            Armor = 0b00110000,
+            Helmet = 0b00110000,
+            Gloves = 0b00110000,
         };
 
         var testChar2 = new CharacterData
         {
+            PlayerIndex = 0x4f6f,
             MaxHP = 5555,
             MaxMP = 5678,
             Strength = 123,
@@ -81,19 +83,20 @@ public class TestHelper
             AvailableDegreeStats = 88,
             IsGenderFemale = false,
             Name = "OwO",
-            FaceType = 0b01001100,
-            HairStyle = 0b01001100,
-            HairColor = 0b01001100,
-            Tattoo = 0b00001100,
-            Boots = 0b00001100,
-            Pants = 0b00001100,
-            Armor = 0b00001100,
-            Helmet = 0b00001100,
-            Gloves = 0b00001100,
+            FaceType = 0b00111010,
+            HairStyle = 0b00110000,
+            HairColor = 0b00110010,
+            Tattoo = 0b00110010,
+            Boots = 0b00110000,
+            Pants = 0b00110000,
+            Armor = 0b00110000,
+            Helmet = 0b00110000,
+            Gloves = 0b00110000,
         };
 
         var testChar3 = new CharacterData
         {
+            PlayerIndex = 0x4f6f,
             MaxHP = 4444,
             MaxMP = 5678,
             Strength = 123,
@@ -119,21 +122,21 @@ public class TestHelper
             AvailableDegreeStats = 88,
             IsGenderFemale = true,
             Name = "oNo",
-            FaceType = 0b10001100,
-            HairStyle = 0b10001100,
-            HairColor = 0b10001100,
-            Tattoo = 0b00001100,
-            Boots = 0b00001100,
-            Pants = 0b00001100,
-            Armor = 0b00001100,
-            Helmet = 0b00001100,
-            Gloves = 0b00001100,
+            FaceType = 0b00111010,
+            HairStyle = 0b00110000,
+            HairColor = 0b00110010,
+            Tattoo = 0b00110010,
+            Boots = 0b00110000,
+            Pants = 0b00110000,
+            Armor = 0b00110000,
+            Helmet = 0b00110000,
+            Gloves = 0b00110000,
         };
 
         return new ClientInitialData
         {
             Character1 = testChar1,
-            Character2 = testChar2,
+            Character2 = null,
             Character3 = testChar3
         };
     }

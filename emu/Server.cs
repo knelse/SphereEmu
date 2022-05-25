@@ -18,7 +18,7 @@ namespace emu
         private static readonly byte[] transmissionEndPacket = Packet.ToByteArray();
         private static int playerCount;
         private static bool liveServerCoords = false;
-        private static SqlConnection? sqlConnection = null;
+        private static SqlConnection? sqlConnection;
 
         private static ushort getNewPlayerIndex()
         {
@@ -52,7 +52,7 @@ namespace emu
 
             try
             {
-                sqlConnection = await Db.Startup.OpenAndGetSqlConnection();
+                // sqlConnection = await Db.Startup.OpenAndGetSqlConnection();
                 Console.CancelKeyPress += async delegate(object? sender, ConsoleCancelEventArgs args)
                 {
                     args.Cancel = true;
@@ -113,7 +113,7 @@ namespace emu
                 await Task.Yield();
                 ns = client.GetStream();
 
-                var clientData = TestHelper.GetTestCharData();
+                var characterList = TestHelper.GetTestCharData();
 
                 var playerIndexStr = Convert.ToHexString(new[]
                 {
@@ -151,7 +151,7 @@ namespace emu
                 await ns.WriteAsync(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 1");
                 Thread.Sleep(50);
-                await ns.WriteAsync(clientData.ToByteArray(currentPlayerIndex));
+                await ns.WriteAsync(characterList.ToByteArray(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 2");
                 Thread.Sleep(50);
 

@@ -3,51 +3,24 @@ using emu.Helpers;
 
 namespace emu.Packets;
 
-public class ClientInitialData : Packet
+public class ClientInitialData
 {
     public CharacterData? Character1;
     public CharacterData? Character2;
     public CharacterData? Character3;
 
-    private static readonly byte[] FourBytesOfZeroes = { 0x00, 0x00, 0x00, 0x00 };
-
     public byte[] ToByteArray(ushort playerIndex)
     {
-        var clientValidationCode = new byte[] {0x04, BitHelper.GetSecondByte(playerIndex), BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x60 };
-        var firstCharData = Character1?.ToByteArray();
-        var secondCharData = Character2?.ToByteArray();
-        var thirdCharData = Character3?.ToByteArray();
+        var firstCharData = Character1?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
+        var secondCharData = Character2?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
+        var thirdCharData = Character3?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
 
-        var clientInitialDataResult = new List<byte>();
+        var charDataBytes = new byte [324];
         
-        var firstCharResult = new List<byte>();
-        firstCharResult.AddRange(clientValidationCode);
+        Array.Copy(firstCharData, 0, charDataBytes, 0, 108);
+        Array.Copy(secondCharData, 0, charDataBytes, 108, 108);
+        Array.Copy(thirdCharData, 0, charDataBytes, 216, 108);
 
-        if (firstCharData == null) return clientInitialDataResult.ToArray();
-
-        firstCharResult.AddRange(firstCharData);
-        firstCharResult.AddRange(FourBytesOfZeroes);
-        
-        clientInitialDataResult.AddRange(Packet.ToByteArray(firstCharResult.ToArray()));
-
-        if (secondCharData == null) return clientInitialDataResult.ToArray();
-        var secondCharResult = new List<byte>();
-        secondCharResult.AddRange(clientValidationCode);
-
-        secondCharResult.AddRange(secondCharData);
-        secondCharResult.AddRange(FourBytesOfZeroes);
-        
-        clientInitialDataResult.AddRange(Packet.ToByteArray(secondCharResult.ToArray()));
-
-        if (thirdCharData == null) return clientInitialDataResult.ToArray();
-        var thirdCharResult = new List<byte>();
-        thirdCharResult.AddRange(clientValidationCode);
-
-        thirdCharResult.AddRange(thirdCharData);
-        thirdCharResult.AddRange(FourBytesOfZeroes);
-        
-        clientInitialDataResult.AddRange(Packet.ToByteArray(thirdCharResult.ToArray()));
-
-        return clientInitialDataResult.ToArray();
+        return charDataBytes;
     }
 }
