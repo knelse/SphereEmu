@@ -171,9 +171,6 @@ public class TestHelper
 
         clientLoginDataFile.Write(Encoding.ASCII.GetBytes("Login: " + Convert.ToHexString(login) + "\t" + "Password: " +
                                                           Convert.ToHexString(password) + "\n"));
-        
-        // clientLoginDataFile.Write(Encoding.ASCII.GetBytes(BitHelper.ByteArrayToBinaryString(rcvBuffer[18..]) + "\n"));
-        // clientLoginDataFile.Write(Encoding.ASCII.GetBytes(Convert.ToHexString(rcvBuffer[18..]) + "\n"));
 
         var loginDecode = new char[login.Length];
         login[0] -= 3;

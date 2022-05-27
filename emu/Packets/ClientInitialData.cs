@@ -23,4 +23,11 @@ public class ClientInitialData
 
         return charDataBytes;
     }
+
+    public ClientInitialData(CharacterData? char1 = null, CharacterData? char2 = null, CharacterData? char3 = null)
+    {
+        Character1 = char1;
+        Character2 = char2;
+        Character3 = char3;
+    }
 }

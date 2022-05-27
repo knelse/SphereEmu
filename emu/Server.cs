@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using emu.DataModels;
+using emu.Db;
 using emu.Helpers;
 using Microsoft.Data.SqlClient;
 
@@ -49,21 +50,6 @@ namespace emu
             }
 
             Console.WriteLine("Server up, waiting for connections...");
-
-            try
-            {
-                // sqlConnection = await Db.Startup.OpenAndGetSqlConnection();
-                Console.CancelKeyPress += async delegate(object? sender, ConsoleCancelEventArgs args)
-                {
-                    args.Cancel = true;
-                    await sqlConnection.CloseAsync();
-                };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Environment.Exit(ex.HResult);
-            }
             
             while (true)
             {
@@ -147,7 +133,9 @@ namespace emu
 
                 Console.WriteLine("CLI: Login data");
                 TestHelper.DumpLoginData(rcvBuffer);
-                LoginHelper.GetLoginAndPasswordHash(rcvBuffer);
+                (var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
+
+                var charListData = await Login.CheckLoginAndGetPlayerCharacters(login, password);
 
                 await ns.WriteAsync(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 1");

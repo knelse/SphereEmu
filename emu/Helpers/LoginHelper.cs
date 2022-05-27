@@ -5,7 +5,7 @@ namespace emu.Helpers;
 
 public class LoginHelper
 {
-    public static Tuple<string, string> GetLoginAndPasswordHash(byte[] rcvBuffer)
+    public static Tuple<string, string> GetLoginAndPassword(byte[] rcvBuffer)
     {
         var loginEnd = 18;
 
@@ -59,10 +59,8 @@ public class LoginHelper
                 passwordDecode[i] = (char)(password[i] / 4 - 48 + '0');
             }
         }
-        
-        var pwdHash = GetHashedString(new string (passwordDecode));
 
-        return new Tuple<string, string>(new string(loginDecode), pwdHash);
+        return new Tuple<string, string>(new string(loginDecode), new string (passwordDecode));
     }
 
     public static string GetHashedString(string str)
