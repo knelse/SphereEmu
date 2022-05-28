@@ -181,4 +181,15 @@ public class Login
 
         return characters;
     }
+
+    public static async Task<bool> IsNameValid(string name)
+    {
+        var sqlConnection = await Startup.OpenAndGetSqlConnection();
+        await using var command =
+            new SqlCommand("SELECT count (1) from characters where name = @name", sqlConnection);
+        command.Parameters.AddWithValue("@name", name);
+        var count = ((await command.ExecuteScalarAsync()) as int?) ?? 0;
+        
+        return count == 0;
+    }
 }
