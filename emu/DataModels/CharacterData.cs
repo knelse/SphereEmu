@@ -56,6 +56,11 @@ public class CharacterData
     public byte Gloves;
     public bool IsNotQueuedForDeletion = true;
 
+    public double x;
+    public double y;
+    public double z;
+    public double t;
+
     public byte[] ToByteArray()
     {
         var nameEncodedWithPadding = new byte[19];

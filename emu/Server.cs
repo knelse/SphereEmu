@@ -135,12 +135,28 @@ namespace emu
                 TestHelper.DumpLoginData(rcvBuffer);
                 (var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
 
-                var charListData = await Login.CheckLoginAndGetPlayerCharacters(login, password);
+                var charListData = await Login.CheckLoginAndGetPlayerCharacters(login, password, currentPlayerIndex);
 
                 await ns.WriteAsync(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 1");
                 Thread.Sleep(50);
-                await ns.WriteAsync(characterList.ToByteArray(currentPlayerIndex));
+
+                if (charListData == null)
+                {
+                    // TODO: login incorrect package?
+                    // await ns.WriteAsync(CommonPackets.AccountOutdated(currentPlayerIndex));
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Client disconnect...");
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Interlocked.Decrement(ref playerCount);
+                    ns.Close();
+                    client.Close();
+
+                    return;
+                }
+                await ns.WriteAsync(charListData.ToByteArray(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 2");
                 Thread.Sleep(50);
 

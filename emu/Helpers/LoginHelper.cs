@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using Microsoft.Data.SqlClient;
 
 namespace emu.Helpers;
 
