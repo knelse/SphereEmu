@@ -52,6 +52,24 @@ public static class CommonPackets
             BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0xC0, 0x01, 0x00
         };
     }
-    
-    // 0E002C010000FA1FF90840C00100 - account outdated
+
+    public static byte[] NameAlreadyExists(ushort playerIndex)
+    {
+        // 0E002C01009EAE13A60840000100
+        return new byte[]
+        {
+            0x0e, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x00, 0x01, 0x00
+        };
+    }
+
+    public static byte[] NameCheckPassed(ushort playerIndex)
+    {
+        // 0E002C01007CB413A60840800000
+        return new byte[]
+        {
+            0x0e, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x80, 0x00, 0x00
+        };
+    }
 }

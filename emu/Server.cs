@@ -146,13 +146,7 @@ namespace emu
                     // TODO: login incorrect package?
                     // await ns.WriteAsync(CommonPackets.AccountOutdated(currentPlayerIndex));
 
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Client disconnect...");
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Interlocked.Decrement(ref playerCount);
-                    ns.Close();
-                    client.Close();
+                    CloseConnection(client, ns);
 
                     return;
                 }
@@ -214,6 +208,16 @@ namespace emu
 
                         var isNameValid = await Login.IsNameValid(sb.ToString());
                         Console.WriteLine(isNameValid ? "Name OK" : "Name already exists!");
+
+                        if (!isNameValid)
+                        {
+                            await (ns.WriteAsync(CommonPackets.NameAlreadyExists(currentPlayerIndex)));
+                        }
+                        else
+                        {
+                            await (ns.WriteAsync(CommonPackets.NameCheckPassed(currentPlayerIndex)));
+                            break;
+                        }
                     }
                 }
 
@@ -470,25 +474,25 @@ namespace emu
                 {
                 }
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Client disconnect...");
-                Console.ForegroundColor = ConsoleColor.White;
-
-                Interlocked.Decrement(ref playerCount);
-                ns.Close();
-                client.Close();
+                CloseConnection(client, ns);
             }
             
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(e);
-                Console.WriteLine("Client disconnect...");
-                Console.ForegroundColor = ConsoleColor.White;
-
-                Interlocked.Decrement(ref playerCount);
-                ns?.Close();
+                Console.WriteLine(e.Message);
+                CloseConnection(client, ns);
             }
+        }
+
+        private static void CloseConnection(TcpClient client, NetworkStream? ns)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Client disconnect...");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Interlocked.Decrement(ref playerCount);
+            ns?.Close();
+            client.Close();
         }
     }
 }
