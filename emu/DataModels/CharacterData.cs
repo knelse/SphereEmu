@@ -14,6 +14,7 @@ public enum KarmaTypes : byte
 public class CharacterData
 {
     public ushort PlayerIndex;
+    public int DbId;
     public byte LookType = 0x7;
     public byte IsTurnedOff = 0x9;
     public ushort MaxHP = 100;

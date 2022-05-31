@@ -66,7 +66,7 @@ namespace emu
             }
         }
 
-        private static async Task HandleClientAsync(TcpClient client, ushort currentPlayerIndex)
+        private static async Task HandleClientAsync(TcpClient client, ushort currentPlayerIndex, bool reconnect = false)
         {
             NetworkStream? ns = null;
             var coordsFilePath = liveServerCoords ? "C:\\_sphereDumps\\currentWorldCoords" : "C:\\source\\clientCoordsSaved";
@@ -99,7 +99,7 @@ namespace emu
                 await Task.Yield();
                 ns = client.GetStream();
 
-                var characterList = TestHelper.GetTestCharData();
+                // var characterList = TestHelper.GetTestCharData();
 
                 var playerIndexStr = Convert.ToHexString(new[]
                 {
@@ -115,7 +115,7 @@ namespace emu
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.WriteLine("SRV: Ready to load initial data");
-                await ns.WriteAsync(CommonPackets.ReadyToLoadInitialData);
+                await ns.WriteAsync( reconnect ? CommonPackets.ReadyToLoadInitialDataReconnect : CommonPackets.ReadyToLoadInitialData);
 
                 var rcvBuffer = new byte[BUFSIZE];
 
@@ -180,6 +180,20 @@ namespace emu
 
                 while (await ns.ReadAsync(rcvBuffer) != 0x15)
                 {
+                    if (rcvBuffer[0] == 0x2a)
+                    {
+                        var charIndex = (rcvBuffer[17] / 4 - 1);
+
+                        Console.WriteLine($"Delete character [{charIndex}] - [{charListData[charIndex]!.Name}]");
+                        await DbCharacters.DeleteCharacterFromDbAsync(charListData[charIndex]!.DbId);
+
+                        // TODO: reinit session after delete
+                        // await HandleClientAsync(client, (ushort) (currentPlayerIndex + 1), true);
+
+                        CloseConnection(client, ns);
+
+                        return;
+                    }
                     if (rcvBuffer[0] >= 0x1b)
                     {
                         var len = rcvBuffer[0] - 20 - 5;
@@ -220,10 +234,18 @@ namespace emu
                         else
                         {
                             var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
-                            var faceType = 256 - (((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6));
-                            var hairStyle = 255 - (((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6));
-                            var hairColor = 255 - (((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6));
-                            var tattoo = 255 - (((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6));
+                            var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
+                            var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
+                            var hairColor = ((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6);
+                            var tattoo = ((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6);
+
+                            if (isGenderFemale)
+                            {
+                                faceType = 256 - faceType;
+                                hairStyle = 255 - hairStyle;
+                                hairColor = 255 - hairColor;
+                                tattoo = 255 - tattoo;
+                            }
 
                             var newCharacterData = CharacterData.CreateNewCharacter(currentPlayerIndex, name,
                                 isGenderFemale, faceType, hairStyle, hairColor, tattoo);

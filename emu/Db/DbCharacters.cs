@@ -63,6 +63,7 @@ public class DbCharacters
             var y = (double) reader.GetDecimal(36);
             var z = (double) reader.GetDecimal(37);
             var t = (double) reader.GetDecimal(38);
+            var dbid = reader.GetInt32(39);
 
             var character = new CharacterData
             {
@@ -105,7 +106,8 @@ public class DbCharacters
                 x = x,
                 y = y,
                 z = z,
-                t = t
+                t = t,
+                DbId = dbid
             };
 
             if (charIndex == 0)
@@ -183,6 +185,15 @@ public class DbCharacters
         command.Parameters.AddWithValue("@player_id", playerId);
         await command.ExecuteNonQueryAsync();
 
+        await sqlConnection.CloseAsync();
+    }
+
+    public static async Task DeleteCharacterFromDbAsync(int characterId)
+    {
+        var sqlConnection = await Startup.OpenAndGetSqlConnectionAsync();
+        var sqlCommand = new SqlCommand("delete from characters where [id] = @id", sqlConnection);
+        sqlCommand.Parameters.AddWithValue("@id", characterId);
+        await sqlCommand.ExecuteNonQueryAsync();
         await sqlConnection.CloseAsync();
     }
 }

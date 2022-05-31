@@ -48,4 +48,11 @@ public class ClientInitialData
             Character3 = newChar;
         }
     }
+
+    public CharacterData? this[int index] =>
+        index == 0 
+            ? Character1 
+            : index == 1 
+                ? Character2 
+                : Character3;
 }

@@ -5,6 +5,9 @@ public static class CommonPackets
     public static readonly byte[]
         ReadyToLoadInitialData = { 0x0a, 0x00, 0xc8, 0x00, 0x14, 0x05, 0x00, 0x00, 0x1f, 0x42};
 
+    public static readonly byte[] 
+        ReadyToLoadInitialDataReconnect = { 0x0a, 0x00, 0xc8, 0x00, 0x94, 0x05, 0x00, 0x00, 0x2f, 0x64};
+
     public static byte[] ServerCredentials(ushort playerIndex)
     {
         var currentSphereTime = TimeHelper.EncodeCurrentSphereDateTime();
