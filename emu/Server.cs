@@ -246,12 +246,14 @@ namespace emu
                                 hairColor = 255 - hairColor;
                                 tattoo = 255 - tattoo;
                             }
+                            
+                            var charIndex = (rcvBuffer[17] / 4 - 1);
 
                             var newCharacterData = CharacterData.CreateNewCharacter(currentPlayerIndex, name,
                                 isGenderFemale, faceType, hairStyle, hairColor, tattoo);
                             
-                            charListData.AddNewCharacter(newCharacterData);
-                            await DbCharacters.AddNewCharacterToDbAsync(charListData.PlayerId, newCharacterData);
+                            charListData.AddNewCharacter(newCharacterData, charIndex);
+                            await DbCharacters.AddNewCharacterToDbAsync(charListData.PlayerId, newCharacterData, charIndex);
                             
                             await (ns.WriteAsync(CommonPackets.NameCheckPassed(currentPlayerIndex)));
                             break;

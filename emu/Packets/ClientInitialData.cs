@@ -33,26 +33,32 @@ public class ClientInitialData
         Character3 = char3;
     }
 
-    public void AddNewCharacter(CharacterData newChar)
+    public void AddNewCharacter(CharacterData newChar, int index)
     {
-        if (Character1 is null)
-        {
-            Character1 = newChar;
-        }
-        else if (Character2 is null)
-        {
-            Character2 = newChar;
-        }
-        else if (Character3 is null)
-        {
-            Character3 = newChar;
-        }
+        this[index] = newChar;
     }
 
-    public CharacterData? this[int index] =>
-        index == 0 
-            ? Character1 
-            : index == 1 
-                ? Character2 
-                : Character3;
+    public CharacterData? this[int index]
+    {
+        get => index == 0
+                ? Character1
+                : index == 1
+                    ? Character2
+                    : Character3;
+        private set
+        {
+            if (index == 0)
+            {
+                Character1 = value;
+            }
+            else if (index == 1)
+            {
+                Character2 = value;
+            }
+            else if (index == 2)
+            {
+                Character3 = value;
+            }
+        }
+    }
 }

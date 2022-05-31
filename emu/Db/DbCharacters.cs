@@ -15,12 +15,11 @@ public class DbCharacters
                            "[degree_xp],[current_satiety],[current_hp],[current_mp],[available_stats_title]," +
                            "[available_stats_degree],[gender_is_female],[name],[face_type],[hair_style],[hair_color]," +
                            "[tattoo],[boots],[pants],[armor],[helmet],[gloves],[deletion_is_not_requested],[x],[y],[z]," +
-                           $"[turn],[id],[player_id] from characters with (nolock) where player_id = {playerId} order by [id]", sqlConnection);
+                           $"[turn],[id],[player_id],[index] from characters with (nolock) where player_id = {playerId} order by [id]", sqlConnection);
 
         await using var reader = await command.ExecuteReaderAsync();
 
         var characters = new ClientInitialData(playerId);
-        var charIndex = 0;
 
         while (reader.Read())
         {
@@ -64,6 +63,7 @@ public class DbCharacters
             var z = (double) reader.GetDecimal(37);
             var t = (double) reader.GetDecimal(38);
             var dbid = reader.GetInt32(39);
+            var index = reader.GetInt32(41);
 
             var character = new CharacterData
             {
@@ -110,20 +110,7 @@ public class DbCharacters
                 DbId = dbid
             };
 
-            if (charIndex == 0)
-            {
-                characters.Character1 = character;
-            }
-            else if (charIndex == 1)
-            {
-                characters.Character2 = character;
-            }
-            else
-            {
-                characters.Character3 = character;
-            }
-
-            charIndex++;
+            characters.AddNewCharacter(character, index);
         }
 
         await sqlConnection.CloseAsync();
@@ -131,18 +118,18 @@ public class DbCharacters
         return characters;
     }
 
-    public static async Task AddNewCharacterToDbAsync(int playerId, CharacterData newCharacter)
+    public static async Task AddNewCharacterToDbAsync(int playerId, CharacterData newCharacter, int charIndex)
     {
         var sqlConnection = await Startup.OpenAndGetSqlConnectionAsync();
         var command = new SqlCommand(@"insert into [characters] (max_hp, max_mp, strength, agility, accuracy, endurance, 
                           earth, air, water, fire, pdef, mdef, karma, max_satiety, title_level, degree_level, title_xp, 
                           degree_xp, current_satiety, current_hp, current_mp, available_stats_title, available_stats_degree, 
                           gender_is_female, [name], face_type, hair_style, hair_color, tattoo, boots, pants, armor, helmet, 
-                          gloves, deletion_is_not_requested, x, [y], z, turn, player_id) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
+                          gloves, deletion_is_not_requested, x, [y], z, turn, player_id, [index]) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
                           @earth, @air, @water, @fire, @pdef, @mdef, @karma, @max_satiety, @title_level, @degree_level, @title_xp, 
                           @degree_xp, @current_satiety, @current_hp, @current_mp, @available_stats_title, @available_stats_degree, 
                           @gender_is_female, @name, @face_type, @hair_style, @hair_color, @tattoo, @boots, @pants, @armor, @helmet, 
-                          @gloves, @deletion_is_not_requested, @x, @y, @z, @turn, @player_id)", sqlConnection);
+                          @gloves, @deletion_is_not_requested, @x, @y, @z, @turn, @player_id, @index)", sqlConnection);
         command.Parameters.AddWithValue("@max_hp", (int) newCharacter.MaxHP);
         command.Parameters.AddWithValue("@max_mp", (int) newCharacter.MaxMP);
         command.Parameters.AddWithValue("@strength", (int) newCharacter.Strength);
@@ -183,6 +170,7 @@ public class DbCharacters
         command.Parameters.AddWithValue("@z", (decimal) newCharacter.z);
         command.Parameters.AddWithValue("@turn", (decimal) newCharacter.t);
         command.Parameters.AddWithValue("@player_id", playerId);
+        command.Parameters.AddWithValue("@index", charIndex);
         await command.ExecuteNonQueryAsync();
 
         await sqlConnection.CloseAsync();
