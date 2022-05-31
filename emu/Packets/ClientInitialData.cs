@@ -8,7 +8,7 @@ public class ClientInitialData
     public CharacterData? Character1;
     public CharacterData? Character2;
     public CharacterData? Character3;
-    public int PlayerId;
+    public readonly int PlayerId;
 
     public byte[] ToByteArray(ushort playerIndex)
     {

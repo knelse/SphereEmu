@@ -157,6 +157,7 @@ public class CharacterData
                             ((nameEncodedWithPadding[16] & 0b11000000) >> 6));
         var name19 = (byte)(((nameEncodedWithPadding[18] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[17] & 0b11000000) >> 6));
+
         var face1 = (byte)(((FaceType & 0b111111) << 2) + ((nameEncodedWithPadding[18] & 0b11000000) >> 6));
         var hairStyle1 = (byte)(((HairStyle & 0b111111) << 2) + ((FaceType & 0b11000000) >> 6));
         var hairColor1 = (byte)(((HairColor & 0b111111) << 2) + ((HairStyle & 0b11000000) >> 6));
@@ -169,10 +170,12 @@ public class CharacterData
         var gloves2 = (byte)((Gloves & 0b11000000) >> 6);
         var isNotDeleted1 = (byte)(((IsNotQueuedForDeletion ? 1 : 0) << 1) + 1);
 
+        var lookType = (byte) (IsNotQueuedForDeletion ? 0x79 : 0x19);
+
         var charDataBytes = new byte[]
         {
             0x6c, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(PlayerIndex),
-            BitHelper.GetFirstByte(PlayerIndex), 0x08, 0x40, 0x60, 0x79, hpMax1, hpMax2, mpMax1, mpMax2, str1, str2,
+            BitHelper.GetFirstByte(PlayerIndex), 0x08, 0x40, 0x60, lookType, hpMax1, hpMax2, mpMax1, mpMax2, str1, str2,
             agi1, agi2, acc1, acc2, end1, end2, ert1, ert2, air1, air2, wat1, wat2, fir1, fir2, pd1, pd2, md1, md2,
             krm1, satMax1, satMax2, tit1, tit2, deg1, deg2, txp1, txp2, txp3, txp4, dxp1, dxp2, dxp3, dxp4, satCur1,
             satCur2, hpCur1, hpCur2, mpCur1, mpCur2, titleStats1, titleStats2, degStats1, degStats2, degStats3, 0xc0,

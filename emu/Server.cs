@@ -220,10 +220,10 @@ namespace emu
                         else
                         {
                             var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
-                            var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
-                            var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
-                            var hairColor = ((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6);
-                            var tattoo = ((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6);
+                            var faceType = 256 - (((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6));
+                            var hairStyle = 255 - (((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6));
+                            var hairColor = 255 - (((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6));
+                            var tattoo = 255 - (((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6));
 
                             var newCharacterData = CharacterData.CreateNewCharacter(currentPlayerIndex, name,
                                 isGenderFemale, faceType, hairStyle, hairColor, tattoo);

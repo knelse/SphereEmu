@@ -72,4 +72,14 @@ public static class CommonPackets
             BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x80, 0x00, 0x00
         };
     }
+
+    public static byte[] AccountAlreadyInUse(ushort playerIndex)
+    {
+        // 0E002C0100B6364BFB0840A00000
+        return new byte[]
+        {
+            0x0e, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0xA0, 0x00, 0x00
+        };
+    }
 }
