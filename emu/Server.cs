@@ -135,7 +135,7 @@ namespace emu
                 TestHelper.DumpLoginData(rcvBuffer);
                 (var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
 
-                var charListData = await Login.CheckLoginAndGetPlayerCharacters(login, password, currentPlayerIndex);
+                var charListData = await Login.CheckLoginAndGetPlayerCharactersAsync(login, password, currentPlayerIndex);
 
                 await ns.WriteAsync(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Initial data 1");
@@ -183,7 +183,9 @@ namespace emu
                     if (rcvBuffer[0] >= 0x1b)
                     {
                         var len = rcvBuffer[0] - 20 - 5;
+                        var charDataBytesStart = rcvBuffer[0] - 5;
                         var nameCheckBytes = rcvBuffer[20..];
+                        var charDataBytes = rcvBuffer[charDataBytesStart..rcvBuffer[0]];
                         var sb = new StringBuilder();
 
                         for (var i = 1; i < len; i++)
@@ -206,8 +208,10 @@ namespace emu
                             }
                         }
 
-                        var isNameValid = await Login.IsNameValid(sb.ToString());
-                        Console.WriteLine(isNameValid ? "Name OK" : "Name already exists!");
+                        var name = sb.ToString();
+
+                        var isNameValid = await Login.IsNameValidAsync(name);
+                        Console.WriteLine(isNameValid ? $"Name [{name}] OK" : $"Name [{name}] already exists!");
 
                         if (!isNameValid)
                         {
@@ -215,6 +219,18 @@ namespace emu
                         }
                         else
                         {
+                            var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
+                            var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
+                            var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
+                            var hairColor = ((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6);
+                            var tattoo = ((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6);
+
+                            var newCharacterData = CharacterData.CreateNewCharacter(currentPlayerIndex, name,
+                                isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+                            
+                            charListData.AddNewCharacter(newCharacterData);
+                            await DbCharacters.AddNewCharacterToDbAsync(charListData.PlayerId, newCharacterData);
+                            
                             await (ns.WriteAsync(CommonPackets.NameCheckPassed(currentPlayerIndex)));
                             break;
                         }
@@ -289,7 +305,7 @@ namespace emu
                 {
                 }
                 
-                await WorldDataTest.SendWorldDataKnelse(ns);
+                await WorldDataTest.SendWorldDataKnelseAsync(ns);
 
                 Task.Run(async () =>
                 {

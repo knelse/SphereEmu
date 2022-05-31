@@ -6,7 +6,7 @@ namespace emu;
 
 public static class WorldDataTest
 {
-    public static async Task SendWorldDataGiras(NetworkStream ns)
+    public static async Task SendWorldDataGirasAsync(NetworkStream ns)
     {
         var watcher = new FileSystemWatcher("C:\\source\\packets\\");
         watcher.Filter = "world_load_data.txt";
@@ -141,7 +141,7 @@ public static class WorldDataTest
             await ns.WriteAsync(Convert.FromHexString(somedata_6));
         }
 
-    public static async Task SendWorldDataKnelse(NetworkStream ns)
+    public static async Task SendWorldDataKnelseAsync(NetworkStream ns)
     {
         var data_1 =
             "C8002c0100ac04210C10802F809FE02946E0335EA92956EC8923F2989E2B0640649101E057788A11F88AF5688A4BDAEB88A0CCE68A0110596400F811A062043E9BB1A0626EEF3AA2ECDFB96200441619007E46DD18814F6040A57850F98EC84671AE1800914506809F533746E013DEBF290EB0C32332EC9D2B0640649101E027FF8D11F80CB8798AFF6DF288784EE88A0110596400F8E97F63043EC3D19BE27F9B3C225E1ABA6200441619007ECF1454838F19B6A698EE3A91A81073AEB810140500C5D032000000" +

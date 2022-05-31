@@ -8,6 +8,7 @@ public class ClientInitialData
     public CharacterData? Character1;
     public CharacterData? Character2;
     public CharacterData? Character3;
+    public int PlayerId;
 
     public byte[] ToByteArray(ushort playerIndex)
     {
@@ -24,10 +25,27 @@ public class ClientInitialData
         return charDataBytes;
     }
 
-    public ClientInitialData(CharacterData? char1 = null, CharacterData? char2 = null, CharacterData? char3 = null)
+    public ClientInitialData(int playerId, CharacterData? char1 = null, CharacterData? char2 = null, CharacterData? char3 = null)
     {
+        PlayerId = playerId;
         Character1 = char1;
         Character2 = char2;
         Character3 = char3;
+    }
+
+    public void AddNewCharacter(CharacterData newChar)
+    {
+        if (Character1 is null)
+        {
+            Character1 = newChar;
+        }
+        else if (Character2 is null)
+        {
+            Character2 = newChar;
+        }
+        else if (Character3 is null)
+        {
+            Character3 = newChar;
+        }
     }
 }

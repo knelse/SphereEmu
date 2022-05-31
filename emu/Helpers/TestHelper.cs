@@ -133,12 +133,7 @@ public class TestHelper
             Gloves = 0b00110000,
         };
 
-        return new ClientInitialData
-        {
-            Character1 = testChar1,
-            Character2 = null,
-            Character3 = testChar3
-        };
+        return new ClientInitialData (0, testChar1, null, testChar3);
     }
 
     public static void DumpLoginData(byte[] rcvBuffer)
