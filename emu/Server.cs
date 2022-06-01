@@ -326,21 +326,21 @@ namespace emu
                 Thread.Sleep(100);
                 // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_4_3));
                 Thread.Sleep(100);
-                var enterGameResponse_5 =
-                    $"2b002c0100ac04{playerIndexStr}08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
-                await ns.WriteAsync(Convert.FromHexString(enterGameResponse_5));
+                // var enterGameResponse_5 =
+                //     $"2b002c0100ac04{playerIndexStr}08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
+                // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_5));
                 Thread.Sleep(300);
 
                 var somedata = $"1b002c0100ac04{playerIndexStr}084043424009a00183000000000000000000";
 
-                await ns.WriteAsync(Convert.FromHexString(somedata));
+                // await ns.WriteAsync(Convert.FromHexString(somedata));
                 Thread.Sleep(50);
 
                 while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x69)
                 {
                 }
                 
-                await WorldDataTest.SendWorldDataKnelseAsync(ns);
+                // await WorldDataTest.SendWorldDataKnelseAsync(ns);
 
                 Task.Run(async () =>
                 {

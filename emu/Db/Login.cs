@@ -37,7 +37,7 @@ public class Login
     
         if (playerId != -1)
         {
-            Console.WriteLine($"Existing player {playerId}");
+            Console.WriteLine($"Existing player [{playerId}]");
             return await DbCharacters.GetPlayerCharactersFromDbAsync(playerId, playerIndex);
         }
 
