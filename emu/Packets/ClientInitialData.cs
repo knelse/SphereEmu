@@ -12,9 +12,9 @@ public class ClientInitialData
 
     public byte[] ToByteArray(ushort playerIndex)
     {
-        var firstCharData = Character1?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
-        var secondCharData = Character2?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
-        var thirdCharData = Character3?.ToByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
+        var firstCharData = Character1?.ToCharacterListByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
+        var secondCharData = Character2?.ToCharacterListByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
+        var thirdCharData = Character3?.ToCharacterListByteArray() ?? CommonPackets.CreateNewCharacterData(playerIndex);
 
         var charDataBytes = new byte [324];
         

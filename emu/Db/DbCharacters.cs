@@ -14,7 +14,7 @@ public class DbCharacters
                            "[water],[fire],[pdef],[mdef],[karma],[max_satiety],[title_level],[degree_level],[title_xp]," +
                            "[degree_xp],[current_satiety],[current_hp],[current_mp],[available_stats_title]," +
                            "[available_stats_degree],[gender_is_female],[name],[face_type],[hair_style],[hair_color]," +
-                           "[tattoo],[boots],[pants],[armor],[helmet],[gloves],[deletion_is_not_requested],[x],[y],[z]," +
+                           "[tattoo],[boots_model],[pants_model],[armor_model],[helmet_model],[gloves_model],[deletion_is_not_requested],[x],[y],[z]," +
                            $"[turn],[id],[player_id],[index] from characters with (nolock) where player_id = {playerId} order by [id]", sqlConnection);
 
         await using var reader = await command.ExecuteReaderAsync();
@@ -52,11 +52,11 @@ public class DbCharacters
             var hair = (byte) reader.GetInt32(26);
             var hairCol = (byte) reader.GetInt32(27);
             var tattoo = (byte) reader.GetInt32(28);
-            var boots = (byte) reader.GetInt32(29);
-            var pants = (byte) reader.GetInt32(30);
-            var armor = (byte) reader.GetInt32(31);
-            var helmet = (byte) reader.GetInt32(32);
-            var gloves = (byte) reader.GetInt32(33);
+            var bootModelId = (byte) reader.GetInt32(29);
+            var pantsModelId = (byte) reader.GetInt32(30);
+            var armorModelId = (byte) reader.GetInt32(31);
+            var helmetModelId = (byte) reader.GetInt32(32);
+            var glovesModelId = (byte) reader.GetInt32(33);
             var notDeleting = reader.GetBoolean(34);
             var x = (double) reader.GetDecimal(35);
             var y = (double) reader.GetDecimal(36);
@@ -70,16 +70,16 @@ public class DbCharacters
                 Accuracy = acc,
                 Agility = agi,
                 Air = air,
-                Armor = armor,
-                Boots = boots,
+                ArmorModelId = armorModelId,
+                BootModelId = bootModelId,
                 Earth = ert,
                 Endurance = end,
                 Fire = fir,
-                Gloves = gloves,
-                Helmet = helmet,
+                GlovesModelId = glovesModelId,
+                HelmetModelId = helmetModelId,
                 Karma = (KarmaTypes) krm,
                 Name = name,
-                Pants = pants,
+                PantsModelId = pantsModelId,
                 Strength = str,
                 Tattoo = tattoo,
                 Water = wat,
@@ -103,10 +103,10 @@ public class DbCharacters
                 DegreeLevelMinusOne = deg,
                 TitleLevelMinusOne = ttl,
                 IsNotQueuedForDeletion = notDeleting,
-                x = x,
-                y = y,
-                z = z,
-                t = t,
+                X = x,
+                Y = y,
+                Z = z,
+                T = t,
                 DbId = dbid
             };
 
@@ -124,12 +124,12 @@ public class DbCharacters
         var command = new SqlCommand(@"insert into [characters] (max_hp, max_mp, strength, agility, accuracy, endurance, 
                           earth, air, water, fire, pdef, mdef, karma, max_satiety, title_level, degree_level, title_xp, 
                           degree_xp, current_satiety, current_hp, current_mp, available_stats_title, available_stats_degree, 
-                          gender_is_female, [name], face_type, hair_style, hair_color, tattoo, boots, pants, armor, helmet, 
-                          gloves, deletion_is_not_requested, x, [y], z, turn, player_id, [index]) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
+                          gender_is_female, [name], face_type, hair_style, hair_color, tattoo, boots_model, pants_model, armor_model, helmet_model, 
+                          gloves_model, deletion_is_not_requested, x, [y], z, turn, player_id, [index]) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
                           @earth, @air, @water, @fire, @pdef, @mdef, @karma, @max_satiety, @title_level, @degree_level, @title_xp, 
                           @degree_xp, @current_satiety, @current_hp, @current_mp, @available_stats_title, @available_stats_degree, 
-                          @gender_is_female, @name, @face_type, @hair_style, @hair_color, @tattoo, @boots, @pants, @armor, @helmet, 
-                          @gloves, @deletion_is_not_requested, @x, @y, @z, @turn, @player_id, @index)", sqlConnection);
+                          @gender_is_female, @name, @face_type, @hair_style, @hair_color, @tattoo, @boots_model, @pants_model, @armor_model, @helmet_model, 
+                          @gloves_model, @deletion_is_not_requested, @x, @y, @z, @turn, @player_id, @index)", sqlConnection);
         command.Parameters.AddWithValue("@max_hp", (int) newCharacter.MaxHP);
         command.Parameters.AddWithValue("@max_mp", (int) newCharacter.MaxMP);
         command.Parameters.AddWithValue("@strength", (int) newCharacter.Strength);
@@ -159,16 +159,16 @@ public class DbCharacters
         command.Parameters.AddWithValue("@hair_style", (int) newCharacter.HairStyle);
         command.Parameters.AddWithValue("@hair_color", (int) newCharacter.HairColor);
         command.Parameters.AddWithValue("@tattoo", (int) newCharacter.Tattoo);
-        command.Parameters.AddWithValue("@boots", (int) newCharacter.Boots);
-        command.Parameters.AddWithValue("@pants", (int) newCharacter.Pants);
-        command.Parameters.AddWithValue("@armor", (int) newCharacter.Armor);
-        command.Parameters.AddWithValue("@helmet", (int) newCharacter.Helmet);
-        command.Parameters.AddWithValue("@gloves", (int) newCharacter.Gloves);
+        command.Parameters.AddWithValue("@boots_model", (int) newCharacter.BootModelId);
+        command.Parameters.AddWithValue("@pants_model", (int) newCharacter.PantsModelId);
+        command.Parameters.AddWithValue("@armor_model", (int) newCharacter.ArmorModelId);
+        command.Parameters.AddWithValue("@helmet_model", (int) newCharacter.HelmetModelId);
+        command.Parameters.AddWithValue("@gloves_model", (int) newCharacter.GlovesModelId);
         command.Parameters.AddWithValue("@deletion_is_not_requested", newCharacter.IsNotQueuedForDeletion);
-        command.Parameters.AddWithValue("@x", (decimal) newCharacter.x);
-        command.Parameters.AddWithValue("@y", (decimal) newCharacter.y);
-        command.Parameters.AddWithValue("@z", (decimal) newCharacter.z);
-        command.Parameters.AddWithValue("@turn", (decimal) newCharacter.t);
+        command.Parameters.AddWithValue("@x", (decimal) newCharacter.X);
+        command.Parameters.AddWithValue("@y", (decimal) newCharacter.Y);
+        command.Parameters.AddWithValue("@z", (decimal) newCharacter.Z);
+        command.Parameters.AddWithValue("@turn", (decimal) newCharacter.T);
         command.Parameters.AddWithValue("@player_id", playerId);
         command.Parameters.AddWithValue("@index", charIndex);
         await command.ExecuteNonQueryAsync();

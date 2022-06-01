@@ -2,7 +2,7 @@ namespace emu;
 
 public class Scratchpad
 {
-    // var cli = BitHelper.ByteArrayToBinaryString(clientData.ToByteArray())[104..];
+    // var cli = BitHelper.ByteArrayToBinaryString(clientData.ToCharacterListByteArray())[104..];
     //
     // for (var i = 0; i < cli.Length; i+=8)
     // {

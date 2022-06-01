@@ -48,11 +48,11 @@ public class TestHelper
             HairStyle = 0b00110000,
             HairColor = 0b00110010,
             Tattoo = 0b00110010,
-            Boots = 0b00110000,
-            Pants = 0b00110000,
-            Armor = 0b00110000,
-            Helmet = 0b00110000,
-            Gloves = 0b00110000,
+            BootModelId = 0b00110000,
+            PantsModelId = 0b00110000,
+            ArmorModelId = 0b00110000,
+            HelmetModelId = 0b00110000,
+            GlovesModelId = 0b00110000,
         };
 
         var testChar2 = new CharacterData
@@ -87,11 +87,11 @@ public class TestHelper
             HairStyle = 0b00110000,
             HairColor = 0b00110010,
             Tattoo = 0b00110010,
-            Boots = 0b00110000,
-            Pants = 0b00110000,
-            Armor = 0b00110000,
-            Helmet = 0b00110000,
-            Gloves = 0b00110000,
+            BootModelId = 0b00110000,
+            PantsModelId = 0b00110000,
+            ArmorModelId = 0b00110000,
+            HelmetModelId = 0b00110000,
+            GlovesModelId = 0b00110000,
         };
 
         var testChar3 = new CharacterData
@@ -126,11 +126,11 @@ public class TestHelper
             HairStyle = 0b00110000,
             HairColor = 0b00110010,
             Tattoo = 0b00110010,
-            Boots = 0b00110000,
-            Pants = 0b00110000,
-            Armor = 0b00110000,
-            Helmet = 0b00110000,
-            Gloves = 0b00110000,
+            BootModelId = 0b00110000,
+            PantsModelId = 0b00110000,
+            ArmorModelId = 0b00110000,
+            HelmetModelId = 0b00110000,
+            GlovesModelId = 0b00110000,
         };
 
         return new ClientInitialData (0, testChar1, null, testChar3);
