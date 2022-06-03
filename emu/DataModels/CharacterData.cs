@@ -1,4 +1,3 @@
-using System.Text;
 using emu.Helpers;
 
 namespace emu.DataModels;
@@ -132,7 +131,7 @@ public class CharacterData
     public byte[] ToCharacterListByteArray()
     {
         var nameEncodedWithPadding = new byte[19];
-        var nameEncoded = BitHelper.EncodeName(Name);
+        var nameEncoded = Server.Win1251.GetBytes(Name);;
         Array.Copy(nameEncoded, nameEncodedWithPadding, nameEncoded.Length);
 
         // 0x79 - look type
@@ -259,8 +258,7 @@ public class CharacterData
 
     public byte[] ToGameDataByteArray()
     {
-        // English only for now
-        var nameEncoded = Encoding.ASCII.GetBytes(Name);
+        var nameEncoded = Server.Win1251.GetBytes(Name);
         var x = CoordsHelper.EncodeServerCoordinate(X);
         var y = CoordsHelper.EncodeServerCoordinate(Y);
         var z = CoordsHelper.EncodeServerCoordinate(Z);
@@ -438,6 +436,20 @@ public class CharacterData
         var moreBytesBinary = File.ReadAllText("C:\\source\\enterGameDataTest.txt").RemoveLineEndings().Replace(" ", "");
         data.AddRange(BitHelper.BinaryStringToByteArray(moreBytesBinary));
         // data.AddRange(moreBytes);
+        // //"F322A07930BA040000A3DC0200"));
+        var str = @"00010000
+        00000000
+        10100000
+        00111001
+        00110000
+         10111010
+         00000100".RemoveLineEndings().Replace(" ", "");
+//         var str1 = @"11001011
+// 00101100
+// 11110010
+// 00000010".RemoveLineEndings().Replace(" ", "");
+        // data.AddRange(BitHelper.BinaryStringToByteArray(str));
+        // data.AddRange(Convert.FromHexString("CB2CF200"));
 
         var arr = data.ToArray();
         arr[0] = (byte) arr.Length;

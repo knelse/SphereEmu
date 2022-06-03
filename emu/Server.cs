@@ -20,6 +20,7 @@ namespace emu
         private static int playerCount;
         private static bool liveServerCoords = false;
         private static SqlConnection? sqlConnection;
+        public static Encoding Win1251 = null!;
 
         private static ushort getNewPlayerIndex()
         {
@@ -38,6 +39,9 @@ namespace emu
             TcpListener? tcpListener = null;
             Console.WindowWidth = 256;
 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Win1251 = Encoding.GetEncoding(1251);
+            
             try
             {
                 tcpListener = new TcpListener(IPAddress.Any, port);
@@ -203,6 +207,8 @@ namespace emu
                         var nameCheckBytes = rcvBuffer[20..];
                         var charDataBytes = rcvBuffer[charDataBytesStart..rcvBuffer[0]];
                         var sb = new StringBuilder();
+                        var firstLetterCharCode = (((nameCheckBytes[1] & 0b11111) << 3) + (nameCheckBytes[0] >> 5));
+                        var firstLetterShouldBeRussian = false;
 
                         for (var i = 1; i < len; i++)
                         {
@@ -210,21 +216,43 @@ namespace emu
 
                             if (currentCharCode % 2 == 0)
                             {
-                                // ASCII, English
+                                // English
                                 var currentLetter = (char)(currentCharCode / 2);
                                 sb.Append(currentLetter);
+                                Console.WriteLine(currentCharCode + "\t" + currentLetter);
                             }
                             else
                             {
-                                // Russian, first letter is borked
+                                // Russian
                                 var currentLetter = currentCharCode >= 193
                                     ? (char)((currentCharCode - 192) / 2 + 'а')
                                     : (char)((currentCharCode - 129) / 2 + 'А');
+                                Console.WriteLine(currentCharCode + "\t" + currentLetter);
                                 sb.Append(currentLetter);
+
+                                if (i == 2)
+                                {
+                                    // we assume first letter was russian if second letter is, this is a hack
+                                    firstLetterShouldBeRussian = true;
+                                }
+
                             }
                         }
 
-                        var name = sb.ToString();
+                        string name;
+
+                        if (firstLetterShouldBeRussian)
+                        {
+                            firstLetterCharCode += 1;
+                            var firstLetter = firstLetterCharCode >= 193
+                                ? (char)((firstLetterCharCode - 192) / 2 + 'а')
+                                : (char)((firstLetterCharCode - 129) / 2 + 'А');
+                            name = firstLetter + sb.ToString()[1..];
+                        }
+                        else
+                        {
+                            name = sb.ToString();
+                        }
 
                         var isNameValid = await Login.IsNameValidAsync(name);
                         Console.WriteLine(isNameValid ? $"Name [{name}] OK" : $"Name [{name}] already exists!");

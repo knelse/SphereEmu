@@ -144,18 +144,6 @@ public static class BitHelper
 
         return tempList.ToArray();
     }
-    
-    public static byte[] EncodeName(string name)
-    {
-        var result = new byte [name.Length];
-
-        for (var i = 0; i < name.Length; i++)
-        {
-            result[i] = (byte)(name[i] - 'A' * 4 + 4);
-        }
-
-        return result;
-    }
     // public static StringBuilder AppendBinaryString(this StringBuilder sb, byte input)
     // {
     //     return sb.Append(Convert.ToString(input, 2).PadLeft(8, '0'));
