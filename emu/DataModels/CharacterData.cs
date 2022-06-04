@@ -49,7 +49,7 @@ public class CharacterData
     public ushort PDef = 0;
     public ushort MDef = 0;
     public KarmaTypes Karma = KarmaTypes.Neutral;
-    public ushort MaxSatiety = 50;
+    public ushort MaxSatiety = 100;
     public ushort TitleLevelMinusOne = 0;
     public ushort DegreeLevelMinusOne = 0;
     public uint TitleXP = 0;
@@ -441,7 +441,7 @@ public class CharacterData
         data.Add((byte)(((toEncode & 0b111111) << 2) + 2));
         data.Add((byte)((toEncode & 0b11111111000000) >> 6));
         
-        data.Add(0x00);
+        data.Add(0x80);
 
         if (SpecType == SpecTypes.None)
         {

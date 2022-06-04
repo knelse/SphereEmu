@@ -219,7 +219,6 @@ namespace emu
                                 // English
                                 var currentLetter = (char)(currentCharCode / 2);
                                 sb.Append(currentLetter);
-                                Console.WriteLine(currentCharCode + "\t" + currentLetter);
                             }
                             else
                             {
@@ -227,7 +226,6 @@ namespace emu
                                 var currentLetter = currentCharCode >= 193
                                     ? (char)((currentCharCode - 192) / 2 + 'а')
                                     : (char)((currentCharCode - 129) / 2 + 'А');
-                                Console.WriteLine(currentCharCode + "\t" + currentLetter);
                                 sb.Append(currentLetter);
 
                                 if (i == 2)
