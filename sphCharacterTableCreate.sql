@@ -1,7 +1,7 @@
 USE [sph]
 GO
 
-/****** Object:  Table [dbo].[characters]    Script Date: 04/06/2022 20:26:09 ******/
+/****** Object:  Table [dbo].[characters]    Script Date: 04/06/2022 23:55:52 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -101,6 +101,8 @@ CREATE TABLE [dbo].[characters](
 	[money] [int] NOT NULL,
 	[spec_level] [int] NOT NULL,
 	[spec_type] [int] NOT NULL,
+	[clan_id] [int] NOT NULL,
+	[clan_rank] [int] NOT NULL,
  CONSTRAINT [PK_CHARACTERS] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -108,10 +110,10 @@ CREATE TABLE [dbo].[characters](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[characters]  WITH CHECK ADD  CONSTRAINT [FK_CHARACTERS_PLAYERS] FOREIGN KEY([player_id])
-REFERENCES [dbo].[players] ([id])
+ALTER TABLE [dbo].[characters]  WITH CHECK ADD  CONSTRAINT [FK_CHARACTERS_CLANS] FOREIGN KEY([clan_id])
+REFERENCES [dbo].[clans] ([id])
 GO
 
-ALTER TABLE [dbo].[characters] CHECK CONSTRAINT [FK_CHARACTERS_PLAYERS]
+ALTER TABLE [dbo].[characters] CHECK CONSTRAINT [FK_CHARACTERS_CLANS]
 GO
 

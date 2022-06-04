@@ -30,6 +30,14 @@ public enum SpecTypes : byte
     Bandier = 0x14,
 }
 
+public enum ClanRank : byte
+{
+    Senior = 0x0,
+    Seneschal = 0x1,
+    Vassal = 0x2,
+    Neophyte = 0x3
+}
+
 public class CharacterData
 {
     public ushort PlayerIndex;
@@ -60,10 +68,8 @@ public class CharacterData
     public ushort AvailableTitleStats = 4;
     public ushort AvailableDegreeStats = 4;
     public bool IsGenderFemale = false;
-    /// <summary>
-    /// 19 chars max?
-    /// </summary>
     public string Name;
+    public string ClanName;
     public byte FaceType;
     public byte HairStyle;
     public byte HairColor;
@@ -124,6 +130,7 @@ public class CharacterData
     public int Money = 0;
     public int SpecLevelMinusOne = 0;
     public SpecTypes SpecType = SpecTypes.None;
+    public ClanRank ClanRank = 0;
 
     public double X;
     public double Y = 150;
@@ -289,9 +296,29 @@ public class CharacterData
         }
 
         data.Add((byte)((nameEncoded[^1] & 0b11111000) >> 3));
-        data.Add(0x00);
-        // unk
-        data.Add(0x6e);
+        Console.WriteLine(Convert.ToHexString(data.ToArray()));
+
+        if (string.IsNullOrWhiteSpace(ClanName))
+        {
+            data.Add(0x00);
+            data.Add(0x6e);
+        }
+        else
+        {
+            var clanNameEncoded = Server.Win1251.GetBytes(ClanName);
+            var clanNameLength = clanNameEncoded.Length;
+            data.Add((byte) ((clanNameLength & 0b111) << 5));
+            data.Add((byte)(((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
+
+            for (var i = 1; i < clanNameLength; i++)
+            {
+                data.Add((byte)(((clanNameEncoded[i] & 0b1111111) << 1) + ((clanNameEncoded[i - 1] & 0b10000000) >> 7)));
+            }
+            
+            data.Add((byte)(((0b01100000) + (((byte) ClanRank) << 1) + ((clanNameEncoded[^1] & 0b10000000) >> 7))));
+        }
+        Console.WriteLine(Convert.ToHexString(data.ToArray()));
+
         data.Add(0x1a);
         data.Add(0x98);
         data.Add(0x18);

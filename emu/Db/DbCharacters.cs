@@ -35,7 +35,7 @@ public class DbCharacters
                            "available_stats_title," +
                            "available_stats_degree," +
                            "gender_is_female," +
-                           "[name]," +
+                           "[cha].[name]," +
                            "face_type," +
                            "hair_style," +
                            "hair_color," +
@@ -50,7 +50,7 @@ public class DbCharacters
                            "[y]," +
                            "z," +
                            "turn," +
-                           "id," +
+                           "[cha].[id]," +
                            "player_id," +
                            "[index]," +
                            "helmet_slot," +
@@ -66,7 +66,7 @@ public class DbCharacters
                            "top_left_ring_slot," +
                            "top_right_ring_slot," +
                            "bottom_left_ring_slot," +
-                           " bottom_right_ring_slot," +
+                           "bottom_right_ring_slot," +
                            "boots_slot," +
                            "left_special_slot_1," +
                            "left_special_slot_2," +
@@ -102,8 +102,11 @@ public class DbCharacters
                            "inventory_slot_10," +
                            "[money]," +
                            "spec_level," +
-                           "spec_type " +
-                           $"from characters with (nolock) where player_id = {playerId} order by [id]", sqlConnection);
+                           "spec_type," +
+                           "[cla].[name]," + 
+                           "clan_rank " +
+                           "FROM [sph].[dbo].[characters] cha with (nolock) left join [sph].[dbo].[clans] cla " +
+                           $"with (nolock) on cla.id = cha.clan_id where player_id = {playerId} order by [id]", sqlConnection);
 
         await using var reader = await command.ExecuteReaderAsync();
 
@@ -202,6 +205,8 @@ public class DbCharacters
             var money = reader.GetInt32(89);
             var specLevel = reader.GetInt32(90);
             var specType = reader.GetInt32(91);
+            var clanName = reader.GetString(92);
+            var clanRank = reader.GetInt32(93);
 
             var character = new CharacterData
             {
@@ -295,7 +300,9 @@ public class DbCharacters
                 BottomRightRingSlot = NullIfZeroValueOtherwise(bottomRightRingSlot),
                 SpecLevelMinusOne = specLevel,
                 TopLeftRingSlot = NullIfZeroValueOtherwise(topLeftRingSlot),
-                TopRightRingSlot = NullIfZeroValueOtherwise(topRightRingSlot)
+                TopRightRingSlot = NullIfZeroValueOtherwise(topRightRingSlot),
+                ClanName = clanName,
+                ClanRank = (ClanRank) clanRank
             };
 
             characters.AddNewCharacter(character, index);
@@ -323,13 +330,13 @@ public class DbCharacters
                         speedhackmantra_slot, money_slot, travelbag_slot, key_slot_1, key_slot_2, mission_slot,
                         inventory_slot_1, inventory_slot_2, inventory_slot_3, inventory_slot_4, inventory_slot_5,
                         inventory_slot_6, inventory_slot_7, inventory_slot_8, inventory_slot_9, inventory_slot_10,
-                        [money], spec_level, spec_type) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
+                        [money], spec_level, spec_type, clan_id, clan_rank) values (@max_hp, @max_mp, @strength, @agility, @accuracy, @endurance, 
                           @earth, @air, @water, @fire, @pdef, @mdef, @karma, @max_satiety, @title_level, @degree_level, @title_xp, 
                           @degree_xp, @current_satiety, @current_hp, @current_mp, @available_stats_title, @available_stats_degree, 
                           @gender_is_female, @name, @face_type, @hair_style, @hair_color, @tattoo, @boots_model, @pants_model, @armor_model, @helmet_model, 
                           @gloves_model, @deletion_is_not_requested, @x, @y, @z, @turn, @player_id, @index, 0, 0, 0, 0, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)", sqlConnection);
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)", sqlConnection);
         command.Parameters.AddWithValue("@max_hp", (int) newCharacter.MaxHP);
         command.Parameters.AddWithValue("@max_mp", (int) newCharacter.MaxMP);
         command.Parameters.AddWithValue("@strength", (int) newCharacter.Strength);
