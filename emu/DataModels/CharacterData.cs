@@ -13,6 +13,7 @@ public enum KarmaTypes : byte
 
 public enum SpecTypes : byte
 {
+    None = 0x0,
     Assasin = 0x1,
     Crusader = 0x2,
     Inquisitor = 0x3,
@@ -120,8 +121,9 @@ public class CharacterData
     public int? InventorySlot8 = null;
     public int? InventorySlot9 = null;
     public int? InventorySlot10 = null;
-    public int Money;
+    public int Money = 0;
     public int SpecLevelMinusOne = 0;
+    public SpecTypes SpecType = SpecTypes.None;
 
     public double X;
     public double Y = 150;
@@ -429,32 +431,36 @@ public class CharacterData
         {
             data.Add(0x00);
         }
-        // var moreBytes = new byte[]
-        // {
-        //     0x33, 0xfc, 0xa1, 0x4a, 0x53, 0x16, 0x52, 0x80, 0x90, 0x54, 0xb5, 0x17, 0x05, 0x00
-        // };
+        
+        data.Add((byte)(((CurrentHP & 0b111) << 5) + 0b10011));
+        data.Add((byte)((CurrentHP & 0b11111111000) >> 3));
+        data.Add((byte)(((MaxHP & 0b11) << 6) + (0b100 << 3) + ((CurrentHP & 0b11100000000000) >> 11)));
+        data.Add((byte)((MaxHP & 0b1111111100) >> 2));
+        data.Add((byte)((((byte) Karma) << 4) + ((MaxHP & 0b11110000000000) >> 10)));
+        
+        // 3 bytes wtf
+
         var moreBytesBinary = File.ReadAllText("C:\\source\\enterGameDataTest.txt").RemoveLineEndings().Replace(" ", "");
         data.AddRange(BitHelper.BinaryStringToByteArray(moreBytesBinary));
-        // data.AddRange(moreBytes);
-        // //"F322A07930BA040000A3DC0200"));
-        var str = @"00010000
-        00000000
-        10100000
-        00111001
-        00110000
-         10111010
-         00000100".RemoveLineEndings().Replace(" ", "");
-//         var str1 = @"11001011
-// 00101100
-// 11110010
-// 00000010".RemoveLineEndings().Replace(" ", "");
-        // data.AddRange(BitHelper.BinaryStringToByteArray(str));
-        // data.AddRange(Convert.FromHexString("CB2CF200"));
+
+        if (SpecType == SpecTypes.None)
+        {
+            data.Add(0x00);
+        }
+        else
+        {
+            data.Add((byte)((1 << 7) + (((byte) SpecType) << 1)));
+        }
+        data.Add((byte)(((Money & 0b1111) << 4) + SpecLevelMinusOne));
+        data.Add((byte)((Money & 0b111111110000) >> 4));
+        data.Add((byte)((Money & 0b11111111000000000000) >> 12));
+        data.Add((byte)((Money & 0b1111111100000000000000000000) >> 20));
+        data.Add((byte)((Money & 0b11110000000000000000000000000000) >> 28));
 
         var arr = data.ToArray();
         arr[0] = (byte) arr.Length;
         
-        return arr; //Convert.FromHexString("49012C010000044f6f08006221880D2E6C2CAC8C6DAE0C006E1818181800000000000000000000000000000000640978000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000780000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001900000000000044167900000000000000");
+        return arr;
     }
 
     public static CharacterData CreateNewCharacter(ushort playerIndex, string name, bool isFemale, int face, int hairStyle,
