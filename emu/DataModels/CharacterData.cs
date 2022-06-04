@@ -437,11 +437,11 @@ public class CharacterData
         data.Add((byte)(((MaxHP & 0b11) << 6) + (0b100 << 3) + ((CurrentHP & 0b11100000000000) >> 11)));
         data.Add((byte)((MaxHP & 0b1111111100) >> 2));
         data.Add((byte)((((byte) Karma) << 4) + ((MaxHP & 0b11110000000000) >> 10)));
+        var toEncode = DegreeLevelMinusOne * 100 + TitleLevelMinusOne;
+        data.Add((byte)(((toEncode & 0b111111) << 2) + 2));
+        data.Add((byte)((toEncode & 0b11111111000000) >> 6));
         
-        // 3 bytes wtf
-
-        var moreBytesBinary = File.ReadAllText("C:\\source\\enterGameDataTest.txt").RemoveLineEndings().Replace(" ", "");
-        data.AddRange(BitHelper.BinaryStringToByteArray(moreBytesBinary));
+        data.Add(0x00);
 
         if (SpecType == SpecTypes.None)
         {
