@@ -296,7 +296,6 @@ public class CharacterData
         }
 
         data.Add((byte)((nameEncoded[^1] & 0b11111000) >> 3));
-        Console.WriteLine(Convert.ToHexString(data.ToArray()));
 
         if (string.IsNullOrWhiteSpace(ClanName))
         {
@@ -317,7 +316,6 @@ public class CharacterData
             
             data.Add((byte)(((0b01100000) + (((byte) ClanRank) << 1) + ((clanNameEncoded[^1] & 0b10000000) >> 7))));
         }
-        Console.WriteLine(Convert.ToHexString(data.ToArray()));
 
         data.Add(0x1a);
         data.Add(0x98);
