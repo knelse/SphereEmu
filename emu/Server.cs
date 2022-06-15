@@ -587,18 +587,6 @@ namespace emu
             });
         }
 
-        private static void CreateEchoPingThread(ushort currentPlayerIndex, NetworkStream ns)
-        {
-            Task.Run(async () =>
-            {
-                while (ns.CanWrite)
-                {
-                    await ns.WriteAsync(CommonPackets.Echo(currentPlayerIndex));
-                    Thread.Sleep(3000);
-                }
-            });
-        }
-
         private static void CloseConnection(TcpClient client, NetworkStream? ns)
         {
             SetColorAndWriteLine(ConsoleColor.Yellow, "Client disconnect...");
