@@ -67,9 +67,9 @@ public class CharacterData
     public ushort CurrentMP = 100;
     public ushort AvailableTitleStats = 4;
     public ushort AvailableDegreeStats = 4;
-    public bool IsGenderFemale = false;
-    public string Name;
-    public string ClanName;
+    public bool IsGenderFemale;
+    public string Name = "Test";
+    public string ClanName = "ClanTest";
     public byte FaceType;
     public byte HairStyle;
     public byte HairColor;
@@ -503,4 +503,52 @@ public class CharacterData
         };
     }
 
+    public byte[] GetTeleportAndUpdateCharacterByteArray(double X, double Y, double Z, double T)
+    {
+
+        var tp = new List<byte>(Convert.FromHexString("AB002c010000044f6f0840E301"));
+        var x = CoordsHelper.EncodeServerCoordinate(X);
+        var y = CoordsHelper.EncodeServerCoordinate(Y);
+        var z = CoordsHelper.EncodeServerCoordinate(Z);
+        var t = CoordsHelper.EncodeServerCoordinate(T);
+        var x_1 = ((x[0] & 0b111) << 5) + 0b00010;
+        var x_2 = ((x[1] & 0b111) << 5) + ((x[0] & 0b11111000) >> 3);
+        var x_3 = ((x[2] & 0b111) << 5) + ((x[1] & 0b11111000) >> 3);
+        var x_4 = ((x[3] & 0b111) << 5) + ((x[2] & 0b11111000) >> 3);
+        var y_1 = ((y[0] & 0b111) << 5) + ((x[3] & 0b11111000) >> 3);
+        var y_2 = ((y[1] & 0b111) << 5) + ((y[0] & 0b11111000) >> 3);
+        var y_3 = ((y[2] & 0b111) << 5) + ((y[1] & 0b11111000) >> 3);
+        var y_4 = ((y[3] & 0b111) << 5) + ((y[2] & 0b11111000) >> 3);
+        var z_1 = ((z[0] & 0b111) << 5) + ((y[3] & 0b11111000) >> 3);
+        var z_2 = ((z[1] & 0b111) << 5) + ((z[0] & 0b11111000) >> 3);
+        var z_3 = ((z[2] & 0b111) << 5) + ((z[1] & 0b11111000) >> 3);
+        var z_4 = ((z[3] & 0b111) << 5) + ((z[2] & 0b11111000) >> 3);
+        var t_1 = ((t[0] & 0b111) << 5) + ((z[3] & 0b11111000) >> 3);
+        var t_2 = ((t[1] & 0b111) << 5) + ((t[0] & 0b11111000) >> 3);
+        var t_3 = ((t[2] & 0b111) << 5) + ((t[1] & 0b11111000) >> 3);
+        var t_4 = ((t[3] & 0b111) << 5) + ((t[2] & 0b11111000) >> 3);
+        var t_5 = 0b10100000 + ((t[3] & 0b11111000) >> 3);
+        tp.Add((byte)x_1);
+        tp.Add((byte)x_2);
+        tp.Add((byte)x_3);
+        tp.Add((byte)x_4);
+        tp.Add((byte)y_1);
+        tp.Add((byte)y_2);
+        tp.Add((byte)y_3);
+        tp.Add((byte)y_4);
+        tp.Add((byte)z_1);
+        tp.Add((byte)z_2);
+        tp.Add((byte)z_3);
+        tp.Add((byte)z_4);
+        tp.Add((byte)t_1);
+        tp.Add((byte)t_2);
+        tp.Add((byte)t_3);
+        tp.Add((byte)t_4);
+        tp.Add((byte)t_5);
+
+        tp.AddRange(Convert.FromHexString(
+            "200839EDA800C80000000B40E74520F74210793188BC20245B14222F0C6071000B045824C04201160BB0608045032C1C64F1200B085844C042021613B0A08045052C2C6071010B4CE44526F2421379B1010B0E5874C0C203161FB0008145082C446031220B125994C0C2041627B64081450A2C5460B10AB160C1450B2E5C6031030B1A58D4C0C2061B1202F602"));
+
+        return tp.ToArray();
+    }
 }

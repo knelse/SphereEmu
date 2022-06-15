@@ -13,19 +13,19 @@ public class Login
         command.Parameters.AddWithValue("@login", login);
 
         var reader = await command.ExecuteReaderAsync();
-        Console.WriteLine("Login fetched");
+        Console.WriteLine($"SRV: Login [{login}] fetched");
     
         var playerId = -1;
     
         while (reader.Read())
         {
-            Console.WriteLine("Checking DB password hash");
+            Console.WriteLine($"SRV: Checking DB password hash for [{login}]");
             playerId = reader.GetInt32(0);
             var dbPasswordHash = reader.GetString(1);
     
-            if (!LoginHelper.EqualsHashed(password, dbPasswordHash)) {
-
-                Console.WriteLine("Wrong password");
+            if (!LoginHelper.EqualsHashed(password, dbPasswordHash))
+            {
+                MiscHelper.SetColorAndWriteLine(ConsoleColor.Red, $"SRV: Wrong password for [{login}]");
                 await sqlConnection.CloseAsync();
                 await reader.CloseAsync();
                 return null;
@@ -37,13 +37,13 @@ public class Login
     
         if (playerId != -1)
         {
-            Console.WriteLine($"Existing player [{playerId}]");
+            MiscHelper.SetColorAndWriteLine(ConsoleColor.DarkGreen, $"SRV: Existing player [{playerId}] found for [{login}]");
             return await DbCharacters.GetPlayerCharactersFromDbAsync(playerId, playerIndex);
         }
 
         if (!createOnNewLogin) return null;
-        
-        Console.WriteLine("Adding player to DB");
+
+        MiscHelper.SetColorAndWriteLine(ConsoleColor.Green, $"SRV: Adding [{login}] to DB");
 
         var sqlConnectionToAdd = await Startup.OpenAndGetSqlConnectionAsync();
         var pwdHash = LoginHelper.GetHashedString(password);
@@ -57,6 +57,9 @@ public class Login
         playerIdCmd.Parameters.AddWithValue("@loginAdded", login);
         playerId = (int?) await playerIdCmd.ExecuteScalarAsync() ?? 0;
         await sqlConnectionToAdd.CloseAsync();
+        
+        MiscHelper.SetColorAndWriteLine(ConsoleColor.Green, $"SRV: Created player [{playerId}] for [{login}]");
+        
         return new ClientInitialData(playerId);
 
     }

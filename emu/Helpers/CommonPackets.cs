@@ -8,6 +8,9 @@ public static class CommonPackets
     public static readonly byte[] 
         ReadyToLoadInitialDataReconnect = { 0x0a, 0x00, 0xc8, 0x00, 0x94, 0x05, 0x00, 0x00, 0x2f, 0x64};
 
+    public static readonly byte[]
+        TransmissionEndPacket = { 0x04, 0x00, 0xf4, 0x01 };
+
     public static byte[] ServerCredentials(ushort playerIndex)
     {
         var currentSphereTime = TimeHelper.EncodeCurrentSphereDateTime();
@@ -83,6 +86,33 @@ public static class CommonPackets
         {
             0x0e, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
             BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0xA0, 0x00, 0x00
+        };
+    }
+
+    public static byte[] Echo(ushort playerIndex)
+    {
+        return new byte[]
+        {
+            0x14, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0xc0, 0x42, 0x60, 0xfe, 0xd3, 0x90, 0x10, 0xb0, 0x17, 0x00
+        };
+    }
+
+    public static byte[] SixSecondPing(ushort playerIndex)
+    {
+        return new byte[]
+        {
+            0x13, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0xc0, 0x42, 0xa0, 0xff, 0xd3, 0x90, 0x08, 0xb0, 0x07
+        };
+    }
+
+    public static byte[] FifteenSecondPing(ushort playerIndex)
+    {
+        return new byte[]
+        {
+            0x10, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(playerIndex),
+            BitHelper.GetFirstByte(playerIndex), 0x08, 0x40, 0x81, 0x93, 0xee, 0xe4, 0x08
         };
     }
 }
