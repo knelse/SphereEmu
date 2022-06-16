@@ -20,6 +20,7 @@ namespace emu
         private static int playerCount;
         public static bool LiveServerCoords = false;
         public static Encoding Win1251 = null!;
+        private static DateTime startTime = DateTime.Now;
 
         private static ushort getNewPlayerIndex()
         {
@@ -229,8 +230,7 @@ namespace emu
                             break;
                         // move item
                         case 0x1A:
-                            await ns.WriteAsync(Convert.FromHexString(
-                                "2E002C010000044F6FE8162D6A5A6F89895B168CBB09D88DF020CA89A02FC544D1180822068F8A302204E000000"));
+                            await PickupItemToInventory(ns, rcvBuffer, currentPlayerIndex);
                             break;
                         //echo
                         case 0x08:
@@ -339,14 +339,15 @@ namespace emu
         {
             Task.Run(async () =>
             {
-                while (ns.CanRead)
-                {
-                    var str = Console.ReadLine();
-
-                    if (string.IsNullOrEmpty(str) || !str.Equals("def"))
-                    {
-                        continue;
-                    }
+                // while (ns.CanRead)
+                // {
+                    Thread.Sleep(3000);
+                    // var str = Console.ReadLine();
+                    //
+                    // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
+                    // {
+                    //     continue;
+                    // }
                     // move to dungeon
                     await ns.WriteAsync(
                         selectedCharacter.GetTeleportAndUpdateCharacterByteArray(701, 4501.62158203125, 900, 1.55));
@@ -376,8 +377,8 @@ namespace emu
                     // await ns.WriteAsync(tp.ToArray());
                     // await ns.WriteAsync(Convert.FromHexString(
                     //     "BC002C0100EE45B0A67C46E11B000000000000000000000000007E6FA67C860F00A8A6180094B10800B09D080091450680C20B0808149E213AB8AE181B3491084130AEB8F00D000000000000000000000000003F71547EC0379753538CB7CA58C4BE374F0480C82203C0AF251524F065D8D414E76F3216F9F6B5130120B2C80050788100805F4E2A48E07B43B729B6BC642C82036C270240649101A0F0020200BF725490C017EB80538C2BCA58A487E14E0480C8220340E105060000"));
-                    Console.WriteLine($"SRV: Teleported client [{selectedCharacter.PlayerIndex}] to default new player dungeon");
-                }
+                    Console.WriteLine($"SRV: Teleported client [{BitHelper.GetFirstByte(selectedCharacter.PlayerIndex) * 256 + BitHelper.GetSecondByte(selectedCharacter.PlayerIndex)}] to default new player dungeon");
+                // }
             });
         }
 
@@ -542,6 +543,36 @@ namespace emu
             Interlocked.Decrement(ref playerCount);
             ns?.Close();
             client.Close();
+        }
+
+        private static async Task PickupItemToInventory(NetworkStream ns, byte[] rcvBuffer, ushort currentPlayerIndex)
+        {
+            var clientItemID_1 = rcvBuffer[21] >> 1;
+            var clientItemID_2 = rcvBuffer[22];
+            var clientItemID_3 = rcvBuffer[23] % 2;
+            var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
+
+            var clientSlot_raw = rcvBuffer[24];
+            var clientSlot = (clientSlot_raw - 0x32) / 2;
+            Console.WriteLine($"CLI: Move item [{clientItemID}] to slot [{clientSlot}]");
+
+            var clientSync_1 = rcvBuffer[17];
+            var clientSync_2 = rcvBuffer[18];
+
+            var serverItemID_1 = (clientItemID & 0b111111) << 2;
+            var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
+            var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
+
+            var moveResult = new byte[]
+            {
+                0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(currentPlayerIndex), 
+                BitHelper.GetFirstByte(currentPlayerIndex), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 
+                0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, 0xE8, 0x13, 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80, 
+                0x82, 0x20, (byte) (clientSlot_raw * 2), (byte) serverItemID_1, (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 
+                0x00, 0x00
+            };
+
+            await ns.WriteAsync(moveResult);
         }
     }
 }
