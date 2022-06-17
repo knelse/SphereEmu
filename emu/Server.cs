@@ -16,7 +16,7 @@ namespace emu
     internal class Server
     {
         private const int BUFSIZE = 1024;
-        private static int playerIndex = 0x8271;
+        private static int playerIndex = 0x4f6f;
         private static int playerCount;
         public static bool LiveServerCoords = false;
         public static Encoding Win1251 = null!;
@@ -172,7 +172,7 @@ namespace emu
                 await ns.WriteAsync(selectedCharacter!.ToGameDataByteArray());
                 Interlocked.Increment(ref playerCount);
 
-                // NewPlayerDungeonFromKeyPress(ns, selectedCharacter);
+                NewPlayerDungeonFromKeyPress(ns, selectedCharacter);
 
                 while (await ns.ReadAsync(rcvBuffer) != 0x13)
                 {
@@ -218,7 +218,11 @@ namespace emu
                 // await ns.WriteAsync(Convert.FromHexString(
                 //     "C6002C01000004F6145443E10FDCE0C66472C6001A01106E70635F74617665726E6B65657072000D0182AA6100805F5C1B25E30320A14B02000000000000000050649101A00003827100850900286401C0FFFFFFFFAFAE0D71F00190D02501000000000000000028B2C800508001C13880C20400FC7607E0019FD6624DB1EA4E22513DF55C3110228B0C008527B89C0000F8F10EC0033EEE999AE26E9D44A2FCEAB96220441619000A4F80390100F0531E80077C12B835C5DDB3894496F573C500882C320000"));
                 // inventory
-                await ns.WriteAsync(Convert.FromHexString($"9D002C01000004CA03F040E111FEFFFFFF2D0A62800BCF50FDEA504422CC31C4247F51FC5362A3577C002474490000000000000000008A2C32001460{Convert.ToHexString(clientSyncSequence)}A0900500FFFFFFFF854FB89C0020760310A000F8C1B5A11FBE8CD0A162B053C622494251221A451619890A3020180750C80280FFFFFFFF1F511BAEE10320A14B02000000000000000050649101A00003{playerIndexStr}00850908286401C0FFFFFF3F"));
+                // 8271 => 201807
+                var itemCheck1 = playerIndexStr[1] + "0" + playerIndexStr[3] + playerIndexStr[0] + "0" +
+                                 playerIndexStr[2]; 
+                // default sword in slot 1 and torweal tavern room key
+                // await ns.WriteAsync(Convert.FromHexString($"9D002C01000004CA03F040E111FEFFFFFF2D0A62800BCF50FDEA504422CC31C4247F51FC5362A3577C002474490000000000000000008A2C32001460{Convert.ToHexString(clientSyncSequence)}A0900500FFFFFFFF854FB89C0020760310A000F8C1B5A11FBE8CD0A162B053C622494251221A451619890A30{itemCheck1}50C80280FFFFFFFF1F511BAEE10320A14B02000000000000000050649101A00003{playerIndexStr}00850908286401C0FFFFFF3F"));
                 
                 while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x69)
                 {
@@ -356,7 +360,7 @@ namespace emu
             {
                 // while (ns.CanRead)
                 // {
-                    Thread.Sleep(3000);
+                    Thread.Sleep(3500);
                     // var str = Console.ReadLine();
                     //
                     // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
@@ -574,15 +578,21 @@ namespace emu
             var clientSync_1 = rcvBuffer[17];
             var clientSync_2 = rcvBuffer[18];
 
+            var clientSyncOther_1 = (rcvBuffer[10] & 0b11000000) >> 4;
+            var clientSyncOther_2 = rcvBuffer[11];
+            var clientSyncOther_3 = rcvBuffer[12] & 0b111111;
+            var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
+
             var serverItemID_1 = (clientItemID & 0b111111) << 2;
             var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
             var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
 
             var moveResult = new byte[]
             {
-                0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, BitHelper.GetSecondByte(currentPlayerIndex), 
-                BitHelper.GetFirstByte(currentPlayerIndex), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 
-                0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, 0xE8, 0x13, 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80, 
+                0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, BitHelper.GetFirstByte((ushort) clientItemID), 
+                BitHelper.GetSecondByte((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 
+                0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, BitHelper.GetFirstByte(clientSyncOther), 
+                BitHelper.GetSecondByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80, 
                 0x82, 0x20, (byte) (clientSlot_raw * 2), (byte) serverItemID_1, (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 
                 0x00, 0x00
             };
