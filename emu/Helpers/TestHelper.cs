@@ -115,10 +115,31 @@ public class TestHelper
             Turn = Convert.ToDouble(entityData[5]),
             HP = Convert.ToUInt16(entityData[6]),
             TypeID = (ushort) (Convert.ToUInt16(entityData[7])),// + index),
-            Level = (byte) (Convert.ToByte(entityData[8]) + index),
+            Level = (byte) (Convert.ToByte(entityData[8])),
         };
 
         return Packet.ToByteArray(entity.ToByteArray(), 1);
     }
 
+    public static byte[] GetNewPlayerDungeonMobData(WorldCoords dungeonEntranceCoords)
+    {
+        var mobX = dungeonEntranceCoords.x - 50;
+        var mobY = dungeonEntranceCoords.y;
+        var mobZ = dungeonEntranceCoords.z + 19.5;
+        var mobT = -2;
+        var entity = new EntitySpawnData
+        {
+            ID = 12345,
+            Unknown = 1260,
+            X = mobX,
+            Y = mobY,
+            Z = mobZ,
+            Turn = mobT,
+            HP = 1009,
+            TypeID = 1069,
+            Level = 0
+        };
+        
+        return Packet.ToByteArray(entity.ToByteArray(), 1);
+    }
 }

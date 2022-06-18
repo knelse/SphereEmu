@@ -192,6 +192,8 @@ namespace emu
 
                 CreateSixSecondPingThread(currentPlayerIndex, ns);
 
+                var newPlayerDungeonMobHp = 64;
+
                 Thread.Sleep(50);
 
                 while (ns.CanRead)
@@ -232,6 +234,18 @@ namespace emu
                                 source[2] += 0x60;
                                 await ns.WriteAsync(Convert.FromHexString(
                                     $"10002c01000004{playerIndexStr}0840{Convert.ToHexString(source)}{damageStr}00"));
+                            }
+                            else
+                            {
+                                Console.WriteLine(damage);
+                                var sourceStr = Convert.ToHexString(source);
+                                newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
+                                var currentMobHpStr = Convert.ToString(newPlayerDungeonMobHp, 16).PadLeft(2, '0');
+                                var hp = new string(new[] { currentMobHpStr[1], '0', '0', currentMobHpStr[0] });
+                                var src = new string (new [] { sourceStr[3], sourceStr[0], sourceStr[5], sourceStr[2] });
+                                var dmgDealt = Convert.ToString(0x60 - damage * 2, 16).PadLeft(2, '0');
+                                await ns.WriteAsync(Convert.FromHexString(
+                                    $"1B002c0100000439304843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
                             }
 
                             break;
@@ -348,8 +362,9 @@ namespace emu
                     //     continue;
                     // }
                     // move to dungeon
+                    var newDungeonCoords = new WorldCoords(701, 4501.62158203125, 900, 1.55);
                     await ns.WriteAsync(
-                        selectedCharacter.GetTeleportAndUpdateCharacterByteArray(701, 4501.62158203125, 900, 1.55));
+                        selectedCharacter.GetTeleportAndUpdateCharacterByteArray(newDungeonCoords));
                     Thread.Sleep(100);
 
                     // get into instance
@@ -377,7 +392,9 @@ namespace emu
                     // await ns.WriteAsync(Convert.FromHexString(
                     //     "BC002C0100EE45B0A67C46E11B000000000000000000000000007E6FA67C860F00A8A6180094B10800B09D080091450680C20B0808149E213AB8AE181B3491084130AEB8F00D000000000000000000000000003F71547EC0379753538CB7CA58C4BE374F0480C82203C0AF251524F065D8D414E76F3216F9F6B5130120B2C80050788100805F4E2A48E07B43B729B6BC642C82036C270240649101A0F0020200BF725490C017EB80538C2BCA58A487E14E0480C8220340E105060000"));
                     Console.WriteLine($"SRV: Teleported client [{BitHelper.GetFirstByte(selectedCharacter.PlayerIndex) * 256 + BitHelper.GetSecondByte(selectedCharacter.PlayerIndex)}] to default new player dungeon");
-                // }
+
+                    await ns.WriteAsync(TestHelper.GetNewPlayerDungeonMobData(newDungeonCoords));
+                    // }
             });
         }
 

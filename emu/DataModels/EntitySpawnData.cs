@@ -46,13 +46,6 @@ public class EntitySpawnData
         var y_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Y));
         var z_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Z));
         var t_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Turn));
-        Console.WriteLine(x_str);
-        Console.WriteLine(x_str[..6]);
-        Console.WriteLine(x_str[6..14]);
-        Console.WriteLine(x_str[14..22]);
-        Console.WriteLine(x_str[22..30]);
-        Console.WriteLine(x_str[30..]);
-
 
 
         sb.Append(x_str[2..8]);
@@ -108,10 +101,6 @@ public class EntitySpawnData
         sb.Append("111101");
         sb.Append(level_str[..2]);
         sb.Append("00000001");
-
-        Console.WriteLine(this.ToString());
-        Console.WriteLine(sb.ToString()[80..]);
-        Console.WriteLine(sb.Length);
 
         return BitHelper.BinaryStringToByteArray(sb.ToString());
     }

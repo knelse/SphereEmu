@@ -503,14 +503,14 @@ public class CharacterData
         };
     }
 
-    public byte[] GetTeleportAndUpdateCharacterByteArray(double X, double Y, double Z, double T)
+    public byte[] GetTeleportAndUpdateCharacterByteArray(WorldCoords coords)
     {
 
         var tp = new List<byte>(Convert.FromHexString("AB002c010000044f6f0840E301"));
-        var x = CoordsHelper.EncodeServerCoordinate(X);
-        var y = CoordsHelper.EncodeServerCoordinate(Y);
-        var z = CoordsHelper.EncodeServerCoordinate(Z);
-        var t = CoordsHelper.EncodeServerCoordinate(T);
+        var x = CoordsHelper.EncodeServerCoordinate(coords.x);
+        var y = CoordsHelper.EncodeServerCoordinate(coords.y);
+        var z = CoordsHelper.EncodeServerCoordinate(coords.z);
+        var t = CoordsHelper.EncodeServerCoordinate(coords.turn);
         var x_1 = ((x[0] & 0b111) << 5) + 0b00010;
         var x_2 = ((x[1] & 0b111) << 5) + ((x[0] & 0b11111000) >> 3);
         var x_3 = ((x[2] & 0b111) << 5) + ((x[1] & 0b11111000) >> 3);
