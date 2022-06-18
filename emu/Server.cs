@@ -39,6 +39,7 @@ namespace emu
             const int port = 25860;
             TcpListener? tcpListener = null;
             Console.WindowWidth = 256;
+            RNGHelper.SetSeedFromSystemTime();
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Win1251 = Encoding.GetEncoding(1251);
@@ -210,11 +211,29 @@ namespace emu
                             break;
                         // move item
                         case 0x1A:
-                            await PickupItemToInventory(ns, rcvBuffer, currentPlayerIndex);
+                            await PickupItemToInventory(ns, rcvBuffer);
                             break;
                         //echo
                         case 0x08:
                             await ns.WriteAsync(CommonPackets.Echo(currentPlayerIndex));
+                            break;
+                        //damage
+                        case 0x20:
+                            var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
+                            var damageStr = Convert.ToString(damage, 16).PadLeft(2, '0');
+                            //X0 YZ 1T => X2 YZ 7T
+                            var source = rcvBuffer[25..28];
+                            var dest = rcvBuffer[28..31];
+                            var selfDamage = source[0] == dest[0] && source[1] == dest[1] && source[2] == dest[2];
+
+                            if (selfDamage)
+                            {
+                                source[0] += 2;
+                                source[2] += 0x60;
+                                await ns.WriteAsync(Convert.FromHexString(
+                                    $"10002c01000004{playerIndexStr}0840{Convert.ToHexString(source)}{damageStr}00"));
+                            }
+
                             break;
                         default:
                             continue;
@@ -525,7 +544,7 @@ namespace emu
             client.Close();
         }
 
-        private static async Task PickupItemToInventory(NetworkStream ns, byte[] rcvBuffer, ushort currentPlayerIndex)
+        private static async Task PickupItemToInventory(NetworkStream ns, byte[] rcvBuffer)
         {
             var clientItemID_1 = rcvBuffer[21] >> 1;
             var clientItemID_2 = rcvBuffer[22];
