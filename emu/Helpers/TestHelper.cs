@@ -129,7 +129,7 @@ public class TestHelper
         var mobT = -2;
         var entity = new EntitySpawnData
         {
-            ID = 12345,
+            ID = 54321,
             Unknown = 1260,
             X = mobX,
             Y = mobY,

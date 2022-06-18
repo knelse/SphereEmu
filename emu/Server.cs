@@ -237,15 +237,17 @@ namespace emu
                             }
                             else
                             {
-                                Console.WriteLine(damage);
                                 var sourceStr = Convert.ToHexString(source);
                                 newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
                                 var currentMobHpStr = Convert.ToString(newPlayerDungeonMobHp, 16).PadLeft(2, '0');
                                 var hp = new string(new[] { currentMobHpStr[1], '0', '0', currentMobHpStr[0] });
                                 var src = new string (new [] { sourceStr[3], sourceStr[0], sourceStr[5], sourceStr[2] });
                                 var dmgDealt = Convert.ToString(0x60 - damage * 2, 16).PadLeft(2, '0');
+                                var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
+                                var destStr = Convert.ToHexString(new[] { BitHelper.GetFirstByte(destId),
+                                    BitHelper.GetSecondByte(destId)});
                                 await ns.WriteAsync(Convert.FromHexString(
-                                    $"1B002c0100000439304843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
+                                    $"1B002c01000004{destStr}4843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
                             }
 
                             break;
@@ -597,6 +599,18 @@ namespace emu
             sendEntPing = false;
 
             await ns.WriteAsync(moveResult);
+        }
+
+        private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
+        {
+            var dest = rcvBuffer[28..];
+            var dest_1 = dest[0] >> 4;
+            var dest_2 = dest[1] & 0b1111;
+            var dest_3 = dest[2];
+            var dest_4 = (dest[1] & 0b11110000) >> 4;
+            var result = dest_1 + (dest_2 << 4) + (dest_3 << 12) + (dest_4 << 8);
+
+            return result / 2;
         }
     }
 }
