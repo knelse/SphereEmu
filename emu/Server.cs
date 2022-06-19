@@ -221,7 +221,7 @@ namespace emu
                             break;
                         //damage
                         case 0x20:
-                            var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
+                            var damage = 48;// (byte)(10 + RNGHelper.GetUniform() * 8);
                             var damageStr = Convert.ToString(damage, 16).PadLeft(2, '0');
                             //X0 YZ 1T => X2 YZ 7T
                             var source = rcvBuffer[25..28];
@@ -246,8 +246,44 @@ namespace emu
                                 var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
                                 var destStr = Convert.ToHexString(new[] { BitHelper.GetFirstByte(destId),
                                     BitHelper.GetSecondByte(destId)});
-                                await ns.WriteAsync(Convert.FromHexString(
-                                    $"1B002c01000004{destStr}4843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
+
+                                if (newPlayerDungeonMobHp > 0)
+                                {
+                                    await ns.WriteAsync(Convert.FromHexString(
+                                        $"1B002c01000004{destStr}4843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
+                                }
+                                else
+                                {
+                                    var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
+                                    var totalMoney = 10 + moneyReward;
+                                    var totalMoney_1 = (byte)((totalMoney & 0b111) << 5);
+                                    var totalMoney_2 = (byte)((totalMoney & 0b11111) >> 3);
+                                    var moneyReward_1 = (byte)((moneyReward & 0b1111) << 4);
+                                    var moneyReward_2 = (byte)((moneyReward & 0b11110000) >> 4);
+                                    var clientId = rcvBuffer[11..13];
+                                    var serverDestId_1 = (byte)(((destId & 0b111) << 5) + 0b11111);
+                                    var serverDestId_2 = (byte)((destId & 0b11111111000) >> 3);
+                                    var serverDestId_3 = (byte)(((destId & 0b1111100000000000) >> 11));
+                                    var karma = 1;
+                                    var karma_1 = (byte)(((karma & 0b111) << 4) + 0b10000001);
+                                    var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
+                                                              ((currentPlayerIndex & 0b1111111100000000) >> 8);
+                                    var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
+                                    var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
+                                    var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
+                                    
+                                    var deathPacket = new byte[]
+                                    {
+                                        0x2f, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04,
+                                        BitHelper.GetFirstByte(destId), BitHelper.GetSecondByte(destId), 0x48, 0x43,
+                                        0xA1, 0x09, src_3, src_2, src_1, 0x00, 0x7e, clientId[0], clientId[1], 0x08,
+                                        0x40, 0x03, 0x87, totalMoney_1, totalMoney_2, 0x00, 0x00, 0xA0, 0x11, 0x80,
+                                        moneyReward_1, moneyReward_2, 0x00, 0x00, 0x60, 0x89, 0x2c, 0xf3, 0xbf, 0x40,
+                                        karma_1, serverDestId_1, serverDestId_2, serverDestId_3, 0x00, 0x00
+                                    };
+
+                                    await ns.WriteAsync(deathPacket);
+                                }
                             }
 
                             break;
@@ -603,14 +639,9 @@ namespace emu
 
         private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
         {
-            var dest = rcvBuffer[28..];
-            var dest_1 = dest[0] >> 4;
-            var dest_2 = dest[1] & 0b1111;
-            var dest_3 = dest[2];
-            var dest_4 = (dest[1] & 0b11110000) >> 4;
-            var result = dest_1 + (dest_2 << 4) + (dest_3 << 12) + (dest_4 << 8);
+            var destBytes = rcvBuffer[28..];
 
-            return result / 2;
+            return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
         }
     }
 }
