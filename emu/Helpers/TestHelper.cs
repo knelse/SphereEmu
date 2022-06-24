@@ -142,4 +142,22 @@ public class TestHelper
         
         return Packet.ToByteArray(entity.ToByteArray(), 1);
     }
+
+    public static byte[] GetTestMobData()
+    {
+        var entity = new EntitySpawnData
+        {
+            ID = 0xb19e,
+            Unknown = 1260,
+            X = 2310,
+            Y = 159.5,
+            Z = -2500,
+            Turn = 0,
+            HP = 1009,
+            TypeID = 1069,
+            Level = 0
+        };
+        
+        return Packet.ToByteArray(entity.ToByteArray(), 1);
+    }
 }
