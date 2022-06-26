@@ -181,7 +181,7 @@ namespace emu
                 await ns.WriteAsync(selectedCharacter!.ToGameDataByteArray());
                 Interlocked.Increment(ref playerCount);
 
-                MoveToNewPlayerDungeon(ns, selectedCharacter);
+                // MoveToNewPlayerDungeon(ns, selectedCharacter);
 
                 while (await ns.ReadAsync(rcvBuffer) != 0x13)
                 {
@@ -203,12 +203,12 @@ namespace emu
                 // for mob move
                 await ns.WriteAsync(TestHelper.GetTestMobData());
 
-                Task.Run(async () =>
-                {
-                    Console.ReadLine();
-                    await ns.WriteAsync(Convert.FromHexString("33002C010000049B4A87DD0535510E6910EC3ADFA558E6CFB30E691038DFF4B1DDDF8F5C116910A894D7676DC4EFE90D016000"));
-                    Console.WriteLine("Mob move?");
-                });
+                // Task.Run(async () =>
+                // {
+                //     Console.ReadLine();
+                //     await ns.WriteAsync(Convert.FromHexString("33002C010000049B4A87DD0535510E6910EC3ADFA558E6CFB30E691038DFF4B1DDDF8F5C116910A894D7676DC4EFE90D016000"));
+                //     Console.WriteLine("Mob move?");
+                // });
 
                 var newPlayerDungeonMobHp = 0;
 
@@ -239,7 +239,7 @@ namespace emu
                             break;
                         //damage
                         case 0x20:
-                        // case 0x19:
+                        case 0x19:
                             var damage = 48;// (byte)(10 + RNGHelper.GetUniform() * 8);
                             var damageStr = Convert.ToString(damage, 16).PadLeft(2, '0');
                             //X0 YZ 1T => X2 YZ 7T
@@ -262,7 +262,7 @@ namespace emu
                                 var hp = new string(new[] { currentMobHpStr[1], '0', '0', currentMobHpStr[0] });
                                 var src = new string (new [] { sourceStr[3], sourceStr[0], sourceStr[5], sourceStr[2] });
                                 var dmgDealt = Convert.ToString(0x60 - damage * 2, 16).PadLeft(2, '0');
-                                var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
+                                var destId = (ushort) 0xb19f;// (ushort) GetDestinationIdFromFistDamagePacket(rcvBuffer);
                                 var destStr = Convert.ToHexString(new[] { BitHelper.GetFirstByte(destId),
                                     BitHelper.GetSecondByte(destId)});
 
@@ -280,9 +280,6 @@ namespace emu
                                     var moneyReward_1 = (byte)((moneyReward & 0b1111) << 4);
                                     var moneyReward_2 = (byte)((moneyReward & 0b11110000) >> 4);
                                     var clientId = rcvBuffer[11..13];
-                                    // var serverDestId_1 = (byte)(((destId & 0b111) << 5) + 0b11111);
-                                    // var serverDestId_2 = (byte)((destId & 0b11111111000) >> 3);
-                                    // var serverDestId_3 = (byte)(((destId & 0b1111100000000000) >> 11));
                                     var karma = 1;
                                     var karma_1 = (byte)(((karma & 0b111) << 4) + 0b10000001);
                                     var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
@@ -290,9 +287,12 @@ namespace emu
                                     var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
                                     var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
                                     var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-                                    var serverDestId_1 = (byte)(((destId & 0b111) << 5) + 0b11111);
-                                    var serverDestId_2 = (byte)((destId & 0b11111111000) >> 3);
-                                    var serverDestId_3 = (byte)(((destId & 0b1111100000000000) >> 11));
+                                    // var serverDestId_1 = (byte)(((destId & 0b111) << 5) + 0b01111);
+                                    // var serverDestId_2 = (byte)((destId & 0b11111111000) >> 3);
+                                    // var serverDestId_3 = (byte)(((destId & 0b1111100000000000) >> 11));
+                                    var src_4 = (byte)(((playerIndexByteSwap & 0b111) << 5) + 0b01111);
+                                    var src_5 = (byte)((playerIndexByteSwap & 0b11111111000) >> 3);
+                                    var src_6 = (byte)(((playerIndexByteSwap & 0b1111100000000000) >> 11));
                                     
                                     // var deathPacket = new byte[]
                                     // {
@@ -304,17 +304,16 @@ namespace emu
                                     //     moneyReward_1, moneyReward_2, 0x00, 0x00, 0x60, 0x89, 0x2c, 0xf3, 0xbf, 0x40,
                                     //     karma_1, serverDestId_1, serverDestId_2, serverDestId_3, 0x01, 0x00
                                     // };
-                                    Console.WriteLine(destId);
 
                                     var deathPacket = new byte[]
                                     {
-                                        0x3d, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, 0x31, 
-                                        0xd4, 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1, 0x00, 0x7e, 
-                                        BitHelper.GetFirstByte(currentPlayerIndex), BitHelper.GetSecondByte(currentPlayerIndex), 
-                                        0x08, 0x40, 0x41, 0x0A, 0x34, 0x32, 0x93, 0x00, 0x00, 0x7E, 0x14, 
-                                        0xCE, 0x14, 0x47, 0x81, 0x05, 0x32, 0x93, 0x7E, 0x31, 
-                                        0xd4, 0x00, 0xC0, serverDestId_1, serverDestId_2, serverDestId_3, 0x01, 0x58, 0x08, 
-                                        0x34, 0x7D, 0x16, 0x28, 0x2D, 0xA6, 0x45, 0x6A, 0xC7, 0x5E, 0x14, 0x00
+                                        0x3d, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetFirstByte(destId), 
+                                        BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1, 0x00, 0x7e, 
+                                        BitHelper.GetFirstByte((ushort) playerIndexByteSwap), BitHelper.GetSecondByte((ushort) playerIndexByteSwap), 
+                                        0x08, 0x40, 0x41, 0x0A, 0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 
+                                        0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A, 0x93, 0x7E, BitHelper.GetFirstByte(destId), 
+                                        BitHelper.GetSecondByte(destId), 0x00, 0xC0, src_4, src_5, src_6, 0x01, 0x58, 0x08, 
+                                        0xcc, 0x56, 0x16, 0x28, 0x25, 0xA6, 0x45, 0x6A, 0xC5, 0x5E, 0x14, 0x00
                                     };
 
                                     await ns.WriteAsync(deathPacket);

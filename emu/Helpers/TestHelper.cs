@@ -147,7 +147,7 @@ public class TestHelper
     {
         var entity = new EntitySpawnData
         {
-            ID = 0xb19e,
+            ID = 0xb19f,
             Unknown = 1260,
             X = 2310,
             Y = 159.5,
