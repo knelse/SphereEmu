@@ -245,38 +245,41 @@ namespace emu
                             await ns.WriteAsync(CommonPackets.Echo(currentPlayerIndex));
                             break;
                         //damage
-                        case 0x20:
                         // case 0x19:
+                        case 0x20:
                             var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
-                            var damageStr = Convert.ToString(damage, 16).PadLeft(2, '0');
-                            //X0 YZ 1T => X2 YZ 7T
-                            var source = rcvBuffer[25..28];
-                            var dest = rcvBuffer[28..31];
-                            var selfDamage = source[0] == dest[0] && source[1] == dest[1] && source[2] == dest[2];
+                            var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
+                            var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
+                                                      ((currentPlayerIndex & 0b1111111100000000) >> 8);
+                            var selfDamage = destId == playerIndexByteSwap;
 
                             if (selfDamage)
                             {
-                                source[0] += 2;
-                                source[2] += 0x60;
-                                await ns.WriteAsync(Convert.FromHexString(
-                                    $"10002c01000004{playerIndexStr}0840{Convert.ToHexString(source)}{damageStr}00"));
+                                var selfDamagePacket = new byte[] {0x10, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04,  
+                                    BitHelper.GetSecondByte(currentPlayerIndex), BitHelper.GetFirstByte(currentPlayerIndex), 
+                                    0x08, 0x40, (byte) (rcvBuffer[25] + 2), rcvBuffer[26], (byte) (rcvBuffer[27] + 0x60), damage, 0x00};
+
+                                await ns.WriteAsync(selfDamagePacket);
                             }
                             else
                             {
-                                var sourceStr = Convert.ToHexString(source);
                                 newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
-                                var currentMobHpStr = Convert.ToString(newPlayerDungeonMobHp, 16).PadLeft(2, '0');
-                                var hp = new string(new[] { currentMobHpStr[1], '0', '0', currentMobHpStr[0] });
-                                var src = new string (new [] { sourceStr[3], sourceStr[0], sourceStr[5], sourceStr[2] });
-                                var dmgDealt = Convert.ToString(0x60 - damage * 2, 16).PadLeft(2, '0');
-                                var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
-                                var destStr = Convert.ToHexString(new[] { BitHelper.GetFirstByte(destId),
-                                    BitHelper.GetSecondByte(destId)});
 
                                 if (newPlayerDungeonMobHp > 0)
                                 {
-                                    await ns.WriteAsync(Convert.FromHexString(
-                                        $"1B002c01000004{destStr}4843A10B{src}00{dmgDealt}EA0A6D{hp}0004500700"));
+                                    var src_1 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
+                                    var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
+                                    var src_3 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
+                                    var dmg_1 = (byte)(0x60 - damage * 2);
+                                    var hp_1 = (byte)((newPlayerDungeonMobHp & 0b1111) << 4);
+                                    var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
+                                    var damagePacket = new byte[]
+                                    {
+                                        0x1B, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetFirstByte(destId), 
+                                        BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x0B, src_1, src_2, src_3, 
+                                        dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00, 0x04, 0x50, 0x07, 0x00
+                                    };
+                                    await ns.WriteAsync(damagePacket);
                                 }
                                 else
                                 {
@@ -286,8 +289,6 @@ namespace emu
                                     var totalMoney_2 = (byte)((totalMoney & 0b11100000) >> 5);
                                     var karma = 1;
                                     var karma_1 = (byte)(((karma & 0b1111111) << 1) + 1);
-                                    var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
-                                                              ((currentPlayerIndex & 0b1111111100000000) >> 8);
                                     var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
                                     var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
                                     var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
