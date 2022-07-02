@@ -685,4 +685,18 @@
 //                 // default sword in slot 1 and torweal tavern room key
 //                 // await ns.WriteAsync(Convert.FromHexString($"9D002C01000004CA03F040E111FEFFFFFF2D0A62800BCF50FDEA504422CC31C4247F51FC5362A3577C002474490000000000000000008A2C32001460{Convert.ToHexString(clientSyncSequence)}A0900500FFFFFFFF854FB89C0020760310A000F8C1B5A11FBE8CD0A162B053C622494251221A451619890A30{itemCheck1}50C80280FFFFFFFF1F511BAEE10320A14B02000000000000000050649101A00003{playerIndexStr}00850908286401C0FFFFFF3F"));
 //                 
-                
+
+
+
+
+
+
+// var deathPacket = new byte[]
+// {
+//     0x28, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, 0xff, 
+//     0xff, 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1, 
+//     0x00, 0x7e, BitHelper.GetFirstByte((ushort)playerIndexByteSwap), 
+//     BitHelper.GetSecondByte((ushort)playerIndexByteSwap), 0x08,
+//     0x40, 0x03, 0x87, totalMoney_1, totalMoney_2, 0x00, 0x00, 0xA0, 0x11, 0x80,
+//     moneyReward_1, moneyReward_2, 0x00, 0x00, 0x60, 0x89, 0x2c, 0xf3, 0x0f
+// };

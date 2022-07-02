@@ -181,7 +181,7 @@ namespace emu
                 await ns.WriteAsync(selectedCharacter!.ToGameDataByteArray());
                 Interlocked.Increment(ref playerCount);
 
-                // MoveToNewPlayerDungeon(ns, selectedCharacter);
+                MoveToNewPlayerDungeon(ns, selectedCharacter);
 
                 while (await ns.ReadAsync(rcvBuffer) != 0x13)
                 {
@@ -200,8 +200,15 @@ namespace emu
 
                 CreateSixSecondPingThread(currentPlayerIndex, ns);
 
-                // for mob move
-                await ns.WriteAsync(TestHelper.GetTestMobData());
+                // for mob kill / move
+                Task.Run (async () =>
+                {
+                    while (ns.CanWrite)
+                    {
+                        await ns.WriteAsync(TestHelper.GetTestMobData());
+                        Thread.Sleep(1000);
+                    }
+                });
 
                 // Task.Run(async () =>
                 // {
@@ -210,7 +217,7 @@ namespace emu
                 //     Console.WriteLine("Mob move?");
                 // });
 
-                var newPlayerDungeonMobHp = 0;
+                var newPlayerDungeonMobHp = 64;
 
                 Thread.Sleep(50);
 
@@ -239,8 +246,8 @@ namespace emu
                             break;
                         //damage
                         case 0x20:
-                        case 0x19:
-                            var damage = 48;// (byte)(10 + RNGHelper.GetUniform() * 8);
+                        // case 0x19:
+                            var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
                             var damageStr = Convert.ToString(damage, 16).PadLeft(2, '0');
                             //X0 YZ 1T => X2 YZ 7T
                             var source = rcvBuffer[25..28];
@@ -262,7 +269,7 @@ namespace emu
                                 var hp = new string(new[] { currentMobHpStr[1], '0', '0', currentMobHpStr[0] });
                                 var src = new string (new [] { sourceStr[3], sourceStr[0], sourceStr[5], sourceStr[2] });
                                 var dmgDealt = Convert.ToString(0x60 - damage * 2, 16).PadLeft(2, '0');
-                                var destId = (ushort) 0xb19f;// (ushort) GetDestinationIdFromFistDamagePacket(rcvBuffer);
+                                var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
                                 var destStr = Convert.ToHexString(new[] { BitHelper.GetFirstByte(destId),
                                     BitHelper.GetSecondByte(destId)});
 
@@ -275,48 +282,37 @@ namespace emu
                                 {
                                     var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
                                     var totalMoney = 10 + moneyReward;
-                                    var totalMoney_1 = (byte)((totalMoney & 0b111) << 5);
-                                    var totalMoney_2 = (byte)((totalMoney & 0b11111) >> 3);
-                                    var moneyReward_1 = (byte)((moneyReward & 0b1111) << 4);
-                                    var moneyReward_2 = (byte)((moneyReward & 0b11110000) >> 4);
-                                    var clientId = rcvBuffer[11..13];
+                                    var totalMoney_1 = (byte)(((totalMoney & 0b11111) << 3) + 0b100);
+                                    var totalMoney_2 = (byte)((totalMoney & 0b11100000) >> 5);
                                     var karma = 1;
-                                    var karma_1 = (byte)(((karma & 0b111) << 4) + 0b10000001);
+                                    var karma_1 = (byte)(((karma & 0b1111111) << 1) + 1);
                                     var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
                                                               ((currentPlayerIndex & 0b1111111100000000) >> 8);
                                     var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
                                     var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
                                     var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-                                    // var serverDestId_1 = (byte)(((destId & 0b111) << 5) + 0b01111);
-                                    // var serverDestId_2 = (byte)((destId & 0b11111111000) >> 3);
-                                    // var serverDestId_3 = (byte)(((destId & 0b1111100000000000) >> 11));
                                     var src_4 = (byte)(((playerIndexByteSwap & 0b111) << 5) + 0b01111);
                                     var src_5 = (byte)((playerIndexByteSwap & 0b11111111000) >> 3);
                                     var src_6 = (byte)(((playerIndexByteSwap & 0b1111100000000000) >> 11));
-                                    
-                                    // var deathPacket = new byte[]
-                                    // {
-                                    //     0x2f, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04,
-                                    //     0x31, 0xD4, 0x48, 0x43,
-                                    //     0xA1, 0x09, src_3, src_2, src_1, 0x00, 0x7e, BitHelper.GetSecondByte(currentPlayerIndex), 
-                                    //     BitHelper.GetFirstByte(currentPlayerIndex), 0x08,
-                                    //     0x40, 0x41, 0x0A, totalMoney_1, totalMoney_2, 0x00, 0x00, 0xA0, 0x11, 0x80,
-                                    //     moneyReward_1, moneyReward_2, 0x00, 0x00, 0x60, 0x89, 0x2c, 0xf3, 0xbf, 0x40,
-                                    //     karma_1, serverDestId_1, serverDestId_2, serverDestId_3, 0x01, 0x00
-                                    // };
 
+                                    var moneyReward_1 = (byte)(((moneyReward & 0b11) << 6) + 1); 
+                                    var moneyReward_2 = (byte)((moneyReward & 0b1111111100) >> 2); 
+
+                                    // this packet can technically contain any stat, xp, level, hp/mp, etc
+                                    // for the new player dungeon we only care about giving karma and some money after a kill
+                                    // chat message should be bright green, idk how to get it to work though
                                     var deathPacket = new byte[]
                                     {
-                                        0x3d, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetFirstByte(destId), 
-                                        BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1, 0x00, 0x7e, 
-                                        BitHelper.GetFirstByte((ushort) playerIndexByteSwap), BitHelper.GetSecondByte((ushort) playerIndexByteSwap), 
-                                        0x08, 0x40, 0x41, 0x0A, 0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 
-                                        0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A, 0x93, 0x7E, BitHelper.GetFirstByte(destId), 
-                                        BitHelper.GetSecondByte(destId), 0x00, 0xC0, src_4, src_5, src_6, 0x01, 0x58, 0x08, 
-                                        0xcc, 0x56, 0x16, 0x28, 0x25, 0xA6, 0x45, 0x6A, 0xC5, 0x5E, 0x14, 0x00
+                                        0x04, BitHelper.GetFirstByte(destId),
+                                        BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1,
+                                        0x00, 0x7e, BitHelper.GetFirstByte((ushort)playerIndexByteSwap),
+                                        BitHelper.GetSecondByte((ushort)playerIndexByteSwap), 0x08, 0x40, 0x41, 0x0A,
+                                        0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A, 
+                                        0x93, 0x7E, BitHelper.GetFirstByte(destId), BitHelper.GetSecondByte(destId), 
+                                        0x00, 0xC0, src_4, src_5, src_6, 0x01, 0x58, 0xE4, totalMoney_1, totalMoney_2, 
+                                        0x16, 0x28, karma_1, 0x80, 0x46, 0x40, moneyReward_1, moneyReward_2
                                     };
-
-                                    await ns.WriteAsync(deathPacket);
+                                    await ns.WriteAsync(Packet.ToByteArray(deathPacket));
                                 }
                             }
 
@@ -426,7 +422,7 @@ namespace emu
             {
                 // while (ns.CanRead)
                 // {
-                    Thread.Sleep(3500);
+                    Thread.Sleep(2500);
                     // var str = Console.ReadLine();
                     //
                     // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
