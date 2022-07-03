@@ -318,6 +318,21 @@ namespace emu
                             }
 
                             break;
+                        // buy from npc
+                        case 0x35:
+                            var vendorIdBytes = rcvBuffer[44..47];
+                            var vendorId = ((vendorIdBytes[2] & 0b1111) << 12) + (vendorIdBytes[1] << 4) +
+                                           ((vendorIdBytes[0] & 0b11110000) >> 4);
+                            Console.WriteLine(vendorId);
+
+                            var vendorList =
+                                $"27002C01000004{playerIndexStr}0840A362202D10E09716483214260040010CE0DF08000000004000000000";
+                            await ns.WriteAsync(Convert.FromHexString(vendorList));
+
+                            Thread.Sleep(300);
+                            var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
+                            await ns.WriteAsync(Convert.FromHexString(vendorListLoaded));
+                            break;
                         default:
                             continue;
                     }
@@ -423,7 +438,7 @@ namespace emu
             {
                 // while (ns.CanRead)
                 // {
-                    Thread.Sleep(2500);
+                    Thread.Sleep(3500);
                     // var str = Console.ReadLine();
                     //
                     // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
