@@ -503,10 +503,10 @@ public class CharacterData
         };
     }
 
-    public byte[] GetTeleportAndUpdateCharacterByteArray(WorldCoords coords)
+    public byte[] GetTeleportAndUpdateCharacterByteArray(WorldCoords coords, string playerIndexStr)
     {
 
-        var tp = new List<byte>(Convert.FromHexString("AB002c010000044f6f0840E301"));
+        var tp = new List<byte>(Convert.FromHexString($"AB002c01000004{playerIndexStr}0840E301"));
         var x = CoordsHelper.EncodeServerCoordinate(coords.x);
         var y = CoordsHelper.EncodeServerCoordinate(coords.y);
         var z = CoordsHelper.EncodeServerCoordinate(coords.z);

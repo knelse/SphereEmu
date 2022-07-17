@@ -181,18 +181,18 @@ namespace emu
                 await ns.WriteAsync(selectedCharacter!.ToGameDataByteArray());
                 Interlocked.Increment(ref playerCount);
 
-                MoveToNewPlayerDungeon(ns, selectedCharacter);
-
                 while (await ns.ReadAsync(rcvBuffer) != 0x13)
                 {
                 }
 
                 // only in dungeon?
-                while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x12)
-                {
-                }
+                // while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x12)
+                // {
+                // }
 
                 WorldDataTest.SendNewCharacterWorldData(ns, playerIndexStr);
+
+                MoveToNewPlayerDungeon(ns, selectedCharacter);
 
                 // while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x69)
                 // {
@@ -210,12 +210,15 @@ namespace emu
                     }
                 });
 
-                // Task.Run(async () =>
-                // {
-                //     Console.ReadLine();
-                //     await ns.WriteAsync(Convert.FromHexString("33002C010000049B4A87DD0535510E6910EC3ADFA558E6CFB30E691038DFF4B1DDDF8F5C116910A894D7676DC4EFE90D016000"));
-                //     Console.WriteLine("Mob move?");
-                // });
+                Task.Run(async () =>
+                {
+                    while (true)
+                    {
+                        Console.ReadLine();
+                        await ns.WriteAsync(BitHelper.BinaryStringToByteArray(File.ReadAllText("C:\\source\\mobMovePacket.txt").RemoveLineEndings()));
+                        Console.WriteLine("Mob move?");
+                    }
+                });
 
                 var newPlayerDungeonMobHp = 64;
 
@@ -320,18 +323,48 @@ namespace emu
                             break;
                         // buy from npc
                         case 0x35:
-                            var vendorIdBytes = rcvBuffer[44..47];
-                            var vendorId = ((vendorIdBytes[2] & 0b1111) << 12) + (vendorIdBytes[1] << 4) +
-                                           ((vendorIdBytes[0] & 0b11110000) >> 4);
-                            Console.WriteLine(vendorId);
+                        case 0x30:
+                            // var vendorIdBytes = rcvBuffer[44..47];
+                            // var vendorId = ((vendorIdBytes[2] & 0b1111) << 12) + (vendorIdBytes[1] << 4) +
+                            //                ((vendorIdBytes[0] & 0b11110000) >> 4);
+                            // Console.WriteLine(vendorId);
+                            var vendorId = 0x8169;
 
-                            var vendorList =
-                                $"27002C01000004{playerIndexStr}0840A362202D10E09716483214260040010CE0DF08000000004000000000";
-                            await ns.WriteAsync(Convert.FromHexString(vendorList));
+                            // await ns.WriteAsync(TestHelper.GetEntityData(
+                            //     new WorldCoords(669.1638793945312, 4501.63134765625, 931.0355224609375, -1), 4816,
+                            //     7654, 4816));
 
-                            Thread.Sleep(300);
-                            var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
-                            await ns.WriteAsync(Convert.FromHexString(vendorListLoaded));
+                            var i = 0;
+                            
+                            // while (ns.CanWrite)
+                            // {
+                            //     var vendorList =
+                            //         $"27002C010000044f6f0840A362202D10E097164832142600400108E0DF08000000004000000000";
+                            //     await ns.WriteAsync(Convert.FromHexString(vendorList));
+                            //
+                            //     if (i < 80)
+                            //     {
+                            //         var ent = i % 4 == 0 ? 5688 : i % 4 == 1 ? 5616 : i % 4 == 2 ? 5712 : 5696;
+                            //         var entTypeId = 0b1000000000000000 + (ent >> 1);
+                            //         var deg = ((double)i * 24) * Math.PI / 180;
+                            //         var x0 = 1;
+                            //         var y0 = 1;
+                            //         var x = x0 * Math.Cos(deg) - y0 * Math.Sin(deg);
+                            //         var y = x0 * Math.Sin(deg) + y0 * Math.Cos(deg);
+                            //         await ns.WriteAsync(TestHelper.GetEntityData(
+                            //             new WorldCoords(671.1638793945312 + x, 4501.63134765625, 932.0355224609375 + y,
+                            //                 -1), 971, 7654 + i, entTypeId));
+                            //
+                            //         i++;
+                            //     }
+                            //
+                            //     Thread.Sleep(1350);
+                            // }
+
+                            // var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
+                            // await ns.WriteAsync(Convert.FromHexString(vendorListLoaded));
+                            var vendorListLoaded = BitHelper.BinaryStringToByteArray(File.ReadAllText("C:\\source\\vendorList.txt").RemoveLineEndings());
+                            await ns.WriteAsync(vendorListLoaded);
                             break;
                         default:
                             continue;
@@ -438,7 +471,7 @@ namespace emu
             {
                 // while (ns.CanRead)
                 // {
-                    Thread.Sleep(3500);
+                    Thread.Sleep(3000);
                     // var str = Console.ReadLine();
                     //
                     // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
@@ -446,20 +479,22 @@ namespace emu
                     //     continue;
                     // }
                     // move to dungeon
-                    var newDungeonCoords = new WorldCoords(701, 4501.62158203125, 900, 1.55);
+                    // var newDungeonCoords = new WorldCoords(701, 4501.62158203125, 900, 1.55);
+                    var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900, 1.55);
                     await ns.WriteAsync(
-                        selectedCharacter.GetTeleportAndUpdateCharacterByteArray(newDungeonCoords));
+                        // selectedCharacter.GetTeleportAndUpdateCharacterByteArray(new WorldCoords(669.5963745117188, 4501.63134765625, 931.5966796875, -1)));
+                        selectedCharacter.GetTeleportAndUpdateCharacterByteArray(new WorldCoords(-1098.69506835937500, 4501.61474609375000, 1900.05493164062500, 1.57079637050629), Convert.ToString(selectedCharacter.PlayerIndex, 16).PadLeft(4, '0')));
                     Thread.Sleep(100);
 
                     // get into instance
                     // commented: no inkpot, no npc29 id 33129, no tokenst id 33130, no ct_lab 33120 33150 33114, no telep1 33116, no tutomsg 33146 33147 33148 33151 33154 33156 33124
                     var enterNewGame_6 =
-                    "BF002C010050E1EA0B1080AF801F5620E2E00320A14B02000000000000000050649101A00003BC8300850900F8750502063E008017220050C6220080302200441619000A2F809DF5030CE4337CBCF8264436A88C45E0F76944C1882C3200145E4020A0F00CBCF8264436A88C45E0F76944856FD0ED2CFE558F4806568F480606F87D05420D3EC2DE16229756C622824830A2E550140014430E0CB20385170000F88905A21F3ECEBD1322B053C6229284302280441619890A5900F0FFFFFF0F" +
-                    "C1002C010050E1698124838F8EF984A89495B18827228D680C140500C5D0AF6600C04F2D903FF00166BC10A9A23216112AAF110124B2C80050C80280FFFFFFFFC2132C1C0004FCB60201161F00095D12000000000000000080228B0C000518E01D04286401C0FFFFFFFF0F2C90CFF00100BC1001803216010084110120B2C8005078810081C233646DCF15EB822612257CD01517BE01000000000000000000000000A0F00C19D976C5DBB489440D7E72C5856F0000000000000000000000000000" +
-                    "C8002C010050E160817C46E11908C0E68AF5411389FE18E28A0BDF00000000000000000000000000F0F30BE4337C00002F4400A08C450000614400882C3200145E4040A0F00C737F75C514A18944208271C5856F00000000000000000000000000F86905F2193E008017220050C6220080302200441619000A2F30205078069906BAE283DA44A22BC1B9E2C23700000000000000000000000000FCB802F9011F8DC60B11DE2A6311F63D1B1100228B0C003FBD4090C0C779F24294BFC958C4B70F460480C8220300" +
-                    "C9002C010050E17A812041E10502007E7B8120818FC80B85C8F292B1081C208C080091450680C20B0800FCF80241021F4FF10811AE2863113D8C181100228B0C0085171800F8FD0582043EC2591322154FC622DC51342200441619000A2F4000F0130C04097C30A02A4446968C45A485684400882C3200145EA000E047180812F890355E889841198BE89ED888001059640028BCC001C08F2C1024F0112DBC10B16132168104A5110120B2C8005078010380DF5920AEE10320A14B0200000000000000005064910100" +
-                    "1B002C010050E16781B84601067807010A131050C80280FFFFFF7F" +
-                    "2D002C01007B058B2CE1202AFC2B106A1060FAF435FEF24F2C10FD10546DFED71FC04F2D903F10587FFED90900";
+                    "BF002C0100067A2C0C10802F811F010BE2E00320A14B02000000000000000050649101A000039AFE00850900F8F9AF00063E00C044620050C62200C0762200441619000A2F809DF50B60E1337CA2838DC436A88C45F0FBF144C1882C3200145E4020A0F00CA2838DC436A88C45F0FBF144856FD0ED2CFE558F4806568F480606F8212C400D3E9F1045629756C62241A476A2E550140014433A29DE0785170000F8252CA01F3E19A14662B053C62249C2762280441619890A5900F0FFFFFF0F" +
+                    "C1002C0100067A150B2483CF38A391B89495B1C813319E680C140500C550EA8000C0CF62813FF001CD2512ABA232160995CB130124B2C80050C80280FFFFFFFFC2132C1C0004FC0C5800161F00095D12000000000000000080228B0C000518D0F407286401C0FFFFFFFFEF7F85CFF001002612038032160100B6130120B2C8005078810081C233646DCF15EB822612257CD01517BE01000000000000000000000000A0F00C19D976C5DBB489440D7E72C5856F0000000000000000000000000000" +
+                    "C8002C0100067AFF2B7C46E11908C0E68AF5411389FE18E28A0BDF00000000000000000000000000F00360E1337C008089C400A08C450080ED4400882C3200145E4040A0F00C737F75C514A18944208271C5856F00000000000000000000000000F8E53EF0193E00C044620050C62200C0762200441619000A2F30205078069906BAE283DA44A22BC1B9E2C23700000000000000000000000000FC741FF8019FB95C2231DE2A6311FBDE3C1100228B0C003F061690C027C396489CBFC958E4DBD74E0480C8220300" +
+                    "C9002C0100067A0C2C2041E10502007E022C2081CF1B9A91D8F292B1080EB09D080091450680C20B0800FC065840029F58C72331AE2863911E863B1100228B0C0085171800F8093F80043E1FD34662154FC622EEA8782200441619000A2F4000F02B5300097CE8AF8BC446968C45D242F14400882C3200145EA000E0A7BF0212F838E512899941198B744FE689001059640028BCC001C06F7F0524F079E92512B36132164182C6130120B2C80050780103809FDE02AEE10320A14B0200000000000000005064910100" +
+                    "1B002C0100067A7A0BB846010634FD010A131050C80280FFFFFF7F" +
+                    "2D002C01006DF78A2CDBE1400F61016A1098F9F435FEF22F6101FD10006DFED71FC0CF62813F10547EFED90900";
                     // var enterGameResponse_5 =
                     //     $"2b002c0100ac04{playerIndexStr}08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
                     // await ns.WriteAsync(Convert.FromHexString(enterGameResponse_5));
