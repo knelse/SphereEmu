@@ -177,6 +177,8 @@ namespace emu
                     selectedCharacter!.T = startCoords.turn;
                 }
 
+                clientData.CurrentCharacter = selectedCharacter!;
+
                 Console.WriteLine("CLI: Enter game");
                 await ns.WriteAsync(selectedCharacter!.ToGameDataByteArray());
                 Interlocked.Increment(ref playerCount);
@@ -210,15 +212,15 @@ namespace emu
                     }
                 });
 
-                Task.Run(async () =>
-                {
-                    while (true)
-                    {
-                        Console.ReadLine();
-                        await ns.WriteAsync(BitHelper.BinaryStringToByteArray(File.ReadAllText("C:\\source\\mobMovePacket.txt").RemoveLineEndings()));
-                        Console.WriteLine("Mob move?");
-                    }
-                });
+                // Task.Run(async () =>
+                // {
+                //     while (true)
+                //     {
+                //         Console.ReadLine();
+                //         await ns.WriteAsync(BitHelper.BinaryStringToByteArray(File.ReadAllText("C:\\source\\mobMovePacket.txt").RemoveLineEndings()));
+                //         Console.WriteLine("Mob move?");
+                //     }
+                // });
 
                 var newPlayerDungeonMobHp = 64;
 
@@ -238,10 +240,11 @@ namespace emu
                         // ping
                         case 0x26:
                             await clientData.SendPingResponse(rcvBuffer, ns);
+                            await MoveEntityAsync(ns, clientData.CurrentCharacter.X, clientData.CurrentCharacter.Y,clientData.CurrentCharacter.Z, 0, 0xB08);
                             break;
                         // move item
                         case 0x1A:
-                            await PickupItemToInventory(ns, rcvBuffer);
+                            await PickupItemToInventoryAsync(ns, rcvBuffer);
                             break;
                         //echo
                         case 0x08:
@@ -389,6 +392,7 @@ namespace emu
                 ? "C:\\_sphereDumps\\currentWorldCoords" 
                 : "C:\\source\\clientCoordsSaved";
             private string? pingPreviousClientPingString;
+            public CharacterData CurrentCharacter;
         
             public async Task SendPingResponse(byte[] rcvBuffer, NetworkStream ns)
             {
@@ -417,14 +421,25 @@ namespace emu
                     if (pingHasChanges != 0)
                     {
                         var coords = CoordsHelper.GetCoordsFromPingBytes(rcvBuffer);
+                        CurrentCharacter.X = coords.x;
+                        CurrentCharacter.Y = coords.y;
+                        CurrentCharacter.Z = coords.z;
+                        CurrentCharacter.T = coords.turn;
                         Console.WriteLine(coords.ToDebugString());
 
                         if (!LiveServerCoords)
                         {
-                            var coordsFile = File.Open(PingCoordsFilePath, FileMode.Create);
-                            coordsFile.Write(Encoding.ASCII.GetBytes(
-                                coords.x + "\n" + coords.y + "\n" + coords.z + "\n" + coords.turn));
-                            coordsFile.Close();
+                            try
+                            {
+                                var coordsFile = File.Open(PingCoordsFilePath, FileMode.Create);
+                                coordsFile.Write(Encoding.ASCII.GetBytes(
+                                    coords.x + "\n" + coords.y + "\n" + coords.z + "\n" + coords.turn));
+                                coordsFile.Close();
+                            }
+                            catch
+                            {
+                                
+                            }
                         }
 
                         pingPreviousClientPingString = clientPingBinaryStr;
@@ -680,7 +695,7 @@ namespace emu
             client.Close();
         }
 
-        private static async Task PickupItemToInventory(NetworkStream ns, byte[] rcvBuffer)
+        private static async Task PickupItemToInventoryAsync(NetworkStream ns, byte[] rcvBuffer)
         {
             var clientItemID_1 = rcvBuffer[21] >> 1;
             var clientItemID_2 = rcvBuffer[22];
@@ -716,6 +731,46 @@ namespace emu
             sendEntPing = false;
 
             await ns.WriteAsync(moveResult);
+        }
+
+        private static async Task MoveEntityAsync(NetworkStream ns, WorldCoords coords, ushort entityId)
+        {
+            await MoveEntityAsync(ns, coords.x, coords.y, coords.z, coords.turn, entityId);
+        }
+        private static async Task MoveEntityAsync(NetworkStream ns, double x0, double y0, double z0, double t0, ushort entityId)
+        {
+            // TODO: figure out how decimal part is sent, for now we'll use only the integer part
+            // var xDec = (int) Math.Truncate((x0 - Math.Truncate(x0)) * 255) + 3584;
+            // var yDec = (int)Math.Truncate((y0 - Math.Truncate(y0)) * 255) + 1792;
+            // var zDec = (int) Math.Truncate((z0 - Math.Truncate(z0)) * 255) + 3840;
+            var x = 32768 + (int)x0;
+            var y = 1200 + (int)y0;
+            var z = 32768 + (int)z0;
+            var x_1 = (byte) (((x & 0b1111111) << 1) + 1);
+            var x_2 = (byte) ((x & 0b111111110000000) >> 7);
+            var y_1 = (byte) (((y & 0b1111111) << 1) + ((x & 0b1000000000000000) >> 15));
+            var z_1 = (byte) (((z & 0b11) << 6) + ((y & 0b1111110000000) >> 7));
+            var z_2 = (byte) ((z & 0b1111111100) >> 2);
+            var z_3 = (byte) ((z & 0b1111110000000000) >> 10);
+            var id_1 = (byte) (((entityId & 0b111) << 5) + 0b10001);
+            var id_2 = (byte) ((entityId & 0b11111111000) >> 3);
+            var id_3 = (byte) ((entityId & 0b1111100000000000) >> 11);
+            // var xdec_1 = (byte) ((xDec & 0b111111) << 2);
+            // var ydec_1 = (byte) (((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
+            // var ydec_2 = (byte) ((yDec & 0b1111111100) >> 2);
+            // var zdec_1 = (byte) (((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
+            // full turn is roughly 6.28126716613769, 1 degree is 0.0174479643503825
+            var turn = ((int)(t0 * 20.29845)) % 128 + (t0 > 0 ? 0 : 128);
+            // var turn_1 = (byte) (((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
+            var turn_1 = (byte) (((turn & 0b11) << 6) + 0b111110);
+            var turn_2 = (byte)((turn & 0b11111100) >> 2);
+            var movePacket = new byte[]
+            {
+                0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2d, id_1,
+                id_2, id_3, 0x6A, 0x10, 0x84, 0x3b, 0xf5, 0xc9, turn_1, turn_2
+            }; //, xdec_1, ydec_1, ydec_2, zdec_1, turn_1, turn_2};
+
+            await ns.WriteAsync(movePacket);
         }
 
         private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)

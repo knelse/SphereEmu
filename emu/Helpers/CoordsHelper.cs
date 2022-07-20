@@ -21,7 +21,7 @@ public class WorldCoords
 
     public string ToDebugString()
     {
-        return "X: " + (double) x + " Y: " + (double) y +  " Z: " + (double) z + " Turn: " + (int) turn;
+        return "X: " + x + " Y: " + y +  " Z: " + z + " Turn: " + turn;
     }
 }
 public static class CoordsHelper

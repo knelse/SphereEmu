@@ -2,3 +2,4 @@
 .idea
 emu/obj
 emu/bin
+GodotServer/.mono/temp
