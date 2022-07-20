@@ -212,15 +212,17 @@ namespace emu
                     }
                 });
 
-                // Task.Run(async () =>
-                // {
-                //     while (true)
-                //     {
-                //         Console.ReadLine();
-                //         await ns.WriteAsync(BitHelper.BinaryStringToByteArray(File.ReadAllText("C:\\source\\mobMovePacket.txt").RemoveLineEndings()));
-                //         Console.WriteLine("Mob move?");
-                //     }
-                // });
+                Task.Run(async () =>
+                {
+                    // very dumb follow player, no turn, no collision, no navmesh obviously
+                    Thread.Sleep(5000);
+                    while (true)
+                    {
+                        await MoveEntityAsync(ns, clientData.CurrentCharacter.X, clientData.CurrentCharacter.Y, 
+                            clientData.CurrentCharacter.Z, 0, 0xB08);
+                        Thread.Sleep(333);
+                    }
+                });
 
                 var newPlayerDungeonMobHp = 64;
 
@@ -240,7 +242,6 @@ namespace emu
                         // ping
                         case 0x26:
                             await clientData.SendPingResponse(rcvBuffer, ns);
-                            await MoveEntityAsync(ns, clientData.CurrentCharacter.X, clientData.CurrentCharacter.Y,clientData.CurrentCharacter.Z, 0, 0xB08);
                             break;
                         // move item
                         case 0x1A:
@@ -737,12 +738,15 @@ namespace emu
         {
             await MoveEntityAsync(ns, coords.x, coords.y, coords.z, coords.turn, entityId);
         }
-        private static async Task MoveEntityAsync(NetworkStream ns, double x0, double y0, double z0, double t0, ushort entityId)
+        private static async Task MoveEntityAsync(NetworkStream ns, double x0, double y0, double z0, double t0, 
+            ushort entityId)
         {
-            // TODO: figure out how decimal part is sent, for now we'll use only the integer part
-            // var xDec = (int) Math.Truncate((x0 - Math.Truncate(x0)) * 255) + 3584;
-            // var yDec = (int)Math.Truncate((y0 - Math.Truncate(y0)) * 255) + 1792;
-            // var zDec = (int) Math.Truncate((z0 - Math.Truncate(z0)) * 255) + 3840;
+            // best guess for X and Z: decimal value in packet = 4095 - coord_value, where coord_value is in 0..63 range
+            // for Y max value becomes 2047 with the same formula
+            // technically, it's not even decimal, as it's possible to move by ~50 units if 0 is sent instead of 4095 
+            var xDec = 4095 - (1 - (int) Math.Truncate((x0 - Math.Truncate(x0))) * 64);
+            var yDec = 2047 - (int) Math.Truncate((y0 - Math.Truncate(y0)) * 64);
+            var zDec = 4095 - (1 - (int) Math.Truncate((z0 - Math.Truncate(z0))) * 64);
             var x = 32768 + (int)x0;
             var y = 1200 + (int)y0;
             var z = 32768 + (int)z0;
@@ -755,20 +759,19 @@ namespace emu
             var id_1 = (byte) (((entityId & 0b111) << 5) + 0b10001);
             var id_2 = (byte) ((entityId & 0b11111111000) >> 3);
             var id_3 = (byte) ((entityId & 0b1111100000000000) >> 11);
-            // var xdec_1 = (byte) ((xDec & 0b111111) << 2);
-            // var ydec_1 = (byte) (((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
-            // var ydec_2 = (byte) ((yDec & 0b1111111100) >> 2);
-            // var zdec_1 = (byte) (((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
+            var xdec_1 = (byte) ((xDec & 0b111111) << 2);
+            var ydec_1 = (byte) (((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
+            var ydec_2 = (byte) ((yDec & 0b1111111100) >> 2);
+            var zdec_1 = (byte) (((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
             // full turn is roughly 6.28126716613769, 1 degree is 0.0174479643503825
             var turn = ((int)(t0 * 20.29845)) % 128 + (t0 > 0 ? 0 : 128);
-            // var turn_1 = (byte) (((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
-            var turn_1 = (byte) (((turn & 0b11) << 6) + 0b111110);
+            var turn_1 = (byte) (((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
             var turn_2 = (byte)((turn & 0b11111100) >> 2);
             var movePacket = new byte[]
             {
                 0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2d, id_1,
-                id_2, id_3, 0x6A, 0x10, 0x84, 0x3b, 0xf5, 0xc9, turn_1, turn_2
-            }; //, xdec_1, ydec_1, ydec_2, zdec_1, turn_1, turn_2};
+                id_2, id_3, 0x6A, 0x10, xdec_1, ydec_1, ydec_2, zdec_1, turn_1, turn_2
+            };
 
             await ns.WriteAsync(movePacket);
         }
