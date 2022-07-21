@@ -136,7 +136,7 @@ public class TestHelper
             Z = mobZ,
             Turn = mobT,
             HP = 1009,
-            TypeID = 1069,
+            TypeID = 1241,
             Level = 0
         };
         
