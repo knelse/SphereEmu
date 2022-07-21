@@ -144,6 +144,11 @@ public static class BitHelper
 
         return tempList.ToArray();
     }
+
+    public static ushort ByteSwap(ushort u)
+    { 
+        return (ushort)(((u & 0b11111111) << 8) + ((u & 0b1111111100000000) >> 8));
+    }
     // public static StringBuilder AppendBinaryString(this StringBuilder sb, byte input)
     // {
     //     return sb.Append(Convert.ToString(input, 2).PadLeft(8, '0'));

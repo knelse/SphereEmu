@@ -215,12 +215,19 @@ namespace emu
                 Task.Run(async () =>
                 {
                     // very dumb follow player, no turn, no collision, no navmesh obviously
-                    Thread.Sleep(5000);
+                    // Thread.Sleep(5000);
+                    // while (true)
+                    // {
+                    //     await MoveEntityAsync(ns, clientData.CurrentCharacter.X, clientData.CurrentCharacter.Y, 
+                    //         clientData.CurrentCharacter.Z, 0, 54321);
+                    //     Thread.Sleep(333);
+                    // }
                     while (true)
                     {
-                        await MoveEntityAsync(ns, clientData.CurrentCharacter.X, clientData.CurrentCharacter.Y, 
-                            clientData.CurrentCharacter.Z, 0, 0xB08);
-                        Thread.Sleep(333);
+                        var dmg = Console.ReadLine();
+                        dmg = string.IsNullOrEmpty(dmg) ? "1" : dmg;
+                        Console.WriteLine($"Damage {dmg}");
+                        await ChangeHealthAsync(ns, 54321, currentPlayerIndex, Convert.ToInt32(dmg));
                     }
                 });
 
@@ -247,17 +254,16 @@ namespace emu
                         case 0x1A:
                             await PickupItemToInventoryAsync(ns, rcvBuffer);
                             break;
-                        //echo
+                        // echo
                         case 0x08:
                             await ns.WriteAsync(CommonPackets.Echo(currentPlayerIndex));
                             break;
-                        //damage
+                        // damage
                         // case 0x19:
                         case 0x20:
                             var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
                             var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
-                            var playerIndexByteSwap = ((currentPlayerIndex & 0b11111111) << 8) +
-                                                      ((currentPlayerIndex & 0b1111111100000000) >> 8);
+                            var playerIndexByteSwap = BitHelper.ByteSwap(currentPlayerIndex);
                             var selfDamage = destId == playerIndexByteSwap;
 
                             if (selfDamage)
@@ -403,11 +409,11 @@ namespace emu
                 var clientPingBinaryStr =
                     BitHelper.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
 
-                if (clientPingBinaryStr[0] == '0')
-                {
-                    // random different packet, idk
-                    return;
-                }
+                // if (clientPingBinaryStr[0] == '0')
+                // {
+                //     // random different packet, idk
+                //     return;
+                // }
 
                 if (string.IsNullOrEmpty(pingPreviousClientPingString))
                 {
@@ -774,6 +780,26 @@ namespace emu
             };
 
             await ns.WriteAsync(movePacket);
+        }
+
+        private static async Task ChangeHealthAsync(NetworkStream ns, ushort entityId, ushort currentPlayerId, int healthDiff)
+        {
+            currentPlayerId = BitHelper.ByteSwap(currentPlayerId);
+            var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
+            var playerId_2 = (byte)((currentPlayerId & 0b111111110000) >> 4);
+            var mobId_1 = (byte)((entityId & 0b1111111) << 1);
+            var mobId_2 = (byte)((entityId & 0b111111110000000) >> 7);
+            var hpMod = healthDiff < 0 ? 0b1110 : 0b1100;
+            healthDiff = Math.Abs(healthDiff);
+            var dmg_1 = (byte)(((healthDiff & 0b1111) << 4) + hpMod + ((entityId & 0b1000000000000000) >> 15));
+            var dmg_2 = (byte)((healthDiff & 0b111111110000) >> 4);
+            var dmg_3 = (byte)((healthDiff & 0b11111111000000000000) >> 12);
+            var playerId_3 = (byte)(0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
+            var dmgPacket = new byte[] { 0x1F, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x00, BitHelper.GetFirstByte(entityId), 
+                BitHelper.GetSecondByte(entityId), 0x48, 0x43, 0x65, 0x00, 0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 
+                0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, mobId_2, dmg_1, dmg_2, dmg_3};
+            Console.WriteLine(Convert.ToHexString(dmgPacket));
+            await ns.WriteAsync(dmgPacket);
         }
 
         private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
