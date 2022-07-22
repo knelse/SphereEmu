@@ -1,6 +1,4 @@
-[gd_scene load_steps=49 format=2]
-
-[ext_resource path="res://PlayerDummy.cs" type="Script" id=1]
+[gd_scene load_steps=45 format=2]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 3.75, 0.1, 4.75 )
@@ -140,19 +138,6 @@ size = Vector3( 11.2, 4, 0.5 )
 
 [sub_resource type="CubeMesh" id=45]
 size = Vector3( 14.2, 4, 0.5 )
-
-[sub_resource type="CapsuleShape" id=46]
-radius = 0.5
-
-[sub_resource type="CapsuleMesh" id=47]
-radius = 0.5
-
-[sub_resource type="SpatialMaterial" id=48]
-emission_enabled = true
-emission = Color( 0.854902, 0.996078, 0, 1 )
-emission_energy = 3.35
-emission_operator = 0
-emission_on_uv2 = false
 
 [node name="NewPlayerDungeon" type="Node"]
 
@@ -836,17 +821,6 @@ shape = SubResource( 33 )
 [node name="MeshInstance" type="MeshInstance" parent="Corridor5/Wall4"]
 mesh = SubResource( 34 )
 material/0 = null
-
-[node name="PlayerDummy" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 35.4578, 6.91355, -0.531705 )
-script = ExtResource( 1 )
-
-[node name="PlayerCollision" type="CollisionShape" parent="PlayerDummy"]
-shape = SubResource( 46 )
-
-[node name="PlayerMesh" type="MeshInstance" parent="PlayerDummy"]
-mesh = SubResource( 47 )
-material/0 = SubResource( 48 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.302326, -0.586881, 0.751112, -0.0104493, 0.785898, 0.618267, -0.953147, -0.194767, 0.231465, 56.8486, 39.4789, 0 )
