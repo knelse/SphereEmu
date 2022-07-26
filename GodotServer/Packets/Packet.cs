@@ -1,13 +1,13 @@
-using SphServer.Helpers;
+using static SphServer.Helpers.BitHelper;
 
 namespace SphServer.Packets
 {
 
     public class Packet
     {
-        protected static ushort PacketValidationCodeOK = 0x2c01;
+        protected static ushort PacketValidationCodeOK = 0x2C01;
 
-        private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xf4, 0x01 };
+        private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xF4, 0x01 };
 
         public static byte[] ToByteArray(byte[]? content = null, int padZeros = 2)
         {
@@ -20,10 +20,10 @@ namespace SphServer.Packets
 
             var result = new byte [content.Length + 4 + padZeros];
 
-            result[0] = BitHelper.GetFirstByte(packetSize);
-            result[1] = BitHelper.GetSecondByte(packetSize);
-            result[2] = BitHelper.GetSecondByte(PacketValidationCodeOK);
-            result[3] = BitHelper.GetFirstByte(PacketValidationCodeOK);
+            result[0] = MinorByte(packetSize);
+            result[1] = MajorByte(packetSize);
+            result[2] = MajorByte(PacketValidationCodeOK);
+            result[3] = MinorByte(PacketValidationCodeOK);
 
             for (var i = 0; i < padZeros; i++)
             {
@@ -34,10 +34,5 @@ namespace SphServer.Packets
 
             return result;
         }
-
-        // public static byte[] ToByteArrayWithPlayerIndex(byte[] content, ushort playerIndex, int padZeros = 2)
-        // {
-        //     
-        // }
     }
 }

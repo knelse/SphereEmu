@@ -1,5 +1,4 @@
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using SphServer.DataModels;
 using SphServer.Packets;
 
@@ -8,7 +7,7 @@ namespace SphServer.Db
 
     public class DbCharacters
     {
-        public static ClientInitialData? GetPlayerCharactersFromDb(int playerId, ushort playerIndex)
+        public static ClientInitialData GetPlayerCharactersFromDb(int playerId, ushort playerIndex)
         {
             var sqlConnection = Startup.OpenAndGetSqlConnection();
             using var command =

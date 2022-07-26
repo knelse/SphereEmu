@@ -7,6 +7,7 @@ using SphServer.DataModels;
 using SphServer.Db;
 using SphServer.Helpers;
 using SphServer.Packets;
+using static SphServer.Helpers.BitHelper;
 using Thread = System.Threading.Thread;
 
 public enum ClientState
@@ -24,13 +25,13 @@ public enum ClientState
 
 public class Client : Node
 {
-    public ushort currentPlayerIndex = 0x4f6f;
+    public ushort currentPlayerIndex = 0x4F6F;
     public StreamPeerTCP streamPeer = null!;
-    private bool reconnect = false;
+    private const bool reconnect = false;
     public const int BUFSIZE = 1024;
     private string playerIndexStr = null!;
     private readonly byte[] rcvBuffer = new byte[BUFSIZE];
-    public static bool LiveServerCoords = false;
+    public const bool LiveServerCoords = false;
     private ushort pingCounter;
     private bool pingShouldXorTopBit;
     public static readonly string PingCoordsFilePath = LiveServerCoords
@@ -53,8 +54,8 @@ public class Client : Node
     {
         playerIndexStr = ConvertHelper.ToHexString(new[]
         {
-            BitHelper.GetSecondByte(currentPlayerIndex),
-            BitHelper.GetFirstByte(currentPlayerIndex)
+            MajorByte(currentPlayerIndex),
+            MinorByte(currentPlayerIndex)
         });
     }
 
@@ -236,17 +237,16 @@ public class Client : Node
             case 0x20:
                 var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
                 var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
-                var playerIndexByteSwap = BitHelper.ByteSwap(currentPlayerIndex);
+                var playerIndexByteSwap = ByteSwap(currentPlayerIndex);
                 var selfDamage = destId == playerIndexByteSwap;
 
                 if (selfDamage)
                 {
                     var selfDamagePacket = new byte[]
                     {
-                        0x10, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04,
-                        BitHelper.GetSecondByte(currentPlayerIndex), BitHelper.GetFirstByte(currentPlayerIndex),
-                        0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26], (byte)(rcvBuffer[27] + 0x60), damage,
-                        0x00
+                        0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(currentPlayerIndex), 
+                        MinorByte(currentPlayerIndex), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26], 
+                        (byte)(rcvBuffer[27] + 0x60), damage, 0x00
                     };
 
                     streamPeer.PutPartialData(selfDamagePacket);
@@ -265,9 +265,9 @@ public class Client : Node
                         var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
                         var damagePacket = new byte[]
                         {
-                            0x1B, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x04, BitHelper.GetFirstByte(destId),
-                            BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x0B, src_1, src_2, src_3,
-                            dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00, 0x04, 0x50, 0x07, 0x00
+                            0x1B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MinorByte(destId), MajorByte(destId), 0x48, 
+                            0x43, 0xA1, 0x0B, src_1, src_2, src_3, dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00, 
+                            0x04, 0x50, 0x07, 0x00
                         };
                         streamPeer.PutPartialData(damagePacket);
                     }
@@ -294,14 +294,12 @@ public class Client : Node
                         // chat message should be bright green, idk how to get it to work though
                         var deathPacket = new byte[]
                         {
-                            0x04, BitHelper.GetFirstByte(destId),
-                            BitHelper.GetSecondByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1,
-                            0x00, 0x7e, BitHelper.GetFirstByte(playerIndexByteSwap),
-                            BitHelper.GetSecondByte(playerIndexByteSwap), 0x08, 0x40, 0x41, 0x0A,
-                            0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A,
-                            0x93, 0x7E, BitHelper.GetFirstByte(destId), BitHelper.GetSecondByte(destId),
-                            0x00, 0xC0, src_4, src_5, src_6, 0x01, 0x58, 0xE4, totalMoney_1, totalMoney_2,
-                            0x16, 0x28, karma_1, 0x80, 0x46, 0x40, moneyReward_1, moneyReward_2
+                            0x04, MinorByte(destId), MajorByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1,
+                            0x00, 0x7E, MinorByte(playerIndexByteSwap), MajorByte(playerIndexByteSwap), 0x08, 0x40, 
+                            0x41, 0x0A, 0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A,
+                            0x93, 0x7E, MinorByte(destId), MajorByte(destId), 0x00, 0xC0, src_4, src_5, src_6, 0x01, 
+                            0x58, 0xE4, totalMoney_1, totalMoney_2, 0x16, 0x28, karma_1, 0x80, 0x46, 0x40, 
+                            moneyReward_1, moneyReward_2
                         };
                         streamPeer.PutPartialData(Packet.ToByteArray(deathPacket));
                     }
@@ -351,7 +349,7 @@ public class Client : Node
                 // var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
                 // streamPeer.PutPartialData(ConvertHelper.FromHexString(vendorListLoaded));
                 var vendorListLoaded =
-                    BitHelper.BinaryStringToByteArray(System.IO.File.ReadAllText("C:\\source\\vendorList.txt")
+                    BinaryStringToByteArray(System.IO.File.ReadAllText("C:\\source\\vendorList.txt")
                         .RemoveLineEndings());
                 streamPeer.PutPartialData(vendorListLoaded);
 
@@ -373,7 +371,7 @@ public class Client : Node
 
     private int CharacterScreenCreateDeleteSelect()
     {
-        if (rcvBuffer[0] == 0x2a)
+        if (rcvBuffer[0] == 0x2A)
         {
             var charIndex = rcvBuffer[17] / 4 - 1;
 
@@ -524,7 +522,7 @@ public class Client : Node
         // await ns.WriteAsync(ConvertHelper.FromHexString(
         //     "BC002C0100EE45B0A67C46E11B000000000000000000000000007E6FA67C860F00A8A6180094B10800B09D080091450680C20B0808149E213AB8AE181B3491084130AEB8F00D000000000000000000000000003F71547EC0379753538CB7CA58C4BE374F0480C82203C0AF251524F065D8D414E76F3216F9F6B5130120B2C80050788100805F4E2A48E07B43B729B6BC642C82036C270240649101A0F0020200BF725490C017EB80538C2BCA58A487E14E0480C8220340E105060000"));
         Console.WriteLine(
-            $"SRV: Teleported client [{BitHelper.GetFirstByte(selectedCharacter.PlayerIndex) * 256 + BitHelper.GetSecondByte(selectedCharacter.PlayerIndex)}] to default new player dungeon");
+            $"SRV: Teleported client [{MinorByte(selectedCharacter.PlayerIndex) * 256 + MajorByte(selectedCharacter.PlayerIndex)}] to default new player dungeon");
 
         streamPeer.PutPartialData(TestHelper.GetNewPlayerDungeonMobData(newDungeonCoords));
 
@@ -545,7 +543,7 @@ public class Client : Node
 
         var clientPingBytesForPong = rcvBuffer.Range(9, 21);
         var clientPingBinaryStr =
-            BitHelper.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
+            ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
 
         // if (clientPingBinaryStr[0] == '0')
         // {
@@ -592,8 +590,8 @@ public class Client : Node
 
         var pong = new byte[]
         {
-            0x00, 0x00, 0x00, 0x00, 0x00, topByteToXor, BitHelper.GetFirstByte(pingCounter),
-            BitHelper.GetSecondByte(pingCounter), 0x00, 0x00, 0x00, 0x00, 0x00
+            0x00, 0x00, 0x00, 0x00, 0x00, topByteToXor, MinorByte(pingCounter),
+            MajorByte(pingCounter), 0x00, 0x00, 0x00, 0x00, 0x00
         };
 
         Array.Copy(clientPingBytesForPong, pong, 5);
@@ -634,10 +632,10 @@ public class Client : Node
 
         var moveResult = new byte[]
         {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, BitHelper.GetFirstByte((ushort)clientItemID),
-            BitHelper.GetSecondByte((ushort)clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95,
-            0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, BitHelper.GetFirstByte(clientSyncOther),
-            BitHelper.GetSecondByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80,
+            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort)clientItemID),
+            MajorByte((ushort)clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95,
+            0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte(clientSyncOther),
+            MajorByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80,
             0x82, 0x20, (byte)(clientSlot_raw * 2), (byte)serverItemID_1, (byte)serverItemID_2,
             (byte)serverItemID_3,
             0x20, 0x4E, 0x00,
@@ -682,7 +680,7 @@ public class Client : Node
         var turn_2 = (byte)((turn & 0b11111100) >> 2);
         var movePacket = new byte[]
         {
-            0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2d, id_1,
+            0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1,
             id_2, id_3, 0x6A, 0x10, xdec_1, ydec_1, ydec_2, zdec_1, turn_1, turn_2
         };
 
@@ -691,7 +689,7 @@ public class Client : Node
 
     private void ChangeHealth(ushort entityId, int healthDiff)
     {
-        var currentPlayerId = BitHelper.ByteSwap(currentPlayerIndex);
+        var currentPlayerId = ByteSwap(currentPlayerIndex);
         var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
         var playerId_2 = (byte)((currentPlayerId & 0b111111110000) >> 4);
         var mobId_1 = (byte)((entityId & 0b1111111) << 1);
@@ -704,8 +702,8 @@ public class Client : Node
         var playerId_3 = (byte)(0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
         var dmgPacket = new byte[]
         {
-            0x1F, 0x00, 0x2c, 0x01, 0x00, 0x00, 0x00, BitHelper.GetFirstByte(entityId),
-            BitHelper.GetSecondByte(entityId), 0x48, 0x43, 0x65, 0x00, 0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00,
+            0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId),
+            MajorByte(entityId), 0x48, 0x43, 0x65, 0x00, 0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00,
             0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, mobId_2, dmg_1, dmg_2, dmg_3
         };
         streamPeer.PutPartialData(dmgPacket);
@@ -732,7 +730,7 @@ public class Client : Node
 
     private void UpdateCoordsWithoutAxisFlip(double x, double y, double z, double turn)
     {
-        var clientModelTransform = clientModel.Transform;
+        var clientModelTransform = clientModel!.Transform;
         clientModelTransform.origin =
             new Vector3((float) x, (float) y, (float) z);
         clientModel.Transform = clientModelTransform;

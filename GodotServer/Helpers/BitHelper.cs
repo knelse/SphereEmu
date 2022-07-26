@@ -107,12 +107,12 @@ namespace SphServer.Helpers
         }
 
 
-        public static byte GetFirstByte(ushort input)
+        public static byte MinorByte(ushort input)
         {
             return (byte)(input & 0xFF);
         }
 
-        public static byte GetSecondByte(ushort input)
+        public static byte MajorByte(ushort input)
         {
             return (byte)(input >> 8);
         }

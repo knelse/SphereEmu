@@ -10,7 +10,7 @@ namespace SphServer
 {
     public class MainServer : Node
     {
-        private static int playerIndex = 0x4f6f;
+        private static int playerIndex = 0x4F6F;
         private static int playerCount;
         public static bool LiveServerCoords = false;
         public static Encoding? Win1251;
