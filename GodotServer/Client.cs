@@ -191,16 +191,19 @@ public class Client : Node
         if (timeSinceLastFifteenSecondPing >= 15)
         {
             streamPeer.PutPartialData(CommonPackets.FifteenSecondPing(currentPlayerIndex));
+            timeSinceLastFifteenSecondPing = 0;
         }
 
         if (timeSinceLastSixSecondPing >= 6)
         {
             streamPeer.PutPartialData(CommonPackets.SixSecondPing(currentPlayerIndex));
+            timeSinceLastSixSecondPing = 0;
         }
 
         if (timeSinceLastTransmissionEndPing >= 3)
         {
             streamPeer.PutPartialData(CommonPackets.TransmissionEndPacket);
+            timeSinceLastTransmissionEndPing = 0;
         }
 
         var length = streamPeer.GetBytes(rcvBuffer);
@@ -210,7 +213,7 @@ public class Client : Node
             return;
         }
 
-        if (Math.Abs(oldY - Double.MaxValue) < Double.Epsilon)
+        if (Math.Abs(oldY - double.MaxValue) < double.Epsilon)
         {
             oldY = CurrentCharacter.Y;
         }
