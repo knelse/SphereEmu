@@ -131,7 +131,7 @@ namespace SphServer.Helpers
             var mobX = dungeonEntranceCoords.x - 50;
             var mobY = dungeonEntranceCoords.y;
             var mobZ = dungeonEntranceCoords.z + 19.5;
-            var mobT = -2;
+            var mobT = 90;
             var entity = new EntitySpawnData
             {
                 ID = 54321,

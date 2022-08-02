@@ -89,7 +89,6 @@ namespace SphServer.DataModels
             // sb.Append("10");
             // sb.Append(hp_str[..6]);
             sb.Append("10000000");
-            ;
             sb.Append("11111000");
             sb.Append("00000001");
             var entid_str = TypeID.ToBinaryString();

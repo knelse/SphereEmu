@@ -117,11 +117,11 @@ public class Client : Node
 
                 streamPeer.PutPartialData(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
                 Console.WriteLine("SRV: Character select screen data - initial");
-                Thread.Sleep(50);
+                Thread.Sleep(100);
 
                 streamPeer.PutPartialData(charListData.ToByteArray(currentPlayerIndex));
                 Console.WriteLine("SRV: Character select screen data - player characters");
-                Thread.Sleep(50);
+                Thread.Sleep(100);
                 currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
 
                 break;
@@ -276,6 +276,9 @@ public class Client : Node
                     }
                     else
                     {
+                        var mob = GetNode<Mob>("/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/Mob");
+                        mob.SetInactive();
+                        
                         var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
                         var totalMoney = 10 + moneyReward;
                         var totalMoney_1 = (byte)(((totalMoney & 0b11111) << 3) + 0b100);
@@ -489,7 +492,7 @@ public class Client : Node
         // }
         // move to dungeon
         // var newDungeonCoords = new WorldCoords(701, 4501.62158203125, 900, 1.55);
-        var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900, 1.55);
+        var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900, 0);
         var playerCoords = new WorldCoords(-1098.69506835937500, 4501.61474609375000, 1900.05493164062500,
             1.57079637050629);
         streamPeer.PutPartialData(
@@ -498,7 +501,7 @@ public class Client : Node
                 Convert.ToString(selectedCharacter.PlayerIndex, 16).PadLeft(4, '0')));
 
         currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
-        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+        await ToSignal(GetTree().CreateTimer(0.3f), "timeout");
 
         // get into instance
         // commented: no inkpot, no npc29 id 33129, no tokenst id 33130, no ct_lab 33120 33150 33114, no telep1 33116, no tutomsg 33146 33147 33148 33151 33154 33156 33124
@@ -635,14 +638,11 @@ public class Client : Node
 
         var moveResult = new byte[]
         {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort)clientItemID),
-            MajorByte((ushort)clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95,
-            0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte(clientSyncOther),
-            MajorByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80,
-            0x82, 0x20, (byte)(clientSlot_raw * 2), (byte)serverItemID_1, (byte)serverItemID_2,
-            (byte)serverItemID_3,
-            0x20, 0x4E, 0x00,
-            0x00, 0x00
+            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort)clientItemID), MajorByte((ushort)clientItemID), 
+            0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, 
+            MinorByte(clientSyncOther), MajorByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80,
+            0x82, 0x20, (byte)(clientSlot_raw * 2), (byte)serverItemID_1, (byte)serverItemID_2, (byte)serverItemID_3,
+            0x20, 0x4E, 0x00, 0x00, 0x00
         };
 
         streamPeer.PutPartialData(moveResult);
@@ -653,7 +653,7 @@ public class Client : Node
         MoveEntity(coords.x, coords.y, coords.z, coords.turn, entityId);
     }
 
-    private void MoveEntity(double x0, double y0, double z0, double t0, ushort entityId)
+    public void MoveEntity(double x0, double y0, double z0, double t0, ushort entityId)
     {
         // best guess for X and Z: decimal value in packet = 4095 - coord_value, where coord_value is in 0..63 range
         // for Y max value becomes 2047 with the same formula
@@ -677,20 +677,24 @@ public class Client : Node
         var ydec_1 = (byte)(((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
         var ydec_2 = (byte)((yDec & 0b1111111100) >> 2);
         var zdec_1 = (byte)(((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
-        // full turn is roughly 6.28126716613769, 1 degree is 0.0174479643503825
-        var turn = ((int)(t0 * 20.29845)) % 128 + (t0 > 0 ? 0 : 128);
+        while (Math.Abs(t0) > 2 * Mathf.Pi)
+        {
+            t0 -= Math.Sign(t0) * 2 * Mathf.Pi;
+        }
+        var turn = (int) (t0 * 256 / 2 / Mathf.Pi);
+        
         var turn_1 = (byte)(((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
         var turn_2 = (byte)((turn & 0b11111100) >> 2);
         var movePacket = new byte[]
         {
-            0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1,
-            id_2, id_3, 0x6A, 0x10, xdec_1, ydec_1, ydec_2, zdec_1, turn_1, turn_2
+            0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1, id_2, id_3, 0x6A, 0x10, xdec_1, 
+            ydec_1, ydec_2, zdec_1, turn_1, turn_2
         };
 
         streamPeer.PutPartialData(movePacket);
     }
 
-    private void ChangeHealth(ushort entityId, int healthDiff)
+    public void ChangeHealth(ushort entityId, int healthDiff)
     {
         var currentPlayerId = ByteSwap(currentPlayerIndex);
         var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
@@ -705,9 +709,9 @@ public class Client : Node
         var playerId_3 = (byte)(0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
         var dmgPacket = new byte[]
         {
-            0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId),
-            MajorByte(entityId), 0x48, 0x43, 0x65, 0x00, 0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00,
-            0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, mobId_2, dmg_1, dmg_2, dmg_3
+            0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x48, 0x43, 0x65, 0x00, 
+            0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, 
+            mobId_2, dmg_1, dmg_2, dmg_3
         };
         streamPeer.PutPartialData(dmgPacket);
     }
