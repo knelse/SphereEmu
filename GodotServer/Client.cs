@@ -235,9 +235,8 @@ public class Client : Node
                 else if (rcvBuffer[13] == 0x5c && rcvBuffer[14] == 0x46 && rcvBuffer[15] == 0xe1)
                 {
                     var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
-                    Console.WriteLine(containerId);
                     // open loot container
-                    streamPeer.PutPartialData(ConvertHelper.FromHexString("27002C01000004FE475C466102000A1300501004803424004B000080822004A821015802000000"));
+                    ShowDropitemList((ushort) containerId, containerId % 4 + 1);
                 }
 
                 break;
@@ -754,6 +753,58 @@ public class Client : Node
         };
         
         streamPeer.PutPartialData(lootBagPacket);
+    }
+
+    public void ShowDropitemList(ushort lootBagId, int count)
+    {
+        byte[] itemList;
+        // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
+        // we'll figure out weight for 3-4 slot containers later
+        var weight = 1234;
+        var weight2 = 5678;
+        var weight_1 = (byte) (weight % 2 == 1 ? 0b10000000 : 0);
+        var weight_2 = (byte) ((weight & 0b111111110) >> 1);
+        var weight_3 = (byte) ((weight & 0b11111111000000000) >> 9);
+        var weight_4 = (byte) ((weight & 0b1111111100000000000000000) >> 17);
+
+        var weight_5 = (byte) ((weight2 & 0b111111) << 2);
+        var weight_6 = (byte) ((weight2 & 0b11111111000000) >> 6);
+        var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
+        var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
+
+        switch (count)
+        {
+            case 1:
+                itemList = new byte[] { 0x1C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
+                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04,
+                    0x00, 0x00, 0x39, weight_1, weight_2, weight_3, weight_4, 0x00
+                };
+                break;
+            case 2:
+                itemList = new byte[] { 0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
+                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, 
+                    0x00, 0x00, 0x1F, weight_1, weight_2, weight_3, weight_4, 0x80, 0x82, 0x20, 0x04, 0x5C, 0xF8, 0x00, weight_5, 
+                    weight_6, weight_7, weight_8, 0x00};
+                break;
+            case 3:
+                itemList = new byte[] { 0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
+                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 
+                    0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86, 0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 
+                    0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 0x00};
+                break;
+            case 4:
+                itemList = new byte[] { 0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
+                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 
+                    0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86, 0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 
+                    0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, 0xE0, 0x61, 0x19, 
+                    0x80, 0x19, 0x00, 0x00, 0x00};
+                break;
+            default:
+                Console.WriteLine($"Item list for count {count} not implemented");
+                return;
+        }
+
+        streamPeer.PutPartialData(itemList);
     }
 
     private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
