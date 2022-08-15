@@ -74,29 +74,35 @@ namespace SphServer.Helpers
             var mul = Math.Pow(2, ((int)Math.Log(a_abs, 2)));
             var numToEncode = (int)(0b100000000000000000000000 * (a_abs / mul + 1));
 
-            var a_2 = (byte)(((numToEncode & 0b111111111111111100000000) >> 16) + (steps % 2 == 1 ? 0b10000000 : 0));
+            var a_2 = (byte)(((numToEncode & 0b111111110000000000000000) >> 16) + (steps % 2 == 1 ? 0b10000000 : 0));
             var a_1 = (byte)((numToEncode & 0b1111111100000000) >> 8);
             var a_0 = (byte)(numToEncode & 0b11111111);
 
             return new[] { a_0, a_1, a_2, a_3 };
         }
 
-        public static int DecodeServerCoordinate(byte[] a)
+        public static double DecodeServerCoordinate(byte[] input, int shift = 0)
         {
-            var steps = (5 - a[2] & 0b111) * 2;
+            var a = BitHelper.GetArrayWithoutBitShift(input, shift);
+            var scale = a[3] & 0b1111111;
 
-            if ((a[1] & 0b10000000) > 0)
+            if (scale == 58)
             {
-                steps -= 1;
+                return 0;
             }
+            
+            var sign = (a[3] & 0b10000000) > 0 ? -1 : 1;
+            var stepsIsOdd = (a[2] & 0b10000000) > 0;
 
-            var a_last4 = (a[0] & 0b11110000) >> 4;
-            var a_next7 = (a[1] & 0b01111111) << 4;
-            var a_first1 = (a[2] & 0b01000000) << 5;
+            if (stepsIsOdd)
+            {
+                scale -= 1;
+            }
+            
+            var numToEncode = ((a[2] & 0b1111111) << 16) + (a[1] << 8) + a[0];
+            var baseCoord = Math.Pow(2, scale - 58);
 
-            var mul = (int)(Math.Pow(2, steps));
-
-            return (a_first1 + a_next7 + a_last4) / mul * ((a[2] & 0b10000000) > 0 ? -1 : 1);
+            return sign * (1 + ((double)numToEncode) / 0b100000000000000000000000) * baseCoord;
         }
 
         public static double DecodeClientCoordinate(byte[] a)

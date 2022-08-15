@@ -6,7 +6,7 @@ public class Mob : KinematicBody
     private bool followActive;
     private Spatial? clientModel;
     private Client? client;
-    private const float speed = 25f;// 5.5f;
+    private const float speed = 5.5f;
     private Vector3[] path;
     private int pathNode;
     private Navigation navMesh = null!;
@@ -101,6 +101,5 @@ public class Mob : KinematicBody
     {
         // TODO: remove stub
         QueueFree();
-        Console.WriteLine("Inactive");
     }
 }

@@ -79,7 +79,7 @@ namespace SphServer.Helpers
                 MinorByte(playerIndex), 0x08, 0x40, 0xA0, 0x00, 0x00
             };
 
-        public static byte[] Echo(ushort playerIndex) =>
+        public static byte[] ClientInvulnerableEffect(ushort playerIndex) =>
             new byte[]
             {
                 0x14, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(playerIndex),

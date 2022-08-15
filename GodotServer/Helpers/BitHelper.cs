@@ -177,6 +177,33 @@ namespace SphServer.Helpers
         {
             return (ushort)(((u & 0b11111111) << 8) + ((u & 0b1111111100000000) >> 8));
         }
+
+        public static byte[] GetArrayWithoutBitShift(byte[] input, int shift = 0)
+        {
+            
+            if (shift <= 0)
+            {
+                return input;
+            }
+
+            var result = new byte[input.Length - 1];
+            // example for 3 bits
+            // 11111111 -> 11111000 = 11111111 - 111 = (2^8 - 1) - (2^3 - 1) = 2^8 - 2^3 + 1
+            // for specific shift: (2^8 - 1) - 2^shift + 1 = 2^8 - 2^shift
+            // then >> by shift
+            var twoPowShift = (int) Math.Round(Math.Pow(2, shift));
+            var bitRemainder = twoPowShift - 1;
+            var bitShift = 256 - twoPowShift;
+
+            for (var i = 0; i < result.Length; i++)
+            {
+                var t1 = (input[i] & bitShift);
+                var t2 = (input[i + 1] & bitRemainder);
+                result[i] = (byte)(((input[i] & bitShift) >> shift) + ((input[i + 1] & bitRemainder) << (8 - shift)));
+            }
+
+            return result;
+        }
         // public static StringBuilder AppendBinaryString(this StringBuilder sb, byte input)
         // {
         //     return sb.Append(Convert.ToString(input, 2).PadLeft(8, '0'));

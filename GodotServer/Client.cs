@@ -225,14 +225,25 @@ public class Client : Node
                 SendPingResponse();
 
                 break;
-            // move item
+            // interact (move item, open loot container)
             case 0x1A:
-                PickupItemToInventory();
+                if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x0C)
+                {
+                    // item pickup
+                    PickupItemToInventory();
+                }
+                else if (rcvBuffer[13] == 0x5c && rcvBuffer[14] == 0x46 && rcvBuffer[15] == 0xe1)
+                {
+                    var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
+                    Console.WriteLine(containerId);
+                    // open loot container
+                    streamPeer.PutPartialData(ConvertHelper.FromHexString("27002C01000004FE475C466102000A1300501004803424004B000080822004A821015802000000"));
+                }
 
                 break;
             // echo
             case 0x08:
-                streamPeer.PutPartialData(CommonPackets.Echo(currentPlayerIndex));
+                // streamPeer.PutPartialData(CommonPackets.Echo(currentPlayerIndex));
 
                 break;
             // damage
@@ -714,6 +725,35 @@ public class Client : Node
             mobId_2, dmg_1, dmg_2, dmg_3
         };
         streamPeer.PutPartialData(dmgPacket);
+    }
+
+    public void DropLoot(ushort lootBagId, double x, double y, double z)
+    {
+        var xArr = CoordsHelper.EncodeServerCoordinate(x);
+        var yArr = CoordsHelper.EncodeServerCoordinate(y);
+        var zArr = CoordsHelper.EncodeServerCoordinate(z);
+        var x_1 = ((xArr[0] & 0b111) << 5) + 0b01111;
+        var x_2 = ((xArr[1] & 0b111) << 5) + ((xArr[0] & 0b11111000) >> 3);
+        var x_3 = ((xArr[2] & 0b111) << 5) + ((xArr[1] & 0b11111000) >> 3);
+        var x_4 = ((xArr[3] & 0b111) << 5) + ((xArr[2] & 0b11111000) >> 3);
+        var y_1 = ((yArr[0] & 0b111) << 5) + ((xArr[3] & 0b11111000) >> 3);
+        var y_2 = ((yArr[1] & 0b111) << 5) + ((yArr[0] & 0b11111000) >> 3);
+        var y_3 = ((yArr[2] & 0b111) << 5) + ((yArr[1] & 0b11111000) >> 3);
+        var y_4 = ((yArr[3] & 0b111) << 5) + ((yArr[2] & 0b11111000) >> 3);
+        var z_1 = ((zArr[0] & 0b111) << 5) + ((yArr[3] & 0b11111000) >> 3);
+        var z_2 = ((zArr[1] & 0b111) << 5) + ((zArr[0] & 0b11111000) >> 3);
+        var z_3 = ((zArr[2] & 0b111) << 5) + ((zArr[1] & 0b11111000) >> 3);
+        var z_4 = ((zArr[3] & 0b111) << 5) + ((zArr[2] & 0b11111000) >> 3);
+        var z_5 = 0b01100000 + ((zArr[3] & 0b11111000) >> 3);
+        
+        var lootBagPacket = new byte[]
+        {
+            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), MajorByte(lootBagId), 0x5C, 0x86, (byte) x_1, 
+            (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1, (byte) z_2, 
+            (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
+        };
+        
+        streamPeer.PutPartialData(lootBagPacket);
     }
 
     private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
