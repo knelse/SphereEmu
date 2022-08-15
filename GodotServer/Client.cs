@@ -227,7 +227,7 @@ public class Client : Node
                 break;
             // interact (move item, open loot container)
             case 0x1A:
-                if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x0C)
+                if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC1)
                 {
                     // item pickup
                     PickupItemToInventory();
@@ -318,6 +318,7 @@ public class Client : Node
                             moneyReward_1, moneyReward_2
                         };
                         streamPeer.PutPartialData(Packet.ToByteArray(deathPacket));
+                        DropLoot(1234, mob.GlobalTransform.origin.x, mob.GlobalTransform.origin.y, mob.GlobalTransform.origin.z);
                     }
                 }
 
