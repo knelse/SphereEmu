@@ -110,18 +110,19 @@ namespace SphServer.Helpers
         public static byte[] GetTestEntityData(int index)
         {
             var entityData = System.IO.File.ReadAllLines("C:\\source\\entityData");
-            var entity = new EntitySpawnData
+            var entity = new GameEntity
             {
-                ID = (ushort)(index * 150),
-                Unknown = (ushort)(Convert.ToUInt16(entityData[1])), // + index),
+                Unknown = Convert.ToUInt16(entityData[1]),
                 X = Convert.ToDouble(entityData[2]),
                 Y = Convert.ToDouble(entityData[3]),
                 Z = Convert.ToDouble(entityData[4]),
                 Turn = Convert.ToDouble(entityData[5]),
-                HP = Convert.ToUInt16(entityData[6]),
-                TypeID = (ushort)(Convert.ToUInt16(entityData[7])), // + index),
-                Level = (byte)(Convert.ToByte(entityData[8])),
+                CurrentHP = Convert.ToUInt16(entityData[6]),
+                TypeID = Convert.ToUInt16(entityData[7]),
+                TitleLevelMinusOne = Convert.ToByte(entityData[8])
             };
+            var id = MainServer.AddToGameObjects(entity);
+            entity.ID = id;
 
             return Packet.ToByteArray(entity.ToByteArray(), 1);
         }
@@ -132,36 +133,39 @@ namespace SphServer.Helpers
             var mobY = dungeonEntranceCoords.y;
             var mobZ = dungeonEntranceCoords.z + 19.5;
             var mobT = 90;
-            var entity = new EntitySpawnData
+            var entity = new GameEntity
             {
-                ID = 54321,
                 Unknown = 1260,
                 X = mobX,
                 Y = mobY,
                 Z = mobZ,
                 Turn = mobT,
-                HP = 1009,
+                CurrentHP = 1009,
                 TypeID = 1241,
-                Level = 0
+                TitleLevelMinusOne = 0
             };
+            var id = MainServer.AddToGameObjects(entity);
+            entity.ID = id;
 
             return Packet.ToByteArray(entity.ToByteArray(), 1);
         }
 
         public static byte[] GetTestMobData()
         {
-            var entity = new EntitySpawnData
+            var id = (ushort) 0xb19f;
+            var entity = new GameEntity
             {
-                ID = 0xb19f,
+                ID = id,
                 Unknown = 1260,
                 X = 2310,
                 Y = 159.5,
                 Z = -2500,
                 Turn = 0,
-                HP = 1009,
+                CurrentHP = 1009,
                 TypeID = 1069,
-                Level = 0
+                TitleLevelMinusOne = 0
             };
+            MainServer.TryAddToGameObjects(id, entity);
 
             return Packet.ToByteArray(entity.ToByteArray(), 1);
         }

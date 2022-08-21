@@ -1,6 +1,4 @@
-[gd_scene load_steps=56 format=2]
-
-[ext_resource path="res://Mob.cs" type="Script" id=1]
+[gd_scene load_steps=50 format=2]
 
 [sub_resource type="SpatialMaterial" id=48]
 emission_enabled = true
@@ -173,26 +171,6 @@ extents = Vector3( 5, 2, 0.25 )
 
 [sub_resource type="CubeMesh" id=54]
 size = Vector3( 10, 4, 0.5 )
-
-[sub_resource type="CapsuleMesh" id=62]
-radius = 0.3
-
-[sub_resource type="SpatialMaterial" id=63]
-albedo_color = Color( 0.964706, 0.337255, 0.337255, 1 )
-
-[sub_resource type="CapsuleShape" id=64]
-radius = 0.3
-
-[sub_resource type="SpatialMaterial" id=65]
-emission_enabled = true
-emission = Color( 0.419608, 1, 0.0627451, 1 )
-emission_energy = 1.0
-emission_operator = 0
-emission_on_uv2 = false
-
-[sub_resource type="CubeMesh" id=66]
-material = SubResource( 65 )
-size = Vector3( 0.1, 0.1, 1 )
 
 [node name="NewPlayerDungeonNode" type="Node"]
 
@@ -1104,22 +1082,3 @@ material/0 = null
 
 [node name="Camera" type="Camera" parent="Navigation/NavigationMeshInstance/NewPlayerDungeon"]
 transform = Transform( -4.37114e-08, 0.939693, -0.34202, 0, 0.34202, 0.939693, 1, 4.10753e-08, -1.49502e-08, -13.5264, 45.1382, 13.5304 )
-
-[node name="Mob" type="KinematicBody" parent="Navigation/NavigationMeshInstance"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1148.97, 4501.13, 1920.49 )
-script = ExtResource( 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Mob"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 62 )
-material/0 = SubResource( 63 )
-
-[node name="ModelCollision" type="CollisionShape" parent="Navigation/NavigationMeshInstance/Mob"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 64 )
-
-[node name="nose" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Mob"]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0909424, 0.501953, -0.623535 )
-layers = 2
-mesh = SubResource( 66 )
-material/0 = null

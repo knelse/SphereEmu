@@ -702,7 +702,7 @@
 // };
 
         
-        // private static async Task HandleClientAsync(TcpClient client, ushort currentPlayerIndex, bool reconnect = false)
+        // private static async Task HandleClientAsync(TcpClient client, ushort ID, bool reconnect = false)
         // {
         //     NetworkStream? ns = null;
         //     var fileCoords = Array.Empty<string>();
@@ -748,7 +748,7 @@
         //         {
         //             while (ns.CanWrite)
         //             {
-        //                 streamPeer.PutPartialData(TestHelper.GetTestMobData());
+        //                 StreamPeer.PutPartialData(TestHelper.GetTestMobData());
         //                 System.Threading.Thread.Sleep(1000);
         //             }
         //         });
@@ -768,5 +768,5 @@
         //                 var dmg = Console.ReadLine();
         //                 dmg = string.IsNullOrEmpty(dmg) ? "1" : dmg;
         //                 Console.WriteLine($"Damage {dmg}");
-        //                 await ChangeHealthAsync(ns, 54321, currentPlayerIndex, Convert.ToInt32(dmg));
+        //                 await ChangeHealthAsync(ns, 54321, ID, Convert.ToInt32(dmg));
         //             }

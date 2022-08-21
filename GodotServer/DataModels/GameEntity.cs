@@ -3,22 +3,23 @@ using SphServer.Helpers;
 
 namespace SphServer.DataModels
 {
-
-    public class EntitySpawnData
+    public class GameEntity : IGameEntity
     {
-        public ushort ID;
-        public ushort Unknown;
-        public double X;
-        public double Y;
-        public double Z;
-        public double Turn;
-        public ushort HP;
-        public ushort TypeID;
-        public byte Level;
+        public ushort ID { get; set; }
+        public ushort Unknown { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+        public double Turn { get; set; }
+        public ushort CurrentHP { get; set; }
+        public ushort MaxHP { get; set; }
+        public ushort TypeID { get; set; }
+        public byte TitleLevelMinusOne { get; set; }
+        public byte DegreeLevelMinusOne { get; set; }
 
         public override string ToString()
         {
-            return $"Ent\t{ID}\t{Unknown}\t{X}\t{Y}\t{Z}\t{Turn}\t{HP}\t{TypeID}\t{Level}";
+            return $"Ent\t{ID}\t{Unknown}\t{X}\t{Y}\t{Z}\t{Turn}\t{CurrentHP}\t{TypeID}\t{TitleLevelMinusOne}";
         }
 
         public byte[] ToByteArray()
@@ -81,7 +82,7 @@ namespace SphServer.DataModels
             // sb.Append(t_str[6..14]);
             // sb.Append(t_str[14..22]);
             // sb.Append(t_str[22..30]);
-            // var hp_str = HP.ToBinaryString();
+            // var hp_str = CurrentHP.ToBinaryString();
             sb.Append("11111100");
             // sb.Append(hp_str[10..]);
             // sb.Append(t_str[30..]);
@@ -96,7 +97,7 @@ namespace SphServer.DataModels
             sb.Append("1");
             sb.Append(entid_str[1..9]);
             // works for levels up to 128 /shrug
-            var level_str = Level.ToBinaryString();
+            var level_str = TitleLevelMinusOne.ToBinaryString();
             sb.Append(level_str[2..]);
             sb.Append("01");
             sb.Append("111101");

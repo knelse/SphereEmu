@@ -25,8 +25,8 @@ public enum ClientState
 
 public class Client : Node
 {
-    public ushort currentPlayerIndex = 0x4F6F;
-    public StreamPeerTCP streamPeer = null!;
+    public ushort ID = 0x4F6F;
+    public StreamPeerTCP StreamPeer = null!;
     private const bool reconnect = false;
     public const int BUFSIZE = 1024;
     private string playerIndexStr = null!;
@@ -54,15 +54,26 @@ public class Client : Node
     {
         playerIndexStr = ConvertHelper.ToHexString(new[]
         {
-            MajorByte(currentPlayerIndex),
-            MinorByte(currentPlayerIndex)
+            MajorByte(ID),
+            MinorByte(ID)
+        });
+
+        Task.Run(() =>
+        {
+            var count = 1;
+            while (true)
+            {
+                Console.ReadLine();
+                Console.WriteLine("Drop");
+                // DropLoot((ushort)(0x47FE + count), 3046 + count, 159, -2082 - count);
+                count++;
+            }
         });
     }
 
-
     public override async void _Process(float delta)
     {
-        if (streamPeer.GetStatus() != StreamPeerTCP.Status.Connected)
+        if (StreamPeer.GetStatus() != StreamPeerTCP.Status.Connected)
         {
             CloseConnection();
         }
@@ -73,26 +84,26 @@ public class Client : Node
         {
             case ClientState.I_AM_BREAD:
                 Console.WriteLine($"CLI {playerIndexStr}: Ready to load initial data");
-                streamPeer.PutPartialData(reconnect
+                StreamPeer.PutPartialData(reconnect
                     ? CommonPackets.ReadyToLoadInitialDataReconnect
                     : CommonPackets.ReadyToLoadInitialData);
                 currentState = ClientState.INIT_READY_FOR_INITIAL_DATA;
 
                 break;
             case ClientState.INIT_READY_FOR_INITIAL_DATA:
-                if (streamPeer.GetBytes(rcvBuffer) == 0)
+                if (StreamPeer.GetBytes(rcvBuffer) == 0)
                 {
                     return;
                 }
 
                 Console.WriteLine($"CLI {playerIndexStr}: Connection initialized");
-                streamPeer.PutPartialData(CommonPackets.ServerCredentials(currentPlayerIndex));
+                StreamPeer.PutPartialData(CommonPackets.ServerCredentials(ID));
                 Console.WriteLine($"SRV {playerIndexStr}: Credentials sent");
                 currentState = ClientState.INIT_WAITING_FOR_LOGIN_DATA;
 
                 break;
             case ClientState.INIT_WAITING_FOR_LOGIN_DATA:
-                if (streamPeer.GetBytes(rcvBuffer) <= 12)
+                if (StreamPeer.GetBytes(rcvBuffer) <= 12)
                 {
                     return;
                 }
@@ -101,7 +112,7 @@ public class Client : Node
                 (var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
 
                 charListData =
-                    Login.CheckLoginAndGetPlayerCharacters(login, password, currentPlayerIndex);
+                    Login.CheckLoginAndGetPlayerCharacters(login, password, ID);
                 Console.WriteLine("Fetched char list data");
                 await (ToSignal(GetTree().CreateTimer(0.05f), "timeout"));
 
@@ -109,17 +120,17 @@ public class Client : Node
                 {
                     // TODO: actual incorrect pwd packet
                     Console.WriteLine($"SRV {playerIndexStr}: Incorrect password!");
-                    streamPeer.PutPartialData(CommonPackets.AccountAlreadyInUse(currentPlayerIndex));
+                    StreamPeer.PutPartialData(CommonPackets.AccountAlreadyInUse(ID));
                     CloseConnection();
 
                     return;
                 }
 
-                streamPeer.PutPartialData(CommonPackets.CharacterSelectStartData(currentPlayerIndex));
+                StreamPeer.PutPartialData(CommonPackets.CharacterSelectStartData(ID));
                 Console.WriteLine("SRV: Character select screen data - initial");
                 Thread.Sleep(100);
 
-                streamPeer.PutPartialData(charListData.ToByteArray(currentPlayerIndex));
+                StreamPeer.PutPartialData(charListData.ToByteArray(ID));
                 Console.WriteLine("SRV: Character select screen data - player characters");
                 Thread.Sleep(100);
                 currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
@@ -128,7 +139,7 @@ public class Client : Node
             case ClientState.INIT_WAITING_FOR_CHARACTER_SELECT:
                 if (selectedCharacterIndex == -1)
                 {
-                    if (streamPeer.GetBytes(rcvBuffer) == 0x15)
+                    if (StreamPeer.GetBytes(rcvBuffer) == 0x15)
                     {
                         selectedCharacterIndex = rcvBuffer[17] / 4 - 1;
 
@@ -146,19 +157,22 @@ public class Client : Node
                 }
 
                 CurrentCharacter = charListData![selectedCharacterIndex]!;
+                CurrentCharacter.Client = this;
 
                 Console.WriteLine("CLI: Enter game");
-                streamPeer.PutPartialData(CurrentCharacter.ToGameDataByteArray());
+                // TODO: this ID is mostly static 0x4F6F for testing, fix later
+                MainServer.TryAddToGameObjects(CurrentCharacter.ID, CurrentCharacter);
+                StreamPeer.PutPartialData(CurrentCharacter.ToGameDataByteArray());
                 currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
                 break;
             case ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK:
-                if (streamPeer.GetBytes(rcvBuffer) == 0x13)
+                if (StreamPeer.GetBytes(rcvBuffer) == 0x13)
                 {
                     return;
                 }
                 // Interlocked.Increment(ref playerCount);
 
-                WorldDataTest.SendNewCharacterWorldData(streamPeer, playerIndexStr);
+                WorldDataTest.SendNewCharacterWorldData(StreamPeer, playerIndexStr);
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
                 await ToSignal(GetTree().CreateTimer(2), "timeout");
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
@@ -168,6 +182,7 @@ public class Client : Node
                 return;
             case ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT:
                 await MoveToNewPlayerDungeonAsync(CurrentCharacter);
+                LootBag.Create(0, 0, 0, 0, 0, LootRatityType.DEFAULT_MOB);
                 break;
             case ClientState.INGAME_DEFAULT:
                 break;
@@ -190,23 +205,23 @@ public class Client : Node
 
         if (timeSinceLastFifteenSecondPing >= 15)
         {
-            streamPeer.PutPartialData(CommonPackets.FifteenSecondPing(currentPlayerIndex));
+            StreamPeer.PutPartialData(CommonPackets.FifteenSecondPing(ID));
             timeSinceLastFifteenSecondPing = 0;
         }
 
         if (timeSinceLastSixSecondPing >= 6)
         {
-            streamPeer.PutPartialData(CommonPackets.SixSecondPing(currentPlayerIndex));
+            StreamPeer.PutPartialData(CommonPackets.SixSecondPing(ID));
             timeSinceLastSixSecondPing = 0;
         }
 
         if (timeSinceLastTransmissionEndPing >= 3)
         {
-            streamPeer.PutPartialData(CommonPackets.TransmissionEndPacket);
+            StreamPeer.PutPartialData(CommonPackets.TransmissionEndPacket);
             timeSinceLastTransmissionEndPing = 0;
         }
 
-        var length = streamPeer.GetBytes(rcvBuffer);
+        var length = StreamPeer.GetBytes(rcvBuffer);
 
         if (length == 0)
         {
@@ -223,7 +238,6 @@ public class Client : Node
             // ping
             case 0x26:
                 SendPingResponse();
-
                 break;
             // interact (move item, open loot container)
             case 0x1A:
@@ -236,33 +250,35 @@ public class Client : Node
                 {
                     var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
                     // open loot container
-                    ShowDropitemList((ushort) containerId, containerId % 4 + 1);
+                    if (MainServer.GameObjects.TryGetValue(containerId, out IGameEntity ent) && ent is LootBag bag)
+                    {
+                        bag.ShowDropitemListForClient(ID);
+                    }
                 }
 
                 break;
             // echo
             case 0x08:
-                // streamPeer.PutPartialData(CommonPackets.Echo(currentPlayerIndex));
+                // StreamPeer.PutPartialData(CommonPackets.Echo(ID));
 
                 break;
             // damage
             // case 0x19:
             case 0x20:
-                var damage = (byte)(10 + RNGHelper.GetUniform() * 8);
+                var damage = (byte) 43;// (byte)(10 + RNGHelper.GetUniform() * 8);
                 var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
-                var playerIndexByteSwap = ByteSwap(currentPlayerIndex);
+                var playerIndexByteSwap = ByteSwap(ID);
                 var selfDamage = destId == playerIndexByteSwap;
 
                 if (selfDamage)
                 {
                     var selfDamagePacket = new byte[]
                     {
-                        0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(currentPlayerIndex), 
-                        MinorByte(currentPlayerIndex), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26], 
+                        0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), 
+                        MinorByte(ID), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26], 
                         (byte)(rcvBuffer[27] + 0x60), damage, 0x00
                     };
-
-                    streamPeer.PutPartialData(selfDamagePacket);
+                    StreamPeer.PutPartialData(selfDamagePacket);
                 }
                 else
                 {
@@ -282,11 +298,11 @@ public class Client : Node
                             0x43, 0xA1, 0x0B, src_1, src_2, src_3, dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00, 
                             0x04, 0x50, 0x07, 0x00
                         };
-                        streamPeer.PutPartialData(damagePacket);
+                        StreamPeer.PutPartialData(damagePacket);
                     }
                     else
                     {
-                        var mob = GetNode<Mob>("/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/Mob");
+                        var mob = GetNode<MobNode>("/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/MobNode");
                         mob.SetInactive();
                         
                         var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
@@ -317,8 +333,10 @@ public class Client : Node
                             0x58, 0xE4, totalMoney_1, totalMoney_2, 0x16, 0x28, karma_1, 0x80, 0x46, 0x40, 
                             moneyReward_1, moneyReward_2
                         };
-                        streamPeer.PutPartialData(Packet.ToByteArray(deathPacket));
-                        DropLoot(1234, mob.GlobalTransform.origin.x, mob.GlobalTransform.origin.y, mob.GlobalTransform.origin.z);
+                        StreamPeer.PutPartialData(Packet.ToByteArray(deathPacket));
+                        // LootBag.CreateFromEntity(mob);
+                        LootBag.Create(mob.GlobalTransform.origin.x, mob.GlobalTransform.origin.y, mob.GlobalTransform.origin.z, 0, 0,
+                            LootRatityType.DEFAULT_MOB);
                     }
                 }
 
@@ -332,7 +350,7 @@ public class Client : Node
                 // Console.WriteLine(vendorId);
                 var vendorId = 0x8169;
 
-                // streamPeer.PutPartialData(TestHelper.GetEntityData(
+                // StreamPeer.PutPartialData(TestHelper.GetEntityData(
                 //     new WorldCoords(669.1638793945312, 4501.63134765625, 931.0355224609375, -1), 4816,
                 //     7654, 4816));
 
@@ -342,7 +360,7 @@ public class Client : Node
                 // {
                 //     var vendorList =
                 //         $"27002C010000044f6f0840A362202D10E097164832142600400108E0DF08000000004000000000";
-                //     streamPeer.PutPartialData(ConvertHelper.FromHexString(vendorList));
+                //     StreamPeer.PutPartialData(ConvertHelper.FromHexString(vendorList));
                 //
                 //     if (i < 80)
                 //     {
@@ -353,7 +371,7 @@ public class Client : Node
                 //         var y0 = 1;
                 //         var x = x0 * Math.Cos(deg) - y0 * Math.Sin(deg);
                 //         var y = x0 * Math.Sin(deg) + y0 * Math.Cos(deg);
-                //         streamPeer.PutPartialData(TestHelper.GetEntityData(
+                //         StreamPeer.PutPartialData(TestHelper.GetEntityData(
                 //             new WorldCoords(671.1638793945312 + x, 4501.63134765625, 932.0355224609375 + y,
                 //                 -1), 971, 7654 + i, entTypeId));
                 //
@@ -364,11 +382,11 @@ public class Client : Node
                 // }
 
                 // var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
-                // streamPeer.PutPartialData(ConvertHelper.FromHexString(vendorListLoaded));
+                // StreamPeer.PutPartialData(ConvertHelper.FromHexString(vendorListLoaded));
                 var vendorListLoaded =
                     BinaryStringToByteArray(System.IO.File.ReadAllText("C:\\source\\vendorList.txt")
                         .RemoveLineEndings());
-                streamPeer.PutPartialData(vendorListLoaded);
+                StreamPeer.PutPartialData(vendorListLoaded);
 
                 break;
         }
@@ -396,7 +414,7 @@ public class Client : Node
             DbCharacters.DeleteCharacterFromDb(charListData[charIndex]!.DbId);
 
             // TODO: reinit session after delete
-            // await HandleClientAsync(client, (ushort) (currentPlayerIndex + 1), true);
+            // await HandleClientAsync(client, (ushort) (ID + 1), true);
 
             CloseConnection();
 
@@ -457,7 +475,7 @@ public class Client : Node
 
         if (!isNameValid)
         {
-            streamPeer.PutPartialData(CommonPackets.NameAlreadyExists(currentPlayerIndex));
+            StreamPeer.PutPartialData(CommonPackets.NameAlreadyExists(ID));
         }
         else
         {
@@ -477,14 +495,14 @@ public class Client : Node
 
             var charIndex = (rcvBuffer[17] / 4 - 1);
 
-            var newCharacterData = CharacterData.CreateNewCharacter(currentPlayerIndex, name,
+            var newCharacterData = CharacterData.CreateNewCharacter(ID, name,
                 isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
             charListData!.AddNewCharacter(newCharacterData, charIndex);
             DbCharacters.AddNewCharacterToDb(charListData.PlayerId, newCharacterData,
                 charIndex);
 
-            streamPeer.PutPartialData(CommonPackets.NameCheckPassed(currentPlayerIndex));
+            StreamPeer.PutPartialData(CommonPackets.NameCheckPassed(ID));
 
             return charIndex;
         }
@@ -506,10 +524,10 @@ public class Client : Node
         var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900, 0);
         var playerCoords = new WorldCoords(-1098.69506835937500, 4501.61474609375000, 1900.05493164062500,
             1.57079637050629);
-        streamPeer.PutPartialData(
+        StreamPeer.PutPartialData(
             // selectedCharacter.GetTeleportAndUpdateCharacterByteArray(new WorldCoords(669.5963745117188, 4501.63134765625, 931.5966796875, -1)));
             selectedCharacter.GetTeleportAndUpdateCharacterByteArray(playerCoords,
-                Convert.ToString(selectedCharacter.PlayerIndex, 16).PadLeft(4, '0')));
+                Convert.ToString(selectedCharacter.ID, 16).PadLeft(4, '0')));
 
         currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
         await ToSignal(GetTree().CreateTimer(0.3f), "timeout");
@@ -534,14 +552,14 @@ public class Client : Node
         // 
         // tp.AddRange(enterNewGame_4);
 
-        streamPeer.PutPartialData(ConvertHelper.FromHexString(enterNewGame_6));
+        StreamPeer.PutPartialData(ConvertHelper.FromHexString(enterNewGame_6));
         // await ns.WriteAsync(tp.ToArray());
         // await ns.WriteAsync(ConvertHelper.FromHexString(
         //     "BC002C0100EE45B0A67C46E11B000000000000000000000000007E6FA67C860F00A8A6180094B10800B09D080091450680C20B0808149E213AB8AE181B3491084130AEB8F00D000000000000000000000000003F71547EC0379753538CB7CA58C4BE374F0480C82203C0AF251524F065D8D414E76F3216F9F6B5130120B2C80050788100805F4E2A48E07B43B729B6BC642C82036C270240649101A0F0020200BF725490C017EB80538C2BCA58A487E14E0480C8220340E105060000"));
         Console.WriteLine(
-            $"SRV: Teleported client [{MinorByte(selectedCharacter.PlayerIndex) * 256 + MajorByte(selectedCharacter.PlayerIndex)}] to default new player dungeon");
+            $"SRV: Teleported client [{MinorByte(selectedCharacter.ID) * 256 + MajorByte(selectedCharacter.ID)}] to default new player dungeon");
 
-        streamPeer.PutPartialData(TestHelper.GetNewPlayerDungeonMobData(newDungeonCoords));
+        StreamPeer.PutPartialData(TestHelper.GetNewPlayerDungeonMobData(newDungeonCoords));
 
         currentState = ClientState.INGAME_DEFAULT;
         UpdateCoordsWithoutAxisFlip(playerCoords);
@@ -584,7 +602,7 @@ public class Client : Node
                 CurrentCharacter.X = coords.x;
                 CurrentCharacter.Y = coords.y;
                 CurrentCharacter.Z = coords.z;
-                CurrentCharacter.T = coords.turn;
+                CurrentCharacter.Turn = coords.turn;
                 Console.WriteLine(coords.ToDebugString());
 
                 pingPreviousClientPingString = clientPingBinaryStr;
@@ -613,7 +631,7 @@ public class Client : Node
 
         Array.Copy(clientPingBytesForPong, pong, 5);
         Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
-        streamPeer.PutPartialData(Packet.ToByteArray(pong, 1));
+        StreamPeer.PutPartialData(Packet.ToByteArray(pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
         pingCounter++;
 
@@ -656,7 +674,7 @@ public class Client : Node
             0x20, 0x4E, 0x00, 0x00, 0x00
         };
 
-        streamPeer.PutPartialData(moveResult);
+        StreamPeer.PutPartialData(moveResult);
     }
 
     private void MoveEntity(WorldCoords coords, ushort entityId)
@@ -702,12 +720,12 @@ public class Client : Node
             ydec_1, ydec_2, zdec_1, turn_1, turn_2
         };
 
-        streamPeer.PutPartialData(movePacket);
+        StreamPeer.PutPartialData(movePacket);
     }
 
     public void ChangeHealth(ushort entityId, int healthDiff)
     {
-        var currentPlayerId = ByteSwap(currentPlayerIndex);
+        var currentPlayerId = ByteSwap(ID);
         var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
         var playerId_2 = (byte)((currentPlayerId & 0b111111110000) >> 4);
         var mobId_1 = (byte)((entityId & 0b1111111) << 1);
@@ -724,90 +742,21 @@ public class Client : Node
             0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, 
             mobId_2, dmg_1, dmg_2, dmg_3
         };
-        streamPeer.PutPartialData(dmgPacket);
+        StreamPeer.PutPartialData(dmgPacket);
     }
 
-    public void DropLoot(ushort lootBagId, double x, double y, double z)
+    public static void TryFindClientByIdAndSendData(ushort clientId, byte[] data)
     {
-        var xArr = CoordsHelper.EncodeServerCoordinate(x);
-        var yArr = CoordsHelper.EncodeServerCoordinate(y);
-        var zArr = CoordsHelper.EncodeServerCoordinate(z);
-        var x_1 = ((xArr[0] & 0b111) << 5) + 0b01111;
-        var x_2 = ((xArr[1] & 0b111) << 5) + ((xArr[0] & 0b11111000) >> 3);
-        var x_3 = ((xArr[2] & 0b111) << 5) + ((xArr[1] & 0b11111000) >> 3);
-        var x_4 = ((xArr[3] & 0b111) << 5) + ((xArr[2] & 0b11111000) >> 3);
-        var y_1 = ((yArr[0] & 0b111) << 5) + ((xArr[3] & 0b11111000) >> 3);
-        var y_2 = ((yArr[1] & 0b111) << 5) + ((yArr[0] & 0b11111000) >> 3);
-        var y_3 = ((yArr[2] & 0b111) << 5) + ((yArr[1] & 0b11111000) >> 3);
-        var y_4 = ((yArr[3] & 0b111) << 5) + ((yArr[2] & 0b11111000) >> 3);
-        var z_1 = ((zArr[0] & 0b111) << 5) + ((yArr[3] & 0b11111000) >> 3);
-        var z_2 = ((zArr[1] & 0b111) << 5) + ((zArr[0] & 0b11111000) >> 3);
-        var z_3 = ((zArr[2] & 0b111) << 5) + ((zArr[1] & 0b11111000) >> 3);
-        var z_4 = ((zArr[3] & 0b111) << 5) + ((zArr[2] & 0b11111000) >> 3);
-        var z_5 = 0b01100000 + ((zArr[3] & 0b11111000) >> 3);
-        
-        var lootBagPacket = new byte[]
+        if (MainServer.GameObjects.TryGetValue(clientId, out IGameEntity ent) && ent is CharacterData characterData)
         {
-            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), MajorByte(lootBagId), 0x5C, 0x86, (byte) x_1, 
-            (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1, (byte) z_2, 
-            (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
-        };
-        
-        streamPeer.PutPartialData(lootBagPacket);
-    }
-
-    public void ShowDropitemList(ushort lootBagId, int count)
-    {
-        byte[] itemList;
-        // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
-        // we'll figure out weight for 3-4 slot containers later
-        var weight = 1234;
-        var weight2 = 5678;
-        var weight_1 = (byte) (weight % 2 == 1 ? 0b10000000 : 0);
-        var weight_2 = (byte) ((weight & 0b111111110) >> 1);
-        var weight_3 = (byte) ((weight & 0b11111111000000000) >> 9);
-        var weight_4 = (byte) ((weight & 0b1111111100000000000000000) >> 17);
-
-        var weight_5 = (byte) ((weight2 & 0b111111) << 2);
-        var weight_6 = (byte) ((weight2 & 0b11111111000000) >> 6);
-        var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
-        var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
-
-        switch (count)
-        {
-            case 1:
-                itemList = new byte[] { 0x1C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
-                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04,
-                    0x00, 0x00, 0x39, weight_1, weight_2, weight_3, weight_4, 0x00
-                };
-                break;
-            case 2:
-                itemList = new byte[] { 0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
-                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, 
-                    0x00, 0x00, 0x1F, weight_1, weight_2, weight_3, weight_4, 0x80, 0x82, 0x20, 0x04, 0x5C, 0xF8, 0x00, weight_5, 
-                    weight_6, weight_7, weight_8, 0x00};
-                break;
-            case 3:
-                itemList = new byte[] { 0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
-                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 
-                    0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86, 0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 
-                    0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 0x00};
-                break;
-            case 4:
-                itemList = new byte[] { 0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(lootBagId), 
-                    MajorByte(lootBagId), 0x5C, 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 
-                    0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86, 0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 
-                    0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, 0xE0, 0x61, 0x19, 
-                    0x80, 0x19, 0x00, 0x00, 0x00};
-                break;
-            default:
-                Console.WriteLine($"Item list for count {count} not implemented");
-                return;
+            characterData.Client.StreamPeer.PutPartialData(data);
         }
-
-        streamPeer.PutPartialData(itemList);
     }
 
+    public float DistanceTo(Vector3 end)
+    {
+        return clientModel!.GlobalTransform.origin.DistanceTo(end);
+    }
     private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
     {
         var destBytes = rcvBuffer.Range(28, rcvBuffer.Length);

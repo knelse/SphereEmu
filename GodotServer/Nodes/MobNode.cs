@@ -1,7 +1,40 @@
-using System;
 using Godot;
+using SphServer;
 
-public class Mob : KinematicBody
+public class Mob : IGameEntity
+{
+    public ushort ID { get; set; }
+    public ushort Unknown { get; set; }
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+    public double Turn { get; set; }
+    public ushort CurrentHP { get; set; }
+    public ushort MaxHP { get; set; }
+    public ushort TypeID { get; set; }
+    public byte TitleLevelMinusOne { get; set; }
+    public byte DegreeLevelMinusOne { get; set; }
+
+    private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
+    
+    public MobNode ParentNode;    
+    
+    public static Mob Create(double x, double y, double z, int level, int sourceTypeId)
+    {
+        var mob = (MobNode) MobScene.Instance();
+        mob.Mob = new Mob();
+        mob.Mob.ID = MainServer.AddToGameObjects(mob.Mob);
+        mob.Mob.X = x;
+        mob.Mob.Y = y;
+        mob.Mob.Z = z;
+        mob.Mob.ParentNode = mob;
+        
+        MainServer.MainServerNode.AddChild(mob);
+        return mob.Mob;
+    }
+}
+
+public class MobNode : KinematicBody
 {
     private bool followActive;
     private Spatial? clientModel;
@@ -15,6 +48,9 @@ public class Mob : KinematicBody
 
     private float networkCoordsUpdateDelay = 0.5f;
     private float attackDelay;
+
+    public Mob Mob;
+    
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -25,11 +61,11 @@ public class Mob : KinematicBody
     public override void _Process(float delta)
     {
         // TODO: replace with signal later
-        clientModel ??= GetNodeOrNull<Spatial>("/root/MainServer/Client/ClientModel");
-        client ??= GetNodeOrNull<Client>("/root/MainServer/Client");
+        clientModel ??= GetNodeOrNull<Spatial>("/root/MainServer/ClientScene/ClientModel");
+        client ??= GetNodeOrNull<Client>("/root/MainServer/ClientScene");
         // clientModel ??= GetNodeOrNull<Spatial>(
         //     "/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/NewPlayerDungeon/Room2/Podium");
-        if ((client?.streamPeer.IsConnectedToHost() ?? true) == false)
+        if ((client?.StreamPeer.IsConnectedToHost() ?? true) == false)
         {
             clientModel = null;
             client = null;
@@ -68,7 +104,7 @@ public class Mob : KinematicBody
 
         if (attackDelay <= 0 && GlobalTransform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 2)
         {
-            client?.ChangeHealth(54321, -rng.RandiRange(5, 8));
+            client?.ChangeHealth(ID, -rng.RandiRange(5, 8));
             attackDelay = 3.5f;
         }
 
@@ -102,4 +138,6 @@ public class Mob : KinematicBody
         // TODO: remove stub
         QueueFree();
     }
+
+    public ushort ID { get; set; }
 }

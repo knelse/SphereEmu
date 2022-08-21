@@ -235,7 +235,7 @@ namespace SphServer.Db
                     MaxSatiety = maxSat,
                     MDef = md,
                     PDef = pd,
-                    PlayerIndex = playerIndex,
+                    ID = playerIndex,
                     AvailableDegreeStats = degStats,
                     AvailableTitleStats = titStats,
                     CurrentHP = curHp,
@@ -245,13 +245,13 @@ namespace SphServer.Db
                     MaxHP = maxHp,
                     MaxMP = maxMp,
                     TitleXP = txp,
-                    DegreeLevelMinusOne = deg,
-                    TitleLevelMinusOne = ttl,
+                    DegreeLevelMinusOne = (byte) deg,
+                    TitleLevelMinusOne = (byte) ttl,
                     IsNotQueuedForDeletion = notDeleting,
                     X = x,
                     Y = y,
                     Z = z,
-                    T = t,
+                    Turn = t,
                     DbId = dbid,
                     Money = money,
                     AmmoSlot = NullIfZeroValueOtherwise(ammoSlot),
@@ -378,7 +378,7 @@ namespace SphServer.Db
             command.Parameters.AddWithValue("@x", (decimal)newCharacter.X);
             command.Parameters.AddWithValue("@y", (decimal)newCharacter.Y);
             command.Parameters.AddWithValue("@z", (decimal)newCharacter.Z);
-            command.Parameters.AddWithValue("@turn", (decimal)newCharacter.T);
+            command.Parameters.AddWithValue("@turn", (decimal)newCharacter.Turn);
             command.Parameters.AddWithValue("@player_id", playerId);
             command.Parameters.AddWithValue("@index", charIndex);
             command.ExecuteNonQuery();

@@ -42,13 +42,23 @@ namespace SphServer.DataModels
         Neophyte = 0x3
     }
 
-    public class CharacterData
+    public class CharacterData : IGameEntity
     {
-        public ushort PlayerIndex;
+        public ushort ID { get; set; }
+        public ushort Unknown { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; } = 150;
+        public double Z { get; set; }
+        public double Turn { get; set; }
+        public ushort CurrentHP { get; set; }
+        public ushort MaxHP { get; set; }
+        public ushort TypeID { get; set; }
+        public byte TitleLevelMinusOne { get; set; }
+        public byte DegreeLevelMinusOne { get; set; }
+
         public int DbId;
         public byte LookType = 0x7;
         public byte IsTurnedOff = 0x9;
-        public ushort MaxHP = 100;
         public ushort MaxMP = 100;
         public ushort Strength = 0;
         public ushort Agility = 0;
@@ -62,12 +72,9 @@ namespace SphServer.DataModels
         public ushort MDef = 0;
         public KarmaTypes Karma = KarmaTypes.Neutral;
         public ushort MaxSatiety = 100;
-        public ushort TitleLevelMinusOne = 0;
-        public ushort DegreeLevelMinusOne = 0;
         public uint TitleXP = 0;
         public uint DegreeXP = 0;
         public ushort CurrentSatiety = 50;
-        public ushort CurrentHP = 100;
         public ushort CurrentMP = 100;
         public ushort AvailableTitleStats = 4;
         public ushort AvailableDegreeStats = 4;
@@ -136,10 +143,7 @@ namespace SphServer.DataModels
         public SpecTypes SpecType = SpecTypes.None;
         public ClanRank ClanRank = 0;
 
-        public double X;
-        public double Y = 150;
-        public double Z;
-        public double T;
+        public Client Client;
 
         public byte[] ToCharacterListByteArray()
         {
@@ -257,7 +261,7 @@ namespace SphServer.DataModels
 
             var charDataBytes = new byte[]
             {
-                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(PlayerIndex), MinorByte(PlayerIndex), 0x08, 0x40, 
+                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 
                 0x60, lookType, hpMax1, hpMax2, mpMax1, mpMax2, strength1, strenth2, agility1, agility2, accuracy1, 
                 accuracy2, endurance1, endurance2, earth1, earth2, air1, air2, water1, water2, fire1, fire2, pdef1, 
                 pdef2, mdef1, mdef2, karma1, satietyMax1, satietyMax2, titleLvl1, titleLvl2, degreeLvl1, degreeLvl2, 
@@ -275,11 +279,11 @@ namespace SphServer.DataModels
 
         public byte[] ToGameDataByteArray()
         {
-            var nameEncoded = MainServer.Win1251.GetBytes(Name);
+            var nameEncoded = MainServer.Win1251!.GetBytes(Name);
             var x = CoordsHelper.EncodeServerCoordinate(X);
             var y = CoordsHelper.EncodeServerCoordinate(Y);
             var z = CoordsHelper.EncodeServerCoordinate(Z);
-            var t = CoordsHelper.EncodeServerCoordinate(T);
+            var t = CoordsHelper.EncodeServerCoordinate(Turn);
             var nameLen = nameEncoded.Length + 1;
             var data = new List<byte>
             {
@@ -290,8 +294,8 @@ namespace SphServer.DataModels
                 0x00,
                 0x00,
                 0x04,
-                MajorByte(PlayerIndex),
-                MinorByte(PlayerIndex),
+                MajorByte(ID),
+                MinorByte(ID),
                 0x08,
                 0x00,
                 (byte)(((nameLen & 0b111) << 5) + 2),
@@ -504,7 +508,7 @@ namespace SphServer.DataModels
         {
             return new CharacterData
             {
-                PlayerIndex = playerIndex,
+                ID = playerIndex,
                 Name = name,
                 IsGenderFemale = isFemale,
                 FaceType = (byte)face,

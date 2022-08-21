@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SphServer.Helpers;
-
 public static class ConvertHelper
 {
     public static string ToHexString(byte[] arr)
