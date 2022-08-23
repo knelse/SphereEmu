@@ -162,7 +162,7 @@ public class Client : Node
                 Console.WriteLine("CLI: Enter game");
                 // TODO: this ID is mostly static 0x4F6F for testing, fix later
                 MainServer.TryAddToGameObjects(CurrentCharacter.ID, CurrentCharacter);
-                StreamPeer.PutPartialData(CurrentCharacter.ToGameDataByteArray());
+                StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
                 currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
                 break;
             case ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK:
@@ -172,7 +172,10 @@ public class Client : Node
                 }
                 // Interlocked.Increment(ref playerCount);
 
-                WorldDataTest.SendNewCharacterWorldData(StreamPeer, playerIndexStr);
+                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.ID);
+                StreamPeer.PutData(worldData[0]);
+                Thread.Sleep(50);
+                StreamPeer.PutData(worldData[1]);
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
                 await ToSignal(GetTree().CreateTimer(2), "timeout");
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
@@ -512,50 +515,15 @@ public class Client : Node
 
     private async Task MoveToNewPlayerDungeonAsync(CharacterData selectedCharacter)
     {
-        // while (ns.CanRead)
-        // var str = Console.ReadLine();
-        //
-        // if (string.IsNullOrEmpty(str) || !str.Equals("def"))
-        // {
-        //     continue;
-        // }
-        // move to dungeon
-        // var newDungeonCoords = new WorldCoords(701, 4501.62158203125, 900, 1.55);
-        var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900, 0);
+        var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900);
         var playerCoords = new WorldCoords(-1098.69506835937500, 4501.61474609375000, 1900.05493164062500,
             1.57079637050629);
-        StreamPeer.PutPartialData(
-            // selectedCharacter.GetTeleportAndUpdateCharacterByteArray(new WorldCoords(669.5963745117188, 4501.63134765625, 931.5966796875, -1)));
-            selectedCharacter.GetTeleportAndUpdateCharacterByteArray(playerCoords,
-                Convert.ToString(selectedCharacter.ID, 16).PadLeft(4, '0')));
+        StreamPeer.PutPartialData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
 
         currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
         await ToSignal(GetTree().CreateTimer(0.3f), "timeout");
 
-        // get into instance
-        // commented: no inkpot, no npc29 id 33129, no tokenst id 33130, no ct_lab 33120 33150 33114, no telep1 33116, no tutomsg 33146 33147 33148 33151 33154 33156 33124
-        var enterNewGame_6 =
-            "BF002C0100067A2C0C10802F811F010BE2E00320A14B02000000000000000050649101A000039AFE00850900F8F9AF00063E00C044620050C62200C0762200441619000A2F809DF50B60E1337CA2838DC436A88C45F0FBF144C1882C3200145E4020A0F00CA2838DC436A88C45F0FBF144856FD0ED2CFE558F4806568F480606F8212C400D3E9F1045629756C62241A476A2E550140014433A29DE0785170000F8252CA01F3E19A14662B053C62249C2762280441619890A5900F0FFFFFF0F" +
-            "C1002C0100067A150B2483CF38A391B89495B1C813319E680C140500C550EA8000C0CF62813FF001CD2512ABA232160995CB130124B2C80050C80280FFFFFFFFC2132C1C0004FC0C5800161F00095D12000000000000000080228B0C000518D0F407286401C0FFFFFFFFEF7F85CFF001002612038032160100B6130120B2C8005078810081C233646DCF15EB822612257CD01517BE01000000000000000000000000A0F00C19D976C5DBB489440D7E72C5856F0000000000000000000000000000" +
-            "C8002C0100067AFF2B7C46E11908C0E68AF5411389FE18E28A0BDF00000000000000000000000000F00360E1337C008089C400A08C450080ED4400882C3200145E4040A0F00C737F75C514A18944208271C5856F00000000000000000000000000F8E53EF0193E00C044620050C62200C0762200441619000A2F30205078069906BAE283DA44A22BC1B9E2C23700000000000000000000000000FC741FF8019FB95C2231DE2A6311FBDE3C1100228B0C003F061690C027C396489CBFC958E4DBD74E0480C8220300" +
-            "C9002C0100067A0C2C2041E10502007E022C2081CF1B9A91D8F292B1080EB09D080091450680C20B0800FC065840029F58C72331AE2863911E863B1100228B0C0085171800F8093F80043E1FD34662154FC622EEA8782200441619000A2F4000F02B5300097CE8AF8BC446968C45D242F14400882C3200145EA000E0A7BF0212F838E512899941198B744FE689001059640028BCC001C06F7F0524F079E92512B36132164182C6130120B2C80050780103809FDE02AEE10320A14B0200000000000000005064910100" +
-            "1B002C0100067A7A0BB846010634FD010A131050C80280FFFFFF7F" +
-            "2D002C01006DF78A2CDBE1400F61016A1098F9F435FEF22F6101FD10006DFED71FC0CF62813F10547EFED90900";
-        // var enterGameResponse_5 =
-        //     $"2b002c0100ac04{playerIndexStr}08400362206056ab814350b51705d07028d006090040768804816f27de915c7c803f";
-        // await ns.WriteAsync(ConvertHelper.FromHexString(enterGameResponse_5));
-
-        // while (await ns.ReadAsync(rcvBuffer) != 0x13)
-        // {
-        // }
-
-        // 
-        // tp.AddRange(enterNewGame_4);
-
-        StreamPeer.PutPartialData(ConvertHelper.FromHexString(enterNewGame_6));
-        // await ns.WriteAsync(tp.ToArray());
-        // await ns.WriteAsync(ConvertHelper.FromHexString(
-        //     "BC002C0100EE45B0A67C46E11B000000000000000000000000007E6FA67C860F00A8A6180094B10800B09D080091450680C20B0808149E213AB8AE181B3491084130AEB8F00D000000000000000000000000003F71547EC0379753538CB7CA58C4BE374F0480C82203C0AF251524F065D8D414E76F3216F9F6B5130120B2C80050788100805F4E2A48E07B43B729B6BC642C82036C270240649101A0F0020200BF725490C017EB80538C2BCA58A487E14E0480C8220340E105060000"));
+        StreamPeer.PutPartialData(CommonPackets.LoadNewPlayerDungeon);
         Console.WriteLine(
             $"SRV: Teleported client [{MinorByte(selectedCharacter.ID) * 256 + MajorByte(selectedCharacter.ID)}] to default new player dungeon");
 
@@ -563,7 +531,6 @@ public class Client : Node
 
         currentState = ClientState.INGAME_DEFAULT;
         UpdateCoordsWithoutAxisFlip(playerCoords);
-        // }
     }
 
     public void CloseConnection()

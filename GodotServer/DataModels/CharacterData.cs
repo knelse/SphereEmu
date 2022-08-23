@@ -517,11 +517,9 @@ namespace SphServer.DataModels
                 Tattoo = (byte)tattoo
             };
         }
-
-        public byte[] GetTeleportAndUpdateCharacterByteArray(WorldCoords coords, string playerIndexStr)
+        public byte[] GetTeleportByteArray(WorldCoords coords)
         {
 
-            var tp = new List<byte>(ConvertHelper.FromHexString($"AB002C01000004{playerIndexStr}0840E301"));
             var x = CoordsHelper.EncodeServerCoordinate(coords.x);
             var y = CoordsHelper.EncodeServerCoordinate(coords.y);
             var z = CoordsHelper.EncodeServerCoordinate(coords.z);
@@ -543,28 +541,58 @@ namespace SphServer.DataModels
             var t_3 = ((t[2] & 0b111) << 5) + ((t[1] & 0b11111000) >> 3);
             var t_4 = ((t[3] & 0b111) << 5) + ((t[2] & 0b11111000) >> 3);
             var t_5 = 0b10100000 + ((t[3] & 0b11111000) >> 3);
-            tp.Add((byte)x_1);
-            tp.Add((byte)x_2);
-            tp.Add((byte)x_3);
-            tp.Add((byte)x_4);
-            tp.Add((byte)y_1);
-            tp.Add((byte)y_2);
-            tp.Add((byte)y_3);
-            tp.Add((byte)y_4);
-            tp.Add((byte)z_1);
-            tp.Add((byte)z_2);
-            tp.Add((byte)z_3);
-            tp.Add((byte)z_4);
-            tp.Add((byte)t_1);
-            tp.Add((byte)t_2);
-            tp.Add((byte)t_3);
-            tp.Add((byte)t_4);
-            tp.Add((byte)t_5);
+            
+            var tpBytes = new byte[]
+            {
+                0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 0xE3, 0x01, 
+                (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
+                (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x00
+            };
+            return tpBytes;
+        }
 
-            tp.AddRange(ConvertHelper.FromHexString(
-                "200839EDA800C80000000B40E74520F74210793188BC20245B14222F0C6071000B045824C04201160BB0608045032C1C64F1200B085844C042021613B0A08045052C2C6071010B4CE44526F2421379B1010B0E5874C0C203161FB0008145082C446031220B125994C0C2041627B64081450A2C5460B10AB160C1450B2E5C6031030B1A58D4C0C2061B1202F602"));
+        public byte[] GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(WorldCoords coords)
+        {
 
-            return tp.ToArray();
+            var x = CoordsHelper.EncodeServerCoordinate(coords.x);
+            var y = CoordsHelper.EncodeServerCoordinate(coords.y);
+            var z = CoordsHelper.EncodeServerCoordinate(coords.z);
+            var t = CoordsHelper.EncodeServerCoordinate(coords.turn);
+            var x_1 = ((x[0] & 0b111) << 5) + 0b00010;
+            var x_2 = ((x[1] & 0b111) << 5) + ((x[0] & 0b11111000) >> 3);
+            var x_3 = ((x[2] & 0b111) << 5) + ((x[1] & 0b11111000) >> 3);
+            var x_4 = ((x[3] & 0b111) << 5) + ((x[2] & 0b11111000) >> 3);
+            var y_1 = ((y[0] & 0b111) << 5) + ((x[3] & 0b11111000) >> 3);
+            var y_2 = ((y[1] & 0b111) << 5) + ((y[0] & 0b11111000) >> 3);
+            var y_3 = ((y[2] & 0b111) << 5) + ((y[1] & 0b11111000) >> 3);
+            var y_4 = ((y[3] & 0b111) << 5) + ((y[2] & 0b11111000) >> 3);
+            var z_1 = ((z[0] & 0b111) << 5) + ((y[3] & 0b11111000) >> 3);
+            var z_2 = ((z[1] & 0b111) << 5) + ((z[0] & 0b11111000) >> 3);
+            var z_3 = ((z[2] & 0b111) << 5) + ((z[1] & 0b11111000) >> 3);
+            var z_4 = ((z[3] & 0b111) << 5) + ((z[2] & 0b11111000) >> 3);
+            var t_1 = ((t[0] & 0b111) << 5) + ((z[3] & 0b11111000) >> 3);
+            var t_2 = ((t[1] & 0b111) << 5) + ((t[0] & 0b11111000) >> 3);
+            var t_3 = ((t[2] & 0b111) << 5) + ((t[1] & 0b11111000) >> 3);
+            var t_4 = ((t[3] & 0b111) << 5) + ((t[2] & 0b11111000) >> 3);
+            var t_5 = 0b10100000 + ((t[3] & 0b11111000) >> 3);
+
+            var tpBytes = new byte[]
+            {
+                0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 0xE3, 0x01, 
+                (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
+                (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x20, 0x08,
+                0x39, 0xED, 0xA8, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x0B, 0x40, 0xE7, 0x45, 0x20, 0xF7, 0x42, 0x10, 0x79, 
+                0x31, 0x88, 0xBC, 0x20, 0x24, 0x5B, 0x14, 0x22, 0x2F, 0x0C, 0x60, 0x71, 0x00, 0x0B, 0x04, 0x58, 0x24, 
+                0xC0, 0x42, 0x01, 0x16, 0x0B, 0xB0, 0x60, 0x80, 0x45, 0x03, 0x2C, 0x1C, 0x64, 0xF1, 0x20, 0x0B, 0x08, 
+                0x58, 0x44, 0xC0, 0x42, 0x02, 0x16, 0x13, 0xB0, 0xA0, 0x80, 0x45, 0x05, 0x2C, 0x2C, 0x60, 0x71, 0x01, 
+                0x0B, 0x4C, 0xE4, 0x45, 0x26, 0xF2, 0x42, 0x13, 0x79, 0xB1, 0x01, 0x0B, 0x0E, 0x58, 0x74, 0xC0, 0xC2, 
+                0x03, 0x16, 0x1F, 0xB0, 0x00, 0x81, 0x45, 0x08, 0x2C, 0x44, 0x60, 0x31, 0x22, 0x0B, 0x12, 0x59, 0x94, 
+                0xC0, 0xC2, 0x04, 0x16, 0x27, 0xB6, 0x40, 0x81, 0x45, 0x0A, 0x2C, 0x54, 0x60, 0xB1, 0x0A, 0xB1, 0x60, 
+                0xC1, 0x45, 0x0B, 0x2E, 0x5C, 0x60, 0x31, 0x03, 0x0B, 0x1A, 0x58, 0xD4, 0xC0, 0xC2, 0x06, 0x1B, 0x12, 
+                0x02, 0xF6, 0x02
+            };
+            
+            return tpBytes;
         }
     }
 }

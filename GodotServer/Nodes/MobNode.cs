@@ -51,20 +51,16 @@ public class MobNode : KinematicBody
 
     public Mob Mob;
     
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         navMesh = GetNode<Navigation>("/root/MainServer/NewPlayerDungeon/Navigation");
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
         // TODO: replace with signal later
         clientModel ??= GetNodeOrNull<Spatial>("/root/MainServer/ClientScene/ClientModel");
         client ??= GetNodeOrNull<Client>("/root/MainServer/ClientScene");
-        // clientModel ??= GetNodeOrNull<Spatial>(
-        //     "/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/NewPlayerDungeon/Room2/Podium");
         if ((client?.StreamPeer.IsConnectedToHost() ?? true) == false)
         {
             clientModel = null;
