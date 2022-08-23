@@ -103,12 +103,13 @@ public class LootBag : IGameEntity
         bag.LootBag.ParentNode = bag;
         // TODO: item gen logic
         var itemCount = (int) RNGHelper.GetUniform() * 3 + 1;
-        Console.WriteLine(itemCount);
 
         for (var i = 0; i < itemCount; i++)
         {
             bag.LootBag[i] = new Item();
         }
+
+        bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
         
         MainServer.MainServerNode.AddChild(bag);
         return bag.LootBag;
@@ -137,9 +138,10 @@ public class LootBag : IGameEntity
     {
         foreach (var ent in MainServer.GameObjects.Values)
         {
-            if (ent is CharacterData charData
-                && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-                MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+            // TODO: proper load/unload for client
+            if (ent is CharacterData charData)
+                // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+                // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
                 charData.Client.MoveEntity(X, Y, Z, Turn, ID);
             }

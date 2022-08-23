@@ -1,16 +1,5 @@
 [gd_scene load_steps=50 format=2]
 
-[sub_resource type="SpatialMaterial" id=48]
-emission_enabled = true
-emission = Color( 1, 1, 1, 1 )
-emission_energy = 12.81
-emission_operator = 0
-emission_on_uv2 = false
-
-[sub_resource type="CubeMesh" id=46]
-material = SubResource( 48 )
-size = Vector3( 0.1, 30, 0.1 )
-
 [sub_resource type="NavigationMesh" id=61]
 vertices = PoolVector3Array( -1148.15, 4501.2, 1919.83, -1148.15, 4501.2, 1920.79, -1146.23, 4501.2, 1921.27, -1143.83, 4501.2, 1921.27, -1133.75, 4501.2, 1901.11, -1133.27, 4501.2, 1902.07, -1131.35, 4501.2, 1900.63, -1131.35, 4501.2, 1898.71, -1133.75, 4501.2, 1899.19, -1149.11, 4501.2, 1908.31, -1149.11, 4501.2, 1919.35, -1148.15, 4501.2, 1919.83, -1143.83, 4501.2, 1921.27, -1140.47, 4501.2, 1920.79, -1140.47, 4501.2, 1908.31, -1144.31, 4501.2, 1907.83, -1145.75, 4501.2, 1907.83, -1131.35, 4501.2, 1898.71, -1129.43, 4501.2, 1898.23, -1128.95, 4501.2, 1895.83, -1133.27, 4501.2, 1895.83, -1133.75, 4501.2, 1899.19, -1144.31, 4501.2, 1901.59, -1133.75, 4501.2, 1901.11, -1133.75, 4501.2, 1899.19, -1145.75, 4501.2, 1899.19, -1144.31, 4501.2, 1901.59, -1145.75, 4501.2, 1899.19, -1145.75, 4501.2, 1907.83, -1144.31, 4501.2, 1907.83, -1126.07, 4501.2, 1898.71, -1126.55, 4501.2, 1895.83, -1128.95, 4501.2, 1895.83, -1129.43, 4501.2, 1898.23, -1128.95, 4501.2, 1900.63, -1126.07, 4501.2, 1901.11, -1093.43, 4501.2, 1895.83, -1106.39, 4501.2, 1895.83, -1106.87, 4501.2, 1898.71, -1106.87, 4501.2, 1901.11, -1106.39, 4501.2, 1904.47, -1093.43, 4501.2, 1904.47, -1126.07, 4501.2, 1901.11, -1106.87, 4501.2, 1901.11, -1106.87, 4501.2, 1898.71, -1126.07, 4501.2, 1898.71, -1131.35, 4501.2, 1900.63, -1133.27, 4501.2, 1902.07, -1133.27, 4501.2, 1904.47, -1126.55, 4501.2, 1904.47, -1126.07, 4501.2, 1901.11, -1128.95, 4501.2, 1900.63, -1147.67, 4505.2, 1906.87, -1146.71, 4505.2, 1907.35, -1146.23, 4505.2, 1898.71, -1147.19, 4505.2, 1898.23, -1143.35, 4505.2, 1902.07, -1143.35, 4505.2, 1907.35, -1142.39, 4505.2, 1907.35, -1142.39, 4505.2, 1902.07, -1122.71, 4501.2, 1930.87, -1122.71, 4501.2, 1928.95, -1126.55, 4501.2, 1928.95, -1126.55, 4501.2, 1930.87, -1143.35, 4501.2, 1928.95, -1146.23, 4501.2, 1930.87, -1133.75, 4501.2, 1930.87, -1133.27, 4501.2, 1928.95, -1127.03, 4501.2, 1934.23, -1126.55, 4501.2, 1930.87, -1126.55, 4501.2, 1928.95, -1127.03, 4501.2, 1925.59, -1132.79, 4501.2, 1925.59, -1133.27, 4501.2, 1928.95, -1132.79, 4501.2, 1931.83, -1132.79, 4501.2, 1931.83, -1132.79, 4501.2, 1934.23, -1127.03, 4501.2, 1934.23, -1133.75, 4501.2, 1930.87, -1132.79, 4501.2, 1931.83, -1133.27, 4501.2, 1928.95, -1143.35, 4501.2, 1928.95, -1143.83, 4501.2, 1921.27, -1146.23, 4501.2, 1921.27, -1146.23, 4501.2, 1930.87, -1142.87, 4505.2, 1921.75, -1142.87, 4505.2, 1922.71, -1139.51, 4505.2, 1922.23, -1139.51, 4505.2, 1921.27, -1122.71, 4501.2, 1928.95, -1122.71, 4501.2, 1930.87, -1118.87, 4501.2, 1930.87, -1118.87, 4501.2, 1928.95, -1101.59, 4501.2, 1932.31, -1101.59, 4501.2, 1938.55, -1099.19, 4501.2, 1938.55, -1099.67, 4501.2, 1928.95, -1118.39, 4501.2, 1925.59, -1118.87, 4501.2, 1928.95, -1118.87, 4501.2, 1930.87, -1118.39, 4501.2, 1934.23, -1113.59, 4501.2, 1934.23, -1113.11, 4501.2, 1930.87, -1113.11, 4501.2, 1928.95, -1113.59, 4501.2, 1925.59, -1102.55, 4501.2, 1931.35, -1099.67, 4501.2, 1928.95, -1113.11, 4501.2, 1928.95, -1113.11, 4501.2, 1930.87, -1102.55, 4501.2, 1931.35, -1101.59, 4501.2, 1932.31, -1099.67, 4501.2, 1928.95, -1098.71, 4505.2, 1938.07, -1097.75, 4505.2, 1938.07, -1098.23, 4505.2, 1927.99, -1099.19, 4505.2, 1927.99, -1099.19, 4501.2, 1938.55, -1101.59, 4501.2, 1938.55, -1103.99, 4501.2, 1939.03, -1103.99, 4501.2, 1951.03, -1095.83, 4501.2, 1951.03, -1095.83, 4501.2, 1939.03 )
 polygons = [ PoolIntArray( 1, 0, 2 ), PoolIntArray( 2, 0, 3 ), PoolIntArray( 4, 8, 5 ), PoolIntArray( 5, 8, 6 ), PoolIntArray( 6, 8, 7 ), PoolIntArray( 16, 15, 9 ), PoolIntArray( 9, 15, 14 ), PoolIntArray( 9, 14, 10 ), PoolIntArray( 10, 14, 11 ), PoolIntArray( 11, 14, 12 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 18, 17, 19 ), PoolIntArray( 19, 17, 20 ), PoolIntArray( 20, 17, 21 ), PoolIntArray( 23, 22, 24 ), PoolIntArray( 24, 22, 25 ), PoolIntArray( 29, 28, 26 ), PoolIntArray( 26, 28, 27 ), PoolIntArray( 32, 31, 33 ), PoolIntArray( 33, 31, 30 ), PoolIntArray( 33, 30, 34 ), PoolIntArray( 34, 30, 35 ), PoolIntArray( 38, 37, 39 ), PoolIntArray( 39, 37, 40 ), PoolIntArray( 40, 37, 36 ), PoolIntArray( 40, 36, 41 ), PoolIntArray( 45, 44, 42 ), PoolIntArray( 42, 44, 43 ), PoolIntArray( 47, 46, 48 ), PoolIntArray( 48, 46, 51 ), PoolIntArray( 48, 51, 50 ), PoolIntArray( 48, 50, 49 ), PoolIntArray( 55, 54, 52 ), PoolIntArray( 52, 54, 53 ), PoolIntArray( 59, 58, 56 ), PoolIntArray( 56, 58, 57 ), PoolIntArray( 63, 62, 60 ), PoolIntArray( 60, 62, 61 ), PoolIntArray( 67, 66, 64 ), PoolIntArray( 64, 66, 65 ), PoolIntArray( 70, 69, 71 ), PoolIntArray( 71, 69, 68 ), PoolIntArray( 71, 68, 74 ), PoolIntArray( 71, 74, 73 ), PoolIntArray( 71, 73, 72 ), PoolIntArray( 77, 76, 75 ), PoolIntArray( 80, 79, 78 ), PoolIntArray( 82, 81, 83 ), PoolIntArray( 83, 81, 84 ), PoolIntArray( 88, 87, 85 ), PoolIntArray( 85, 87, 86 ), PoolIntArray( 92, 91, 89 ), PoolIntArray( 89, 91, 90 ), PoolIntArray( 94, 93, 95 ), PoolIntArray( 95, 93, 96 ), PoolIntArray( 103, 102, 104 ), PoolIntArray( 104, 102, 101 ), PoolIntArray( 104, 101, 100 ), PoolIntArray( 104, 100, 99 ), PoolIntArray( 104, 99, 98 ), PoolIntArray( 104, 98, 97 ), PoolIntArray( 108, 107, 105 ), PoolIntArray( 105, 107, 106 ), PoolIntArray( 111, 110, 109 ), PoolIntArray( 115, 114, 112 ), PoolIntArray( 112, 114, 113 ), PoolIntArray( 117, 116, 118 ), PoolIntArray( 118, 116, 121 ), PoolIntArray( 118, 121, 120 ), PoolIntArray( 118, 120, 119 ) ]
@@ -172,210 +161,18 @@ extents = Vector3( 5, 2, 0.25 )
 [sub_resource type="CubeMesh" id=54]
 size = Vector3( 10, 4, 0.5 )
 
+[sub_resource type="SpatialMaterial" id=48]
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 12.81
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="CubeMesh" id=46]
+material = SubResource( 48 )
+size = Vector3( 0.1, 30, 0.1 )
+
 [node name="NewPlayerDungeonNode" type="Node"]
-
-[node name="CornerPillar1" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1895 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar1"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar2" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1895 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar2"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar3" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1905 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar3"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar4" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1905 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar4"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar5" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1898 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar5"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar6" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1901.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar6"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar7" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1901.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar7"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar8" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1898 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar8"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar9" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1905 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar9"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar10" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1895 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar10"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar11" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1895 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar11"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar12" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1905 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar12"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar13" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1899 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar13"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar14" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1900.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar14"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar15" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.5, 4500, 1900.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar15"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar16" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1898.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar16"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar17" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1901.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar17"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar18" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1146.5, 4500, 1898.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar18"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar19" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1901.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar19"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar20" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1907.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar20"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar23" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1935 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar23"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar29" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1925 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar29"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar28" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1935 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar28"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar24" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1925 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar24"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar25" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1119, 4500, 1934.7 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar25"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar26" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1113, 4500, 1925 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar26"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar27" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1099, 4500, 1928.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar27"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar21" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1104.5, 4500, 1938.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar21"]
-mesh = SubResource( 46 )
-material/0 = null
-
-[node name="CornerPillar22" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1095.5, 4500, 1951.5 )
-
-[node name="MeshInstance" type="MeshInstance" parent="CornerPillar22"]
-mesh = SubResource( 46 )
-material/0 = null
 
 [node name="Navigation" type="Navigation" parent="."]
 
@@ -1082,3 +879,208 @@ material/0 = null
 
 [node name="Camera" type="Camera" parent="Navigation/NavigationMeshInstance/NewPlayerDungeon"]
 transform = Transform( -4.37114e-08, 0.939693, -0.34202, 0, 0.34202, 0.939693, 1, 4.10753e-08, -1.49502e-08, -13.5264, 45.1382, 13.5304 )
+
+[node name="Corners" type="Spatial" parent="."]
+
+[node name="CornerPillar1" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1895 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar1"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar2" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1895 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar2"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar3" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1905 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar3"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar4" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1905 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar4"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar5" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1898 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar5"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar6" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1901.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar6"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar7" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1901.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar7"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar8" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1898 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar8"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar9" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1905 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar9"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar10" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1895 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar10"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar11" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1895 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar11"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar12" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1905 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar12"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar13" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1899 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar13"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar14" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1900.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar14"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar15" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.5, 4500, 1900.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar15"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar16" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1898.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar16"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar17" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1901.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar17"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar18" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1146.5, 4500, 1898.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar18"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar19" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1901.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar19"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar20" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1907.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar20"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar23" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1935 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar23"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar29" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1925 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar29"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar28" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1935 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar28"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar24" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1925 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar24"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar25" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1119, 4500, 1934.7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar25"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar26" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1113, 4500, 1925 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar26"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar27" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1099, 4500, 1928.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar27"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar21" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1104.5, 4500, 1938.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar21"]
+mesh = SubResource( 46 )
+material/0 = null
+
+[node name="CornerPillar22" type="Spatial" parent="Corners"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1095.5, 4500, 1951.5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar22"]
+mesh = SubResource( 46 )
+material/0 = null

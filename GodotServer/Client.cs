@@ -32,7 +32,7 @@ public class Client : Node
     private string playerIndexStr = null!;
     private readonly byte[] rcvBuffer = new byte[BUFSIZE];
     public const bool LiveServerCoords = false;
-    private ushort pingCounter;
+    private ushort counter;
     private bool pingShouldXorTopBit;
     public static readonly string PingCoordsFilePath = LiveServerCoords
         ? "C:\\_sphereDumps\\currentWorldCoords"
@@ -177,7 +177,7 @@ public class Client : Node
                 Thread.Sleep(50);
                 StreamPeer.PutData(worldData[1]);
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
-                await ToSignal(GetTree().CreateTimer(2), "timeout");
+                await ToSignal(GetTree().CreateTimer(3), "timeout");
                 currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
                 
                 break;
@@ -185,7 +185,6 @@ public class Client : Node
                 return;
             case ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT:
                 await MoveToNewPlayerDungeonAsync(CurrentCharacter);
-                LootBag.Create(0, 0, 0, 0, 0, LootRatityType.DEFAULT_MOB);
                 break;
             case ClientState.INGAME_DEFAULT:
                 break;
@@ -305,9 +304,6 @@ public class Client : Node
                     }
                     else
                     {
-                        var mob = GetNode<MobNode>("/root/MainServer/NewPlayerDungeon/Navigation/NavigationMeshInstance/MobNode");
-                        mob.SetInactive();
-                        
                         var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
                         var totalMoney = 10 + moneyReward;
                         var totalMoney_1 = (byte)(((totalMoney & 0b11111) << 3) + 0b100);
@@ -337,9 +333,12 @@ public class Client : Node
                             moneyReward_1, moneyReward_2
                         };
                         StreamPeer.PutPartialData(Packet.ToByteArray(deathPacket));
+                        MainServer.GameObjects.TryGetValue(destId, out var mobEnt);
+                        var mob = (Mob) mobEnt!;
                         // LootBag.CreateFromEntity(mob);
-                        LootBag.Create(mob.GlobalTransform.origin.x, mob.GlobalTransform.origin.y, mob.GlobalTransform.origin.z, 0, 0,
-                            LootRatityType.DEFAULT_MOB);
+                        LootBag.Create(mob.ParentNode.GlobalTransform.origin.x, mob.ParentNode.GlobalTransform.origin.y, 
+                            mob.ParentNode.GlobalTransform.origin.z, 0, 0, LootRatityType.DEFAULT_MOB);
+                        mob.ParentNode.SetInactive();
                     }
                 }
 
@@ -521,13 +520,16 @@ public class Client : Node
         StreamPeer.PutPartialData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
 
         currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
-        await ToSignal(GetTree().CreateTimer(0.3f), "timeout");
+        await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
 
         StreamPeer.PutPartialData(CommonPackets.LoadNewPlayerDungeon);
         Console.WriteLine(
             $"SRV: Teleported client [{MinorByte(selectedCharacter.ID) * 256 + MajorByte(selectedCharacter.ID)}] to default new player dungeon");
-
-        StreamPeer.PutPartialData(TestHelper.GetNewPlayerDungeonMobData(newDungeonCoords));
+        var mobX = newDungeonCoords.x - 50;
+        var mobY = newDungeonCoords.y;
+        var mobZ = newDungeonCoords.z + 19.5;
+        
+        Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
 
         currentState = ClientState.INGAME_DEFAULT;
         UpdateCoordsWithoutAxisFlip(playerCoords);
@@ -576,36 +578,35 @@ public class Client : Node
             }
         }
 
-        var topByteToXor = clientPingBytesForPong[5];
+        var xored = clientPingBytesForPong[5];
 
         if (pingShouldXorTopBit)
         {
-            topByteToXor ^= 0b10000000;
+            xored ^= 0b10000000;
         }
 
-        if (pingCounter == 0)
+        if (counter == 0)
         {
             var first = (ushort)((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
             first -= 0xE001;
-            pingCounter = (ushort)(0xE001 + first / 12);
+            counter = (ushort)(0xE001 + first / 12);
         }
 
         var pong = new byte[]
         {
-            0x00, 0x00, 0x00, 0x00, 0x00, topByteToXor, MinorByte(pingCounter),
-            MajorByte(pingCounter), 0x00, 0x00, 0x00, 0x00, 0x00
+            0x00, 0x00, 0x00, 0x00, 0x00, xored, MinorByte(counter), MajorByte(counter), 0x00, 0x00, 0x00, 0x00, 0x00
         };
 
         Array.Copy(clientPingBytesForPong, pong, 5);
         Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
         StreamPeer.PutPartialData(Packet.ToByteArray(pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
-        pingCounter++;
+        counter++;
 
         //overflow
-        if (pingCounter < 0xE001)
+        if (counter < 0xE001)
         {
-            pingCounter = 0xE001;
+            counter = 0xE001;
         }
     }
 
