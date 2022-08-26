@@ -748,7 +748,7 @@
         //         {
         //             while (ns.CanWrite)
         //             {
-        //                 StreamPeer.PutPartialData(TestHelper.GetTestMobData());
+        //                 StreamPeer.PutData(TestHelper.GetTestMobData());
         //                 System.Threading.Thread.Sleep(1000);
         //             }
         //         });
