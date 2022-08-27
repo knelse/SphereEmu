@@ -129,7 +129,7 @@ public class LootBag : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                Console.WriteLine($"{ent.ID} {ent.X} {ent.Y} {ent.Z}");
+                Console.WriteLine($"Sending {ID} ({ent.X}, {ent.Y}, {ent.Z}) to cli {charData.ID}");
                 ShowForClient(charData.ID);
             }
         }
