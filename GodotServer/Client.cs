@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Godot;
@@ -8,6 +10,7 @@ using SphServer.Db;
 using SphServer.Helpers;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
+using File = System.IO.File;
 using Thread = System.Threading.Thread;
 
 public enum ClientState
@@ -48,6 +51,8 @@ public class Client : Node
     private int selectedCharacterIndex = -1;
     private StaticBody? clientModel;
     private double oldY = Double.MaxValue;
+    private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
+    private static LootBag testLootBag;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -57,18 +62,21 @@ public class Client : Node
             MajorByte(ID),
             MinorByte(ID)
         });
-
-        Task.Run(() =>
+        watcher.NotifyFilter = NotifyFilters.LastWrite;
+        watcher.EnableRaisingEvents = true;
+        watcher.Changed += (sender, args) =>
         {
-            var count = 1;
-            while (true)
+            if (args.ChangeType == WatcherChangeTypes.Changed)
             {
-                Console.ReadLine();
-                Console.WriteLine("Drop");
-                // DropLoot((ushort)(0x47FE + count), 3046 + count, 159, -2082 - count);
-                count++;
+                StreamPeer.PutData(CommonPackets.DespawnEntity(testLootBag.ID));
+                MainServer.GameObjects.TryRemove(testLootBag.ID, out var _);
+                MainServer.GameObjects.TryRemove(testLootBag.Item0.ID, out var _);
+                // MainServer.currentId -= 2;
+                testLootBag.ParentNode.QueueFree();
+                testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
+                    LootRatityType.DEFAULT_MOB, 1);
             }
-        });
+        };
     }
 
     public override async void _Process(float delta)
@@ -255,15 +263,18 @@ public class Client : Node
                     if (MainServer.GameObjects.TryGetValue(containerId, out IGameEntity ent) && ent is LootBag bag)
                     {
                         bag.ShowDropitemListForClient(ID);
-                        var test = new byte[]
+                        var type = (byte) (counter % 2 == 1 ? 0xD0 : 0xD8);
+                        var txt = File.ReadAllText("C:\\source\\itemDropPacketTest.txt").RemoveLineEndings();
+                        var test = new List<byte>
                         {
-                            0x30, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(bag.Item0.ID), MajorByte(bag.Item0.ID), 0x60, 0x89, 0x0F, 0x80, 0x84, 0x2E, 
-                            0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, 0xE6, 0xE3, 0x10, 
-                            0x15, 0x60, 0xE0, 0xA2, 0x13, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x05, 0x16, 
-                            0x08, 0x00, 0x00,
-
+                            0x2C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(bag.Item0.ID), MajorByte(bag.Item0.ID), 
+                            // type, 0x87, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+                            // 0x40, 0x91, 0x45, 0x66, 0xBC, 0x23, 0x48, 0x01, 0x06, 0x1E, 0x31, 0x01, 0x0A, 0x59, 0x00, 
+                            // 0xF0, 0xFF, 0xFF, 0xFF, 0x0F
+                        
                         };
-                        StreamPeer.PutData(test);
+                        test.AddRange(BinaryStringToByteArray(txt));
+                        StreamPeer.PutData(test.ToArray());
                     }
                 }
 
@@ -540,8 +551,9 @@ public class Client : Node
         
         Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
         // for debug
-        LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
+        testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
             LootRatityType.DEFAULT_MOB, 1);
+        
         // LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1900.05493164062500, 0, 0,
         //     LootRatityType.DEFAULT_MOB, 2);
         // LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1901.05493164062500, 0, 0,
