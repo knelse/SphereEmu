@@ -154,24 +154,22 @@ public class MobNode : KinematicBody
     private Spatial? clientModel;
     private Client? client;
     private const float speed = 5.5f;
-    private Vector3[] path;
-    private int pathNode;
-    private Navigation navMesh = null!;
     private Vector3 lastKnownClientPosition = Vector3.Zero;
     private readonly RandomNumberGenerator rng = new();
 
     private float networkCoordsUpdateDelay = 0.5f;
     private float attackDelay;
+    private NavigationAgent navigationAgent;
 
     public Mob Mob;
     
     public override void _Ready()
     {
-        navMesh = GetNode<Navigation>("/root/MainServer/NewPlayerDungeon/Navigation");
         Mob.ShowForEveryClientInRadius();
+        navigationAgent = GetNode<NavigationAgent>("NavigationAgent");
     }
 
-    public override void _Process(float delta)
+    public override void _PhysicsProcess(float delta)
     {
         // TODO: replace with signal later
         clientModel ??= GetNodeOrNull<Spatial>("/root/MainServer/Client/ClientModel");
@@ -193,7 +191,7 @@ public class MobNode : KinematicBody
         {
             followActive = true;
             lastKnownClientPosition = clientModel.GlobalTransform.origin;
-            path = navMesh.GetSimplePath(GlobalTransform.origin, clientModel.GlobalTransform.origin);
+            navigationAgent.SetTargetLocation(lastKnownClientPosition);
         }
 
         if (!followActive)
@@ -221,27 +219,19 @@ public class MobNode : KinematicBody
 
         if (clientModel.GlobalTransform.origin.DistanceTo(lastKnownClientPosition) >= 0.2)
         {
-            path = navMesh.GetSimplePath(Transform.origin, clientModel.Transform.origin);
-            lastKnownClientPosition = clientModel.Transform.origin;
-            pathNode = 0;
+            lastKnownClientPosition = clientModel.GlobalTransform.origin;
+            navigationAgent.SetTargetLocation(lastKnownClientPosition);
         }
 
-        if (!followActive || pathNode >= path.Length)
+        if (!followActive || navigationAgent.GetFinalLocation().DistanceTo(GlobalTransform.origin) < 0.2)
         {
             return;
         }
 
-        var direction = path[pathNode] - Transform.origin;
-        
-        if (direction.Length() < 0.5)
-        {
-            pathNode += 1;
-        }
-        else
-        {
-            MoveAndSlide(direction.Normalized() * speed, Vector3.Up);
-            LookAt(clientModel.GlobalTransform.origin, Vector3.Up);
-        }
+        var next = navigationAgent.GetNextLocation();
+        var direction = GlobalTransform.origin.DirectionTo(next);
+        MoveAndSlide(direction.Normalized() * speed);
+        LookAt(clientModel.GlobalTransform.origin, Vector3.Up);
     }
 
     public void SetInactive()

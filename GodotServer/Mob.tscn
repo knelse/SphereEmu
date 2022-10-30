@@ -39,4 +39,5 @@ shape = SubResource( 68 )
 transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0909424, 0.501953, -0.623535 )
 layers = 2
 mesh = SubResource( 69 )
-material/0 = null
+
+[node name="NavigationAgent" type="NavigationAgent" parent="."]
