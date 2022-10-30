@@ -19,6 +19,8 @@ emission_on_uv2 = false
 extents = Vector3( 0.25, 0.25, 0.25 )
 
 [node name="LootBag" type="RigidBody"]
+mode = 1
+gravity_scale = 0.0
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

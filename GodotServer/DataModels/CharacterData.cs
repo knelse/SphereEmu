@@ -281,7 +281,7 @@ namespace SphServer.DataModels
         {
             var nameEncoded = MainServer.Win1251!.GetBytes(Name);
             var x = CoordsHelper.EncodeServerCoordinate(X);
-            var y = CoordsHelper.EncodeServerCoordinate(Y);
+            var y = CoordsHelper.EncodeServerCoordinate(-Y);
             var z = CoordsHelper.EncodeServerCoordinate(Z);
             var t = CoordsHelper.EncodeServerCoordinate(Turn);
             var nameLen = nameEncoded.Length + 1;
@@ -521,7 +521,7 @@ namespace SphServer.DataModels
         {
 
             var x = CoordsHelper.EncodeServerCoordinate(coords.x);
-            var y = CoordsHelper.EncodeServerCoordinate(coords.y);
+            var y = CoordsHelper.EncodeServerCoordinate(-coords.y);
             var z = CoordsHelper.EncodeServerCoordinate(coords.z);
             var t = CoordsHelper.EncodeServerCoordinate(coords.turn);
             var x_1 = ((x[0] & 0b111) << 5) + 0b00010;
@@ -555,7 +555,7 @@ namespace SphServer.DataModels
         {
 
             var x = CoordsHelper.EncodeServerCoordinate(coords.x);
-            var y = CoordsHelper.EncodeServerCoordinate(coords.y);
+            var y = CoordsHelper.EncodeServerCoordinate(-coords.y);
             var z = CoordsHelper.EncodeServerCoordinate(coords.z);
             var t = CoordsHelper.EncodeServerCoordinate(coords.turn);
             var x_1 = ((x[0] & 0b111) << 5) + 0b00010;

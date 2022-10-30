@@ -50,7 +50,6 @@ public class Client : Node
     private ClientInitialData? charListData;
     private int selectedCharacterIndex = -1;
     private StaticBody? clientModel;
-    private double oldY = Double.MaxValue;
     private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
     private static LootBag testLootBag;
 
@@ -237,11 +236,6 @@ public class Client : Node
         {
             return;
         }
-
-        if (Math.Abs(oldY - double.MaxValue) < double.Epsilon)
-        {
-            oldY = CurrentCharacter.Y;
-        }
         
         switch (rcvBuffer[0])
         {
@@ -416,14 +410,13 @@ public class Client : Node
         var clientModelTransform = clientModel.Transform;
 
         // ignore new client coords if they're too far away from what server knows
-        if (clientModelTransform.origin.DistanceTo(new Vector3((float)CurrentCharacter.X, 
-                (float) (clientModelTransform.origin.y + oldY - CurrentCharacter.Y), (float)CurrentCharacter.Z)) < 50)
-        {
-            clientModelTransform.origin =
-                new Vector3((float)CurrentCharacter.X, (float) (clientModelTransform.origin.y + oldY - CurrentCharacter.Y), (float)CurrentCharacter.Z);
-            clientModel.Transform = clientModelTransform;
-        }
-        oldY = CurrentCharacter.Y;
+        // if (clientModelTransform.origin.DistanceTo(new Vector3((float)CurrentCharacter.X, 
+        //         (float) (clientModelTransform.origin.y + oldY - CurrentCharacter.Y), (float)CurrentCharacter.Z)) < 50)
+        // {
+        clientModelTransform.origin =
+            new Vector3((float)CurrentCharacter.X, (float) CurrentCharacter.Y, (float)CurrentCharacter.Z);
+        clientModel.Transform = clientModelTransform;
+        // }
     }
 
     private int CharacterScreenCreateDeleteSelect()
@@ -534,8 +527,8 @@ public class Client : Node
 
     private async Task MoveToNewPlayerDungeonAsync(CharacterData selectedCharacter)
     {
-        var newDungeonCoords = new WorldCoords(-1098, 4501.62158203125, 1900);
-        var playerCoords = new WorldCoords(-1098.69506835937500, 4501.61474609375000, 1900.05493164062500,
+        var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
+        var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
             1.57079637050629);
         StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
 
@@ -551,9 +544,143 @@ public class Client : Node
         
         Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
         // for debug
-        testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
+        // testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
+        //     LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1899.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1898.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1900.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1900.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1900.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1900.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1900.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1900.05493164062500, 0, 0,
             LootRatityType.DEFAULT_MOB, 1);
         
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1895.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1896.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1897.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1901.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1902.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1903.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1904.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1905.05493164062500, 0, 0,
+            LootRatityType.DEFAULT_MOB, 1);
         // LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1900.05493164062500, 0, 0,
         //     LootRatityType.DEFAULT_MOB, 2);
         // LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1901.05493164062500, 0, 0,
@@ -562,7 +689,11 @@ public class Client : Node
         //     LootRatityType.DEFAULT_MOB, 4);
 
         currentState = ClientState.INGAME_DEFAULT;
-        UpdateCoordsWithoutAxisFlip(playerCoords);
+        var clientTransform = clientModel!.Transform;
+        clientTransform.origin.x = (float) playerCoords.x;
+        clientTransform.origin.y = (float) playerCoords.y;
+        clientTransform.origin.z = (float) playerCoords.z;
+        clientModel.Transform = clientTransform;
     }
 
     public void CloseConnection()
@@ -769,17 +900,17 @@ public class Client : Node
         return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
     }
 
-    private void UpdateCoordsWithoutAxisFlip(WorldCoords coords)
-    {
-        UpdateCoordsWithoutAxisFlip(coords.x, coords.y, coords.z, coords.turn);
-    }
+    // private void UpdateCoordsWithoutAxisFlip(WorldCoords coords)
+    // {
+    //     UpdateCoordsWithoutAxisFlip(coords.x, coords.y, coords.z, coords.turn);
+    // }
 
-    private void UpdateCoordsWithoutAxisFlip(double x, double y, double z, double turn)
-    {
-        var clientModelTransform = clientModel!.Transform;
-        clientModelTransform.origin =
-            new Vector3((float) x, (float) y, (float) z);
-        clientModel.Transform = clientModelTransform;
-        oldY = CurrentCharacter.Y;
-    }
+    // private void UpdateCoordsWithoutAxisFlip(double x, double y, double z, double turn)
+    // {
+    //     var clientModelTransform = clientModel!.Transform;
+    //     clientModelTransform.origin =
+    //         new Vector3((float) x, (float) y, (float) z);
+    //     clientModel.Transform = clientModelTransform;
+    //     oldY = CurrentCharacter.Y;
+    // }
 }

@@ -144,7 +144,7 @@ public class LootBag : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                charData.Client.MoveEntity(X, Y, Z, Turn, ID);
+                charData.Client.MoveEntity(X, -Y, Z, Turn, ID);
             }
         }
     }
@@ -152,7 +152,7 @@ public class LootBag : IGameEntity
     public void ShowForClient(ushort clientId)
     {
         var xArr = CoordsHelper.EncodeServerCoordinate(X);
-        var yArr = CoordsHelper.EncodeServerCoordinate(Y);
+        var yArr = CoordsHelper.EncodeServerCoordinate(-Y);
         var zArr = CoordsHelper.EncodeServerCoordinate(Z);
         var x_1 = ((xArr[0] & 0b111) << 5) + 0b01111;
         var x_2 = ((xArr[1] & 0b111) << 5) + ((xArr[0] & 0b11111000) >> 3);

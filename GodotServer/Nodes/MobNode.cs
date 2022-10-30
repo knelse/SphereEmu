@@ -85,7 +85,7 @@ public class Mob : IGameEntity
         // sb.Append("111");
         // sb.Append(enttype_str[..5]);
         var x_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(X));
-        var y_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Y));
+        var y_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(-Y));
         var z_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Z));
         var t_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Turn));
 
@@ -189,11 +189,11 @@ public class MobNode : KinematicBody
             return;
         }
         
-        if (!followActive && Transform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 10)
+        if (!followActive && GlobalTransform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 10)
         {
             followActive = true;
             lastKnownClientPosition = clientModel.GlobalTransform.origin;
-            path = navMesh.GetSimplePath(Transform.origin, clientModel.GlobalTransform.origin);
+            path = navMesh.GetSimplePath(GlobalTransform.origin, clientModel.GlobalTransform.origin);
         }
 
         if (!followActive)
@@ -207,7 +207,7 @@ public class MobNode : KinematicBody
         {
             networkCoordsUpdateDelay = 0.5f;
 
-            client?.MoveEntity(GlobalTransform.origin.x, GlobalTransform.origin.y + 0.75,
+            client?.MoveEntity(GlobalTransform.origin.x, -GlobalTransform.origin.y + 1,
                 GlobalTransform.origin.z, Mathf.Pi - Transform.basis.GetEuler().y, Mob.ID);
         }
 
@@ -221,8 +221,8 @@ public class MobNode : KinematicBody
 
         if (clientModel.GlobalTransform.origin.DistanceTo(lastKnownClientPosition) >= 0.2)
         {
-            path = navMesh.GetSimplePath(Transform.origin, clientModel.GlobalTransform.origin);
-            lastKnownClientPosition = clientModel.GlobalTransform.origin;
+            path = navMesh.GetSimplePath(Transform.origin, clientModel.Transform.origin);
+            lastKnownClientPosition = clientModel.Transform.origin;
             pathNode = 0;
         }
 
@@ -231,7 +231,7 @@ public class MobNode : KinematicBody
             return;
         }
 
-        var direction = path[pathNode] - GlobalTransform.origin;
+        var direction = path[pathNode] - Transform.origin;
         
         if (direction.Length() < 0.5)
         {

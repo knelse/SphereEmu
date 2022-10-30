@@ -114,7 +114,7 @@ namespace SphServer.Helpers
             {
                 Unknown = Convert.ToUInt16(entityData[1]),
                 X = Convert.ToDouble(entityData[2]),
-                Y = Convert.ToDouble(entityData[3]),
+                Y = -Convert.ToDouble(entityData[3]),
                 Z = Convert.ToDouble(entityData[4]),
                 Turn = Convert.ToDouble(entityData[5]),
                 CurrentHP = Convert.ToUInt16(entityData[6]),
@@ -137,7 +137,7 @@ namespace SphServer.Helpers
             {
                 Unknown = 1260,
                 X = mobX,
-                Y = mobY,
+                Y = -mobY,
                 Z = mobZ,
                 Turn = mobT,
                 CurrentHP = 1009,

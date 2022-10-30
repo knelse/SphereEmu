@@ -1,19 +1,21 @@
 [gd_scene load_steps=50 format=2]
 
 [sub_resource type="NavigationMesh" id=61]
-vertices = PoolVector3Array( -1148.15, 4501.2, 1919.83, -1148.15, 4501.2, 1920.79, -1146.23, 4501.2, 1921.27, -1143.83, 4501.2, 1921.27, -1133.75, 4501.2, 1901.11, -1133.27, 4501.2, 1902.07, -1131.35, 4501.2, 1900.63, -1131.35, 4501.2, 1898.71, -1133.75, 4501.2, 1899.19, -1149.11, 4501.2, 1908.31, -1149.11, 4501.2, 1919.35, -1148.15, 4501.2, 1919.83, -1143.83, 4501.2, 1921.27, -1140.47, 4501.2, 1920.79, -1140.47, 4501.2, 1908.31, -1144.31, 4501.2, 1907.83, -1145.75, 4501.2, 1907.83, -1131.35, 4501.2, 1898.71, -1129.43, 4501.2, 1898.23, -1128.95, 4501.2, 1895.83, -1133.27, 4501.2, 1895.83, -1133.75, 4501.2, 1899.19, -1144.31, 4501.2, 1901.59, -1133.75, 4501.2, 1901.11, -1133.75, 4501.2, 1899.19, -1145.75, 4501.2, 1899.19, -1144.31, 4501.2, 1901.59, -1145.75, 4501.2, 1899.19, -1145.75, 4501.2, 1907.83, -1144.31, 4501.2, 1907.83, -1126.07, 4501.2, 1898.71, -1126.55, 4501.2, 1895.83, -1128.95, 4501.2, 1895.83, -1129.43, 4501.2, 1898.23, -1128.95, 4501.2, 1900.63, -1126.07, 4501.2, 1901.11, -1093.43, 4501.2, 1895.83, -1106.39, 4501.2, 1895.83, -1106.87, 4501.2, 1898.71, -1106.87, 4501.2, 1901.11, -1106.39, 4501.2, 1904.47, -1093.43, 4501.2, 1904.47, -1126.07, 4501.2, 1901.11, -1106.87, 4501.2, 1901.11, -1106.87, 4501.2, 1898.71, -1126.07, 4501.2, 1898.71, -1131.35, 4501.2, 1900.63, -1133.27, 4501.2, 1902.07, -1133.27, 4501.2, 1904.47, -1126.55, 4501.2, 1904.47, -1126.07, 4501.2, 1901.11, -1128.95, 4501.2, 1900.63, -1147.67, 4505.2, 1906.87, -1146.71, 4505.2, 1907.35, -1146.23, 4505.2, 1898.71, -1147.19, 4505.2, 1898.23, -1143.35, 4505.2, 1902.07, -1143.35, 4505.2, 1907.35, -1142.39, 4505.2, 1907.35, -1142.39, 4505.2, 1902.07, -1122.71, 4501.2, 1930.87, -1122.71, 4501.2, 1928.95, -1126.55, 4501.2, 1928.95, -1126.55, 4501.2, 1930.87, -1143.35, 4501.2, 1928.95, -1146.23, 4501.2, 1930.87, -1133.75, 4501.2, 1930.87, -1133.27, 4501.2, 1928.95, -1127.03, 4501.2, 1934.23, -1126.55, 4501.2, 1930.87, -1126.55, 4501.2, 1928.95, -1127.03, 4501.2, 1925.59, -1132.79, 4501.2, 1925.59, -1133.27, 4501.2, 1928.95, -1132.79, 4501.2, 1931.83, -1132.79, 4501.2, 1931.83, -1132.79, 4501.2, 1934.23, -1127.03, 4501.2, 1934.23, -1133.75, 4501.2, 1930.87, -1132.79, 4501.2, 1931.83, -1133.27, 4501.2, 1928.95, -1143.35, 4501.2, 1928.95, -1143.83, 4501.2, 1921.27, -1146.23, 4501.2, 1921.27, -1146.23, 4501.2, 1930.87, -1142.87, 4505.2, 1921.75, -1142.87, 4505.2, 1922.71, -1139.51, 4505.2, 1922.23, -1139.51, 4505.2, 1921.27, -1122.71, 4501.2, 1928.95, -1122.71, 4501.2, 1930.87, -1118.87, 4501.2, 1930.87, -1118.87, 4501.2, 1928.95, -1101.59, 4501.2, 1932.31, -1101.59, 4501.2, 1938.55, -1099.19, 4501.2, 1938.55, -1099.67, 4501.2, 1928.95, -1118.39, 4501.2, 1925.59, -1118.87, 4501.2, 1928.95, -1118.87, 4501.2, 1930.87, -1118.39, 4501.2, 1934.23, -1113.59, 4501.2, 1934.23, -1113.11, 4501.2, 1930.87, -1113.11, 4501.2, 1928.95, -1113.59, 4501.2, 1925.59, -1102.55, 4501.2, 1931.35, -1099.67, 4501.2, 1928.95, -1113.11, 4501.2, 1928.95, -1113.11, 4501.2, 1930.87, -1102.55, 4501.2, 1931.35, -1101.59, 4501.2, 1932.31, -1099.67, 4501.2, 1928.95, -1098.71, 4505.2, 1938.07, -1097.75, 4505.2, 1938.07, -1098.23, 4505.2, 1927.99, -1099.19, 4505.2, 1927.99, -1099.19, 4501.2, 1938.55, -1101.59, 4501.2, 1938.55, -1103.99, 4501.2, 1939.03, -1103.99, 4501.2, 1951.03, -1095.83, 4501.2, 1951.03, -1095.83, 4501.2, 1939.03 )
-polygons = [ PoolIntArray( 1, 0, 2 ), PoolIntArray( 2, 0, 3 ), PoolIntArray( 4, 8, 5 ), PoolIntArray( 5, 8, 6 ), PoolIntArray( 6, 8, 7 ), PoolIntArray( 16, 15, 9 ), PoolIntArray( 9, 15, 14 ), PoolIntArray( 9, 14, 10 ), PoolIntArray( 10, 14, 11 ), PoolIntArray( 11, 14, 12 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 18, 17, 19 ), PoolIntArray( 19, 17, 20 ), PoolIntArray( 20, 17, 21 ), PoolIntArray( 23, 22, 24 ), PoolIntArray( 24, 22, 25 ), PoolIntArray( 29, 28, 26 ), PoolIntArray( 26, 28, 27 ), PoolIntArray( 32, 31, 33 ), PoolIntArray( 33, 31, 30 ), PoolIntArray( 33, 30, 34 ), PoolIntArray( 34, 30, 35 ), PoolIntArray( 38, 37, 39 ), PoolIntArray( 39, 37, 40 ), PoolIntArray( 40, 37, 36 ), PoolIntArray( 40, 36, 41 ), PoolIntArray( 45, 44, 42 ), PoolIntArray( 42, 44, 43 ), PoolIntArray( 47, 46, 48 ), PoolIntArray( 48, 46, 51 ), PoolIntArray( 48, 51, 50 ), PoolIntArray( 48, 50, 49 ), PoolIntArray( 55, 54, 52 ), PoolIntArray( 52, 54, 53 ), PoolIntArray( 59, 58, 56 ), PoolIntArray( 56, 58, 57 ), PoolIntArray( 63, 62, 60 ), PoolIntArray( 60, 62, 61 ), PoolIntArray( 67, 66, 64 ), PoolIntArray( 64, 66, 65 ), PoolIntArray( 70, 69, 71 ), PoolIntArray( 71, 69, 68 ), PoolIntArray( 71, 68, 74 ), PoolIntArray( 71, 74, 73 ), PoolIntArray( 71, 73, 72 ), PoolIntArray( 77, 76, 75 ), PoolIntArray( 80, 79, 78 ), PoolIntArray( 82, 81, 83 ), PoolIntArray( 83, 81, 84 ), PoolIntArray( 88, 87, 85 ), PoolIntArray( 85, 87, 86 ), PoolIntArray( 92, 91, 89 ), PoolIntArray( 89, 91, 90 ), PoolIntArray( 94, 93, 95 ), PoolIntArray( 95, 93, 96 ), PoolIntArray( 103, 102, 104 ), PoolIntArray( 104, 102, 101 ), PoolIntArray( 104, 101, 100 ), PoolIntArray( 104, 100, 99 ), PoolIntArray( 104, 99, 98 ), PoolIntArray( 104, 98, 97 ), PoolIntArray( 108, 107, 105 ), PoolIntArray( 105, 107, 106 ), PoolIntArray( 111, 110, 109 ), PoolIntArray( 115, 114, 112 ), PoolIntArray( 112, 114, 113 ), PoolIntArray( 117, 116, 118 ), PoolIntArray( 118, 116, 121 ), PoolIntArray( 118, 121, 120 ), PoolIntArray( 118, 120, 119 ) ]
+vertices = PoolVector3Array( -1133.99, -4501.26, 1898.35, -1134.17, -4501.26, 1898.35, -1134.17, -4501.26, 1898.53, -1130.57, -4501.26, 1898.71, -1130.57, -4501.26, 1898.71, -1129.85, -4501.26, 1898.71, -1129.85, -4501.26, 1895.29, -1133.99, -4501.26, 1895.29, -1133.99, -4501.26, 1898.35, -1126.07, -4501.26, 1897.99, -1129.31, -4501.26, 1898.71, -1129.31, -4501.26, 1898.89, -1129.13, -4501.26, 1898.89, -1125.89, -4501.26, 1898.17, -1125.89, -4501.26, 1897.99, -1129.85, -4501.26, 1895.29, -1129.85, -4501.26, 1898.71, -1129.31, -4501.26, 1898.71, -1126.07, -4501.26, 1897.99, -1126.07, -4501.26, 1895.29, -1129.13, -4501.26, 1898.89, -1125.71, -4501.26, 1898.17, -1125.89, -4501.26, 1898.17, -1106.99, -4501.26, 1901.41, -1106.99, -4501.26, 1901.59, -1106.81, -4501.26, 1901.59, -1106.81, -4501.26, 1897.99, -1106.99, -4501.26, 1897.99, -1106.99, -4501.26, 1898.17, -1108.43, -4501.26, 1898.17, -1108.43, -4501.26, 1901.41, -1106.99, -4501.26, 1901.41, -1106.99, -4501.26, 1898.17, -1106.81, -4501.26, 1901.59, -1106.81, -4501.26, 1904.83, -1093.13, -4501.26, 1904.83, -1106.81, -4501.26, 1897.99, -1106.99, -4501.26, 1898.17, -1106.99, -4501.26, 1901.41, -1106.81, -4501.26, 1901.59, -1093.13, -4501.26, 1904.83, -1093.13, -4501.26, 1895.29, -1093.13, -4501.26, 1895.29, -1106.81, -4501.26, 1895.29, -1106.81, -4501.26, 1897.99, -1129.13, -4501.26, 1900.69, -1129.31, -4501.26, 1900.69, -1129.31, -4501.26, 1900.87, -1126.07, -4501.26, 1901.77, -1126.07, -4501.26, 1901.59, -1126.07, -4501.26, 1901.59, -1125.89, -4501.26, 1901.59, -1125.89, -4501.26, 1901.41, -1129.31, -4501.26, 1900.87, -1129.49, -4501.26, 1900.87, -1126.07, -4501.26, 1901.77, -1129.13, -4501.26, 1900.69, -1126.07, -4501.26, 1901.59, -1125.89, -4501.26, 1901.41, -1125.71, -4501.26, 1898.17, -1129.13, -4501.26, 1898.89, -1124.45, -4501.26, 1901.41, -1124.45, -4501.26, 1898.17, -1125.71, -4501.26, 1898.17, -1125.89, -4501.26, 1901.41, -1124.45, -4501.26, 1901.41, -1108.43, -4501.26, 1901.41, -1108.43, -4501.26, 1898.17, -1124.45, -4501.26, 1898.17, -1143.71, -4501.26, 1901.59, -1143.53, -4501.26, 1901.59, -1143.53, -4501.26, 1901.41, -1143.53, -4501.26, 1901.41, -1142.09, -4501.26, 1901.41, -1142.09, -4501.26, 1898.53, -1143.71, -4501.26, 1901.59, -1143.53, -4501.26, 1901.41, -1142.09, -4501.26, 1898.53, -1146.41, -4501.26, 1898.53, -1146.41, -4501.26, 1906.45, -1143.71, -4501.26, 1906.45, -1143.71, -4501.26, 1901.59, -1146.41, -4501.26, 1898.53, -1142.09, -4501.26, 1901.41, -1135.61, -4501.26, 1901.41, -1135.61, -4501.26, 1898.53, -1142.09, -4501.26, 1898.53, -1134.17, -4501.26, 1901.41, -1134.17, -4501.26, 1901.59, -1133.99, -4501.26, 1901.59, -1130.57, -4501.26, 1900.87, -1130.57, -4501.26, 1900.69, -1130.75, -4501.26, 1900.69, -1133.99, -4501.26, 1901.59, -1133.99, -4501.26, 1901.95, -1130.75, -4501.26, 1898.89, -1130.57, -4501.26, 1898.89, -1130.57, -4501.26, 1898.71, -1134.17, -4501.26, 1898.53, -1134.17, -4501.26, 1898.53, -1135.61, -4501.26, 1898.53, -1135.61, -4501.26, 1901.41, -1134.17, -4501.26, 1901.41, -1133.99, -4501.26, 1901.59, -1130.75, -4501.26, 1900.69, -1130.75, -4501.26, 1898.89, -1134.17, -4501.26, 1898.53, -1134.17, -4501.26, 1901.41, -1133.99, -4501.26, 1901.95, -1130.39, -4501.26, 1900.87, -1130.57, -4501.26, 1900.87, -1130.21, -4499.72, 1899.25, -1130.21, -4499.72, 1900.33, -1129.67, -4499.72, 1900.33, -1129.67, -4499.72, 1899.25, -1129.85, -4501.26, 1904.83, -1129.85, -4501.26, 1900.87, -1130.39, -4501.26, 1900.87, -1133.99, -4501.26, 1901.95, -1133.99, -4501.26, 1904.83, -1126.07, -4501.26, 1901.77, -1129.49, -4501.26, 1900.87, -1129.85, -4501.26, 1900.87, -1129.85, -4501.26, 1904.83, -1126.07, -4501.26, 1904.83, -1146.41, -4501.26, 1907.71, -1146.59, -4501.26, 1907.71, -1146.59, -4501.26, 1907.89, -1146.95, -4501.26, 1921.39, -1146.95, -4501.26, 1921.57, -1146.77, -4501.26, 1921.57, -1143.17, -4501.26, 1921.57, -1142.99, -4501.26, 1921.57, -1142.99, -4501.26, 1921.39, -1143.53, -4501.26, 1907.89, -1143.53, -4501.26, 1907.71, -1143.71, -4501.26, 1907.71, -1146.77, -4501.26, 1921.57, -1146.77, -4501.26, 1921.93, -1146.59, -4501.26, 1921.93, -1143.35, -4501.26, 1921.93, -1143.17, -4501.26, 1921.93, -1143.17, -4501.26, 1921.57, -1143.71, -4501.26, 1907.71, -1143.71, -4501.26, 1906.45, -1146.41, -4501.26, 1906.45, -1146.41, -4501.26, 1907.71, -1149.83, -4501.26, 1907.89, -1149.83, -4501.26, 1921.39, -1146.95, -4501.26, 1921.39, -1146.59, -4501.26, 1907.89, -1143.53, -4501.26, 1907.89, -1143.71, -4501.26, 1907.71, -1146.41, -4501.26, 1907.71, -1146.59, -4501.26, 1907.89, -1146.95, -4501.26, 1921.39, -1146.77, -4501.26, 1921.57, -1143.17, -4501.26, 1921.57, -1142.99, -4501.26, 1921.39, -1146.77, -4501.26, 1921.57, -1146.59, -4501.26, 1921.93, -1143.35, -4501.26, 1921.93, -1143.17, -4501.26, 1921.57, -1146.59, -4501.26, 1921.93, -1146.59, -4501.26, 1923.37, -1143.35, -4501.26, 1923.37, -1143.35, -4501.26, 1921.93, -1142.99, -4501.26, 1921.39, -1140.29, -4501.26, 1921.39, -1140.29, -4501.26, 1907.89, -1143.53, -4501.26, 1907.89, -1142.99, -4501.26, 1928.41, -1142.99, -4501.26, 1928.23, -1143.17, -4501.26, 1928.23, -1143.17, -4501.26, 1928.23, -1143.17, -4501.26, 1928.05, -1143.35, -4501.26, 1928.05, -1141.55, -4501.26, 1931.29, -1141.55, -4501.26, 1928.41, -1142.99, -4501.26, 1928.41, -1141.55, -4501.26, 1931.29, -1142.99, -4501.26, 1928.41, -1143.17, -4501.26, 1928.23, -1141.55, -4501.26, 1931.29, -1143.17, -4501.26, 1928.23, -1143.35, -4501.26, 1928.05, -1146.59, -4501.26, 1931.29, -1143.35, -4501.26, 1928.05, -1143.35, -4501.26, 1923.37, -1146.59, -4501.26, 1923.37, -1146.59, -4501.26, 1931.29, -1133.63, -4501.26, 1931.29, -1133.63, -4501.26, 1931.47, -1133.45, -4501.26, 1931.47, -1133.45, -4501.26, 1928.41, -1126.43, -4501.26, 1931.47, -1126.25, -4501.26, 1931.47, -1126.25, -4501.26, 1931.29, -1126.25, -4501.26, 1928.59, -1126.25, -4501.26, 1928.41, -1126.43, -4501.26, 1928.41, -1133.27, -4501.26, 1928.23, -1133.45, -4501.26, 1928.23, -1133.45, -4501.26, 1928.41, -1133.45, -4501.26, 1931.47, -1133.45, -4501.26, 1931.83, -1133.27, -4501.26, 1931.83, -1126.25, -4501.26, 1931.29, -1124.99, -4501.26, 1931.29, -1124.99, -4501.26, 1928.59, -1126.25, -4501.26, 1928.59, -1126.43, -4501.26, 1925.17, -1133.27, -4501.26, 1925.17, -1133.27, -4501.26, 1928.23, -1126.43, -4501.26, 1928.41, -1126.43, -4501.26, 1931.47, -1126.25, -4501.26, 1931.29, -1126.25, -4501.26, 1928.59, -1126.43, -4501.26, 1928.41, -1133.27, -4501.26, 1928.23, -1133.45, -4501.26, 1928.41, -1133.45, -4501.26, 1931.47, -1133.27, -4501.26, 1931.83, -1133.27, -4501.26, 1931.83, -1133.27, -4501.26, 1934.89, -1126.43, -4501.26, 1934.89, -1126.43, -4501.26, 1931.47, -1135.07, -4501.26, 1928.41, -1135.07, -4501.26, 1931.29, -1133.63, -4501.26, 1931.29, -1133.45, -4501.26, 1928.41, -1118.87, -4501.26, 1931.29, -1118.87, -4501.26, 1931.47, -1118.69, -4501.26, 1931.47, -1113.11, -4501.26, 1931.65, -1112.93, -4501.26, 1931.65, -1112.93, -4501.26, 1931.47, -1112.93, -4501.26, 1928.41, -1112.93, -4501.26, 1928.23, -1113.11, -4501.26, 1928.23, -1118.69, -4501.26, 1928.41, -1118.87, -4501.26, 1928.41, -1118.87, -4501.26, 1928.59, -1112.21, -4501.26, 1931.47, -1112.21, -4501.26, 1931.65, -1111.85, -4501.26, 1931.65, -1111.67, -4501.26, 1928.41, -1118.69, -4501.26, 1932.19, -1118.87, -4501.26, 1932.19, -1118.87, -4501.26, 1934.71, -1118.87, -4501.26, 1925.17, -1118.87, -4501.26, 1927.69, -1118.69, -4501.26, 1927.69, -1118.69, -4501.26, 1931.47, -1118.69, -4501.26, 1932.19, -1113.11, -4501.26, 1931.65, -1112.21, -4501.26, 1931.47, -1111.67, -4501.26, 1928.41, -1112.93, -4501.26, 1928.41, -1112.93, -4501.26, 1931.47, -1113.11, -4501.26, 1928.23, -1118.69, -4501.26, 1927.69, -1118.69, -4501.26, 1928.41, -1113.11, -4501.26, 1931.65, -1112.93, -4501.26, 1931.47, -1112.93, -4501.26, 1928.41, -1113.11, -4501.26, 1928.23, -1118.69, -4501.26, 1928.41, -1118.87, -4501.26, 1928.59, -1118.87, -4501.26, 1931.29, -1118.69, -4501.26, 1931.47, -1113.11, -4501.26, 1925.17, -1118.87, -4501.26, 1925.17, -1118.69, -4501.26, 1927.69, -1113.11, -4501.26, 1928.23, -1118.69, -4501.26, 1932.19, -1118.87, -4501.26, 1934.71, -1113.11, -4501.26, 1934.71, -1113.11, -4501.26, 1931.65, -1124.99, -4501.26, 1928.59, -1124.99, -4501.26, 1931.29, -1118.87, -4501.26, 1931.29, -1118.87, -4501.26, 1928.59, -1141.55, -4501.26, 1931.29, -1135.07, -4501.26, 1931.29, -1135.07, -4501.26, 1928.41, -1141.55, -4501.26, 1928.41, -1104.11, -4501.26, 1931.65, -1104.11, -4501.26, 1928.41, -1111.67, -4501.26, 1928.41, -1111.85, -4501.26, 1931.65, -1102.67, -4501.26, 1931.65, -1102.67, -4501.26, 1931.83, -1102.49, -4501.26, 1931.83, -1102.49, -4501.26, 1931.83, -1102.49, -4501.26, 1932.01, -1102.31, -4501.26, 1932.01, -1102.31, -4501.26, 1932.01, -1102.31, -4501.26, 1932.19, -1102.13, -4501.26, 1932.19, -1104.11, -4501.26, 1928.41, -1104.11, -4501.26, 1931.65, -1102.67, -4501.26, 1931.65, -1104.11, -4501.26, 1928.41, -1102.67, -4501.26, 1931.65, -1102.49, -4501.26, 1931.83, -1104.11, -4501.26, 1928.41, -1102.49, -4501.26, 1931.83, -1102.31, -4501.26, 1932.01, -1104.11, -4501.26, 1928.41, -1102.31, -4501.26, 1932.01, -1102.13, -4501.26, 1932.19, -1099.07, -4501.26, 1928.41, -1102.13, -4501.26, 1932.19, -1102.13, -4501.26, 1937.05, -1099.07, -4501.26, 1936.87, -1099.07, -4501.26, 1928.41, -1102.13, -4501.26, 1938.49, -1102.31, -4501.26, 1938.49, -1102.31, -4501.26, 1938.67, -1098.71, -4501.26, 1938.67, -1098.71, -4501.26, 1938.49, -1098.89, -4501.26, 1938.49, -1098.89, -4501.26, 1938.49, -1098.89, -4501.26, 1938.13, -1099.07, -4501.26, 1938.13, -1102.13, -4501.26, 1938.49, -1099.07, -4501.26, 1938.13, -1099.07, -4501.26, 1936.87, -1102.13, -4501.26, 1937.05, -1102.13, -4501.26, 1938.49, -1102.31, -4501.26, 1938.67, -1104.47, -4501.26, 1938.67, -1104.47, -4501.26, 1951.45, -1095.65, -4501.26, 1951.45, -1095.65, -4501.26, 1938.67, -1098.71, -4501.26, 1938.67, -1098.71, -4501.26, 1938.67, -1098.89, -4501.26, 1938.49, -1102.13, -4501.26, 1938.49, -1102.31, -4501.26, 1938.67, -1104.47, -4501.26, 1951.45, -1095.65, -4501.26, 1951.45 )
+polygons = [ PoolIntArray( 1, 0, 2 ), PoolIntArray( 2, 0, 3 ), PoolIntArray( 5, 4, 6 ), PoolIntArray( 6, 4, 8 ), PoolIntArray( 6, 8, 7 ), PoolIntArray( 11, 10, 12 ), PoolIntArray( 12, 10, 9 ), PoolIntArray( 12, 9, 14 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 16, 15, 17 ), PoolIntArray( 17, 15, 18 ), PoolIntArray( 18, 15, 19 ), PoolIntArray( 22, 21, 20 ), PoolIntArray( 25, 24, 23 ), PoolIntArray( 28, 27, 26 ), PoolIntArray( 32, 31, 29 ), PoolIntArray( 29, 31, 30 ), PoolIntArray( 35, 34, 33 ), PoolIntArray( 37, 36, 38 ), PoolIntArray( 38, 36, 39 ), PoolIntArray( 39, 36, 41 ), PoolIntArray( 39, 41, 40 ), PoolIntArray( 44, 43, 42 ), PoolIntArray( 46, 45, 47 ), PoolIntArray( 47, 45, 49 ), PoolIntArray( 47, 49, 48 ), PoolIntArray( 52, 51, 50 ), PoolIntArray( 55, 54, 53 ), PoolIntArray( 57, 56, 58 ), PoolIntArray( 58, 56, 60 ), PoolIntArray( 58, 60, 59 ), PoolIntArray( 62, 61, 63 ), PoolIntArray( 63, 61, 64 ), PoolIntArray( 68, 67, 65 ), PoolIntArray( 65, 67, 66 ), PoolIntArray( 71, 70, 69 ), PoolIntArray( 74, 73, 72 ), PoolIntArray( 76, 75, 77 ), PoolIntArray( 77, 75, 78 ), PoolIntArray( 80, 79, 81 ), PoolIntArray( 81, 79, 82 ), PoolIntArray( 86, 85, 83 ), PoolIntArray( 83, 85, 84 ), PoolIntArray( 89, 88, 87 ), PoolIntArray( 91, 90, 92 ), PoolIntArray( 92, 90, 93 ), PoolIntArray( 93, 90, 94 ), PoolIntArray( 96, 95, 97 ), PoolIntArray( 97, 95, 98 ), PoolIntArray( 102, 101, 99 ), PoolIntArray( 99, 101, 100 ), PoolIntArray( 107, 106, 103 ), PoolIntArray( 103, 106, 104 ), PoolIntArray( 104, 106, 105 ), PoolIntArray( 110, 109, 108 ), PoolIntArray( 114, 113, 111 ), PoolIntArray( 111, 113, 112 ), PoolIntArray( 116, 115, 117 ), PoolIntArray( 117, 115, 118 ), PoolIntArray( 118, 115, 119 ), PoolIntArray( 121, 120, 122 ), PoolIntArray( 122, 120, 124 ), PoolIntArray( 122, 124, 123 ), PoolIntArray( 127, 126, 125 ), PoolIntArray( 130, 129, 128 ), PoolIntArray( 133, 132, 131 ), PoolIntArray( 136, 135, 134 ), PoolIntArray( 139, 138, 137 ), PoolIntArray( 142, 141, 140 ), PoolIntArray( 146, 145, 143 ), PoolIntArray( 143, 145, 144 ), PoolIntArray( 148, 147, 149 ), PoolIntArray( 149, 147, 150 ), PoolIntArray( 152, 151, 153 ), PoolIntArray( 153, 151, 154 ), PoolIntArray( 154, 151, 155 ), PoolIntArray( 155, 151, 156 ), PoolIntArray( 156, 151, 157 ), PoolIntArray( 157, 151, 158 ), PoolIntArray( 160, 159, 161 ), PoolIntArray( 161, 159, 162 ), PoolIntArray( 166, 165, 163 ), PoolIntArray( 163, 165, 164 ), PoolIntArray( 168, 167, 169 ), PoolIntArray( 169, 167, 170 ), PoolIntArray( 173, 172, 171 ), PoolIntArray( 176, 175, 174 ), PoolIntArray( 179, 178, 177 ), PoolIntArray( 182, 181, 180 ), PoolIntArray( 184, 183, 185 ), PoolIntArray( 185, 183, 186 ), PoolIntArray( 188, 187, 189 ), PoolIntArray( 189, 187, 190 ), PoolIntArray( 192, 191, 193 ), PoolIntArray( 193, 191, 194 ), PoolIntArray( 197, 196, 195 ), PoolIntArray( 200, 199, 198 ), PoolIntArray( 203, 202, 201 ), PoolIntArray( 206, 205, 204 ), PoolIntArray( 210, 209, 207 ), PoolIntArray( 207, 209, 208 ), PoolIntArray( 212, 211, 213 ), PoolIntArray( 213, 211, 214 ), PoolIntArray( 216, 215, 217 ), PoolIntArray( 217, 215, 218 ), PoolIntArray( 218, 215, 219 ), PoolIntArray( 219, 215, 220 ), PoolIntArray( 220, 215, 221 ), PoolIntArray( 221, 215, 222 ), PoolIntArray( 224, 223, 225 ), PoolIntArray( 225, 223, 226 ), PoolIntArray( 228, 227, 229 ), PoolIntArray( 229, 227, 230 ), PoolIntArray( 233, 232, 231 ), PoolIntArray( 236, 235, 234 ), PoolIntArray( 239, 238, 237 ), PoolIntArray( 242, 241, 240 ), PoolIntArray( 244, 243, 245 ), PoolIntArray( 245, 243, 246 ), PoolIntArray( 249, 248, 247 ), PoolIntArray( 252, 251, 250 ), PoolIntArray( 255, 254, 253 ), PoolIntArray( 259, 258, 256 ), PoolIntArray( 256, 258, 257 ), PoolIntArray( 262, 261, 260 ), PoolIntArray( 268, 267, 269 ), PoolIntArray( 269, 267, 270 ), PoolIntArray( 270, 267, 266 ), PoolIntArray( 270, 266, 265 ), PoolIntArray( 270, 265, 264 ), PoolIntArray( 270, 264, 263 ), PoolIntArray( 272, 271, 273 ), PoolIntArray( 273, 271, 274 ), PoolIntArray( 276, 275, 277 ), PoolIntArray( 277, 275, 278 ), PoolIntArray( 282, 281, 279 ), PoolIntArray( 279, 281, 280 ), PoolIntArray( 286, 285, 283 ), PoolIntArray( 283, 285, 284 ), PoolIntArray( 288, 287, 289 ), PoolIntArray( 289, 287, 290 ), PoolIntArray( 293, 292, 291 ), PoolIntArray( 296, 295, 294 ), PoolIntArray( 299, 298, 297 ), PoolIntArray( 302, 301, 300 ), PoolIntArray( 303, 305, 304 ), PoolIntArray( 306, 308, 307 ), PoolIntArray( 310, 309, 311 ), PoolIntArray( 311, 309, 312 ), PoolIntArray( 314, 313, 315 ), PoolIntArray( 315, 313, 316 ), PoolIntArray( 319, 318, 317 ), PoolIntArray( 322, 321, 320 ), PoolIntArray( 324, 323, 325 ), PoolIntArray( 325, 323, 326 ), PoolIntArray( 328, 327, 329 ), PoolIntArray( 329, 327, 330 ), PoolIntArray( 333, 332, 331 ), PoolIntArray( 336, 335, 334 ), PoolIntArray( 338, 337, 339 ), PoolIntArray( 339, 337, 340 ), PoolIntArray( 340, 337, 341 ), PoolIntArray( 341, 337, 342 ) ]
 geometry/parsed_geometry_type = 2
 geometry/collision_mask = 4294967295
-cell/size = 0.48
-cell/height = 1.0
-agent/radius = 0.2
-agent/max_climb = 0.39
+cell/size = 0.18
+cell/height = 0.22
+agent/radius = 0.1
+agent/max_climb = 0.53
+agent/max_slope = 28.0
 region/min_size = 3.0
-edge/max_length = 36.06
-edge/max_error = 1.0
+edge/max_length = 21.8
+edge/max_error = 0.32
 polygon/verts_per_poly = 10.0
 detail/sample_distance = 2.83
+filter/ledge_spans = true
 filter/filter_walkable_low_height_spans = true
 
 [sub_resource type="BoxShape" id=1]
@@ -180,7 +182,7 @@ size = Vector3( 0.1, 30, 0.1 )
 navmesh = SubResource( 61 )
 
 [node name="NewPlayerDungeon" type="Spatial" parent="Navigation/NavigationMeshInstance"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1131.4, 4500, 1900 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1131.4, -4501.6, 1900 )
 
 [node name="Room1" type="Spatial" parent="Navigation/NavigationMeshInstance/NewPlayerDungeon"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 31, 0, 0 )
@@ -883,203 +885,203 @@ transform = Transform( -4.37114e-08, 0.939693, -0.34202, 0, 0.34202, 0.939693, 1
 [node name="Corners" type="Spatial" parent="."]
 
 [node name="CornerPillar1" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1895 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, -4500, 1895 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar1"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar2" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1895 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, -4500, 1895 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar2"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar3" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, 4500, 1905 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107, -4500, 1905 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar3"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar4" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, 4500, 1905 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1093, -4500, 1905 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar4"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar5" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1898 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, -4500, 1898 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar5"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar6" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, 4500, 1901.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1107.5, -4500, 1901.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar6"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar7" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1901.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, -4500, 1901.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar7"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar8" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, 4500, 1898 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1125.5, -4500, 1898 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar8"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar9" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1905 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, -4500, 1905 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar9"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar10" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, 4500, 1895 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126, -4500, 1895 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar10"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar11" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1895 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, -4500, 1895 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar11"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar12" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, 4500, 1905 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134, -4500, 1905 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar12"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar13" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1899 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, -4500, 1899 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar13"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar14" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, 4500, 1900.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1130.5, -4500, 1900.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar14"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar15" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.5, 4500, 1900.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.5, -4500, 1900.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar15"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar16" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1898.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, -4500, 1898.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar16"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar17" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, 4500, 1901.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1134.5, -4500, 1901.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar17"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar18" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1146.5, 4500, 1898.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1146.5, -4500, 1898.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar18"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar19" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1901.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, -4500, 1901.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar19"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar20" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, 4500, 1907.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.5, -4500, 1907.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar20"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar23" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1935 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, -4500, 1935 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar23"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar29" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, 4500, 1925 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1126.5, -4500, 1925 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar29"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar28" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1935 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, -4500, 1935 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar28"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar24" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, 4500, 1925 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1133.5, -4500, 1925 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar24"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar25" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1119, 4500, 1934.7 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1119, -4500, 1934.7 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar25"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar26" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1113, 4500, 1925 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1113, -4500, 1925 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar26"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar27" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1099, 4500, 1928.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1099, -4500, 1928.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar27"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar21" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1104.5, 4500, 1938.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1104.5, -4500, 1938.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar21"]
 mesh = SubResource( 46 )
 material/0 = null
 
 [node name="CornerPillar22" type="Spatial" parent="Corners"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1095.5, 4500, 1951.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1095.5, -4500, 1951.5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Corners/CornerPillar22"]
 mesh = SubResource( 46 )

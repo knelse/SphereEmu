@@ -23,7 +23,7 @@ material = SubResource( 65 )
 size = Vector3( 0.1, 0.1, 1 )
 
 [node name="Mob" type="KinematicBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1148.97, 4501.13, 1920.49 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1148.97, -4501.6, 1920.49 )
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
