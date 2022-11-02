@@ -25,6 +25,7 @@ namespace SphServer
         public static int currentId = 100;
         public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
         public static MainServer MainServerNode = null!;
+        public static readonly RandomNumberGenerator Rng = new();
 
         private static ushort getNewPlayerIndex()
         {

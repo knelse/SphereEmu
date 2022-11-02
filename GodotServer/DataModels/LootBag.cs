@@ -102,7 +102,7 @@ public class LootBag : IGameEntity
         bag.LootBag.Z = z;
         bag.LootBag.ParentNode = bag;
         // TODO: item gen logic
-        var itemCount = count == -1 ? (int) RNGHelper.GetUniform() * 3 + 1 : count;
+        var itemCount = count == -1 ? (int) (RNGHelper.GetUniform() * 3) + 1 : count;
 
         for (var i = 0; i < itemCount; i++)
         {
@@ -195,7 +195,8 @@ public class LootBag : IGameEntity
         var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
 
-        switch (Count)
+        // TODO: actual count. Will test with 1 for now
+        switch (1)
         {
             case 1:
                 var id_1 = Item0.ID >> 12;
@@ -245,5 +246,46 @@ public class LootBag : IGameEntity
         }
 
         Client.TryFindClientByIdAndSendData(clientId, itemList);
+    }
+
+    public byte[] GetContentsPacket()
+    {
+        // black 0 and white 1 mantras for now
+        var type = MainServer.Rng.RandiRange(0, 1);
+        int itemid;
+
+        if (type == 0)
+        {
+            itemid = MainServer.Rng.RandiRange(2401, 2474);
+
+            while (itemid is 2458 or 2408 or 2409)
+            {
+                itemid = MainServer.Rng.RandiRange(2401, 2474);
+            }
+        }
+        else
+        {
+            itemid = MainServer.Rng.RandiRange(2301, 2399);
+
+            while (itemid is 2373)
+            {
+                itemid = MainServer.Rng.RandiRange(2301, 2399);
+            }
+        }
+
+        var objid_1 = (byte) (((itemid & 0b11) << 6) + 0b100110);
+        var objid_2 = (byte) ((itemid >> 2) & 0b11111111);
+        var objid_3 = (byte) (((itemid >> 10) & 0b1111) + 0b00010000);
+
+        var bagid_1 = (byte) (((ID) & 0b111) << 5);
+        var bagid_2 = (byte) ((ID >> 3) & 0b11111111);
+        var bagid_3 = (byte) ((ID >> 11) & 0b11111);
+        Console.WriteLine($"{(type == 0 ? "Black " : "White ")} {itemid}");
+        return new byte[]
+        {
+            0x28, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID), (byte) (type == 0 ? 0xA4 : 0xA0), 
+            0x8F, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, 
+            objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, bagid_2, bagid_3, 0xA0, 0xC0, 0x02, 0x01, 0x00
+        };
     }
 }

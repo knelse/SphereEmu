@@ -258,17 +258,17 @@ public class Client : Node
                     {
                         bag.ShowDropitemListForClient(ID);
                         var type = (byte) (counter % 2 == 1 ? 0xD0 : 0xD8);
-                        var txt = File.ReadAllText("C:\\source\\itemDropPacketTest.txt").RemoveLineEndings();
-                        var test = new List<byte>
-                        {
-                            0x2C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(bag.Item0.ID), MajorByte(bag.Item0.ID), 
-                            // type, 0x87, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                            // 0x40, 0x91, 0x45, 0x66, 0xBC, 0x23, 0x48, 0x01, 0x06, 0x1E, 0x31, 0x01, 0x0A, 0x59, 0x00, 
-                            // 0xF0, 0xFF, 0xFF, 0xFF, 0x0F
-                        
-                        };
-                        test.AddRange(BinaryStringToByteArray(txt));
-                        StreamPeer.PutData(test.ToArray());
+                        // var txt = File.ReadAllText("C:\\source\\itemDropPacketTest.txt").RemoveLineEndings();
+                        // var test = new List<byte>
+                        // {
+                        //     0x2C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(bag.Item0.ID), MajorByte(bag.Item0.ID), 
+                        //     // type, 0x87, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+                        //     // 0x40, 0x91, 0x45, 0x66, 0xBC, 0x23, 0x48, 0x01, 0x06, 0x1E, 0x31, 0x01, 0x0A, 0x59, 0x00, 
+                        //     // 0xF0, 0xFF, 0xFF, 0xFF, 0x0F
+                        //
+                        // };
+                        // test.AddRange(BinaryStringToByteArray(txt));
+                        StreamPeer.PutData(bag.GetContentsPacket());
                     }
                 }
 
