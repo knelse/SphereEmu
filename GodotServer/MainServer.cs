@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Godot;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -26,6 +27,7 @@ namespace SphServer
         public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
         public static MainServer MainServerNode = null!;
         public static readonly RandomNumberGenerator Rng = new();
+        public static Dictionary<string, SortedSet<int>> ItemTypeNameToIdMapping = new();
 
         private static ushort getNewPlayerIndex()
         {
@@ -62,6 +64,25 @@ namespace SphServer
         
         public override void _Ready()
         {
+            var pref = System.IO.File.ReadAllLines("c:\\source\\_sphFilesDecode\\params\\grouppref.cfg");
+
+            foreach (var str in pref)
+            {
+                var split = str.Split(new [] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
+                if (!ItemTypeNameToIdMapping.ContainsKey(split[0]))
+                {
+                    ItemTypeNameToIdMapping.Add(split[0], new SortedSet<int>());
+                }
+                try
+                {
+                    ItemTypeNameToIdMapping[split[0]].Add(int.Parse(split[1]));
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            
             const int port = 25860;
             RNGHelper.SetSeedFromSystemTime();
 
