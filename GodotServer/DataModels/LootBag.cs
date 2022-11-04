@@ -312,10 +312,16 @@ public class LootBag : IGameEntity
                 }
                 return GetRandomFromSet(set5);
             case ItemType.Amulet: 
-                break;
             case ItemType.Bracelet:
-                break;
             case ItemType.Ring:
+                var set9 = MainServer.ItemTypeNameToIdMapping["magdef"];
+                var set10 = MainServer.ItemTypeNameToIdMapping["magdef_n"];
+
+                foreach (var val in set10)
+                {
+                    set9.Add(val);
+                }
+                return GetRandomFromSet(set9);
                 break;
             case ItemType.Armor:
             case ItemType.Shield:
@@ -372,7 +378,19 @@ public class LootBag : IGameEntity
             (int) ItemType.Mineral,
             (int) ItemType.MantraBlack,
             (int) ItemType.MantraWhite,
-            (int) ItemType.Powder
+            (int) ItemType.Powder,
+            (int) ItemType.Arbalet,
+            (int) ItemType.Sword,
+            (int) ItemType.Axe,
+            (int) ItemType.Amulet,
+            (int) ItemType.Bracelet,
+            (int) ItemType.Helm,
+            (int) ItemType.Armor,
+            (int) ItemType.Shield,
+            (int) ItemType.Gloves,
+            (int) ItemType.Shoes,
+            (int) ItemType.Belt,
+            (int) ItemType.Pants,
         };
         var type = (ItemType) GetRandomFromSet(typeFilter);
         var itemid = GetRandomObjectId(type);
@@ -397,36 +415,119 @@ public class LootBag : IGameEntity
                 bagid_2, bagid_3, 0xA0, 0xC0, 0x02, 0x01, 0x00
             };
         }
-        var count = type == ItemType.Powder ? MainServer.Rng.RandiRange(1, 19) : 1;
-        byte typeid_1 = 0;
-        byte typeid_2 = 0;
 
-        switch (type)
+        if (type is ItemType.Flower or ItemType.Metal or ItemType.Mineral or ItemType.Powder)
         {
-            case ItemType.Flower:
-                typeid_1 = 0x64;
-                typeid_2 = 0x89;
-                break;
-            case ItemType.Metal:
-                typeid_1 = 0x68;
-                typeid_2 = 0x89;
-                break;
-            case ItemType.Mineral:
-                typeid_1 = 0x60;
-                typeid_2 = 0x89;
-                break;
-            case ItemType.Powder:
-                typeid_1 = 0x14;
-                typeid_2 = 0x87;
-                break;
+            var count = type == ItemType.Powder ? MainServer.Rng.RandiRange(1, 19) : 1;
+            byte typeid_1 = 0;
+            byte typeid_2 = 0;
+
+            switch (type)
+            {
+                case ItemType.Flower:
+                    typeid_1 = 0x64;
+                    typeid_2 = 0x89;
+
+                    break;
+                case ItemType.Metal:
+                    typeid_1 = 0x68;
+                    typeid_2 = 0x89;
+
+                    break;
+                case ItemType.Mineral:
+                    typeid_1 = 0x60;
+                    typeid_2 = 0x89;
+
+                    break;
+                case ItemType.Powder:
+                    typeid_1 = 0x14;
+                    typeid_2 = 0x87;
+
+                    break;
+            }
+
+            return new byte[]
+            {
+                0x30, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID), typeid_1, typeid_2,
+                0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45,
+                objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF,
+                0xFF, 0xFF, 0x05, 0x16, (byte) ((count & 0b11111) << 3), (byte) ((count >> 5) & 0b11111111), 0x00
+            };
         }
-        
-        return new byte[]
+
+        if (type is ItemType.Arbalet or ItemType.Axe or ItemType.Sword or ItemType.Amulet or ItemType.Armor
+            or ItemType.Belt or ItemType.Bracelet or ItemType.Gloves or ItemType.Helm or ItemType.Pants
+            or ItemType.Shield or ItemType.Shoes)
         {
-            0x30, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID), typeid_1, typeid_2, 
-            0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45,
-            objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 
-            0xFF, 0xFF, 0x05, 0x16, (byte) ((count & 0b11111) << 3), (byte) ((count >> 5) & 0b11111111), 0x00
-        };
+            
+            byte typeid_1 = 0;
+            byte typeid_2 = 0;
+
+            switch (type)
+            {
+                case ItemType.Arbalet:
+                    typeid_1 = 0xD8;
+                    typeid_2 = 0x87;
+                    break;
+                case ItemType.Sword:
+                    typeid_1 = 0xD0;
+                    typeid_2 = 0x87;
+                    break;
+                case ItemType.Axe:
+                    typeid_1 = 0xD4;
+                    typeid_2 = 0x87;
+                    break;
+                case ItemType.Amulet:
+                    typeid_1 = 0xBC;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Armor: // only chain armor typeID for now
+                    typeid_1 = 0xB8;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Bracelet:
+                    typeid_1 = 0xDC;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Belt:
+                    typeid_1 = 0xCC;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Gloves:
+                    typeid_1 = 0x18;
+                    typeid_2 = 0x8C;
+                    break;
+                case ItemType.Helm:
+                    typeid_1 = 0xD4;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Pants:
+                    typeid_1 = 0xD8;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Shield:
+                    typeid_1 = 0xC0;
+                    typeid_2 = 0x8B;
+                    break;
+                case ItemType.Shoes:
+                    typeid_1 = 0x10;
+                    typeid_2 = 0x8C;
+                    break;
+            }
+            // B0 B_ B8 BC C0 C_ C_ CC D_ D4 D8 DC 
+            var prefix = 1;// MainServer.Rng.RandiRange(0, 15);
+            // currently, only "of damage" would work
+            objid_3 = (byte) (((itemid >> 10) & 0b1111) + (prefix << 4));
+            Console.WriteLine($"{typeid_1:X} {typeid_2:X}");
+            return new byte[]
+            {
+                0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
+                typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, 
+                bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+            };
+        }
+
+        return new byte[] { };
     }
 }

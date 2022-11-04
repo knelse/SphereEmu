@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -64,7 +65,13 @@ namespace SphServer
         
         public override void _Ready()
         {
-            var pref = System.IO.File.ReadAllLines("c:\\source\\_sphFilesDecode\\params\\grouppref.cfg");
+            // TODO: item filtering by subtype (e.g. crossbows should not contain letters, crystals and helmets -- thanks game)
+            var pref = System.IO.File.ReadAllLines("c:\\source\\_sphFilesDecode\\params\\grouppref.cfg").ToList();
+            var axes = System.IO.File.ReadAllLines("c:\\source\\_sphFilesDecode\\params\\group_axes.cfg").ToList();
+            axes.ForEach(val =>
+            {
+                pref.Add($"axes\t{val}");
+            });
 
             foreach (var str in pref)
             {
