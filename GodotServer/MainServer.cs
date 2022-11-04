@@ -91,7 +91,7 @@ namespace SphServer
             }
             
             const int port = 25860;
-            RNGHelper.SetSeedFromSystemTime();
+            Rng.Randomize();
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Win1251 = Encoding.GetEncoding(1251);

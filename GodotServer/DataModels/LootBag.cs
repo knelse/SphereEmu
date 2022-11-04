@@ -322,7 +322,6 @@ public class LootBag : IGameEntity
                     set9.Add(val);
                 }
                 return GetRandomFromSet(set9);
-                break;
             case ItemType.Armor:
             case ItemType.Shield:
             case ItemType.Gloves:
@@ -391,6 +390,7 @@ public class LootBag : IGameEntity
             (int) ItemType.Shoes,
             (int) ItemType.Belt,
             (int) ItemType.Pants,
+            (int) ItemType.Ring
         };
         var type = (ItemType) GetRandomFromSet(typeFilter);
         var itemid = GetRandomObjectId(type);
@@ -525,6 +525,18 @@ public class LootBag : IGameEntity
                 typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, 
                 bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+            };
+        }
+
+        if (type == ItemType.Ring)
+        {
+            return new byte[]
+            {
+                0x3C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
+                0xE0, 0x8B, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x46, 0x01, bagid_1, 
+                bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x85, 0x77, 0x50, 0xBB, 0xFB, 0x22,
+                0x4B, 0x0B, 0x6B, 0x93, 0x4B, 0x73, 0x3B, 0x83, 0xA9, 0x01, 0x00
             };
         }
 
