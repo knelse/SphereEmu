@@ -285,43 +285,15 @@ public class LootBag : IGameEntity
         switch (type)
         {
             case ItemType.Arbalet:
-                var set1 = MainServer.ItemTypeNameToIdMapping["arbs"];
-                var set2 = MainServer.ItemTypeNameToIdMapping["arbs_n"];
-
-                foreach (var val in set2)
-                {
-                    set1.Add(val);
-                }
-                return GetRandomFromSet(set1);
+                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["arbs_n"]);
             case ItemType.Sword:
-                var set3 = MainServer.ItemTypeNameToIdMapping["swords"];
-                var set4 = MainServer.ItemTypeNameToIdMapping["swords_n"];
-
-                foreach (var val in set4)
-                {
-                    set3.Add(val);
-                }
-                return GetRandomFromSet(set3);
+                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["swords_n"]);
             case ItemType.Axe:
-                var set5 = MainServer.ItemTypeNameToIdMapping["axes"];
-                var set6 = MainServer.ItemTypeNameToIdMapping["axes_n"];
-
-                foreach (var val in set6)
-                {
-                    set5.Add(val);
-                }
-                return GetRandomFromSet(set5);
+                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["axes_n"]);
             case ItemType.Amulet: 
             case ItemType.Bracelet:
             case ItemType.Ring:
-                var set9 = MainServer.ItemTypeNameToIdMapping["magdef"];
-                var set10 = MainServer.ItemTypeNameToIdMapping["magdef_n"];
-
-                foreach (var val in set10)
-                {
-                    set9.Add(val);
-                }
-                return GetRandomFromSet(set9);
+                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["magdef_n"]);
             case ItemType.Armor:
             case ItemType.Shield:
             case ItemType.Gloves:
@@ -329,14 +301,7 @@ public class LootBag : IGameEntity
             case ItemType.Belt:
             case ItemType.Shoes:
             case ItemType.Pants:
-                var set7 = MainServer.ItemTypeNameToIdMapping["armor"];
-                var set8 = MainServer.ItemTypeNameToIdMapping["armor_n"];
-
-                foreach (var val in set8)
-                {
-                    set7.Add(val);
-                }
-                return GetRandomFromSet(set7);
+                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["armor_n"]);
             // case ItemType.Shield:
             //     break;
             // case ItemType.Gloves:
