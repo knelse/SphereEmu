@@ -68,26 +68,6 @@ namespace SphServer
         
         public override void _Ready()
         {
-            // // TODO: item filtering by subtype (e.g. crossbows should not contain letters, crystals and helmets -- thanks game)
-            // var pref = System.IO.File.ReadAllLines("c:\\source\\_sphFilesDecode\\params\\grouppref.cfg").ToList();
-            //
-            // foreach (var str in pref)
-            // {
-            //     var split = str.Split(new [] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
-            //     if (!GameObjectDataOld.ContainsKey(split[0]))
-            //     {
-            //         GameObjectDataOld.Add(split[0], new SortedSet<int>());
-            //     }
-            //     try
-            //     {
-            //         GameObjectDataOld[split[0]].Add(int.Parse(split[1]));
-            //     }
-            //     catch
-            //     {
-            //         // ignored
-            //     }
-            // }
-            
             LoadGameObjectData();
             
             const int port = 25860;
@@ -148,7 +128,7 @@ namespace SphServer
                     var gameId = int.Parse(entrySplit[0]);
 
                     if (gameId is >= 4740 and <= 4749 or 4302 or 4304 or 4306 or 4308 or 4310 or 4312 or 4314 
-                        or 4316 or 4318 or 4320 or 4450 or 4192 or 4193 or 4194 or 4199 or 4186 or 4187 or 4245)
+                        or 4316 or 4318 or 4320 or 4450 or 4192 or 4193 or 4194 or 4199 or 4186 or 4187 or >= 4242 and <= 4249)
                     {
                         // event armor
                         continue;
