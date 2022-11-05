@@ -99,6 +99,7 @@ public class LootBag : IGameEntity
         var bag = (LootBagNode) LootBagScene.Instance();
         bag.LootBag = new LootBag();
         bag.LootBag.ID = MainServer.AddToGameObjects(bag.LootBag);
+        bag.LootBag.TitleLevelMinusOne = (byte) level;
         bag.LootBag.X = x;
         bag.LootBag.Y = y;
         bag.LootBag.Z = z;
@@ -250,164 +251,62 @@ public class LootBag : IGameEntity
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    enum ItemType
-    {
-        Arbalet,
-        Sword,
-        Axe,
-        Amulet,
-        Bracelet,
-        Ring,
-        Armor,
-        Shield,
-        Gloves,
-        Helm,
-        Belt, 
-        Shoes,
-        Pants,
-        Mineral,
-        Flower,
-        Metal,
-        MantraWhite,
-        MantraBlack,
-        Powder
-    }
-
-    private static int itemTypeCount => Enum.GetValues(typeof(ItemType)).Length;
-
-    private int GetRandomFromSet(SortedSet<int> set)
-    {
-        return set.ElementAt(MainServer.Rng.RandiRange(0, set.Count - 1));
-    }
-
-    private int GetRandomObjectId(ItemType type)
-    {
-        switch (type)
-        {
-            case ItemType.Arbalet:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["arbs_n"]);
-            case ItemType.Sword:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["swords_n"]);
-            case ItemType.Axe:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["axes_n"]);
-            case ItemType.Amulet: 
-            case ItemType.Bracelet:
-            case ItemType.Ring:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["magdef_n"]);
-            case ItemType.Armor:
-            case ItemType.Shield:
-            case ItemType.Gloves:
-            case ItemType.Helm:
-            case ItemType.Belt:
-            case ItemType.Shoes:
-            case ItemType.Pants:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["armor_n"]);
-            // case ItemType.Shield:
-            //     break;
-            // case ItemType.Gloves:
-            //     break;
-            // case ItemType.Helm:
-            //     break;
-            // case ItemType.Belt:
-            //     break;
-            // case ItemType.Shoes:
-            //     break;
-            // case ItemType.Pants:
-            //     break;
-            case ItemType.Mineral:
-            case ItemType.Flower:
-            case ItemType.Metal:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["alch"]);
-            // case ItemType.Flower:
-            //     break;
-            // case ItemType.Metal:
-            //     break;
-            case ItemType.MantraBlack:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["mantra_b"]);
-            case ItemType.MantraWhite:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["mantra_w"]);
-            case ItemType.Powder:
-                return GetRandomFromSet(MainServer.ItemTypeNameToIdMapping["powder"]);
-        }
-
-        return 0;
-    }
-
     public byte[] GetContentsPacket()
     {
-        var typeFilter = new SortedSet<int>
-        {
-            (int) ItemType.Flower,
-            (int) ItemType.Metal,
-            (int) ItemType.Mineral,
-            (int) ItemType.MantraBlack,
-            (int) ItemType.MantraWhite,
-            (int) ItemType.Powder,
-            (int) ItemType.Arbalet,
-            (int) ItemType.Sword,
-            (int) ItemType.Axe,
-            (int) ItemType.Amulet,
-            (int) ItemType.Bracelet,
-            (int) ItemType.Helm,
-            (int) ItemType.Armor,
-            (int) ItemType.Shield,
-            (int) ItemType.Gloves,
-            (int) ItemType.Shoes,
-            (int) ItemType.Belt,
-            (int) ItemType.Pants,
-            (int) ItemType.Ring
-        };
-        var type = (ItemType) GetRandomFromSet(typeFilter);
-        var itemid = GetRandomObjectId(type);
+        var loot = GetRandomObjectData();
 
-        var objid_1 = (byte) (((itemid & 0b11) << 6) + 0b100110);
-        var objid_2 = (byte) ((itemid >> 2) & 0b11111111);
-        var objid_3 = (byte) (((itemid >> 10) & 0b1111) + 0b00010000);
+        var objid_1 = (byte) (((loot.GameId & 0b11) << 6) + 0b100110);
+        var objid_2 = (byte) ((loot.GameId >> 2) & 0b11111111);
+        var objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b00010000);
 
         var bagid_1 = (byte) (((ID) & 0b111) << 5);
         var bagid_2 = (byte) ((ID >> 3) & 0b11111111);
         var bagid_3 = (byte) ((ID >> 11) & 0b11111);
         
-        Console.WriteLine($"{Enum.GetName(typeof(ItemType), type)} {itemid}");
+        Console.WriteLine(loot.ToDebugString());
 
-        if (type is ItemType.MantraBlack or ItemType.MantraWhite)
+        if (loot.ObjectType is GameObjectType.MantraBlack or GameObjectType.MantraWhite)
         {
             return new byte[]
             {
                 0x28, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
-                (byte) (type == ItemType.MantraBlack ? 0xA4 : 0xA0), 0x8F, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                (byte) (loot.ObjectType == GameObjectType.MantraBlack ? 0xA4 : 0xA0), 0x8F, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, 
                 bagid_2, bagid_3, 0xA0, 0xC0, 0x02, 0x01, 0x00
             };
         }
 
-        if (type is ItemType.Flower or ItemType.Metal or ItemType.Mineral or ItemType.Powder)
+        if (loot.ObjectType is GameObjectType.Flower or GameObjectType.Metal or GameObjectType.Mineral 
+            or GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle 
+            or GameObjectType.Elixir_Trap)
         {
-            var count = type == ItemType.Powder ? MainServer.Rng.RandiRange(1, 19) : 1;
+            var count = loot.ObjectType == GameObjectType.Powder ? MainServer.Rng.RandiRange(1, 19) : 1;
             byte typeid_1 = 0;
             byte typeid_2 = 0;
 
-            switch (type)
+            switch (loot.ObjectType)
             {
-                case ItemType.Flower:
+                case GameObjectType.Flower:
                     typeid_1 = 0x64;
                     typeid_2 = 0x89;
-
                     break;
-                case ItemType.Metal:
+                case GameObjectType.Metal:
                     typeid_1 = 0x68;
                     typeid_2 = 0x89;
-
                     break;
-                case ItemType.Mineral:
+                case GameObjectType.Mineral:
                     typeid_1 = 0x60;
                     typeid_2 = 0x89;
-
                     break;
-                case ItemType.Powder:
+                case GameObjectType.Powder:
+                case GameObjectType.Powder_Area:
                     typeid_1 = 0x14;
                     typeid_2 = 0x87;
-
+                    break;
+                case GameObjectType.Elixir_Castle:
+                case GameObjectType.Elixir_Trap:
+                    typeid_1 = 0x60;
+                    typeid_2 = 0x87;
                     break;
             }
 
@@ -420,70 +319,72 @@ public class LootBag : IGameEntity
             };
         }
 
-        if (type is ItemType.Arbalet or ItemType.Axe or ItemType.Sword or ItemType.Amulet or ItemType.Armor
-            or ItemType.Belt or ItemType.Bracelet or ItemType.Gloves or ItemType.Helm or ItemType.Pants
-            or ItemType.Shield or ItemType.Shoes)
+        if (loot.ObjectType is GameObjectType.Crossbow or GameObjectType.Axe or GameObjectType.Sword or GameObjectType.Amulet or GameObjectType.Armor
+            or GameObjectType.Belt or GameObjectType.Bracelet or GameObjectType.Gloves or GameObjectType.Helmet or GameObjectType.Pants
+            or GameObjectType.Shield or GameObjectType.Shoes or GameObjectType.Robe)
         {
             
             byte typeid_1 = 0;
             byte typeid_2 = 0;
-
-            switch (type)
+        
+            switch (loot.ObjectType)
             {
-                case ItemType.Arbalet:
+                case GameObjectType.Crossbow:
                     typeid_1 = 0xD8;
                     typeid_2 = 0x87;
                     break;
-                case ItemType.Sword:
+                case GameObjectType.Sword:
                     typeid_1 = 0xD0;
                     typeid_2 = 0x87;
                     break;
-                case ItemType.Axe:
+                case GameObjectType.Axe:
                     typeid_1 = 0xD4;
                     typeid_2 = 0x87;
                     break;
-                case ItemType.Amulet:
+                case GameObjectType.Amulet:
                     typeid_1 = 0xBC;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Armor: // only chain armor typeID for now
+                case GameObjectType.Armor:
                     typeid_1 = 0xB8;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Bracelet:
+                case GameObjectType.Bracelet:
                     typeid_1 = 0xDC;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Belt:
+                case GameObjectType.Belt:
                     typeid_1 = 0xCC;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Gloves:
+                case GameObjectType.Gloves:
                     typeid_1 = 0x18;
                     typeid_2 = 0x8C;
                     break;
-                case ItemType.Helm:
+                case GameObjectType.Helmet:
                     typeid_1 = 0xD4;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Pants:
+                case GameObjectType.Pants:
                     typeid_1 = 0xD8;
                     typeid_2 = 0x8B;
                     break;
-                case ItemType.Shield:
-                    typeid_1 = 0xC0;
-                    typeid_2 = 0x8B;
+                case GameObjectType.Shield: // TODO: shouldn't be a wooden shield
+                    typeid_1 = 0x20;
+                    typeid_2 = 0x8C;
                     break;
-                case ItemType.Shoes:
+                case GameObjectType.Shoes:
                     typeid_1 = 0x10;
                     typeid_2 = 0x8C;
                     break;
+                case GameObjectType.Robe:
+                    typeid_1 = 0xE4;
+                    typeid_2 = 0x8B;
+                    break;
             }
-            // B0 B_ B8 BC C0 C_ C_ CC D_ D4 D8 DC 
             var prefix = 1;// MainServer.Rng.RandiRange(0, 15);
             // currently, only "of damage" would work
-            objid_3 = (byte) (((itemid >> 10) & 0b1111) + (prefix << 4));
-            Console.WriteLine($"{typeid_1:X} {typeid_2:X}");
+            objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + (prefix << 4));
             return new byte[]
             {
                 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
@@ -492,8 +393,8 @@ public class LootBag : IGameEntity
                 bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
             };
         }
-
-        if (type == ItemType.Ring)
+        
+        if (loot.ObjectType == GameObjectType.Ring)
         {
             return new byte[]
             {
@@ -505,6 +406,74 @@ public class LootBag : IGameEntity
             };
         }
 
+        Console.WriteLine("Unhandled game object");
+
         return new byte[] { };
+    }
+
+    public GameObjectData GetRandomObjectData()
+    {
+        var tierFilter = Math.Min(TitleLevelMinusOne, (byte) 74) / 5 + 1;
+        Console.WriteLine(tierFilter);
+        var typeFilter = new HashSet<GameObjectType>
+        {
+            GameObjectType.Flower,
+            GameObjectType.Metal,
+            GameObjectType.Mineral,
+            GameObjectType.Amulet,
+            GameObjectType.Armor,
+            GameObjectType.Robe,
+            GameObjectType.Belt,
+            GameObjectType.Bracelet,
+            GameObjectType.Gloves,
+            GameObjectType.Helmet,
+            GameObjectType.Pants,
+            GameObjectType.Ring,
+            GameObjectType.Shield,
+            GameObjectType.Shoes,
+            // Flag,
+            // Guild,
+            GameObjectType.MantraBlack,
+            GameObjectType.MantraWhite,
+            GameObjectType.Elixir_Castle, 
+            GameObjectType.Elixir_Trap,
+            GameObjectType.Powder,
+            GameObjectType.Powder_Area,
+            GameObjectType.Crossbow,
+            GameObjectType.Axe,
+            GameObjectType.Sword,
+        };
+
+        var kindFilter = new HashSet<GameObjectKind>
+        {
+            GameObjectKind.Alchemy,
+            GameObjectKind.Crossbow_New,
+            GameObjectKind.Armor_New,
+            GameObjectKind.Armor_Old, // "Old" robes only
+            GameObjectKind.Axe_New,
+            GameObjectKind.Powder,
+            GameObjectKind.Magical_New,
+            GameObjectKind.MantraBlack,
+            GameObjectKind.MantraWhite,
+            GameObjectKind.Sword_New,
+        };
+
+        var tierAgnosticTypes = new HashSet<GameObjectType>
+        {
+            GameObjectType.Flower,
+            GameObjectType.Metal,
+            GameObjectType.Mineral,
+        };
+
+        var lootPool = MainServer.GameObjectDataDb
+            .Where(x => 
+                kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType) 
+                                                        && (x.Value.Tier == tierFilter 
+                                                            || tierAgnosticTypes.Contains(x.Value.ObjectType)))
+            .Select(y => y.Value)
+            .ToList();
+
+        var random = MainServer.Rng.RandiRange(0, lootPool.Count - 1);
+        return lootPool.ElementAt(random);
     }
 }
