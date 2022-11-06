@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SphServer.DataModels;
 
@@ -132,8 +133,231 @@ public enum GameObjectType
     Unknown
 }
 
+public enum ItemSuffix
+{
+    None,
+    //---- Rings ----//
+    Health,
+    Ether,
+    Accuracy,
+    Air,
+    Durability,
+    Life,
+    Precision,
+    Endurance,
+    Fire,
+    Absorption,
+    Meditation,
+    Strength,
+    Earth,
+    Value,
+    Safety,
+    Prana,
+    Agility,
+    Water,
+    //---- Crossbows ----//
+    Cruelty,
+    Chaos,
+    Range,
+    // Ether,
+    Exhaustion,
+    Rush,
+    Penetration,
+    Distance,
+    Radiance,
+    Valor,
+    Speed,
+    Instability,
+    Mastery,
+    Disease,
+    Damage,
+    Disorder,
+    Decay,
+    Fatigue,
+    // Value,
+    //---- Other weapons ----//
+    // Cruelty,
+    // Chaos,
+    // Instability,
+    Devastation,
+    // Value,
+    // Exhaustion,
+    // Rush,
+    // Ether,
+    // Range,
+    Weakness,
+    // Valor,
+    // Speed,
+    // Fatigue,
+    // Distance,
+    // Penetration,
+    // Damage,
+    // Disorder,
+    // Disease,
+    // Decay,
+    Interdict,
+    //---- Robes ----//
+    // Safety,
+    // Prana,
+    // Fire,
+    // Durability,
+    // Life,
+    Dragon,
+    // Value,
+    // Health,
+    // Earth,
+    // Ether,
+    Deflection,
+    // Meditation,
+    Durability_Old,
+    Life_Old,
+    // Water,
+    Eclipse,
+    Safety_Old,
+    Prana_Old,
+    Deflection_Old,
+    Meditation_Old,
+    // Air,
+    Archmage,
+    Health_Old,
+    Ether_Old,
+    //---- Bracelets, Amulets ----//
+    // Safety,
+    // Ether,
+    // Durability,
+    // Health,
+    // Radiance,
+    // Absorption,
+    // Meditation,
+    // Value,
+    // Deflection,
+    // Precision,
+    // Damage,
+    //---- Helmets, Gloves, Belts, Pants, Shoes ----//
+    // Health,
+    // Value,
+    // Durability,
+    // Meditation,
+    // Absorption,
+    // Precision,
+    // Safety,
+    // Ether,
+    //---- Chests ----//
+    // Deflection,
+    // Health,
+    // Agility,
+    // Water,
+    // Value,
+    Concentration,
+    // Valor,
+    // Safety,
+    // Meditation,
+    Majesty_Old,
+    // Air,
+    // Strength,
+    Wholeness,
+    // Durability,
+    Invincibility,
+    // Prana,
+    Concentration_Old,
+    // Fire,
+    // Agility,
+    // Absorption,
+    // Health,
+    // Strength,
+    // Earth,
+    Elements,
+    Majesty,
+    //---- Shields ----//
+    // Deflection,
+    // Life,
+    Agility_Old,
+    // Water,
+    // Value,
+    // Concentration,
+    // Valor,
+    // Safety,
+    // Meditation,
+    // Majesty_Old,
+    // Air,
+    // Strength,
+    // Wholeness,
+    // Durability,
+    // Invincibility,
+    // Prana,
+    // Concentration_Old,
+    // Fire,
+    // Agility,
+    // Elements,
+    // Absorption,
+    // Health,
+    Strength_Old,
+    // Earth,
+    Elements_Old,
+    // Majesty,
+    Elements_New,
+    //---- Quest ----//
+    Secret,
+    Existence,
+    Adventure,
+    Myth,
+    Legend,
+    Silence,
+    Being,
+    Peace,
+    Prophecy,
+    Hike,
+    //---- Crystal ----//
+    // Strength,
+    Energy,
+    Persistence,
+    // Deflection,
+    //---- Castle ----// TODO: later
+    // Invincibility,
+    // Reliability,
+    // Blinding,
+    // Purification,
+    // Curse,
+    // Eradication,
+    // Life,
+    // Invincibility,
+    // Fright,
+    // Punishment,
+    // Devastation,
+    // Eradication,
+    // Life,
+    // Halt,
+    // Shackle,
+    // Reliability,
+    // Devastation,
+    // Rule,
+    // Deliverance,
+    // Whirl
+} 
+
 public static class GameObjectDataHelper
 {
+    public static HashSet<ItemSuffix> RingSuffixes = new ()
+    {
+        ItemSuffix.Health,
+        ItemSuffix.Ether,
+        ItemSuffix.Accuracy,
+        ItemSuffix.Air,
+        ItemSuffix.Durability,
+        ItemSuffix.Life,
+        ItemSuffix.Precision,
+        ItemSuffix.Endurance,
+        ItemSuffix.Fire,
+        ItemSuffix.Absorption,
+        ItemSuffix.Meditation,
+        ItemSuffix.Strength,
+        ItemSuffix.Earth,
+        ItemSuffix.Value,
+        ItemSuffix.Safety,
+        ItemSuffix.Prana,
+        ItemSuffix.Agility,
+        ItemSuffix.Water,
+    };
     public static GameObjectKind GetKindBySphereName(string sphName)
     {
         switch (sphName)
@@ -335,6 +559,7 @@ public class GameObjectData
     /// Seconds
     /// </summary>
     public int Duration;
+    public ItemSuffix Suffix = ItemSuffix.None;
 
     public string ToDebugString()
     {
@@ -350,6 +575,7 @@ public class GameObjectData
                $"EnduranceUp: {EnduranceUp} EarthUp: {EarthUp} AirUp: {AirUp} WaterUp: {WaterUp} FireUp: {FireUp} " +
                $"MAUp: {MAtkUpNegative} Weight: {Weight} Durability: {Durability} Range: {Range} Radius: {Radius} " +
                $"UseTime: {UseTime} VendorCost: {VendorCost} MutatorId: {MutatorId} Duration: {Duration} " +
-               $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7: {t7} Tier: {Tier}";
+               $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7: {t7} Tier: {Tier} " +
+               $"Suffix: {Enum.GetName(typeof(ItemSuffix), Suffix)}";
     }
 }

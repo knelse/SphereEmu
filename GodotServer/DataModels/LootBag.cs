@@ -396,13 +396,150 @@ public class LootBag : IGameEntity
         
         if (loot.ObjectType == GameObjectType.Ring)
         {
+            byte ringTypeId_1 = 0;
+            byte ringTypeId_2 = 0;
+
+            switch (loot.Suffix)
+            {                
+                
+                case ItemSuffix.Air:
+                case ItemSuffix.Water:
+                    ringTypeId_1 = 0x47;
+                    ringTypeId_2 = 0x01;
+                    break;
+                case ItemSuffix.Meditation:
+                case ItemSuffix.Life:
+                    ringTypeId_1 = 0x16;
+                    ringTypeId_2 = 0x60;
+                    break;
+                case ItemSuffix.Earth:
+                case ItemSuffix.Endurance:
+                    ringTypeId_1 = 0x46;
+                    ringTypeId_2 = 0x01;
+                    break;
+                case ItemSuffix.Health:
+                case ItemSuffix.Safety:
+                    ringTypeId_1 = 0x15;
+                    ringTypeId_2 = 0x60;
+                    break;
+                case ItemSuffix.Prana:
+                    ringTypeId_1 = 0x17;
+                    ringTypeId_2 = 0x60;
+                    break;
+                case ItemSuffix.Accuracy:
+                case ItemSuffix.Agility:
+                    ringTypeId_1 = 0x45;
+                    ringTypeId_2 = 0x01;
+                    break;
+                case ItemSuffix.Durability:
+                case ItemSuffix.Absorption:
+                    ringTypeId_1 = 0x14;
+                    ringTypeId_2 = 0x60;
+                    break;
+                case ItemSuffix.Fire: // TODO: do
+                    ringTypeId_1 = 0x15;
+                    ringTypeId_2 = 0x60;
+                    break;
+                case ItemSuffix.Strength: // TODO: do
+                    ringTypeId_1 = 0x15;
+                    ringTypeId_2 = 0x60;
+                    break;
+                default:
+                    Console.WriteLine($"Wrong suffix {Enum.GetName(typeof(ItemSuffix), loot.Suffix)}");
+                    break;
+            };
+
+            // these seem safe to ignore but we'll keep them same as live servers tend to do
+            byte ringTypeId_3 = 0;
+            byte ringTypeId_4 = 0;
+
+            switch (loot.Suffix)
+            {
+                case ItemSuffix.Air:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10100000);
+                    ringTypeId_3 = 0x98;
+                    ringTypeId_4 = 0x1A;
+                    break;
+                case ItemSuffix.Water:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b00100000);
+                    ringTypeId_3 = 0x18;
+                    ringTypeId_4 = 0x1A;
+                    break;
+                case ItemSuffix.Meditation:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10000000);
+                    ringTypeId_3 = 0xA9;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Life:
+                    objid_3 = (byte) ((loot.GameId >> 10) & 0b1111);
+                    ringTypeId_3 = 0xA1;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Earth:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10100000);
+                    ringTypeId_3 = 0x98;
+                    ringTypeId_4 = 0x19;
+                    break;
+                case ItemSuffix.Endurance:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b00100000);
+                    ringTypeId_3 = 0x18;
+                    ringTypeId_4 = 0x19;
+                    break;
+                case ItemSuffix.Health:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10000000);
+                    ringTypeId_3 = 0x99;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Safety:
+                    objid_3 = (byte) ((loot.GameId >> 10) & 0b1111);
+                    ringTypeId_3 = 0x91;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Prana:
+                    objid_3 = (byte) ((loot.GameId >> 10) & 0b1111);
+                    ringTypeId_3 = 0xB1;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Accuracy:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10100000);
+                    ringTypeId_3 = 0x98;
+                    ringTypeId_4 = 0x18;
+                    break;
+                case ItemSuffix.Agility:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b00100000);
+                    ringTypeId_3 = 0x18;
+                    ringTypeId_4 = 0x18;
+                    break;
+                case ItemSuffix.Durability:
+                    objid_3 = (byte) ((loot.GameId >> 10) & 0b1111);
+                    ringTypeId_3 = 0x81;
+                    ringTypeId_4 = 0x01;
+                    break;
+                case ItemSuffix.Absorption:
+                    objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + 0b10000000);
+                    ringTypeId_3 = 0x89;
+                    ringTypeId_4 = 0x91;
+                    break;
+                case ItemSuffix.Fire: // TODO: do
+                    ringTypeId_3 = 0x98;
+                    ringTypeId_4 = 0x1A;
+                    break;
+                case ItemSuffix.Strength: // TODO: do
+                    ringTypeId_3 = 0x98;
+                    ringTypeId_4 = 0x1A;
+                    break;
+                default:
+                    Console.WriteLine($"Wrong suffix {Enum.GetName(typeof(ItemSuffix), loot.Suffix)}");
+                    break;
+            };
+            
             return new byte[]
             {
                 0x3C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
                 0xE0, 0x8B, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x46, 0x01, bagid_1, 
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, ringTypeId_1, ringTypeId_2, bagid_1, 
                 bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x85, 0x77, 0x50, 0xBB, 0xFB, 0x22,
-                0x4B, 0x0B, 0x6B, 0x93, 0x4B, 0x73, 0x3B, 0x83, 0xA9, 0x01, 0x00
+                0x4B, 0x0B, 0x6B, 0x93, 0x4B, 0x73, 0x3B, 0x83, ringTypeId_3, ringTypeId_4, 0x00
             };
         }
 
@@ -444,6 +581,13 @@ public class LootBag : IGameEntity
             GameObjectType.Sword,
         };
 
+        var overrideFilter = new HashSet<GameObjectType>
+        {
+            GameObjectType.Ring,
+        };
+
+        typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
+
         var kindFilter = new HashSet<GameObjectKind>
         {
             GameObjectKind.Alchemy,
@@ -474,6 +618,34 @@ public class LootBag : IGameEntity
             .ToList();
 
         var random = MainServer.Rng.RandiRange(0, lootPool.Count - 1);
-        return lootPool.ElementAt(random);
+        var item = lootPool.ElementAt(random);
+
+        if (item.ObjectType == GameObjectType.Ring)
+        {
+            var suffixFilter = new List<ItemSuffix>
+            {
+                ItemSuffix.Health,
+                ItemSuffix.Accuracy,
+                ItemSuffix.Air,
+                ItemSuffix.Durability,
+                ItemSuffix.Life,
+                ItemSuffix.Endurance,
+                // ItemSuffix.Fire,
+                ItemSuffix.Absorption,
+                ItemSuffix.Meditation,
+                // ItemSuffix.Strength,
+                ItemSuffix.Earth,
+                ItemSuffix.Safety,
+                ItemSuffix.Prana,
+                ItemSuffix.Agility,
+                ItemSuffix.Water,
+                // ItemSuffix.Value,
+                // ItemSuffix.Precision,
+                // ItemSuffix.Ether,
+            };
+            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
+            item.Suffix = suffix;
+        }
+        return item;
     }
 }
