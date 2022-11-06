@@ -51,6 +51,7 @@ public class LootBag : IGameEntity
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
     
     public LootBagNode ParentNode;
+    private static byte itemSuffixModTest = 0x0;
 
     public Item? this[int index]
     {
@@ -369,9 +370,9 @@ public class LootBag : IGameEntity
                     typeid_1 = 0xD8;
                     typeid_2 = 0x8B;
                     break;
-                case GameObjectType.Shield: // TODO: shouldn't be a wooden shield
-                    typeid_1 = 0x20;
-                    typeid_2 = 0x8C;
+                case GameObjectType.Shield:
+                    typeid_1 = 0xD0;
+                    typeid_2 = 0x8B;
                     break;
                 case GameObjectType.Shoes:
                     typeid_1 = 0x10;
@@ -382,9 +383,107 @@ public class LootBag : IGameEntity
                     typeid_2 = 0x8B;
                     break;
             }
-            var prefix = 1;// MainServer.Rng.RandiRange(0, 15);
-            // currently, only "of damage" would work
-            objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + (prefix << 4));
+            objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + (0x1 << 4));
+
+            if (loot.ObjectType is GameObjectType.Sword or GameObjectType.Axe)
+            {
+                byte typeIdMod_1 = 0;
+                byte typeIdMod_2 = 0;
+
+                switch (loot.Suffix)
+                {
+                    case ItemSuffix.Exhaustion:
+                    case ItemSuffix.Ether:
+                    case ItemSuffix.Valor:
+                    case ItemSuffix.Fatigue:
+                        typeIdMod_1 = 0x44;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Damage:
+                    case ItemSuffix.Disease:
+                    case ItemSuffix.Cruelty:
+                    case ItemSuffix.Instability:
+                        typeIdMod_1 = 0x45;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Haste:
+                    case ItemSuffix.Range:
+                    case ItemSuffix.Speed:
+                    case ItemSuffix.Distance:
+                        typeIdMod_1 = 0x46;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Disorder:
+                    case ItemSuffix.Decay:
+                    case ItemSuffix.Chaos:
+                    case ItemSuffix.Devastation:
+                        typeIdMod_1 = 0x47;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    // case ItemSuffix.Exhaustion:
+                    case ItemSuffix.Weakness:
+                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Penetration:
+                        typeIdMod_1 = 0x48;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    // case ItemSuffix.Damage:
+                    case ItemSuffix.Interdict:
+                    // case ItemSuffix.Cruelty:
+                    case ItemSuffix.Value:
+                        typeIdMod_1 = 0x49;
+                        typeIdMod_2 = 0x01;
+                        break;
+                        
+                }
+
+                byte itemSuffixMod = 0x0;
+
+                switch (loot.Suffix)
+                {
+                    case ItemSuffix.Exhaustion:
+                    case ItemSuffix.Damage:
+                    case ItemSuffix.Haste:
+                    case ItemSuffix.Disorder:
+                        itemSuffixMod = 0x0;
+                        break;
+                    case ItemSuffix.Ether:
+                    case ItemSuffix.Disease:
+                    case ItemSuffix.Range:
+                    case ItemSuffix.Decay:
+                    case ItemSuffix.Weakness:
+                    case ItemSuffix.Interdict:
+                        itemSuffixMod = 0x20;
+                        break;
+                    case ItemSuffix.Valor:
+                    case ItemSuffix.Cruelty:
+                    case ItemSuffix.Speed:
+                    case ItemSuffix.Chaos:
+                        itemSuffixMod = 0x80;
+                        break;
+                    case ItemSuffix.Fatigue:
+                    case ItemSuffix.Instability:
+                    case ItemSuffix.Distance:
+                    case ItemSuffix.Devastation:
+                    case ItemSuffix.Penetration:
+                    case ItemSuffix.Value:
+                        itemSuffixMod = 0xA0;
+                        break;
+                        
+                }
+                
+                objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + itemSuffixMod);
+                
+                return new byte[]
+                {
+                    0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
+                    typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 
+                    typeIdMod_1, typeIdMod_2, bagid_1, 
+                    bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+                };
+            }
+            
             return new byte[]
             {
                 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
@@ -525,7 +624,6 @@ public class LootBag : IGameEntity
 
         var overrideFilter = new HashSet<GameObjectType>
         {
-            GameObjectType.Ring,
         };
 
         typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
@@ -584,6 +682,35 @@ public class LootBag : IGameEntity
                 ItemSuffix.Value,
                 ItemSuffix.Precision,
                 ItemSuffix.Ether,
+            };
+            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
+            item.Suffix = suffix;
+        }
+
+        if (item.ObjectType is GameObjectType.Sword or GameObjectType.Axe)
+        {
+            var suffixFilter = new List<ItemSuffix>
+            {
+                ItemSuffix.Cruelty,
+                ItemSuffix.Chaos,
+                ItemSuffix.Instability,
+                ItemSuffix.Devastation,
+                ItemSuffix.Value,
+                ItemSuffix.Exhaustion,
+                ItemSuffix.Haste,
+                ItemSuffix.Ether,
+                ItemSuffix.Range,
+                ItemSuffix.Weakness,
+                ItemSuffix.Valor,
+                ItemSuffix.Speed,
+                ItemSuffix.Fatigue,
+                ItemSuffix.Distance,
+                ItemSuffix.Penetration,
+                ItemSuffix.Damage,
+                ItemSuffix.Disorder,
+                ItemSuffix.Disease,
+                ItemSuffix.Decay,
+                ItemSuffix.Interdict,
             };
             var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
             item.Suffix = suffix;
