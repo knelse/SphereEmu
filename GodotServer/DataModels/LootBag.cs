@@ -51,9 +51,6 @@ public class LootBag : IGameEntity
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
     
     public LootBagNode ParentNode;
-    private static byte[] suffixModBytes = { 0x0, 0x20, 0x80, 0xA0};
-    private static int itemSuffixModTest = 0;
-    private static int itemTypeModTest = 0;
 
     public Item? this[int index]
     {
@@ -709,8 +706,6 @@ public class LootBag : IGameEntity
                 }
                 
                 objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + itemSuffixMod);
-                Console.WriteLine(itemSuffixModTest++);
-                itemSuffixModTest %= 4;
                 
                 return new byte[]
                 {
