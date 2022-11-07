@@ -5,6 +5,7 @@ using Godot;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Helpers;
+using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
 
 public class Item : IGameEntity
@@ -105,7 +106,7 @@ public class LootBag : IGameEntity
         bag.LootBag.Z = z;
         bag.LootBag.ParentNode = bag;
         // TODO: item gen logic
-        var itemCount = count == -1 ? (int) (RNGHelper.GetUniform() * 3) + 1 : count;
+        var itemCount = 2; // count == -1 ? (int) (RNGHelper.GetUniform() * 3) + 1 : count;
 
         for (var i = 0; i < itemCount; i++)
         {
@@ -197,15 +198,16 @@ public class LootBag : IGameEntity
         var weight_6 = (byte) ((weight2 & 0b11111111000000) >> 6);
         var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
-
+        
         // TODO: actual count. Will test with 1 for now
-        switch (1)
+        switch (2)
         {
             case 1:
                 var id_1 = Item0.ID >> 12;
                 var id_2 = (Item0.ID & 0b111100000000) >> 8;
                 var id_3 = (Item0.ID & 0b11110000) >> 4;
                 var id_4 = Item0.ID & 0b1111;
+                
                 itemList = new byte[]
                 {
                     0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
@@ -214,11 +216,18 @@ public class LootBag : IGameEntity
 
                 break;
             case 2:
+                var item0_1 = (byte) ((Item0.ID & 0b1) << 7);
+                var item0_2 = (byte) ((Item0.ID >> 1) & 0b11111111);
+                var item0_3 = (byte) ((Item0.ID >> 9) & 0b1111111);
+
+                var item1_1 = (byte) ((Item1.ID & 0b111111) << 2);
+                var item1_2 = (byte) ((Item1.ID >> 6) & 0b11111111);
+                var item1_3 = (byte) ((Item1.ID >> 14) & 0b11);
                 itemList = new byte[]
                 {
                     0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
-                    0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, 0x00, 0x00, 0x1F, weight_1, weight_2, weight_3, weight_4, 
-                    0x80, 0x82, 0x20, 0x04, 0x5C, 0xF8, 0x00, weight_5, weight_6, weight_7, weight_8, 0x00
+                    0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, item0_1, item0_2, item0_3, weight_1, weight_2, weight_3, weight_4, 
+                    0x80, 0x82, 0x20, 0x04, item1_1, item1_2, item1_3, weight_5, weight_6, weight_7, weight_8, 0x00
                 };
 
                 break;
@@ -267,13 +276,30 @@ public class LootBag : IGameEntity
 
         if (loot.ObjectType is GameObjectType.MantraBlack or GameObjectType.MantraWhite)
         {
-            return new byte[]
+            var lootBytes = new byte[]
             {
-                0x28, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
+                MinorByte(Item0.ID), MajorByte(Item0.ID),
                 (byte) (loot.ObjectType == GameObjectType.MantraBlack ? 0xA4 : 0xA0), 0x8F, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, 
                 bagid_2, bagid_3, 0xA0, 0xC0, 0x02, 0x01, 0x00
             };
+            var lootBytesTest = new byte[]
+            {
+                MinorByte(Item1.ID), MajorByte(Item1.ID),
+                (byte) (loot.ObjectType == GameObjectType.MantraBlack ? 0xA4 : 0xA0), 0x8F, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 0x15, 0x60, bagid_1, 
+                bagid_2, bagid_3, 0xA0, 0xC0, 0x02, 0x01, 0x00
+            };
+            var loot2Bytes = new List<byte>(lootBytes) { (byte) (((lootBytesTest[0] & 0b1) << 7) + 0b111111) };
+
+            for (int i = 1; i < lootBytesTest.Length; i++)
+            {
+                loot2Bytes.Add((byte) (((lootBytesTest[i] & 0b1) << 7) + (lootBytesTest[i - 1] >> 1)));
+            }
+            loot2Bytes.Add((byte) (lootBytesTest[^1] >> 1));
+            var result = Packet.ToByteArray(loot2Bytes.ToArray(), 3);
+            Console.WriteLine(ConvertHelper.ToHexString(result));
+            return result;
         }
 
         if (loot.ObjectType is GameObjectType.Flower or GameObjectType.Metal or GameObjectType.Mineral 
@@ -1127,9 +1153,10 @@ public class LootBag : IGameEntity
 
         var overrideFilter = new HashSet<GameObjectType>
         {
+            GameObjectType.MantraWhite
         };
 
-        var idOverride = -1;
+        var idOverride = 2305;
 
         typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
 
