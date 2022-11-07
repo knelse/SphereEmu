@@ -546,140 +546,140 @@ public class Client : Node
         // for debug
         // testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
         //     LootRatityType.DEFAULT_MOB, 1);
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1899.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1899.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1898.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1898.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1900.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1900.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1900.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1900.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1900.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1900.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);
-        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1895.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1896.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1897.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1897.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1897.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1897.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1897.05493164062500, 24, 0,
-            LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1897.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1900.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
         
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1901.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1895.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1902.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1896.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1903.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1897.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
         
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1901.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1901.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1901.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1901.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1901.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1904.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1901.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1902.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1902.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1902.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1902.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1902.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1902.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
-        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1903.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1903.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1903.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1903.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1903.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);        
-        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1905.05493164062500, 24, 0,
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1903.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1904.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);
+        testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1905.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1905.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4499.41474609375000, 1905.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4498.31474609375000, 1905.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4497.21474609375000, 1905.05493164062500, 39, 0,
+            LootRatityType.DEFAULT_MOB, 1);        
+        testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1905.05493164062500, 39, 0,
             LootRatityType.DEFAULT_MOB, 1);
         // LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1900.05493164062500, 0, 0,
         //     LootRatityType.DEFAULT_MOB, 2);

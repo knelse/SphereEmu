@@ -45,37 +45,37 @@ public enum GameObjectType
     Metal,
     Mineral,
     Amulet,
-    Amulet_Unique,
+    Amulet_Unique, // Castle?
     Armor,
     Robe, // armor2 is always robe
     Robe_Quest,
-    Robe_Unique,
+    Robe_Unique, // Castle?
     Armor_Quest,
-    Armor_Unique,
+    Armor_Unique, // Castle?
     Belt,
     Belt_Quest,
-    Belt_Unique,
+    Belt_Unique, // Castle?
     Bracelet,
-    Bracelet_Unique,
+    Bracelet_Unique, // Castle?
     Gloves,
     Gloves_Quest,
-    Gloves_Unique,
+    Gloves_Unique, // Castle?
     Helmet,
     Helmet_Premium,
     Helmet_Quest,
-    Helmet_Unique,
+    Helmet_Unique, // Castle?
     Pants,
     Pants_Quest,
-    Pants_Unique,
+    Pants_Unique, // Castle?
     Ring,
     Ring_Special,
-    Ring_Unique,
+    Ring_Unique, // Castle?
     Shield,
     Shield_Quest,
-    Shield_Unique,
+    Shield_Unique, // Castle?
     Shoes,
     Shoes_Quest,
-    Shoes_Unique,
+    Shoes_Unique, // Castle?
     Castle_Crystal,
     Castle_Stone,
     Guild_Bag,
@@ -123,7 +123,7 @@ public enum GameObjectType
     Axe_Quest,
     Sword,
     Sword_Quest,
-    Sword_Unique,
+    Sword_Unique, // Castle?
     X2_Degree,
     X2_Both,
     X2_Title,
@@ -209,18 +209,18 @@ public enum ItemSuffix
     // Ether,
     Deflection,
     // Meditation,
-    Durability_Old,
-    Life_Old,
+    // Durability_Old, // These perks have different stat reqs, we'll leave them at their standard / first occurance values
+    // Life_Old,
     // Water,
     Eclipse,
-    Safety_Old,
-    Prana_Old,
-    Deflection_Old,
-    Meditation_Old,
+    // Safety_Old,
+    // Prana_Old,
+    // Deflection_Old,
+    // Meditation_Old,
     // Air,
     Archmage,
-    Health_Old,
-    Ether_Old,
+    // Health_Old,
+    // Ether_Old,
     //---- Bracelets, Amulets ----//
     // Safety,
     // Ether,
