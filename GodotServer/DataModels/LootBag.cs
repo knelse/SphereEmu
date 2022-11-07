@@ -53,6 +53,7 @@ public class LootBag : IGameEntity
     public LootBagNode ParentNode;
     private static byte[] suffixModBytes = { 0x0, 0x20, 0x80, 0xA0};
     private static int itemSuffixModTest = 0;
+    private static int itemTypeModTest = 0;
 
     public Item? this[int index]
     {
@@ -321,9 +322,10 @@ public class LootBag : IGameEntity
             };
         }
 
-        if (loot.ObjectType is GameObjectType.Crossbow or GameObjectType.Axe or GameObjectType.Sword or GameObjectType.Amulet or GameObjectType.Armor
-            or GameObjectType.Belt or GameObjectType.Bracelet or GameObjectType.Gloves or GameObjectType.Helmet or GameObjectType.Pants
-            or GameObjectType.Shield or GameObjectType.Shoes or GameObjectType.Robe)
+        if (loot.ObjectType is GameObjectType.Crossbow or GameObjectType.Axe or GameObjectType.Sword
+            or GameObjectType.Amulet or GameObjectType.Armor or GameObjectType.Belt or GameObjectType.Bracelet
+            or GameObjectType.Gloves or GameObjectType.Helmet or GameObjectType.Pants or GameObjectType.Shield
+            or GameObjectType.Shoes or GameObjectType.Robe)
         {
             
             byte typeid_1 = 0;
@@ -854,110 +856,142 @@ public class LootBag : IGameEntity
                     bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
                 };
             }
-
-            // if (loot.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt 
-            //     or GameObjectType.Pants or GameObjectType.Shoes)
-            // {
-            //     byte typeIdMod_1 = 0x15;
-            //     byte typeIdMod_2 = 0x60;
-            //
-            //     switch (loot.Suffix)
-            //     {
-            //         case ItemSuffix.None:
-            //             break;
-            //         case ItemSuffix.Health:
-            //         case ItemSuffix.Penetration:
-            //         case ItemSuffix.Valor:
-            //         case ItemSuffix.Instability:
-            //             typeIdMod_1 = 0x47;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //         case ItemSuffix.Damage:
-            //         case ItemSuffix.Decay:
-            //         case ItemSuffix.Cruelty:
-            //         case ItemSuffix.Range:
-            //             typeIdMod_1 = 0x45;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //         case ItemSuffix.Haste:
-            //         case ItemSuffix.Distance:
-            //         case ItemSuffix.Speed:
-            //         case ItemSuffix.Mastery:
-            //             typeIdMod_1 = 0x46;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //         case ItemSuffix.Disorder:
-            //         case ItemSuffix.Fatigue:
-            //         case ItemSuffix.Chaos:
-            //         case ItemSuffix.Ether:
-            //             typeIdMod_1 = 0x47;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //         // case ItemSuffix.Exhaustion:
-            //         case ItemSuffix.Radiance:
-            //         // case ItemSuffix.Valor:
-            //         case ItemSuffix.Disease:
-            //             typeIdMod_1 = 0x48;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //         // case ItemSuffix.Damage:
-            //         case ItemSuffix.Value:
-            //         // case ItemSuffix.Cruelty:
-            //             typeIdMod_1 = 0x49;
-            //             typeIdMod_2 = 0x01;
-            //             break;
-            //             
-            //     }
-            //
-            //     byte itemSuffixMod = 0x10;
-            //
-            //     switch (loot.Suffix)
-            //     {
-            //         case ItemSuffix.None:
-            //             break;
-            //         case ItemSuffix.Exhaustion:
-            //         case ItemSuffix.Damage:
-            //         case ItemSuffix.Haste:
-            //         case ItemSuffix.Disorder:
-            //             itemSuffixMod = 0x0;
-            //             break;
-            //         case ItemSuffix.Penetration:
-            //         case ItemSuffix.Decay:
-            //         case ItemSuffix.Distance:
-            //         case ItemSuffix.Fatigue:
-            //         case ItemSuffix.Radiance:
-            //         case ItemSuffix.Value:
-            //             itemSuffixMod = 0x20;
-            //             break;
-            //         case ItemSuffix.Valor:
-            //         case ItemSuffix.Cruelty:
-            //         case ItemSuffix.Speed:
-            //         case ItemSuffix.Chaos:
-            //             itemSuffixMod = 0x80;
-            //             break;
-            //         case ItemSuffix.Instability:
-            //         case ItemSuffix.Range:
-            //         case ItemSuffix.Mastery:
-            //         case ItemSuffix.Ether:
-            //         case ItemSuffix.Disease:
-            //             itemSuffixMod = 0xA0;
-            //             break;
-            //             
-            //     }
-            //     
-            //     objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + suffixModBytes[itemSuffixModTest]);
-            //     Console.WriteLine(itemSuffixModTest++);
-            //     itemSuffixModTest %= 4;
-            //     
-            //     return new byte[]
-            //     {
-            //         0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
-            //         typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
-            //         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 
-            //         typeIdMod_1, typeIdMod_2, bagid_1, 
-            //         bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
-            //     };
-            // }
+            if (loot.ObjectType is GameObjectType.Armor or GameObjectType.Shield)
+            {
+                byte typeIdMod_1 = 0x15;
+                byte typeIdMod_2 = 0x60;
+            
+                switch (loot.Suffix)
+                {
+                    case ItemSuffix.None:
+                        break;
+                    case ItemSuffix.Valor:
+                    case ItemSuffix.Meditation:
+                    case ItemSuffix.Durability:
+                    case ItemSuffix.Prana:
+                        typeIdMod_1 = 0x44;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Absorption:
+                    case ItemSuffix.Strength:
+                    case ItemSuffix.Deflection:
+                    case ItemSuffix.Agility:
+                        typeIdMod_1 = 0x45;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Safety:
+                    case ItemSuffix.Majesty:
+                    case ItemSuffix.Invincibility:
+                    case ItemSuffix.Concentration:
+                        typeIdMod_1 = 0x46;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    case ItemSuffix.Health:
+                    case ItemSuffix.Earth:
+                    case ItemSuffix.Life:
+                    case ItemSuffix.Water:
+                        typeIdMod_1 = 0x47;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Air:
+                    // case ItemSuffix.Durability:
+                    case ItemSuffix.Fire:
+                        typeIdMod_1 = 0x48;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    // case ItemSuffix.Absorption:
+                    case ItemSuffix.Elements:
+                    // case ItemSuffix.Deflection:
+                    case ItemSuffix.Value:
+                        typeIdMod_1 = 0x49;
+                        typeIdMod_2 = 0x01;
+                        break;
+                    // case ItemSuffix.Safety:
+                    // case ItemSuffix.Strength:
+                    // case ItemSuffix.Invincibility:
+                    // case ItemSuffix.Agility:
+                    //     typeIdMod_1 = 0x4A;
+                    //     typeIdMod_2 = 0x01;
+                    //     break;
+                    // case ItemSuffix.Health:
+                    // case ItemSuffix.Majesty:
+                    // case ItemSuffix.Life:
+                    // case ItemSuffix.Concentration:
+                        // typeIdMod_1 = 0x4B;
+                        // typeIdMod_2 = 0x01;
+                        // break;
+                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Integrity:
+                    // case ItemSuffix.Durability:
+                        typeIdMod_1 = 0x4C;
+                        typeIdMod_2 = 0x01;
+                        break;
+                }
+            
+                byte itemSuffixMod = 0x10;
+            
+                switch (loot.Suffix)
+                {
+                    case ItemSuffix.None:
+                        break;
+                    case ItemSuffix.Valor:
+                    case ItemSuffix.Absorption:
+                    case ItemSuffix.Safety:
+                    case ItemSuffix.Health:
+                    // case ItemSuffix.Valor:
+                    // case ItemSuffix.Absorption:
+                    // case ItemSuffix.Safety:
+                    // case ItemSuffix.Health:
+                    // case ItemSuffix.Valor:
+                        itemSuffixMod = 0x0;
+                        break;
+                    case ItemSuffix.Meditation:
+                    case ItemSuffix.Strength:
+                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Earth:
+                    case ItemSuffix.Air:
+                    case ItemSuffix.Elements:
+                    // case ItemSuffix.Strength:
+                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Integrity:
+                        itemSuffixMod = 0x20;
+                        break;
+                    case ItemSuffix.Durability:
+                    case ItemSuffix.Deflection:
+                    case ItemSuffix.Invincibility:
+                    case ItemSuffix.Life:
+                    // case ItemSuffix.Durability:
+                    // case ItemSuffix.Deflection:
+                    // case ItemSuffix.Invincibility:
+                    // case ItemSuffix.Life:
+                    // case ItemSuffix.Durability:
+                        itemSuffixMod = 0x80;
+                        break;
+                    case ItemSuffix.Prana:
+                    case ItemSuffix.Agility:
+                    case ItemSuffix.Concentration:
+                    case ItemSuffix.Water:
+                    case ItemSuffix.Fire:
+                    case ItemSuffix.Value:
+                    // case ItemSuffix.Agility:
+                    // case ItemSuffix.Concentration:
+                        itemSuffixMod = 0xA0;
+                        break;
+                }
+                
+                objid_3 = (byte) (((loot.GameId >> 10) & 0b1111) + itemSuffixMod);
+                
+                return new byte[]
+                {
+                    0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
+                    typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 
+                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, 
+                    typeIdMod_1, typeIdMod_2, bagid_1, 
+                    bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+                };
+            }
+            
             return new byte[]
             {
                 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Item0.ID), MajorByte(Item0.ID),
@@ -1098,11 +1132,6 @@ public class LootBag : IGameEntity
 
         var overrideFilter = new HashSet<GameObjectType>
         {
-            GameObjectType.Helmet,
-            GameObjectType.Gloves,
-            GameObjectType.Shoes,
-            GameObjectType.Pants,
-            GameObjectType.Belt
         };
 
         var idOverride = -1;
@@ -1291,6 +1320,43 @@ public class LootBag : IGameEntity
                 ItemSuffix.Precision,
                 ItemSuffix.Safety,
                 ItemSuffix.Ether,
+            };
+            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
+            item.Suffix = suffix;
+        }
+        if (item.ObjectType is GameObjectType.Armor or GameObjectType.Shield)
+        {
+            var suffixFilter = new List<ItemSuffix>
+            {// for shields Elements is "Old" (e.g. +68 at 12 rank)
+                ItemSuffix.Deflection,
+                ItemSuffix.Life,
+                ItemSuffix.Agility,
+                ItemSuffix.Water,
+                ItemSuffix.Value,
+                ItemSuffix.Concentration,
+                ItemSuffix.Valor,
+                ItemSuffix.Safety,
+                ItemSuffix.Meditation,
+                ItemSuffix.Air,
+                ItemSuffix.Strength,
+                ItemSuffix.Integrity,
+                ItemSuffix.Durability,
+                ItemSuffix.Invincibility,
+                ItemSuffix.Prana,
+                ItemSuffix.Fire,
+                ItemSuffix.Agility,
+                ItemSuffix.Absorption,
+                ItemSuffix.Health,
+                ItemSuffix.Strength,
+                ItemSuffix.Earth,
+                ItemSuffix.Elements,
+                ItemSuffix.Majesty,
+                // ItemSuffix.Concentration_Old,
+                // ItemSuffix.Majesty_Old,
+                // ItemSuffix.Agility_Old,
+                // ItemSuffix.Strength_Old,
+                // ItemSuffix.Elements_Old,
+                // ItemSuffix.Elements_New,
             };
             var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
             item.Suffix = suffix;
