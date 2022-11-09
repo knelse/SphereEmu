@@ -19,6 +19,7 @@ public class Mob : IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
+    public GameObjectData GameObjectData { get; set; } // unused for now
 
     private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
     

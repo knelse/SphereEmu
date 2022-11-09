@@ -1,3 +1,5 @@
+using SphServer.DataModels;
+
 public interface IGameEntity
 {
     public ushort ID { get; set; }
@@ -11,4 +13,5 @@ public interface IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
+    public GameObjectData GameObjectData { get; set; }
 }
