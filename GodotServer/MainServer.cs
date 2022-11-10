@@ -24,7 +24,7 @@ namespace SphServer
         private static TCP_Server tcpServer;
         private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Client.tscn");
         public static readonly ConcurrentDictionary<int, IGameEntity> GameObjects = new ();
-        public static int currentId = 100;
+        public static int currentId = 54678;
         public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
         public static MainServer MainServerNode = null!;
         public static readonly RandomNumberGenerator Rng = new();

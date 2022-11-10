@@ -500,111 +500,113 @@ public static class GameObjectDataHelper
         }
     }
 
-    public static GameObjectData GetRandomObjectData(int titleLevelMinusOne)
+    public static GameObjectData GetRandomObjectData(int titleLevelMinusOne, int gameIdOverride = -1)
     {
-        var tierFilter = Math.Min(titleLevelMinusOne, 74) / 5 + 1;
-        var typeFilter = new HashSet<GameObjectType>
+        GameObjectData item;
+        if (gameIdOverride != -1)
         {
-            GameObjectType.Flower,
-            GameObjectType.Metal,
-            GameObjectType.Mineral,
-            GameObjectType.Amulet,
-            GameObjectType.Armor,
-            GameObjectType.Robe,
-            GameObjectType.Belt,
-            GameObjectType.Bracelet,
-            GameObjectType.Gloves,
-            GameObjectType.Helmet,
-            GameObjectType.Pants,
-            GameObjectType.Ring,
-            GameObjectType.Shield,
-            GameObjectType.Shoes,
-            // Flag,
-            // Guild,
-            GameObjectType.MantraBlack,
-            GameObjectType.MantraWhite,
-            GameObjectType.Elixir_Castle, 
-            GameObjectType.Elixir_Trap,
-            GameObjectType.Powder,
-            GameObjectType.Powder_Area,
-            GameObjectType.Crossbow,
-            GameObjectType.Axe,
-            GameObjectType.Sword,
-        };
-
-        var overrideFilter = new HashSet<GameObjectType>
+            item = MainServer.GameObjectDataDb.First(x => x.Value.GameId == gameIdOverride).Value;
+        }
+        else
         {
-            GameObjectType.Ring
-        };
+            var tierFilter = Math.Min(titleLevelMinusOne, 74) / 5 + 1;
+            var typeFilter = new HashSet<GameObjectType>
+            {
+                GameObjectType.Flower,
+                GameObjectType.Metal,
+                GameObjectType.Mineral,
+                GameObjectType.Amulet,
+                GameObjectType.Armor,
+                GameObjectType.Robe,
+                GameObjectType.Belt,
+                GameObjectType.Bracelet,
+                GameObjectType.Gloves,
+                GameObjectType.Helmet,
+                GameObjectType.Pants,
+                GameObjectType.Ring,
+                GameObjectType.Shield,
+                GameObjectType.Shoes,
+                // Flag,
+                // Guild,
+                GameObjectType.MantraBlack,
+                GameObjectType.MantraWhite,
+                GameObjectType.Elixir_Castle,
+                GameObjectType.Elixir_Trap,
+                GameObjectType.Powder,
+                GameObjectType.Powder_Area,
+                GameObjectType.Crossbow,
+                GameObjectType.Axe,
+                GameObjectType.Sword,
+            };
 
-        var idOverride = 4049;
-        var noSuffix = true;
+            var overrideFilter = new HashSet<GameObjectType>
+            {
+                // GameObjectType.Powder_Area
+                // GameObjectType.Ring
+            };
 
-        typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
+            typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
 
-        var kindFilter = new HashSet<GameObjectKind>
-        {
-            GameObjectKind.Alchemy,
-            GameObjectKind.Crossbow_New,
-            GameObjectKind.Armor_New,
-            GameObjectKind.Armor_Old, // "Old" robes only
-            GameObjectKind.Axe_New,
-            GameObjectKind.Powder,
-            GameObjectKind.Magical_New,
-            GameObjectKind.MantraBlack,
-            GameObjectKind.MantraWhite,
-            GameObjectKind.Sword_New,
-        };
+            var kindFilter = new HashSet<GameObjectKind>
+            {
+                GameObjectKind.Alchemy,
+                GameObjectKind.Crossbow_New,
+                GameObjectKind.Armor_New,
+                GameObjectKind.Armor_Old, // "Old" robes only
+                GameObjectKind.Axe_New,
+                GameObjectKind.Powder,
+                GameObjectKind.Magical_New,
+                GameObjectKind.MantraBlack,
+                GameObjectKind.MantraWhite,
+                GameObjectKind.Sword_New,
+            };
 
-        var tierAgnosticTypes = new HashSet<GameObjectType>
-        {
-            GameObjectType.Flower,
-            GameObjectType.Metal,
-            GameObjectType.Mineral,
-        };
+            var tierAgnosticTypes = new HashSet<GameObjectType>
+            {
+                GameObjectType.Flower,
+                GameObjectType.Metal,
+                GameObjectType.Mineral,
+            };
 
-        var lootPool = MainServer.GameObjectDataDb
-            .Where(x => 
-                kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType) 
-                                                        && (x.Value.Tier == tierFilter 
-                                                            || tierAgnosticTypes.Contains(x.Value.ObjectType)))
-            .Select(y => y.Value)
-            .ToList();
+            var lootPool = MainServer.GameObjectDataDb
+                .Where(x =>
+                    kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
+                                                            && (x.Value.Tier == tierFilter
+                                                                || tierAgnosticTypes.Contains(x.Value.ObjectType)))
+                .Select(y => y.Value)
+                .ToList();
 
-        var random = MainServer.Rng.RandiRange(0, lootPool.Count - 1);
-        var item = lootPool.ElementAt(random);
-
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-        if (idOverride != -1)
-        {
-            item = MainServer.GameObjectDataDb.First(x => x.Value.GameId == idOverride).Value;
+            var random = MainServer.Rng.RandiRange(0, lootPool.Count - 1);
+            item = lootPool.ElementAt(random);
         }
 
+        var noSuffix = false;
+        var suffixFilter = new SortedSet<ItemSuffix> { ItemSuffix.None };
+            
         if (item.ObjectType is GameObjectType.Ring)
-        {
-            var suffixFilter = new List<ItemSuffix>
+        { 
+            suffixFilter = new SortedSet<ItemSuffix>
             {
-                ItemSuffix.Health,
-                ItemSuffix.Accuracy,
-                ItemSuffix.Air,
-                ItemSuffix.Durability,
-                ItemSuffix.Life,
-                ItemSuffix.Endurance,
-                ItemSuffix.Fire,
-                ItemSuffix.Absorption,
-                ItemSuffix.Meditation,
-                ItemSuffix.Strength,
-                ItemSuffix.Earth,
+                // ItemSuffix.Health,
+                // ItemSuffix.Accuracy,
+                // ItemSuffix.Air,
+                // ItemSuffix.Durability,
+                // ItemSuffix.Life,
+                // ItemSuffix.Endurance,
+                // ItemSuffix.Fire,
+                // ItemSuffix.Absorption,
+                // ItemSuffix.Meditation,
+                // ItemSuffix.Strength,
+                // ItemSuffix.Earth,
                 ItemSuffix.Safety,
-                ItemSuffix.Prana,
-                ItemSuffix.Agility,
+                // ItemSuffix.Prana,
+                // ItemSuffix.Agility,
                 ItemSuffix.Water,
-                ItemSuffix.Value,
-                ItemSuffix.Precision,
-                ItemSuffix.Ether,
+                // ItemSuffix.Value,
+                // ItemSuffix.Precision,
+                // ItemSuffix.Ether,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
         }
 
         // Rings should always have a suffix
@@ -614,7 +616,7 @@ public static class GameObjectDataHelper
         }
         if (item.ObjectType is GameObjectType.Sword or GameObjectType.Axe)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Cruelty,
                 ItemSuffix.Chaos,
@@ -637,12 +639,10 @@ public static class GameObjectDataHelper
                 ItemSuffix.Decay,
                 ItemSuffix.Interdict,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
         if (item.ObjectType is GameObjectType.Crossbow)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Cruelty,
                 ItemSuffix.Chaos,
@@ -664,12 +664,10 @@ public static class GameObjectDataHelper
                 ItemSuffix.Mastery,
                 ItemSuffix.Radiance
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
         if (item.ObjectType is GameObjectType.Robe)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Safety,
                 ItemSuffix.Prana,
@@ -696,12 +694,10 @@ public static class GameObjectDataHelper
                 // ItemSuffix.Health_Old,
                 // ItemSuffix.Ether_Old,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
         if (item.ObjectType is GameObjectType.Bracelet or GameObjectType.Amulet)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Safety,
                 ItemSuffix.Ether,
@@ -715,13 +711,11 @@ public static class GameObjectDataHelper
                 ItemSuffix.Precision,
                 ItemSuffix.Damage,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
         if (item.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt 
             or GameObjectType.Pants or GameObjectType.Shoes)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Health,
                 ItemSuffix.Value,
@@ -732,12 +726,10 @@ public static class GameObjectDataHelper
                 ItemSuffix.Safety,
                 ItemSuffix.Ether,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
         if (item.ObjectType is GameObjectType.Armor or GameObjectType.Shield)
         {
-            var suffixFilter = new List<ItemSuffix>
+            suffixFilter = new SortedSet<ItemSuffix>
             {// for shields Elements is "Old" (e.g. +68 at 12 rank)
                 ItemSuffix.Deflection,
                 ItemSuffix.Life,
@@ -769,14 +761,15 @@ public static class GameObjectDataHelper
                 // ItemSuffix.Elements_Old,
                 // ItemSuffix.Elements_New,
             };
-            var suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
-            item.Suffix = suffix;
         }
 
-        if (item.ObjectType is GameObjectType.Powder)
+        if (item.ObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle 
+            or GameObjectType.Elixir_Trap)
         {
-            item.ItemCount =  MainServer.Rng.RandiRange(1, 19);
+            item.ItemCount =  MainServer.Rng.RandiRange(3, 19);
         }
+
+        item.Suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
         return item;
     }
 }
@@ -844,19 +837,19 @@ public class GameObjectData
     public ItemSuffix Suffix = ItemSuffix.None;
     public int ItemCount = 1;
 
-    public static HashSet<GameObjectType> Mantras = new ()
+    public static readonly HashSet<GameObjectType> Mantras = new ()
     {
         GameObjectType.MantraBlack,
         GameObjectType.MantraWhite
     };
 
-    public static HashSet<GameObjectType> MaterialsPowdersElixirs = new()
+    public static readonly HashSet<GameObjectType> MaterialsPowdersElixirs = new()
     {
         GameObjectType.Flower, GameObjectType.Metal, GameObjectType.Mineral, GameObjectType.Powder,
         GameObjectType.Powder_Area, GameObjectType.Elixir_Castle, GameObjectType.Elixir_Trap
     };
 
-    public static HashSet<GameObjectType> WeaponsArmor = new()
+    public static readonly HashSet<GameObjectType> WeaponsArmor = new()
     {
         GameObjectType.Crossbow, GameObjectType.Axe, GameObjectType.Sword, GameObjectType.Amulet, GameObjectType.Armor,
         GameObjectType.Belt, GameObjectType.Bracelet, GameObjectType.Gloves, GameObjectType.Helmet,
@@ -924,8 +917,11 @@ public class GameObjectData
                     typeid_2 = 0x89;
                     break;
                 case GameObjectType.Powder:
-                case GameObjectType.Powder_Area:
                     typeid_1 = 0x14;
+                    typeid_2 = 0x87;
+                    break;
+                case GameObjectType.Powder_Area:
+                    typeid_1 = 0x1C;
                     typeid_2 = 0x87;
                     break;
                 case GameObjectType.Elixir_Castle:
@@ -1476,12 +1472,12 @@ public class GameObjectData
                         break;
                     case ItemSuffix.Meditation:
                     case ItemSuffix.Strength:
-                    // case ItemSuffix.Valor:
+                    case ItemSuffix.Majesty:
                     case ItemSuffix.Earth:
                     case ItemSuffix.Air:
                     case ItemSuffix.Elements:
                     // case ItemSuffix.Strength:
-                    // case ItemSuffix.Valor:
+                    // case ItemSuffix.Majesty:
                     case ItemSuffix.Integrity:
                         itemSuffixMod = 0x20;
                         break;
@@ -1515,10 +1511,11 @@ public class GameObjectData
             {
                 MinorByte(itemId), MajorByte(itemId), typeid_1, typeid_2, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, typeIdMod_1,
-                typeIdMod_2, bagid_1, bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+                typeIdMod_2, bagid_1, bagid_2, bagid_3, //0x01, 0x0A, 0x59, 0x00, 0xF0, 0xFF, 0xFF, 0xFF, 0x0F 
+                0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
             };
         }
-        
+
         if (ObjectType == GameObjectType.Ring)
         {
             byte ringTypeId_1 = 0;
@@ -1526,20 +1523,22 @@ public class GameObjectData
             byte itemSuffixMod = 0;
 
             switch (Suffix)
-            {                
+            {
                 case ItemSuffix.Durability:
                 case ItemSuffix.Precision:
                 case ItemSuffix.Absorption:
                 case ItemSuffix.Strength:
                     ringTypeId_1 = 0x44;
                     ringTypeId_2 = 0x01;
+
                     break;
                 case ItemSuffix.Accuracy:
                 case ItemSuffix.Agility:
                 case ItemSuffix.Safety:
                 case ItemSuffix.Health:
-                    ringTypeId_1 = 0x45;
-                    ringTypeId_2 = 0x01;
+                    ringTypeId_1 = 0x15;
+                    ringTypeId_2 = 0x60;
+
                     break;
                 case ItemSuffix.Earth:
                 case ItemSuffix.Endurance:
@@ -1547,6 +1546,7 @@ public class GameObjectData
                 case ItemSuffix.Meditation:
                     ringTypeId_1 = 0x46;
                     ringTypeId_2 = 0x01;
+
                     break;
                 case ItemSuffix.Air:
                 case ItemSuffix.Water:
@@ -1554,18 +1554,22 @@ public class GameObjectData
                 case ItemSuffix.Ether:
                     ringTypeId_1 = 0x47;
                     ringTypeId_2 = 0x01;
+
                     break;
                 case ItemSuffix.Fire:
                 case ItemSuffix.Value:
-                // case ItemSuffix.Absorption:
-                // case ItemSuffix.Durability:
+                    // case ItemSuffix.Absorption:
+                    // case ItemSuffix.Durability:
                     ringTypeId_1 = 0x48;
                     ringTypeId_2 = 0x01;
+
                     break;
                 default:
                     Console.WriteLine($"Wrong suffix {Enum.GetName(typeof(ItemSuffix), Suffix)}");
+
                     break;
             }
+
             switch (Suffix)
             {
                 case ItemSuffix.Durability:
@@ -1573,6 +1577,7 @@ public class GameObjectData
                 case ItemSuffix.Life:
                 case ItemSuffix.Prana:
                     itemSuffixMod = 0x0;
+
                     break;
                 case ItemSuffix.Precision:
                 case ItemSuffix.Agility:
@@ -1580,12 +1585,14 @@ public class GameObjectData
                 case ItemSuffix.Water:
                 case ItemSuffix.Fire:
                     itemSuffixMod = 0x20;
+
                     break;
                 case ItemSuffix.Absorption:
                 case ItemSuffix.Health:
                 case ItemSuffix.Meditation:
                 case ItemSuffix.Ether:
                     itemSuffixMod = 0x80;
+
                     break;
                 case ItemSuffix.Strength:
                 case ItemSuffix.Accuracy:
@@ -1593,19 +1600,42 @@ public class GameObjectData
                 case ItemSuffix.Air:
                 case ItemSuffix.Value:
                     itemSuffixMod = 0xA0;
+
                     break;
             }
+
             objid_3 = (byte) (((GameId >> 10) & 0b1111) + itemSuffixMod);
-            
+
             // technically, live server has different values per suffix group for 0x98 0x1A at the end but these
             // seem to be safe to ignore
-            return new byte[]
+            bagid_1 = (byte) (bagid_1 + 0b00110);
+            var fullStatRingsBytes = new byte[]
+            {
+                0x00, 0x0A, 0x59, 0x00, 0xF0, 0xFF, 0xFF, 0xFF, 0x5F, 0x78, 0x07, 0xB5, 0xBB, 0x2F, 0xB2, 0xB4, 0xB0,
+                0x36, 0xB9, 0x34, 0xB7, 0xB3
+            };
+            var halfStatRingBytes = new byte[] // shifted by 4 bits
+            {
+                0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x85, 0x77, 0x50, 0xBB, 0xFB, 0x22, 0x4B, 0x0B, 0x6B,
+                0x93, 0x4B, 0x73, 0x3B, 0x83
+            };
+            var result = new List<byte>(new byte[]
             {
                 MinorByte(itemId), MajorByte(itemId), 0xE0, 0x8B, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x40, 0x91, 0x45, objid_1, objid_2, objid_3, ringTypeId_1, ringTypeId_2,
-                bagid_1, bagid_2, bagid_3, 0xA0, 0x90, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x85, 0x77, 0x50, 0xBB, 0xFB,
-                0x22, 0x4B, 0x0B, 0x6B, 0x93, 0x4B, 0x73, 0x3B, 0x83, 0x98, 0x1A, 0x00
-            };
+                bagid_1, bagid_2, bagid_3
+            });
+
+            result.AddRange(Suffix is ItemSuffix.Strength or ItemSuffix.Agility or ItemSuffix.Accuracy
+                or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water or ItemSuffix.Air or ItemSuffix.Fire
+                ? fullStatRingsBytes
+                : halfStatRingBytes);
+
+            var safety = new byte[] { 0x91, 0x01, 0x00 };
+            var water = new byte[] { 0x18, 0x1A, 0x00 };
+
+            result.AddRange(Suffix == ItemSuffix.Safety ? safety : water);
+            return result.ToArray();
         }
 
         Console.WriteLine($"Unhandled game object: {ToDebugString()}");

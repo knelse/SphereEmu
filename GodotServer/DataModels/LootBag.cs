@@ -116,7 +116,7 @@ public class LootBag : IGameEntity
         {
             var item = new Item
             {
-                GameObjectData = GameObjectDataHelper.GetRandomObjectData(level)
+                GameObjectData = GameObjectDataHelper.GetRandomObjectData(level)//, i == 0 ? -1 : 2402)
             };
             item.ID = MainServer.AddToGameObjects(item);
             bag.LootBag[i] = item;
@@ -274,42 +274,69 @@ public class LootBag : IGameEntity
 
     public byte[] GetContentsPacket()
     {
-        var result = new List<byte>(GetItemBytes(0));
+        var item0ByteList = new List<byte>(GetItemBytes(0));
 
         if (Count >= 2)
         {
+            Console.WriteLine($"IDs: {Item0.ID} {Item1.ID}");
             var item1Bytes = GetItemBytes(1);
-            if (MaterialsPowdersElixirs.Contains(Item0.GameObjectData.ObjectType) || 
-                Item0.GameObjectData.ObjectType == GameObjectType.Ring)
+            byte[] resultArray;
+
+            if (Mantras.Contains(Item0.GameObjectData.ObjectType))
             {
-                // for mantras, A0C0020100 pattern at the end stays, for others the last 00 is removed
-                result.RemoveAt(result.Count - 1);
-                result.Add(0xF8);
-                result.Add((byte) (((item1Bytes[0] & 0b111111) << 2) + 0b01));
-                
+                item0ByteList.Add((byte) (((item1Bytes[0] & 0b1) << 7) + 0b0111111));
+
                 for (var i = 1; i < item1Bytes.Length; i++)
                 {
-                    result.Add((byte) (((item1Bytes[i] & 0b111111) << 2) + (item1Bytes[i - 1] >> 6)));
+                    item0ByteList.Add((byte) (((item1Bytes[i] & 0b1) << 7) + (item1Bytes[i - 1] >> 1)));
                 }
-                result.Add((byte) (item1Bytes[^1] >> 6));
-                
+
+                item0ByteList.Add((byte) (item1Bytes[^1] >> 1));
+                resultArray = item0ByteList.ToArray();
             }
+            // add 7E as constant, shift +- 2
             else
             {
-                result.Add((byte) (((item1Bytes[0] & 0b1) << 7) + 0b111111));
-                
-                for (var i = 1; i < item1Bytes.Length; i++)
-                {
-                    result.Add((byte) (((item1Bytes[i] & 0b1) << 7) + (item1Bytes[i - 1] >> 1)));
-                }
-                result.Add((byte) (item1Bytes[^1] >> 1));
-                
-            }
-        }
+                var isFullStatRing = Item0.GameObjectData.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
+                    or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water
+                    or ItemSuffix.Air or ItemSuffix.Fire;
 
-        var packet = Packet.ToByteArray(result.ToArray(), 3);
-        Console.WriteLine(ConvertHelper.ToHexString(packet));
+                if (MaterialsPowdersElixirs.Contains(Item0.GameObjectData.ObjectType))
+                {
+                    item0ByteList.RemoveAt(item0ByteList.Count - 1);
+                }
+                var baseLength = item0ByteList.Count;
+                item0ByteList.Add(0x7E);
+                item0ByteList.AddRange(item1Bytes);
+                resultArray = item0ByteList.ToArray();
+
+                if (Item0.GameObjectData.ObjectType == GameObjectType.Ring && isFullStatRing)
+                {
+                    for (var i = baseLength - 1; i < resultArray.Length; i++)
+                    {
+                        resultArray[i] = (byte) (((resultArray[i] & 0b11) << 6) + (resultArray[i - 1] >> 2));
+                    }
+
+                    resultArray[^1] >>= 2;
+                }
+                else
+                {
+                    for (var i = resultArray.Length - 1; i >= baseLength + 1; i--)
+                    {
+                        resultArray[i] = (byte) (((resultArray[i] & 0b111111) << 2) + (resultArray[i - 1] >> 6));
+                    }
+
+                    Console.WriteLine(resultArray[baseLength]);
+                    resultArray[baseLength] <<= 2;
+                }
+            }
+
+            var packet = Packet.ToByteArray(resultArray.ToArray(), 3);
+            Console.WriteLine(ConvertHelper.ToHexString(packet));
+
+            return packet;
+        }
         
-        return packet;
+        return Packet.ToByteArray(item0ByteList.ToArray(), 3); 
     }
 }
