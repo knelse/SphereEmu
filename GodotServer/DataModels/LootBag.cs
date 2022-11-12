@@ -223,18 +223,31 @@ public class LootBag : IGameEntity
 
                 break;
             case 2:
-                var item0_1 = (byte) ((Item0.ID & 0b1) << 7);
-                var item0_2 = (byte) ((Item0.ID >> 1) & 0b11111111);
-                var item0_3 = (byte) ((Item0.ID >> 9) & 0b1111111);
+                // var item0_1 = (byte) ((Item0.ID & 0b1) << 7);
+                // var item0_2 = (byte) ((Item0.ID >> 1) & 0b11111111);
+                // var item0_3 = (byte) ((Item0.ID >> 9) & 0b1111111);
+                //
+                // var item1_1 = (byte) ((Item1.ID & 0b111111) << 2);
+                // var item1_2 = (byte) ((Item1.ID >> 6) & 0b11111111);
+                // var item1_3 = (byte) ((Item1.ID >> 14) & 0b11);
 
-                var item1_1 = (byte) ((Item1.ID & 0b111111) << 2);
-                var item1_2 = (byte) ((Item1.ID >> 6) & 0b11111111);
-                var item1_3 = (byte) ((Item1.ID >> 14) & 0b11);
+                var item0_1 = (byte) ((Item0.ID & 0b1111) << 4);
+                var item0_2 = (byte) ((Item0.ID >> 4) & 0b11111111);
+                var item0_3 = (byte) ((Item0.ID >> 12) & 0b1111);
+                
+                var item1_1 = (byte) ((Item1.ID & 0b1) << 7);
+                var item1_2 = (byte) ((Item1.ID >> 1) & 0b11111111);
+                var item1_3 = (byte) ((Item1.ID >> 9) & 0b1111111);
+                
                 itemList = new byte[]
                 {
-                    0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
-                    0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, item0_1, item0_2, item0_3, weight_1, weight_2, weight_3, weight_4, 
-                    0x80, 0x82, 0x20, 0x04, item1_1, item1_2, item1_3, weight_5, weight_6, weight_7, weight_8, 0x00
+                    // 0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    // 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, item0_1, item0_2, item0_3, weight_1, weight_2, weight_3, weight_4, 
+                    // 0x80, 0x82, 0x20, 0x04, item1_1, item1_2, item1_3, weight_5, weight_6, weight_7, weight_8, 0x00
+                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00, 0x00, 0x50, 0x10, 
+                    0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
+                    
                 };
 
                 break;
@@ -267,9 +280,9 @@ public class LootBag : IGameEntity
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    private byte[] GetItemBytes(int itemIndex)
+    private byte[] GetItemBytes(int itemIndex, bool bitShiftForRings = false)
     {
-        return this[itemIndex].GameObjectData.GetLootItemBytes(ID, this[itemIndex].ID);
+        return this[itemIndex].GameObjectData.GetLootItemBytes(ID, this[itemIndex].ID, bitShiftForRings);
     }
 
     public byte[] GetContentsPacket()
@@ -279,7 +292,10 @@ public class LootBag : IGameEntity
         if (Count >= 2)
         {
             Console.WriteLine($"IDs: {Item0.ID} {Item1.ID}");
-            var item1Bytes = GetItemBytes(1);
+            var item1Bytes = GetItemBytes(1, Item0.GameObjectData.ObjectType == GameObjectType.Ring 
+                && Item0.GameObjectData.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
+                or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water
+                or ItemSuffix.Air or ItemSuffix.Fire);
             byte[] resultArray;
 
             if (Mantras.Contains(Item0.GameObjectData.ObjectType))
@@ -301,10 +317,11 @@ public class LootBag : IGameEntity
                     or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water
                     or ItemSuffix.Air or ItemSuffix.Fire;
 
-                if (MaterialsPowdersElixirs.Contains(Item0.GameObjectData.ObjectType))
+                if (Item0.GameObjectData.ObjectType != GameObjectType.Ring || !isFullStatRing)
                 {
                     item0ByteList.RemoveAt(item0ByteList.Count - 1);
                 }
+
                 var baseLength = item0ByteList.Count;
                 item0ByteList.Add(0x7E);
                 item0ByteList.AddRange(item1Bytes);
@@ -312,11 +329,11 @@ public class LootBag : IGameEntity
 
                 if (Item0.GameObjectData.ObjectType == GameObjectType.Ring && isFullStatRing)
                 {
-                    for (var i = baseLength - 1; i < resultArray.Length; i++)
+                    
+                    for (var i = baseLength - 1; i < resultArray.Length - 1; i++)
                     {
-                        resultArray[i] = (byte) (((resultArray[i] & 0b11) << 6) + (resultArray[i - 1] >> 2));
+                        resultArray[i] = (byte) ((resultArray[i] >> 2) + ((resultArray[i + 1] & 0b11) << 6));
                     }
-
                     resultArray[^1] >>= 2;
                 }
                 else
@@ -325,8 +342,6 @@ public class LootBag : IGameEntity
                     {
                         resultArray[i] = (byte) (((resultArray[i] & 0b111111) << 2) + (resultArray[i - 1] >> 6));
                     }
-
-                    Console.WriteLine(resultArray[baseLength]);
                     resultArray[baseLength] <<= 2;
                 }
             }

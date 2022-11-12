@@ -268,7 +268,9 @@ public class Client : Node
                         //
                         // };
                         // test.AddRange(BinaryStringToByteArray(txt));
-                        StreamPeer.PutData(bag.GetContentsPacket());
+                        var packet = bag.GetContentsPacket();
+                        packet[6] = 0x04;
+                        StreamPeer.PutData(packet);
                     }
                 }
 

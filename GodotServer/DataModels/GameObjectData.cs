@@ -339,6 +339,7 @@ public enum ItemSuffix
 
 public static class GameObjectDataHelper
 {
+    public static bool firstTypeRolled = false;
     public static HashSet<ItemSuffix> RingSuffixes = new ()
     {
         ItemSuffix.Health,
@@ -538,12 +539,20 @@ public static class GameObjectDataHelper
                 GameObjectType.Axe,
                 GameObjectType.Sword,
             };
-
             var overrideFilter = new HashSet<GameObjectType>
             {
-                // GameObjectType.Powder_Area
-                // GameObjectType.Ring
+                GameObjectType.Ring,
             };
+
+            if (firstTypeRolled)
+            {
+                overrideFilter = new HashSet<GameObjectType>
+                {
+                    GameObjectType.Mineral
+                };
+            }
+
+            firstTypeRolled = !firstTypeRolled;
 
             typeFilter = overrideFilter.Count > 0 ? overrideFilter : typeFilter;
 
@@ -593,15 +602,15 @@ public static class GameObjectDataHelper
                 // ItemSuffix.Durability,
                 // ItemSuffix.Life,
                 // ItemSuffix.Endurance,
-                // ItemSuffix.Fire,
+                ItemSuffix.Fire,
                 // ItemSuffix.Absorption,
                 // ItemSuffix.Meditation,
                 // ItemSuffix.Strength,
                 // ItemSuffix.Earth,
-                ItemSuffix.Safety,
+                // ItemSuffix.Safety,
                 // ItemSuffix.Prana,
                 // ItemSuffix.Agility,
-                ItemSuffix.Water,
+                // ItemSuffix.Water,
                 // ItemSuffix.Value,
                 // ItemSuffix.Precision,
                 // ItemSuffix.Ether,
@@ -875,16 +884,28 @@ public class GameObjectData
                $"Suffix: {Enum.GetName(typeof(ItemSuffix), Suffix)} {itemCountStr}";
     }
 
-    public byte[] GetLootItemBytes(ushort bagId, ushort itemId)
+    public byte[] GetLootItemBytes(ushort bagId, ushort itemId, bool bitShiftForRings = false)
     {
         var objid_1 = (byte) (((GameId & 0b11) << 6) + 0b100110);
         var objid_2 = (byte) ((GameId >> 2) & 0b11111111);
         var objid_3 = (byte) (((GameId >> 10) & 0b1111) + 0b00010000);
+        byte bagid_1;
+        byte bagid_2;
+        byte bagid_3;
 
-        var bagid_1 = (byte) (((bagId) & 0b111) << 5);
-        var bagid_2 = (byte) ((bagId >> 3) & 0b11111111);
-        var bagid_3 = (byte) ((bagId >> 11) & 0b11111);
-        
+        if (!bitShiftForRings)
+        {
+            bagid_1 = (byte) (((bagId) & 0b111) << 5);
+            bagid_2 = (byte) ((bagId >> 3) & 0b11111111);
+            bagid_3 = (byte) ((bagId >> 11) & 0b11111);
+        }
+        else
+        {
+            bagid_1 = (byte) (((bagId) & 0b1111111) << 1);
+            bagid_2 = (byte) ((bagId >> 7) & 0b11111111);
+            bagid_3 = (byte) ((bagId >> 15) & 0b1);
+        }
+
         Console.WriteLine(ToDebugString());
 
         if (Mantras.Contains(ObjectType))
@@ -1550,7 +1571,6 @@ public class GameObjectData
                     break;
                 case ItemSuffix.Air:
                 case ItemSuffix.Water:
-                case ItemSuffix.Prana:
                 case ItemSuffix.Ether:
                     ringTypeId_1 = 0x47;
                     ringTypeId_2 = 0x01;
@@ -1564,6 +1584,12 @@ public class GameObjectData
                     ringTypeId_2 = 0x01;
 
                     break;
+                
+                case ItemSuffix.Prana:
+                    ringTypeId_1 = 0x17;
+                    ringTypeId_2 = 0x60;
+                    break;
+                    
                 default:
                     Console.WriteLine($"Wrong suffix {Enum.GetName(typeof(ItemSuffix), Suffix)}");
 
@@ -1605,10 +1631,16 @@ public class GameObjectData
             }
 
             objid_3 = (byte) (((GameId >> 10) & 0b1111) + itemSuffixMod);
+            var isFullStat = Suffix is ItemSuffix.Strength or ItemSuffix.Agility or ItemSuffix.Accuracy
+                or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water or ItemSuffix.Air or ItemSuffix.Fire;
 
             // technically, live server has different values per suffix group for 0x98 0x1A at the end but these
             // seem to be safe to ignore
-            bagid_1 = (byte) (bagid_1 + 0b00110);
+            if (isFullStat && !bitShiftForRings)
+            {
+                bagid_1 = (byte) (bagid_1 + 0b00110);
+            }
+
             var fullStatRingsBytes = new byte[]
             {
                 0x00, 0x0A, 0x59, 0x00, 0xF0, 0xFF, 0xFF, 0xFF, 0x5F, 0x78, 0x07, 0xB5, 0xBB, 0x2F, 0xB2, 0xB4, 0xB0,
@@ -1626,15 +1658,16 @@ public class GameObjectData
                 bagid_1, bagid_2, bagid_3
             });
 
-            result.AddRange(Suffix is ItemSuffix.Strength or ItemSuffix.Agility or ItemSuffix.Accuracy
-                or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water or ItemSuffix.Air or ItemSuffix.Fire
+            result.AddRange(isFullStat
                 ? fullStatRingsBytes
                 : halfStatRingBytes);
 
             var safety = new byte[] { 0x91, 0x01, 0x00 };
             var water = new byte[] { 0x18, 0x1A, 0x00 };
-
-            result.AddRange(Suffix == ItemSuffix.Safety ? safety : water);
+            var prana = new byte[] { 0xB1, 0x01, 0x00 };
+            var health = new byte[] { 0x99, 0x01, 0x00 };
+ 
+            result.AddRange(Suffix == ItemSuffix.Prana ? prana : health);
             return result.ToArray();
         }
 

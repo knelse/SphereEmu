@@ -22,7 +22,7 @@ public class LootBagNode : RigidBody
         if (updateDelay < 0)
         {
             updateDelay = 0.1f;
-            LootBag.UpdatePositionForEveryClientInRadius();
+            // LootBag.UpdatePositionForEveryClientInRadius();
         }
     }
 }
