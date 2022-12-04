@@ -122,7 +122,7 @@ namespace SphServer.Helpers
                 TitleLevelMinusOne = Convert.ToByte(entityData[8])
             };
             var id = MainServer.AddToGameObjects(entity);
-            entity.ID = id;
+            entity.Id = id;
 
             return Packet.ToByteArray(entity.ToByteArray(), 1);
         }
@@ -145,7 +145,7 @@ namespace SphServer.Helpers
                 TitleLevelMinusOne = 0
             };
             var id = MainServer.AddToGameObjects(entity);
-            entity.ID = id;
+            entity.Id = id;
 
             return Packet.ToByteArray(entity.ToByteArray(), 1);
         }
@@ -155,7 +155,7 @@ namespace SphServer.Helpers
             var id = (ushort) 0xb19f;
             var entity = new GameEntity
             {
-                ID = id,
+                Id = id,
                 Unknown = 1260,
                 X = 2310,
                 Y = 159.5,

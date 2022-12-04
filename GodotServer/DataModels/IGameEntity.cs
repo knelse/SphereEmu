@@ -2,7 +2,7 @@ using SphServer.DataModels;
 
 public interface IGameEntity
 {
-    public ushort ID { get; set; }
+    public ushort Id { get; set; }
     public ushort Unknown { get; set; }
     public double X { get; set; }
     public double Y { get; set; }

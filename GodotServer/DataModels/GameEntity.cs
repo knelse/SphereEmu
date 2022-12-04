@@ -5,7 +5,7 @@ namespace SphServer.DataModels
 {
     public class GameEntity : IGameEntity
     {
-        public ushort ID { get; set; }
+        public ushort Id { get; set; }
         public ushort Unknown { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
@@ -20,7 +20,7 @@ namespace SphServer.DataModels
 
         public override string ToString()
         {
-            return $"Ent\t{ID}\t{Unknown}\t{X}\t{Y}\t{Z}\t{Turn}\t{CurrentHP}\t{TypeID}\t{TitleLevelMinusOne}";
+            return $"Ent\t{Id}\t{Unknown}\t{X}\t{Y}\t{Z}\t{Turn}\t{CurrentHP}\t{TypeID}\t{TitleLevelMinusOne}";
         }
 
         public byte[] ToByteArray()
@@ -32,7 +32,7 @@ namespace SphServer.DataModels
             sb.Append("01110000"); //70
             sb.Append("00000000"); //00
             sb.Append("11000000"); //c0
-            var id_str = ID.ToBinaryString();
+            var id_str = Id.ToBinaryString();
             sb.Append(id_str[13..]);
             sb.Append("01111");
             sb.Append(id_str[5..13]);

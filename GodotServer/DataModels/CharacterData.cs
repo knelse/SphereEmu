@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using LiteDB;
 using SphServer.Helpers;
 using static SphServer.Helpers.BitHelper;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace SphServer.DataModels
 {
@@ -44,7 +48,8 @@ namespace SphServer.DataModels
 
     public class CharacterData : IGameEntity
     {
-        public ushort ID { get; set; }
+        [BsonId]
+        public ushort Id { get; set; }
         public ushort Unknown { get; set; }
         public double X { get; set; }
         public double Y { get; set; } = 150;
@@ -55,96 +60,99 @@ namespace SphServer.DataModels
         public ushort TypeID { get; set; }
         public byte TitleLevelMinusOne { get; set; }
         public byte DegreeLevelMinusOne { get; set; }
-        public GameObjectData GameObjectData { get; set; } // unused for now
+        
+        [BsonIgnore]
+        public GameObjectData GameObjectData { get; set; } = null!; // unused for now
 
-        public int DbId;
-        public byte LookType = 0x7;
-        public byte IsTurnedOff = 0x9;
-        public ushort MaxMP = 100;
-        public ushort Strength = 0;
-        public ushort Agility = 0;
-        public ushort Accuracy = 0;
-        public ushort Endurance = 0;
-        public ushort Earth = 0;
-        public ushort Air = 0;
-        public ushort Water = 0;
-        public ushort Fire = 0;
-        public ushort PDef = 0;
-        public ushort MDef = 0;
-        public KarmaTypes Karma = KarmaTypes.Neutral;
-        public ushort MaxSatiety = 100;
-        public uint TitleXP = 0;
-        public uint DegreeXP = 0;
-        public ushort CurrentSatiety = 50;
-        public ushort CurrentMP = 100;
-        public ushort AvailableTitleStats = 4;
-        public ushort AvailableDegreeStats = 4;
-        public bool IsGenderFemale;
-        public string Name = "Test";
-        public string ClanName = "ClanTest";
-        public byte FaceType;
-        public byte HairStyle;
-        public byte HairColor;
-        public byte Tattoo;
-        public byte BootModelId;
-        public byte PantsModelId;
-        public byte ArmorModelId;
-        public byte HelmetModelId;
-        public byte GlovesModelId;
-        public bool IsNotQueuedForDeletion = true;
-        public int? HelmetSlot = null;
-        public int? AmuletSlot = null;
-        public int? SpecSlot = null;
-        public int? ArmorSlot = null;
-        public int? ShieldSlot = null;
-        public int? BeltSlot = null;
-        public int? GlovesSlot = null;
-        public int? LeftBraceletSlot = null;
-        public int? PantsSlot = null;
-        public int? RightBraceletSlot = null;
-        public int? TopLeftRingSlot = null;
-        public int? TopRightRingSlot = null;
-        public int? BottomLeftRingSlot = null;
-        public int? BottomRightRingSlot = null;
-        public int? BootsSlot = null;
-        public int? LeftSpecialSlot1 = null;
-        public int? LeftSpecialSlot2 = null;
-        public int? LeftSpecialSlot3 = null;
-        public int? LeftSpecialSlot4 = null;
-        public int? LeftSpecialSlot5 = null; // spec ability 1
-        public int? LeftSpecialSlot6 = null; // spec ability 2
-        public int? LeftSpecialSlot7 = null; // spec ability 3
-        public int? LeftSpecialSlot8 = null;
-        public int? LeftSpecialSlot9 = null;
-        public int? WeaponSlot = null;
-        public int? AmmoSlot = null;
-        public int? MapBookSlot = null;
-        public int? RecipeBookSlot = null;
-        public int? MantraBookSlot = null;
-        public int? InkpotSlot = null;
-        public int? IslandTokenSlot = null;
-        public int? SpeedhackMantraSlot = null;
-        public int? MoneySlot = null;
-        public int? TravelbagSlot = null;
-        public int? KeySlot1 = null;
-        public int? KeySlot2 = null;
-        public int? MissionSlot = null;
-        public int? InventorySlot1 = null;
-        public int? InventorySlot2 = null;
-        public int? InventorySlot3 = null;
-        public int? InventorySlot4 = null;
-        public int? InventorySlot5 = null;
-        public int? InventorySlot6 = null;
-        public int? InventorySlot7 = null;
-        public int? InventorySlot8 = null;
-        public int? InventorySlot9 = null;
-        public int? InventorySlot10 = null;
-        public int Money = 0;
-        public int SpecLevelMinusOne = 0;
-        public SpecTypes SpecType = SpecTypes.None;
-        public ClanRank ClanRank = 0;
+        public byte LookType { get; set; } = 0x7;
+        public byte IsTurnedOff { get; set; } = 0x9;
+        public ushort MaxMP { get; set; } = 100;
+        public ushort Strength { get; set; }
+        public ushort Agility { get; set; }
+        public ushort Accuracy { get; set; }
+        public ushort Endurance { get; set; }
+        public ushort Earth { get; set; }
+        public ushort Air { get; set; }
+        public ushort Water { get; set; }
+        public ushort Fire { get; set; }
+        public ushort PDef { get; set; }
+        public ushort MDef { get; set; }
+        public KarmaTypes Karma { get; set; } = KarmaTypes.Neutral;
+        public ushort MaxSatiety { get; set; } = 100;
+        public uint TitleXP { get; set; }
+        public uint DegreeXP { get; set; }
+        public ushort CurrentSatiety { get; set; } = 50;
+        public ushort CurrentMP { get; set; } = 100;
+        public ushort AvailableTitleStats { get; set; } = 4;
+        public ushort AvailableDegreeStats { get; set; } = 4;
+        public bool IsGenderFemale { get; set; }
+        public string Name { get; set; } = "Test";
+        [BsonRef("Clans")] 
+        public Clan Clan { get; set; } = Clan.DefaultClan;
+        public byte FaceType { get; set; }
+        public byte HairStyle { get; set; }
+        public byte HairColor { get; set; }
+        public byte Tattoo { get; set; }
+        public byte BootModelId { get; set; }
+        public byte PantsModelId { get; set; }
+        public byte ArmorModelId { get; set; }
+        public byte HelmetModelId { get; set; }
+        public byte GlovesModelId { get; set; }
+        public bool IsNotQueuedForDeletion { get; set; } = true;
+        public int? HelmetSlot { get; set; }
+        public int? AmuletSlot { get; set; }
+        public int? SpecSlot { get; set; }
+        public int? ArmorSlot { get; set; }
+        public int? ShieldSlot { get; set; }
+        public int? BeltSlot { get; set; }
+        public int? GlovesSlot { get; set; }
+        public int? LeftBraceletSlot { get; set; }
+        public int? PantsSlot { get; set; }
+        public int? RightBraceletSlot { get; set; }
+        public int? TopLeftRingSlot { get; set; }
+        public int? TopRightRingSlot { get; set; }
+        public int? BottomLeftRingSlot { get; set; }
+        public int? BottomRightRingSlot { get; set; }
+        public int? BootsSlot { get; set; }
+        public int? LeftSpecialSlot1 { get; set; }
+        public int? LeftSpecialSlot2 { get; set; }
+        public int? LeftSpecialSlot3 { get; set; }
+        public int? LeftSpecialSlot4 { get; set; }
+        public int? LeftSpecialSlot5 { get; set; } // spec ability 1
+        public int? LeftSpecialSlot6 { get; set; } // spec ability 2
+        public int? LeftSpecialSlot7 { get; set; } // spec ability 3
+        public int? LeftSpecialSlot8 { get; set; }
+        public int? LeftSpecialSlot9 { get; set; }
+        public int? WeaponSlot { get; set; }
+        public int? AmmoSlot { get; set; }
+        public int? MapBookSlot { get; set; }
+        public int? RecipeBookSlot { get; set; }
+        public int? MantraBookSlot { get; set; }
+        public int? InkpotSlot { get; set; }
+        public int? IslandTokenSlot { get; set; }
+        public int? SpeedhackMantraSlot { get; set; }
+        public int? MoneySlot { get; set; }
+        public int? TravelbagSlot { get; set; }
+        public int? KeySlot1 { get; set; }
+        public int? KeySlot2 { get; set; }
+        public int? MissionSlot { get; set; }
+        public int? InventorySlot1 { get; set; }
+        public int? InventorySlot2 { get; set; }
+        public int? InventorySlot3 { get; set; }
+        public int? InventorySlot4 { get; set; }
+        public int? InventorySlot5 { get; set; }
+        public int? InventorySlot6 { get; set; }
+        public int? InventorySlot7 { get; set; }
+        public int? InventorySlot8 { get; set; }
+        public int? InventorySlot9 { get; set; }
+        public int? InventorySlot10 { get; set; }
+        public int Money { get; set; }
+        public int SpecLevelMinusOne { get; set; }
+        public SpecTypes SpecType { get; set; } = SpecTypes.None;
+        public ClanRank ClanRank { get; set; }
 
-        public Client Client;
+        [BsonIgnore]
+        public Client Client = null!;
 
         public byte[] ToCharacterListByteArray()
         {
@@ -262,7 +270,7 @@ namespace SphServer.DataModels
 
             var charDataBytes = new byte[]
             {
-                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 
+                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 
                 0x60, lookType, hpMax1, hpMax2, mpMax1, mpMax2, strength1, strenth2, agility1, agility2, accuracy1, 
                 accuracy2, endurance1, endurance2, earth1, earth2, air1, air2, water1, water2, fire1, fire2, pdef1, 
                 pdef2, mdef1, mdef2, karma1, satietyMax1, satietyMax2, titleLvl1, titleLvl2, degreeLvl1, degreeLvl2, 
@@ -295,8 +303,8 @@ namespace SphServer.DataModels
                 0x00,
                 0x00,
                 0x04,
-                MajorByte(ID),
-                MinorByte(ID),
+                MajorByte(Id),
+                MinorByte(Id),
                 0x08,
                 0x00,
                 (byte)(((nameLen & 0b111) << 5) + 2),
@@ -310,14 +318,14 @@ namespace SphServer.DataModels
 
             data.Add((byte)((nameEncoded[^1] & 0b11111000) >> 3));
 
-            if (string.IsNullOrWhiteSpace(ClanName))
+            if (Clan.Id == Clan.DefaultClan.Id)
             {
                 data.Add(0x00);
                 data.Add(0x6E);
             }
             else
             {
-                var clanNameEncoded = MainServer.Win1251.GetBytes(ClanName);
+                var clanNameEncoded = MainServer.Win1251.GetBytes(Clan.Name);
                 var clanNameLength = clanNameEncoded.Length;
                 data.Add((byte)((clanNameLength & 0b111) << 5));
                 data.Add((byte)(((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
@@ -509,7 +517,7 @@ namespace SphServer.DataModels
         {
             return new CharacterData
             {
-                ID = playerIndex,
+                Id = playerIndex,
                 Name = name,
                 IsGenderFemale = isFemale,
                 FaceType = (byte)face,
@@ -545,7 +553,7 @@ namespace SphServer.DataModels
             
             var tpBytes = new byte[]
             {
-                0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 0xE3, 0x01, 
+                0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 0xE3, 0x01, 
                 (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
                 (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x00
             };
@@ -579,7 +587,7 @@ namespace SphServer.DataModels
 
             var tpBytes = new byte[]
             {
-                0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 0xE3, 0x01, 
+                0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 0xE3, 0x01, 
                 (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
                 (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x20, 0x08,
                 0x39, 0xED, 0xA8, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x0B, 0x40, 0xE7, 0x45, 0x20, 0xF7, 0x42, 0x10, 0x79, 

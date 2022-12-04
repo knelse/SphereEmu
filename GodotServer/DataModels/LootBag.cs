@@ -11,7 +11,7 @@ using static SphServer.Helpers.BitHelper;
 
 public class Item : IGameEntity
 {
-    public ushort ID { get; set; }
+    public ushort Id { get; set; }
     public ushort Unknown { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
@@ -35,7 +35,7 @@ public enum LootRatityType
 
 public class LootBag : IGameEntity
 {
-    public ushort ID { get; set; }
+    public ushort Id { get; set; }
     public ushort Unknown { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
@@ -103,7 +103,7 @@ public class LootBag : IGameEntity
     {
         var bag = (LootBagNode) LootBagScene.Instance();
         bag.LootBag = new LootBag();
-        bag.LootBag.ID = MainServer.AddToGameObjects(bag.LootBag);
+        bag.LootBag.Id = MainServer.AddToGameObjects(bag.LootBag);
         bag.LootBag.TitleLevelMinusOne = (byte) level;
         bag.LootBag.X = x;
         bag.LootBag.Y = y;
@@ -118,7 +118,7 @@ public class LootBag : IGameEntity
             {
                 GameObjectData = GameObjectDataHelper.GetRandomObjectData(level)//, i == 0 ? -1 : 2402)
             };
-            item.ID = MainServer.AddToGameObjects(item);
+            item.Id = MainServer.AddToGameObjects(item);
             bag.LootBag[i] = item;
         }
 
@@ -140,8 +140,8 @@ public class LootBag : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                Console.WriteLine($"Sending {ID} ({ent.X}, {ent.Y}, {ent.Z}) to cli {charData.ID}");
-                ShowForClient(charData.ID);
+                Console.WriteLine($"Sending {Id} ({ent.X}, {ent.Y}, {ent.Z}) to cli {charData.Id}");
+                ShowForClient(charData.Id);
             }
         }
     }
@@ -155,7 +155,7 @@ public class LootBag : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                charData.Client.MoveEntity(X, -Y, Z, Turn, ID);
+                charData.Client.MoveEntity(X, -Y, Z, Turn, Id);
             }
         }
     }
@@ -181,7 +181,7 @@ public class LootBag : IGameEntity
 
         var lootBagPacket = new byte[]
         {
-            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x86, (byte) x_1,
+            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x86, (byte) x_1,
             (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
             (byte) z_2, (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
         };
@@ -209,14 +209,14 @@ public class LootBag : IGameEntity
         switch (Count)
         {
             case 1:
-                var id_1 = Item0.ID >> 12;
-                var id_2 = (Item0.ID & 0b111100000000) >> 8;
-                var id_3 = (Item0.ID & 0b11110000) >> 4;
-                var id_4 = Item0.ID & 0b1111;
+                var id_1 = Item0.Id >> 12;
+                var id_2 = (Item0.Id & 0b111100000000) >> 8;
+                var id_3 = (Item0.Id & 0b11110000) >> 4;
+                var id_4 = Item0.Id & 0b1111;
                 
                 itemList = new byte[]
                 {
-                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, (byte) (id_4 << 4), (byte) ((id_2 << 4) + id_3), (byte) id_1, 0x70, 0x0D, 
                     0x00, 0x00, 0x00 
                 };
@@ -231,20 +231,20 @@ public class LootBag : IGameEntity
                 // var item1_2 = (byte) ((Item1.ID >> 6) & 0b11111111);
                 // var item1_3 = (byte) ((Item1.ID >> 14) & 0b11);
 
-                var item0_1 = (byte) ((Item0.ID & 0b1111) << 4);
-                var item0_2 = (byte) ((Item0.ID >> 4) & 0b11111111);
-                var item0_3 = (byte) ((Item0.ID >> 12) & 0b1111);
+                var item0_1 = (byte) ((Item0.Id & 0b1111) << 4);
+                var item0_2 = (byte) ((Item0.Id >> 4) & 0b11111111);
+                var item0_3 = (byte) ((Item0.Id >> 12) & 0b1111);
                 
-                var item1_1 = (byte) ((Item1.ID & 0b1) << 7);
-                var item1_2 = (byte) ((Item1.ID >> 1) & 0b11111111);
-                var item1_3 = (byte) ((Item1.ID >> 9) & 0b1111111);
+                var item1_1 = (byte) ((Item1.Id & 0b1) << 7);
+                var item1_2 = (byte) ((Item1.Id >> 1) & 0b11111111);
+                var item1_3 = (byte) ((Item1.Id >> 9) & 0b1111111);
                 
                 itemList = new byte[]
                 {
                     // 0x27, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
                     // 0x00, 0x0A, 0x13, 0x00, 0x50, 0x10, 0x04, item0_1, item0_2, item0_3, weight_1, weight_2, weight_3, weight_4, 
                     // 0x80, 0x82, 0x20, 0x04, item1_1, item1_2, item1_3, weight_5, weight_6, weight_7, weight_8, 0x00
-                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00, 0x00, 0x50, 0x10, 
                     0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
                     
@@ -254,7 +254,7 @@ public class LootBag : IGameEntity
             case 3:
                 itemList = new byte[]
                 {
-                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86, 
                     0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 
                     0x00
@@ -264,7 +264,7 @@ public class LootBag : IGameEntity
             case 4:
                 itemList = new byte[]
                 {
-                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x5C, 0x46, 0x61, 0x02, 
+                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, 0x50, 0xA3, 0x0C, 0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 0x80, 0x86,
                     0x65, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, 0xF0, 0x28, 0x03, 0x2C, 0x00, 0x00, 0x00, 
                     0x14, 0x04, 0x61, 0xE0, 0x61, 0x19, 0x80, 0x19, 0x00, 0x00, 0x00
@@ -282,7 +282,7 @@ public class LootBag : IGameEntity
 
     private byte[] GetItemBytes(int itemIndex, bool bitShiftForRings = false)
     {
-        return this[itemIndex].GameObjectData.GetLootItemBytes(ID, this[itemIndex].ID, bitShiftForRings);
+        return this[itemIndex].GameObjectData.GetLootItemBytes(Id, this[itemIndex].Id, bitShiftForRings);
     }
 
     public byte[] GetContentsPacket()
@@ -291,7 +291,7 @@ public class LootBag : IGameEntity
 
         if (Count >= 2)
         {
-            Console.WriteLine($"IDs: {Item0.ID} {Item1.ID}");
+            Console.WriteLine($"IDs: {Item0.Id} {Item1.Id}");
             var item1Bytes = GetItemBytes(1, Item0.GameObjectData.ObjectType == GameObjectType.Ring 
                 && Item0.GameObjectData.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
                 or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water

@@ -7,12 +7,14 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using LiteDB;
 using SphServer.DataModels;
 using SphServer.Helpers;
 #pragma warning disable CS4014
 
 namespace SphServer
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class MainServer : Node
     {
         private static readonly int playerIndex = 0x4F6F;
@@ -32,6 +34,10 @@ namespace SphServer
         public static readonly Dictionary<int, GameObjectData> GameObjectDataDb = new();
         public static readonly string gameDataPath = "c:\\source\\_sphFilesDecode\\params\\";
         private static readonly char[] TabCharacter = {'\t'};
+        public static LiteDatabase Db = new (@"C:\_sphereStuff\sph.db");
+        public static ILiteCollection<Player> PlayerCollection => Db.GetCollection<Player>("Players");
+        public static ILiteCollection<CharacterData> CharacterCollection => Db.GetCollection<CharacterData>("Characters");
+        public static ILiteCollection<Clan> ClanCollection => Db.GetCollection<Clan>("Clans");
 
         private static ushort getNewPlayerIndex()
         {
@@ -47,7 +53,7 @@ namespace SphServer
         public static ushort AddToGameObjects(IGameEntity ent)
         {
             while (!GameObjects.TryAdd(Interlocked.Increment(ref currentId), ent));
-            ent.ID = (ushort) currentId;
+            ent.Id = (ushort) currentId;
             ShowDebugInfo(ent);
 
             return (ushort) currentId;
@@ -62,7 +68,7 @@ namespace SphServer
 
         private static void ShowDebugInfo(IGameEntity ent)
         {
-            GD.Print($"SRV: NEW ENT ID: {ent.ID:####0}\tType: {ent.TypeID:####0}\tX: {(int) ent.X:####0}\tY: {(int) ent.Y:####0}\tZ: {(int) ent.Z:####0}\t" +
+            GD.Print($"SRV: NEW ENT ID: {ent.Id:####0}\tType: {ent.TypeID:####0}\tX: {(int) ent.X:####0}\tY: {(int) ent.Y:####0}\tZ: {(int) ent.Z:####0}\t" +
                      $"T: {ent.Turn:##0.#####}\tLevel: {ent.TitleLevelMinusOne:##0}\tHP: {ent.CurrentHP:####0}/{ent.MaxHP}");
         }
         

@@ -8,7 +8,7 @@ using SphServer.Packets;
 
 public class Mob : IGameEntity
 {
-    public ushort ID { get; set; }
+    public ushort Id { get; set; }
     public ushort Unknown { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
@@ -41,7 +41,7 @@ public class Mob : IGameEntity
             TypeID = (ushort) typeId,
             TitleLevelMinusOne = (byte) level
         };
-        mob.Mob.ID = MainServer.AddToGameObjects(mob.Mob);
+        mob.Mob.Id = MainServer.AddToGameObjects(mob.Mob);
         
         MainServer.MainServerNode.AddChild(mob);
         return mob.Mob;
@@ -56,8 +56,8 @@ public class Mob : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                Console.WriteLine($"CLI {charData.ID}: MOB {ent.ID} {ent.X} {ent.Y} {ent.Z}");
-                Client.TryFindClientByIdAndSendData(charData.ID, Packet.ToByteArray(ToByteArray(), 1));
+                Console.WriteLine($"CLI {charData.Id}: MOB {ent.Id} {ent.X} {ent.Y} {ent.Z}");
+                Client.TryFindClientByIdAndSendData(charData.Id, Packet.ToByteArray(ToByteArray(), 1));
             }
         }
     }
@@ -72,7 +72,7 @@ public class Mob : IGameEntity
         sb.Append("01110000"); //70
         sb.Append("00000000"); //00
         sb.Append("11000000"); //c0
-        var id_str = ID.ToBinaryString();
+        var id_str = Id.ToBinaryString();
         sb.Append(id_str[13..]);
         sb.Append("01111");
         sb.Append(id_str[5..13]);
@@ -207,14 +207,14 @@ public class MobNode : KinematicBody
             networkCoordsUpdateDelay = 0.5f;
 
             client?.MoveEntity(GlobalTransform.origin.x, -GlobalTransform.origin.y + 1,
-                GlobalTransform.origin.z, Mathf.Pi - Transform.basis.GetEuler().y, Mob.ID);
+                GlobalTransform.origin.z, Mathf.Pi - Transform.basis.GetEuler().y, Mob.Id);
         }
 
         attackDelay -= delta;
 
         if (attackDelay <= 0 && GlobalTransform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 2)
         {
-            client?.ChangeHealth(Mob.ID, -rng.RandiRange(5, 8));
+            client?.ChangeHealth(Mob.Id, -rng.RandiRange(5, 8));
             attackDelay = 3.5f;
         }
 

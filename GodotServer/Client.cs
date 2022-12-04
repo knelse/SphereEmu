@@ -47,7 +47,7 @@ public class Client : Node
     private float timeSinceLastFifteenSecondPing = 1000;
     private float timeSinceLastTransmissionEndPing = 1000;
     private ClientState currentState = ClientState.I_AM_BREAD;
-    private ClientInitialData? charListData;
+    private Player? player;
     private int selectedCharacterIndex = -1;
     private StaticBody? clientModel;
     private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
@@ -67,9 +67,9 @@ public class Client : Node
         {
             if (args.ChangeType == WatcherChangeTypes.Changed)
             {
-                StreamPeer.PutData(CommonPackets.DespawnEntity(testLootBag.ID));
-                MainServer.GameObjects.TryRemove(testLootBag.ID, out var _);
-                MainServer.GameObjects.TryRemove(testLootBag.Item0.ID, out var _);
+                StreamPeer.PutData(CommonPackets.DespawnEntity(testLootBag.Id));
+                MainServer.GameObjects.TryRemove(testLootBag.Id, out var _);
+                MainServer.GameObjects.TryRemove(testLootBag.Item0.Id, out var _);
                 // MainServer.currentId -= 2;
                 testLootBag.ParentNode.QueueFree();
                 testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
@@ -118,12 +118,12 @@ public class Client : Node
                 Console.WriteLine($"CLI {playerIndexStr}: Login data sent");
                 (var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
 
-                charListData =
-                    Login.CheckLoginAndGetPlayerCharacters(login, password, ID);
+                player =
+                    Login.CheckLoginAndGetPlayer(login, password, ID);
                 Console.WriteLine("Fetched char list data");
                 await (ToSignal(GetTree().CreateTimer(0.05f), "timeout"));
 
-                if (charListData == null)
+                if (player == null)
                 {
                     // TODO: actual incorrect pwd packet
                     Console.WriteLine($"SRV {playerIndexStr}: Incorrect password!");
@@ -137,7 +137,7 @@ public class Client : Node
                 Console.WriteLine("SRV: Character select screen data - initial");
                 Thread.Sleep(100);
 
-                StreamPeer.PutData(charListData.ToByteArray(ID));
+                StreamPeer.PutData(player.ToInitialDataByteArray());
                 Console.WriteLine("SRV: Character select screen data - player characters");
                 Thread.Sleep(100);
                 currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
@@ -163,12 +163,12 @@ public class Client : Node
                     selectedCharacterIndex = CharacterScreenCreateDeleteSelect();
                 }
 
-                CurrentCharacter = charListData![selectedCharacterIndex]!;
+                CurrentCharacter = player.Characters[selectedCharacterIndex]!;
                 CurrentCharacter.Client = this;
 
                 Console.WriteLine("CLI: Enter game");
                 // TODO: this ID is mostly static 0x4F6F for testing, fix later
-                MainServer.TryAddToGameObjects(CurrentCharacter.ID, CurrentCharacter);
+                MainServer.TryAddToGameObjects(CurrentCharacter.Id, CurrentCharacter);
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
                 currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
                 break;
@@ -179,7 +179,7 @@ public class Client : Node
                 }
                 // Interlocked.Increment(ref playerCount);
 
-                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.ID);
+                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.Id);
                 StreamPeer.PutData(worldData[0]);
                 Thread.Sleep(50);
                 StreamPeer.PutData(worldData[1]);
@@ -426,9 +426,9 @@ public class Client : Node
         if (rcvBuffer[0] == 0x2A)
         {
             var charIndex = rcvBuffer[17] / 4 - 1;
-
-            Console.WriteLine($"Delete character [{charIndex}] - [{charListData![charIndex]!.Name}]");
-            DbCharacters.DeleteCharacterFromDb(charListData[charIndex]!.DbId);
+            Console.WriteLine($"Delete character [{charIndex}] - [{player.Characters[charIndex]!.Name}]");
+            player.Characters.RemoveAt(charIndex);
+            MainServer.PlayerCollection.Update(player);
 
             // TODO: reinit session after delete
             // await HandleClientAsync(client, (ushort) (ID + 1), true);
@@ -514,10 +514,9 @@ public class Client : Node
 
             var newCharacterData = CharacterData.CreateNewCharacter(ID, name,
                 isGenderFemale, faceType, hairStyle, hairColor, tattoo);
-
-            charListData!.AddNewCharacter(newCharacterData, charIndex);
-            DbCharacters.AddNewCharacterToDb(charListData.PlayerId, newCharacterData,
-                charIndex);
+            
+            player.Characters.Insert(charIndex, newCharacterData);
+            MainServer.PlayerCollection.Update(player);
 
             StreamPeer.PutData(CommonPackets.NameCheckPassed(ID));
 
@@ -539,7 +538,7 @@ public class Client : Node
 
         StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
         Console.WriteLine(
-            $"SRV: Teleported client [{MinorByte(selectedCharacter.ID) * 256 + MajorByte(selectedCharacter.ID)}] to default new player dungeon");
+            $"SRV: Teleported client [{MinorByte(selectedCharacter.Id) * 256 + MajorByte(selectedCharacter.Id)}] to default new player dungeon");
         var mobX = newDungeonCoords.x - 50;
         var mobY = newDungeonCoords.y;
         var mobZ = newDungeonCoords.z + 19.5;
