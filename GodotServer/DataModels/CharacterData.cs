@@ -48,15 +48,16 @@ namespace SphServer.DataModels
 
     public class CharacterData : IGameEntity
     {
-        [BsonId]
+        [BsonIgnore]
+        [Obsolete]
         public ushort Id { get; set; }
         public ushort Unknown { get; set; }
         public double X { get; set; }
         public double Y { get; set; } = 150;
         public double Z { get; set; }
         public double Turn { get; set; }
-        public ushort CurrentHP { get; set; }
-        public ushort MaxHP { get; set; }
+        public ushort CurrentHP { get; set; } = 100;
+        public ushort MaxHP { get; set; } = 100;
         public ushort TypeID { get; set; }
         public byte TitleLevelMinusOne { get; set; }
         public byte DegreeLevelMinusOne { get; set; }
@@ -64,6 +65,9 @@ namespace SphServer.DataModels
         [BsonIgnore]
         public GameObjectData GameObjectData { get; set; } = null!; // unused for now
 
+        [BsonId]
+        public int DbId { get; set; }
+        
         public byte LookType { get; set; } = 0x7;
         public byte IsTurnedOff { get; set; } = 0x9;
         public ushort MaxMP { get; set; } = 100;
@@ -88,7 +92,7 @@ namespace SphServer.DataModels
         public bool IsGenderFemale { get; set; }
         public string Name { get; set; } = "Test";
         [BsonRef("Clans")] 
-        public Clan Clan { get; set; } = Clan.DefaultClan;
+        public Clan? Clan { get; set; } = Clan.DefaultClan;
         public byte FaceType { get; set; }
         public byte HairStyle { get; set; }
         public byte HairColor { get; set; }
@@ -149,10 +153,13 @@ namespace SphServer.DataModels
         public int Money { get; set; }
         public int SpecLevelMinusOne { get; set; }
         public SpecTypes SpecType { get; set; } = SpecTypes.None;
-        public ClanRank ClanRank { get; set; }
+        public ClanRank ClanRank { get; set; } = ClanRank.Neophyte;
 
         [BsonIgnore]
         public Client Client = null!;
+
+        [BsonIgnore] 
+        public Player Player = null!;
 
         public byte[] ToCharacterListByteArray()
         {
@@ -270,7 +277,7 @@ namespace SphServer.DataModels
 
             var charDataBytes = new byte[]
             {
-                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 
+                0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Player.Index), MinorByte(Player.Index), 0x08, 0x40, 
                 0x60, lookType, hpMax1, hpMax2, mpMax1, mpMax2, strength1, strenth2, agility1, agility2, accuracy1, 
                 accuracy2, endurance1, endurance2, earth1, earth2, air1, air2, water1, water2, fire1, fire2, pdef1, 
                 pdef2, mdef1, mdef2, karma1, satietyMax1, satietyMax2, titleLvl1, titleLvl2, degreeLvl1, degreeLvl2, 
@@ -303,8 +310,8 @@ namespace SphServer.DataModels
                 0x00,
                 0x00,
                 0x04,
-                MajorByte(Id),
-                MinorByte(Id),
+                MajorByte(Player.Index),
+                MinorByte(Player.Index),
                 0x08,
                 0x00,
                 (byte)(((nameLen & 0b111) << 5) + 2),
@@ -318,14 +325,14 @@ namespace SphServer.DataModels
 
             data.Add((byte)((nameEncoded[^1] & 0b11111000) >> 3));
 
-            if (Clan.Id == Clan.DefaultClan.Id)
+            if (Clan?.Id == null || Clan?.Id == Clan.DefaultClan.Id)
             {
                 data.Add(0x00);
                 data.Add(0x6E);
             }
             else
             {
-                var clanNameEncoded = MainServer.Win1251.GetBytes(Clan.Name);
+                var clanNameEncoded = MainServer.Win1251.GetBytes(Clan!.Name);
                 var clanNameLength = clanNameEncoded.Length;
                 data.Add((byte)((clanNameLength & 0b111) << 5));
                 data.Add((byte)(((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
@@ -511,19 +518,18 @@ namespace SphServer.DataModels
             return arr;
         }
 
-        public static CharacterData CreateNewCharacter(ushort playerIndex, string name, bool isFemale, int face,
-            int hairStyle,
-            int hairColor, int tattoo)
+        public static CharacterData CreateNewCharacter(Player player, string name, bool isFemale, int face,
+            int hairStyle, int hairColor, int tattoo)
         {
             return new CharacterData
             {
-                Id = playerIndex,
                 Name = name,
                 IsGenderFemale = isFemale,
                 FaceType = (byte)face,
                 HairStyle = (byte)hairStyle,
                 HairColor = (byte)hairColor,
-                Tattoo = (byte)tattoo
+                Tattoo = (byte)tattoo,
+                Player = player
             };
         }
         public byte[] GetTeleportByteArray(WorldCoords coords)
@@ -553,7 +559,7 @@ namespace SphServer.DataModels
             
             var tpBytes = new byte[]
             {
-                0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 0xE3, 0x01, 
+                0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Player.Index), MinorByte(Player.Index), 0x08, 0x40, 0xE3, 0x01, 
                 (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
                 (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x00
             };
@@ -587,7 +593,7 @@ namespace SphServer.DataModels
 
             var tpBytes = new byte[]
             {
-                0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Id), MinorByte(Id), 0x08, 0x40, 0xE3, 0x01, 
+                0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(Player.Index), MinorByte(Player.Index), 0x08, 0x40, 0xE3, 0x01, 
                 (byte)x_1, (byte)x_2, (byte)x_3, (byte)x_4, (byte)y_1, (byte)y_2, (byte)y_3, (byte)y_4, (byte)z_1, 
                 (byte)z_2, (byte)z_3, (byte)z_4, (byte)t_1, (byte)t_2, (byte)t_3, (byte)t_4, (byte)t_5, 0x20, 0x08,
                 0x39, 0xED, 0xA8, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x0B, 0x40, 0xE7, 0x45, 0x20, 0xF7, 0x42, 0x10, 0x79, 

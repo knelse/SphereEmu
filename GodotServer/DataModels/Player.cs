@@ -18,6 +18,10 @@ public class Player
     public byte[] ToInitialDataByteArray()
     {
         var data = new List<byte>();
+        foreach (var character in Characters)
+        {
+            character.Player = this;
+        }
 
         for (var i = 0; i < 3; i++)
         {

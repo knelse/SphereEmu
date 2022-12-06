@@ -133,11 +133,15 @@ public class Client : Node
                     return;
                 }
 
+                player.Index = ID;
+
                 StreamPeer.PutData(CommonPackets.CharacterSelectStartData(ID));
                 Console.WriteLine("SRV: Character select screen data - initial");
                 Thread.Sleep(100);
 
-                StreamPeer.PutData(player.ToInitialDataByteArray());
+                var playerInitialData = player.ToInitialDataByteArray();
+
+                StreamPeer.PutData(playerInitialData);
                 Console.WriteLine("SRV: Character select screen data - player characters");
                 Thread.Sleep(100);
                 currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
@@ -168,7 +172,7 @@ public class Client : Node
 
                 Console.WriteLine("CLI: Enter game");
                 // TODO: this ID is mostly static 0x4F6F for testing, fix later
-                MainServer.TryAddToGameObjects(CurrentCharacter.Id, CurrentCharacter);
+                MainServer.TryAddToGameObjects(CurrentCharacter.Player.Index, CurrentCharacter);
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
                 currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
                 break;
@@ -179,7 +183,7 @@ public class Client : Node
                 }
                 // Interlocked.Increment(ref playerCount);
 
-                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.Id);
+                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.Player.Index);
                 StreamPeer.PutData(worldData[0]);
                 Thread.Sleep(50);
                 StreamPeer.PutData(worldData[1]);
@@ -512,13 +516,14 @@ public class Client : Node
 
             var charIndex = (rcvBuffer[17] / 4 - 1);
 
-            var newCharacterData = CharacterData.CreateNewCharacter(ID, name,
-                isGenderFemale, faceType, hairStyle, hairColor, tattoo);
-            
-            player.Characters.Insert(charIndex, newCharacterData);
-            MainServer.PlayerCollection.Update(player);
+            var newCharacterData =
+                CharacterData.CreateNewCharacter(player!, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
-            StreamPeer.PutData(CommonPackets.NameCheckPassed(ID));
+            MainServer.CharacterCollection.Insert(newCharacterData);
+            player!.Characters.Insert(charIndex, newCharacterData);
+            MainServer.PlayerCollection.Update(player!);
+
+            StreamPeer.PutData(CommonPackets.NameCheckPassed(player!.Index));
 
             return charIndex;
         }
@@ -538,7 +543,7 @@ public class Client : Node
 
         StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
         Console.WriteLine(
-            $"SRV: Teleported client [{MinorByte(selectedCharacter.Id) * 256 + MajorByte(selectedCharacter.Id)}] to default new player dungeon");
+            $"SRV: Teleported client [{MinorByte(selectedCharacter.Player.Index) * 256 + MajorByte(selectedCharacter.Player.Index)}] to default new player dungeon");
         var mobX = newDungeonCoords.x - 50;
         var mobY = newDungeonCoords.y;
         var mobZ = newDungeonCoords.z + 19.5;

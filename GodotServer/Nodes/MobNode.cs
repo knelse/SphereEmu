@@ -56,8 +56,8 @@ public class Mob : IGameEntity
                 // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
                 // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
             {
-                Console.WriteLine($"CLI {charData.Id}: MOB {ent.Id} {ent.X} {ent.Y} {ent.Z}");
-                Client.TryFindClientByIdAndSendData(charData.Id, Packet.ToByteArray(ToByteArray(), 1));
+                Console.WriteLine($"CLI {charData.Player.Index}: MOB {ent.Id} {ent.X} {ent.Y} {ent.Z}");
+                Client.TryFindClientByIdAndSendData(charData.Player.Index, Packet.ToByteArray(ToByteArray(), 1));
             }
         }
     }

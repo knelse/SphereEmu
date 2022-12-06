@@ -10,7 +10,7 @@ public class Clan
     
     public static readonly Clan DefaultClan = new ()
     {
-        Id = 0,
+        Id = -1,
         Name = "___"
     };
 }
