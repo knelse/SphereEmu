@@ -26,7 +26,7 @@ public enum ClientState
     INGAME_DEFAULT
 }
 
-public class Client : Node
+public partial class Client : Node
 {
     public ushort ID = 0x4F6F;
     public StreamPeerTCP StreamPeer = null!;
@@ -43,13 +43,13 @@ public class Client : Node
     private string? pingPreviousClientPingString;
     public CharacterData CurrentCharacter = null!;
     private int newPlayerDungeonMobHp = 64;
-    private float timeSinceLastSixSecondPing = 1000;
-    private float timeSinceLastFifteenSecondPing = 1000;
-    private float timeSinceLastTransmissionEndPing = 1000;
+    private double timeSinceLastSixSecondPing = 1000;
+    private double timeSinceLastFifteenSecondPing = 1000;
+    private double timeSinceLastTransmissionEndPing = 1000;
     private ClientState currentState = ClientState.I_AM_BREAD;
     private Player? player;
     private int selectedCharacterIndex = -1;
-    private StaticBody? clientModel;
+    private StaticBody3D? clientModel;
     private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
     private static LootBag testLootBag;
 
@@ -78,14 +78,14 @@ public class Client : Node
         };
     }
 
-    public override async void _Process(float delta)
+    public override async void _Process(double delta)
     {
         if (StreamPeer.GetStatus() != StreamPeerTCP.Status.Connected)
         {
             CloseConnection();
         }
 
-        clientModel ??= GetNode<StaticBody>("ClientModel");
+        clientModel ??= GetNode<StaticBody3D>("ClientModel");
 
         switch (currentState)
         {
@@ -913,10 +913,10 @@ public class Client : Node
 
     // private void UpdateCoordsWithoutAxisFlip(double x, double y, double z, double turn)
     // {
-    //     var clientModelTransform = clientModel!.Transform;
+    //     var clientModelTransform = clientModel!.Transform3D;
     //     clientModelTransform.origin =
     //         new Vector3((float) x, (float) y, (float) z);
-    //     clientModel.Transform = clientModelTransform;
+    //     clientModel.Transform3D = clientModelTransform;
     //     oldY = CurrentCharacter.Y;
     // }
 }

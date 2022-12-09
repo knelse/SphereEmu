@@ -6,7 +6,7 @@ using SphServer.DataModels;
 using SphServer.Helpers;
 using SphServer.Packets;
 
-public class Mob : IGameEntity
+public partial class Mob : IGameEntity
 {
     public ushort Id { get; set; }
     public ushort Unknown { get; set; }
@@ -19,7 +19,7 @@ public class Mob : IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
-    public GameObjectData GameObjectData { get; set; } // unused for now
+    public SphGameObject SphGameObject { get; set; } // unused for now
 
     private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
     
@@ -27,7 +27,7 @@ public class Mob : IGameEntity
     
     public static Mob Create(double x, double y, double z, double turn, int unknown, int level, int currentHp, int typeId)
     {
-        var mob = (MobNode) MobScene.Instance();
+        var mob = MobScene.Instantiate<MobNode>();
         mob.Mob = new Mob
         {
             X = x,
@@ -149,33 +149,33 @@ public class Mob : IGameEntity
     }
 }
 
-public class MobNode : KinematicBody
+public partial class MobNode : CharacterBody3D
 {
     private bool followActive;
-    private Spatial? clientModel;
+    private Node3D? clientModel;
     private Client? client;
     private const float speed = 5.5f;
     private Vector3 lastKnownClientPosition = Vector3.Zero;
     private readonly RandomNumberGenerator rng = new();
 
-    private float networkCoordsUpdateDelay = 0.5f;
-    private float attackDelay;
-    private NavigationAgent navigationAgent;
+    private double networkCoordsUpdateDelay = 0.5f;
+    private double attackDelay;
+    private NavigationAgent3D navigationAgent;
 
     public Mob Mob;
     
     public override void _Ready()
     {
         Mob.ShowForEveryClientInRadius();
-        navigationAgent = GetNode<NavigationAgent>("NavigationAgent");
+        navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         // TODO: replace with signal later
-        clientModel ??= GetNodeOrNull<Spatial>("/root/MainServer/Client/ClientModel");
+        clientModel ??= GetNodeOrNull<Node3D>("/root/MainServer/Client/ClientModel");
         client ??= GetNodeOrNull<Client>("/root/MainServer/Client");
-        if ((client?.StreamPeer.IsConnectedToHost() ?? true) == false)
+        if ((client?.StreamPeer.GetStatus() ?? StreamPeerTCP.Status.None) != StreamPeerTCP.Status.Connected)
         {
             clientModel = null;
             client = null;
@@ -231,7 +231,9 @@ public class MobNode : KinematicBody
 
         var next = navigationAgent.GetNextLocation();
         var direction = GlobalTransform.origin.DirectionTo(next);
-        MoveAndSlide(direction.Normalized() * speed);
+
+        Velocity = direction.Normalized() * speed;
+        MoveAndSlide();
         LookAt(clientModel.GlobalTransform.origin, Vector3.Up);
     }
 

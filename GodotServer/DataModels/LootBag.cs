@@ -6,10 +6,9 @@ using SphServer;
 using SphServer.DataModels;
 using SphServer.Helpers;
 using SphServer.Packets;
-using static SphServer.DataModels.GameObjectData;
 using static SphServer.Helpers.BitHelper;
 
-public class Item : IGameEntity
+public partial class Item : IGameEntity
 {
     public ushort Id { get; set; }
     public ushort Unknown { get; set; }
@@ -22,7 +21,7 @@ public class Item : IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
-    public GameObjectData GameObjectData { get; set; }
+    public SphGameObject SphGameObject { get; set; }
     public int ItemCount { get; set; } = 1;
 }
 
@@ -33,7 +32,7 @@ public enum LootRatityType
     PLAYER
 }
 
-public class LootBag : IGameEntity
+public partial class LootBag : IGameEntity
 {
     public ushort Id { get; set; }
     public ushort Unknown { get; set; }
@@ -46,7 +45,7 @@ public class LootBag : IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
-    public GameObjectData GameObjectData { get; set; } // unused for now
+    public SphGameObject SphGameObject { get; set; } // unused for now
 
     public Item? Item0;
     public Item? Item1;
@@ -101,7 +100,7 @@ public class LootBag : IGameEntity
     public static LootBag Create(double x, double y, double z, int level, int sourceTypeId,
         LootRatityType ratityType, int count = -1)
     {
-        var bag = (LootBagNode) LootBagScene.Instance();
+        var bag = LootBagScene.Instantiate<LootBagNode>();
         bag.LootBag = new LootBag();
         bag.LootBag.Id = MainServer.AddToGameObjects(bag.LootBag);
         bag.LootBag.TitleLevelMinusOne = (byte) level;
@@ -116,7 +115,7 @@ public class LootBag : IGameEntity
         {
             var item = new Item
             {
-                GameObjectData = GameObjectDataHelper.GetRandomObjectData(level)//, i == 0 ? -1 : 2402)
+                SphGameObject = LootHelper.GetRandomObjectData(level)//, i == 0 ? -1 : 2402)
             };
             item.Id = MainServer.AddToGameObjects(item);
             bag.LootBag[i] = item;
@@ -282,7 +281,7 @@ public class LootBag : IGameEntity
 
     private byte[] GetItemBytes(int itemIndex, bool bitShiftForRings = false)
     {
-        return this[itemIndex].GameObjectData.GetLootItemBytes(Id, this[itemIndex].Id, bitShiftForRings);
+        return this[itemIndex].SphGameObject.GetLootItemBytes(Id, this[itemIndex].Id, bitShiftForRings);
     }
 
     public byte[] GetContentsPacket()
@@ -292,13 +291,13 @@ public class LootBag : IGameEntity
         if (Count >= 2)
         {
             Console.WriteLine($"IDs: {Item0.Id} {Item1.Id}");
-            var item1Bytes = GetItemBytes(1, Item0.GameObjectData.ObjectType == GameObjectType.Ring 
-                && Item0.GameObjectData.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
+            var item1Bytes = GetItemBytes(1, Item0.SphGameObject.ObjectType == GameObjectType.Ring 
+                && Item0.SphGameObject.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
                 or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water
                 or ItemSuffix.Air or ItemSuffix.Fire);
             byte[] resultArray;
 
-            if (Mantras.Contains(Item0.GameObjectData.ObjectType))
+            if (SphGameObject.Mantras.Contains(Item0.SphGameObject.ObjectType))
             {
                 item0ByteList.Add((byte) (((item1Bytes[0] & 0b1) << 7) + 0b0111111));
 
@@ -313,11 +312,11 @@ public class LootBag : IGameEntity
             // add 7E as constant, shift +- 2
             else
             {
-                var isFullStatRing = Item0.GameObjectData.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
+                var isFullStatRing = Item0.SphGameObject.Suffix is ItemSuffix.Strength or ItemSuffix.Agility
                     or ItemSuffix.Accuracy or ItemSuffix.Endurance or ItemSuffix.Earth or ItemSuffix.Water
                     or ItemSuffix.Air or ItemSuffix.Fire;
 
-                if (Item0.GameObjectData.ObjectType != GameObjectType.Ring || !isFullStatRing)
+                if (Item0.SphGameObject.ObjectType != GameObjectType.Ring || !isFullStatRing)
                 {
                     item0ByteList.RemoveAt(item0ByteList.Count - 1);
                 }
@@ -327,7 +326,7 @@ public class LootBag : IGameEntity
                 item0ByteList.AddRange(item1Bytes);
                 resultArray = item0ByteList.ToArray();
 
-                if (Item0.GameObjectData.ObjectType == GameObjectType.Ring && isFullStatRing)
+                if (Item0.SphGameObject.ObjectType == GameObjectType.Ring && isFullStatRing)
                 {
                     
                     for (var i = baseLength - 1; i < resultArray.Length - 1; i++)

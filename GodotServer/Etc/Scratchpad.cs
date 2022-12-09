@@ -1,6 +1,6 @@
 // namespace SphServer;
 //
-// public class Scratchpad
+// public partial class Scratchpad
 // {
     // var cli = BitHelper.ByteArrayToBinaryString(clientData.ToCharacterListByteArray())[104..];
     //

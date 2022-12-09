@@ -1,0 +1,4 @@
+res://MainServer.tscn
+res://LootDropShimmer.gd
+res://LootBag.tscn
+res://Nodes/LootBagNode.cs

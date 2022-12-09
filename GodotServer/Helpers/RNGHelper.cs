@@ -3,7 +3,7 @@ using System;
 namespace SphServer.Helpers
 {
 
-    public class RNGHelper
+    public partial class RNGHelper
     {
         /// <summary>
         /// SimpleRNG is a simple random number generator based on 
@@ -88,7 +88,7 @@ namespace SphServer.Helpers
         {
             if (standardDeviation <= 0.0)
             {
-                var msg = $"Shape must be positive. Received {standardDeviation}.";
+                var msg = $"Shape3D must be positive. Received {standardDeviation}.";
 
                 throw new ArgumentOutOfRangeException(msg);
             }
@@ -148,7 +148,7 @@ namespace SphServer.Helpers
 
             if (shape <= 0.0)
             {
-                var msg = $"Shape must be positive. Received {shape}.";
+                var msg = $"Shape3D must be positive. Received {shape}.";
 
                 throw new ArgumentOutOfRangeException(msg);
             }
@@ -177,7 +177,7 @@ namespace SphServer.Helpers
         {
             if (shape <= 0.0 || scale <= 0.0)
             {
-                var msg = string.Format("Shape and scale parameters must be positive. Recieved shape {0} and scale{1}.",
+                var msg = string.Format("Shape3D and scale parameters must be positive. Recieved shape {0} and scale{1}.",
                     shape, scale);
 
                 throw new ArgumentOutOfRangeException(msg);

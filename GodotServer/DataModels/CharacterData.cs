@@ -46,7 +46,7 @@ namespace SphServer.DataModels
         Neophyte = 0x3
     }
 
-    public class CharacterData : IGameEntity
+    public partial class CharacterData : IGameEntity
     {
         [BsonIgnore]
         [Obsolete]
@@ -63,7 +63,7 @@ namespace SphServer.DataModels
         public byte DegreeLevelMinusOne { get; set; }
         
         [BsonIgnore]
-        public GameObjectData GameObjectData { get; set; } = null!; // unused for now
+        public SphGameObject SphGameObject { get; set; } = null!; // unused for now
 
         [BsonId]
         public int DbId { get; set; }

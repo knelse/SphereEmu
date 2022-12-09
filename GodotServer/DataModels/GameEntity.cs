@@ -3,7 +3,7 @@ using SphServer.Helpers;
 
 namespace SphServer.DataModels
 {
-    public class GameEntity : IGameEntity
+    public partial class GameEntity : IGameEntity
     {
         public ushort Id { get; set; }
         public ushort Unknown { get; set; }
@@ -16,7 +16,7 @@ namespace SphServer.DataModels
         public ushort TypeID { get; set; }
         public byte TitleLevelMinusOne { get; set; }
         public byte DegreeLevelMinusOne { get; set; }
-        public GameObjectData GameObjectData { get; set; } // unused for now
+        public SphGameObject SphGameObject { get; set; } // unused for now
 
         public override string ToString()
         {

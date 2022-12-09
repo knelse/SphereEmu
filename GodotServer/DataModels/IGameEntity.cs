@@ -13,5 +13,5 @@ public interface IGameEntity
     public ushort TypeID { get; set; }
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
-    public GameObjectData GameObjectData { get; set; }
+    public SphGameObject SphGameObject { get; set; }
 }

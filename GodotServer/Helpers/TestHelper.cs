@@ -15,7 +15,7 @@ namespace SphServer.Helpers
         }
     }
 
-    public class TestHelper
+    public partial class TestHelper
     {
         // public static void DumpLoginData(byte[] rcvBuffer)
         // {

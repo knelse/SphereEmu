@@ -3,7 +3,7 @@ using System;
 namespace SphServer.Helpers
 {
 
-    public class WorldCoords
+    public partial class WorldCoords
     {
         public double x;
         public double y;
