@@ -29,15 +29,19 @@ namespace SphServer
 		public static int currentId = 54678;
 		public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
 		public static MainServer MainServerNode = null!;
-		public static readonly RandomNumberGenerator Rng = new();
+		public static readonly Random Rng = new(Guid.NewGuid().GetHashCode());
 		public static readonly Dictionary<string, SortedSet<int>> GameObjectDataOld = new();
 		public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = SphObjectDb.GameObjectDataDb;
 		public const string gameDataPath = "c:\\source\\_sphFilesDecode\\params\\";
 		private static readonly char[] TabCharacter = {'\t'};
 		public static readonly LiteDatabase Db = new (@"Filename=C:\_sphereStuff\sph.db;Connection=shared;");
+		public static readonly LiteDatabase ItemDb = new (@"Filename=C:\_sphereStuff\sph_items.db;Connection=shared;");
 		public static ILiteCollection<Player> PlayerCollection => Db.GetCollection<Player>("Players");
 		public static ILiteCollection<CharacterData> CharacterCollection => Db.GetCollection<CharacterData>("Characters");
 		public static ILiteCollection<Clan> ClanCollection => Db.GetCollection<Clan>("Clans");
+
+		public static readonly ILiteCollection<ObjectPacket> ObjectPacketCollection =
+			ItemDb.GetCollection<ObjectPacket>("ObjectPackets");
 
 		private static ushort getNewPlayerIndex()
 		{
@@ -75,11 +79,11 @@ namespace SphServer
 		public override void _Ready()
 		{
 			const int port = 25860;
-			Rng.Randomize();
 
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 			Win1251 = Encoding.GetEncoding(1251);
 			tcpServer = new TCPServer();
+			ObjectPacketTools.RegisterBsonMapperForBit();
 
 			try
 			{

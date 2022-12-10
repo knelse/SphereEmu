@@ -7,6 +7,117 @@ public static class LootHelper
 {
     public static bool firstTypeRolled = false;
 
+    public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
+    {
+        return gameObjectType switch
+        {
+            GameObjectType.Amulet => ObjectType.ArmorAmulet,
+            GameObjectType.Armor => ObjectType.ArmorChest,
+            GameObjectType.Axe => ObjectType.WeaponAxe,
+            GameObjectType.Bead => ObjectType.Bead,
+            GameObjectType.Belt => ObjectType.ArmorBelt,
+            GameObjectType.Boots => ObjectType.ArmorBoots,
+            GameObjectType.Bracelet => ObjectType.ArmorBracelet,
+            GameObjectType.Crossbow => ObjectType.WeaponCrossbow,
+            GameObjectType.Pref_A => ObjectType.Unknown,
+            GameObjectType.Pref_B => ObjectType.Unknown,
+            GameObjectType.Pref_C => ObjectType.Unknown,
+            GameObjectType.Pref_D => ObjectType.Unknown,
+            GameObjectType.Pref_E => ObjectType.Unknown,
+            GameObjectType.Pref_F => ObjectType.Unknown,
+            GameObjectType.Pref_G => ObjectType.Unknown,
+            GameObjectType.Pref_H => ObjectType.Unknown,
+            GameObjectType.Pref_I => ObjectType.Unknown,
+            GameObjectType.Pref_Z => ObjectType.Unknown,
+            GameObjectType.Flower => ObjectType.AlchemyPlant,
+            GameObjectType.Metal => ObjectType.AlchemyMetal,
+            GameObjectType.Mineral => ObjectType.AlchemyMineral,
+            GameObjectType.Amulet_Unique => ObjectType.ArmorAmulet,
+            GameObjectType.Robe => ObjectType.ArmorRobe,
+            GameObjectType.Robe_Quest => ObjectType.QuestArmorRobe,
+            GameObjectType.Robe_Unique => ObjectType.ArmorRobe,
+            GameObjectType.Armor_Quest => ObjectType.QuestArmorChest,
+            GameObjectType.Armor_Unique => ObjectType.ArmorChest,
+            GameObjectType.Belt_Quest => ObjectType.QuestArmorBelt,
+            GameObjectType.Belt_Unique => ObjectType.ArmorBelt,
+            GameObjectType.Bracelet_Unique => ObjectType.ArmorBracelet,
+            GameObjectType.Gloves => ObjectType.ArmorGloves,
+            GameObjectType.Gloves_Quest => ObjectType.QuestArmorGloves,
+            GameObjectType.Gloves_Unique => ObjectType.ArmorGloves,
+            GameObjectType.Helmet => ObjectType.ArmorHelmet,
+            GameObjectType.Helmet_Premium => ObjectType.ArmorHelmetPremium,
+            GameObjectType.Helmet_Quest => ObjectType.QuestArmorHelmet,
+            GameObjectType.Helmet_Unique => ObjectType.ArmorHelmet,
+            GameObjectType.Pants => ObjectType.ArmorPants,
+            GameObjectType.Pants_Quest => ObjectType.QuestArmorPants,
+            GameObjectType.Pants_Unique => ObjectType.ArmorPants,
+            GameObjectType.Ring => ObjectType.Ring,
+            // TODO: change maybe
+            GameObjectType.Ring_Special => ObjectType.RingDiamond,
+            GameObjectType.Ring_Unique => ObjectType.Ring,
+            GameObjectType.Shield => ObjectType.ArmorShield,
+            GameObjectType.Shield_Quest => ObjectType.QuestArmorShield,
+            GameObjectType.Shield_Unique => ObjectType.ArmorShield,
+            GameObjectType.Boots_Quest => ObjectType.QuestArmorBoots,
+            GameObjectType.Boots_Unique => ObjectType.ArmorBoots,
+            // TODO: change maybe
+            GameObjectType.Castle_Crystal => ObjectType.SeedCastle,
+            // TODO: change maybe
+            GameObjectType.Castle_Stone => ObjectType.SeedCastle,
+            GameObjectType.Guild_Bag => ObjectType.Sack,
+            GameObjectType.Flag => ObjectType.Unknown,
+            GameObjectType.Guild => ObjectType.Unknown,
+            GameObjectType.Letter => ObjectType.Unknown,
+            GameObjectType.Lottery => ObjectType.Unknown,
+            GameObjectType.MantraBlack => ObjectType.MantraBlack,
+            GameObjectType.MantraWhite => ObjectType.MantraWhite,
+            GameObjectType.Monster => ObjectType.Unknown,
+            GameObjectType.Monster_Castle_Stone => ObjectType.Unknown,
+            GameObjectType.Monster_Event => ObjectType.Unknown,
+            GameObjectType.Monster_Event_Flying => ObjectType.Unknown,
+            GameObjectType.Monster_Flying => ObjectType.Unknown,
+            GameObjectType.Monster_Tower_Spirit => ObjectType.Unknown,
+            GameObjectType.Monster_Castle_Spirit => ObjectType.Unknown,
+            GameObjectType.Elixir_Castle => ObjectType.ElixirCastle,
+            GameObjectType.Elixir_Trap => ObjectType.ElixirTrap,
+            GameObjectType.Powder => ObjectType.PowderTarget,
+            GameObjectType.Powder_Area => ObjectType.PowderAoE,
+            GameObjectType.Powder_Event => ObjectType.PowderTarget,
+            GameObjectType.Powder_Guild => ObjectType.PowderTarget,
+            GameObjectType.Scroll => ObjectType.ScrollLegend,
+            GameObjectType.Special => ObjectType.Unknown,
+            GameObjectType.Special_BA => ObjectType.Unknown,
+            GameObjectType.Special_CA => ObjectType.Unknown,
+            GameObjectType.Special_EA => ObjectType.Unknown,
+            GameObjectType.Special_GA => ObjectType.Unknown,
+            GameObjectType.Special_GB => ObjectType.Unknown,
+            GameObjectType.Special_HA => ObjectType.Unknown,
+            GameObjectType.Special_IC => ObjectType.Unknown,
+            GameObjectType.Special_MA => ObjectType.Unknown,
+            GameObjectType.Special_MB => ObjectType.Unknown,
+            GameObjectType.Special_MC => ObjectType.Unknown,
+            GameObjectType.Special_NA => ObjectType.Unknown,
+            GameObjectType.Special_NB => ObjectType.Unknown,
+            GameObjectType.Special_NC => ObjectType.Unknown,
+            GameObjectType.Key => ObjectType.Key,
+            GameObjectType.Map => ObjectType.Map,
+            GameObjectType.Ear_String => ObjectType.EarString,
+            GameObjectType.Crystal => ObjectType.Unknown,
+            GameObjectType.Crossbow_Quest => ObjectType.QuestWeaponCrossbow,
+            GameObjectType.Axe_Quest => ObjectType.QuestWeaponAxe,
+            GameObjectType.Sword => ObjectType.WeaponSword,
+            GameObjectType.Sword_Quest => ObjectType.QuestWeaponSword,
+            GameObjectType.Sword_Unique => ObjectType.WeaponSword,
+            GameObjectType.X2_Degree => ObjectType.XpPillDegree,
+            GameObjectType.X2_Both => ObjectType.XpPillDegree,
+            GameObjectType.X2_Title => ObjectType.XpPillDegree,
+            GameObjectType.Ear => ObjectType.Ear,
+            GameObjectType.Packet => ObjectType.Unknown,
+            GameObjectType.Unknown => ObjectType.Unknown,
+            _ => ObjectType.Unknown,
+        };
+    }
+
     public static SphGameObject GetRandomObjectData(int titleLevelMinusOne, int gameIdOverride = -1)
     {
         SphGameObject item;
@@ -47,16 +158,17 @@ public static class LootHelper
             };
             var overrideFilter = new HashSet<GameObjectType>
             {
-                GameObjectType.Ring,
+                // GameObjectType.Ring,
+                // GameObjectType.Powder
             };
 
-            if (firstTypeRolled)
-            {
-                overrideFilter = new HashSet<GameObjectType>
-                {
-                    GameObjectType.Mineral
-                };
-            }
+            // if (firstTypeRolled)
+            // {
+            //     overrideFilter = new HashSet<GameObjectType>
+            //     {
+            //         GameObjectType.Mineral
+            //     };
+            // }
 
             firstTypeRolled = !firstTypeRolled;
 
@@ -91,7 +203,7 @@ public static class LootHelper
                 .Select(y => y.Value)
                 .ToList();
 
-            var random = MainServer.Rng.RandiRange(0, lootPool.Count - 1);
+            var random = MainServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
         }
 
@@ -102,26 +214,27 @@ public static class LootHelper
         { 
             suffixFilter = new SortedSet<ItemSuffix>
             {
-                // ItemSuffix.Health,
-                // ItemSuffix.Accuracy,
-                // ItemSuffix.Air,
-                // ItemSuffix.Durability,
-                // ItemSuffix.Life,
-                // ItemSuffix.Endurance,
+                ItemSuffix.Health,
+                ItemSuffix.Accuracy,
+                ItemSuffix.Air,
+                ItemSuffix.Durability,
+                ItemSuffix.Life,
+                ItemSuffix.Endurance,
                 ItemSuffix.Fire,
-                // ItemSuffix.Absorption,
-                // ItemSuffix.Meditation,
-                // ItemSuffix.Strength,
-                // ItemSuffix.Earth,
-                // ItemSuffix.Safety,
-                // ItemSuffix.Prana,
-                // ItemSuffix.Agility,
-                // ItemSuffix.Water,
-                // ItemSuffix.Value,
-                // ItemSuffix.Precision,
-                // ItemSuffix.Ether,
+                ItemSuffix.Absorption,
+                ItemSuffix.Meditation,
+                ItemSuffix.Strength,
+                ItemSuffix.Earth,
+                ItemSuffix.Safety,
+                ItemSuffix.Prana,
+                ItemSuffix.Agility,
+                ItemSuffix.Water,
+                ItemSuffix.Value,
+                ItemSuffix.Precision,
+                ItemSuffix.Ether,
             };
-            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
 
         // Rings should always have a suffix
@@ -154,6 +267,9 @@ public static class LootHelper
                 ItemSuffix.Decay,
                 ItemSuffix.Interdict,
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
         if (item.ObjectType is GameObjectType.Crossbow)
         {
@@ -179,6 +295,9 @@ public static class LootHelper
                 ItemSuffix.Mastery,
                 ItemSuffix.Radiance
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
         if (item.ObjectType is GameObjectType.Robe)
         {
@@ -209,6 +328,9 @@ public static class LootHelper
                 // ItemSuffix.Health_Old,
                 // ItemSuffix.Ether_Old,
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
         if (item.ObjectType is GameObjectType.Bracelet or GameObjectType.Amulet)
         {
@@ -226,6 +348,9 @@ public static class LootHelper
                 ItemSuffix.Precision,
                 ItemSuffix.Damage,
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
         if (item.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt 
             or GameObjectType.Pants or GameObjectType.Boots)
@@ -241,6 +366,9 @@ public static class LootHelper
                 ItemSuffix.Safety,
                 ItemSuffix.Ether,
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
         if (item.ObjectType is GameObjectType.Armor or GameObjectType.Shield)
         {
@@ -276,15 +404,18 @@ public static class LootHelper
                 // ItemSuffix.Elements_Old,
                 // ItemSuffix.Elements_New,
             };
+
+            item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
+            return item;
         }
 
         if (item.ObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle 
             or GameObjectType.Elixir_Trap)
         {
-            item.ItemCount =  MainServer.Rng.RandiRange(3, 19);
+            item.ItemCount =  MainServer.Rng.Next(3, 20);
         }
 
-        item.Suffix = suffixFilter.ElementAt(MainServer.Rng.RandiRange(0, suffixFilter.Count - 1));
+        item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
         return item;
     }
 }

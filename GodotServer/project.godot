@@ -15,6 +15,10 @@ run/main_scene="res://MainServer.tscn"
 config/features=PackedStringArray("4.0", "C#")
 config/icon="res://icon.png"
 
+[display]
+
+window/size/mode=1
+
 [dotnet]
 
 project/assembly_name="SphServer"

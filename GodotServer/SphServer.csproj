@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\source\LiteDB\LiteDB\LiteDB.csproj" />
+    <ProjectReference Include="..\..\source\ObjectPacketTools\ObjectPacketTools.csproj" />
     <ProjectReference Include="..\..\source\SphObjectDb\SphObjectDb.csproj" />
   </ItemGroup>
 </Project>
