@@ -22,6 +22,7 @@ public class Item : IGameEntity
     public byte TitleLevelMinusOne { get; set; }
     public byte DegreeLevelMinusOne { get; set; }
     public SphGameObject SphGameObject { get; set; } = null!;
+    public IGameEntity Owner { get; set; } = null!;
 }
 
 public enum LootRatityType
@@ -117,12 +118,46 @@ public class LootBag : IGameEntity
                 SphGameObject = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level)//, i == 0 ? -1 : 2402)
             };
             item.Id = MainServer.AddToGameObjects(item);
+            item.Owner = bag.LootBag;
             bag.LootBag[i] = item;
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
         MainServer.MainServerNode.AddChild(bag);
         return bag.LootBag;
+    }
+
+    public bool RemoveItem(ushort itemId)
+    {
+        if (Item0?.Id == itemId)
+        {
+            Item0 = null;
+            Console.WriteLine($"Removed item0 {itemId} from lootbag {Id}");
+        }
+        else if (Item1?.Id == itemId)
+        {
+            Item1 = null;
+            Console.WriteLine($"Removed item1 {itemId} from lootbag {Id}");
+        }
+        else if (Item2?.Id == itemId)
+        {
+            Item2 = null;
+            Console.WriteLine($"Removed item2 {itemId} from lootbag {Id}");
+        }
+        else if (Item3?.Id == itemId)
+        {
+            Item3 = null;
+            Console.WriteLine($"Removed item3 {itemId} from lootbag {Id}");
+        }
+
+        if (Count == 0)
+        {
+            
+            ParentNode.QueueFree();
+            return true;
+        }
+
+        return false;
     }
 
     public static LootBag CreateFromEntity(IGameEntity ent)

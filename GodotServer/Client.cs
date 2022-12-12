@@ -809,6 +809,10 @@ public partial class Client : Node
 			CurrentCharacter.Items[(Belongings)targetSlot] = item;
 			Console.WriteLine($"{Enum.GetName((Belongings)targetSlot)} now has {item.Id}");
 			StreamPeer.PutData(moveResult);
+			if (item.Owner is LootBag lootBag && lootBag.RemoveItem(item.Id))
+			{
+				RemoveEntity(lootBag.Id);
+			}
 		}
 	}
 
@@ -852,6 +856,11 @@ public partial class Client : Node
 			
 			StreamPeer.PutData(moveResult);
 		}
+	}
+
+	private void RemoveEntity(ushort id)
+	{
+		StreamPeer.PutData(CommonPackets.DespawnEntity(id));
 	}
 
 	// private void MoveEntity(WorldCoords coords, ushort entityId)
