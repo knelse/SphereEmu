@@ -103,6 +103,7 @@ public partial class LootBag : IGameEntity
         LootRatityType ratityType, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
+        var levelOverride = 1;
         bag.LootBag = new LootBag();
         bag.LootBag.Id = MainServer.AddToGameObjects(bag.LootBag);
         bag.LootBag.TitleLevelMinusOne = (byte) level;
@@ -116,7 +117,7 @@ public partial class LootBag : IGameEntity
         {
             var item = new Item
             {
-                SphGameObject = LootHelper.GetRandomObjectData(level)//, i == 0 ? -1 : 2402)
+                SphGameObject = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level)//, i == 0 ? -1 : 2402)
             };
             item.Id = MainServer.AddToGameObjects(item);
             bag.LootBag[i] = item;

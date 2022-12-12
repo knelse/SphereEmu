@@ -9,7 +9,6 @@ using static SphServer.Helpers.BitHelper;
 
 namespace SphServer.DataModels
 {
-
     public enum KarmaTypes : byte
     {
         VeryBad = 0x1,
@@ -46,6 +45,38 @@ namespace SphServer.DataModels
         Neophyte = 0x3
     }
 
+    public enum Belongings : int
+    {
+        Helmet = 0,
+        Amulet = 1,
+        Shield = 2,
+        Chestplate = 3,
+        Gloves = 4,
+        Belt = 5,
+        BraceletLeft = 6,
+        BraceletRight = 7,
+        Ring_1 = 8,
+        Ring_2 = 9,
+        Ring_3 = 10,
+        Ring_4 = 11,
+        Pants = 12,
+        Boots = 13,
+        Guild = 14,
+        MapBook = 15,
+        RecipeBook = 16,
+        MantraBook = 17,
+        Inkpot = 20,
+        Inventory_1 = 26,
+        Inventory_2 = 27,
+        Inventory_3 = 28,
+        Inventory_4 = 29,
+        Inventory_5 = 30,
+        Inventory_6 = 31,
+        Inventory_7 = 32,
+        Inventory_8 = 33,
+        Inventory_9 = 34,
+        Inventory_10 = 35,
+    }
     public partial class CharacterData : IGameEntity
     {
         [BsonIgnore]
@@ -160,6 +191,10 @@ namespace SphServer.DataModels
 
         [BsonIgnore] 
         public Player Player = null!;
+
+        // TODO: db
+        [BsonIgnore]
+        public Dictionary<Belongings, Item> Items = new();
 
         public byte[] ToCharacterListByteArray()
         {

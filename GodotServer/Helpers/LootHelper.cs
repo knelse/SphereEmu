@@ -120,19 +120,32 @@ public static class LootHelper
 
     public static SphGameObject GetRandomObjectData(int titleLevelMinusOne, int gameIdOverride = -1)
     {
+        var gameIdsToRemove = new HashSet<int>
+        {
+            4192, 4193, 4194, 4199, 4186, 4187, 4242, 4243, 4244, 4245, 4246, 4247, 4248, 4249, 4302, 4304, 4306, 4308,
+            4310, 4312, 4314, 4316, 4318, 4320, 4450, 4740, 4741, 4742, 4743, 4744, 4745, 4746, 4747, 4748, 4749,
+        };
+        
         SphGameObject item;
         if (gameIdOverride != -1)
         {
             item = MainServer.GameObjectDataDb.First(x => x.Value.GameId == gameIdOverride).Value;
         }
+        
+        // TODO: server only
+        // if (gameId is )
+        // {
+        //     // event armor
+        //     continue;
+        // }
         else
         {
             var tierFilter = Math.Min(titleLevelMinusOne, 74) / 5 + 1;
             var typeFilter = new HashSet<GameObjectType>
             {
-                GameObjectType.Flower,
-                GameObjectType.Metal,
-                GameObjectType.Mineral,
+                // GameObjectType.Flower,
+                // GameObjectType.Metal,
+                // GameObjectType.Mineral,
                 GameObjectType.Amulet,
                 GameObjectType.Armor,
                 GameObjectType.Robe,
@@ -146,12 +159,12 @@ public static class LootHelper
                 GameObjectType.Boots,
                 // Flag,
                 // Guild,
-                GameObjectType.MantraBlack,
-                GameObjectType.MantraWhite,
-                GameObjectType.Elixir_Castle,
-                GameObjectType.Elixir_Trap,
-                GameObjectType.Powder,
-                GameObjectType.Powder_Area,
+                // GameObjectType.MantraBlack,
+                // GameObjectType.MantraWhite,
+                // GameObjectType.Elixir_Castle,
+                // GameObjectType.Elixir_Trap,
+                // GameObjectType.Powder,
+                // GameObjectType.Powder_Area,
                 GameObjectType.Crossbow,
                 GameObjectType.Axe,
                 GameObjectType.Sword,
@@ -197,7 +210,7 @@ public static class LootHelper
 
             var lootPool = MainServer.GameObjectDataDb
                 .Where(x =>
-                    kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
+                    !gameIdsToRemove.Contains(x.Value.GameId) && kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
                                                             && (x.Value.Tier == tierFilter
                                                                 || tierAgnosticTypes.Contains(x.Value.ObjectType)))
                 .Select(y => y.Value)

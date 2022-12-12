@@ -251,8 +251,8 @@ public partial class Client : Node
 			case 0x1A:
 				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC1)
 				{
-					// item pickup
-					PickupItemToInventory();
+					// item pickup to target slot
+					PickupItemToTargetSlot();
 				}
 				else if (rcvBuffer[13] == 0x5c && rcvBuffer[14] == 0x46 && rcvBuffer[15] == 0xe1)
 				{
@@ -278,6 +278,20 @@ public partial class Client : Node
 					}
 				}
 
+				break;
+			case 0x16:
+				// click on item to pick up or click on "Pickup all" button (repeats for every item)
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x23)
+				{
+					PickupItemToInventory();
+				}
+				break;
+			case 0x18:
+				// move to a different slot
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x81)
+				{
+					MoveItemToAnotherSlot();
+				}
 				break;
 			// echo
 			case 0x08:
@@ -324,7 +338,7 @@ public partial class Client : Node
 					}
 					else
 					{
-						var moneyReward = (byte)(10 + RNGHelper.GetUniform() * 8);
+						var moneyReward = (byte)(10 + MainServer.Rng.Next(0, 9));
 						var totalMoney = 10 + moneyReward;
 						var totalMoney_1 = (byte)(((totalMoney & 0b11111) << 3) + 0b100);
 						var totalMoney_2 = (byte)((totalMoney & 0b11100000) >> 5);
@@ -777,7 +791,7 @@ public partial class Client : Node
 		}
 	}
 
-	private void PickupItemToInventory()
+	private void PickupItemToTargetSlot()
 	{
 		var clientItemID_1 = rcvBuffer[21] >> 1;
 		var clientItemID_2 = rcvBuffer[22];
@@ -786,7 +800,8 @@ public partial class Client : Node
 
 		var clientSlot_raw = rcvBuffer[24];
 		var clientSlot = (clientSlot_raw - 0x32) / 2;
-		Console.WriteLine($"CLI: Move item [{clientItemID}] to slot [{clientSlot}]");
+		Console.WriteLine($"CLI: Move item [{clientItemID}] to slot raw [{clientSlot_raw}] " +
+		                  $"[{Enum.GetName(typeof(Belongings), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
 		var clientSync_1 = rcvBuffer[17];
 		var clientSync_2 = rcvBuffer[18];
@@ -808,8 +823,57 @@ public partial class Client : Node
 			0x82, 0x20, (byte)(clientSlot_raw * 2), (byte)serverItemID_1, (byte)serverItemID_2, (byte)serverItemID_3,
 			0x20, 0x4E, 0x00, 0x00, 0x00
 		};
+		
+		// TODO: check if slot is valid
+		if (MainServer.GameObjects.TryGetValue(clientItemID, out IGameEntity itemObj) && itemObj is Item item)
+		{
+			var targetSlot = clientSlot_raw >> 1;
+			CurrentCharacter.Items[(Belongings)targetSlot] = item;
+			Console.WriteLine($"{Enum.GetName((Belongings)targetSlot)} now has {item.Id}");
+			StreamPeer.PutData(moveResult);
+		}
+	}
 
-		StreamPeer.PutData(moveResult);
+	private void PickupItemToInventory()
+	{
+		var clientID_1 = rcvBuffer[11];
+		var clientID_2 = rcvBuffer[12];
+
+		var clientItemID = (rcvBuffer[17] >> 5) + (rcvBuffer[18] << 3) + ((rcvBuffer[19] & 0b11111) << 11);
+		Console.WriteLine($"Pickup request: {clientItemID}");
+	}
+
+	private void MoveItemToAnotherSlot()
+	{
+		var clientID_1 = rcvBuffer[11];
+		var clientID_2 = rcvBuffer[12];
+		var newSlotRaw = rcvBuffer[21];
+		var oldSlotRaw = rcvBuffer[22];
+		var oldSlot = rcvBuffer[22] >> 1;
+		var newSlot = rcvBuffer[21] >> 1;
+		Console.WriteLine(
+			$"Move to another slot request: from [{Enum.GetName(typeof(Belongings), oldSlot)}] " +
+			$"to [{Enum.GetName(typeof(Belongings), newSlot)}]");
+		if (Enum.IsDefined(typeof(Belongings), oldSlot) && CurrentCharacter.Items.ContainsKey((Belongings) oldSlot))
+		{
+			var oldItem = CurrentCharacter.Items[(Belongings)oldSlot];
+			Console.WriteLine($"Item found: {oldItem.Id}");
+			var newSlot_1 = (byte)((newSlotRaw & 0b1111) << 4);
+			var newSlot_2 = (byte) ((oldItem.Id & 0b1111) + (newSlotRaw >> 4));
+			var oldItem_1 = (byte) ((oldItem.Id >> 4) & 0b11111111);
+			var oldItem_2 = (byte) (oldItem.Id >> 12);
+
+			var moveResult = new byte[]
+			{
+				0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x08, 0x40, 0x41, 0x10,
+				oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1, 
+				oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
+			};
+			CurrentCharacter.Items[(Belongings)newSlot] = oldItem;
+			CurrentCharacter.Items.Remove((Belongings)oldSlot);
+			
+			StreamPeer.PutData(moveResult);
+		}
 	}
 
 	private void MoveEntity(WorldCoords coords, ushort entityId)
