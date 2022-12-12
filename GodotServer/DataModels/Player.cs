@@ -4,7 +4,7 @@ using SphServer.Helpers;
 
 namespace SphServer.DataModels;
 
-public partial class Player
+public class Player
 {
     [BsonId] 
     public int Id { get; set; }

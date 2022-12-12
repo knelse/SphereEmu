@@ -2,7 +2,7 @@ using LiteDB;
 
 namespace SphServer.DataModels;
 
-public partial class Clan
+public class Clan
 {
     [BsonId] 
     public int Id { get; set; }

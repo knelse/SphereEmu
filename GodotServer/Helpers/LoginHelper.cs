@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace SphServer.Helpers
 {
 
-    public partial class LoginHelper
+    public class LoginHelper
     {
         public static Tuple<string, string> GetLoginAndPassword(byte[] rcvBuffer)
         {

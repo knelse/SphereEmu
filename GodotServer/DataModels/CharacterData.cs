@@ -45,7 +45,7 @@ namespace SphServer.DataModels
         Neophyte = 0x3
     }
 
-    public enum Belongings : int
+    public enum Belongings
     {
         Helmet = 0,
         Amulet = 1,
@@ -77,7 +77,7 @@ namespace SphServer.DataModels
         Inventory_9 = 34,
         Inventory_10 = 35,
     }
-    public partial class CharacterData : IGameEntity
+    public class CharacterData : IGameEntity
     {
         [BsonIgnore]
         [Obsolete]
@@ -194,7 +194,7 @@ namespace SphServer.DataModels
 
         // TODO: db
         [BsonIgnore]
-        public Dictionary<Belongings, Item> Items = new();
+        public readonly Dictionary<Belongings, Item> Items = new();
 
         public byte[] ToCharacterListByteArray()
         {

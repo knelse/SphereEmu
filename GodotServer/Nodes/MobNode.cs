@@ -6,7 +6,7 @@ using SphServer.DataModels;
 using SphServer.Helpers;
 using SphServer.Packets;
 
-public partial class Mob : IGameEntity
+public class Mob : IGameEntity
 {
 	public ushort Id { get; set; }
 	public ushort Unknown { get; set; }

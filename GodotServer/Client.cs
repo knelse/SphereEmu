@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using SphServer.Db;
 using SphServer.Helpers;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
-using File = System.IO.File;
 using Thread = System.Threading.Thread;
 
 public enum ClientState
@@ -51,7 +49,7 @@ public partial class Client : Node
 	private int selectedCharacterIndex = -1;
 	private StaticBody3D? clientModel;
 	private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
-	private static LootBag testLootBag;
+	private static LootBag testLootBag = null!;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -63,13 +61,13 @@ public partial class Client : Node
 		});
 		watcher.NotifyFilter = NotifyFilters.LastWrite;
 		watcher.EnableRaisingEvents = true;
-		watcher.Changed += (sender, args) =>
+		watcher.Changed += (_, args) =>
 		{
 			if (args.ChangeType == WatcherChangeTypes.Changed)
 			{
 				StreamPeer.PutData(CommonPackets.DespawnEntity(testLootBag.Id));
 				MainServer.GameObjects.TryRemove(testLootBag.Id, out var _);
-				MainServer.GameObjects.TryRemove(testLootBag.Item0.Id, out var _);
+				MainServer.GameObjects.TryRemove(testLootBag.Item0!.Id, out var _);
 				// MainServer.currentId -= 2;
 				testLootBag.ParentNode.QueueFree();
 				testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
@@ -116,7 +114,7 @@ public partial class Client : Node
 				}
 
 				Console.WriteLine($"CLI {playerIndexStr}: Login data sent");
-				(var login, var password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
+				var (login, password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
 
 				player =
 					Login.CheckLoginAndGetPlayer(login, password, ID);
@@ -167,7 +165,7 @@ public partial class Client : Node
 					selectedCharacterIndex = CharacterScreenCreateDeleteSelect();
 				}
 
-				CurrentCharacter = player.Characters[selectedCharacterIndex]!;
+				CurrentCharacter = player!.Characters[selectedCharacterIndex];
 				CurrentCharacter.Client = this;
 
 				Console.WriteLine("CLI: Enter game");
@@ -258,20 +256,9 @@ public partial class Client : Node
 				{
 					var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
 					// open loot container
-					if (MainServer.GameObjects.TryGetValue(containerId, out IGameEntity ent) && ent is LootBag bag)
+					if (MainServer.GameObjects.TryGetValue(containerId, out var ent) && ent is LootBag bag)
 					{
 						bag.ShowDropitemListForClient(ID);
-						var type = (byte) (counter % 2 == 1 ? 0xD0 : 0xD8);
-						// var txt = File.ReadAllText("C:\\source\\itemDropPacketTest.txt").RemoveLineEndings();
-						// var test = new List<byte>
-						// {
-						//     0x2C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(bag.Item0.ID), MajorByte(bag.Item0.ID), 
-						//     // type, 0x87, 0x0F, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-						//     // 0x40, 0x91, 0x45, 0x66, 0xBC, 0x23, 0x48, 0x01, 0x06, 0x1E, 0x31, 0x01, 0x0A, 0x59, 0x00, 
-						//     // 0xF0, 0xFF, 0xFF, 0xFF, 0x0F
-						//
-						// };
-						// test.AddRange(BinaryStringToByteArray(txt));
 						var packet = bag.GetContentsPacket();
 						packet[6] = 0x04;
 						StreamPeer.PutData(packet);
@@ -384,13 +371,13 @@ public partial class Client : Node
 				// var vendorId = ((vendorIdBytes[2] & 0b1111) << 12) + (vendorIdBytes[1] << 4) +
 				//                ((vendorIdBytes[0] & 0b11110000) >> 4);
 				// Console.WriteLine(vendorId);
-				var vendorId = 0x8169;
+				// var vendorId = 0x8169;
 
 				// StreamPeer.PutData(TestHelper.GetEntityData(
 				//     new WorldCoords(669.1638793945312, 4501.63134765625, 931.0355224609375, -1), 4816,
 				//     7654, 4816));
 
-				var i = 0;
+				// var i = 0;
 
 				// while (ns.CanWrite)
 				// {
@@ -420,7 +407,7 @@ public partial class Client : Node
 				// var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
 				// StreamPeer.PutData(ConvertHelper.FromHexString(vendorListLoaded));
 				var vendorListLoaded =
-					BinaryStringToByteArray(System.IO.File.ReadAllText("C:\\source\\vendorList.txt")
+					BinaryStringToByteArray((await File.ReadAllTextAsync("C:\\source\\vendorList.txt"))
 						.RemoveLineEndings());
 				StreamPeer.PutData(vendorListLoaded);
 
@@ -444,8 +431,8 @@ public partial class Client : Node
 		if (rcvBuffer[0] == 0x2A)
 		{
 			var charIndex = rcvBuffer[17] / 4 - 1;
-			Console.WriteLine($"Delete character [{charIndex}] - [{player.Characters[charIndex]!.Name}]");
-			player.Characters.RemoveAt(charIndex);
+			Console.WriteLine($"Delete character [{charIndex}] - [{player!.Characters[charIndex].Name}]");
+			player!.Characters.RemoveAt(charIndex);
 			MainServer.PlayerCollection.Update(player);
 
 			// TODO: reinit session after delete
@@ -563,9 +550,6 @@ public partial class Client : Node
 		var mobZ = newDungeonCoords.z + 19.5;
 		
 		Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
-		// for debug
-		// testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
-		//     LootRatityType.DEFAULT_MOB, 1);
 		testLootBag = LootBag.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 39, 0,
 			LootRatityType.DEFAULT_MOB);   
 		testLootBag = LootBag.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 39, 0,
@@ -701,12 +685,6 @@ public partial class Client : Node
 			LootRatityType.DEFAULT_MOB);        
 		testLootBag = LootBag.Create(-1098.49506835937500, -4496.11474609375000, 1905.05493164062500, 39, 0,
 			LootRatityType.DEFAULT_MOB);
-		// LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1900.05493164062500, 0, 0,
-		//     LootRatityType.DEFAULT_MOB, 2);
-		// LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1901.05493164062500, 0, 0,
-		//     LootRatityType.DEFAULT_MOB, 3);
-		// LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1902.05493164062500, 0, 0,
-		//     LootRatityType.DEFAULT_MOB, 4);
 
 		currentState = ClientState.INGAME_DEFAULT;
 		var clientTransform = clientModel!.Transform;
@@ -825,7 +803,7 @@ public partial class Client : Node
 		};
 		
 		// TODO: check if slot is valid
-		if (MainServer.GameObjects.TryGetValue(clientItemID, out IGameEntity itemObj) && itemObj is Item item)
+		if (MainServer.GameObjects.TryGetValue(clientItemID, out var itemObj) && itemObj is Item item)
 		{
 			var targetSlot = clientSlot_raw >> 1;
 			CurrentCharacter.Items[(Belongings)targetSlot] = item;
@@ -836,8 +814,8 @@ public partial class Client : Node
 
 	private void PickupItemToInventory()
 	{
-		var clientID_1 = rcvBuffer[11];
-		var clientID_2 = rcvBuffer[12];
+		// var clientID_1 = rcvBuffer[11];
+		// var clientID_2 = rcvBuffer[12];
 
 		var clientItemID = (rcvBuffer[17] >> 5) + (rcvBuffer[18] << 3) + ((rcvBuffer[19] & 0b11111) << 11);
 		Console.WriteLine($"Pickup request: {clientItemID}");
@@ -845,8 +823,8 @@ public partial class Client : Node
 
 	private void MoveItemToAnotherSlot()
 	{
-		var clientID_1 = rcvBuffer[11];
-		var clientID_2 = rcvBuffer[12];
+		// var clientID_1 = rcvBuffer[11];
+		// var clientID_2 = rcvBuffer[12];
 		var newSlotRaw = rcvBuffer[21];
 		var oldSlotRaw = rcvBuffer[22];
 		var oldSlot = rcvBuffer[22] >> 1;
@@ -858,14 +836,14 @@ public partial class Client : Node
 		{
 			var oldItem = CurrentCharacter.Items[(Belongings)oldSlot];
 			Console.WriteLine($"Item found: {oldItem.Id}");
-			var newSlot_1 = (byte)((newSlotRaw & 0b1111) << 4);
-			var newSlot_2 = (byte) ((oldItem.Id & 0b1111) + (newSlotRaw >> 4));
+			var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
+			var newSlot_2 = (byte) (((oldItem.Id & 0b1111) << 4) + (newSlotRaw >> 5));
 			var oldItem_1 = (byte) ((oldItem.Id >> 4) & 0b11111111);
 			var oldItem_2 = (byte) (oldItem.Id >> 12);
 
 			var moveResult = new byte[]
 			{
-				0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x08, 0x40, 0x41, 0x10,
+				0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(ID), MinorByte(ID), 0x08, 0x40, 0x41, 0x10,
 				oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1, 
 				oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
 			};
@@ -876,10 +854,10 @@ public partial class Client : Node
 		}
 	}
 
-	private void MoveEntity(WorldCoords coords, ushort entityId)
-	{
-		MoveEntity(coords.x, coords.y, coords.z, coords.turn, entityId);
-	}
+	// private void MoveEntity(WorldCoords coords, ushort entityId)
+	// {
+	// 	MoveEntity(coords.x, coords.y, coords.z, coords.turn, entityId);
+	// }
 
 	public void MoveEntity(double x0, double y0, double z0, double t0, ushort entityId)
 	{
@@ -946,7 +924,7 @@ public partial class Client : Node
 
 	public static void TryFindClientByIdAndSendData(ushort clientId, byte[] data)
 	{
-		if (MainServer.GameObjects.TryGetValue(clientId, out IGameEntity ent) && ent is CharacterData characterData)
+		if (MainServer.GameObjects.TryGetValue(clientId, out var ent) && ent is CharacterData characterData)
 		{
 			characterData.Client.StreamPeer.PutData(data);
 		}
@@ -963,24 +941,10 @@ public partial class Client : Node
 		return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
 	}
 
-	private static int GetDestinationIdFromFistDamagePacket(byte[] rcvBuffer)
-	{
-		var destBytes = rcvBuffer.Range(21, rcvBuffer.Length);
-
-		return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
-	}
-
-	// private void UpdateCoordsWithoutAxisFlip(WorldCoords coords)
+	// private static int GetDestinationIdFromFistDamagePacket(byte[] rcvBuffer)
 	// {
-	//     UpdateCoordsWithoutAxisFlip(coords.x, coords.y, coords.z, coords.turn);
-	// }
-
-	// private void UpdateCoordsWithoutAxisFlip(double x, double y, double z, double turn)
-	// {
-	//     var clientModelTransform = clientModel!.Transform3D;
-	//     clientModelTransform.origin =
-	//         new Vector3((float) x, (float) y, (float) z);
-	//     clientModel.Transform3D = clientModelTransform;
-	//     oldY = CurrentCharacter.Y;
+	// 	var destBytes = rcvBuffer.Range(21, rcvBuffer.Length);
+	//
+	// 	return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
 	// }
 }

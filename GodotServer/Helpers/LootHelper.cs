@@ -5,7 +5,7 @@ using SphServer;
 
 public static class LootHelper
 {
-    public static bool firstTypeRolled = false;
+    private static bool firstTypeRolled;
 
     public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
     {
@@ -131,13 +131,7 @@ public static class LootHelper
         {
             item = MainServer.GameObjectDataDb.First(x => x.Value.GameId == gameIdOverride).Value;
         }
-        
-        // TODO: server only
-        // if (gameId is )
-        // {
-        //     // event armor
-        //     continue;
-        // }
+
         else
         {
             var tierFilter = Math.Min(titleLevelMinusOne, 74) / 5 + 1;

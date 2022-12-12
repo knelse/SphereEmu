@@ -1,5 +1,3 @@
-using SphServer.DataModels;
-
 public interface IGameEntity
 {
     public ushort Id { get; set; }

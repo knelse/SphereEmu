@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using LiteDB;
 using SphServer.DataModels;
-using SphServer.Helpers;
+// ReSharper disable NotAccessedField.Local
+
 #pragma warning disable CS4014
 
 namespace SphServer
@@ -19,11 +18,10 @@ namespace SphServer
 	{
 		private static readonly int playerIndex = 0x4F6F;
 		private static int playerCount;
-		public static bool LiveServerCoords = false;
+		// private static bool liveServerCoords = false;
 		public static Encoding? Win1251;
-		private static DateTime startTime = DateTime.Now;
-		private static bool sendEntPing = true;
-		private static TCPServer tcpServer;
+		// private static bool sendEntPing = true;
+		private static TCPServer tcpServer = null!;
 		private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Client.tscn");
 		public static readonly ConcurrentDictionary<int, IGameEntity> GameObjects = new ();
 		public static int currentId = 54678;
@@ -33,7 +31,6 @@ namespace SphServer
 		public static readonly Dictionary<string, SortedSet<int>> GameObjectDataOld = new();
 		public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = SphObjectDb.GameObjectDataDb;
 		public const string gameDataPath = "c:\\source\\_sphFilesDecode\\params\\";
-		private static readonly char[] TabCharacter = {'\t'};
 		public static readonly LiteDatabase Db = new (@"Filename=C:\_sphereStuff\sph.db;Connection=shared;");
 		public static readonly LiteDatabase ItemDb = new (@"Filename=C:\_sphereStuff\sph_items.db;Connection=shared;");
 		public static ILiteCollection<Player> PlayerCollection => Db.GetCollection<Player>("Players");
@@ -56,7 +53,10 @@ namespace SphServer
 
 		public static ushort AddToGameObjects(IGameEntity ent)
 		{
-			while (!GameObjects.TryAdd(Interlocked.Increment(ref currentId), ent));
+			while (!GameObjects.TryAdd(Interlocked.Increment(ref currentId), ent))
+			{
+			}
+
 			ent.Id = (ushort) currentId;
 			ShowDebugInfo(ent);
 

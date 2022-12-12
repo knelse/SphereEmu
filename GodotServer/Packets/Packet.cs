@@ -3,7 +3,7 @@ using static SphServer.Helpers.BitHelper;
 namespace SphServer.Packets
 {
 
-    public partial class Packet
+    public class Packet
     {
         protected static readonly ushort PacketValidationCodeOK = 0x2C01;
 

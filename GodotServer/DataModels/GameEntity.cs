@@ -3,7 +3,7 @@ using SphServer.Helpers;
 
 namespace SphServer.DataModels
 {
-    public partial class GameEntity : IGameEntity
+    public class GameEntity : IGameEntity
     {
         public ushort Id { get; set; }
         public ushort Unknown { get; set; }
