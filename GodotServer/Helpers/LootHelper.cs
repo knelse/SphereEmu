@@ -425,4 +425,10 @@ public static class LootHelper
         item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
         return item;
     }
+
+    public static bool IsSlotValidForItem(BelongingSlot slot, SphGameObject? item)
+    {
+        // TODO: actual check
+        return true;
+    }
 }

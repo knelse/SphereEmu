@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Godot;
@@ -65,9 +67,9 @@ public partial class Client : Node
 		{
 			if (args.ChangeType == WatcherChangeTypes.Changed)
 			{
-				StreamPeer.PutData(CommonPackets.DespawnEntity(testLootBag.Id));
-				MainServer.GameObjects.TryRemove(testLootBag.Id, out var _);
-				MainServer.GameObjects.TryRemove(testLootBag.Item0!.Id, out var _);
+				StreamPeer.PutData(CommonPackets.DespawnEntity(GetLocalObjectId(ID, testLootBag.Id)));
+				MainServer.ExistingGameObjects.Delete(testLootBag.Id);
+				MainServer.ExistingGameObjects.Delete(testLootBag.Item0!.Id);
 				// MainServer.currentId -= 2;
 				testLootBag.ParentNode.QueueFree();
 				testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
@@ -166,11 +168,11 @@ public partial class Client : Node
 				}
 
 				CurrentCharacter = player!.Characters[selectedCharacterIndex];
-				CurrentCharacter.Client = this;
+				CurrentCharacter.ClientIndex = ID;
 
 				Console.WriteLine("CLI: Enter game");
 				// TODO: this ID is mostly static 0x4F6F for testing, fix later
-				MainServer.TryAddToGameObjects(CurrentCharacter.Player.Index, CurrentCharacter);
+				MainServer.ExistingGameObjects.Insert((int) CurrentCharacter.ClientIndex, CurrentCharacter);
 				StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
 				currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
 				break;
@@ -181,7 +183,7 @@ public partial class Client : Node
 				}
 				// Interlocked.Increment(ref playerCount);
 
-				var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.Player.Index);
+				var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.ClientIndex);
 				StreamPeer.PutData(worldData[0]);
 				Thread.Sleep(50);
 				StreamPeer.PutData(worldData[1]);
@@ -256,10 +258,11 @@ public partial class Client : Node
 				{
 					var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
 					// open loot container
-					if (MainServer.GameObjects.TryGetValue(containerId, out var ent) && ent is LootBag bag)
+					var bagObj = MainServer.ExistingGameObjects.FindById(containerId);
+					if (bagObj is LootBag bag)
 					{
 						bag.ShowDropitemListForClient(ID);
-						var packet = bag.GetContentsPacket();
+						var packet = bag.GetContentsPacket(ID);
 						packet[6] = 0x04;
 						StreamPeer.PutData(packet);
 					}
@@ -280,10 +283,16 @@ public partial class Client : Node
 					MoveItemToAnotherSlot();
 				}
 				break;
+			case 0x2D:
+				// drop item to ground
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x63)
+				{
+					DropItemToGround();
+				}
+				break;
 			// echo
 			case 0x08:
 				// StreamPeer.PutData(CommonPackets.Echo(ID));
-
 				break;
 			// damage
 			// case 0x19:
@@ -354,8 +363,7 @@ public partial class Client : Node
 							moneyReward_1, moneyReward_2
 						};
 						StreamPeer.PutData(Packet.ToByteArray(deathPacket));
-						MainServer.GameObjects.TryGetValue(destId, out var mobEnt);
-						var mob = (Mob) mobEnt!;
+						var mob = (Mob) MainServer.ExistingGameObjects.FindById((int)destId);
 						// LootBag.CreateFromEntity(mob);
 						LootBag.Create(mob.ParentNode.GlobalTransform.origin.x, mob.ParentNode.GlobalTransform.origin.y, 
 							mob.ParentNode.GlobalTransform.origin.z, 0, 0, LootRatityType.DEFAULT_MOB);
@@ -518,7 +526,7 @@ public partial class Client : Node
 			var charIndex = (rcvBuffer[17] / 4 - 1);
 
 			var newCharacterData =
-				CharacterData.CreateNewCharacter(player!, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+				CharacterData.CreateNewCharacter(ID, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
 			MainServer.CharacterCollection.Insert(newCharacterData);
 			player!.Characters.Insert(charIndex, newCharacterData);
@@ -544,7 +552,7 @@ public partial class Client : Node
 
 		StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
 		Console.WriteLine(
-			$"SRV: Teleported client [{MinorByte(selectedCharacter.Player.Index) * 256 + MajorByte(selectedCharacter.Player.Index)}] to default new player dungeon");
+			$"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
 		var mobX = newDungeonCoords.x - 50;
 		var mobY = newDungeonCoords.y;
 		var mobZ = newDungeonCoords.z + 19.5;
@@ -730,7 +738,7 @@ public partial class Client : Node
 				CurrentCharacter.X = coords.x;
 				CurrentCharacter.Y = coords.y;
 				CurrentCharacter.Z = coords.z;
-				CurrentCharacter.Turn = coords.turn;
+				CurrentCharacter.Angle = coords.turn;
 				Console.WriteLine(coords.ToDebugString());
 
 				pingPreviousClientPingString = clientPingBinaryStr;
@@ -779,7 +787,7 @@ public partial class Client : Node
 		var clientSlot_raw = rcvBuffer[24];
 		var clientSlot = (clientSlot_raw - 0x32) / 2;
 		Console.WriteLine($"CLI: Move item [{clientItemID}] to slot raw [{clientSlot_raw}] " +
-		                  $"[{Enum.GetName(typeof(Belongings), clientSlot_raw >> 1)}] actual [{clientSlot}]");
+		                  $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
 		var clientSync_1 = rcvBuffer[17];
 		var clientSync_2 = rcvBuffer[18];
@@ -798,26 +806,36 @@ public partial class Client : Node
 			0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort)clientItemID), MajorByte((ushort)clientItemID), 
 			0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09, 0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, 
 			MinorByte(clientSyncOther), MajorByte(clientSyncOther), 0x01, 0xFC, clientSync_1, clientSync_2, 0x10, 0x80,
-			0x82, 0x20, (byte)(clientSlot_raw * 2), (byte)serverItemID_1, (byte)serverItemID_2, (byte)serverItemID_3,
+			0x82, 0x20, (byte)(clientSlot_raw << 1), (byte)serverItemID_1, (byte)serverItemID_2, (byte)serverItemID_3,
 			0x20, 0x4E, 0x00, 0x00, 0x00
 		};
 		
 		// TODO: check if slot is valid
-		if (MainServer.GameObjects.TryGetValue(clientItemID, out var itemObj) && itemObj is Item item)
+		var oldItem = MainServer.ExistingGameObjects.FindById(clientItemID);
+		// if (oldItem is Item item)
+		// {
+		var targetSlot = clientSlot_raw >> 1;
+		CurrentCharacter.Items[(BelongingSlot)targetSlot] = oldItem;
+		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlot)} now has {oldItem.Id}");
+		StreamPeer.PutData(moveResult);
+		if (oldItem.Parent is LootBag lootBag && lootBag.RemoveItem(oldItem.Id))
 		{
-			var targetSlot = clientSlot_raw >> 1;
-			CurrentCharacter.Items[(Belongings)targetSlot] = item;
-			Console.WriteLine($"{Enum.GetName((Belongings)targetSlot)} now has {item.Id}");
-			StreamPeer.PutData(moveResult);
-			if (item.Owner is LootBag lootBag && lootBag.RemoveItem(item.Id))
-			{
-				RemoveEntity(lootBag.Id);
-			}
+			RemoveEntity(GetLocalObjectId(ID, lootBag.Id));
 		}
+		// }
+	}
+
+	private void DropItemToGround()
+	{
+		// TODO: support later
+		// likely contains client coords to drop at and response should have server coords
+
+		Console.WriteLine("Drop item to ground, TBD");
 	}
 
 	private void PickupItemToInventory()
 	{
+		// TODO: support later
 		// var clientID_1 = rcvBuffer[11];
 		// var clientID_2 = rcvBuffer[12];
 
@@ -827,6 +845,7 @@ public partial class Client : Node
 
 	private void MoveItemToAnotherSlot()
 	{
+		// ideally we'd support swapping items but client simply doesn't send anything if slot is occupied
 		// var clientID_1 = rcvBuffer[11];
 		// var clientID_2 = rcvBuffer[12];
 		var newSlotRaw = rcvBuffer[21];
@@ -834,11 +853,11 @@ public partial class Client : Node
 		var oldSlot = rcvBuffer[22] >> 1;
 		var newSlot = rcvBuffer[21] >> 1;
 		Console.WriteLine(
-			$"Move to another slot request: from [{Enum.GetName(typeof(Belongings), oldSlot)}] " +
-			$"to [{Enum.GetName(typeof(Belongings), newSlot)}]");
-		if (Enum.IsDefined(typeof(Belongings), oldSlot) && CurrentCharacter.Items.ContainsKey((Belongings) oldSlot))
+			$"Move to another slot request: from [{Enum.GetName(typeof(BelongingSlot), oldSlot)}] " +
+			$"to [{Enum.GetName(typeof(BelongingSlot), newSlot)}]");
+		if (Enum.IsDefined(typeof(BelongingSlot), oldSlot) && CurrentCharacter.Items.ContainsKey((BelongingSlot) oldSlot))
 		{
-			var oldItem = CurrentCharacter.Items[(Belongings)oldSlot];
+			var oldItem = CurrentCharacter.Items[(BelongingSlot)oldSlot];
 			Console.WriteLine($"Item found: {oldItem.Id}");
 			var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
 			var newSlot_2 = (byte) (((oldItem.Id & 0b1111) << 4) + (newSlotRaw >> 5));
@@ -851,11 +870,23 @@ public partial class Client : Node
 				oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1, 
 				oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
 			};
-			CurrentCharacter.Items[(Belongings)newSlot] = oldItem;
-			CurrentCharacter.Items.Remove((Belongings)oldSlot);
+			CurrentCharacter.Items[(BelongingSlot)newSlot] = oldItem;
+			CurrentCharacter.Items.Remove((BelongingSlot)oldSlot);
 			
 			StreamPeer.PutData(moveResult);
 		}
+	}
+
+	public ushort GetLocalObjectId(int globalId)
+	{
+		// TODO: at some point we'll run out of 65536 globalIds and will have to keep client-specific object lists
+		return (ushort)globalId;
+	}
+
+	public static ushort GetLocalObjectId(int clientId, int globalId)
+	{
+		// TODO: at some point we'll run out of 65536 globalIds and will have to keep client-specific object lists
+		return (ushort)globalId;
 	}
 
 	private void RemoveEntity(ushort id)
@@ -933,10 +964,8 @@ public partial class Client : Node
 
 	public static void TryFindClientByIdAndSendData(ushort clientId, byte[] data)
 	{
-		if (MainServer.GameObjects.TryGetValue(clientId, out var ent) && ent is CharacterData characterData)
-		{
-			characterData.Client.StreamPeer.PutData(data);
-		}
+		var client = MainServer.ActiveClients.GetValueOrDefault(clientId, null);
+		client?.StreamPeer.PutData(data);
 	}
 
 	public float DistanceTo(Vector3 end)

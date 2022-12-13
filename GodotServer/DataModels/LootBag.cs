@@ -1,29 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BitStreams;
 using Godot;
+using LiteDB;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Helpers;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
-
-public class Item : IGameEntity
-{
-    public ushort Id { get; set; }
-    public ushort Unknown { get; set; }
-    public double X { get; set; }
-    public double Y { get; set; }
-    public double Z { get; set; }
-    public double Turn { get; set; }
-    public ushort CurrentHP { get; set; }
-    public ushort MaxHP { get; set; }
-    public ushort TypeID { get; set; }
-    public byte TitleLevelMinusOne { get; set; }
-    public byte DegreeLevelMinusOne { get; set; }
-    public SphGameObject SphGameObject { get; set; } = null!;
-    public IGameEntity Owner { get; set; } = null!;
-}
 
 public enum LootRatityType
 {
@@ -32,31 +18,29 @@ public enum LootRatityType
     PLAYER
 }
 
-public class LootBag : IGameEntity
+public class LootBag : WorldObject
 {
-    public ushort Id { get; set; }
-    public ushort Unknown { get; set; }
-    public double X { get; set; }
-    public double Y { get; set; }
-    public double Z { get; set; }
-    public double Turn { get; set; }
-    public ushort CurrentHP { get; set; }
-    public ushort MaxHP { get; set; }
-    public ushort TypeID { get; set; }
-    public byte TitleLevelMinusOne { get; set; }
-    public byte DegreeLevelMinusOne { get; set; }
-    public SphGameObject SphGameObject { get; set; } = null!; // unused for now
-
-    public Item? Item0;
-    public Item? Item1;
-    public Item? Item2;
-    public Item? Item3;
+    [BsonRef("GameObjects")]
+    public SphGameObject? Item0 { get; set; }
+    [BsonRef("GameObjects")]
+    public SphGameObject? Item1 { get; set; }
+    [BsonRef("GameObjects")]
+    public SphGameObject? Item2 { get; set; }
+    [BsonRef("GameObjects")]
+    public SphGameObject? Item3 { get; set; }
 
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
     
-    public LootBagNode ParentNode = null!;
+    [BsonIgnore]
+    public LootBagNode ParentNode { get; set; } = null!;
 
-    public Item? this[int index]
+    public LootBag()
+    {
+        ObjectKind = GameObjectKind.LootBag;
+        ObjectType = GameObjectType.LootBag;
+    }
+
+    public SphGameObject? this[int index]
     {
         get
         {
@@ -103,8 +87,8 @@ public class LootBag : IGameEntity
         var bag = LootBagScene.Instantiate<LootBagNode>();
         var levelOverride = 1;
         bag.LootBag = new LootBag();
-        bag.LootBag.Id = MainServer.AddToGameObjects(bag.LootBag);
-        bag.LootBag.TitleLevelMinusOne = (byte) level;
+        bag.LootBag.Id = MainServer.ExistingGameObjects.Insert(bag.LootBag);
+        bag.LootBag.TitleMinusOne = (byte) level;
         bag.LootBag.X = x;
         bag.LootBag.Y = y;
         bag.LootBag.Z = z;
@@ -113,21 +97,20 @@ public class LootBag : IGameEntity
 
         for (var i = 0; i < itemCount; i++)
         {
-            var item = new Item
-            {
-                SphGameObject = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level)//, i == 0 ? -1 : 2402)
-            };
-            item.Id = MainServer.AddToGameObjects(item);
-            item.Owner = bag.LootBag;
-            bag.LootBag[i] = item;
+            var randomObj = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level);
+            var gameObj = randomObj.Clone();
+            gameObj.Id = MainServer.ExistingGameObjects.Insert(gameObj);
+            gameObj.Parent = bag.LootBag;
+            bag.LootBag[i] = gameObj;
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
         MainServer.MainServerNode.AddChild(bag);
+        MainServer.ExistingGameObjects.Update(bag.LootBag.Id, bag.LootBag);
         return bag.LootBag;
     }
 
-    public bool RemoveItem(ushort itemId)
+    public bool RemoveItem(int itemId)
     {
         if (Item0?.Id == itemId)
         {
@@ -160,36 +143,24 @@ public class LootBag : IGameEntity
         return false;
     }
 
-    public static LootBag CreateFromEntity(IGameEntity ent)
-    {
-        return Create(ent.X, ent.Y, ent.Z, 0, ent.TypeID, LootRatityType.DEFAULT_MOB);
-    }
-
     public void ShowForEveryClientInRadius()
     {
-        foreach (var ent in MainServer.GameObjects.Values)
+        foreach (var client in MainServer.ActiveClients.Values)
         {
-            if (ent is CharacterData charData)
-                // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-                // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            {
-                Console.WriteLine($"Sending {Id} ({ent.X}, {ent.Y}, {ent.Z}) to cli {charData.Player.Index}");
-                ShowForClient(charData.Player.Index);
-            }
+            // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+            // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+            ShowForClient(client.CurrentCharacter.ClientIndex);
         }
     }
 
     public void UpdatePositionForEveryClientInRadius()
     {
-        foreach (var ent in MainServer.GameObjects.Values)
+        foreach (var client in MainServer.ActiveClients.Values)
         {
             // TODO: proper load/unload for client
-            if (ent is CharacterData charData)
-                // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-                // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            {
-                charData.Client.MoveEntity(X, -Y, Z, Turn, Id);
-            }
+            // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+            // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+            client.MoveEntity(X, -Y, Z, Angle, client.GetLocalObjectId(Id));
         }
     }
 
@@ -211,10 +182,11 @@ public class LootBag : IGameEntity
         var z_3 = ((zArr[2] & 0b111) << 5) + ((zArr[1] & 0b11111000) >> 3);
         var z_4 = ((zArr[3] & 0b111) << 5) + ((zArr[2] & 0b11111000) >> 3);
         var z_5 = 0b01100000 + ((zArr[3] & 0b11111000) >> 3);
+        var localClientId = Client.GetLocalObjectId(clientId, Id);
 
         var lootBagPacket = new byte[]
         {
-            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x86, (byte) x_1,
+            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localClientId), MajorByte(localClientId), 0x5C, 0x86, (byte) x_1,
             (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
             (byte) z_2, (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
         };
@@ -259,13 +231,14 @@ public class LootBag : IGameEntity
         var item3_1 = (byte) ((item_3_id & 0b111) << 5);
         var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
         var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
+        var localClientId = Client.GetLocalObjectId(clientId, Id);
         
         switch (Count)
         {
             case 1:
                 itemList = new byte[]
                 {
-                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
+                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localClientId), MajorByte(localClientId), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 
                     0x00, 0x00, 0x00 
                 };
@@ -274,7 +247,7 @@ public class LootBag : IGameEntity
             case 2:
                 itemList = new byte[]
                 {
-                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
+                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localClientId), MajorByte(localClientId), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00, 0x00, 0x50, 0x10, 
                     0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
                     
@@ -284,7 +257,7 @@ public class LootBag : IGameEntity
             case 3:
                 itemList = new byte[]
                 {
-                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
+                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localClientId), MajorByte(localClientId), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 
                     item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1, item2_2, item2_3, 
                     0x2C, 0x00, 0x00, 0x00, 0x00
@@ -294,7 +267,7 @@ public class LootBag : IGameEntity
             case 4:
                 itemList = new byte[]
                 {
-                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(Id), MajorByte(Id), 0x5C, 0x46, 0x61, 0x02, 
+                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localClientId), MajorByte(localClientId), 0x5C, 0x46, 0x61, 0x02, 
                     0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50, 0x10, 0x84, 
                     item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1, item2_2, 
                     item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19, 0x00, 
@@ -311,7 +284,7 @@ public class LootBag : IGameEntity
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    private ObjectPacket FindSimilarObjectPacketInDb(SphGameObject gameObject, ushort id)
+    private ObjectPacket FindSimilarObjectPacketInDb(SphGameObject gameObject, ushort id, ushort clientId)
     {
         Console.WriteLine(gameObject.ToDebugString());
         var weaponArmorNotShiftedId = 243; //
@@ -370,7 +343,8 @@ public class LootBag : IGameEntity
 
         result.Id = id;
         result.GameId = (ushort) gameObject.GameId;
-        result.BagId = Id;
+        var bagId = Client.GetLocalObjectId(clientId, Id);
+        result.BagId = bagId;
         result.SuffixMod = suffixMod;
         result.Count = (ushort) gameObject.ItemCount;
 
@@ -391,7 +365,7 @@ public class LootBag : IGameEntity
         return result;
     }
 
-    public byte[] GetContentsPacket()
+    public byte[] GetContentsPacket(ushort clientId)
     {
         var memoryStream = new MemoryStream();
         var stream = new BitStream(memoryStream)
@@ -400,7 +374,7 @@ public class LootBag : IGameEntity
         };
         for (var i = 0; i < Count; i++)
         {
-            var similarPacket = FindSimilarObjectPacketInDb(this[i]!.SphGameObject, this[i]!.Id);
+            var similarPacket = FindSimilarObjectPacketInDb(this[i]!, (ushort) this[i]!.Id, clientId);
             similarPacket.ToStream(stream);
             if (i < Count - 1)
             {

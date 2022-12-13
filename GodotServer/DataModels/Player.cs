@@ -20,7 +20,7 @@ public class Player
         var data = new List<byte>();
         foreach (var character in Characters)
         {
-            character.Player = this;
+            character.ClientIndex = Index;
         }
 
         for (var i = 0; i < 3; i++)
