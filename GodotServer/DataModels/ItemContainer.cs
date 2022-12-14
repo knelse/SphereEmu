@@ -11,17 +11,8 @@ using SphServer.Helpers;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
 
-public enum LootRatityType
-{
-    DEFAULT_MOB,
-    NAMED_MOB,
-    PLAYER
-}
-
 public class ItemContainer
 {
-    [BsonRef("Items")] 
-    public List<Item> Contents { get; set; } = new();
     [BsonId]
     public int Id { get; set; }
     public double X { get; set; }
@@ -33,11 +24,11 @@ public class ItemContainer
 
     [BsonIgnore]
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
-    
+    public Dictionary<int, int> Contents { get; set; } = new();
     public ulong? ParentNodeId { get; set; }
 
     public static ItemContainer Create(double x, double y, double z, int level, int sourceTypeId,
-        LootRatityType ratityType, int count = -1)
+        LootRatity ratity, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
         MainServer.ActiveNodes[bag.GetInstanceId()] = bag;
@@ -59,11 +50,11 @@ public class ItemContainer
             var randomObj = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level);
             var item = Item.CreateFromGameObject(randomObj);
             item.ParentContainerId = bag.ItemContainer.Id;
-            bag.ItemContainer.Contents.Insert(i,item);
+            MainServer.ItemCollection.Insert(item);
+            bag.ItemContainer.Contents[i] = item.Id;
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
-        MainServer.ItemCollection.InsertBulk(bag.ItemContainer.Contents);
         MainServer.MainServerNode.AddChild(bag);
         MainServer.ItemContainerCollection.Update(bag.ItemContainer);
 
@@ -72,9 +63,11 @@ public class ItemContainer
 
     public bool RemoveItemAndDestroyContainerIfEmpty(int itemGlobalId)
     {
-        if (Contents.RemoveAll(x => x.Id == itemGlobalId) > 0)
+        if (Contents.ContainsValue(itemGlobalId))
         {
-            Console.WriteLine($"Removed ID {itemGlobalId} from container {Id}");
+            var key = Contents.First(x => x.Value == itemGlobalId).Key;
+            Contents.Remove(key);
+            Console.WriteLine($"Removed at {key} ID {itemGlobalId} from container {Id}");
         }
 
         MainServer.ItemContainerCollection.Update(Id, this);
@@ -161,10 +154,10 @@ public class ItemContainer
         // var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         // var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
 
-        var item_0_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(0)?.Id ?? 0);
-        var item_1_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(1)?.Id ?? 0);
-        var item_2_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(2)?.Id ?? 0);
-        var item_3_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(3)?.Id ?? 0);
+        var item_0_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(0) ? Contents[0] : 0);
+        var item_1_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(1) ? Contents[1] : 0);
+        var item_2_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(2) ? Contents[2] : 0);
+        var item_3_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(3) ? Contents[3] : 0);
         
         var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
         var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
@@ -333,7 +326,12 @@ public class ItemContainer
         };
         for (var i = 0; i < Contents.Count; i++)
         {
-            var item = Contents.ElementAtOrDefault(i);
+            if (!Contents.ContainsKey(i))
+            {
+                // TODO: actual skip slot
+                continue;
+            }
+            var item = MainServer.ItemCollection.FindById(Contents[i]);
             var similarPacket = FindSimilarObjectPacketInDb(item, clientId);
             if (similarPacket is null)
             {

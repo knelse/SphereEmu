@@ -73,7 +73,7 @@ namespace SphServer.DataModels
         public ushort PDef { get; set; }
         public ushort MDef { get; set; }
         public KarmaTier Karma { get; set; } = KarmaTier.Neutral;
-        public readonly Dictionary<BelongingSlot, Item?> Items = new();
+        public Dictionary<BelongingSlot, int> Items { get; set; } = new();
 
         [BsonIgnore]
         public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
@@ -563,19 +563,20 @@ namespace SphServer.DataModels
 
         public bool IsItemSlotEmpty(BelongingSlot belongingSlot)
         {
-            return !Items.ContainsKey(belongingSlot) || Items[belongingSlot] is null;
+            return !Items.ContainsKey(belongingSlot);
         }
 
-        public Item? GetItemValue(BelongingSlot belongingSlot)
-        {
-            return Items.GetValueOrDefault(belongingSlot, null);
-        }
-
-        public void SetItemValue(Item? value, BelongingSlot belongingSlot)
-        {
-            if (!LootHelper.IsSlotValidForItem(belongingSlot, value)) return;
-            Items[belongingSlot] = value;
-        }
+        // public Item? GetItemValue(BelongingSlot belongingSlot)
+        // {
+        //     return Items.GetValueOrDefault(belongingSlot, null);
+        // }
+        //
+        // public void SetItemValue(Item? value, BelongingSlot belongingSlot)
+        // {
+        //     if (!LootHelper.IsSlotValidForItem(belongingSlot, value)) return;
+        //     Items[belongingSlot] = value;
+        //     MainServer.CharacterCollection.Update(Id, this);
+        // }
 
         private ulong GetXpToLevelUp()
         {
