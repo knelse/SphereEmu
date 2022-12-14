@@ -18,129 +18,79 @@ public enum LootRatityType
     PLAYER
 }
 
-public class LootBag : WorldObject
+public class ItemContainer
 {
-    [BsonRef("GameObjects")]
-    public SphGameObject? Item0 { get; set; }
-    [BsonRef("GameObjects")]
-    public SphGameObject? Item1 { get; set; }
-    [BsonRef("GameObjects")]
-    public SphGameObject? Item2 { get; set; }
-    [BsonRef("GameObjects")]
-    public SphGameObject? Item3 { get; set; }
+    [BsonRef("Items")] 
+    public List<Item> Contents { get; set; } = new();
+    [BsonId]
+    public int Id { get; set; }
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+    public double Angle { get; set; }
+    public int TitleMinusOne { get; set; }
+    public int DegreeMinusOne { get; set; }
 
+    [BsonIgnore]
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
     
-    [BsonIgnore]
-    public LootBagNode ParentNode { get; set; } = null!;
+    public ulong? ParentNodeId { get; set; }
 
-    public LootBag()
-    {
-        ObjectKind = GameObjectKind.LootBag;
-        ObjectType = GameObjectType.LootBag;
-    }
-
-    public SphGameObject? this[int index]
-    {
-        get
-        {
-            if (index is < 0 or > 3)
-            {
-                return null;
-            }
-
-            return index == 0 ? Item0 : index == 1 ? Item1 : index == 2 ? Item2 : Item3;
-        }
-
-        set
-        {
-            if (index < 0 || index > 3)
-            {
-                return;
-            }
-
-            if (index == 0)
-            {
-                Item0 = value;
-            }
-            else if (index == 1)
-            {
-                Item1 = value;
-            }
-            else if (index == 2)
-            {
-                Item2 = value;
-            }
-            else
-            {
-                Item3 = value;
-            }
-        }
-    }
-
-    public int Count => (Item0 is null ? 0 : 1) + (Item1 is null ? 0 : 1) + (Item2 is null ? 0 : 1) +
-                        (Item3 is null ? 0 : 1);
-
-    public static LootBag Create(double x, double y, double z, int level, int sourceTypeId,
+    public static ItemContainer Create(double x, double y, double z, int level, int sourceTypeId,
         LootRatityType ratityType, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
+        MainServer.ActiveNodes[bag.GetInstanceId()] = bag;
         var levelOverride = 1;
-        bag.LootBag = new LootBag();
-        bag.LootBag.Id = MainServer.ExistingGameObjects.Insert(bag.LootBag);
-        bag.LootBag.TitleMinusOne = (byte) level;
-        bag.LootBag.X = x;
-        bag.LootBag.Y = y;
-        bag.LootBag.Z = z;
-        bag.LootBag.ParentNode = bag;
+        bag.ItemContainer = new ItemContainer
+        {
+            TitleMinusOne = (byte)level,
+            X = x,
+            Y = y,
+            Z = z,
+            ParentNodeId = bag.GetInstanceId()
+        };
+        bag.ItemContainer.Id = MainServer.ItemContainerCollection.Insert(bag.ItemContainer);
+
         var itemCount = count == -1 ? MainServer.Rng.Next(1, 5) : count;
 
         for (var i = 0; i < itemCount; i++)
         {
             var randomObj = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level);
-            var gameObj = randomObj.Clone();
-            gameObj.Id = MainServer.ExistingGameObjects.Insert(gameObj);
-            gameObj.Parent = bag.LootBag;
-            bag.LootBag[i] = gameObj;
+            var item = Item.CreateFromGameObject(randomObj);
+            item.ParentContainerId = bag.ItemContainer.Id;
+            bag.ItemContainer.Contents.Insert(i,item);
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
+        MainServer.ItemCollection.InsertBulk(bag.ItemContainer.Contents);
         MainServer.MainServerNode.AddChild(bag);
-        MainServer.ExistingGameObjects.Update(bag.LootBag.Id, bag.LootBag);
-        return bag.LootBag;
+        MainServer.ItemContainerCollection.Update(bag.ItemContainer);
+
+        return bag.ItemContainer;
     }
 
-    public bool RemoveItem(int itemId)
+    public bool RemoveItemAndDestroyContainerIfEmpty(int itemGlobalId)
     {
-        if (Item0?.Id == itemId)
+        if (Contents.RemoveAll(x => x.Id == itemGlobalId) > 0)
         {
-            Item0 = null;
-            Console.WriteLine($"Removed item0 {itemId} from lootbag {Id}");
-        }
-        else if (Item1?.Id == itemId)
-        {
-            Item1 = null;
-            Console.WriteLine($"Removed item1 {itemId} from lootbag {Id}");
-        }
-        else if (Item2?.Id == itemId)
-        {
-            Item2 = null;
-            Console.WriteLine($"Removed item2 {itemId} from lootbag {Id}");
-        }
-        else if (Item3?.Id == itemId)
-        {
-            Item3 = null;
-            Console.WriteLine($"Removed item3 {itemId} from lootbag {Id}");
+            Console.WriteLine($"Removed ID {itemGlobalId} from container {Id}");
         }
 
-        if (Count == 0)
+        MainServer.ItemContainerCollection.Update(Id, this);
+
+        if (Contents.Any())
         {
-            
-            ParentNode.QueueFree();
-            return true;
+            return false;
         }
 
-        return false;
+        if (ParentNodeId != null)
+        {
+            MainServer.ActiveNodes[ParentNodeId.Value].QueueFree();
+        }
+        
+        return true;
+
     }
 
     public void ShowForEveryClientInRadius()
@@ -149,7 +99,7 @@ public class LootBag : WorldObject
         {
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
             // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            ShowForClient(client.CurrentCharacter.ClientIndex);
+            ShowForClient(client);
         }
     }
 
@@ -164,7 +114,7 @@ public class LootBag : WorldObject
         }
     }
 
-    public void ShowForClient(ushort clientId)
+    public void ShowForClient(Client client)
     {
         var xArr = CoordsHelper.EncodeServerCoordinate(X);
         var yArr = CoordsHelper.EncodeServerCoordinate(-Y);
@@ -182,7 +132,7 @@ public class LootBag : WorldObject
         var z_3 = ((zArr[2] & 0b111) << 5) + ((zArr[1] & 0b11111000) >> 3);
         var z_4 = ((zArr[3] & 0b111) << 5) + ((zArr[2] & 0b11111000) >> 3);
         var z_5 = 0b01100000 + ((zArr[3] & 0b11111000) >> 3);
-        var localClientId = Client.GetLocalObjectId(clientId, Id);
+        var localClientId = client.GetLocalObjectId(Id);
 
         var lootBagPacket = new byte[]
         {
@@ -190,11 +140,11 @@ public class LootBag : WorldObject
             (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
             (byte) z_2, (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
         };
-
-        Client.TryFindClientByIdAndSendData(clientId, lootBagPacket);
+        
+        client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowDropitemListForClient(ushort clientId)
+    public void ShowFourSlotBagDropitemListForClient(ushort clientId)
     {
         byte[] itemList;
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
@@ -211,10 +161,10 @@ public class LootBag : WorldObject
         // var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         // var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
 
-        var item_0_id = Item0?.Id ?? 0;
-        var item_1_id = Item1?.Id ?? 0;
-        var item_2_id = Item2?.Id ?? 0;
-        var item_3_id = Item3?.Id ?? 0;
+        var item_0_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(0)?.Id ?? 0);
+        var item_1_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(1)?.Id ?? 0);
+        var item_2_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(2)?.Id ?? 0);
+        var item_3_id = Client.GetLocalObjectId(clientId, Contents.ElementAtOrDefault(3)?.Id ?? 0);
         
         var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
         var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
@@ -233,7 +183,7 @@ public class LootBag : WorldObject
         var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
         var localClientId = Client.GetLocalObjectId(clientId, Id);
         
-        switch (Count)
+        switch (Contents.Count)
         {
             case 1:
                 itemList = new byte[]
@@ -276,7 +226,7 @@ public class LootBag : WorldObject
 
                 break;
             default:
-                Console.WriteLine($"Item list for count {Count} not implemented");
+                Console.WriteLine($"Item list for count {Contents.Count} not implemented");
 
                 return;
         }
@@ -284,9 +234,13 @@ public class LootBag : WorldObject
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    private ObjectPacket FindSimilarObjectPacketInDb(SphGameObject gameObject, ushort id, ushort clientId)
+    private ObjectPacket? FindSimilarObjectPacketInDb(Item? item, ushort clientId)
     {
-        Console.WriteLine(gameObject.ToDebugString());
+        if (item is null)
+        {
+            return null;
+        }
+        Console.WriteLine(item.ToDebugString());
         var weaponArmorNotShiftedId = 243; //
         var weaponArmorShiftedId = 153; //
         var ringNotShiftedId = 666;
@@ -301,55 +255,60 @@ public class LootBag : WorldObject
         // var diamondRingId = 569;
         
         ObjectPacket result;
-        var objectType = gameObject.ObjectType.GetPacketObjectType();
+        var objectType = item.ObjectType.GetPacketObjectType();
         Console.WriteLine(Enum.GetName(objectType));
-        var suffixMod = gameObject.Suffix == ItemSuffix.None
+        var suffixMod = item.Suffix == ItemSuffix.None
             ? (ushort)81
-            : (ushort)GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[gameObject.ObjectType][gameObject.Suffix].value;
+            : (ushort)GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[item.ObjectType][item.Suffix].value;
 
         var dbId = -1;
-        if (GameObjectDataHelper.WeaponsAndArmor.Contains(gameObject.ObjectType))
+        if (GameObjectDataHelper.WeaponsAndArmor.Contains(item.ObjectType))
         {
             dbId = suffixMod > 1000 ? weaponArmorShiftedId : weaponArmorNotShiftedId;
         }
 
-        else if (GameObjectDataHelper.Mantras.Contains(gameObject.ObjectType))
+        else if (GameObjectDataHelper.Mantras.Contains(item.ObjectType))
         {
             dbId = mantraId;
         }
 
-        else if (GameObjectDataHelper.Powders.Contains(gameObject.ObjectType))
+        else if (GameObjectDataHelper.Powders.Contains(item.ObjectType))
         {
             dbId = powderId;
         }
 
-        else if (GameObjectDataHelper.AlchemyMaterials.Contains(gameObject.ObjectType))
+        else if (GameObjectDataHelper.AlchemyMaterials.Contains(item.ObjectType))
         {
             dbId = alchemyId;
         }
 
-        else if (gameObject.ObjectType is GameObjectType.Ring)
+        else if (item.ObjectType is GameObjectType.Ring)
         {
             dbId = suffixMod > 1000 ? ringShiftedId : ringNotShiftedId;
         }
 
         if (dbId == -1)
         {
-            Console.WriteLine($"NOT FOUND: Type: {Enum.GetName(gameObject.ObjectType)} Suffix: {suffixMod} {Enum.GetName(gameObject.Suffix)}");
+            Console.WriteLine($"NOT FOUND: Type: {Enum.GetName(item.ObjectType)} Suffix: {suffixMod} {Enum.GetName(item.Suffix)}");
             dbId = 4;
         }
 
-        result = MainServer.ObjectPacketCollection.FindOne(x => x.DbId == dbId);
+        result = MainServer.LiveServerObjectPacketCollection.FindOne(x => x.DbId == dbId);
+        var client = MainServer.ActiveClients!.GetValueOrDefault(clientId, null);
+        if (client is null)
+        {
+            return null;
+        }
 
-        result.Id = id;
-        result.GameId = (ushort) gameObject.GameId;
+        result.Id = client.GetLocalObjectId(item.Id); 
+        result.GameId = (ushort) item.GameId;
         var bagId = Client.GetLocalObjectId(clientId, Id);
         result.BagId = bagId;
         result.SuffixMod = suffixMod;
-        result.Count = (ushort) gameObject.ItemCount;
+        result.Count = (ushort) item.ItemCount;
 
-        result.GameObject = gameObject;
-        result.FriendlyName = MainServer.GameObjectDataDb[result.GameId].Localisation[Locale.Russian];
+        result.GameObject = MainServer.GameObjectCollection.FindById(item.GameObjectDbId);
+        result.FriendlyName = MainServer.GameObjectCollection.FindById((int) result.GameId)!.Localisation[Locale.Russian];
         var type = result.GameObject.ObjectType;
         result.Type = (ushort) objectType;
         
@@ -365,34 +324,40 @@ public class LootBag : WorldObject
         return result;
     }
 
-    public byte[] GetContentsPacket(ushort clientId)
+    public byte[] GetFourSlotBagContentsPacket(ushort clientId)
     {
         var memoryStream = new MemoryStream();
         var stream = new BitStream(memoryStream)
         {
             AutoIncreaseStream = true
         };
-        for (var i = 0; i < Count; i++)
+        for (var i = 0; i < Contents.Count; i++)
         {
-            var similarPacket = FindSimilarObjectPacketInDb(this[i]!, (ushort) this[i]!.Id, clientId);
-            similarPacket.ToStream(stream);
-            if (i < Count - 1)
+            var item = Contents.ElementAtOrDefault(i);
+            var similarPacket = FindSimilarObjectPacketInDb(item, clientId);
+            if (similarPacket is null)
             {
-                if (GameObjectDataHelper.WeaponsAndArmor.Contains(similarPacket.GameObject!.ObjectType))
-                {
-                    stream.WriteByte(0x7E >> 1, 7);
-                }
-                else
-                {
-                    var seekBack = GameObjectDataHelper.Mantras.Contains(similarPacket.GameObject.ObjectType)
-                                   || GameObjectDataHelper.Powders.Contains(similarPacket.GameObject.ObjectType)
-                                   || GameObjectDataHelper.AlchemyMaterials.Contains(
-                                       similarPacket.GameObject.ObjectType)
-                        ? 1
-                        : 0;
-                    stream.SeekBack(seekBack);
-                    stream.WriteByte(0x7E);
-                }
+                continue;
+            }
+            similarPacket.Value.ToStream(stream);
+            if (i >= Contents.Count - 1)
+            {
+                break;
+            }
+            if (GameObjectDataHelper.WeaponsAndArmor.Contains(similarPacket.Value.GameObject!.ObjectType))
+            {
+                stream.WriteByte(0x7E >> 1, 7);
+            }
+            else
+            {
+                var seekBack = GameObjectDataHelper.Mantras.Contains(similarPacket.Value.GameObject.ObjectType)
+                               || GameObjectDataHelper.Powders.Contains(similarPacket.Value.GameObject.ObjectType)
+                               || GameObjectDataHelper.AlchemyMaterials.Contains(
+                                   similarPacket.Value.GameObject.ObjectType)
+                    ? 1
+                    : 0;
+                stream.SeekBack(seekBack);
+                stream.WriteByte(0x7E);
             }
         }
 

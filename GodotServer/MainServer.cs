@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using LiteDB;
 using SphServer.DataModels;
 // ReSharper disable NotAccessedField.Local
@@ -26,20 +26,23 @@ namespace SphServer
 		public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
 		public static MainServer MainServerNode = null!;
 		public static readonly Random Rng = new(Guid.NewGuid().GetHashCode());
-		public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = SphObjectDb.GameObjectDataDb;
 		public const string gameDataPath = "c:\\source\\_sphFilesDecode\\params\\";
-		public static readonly LiteDatabase Db = new (@"Filename=C:\_sphereStuff\sph.db;Connection=shared;");
-		public static readonly LiteDatabase ItemDb = new (@"Filename=C:\_sphereStuff\sph_items.db;Connection=shared;");
-		public static ILiteCollection<Player> PlayerCollection => Db.GetCollection<Player>("Players");
-		public static ILiteCollection<CharacterData> CharacterCollection => Db.GetCollection<CharacterData>("Characters");
-		public static ILiteCollection<Clan> ClanCollection => Db.GetCollection<Clan>("Clans");
 		public static readonly ConcurrentDictionary<ushort, Client> ActiveClients = new();
-
-		public static ILiteCollection<SphGameObject> ExistingGameObjects =>
+		public static readonly LiteDatabase Db = new (@"Filename=C:\_sphereStuff\sph.db;Connection=shared;");
+		public static readonly LiteDatabase LiveServerObjectPacketDb = new (@"Filename=C:\_sphereStuff\sph_items.db;Connection=shared;");
+		public static readonly ILiteCollection<Clan> ClanCollection = Db.GetCollection<Clan>("Clans");
+		public static readonly ILiteCollection<Player> PlayerCollection = Db.GetCollection<Player>("Players");
+		public static readonly ILiteCollection<Character> CharacterCollection = Db.GetCollection<Character>("Characters");
+		public static readonly ILiteCollection<Item> ItemCollection = Db.GetCollection<Item>("Items");
+		public static readonly ILiteCollection<ItemContainer> ItemContainerCollection = Db.GetCollection<ItemContainer>("ItemContainers");
+		public static readonly ILiteCollection<Mob> MonsterCollection = Db.GetCollection<Mob>("Monsters");
+		public static readonly ILiteCollection<SphGameObject> GameObjectCollection =
 			Db.GetCollection<SphGameObject>("GameObjects");
+		public static readonly ILiteCollection<ObjectPacket> LiveServerObjectPacketCollection =
+			LiveServerObjectPacketDb.GetCollection<ObjectPacket>("ObjectPackets");
+		public static readonly ConcurrentDictionary<ulong, Node> ActiveNodes = new ();
 
-		public static readonly ILiteCollection<ObjectPacket> ObjectPacketCollection =
-			ItemDb.GetCollection<ObjectPacket>("ObjectPackets");
+		public static readonly Dictionary<int, SphGameObject> SphGameObjectDb = SphObjectDb.GameObjectDataDb;
 
 		private static ushort getNewPlayerIndex()
 		{
@@ -70,21 +73,42 @@ namespace SphServer
 				Console.WriteLine(se.Message);
 			}
 
+			ItemCollection.DeleteAll();
+			MonsterCollection.DeleteAll();
+			ItemContainerCollection.DeleteAll();
+
+			var time = DateTime.Now;
+			if (GameObjectCollection.Count() == 0)
+			{
+				// load db
+				Console.WriteLine("Filling object collection");
+				foreach (var dbEntry in SphGameObjectDb)
+				{
+					GameObjectCollection.Insert(dbEntry.Key, dbEntry.Value);
+				}
+
+				Console.WriteLine($"Time elapsed: {(DateTime.Now - time).TotalMilliseconds} ms");
+			}
+
 			if (!ClanCollection.Exists(x => x.Id == Clan.DefaultClan.Id))
 			{
 				ClanCollection.Insert(Clan.DefaultClan.Id,Clan.DefaultClan);
 			}
-
-			// TODO: will be storing later
-			ExistingGameObjects.DeleteAll();
-			ExistingGameObjects.EnsureIndex(x => x.Id);
-			ExistingGameObjects.EnsureIndex(x => x.GameId);
 			
 			// special case for basic sword, to be removed later
-			if (ExistingGameObjects.FindById(2825) is null)
+			if (ItemCollection.FindById(2825) is null)
 			{
-				ExistingGameObjects.Insert(2825, GameObjectDataDb[1]);
+				ItemCollection.Insert(2825,  Item.CreateFromGameObject(GameObjectCollection.FindById(1)));
 			}
+
+			ItemCollection.EnsureIndex(x => x.GameObjectDbId);
+			ItemCollection.EnsureIndex(x => x.GameId);
+			GameObjectCollection.EnsureIndex(x => x.GameId);
+			GameObjectCollection.EnsureIndex(x => x.GameObjectDbId);
+			GameObjectCollection.EnsureIndex(x => x.ObjectType);
+			GameObjectCollection.EnsureIndex(x => x.ObjectKind);
+			PlayerCollection.EnsureIndex(x => x.Login);
+			LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
 
 			Console.WriteLine("Server up, waiting for connections...");
 			MainServerNode = this;
@@ -99,8 +123,9 @@ namespace SphServer
 			var client = ClientScene.Instantiate<Client>();
 			playerCount += 1;
 			client.StreamPeer = streamPeer;
-			client.ID = getNewPlayerIndex();
-			ActiveClients[client.ID] = client;
+			client.LocalId = getNewPlayerIndex();
+			ActiveClients[client.LocalId] = client;
+			ActiveNodes[client.GetInstanceId()] = client;
 			AddChild(client);
 		}
 	}

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Godot;
+using SphServer;
 
 public partial class MobNode : CharacterBody3D
 {
@@ -90,7 +92,7 @@ public partial class MobNode : CharacterBody3D
 
 	public void SetInactive()
 	{
-		// TODO: remove stub
+		MainServer.ActiveNodes.Remove(GetInstanceId(), out _);
 		QueueFree();
 	}
 }

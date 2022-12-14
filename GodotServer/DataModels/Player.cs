@@ -6,14 +6,13 @@ namespace SphServer.DataModels;
 
 public class Player
 {
-    [BsonId] 
     public int Id { get; set; }
     [BsonIgnore]
     public ushort Index { get; set; }
     public string Login { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
 
-    [BsonRef("Characters")] public List<CharacterData> Characters { get; set; }
+    [BsonRef("Characters")] public List<Character> Characters { get; set; } = new();
     
     public byte[] ToInitialDataByteArray()
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SphServer;
+using SphServer.DataModels;
 
 public static class LootHelper
 {
@@ -129,7 +130,7 @@ public static class LootHelper
         SphGameObject item;
         if (gameIdOverride != -1)
         {
-            item = MainServer.GameObjectDataDb.First(x => x.Value.GameId == gameIdOverride).Value;
+            item = MainServer.GameObjectCollection.FindById(gameIdOverride);
         }
 
         else
@@ -202,16 +203,17 @@ public static class LootHelper
                 GameObjectType.Mineral,
             };
 
-            var lootPool = MainServer.GameObjectDataDb
+            var time = DateTime.Now;
+            var lootPool = MainServer.SphGameObjectDb
                 .Where(x =>
-                    !gameIdsToRemove.Contains(x.Value.GameId) && kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
+                    !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
                                                             && (x.Value.Tier == tierFilter
-                                                                || tierAgnosticTypes.Contains(x.Value.ObjectType)))
-                .Select(y => y.Value)
+                                                                || tierAgnosticTypes.Contains(x.Value.ObjectType))).Select(x => x.Value)
                 .ToList();
-
             var random = MainServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
+            var collectionItem = MainServer.GameObjectCollection.FindOne(x => x.GameId == item.GameId);
+            item.GameObjectDbId = collectionItem.GameObjectDbId;
         }
 
         var noSuffix = false;
@@ -426,7 +428,7 @@ public static class LootHelper
         return item;
     }
 
-    public static bool IsSlotValidForItem(BelongingSlot slot, SphGameObject? item)
+    public static bool IsSlotValidForItem(BelongingSlot slot, Item? item)
     {
         // TODO: actual check
         return true;

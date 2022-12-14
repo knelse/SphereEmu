@@ -12,10 +12,11 @@ using static SphServer.Helpers.CharacterDataHelper;
 namespace SphServer.DataModels
 {
     // TODO: skip unnecessary fields for serialization
-    public class CharacterData : KillableWorldObject
+    public class Character
     {
-        [BsonId]
-        public int DbId { get; set; }
+        public int Id { get; set; }
+        [BsonIgnore]
+        public int ClientLocalId { get; set; }
         public byte LookType { get; set; }
         public byte IsTurnedOff { get; set; }
         public ushort MaxMP { get; set; }
@@ -61,8 +62,18 @@ namespace SphServer.DataModels
         public Guild Guild { get; set; } = Guild.None;
         public ClanRank ClanRank { get; set; } = ClanRank.Neophyte;
         public ushort ClientIndex { get; set; }
-
-        public readonly Dictionary<BelongingSlot, SphGameObject?> Items = new();
+        public double X { get; set; }
+        public double Y { get; set; } = 150;
+        public double Z { get; set; }
+        public double Angle { get; set; }
+        public int TitleMinusOne { get; set; }
+        public int DegreeMinusOne { get; set; }
+        public ushort CurrentHP { get; set; } = 100;
+        public ushort MaxHP { get; set; } = 100;
+        public ushort PDef { get; set; }
+        public ushort MDef { get; set; }
+        public KarmaTier Karma { get; set; } = KarmaTier.Neutral;
+        public readonly Dictionary<BelongingSlot, Item?> Items = new();
 
         [BsonIgnore]
         public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
@@ -70,7 +81,7 @@ namespace SphServer.DataModels
         public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
         [BsonIgnore] public ulong XpToLevelUp => GetXpToLevelUp();
 
-        public CharacterData()
+        public Character()
         {
             LookType = 0x7;
             IsTurnedOff = 0x9;
@@ -82,8 +93,6 @@ namespace SphServer.DataModels
             MaxSatiety = 100;
             AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
             AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
-            ObjectType = GameObjectType.Client;
-            ObjectKind = GameObjectKind.Client;
         }
 
         public void LevelUp(int newTitleLevel, int newDegreeLevel)
@@ -460,10 +469,10 @@ namespace SphServer.DataModels
             return arr;
         }
 
-        public static CharacterData CreateNewCharacter(ushort clientIndex, string name, bool isFemale, int face,
+        public static Character CreateNewCharacter(ushort clientIndex, string name, bool isFemale, int face,
             int hairStyle, int hairColor, int tattoo)
         {
-            return new CharacterData
+            return new Character
             {
                 Name = name,
                 IsGenderFemale = isFemale,
@@ -557,12 +566,12 @@ namespace SphServer.DataModels
             return !Items.ContainsKey(belongingSlot) || Items[belongingSlot] is null;
         }
 
-        public SphGameObject? GetItemValue(BelongingSlot belongingSlot)
+        public Item? GetItemValue(BelongingSlot belongingSlot)
         {
             return Items.GetValueOrDefault(belongingSlot, null);
         }
 
-        public void SetItemValue(SphGameObject? value, BelongingSlot belongingSlot)
+        public void SetItemValue(Item? value, BelongingSlot belongingSlot)
         {
             if (!LootHelper.IsSlotValidForItem(belongingSlot, value)) return;
             Items[belongingSlot] = value;

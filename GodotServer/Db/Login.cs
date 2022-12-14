@@ -45,7 +45,7 @@ namespace SphServer.Db
                 Index = playerIndex,
                 Login = login,
                 PasswordHash = pwdHash,
-                Characters = new List<CharacterData>()
+                Characters = new List<Character>()
             };
 
             var playerId = playerCollection.Insert(player);

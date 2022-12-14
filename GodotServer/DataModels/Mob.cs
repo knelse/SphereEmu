@@ -2,25 +2,31 @@ using System.Text;
 using Godot;
 using LiteDB;
 using SphServer;
-using SphServer.DataModels;
 using SphServer.Helpers;
 using SphServer.Packets;
 
-public class Mob : KillableWorldObject
+public class Mob
 {
+    public int Id { get; set; }
     public ushort Unknown { get; set; }
     public ushort TypeID { get; set; }
+    // TODO: filled when mobs are actual mobs
+    public string ModelName { get; set; } = string.Empty;
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+    public double Angle { get; set; }
+    public int TitleMinusOne { get; set; }
+    public int DegreeMinusOne { get; set; }
+    public ushort CurrentHP { get; set; }
+    public ushort MaxHP { get; set; }
+    public ushort PDef { get; set; }
+    public ushort MDef { get; set; }
+    public KarmaTier Karma { get; set; }
 
     private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
     
-    [BsonIgnore]
-    public MobNode ParentNode { get; set; }    
-
-    public Mob()
-    {
-        ObjectType = GameObjectType.Monster;
-        ObjectKind = GameObjectKind.Monster;
-    }
+    public ulong? ParentNodeId { get; set; }    
 	
     public static Mob Create(double x, double y, double z, double turn, int unknown, int level, int currentHp, int typeId)
     {
@@ -31,19 +37,17 @@ public class Mob : KillableWorldObject
             Y = y,
             Z = z,
             Angle = turn,
-            ParentNode = mob,
+            ParentNodeId = mob.GetInstanceId(),
             Unknown = (ushort) unknown,
             CurrentHP = (ushort) currentHp,
             MaxHP = (ushort) currentHp,
             TypeID = (ushort) typeId,
             TitleMinusOne = (byte) level,
-            ModelNameGround = "t",
-            ModelNameInventory = "s",
-            SphereType = "u",
-            t6 = "t6",
-            t7 = "t7"
         };
-        mob.Mob.Id = MainServer.ExistingGameObjects.Insert(mob.Mob);
+        // TODO: fix when entity spawn is done properly
+        mob.Mob.Id = 9999;
+        MainServer.MonsterCollection.Insert(9999, mob.Mob);
+        MainServer.ActiveNodes[mob.GetInstanceId()] = mob;
 		
         MainServer.MainServerNode.AddChild(mob);
         return mob.Mob;
@@ -56,15 +60,14 @@ public class Mob : KillableWorldObject
             // TODO: proper load/unload for client
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
             // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            Client.TryFindClientByIdAndSendData(client.CurrentCharacter.ClientIndex,
-                Packet.ToByteArray(ToByteArray(client.CurrentCharacter.ClientIndex), 1));
+            client.StreamPeer.PutData(Packet.ToByteArray(ToByteArray(client.LocalId), 1));
         }
     }
 
     // TODO: unhorrify
-    public byte[] ToByteArray(ushort clientId)
+    public byte[] ToByteArray(ushort clientGlobalId)
     {
-        var clientLocalId = Client.GetLocalObjectId(clientId, Id);
+        var clientLocalId = Client.GetLocalObjectId(clientGlobalId, Id);
         var sb = new StringBuilder();
         sb.Append("11111100"); //fc
         sb.Append("11010010"); //d2
