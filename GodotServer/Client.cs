@@ -756,7 +756,7 @@ public partial class Client : Node
 				CurrentCharacter.Y = coords.y;
 				CurrentCharacter.Z = coords.z;
 				CurrentCharacter.Angle = coords.turn;
-				Console.WriteLine(coords.ToDebugString());
+				// Console.WriteLine(coords.ToDebugString());
 
 				pingPreviousClientPingString = clientPingBinaryStr;
 			}

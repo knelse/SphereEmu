@@ -76,21 +76,24 @@ public class Item
     public int? ParentContainerId { get; set; }
     public string ToDebugString()
     {
-        var itemCountStr = ItemCount > 1 ? $"Count: {ItemCount}" : "";
-        return $"Kind: {Enum.GetName(typeof(GameObjectKind), ObjectKind)} " +
-               $"ID: {GameId} Type: {Enum.GetName(typeof(GameObjectType), ObjectType)} Ground: {ModelNameGround} " +
-               $"Inv: {ModelNameInventory} HpCost: {HpCost} MpCost: {MpCost} TitleReq: {TitleMinusOne} " +
-               $"DegreeReq: {DegreeMinusOne} KarmaMin: {Enum.GetName(typeof(KarmaTypes), MinKarmaLevel)} " +
-               $"KarmaMax: {Enum.GetName(typeof(KarmaTypes), MaxKarmaLevel)} StrengthReq: {StrengthReq} " +
-               $"AgilityReq: {AgilityReq} AccuracyReq: {AccuracyReq} EnduranceReq: {EnduranceReq} EarthReq: {EarthReq} " +
-               $"AirReq: {AirReq} WaterReq: {WaterReq} FireReq: {FireReq} PA: {PAtkNegative} MA: {MAtkNegativeOrHeal} " +
-               $"MPHeal: {MPHeal} T1: {t1} MaxHPUp: {MaxHpUp} MaxMpUp: {MaxMpUp} PAUp: {PAtkUpNegative} PDUp: {PDefUp} " +
-               $"MDUp: {MDefUp} StrengthUp: {StrengthUp} AgilityUp: {AgilityUp} AccuracyUp: {AccuracyUp} " +
-               $"EnduranceUp: {EnduranceUp} EarthUp: {EarthUp} AirUp: {AirUp} WaterUp: {WaterUp} FireUp: {FireUp} " +
-               $"MAUp: {MAtkUpNegative} Weight: {Weight} Durability: {Durability} Range: {Range} Radius: {Radius} " +
-               $"UseTime: {UseTime} VendorCost: {VendorCost} MutatorId: {MutatorId} Duration: {Duration} " +
-               $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7: {t7} Tier: {Tier} " +
-               $"Suffix: {Enum.GetName(typeof(ItemSuffix), Suffix)} {itemCountStr}";
+        var itemCountStr = ItemCount > 1 ? $" ({ItemCount})" : "";
+        return
+            "===============================================================================================================================\n" +
+            $"GO: {Enum.GetName(typeof(GameObjectType), ObjectType)} [{GameId}] T{Tier}" + itemCountStr +
+            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof(ItemSuffix), Suffix)} \n" +
+            $"Str: {StrengthReq} Agi: {AgilityReq} Acc: {AccuracyReq} End: {EnduranceReq} Ear: {EarthReq} Air: {AirReq} Wat: {WaterReq} Fir: {FireReq}\n" +
+            $"Str+: {StrengthUp} Agi+: {AgilityUp} Acc+: {AccuracyUp} End+: {EnduranceUp} Ear+: {EarthUp} Air+: {AirUp} Wat+: {WaterUp} Fir+: {FireUp}\n" +
+            $"MaxHP+: {MaxHpUp} MaxMP+: {MaxMpUp} PD+: {PDefUp} MD+: {MDefUp} PA: {PAtkNegative} PA+: {PAtkUpNegative} MA: {MAtkNegativeOrHeal} MA+: {MAtkUpNegative} MP+: {MPHeal}";
+        // $" T1: {t1} " +
+        // $" Weight: {Weight} Durability: {Durability} Range: {Range} Radius: {Radius} " +
+        // $"UseTime: {UseTime} VendorCost: {VendorCost} MutatorId: {MutatorId} Duration: {Duration} " +
+        // $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7: {t7}" +
+        // $"Suffix: {Enum.GetName(typeof(ItemSuffix), Suffix)} {itemCountStr}";
+        // Kind: {Enum.GetName(typeof(GameObjectKind), ObjectKind)} 
+        //Ground: {ModelNameGround} 
+        //Inv: {ModelNameInventory} 
+        //KarmaMin: {Enum.GetName(typeof(KarmaTypes), MinKarmaLevel)} 
+        //KarmaMax: {Enum.GetName(typeof(KarmaTypes), MaxKarmaLevel)} 
     }
 
     public bool IsTierVisible()
@@ -117,7 +120,44 @@ public class Item
         }
 
         item.GameObjectDbId = go.GameObjectDbId;
+        if (item.Suffix != ItemSuffix.None)
+        {
+            item.UpdateStatsForSuffix();;
+        }
 
         return item;
+    }
+
+    private void UpdateStatsForSuffix()
+    {
+        var suffixObj = SphObjectDbHelper.GetSuffixObject(ObjectType, Suffix, Tier);
+        Durability *= (100 + suffixObj.Durability) / 100;
+        Weight *= (100 + suffixObj.Weight) / 100;
+        UseTime = UseTime * (100 + suffixObj.UseTime) / 100;
+        VendorCost += suffixObj.VendorCost;
+        StrengthReq += suffixObj.StrengthReq;
+        AgilityReq += suffixObj.AgilityReq;
+        AccuracyReq += suffixObj.AccuracyReq;
+        EnduranceReq += suffixObj.EnduranceReq;
+        EarthReq += suffixObj.EarthReq;
+        WaterReq += suffixObj.WaterReq;
+        AirReq += suffixObj.AirReq;
+        FireReq += suffixObj.FireReq;
+        StrengthUp += suffixObj.StrengthUp;
+        AgilityUp += suffixObj.AgilityUp;
+        AccuracyUp += suffixObj.AccuracyUp;
+        EnduranceUp += suffixObj.EnduranceUp;
+        EarthUp += suffixObj.EarthUp;
+        WaterUp += suffixObj.WaterUp;
+        AirUp += suffixObj.AirUp;
+        FireUp += suffixObj.FireUp;
+        MaxHpUp += suffixObj.MaxHpUp;
+        MaxMpUp += suffixObj.MaxMpUp;
+        PDefUp += suffixObj.PDefUp;
+        MDefUp += suffixObj.MDefUp;
+        PAtkUpNegative -= suffixObj.PAtkUpNegative;
+        PAtkNegative -= suffixObj.PAtkNegative;
+        MAtkUpNegative -= suffixObj.MAtkUpNegative;
+        MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
     }
 }

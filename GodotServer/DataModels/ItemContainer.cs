@@ -32,7 +32,7 @@ public class ItemContainer
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
         MainServer.ActiveNodes[bag.GetInstanceId()] = bag;
-        var levelOverride = 1;
+        var levelOverride = MainServer.Rng.Next(0, 61);
         bag.ItemContainer = new ItemContainer
         {
             TitleMinusOne = (byte)level,
@@ -249,7 +249,7 @@ public class ItemContainer
         
         ObjectPacket result;
         var objectType = item.ObjectType.GetPacketObjectType();
-        Console.WriteLine(Enum.GetName(objectType));
+        // Console.WriteLine(Enum.GetName(objectType));
         var suffixMod = item.Suffix == ItemSuffix.None
             ? (ushort)81
             : (ushort)GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[item.ObjectType][item.Suffix].value;
@@ -311,9 +311,9 @@ public class ItemContainer
                 .GetSuffixById(result.SuffixMod);
         }
 
-        Console.WriteLine(result.DbId);
+        // Console.WriteLine(result.DbId);
 
-        Console.WriteLine(result.ToDebugString());
+        // Console.WriteLine(result.ToDebugString());
         return result;
     }
 
@@ -362,7 +362,7 @@ public class ItemContainer
         var readLength = stream.Offset * 8 + stream.Bit;
         stream.Seek(0, 0);
         var similarPacketBytes = stream.ReadBytes(readLength);
-        Console.WriteLine(Convert.ToHexString(similarPacketBytes));
+        // Console.WriteLine(Convert.ToHexString(similarPacketBytes));
         return Packet.ToByteArray(similarPacketBytes, 3); 
     }
 }
