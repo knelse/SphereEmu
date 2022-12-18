@@ -801,7 +801,20 @@ public partial class Client : Node
 		var clientItemID_3 = rcvBuffer[23] % 2;
 		var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
+		var globalItemId = GetGlobalObjectId((ushort) clientItemID);
+		var item = MainServer.ItemCollection.FindById(globalItemId);
+
 		var clientSlot_raw = rcvBuffer[24];
+		var targetSlotId = clientSlot_raw >> 1;
+		var targetSlot = Enum.IsDefined(typeof(BelongingSlot), targetSlotId) ? (BelongingSlot)targetSlotId : BelongingSlot.Unknown;
+
+		if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
+		    !CurrentCharacter.CanUseItem(item))
+		{
+			Console.WriteLine($"Item [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+			return;
+		}
+		
 		var clientSlot = (clientSlot_raw - 0x32) / 2;
 		Console.WriteLine($"CLI: Move item [{clientItemID}] to slot raw [{clientSlot_raw}] " +
 		                  $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
@@ -827,14 +840,8 @@ public partial class Client : Node
 			0x20, 0x4E, 0x00, 0x00, 0x00
 		};
 		
-		// TODO: check if slot is valid
-
-		var globalItemId = GetGlobalObjectId((ushort) clientItemID);
-		var item = MainServer.ItemCollection.FindById(globalItemId);
-		
-		var targetSlot = clientSlot_raw >> 1;
-		CurrentCharacter.Items[(BelongingSlot)targetSlot] = globalItemId;
-		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlot)} now has {globalItemId}");
+		CurrentCharacter.Items[targetSlot] = globalItemId;
+		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlotId)} now has {globalItemId}");
 		StreamPeer.PutData(moveResult);
 		var oldContainer = item.ParentContainerId is null
 			? null
@@ -844,6 +851,7 @@ public partial class Client : Node
 		{
 			RemoveEntity(GetLocalObjectId(LocalId, oldContainer.Id));
 		}
+		CurrentCharacter.UpdateCurrentStats();
 	}
 
 	private void DropItemToGround()
@@ -871,33 +879,60 @@ public partial class Client : Node
 		// var clientID_2 = rcvBuffer[12];
 		var newSlotRaw = rcvBuffer[21];
 		var oldSlotRaw = rcvBuffer[22];
-		var oldSlot = rcvBuffer[22] >> 1;
-		var newSlot = rcvBuffer[21] >> 1;
+		var oldSlotId = rcvBuffer[22] >> 1;
+		var newSlotId = rcvBuffer[21] >> 1;
 		Console.WriteLine(
-			$"Move to another slot request: from [{Enum.GetName(typeof(BelongingSlot), oldSlot)}] " +
-			$"to [{Enum.GetName(typeof(BelongingSlot), newSlot)}]");
-		if (Enum.IsDefined(typeof(BelongingSlot), oldSlot) && CurrentCharacter.Items.ContainsKey((BelongingSlot) oldSlot))
-		{
-			var oldItemId = CurrentCharacter.Items[(BelongingSlot)oldSlot];
-			Console.WriteLine($"Item found: {oldItemId}");
-			var oldItemLocalId = GetLocalObjectId(oldItemId);
-			var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
-			var newSlot_2 = (byte) (((oldItemLocalId & 0b1111) << 4) + (newSlotRaw >> 5));
-			var oldItem_1 = (byte) ((oldItemLocalId >> 4) & 0b11111111);
-			var oldItem_2 = (byte) (oldItemLocalId >> 12);
+			$"Move to another slot request: from [{Enum.GetName(typeof(BelongingSlot), oldSlotId)}] " +
+			$"to [{Enum.GetName(typeof(BelongingSlot), newSlotId)}]");
+		var targetSlot = Enum.IsDefined(typeof(BelongingSlot), newSlotId) ? (BelongingSlot)newSlotId : BelongingSlot.Unknown;
+		var oldSlot = Enum.IsDefined(typeof(BelongingSlot), oldSlotId) ? (BelongingSlot)oldSlotId : BelongingSlot.Unknown;
 
-			var moveResult = new byte[]
-			{
-				0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10,
-				oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1, 
-				oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
-			};
-			CurrentCharacter.Items[(BelongingSlot)newSlot] = oldItemId;
-			CurrentCharacter.Items.Remove((BelongingSlot)oldSlot);
-			MainServer.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
-			
-			StreamPeer.PutData(moveResult);
+		var returnToOldSlot = false;
+		
+		if (targetSlot is BelongingSlot.Unknown || oldSlot is BelongingSlot.Unknown || !CurrentCharacter.Items.ContainsKey(oldSlot))
+		{
+			Console.WriteLine($"Item not found in slot [{Enum.GetName(oldSlot)}]");
+			returnToOldSlot = true;
 		}
+
+		var globalOldItemId = CurrentCharacter.Items[oldSlot];
+
+		var item = MainServer.ItemCollection.FindById(globalOldItemId);
+
+		if (!item.IsValidForSlot(targetSlot) || !CurrentCharacter.CanUseItem(item))
+		{
+			Console.WriteLine($"Item [{globalOldItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+			returnToOldSlot = true;
+		}
+
+		if (returnToOldSlot)
+		{
+			newSlotRaw = oldSlotRaw;
+		}
+		
+		Console.WriteLine($"Item found: {globalOldItemId}");
+		var oldItemLocalId = GetLocalObjectId(globalOldItemId);
+		var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
+		var newSlot_2 = (byte) (((oldItemLocalId & 0b1111) << 4) + (newSlotRaw >> 5));
+		var oldItem_1 = (byte) ((oldItemLocalId >> 4) & 0b11111111);
+		var oldItem_2 = (byte) (oldItemLocalId >> 12);
+
+		var moveResult = new byte[]
+		{
+			0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10,
+			oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1, 
+			oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
+		};
+		if (!returnToOldSlot)
+		{
+			CurrentCharacter.Items[targetSlot] = globalOldItemId;
+			CurrentCharacter.Items.Remove(oldSlot);
+			CurrentCharacter.UpdateCurrentStats();
+			// TODO: character state shouldn't be stored in starting dungeon
+			// MainServer.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
+		}
+
+		StreamPeer.PutData(moveResult);
 	}
 
 	public ushort GetLocalObjectId(int globalId)

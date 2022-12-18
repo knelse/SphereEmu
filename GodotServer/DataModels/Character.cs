@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LiteDB;
 using SphServer.Helpers;
 using static SphServer.Helpers.BitHelper;
@@ -74,12 +75,12 @@ namespace SphServer.DataModels
         public ushort MDef { get; set; }
         public KarmaTier Karma { get; set; } = KarmaTier.Neutral;
         public Dictionary<BelongingSlot, int> Items { get; set; } = new();
+        public int PAtk { get; set; }
+        public int MAtk { get; set; }
 
-        [BsonIgnore]
         public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
-        [BsonIgnore]
         public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
-        [BsonIgnore] public ulong XpToLevelUp => GetXpToLevelUp();
+        public ulong XpToLevelUp => GetXpToLevelUp();
 
         public Character()
         {
@@ -566,18 +567,6 @@ namespace SphServer.DataModels
             return !Items.ContainsKey(belongingSlot);
         }
 
-        // public Item? GetItemValue(BelongingSlot belongingSlot)
-        // {
-        //     return Items.GetValueOrDefault(belongingSlot, null);
-        // }
-        //
-        // public void SetItemValue(Item? value, BelongingSlot belongingSlot)
-        // {
-        //     if (!LootHelper.IsSlotValidForItem(belongingSlot, value)) return;
-        //     Items[belongingSlot] = value;
-        //     MainServer.CharacterCollection.Update(Id, this);
-        // }
-
         private ulong GetXpToLevelUp()
         {
             if (TitleMinusOne % 60 == 59 && DegreeMinusOne % 60 == 59) return 1;
@@ -585,6 +574,105 @@ namespace SphServer.DataModels
             var maxLevel = Math.Max(TitleMinusOne, DegreeMinusOne);
 
             return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
+        }
+
+        public bool CanUseItem(Item item)
+        {
+            // TODO: actual check
+            return true;
+        }
+
+        public void UpdateCurrentStats()
+        {
+            var slotsToUpdate = new HashSet<BelongingSlot>
+            {
+                BelongingSlot.Amulet, BelongingSlot.Belt, BelongingSlot.Boots, BelongingSlot.Chestplate,
+                BelongingSlot.Gloves, BelongingSlot.Guild, BelongingSlot.Helmet, BelongingSlot.Pants,
+                BelongingSlot.Ring_1, BelongingSlot.Ring_2, BelongingSlot.Ring_3, BelongingSlot.Ring_4,
+                BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight
+            };
+
+            var str = (int) BaseStrength;
+            var agi = (int) BaseAgility;
+            var acc = (int) BaseAccuracy;
+            var end = (int) BaseEndurance;
+            var ear = (int) BaseEarth;
+            var wat = (int) BaseWater;
+            var air = (int) BaseAir;
+            var fir = (int) BaseFire;
+            // TODO: satiety not calculated atm
+            var hpMax = MaxHPBase;
+            var mpMax = MaxMPBase;
+            var pdef = 0;
+            var mdef = 0;
+            var patk = 0;
+            var matk = 0;
+
+            var updated = false;
+
+            foreach (var slot in slotsToUpdate)
+            {
+                if (!Items.ContainsKey(slot))
+                {
+                    continue;
+                }
+
+                var item = MainServer.ItemCollection.FindById(Items[slot]);
+                if (item is null || !CanUseItem(item))
+                {
+                    continue;
+                }
+
+                updated = true;
+                
+                str += item.StrengthUp;
+                agi += item.AgilityUp;
+                acc += item.AccuracyUp;
+                end += item.EnduranceUp;
+                ear += item.EarthUp;
+                wat += item.WaterUp;
+                air += item.AirUp;
+                fir += item.FireUp;
+                hpMax += item.MaxHpUp;
+                mpMax += item.MaxMpUp;
+                pdef += item.PDefUp;
+                mdef += item.MDefUp;
+                patk += item.PAtkUpNegative;
+                matk += item.MAtkUpNegative;
+            }
+
+            if (!updated)
+            {
+                return;
+            }
+
+            CurrentStrength = (ushort) str;
+            CurrentAgility = (ushort) agi;
+            CurrentAccuracy = (ushort) acc;
+            CurrentEndurance = (ushort) end;
+            CurrentEarth = (ushort) ear;
+            CurrentWater = (ushort) wat;
+            CurrentAir = (ushort) air;
+            CurrentFire = (ushort) fir;
+            CurrentHP = (ushort) Math.Min(CurrentHP, hpMax);
+            CurrentMP = (ushort) Math.Min(CurrentMP, mpMax);
+            MaxHP = (ushort) hpMax;
+            MaxMP = (ushort) mpMax;
+            PDef = (ushort) pdef;
+            MDef = (ushort) mdef;
+            PAtk = (ushort) patk;
+            MAtk = (ushort) matk;
+
+            // TODO: character state shouldn't be updated in starting dungeon
+            // MainServer.CharacterCollection.Update(Id, this);
+
+            // Would be cool but Rider console doesn't support emoji until 2023.1 or smth
+            // Console.WriteLine($"💪{CurrentStrength} 🦵{CurrentAgility} 👀{CurrentAccuracy} 🏃{CurrentEndurance} 🌍{CurrentEarth} " +
+            //                   $"💧{CurrentWater} ⛅{CurrentAir} 🔥{CurrentFire} 💖{CurrentHP}/{MaxHP} 💙{CurrentMP}/{MaxMP} " +
+            //                   $"🧿{PDef} 🛐{MDef} 🪓{PAtk} 💥{MAtk}");
+            Console.WriteLine($"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
+                              $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
+                              $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
         }
     }
 }

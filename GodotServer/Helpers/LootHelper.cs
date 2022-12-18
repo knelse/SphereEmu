@@ -13,7 +13,7 @@ public static class LootHelper
         return gameObjectType switch
         {
             GameObjectType.Amulet => ObjectType.ArmorAmulet,
-            GameObjectType.Armor => ObjectType.ArmorChest,
+            GameObjectType.Chestplate => ObjectType.ArmorChest,
             GameObjectType.Axe => ObjectType.WeaponAxe,
             GameObjectType.Bead => ObjectType.Bead,
             GameObjectType.Belt => ObjectType.ArmorBelt,
@@ -37,8 +37,8 @@ public static class LootHelper
             GameObjectType.Robe => ObjectType.ArmorRobe,
             GameObjectType.Robe_Quest => ObjectType.QuestArmorRobe,
             GameObjectType.Robe_Unique => ObjectType.ArmorRobe,
-            GameObjectType.Armor_Quest => ObjectType.QuestArmorChest,
-            GameObjectType.Armor_Unique => ObjectType.ArmorChest,
+            GameObjectType.Chestplate_Quest => ObjectType.QuestArmorChest,
+            GameObjectType.Chestplate_Unique => ObjectType.ArmorChest,
             GameObjectType.Belt_Quest => ObjectType.QuestArmorBelt,
             GameObjectType.Belt_Unique => ObjectType.ArmorBelt,
             GameObjectType.Bracelet_Unique => ObjectType.ArmorBracelet,
@@ -142,7 +142,7 @@ public static class LootHelper
                 // GameObjectType.Metal,
                 // GameObjectType.Mineral,
                 GameObjectType.Amulet,
-                GameObjectType.Armor,
+                GameObjectType.Chestplate,
                 GameObjectType.Robe,
                 GameObjectType.Belt,
                 GameObjectType.Bracelet,
@@ -379,7 +379,7 @@ public static class LootHelper
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
-        if (item.ObjectType is GameObjectType.Armor or GameObjectType.Shield)
+        if (item.ObjectType is GameObjectType.Chestplate or GameObjectType.Shield)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {// for shields Elements is "Old" (e.g. +68 at 12 rank)

@@ -46,4 +46,5 @@ public enum BelongingSlot
     Special_9 = 1013,
     Ammo = 1014,
     SpeedhackMantra = 1015,
+    Unknown = -1,
 }

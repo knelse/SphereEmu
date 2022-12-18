@@ -160,4 +160,36 @@ public class Item
         MAtkUpNegative -= suffixObj.MAtkUpNegative;
         MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
     }
+
+    public bool IsValidForSlot(BelongingSlot slot)
+    {
+        if (slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
+            or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
+            or BelongingSlot.Inventory_7 or BelongingSlot.Inventory_8 or BelongingSlot.Inventory_9
+            or BelongingSlot.Inventory_10)
+        {
+            return true;
+        }
+
+        return (ObjectType is GameObjectType.Amulet or GameObjectType.Amulet_Unique && slot is BelongingSlot.Amulet)
+                || (ObjectType is GameObjectType.Belt or GameObjectType.Belt_Quest or GameObjectType.Belt_Unique &&
+                    slot is BelongingSlot.Belt)
+                || (ObjectType is GameObjectType.Boots or GameObjectType.Boots_Quest or GameObjectType.Boots_Unique &&
+                    slot is BelongingSlot.Boots)
+                || (ObjectType is GameObjectType.Bracelet or GameObjectType.Bracelet_Unique &&
+                    slot is BelongingSlot.BraceletLeft or BelongingSlot.BraceletRight)
+                || (ObjectType is GameObjectType.Chestplate or GameObjectType.Chestplate_Quest
+                    or GameObjectType.Chestplate_Unique && slot is BelongingSlot.Chestplate)
+                || (ObjectType is GameObjectType.Helmet or GameObjectType.Helmet_Premium or GameObjectType.Helmet_Quest
+                    or GameObjectType.Helmet_Unique && slot is BelongingSlot.Helmet)
+                || (ObjectType is GameObjectType.Pants or GameObjectType.Pants_Quest or GameObjectType.Pants_Unique &&
+                    slot is BelongingSlot.Pants)
+                || (ObjectType is GameObjectType.Ring or GameObjectType.Ring_Special or GameObjectType.Ring_Unique &&
+                    slot is BelongingSlot.Ring_1 or BelongingSlot.Ring_2 or BelongingSlot.Ring_3
+                        or BelongingSlot.Ring_4)
+                || (ObjectType is GameObjectType.Robe or GameObjectType.Robe_Quest or GameObjectType.Robe_Unique &&
+                    slot is BelongingSlot.Chestplate)
+                || (ObjectType is GameObjectType.Shield or GameObjectType.Shield_Quest
+                    or GameObjectType.Shield_Unique && slot is BelongingSlot.Shield);
+    }
 }
