@@ -1,4 +1,3 @@
-
 public enum BelongingSlot
 {
     Helmet = 0,

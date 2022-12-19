@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using BitStreams;
 using Godot;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
+using SphServer.Enums;
 using SphServer.Helpers;
 using SphServer.Packets;
+using static SphServer.Enums.Stat;
 using static SphServer.Helpers.BitHelper;
 using Thread = System.Threading.Thread;
 
@@ -51,7 +54,7 @@ public partial class Client : Node
 	private Player? player;
 	private int selectedCharacterIndex = -1;
 	private StaticBody3D? clientModel;
-	private readonly FileSystemWatcher watcher = new ("C:\\source\\", "itemDropPacketTest.txt");
+	private readonly FileSystemWatcher watcher = new ("C:\\source\\", "statUpdatePacket.txt");
 	private static ItemContainer _testItemContainer = null!;
 	public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new();
 
@@ -66,18 +69,49 @@ public partial class Client : Node
 		// watcher.NotifyFilter = NotifyFilters.LastWrite;
 		// watcher.EnableRaisingEvents = true;
 		// watcher.Changed += (_, args) =>
-		// {
-		// 	if (args.ChangeType == WatcherChangeTypes.Changed)
-		// 	{
-		// 		StreamPeer.PutData(CommonPackets.DespawnEntity(GetLocalObjectId(ID, testLootBag.Id)));
-		// 		MainServer.ExistingGameObjects.Delete(testLootBag.Id);
-		// 		MainServer.ExistingGameObjects.Delete(testLootBag.Item0!.Id);
-		// 		// MainServer.currentId -= 2;
-		// 		testLootBag.ParentNode.QueueFree();
-		// 		testLootBag = LootBag.Create(-1102.69506835937500, 4500.61474609375000, 1899.05493164062500, 0, 0,
-		// 			LootRatityType.DEFAULT_MOB, 1);
-		// 	}
-		// };
+		Task.Run(() => 
+		{
+			// if (args.ChangeType == WatcherChangeTypes.Changed)
+			// {
+			string input;
+			while ((input = Console.ReadLine()) != "/stop")
+			{
+				// TODO: more commands at some point
+				if (input.StartsWith("/stats"))
+				{
+					var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+					CurrentCharacter.MaxHP = ushort.Parse(stats[1]);
+					CurrentCharacter.MaxMP = ushort.Parse(stats[2]);
+					CurrentCharacter.CurrentSatiety = ushort.Parse(stats[3]);
+					CurrentCharacter.MaxSatiety = ushort.Parse(stats[4]);
+					CurrentCharacter.CurrentStrength = ushort.Parse(stats[5]);
+					CurrentCharacter.CurrentAgility = ushort.Parse(stats[6]);
+					CurrentCharacter.CurrentAccuracy = ushort.Parse(stats[7]);
+					CurrentCharacter.CurrentEndurance = ushort.Parse(stats[8]);
+					CurrentCharacter.CurrentEarth = ushort.Parse(stats[9]);
+					CurrentCharacter.CurrentAir = ushort.Parse(stats[10]);
+					CurrentCharacter.CurrentWater = ushort.Parse(stats[11]);
+					CurrentCharacter.CurrentFire = ushort.Parse(stats[12]);
+					CurrentCharacter.PDef = ushort.Parse(stats[13]);
+					CurrentCharacter.MDef = ushort.Parse(stats[14]);
+					CurrentCharacter.TitleMinusOne = ushort.Parse(stats[15]);
+					CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[16]);
+					CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[17]);
+					CurrentCharacter.KarmaCount = ushort.Parse(stats[18]);
+					// CurrentCharacter.TitleXP = uint.Parse(stats[19]);
+					// CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
+					CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[19]);
+					CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[20]);
+					CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[21]);
+					// CurrentCharacter.Money = int.Parse(stats[22]);
+					CurrentCharacter.PAtk = int.Parse(stats[22]);
+					CurrentCharacter.MAtk = int.Parse(stats[23]);
+					
+					UpdateStatsForClient();
+				}
+			}
+			// }
+		});
 	}
 
 	public override async void _Process(double delta)
@@ -316,6 +350,9 @@ public partial class Client : Node
 				{
 					DropItemToGround();
 				}
+				break;
+			case 0x1B:
+				// item in hand
 				break;
 			// echo
 			case 0x08:
@@ -851,7 +888,11 @@ public partial class Client : Node
 		{
 			RemoveEntity(GetLocalObjectId(LocalId, oldContainer.Id));
 		}
-		CurrentCharacter.UpdateCurrentStats();
+
+		if (CurrentCharacter.UpdateCurrentStats())
+		{
+			UpdateStatsForClient();
+		}
 	}
 
 	private void DropItemToGround()
@@ -927,7 +968,11 @@ public partial class Client : Node
 		{
 			CurrentCharacter.Items[targetSlot] = globalOldItemId;
 			CurrentCharacter.Items.Remove(oldSlot);
-			CurrentCharacter.UpdateCurrentStats();
+
+			if (CurrentCharacter.UpdateCurrentStats())
+			{
+				UpdateStatsForClient();
+			}
 			// TODO: character state shouldn't be stored in starting dungeon
 			// MainServer.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
 		}
@@ -1045,6 +1090,115 @@ public partial class Client : Node
 		var destBytes = rcvBuffer.Range(28, rcvBuffer.Length);
 
 		return ((destBytes[2] & 0b11111) << 11) + ((destBytes[1]) << 3) + ((destBytes[0] & 0b11100000) >> 5);
+	}
+
+	public void UpdateStatsForClient()
+	{
+		var divider = 0b0001011;
+		var fieldMarker7Bit = 0b01;
+		var fieldMarker14Bit = 0b10;
+		var fieldMarker28Bit = 0b11;
+
+		// to write 0x08 0xC0 instead
+		var hpMaxMarker = 0b10000000100010;
+
+		// TODO: change char fields and game objects to dict too, maybe
+		var fieldMarkers = new Dictionary<Stat, int>
+		{
+			// [HpCurrent] =				0b000000,
+			[HpMax] =					0b000001,
+			// [MpCurrent] =				0b000010,
+			[MpMax] =					0b000011,
+			// [SatietyCurrent] =			0b000100,
+			// [SatietyMax] =				0b000101,
+			[Strength] =				0b000110,
+			[Agility] =					0b000111,
+			[Accuracy] =				0b001000,
+			[Endurance] =				0b001001,
+			[Earth] =					0b001010,
+			[Air] =						0b001011,
+			[Water] =					0b001100,
+			[Fire] =					0b001101,
+			[PD] = 						0b010000,
+			[MD] = 						0b010001,
+			// [IsInvisible] =				0b010100, later
+			[TitleLevel] =				0b100101,
+			[DegreeLevel] =				0b100110,
+			[KarmaType] =				0b100111,
+			[Karma] =					0b101000,
+			// [TitleXp] =					0b101001,
+			// [DegreeXp] =				0b101010,
+			[TitleStatsAvailable] =		0b101100,
+			[DegreeStatsAvailable] =	0b101101,
+			[ClanRankType] =			0b101111,
+			// [Money] =					0b111001,
+			[PA] = 						0b010010,
+			[MA] = 						0b010011,
+		};
+
+		var characterFieldMap = new Dictionary<Stat, int>
+		{
+			[HpCurrent] = CurrentCharacter.CurrentHP,
+			[HpMax] = CurrentCharacter.MaxHP,
+			[MpCurrent] = CurrentCharacter.CurrentMP,
+			[MpMax] = CurrentCharacter.MaxMP,
+			[SatietyCurrent] = CurrentCharacter.CurrentSatiety,
+			[SatietyMax] = CurrentCharacter.MaxSatiety,
+			[Strength] = CurrentCharacter.CurrentStrength,
+			[Agility] = CurrentCharacter.CurrentAgility,
+			[Accuracy] = CurrentCharacter.CurrentAccuracy,
+			[Endurance] = CurrentCharacter.CurrentEndurance,
+			[Earth] = CurrentCharacter.CurrentEarth,
+			[Air] = CurrentCharacter.CurrentAir,
+			[Water] = CurrentCharacter.CurrentWater,
+			[Fire] = CurrentCharacter.CurrentFire,
+			[PD] = CurrentCharacter.PDef,
+			[MD] = CurrentCharacter.MDef,
+			[TitleLevel] = CurrentCharacter.TitleMinusOne,
+			[DegreeLevel] = CurrentCharacter.DegreeMinusOne,
+			[KarmaType] = (int) CurrentCharacter.Karma,
+			[Karma] = CurrentCharacter.KarmaCount,
+			[TitleXp] = (int) CurrentCharacter.TitleXP,
+			[DegreeXp] = (int) CurrentCharacter.DegreeXP,
+			[TitleStatsAvailable] = CurrentCharacter.AvailableTitleStats,
+			[DegreeStatsAvailable] = CurrentCharacter.AvailableDegreeStats,
+			[ClanRankType] = (int) CurrentCharacter.ClanRank,
+			[Money] = CurrentCharacter.Money,
+			[PA] = CurrentCharacter.PAtk,
+			[MA] = CurrentCharacter.MAtk,
+		};
+
+		var memoryStream = new MemoryStream();
+		var stream = new BitStream(memoryStream)
+		{
+			AutoIncreaseStream = true
+		};
+		
+		stream.WriteBytes(new byte[] {MajorByte(LocalId), MinorByte(LocalId), 0x08, 0xC0}, 4, true);
+		stream.WriteUInt16((ushort) hpMaxMarker, 14);
+		stream.WriteUInt16(CurrentCharacter.MaxHP, 14);
+
+		foreach (var (field, marker) in fieldMarkers)
+		{
+			var statValue = characterFieldMap[field];
+			var statValueAbs = Math.Abs(statValue);
+			var fieldLength = statValueAbs <= 127 ? 7 :
+				statValueAbs <= 16383 ? 14 : 28;
+			var fieldLengthMarker = fieldLength switch
+			{
+				7 => fieldMarker7Bit,
+				14 => fieldMarker14Bit,
+				_ => fieldMarker28Bit
+			};
+			var negativeBit = statValue < 0 ? 1 : 0;
+			var fieldSeparator = (short) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
+			stream.WriteInt16(fieldSeparator);
+			var valueBits = ObjectPacketTools.IntToBits(statValueAbs, fieldLength);
+			stream.WriteBits(valueBits, fieldLength);
+		}
+
+		StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
+		Console.WriteLine("Stat update");
 	}
 
 	// private static int GetDestinationIdFromFistDamagePacket(byte[] rcvBuffer)

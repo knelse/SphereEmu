@@ -182,6 +182,8 @@ public class Item
                     or GameObjectType.Chestplate_Unique && slot is BelongingSlot.Chestplate)
                 || (ObjectType is GameObjectType.Helmet or GameObjectType.Helmet_Premium or GameObjectType.Helmet_Quest
                     or GameObjectType.Helmet_Unique && slot is BelongingSlot.Helmet)
+                || (ObjectType is GameObjectType.Gloves or GameObjectType.Gloves_Quest
+                    or GameObjectType.Gloves_Unique && slot is BelongingSlot.Gloves)
                 || (ObjectType is GameObjectType.Pants or GameObjectType.Pants_Quest or GameObjectType.Pants_Unique &&
                     slot is BelongingSlot.Pants)
                 || (ObjectType is GameObjectType.Ring or GameObjectType.Ring_Special or GameObjectType.Ring_Unique &&

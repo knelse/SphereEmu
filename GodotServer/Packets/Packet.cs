@@ -3,12 +3,10 @@ using static SphServer.Helpers.BitHelper;
 namespace SphServer.Packets
 {
 
-    public class Packet
+    public static class Packet
     {
-        protected static readonly ushort PacketValidationCodeOK = 0x2C01;
-
+        private static readonly ushort PacketValidationCodeOK = 0x2C01;
         private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xF4, 0x01 };
-
         public static byte[] ToByteArray(byte[]? content = null, int padZeros = 2)
         {
             if (content is null)

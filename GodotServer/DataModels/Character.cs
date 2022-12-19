@@ -77,6 +77,7 @@ namespace SphServer.DataModels
         public Dictionary<BelongingSlot, int> Items { get; set; } = new();
         public int PAtk { get; set; }
         public int MAtk { get; set; }
+        public int KarmaCount { get; set; }
 
         public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
         public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
@@ -582,7 +583,7 @@ namespace SphServer.DataModels
             return true;
         }
 
-        public void UpdateCurrentStats()
+        public bool UpdateCurrentStats()
         {
             var slotsToUpdate = new HashSet<BelongingSlot>
             {
@@ -608,8 +609,6 @@ namespace SphServer.DataModels
             var patk = 0;
             var matk = 0;
 
-            var updated = false;
-
             foreach (var slot in slotsToUpdate)
             {
                 if (!Items.ContainsKey(slot))
@@ -622,8 +621,6 @@ namespace SphServer.DataModels
                 {
                     continue;
                 }
-
-                updated = true;
                 
                 str += item.StrengthUp;
                 agi += item.AgilityUp;
@@ -640,12 +637,7 @@ namespace SphServer.DataModels
                 patk += item.PAtkUpNegative;
                 matk += item.MAtkUpNegative;
             }
-
-            if (!updated)
-            {
-                return;
-            }
-
+            
             CurrentStrength = (ushort) str;
             CurrentAgility = (ushort) agi;
             CurrentAccuracy = (ushort) acc;
@@ -673,6 +665,8 @@ namespace SphServer.DataModels
             Console.WriteLine($"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
                               $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
                               $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
+
+            return true;
         }
     }
 }
