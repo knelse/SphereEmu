@@ -161,6 +161,14 @@ public class Item
         MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
     }
 
+    public static bool IsInventorySlot(BelongingSlot slot)
+    {
+        return slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
+            or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
+            or BelongingSlot.Inventory_7 or BelongingSlot.Inventory_8 or BelongingSlot.Inventory_9
+            or BelongingSlot.Inventory_10;
+    }
+
     public bool IsValidForSlot(BelongingSlot slot)
     {
         if (slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3

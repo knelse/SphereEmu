@@ -98,15 +98,14 @@ public partial class Client : Node
 					CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[16]);
 					CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[17]);
 					CurrentCharacter.KarmaCount = ushort.Parse(stats[18]);
-					// CurrentCharacter.TitleXP = uint.Parse(stats[19]);
-					// CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
-					CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[19]);
-					CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[20]);
-					CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[21]);
-					// CurrentCharacter.Money = int.Parse(stats[22]);
-					CurrentCharacter.PAtk = int.Parse(stats[22]);
-					CurrentCharacter.MAtk = int.Parse(stats[23]);
-					
+					CurrentCharacter.TitleXP = uint.Parse(stats[19]);
+					CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
+					CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[21]);
+					CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[22]);
+					CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[23]);
+					CurrentCharacter.Money = int.Parse(stats[24]);
+					CurrentCharacter.PAtk = int.Parse(stats[25]);
+					CurrentCharacter.MAtk = int.Parse(stats[26]);
 					UpdateStatsForClient();
 				}
 			}
@@ -889,9 +888,12 @@ public partial class Client : Node
 			RemoveEntity(GetLocalObjectId(LocalId, oldContainer.Id));
 		}
 
-		if (CurrentCharacter.UpdateCurrentStats())
+		if (!Item.IsInventorySlot(targetSlot))
 		{
-			UpdateStatsForClient();
+			if (CurrentCharacter.UpdateCurrentStats())
+			{
+				UpdateStatsForClient();
+			}
 		}
 	}
 
@@ -1097,7 +1099,7 @@ public partial class Client : Node
 		var divider = 0b0001011;
 		var fieldMarker7Bit = 0b01;
 		var fieldMarker14Bit = 0b10;
-		var fieldMarker28Bit = 0b11;
+		var fieldMarker31Bit = 0b11;
 
 		// to write 0x08 0xC0 instead
 		var hpMaxMarker = 0b10000000100010;
@@ -1105,12 +1107,12 @@ public partial class Client : Node
 		// TODO: change char fields and game objects to dict too, maybe
 		var fieldMarkers = new Dictionary<Stat, int>
 		{
-			// [HpCurrent] =				0b000000,
-			[HpMax] =					0b000001,
-			// [MpCurrent] =				0b000010,
+			// // [HpCurrent] =				0b000000,
+			// already used // // // // [HpMax] =					0b000001,
+			// not applicable? [MpCurrent] =				0b000010,
 			[MpMax] =					0b000011,
-			// [SatietyCurrent] =			0b000100,
-			// [SatietyMax] =				0b000101,
+			[SatietyCurrent] =			0b000100,
+			[SatietyMax] =				0b000101,
 			[Strength] =				0b000110,
 			[Agility] =					0b000111,
 			[Accuracy] =				0b001000,
@@ -1121,17 +1123,17 @@ public partial class Client : Node
 			[Fire] =					0b001101,
 			[PD] = 						0b010000,
 			[MD] = 						0b010001,
-			// [IsInvisible] =				0b010100, later
+			// // [IsInvisible] =				0b010100, later
 			[TitleLevel] =				0b100101,
 			[DegreeLevel] =				0b100110,
 			[KarmaType] =				0b100111,
 			[Karma] =					0b101000,
-			// [TitleXp] =					0b101001,
-			// [DegreeXp] =				0b101010,
+			[TitleXp] =					0b101001,
+			[DegreeXp] =				0b101010,
 			[TitleStatsAvailable] =		0b101100,
 			[DegreeStatsAvailable] =	0b101101,
 			[ClanRankType] =			0b101111,
-			// [Money] =					0b111001,
+			[Money] =					0b111001,
 			[PA] = 						0b010010,
 			[MA] = 						0b010011,
 		};
@@ -1183,16 +1185,16 @@ public partial class Client : Node
 			var statValue = characterFieldMap[field];
 			var statValueAbs = Math.Abs(statValue);
 			var fieldLength = statValueAbs <= 127 ? 7 :
-				statValueAbs <= 16383 ? 14 : 28;
+				statValueAbs <= 16383 ? 14 : 31;
 			var fieldLengthMarker = fieldLength switch
 			{
 				7 => fieldMarker7Bit,
 				14 => fieldMarker14Bit,
-				_ => fieldMarker28Bit
+				_ => fieldMarker31Bit
 			};
 			var negativeBit = statValue < 0 ? 1 : 0;
-			var fieldSeparator = (short) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
-			stream.WriteInt16(fieldSeparator);
+			var fieldSeparator = (ushort) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
+			stream.WriteUInt16(fieldSeparator);
 			var valueBits = ObjectPacketTools.IntToBits(statValueAbs, fieldLength);
 			stream.WriteBits(valueBits, fieldLength);
 		}
