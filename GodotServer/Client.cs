@@ -322,7 +322,7 @@ public partial class Client : Node
 					if (bag is not null)
 					{
 						bag.ShowFourSlotBagDropitemListForClient(LocalId);
-						var packet = bag.GetFourSlotBagContentsPacket(LocalId);
+						var packet = bag.GetContentsPacket(LocalId);
 						packet[6] = 0x04;
 						StreamPeer.PutData(packet);
 					}
@@ -440,53 +440,37 @@ public partial class Client : Node
 				}
 
 				break;
-			// buy from npc
-			case 0x35:
+			// vendor trade
 			case 0x30:
-				// var vendorIdBytes = rcvBuffer[44..47];
-				// var vendorId = ((vendorIdBytes[2] & 0b1111) << 12) + (vendorIdBytes[1] << 4) +
-				//                ((vendorIdBytes[0] & 0b11110000) >> 4);
-				// Console.WriteLine(vendorId);
-				// var vendorId = 0x8169;
+			case 0x35:
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
+				{
+					var vendorLocalId = (ushort) (((rcvBuffer[46] & 0b1111) << 12) + (rcvBuffer[45] << 4) +
+					               (rcvBuffer[44] >> 4));
+					if (vendorLocalId == 0)
+					{
+						// first vendor open is 0x30, then client sends another 0x30 request to close the trade window,
+						// and later it's 0x35 to open 0x30 to close. Sphere =/
+						break;
+					}
 
-				// StreamPeer.PutData(TestHelper.GetEntityData(
-				//     new WorldCoords(669.1638793945312, 4501.63134765625, 931.0355224609375, -1), 4816,
-				//     7654, 4816));
-
-				// var i = 0;
-
-				// while (ns.CanWrite)
-				// {
-				//     var vendorList =
-				//         $"27002C010000044f6f0840A362202D10E097164832142600400108E0DF08000000004000000000";
-				//     StreamPeer.PutData(ConvertHelper.FromHexString(vendorList));
-				//
-				//     if (i < 80)
-				//     {
-				//         var ent = i % 4 == 0 ? 5688 : i % 4 == 1 ? 5616 : i % 4 == 2 ? 5712 : 5696;
-				//         var entTypeId = 0b1000000000000000 + (ent >> 1);
-				//         var deg = ((double)i * 24) * Math.PI / 180;
-				//         var x0 = 1;
-				//         var y0 = 1;
-				//         var x = x0 * Math.Cos(deg) - y0 * Math.Sin(deg);
-				//         var y = x0 * Math.Sin(deg) + y0 * Math.Cos(deg);
-				//         StreamPeer.PutData(TestHelper.GetEntityData(
-				//             new WorldCoords(671.1638793945312 + x, 4501.63134765625, 932.0355224609375 + y,
-				//                 -1), 971, 7654 + i, entTypeId));
-				//
-				//         i++;
-				//     }
-				//
-				//     System.Threading.Thread.Sleep(1350);
-				// }
-
-				// var vendorListLoaded = $"30002C01000004FE8D14870F80842E0900000000000000004091456696101560202D10A0900500FFFFFFFF0516401F00";
-				// StreamPeer.PutData(ConvertHelper.FromHexString(vendorListLoaded));
-				var vendorListLoaded =
-					BinaryStringToByteArray((await File.ReadAllTextAsync("C:\\source\\vendorList.txt"))
-						.RemoveLineEndings());
-				StreamPeer.PutData(vendorListLoaded);
-
+					var vendorId = GetGlobalObjectId(vendorLocalId);
+					
+					var vendor = MainServer.VendorCollection.FindById(vendorId);
+					if (vendor is null)
+					{
+						Console.WriteLine($"Vendor [{vendorId}] not found");
+					}
+					else
+					{
+						Console.WriteLine($"Vendor [{vendor.Name} {vendor.FamilyName}]");
+						var vendorSlotList = vendor.GetItemSlotListForClient(LocalId);
+						StreamPeer.PutData(vendorSlotList);
+						var itemContents = Packet.ItemsToPacket(LocalId, vendorLocalId, vendor.ItemsOnSale);
+						Console.WriteLine(Convert.ToHexString(itemContents));
+						StreamPeer.PutData(itemContents);
+					}
+				}
 				break;
 		}
 		

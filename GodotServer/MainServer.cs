@@ -36,6 +36,7 @@ namespace SphServer
 		public static readonly ILiteCollection<Item> ItemCollection = Db.GetCollection<Item>("Items");
 		public static readonly ILiteCollection<ItemContainer> ItemContainerCollection = Db.GetCollection<ItemContainer>("ItemContainers");
 		public static readonly ILiteCollection<Mob> MonsterCollection = Db.GetCollection<Mob>("Monsters");
+		public static readonly ILiteCollection<Vendor> VendorCollection = Db.GetCollection<Vendor>("Vendors");
 		public static readonly ILiteCollection<SphGameObject> GameObjectCollection =
 			Db.GetCollection<SphGameObject>("GameObjects");
 		public static readonly ILiteCollection<ObjectPacket> LiveServerObjectPacketCollection =
@@ -76,6 +77,7 @@ namespace SphServer
 			ItemCollection.DeleteAll();
 			MonsterCollection.DeleteAll();
 			ItemContainerCollection.DeleteAll();
+			VendorCollection.DeleteAll();
 
 			var time = DateTime.Now;
 			if (GameObjectCollection.Count() == 0)
@@ -109,6 +111,39 @@ namespace SphServer
 			GameObjectCollection.EnsureIndex(x => x.ObjectKind);
 			PlayerCollection.EnsureIndex(x => x.Login);
 			LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
+
+			if (VendorCollection.FindById(2837) is null)
+			{
+				// until we stop clearing item collection, we need to create it to get proper itemid
+				// healing powder 1
+				var hpPowder = Item.CreateFromGameObject(GameObjectCollection.FindById(601));
+				hpPowder.ItemCount = 1000;
+				hpPowder.Id = ItemCollection.Insert(hpPowder);
+				
+				var hpPowder1 = Item.CreateFromGameObject(GameObjectCollection.FindById(875));
+				hpPowder1.ItemCount = 1000;
+				hpPowder1.Id = ItemCollection.Insert(hpPowder1);
+
+				var go = SphGameObject.CreateFromGameObject(GameObjectCollection.FindById(4171));
+				// go.Suffix = ItemSuffix.Precision;
+
+				var test = Item.CreateFromGameObject(go);
+				test.Id = ItemCollection.Insert(test);
+				
+				var newPlayerDungeonVendor = new Vendor
+				{
+					Id = 2837,
+					ItemIdsOnSale = new List<int>
+					{
+						hpPowder.Id,
+						test.Id
+					},
+					Name = "Test",
+					FamilyName = "Vendor"
+				};
+
+				VendorCollection.Insert(newPlayerDungeonVendor);
+			}
 
 			Console.WriteLine("Server up, waiting for connections...");
 			MainServerNode = this;
