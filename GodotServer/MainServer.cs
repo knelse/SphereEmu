@@ -125,18 +125,24 @@ namespace SphServer
 				hpPowder1.Id = ItemCollection.Insert(hpPowder1);
 
 				var go = SphGameObject.CreateFromGameObject(GameObjectCollection.FindById(4171));
-				// go.Suffix = ItemSuffix.Precision;
+				go.Suffix = ItemSuffix.Precision;
 
 				var test = Item.CreateFromGameObject(go);
 				test.Id = ItemCollection.Insert(test);
+
+				var go1 = SphGameObject.CreateFromGameObject(GameObjectCollection.FindById(4171));
+
+				var test1 = Item.CreateFromGameObject(go1);
+				test1.Id = ItemCollection.Insert(test1);
 				
 				var newPlayerDungeonVendor = new Vendor
 				{
 					Id = 2837,
 					ItemIdsOnSale = new List<int>
 					{
+						test.Id,
+						test1.Id,
 						hpPowder.Id,
-						test.Id
 					},
 					Name = "Test",
 					FamilyName = "Vendor"

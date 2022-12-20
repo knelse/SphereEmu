@@ -49,20 +49,28 @@ public class Vendor
         {
             var item = ItemsOnSale[i];
             stream.WriteUInt16(itemSeparator, 15);
-            stream.WriteByte((byte) i, 8);
+            stream.WriteByte((byte)(i + 1), 8);
             var itemLocalId = Client.GetLocalObjectId(clientId, item.Id);
             stream.WriteUInt16(itemLocalId);
             stream.WriteBytes(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00}, 5, true);
             stream.WriteUInt32((uint) item.VendorCost);
         }
         
-        stream.WriteByte(0x7F);
+        stream.WriteByte(0x3F, 7);
         stream.WriteUInt16(clientId);
         stream.WriteBytes(new byte[] {0b00001000, 0b01000000, 0b10100011, 0b01100010}, 4, true);
         stream.WriteByte(0x0, 5);
         stream.WriteUInt16(localId);
-        stream.WriteByte(0x0);
+        stream.WriteByte(0x0, 8);
 
-        return Packet.ToByteArray(stream.GetStreamData(), 3);
+        var streamData = stream.GetStreamData();
+        // I have no idea why but it becomes 0xFC in some cases, because value pops at stream.WriteByte(0x0, 5)
+        // and keeps getting shifted back to end of stream
+        if (streamData[^1] != 0)
+        {
+            streamData = streamData[..^1];
+        }
+
+        return Packet.ToByteArray(streamData, 3);
     }
 }
