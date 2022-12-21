@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BitStreams;
 using Godot;
+using Kaitai;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
@@ -38,6 +39,7 @@ public partial class Client : Node
 	public const int BUFSIZE = 1024;
 	private string playerIndexStr = null!;
 	private readonly byte[] rcvBuffer = new byte[BUFSIZE];
+	private KaitaiStream kaitaiStream;
 	public const bool LiveServerCoords = false;
 	private ushort counter;
 	private bool pingShouldXorTopBit;
@@ -302,6 +304,7 @@ public partial class Client : Node
 		}
 
 		var length = StreamPeer.GetBytes(rcvBuffer);
+		kaitaiStream = new KaitaiStream(rcvBuffer);
 
 		if (length == 0)
 		{
@@ -937,15 +940,11 @@ public partial class Client : Node
 
 	private void BuyItemFromTarget()
 	{
-		var clientId = rcvBuffer[12] * 0x100 + rcvBuffer[11];
-		var vendorId = ((rcvBuffer[19] & 0b11111) << 11) + (rcvBuffer[18] << 3) + (rcvBuffer[17] >> 5);
-		var slotId = ((rcvBuffer[21] & 0b11111) << 3) + (rcvBuffer[20] >> 5);
-		var costPerOne = (rcvBuffer[23] >> 5) + (rcvBuffer[24] << 3) + (rcvBuffer[25] << 11) + (rcvBuffer[26] << 19) +
-		                 ((rcvBuffer[27] & 0b11111) << 27);
-		var quantity = (rcvBuffer[27] >> 5) + (rcvBuffer[28] << 3) + (rcvBuffer[29] << 11) + (rcvBuffer[30] << 19) +
-		               ((rcvBuffer[31] & 0b11111) << 27);
+		var packet = new BuyItemRequest(kaitaiStream);
+		var slotId = (byte) packet.SlotId;
+		var clientId = packet.Header.ClientId;
 
-		var vendorGlobalId = GetGlobalObjectId((ushort) vendorId);
+		var vendorGlobalId = GetGlobalObjectId((ushort) packet.VendorId);
 		var vendor = MainServer.VendorCollection.FindById(vendorGlobalId);
 
 		if (vendor is null)
@@ -962,8 +961,9 @@ public partial class Client : Node
 			return;
 		}
 
-		Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {item.Localisation[Locale.Russian]} ({quantity}) {costPerOne}t ea " +
-		                  $"from {vendor.Name} {vendor.FamilyName} {vendorId}");
+		Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {item.Localisation[Locale.Russian]} " +
+		                  $"({packet.Quantity}) {packet.CostPerOne}t ea " +
+		                  $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
 	}
 
 	private void DamageTarget()
