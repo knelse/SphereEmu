@@ -108,6 +108,13 @@ public partial class Client : Node
 					CurrentCharacter.MAtk = int.Parse(stats[26]);
 					UpdateStatsForClient();
 				}
+
+				if (input.StartsWith("/money"))
+				{
+					var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+					CurrentCharacter.Money = int.Parse(stats[1]);
+					UpdateStatsForClient();
+				}
 			}
 			// }
 		});
@@ -357,86 +364,16 @@ public partial class Client : Node
 			case 0x08:
 				// StreamPeer.PutData(CommonPackets.Echo(ID));
 				break;
-			// damage
+			// damage or trade
 			// case 0x19:
 			case 0x20:
-				var damage = (byte) 43;// (byte)(10 + RNGHelper.GetUniform() * 8);
-				var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
-				var playerIndexByteSwap = ByteSwap(LocalId);
-				var selfDamage = destId == playerIndexByteSwap;
-
-				if (selfDamage)
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x03)
 				{
-					var selfDamagePacket = new byte[]
-					{
-						0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(LocalId), 
-						MinorByte(LocalId), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26], 
-						(byte)(rcvBuffer[27] + 0x60), damage, 0x00
-					};
-					StreamPeer.PutData(selfDamagePacket);
+					BuyItemFromTarget();
 				}
 				else
 				{
-					newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
-
-					if (newPlayerDungeonMobHp > 0)
-					{
-						var src_1 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-						var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
-						var src_3 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
-						var dmg_1 = (byte)(0x60 - damage * 2);
-						var hp_1 = (byte)((newPlayerDungeonMobHp & 0b1111) << 4);
-						var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
-						var damagePacket = new byte[]
-						{
-							0x1B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MinorByte(destId), MajorByte(destId), 0x48, 
-							0x43, 0xA1, 0x0B, src_1, src_2, src_3, dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00, 
-							0x04, 0x50, 0x07, 0x00
-						};
-						StreamPeer.PutData(damagePacket);
-					}
-					else
-					{
-						var moneyReward = (byte)(10 + MainServer.Rng.Next(0, 9));
-						var totalMoney = 10 + moneyReward;
-						var totalMoney_1 = (byte)(((totalMoney & 0b11111) << 3) + 0b100);
-						var totalMoney_2 = (byte)((totalMoney & 0b11100000) >> 5);
-						var karma = 1;
-						var karma_1 = (byte)(((karma & 0b1111111) << 1) + 1);
-						var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
-						var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
-						var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-						var src_4 = (byte)(((playerIndexByteSwap & 0b111) << 5) + 0b01111);
-						var src_5 = (byte)((playerIndexByteSwap & 0b11111111000) >> 3);
-						var src_6 = (byte)(((playerIndexByteSwap & 0b1111100000000000) >> 11));
-
-						var moneyReward_1 = (byte)(((moneyReward & 0b11) << 6) + 1);
-						var moneyReward_2 = (byte)((moneyReward & 0b1111111100) >> 2);
-
-						// this packet can technically contain any stat, xp, level, hp/mp, etc
-						// for the new player dungeon we only care about giving karma and some money after a kill
-						// chat message should be bright green, idk how to get it to work though
-						var deathPacket = new byte[]
-						{
-							0x04, MinorByte(destId), MajorByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1,
-							0x00, 0x7E, MinorByte(playerIndexByteSwap), MajorByte(playerIndexByteSwap), 0x08, 0x40, 
-							0x41, 0x0A, 0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A,
-							0x93, 0x7E, MinorByte(destId), MajorByte(destId), 0x00, 0xC0, src_4, src_5, src_6, 0x01, 
-							0x58, 0xE4, totalMoney_1, totalMoney_2, 0x16, 0x28, karma_1, 0x80, 0x46, 0x40, 
-							moneyReward_1, moneyReward_2
-						};
-						StreamPeer.PutData(Packet.ToByteArray(deathPacket));
-						var mob = MainServer.MonsterCollection.FindById((int)destId);
-						if (mob?.ParentNodeId is not null)
-						{
-							// LootBag.CreateFromEntity(mob);
-							var parentNode = MainServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
-							ItemContainer.Create(parentNode.GlobalTransform.origin.x,
-								parentNode.GlobalTransform.origin.y,
-								parentNode.GlobalTransform.origin.z, 0, 0, LootRatity.DEFAULT_MOB);
-							parentNode.SetInactive();
-						}
-					}
+					DamageTarget();
 				}
 
 				break;
@@ -583,6 +520,10 @@ public partial class Client : Node
 		var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
 			1.57079637050629);
 		StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
+		// here some stats are updated because satiety gets applied. We'll figure that out later, for now just flat
+		CurrentCharacter.MaxHP = 110;
+		CurrentCharacter.MaxSatiety = 100;
+		CurrentCharacter.Money = 10;
 
 		currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
 		await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
@@ -831,12 +772,12 @@ public partial class Client : Node
 		if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
 		    !CurrentCharacter.CanUseItem(item))
 		{
-			Console.WriteLine($"Item [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+			Console.WriteLine($"Item {item.Localisation[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
 			return;
 		}
 		
 		var clientSlot = (clientSlot_raw - 0x32) / 2;
-		Console.WriteLine($"CLI: Move item [{clientItemID}] to slot raw [{clientSlot_raw}] " +
+		Console.WriteLine($"CLI: Move item {item.Localisation[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
 		                  $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
 		var clientSync_1 = rcvBuffer[17];
@@ -861,7 +802,8 @@ public partial class Client : Node
 		};
 		
 		CurrentCharacter.Items[targetSlot] = globalItemId;
-		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlotId)} now has {globalItemId}");
+		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlotId)} now has {item.Localisation[Locale.Russian]} " +
+		                  $"({item.ItemCount}) [{globalItemId}]");
 		StreamPeer.PutData(moveResult);
 		var oldContainer = item.ParentContainerId is null
 			? null
@@ -991,6 +933,118 @@ public partial class Client : Node
 	private void RemoveEntity(ushort id)
 	{
 		StreamPeer.PutData(CommonPackets.DespawnEntity(id));
+	}
+
+	private void BuyItemFromTarget()
+	{
+		var clientId = rcvBuffer[12] * 0x100 + rcvBuffer[11];
+		var vendorId = ((rcvBuffer[19] & 0b11111) << 11) + (rcvBuffer[18] << 3) + (rcvBuffer[17] >> 5);
+		var slotId = ((rcvBuffer[21] & 0b11111) << 3) + (rcvBuffer[20] >> 5);
+		var costPerOne = (rcvBuffer[23] >> 5) + (rcvBuffer[24] << 3) + (rcvBuffer[25] << 11) + (rcvBuffer[26] << 19) +
+		                 ((rcvBuffer[27] & 0b11111) << 27);
+		var quantity = (rcvBuffer[27] >> 5) + (rcvBuffer[28] << 3) + (rcvBuffer[29] << 11) + (rcvBuffer[30] << 19) +
+		               ((rcvBuffer[31] & 0b11111) << 27);
+
+		var vendorGlobalId = GetGlobalObjectId((ushort) vendorId);
+		var vendor = MainServer.VendorCollection.FindById(vendorGlobalId);
+
+		if (vendor is null)
+		{
+			Console.WriteLine($"Unknown vendor [{vendorGlobalId}]");
+			return;
+		}
+
+		var item = vendor.ItemsOnSale.Count > slotId ? vendor.ItemsOnSale[slotId] : null;
+
+		if (item is null)
+		{
+			Console.WriteLine($"Vendor [{vendorGlobalId}] has nothing in slot [{slotId}]");
+			return;
+		}
+
+		Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {item.Localisation[Locale.Russian]} ({quantity}) {costPerOne}t ea " +
+		                  $"from {vendor.Name} {vendor.FamilyName} {vendorId}");
+	}
+
+	private void DamageTarget()
+	{
+		var damage = (byte)43; // (byte)(10 + RNGHelper.GetUniform() * 8);
+		var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
+		var playerIndexByteSwap = ByteSwap(LocalId);
+		var selfDamage = destId == playerIndexByteSwap;
+
+		if (selfDamage)
+		{
+			var selfDamagePacket = new byte[]
+			{
+				0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(LocalId),
+				MinorByte(LocalId), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26],
+				(byte)(rcvBuffer[27] + 0x60), damage, 0x00
+			};
+			StreamPeer.PutData(selfDamagePacket);
+		}
+		else
+		{
+			newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
+
+			if (newPlayerDungeonMobHp > 0)
+			{
+				var src_1 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
+				var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
+				var src_3 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
+				var dmg_1 = (byte)(0x60 - damage * 2);
+				var hp_1 = (byte)((newPlayerDungeonMobHp & 0b1111) << 4);
+				var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
+				var damagePacket = new byte[]
+				{
+					0x1B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MinorByte(destId), MajorByte(destId), 0x48,
+					0x43, 0xA1, 0x0B, src_1, src_2, src_3, dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00,
+					0x04, 0x50, 0x07, 0x00
+				};
+				StreamPeer.PutData(damagePacket);
+			}
+			else
+			{
+				var moneyReward = (byte)(10 + MainServer.Rng.Next(0, 9));
+				CurrentCharacter.Money += moneyReward;
+				var totalMoney_1 = (byte)(((CurrentCharacter.Money & 0b11111) << 3) + 0b100);
+				var totalMoney_2 = (byte)((CurrentCharacter.Money & 0b11100000) >> 5);
+				CurrentCharacter.KarmaCount += 1;
+				var karma_1 = (byte)(((CurrentCharacter.KarmaCount & 0b1111111) << 1) + 1);
+				var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
+				var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
+				var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
+				var src_4 = (byte)(((playerIndexByteSwap & 0b111) << 5) + 0b01111);
+				var src_5 = (byte)((playerIndexByteSwap & 0b11111111000) >> 3);
+				var src_6 = (byte)(((playerIndexByteSwap & 0b1111100000000000) >> 11));
+
+				var moneyReward_1 = (byte)(((moneyReward & 0b11) << 6) + 1);
+				var moneyReward_2 = (byte)((moneyReward & 0b1111111100) >> 2);
+
+				// this packet can technically contain any stat, xp, level, hp/mp, etc
+				// for the new player dungeon we only care about giving karma and some money after a kill
+				// chat message should be bright green, idk how to get it to work though
+				var deathPacket = new byte[]
+				{
+					0x04, MinorByte(destId), MajorByte(destId), 0x48, 0x43, 0xA1, 0x09, src_3, src_2, src_1,
+					0x00, 0x7E, MinorByte(playerIndexByteSwap), MajorByte(playerIndexByteSwap), 0x08, 0x40,
+					0x41, 0x0A, 0x34, 0x3A, 0x93, 0x00, 0x00, 0x7E, 0x14, 0xCE, 0x14, 0x47, 0x81, 0x05, 0x3A,
+					0x93, 0x7E, MinorByte(destId), MajorByte(destId), 0x00, 0xC0, src_4, src_5, src_6, 0x01,
+					0x58, 0xE4, totalMoney_1, totalMoney_2, 0x16, 0x28, karma_1, 0x80, 0x46, 0x40,
+					moneyReward_1, moneyReward_2
+				};
+				StreamPeer.PutData(Packet.ToByteArray(deathPacket));
+				var mob = MainServer.MonsterCollection.FindById((int)destId);
+				if (mob?.ParentNodeId is not null)
+				{
+					var parentNode = MainServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
+					ItemContainer.Create(parentNode.GlobalTransform.origin.x,
+						parentNode.GlobalTransform.origin.y,
+						parentNode.GlobalTransform.origin.z, 0, 0, LootRatity.DEFAULT_MOB);
+					parentNode.SetInactive();
+				}
+			}
+		}
 	}
 
 	// private void MoveEntity(WorldCoords coords, ushort entityId)

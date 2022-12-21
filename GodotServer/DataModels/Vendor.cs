@@ -49,7 +49,7 @@ public class Vendor
         {
             var item = ItemsOnSale[i];
             stream.WriteUInt16(itemSeparator, 15);
-            stream.WriteByte((byte)(i + 1), 8);
+            stream.WriteByte((byte) i, 8);
             var itemLocalId = Client.GetLocalObjectId(clientId, item.Id);
             stream.WriteUInt16(itemLocalId);
             stream.WriteBytes(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00}, 5, true);
