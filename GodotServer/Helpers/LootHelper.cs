@@ -115,6 +115,12 @@ public static class LootHelper
             GameObjectType.Ear => ObjectType.Ear,
             GameObjectType.Packet => ObjectType.Unknown,
             GameObjectType.Unknown => ObjectType.Unknown,
+            GameObjectType.FoodApple => ObjectType.FoodApple,
+            GameObjectType.FoodBread => ObjectType.FoodBread,
+            GameObjectType.FoodFish => ObjectType.FoodFish,
+            GameObjectType.FoodMeat => ObjectType.FoodMeat,
+            GameObjectType.FoodPear => ObjectType.FoodPear,
+            GameObjectType.AlchemyBrushwood => ObjectType.AlchemyBrushwood,
             _ => ObjectType.Unknown,
         };
     }

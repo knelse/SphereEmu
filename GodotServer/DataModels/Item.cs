@@ -128,6 +128,28 @@ public class Item
         return item;
     }
 
+    public static Item Clone (Item source, bool insertIntoItemCollection = true)
+    {
+        var item = new Item();
+        foreach (var prop in source.GetType().GetFields())
+        {
+            item.GetType().GetField(prop.Name)?.SetValue(item, prop.GetValue(source));
+        }
+
+        foreach (var prop in source.GetType().GetProperties())
+        {
+            item.GetType().GetProperty(prop.Name)?.SetValue(item, prop.GetValue(source));
+        }
+
+        if (insertIntoItemCollection)
+        {
+            item.Id = 0;
+            item.Id = MainServer.ItemCollection.Insert(item);
+        }
+
+        return item;
+    }
+
     private void UpdateStatsForSuffix()
     {
         var suffixObj = SphObjectDbHelper.GetSuffixObject(ObjectType, Suffix, Tier);

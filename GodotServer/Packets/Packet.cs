@@ -85,14 +85,14 @@ namespace SphServer.Packets
             }
 
             Console.WriteLine(item.ToDebugString());
-            var weaponArmorNotShiftedId = 243; //
-            var weaponArmorShiftedId = 153; //
+            var weaponArmorNotShiftedId = 243;
+            var weaponArmorShiftedId = 153;
             var ringNotShiftedId = 666;
-            var ringShiftedId = 637; //
+            var ringShiftedId = 637;
             var mantraId = 354;
             var alchemyId = 374;
-            var powderId = 1;
-            // var foodId = 292;
+            var powderId = 147;
+            var foodAppleId = 2161;
             // var keyId = 296;
             // var mantraBookId = 317;
             // var tokenId = 330;
@@ -130,6 +130,11 @@ namespace SphServer.Packets
             {
                 dbId = suffixMod > 1000 ? ringShiftedId : ringNotShiftedId;
             }
+            
+            else if (item.ObjectType is GameObjectType.FoodApple)
+            {
+                dbId = foodAppleId;
+            }
 
             if (dbId == -1)
             {
@@ -146,22 +151,28 @@ namespace SphServer.Packets
             }
 
             result.Id = client.GetLocalObjectId(item.Id);
-            result.GameId = (ushort)item.GameId;
+            if (objectType is not ObjectType.FoodApple)
+            {
+                result.GameId = (ushort)item.GameId;
+                result.SuffixMod = suffixMod;
+            }
+
             var bagLocalId = Client.GetLocalObjectId(clientId, bagId);
             result.BagId = bagLocalId;
-            result.SuffixMod = suffixMod;
             result.Count = (ushort)item.ItemCount;
 
             result.GameObject = MainServer.GameObjectCollection.FindById(item.GameObjectDbId);
-            result.FriendlyName =
-                MainServer.GameObjectCollection.FindById((int)result.GameId)!.Localisation[Locale.Russian];
-            var type = result.GameObject.ObjectType;
-            result.Type = (ushort)objectType;
-
-            if (GameObjectDataHelper.ObjectTypeToSuffixLocaleMap.ContainsKey(type))
+            if (objectType is not ObjectType.FoodApple)
             {
-                result.GameObject.Suffix = GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[type]
-                    .GetSuffixById(result.SuffixMod);
+                result.FriendlyName =
+                    MainServer.GameObjectCollection.FindById((int)result.GameId)!.Localisation[Locale.Russian];
+                var type = result.GameObject.ObjectType;
+                result.Type = (ushort)objectType;
+                if (GameObjectDataHelper.ObjectTypeToSuffixLocaleMap.ContainsKey(type))
+                {
+                    result.GameObject.Suffix = GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[type]
+                        .GetSuffixById(result.SuffixMod);
+                }
             }
 
             return result;

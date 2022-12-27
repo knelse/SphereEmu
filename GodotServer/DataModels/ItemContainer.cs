@@ -61,17 +61,8 @@ public class ItemContainer
         return bag.ItemContainer;
     }
 
-    public bool RemoveItemAndDestroyContainerIfEmpty(int itemGlobalId)
+    private bool RemoveIfEmpty()
     {
-        if (Contents.ContainsValue(itemGlobalId))
-        {
-            var key = Contents.First(x => x.Value == itemGlobalId).Key;
-            Contents.Remove(key);
-            Console.WriteLine($"Removed at {key} ID {itemGlobalId} from container {Id}");
-        }
-
-        MainServer.ItemContainerCollection.Update(Id, this);
-
         if (Contents.Any())
         {
             return false;
@@ -83,9 +74,35 @@ public class ItemContainer
         }
         
         return true;
-
+        
     }
 
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty(int itemGlobalId)
+    {
+        if (Contents.ContainsValue(itemGlobalId))
+        {
+            var key = Contents.First(x => x.Value == itemGlobalId).Key;
+            Contents.Remove(key);
+            Console.WriteLine($"Removed at {key} ID {itemGlobalId} from container {Id}");
+        }
+
+        MainServer.ItemContainerCollection.Update(Id, this);
+
+        return RemoveIfEmpty();
+    }
+
+    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty(int slotId)
+    {
+        if (Contents.ContainsKey(slotId))
+        {
+            Console.WriteLine($"Removed at {slotId} ID {Contents[slotId]} from container {Id}");
+            Contents.Remove(slotId);
+        }
+
+        MainServer.ItemContainerCollection.Update(Id, this);
+
+        return RemoveIfEmpty();
+    }
     public void ShowForEveryClientInRadius()
     {
         foreach (var client in MainServer.ActiveClients.Values)

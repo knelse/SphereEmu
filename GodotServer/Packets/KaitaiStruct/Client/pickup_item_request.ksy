@@ -1,24 +1,17 @@
 meta:
-  id: buy_item_request
-  endian: le
+  id: pickup_item_request
+  file-extension: pickup_item_request
+  endian: be
   bit-endian: le
 seq:
   - id: header
     type: client_header
   - id: skip_13_bit
     type: b13
-  - id: vendor_id
+  - id: item_id
     type: b16
-  - id: zeroes_2
-    type: b8
-  - id: slot_id
-    type: b8
-  - id: zeroes_3
-    type: b16
-  - id: cost_per_one
-    type: b32
-  - id: quantity
-    type: b32
+  - id: zeroes
+    type: b19
 types:
   packet_length:
     seq:

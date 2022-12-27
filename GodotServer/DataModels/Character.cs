@@ -563,6 +563,39 @@ namespace SphServer.DataModels
             return tpBytes;
         }
 
+        public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+        {
+            return FindEmptyInventorySlot != null;
+        }
+
+        public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+        {
+            // TODO: equipped slots, bags, etc
+            var lookup = new List<BelongingSlot>
+            {
+                BelongingSlot.Inventory_1,
+                BelongingSlot.Inventory_2,
+                BelongingSlot.Inventory_3,
+                BelongingSlot.Inventory_4,
+                BelongingSlot.Inventory_5,
+                BelongingSlot.Inventory_6,
+                BelongingSlot.Inventory_7,
+                BelongingSlot.Inventory_8,
+                BelongingSlot.Inventory_9,
+                BelongingSlot.Inventory_10
+            };
+
+            foreach (var slot in lookup)
+            {
+                if (IsItemSlotEmpty(slot))
+                {
+                    return slot;
+                }
+            }
+
+            return null;
+        }
+
         public bool IsItemSlotEmpty(BelongingSlot belongingSlot)
         {
             return !Items.ContainsKey(belongingSlot);
