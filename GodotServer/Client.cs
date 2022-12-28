@@ -354,6 +354,11 @@ public partial class Client : Node
 				{
 					MoveItemToAnotherSlot();
 				}
+				// use item from inventory
+				else
+				{
+					UseItem();
+				}
 				break;
 			case 0x2D:
 				// drop item to ground
@@ -1145,6 +1150,17 @@ public partial class Client : Node
 		// buyResult[^1] = 0;
 		Console.WriteLine(Convert.ToHexString(buyResult));
 		StreamPeer.PutData(buyResult);
+	}
+
+	private void UseItem()
+	{
+		var itemId = (ushort) (rcvBuffer[11] + rcvBuffer[12] * 0x100);
+		Console.WriteLine($"Use item [{itemId}]");
+
+		var teleportPacket =
+			CurrentCharacter.GetTeleportByteArray(new WorldCoords(2290.30395507812500, -155, -2388.89477539062500, 0));
+
+		StreamPeer.PutData(teleportPacket);
 	}
 
 	private void DamageTarget()
