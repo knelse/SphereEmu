@@ -82,6 +82,12 @@ namespace SphServer.DataModels
         public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
         public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
         public ulong XpToLevelUp => GetXpToLevelUp();
+        
+        public readonly Item Fists = new ()
+        {
+            ObjectKind = GameObjectKind.Fists,
+            ObjectType = GameObjectType.Fists
+        };
 
         public Character()
         {
@@ -95,6 +101,7 @@ namespace SphServer.DataModels
             MaxSatiety = 100;
             AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
             AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
+            Fists.Id = MainServer.ItemCollection.Insert(Fists);
         }
 
         public void LevelUp(int newTitleLevel, int newDegreeLevel)

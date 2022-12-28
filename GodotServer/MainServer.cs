@@ -120,41 +120,12 @@ namespace SphServer
 				hpPowder.ItemCount = 1000;
 				hpPowder.Id = ItemCollection.Insert(hpPowder);
 				
-				var hpPowder1 = Item.CreateFromGameObject(GameObjectCollection.FindById(875));
-				hpPowder1.ItemCount = 1000;
-				hpPowder1.Id = ItemCollection.Insert(hpPowder1);
-
-				var go = SphGameObject.CreateFromGameObject(GameObjectCollection.FindById(4171));
-				go.Suffix = ItemSuffix.Precision;
-
-				var test = Item.CreateFromGameObject(go);
-				test.VendorCost = 1;
-				test.Id = ItemCollection.Insert(test);
-
-				var go1 = SphGameObject.CreateFromGameObject(GameObjectCollection.FindById(4171));
-
-				var test1 = Item.CreateFromGameObject(go1);
-				test1.VendorCost = 2;
-				test1.Id = ItemCollection.Insert(test1);
-
-				var apple = new Item
-				{
-					ObjectKind = GameObjectKind.Food,
-					ObjectType = GameObjectType.FoodApple,
-					VendorCost = 1,
-					ItemCount = 1000
-				};
-				apple.Id = ItemCollection.Insert(apple);
-				
 				var newPlayerDungeonVendor = new Vendor
 				{
 					Id = 2837,
 					ItemIdsOnSale = new List<int>
 					{
-						test.Id,
-						test1.Id,
 						hpPowder.Id,
-						apple.Id
 					},
 					Name = "Test",
 					FamilyName = "Vendor"

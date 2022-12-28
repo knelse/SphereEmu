@@ -362,8 +362,17 @@ public partial class Client : Node
 					DropItemToGround();
 				}
 				break;
+			case 0x15:
+			case 0x19:
 			case 0x1B:
+			case 0x1F:
+			case 0x23:
 				// item in hand
+				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && (rcvBuffer[15] == 0xA3 || rcvBuffer[15] == 0x83))
+				{
+					MainhandTakeItem();
+				}
+
 				break;
 			// echo
 			case 0x08:
@@ -526,9 +535,6 @@ public partial class Client : Node
 			1.57079637050629);
 		StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
 		// here some stats are updated because satiety gets applied. We'll figure that out later, for now just flat
-		CurrentCharacter.MaxHP = 110;
-		CurrentCharacter.MaxSatiety = 100;
-		CurrentCharacter.Money = 10;
 
 		currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
 		await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
@@ -684,10 +690,9 @@ public partial class Client : Node
 		clientTransform.origin.z = (float) playerCoords.z;
 		clientModel.Transform = clientTransform;
 		
-		MoveEntity(-1101, 4502, 1900, 0, 2837);
-		MoveEntity(-1101, 4502, 1900, 0, 2837);
-		MoveEntity(-1101, 4502, 1900, 0, 2837);
-		MoveEntity(-1101, 4502, 1900, 0, 2837);
+		CurrentCharacter.MaxHP = 110;
+		CurrentCharacter.MaxSatiety = 100;
+		CurrentCharacter.Money = 10;
 		CurrentCharacter.UpdateCurrentStats();
 	}
 
@@ -1001,6 +1006,53 @@ public partial class Client : Node
 		StreamPeer.PutData(CommonPackets.DespawnEntity(id));
 	}
 
+	private void MainhandTakeItem()
+	{
+		dynamic packet = rcvBuffer[0] switch
+		{
+			0x15 => new MainhandEquipPowder(kaitaiStream),
+			0x19 => new MainhandEquipSword(kaitaiStream),
+			0x1b => new MainhandReequipPowderPowder(kaitaiStream),
+			0x1f => new MainhandReequipPowderSword(kaitaiStream),
+			0x23 => new MainhandReequipSwordSword(kaitaiStream)
+		};
+
+		var slotState = (MainhandSlotState) packet.MainhandState;
+		var localItemId = (ushort) packet.EquipItemId;
+
+		Console.WriteLine($"Mainhand: {Enum.GetName(slotState)} [{localItemId}]");
+
+		if (slotState == MainhandSlotState.Empty)
+		{
+			var currentItemId = CurrentCharacter.Items[BelongingSlot.MainHand];
+			var currentItem = MainServer.ItemCollection.FindById(currentItemId);
+			CurrentCharacter.PAtk -= currentItem.PAtkNegative;
+			CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
+			CurrentCharacter.Items.Remove(BelongingSlot.MainHand);
+		}
+		else if (slotState == MainhandSlotState.Fists)
+		{
+			CurrentCharacter.Items[BelongingSlot.MainHand] = CurrentCharacter.Fists.Id;
+		}
+		else
+		{
+			var itemId = GetGlobalObjectId(localItemId);
+			var item = MainServer.ItemCollection.FindById(itemId);
+			var currentItem = CurrentCharacter.Items.ContainsKey(BelongingSlot.MainHand)
+				? MainServer.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand])
+				: null;
+			if (currentItem is not null)
+			{
+				CurrentCharacter.PAtk -= currentItem.PAtkNegative;
+				CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
+			}
+			CurrentCharacter.PAtk += item.PAtkNegative;
+			CurrentCharacter.MAtk += item.MAtkNegativeOrHeal;
+			CurrentCharacter.Items[BelongingSlot.MainHand] = itemId;
+			// UpdateStatsForClient();
+		}
+	}
+
 	private void BuyItemFromTarget()
 	{
 		var packet = new BuyItemRequest(kaitaiStream);
@@ -1030,16 +1082,64 @@ public partial class Client : Node
 		                  $"({packet.Quantity}) {packet.CostPerOne}t ea " +
 		                  $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
 
-		if (!CurrentCharacter.HasEmptyInventorySlot())
+		var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
+		
+		if (clientSlotId is null)
 		{
 			Console.WriteLine("No empty slots!");
 			return;
 		}
 
+		var totalCost = (int) (packet.Quantity * packet.CostPerOne);
+		if (CurrentCharacter.Money < totalCost)
+		{
+			Console.WriteLine("Not enough money!");
+			return;
+		}
+
 		var clone = Item.Clone(item);
 		clone.ItemCount = (int) packet.Quantity;
+		clone.ParentContainerId = LocalId;
 
-		clone.ParentContainerId = CurrentCharacterInventoryId;
+		var characterUpdateStream = new BitStream(new MemoryStream())
+		{
+			AutoIncreaseStream = true
+		};
+		
+		CurrentCharacter.Money -= totalCost;
+		CurrentCharacter.Items[clientSlotId.Value] = clone.Id;
+
+		characterUpdateStream.WriteBytes(
+			new byte[]
+			{
+				0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10
+			}, 13, true);
+		characterUpdateStream.WriteBit(0);
+		characterUpdateStream.WriteByte((byte) clientSlotId);
+		characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
+		characterUpdateStream.WriteByte(0);
+		characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+		characterUpdateStream.WriteByte(0, 7);
+		characterUpdateStream.WriteBytes(new byte[] { 0x0, 0x1A, 0x38, 0x04 }, 4, true);
+		characterUpdateStream.WriteInt32(CurrentCharacter.Money);
+		characterUpdateStream.WriteByte(0x0D);
+		characterUpdateStream.WriteByte(0x04);
+		characterUpdateStream.WriteByte(0b110, 7);
+		characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
+		characterUpdateStream.WriteByte(0);
+		characterUpdateStream.WriteByte(0, 1);
+		characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+		characterUpdateStream.WriteByte(0);
+		characterUpdateStream.WriteByte(0, 7);
+		characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+		characterUpdateStream.WriteByte(0, 1);
+		characterUpdateStream.WriteByte(0);
+		characterUpdateStream.WriteByte(0);
+		characterUpdateStream.WriteByte(0x32);
+
+		var characterUpdateResult = characterUpdateStream.GetStreamData();
+		Console.WriteLine(Convert.ToHexString(characterUpdateResult));
+		StreamPeer.PutData(characterUpdateResult);
 
 		var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
 		// buyResult[^1] = 0;
@@ -1049,31 +1149,60 @@ public partial class Client : Node
 
 	private void DamageTarget()
 	{
-		var damage = (byte)43; // (byte)(10 + RNGHelper.GetUniform() * 8);
+		var paAbs = Math.Abs(CurrentCharacter.PAtk);
+		var currentItem = MainServer.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand]);
+		var damagePa = currentItem.PAtkNegative == 0 ? 0 : MainServer.Rng.Next((int)(paAbs * 0.65), (int)
+			(paAbs * 1.4));
+		var damageMa = CurrentCharacter.MAtk;
+		var totalDamage = (ushort) (damageMa + damagePa);
 		var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
 		var playerIndexByteSwap = ByteSwap(LocalId);
 		var selfDamage = destId == playerIndexByteSwap;
+		var selfHeal = damageMa > 0;
 
 		if (selfDamage)
 		{
+			var id_1 = (byte) (((ByteSwap(LocalId) & 0b111) << 5) + 0b00010);
+			var id_2 = (byte) ((ByteSwap(LocalId) >> 3) & 0b11111111);
+			var type = selfHeal ? 0b10000000 : 0b10100000;
+			var id_3 = (byte)(((ByteSwap(LocalId) >> 11) & 0b11111) + type);
+
+			if (selfHeal)
+			{
+				if (CurrentCharacter.CurrentHP + totalDamage > CurrentCharacter.MaxHP)
+				{
+					totalDamage = (ushort)(CurrentCharacter.MaxHP - CurrentCharacter.CurrentHP);
+				}
+
+				CurrentCharacter.CurrentHP += totalDamage;
+			}
+			else
+			{
+				if (CurrentCharacter.CurrentHP < totalDamage)
+				{
+					totalDamage = CurrentCharacter.CurrentHP;
+				}
+
+				CurrentCharacter.CurrentHP -= totalDamage;
+			}
+			
 			var selfDamagePacket = new byte[]
 			{
-				0x10, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(LocalId),
-				MinorByte(LocalId), 0x08, 0x40, (byte)(rcvBuffer[25] + 2), rcvBuffer[26],
-				(byte)(rcvBuffer[27] + 0x60), damage, 0x00
+				0x11, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, id_1, 
+				id_2, id_3, MinorByte(totalDamage), MajorByte(totalDamage), 0x00
 			};
 			StreamPeer.PutData(selfDamagePacket);
 		}
 		else
 		{
-			newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - damage);
+			newPlayerDungeonMobHp = Math.Max(0, newPlayerDungeonMobHp - totalDamage);
 
 			if (newPlayerDungeonMobHp > 0)
 			{
 				var src_1 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
 				var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
 				var src_3 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
-				var dmg_1 = (byte)(0x60 - damage * 2);
+				var dmg_1 = (byte)(0x60 - totalDamage * 2);
 				var hp_1 = (byte)((newPlayerDungeonMobHp & 0b1111) << 4);
 				var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
 				var damagePacket = new byte[]
@@ -1193,6 +1322,17 @@ public partial class Client : Node
 			0x00, 0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0, playerId_1, playerId_2, playerId_3, 0x00, 0x24, mobId_1, 
 			mobId_2, dmg_1, dmg_2, dmg_3
 		};
+		var resultHp = CurrentCharacter.CurrentHP - healthDiff;
+		if (resultHp > CurrentCharacter.MaxHP)
+		{
+			resultHp = CurrentCharacter.MaxHP;
+		}
+
+		if (resultHp < 0)
+		{
+			resultHp = 0;
+		}
+		CurrentCharacter.CurrentHP = (ushort) resultHp;
 		StreamPeer.PutData(dmgPacket);
 	}
 
