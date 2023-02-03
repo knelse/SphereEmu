@@ -15,7 +15,7 @@ agent_max_slope = 28.0
 region_min_size = 3.0
 edge_max_length = 21.8
 edge_max_error = 1.15
-polygon_verts_per_poly = 10.0
+vertices_per_polygon = 10.0
 detail_sample_distance = 2.83
 filter_ledge_spans = true
 filter_walkable_low_height_spans = true
@@ -197,7 +197,7 @@ size = Vector3(0.1, 30, 0.1)
 [node name="NewPlayerDungeonNode" type="Node"]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-navmesh = SubResource("61")
+navigation_mesh = SubResource("61")
 
 [node name="NewPlayerDungeon" type="Node3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1131.4, -4501.6, 1900)

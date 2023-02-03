@@ -28,7 +28,7 @@ public partial class MobNode : CharacterBody3D
 		// TODO: replace with signal later
 		clientModel ??= GetNodeOrNull<Node3D>("/root/MainServer/Client/ClientModel");
 		client ??= GetNodeOrNull<Client>("/root/MainServer/Client");
-		if ((client?.StreamPeer.GetStatus() ?? StreamPeerTCP.Status.None) != StreamPeerTCP.Status.Connected)
+		if ((client?.StreamPeer.GetStatus() ?? StreamPeerTcp.Status.None) != StreamPeerTcp.Status.Connected)
 		{
 			clientModel = null;
 			client = null;
@@ -41,11 +41,11 @@ public partial class MobNode : CharacterBody3D
 			return;
 		}
 		
-		if (!followActive && GlobalTransform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 10)
+		if (!followActive && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 10)
 		{
 			followActive = true;
-			lastKnownClientPosition = clientModel.GlobalTransform.origin;
-			navigationAgent.SetTargetLocation(lastKnownClientPosition);
+			lastKnownClientPosition = clientModel.GlobalTransform.Origin;
+			navigationAgent.TargetPosition = lastKnownClientPosition;
 		}
 
 		if (!followActive)
@@ -59,35 +59,35 @@ public partial class MobNode : CharacterBody3D
 		{
 			networkCoordsUpdateDelay = 0.5f;
 
-			client?.MoveEntity(GlobalTransform.origin.x, -GlobalTransform.origin.y + 1,
-				GlobalTransform.origin.z, Mathf.Pi - Transform.basis.GetEuler().y, client.GetLocalObjectId(Mob.Id));
+			client?.MoveEntity(GlobalTransform.Origin.X, -GlobalTransform.Origin.Y + 1,
+				GlobalTransform.Origin.Z, Mathf.Pi - Transform.Basis.GetEuler().Y, client.GetLocalObjectId(Mob.Id));
 		}
 
 		attackDelay -= delta;
 
-		if (attackDelay <= 0 && GlobalTransform.origin.DistanceTo(clientModel.GlobalTransform.origin) <= 2)
+		if (attackDelay <= 0 && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 2)
 		{
 			client?.ChangeHealth(client.GetLocalObjectId(Mob.Id), -rng.RandiRange(5, 8));
 			attackDelay = 3.5f;
 		}
 
-		if (clientModel.GlobalTransform.origin.DistanceTo(lastKnownClientPosition) >= 0.2)
+		if (clientModel.GlobalTransform.Origin.DistanceTo(lastKnownClientPosition) >= 0.2)
 		{
-			lastKnownClientPosition = clientModel.GlobalTransform.origin;
-			navigationAgent.SetTargetLocation(lastKnownClientPosition);
+			lastKnownClientPosition = clientModel.GlobalTransform.Origin;
+			navigationAgent.TargetPosition = lastKnownClientPosition;
 		}
 
-		if (!followActive || navigationAgent.GetFinalLocation().DistanceTo(GlobalTransform.origin) < 0.2)
+		if (!followActive || navigationAgent.GetFinalPosition().DistanceTo(GlobalTransform.Origin) < 0.2)
 		{
 			return;
 		}
 
-		var next = navigationAgent.GetNextLocation();
-		var direction = GlobalTransform.origin.DirectionTo(next);
+		var next = navigationAgent.GetNextPathPosition();
+		var direction = GlobalTransform.Origin.DirectionTo(next);
 
 		Velocity = direction.Normalized() * speed;
 		MoveAndSlide();
-		LookAt(clientModel.GlobalTransform.origin, Vector3.Up);
+		LookAt(clientModel.GlobalTransform.Origin, Vector3.Up);
 	}
 
 	public void SetInactive()

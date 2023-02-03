@@ -21,7 +21,7 @@ namespace SphServer
 		// private static bool liveServerCoords = false;
 		public static Encoding? Win1251;
 		// private static bool sendEntPing = true;
-		private static TCPServer tcpServer = null!;
+		private static TcpServer tcpServer = null!;
 		private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Client.tscn");
 		public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
 		public static MainServer MainServerNode = null!;
@@ -62,7 +62,7 @@ namespace SphServer
 
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 			Win1251 = Encoding.GetEncoding(1251);
-			tcpServer = new TCPServer();
+			tcpServer = new TcpServer();
 			ObjectPacketTools.RegisterBsonMapperForBit();
 
 			try

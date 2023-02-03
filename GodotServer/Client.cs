@@ -35,7 +35,7 @@ public partial class Client : Node
 {
 	public int GlobalId;
 	public ushort LocalId = 0x4F6F;
-	public StreamPeerTCP StreamPeer = null!;
+	public StreamPeerTcp StreamPeer = null!;
 	private const bool reconnect = false;
 	public const int BUFSIZE = 1024;
 	private string playerIndexStr = null!;
@@ -126,7 +126,7 @@ public partial class Client : Node
 
 	public override async void _Process(double delta)
 	{
-		if (StreamPeer.GetStatus() != StreamPeerTCP.Status.Connected)
+		if (StreamPeer.GetStatus() != StreamPeerTcp.Status.Connected)
 		{
 			// TODO: sync state
 			CloseConnection();
@@ -402,7 +402,7 @@ public partial class Client : Node
 				if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
 				{
 					var vendorLocalId = (ushort) (((rcvBuffer[46] & 0b1111) << 12) + (rcvBuffer[45] << 4) +
-					               (rcvBuffer[44] >> 4));
+								   (rcvBuffer[44] >> 4));
 					if (vendorLocalId == 0)
 					{
 						// first vendor open is 0x30, then client sends another 0x30 request to close the trade window,
@@ -436,7 +436,7 @@ public partial class Client : Node
 		// if (clientModelTransform.origin.DistanceTo(new Vector3((float)CurrentCharacter.X, 
 		//         (float) (clientModelTransform.origin.y + oldY - CurrentCharacter.Y), (float)CurrentCharacter.Z)) < 50)
 		// {
-		clientModelTransform.origin =
+		clientModelTransform.Origin =
 			new Vector3((float)CurrentCharacter.X, (float) CurrentCharacter.Y, (float)CurrentCharacter.Z);
 		clientModel.Transform = clientModelTransform;
 		// }
@@ -690,9 +690,9 @@ public partial class Client : Node
 
 		currentState = ClientState.INGAME_DEFAULT;
 		var clientTransform = clientModel!.Transform;
-		clientTransform.origin.x = (float) playerCoords.x;
-		clientTransform.origin.y = (float) playerCoords.y;
-		clientTransform.origin.z = (float) playerCoords.z;
+		clientTransform.Origin.X = (float) playerCoords.x;
+		clientTransform.Origin.Y = (float) playerCoords.y;
+		clientTransform.Origin.Z = (float) playerCoords.z;
 		clientModel.Transform = clientTransform;
 		
 		CurrentCharacter.MaxHP = 110;
@@ -791,7 +791,7 @@ public partial class Client : Node
 		var targetSlot = Enum.IsDefined(typeof(BelongingSlot), targetSlotId) ? (BelongingSlot)targetSlotId : BelongingSlot.Unknown;
 
 		if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
-		    !CurrentCharacter.CanUseItem(item))
+			!CurrentCharacter.CanUseItem(item))
 		{
 			Console.WriteLine($"Item {item.Localisation[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
 			return;
@@ -799,7 +799,7 @@ public partial class Client : Node
 		
 		var clientSlot = (clientSlot_raw - 0x32) / 2;
 		Console.WriteLine($"CLI: Move item {item.Localisation[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
-		                  $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
+						  $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
 		var clientSync_1 = rcvBuffer[17];
 		var clientSync_2 = rcvBuffer[18];
@@ -824,7 +824,7 @@ public partial class Client : Node
 		
 		CurrentCharacter.Items[targetSlot] = globalItemId;
 		Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlotId)} now has {item.Localisation[Locale.Russian]} " +
-		                  $"({item.ItemCount}) [{globalItemId}]");
+						  $"({item.ItemCount}) [{globalItemId}]");
 		StreamPeer.PutData(moveResult);
 		var oldContainer = item.ParentContainerId is null
 			? null
@@ -1084,8 +1084,8 @@ public partial class Client : Node
 		var localization = item.ObjectType is GameObjectType.FoodApple ? "Apple" : item.Localisation[Locale.Russian];
 
 		Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {localization} " +
-		                  $"({packet.Quantity}) {packet.CostPerOne}t ea " +
-		                  $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
+						  $"({packet.Quantity}) {packet.CostPerOne}t ea " +
+						  $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
 
 		var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
 		
@@ -1264,9 +1264,9 @@ public partial class Client : Node
 				if (mob?.ParentNodeId is not null)
 				{
 					var parentNode = MainServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
-					ItemContainer.Create(parentNode.GlobalTransform.origin.x,
-						parentNode.GlobalTransform.origin.y,
-						parentNode.GlobalTransform.origin.z, 0, 0, LootRatity.DEFAULT_MOB);
+					ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
+						parentNode.GlobalTransform.Origin.Y,
+						parentNode.GlobalTransform.Origin.Z, 0, 0, LootRatity.DEFAULT_MOB);
 					parentNode.SetInactive();
 				}
 			}
@@ -1360,7 +1360,7 @@ public partial class Client : Node
 
 	public float DistanceTo(Vector3 end)
 	{
-		return clientModel!.GlobalTransform.origin.DistanceTo(end);
+		return clientModel!.GlobalTransform.Origin.DistanceTo(end);
 	}
 	private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
 	{

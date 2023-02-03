@@ -14,9 +14,9 @@ public partial class LootBagNode : RigidBody3D
 	public override void _Process(double delta)
 	{
 		updateDelay -= delta;
-		ItemContainer.X = GlobalTransform.origin.x;
-		ItemContainer.Y = GlobalTransform.origin.y;
-		ItemContainer.Z = GlobalTransform.origin.z;
+		ItemContainer.X = GlobalTransform.Origin.X;
+		ItemContainer.Y = GlobalTransform.Origin.Y;
+		ItemContainer.Z = GlobalTransform.Origin.Z;
 
 		if (updateDelay < 0)
 		{
