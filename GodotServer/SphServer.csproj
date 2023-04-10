@@ -9,7 +9,10 @@
     <PackageReference Include="System.IO" Version="4.3.0" />
     <PackageReference Include="system.io.filesystem" Version="4.3.0" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0-preview.2.23128.3" />
+    <PackageReference Update="Godot.SourceGenerators" Version="4.0.2" />
+    <PackageReference Update="GodotSharp" Version="4.0.2" />
+    <PackageReference Update="GodotSharpEditor" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\source\kaitai_struct\runtime\csharp\kaitai_struct_runtime_csharp.csproj" />
