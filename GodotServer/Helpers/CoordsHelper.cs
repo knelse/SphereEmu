@@ -37,6 +37,9 @@ namespace SphServer.Helpers
         public static WorldCoords TpPointHyperionSharedDungeonChoice => new(1299, 1499, 35, 5.87);
         public static WorldCoords TpPointHyperionSharedDungeonKareRoyalNorth => new(-1293, 1499, 100, 1.57);
         public static WorldCoords TpPointHyperionSharedDungeonKareRoyalSouth => new(-1061, 1499, 100, 4.68);
+        public static WorldCoords TpPointHyperionSharedDungeonHortonForest => new(-1894, 1498, 100, 1.58);
+        public static WorldCoords TpPointHyperionSharedDungeonSunpoolForest => new(233, 1500, 54, 4.7);
+        public static WorldCoords TpPointHyperionSharedDungeonSunpoolTorwealRoadMountains => new(-1735, 1498, 100, 4.7);
         public static WorldCoords TpPointHyperionNothernRoad => new(3031, 159, 2095, -2.5);
         public static WorldCoords TpPointHyperionHorthWesternEdge => new(502, 159, 1132, 4.6);
         public static WorldCoords TpPointHyperionShipstoneSunpoolRoad => new(1902, 159, 1161, 4.6);
@@ -56,6 +59,7 @@ namespace SphServer.Helpers
         public static WorldCoords TpPointHyperionEasternForest => new(3652, 164, -1533, 5.87);
         public static WorldCoords TpPointHyperionDiomaRiverMouth => new(2227, 159, -1684, 3.14);
         public static WorldCoords TpPointHyperionHortonForest => new(300, 159, -1945, 0);
+        public static WorldCoords TpPointHyperionSunpoolTorwealRoadMountains => new(828, 157.4, -2729, 1.57);
         public static WorldCoords TpPointCastleIlSu => new(-1212, -356, -1703);
         public static WorldCoords TpPointCastleAmmalael => new(533, 159, 485, -2.6);
         public static WorldCoords TpPointCastleAmmalaelInnerArea => new(-2508, 1099, 1104, -2);
