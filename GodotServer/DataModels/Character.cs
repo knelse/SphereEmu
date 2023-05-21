@@ -496,7 +496,7 @@ namespace SphServer.DataModels
         {
 
             var x = CoordsHelper.EncodeServerCoordinate(coords.x);
-            var y = CoordsHelper.EncodeServerCoordinate(-coords.y);
+            var y = CoordsHelper.EncodeServerCoordinate(coords.y);
             var z = CoordsHelper.EncodeServerCoordinate(coords.z);
             var t = CoordsHelper.EncodeServerCoordinate(coords.turn);
             var x_1 = ((x[0] & 0b111) << 5) + 0b00010;

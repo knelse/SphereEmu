@@ -5,10 +5,10 @@ namespace SphServer.Helpers
 
     public class WorldCoords
     {
-        public double x;
-        public double y;
-        public double z;
-        public double turn;
+        public readonly double x;
+        public readonly double y;
+        public readonly double z;
+        public readonly double turn;
 
         public WorldCoords(double x1, double y1, double z1, double turn1 = 0)
         {
@@ -18,9 +18,12 @@ namespace SphServer.Helpers
             turn = turn1;
         }
 
-        public static WorldCoords ShipstoneCenter => new WorldCoords(2614, 157, 1293);
-        public static WorldCoords UmradCenter => new WorldCoords(-1993, -106, 457);
-        public static WorldCoords Test => new WorldCoords(-7, 19, 2987);
+        public static WorldCoords ShipstoneCenter => new (2614, 157.8, 1293);
+        public static WorldCoords BangvilleCenter => new (1882, 155.6, -407);
+        public static WorldCoords SunpoolCenter => new (422, 153.3, -1284);
+        public static WorldCoords TorwealCenter => new (2292, 155.3, -2386);
+        public static WorldCoords UmradCenter => new (-1993, -104.5, 457);
+        public static WorldCoords Test => new (-7, 19, 2987);
 
         public string ToDebugString()
         {

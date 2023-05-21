@@ -11,11 +11,10 @@ using Kaitai;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
-using SphServer.Enums;
 using SphServer.Helpers;
 using SphServer.Packets;
-using static SphServer.Enums.Stat;
 using static SphServer.Helpers.BitHelper;
+using static Stat;
 using Thread = System.Threading.Thread;
 
 public enum ClientState
@@ -113,11 +112,57 @@ public partial class Client : Node
 					UpdateStatsForClient();
 				}
 
-				if (input.StartsWith("/money"))
+				else if (input.StartsWith("/money"))
 				{
 					var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 					CurrentCharacter.Money = int.Parse(stats[1]);
 					UpdateStatsForClient();
+				}
+
+				else
+				{
+					var encoded = MainServer.Win1251.GetBytes(input);
+					var chatStream = new BitStream(new MemoryStream())
+					{
+						AutoIncreaseStream = true
+					};
+
+					var packetLength = 0xED - 1 + encoded.Length;
+
+					chatStream.WriteBytes(
+						new byte[]
+						{
+							(byte)packetLength, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId),
+							MinorByte(LocalId), 0x08, 0x40, 0x43
+						}, 12, true);
+
+					var encodedLength = 0b11011110 + encoded.Length;
+					var encLen1 = (encodedLength & 0b111) << 5;
+					var encLen2 = 0b10000000 + (encodedLength >> 3);
+					chatStream.WriteByte((byte) encLen1);
+					chatStream.WriteByte((byte) encLen2);
+					chatStream.WriteByte(0x40);
+					chatStream.WriteByte(0x20);
+					chatStream.WriteByte(0x00);
+					var padding = Convert.FromHexString(
+						"00001F3D1D84BC5C1DBC1D04A56626856B6B8CADA7A8A8A8A8A888AB8B6BEB858EAB8B6B4B4C8EAB8B6B8BAE874B64A42A698A4AEA8B8AEA2BE90AE706894B84AB8B6B2BADEDAC874B24CDED6B0EAE6C0C0687A52D8D8C05864586C58645864B84AB0B846B6B8CADA7A8A8A8A8A888AB2B5A1E1CDE3D5E1E1C04A526856B6B8CADA7A8A8A8A8A888AB8B6BEB858EAB8B6B4B4C8EAB4B791DBC1D642AED2C8D0D0425BABC9DDF1D3E856B4B4C8EAB8B6B2BADEDAC874B64AE0C8EA52D8D8C05868586058645864B84AB4BC4E7284D2E6C8EE785CD4707");
+					// chatStream.WriteBytes(padding, padding.Length, true);
+					// chatStream.WriteByte(0b00100, 5);
+					chatStream.WriteByte(0b00000, 5);
+					foreach (var enc in encoded)
+					{
+						chatStream.WriteByte(enc);
+					}
+					chatStream.WriteByte(0, 3);
+					chatStream.WriteByte(0x00);
+					chatStream.WriteByte(0x00);
+					chatStream.WriteByte(0x00);
+					chatStream.WriteByte(0x00);
+					chatStream.WriteByte(0x00);
+
+					var result = chatStream.GetStreamData();
+					Console.WriteLine(Convert.ToHexString(result));
+					StreamPeer.PutData(result);
 				}
 			}
 			// }
@@ -339,6 +384,11 @@ public partial class Client : Node
 						StreamPeer.PutData(packet);
 					}
 				}
+				else if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x43)
+				{
+					// chat message
+					HandleChatMessage();
+				}
 
 				break;
 			case 0x16:
@@ -440,6 +490,124 @@ public partial class Client : Node
 			new Vector3((float)CurrentCharacter.X, (float) CurrentCharacter.Y, (float)CurrentCharacter.Z);
 		clientModel.Transform = clientModelTransform;
 		// }
+	}
+
+	private void HandleChatMessage()
+	{
+		try
+		{
+			var chatTypeVal = ((rcvBuffer[18] & 0b11111) << 3) + (rcvBuffer[17] >> 5);
+			var chatType = ChatType.Unknown;
+			if (Enum.IsDefined(typeof(ChatType), chatTypeVal))
+			{
+				chatType = (ChatType)chatTypeVal;
+			}
+
+			if (chatType == ChatType.Unknown)
+			{
+				Console.WriteLine(chatTypeVal + " " + Enum.GetName(chatType));
+			}
+
+			var firstPacket = rcvBuffer[..26];
+			var packetCount = (firstPacket[23] >> 5) + ((firstPacket[24] & 0b11111) << 3);
+			var packetStart = 26;
+			var decodeList = new List<byte[]>();
+
+			if (packetCount < 2)
+			{
+				Console.WriteLine("Broken client packet again reee");
+				return;
+			}
+
+			for (var i = 0; i < packetCount; i++)
+			{
+				var packetLength = rcvBuffer[packetStart + 1] * 256 + rcvBuffer[packetStart];
+				var packetEnd = packetStart + packetLength;
+				var packetDecode = rcvBuffer[packetStart..packetEnd];
+				packetStart = packetEnd;
+				decodeList.Add(packetDecode);
+				Console.WriteLine(Convert.ToHexString(packetDecode));
+			}
+
+			var msgBytes = new List<byte>();
+
+			foreach (var decoded in decodeList)
+			{
+				var messagePart = decoded[21..];
+				for (var j = 0; j < messagePart.Length - 1; j++)
+				{
+					var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
+					msgBytes.Add((byte)msgByte);
+				}
+			}
+
+			var chatString = MainServer.Win1251.GetString(msgBytes.ToArray());
+			var nameClosingTagIndex = chatString.IndexOf("</l>: ", StringComparison.OrdinalIgnoreCase);
+			var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
+			var name = chatString[(nameStart + 4)..nameClosingTagIndex];
+			var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char)0); // weird but necessary
+
+			Console.WriteLine($"CLI: [{Enum.GetName(chatType)}] {name}: {message}");
+
+			if (message.StartsWith("/tp"))
+			{
+				// TODO: actual client commands
+				var coords = message.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+				
+				if (coords.Length < 2)
+				{
+					Console.WriteLine("Incorrect coods. Usage: /tp X Y Z OR /tp <name>");
+					return;
+				}
+
+				if (coords.Length == 2 && char.IsLetter(coords[1][0]))
+				{
+					WorldCoords tpCoords;
+					if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.ShipstoneCenter;
+					}
+					else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.BangvilleCenter;
+					}
+					else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.TorwealCenter;
+					}
+					else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.SunpoolCenter;
+					}
+					else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.UmradCenter;
+					}
+					else
+					{
+						Console.WriteLine($"Unknown teleport destination: {coords[1]}");
+						return;
+					}
+					
+					StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(tpCoords));
+					return;
+				}
+
+				if (coords.Length < 4)
+				{
+					Console.WriteLine("Incorrect coords. Usage: /tp X Y Z OR /tp <name>");
+					return;
+				}
+				var teleportCoords =
+					new WorldCoords(double.Parse(coords[1]), -double.Parse(coords[2]), double.Parse(coords[3]));
+
+				StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(teleportCoords));
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+		}
 	}
 
 	private int CharacterScreenCreateDeleteSelect()
@@ -1158,7 +1326,7 @@ public partial class Client : Node
 		Console.WriteLine($"Use item [{itemId}]");
 
 		var teleportPacket =
-			CurrentCharacter.GetTeleportByteArray(new WorldCoords(2290.30395507812500, -155, -2388.89477539062500, 0));
+			CurrentCharacter.GetTeleportByteArray(new WorldCoords(2290.30395507812500, 155, -2388.89477539062500, 0));
 
 		StreamPeer.PutData(teleportPacket);
 	}
