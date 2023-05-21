@@ -583,6 +583,14 @@ public partial class Client : Node
 					{
 						tpCoords = WorldCoords.UmradCenter;
 					}
+					else if (coords[1].Equals("IsleOfChoice", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.IsleOfChoice;
+					}
+					else if (coords[1].Equals("Arena", StringComparison.InvariantCultureIgnoreCase))
+					{
+						tpCoords = WorldCoords.Arena;
+					}
 					else
 					{
 						Console.WriteLine($"Unknown teleport destination: {coords[1]}");
