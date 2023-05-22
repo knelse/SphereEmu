@@ -14,6 +14,9 @@ using SphServer.Db;
 using SphServer.Helpers;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
+using static SphServer.Helpers.Cities;
+using static SphServer.Helpers.Continents;
+using static SphServer.Helpers.PoiType;
 using static Stat;
 using Thread = System.Threading.Thread;
 
@@ -565,31 +568,31 @@ public partial class Client : Node
 					WorldCoords tpCoords;
 					if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.ShipstoneCenter;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Shipstone)];
 					}
 					else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.BangvilleCenter;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Bangville)];
 					}
 					else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.TorwealCenter;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Torweal)];
 					}
 					else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.SunpoolCenter;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Sunpool)];
 					}
 					else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.UmradCenter;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Umrad)];
 					}
-					else if (coords[1].Equals("IsleOfChoice", StringComparison.InvariantCultureIgnoreCase))
+					else if (coords[1].Equals("ChoiceIsland", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.IsleOfChoice;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][Other]["ChoiceIsland"];
 					}
 					else if (coords[1].Equals("Arena", StringComparison.InvariantCultureIgnoreCase))
 					{
-						tpCoords = WorldCoords.Arena;
+						tpCoords = SavedCoords.TeleportPoints[Hyperion][Other]["Arena"];
 					}
 					else
 					{
