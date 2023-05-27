@@ -122,50 +122,32 @@ public partial class Client : Node
 					UpdateStatsForClient();
 				}
 
-				else
+				else if (input.StartsWith("/s"))
 				{
-					var encoded = MainServer.Win1251.GetBytes(input);
-					var chatStream = new BitStream(new MemoryStream())
-					{
-						AutoIncreaseStream = true
-					};
+					var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+					// if (chatData.Length < 4)
+					// {
+					// 	Console.WriteLine("usage: /s chat_type name message");
+					// 	continue;
+					// }
 
-					var packetLength = 0xED - 1 + encoded.Length;
+					var chatType = int.Parse(chatData[1]);
+					Console.WriteLine(chatType);
 
-					chatStream.WriteBytes(
-						new byte[]
-						{
-							(byte)packetLength, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId),
-							MinorByte(LocalId), 0x08, 0x40, 0x43
-						}, 12, true);
+					// if (!Enum.TryParse<ChatType>(chatData[1], out var chatType) || chatType == ChatType.Unknown)
+					// {
+					// 	Console.WriteLine("usage: /s chat_type name message");
+					// 	continue;
+					// }
 
-					var encodedLength = 0b11011110 + encoded.Length;
-					var encLen1 = (encodedLength & 0b111) << 5;
-					var encLen2 = 0b10000000 + (encodedLength >> 3);
-					chatStream.WriteByte((byte) encLen1);
-					chatStream.WriteByte((byte) encLen2);
-					chatStream.WriteByte(0x40);
-					chatStream.WriteByte(0x20);
-					chatStream.WriteByte(0x00);
-					var padding = Convert.FromHexString(
-						"00001F3D1D84BC5C1DBC1D04A56626856B6B8CADA7A8A8A8A8A888AB8B6BEB858EAB8B6B4B4C8EAB8B6B8BAE874B64A42A698A4AEA8B8AEA2BE90AE706894B84AB8B6B2BADEDAC874B24CDED6B0EAE6C0C0687A52D8D8C05864586C58645864B84AB0B846B6B8CADA7A8A8A8A8A888AB2B5A1E1CDE3D5E1E1C04A526856B6B8CADA7A8A8A8A8A888AB8B6BEB858EAB8B6B4B4C8EAB4B791DBC1D642AED2C8D0D0425BABC9DDF1D3E856B4B4C8EAB8B6B2BADEDAC874B64AE0C8EA52D8D8C05868586058645864B84AB4BC4E7284D2E6C8EE785CD4707");
-					// chatStream.WriteBytes(padding, padding.Length, true);
-					// chatStream.WriteByte(0b00100, 5);
-					chatStream.WriteByte(0b00000, 5);
-					foreach (var enc in encoded)
-					{
-						chatStream.WriteByte(enc);
-					}
-					chatStream.WriteByte(0, 3);
-					chatStream.WriteByte(0x00);
-					chatStream.WriteByte(0x00);
-					chatStream.WriteByte(0x00);
-					chatStream.WriteByte(0x00);
-					chatStream.WriteByte(0x00);
-
-					var result = chatStream.GetStreamData();
-					Console.WriteLine(Convert.ToHexString(result));
-					StreamPeer.PutData(result);
+					// var name = chatData[2];
+					// var message = string.Join(" ", chatData[3..]);
+					var name = chatType.ToString();
+					var message = chatType.ToString();
+					message = name + ": " + message + "\n";
+// <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
+					var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
+					StreamPeer.PutData(response);
 				}
 			}
 			// }
@@ -497,19 +479,10 @@ public partial class Client : Node
 
 	private void HandleChatMessage()
 	{
+		// 1A002C4109222C01003C57	638B	084043	008120E0570000600000
 		try
 		{
 			var chatTypeVal = ((rcvBuffer[18] & 0b11111) << 3) + (rcvBuffer[17] >> 5);
-			var chatType = ChatType.Unknown;
-			if (Enum.IsDefined(typeof(ChatType), chatTypeVal))
-			{
-				chatType = (ChatType)chatTypeVal;
-			}
-
-			if (chatType == ChatType.Unknown)
-			{
-				Console.WriteLine(chatTypeVal + " " + Enum.GetName(chatType));
-			}
 
 			var firstPacket = rcvBuffer[..26];
 			var packetCount = (firstPacket[23] >> 5) + ((firstPacket[24] & 0b11111) << 3);
@@ -533,10 +506,15 @@ public partial class Client : Node
 			}
 
 			var msgBytes = new List<byte>();
+			var clientMessageContentBytes = new List<byte[]>
+			{
+				firstPacket[11..]
+			};
 
 			foreach (var decoded in decodeList)
 			{
 				var messagePart = decoded[21..];
+				clientMessageContentBytes.Add(decoded[11..]);
 				for (var j = 0; j < messagePart.Length - 1; j++)
 				{
 					var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
@@ -544,13 +522,52 @@ public partial class Client : Node
 				}
 			}
 
+			// var chatTypeOverride = MainServer.Rng.Next(0, 17);
+			// Console.WriteLine(chatTypeOverride);
+			//
+			// clientMessageContentBytes[0][6] = (byte)((clientMessageContentBytes[0][6] & 0b11111) + ((chatTypeOverride & 0b111) << 5));
+			// clientMessageContentBytes[0][7] = (byte)((clientMessageContentBytes[0][7] & 0b11100000) + (chatTypeOverride >> 3));
+
+			var serverResponseBytes = new List<byte>();
+
+			// client_id 084043 content
+			byte[] GetResponseArray(byte[] clientBytes)
+			{
+				var responseBytes = new byte [clientBytes.Length + 7];
+				responseBytes[0] = (byte)(responseBytes.Length % 256);
+				responseBytes[1] = (byte)(responseBytes.Length / 256);
+				responseBytes[2] = 0x2C;
+				responseBytes[3] = 0x01;
+				responseBytes[4] = 0x00;
+				responseBytes[5] = 0x00;
+				responseBytes[6] = 0x00;
+				Array.Copy(clientBytes, 0, responseBytes, 7, clientBytes.Length);
+				return responseBytes;
+			}
+
+			serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[0]));
+			serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[1]));
+			Console.WriteLine(Convert.ToHexString(serverResponseBytes.ToArray()));
+			Console.WriteLine("--");
+			// StreamPeer.PutData(serverResponseBytes.ToArray());
+			
+			for (var i = 2; i < clientMessageContentBytes.Count; i++)
+			{
+				// StreamPeer.PutData(GetResponseArray(clientMessageContentBytes[i]));
+				// Console.WriteLine(Convert.ToHexString(GetResponseArray(clientMessageContentBytes[i])));
+			}
+			
 			var chatString = MainServer.Win1251.GetString(msgBytes.ToArray());
 			var nameClosingTagIndex = chatString.IndexOf("</l>: ", StringComparison.OrdinalIgnoreCase);
 			var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
 			var name = chatString[(nameStart + 4)..nameClosingTagIndex];
 			var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char)0); // weird but necessary
 
-			Console.WriteLine($"CLI: [{Enum.GetName(chatType)}] {name}: {message}");
+			var response = ChatHelper.GetChatMessageBytesForServerSend(chatString, name, chatTypeVal);
+			Console.WriteLine(Convert.ToHexString(response));
+			StreamPeer.PutData(response);
+
+			Console.WriteLine($"CLI: [{chatTypeVal}] {name}: {message}");
 
 			if (message.StartsWith("/tp"))
 			{
@@ -715,15 +732,17 @@ public partial class Client : Node
 	private async Task MoveToNewPlayerDungeonAsync(Character selectedCharacter)
 	{
 		var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
-		var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
-			1.57079637050629);
-		StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
+		// var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
+		// 	1.57079637050629);
+		var playerCoords = new WorldCoords(0, 150, 0);
+		StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(playerCoords));
+		// StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
 		// here some stats are updated because satiety gets applied. We'll figure that out later, for now just flat
 
 		currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
 		await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
 
-		StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
+		// StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
 		Console.WriteLine(
 			$"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
 		var mobX = newDungeonCoords.x - 50;

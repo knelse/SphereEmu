@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using BitStreams;
 using Godot;
 using Convert = System.Convert;
 
@@ -12,6 +14,13 @@ namespace SphServer.Helpers
 	/// </summary>
 	public static class BitHelper
 	{
+		public static BitStream GetBitStream()
+		{
+			return new BitStream(new MemoryStream())
+			{
+				AutoIncreaseStream = true
+			};
+		}
 		public static int GetBytes(this StreamPeerTcp streamPeerTcp, byte[] bytes)
 		{
 			var temp = streamPeerTcp.GetPartialData(Client.BUFSIZE);
