@@ -11,6 +11,11 @@ public static class ChatHelper
             // todo
             return Array.Empty<byte>();
         }
+
+        if (chatTypeVal == (int) PublicChatType.GM_Outgoing)
+        {
+            chatTypeVal = (int) PublicChatType.GM;
+        }
         var stream = BitHelper.GetBitStream();
         var length = messageContent.Length;
         var nameLength = name.Length;

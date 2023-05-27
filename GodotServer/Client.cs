@@ -125,26 +125,19 @@ public partial class Client : Node
 				else if (input.StartsWith("/s"))
 				{
 					var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-					// if (chatData.Length < 4)
-					// {
-					// 	Console.WriteLine("usage: /s chat_type name message");
-					// 	continue;
-					// }
+					if (chatData.Length < 4)
+					{
+						Console.WriteLine("usage: /s chat_type name message");
+						continue;
+					}
 
 					var chatType = int.Parse(chatData[1]);
 					Console.WriteLine(chatType);
 
-					// if (!Enum.TryParse<ChatType>(chatData[1], out var chatType) || chatType == ChatType.Unknown)
-					// {
-					// 	Console.WriteLine("usage: /s chat_type name message");
-					// 	continue;
-					// }
-
-					// var name = chatData[2];
-					// var message = string.Join(" ", chatData[3..]);
-					var name = chatType.ToString();
-					var message = chatType.ToString();
-					message = name + ": " + message + "\n";
+					var name = chatData[2].Replace("_", " ");
+					var message = string.Join(" ", chatData[3..]);
+					
+					message = name + ": " + message;
 // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
 					var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
 					StreamPeer.PutData(response);
