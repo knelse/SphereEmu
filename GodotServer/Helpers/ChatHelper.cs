@@ -30,7 +30,6 @@ public static class ChatHelper
         
         // client sometimes adds X bytes of 0x00 at the end, server does not send those back
         messageContent = messageContent.TrimEnd((char)0);
-        // messageContent += (char)0;
         var messageBytes = MainServer.Win1251.GetBytes(messageContent);
         var end = 0;
         var previousEnd = 0;

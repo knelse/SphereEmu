@@ -142,6 +142,48 @@ public partial class Client : Node
 					var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
 					StreamPeer.PutData(response);
 				}
+				
+				else if (input.StartsWith("/clan"))
+				{
+					var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+					if (chatData.Length < 2)
+					{
+						Console.WriteLine("usage: /clan action value");
+						continue;
+					}
+
+					var action = chatData[1].ToLowerInvariant();
+					var targetRank = int.Parse(chatData[2]);
+					switch (action)
+					{
+						case "rank":
+							var responseStream = GetBitStream();
+							var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
+							responseStream.WriteBytes(new byte[]
+							{
+								(byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08,
+								0x40, 0xE3, 0xA2, 0xA0, (byte)(targetRank << 5)
+							});
+							
+							// 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
+							responseStream.WriteByte(0x0, 5);
+							responseStream.WriteByte(MajorByte(LocalId));
+							responseStream.WriteByte(MinorByte(LocalId));
+							responseStream.WriteByte(0x0, 7);
+							responseStream.WriteByte(0x1A);
+							responseStream.WriteByte(0x16);
+							responseStream.WriteByte((byte)(nameBytes.Length + 2));
+							responseStream.WriteByte((byte)targetRank);
+							responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
+							responseStream.WriteByte(0x0, 4);
+							responseStream.WriteByte(0x0);
+
+							var response = responseStream.GetStreamData();
+							Console.WriteLine(Convert.ToHexString(response));
+							StreamPeer.PutData(response);
+							break;
+					}
+				}
 			}
 			// }
 		});
@@ -336,7 +378,65 @@ public partial class Client : Node
 			return;
 		}
 		
-		switch (rcvBuffer[0])
+		// todo: proper handling by packet type
+
+		if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC3)
+		{
+			Console.WriteLine(Convert.ToHexString(rcvBuffer[..rcvBuffer[0]]));
+			// clan
+			var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
+			// there might be a better way to select action
+			var shouldCreate = rcvBuffer[18] == 0x00 && rcvBuffer[19] == 0x00 && rcvBuffer[20] == 0x00;
+			if (shouldCreate)
+			{
+				var nameLength = ((rcvBuffer[16] >> 5) + ((rcvBuffer[17] & 0b11111) << 3)) - 5;
+				var name = new List<byte>();
+
+				for (var i = 0; i < nameLength; i++)
+				{
+					name.Add((byte)((rcvBuffer[i + 21] >> 5) + ((rcvBuffer[i + 22] & 0b11111) << 3)));
+				}
+
+				var clanNameBytes = name.ToArray();
+				var clanNameString = MainServer.Win1251.GetString(clanNameBytes);
+
+				Console.WriteLine($"[{clientLocalId:X}] Create clan [{clanNameString}]");
+
+				var characterNameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Name);
+
+				// change clan rank
+				var responseStream = GetBitStream();
+				responseStream.WriteBytes(new byte[]
+				{
+					(byte)(characterNameBytes.Length + 27), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
+					MajorByte(clientLocalId), MinorByte(clientLocalId), 0x08, 0x40, 0xC3, 0x22, 0x20, 0xA0, 0x71
+				}, 16, true);
+				responseStream.WriteByte(0x1, 4);
+				responseStream.WriteByte((byte) (characterNameBytes.Length + 5));
+				responseStream.WriteByte(0x1);
+				responseStream.WriteByte(0x0);
+				responseStream.WriteByte(MajorByte(clientLocalId));
+				responseStream.WriteByte(MinorByte(clientLocalId));
+				responseStream.WriteByte(0x0);
+				responseStream.WriteBytes(characterNameBytes, characterNameBytes.Length, true);
+				responseStream.WriteByte(0x0D);
+				responseStream.WriteByte(0x12);
+				responseStream.WriteByte(0x2);
+				responseStream.WriteByte(0xA, 4);
+				responseStream.WriteByte(0x0);
+				var response = responseStream.GetStreamData();
+				Console.WriteLine(Convert.ToHexString(response));
+				StreamPeer.PutData(response);
+
+				CurrentCharacter.Clan = new Clan
+				{
+					Id = 999,
+					Name = clanNameString
+				};
+			}
+		}
+		
+		else switch (rcvBuffer[0])
 		{
 			// ping
 			case 0x26:
@@ -454,6 +554,40 @@ public partial class Client : Node
 						Console.WriteLine(Convert.ToHexString(itemContents));
 						StreamPeer.PutData(itemContents);
 					}
+				}
+				break;
+			// group create/leave 08 40 23 23
+			case 0x13:
+				if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 || rcvBuffer[16] != 0x23)
+				{
+					break;
+				}
+				var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
+				var action = rcvBuffer[17];
+				switch (action)
+				{
+					case 0x00:
+					{
+						// create
+						Console.WriteLine($"[{clientLocalId:X}] Create group");
+						var createResponse = new byte[]
+						{
+							0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId), MinorByte(clientLocalId),
+							0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
+						};
+						StreamPeer.PutData(createResponse);
+						break;
+					}
+					case 0x80:
+						// leave or disband
+						Console.WriteLine($"[{clientLocalId:X}] Leave group");
+						var leaveResponse = new byte[]
+						{
+							0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId), MinorByte(clientLocalId),
+							0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
+						};
+						StreamPeer.PutData(leaveResponse);
+						break;
 				}
 				break;
 		}
