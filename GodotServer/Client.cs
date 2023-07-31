@@ -204,6 +204,15 @@ public partial class Client : Node
 						ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
 					}
 				}
+				else if (input.StartsWith("/buff"))
+				{
+					var jumpx4 =
+						"3F002C010082EB07B278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49E9FD93408ACF007F70391E0004F6F00";
+					var runSpeed =
+						"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
+					StreamPeer.PutData(Convert.FromHexString(jumpx4));
+					StreamPeer.PutData(Convert.FromHexString(runSpeed));
+				}
 			}
 			// }
 		});
