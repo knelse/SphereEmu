@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaitai_struct_runtime_cshar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphEntities", "..\..\source\SphEntities\SphEntities.csproj", "{1896DA4F-580B-426E-922E-2AFC72436C2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereHelpers", "..\..\source\SphereHelpers\SphereHelpers.csproj", "{47355538-A87B-48F7-9BC4-6F7D00C67120}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -79,5 +81,11 @@ Global
 		{1896DA4F-580B-426E-922E-2AFC72436C2E}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{1896DA4F-580B-426E-922E-2AFC72436C2E}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{1896DA4F-580B-426E-922E-2AFC72436C2E}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{47355538-A87B-48F7-9BC4-6F7D00C67120}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

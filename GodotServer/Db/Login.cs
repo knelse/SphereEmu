@@ -1,63 +1,66 @@
 using System;
 using System.Collections.Generic;
 using LiteDB;
+using PacketLogViewer.Extensions;
 using SphServer.DataModels;
 using SphServer.Helpers;
 
-namespace SphServer.Db
+namespace SphServer.Db;
+
+public static class Login
 {
-    public static class Login
+    public static Player? CheckLoginAndGetPlayer (string login, string password,
+        ushort playerIndex, bool createOnNewLogin = true)
     {
-        public static Player? CheckLoginAndGetPlayer(string login, string password, 
-            ushort playerIndex, bool createOnNewLogin = true)
+        var playerCollection = MainServer.PlayerCollection;
+
+        var player = playerCollection.Query()
+            .Include(new List<BsonExpression> { "$.Characters[*]", "$.Characters[*].Clan" })
+            .Where(x => x.Login == login).FirstOrDefault();
+
+        if (player is not null)
         {
-            var playerCollection = MainServer.PlayerCollection;
+            Console.WriteLine($"SRV: Login [{login}] fetched");
+            Console.WriteLine($"SRV: Checking DB password hash for [{login}]");
 
-            var player = playerCollection.Query()
-                .Include(new List<BsonExpression> { "$.Characters[*]", "$.Characters[*].Clan" })
-                .Where(x => x.Login == login).FirstOrDefault();
-
-            if (player is not null)
+            if (!LoginHelper.EqualsHashed(password, player.PasswordHash))
             {
-                Console.WriteLine($"SRV: Login [{login}] fetched");
-                Console.WriteLine($"SRV: Checking DB password hash for [{login}]");
-                
-                if (!LoginHelper.EqualsHashed(password, player.PasswordHash))
-                {
-                    MiscHelper.SetColorAndWriteLine(ConsoleColor.Red, $"SRV: Wrong password for [{login}]");
-                    return null;
-                }
-                
-                MiscHelper.SetColorAndWriteLine(ConsoleColor.DarkGreen,
-                    $"SRV: Existing player [{player.Id}] found for [{login}]");
-
-                return player;
+                ConsoleExtensions.WriteLineColored($"SRV: Wrong password for [{login}]", ConsoleColor.Red);
+                return null;
             }
 
-            if (!createOnNewLogin) return null;
-
-            MiscHelper.SetColorAndWriteLine(ConsoleColor.Green, $"SRV: Adding [{login}] to DB");
-
-            var pwdHash = LoginHelper.GetHashedString(password);
-
-            player = new Player
-            {
-                Index = playerIndex,
-                Login = login,
-                PasswordHash = pwdHash,
-                Characters = new List<Character>()
-            };
-
-            var playerId = playerCollection.Insert(player);
-
-            MiscHelper.SetColorAndWriteLine(ConsoleColor.Green, $"SRV: Created player [{playerId}] for [{login}]");
+            ConsoleExtensions.WriteLineColored($"SRV: Existing player [{player.Id}] found for [{login}]",
+                ConsoleColor.DarkGreen);
 
             return player;
         }
 
-        public static bool IsNameValid(string name)
+        if (!createOnNewLogin)
         {
-            return !MainServer.CharacterCollection.Exists(x => x.Name == name);
+            return null;
         }
+
+        ConsoleExtensions.WriteLineColored($"SRV: Adding [{login}] to DB", ConsoleColor.Green);
+
+        var pwdHash = LoginHelper.GetHashedString(password);
+
+        player = new Player
+        {
+            Index = playerIndex,
+            Login = login,
+            PasswordHash = pwdHash,
+            Characters = new List<Character>()
+        };
+
+        var playerId = playerCollection.Insert(player);
+
+        ConsoleExtensions.WriteLineColored($"SRV: Created player [{playerId}] for [{login}]", ConsoleColor.Green);
+
+        return player;
+    }
+
+    public static bool IsNameValid (string name)
+    {
+        return !MainServer.CharacterCollection.Exists(x => x.Name == name);
     }
 }
