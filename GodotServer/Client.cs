@@ -65,6 +65,7 @@ public partial class Client : Node
     private double timeSinceLastFifteenSecondPing = 1000;
     private double timeSinceLastSixSecondPing = 1000;
     private double timeSinceLastTransmissionEndPing = 1000;
+    private static ushort NewEntityIndex = 0x1000;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready ()
@@ -79,11 +80,55 @@ public partial class Client : Node
         // watcher.Changed += (_, args) =>
         Task.Run(() =>
         {
-            // if (args.ChangeType == WatcherChangeTypes.Changed)
-            // {
-            string input;
-            while ((input = Console.ReadLine()) != "/stop")
+            var consoleHistoryFilePath = @"C:\_sphereDumps\emuConsoleHistory.txt";
+            var consoleHistory = Path.Exists(consoleHistoryFilePath)
+                ? File.ReadAllLines(consoleHistoryFilePath).ToList()
+                : new List<string>();
+            // var consoleHistoryIndex = consoleHistory.Count;
+            // var consoleHistoryContent = string.Empty;
+            while (true)
             {
+                // var shouldUpdateInput = false;
+                // var key = Console.ReadKey(false);
+                // if (key.Key == ConsoleKey.UpArrow)
+                // {
+                //     consoleHistoryIndex = Math.Max(consoleHistoryIndex - 1, 0);
+                //     shouldUpdateInput = true;
+                // }
+                //
+                // else if (key.Key == ConsoleKey.DownArrow)
+                // {
+                //     consoleHistoryIndex++;
+                //     consoleHistoryIndex = Math.Min(consoleHistoryIndex + 1, consoleHistory.Count);
+                //     shouldUpdateInput = true;
+                // }
+                //
+                // if (char.IsLetterOrDigit(key.KeyChar) || char.IsPunctuation(key.KeyChar) || char.IsSeparator(key.KeyChar) || char.IsSymbol(key.KeyChar))
+                // {
+                //     consoleHistoryContent += key.KeyChar;
+                // }
+                //
+                // if (shouldUpdateInput)
+                // {
+                //     Console.SetCursorPosition(0, Console.CursorTop);
+                //     Console.Write(new string(' ', Console.BufferWidth));
+                //     Console.SetCursorPosition(0, Console.CursorTop - 1);
+                //     if (consoleHistoryIndex < consoleHistory.Count)
+                //     {
+                //         consoleHistoryContent = consoleHistory[consoleHistoryIndex];
+                //         Console.Write(consoleHistory[consoleHistoryIndex]);
+                //     }
+                //     else
+                //     {
+                //         consoleHistoryContent = string.Empty;
+                //     }
+                //
+                //     continue;
+                // }
+
+                var input = Console.ReadLine();
+
+                var shouldSaveCommand = true;
                 // TODO: more commands at some point
                 if (input.StartsWith("/stats"))
                 {
@@ -124,25 +169,26 @@ public partial class Client : Node
                     UpdateStatsForClient();
                 }
 
-                else if (input.StartsWith("/s"))
+                else if (input.StartsWith("/msg"))
                 {
                     var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                     if (chatData.Length < 4)
                     {
-                        Console.WriteLine("usage: /s chat_type name message");
-                        continue;
+                        Console.WriteLine("usage: /msg chat_type name message");
                     }
+                    else
+                    {
+                        var chatType = int.Parse(chatData[1]);
+                        Console.WriteLine(chatType);
 
-                    var chatType = int.Parse(chatData[1]);
-                    Console.WriteLine(chatType);
+                        var name = chatData[2].Replace("_", " ");
+                        var message = string.Join(" ", chatData[3..]);
 
-                    var name = chatData[2].Replace("_", " ");
-                    var message = string.Join(" ", chatData[3..]);
-
-                    message = name + ": " + message;
+                        message = name + ": " + message;
 // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
-                    var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
-                    StreamPeer.PutData(response);
+                        var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
+                        StreamPeer.PutData(response);
+                    }
                 }
 
                 else if (input.StartsWith("/clan"))
@@ -151,60 +197,63 @@ public partial class Client : Node
                     if (chatData.Length < 2)
                     {
                         Console.WriteLine("usage: /clan action value");
-                        continue;
                     }
-
-                    var action = chatData[1].ToLowerInvariant();
-                    var targetRank = int.Parse(chatData[2]);
-                    switch (action)
+                    else
                     {
-                        case "rank":
-                            var responseStream = GetBitStream();
-                            var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
-                            responseStream.WriteBytes(new byte[]
-                            {
-                                (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId),
-                                MinorByte(LocalId), 0x08,
-                                0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
-                            });
+                        var action = chatData[1].ToLowerInvariant();
+                        var targetRank = int.Parse(chatData[2]);
+                        switch (action)
+                        {
+                            case "rank":
+                                var responseStream = GetWriteBitStream();
+                                var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
+                                responseStream.WriteBytes(new byte[]
+                                {
+                                    (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
+                                    MajorByte(LocalId),
+                                    MinorByte(LocalId), 0x08,
+                                    0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
+                                });
 
-                            // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
-                            responseStream.WriteByte(0x0, 5);
-                            responseStream.WriteByte(MajorByte(LocalId));
-                            responseStream.WriteByte(MinorByte(LocalId));
-                            responseStream.WriteByte(0x0, 7);
-                            responseStream.WriteByte(0x1A);
-                            responseStream.WriteByte(0x16);
-                            responseStream.WriteByte((byte) (nameBytes.Length + 2));
-                            responseStream.WriteByte((byte) targetRank);
-                            responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
-                            responseStream.WriteByte(0x0, 4);
-                            responseStream.WriteByte(0x0);
+                                // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
+                                responseStream.WriteByte(0x0, 5);
+                                responseStream.WriteByte(MajorByte(LocalId));
+                                responseStream.WriteByte(MinorByte(LocalId));
+                                responseStream.WriteByte(0x0, 7);
+                                responseStream.WriteByte(0x1A);
+                                responseStream.WriteByte(0x16);
+                                responseStream.WriteByte((byte) (nameBytes.Length + 2));
+                                responseStream.WriteByte((byte) targetRank);
+                                responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
+                                responseStream.WriteByte(0x0, 4);
+                                responseStream.WriteByte(0x0);
 
-                            var response = responseStream.GetStreamData();
-                            Console.WriteLine(Convert.ToHexString(response));
-                            StreamPeer.PutData(response);
-                            break;
+                                var response = responseStream.GetStreamData();
+                                Console.WriteLine(Convert.ToHexString(response));
+                                StreamPeer.PutData(response);
+                                break;
+                        }
                     }
                 }
 
-                else if (input.StartsWith("/p"))
+                else if (input.StartsWith("/sendpackethex"))
                 {
                     var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                     if (chatData.Length < 2)
                     {
-                        Console.WriteLine("usage: /p packet");
-                        continue;
+                        Console.WriteLine("usage: /sendpackethex packet");
                     }
-
-                    try
+                    else
                     {
-                        var content = Convert.FromHexString(chatData[1]);
-                        StreamPeer.PutData(content);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
+                        try
+                        {
+                            var content = Convert.FromHexString(chatData[1]);
+                            StreamPeer.PutData(content);
+                        }
+                        catch (Exception ex)
+                        {
+                            ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
+                        }
                     }
                 }
                 else if (input.StartsWith("/buff"))
@@ -221,8 +270,58 @@ public partial class Client : Node
                     // StreamPeer.PutData(Convert.FromHexString(runSpeed));
                     // StreamPeer.PutData(Convert.FromHexString(test));
                 }
+                else if (input.StartsWith("/packet"))
+                {
+                    TestHelper.SendSpherePacketFromConsole(input, StreamPeer);
+                }
+                else if (input.StartsWith("/mob"))
+                {
+                    var mobPacketName = input.Length == 1
+                        ? "mob"
+                        : "mob_" + input.Split(' ',
+                            StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+                    TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+                }
+                else if (input.StartsWith("/loot"))
+                {
+                    // var mobPacketName = input.Length == 1
+                    //     ? "mob"
+                    //     : "mob_" + input.Split(' ',
+                    //         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+                    // TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+                    var bag1 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 1, 1,
+                        LootRatity.DEFAULT_MOB);
+                    var bag2 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 2, 1,
+                        LootRatity.DEFAULT_MOB);
+                    var bag3 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 3, 1,
+                        LootRatity.DEFAULT_MOB);
+                }
+                else if (input.StartsWith("/tp"))
+                {
+                    try
+                    {
+                        var coords = input.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1..].Select(double.Parse)
+                            .ToArray();
+                        StreamPeer.PutData(
+                            CurrentCharacter.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2], 0)));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                else
+                {
+                    shouldSaveCommand = false;
+                }
+
+                if (shouldSaveCommand)
+                {
+                    File.AppendAllText(consoleHistoryFilePath, input + "\n");
+                    consoleHistory.Add(input);
+                    // consoleHistoryIndex = consoleHistory.Count;
+                }
             }
-            // }
         });
     }
 
@@ -345,6 +444,9 @@ public partial class Client : Node
 
                 CurrentCharacter = player!.Characters[selectedCharacterIndex];
                 CurrentCharacter.ClientIndex = LocalId;
+                CurrentCharacter.X = 2584;
+                CurrentCharacter.Y = -160;
+                CurrentCharacter.Z = 1426;
 
                 Console.WriteLine("CLI: Enter game");
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
@@ -361,16 +463,16 @@ public partial class Client : Node
                 StreamPeer.PutData(worldData[0]);
                 Thread.Sleep(50);
                 // StreamPeer.PutData(worldData[1]);
-                currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
-                await ToSignal(GetTree().CreateTimer(3), "timeout");
-                currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
-
+                // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
+                // await ToSignal(GetTree().CreateTimer(3), "timeout");
+                // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
+                currentState = ClientState.INGAME_DEFAULT;
                 break;
             case ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY:
                 return;
             case ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT:
                 await MoveToNewPlayerDungeonAsync(CurrentCharacter);
-                StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(new WorldCoords(2584, 160, 1426, -1.5)));
+                // StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(new WorldCoords(2584, 160, 1426, -1.5)));
                 break;
             case ClientState.INGAME_DEFAULT:
                 break;
@@ -419,61 +521,59 @@ public partial class Client : Node
 
         // todo: proper handling by packet type
 
-        if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC3)
-        {
-            Console.WriteLine(Convert.ToHexString(rcvBuffer[..rcvBuffer[0]]));
-            // clan
-            var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
-            // there might be a better way to select action
-            var shouldCreate = rcvBuffer[18] == 0x00 && rcvBuffer[19] == 0x00 && rcvBuffer[20] == 0x00;
-            if (shouldCreate)
-            {
-                var nameLength = (rcvBuffer[16] >> 5) + ((rcvBuffer[17] & 0b11111) << 3) - 5;
-                var name = new List<byte>();
-
-                for (var i = 0; i < nameLength; i++)
-                {
-                    name.Add((byte) ((rcvBuffer[i + 21] >> 5) + ((rcvBuffer[i + 22] & 0b11111) << 3)));
-                }
-
-                var clanNameBytes = name.ToArray();
-                var clanNameString = MainServer.Win1251.GetString(clanNameBytes);
-
-                Console.WriteLine($"[{clientLocalId:X}] Create clan [{clanNameString}]");
-
-                var characterNameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Name);
-
-                // change clan rank
-                var responseStream = GetBitStream();
-                responseStream.WriteBytes(new byte[]
-                {
-                    (byte) (characterNameBytes.Length + 27), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                    MajorByte(clientLocalId), MinorByte(clientLocalId), 0x08, 0x40, 0xC3, 0x22, 0x20, 0xA0, 0x71
-                }, 16, true);
-                responseStream.WriteByte(0x1, 4);
-                responseStream.WriteByte((byte) (characterNameBytes.Length + 5));
-                responseStream.WriteByte(0x1);
-                responseStream.WriteByte(0x0);
-                responseStream.WriteByte(MajorByte(clientLocalId));
-                responseStream.WriteByte(MinorByte(clientLocalId));
-                responseStream.WriteByte(0x0);
-                responseStream.WriteBytes(characterNameBytes, characterNameBytes.Length, true);
-                responseStream.WriteByte(0x0D);
-                responseStream.WriteByte(0x12);
-                responseStream.WriteByte(0x2);
-                responseStream.WriteByte(0xA, 4);
-                responseStream.WriteByte(0x0);
-                var response = responseStream.GetStreamData();
-                Console.WriteLine(Convert.ToHexString(response));
-                StreamPeer.PutData(response);
-
-                CurrentCharacter.Clan = new Clan
-                {
-                    Id = 999,
-                    Name = clanNameString
-                };
-            }
-        }
+        // if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC3)
+        // {
+        //     // clan
+        //     var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
+        //     // there might be a better way to select action
+        //     var shouldCreate = rcvBuffer[18] == 0x00 && rcvBuffer[19] == 0x00 && rcvBuffer[20] == 0x00;
+        //     if (shouldCreate)
+        //     {
+        //         var nameLength = (rcvBuffer[16] >> 5) + ((rcvBuffer[17] & 0b11111) << 3) - 5;
+        //         var name = new List<byte>();
+        //
+        //         for (var i = 0; i < nameLength; i++)
+        //         {
+        //             name.Add((byte) ((rcvBuffer[i + 21] >> 5) + ((rcvBuffer[i + 22] & 0b11111) << 3)));
+        //         }
+        //
+        //         var clanNameBytes = name.ToArray();
+        //         var clanNameString = MainServer.Win1251.GetString(clanNameBytes);
+        //
+        //         Console.WriteLine($"[{clientLocalId:X}] Create clan [{clanNameString}]");
+        //
+        //         var characterNameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Name);
+        //
+        //         // change clan rank
+        //         var responseStream = GetWriteBitStream();
+        //         responseStream.WriteBytes(new byte[]
+        //         {
+        //             (byte) (characterNameBytes.Length + 27), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
+        //             MajorByte(clientLocalId), MinorByte(clientLocalId), 0x08, 0x40, 0xC3, 0x22, 0x20, 0xA0, 0x71
+        //         }, 16, true);
+        //         responseStream.WriteByte(0x1, 4);
+        //         responseStream.WriteByte((byte) (characterNameBytes.Length + 5));
+        //         responseStream.WriteByte(0x1);
+        //         responseStream.WriteByte(0x0);
+        //         responseStream.WriteByte(MajorByte(clientLocalId));
+        //         responseStream.WriteByte(MinorByte(clientLocalId));
+        //         responseStream.WriteByte(0x0);
+        //         responseStream.WriteBytes(characterNameBytes, characterNameBytes.Length, true);
+        //         responseStream.WriteByte(0x0D);
+        //         responseStream.WriteByte(0x12);
+        //         responseStream.WriteByte(0x2);
+        //         responseStream.WriteByte(0xA, 4);
+        //         responseStream.WriteByte(0x0);
+        //         var response = responseStream.GetStreamData();
+        //         StreamPeer.PutData(response);
+        //
+        //         CurrentCharacter.Clan = new Clan
+        //         {
+        //             Id = 999,
+        //             Name = clanNameString
+        //         };
+        //     }
+        // }
 
         else
         {
@@ -483,165 +583,166 @@ public partial class Client : Node
                 case 0x26:
                     SendPingResponse();
                     break;
-                // interact (move item, open loot container)
-                case 0x1A:
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC1)
-                    {
-                        // item pickup to target slot
-                        PickupItemToTargetSlot();
-                    }
-                    else if (rcvBuffer[13] == 0x5c && rcvBuffer[14] == 0x46 && rcvBuffer[15] == 0xe1)
-                    {
-                        var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
-                        // open loot container
-                        var bag = MainServer.ItemContainerCollection.Include(x => x.Contents).FindById(containerId);
-                        if (bag is not null)
-                        {
-                            bag.ShowFourSlotBagDropitemListForClient(LocalId);
-                            var packet = bag.GetContentsPacket(LocalId);
-                            packet[6] = 0x04;
-                            StreamPeer.PutData(packet);
-                        }
-                    }
-                    else if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x43)
-                    {
-                        // chat message
-                        HandleChatMessage();
-                    }
-
-                    break;
-                case 0x16:
-                    // click on item to pick up or click on "Pickup all" button (repeats for every item)
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x23)
-                    {
-                        PickupItemToInventory();
-                    }
-
-                    break;
-                case 0x18:
-                    // move to a different slot
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x81)
-                    {
-                        MoveItemToAnotherSlot();
-                    }
-                    // use item from inventory
-                    else
-                    {
-                        UseItem();
-                    }
-
-                    break;
-                case 0x2D:
-                    // drop item to ground
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x63)
-                    {
-                        DropItemToGround();
-                    }
-
-                    break;
-                case 0x15:
-                case 0x19:
-                case 0x1B:
-                case 0x1F:
-                case 0x23:
-                    // item in hand
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 &&
-                        (rcvBuffer[15] == 0xA3 || rcvBuffer[15] == 0x83))
-                    {
-                        MainhandTakeItem();
-                    }
-
-                    break;
-                // echo
-                case 0x08:
-                    // StreamPeer.PutData(CommonPackets.Echo(ID));
-                    break;
-                // damage or trade
-                // case 0x19:
-                case 0x20:
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x03)
-                    {
-                        BuyItemFromTarget();
-                    }
-                    else
-                    {
-                        DamageTarget();
-                    }
-
-                    break;
-                // vendor trade
-                case 0x30:
-                case 0x35:
-                    if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
-                    {
-                        var vendorLocalId = (ushort) (((rcvBuffer[46] & 0b1111) << 12) + (rcvBuffer[45] << 4) +
-                                                      (rcvBuffer[44] >> 4));
-                        if (vendorLocalId == 0)
-                        {
-                            // first vendor open is 0x30, then client sends another 0x30 request to close the trade window,
-                            // and later it's 0x35 to open 0x30 to close. Sphere =/
-                            break;
-                        }
-
-                        var vendorId = GetGlobalObjectId(vendorLocalId);
-
-                        var vendor = MainServer.VendorCollection.FindById(vendorId);
-                        if (vendor is null)
-                        {
-                            Console.WriteLine($"Vendor [{vendorId}] not found");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Vendor [{vendor.Name} {vendor.FamilyName}]");
-                            var vendorSlotList = vendor.GetItemSlotListForClient(LocalId);
-                            StreamPeer.PutData(vendorSlotList);
-                            var itemContents = Packet.ItemsToPacket(LocalId, vendorLocalId, vendor.ItemsOnSale);
-                            Console.WriteLine(Convert.ToHexString(itemContents));
-                            StreamPeer.PutData(itemContents);
-                        }
-                    }
-
-                    break;
-                // group create/leave 08 40 23 23
-                case 0x13:
-                    if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 ||
-                        rcvBuffer[16] != 0x23)
-                    {
-                        break;
-                    }
-
-                    var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
-                    var action = rcvBuffer[17];
-                    switch (action)
-                    {
-                        case 0x00:
-                        {
-                            // create
-                            Console.WriteLine($"[{clientLocalId:X}] Create group");
-                            var createResponse = new byte[]
-                            {
-                                0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
-                                MinorByte(clientLocalId),
-                                0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
-                            };
-                            StreamPeer.PutData(createResponse);
-                            break;
-                        }
-                        case 0x80:
-                            // leave or disband
-                            Console.WriteLine($"[{clientLocalId:X}] Leave group");
-                            var leaveResponse = new byte[]
-                            {
-                                0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
-                                MinorByte(clientLocalId),
-                                0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
-                            };
-                            StreamPeer.PutData(leaveResponse);
-                            break;
-                    }
-
-                    break;
             }
+            //     // interact (move item, open loot container)
+            //     case 0x1A:
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC1)
+            //         {
+            //             // item pickup to target slot
+            //             PickupItemToTargetSlot();
+            //         }
+            //         else if (rcvBuffer[13] == 0x5c && rcvBuffer[14] == 0x46 && rcvBuffer[15] == 0xe1)
+            //         {
+            //             var containerId = rcvBuffer[11] + rcvBuffer[12] * 0x100;
+            //             // open loot container
+            //             var bag = MainServer.ItemContainerCollection.Include(x => x.Contents).FindById(containerId);
+            //             if (bag is not null)
+            //             {
+            //                 bag.ShowFourSlotBagDropitemListForClient(LocalId);
+            //                 var packet = bag.GetContentsPacket(LocalId);
+            //                 packet[6] = 0x04;
+            //                 StreamPeer.PutData(packet);
+            //             }
+            //         }
+            //         else if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x43)
+            //         {
+            //             // chat message
+            //             HandleChatMessage();
+            //         }
+            //
+            //         break;
+            //     case 0x16:
+            //         // click on item to pick up or click on "Pickup all" button (repeats for every item)
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x23)
+            //         {
+            //             PickupItemToInventory();
+            //         }
+            //
+            //         break;
+            //     case 0x18:
+            //         // move to a different slot
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x81)
+            //         {
+            //             MoveItemToAnotherSlot();
+            //         }
+            //         // use item from inventory
+            //         else
+            //         {
+            //             UseItem();
+            //         }
+            //
+            //         break;
+            //     case 0x2D:
+            //         // drop item to ground
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x63)
+            //         {
+            //             DropItemToGround();
+            //         }
+            //
+            //         break;
+            //     case 0x15:
+            //     case 0x19:
+            //     case 0x1B:
+            //     case 0x1F:
+            //     case 0x23:
+            //         // item in hand
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 &&
+            //             (rcvBuffer[15] == 0xA3 || rcvBuffer[15] == 0x83))
+            //         {
+            //             MainhandTakeItem();
+            //         }
+            //
+            //         break;
+            //     // echo
+            //     case 0x08:
+            //         // StreamPeer.PutData(CommonPackets.Echo(ID));
+            //         break;
+            //     // damage or trade
+            //     // case 0x19:
+            //     case 0x20:
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x03)
+            //         {
+            //             BuyItemFromTarget();
+            //         }
+            //         else
+            //         {
+            //             DamageTarget();
+            //         }
+            //
+            //         break;
+            //     // vendor trade
+            //     case 0x30:
+            //     case 0x35:
+            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
+            //         {
+            //             var vendorLocalId = (ushort) (((rcvBuffer[46] & 0b1111) << 12) + (rcvBuffer[45] << 4) +
+            //                                           (rcvBuffer[44] >> 4));
+            //             if (vendorLocalId == 0)
+            //             {
+            //                 // first vendor open is 0x30, then client sends another 0x30 request to close the trade window,
+            //                 // and later it's 0x35 to open 0x30 to close. Sphere =/
+            //                 break;
+            //             }
+            //
+            //             var vendorId = GetGlobalObjectId(vendorLocalId);
+            //
+            //             var vendor = MainServer.VendorCollection.FindById(vendorId);
+            //             if (vendor is null)
+            //             {
+            //                 Console.WriteLine($"Vendor [{vendorId}] not found");
+            //             }
+            //             else
+            //             {
+            //                 Console.WriteLine($"Vendor [{vendor.Name} {vendor.FamilyName}]");
+            //                 var vendorSlotList = vendor.GetItemSlotListForClient(LocalId);
+            //                 StreamPeer.PutData(vendorSlotList);
+            //                 var itemContents = Packet.ItemsToPacket(LocalId, vendorLocalId, vendor.ItemsOnSale);
+            //
+            //                 StreamPeer.PutData(itemContents);
+            //             }
+            //         }
+            //
+            //         break;
+            //     // group create/leave 08 40 23 23
+            //     case 0x13:
+            //         if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 ||
+            //             rcvBuffer[16] != 0x23)
+            //         {
+            //             break;
+            //         }
+            //
+            //         var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
+            //         var action = rcvBuffer[17];
+            //         switch (action)
+            //         {
+            //             case 0x00:
+            //             {
+            //                 // create
+            //                 Console.WriteLine($"[{clientLocalId:X}] Create group");
+            //                 var createResponse = new byte[]
+            //                 {
+            //                     0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
+            //                     MinorByte(clientLocalId),
+            //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
+            //                 };
+            //                 StreamPeer.PutData(createResponse);
+            //                 break;
+            //             }
+            //             case 0x80:
+            //                 // leave or disband
+            //                 Console.WriteLine($"[{clientLocalId:X}] Leave group");
+            //                 var leaveResponse = new byte[]
+            //                 {
+            //                     0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
+            //                     MinorByte(clientLocalId),
+            //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
+            //                 };
+            //                 StreamPeer.PutData(leaveResponse);
+            //                 break;
+            //         }
+            //
+            //         break;
+            // }
         }
 
         var clientModelTransform = clientModel.Transform;
@@ -681,7 +782,6 @@ public partial class Client : Node
                 var packetDecode = rcvBuffer[packetStart..packetEnd];
                 packetStart = packetEnd;
                 decodeList.Add(packetDecode);
-                Console.WriteLine(Convert.ToHexString(packetDecode));
             }
 
             var msgBytes = new List<byte>();
@@ -726,8 +826,6 @@ public partial class Client : Node
 
             serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[0]));
             serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[1]));
-            Console.WriteLine(Convert.ToHexString(serverResponseBytes.ToArray()));
-            Console.WriteLine("--");
             // StreamPeer.PutData(serverResponseBytes.ToArray());
 
             for (var i = 2; i < clientMessageContentBytes.Count; i++)
@@ -743,7 +841,6 @@ public partial class Client : Node
             var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
 
             var response = ChatHelper.GetChatMessageBytesForServerSend(chatString, name, chatTypeVal);
-            Console.WriteLine(Convert.ToHexString(response));
             StreamPeer.PutData(response);
 
             Console.WriteLine($"CLI: [{chatTypeVal}] {name}: {message}");
@@ -936,22 +1033,22 @@ public partial class Client : Node
             1.57079637050629);
         // var playerCoords = new WorldCoords(0, 150, 0);
         // StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(playerCoords));
-        StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
+        // StreamPeer.PutData(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
         // here some stats are updated because satiety gets applied. We'll figure that out later, for now just flat
 
-        currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
-        await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+        // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
+        // await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
 
-        StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
-        ConsoleHelper.WriteLine(CommonPackets.LoadNewPlayerDungeon);
-        ConsoleHelper.WriteLine(
-            $"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
+        // StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
+        // ConsoleHelper.WriteLine(
+        // $"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
         var mobX = newDungeonCoords.x - 50;
         var mobY = newDungeonCoords.y;
         var mobZ = newDungeonCoords.z + 19.5;
 
         // typeid is itemid
-        Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
+        // Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
+
         // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 39, 0,
         // 	LootRatity.DEFAULT_MOB);   
         // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 39, 0,
@@ -1113,7 +1210,7 @@ public partial class Client : Node
 
         var clientPingBytesForPong = rcvBuffer[9..30];
         var clientPingBinaryStr =
-            ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
+            StringConvertHelpers.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
 
         // if (clientPingBinaryStr[0] == '0')
         // {
@@ -1321,8 +1418,6 @@ public partial class Client : Node
         {
             RemoveEntity(GetLocalObjectId(LocalId, container.Id));
         }
-
-        Console.WriteLine(Convert.ToHexString(pickupResult));
 
         StreamPeer.PutData(pickupResult);
     }
@@ -1559,12 +1654,10 @@ public partial class Client : Node
         characterUpdateStream.WriteByte(0x32);
 
         var characterUpdateResult = characterUpdateStream.GetStreamData();
-        Console.WriteLine(Convert.ToHexString(characterUpdateResult));
         StreamPeer.PutData(characterUpdateResult);
 
         var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
         // buyResult[^1] = 0;
-        Console.WriteLine(Convert.ToHexString(buyResult));
         StreamPeer.PutData(buyResult);
     }
 
@@ -1684,7 +1777,7 @@ public partial class Client : Node
                     var parentNode = MainServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
                     ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
                         parentNode.GlobalTransform.Origin.Y,
-                        parentNode.GlobalTransform.Origin.Z, 0, 0, LootRatity.DEFAULT_MOB);
+                        parentNode.GlobalTransform.Origin.Z, 0, LootRatity.DEFAULT_MOB);
                     parentNode.SetInactive();
                 }
             }
@@ -1897,6 +1990,11 @@ public partial class Client : Node
 
         StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
         Console.WriteLine("Stat update");
+    }
+
+    public static ushort GetNewEntityIndex ()
+    {
+        return NewEntityIndex++;
     }
 
     // private static int GetDestinationIdFromFistDamagePacket(byte[] rcvBuffer)

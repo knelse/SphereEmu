@@ -1,15 +1,17 @@
 using System.Text;
 using Godot;
-using LiteDB;
 using SphServer;
 using SphServer.Helpers;
 using SphServer.Packets;
 
 public class Mob
 {
+    private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
     public int Id { get; set; }
     public ushort Unknown { get; set; }
+
     public ushort TypeID { get; set; }
+
     // TODO: filled when mobs are actual mobs
     public string ModelName { get; set; } = string.Empty;
     public double X { get; set; }
@@ -24,11 +26,10 @@ public class Mob
     public ushort MDef { get; set; }
     public KarmaTier Karma { get; set; }
 
-    private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");
-    
-    public ulong? ParentNodeId { get; set; }    
-	
-    public static Mob Create(double x, double y, double z, double turn, int unknown, int level, int currentHp, int typeId)
+    public ulong? ParentNodeId { get; set; }
+
+    public static Mob Create (double x, double y, double z, double turn, int unknown, int level, int currentHp,
+        int typeId)
     {
         var mob = MobScene.Instantiate<MobNode>();
         mob.Mob = new Mob
@@ -42,30 +43,31 @@ public class Mob
             CurrentHP = (ushort) currentHp,
             MaxHP = (ushort) currentHp,
             TypeID = (ushort) typeId,
-            TitleMinusOne = (byte) level,
+            TitleMinusOne = (byte) level
         };
         // TODO: fix when entity spawn is done properly
-        mob.Mob.Id = 9999;
-        MainServer.MonsterCollection.Insert(9999, mob.Mob);
+        var index = (int) Client.GetNewEntityIndex();
+        mob.Mob.Id = index;
+        MainServer.MonsterCollection.Insert(index, mob.Mob);
         MainServer.ActiveNodes[mob.GetInstanceId()] = mob;
-		
+
         MainServer.MainServerNode.AddChild(mob);
         return mob.Mob;
     }
 
-    public void ShowForEveryClientInRadius()
+    public void ShowForEveryClientInRadius ()
     {
         foreach (var client in MainServer.ActiveClients.Values)
         {
             // TODO: proper load/unload for client
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
             // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            client.StreamPeer.PutData(Packet.ToByteArray(ToByteArray(client.LocalId), 1));
+            // client.StreamPeer.PutData(Packet.ToByteArray(ToByteArray(client.LocalId), 1));
         }
     }
 
     // TODO: unhorrify
-    public byte[] ToByteArray(ushort clientGlobalId)
+    public byte[] ToByteArray (ushort clientGlobalId)
     {
         var clientLocalId = Client.GetLocalObjectId(clientGlobalId, Id);
         var sb = new StringBuilder();
@@ -88,10 +90,10 @@ public class Mob
         // sb.Append(enttype_str[5..13]);
         // sb.Append("111");
         // sb.Append(enttype_str[..5]);
-        var x_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(X));
-        var y_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(-Y));
-        var z_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Z));
-        var t_str = BitHelper.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Angle));
+        var x_str = StringConvertHelpers.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(X));
+        var y_str = StringConvertHelpers.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(-Y));
+        var z_str = StringConvertHelpers.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Z));
+        var t_str = StringConvertHelpers.ByteArrayToBinaryString(CoordsHelper.EncodeServerCoordinate(Angle));
 
 
         sb.Append(x_str[2..8]);
@@ -141,7 +143,7 @@ public class Mob
         sb.Append("1");
         sb.Append(entid_str[1..9]);
         // works for levels up to 128 /shrug
-        var level_str = ((ushort)TitleMinusOne).ToBinaryString();
+        var level_str = ((ushort) TitleMinusOne).ToBinaryString();
         sb.Append(level_str[2..]);
         sb.Append("01");
         sb.Append("111101");

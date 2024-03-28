@@ -13,8 +13,7 @@ using static SphServer.Helpers.BitHelper;
 
 public class ItemContainer
 {
-    [BsonId]
-    public int Id { get; set; }
+    [BsonId] public int Id { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
     public double Z { get; set; }
@@ -24,10 +23,11 @@ public class ItemContainer
 
     [BsonIgnore]
     private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
-    public Dictionary<int, int> Contents { get; set; } = new();
+
+    public Dictionary<int, int> Contents { get; set; } = new ();
     public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainer Create(double x, double y, double z, int level, int sourceTypeId,
+    public static ItemContainer Create (double x, double y, double z, int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
@@ -35,7 +35,7 @@ public class ItemContainer
         var levelOverride = MainServer.Rng.Next(0, 61);
         bag.ItemContainer = new ItemContainer
         {
-            TitleMinusOne = (byte)level,
+            TitleMinusOne = (byte) level,
             X = x,
             Y = y,
             Z = z,
@@ -55,13 +55,13 @@ public class ItemContainer
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
-        MainServer.MainServerNode.AddChild(bag);
+        MainServer.MainServerNode.CallDeferred("add_child", bag);
         MainServer.ItemContainerCollection.Update(bag.ItemContainer);
 
         return bag.ItemContainer;
     }
 
-    private bool RemoveIfEmpty()
+    private bool RemoveIfEmpty ()
     {
         if (Contents.Any())
         {
@@ -72,12 +72,11 @@ public class ItemContainer
         {
             MainServer.ActiveNodes[ParentNodeId.Value].QueueFree();
         }
-        
+
         return true;
-        
     }
 
-    public bool RemoveItemByIdAndDestroyContainerIfEmpty(int itemGlobalId)
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
     {
         if (Contents.ContainsValue(itemGlobalId))
         {
@@ -91,7 +90,7 @@ public class ItemContainer
         return RemoveIfEmpty();
     }
 
-    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty(int slotId)
+    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty (int slotId)
     {
         if (Contents.ContainsKey(slotId))
         {
@@ -103,7 +102,8 @@ public class ItemContainer
 
         return RemoveIfEmpty();
     }
-    public void ShowForEveryClientInRadius()
+
+    public void ShowForEveryClientInRadius ()
     {
         foreach (var client in MainServer.ActiveClients.Values)
         {
@@ -113,7 +113,7 @@ public class ItemContainer
         }
     }
 
-    public void UpdatePositionForEveryClientInRadius()
+    public void UpdatePositionForEveryClientInRadius ()
     {
         foreach (var client in MainServer.ActiveClients.Values)
         {
@@ -124,37 +124,18 @@ public class ItemContainer
         }
     }
 
-    public void ShowForClient(Client client)
+    public void ShowForClient (Client client)
     {
-        var xArr = CoordsHelper.EncodeServerCoordinate(X);
-        var yArr = CoordsHelper.EncodeServerCoordinate(-Y);
-        var zArr = CoordsHelper.EncodeServerCoordinate(Z);
-        var x_1 = ((xArr[0] & 0b111) << 5) + 0b01111;
-        var x_2 = ((xArr[1] & 0b111) << 5) + ((xArr[0] & 0b11111000) >> 3);
-        var x_3 = ((xArr[2] & 0b111) << 5) + ((xArr[1] & 0b11111000) >> 3);
-        var x_4 = ((xArr[3] & 0b111) << 5) + ((xArr[2] & 0b11111000) >> 3);
-        var y_1 = ((yArr[0] & 0b111) << 5) + ((xArr[3] & 0b11111000) >> 3);
-        var y_2 = ((yArr[1] & 0b111) << 5) + ((yArr[0] & 0b11111000) >> 3);
-        var y_3 = ((yArr[2] & 0b111) << 5) + ((yArr[1] & 0b11111000) >> 3);
-        var y_4 = ((yArr[3] & 0b111) << 5) + ((yArr[2] & 0b11111000) >> 3);
-        var z_1 = ((zArr[0] & 0b111) << 5) + ((yArr[3] & 0b11111000) >> 3);
-        var z_2 = ((zArr[1] & 0b111) << 5) + ((zArr[0] & 0b11111000) >> 3);
-        var z_3 = ((zArr[2] & 0b111) << 5) + ((zArr[1] & 0b11111000) >> 3);
-        var z_4 = ((zArr[3] & 0b111) << 5) + ((zArr[2] & 0b11111000) >> 3);
-        var z_5 = 0b01100000 + ((zArr[3] & 0b11111000) >> 3);
+        var packetParts = PacketPart.LoadDefinedPartsFromFile(PacketPartNames.MobLootSack);
+        PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
         var localId = client.GetLocalObjectId(Id);
+        PacketPart.UpdateEntityId(packetParts, localId);
+        var lootBagPacket = PacketPart.GetBytesToWrite(packetParts);
 
-        var lootBagPacket = new byte[]
-        {
-            0x1D, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C, 0x86, (byte) x_1,
-            (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
-            (byte) z_2, (byte) z_3, (byte) z_4, (byte) z_5, 0x20, 0x91, 0x45, 0x06, 0x00
-        };
-        
         client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowFourSlotBagDropitemListForClient(ushort clientId)
+    public void ShowFourSlotBagDropitemListForClient (ushort clientId)
     {
         byte[] itemList;
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
@@ -175,39 +156,39 @@ public class ItemContainer
         var item_1_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(1) ? Contents[1] : 0);
         var item_2_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(2) ? Contents[2] : 0);
         var item_3_id = Client.GetLocalObjectId(clientId, Contents.ContainsKey(3) ? Contents[3] : 0);
-        
+
         var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
         var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
         var item0_3 = (byte) ((item_0_id >> 12) & 0b1111);
-                
+
         var item1_1 = (byte) ((item_1_id & 0b1) << 7);
         var item1_2 = (byte) ((item_1_id >> 1) & 0b11111111);
         var item1_3 = (byte) ((item_1_id >> 9) & 0b1111111);
-                
+
         var item2_1 = (byte) ((item_2_id & 0b111111) << 2);
         var item2_2 = (byte) ((item_2_id >> 6) & 0b11111111);
         var item2_3 = (byte) ((item_2_id >> 14) & 0b11);
-                
+
         var item3_1 = (byte) ((item_3_id & 0b111) << 5);
         var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
         var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
         var localId = Client.GetLocalObjectId(clientId, Id);
-        
+
         switch (Contents.Count)
         {
             case 1:
                 itemList = new byte[]
                 {
-                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C, 
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00, 0x00, 0x00 
+                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00, 0x00, 0x00
                 };
 
                 break;
             case 2:
                 itemList = new byte[]
                 {
-                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C, 
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00, 
+                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00,
                     0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
                 };
 
@@ -215,9 +196,9 @@ public class ItemContainer
             case 3:
                 itemList = new byte[]
                 {
-                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C, 
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50, 
-                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1, 
+                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
+                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
                     item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x00
                 };
 
@@ -225,10 +206,10 @@ public class ItemContainer
             case 4:
                 itemList = new byte[]
                 {
-                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C, 
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50, 
-                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1, 
-                    item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19, 
+                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
+                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
+                    item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19,
                     0x00, 0x00, 0x00
                 };
 
@@ -242,7 +223,7 @@ public class ItemContainer
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    public byte[] GetContentsPacket(ushort clientId)
+    public byte[] GetContentsPacket (ushort clientId)
     {
         var items = Contents.Select(x => MainServer.ItemCollection.FindById(x.Value)).ToList();
         return Packet.ItemsToPacket(clientId, Id, items);

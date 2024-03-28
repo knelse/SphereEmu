@@ -8,7 +8,7 @@ public static class LootHelper
 {
     private static bool firstTypeRolled;
 
-    public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
+    public static ObjectType GetPacketObjectType (this GameObjectType gameObjectType)
     {
         return gameObjectType switch
         {
@@ -81,10 +81,10 @@ public static class LootHelper
             GameObjectType.Monster_Castle_Spirit => ObjectType.Unknown,
             GameObjectType.Elixir_Castle => ObjectType.ElixirCastle,
             GameObjectType.Elixir_Trap => ObjectType.ElixirTrap,
-            GameObjectType.Powder => ObjectType.PowderTarget,
+            GameObjectType.Powder => ObjectType.PowderSingleTarget,
             GameObjectType.Powder_Area => ObjectType.PowderAoE,
-            GameObjectType.Powder_Event => ObjectType.PowderTarget,
-            GameObjectType.Powder_Guild => ObjectType.PowderTarget,
+            GameObjectType.Powder_Event => ObjectType.PowderSingleTarget,
+            GameObjectType.Powder_Guild => ObjectType.PowderSingleTarget,
             GameObjectType.Scroll => ObjectType.ScrollLegend,
             GameObjectType.Special => ObjectType.Unknown,
             GameObjectType.Special_Crusader_Gapclose => ObjectType.Unknown,
@@ -121,18 +121,18 @@ public static class LootHelper
             GameObjectType.FoodMeat => ObjectType.FoodMeat,
             GameObjectType.FoodPear => ObjectType.FoodPear,
             GameObjectType.AlchemyBrushwood => ObjectType.AlchemyBrushwood,
-            _ => ObjectType.Unknown,
+            _ => ObjectType.Unknown
         };
     }
 
-    public static SphGameObject GetRandomObjectData(int titleLevelMinusOne, int gameIdOverride = -1)
+    public static SphGameObject GetRandomObjectData (int titleLevelMinusOne, int gameIdOverride = -1)
     {
         var gameIdsToRemove = new HashSet<int>
         {
             4192, 4193, 4194, 4199, 4186, 4187, 4242, 4243, 4244, 4245, 4246, 4247, 4248, 4249, 4302, 4304, 4306, 4308,
-            4310, 4312, 4314, 4316, 4318, 4320, 4450, 4740, 4741, 4742, 4743, 4744, 4745, 4746, 4747, 4748, 4749,
+            4310, 4312, 4314, 4316, 4318, 4320, 4450, 4740, 4741, 4742, 4743, 4744, 4745, 4746, 4747, 4748, 4749
         };
-        
+
         SphGameObject item;
         if (gameIdOverride != -1)
         {
@@ -168,7 +168,7 @@ public static class LootHelper
                 GameObjectType.Powder_Area,
                 GameObjectType.Crossbow,
                 GameObjectType.Axe,
-                GameObjectType.Sword,
+                GameObjectType.Sword
             };
             var overrideFilter = new HashSet<GameObjectType>
             {
@@ -199,22 +199,23 @@ public static class LootHelper
                 GameObjectKind.Magical_New,
                 GameObjectKind.MantraBlack,
                 GameObjectKind.MantraWhite,
-                GameObjectKind.Sword_New,
+                GameObjectKind.Sword_New
             };
 
             var tierAgnosticTypes = new HashSet<GameObjectType>
             {
                 GameObjectType.Flower,
                 GameObjectType.Metal,
-                GameObjectType.Mineral,
+                GameObjectType.Mineral
             };
 
             var time = DateTime.Now;
             var lootPool = MainServer.SphGameObjectDb
                 .Where(x =>
-                    !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) && typeFilter.Contains(x.Value.ObjectType)
-                                                            && (x.Value.Tier == tierFilter
-                                                                || tierAgnosticTypes.Contains(x.Value.ObjectType))).Select(x => x.Value)
+                    !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) &&
+                    typeFilter.Contains(x.Value.ObjectType)
+                    && (x.Value.Tier == tierFilter
+                        || tierAgnosticTypes.Contains(x.Value.ObjectType))).Select(x => x.Value)
                 .ToList();
             var random = MainServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
@@ -224,9 +225,9 @@ public static class LootHelper
 
         var noSuffix = false;
         var suffixFilter = new SortedSet<ItemSuffix> { ItemSuffix.None };
-            
+
         if (item.ObjectType is GameObjectType.Ring)
-        { 
+        {
             suffixFilter = new SortedSet<ItemSuffix>
             {
                 ItemSuffix.Health,
@@ -246,7 +247,7 @@ public static class LootHelper
                 ItemSuffix.Water,
                 ItemSuffix.Value,
                 ItemSuffix.Precision,
-                ItemSuffix.Ether,
+                ItemSuffix.Ether
             };
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
@@ -257,6 +258,7 @@ public static class LootHelper
         {
             return item;
         }
+
         if (item.ObjectType is GameObjectType.Sword or GameObjectType.Axe)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -280,12 +282,13 @@ public static class LootHelper
                 ItemSuffix.Disorder,
                 ItemSuffix.Disease,
                 ItemSuffix.Decay,
-                ItemSuffix.Interdict,
+                ItemSuffix.Interdict
             };
 
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
+
         if (item.ObjectType is GameObjectType.Crossbow)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -314,6 +317,7 @@ public static class LootHelper
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
+
         if (item.ObjectType is GameObjectType.Robe)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -333,7 +337,7 @@ public static class LootHelper
                 ItemSuffix.Water,
                 ItemSuffix.Eclipse,
                 ItemSuffix.Air,
-                ItemSuffix.Archmage,
+                ItemSuffix.Archmage
                 // ItemSuffix.Durability_Old,
                 // ItemSuffix.Life_Old,
                 // ItemSuffix.Safety_Old,
@@ -347,6 +351,7 @@ public static class LootHelper
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
+
         if (item.ObjectType is GameObjectType.Bracelet or GameObjectType.Amulet)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -361,13 +366,14 @@ public static class LootHelper
                 ItemSuffix.Value,
                 ItemSuffix.Deflection,
                 ItemSuffix.Precision,
-                ItemSuffix.Damage,
+                ItemSuffix.Damage
             };
 
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
-        if (item.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt 
+
+        if (item.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt
             or GameObjectType.Pants or GameObjectType.Boots)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -379,16 +385,18 @@ public static class LootHelper
                 ItemSuffix.Absorption,
                 ItemSuffix.Precision,
                 ItemSuffix.Safety,
-                ItemSuffix.Ether,
+                ItemSuffix.Ether
             };
 
             item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
+
         if (item.ObjectType is GameObjectType.Chestplate or GameObjectType.Shield)
         {
             suffixFilter = new SortedSet<ItemSuffix>
-            {// for shields Elements is "Old" (e.g. +68 at 12 rank)
+            {
+                // for shields Elements is "Old" (e.g. +68 at 12 rank)
                 ItemSuffix.Deflection,
                 ItemSuffix.Life,
                 ItemSuffix.Agility,
@@ -411,7 +419,7 @@ public static class LootHelper
                 ItemSuffix.Strength,
                 ItemSuffix.Earth,
                 ItemSuffix.Elements,
-                ItemSuffix.Majesty,
+                ItemSuffix.Majesty
                 // ItemSuffix.Concentration_Old,
                 // ItemSuffix.Majesty_Old,
                 // ItemSuffix.Agility_Old,
@@ -424,17 +432,17 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle 
+        if (item.ObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle
             or GameObjectType.Elixir_Trap)
         {
-            item.ItemCount =  MainServer.Rng.Next(3, 20);
+            item.ItemCount = MainServer.Rng.Next(3, 20);
         }
 
         item.Suffix = suffixFilter.ElementAt(MainServer.Rng.Next(0, suffixFilter.Count));
         return item;
     }
 
-    public static bool IsSlotValidForItem(BelongingSlot slot, Item? item)
+    public static bool IsSlotValidForItem (BelongingSlot slot, Item? item)
     {
         // TODO: actual check
         return true;
