@@ -21,12 +21,6 @@
         <ProjectReference Include="..\..\source\SphObjectDb\SphObjectDb.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Remove="Packets\KaitaiStruct\Client\**"/>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Remove="Packets\KaitaiStruct\Client\**"/>
-    </ItemGroup>
-    <ItemGroup>
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
