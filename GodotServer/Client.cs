@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BitStreams;
 using Godot;
-using Kaitai;
+using SphereHelpers.Extensions;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
@@ -40,20 +41,21 @@ public partial class Client : Node
     public const bool LiveServerCoords = false;
     public const ushort CurrentCharacterInventoryId = 0xA001;
 
-    public static readonly string PingCoordsFilePath = LiveServerCoords
-        ? "C:\\_sphereDumps\\currentWorldCoords"
-        : "C:\\source\\clientCoordsSaved";
+    // public static readonly string PingCoordsFilePath = LiveServerCoords
+    //     ? "C:\\_sphereDumps\\currentWorldCoords"
+    //     : "C:\\source\\clientCoordsSaved";
 
     private static ItemContainer _testItemContainer = null!;
     public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new ();
+
     private readonly byte[] rcvBuffer = new byte[BUFSIZE];
-    private readonly FileSystemWatcher watcher = new ("C:\\source\\", "statUpdatePacket.txt");
+
+    // private readonly FileSystemWatcher watcher = new ("C:\\source\\", "statUpdatePacket.txt");
     private StaticBody3D? clientModel;
     private ushort counter;
     public Character CurrentCharacter = null!;
     private ClientState currentState = ClientState.I_AM_BREAD;
     public int GlobalId;
-    private KaitaiStream kaitaiStream;
     public ushort LocalId = 0x4F6F;
     private int newPlayerDungeonMobHp = 64;
     private string? pingPreviousClientPingString;
@@ -80,10 +82,10 @@ public partial class Client : Node
         // watcher.Changed += (_, args) =>
         Task.Run(() =>
         {
-            var consoleHistoryFilePath = @"C:\_sphereDumps\emuConsoleHistory.txt";
-            var consoleHistory = Path.Exists(consoleHistoryFilePath)
-                ? File.ReadAllLines(consoleHistoryFilePath).ToList()
-                : new List<string>();
+            // var consoleHistoryFilePath = @"C:\_sphereDumps\emuConsoleHistory.txt";
+            // var consoleHistory = Path.Exists(consoleHistoryFilePath)
+            //     ? File.ReadAllLines(consoleHistoryFilePath).ToList()
+            //     : new List<string>();
             // var consoleHistoryIndex = consoleHistory.Count;
             // var consoleHistoryContent = string.Empty;
             while (true)
@@ -276,11 +278,33 @@ public partial class Client : Node
                 }
                 else if (input.StartsWith("/mob"))
                 {
-                    var mobPacketName = input.Length == 1
+                    var split = input.Split(' ',
+                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    var mobPacketName = split.Length == 1
                         ? "mob"
-                        : "mob_" + input.Split(' ',
-                            StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+                        : "mob_" + split;
                     TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+                }
+                else if (input.StartsWith("/spawn_mob_id"))
+                {
+                    var split = input.Split(' ',
+                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    if (split.Length != 2 || !int.TryParse(split[1], out var mobId))
+                    {
+                        Console.WriteLine(
+                            "Usage: /spawn_mob_id <id>. For the list of IDs check entityNamesCollected file");
+                    }
+                    else
+                    {
+                        TestHelper.SendSpherePacketFromConsole($"/packet mob_assassin onme", StreamPeer, true, list =>
+                        {
+                            foreach (var idPart in list.Where(x => x.Name == "mob_type"))
+                            {
+                                var bits = BitStreamExtensions.IntToBits(mobId, 16).ToList();
+                                idPart.Value = bits;
+                            }
+                        });
+                    }
                 }
                 else if (input.StartsWith("/loot"))
                 {
@@ -317,8 +341,8 @@ public partial class Client : Node
 
                 if (shouldSaveCommand)
                 {
-                    File.AppendAllText(consoleHistoryFilePath, input + "\n");
-                    consoleHistory.Add(input);
+                    // File.AppendAllText(consoleHistoryFilePath, input + "\n");
+                    // consoleHistory.Add(input);
                     // consoleHistoryIndex = consoleHistory.Count;
                 }
             }
@@ -512,7 +536,6 @@ public partial class Client : Node
         }
 
         var length = StreamPeer.GetBytes(rcvBuffer);
-        kaitaiStream = new KaitaiStream(rcvBuffer);
 
         if (length == 0)
         {
@@ -1239,7 +1262,7 @@ public partial class Client : Node
 
                 pingPreviousClientPingString = clientPingBinaryStr;
 
-                File.WriteAllText(@"c:\_sphereDumps\localPing", $"{coords.x} {coords.y} {coords.z}");
+                // File.WriteAllText(@"c:\_sphereDumps\localPing", $"{coords.x} {coords.y} {coords.z}");
             }
         }
 
@@ -1359,67 +1382,68 @@ public partial class Client : Node
 
     private void PickupItemToInventory ()
     {
-        var packet = new PickupItemRequest(kaitaiStream);
-        var clientItemID = (ushort) packet.ItemId;
-        Console.WriteLine($"Pickup request: {clientItemID}");
-
-        var itemId = GetGlobalObjectId(clientItemID);
-
-        var item = MainServer.ItemCollection.FindById(itemId);
-        var parentId = item?.ParentContainerId;
-        if (parentId is null)
-        {
-            Console.WriteLine($"Item local [{clientItemID}] global [{itemId}] not found or has no parent container");
-            return;
-        }
-
-        var container = MainServer.ItemContainerCollection.FindById(parentId);
-
-        if (container is null)
-        {
-            Console.WriteLine($"Container [{parentId}] not found");
-            return;
-        }
-
-        var slotId = container.Contents.First(x => x.Value == itemId).Key << 1;
-        var packetObjectType = (int) item.ObjectType.GetPacketObjectType();
-        var type_1 = (byte) ((packetObjectType & 0b111111) << 2);
-        var type_2 = (byte) (0b11000000 + (packetObjectType >> 6));
-
-        var targetSlot = CurrentCharacter.FindEmptyInventorySlot();
-
-        var targetSlot_1 = (byte) (((int) targetSlot & 0b111111) << 2);
-        var targetSlot_2 = (byte) ((((int) targetSlot >> 6) & 0b11) + ((clientItemID & 0b111111) << 2));
-        var itemId_1 = (byte) ((clientItemID >> 6) & 0b11111111);
-        var itemId_2 = (byte) ((clientItemID >> 14) & 0b11);
-
-        var clientId_1 = (byte) ((ByteSwap(LocalId) & 0b1111111) << 1);
-        var clientId_2 = (byte) ((ByteSwap(LocalId) >> 7) & 0b11111111);
-        var clientId_3 = (byte) (((ByteSwap(LocalId) >> 15) & 0b1) + 0b00010000);
-
-        var bagId_1 = (byte) ((ByteSwap(LocalId) & 0b111111) << 2);
-        var bagId_2 = (byte) ((ByteSwap(LocalId) >> 6) & 0b11111111);
-        var bagId_3 = (byte) ((ByteSwap(LocalId) >> 14) & 0b11);
-
-        var pickupResult = new byte[]
-        {
-            0x36, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) parentId), MajorByte((ushort) parentId), 0x5c,
-            0x46, 0x41, 0x02, (byte) slotId, 0x7e, MinorByte(clientItemID), MajorByte(clientItemID), type_1, type_2,
-            0x00, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x02, 0x0C, bagId_1,
-            bagId_2,
-            bagId_3, 0xFC, clientId_1, clientId_2, clientId_3, 0x80, 0x82, 0x20, targetSlot_1, targetSlot_2, itemId_1,
-            itemId_2, 0xC8, 0x00,
-            0x00, 0x00, 0x00
-        };
-
-        CurrentCharacter.Items[targetSlot.Value] = itemId;
-
-        if (container.RemoveItemBySlotIdAndDestroyContainerIfEmpty(slotId >> 1))
-        {
-            RemoveEntity(GetLocalObjectId(LocalId, container.Id));
-        }
-
-        StreamPeer.PutData(pickupResult);
+        // TODO: remove kaitai
+        // var packet = new PickupItemRequest(kaitaiStream);
+        // var clientItemID = (ushort) packet.ItemId;
+        // Console.WriteLine($"Pickup request: {clientItemID}");
+        //
+        // var itemId = GetGlobalObjectId(clientItemID);
+        //
+        // var item = MainServer.ItemCollection.FindById(itemId);
+        // var parentId = item?.ParentContainerId;
+        // if (parentId is null)
+        // {
+        //     Console.WriteLine($"Item local [{clientItemID}] global [{itemId}] not found or has no parent container");
+        //     return;
+        // }
+        //
+        // var container = MainServer.ItemContainerCollection.FindById(parentId);
+        //
+        // if (container is null)
+        // {
+        //     Console.WriteLine($"Container [{parentId}] not found");
+        //     return;
+        // }
+        //
+        // var slotId = container.Contents.First(x => x.Value == itemId).Key << 1;
+        // var packetObjectType = (int) item.ObjectType.GetPacketObjectType();
+        // var type_1 = (byte) ((packetObjectType & 0b111111) << 2);
+        // var type_2 = (byte) (0b11000000 + (packetObjectType >> 6));
+        //
+        // var targetSlot = CurrentCharacter.FindEmptyInventorySlot();
+        //
+        // var targetSlot_1 = (byte) (((int) targetSlot & 0b111111) << 2);
+        // var targetSlot_2 = (byte) ((((int) targetSlot >> 6) & 0b11) + ((clientItemID & 0b111111) << 2));
+        // var itemId_1 = (byte) ((clientItemID >> 6) & 0b11111111);
+        // var itemId_2 = (byte) ((clientItemID >> 14) & 0b11);
+        //
+        // var clientId_1 = (byte) ((ByteSwap(LocalId) & 0b1111111) << 1);
+        // var clientId_2 = (byte) ((ByteSwap(LocalId) >> 7) & 0b11111111);
+        // var clientId_3 = (byte) (((ByteSwap(LocalId) >> 15) & 0b1) + 0b00010000);
+        //
+        // var bagId_1 = (byte) ((ByteSwap(LocalId) & 0b111111) << 2);
+        // var bagId_2 = (byte) ((ByteSwap(LocalId) >> 6) & 0b11111111);
+        // var bagId_3 = (byte) ((ByteSwap(LocalId) >> 14) & 0b11);
+        //
+        // var pickupResult = new byte[]
+        // {
+        //     0x36, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) parentId), MajorByte((ushort) parentId), 0x5c,
+        //     0x46, 0x41, 0x02, (byte) slotId, 0x7e, MinorByte(clientItemID), MajorByte(clientItemID), type_1, type_2,
+        //     0x00, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x02, 0x0C, bagId_1,
+        //     bagId_2,
+        //     bagId_3, 0xFC, clientId_1, clientId_2, clientId_3, 0x80, 0x82, 0x20, targetSlot_1, targetSlot_2, itemId_1,
+        //     itemId_2, 0xC8, 0x00,
+        //     0x00, 0x00, 0x00
+        // };
+        //
+        // CurrentCharacter.Items[targetSlot.Value] = itemId;
+        //
+        // if (container.RemoveItemBySlotIdAndDestroyContainerIfEmpty(slotId >> 1))
+        // {
+        //     RemoveEntity(GetLocalObjectId(LocalId, container.Id));
+        // }
+        //
+        // StreamPeer.PutData(pickupResult);
     }
 
     private void MoveItemToAnotherSlot ()
@@ -1523,142 +1547,144 @@ public partial class Client : Node
 
     private void MainhandTakeItem ()
     {
-        dynamic packet = rcvBuffer[0] switch
-        {
-            0x15 => new MainhandEquipPowder(kaitaiStream),
-            0x19 => new MainhandEquipSword(kaitaiStream),
-            0x1b => new MainhandReequipPowderPowder(kaitaiStream),
-            0x1f => new MainhandReequipPowderSword(kaitaiStream),
-            0x23 => new MainhandReequipSwordSword(kaitaiStream)
-        };
-
-        var slotState = (MainhandSlotState) packet.MainhandState;
-        var localItemId = (ushort) packet.EquipItemId;
-
-        Console.WriteLine($"Mainhand: {Enum.GetName(slotState)} [{localItemId}]");
-
-        if (slotState == MainhandSlotState.Empty)
-        {
-            var currentItemId = CurrentCharacter.Items[BelongingSlot.MainHand];
-            var currentItem = MainServer.ItemCollection.FindById(currentItemId);
-            CurrentCharacter.PAtk -= currentItem.PAtkNegative;
-            CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
-            CurrentCharacter.Items.Remove(BelongingSlot.MainHand);
-        }
-        else if (slotState == MainhandSlotState.Fists)
-        {
-            CurrentCharacter.Items[BelongingSlot.MainHand] = CurrentCharacter.Fists.Id;
-        }
-        else
-        {
-            var itemId = GetGlobalObjectId(localItemId);
-            var item = MainServer.ItemCollection.FindById(itemId);
-            var currentItem = CurrentCharacter.Items.ContainsKey(BelongingSlot.MainHand)
-                ? MainServer.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand])
-                : null;
-            if (currentItem is not null)
-            {
-                CurrentCharacter.PAtk -= currentItem.PAtkNegative;
-                CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
-            }
-
-            CurrentCharacter.PAtk += item.PAtkNegative;
-            CurrentCharacter.MAtk += item.MAtkNegativeOrHeal;
-            CurrentCharacter.Items[BelongingSlot.MainHand] = itemId;
-            // UpdateStatsForClient();
-        }
+        // TODO: remove kaitai
+        // dynamic packet = rcvBuffer[0] switch
+        // {
+        //     0x15 => new MainhandEquipPowder(kaitaiStream),
+        //     0x19 => new MainhandEquipSword(kaitaiStream),
+        //     0x1b => new MainhandReequipPowderPowder(kaitaiStream),
+        //     0x1f => new MainhandReequipPowderSword(kaitaiStream),
+        //     0x23 => new MainhandReequipSwordSword(kaitaiStream)
+        // };
+        //
+        // var slotState = (MainhandSlotState) packet.MainhandState;
+        // var localItemId = (ushort) packet.EquipItemId;
+        //
+        // Console.WriteLine($"Mainhand: {Enum.GetName(slotState)} [{localItemId}]");
+        //
+        // if (slotState == MainhandSlotState.Empty)
+        // {
+        //     var currentItemId = CurrentCharacter.Items[BelongingSlot.MainHand];
+        //     var currentItem = MainServer.ItemCollection.FindById(currentItemId);
+        //     CurrentCharacter.PAtk -= currentItem.PAtkNegative;
+        //     CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
+        //     CurrentCharacter.Items.Remove(BelongingSlot.MainHand);
+        // }
+        // else if (slotState == MainhandSlotState.Fists)
+        // {
+        //     CurrentCharacter.Items[BelongingSlot.MainHand] = CurrentCharacter.Fists.Id;
+        // }
+        // else
+        // {
+        //     var itemId = GetGlobalObjectId(localItemId);
+        //     var item = MainServer.ItemCollection.FindById(itemId);
+        //     var currentItem = CurrentCharacter.Items.ContainsKey(BelongingSlot.MainHand)
+        //         ? MainServer.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand])
+        //         : null;
+        //     if (currentItem is not null)
+        //     {
+        //         CurrentCharacter.PAtk -= currentItem.PAtkNegative;
+        //         CurrentCharacter.MAtk -= currentItem.MAtkNegativeOrHeal;
+        //     }
+        //
+        //     CurrentCharacter.PAtk += item.PAtkNegative;
+        //     CurrentCharacter.MAtk += item.MAtkNegativeOrHeal;
+        //     CurrentCharacter.Items[BelongingSlot.MainHand] = itemId;
+        //     // UpdateStatsForClient();
+        // }
     }
 
     private void BuyItemFromTarget ()
     {
-        var packet = new BuyItemRequest(kaitaiStream);
-        var slotId = (byte) packet.SlotId;
-        var clientId = packet.Header.ClientId;
-
-        var vendorGlobalId = GetGlobalObjectId((ushort) packet.VendorId);
-        var vendor = MainServer.VendorCollection.FindById(vendorGlobalId);
-
-        if (vendor is null)
-        {
-            Console.WriteLine($"Unknown vendor [{vendorGlobalId}]");
-            return;
-        }
-
-        var item = vendor.ItemsOnSale.Count > slotId ? vendor.ItemsOnSale[slotId] : null;
-
-        if (item is null)
-        {
-            Console.WriteLine($"Vendor [{vendorGlobalId}] has nothing in slot [{slotId}]");
-            return;
-        }
-
-        var localization = item.ObjectType is GameObjectType.FoodApple ? "Apple" : item.Localisation[Locale.Russian];
-
-        Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {localization} " +
-                          $"({packet.Quantity}) {packet.CostPerOne}t ea " +
-                          $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
-
-        var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
-
-        if (clientSlotId is null)
-        {
-            Console.WriteLine("No empty slots!");
-            return;
-        }
-
-        var totalCost = (int) (packet.Quantity * packet.CostPerOne);
-        if (CurrentCharacter.Money < totalCost)
-        {
-            Console.WriteLine("Not enough money!");
-            return;
-        }
-
-        var clone = Item.Clone(item);
-        clone.ItemCount = (int) packet.Quantity;
-        clone.ParentContainerId = LocalId;
-
-        var characterUpdateStream = new BitStream(new MemoryStream())
-        {
-            AutoIncreaseStream = true
-        };
-
-        CurrentCharacter.Money -= totalCost;
-        CurrentCharacter.Items[clientSlotId.Value] = clone.Id;
-
-        characterUpdateStream.WriteBytes(
-            new byte[]
-            {
-                0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10
-            }, 13, true);
-        characterUpdateStream.WriteBit(0);
-        characterUpdateStream.WriteByte((byte) clientSlotId);
-        characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
-        characterUpdateStream.WriteByte(0);
-        characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        characterUpdateStream.WriteByte(0, 7);
-        characterUpdateStream.WriteBytes(new byte[] { 0x0, 0x1A, 0x38, 0x04 }, 4, true);
-        characterUpdateStream.WriteInt32(CurrentCharacter.Money);
-        characterUpdateStream.WriteByte(0x0D);
-        characterUpdateStream.WriteByte(0x04);
-        characterUpdateStream.WriteByte(0b110, 7);
-        characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
-        characterUpdateStream.WriteByte(0);
-        characterUpdateStream.WriteByte(0, 1);
-        characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        characterUpdateStream.WriteByte(0);
-        characterUpdateStream.WriteByte(0, 7);
-        characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        characterUpdateStream.WriteByte(0, 1);
-        characterUpdateStream.WriteByte(0);
-        characterUpdateStream.WriteByte(0);
-        characterUpdateStream.WriteByte(0x32);
-
-        var characterUpdateResult = characterUpdateStream.GetStreamData();
-        StreamPeer.PutData(characterUpdateResult);
-
-        var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
-        // buyResult[^1] = 0;
-        StreamPeer.PutData(buyResult);
+        // TODO: remove kaitai
+        // var packet = new BuyItemRequest(kaitaiStream);
+        // var slotId = (byte) packet.SlotId;
+        // var clientId = packet.Header.ClientId;
+        //
+        // var vendorGlobalId = GetGlobalObjectId((ushort) packet.VendorId);
+        // var vendor = MainServer.VendorCollection.FindById(vendorGlobalId);
+        //
+        // if (vendor is null)
+        // {
+        //     Console.WriteLine($"Unknown vendor [{vendorGlobalId}]");
+        //     return;
+        // }
+        //
+        // var item = vendor.ItemsOnSale.Count > slotId ? vendor.ItemsOnSale[slotId] : null;
+        //
+        // if (item is null)
+        // {
+        //     Console.WriteLine($"Vendor [{vendorGlobalId}] has nothing in slot [{slotId}]");
+        //     return;
+        // }
+        //
+        // var localization = item.ObjectType is GameObjectType.FoodApple ? "Apple" : item.Localisation[Locale.Russian];
+        //
+        // Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {localization} " +
+        //                   $"({packet.Quantity}) {packet.CostPerOne}t ea " +
+        //                   $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
+        //
+        // var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
+        //
+        // if (clientSlotId is null)
+        // {
+        //     Console.WriteLine("No empty slots!");
+        //     return;
+        // }
+        //
+        // var totalCost = (int) (packet.Quantity * packet.CostPerOne);
+        // if (CurrentCharacter.Money < totalCost)
+        // {
+        //     Console.WriteLine("Not enough money!");
+        //     return;
+        // }
+        //
+        // var clone = Item.Clone(item);
+        // clone.ItemCount = (int) packet.Quantity;
+        // clone.ParentContainerId = LocalId;
+        //
+        // var characterUpdateStream = new BitStream(new MemoryStream())
+        // {
+        //     AutoIncreaseStream = true
+        // };
+        //
+        // CurrentCharacter.Money -= totalCost;
+        // CurrentCharacter.Items[clientSlotId.Value] = clone.Id;
+        //
+        // characterUpdateStream.WriteBytes(
+        //     new byte[]
+        //     {
+        //         0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10
+        //     }, 13, true);
+        // characterUpdateStream.WriteBit(0);
+        // characterUpdateStream.WriteByte((byte) clientSlotId);
+        // characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
+        // characterUpdateStream.WriteByte(0);
+        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+        // characterUpdateStream.WriteByte(0, 7);
+        // characterUpdateStream.WriteBytes(new byte[] { 0x0, 0x1A, 0x38, 0x04 }, 4, true);
+        // characterUpdateStream.WriteInt32(CurrentCharacter.Money);
+        // characterUpdateStream.WriteByte(0x0D);
+        // characterUpdateStream.WriteByte(0x04);
+        // characterUpdateStream.WriteByte(0b110, 7);
+        // characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
+        // characterUpdateStream.WriteByte(0);
+        // characterUpdateStream.WriteByte(0, 1);
+        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+        // characterUpdateStream.WriteByte(0);
+        // characterUpdateStream.WriteByte(0, 7);
+        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
+        // characterUpdateStream.WriteByte(0, 1);
+        // characterUpdateStream.WriteByte(0);
+        // characterUpdateStream.WriteByte(0);
+        // characterUpdateStream.WriteByte(0x32);
+        //
+        // var characterUpdateResult = characterUpdateStream.GetStreamData();
+        // StreamPeer.PutData(characterUpdateResult);
+        //
+        // var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
+        // // buyResult[^1] = 0;
+        // StreamPeer.PutData(buyResult);
     }
 
     private void UseItem ()

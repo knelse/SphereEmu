@@ -1,0 +1,10 @@
+{
+  "DecodedGameDataPath": "c:\\source\\_sphFilesDecode",
+  "GeneratedJsonOutputFolder": "C:\\_sphereGenerated",
+  "DecodedParamsFolderName": "params",
+  "DecodedLocaleFolderName": "language",
+  "ObjectDataFileName": "objectData.json",
+  "SuffixDataFileName": "suffixData.json",
+  "LocalizationContentFileName": "localizationContent.json",
+  "ObjectLocalizationFileName": "objectLocalization.json"
+}

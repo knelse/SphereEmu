@@ -26,7 +26,6 @@ public class PacketPart
     public int BitPositionStart;
     public readonly string Name;
     public List<Bit> Value;
-    public const string PacketPartsPath = @"c:\source\sphPacketDefinitions\";
 
     public static readonly Dictionary<string, string> DefinedPacketParts = new ()
     {
@@ -47,7 +46,8 @@ public class PacketPart
 
     public static List<PacketPart> LoadDefinedPartsFromFile (string name)
     {
-        return LoadFromFile(Path.Combine(PacketPartsPath, DefinedPacketParts[name] + ".spdp"));
+        var partsPath = MainServer.AppConfig["PacketPartPath"];
+        return LoadFromFile(Path.Combine(partsPath, DefinedPacketParts[name] + ".spdp"));
     }
 
     public static List<PacketPart> LoadFromFile (string filePath)

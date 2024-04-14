@@ -192,7 +192,8 @@ public class TestHelper
         }
 
         var packetName = inputParams[1];
-        var path = Path.Combine(MainServer.PacketDefinitionPath,
+        var path = Path.Combine(
+            MainServer.AppConfig["PacketDefinitionPath"],
             packetName + (isPacketPart ? MainServer.ExportedPartExtension : MainServer.PacketDefinitionExtension));
 
         if (!Path.Exists(path))
@@ -207,10 +208,8 @@ public class TestHelper
         {
             ChangeAllCoordsToFirstClient(packetParts);
         }
-        else
-        {
-            transformPacketPartValueAction?.Invoke(packetParts);
-        }
+
+        transformPacketPartValueAction?.Invoke(packetParts);
 
         if (generateNewId)
         {

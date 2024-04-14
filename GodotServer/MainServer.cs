@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using Godot;
 using LiteDB;
+using Newtonsoft.Json;
 using SphereHelpers.Extensions;
 using SphServer.DataModels;
 
@@ -18,8 +20,6 @@ namespace SphServer;
 public partial class MainServer : Node
 {
     public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
-    public const string gameDataPath = "c:\\source\\_sphFilesDecode\\params\\";
-    public const string PacketDefinitionPath = @"C:\\source\\sphPacketDefinitions";
     public const string PacketDefinitionExtension = ".spd";
     public const string ExportedPartExtension = ".spdp";
     private static readonly int playerIndex = 0x4F6F;
@@ -35,31 +35,32 @@ public partial class MainServer : Node
     public static MainServer MainServerNode = null!;
     public static readonly Random Rng = new (Guid.NewGuid().GetHashCode());
     public static readonly ConcurrentDictionary<ushort, Client> ActiveClients = new ();
-    public static readonly LiteDatabase Db = new (@"Filename=C:\_sphereStuff\sph.db;Connection=shared;");
+    public static LiteDatabase Db;
 
-    public static readonly LiteDatabase LiveServerObjectPacketDb =
-        new (@"Filename=C:\_sphereStuff\sph_items.db;Connection=shared;");
+    public static ILiteCollection<Clan> ClanCollection;
+    public static ILiteCollection<Player> PlayerCollection;
+    public static ILiteCollection<Character> CharacterCollection;
+    public static ILiteCollection<Item> ItemCollection;
 
-    public static readonly ILiteCollection<Clan> ClanCollection = Db.GetCollection<Clan>("Clans");
-    public static readonly ILiteCollection<Player> PlayerCollection = Db.GetCollection<Player>("Players");
-    public static readonly ILiteCollection<Character> CharacterCollection = Db.GetCollection<Character>("Characters");
-    public static readonly ILiteCollection<Item> ItemCollection = Db.GetCollection<Item>("Items");
+    public static ILiteCollection<ItemContainer> ItemContainerCollection;
 
-    public static readonly ILiteCollection<ItemContainer> ItemContainerCollection =
-        Db.GetCollection<ItemContainer>("ItemContainers");
+    public static ILiteCollection<Mob> MonsterCollection;
+    public static ILiteCollection<Vendor> VendorCollection;
 
-    public static readonly ILiteCollection<Mob> MonsterCollection = Db.GetCollection<Mob>("Monsters");
-    public static readonly ILiteCollection<Vendor> VendorCollection = Db.GetCollection<Vendor>("Vendors");
+    public static ILiteCollection<SphGameObject> GameObjectCollection;
 
-    public static readonly ILiteCollection<SphGameObject> GameObjectCollection =
-        Db.GetCollection<SphGameObject>("GameObjects");
-
-    public static readonly ILiteCollection<ObjectPacket> LiveServerObjectPacketCollection =
-        LiveServerObjectPacketDb.GetCollection<ObjectPacket>("ObjectPackets");
+    // public static readonly ILiteCollection<ObjectPacket> LiveServerObjectPacketCollection =
+    //     LiveServerObjectPacketDb.GetCollection<ObjectPacket>("ObjectPackets");
 
     public static readonly ConcurrentDictionary<ulong, Node> ActiveNodes = new ();
 
     public static readonly Dictionary<int, SphGameObject> SphGameObjectDb = SphObjectDb.GameObjectDataDb;
+
+    public static Dictionary<string, string> AppConfig;
+
+    static MainServer ()
+    {
+    }
 
     private static ushort getNewPlayerIndex ()
     {
@@ -75,6 +76,21 @@ public partial class MainServer : Node
     public override void _Ready ()
     {
         const int port = 25860;
+        using var configFile = File.OpenRead("appsettings.json");
+        using var configReader = new StreamReader(configFile);
+        AppConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(configReader.ReadToEnd());
+
+        Db = new LiteDatabase(AppConfig["LiteDbConnectionString"]);
+        ClanCollection = Db.GetCollection<Clan>("Clans");
+        PlayerCollection = Db.GetCollection<Player>("Players");
+        CharacterCollection = Db.GetCollection<Character>("Characters");
+        ItemCollection = Db.GetCollection<Item>("Items");
+        ItemContainerCollection =
+            Db.GetCollection<ItemContainer>("ItemContainers");
+        MonsterCollection = Db.GetCollection<Mob>("Monsters");
+        VendorCollection = Db.GetCollection<Vendor>("Vendors");
+        GameObjectCollection =
+            Db.GetCollection<SphGameObject>("GameObjects");
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         Win1251 = Encoding.GetEncoding(1251);
@@ -126,7 +142,7 @@ public partial class MainServer : Node
         GameObjectCollection.EnsureIndex(x => x.ObjectType);
         GameObjectCollection.EnsureIndex(x => x.ObjectKind);
         PlayerCollection.EnsureIndex(x => x.Login);
-        LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
+        // LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
 
         if (VendorCollection.FindById(2837) is null)
         {
