@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cv0dxdqcamfvf" path="res://NewPlayerDungeon.tscn" id="1"]
 [ext_resource type="Script" path="res://MainServer.cs" id="2"]
-[ext_resource type="PackedScene" uid="uid://b3qmcmy7d60wi" path="res://Npc.tscn" id="4_0nj4w"]
+[ext_resource type="Script" path="res://NpcInteractable.cs" id="4_74o3t"]
 [ext_resource type="Script" path="res://WorldObject.cs" id="5_efl4q"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
@@ -13,8 +13,6 @@
 script = ExtResource("2")
 
 [node name="NewPlayerDungeon" parent="." instance=ExtResource("1")]
-
-[node name="Npc" parent="." instance=ExtResource("4_0nj4w")]
 
 [node name="CityTeleports" type="Node3D" parent="."]
 
@@ -51,6 +49,7 @@ mesh = SubResource("BoxMesh_le5qm")
 [node name="Bangville1" type="Node3D" parent="CityTeleports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1896.18, -156.926, -435.485)
 script = ExtResource("5_efl4q")
+Angle = null
 ID = 1003
 ObjectType = 63
 
@@ -75,4 +74,43 @@ ObjectType = 65535
 shape = SubResource("CapsuleShape3D_imxti")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WorldObject"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="NpcInteractable" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("4_74o3t")
+Angle = null
+ID = null
+NameID = null
+ModelName = null
+IconName = null
+ObjectType = 213
+NpcType = null
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NpcInteractable"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NpcInteractable/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NpcInteractable"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="NPC" type="Node3D" parent="."]
+
+[node name="AlmaMaddocks" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.6, -152.93, -1280.73)
+script = ExtResource("4_74o3t")
+Angle = null
+ID = 2001
+ModelName = "npc14"
+IconName = "npc_trade_magic"
+ObjectType = 213
+NpcType = null
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/AlmaMaddocks"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/AlmaMaddocks/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/AlmaMaddocks"]
 mesh = SubResource("BoxMesh_le5qm")

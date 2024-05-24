@@ -49,6 +49,22 @@ public class PacketPart
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
+    public static List<PacketPart> LoadDefinedPartsFromFile (NpcType npcType)
+    {
+        var name = npcType switch
+        {
+            NpcType.TradeMagic => "npc_trade_magic_old",
+            NpcType.TradeWeapon => "npc_trade_wpon",
+            NpcType.QuestKarma => "npc_quest_karma",
+            NpcType.QuestTitle => "npc_quest_title",
+            NpcType.QuestDegree => "npc_quest_degree",
+            NpcType.Guilder => "npc_guilder",
+            _ => "npc_trade"
+        };
+        var partsPath = MainServer.AppConfig["PacketPartPath"];
+        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+    }
+
     public static List<PacketPart> LoadFromFile (string filePath)
     {
         var contents = File.ReadAllLines(filePath);

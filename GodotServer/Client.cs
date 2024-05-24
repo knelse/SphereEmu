@@ -468,9 +468,9 @@ public partial class Client : Node
 
                 CurrentCharacter = player!.Characters[selectedCharacterIndex];
                 CurrentCharacter.ClientIndex = LocalId;
-                CurrentCharacter.X = 2584;
-                CurrentCharacter.Y = -160;
-                CurrentCharacter.Z = 1426;
+                CurrentCharacter.X = 400;
+                CurrentCharacter.Y = -150;
+                CurrentCharacter.Z = -1300;
 
                 Console.WriteLine("CLI: Enter game");
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
@@ -1065,148 +1065,6 @@ public partial class Client : Node
         // StreamPeer.PutData(CommonPackets.LoadNewPlayerDungeon);
         // ConsoleHelper.WriteLine(
         // $"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
-        var mobX = newDungeonCoords.x - 50;
-        var mobY = newDungeonCoords.y;
-        var mobZ = newDungeonCoords.z + 19.5;
-
-        // typeid is itemid
-        // Mob.Create(mobX, mobY, mobZ, 0, 1260, 0, 1009, 1241);
-
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1899.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);   
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1898.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1900.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        //
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1895.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1896.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1897.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        //
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1901.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1902.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1903.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        //
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1904.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4501.61474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4500.51474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4499.41474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4498.31474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4497.21474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);        
-        // _testItemContainer = ItemContainer.Create(-1098.49506835937500, -4496.11474609375000, 1905.05493164062500, 39, 0,
-        // 	LootRatity.DEFAULT_MOB);
 
         currentState = ClientState.INGAME_DEFAULT;
         var clientTransform = clientModel!.Transform;
