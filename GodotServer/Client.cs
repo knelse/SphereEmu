@@ -1899,7 +1899,7 @@ public partial class Client : Node
 
     public float DistanceTo (Vector3 end)
     {
-        return clientModel!.GlobalTransform.Origin.DistanceTo(end);
+        return clientModel?.GlobalTransform.Origin.DistanceTo(end) ?? float.MaxValue;
     }
 
     private static int GetDestinationIdFromDamagePacket (byte[] rcvBuffer)

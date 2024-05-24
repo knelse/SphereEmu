@@ -12,6 +12,9 @@ namespace SphServer.Packets;
 public static class PacketPartNames
 {
     public const string MobLootSack = "MobLootSack";
+    public const string NpcTrade = "NpcTrade";
+    public const string NpcTradeWeapon = "NpcTradeWeapon";
+    public const string Teleport = "Teleport";
 }
 
 public class PacketPart
@@ -27,11 +30,6 @@ public class PacketPart
     public readonly string Name;
     public List<Bit> Value;
 
-    public static readonly Dictionary<string, string> DefinedPacketParts = new ()
-    {
-        [PacketPartNames.MobLootSack] = "sack_mob_loot"
-    };
-
     public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
     {
@@ -44,10 +42,11 @@ public class PacketPart
         Value = value;
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile (string name)
+    public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
     {
+        var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
         var partsPath = MainServer.AppConfig["PacketPartPath"];
-        return LoadFromFile(Path.Combine(partsPath, DefinedPacketParts[name] + ".spdp"));
+        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
     public static List<PacketPart> LoadFromFile (string filePath)
@@ -105,6 +104,27 @@ public class PacketPart
                 "z" => zValue,
                 _ => part.Value
             };
+        }
+    }
+
+    public static void UpdateValue (List<PacketPart> list, string name, int val, int length = 32)
+    {
+        var part = list.FirstOrDefault(x => x.Name == name);
+        if (part is not null)
+        {
+            part.Value = BitStreamExtensions.IntToBits(val, length).ToList();
+        }
+    }
+
+    public static void UpdateValue (List<PacketPart> list, string name, string val)
+    {
+        var part = list.FirstOrDefault(x => x.Name == name);
+        var valBytes = MainServer.Win1251.GetBytes(val);
+        var stream = new BitStream(valBytes);
+        var bits = stream.ReadBits(int.MaxValue);
+        if (part is not null)
+        {
+            part.Value = bits.ToList();
         }
     }
 

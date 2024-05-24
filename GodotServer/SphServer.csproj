@@ -1,36 +1,36 @@
-<Project Sdk="Godot.NET.Sdk/4.2.1">
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <LangVersion>latestmajor</LangVersion>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="IndexRange" Version="1.0.2"/>
-        <PackageReference Include="System.IO" Version="4.3.0"/>
-        <PackageReference Include="system.io.filesystem" Version="4.3.0"/>
-        <PackageReference Include="System.Runtime" Version="4.3.1"/>
-        <PackageReference Update="Godot.SourceGenerators" Version="4.0.2"/>
-        <PackageReference Update="GodotSharp" Version="4.0.2"/>
-        <PackageReference Update="GodotSharpEditor" Version="4.0.2"/>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\source\LiteDB\LiteDB\LiteDB.csproj"/>
-        <ProjectReference Include="..\..\source\ObjectPacketTools\ObjectPacketTools.csproj"/>
-        <ProjectReference Include="..\..\source\SphEntities\SphEntities.csproj"/>
-        <ProjectReference Include="..\..\source\SphereHelpers\SphereHelpers.csproj"/>
-        <ProjectReference Include="..\..\source\SphObjectDb\SphObjectDb.csproj"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="appsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="sphdbsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="GodotSharp">
-            <HintPath>..\..\Games\Godot\GodotSharp\Api\Release\GodotSharp.dll</HintPath>
-        </Reference>
-    </ItemGroup>
+<Project Sdk="Godot.NET.Sdk/4.2.2">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="IndexRange" Version="1.0.2" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="system.io.filesystem" Version="4.3.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Update="Godot.SourceGenerators" Version="4.0.2" />
+    <PackageReference Update="GodotSharp" Version="4.0.2" />
+    <PackageReference Update="GodotSharpEditor" Version="4.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\source\LiteDB\LiteDB\LiteDB.csproj" />
+    <ProjectReference Include="..\..\source\ObjectPacketTools\ObjectPacketTools.csproj" />
+    <ProjectReference Include="..\..\source\SphEntities\SphEntities.csproj" />
+    <ProjectReference Include="..\..\source\SphereHelpers\SphereHelpers.csproj" />
+    <ProjectReference Include="..\..\source\SphObjectDb\SphObjectDb.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sphdbsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\Games\Godot\GodotSharp\Api\Release\GodotSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

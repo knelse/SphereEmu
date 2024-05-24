@@ -126,7 +126,7 @@ public class ItemContainer
 
     public void ShowForClient (Client client)
     {
-        var packetParts = PacketPart.LoadDefinedPartsFromFile(PacketPartNames.MobLootSack);
+        var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.SackMobLoot);
         PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
         var localId = client.GetLocalObjectId(Id);
         PacketPart.UpdateEntityId(packetParts, localId);

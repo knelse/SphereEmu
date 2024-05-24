@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3qmcmy7d60wi"]
+
+[ext_resource type="Script" path="res://Nodes/NpcNode.cs" id="1_e2ffg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijfgl"]
+albedo_color = Color(0.819608, 0.0117647, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="66"]
+material = SubResource("StandardMaterial3D_ijfgl")
+radius = 0.3
+
+[sub_resource type="CapsuleShape3D" id="68"]
+radius = 0.3
+
+[sub_resource type="StandardMaterial3D" id="65"]
+emission_enabled = true
+emission = Color(0.419608, 1, 0.0627451, 1)
+
+[sub_resource type="BoxMesh" id="69"]
+material = SubResource("65")
+size = Vector3(0.1, 0.1, 1)
+
+[node name="Npc" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_e2ffg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("66")
+
+[node name="ModelCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("68")
+
+[node name="nose" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0909424, 0.501953, -0.623535)
+layers = 2
+mesh = SubResource("69")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
