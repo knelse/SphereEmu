@@ -53,8 +53,11 @@ public class PacketPart
     {
         var name = npcType switch
         {
-            NpcType.TradeMagic => "npc_trade_magic_old",
-            NpcType.TradeWeapon => "npc_trade_wpon",
+            // NpcType.TradeMagic => "npc_trade_magic",
+            // NpcType.TradeAlchemy => "npc_trade_magic",
+            // NpcType.TradeJewelry => "npc_trade_magic",
+            // NpcType.TradeWeapon => "npc_trade_wpon",
+            // NpcType.TradeArmor => "npc_trade_wpon",
             NpcType.QuestKarma => "npc_quest_karma",
             NpcType.QuestTitle => "npc_quest_title",
             NpcType.QuestDegree => "npc_quest_degree",
@@ -102,7 +105,7 @@ public class PacketPart
         return parts;
     }
 
-    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, double T = 0,
+    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0,
         bool flipYAxis = true)
     {
         var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
@@ -111,6 +114,7 @@ public class PacketPart
         var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
         var zValueBytes = CoordsHelper.EncodeServerCoordinate(Z);
         var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();
+        var angleValue = BitStreamExtensions.IntToBits(angle, 8).ToList();
         foreach (var part in list)
         {
             part.Value = part.Name switch
@@ -118,6 +122,7 @@ public class PacketPart
                 "x" => xValue,
                 "y" => yValue,
                 "z" => zValue,
+                "angle" => angleValue,
                 _ => part.Value
             };
         }

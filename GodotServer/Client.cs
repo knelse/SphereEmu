@@ -379,6 +379,7 @@ public partial class Client : Node
                 }
 
                 Console.WriteLine($"CLI {playerIndexStr}: Connection initialized");
+                await ToSignal(GetTree().CreateTimer(0.2f), "timeout");
                 StreamPeer.PutData(CommonPackets.ServerCredentials(LocalId));
                 Console.WriteLine($"SRV {playerIndexStr}: Credentials sent");
                 currentState = ClientState.INIT_WAITING_FOR_LOGIN_DATA;
@@ -1875,6 +1876,8 @@ public partial class Client : Node
         StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
         Console.WriteLine("Stat update");
     }
+
+    public bool IsReadyForGameLogic => currentState == ClientState.INGAME_DEFAULT;
 
     public static ushort GetNewEntityIndex ()
     {

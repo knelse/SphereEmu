@@ -102,6 +102,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.6, -152.93, -1280.73)
 script = ExtResource("4_74o3t")
 Angle = null
 ID = 2001
+NameID = null
 ModelName = "npc14"
 IconName = "npc_trade_magic"
 ObjectType = 213
@@ -113,4 +114,118 @@ NpcType = null
 shape = SubResource("CapsuleShape3D_imxti")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/AlmaMaddocks"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="SamuelNectarus" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 424.381, -153.467, -1287.3)
+script = ExtResource("4_74o3t")
+Angle = 90
+ID = 2002
+NameID = 4014
+ModelName = "npc29c"
+IconName = "npc_trade_armor"
+ObjectType = 213
+NpcType = 4
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/SamuelNectarus"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/SamuelNectarus/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/SamuelNectarus"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="NpcTradeTravelSunpool" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 401.71, -153.38, -1271.21)
+script = ExtResource("4_74o3t")
+Angle = null
+ID = 2003
+NameID = 4015
+ModelName = "npc29b"
+IconName = "npc_trade_travl"
+ObjectType = 213
+NpcType = 5
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/NpcTradeTravelSunpool"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/NpcTradeTravelSunpool/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/NpcTradeTravelSunpool"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="SimonPike" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 390.999, -153.363, -1308.51)
+script = ExtResource("4_74o3t")
+Angle = 193
+ID = 2004
+NameID = 4004
+ModelName = "npc08"
+IconName = "npc_trade_wpon"
+ObjectType = 213
+NpcType = 2
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/SimonPike"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/SimonPike/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/SimonPike"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="AnitaThompson" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 421.55, -153.042, -1315.53)
+script = ExtResource("4_74o3t")
+Angle = 59
+ID = 2005
+NameID = 4005
+ModelName = "npc14b"
+IconName = "npc_trade_jewel"
+ObjectType = 213
+NpcType = 3
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/AnitaThompson"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/AnitaThompson/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/AnitaThompson"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="TemporaTempus" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 367.063, -158.561, -1338.48)
+script = ExtResource("4_74o3t")
+Angle = 57
+ID = 2006
+NameID = 4150
+ModelName = "npc14a"
+IconName = "npc_trade_alchm"
+ObjectType = 213
+NpcType = 1
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/TemporaTempus"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/TemporaTempus/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/TemporaTempus"]
+mesh = SubResource("BoxMesh_le5qm")
+
+[node name="EugeneZelenski" type="Node3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 344.141, -160.069, -1405.19)
+script = ExtResource("4_74o3t")
+Angle = 230
+ID = 2007
+NameID = 4407
+ModelName = null
+IconName = "npc_quest_dgree"
+ObjectType = 213
+NpcType = 9
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NPC/EugeneZelenski"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/EugeneZelenski/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC/EugeneZelenski"]
 mesh = SubResource("BoxMesh_le5qm")

@@ -24,7 +24,8 @@ public partial class WorldObject : Node3D
     public override void _Process (double delta)
     {
         foreach (var clientInRange in MainServer.ActiveClients.Where(x =>
-                     !ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
+                     x.Value.IsReadyForGameLogic && !ShownForClients.ContainsKey(x.Key) &&
+                     x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
         {
             ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
             ShowForClient(clientInRange.Value);

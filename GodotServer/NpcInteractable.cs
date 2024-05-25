@@ -11,6 +11,7 @@ public enum NpcType
     TradeMagic,
     TradeAlchemy,
     TradeWeapon,
+    TradeJewelry,
     TradeArmor,
     TradeTravelGeneric,
     TradeTravelTokens,
@@ -18,7 +19,36 @@ public enum NpcType
     QuestTitle,
     QuestDegree,
     QuestKarma,
-    Guilder
+    Guilder,
+    Banker,
+    Prefix,
+    Tournament
+}
+
+public static class NpcInteractableMappings
+{
+    public static int NpcTypeToNpcTradeTypeSph (NpcType npcType)
+    {
+        return npcType switch
+        {
+            NpcType.TradeMagic => 9,
+            NpcType.TradeAlchemy => 5,
+            NpcType.TradeWeapon => 11,
+            NpcType.TradeJewelry => 8,
+            NpcType.TradeArmor => 7,
+            NpcType.TradeTavernkeeper => 6,
+            NpcType.TradeTravelGeneric => 10,
+            NpcType.TradeTravelTokens => 10,
+            NpcType.QuestTitle => 4,
+            NpcType.QuestDegree => 2,
+            NpcType.QuestKarma => 3,
+            NpcType.Guilder => 1,
+            NpcType.Banker => 0,
+            NpcType.Prefix => 12,
+            NpcType.Tournament => 13,
+            _ => 0
+        };
+    }
 }
 
 public partial class NpcInteractable : Node3D
@@ -47,7 +77,8 @@ public partial class NpcInteractable : Node3D
     public override void _Process (double delta)
     {
         foreach (var clientInRange in MainServer.ActiveClients.Where(x =>
-                     !ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
+                     x.Value.IsReadyForGameLogic && !ShownForClients.ContainsKey(x.Key) &&
+                     x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
         {
             ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
             ShowForClient(clientInRange.Value);
@@ -73,20 +104,11 @@ public partial class NpcInteractable : Node3D
         PacketPart.UpdateValue(packetParts, "entity_type_name", ModelNameSph);
         PacketPart.UpdateValue(packetParts, "icon_name_length", IconNameLength, 8);
         PacketPart.UpdateValue(packetParts, "icon_name", IconNameSph);
-
-        var spawnerPacketParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.MobSpawner);
-        PacketPart.UpdateCoordinates(spawnerPacketParts, GlobalTransform.Origin.X + 50, GlobalTransform.Origin.Y,
-            GlobalTransform.Origin.Z + 50, 0);
-        var spawnerLocalId = client.GetLocalObjectId(ID + 1000);
-        PacketPart.UpdateEntityId(spawnerPacketParts, spawnerLocalId);
-
+        var tradeType = NpcInteractableMappings.NpcTypeToNpcTradeTypeSph(NpcType);
+        PacketPart.UpdateValue(packetParts, "npc_trade_type", tradeType, 4);
         var npcPacket = PacketPart.GetBytesToWrite(packetParts);
         npcPacket[^1] = 0;
 
-        var spawnerPacket = PacketPart.GetBytesToWrite(spawnerPacketParts);
-        spawnerPacket[^1] = 0;
-
-        client.StreamPeer.PutData(spawnerPacket);
         client.StreamPeer.PutData(npcPacket);
     }
 }
