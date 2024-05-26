@@ -62,6 +62,7 @@ public class PacketPart
             NpcType.QuestTitle => "npc_quest_title",
             NpcType.QuestDegree => "npc_quest_degree",
             NpcType.Guilder => "npc_guilder",
+            NpcType.Banker => "npc_banker",
             _ => "npc_trade"
         };
         var partsPath = MainServer.AppConfig["PacketPartPath"];

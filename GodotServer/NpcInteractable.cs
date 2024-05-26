@@ -106,6 +106,7 @@ public partial class NpcInteractable : Node3D
         PacketPart.UpdateValue(packetParts, "icon_name", IconNameSph);
         var tradeType = NpcInteractableMappings.NpcTypeToNpcTradeTypeSph(NpcType);
         PacketPart.UpdateValue(packetParts, "npc_trade_type", tradeType, 4);
+
         var npcPacket = PacketPart.GetBytesToWrite(packetParts);
         npcPacket[^1] = 0;
 

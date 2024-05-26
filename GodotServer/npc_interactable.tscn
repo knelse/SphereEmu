@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://6qegskoxrqr4"]
+
+[ext_resource type="Script" path="res://NpcInteractable.cs" id="1_lxa1o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_le5qm"]
+
+[node name="NpcInteractable" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.6, -152.93, -1280.73)
+script = ExtResource("1_lxa1o")
+Angle = null
+ID = 2001
+NameID = null
+ModelName = "npc14"
+IconName = "npc_trade_magic"
+ObjectType = 213
+NpcType = null
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_le5qm")
