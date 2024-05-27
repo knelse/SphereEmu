@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhf55t2qcp114"]
+[gd_scene load_steps=6 format=3 uid="uid://bhf55t2qcp114"]
 
 [ext_resource type="PackedScene" uid="uid://cv0dxdqcamfvf" path="res://NewPlayerDungeon.tscn" id="1"]
 [ext_resource type="Script" path="res://MainServer.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://c75fu8t5hnes4" path="res://world_object.tscn" id="4_61mkd"]
 [ext_resource type="PackedScene" uid="uid://6qegskoxrqr4" path="res://npc_interactable.tscn" id="5_5rg3u"]
+[ext_resource type="PackedScene" uid="uid://2x20dwdkiyxi" path="res://door.tscn" id="5_h4gwc"]
 
 [node name="MainServer" type="Node"]
 script = ExtResource("2")
@@ -24,9 +25,14 @@ Angle = 54
 ID = 1002
 ObjectType = 63
 
+[node name="Sunpool_Rodos" parent="CityTeleports" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 405.3, -159.79, -1186.47)
+ID = 1003
+ObjectType = 62
+
 [node name="Bangville_1" parent="CityTeleports" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1896.18, -156.926, -435.485)
-ID = 1003
+ID = 1004
 ObjectType = 63
 
 [node name="NPC" type="Node3D" parent="."]
@@ -106,3 +112,89 @@ ModelName = "<null>"
 IconName = "npc_quest_title"
 ObjectType = 205
 NpcType = 8
+
+[node name="DungeonEntrances" type="Node3D" parent="."]
+
+[node name="Sunpool_1" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 422.273, -151.589, -1320.4)
+Angle = 32
+ID = 3001
+ObjectType = 65
+
+[node name="Sunpool_2" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 431.388, -156.291, -1260.22)
+Angle = 30
+ID = 3002
+ObjectType = 65
+
+[node name="Sunpool_3" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 386.095, -151.853, -1285.59)
+Angle = 34
+ID = 3003
+ObjectType = 65
+
+[node name="Sunpool_4" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 365.087, -157.664, -1332.73)
+Angle = 221
+ID = 3004
+ObjectType = 65
+
+[node name="Workshops" type="Node3D" parent="."]
+
+[node name="Sunpool_1" parent="Workshops" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 440.04, -157.92, -1249.98)
+Angle = 227
+ID = 4001
+ObjectType = 805
+
+[node name="Sunpool_2" parent="Workshops" instance=ExtResource("4_61mkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 348.8, -158.69, -1333.41)
+Angle = 206
+ID = 4002
+ObjectType = 805
+
+[node name="Doors" type="Node3D" parent="."]
+
+[node name="Sunpool1" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 413.649, -151.938, -1279.93)
+DoorID = 32767
+HasTarget = true
+TargetX = -3093.51
+TargetY = 1099.98
+TargetZ = 3901.05
+Angle = 30
+ID = 5001
+
+[node name="Sunpool2" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 414.212, -149.001, -1272.16)
+DoorID = 5011
+Angle = 31
+ID = 5002
+
+[node name="Sunpool3" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 411.438, -148.984, -1274.88)
+DoorID = 5012
+Angle = 31
+ID = 5003
+
+[node name="Sunpool4" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 408.611, -148.994, -1277.64)
+DoorID = 5013
+Angle = 31
+ID = 5004
+
+[node name="Sunpool5" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 405.812, -148.83, -1280.38)
+DoorID = 5014
+Angle = 31
+ID = 5005
+
+[node name="Sunpool6" parent="Doors" instance=ExtResource("5_h4gwc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 411.522, -152.216, -1274.96)
+DoorID = 32767
+HasTarget = true
+TargetX = -3099.7
+TargetY = 1099.95
+TargetZ = 3899.65
+Angle = 31
+ID = 5006

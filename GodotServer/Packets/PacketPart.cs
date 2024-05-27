@@ -9,14 +9,6 @@ using SphServer.Helpers.Enums;
 
 namespace SphServer.Packets;
 
-public static class PacketPartNames
-{
-    public const string MobLootSack = "MobLootSack";
-    public const string NpcTrade = "NpcTrade";
-    public const string NpcTradeWeapon = "NpcTradeWeapon";
-    public const string Teleport = "Teleport";
-}
-
 public class PacketPart
 {
     // this is a server-side stub, main implementation in PacketLogViewer
@@ -45,6 +37,12 @@ public class PacketPart
     public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
     {
         var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
+        var partsPath = MainServer.AppConfig["PacketPartPath"];
+        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+    }
+
+    public static List<PacketPart> LoadDefinedWithOverride (string name)
+    {
         var partsPath = MainServer.AppConfig["PacketPartPath"];
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }

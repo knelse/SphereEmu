@@ -41,12 +41,30 @@ public partial class WorldObject : Node3D
 
     public void ShowForClient (Client client)
     {
-        var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType);
+        var packetParts = GetPacketPartsAndUpdateCoordsAndID(client);
+        packetParts = ModifyPacketParts(packetParts);
+        var npcPacket = PacketPart.GetBytesToWrite(packetParts);
+        client.StreamPeer.PutData(npcPacket);
+    }
+
+    public virtual List<PacketPart> GetPacketParts ()
+    {
+        return PacketPart.LoadDefinedPartsFromFile(ObjectType);
+    }
+
+    public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID (Client client)
+    {
+        var packetParts = GetPacketParts();
         PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, GlobalTransform.Origin.Y,
             GlobalTransform.Origin.Z, Angle);
         var localId = client.GetLocalObjectId(ID);
         PacketPart.UpdateEntityId(packetParts, localId);
-        var npcPacket = PacketPart.GetBytesToWrite(packetParts);
-        client.StreamPeer.PutData(npcPacket);
+
+        return packetParts;
+    }
+
+    public virtual List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    {
+        return packetParts;
     }
 }
