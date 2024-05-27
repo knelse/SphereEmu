@@ -32,11 +32,11 @@ public static class NpcInteractableMappings
         return npcType switch
         {
             NpcType.TradeMagic => 9,
-            NpcType.TradeAlchemy => 5,
+            NpcType.TradeAlchemy => 6,
             NpcType.TradeWeapon => 11,
             NpcType.TradeJewelry => 8,
             NpcType.TradeArmor => 7,
-            NpcType.TradeTavernkeeper => 6,
+            NpcType.TradeTavernkeeper => 5,
             NpcType.TradeTravelGeneric => 10,
             NpcType.TradeTravelTokens => 10,
             NpcType.QuestTitle => 4,
@@ -58,7 +58,6 @@ public partial class NpcInteractable : Node3D
     [Export] public int NameID { get; set; } = 4016;
     [Export] public string ModelName { get; set; } = string.Empty;
     public string ModelNameSph => ModelName + "\0";
-    public int ModelNameLength => ModelNameSph.Length;
     [Export] public string IconName { get; set; } = string.Empty;
     public string IconNameSph => IconName + "\0";
     public int IconNameLength => IconNameSph.Length;
@@ -100,8 +99,14 @@ public partial class NpcInteractable : Node3D
         var localId = client.GetLocalObjectId(ID);
         PacketPart.UpdateEntityId(packetParts, localId);
         PacketPart.UpdateValue(packetParts, "name_id", NameID - 4000, 11);
-        PacketPart.UpdateValue(packetParts, "entity_type_name_length", ModelNameLength, 8);
-        PacketPart.UpdateValue(packetParts, "entity_type_name", ModelNameSph);
+        var modelName = ModelNameSph;
+        if (NpcType is NpcType.Guilder)
+        {
+            modelName = modelName.PadRight(16, '\0');
+        }
+
+        PacketPart.UpdateValue(packetParts, "entity_type_name_length", modelName.Length, 8);
+        PacketPart.UpdateValue(packetParts, "entity_type_name", modelName);
         PacketPart.UpdateValue(packetParts, "icon_name_length", IconNameLength, 8);
         PacketPart.UpdateValue(packetParts, "icon_name", IconNameSph);
         var tradeType = NpcInteractableMappings.NpcTypeToNpcTradeTypeSph(NpcType);
