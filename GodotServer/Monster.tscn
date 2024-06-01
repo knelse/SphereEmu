@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://jecy1l185txr"]
 
-[ext_resource type="Script" path="res://Nodes/MobNode.cs" id="1"]
+[ext_resource type="Script" path="res://Monster.cs" id="1_4avj5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijfgl"]
 albedo_color = Color(0.819608, 0.0117647, 0, 1)
@@ -20,9 +20,9 @@ emission = Color(0.419608, 1, 0.0627451, 1)
 material = SubResource("65")
 size = Vector3(0.1, 0.1, 1)
 
-[node name="Mob" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1148.97, -4501.6, 1920.49)
-script = ExtResource("1")
+[node name="Monster" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_4avj5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("66")
@@ -35,5 +35,3 @@ shape = SubResource("68")
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0909424, 0.501953, -0.623535)
 layers = 2
 mesh = SubResource("69")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

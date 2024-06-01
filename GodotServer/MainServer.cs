@@ -9,6 +9,7 @@ using LiteDB;
 using Newtonsoft.Json;
 using SphereHelpers.Extensions;
 using SphServer.DataModels;
+using SphServer.Enums;
 
 // ReSharper disable NotAccessedField.Local
 
@@ -57,6 +58,7 @@ public partial class MainServer : Node
     public static readonly Dictionary<int, SphGameObject> SphGameObjectDb = SphObjectDb.GameObjectDataDb;
 
     public static Dictionary<string, string> AppConfig;
+    private static readonly PackedScene MonsterScene = (PackedScene) ResourceLoader.Load("res://Monster.tscn");
 
     static MainServer ()
     {
@@ -168,6 +170,7 @@ public partial class MainServer : Node
 
         Console.WriteLine("Server up, waiting for connections...");
         MainServerNode = this;
+        InstantiateObjects();
     }
 
     public override void _Process (double delta)
@@ -186,5 +189,46 @@ public partial class MainServer : Node
         ActiveClients[client.LocalId] = client;
         ActiveNodes[client.GetInstanceId()] = client;
         AddChild(client);
+    }
+
+    private void InstantiateObjects ()
+    {
+        var mobData = File.ReadAllLines(@"Helpers\MonsterSpawnData\MonsterSpawnData.txt");
+        var mobId = 7300;
+        foreach (var line in mobData)
+        {
+            try
+            {
+                var split = line.Split('\t', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var x = float.Parse(split[3]);
+                var y = float.Parse(split[4]);
+                var z = float.Parse(split[5]);
+                var angle = int.Parse(split[6]);
+                var currentHp = int.Parse(split[7]);
+                var maxHp = int.Parse(split[8]);
+                var type = int.Parse(split[9]);
+                var level = int.Parse(split[10]) - 1;
+                if (level > 30)
+                {
+                    level = 0;
+                }
+
+                var monsterNode = MonsterScene.Instantiate<Monster>();
+                monsterNode.MonsterType = MonsterTypeMapping.MonsterTypeToMonsterNameMapping[type];
+                monsterNode.Level = level;
+                monsterNode.Angle = angle;
+                monsterNode.CurrentHP = currentHp;
+                monsterNode.MaxHP = maxHp;
+                monsterNode.Name = Enum.GetName(typeof (MonsterType), monsterNode.MonsterType);
+                monsterNode.ID = (ushort) mobId;
+                mobId++;
+                MainServerNode.CallDeferred("add_child", monsterNode);
+                monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

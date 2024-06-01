@@ -14,6 +14,7 @@ public partial class WorldObject : Node3D
     [Export] public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
 
     public readonly Dictionary<ushort, DateTime> ShownForClients = new ();
+    public readonly Dictionary<ushort, DateTime> DeleteForClients = new ();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready ()
@@ -24,18 +25,35 @@ public partial class WorldObject : Node3D
     public override void _Process (double delta)
     {
         foreach (var clientInRange in MainServer.ActiveClients.Where(x =>
-                     x.Value.IsReadyForGameLogic && !ShownForClients.ContainsKey(x.Key) &&
+                     x.Value.IsReadyForGameLogic &&
                      x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
         {
-            ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
-            ShowForClient(clientInRange.Value);
+            if (!ShownForClients.ContainsKey(clientInRange.Key))
+            {
+                ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
+                ShowForClient(clientInRange.Value);
+            }
+
+            if (DeleteForClients.ContainsKey(clientInRange.Key))
+            {
+                DeleteForClients.Remove(clientInRange.Key);
+            }
         }
 
         foreach (var clientOutOfRange in MainServer.ActiveClients.Where(x =>
                      ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) > 100))
         {
-            clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
-            ShownForClients.Remove(clientOutOfRange.Key);
+            if (DeleteForClients.ContainsKey(clientOutOfRange.Key) &&
+                (DateTime.UtcNow - DeleteForClients[clientOutOfRange.Key]).Milliseconds > 100)
+            {
+                clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
+                ShownForClients.Remove(clientOutOfRange.Key);
+                DeleteForClients.Remove(clientOutOfRange.Key);
+            }
+            else if (!DeleteForClients.ContainsKey(clientOutOfRange.Key))
+            {
+                DeleteForClients.Add(clientOutOfRange.Key, DateTime.UtcNow);
+            }
         }
     }
 

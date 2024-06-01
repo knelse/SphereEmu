@@ -133,6 +133,7 @@ public class PacketPart
         if (part is not null)
         {
             part.Value = BitStreamExtensions.IntToBits(val, length).ToList();
+            part.BitLength = length;
         }
     }
 
