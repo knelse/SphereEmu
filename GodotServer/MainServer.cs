@@ -60,6 +60,9 @@ public partial class MainServer : Node
     public static Dictionary<string, string> AppConfig;
     private static readonly PackedScene MonsterScene = (PackedScene) ResourceLoader.Load("res://Monster.tscn");
 
+    private static readonly PackedScene AlchemyResourceScene =
+        (PackedScene) ResourceLoader.Load("res://alchemy_resource.tscn");
+
     static MainServer ()
     {
     }
@@ -224,6 +227,37 @@ public partial class MainServer : Node
                 mobId++;
                 MainServerNode.CallDeferred("add_child", monsterNode);
                 monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        var alchemyResourceData = File.ReadAllLines(@"Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt");
+        var resourceId = 10000;
+        foreach (var line in alchemyResourceData)
+        {
+            try
+            {
+                var split = line.Split('\t', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var type = split[1];
+                var x = float.Parse(split[3]);
+                var y = float.Parse(split[4]);
+                var z = float.Parse(split[5]);
+                var angle = int.Parse(split[6]);
+                var gameId = int.Parse(split[7]);
+
+                var node = AlchemyResourceScene.Instantiate<AlchemyResource>();
+                node.Angle = angle;
+                node.ID = (ushort) resourceId;
+                node.GameObjectID = gameId;
+                resourceId++;
+                MainServerNode.CallDeferred("add_child", node);
+                node.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
+                node.ObjectType = Enum.TryParse(type, out ObjectType objectType)
+                    ? objectType
+                    : ObjectType.AlchemyMetal;
             }
             catch (Exception ex)
             {

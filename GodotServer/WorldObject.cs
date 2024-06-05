@@ -44,7 +44,7 @@ public partial class WorldObject : Node3D
                      ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) > 100))
         {
             if (DeleteForClients.ContainsKey(clientOutOfRange.Key) &&
-                (DateTime.UtcNow - DeleteForClients[clientOutOfRange.Key]).Milliseconds > 100)
+                (DateTime.UtcNow - DeleteForClients[clientOutOfRange.Key]).Milliseconds > 500)
             {
                 clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
                 ShownForClients.Remove(clientOutOfRange.Key);

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpjd7468smaxw"]
+
+[ext_resource type="Script" path="res://AlchemyResource.cs" id="1_1jq64"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_le5qm"]
+
+[node name="AlchemyResource" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_1jq64")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_le5qm")

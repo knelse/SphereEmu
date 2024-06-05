@@ -24,6 +24,9 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="Helpers\MonsterSpawnData\MonsterSpawnData.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
