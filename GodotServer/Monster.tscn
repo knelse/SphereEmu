@@ -23,6 +23,17 @@ size = Vector3(0.1, 0.1, 1)
 [node name="Monster" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_4avj5")
+MonsterType = null
+HasName = null
+NameID_1 = null
+NameID_2 = null
+NameID_3 = null
+CurrentHP = null
+MaxHP = null
+Level = null
+Angle = null
+ID = null
+ObjectType = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("66")

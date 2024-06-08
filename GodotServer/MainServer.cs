@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using Godot;
 using LiteDB;
 using Newtonsoft.Json;
@@ -23,7 +24,8 @@ public partial class MainServer : Node
     public const int CLIENT_OBJECT_VISIBILITY_DISTANCE = 100;
     public const string PacketDefinitionExtension = ".spd";
     public const string ExportedPartExtension = ".spdp";
-    private static readonly int playerIndex = 0x4F6F;
+    private static uint playerIndex = 0x4F6F;
+    private static uint worldObjectIndex = 1000;
 
     private static int playerCount;
 
@@ -54,14 +56,11 @@ public partial class MainServer : Node
     //     LiveServerObjectPacketDb.GetCollection<ObjectPacket>("ObjectPackets");
 
     public static readonly ConcurrentDictionary<ulong, Node> ActiveNodes = new ();
+    public static readonly ConcurrentDictionary<ushort, WorldObject> ActiveWorldObjects = new ();
 
     public static readonly Dictionary<int, SphGameObject> SphGameObjectDb = SphObjectDb.GameObjectDataDb;
 
     public static Dictionary<string, string> AppConfig;
-    private static readonly PackedScene MonsterScene = (PackedScene) ResourceLoader.Load("res://Monster.tscn");
-
-    private static readonly PackedScene AlchemyResourceScene =
-        (PackedScene) ResourceLoader.Load("res://alchemy_resource.tscn");
 
     static MainServer ()
     {
@@ -76,6 +75,16 @@ public partial class MainServer : Node
 
         // return (ushort) Interlocked.Increment(ref playerIndex);
         return (ushort) playerIndex;
+    }
+
+    public static ushort GetNewWorldObjectIndex ()
+    {
+        if (worldObjectIndex > 65535)
+        {
+            throw new ArgumentException("Reached max number of connections");
+        }
+
+        return (ushort) Interlocked.Increment(ref worldObjectIndex);
     }
 
     public override void _Ready ()
@@ -144,36 +153,36 @@ public partial class MainServer : Node
         ItemCollection.EnsureIndex(x => x.GameId);
         GameObjectCollection.EnsureIndex(x => x.GameId);
         GameObjectCollection.EnsureIndex(x => x.GameObjectDbId);
-        GameObjectCollection.EnsureIndex(x => x.ObjectType);
+        GameObjectCollection.EnsureIndex(x => x.GameObjectType);
         GameObjectCollection.EnsureIndex(x => x.ObjectKind);
         PlayerCollection.EnsureIndex(x => x.Login);
         // LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
 
-        if (VendorCollection.FindById(2837) is null)
-        {
-            // until we stop clearing item collection, we need to create it to get proper itemid
-            // healing powder 1
-            var hpPowder = Item.CreateFromGameObject(GameObjectCollection.FindById(601));
-            hpPowder.ItemCount = 1000;
-            hpPowder.Id = ItemCollection.Insert(hpPowder);
-
-            var newPlayerDungeonVendor = new Vendor
-            {
-                Id = 2837,
-                ItemIdsOnSale = new List<int>
-                {
-                    hpPowder.Id
-                },
-                Name = "Test",
-                FamilyName = "Vendor"
-            };
-
-            VendorCollection.Insert(newPlayerDungeonVendor);
-        }
+        // if (VendorCollection.FindById(2837) is null)
+        // {
+        //     // until we stop clearing item collection, we need to create it to get proper itemid
+        //     // healing powder 1
+        //     var hpPowder = Item.CreateFromGameObject(GameObjectCollection.FindById(601));
+        //     hpPowder.ItemCount = 1000;
+        //     hpPowder.Id = ItemCollection.Insert(hpPowder);
+        //
+        //     var newPlayerDungeonVendor = new Vendor
+        //     {
+        //         Id = 2837,
+        //         ItemIdsOnSale = new List<int>
+        //         {
+        //             hpPowder.Id
+        //         },
+        //         Name = "Test",
+        //         FamilyName = "Vendor"
+        //     };
+        //
+        //     VendorCollection.Insert(newPlayerDungeonVendor);
+        // }
 
         Console.WriteLine("Server up, waiting for connections...");
         MainServerNode = this;
-        InstantiateObjects();
+        WorldObjectSpawner.InstantiateObjects();
     }
 
     public override void _Process (double delta)
@@ -192,77 +201,5 @@ public partial class MainServer : Node
         ActiveClients[client.LocalId] = client;
         ActiveNodes[client.GetInstanceId()] = client;
         AddChild(client);
-    }
-
-    private void InstantiateObjects ()
-    {
-        var mobData = File.ReadAllLines(@"Helpers\MonsterSpawnData\MonsterSpawnData.txt");
-        var mobId = 7300;
-        foreach (var line in mobData)
-        {
-            try
-            {
-                var split = line.Split('\t', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                var x = float.Parse(split[3]);
-                var y = float.Parse(split[4]);
-                var z = float.Parse(split[5]);
-                var angle = int.Parse(split[6]);
-                var currentHp = int.Parse(split[7]);
-                var maxHp = int.Parse(split[8]);
-                var type = int.Parse(split[9]);
-                var level = int.Parse(split[10]) - 1;
-                if (level > 30)
-                {
-                    level = 0;
-                }
-
-                var monsterNode = MonsterScene.Instantiate<Monster>();
-                monsterNode.MonsterType = MonsterTypeMapping.MonsterTypeToMonsterNameMapping[type];
-                monsterNode.Level = level;
-                monsterNode.Angle = angle;
-                monsterNode.CurrentHP = currentHp;
-                monsterNode.MaxHP = maxHp;
-                monsterNode.Name = Enum.GetName(typeof (MonsterType), monsterNode.MonsterType);
-                monsterNode.ID = (ushort) mobId;
-                mobId++;
-                MainServerNode.CallDeferred("add_child", monsterNode);
-                monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        var alchemyResourceData = File.ReadAllLines(@"Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt");
-        var resourceId = 10000;
-        foreach (var line in alchemyResourceData)
-        {
-            try
-            {
-                var split = line.Split('\t', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                var type = split[1];
-                var x = float.Parse(split[3]);
-                var y = float.Parse(split[4]);
-                var z = float.Parse(split[5]);
-                var angle = int.Parse(split[6]);
-                var gameId = int.Parse(split[7]);
-
-                var node = AlchemyResourceScene.Instantiate<AlchemyResource>();
-                node.Angle = angle;
-                node.ID = (ushort) resourceId;
-                node.GameObjectID = gameId;
-                resourceId++;
-                MainServerNode.CallDeferred("add_child", node);
-                node.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
-                node.ObjectType = Enum.TryParse(type, out ObjectType objectType)
-                    ? objectType
-                    : ObjectType.AlchemyMetal;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
     }
 }

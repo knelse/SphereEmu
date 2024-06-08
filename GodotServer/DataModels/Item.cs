@@ -6,13 +6,13 @@ namespace SphServer.DataModels;
 
 public class Item
 {
-    [BsonId]
-    public int Id { get; set; }
+    [BsonId] public int Id { get; set; }
     public int GameObjectDbId { get; set; }
     public GameObjectKind ObjectKind { get; set; }
     public int GameId { get; set; }
     public string SphereType { get; set; } = string.Empty;
-    public GameObjectType ObjectType { get; set; }
+    public GameObjectType GameObjectType { get; set; }
+    public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
     public string ModelNameGround { get; set; } = string.Empty;
     public string ModelNameInventory { get; set; } = string.Empty;
     public int HpCost { get; set; }
@@ -71,16 +71,17 @@ public class Item
     public int Duration { get; set; }
     public ItemSuffix Suffix { get; set; }
     public int ItemCount { get; set; }
-    public Dictionary<Locale, string> Localisation { get; set; } = new();
+    public Dictionary<Locale, string> Localisation { get; set; } = new ();
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
-    public string ToDebugString()
+
+    public string ToDebugString ()
     {
         var itemCountStr = ItemCount > 1 ? $" ({ItemCount})" : "";
         return
             "===============================================================================================================================\n" +
-            $"GO: {Enum.GetName(typeof(GameObjectType), ObjectType)} [{GameId}] T{Tier}" + itemCountStr +
-            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof(ItemSuffix), Suffix)} \n" +
+            $"GO: {Enum.GetName(typeof (GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
+            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof (ItemSuffix), Suffix)} \n" +
             $"Str: {StrengthReq} Agi: {AgilityReq} Acc: {AccuracyReq} End: {EnduranceReq} Ear: {EarthReq} Air: {AirReq} Wat: {WaterReq} Fir: {FireReq}\n" +
             $"Str+: {StrengthUp} Agi+: {AgilityUp} Acc+: {AccuracyUp} End+: {EnduranceUp} Ear+: {EarthUp} Air+: {AirUp} Wat+: {WaterUp} Fir+: {FireUp}\n" +
             $"MaxHP+: {MaxHpUp} MaxMP+: {MaxMpUp} PD+: {PDefUp} MD+: {MDefUp} PA: {PAtkNegative} PA+: {PAtkUpNegative} MA: {MAtkNegativeOrHeal} MA+: {MAtkUpNegative} MP+: {MPHeal}";
@@ -96,14 +97,15 @@ public class Item
         //KarmaMax: {Enum.GetName(typeof(KarmaTypes), MaxKarmaLevel)} 
     }
 
-    public bool IsTierVisible()
+    public bool IsTierVisible ()
     {
         return ObjectKind is GameObjectKind.Armor or GameObjectKind.Axe or GameObjectKind.Guild
                    or GameObjectKind.Magical or GameObjectKind.Powder or GameObjectKind.Quest or GameObjectKind.Sword
-                   or GameObjectKind.Unique or GameObjectKind.Armor_New or GameObjectKind.Armor_Old or GameObjectKind.Axe_New
+                   or GameObjectKind.Unique or GameObjectKind.Armor_New or GameObjectKind.Armor_Old
+                   or GameObjectKind.Axe_New
                    or GameObjectKind.Crossbow_New or GameObjectKind.Magical_New or GameObjectKind.MantraBlack
                    or GameObjectKind.MantraWhite or GameObjectKind.Sword_New
-               && ObjectType is not GameObjectType.Ear;
+               && GameObjectType is not GameObjectType.Ear;
     }
 
     public static Item CreateFromGameObject (SphGameObject go)
@@ -122,7 +124,8 @@ public class Item
         item.GameObjectDbId = go.GameObjectDbId;
         if (item.Suffix != ItemSuffix.None)
         {
-            item.UpdateStatsForSuffix();;
+            item.UpdateStatsForSuffix();
+            ;
         }
 
         return item;
@@ -150,9 +153,9 @@ public class Item
         return item;
     }
 
-    private void UpdateStatsForSuffix()
+    private void UpdateStatsForSuffix ()
     {
-        var suffixObj = SphObjectDbHelper.GetSuffixObject(ObjectType, Suffix, Tier);
+        var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
         Durability *= (100 + suffixObj.Durability) / 100;
         Weight *= (100 + suffixObj.Weight) / 100;
         UseTime = UseTime * (100 + suffixObj.UseTime) / 100;
@@ -183,7 +186,7 @@ public class Item
         MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
     }
 
-    public static bool IsInventorySlot(BelongingSlot slot)
+    public static bool IsInventorySlot (BelongingSlot slot)
     {
         return slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
             or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
@@ -191,7 +194,7 @@ public class Item
             or BelongingSlot.Inventory_10;
     }
 
-    public bool IsValidForSlot(BelongingSlot slot)
+    public bool IsValidForSlot (BelongingSlot slot)
     {
         if (slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
             or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
@@ -201,27 +204,30 @@ public class Item
             return true;
         }
 
-        return (ObjectType is GameObjectType.Amulet or GameObjectType.Amulet_Unique && slot is BelongingSlot.Amulet)
-                || (ObjectType is GameObjectType.Belt or GameObjectType.Belt_Quest or GameObjectType.Belt_Unique &&
-                    slot is BelongingSlot.Belt)
-                || (ObjectType is GameObjectType.Boots or GameObjectType.Boots_Quest or GameObjectType.Boots_Unique &&
-                    slot is BelongingSlot.Boots)
-                || (ObjectType is GameObjectType.Bracelet or GameObjectType.Bracelet_Unique &&
-                    slot is BelongingSlot.BraceletLeft or BelongingSlot.BraceletRight)
-                || (ObjectType is GameObjectType.Chestplate or GameObjectType.Chestplate_Quest
-                    or GameObjectType.Chestplate_Unique && slot is BelongingSlot.Chestplate)
-                || (ObjectType is GameObjectType.Helmet or GameObjectType.Helmet_Premium or GameObjectType.Helmet_Quest
-                    or GameObjectType.Helmet_Unique && slot is BelongingSlot.Helmet)
-                || (ObjectType is GameObjectType.Gloves or GameObjectType.Gloves_Quest
-                    or GameObjectType.Gloves_Unique && slot is BelongingSlot.Gloves)
-                || (ObjectType is GameObjectType.Pants or GameObjectType.Pants_Quest or GameObjectType.Pants_Unique &&
-                    slot is BelongingSlot.Pants)
-                || (ObjectType is GameObjectType.Ring or GameObjectType.Ring_Special or GameObjectType.Ring_Unique &&
-                    slot is BelongingSlot.Ring_1 or BelongingSlot.Ring_2 or BelongingSlot.Ring_3
-                        or BelongingSlot.Ring_4)
-                || (ObjectType is GameObjectType.Robe or GameObjectType.Robe_Quest or GameObjectType.Robe_Unique &&
-                    slot is BelongingSlot.Chestplate)
-                || (ObjectType is GameObjectType.Shield or GameObjectType.Shield_Quest
-                    or GameObjectType.Shield_Unique && slot is BelongingSlot.Shield);
+        return (GameObjectType is GameObjectType.Amulet or GameObjectType.Amulet_Unique && slot is BelongingSlot.Amulet)
+               || (GameObjectType is GameObjectType.Belt or GameObjectType.Belt_Quest or GameObjectType.Belt_Unique &&
+                   slot is BelongingSlot.Belt)
+               || (GameObjectType is GameObjectType.Boots or GameObjectType.Boots_Quest
+                       or GameObjectType.Boots_Unique &&
+                   slot is BelongingSlot.Boots)
+               || (GameObjectType is GameObjectType.Bracelet or GameObjectType.Bracelet_Unique &&
+                   slot is BelongingSlot.BraceletLeft or BelongingSlot.BraceletRight)
+               || (GameObjectType is GameObjectType.Chestplate or GameObjectType.Chestplate_Quest
+                   or GameObjectType.Chestplate_Unique && slot is BelongingSlot.Chestplate)
+               || (GameObjectType is GameObjectType.Helmet or GameObjectType.Helmet_Premium
+                   or GameObjectType.Helmet_Quest
+                   or GameObjectType.Helmet_Unique && slot is BelongingSlot.Helmet)
+               || (GameObjectType is GameObjectType.Gloves or GameObjectType.Gloves_Quest
+                   or GameObjectType.Gloves_Unique && slot is BelongingSlot.Gloves)
+               || (GameObjectType is GameObjectType.Pants or GameObjectType.Pants_Quest
+                       or GameObjectType.Pants_Unique &&
+                   slot is BelongingSlot.Pants)
+               || (GameObjectType is GameObjectType.Ring or GameObjectType.Ring_Special or GameObjectType.Ring_Unique &&
+                   slot is BelongingSlot.Ring_1 or BelongingSlot.Ring_2 or BelongingSlot.Ring_3
+                       or BelongingSlot.Ring_4)
+               || (GameObjectType is GameObjectType.Robe or GameObjectType.Robe_Quest or GameObjectType.Robe_Unique &&
+                   slot is BelongingSlot.Chestplate)
+               || (GameObjectType is GameObjectType.Shield or GameObjectType.Shield_Quest
+                   or GameObjectType.Shield_Unique && slot is BelongingSlot.Shield);
     }
 }

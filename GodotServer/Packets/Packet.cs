@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using BitStreams;
 using SphServer.DataModels;
+using SphServer.Helpers;
 using static SphServer.Helpers.BitHelper;
 
 namespace SphServer.Packets;
@@ -40,11 +41,7 @@ public static class Packet
 
     public static byte[] ItemsToPacket (ushort clientId, int bagId, List<Item> items)
     {
-        var memoryStream = new MemoryStream();
-        var stream = new BitStream(memoryStream)
-        {
-            AutoIncreaseStream = true
-        };
+        var stream = GetWriteBitStream();
 
         for (var i = 0; i < items.Count; i++)
         {
@@ -61,16 +58,16 @@ public static class Packet
                 break;
             }
 
-            if (GameObjectDataHelper.WeaponsAndArmor.Contains(similarPacket.Value.GameObject!.ObjectType))
+            if (GameObjectDataHelper.WeaponsAndArmor.Contains(similarPacket.Value.GameObject!.GameObjectType))
             {
                 stream.WriteByte(0x7E >> 1, 7);
             }
             else
             {
-                var seekBack = GameObjectDataHelper.Mantras.Contains(similarPacket.Value.GameObject.ObjectType)
-                               || GameObjectDataHelper.Powders.Contains(similarPacket.Value.GameObject.ObjectType)
+                var seekBack = GameObjectDataHelper.Mantras.Contains(similarPacket.Value.GameObject.GameObjectType)
+                               || GameObjectDataHelper.Powders.Contains(similarPacket.Value.GameObject.GameObjectType)
                                || GameObjectDataHelper.AlchemyMaterials.Contains(
-                                   similarPacket.Value.GameObject.ObjectType)
+                                   similarPacket.Value.GameObject.GameObjectType)
                     ? 1
                     : 0;
                 stream.SeekBack(seekBack);
@@ -103,39 +100,39 @@ public static class Packet
         // var diamondRingId = 569;
 
         ObjectPacket result;
-        var objectType = item.ObjectType.GetPacketObjectType();
+        var objectType = item.GameObjectType.GetPacketObjectType();
         // Console.WriteLine(Enum.GetName(objectType));
         var suffixMod = item.Suffix == ItemSuffix.None
             ? (ushort) 81
-            : (ushort) GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[item.ObjectType][item.Suffix].value;
+            : (ushort) GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[item.GameObjectType][item.Suffix].value;
 
         var dbId = -1;
-        if (GameObjectDataHelper.WeaponsAndArmor.Contains(item.ObjectType))
+        if (GameObjectDataHelper.WeaponsAndArmor.Contains(item.GameObjectType))
         {
             dbId = suffixMod > 1000 ? weaponArmorShiftedId : weaponArmorNotShiftedId;
         }
 
-        else if (GameObjectDataHelper.Mantras.Contains(item.ObjectType))
+        else if (GameObjectDataHelper.Mantras.Contains(item.GameObjectType))
         {
             dbId = mantraId;
         }
 
-        else if (GameObjectDataHelper.Powders.Contains(item.ObjectType))
+        else if (GameObjectDataHelper.Powders.Contains(item.GameObjectType))
         {
             dbId = powderId;
         }
 
-        else if (GameObjectDataHelper.AlchemyMaterials.Contains(item.ObjectType))
+        else if (GameObjectDataHelper.AlchemyMaterials.Contains(item.GameObjectType))
         {
             dbId = alchemyId;
         }
 
-        else if (item.ObjectType is GameObjectType.Ring)
+        else if (item.GameObjectType is GameObjectType.Ring)
         {
             dbId = suffixMod > 1000 ? ringShiftedId : ringNotShiftedId;
         }
 
-        else if (item.ObjectType is GameObjectType.FoodApple)
+        else if (item.GameObjectType is GameObjectType.FoodApple)
         {
             dbId = foodAppleId;
         }
@@ -143,7 +140,7 @@ public static class Packet
         if (dbId == -1)
         {
             Console.WriteLine(
-                $"NOT FOUND: Type: {Enum.GetName(item.ObjectType)} Suffix: {suffixMod} {Enum.GetName(item.Suffix)}");
+                $"NOT FOUND: Type: {Enum.GetName(item.GameObjectType)} Suffix: {suffixMod} {Enum.GetName(item.Suffix)}");
             dbId = 4;
         }
 

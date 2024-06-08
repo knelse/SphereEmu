@@ -469,9 +469,10 @@ public partial class Client : Node
 
                 CurrentCharacter = player!.Characters[selectedCharacterIndex];
                 CurrentCharacter.ClientIndex = LocalId;
-                CurrentCharacter.X = 400;
-                CurrentCharacter.Y = -150;
-                CurrentCharacter.Z = -1300;
+                CurrentCharacter.X = 419;
+                CurrentCharacter.Y = -153;
+                CurrentCharacter.Z = -1314;
+                CurrentCharacter.Angle = 4;
 
                 Console.WriteLine("CLI: Enter game");
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
@@ -544,6 +545,8 @@ public partial class Client : Node
         }
 
         // todo: proper handling by packet type
+        var receiveStream = new BitStream(rcvBuffer);
+        receiveStream.CutStream(0, length);
 
         // if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC3)
         // {
@@ -599,15 +602,15 @@ public partial class Client : Node
         //     }
         // }
 
-        else
+        // else
+        // {
+        switch (rcvBuffer[0])
         {
-            switch (rcvBuffer[0])
-            {
-                // ping
-                case 0x26:
-                    SendPingResponse();
-                    break;
-            }
+            // ping
+            case 0x26:
+                SendPingResponse();
+                break;
+
             //     // interact (move item, open loot container)
             //     case 0x1A:
             //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC1)
@@ -694,39 +697,48 @@ public partial class Client : Node
             //         }
             //
             //         break;
-            //     // vendor trade
-            //     case 0x30:
-            //     case 0x35:
-            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
-            //         {
-            //             var vendorLocalId = (ushort) (((rcvBuffer[46] & 0b1111) << 12) + (rcvBuffer[45] << 4) +
-            //                                           (rcvBuffer[44] >> 4));
-            //             if (vendorLocalId == 0)
-            //             {
-            //                 // first vendor open is 0x30, then client sends another 0x30 request to close the trade window,
-            //                 // and later it's 0x35 to open 0x30 to close. Sphere =/
-            //                 break;
-            //             }
-            //
-            //             var vendorId = GetGlobalObjectId(vendorLocalId);
-            //
-            //             var vendor = MainServer.VendorCollection.FindById(vendorId);
-            //             if (vendor is null)
-            //             {
-            //                 Console.WriteLine($"Vendor [{vendorId}] not found");
-            //             }
-            //             else
-            //             {
-            //                 Console.WriteLine($"Vendor [{vendor.Name} {vendor.FamilyName}]");
-            //                 var vendorSlotList = vendor.GetItemSlotListForClient(LocalId);
-            //                 StreamPeer.PutData(vendorSlotList);
-            //                 var itemContents = Packet.ItemsToPacket(LocalId, vendorLocalId, vendor.ItemsOnSale);
-            //
-            //                 StreamPeer.PutData(itemContents);
-            //             }
-            //         }
-            //
-            //         break;
+            // vendor trade
+            case 0x31:
+            case 0x36:
+                if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xA3)
+                {
+                    receiveStream.ReadBits(364);
+                    var vendorLocalId = receiveStream.ReadUInt16();
+                    if (vendorLocalId == 0)
+                    {
+                        // first vendor open is 0x31, then client sends another 0x31 request to close the trade window,
+                        // and later it's 0x36 to open 0x31 to close. Sphere =/
+                        break;
+                    }
+
+                    var vendorId = GetGlobalObjectId(vendorLocalId);
+                    var vendorWorldObject =
+                        MainServer.ActiveWorldObjects.GetValueOrDefault((ushort) vendorId);
+                    if (vendorWorldObject is null)
+                    {
+                        Console.WriteLine($"Vendor world object [{vendorId}] not found");
+                        break;
+                    }
+
+                    vendorWorldObject.ClientInteract(LocalId, ClientInteractionType.OpenTrade);
+
+                    // var vendor = MainServer.VendorCollection.FindById(vendorId);
+                    // if (vendor is null)
+                    // {
+                    //     Console.WriteLine($"Vendor [{vendorId}] not found");
+                    // }
+                    // else
+                    // {
+                    //     Console.WriteLine($"Vendor [{vendor.Name} {vendor.FamilyName}]");
+                    //     var vendorSlotList = vendor.GetItemSlotListForClient(LocalId);
+                    //     StreamPeer.PutData(vendorSlotList);
+                    //     var itemContents = Packet.ItemsToPacket(LocalId, vendorLocalId, vendor.ItemsOnSale);
+                    //
+                    //     StreamPeer.PutData(itemContents);
+                    // }
+                }
+
+                break;
             //     // group create/leave 08 40 23 23
             //     case 0x13:
             //         if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 ||
@@ -766,8 +778,8 @@ public partial class Client : Node
             //         }
             //
             //         break;
-            // }
         }
+        // }
 
         var clientModelTransform = clientModel.Transform;
 
@@ -1753,6 +1765,11 @@ public partial class Client : Node
     public static void TryFindClientByIdAndSendData (ushort clientId, byte[] data)
     {
         var client = MainServer.ActiveClients.GetValueOrDefault(clientId, null);
+        if (client is null)
+        {
+            Console.WriteLine($"Trying to send packet to inexistent client [{clientId}]");
+        }
+
         client?.StreamPeer.PutData(data);
     }
 

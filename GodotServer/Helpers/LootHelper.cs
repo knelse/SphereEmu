@@ -213,9 +213,9 @@ public static class LootHelper
             var lootPool = MainServer.SphGameObjectDb
                 .Where(x =>
                     !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) &&
-                    typeFilter.Contains(x.Value.ObjectType)
+                    typeFilter.Contains(x.Value.GameObjectType)
                     && (x.Value.Tier == tierFilter
-                        || tierAgnosticTypes.Contains(x.Value.ObjectType))).Select(x => x.Value)
+                        || tierAgnosticTypes.Contains(x.Value.GameObjectType))).Select(x => x.Value)
                 .ToList();
             var random = MainServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
@@ -226,7 +226,7 @@ public static class LootHelper
         var noSuffix = false;
         var suffixFilter = new SortedSet<ItemSuffix> { ItemSuffix.None };
 
-        if (item.ObjectType is GameObjectType.Ring)
+        if (item.GameObjectType is GameObjectType.Ring)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -259,7 +259,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Sword or GameObjectType.Axe)
+        if (item.GameObjectType is GameObjectType.Sword or GameObjectType.Axe)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -289,7 +289,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Crossbow)
+        if (item.GameObjectType is GameObjectType.Crossbow)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -318,7 +318,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Robe)
+        if (item.GameObjectType is GameObjectType.Robe)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -352,7 +352,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Bracelet or GameObjectType.Amulet)
+        if (item.GameObjectType is GameObjectType.Bracelet or GameObjectType.Amulet)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -373,7 +373,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt
+        if (item.GameObjectType is GameObjectType.Helmet or GameObjectType.Gloves or GameObjectType.Belt
             or GameObjectType.Pants or GameObjectType.Boots)
         {
             suffixFilter = new SortedSet<ItemSuffix>
@@ -392,7 +392,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Chestplate or GameObjectType.Shield)
+        if (item.GameObjectType is GameObjectType.Chestplate or GameObjectType.Shield)
         {
             suffixFilter = new SortedSet<ItemSuffix>
             {
@@ -432,7 +432,7 @@ public static class LootHelper
             return item;
         }
 
-        if (item.ObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle
+        if (item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle
             or GameObjectType.Elixir_Trap)
         {
             item.ItemCount = MainServer.Rng.Next(3, 20);
