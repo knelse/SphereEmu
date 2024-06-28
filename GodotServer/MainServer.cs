@@ -25,7 +25,7 @@ public partial class MainServer : Node
     public const string PacketDefinitionExtension = ".spd";
     public const string ExportedPartExtension = ".spdp";
     private static uint playerIndex = 0x4F6F;
-    private static uint worldObjectIndex = 1000;
+    private static uint worldObjectIndex = 0x1000;
 
     private static int playerCount;
 

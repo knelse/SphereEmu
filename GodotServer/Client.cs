@@ -129,221 +129,233 @@ public partial class Client : Node
                 // }
 
                 var input = Console.ReadLine();
-
-                var shouldSaveCommand = true;
-                // TODO: more commands at some point
-                if (input.StartsWith("/stats"))
+                try
                 {
-                    var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    CurrentCharacter.MaxHP = ushort.Parse(stats[1]);
-                    CurrentCharacter.MaxMP = ushort.Parse(stats[2]);
-                    CurrentCharacter.CurrentSatiety = ushort.Parse(stats[3]);
-                    CurrentCharacter.MaxSatiety = ushort.Parse(stats[4]);
-                    CurrentCharacter.CurrentStrength = ushort.Parse(stats[5]);
-                    CurrentCharacter.CurrentAgility = ushort.Parse(stats[6]);
-                    CurrentCharacter.CurrentAccuracy = ushort.Parse(stats[7]);
-                    CurrentCharacter.CurrentEndurance = ushort.Parse(stats[8]);
-                    CurrentCharacter.CurrentEarth = ushort.Parse(stats[9]);
-                    CurrentCharacter.CurrentAir = ushort.Parse(stats[10]);
-                    CurrentCharacter.CurrentWater = ushort.Parse(stats[11]);
-                    CurrentCharacter.CurrentFire = ushort.Parse(stats[12]);
-                    CurrentCharacter.PDef = ushort.Parse(stats[13]);
-                    CurrentCharacter.MDef = ushort.Parse(stats[14]);
-                    CurrentCharacter.TitleMinusOne = ushort.Parse(stats[15]);
-                    CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[16]);
-                    CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[17]);
-                    CurrentCharacter.KarmaCount = ushort.Parse(stats[18]);
-                    CurrentCharacter.TitleXP = uint.Parse(stats[19]);
-                    CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
-                    CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[21]);
-                    CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[22]);
-                    CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[23]);
-                    CurrentCharacter.Money = int.Parse(stats[24]);
-                    CurrentCharacter.PAtk = int.Parse(stats[25]);
-                    CurrentCharacter.MAtk = int.Parse(stats[26]);
-                    UpdateStatsForClient();
-                }
-
-                else if (input.StartsWith("/money"))
-                {
-                    var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    CurrentCharacter.Money = int.Parse(stats[1]);
-                    UpdateStatsForClient();
-                }
-
-                else if (input.StartsWith("/msg"))
-                {
-                    var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    if (chatData.Length < 4)
+                    var shouldSaveCommand = true;
+                    // TODO: more commands at some point
+                    if (input.StartsWith("/stats"))
                     {
-                        Console.WriteLine("usage: /msg chat_type name message");
+                        var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        CurrentCharacter.MaxHP = ushort.Parse(stats[1]);
+                        CurrentCharacter.MaxMP = ushort.Parse(stats[2]);
+                        CurrentCharacter.CurrentSatiety = ushort.Parse(stats[3]);
+                        CurrentCharacter.MaxSatiety = ushort.Parse(stats[4]);
+                        CurrentCharacter.CurrentStrength = ushort.Parse(stats[5]);
+                        CurrentCharacter.CurrentAgility = ushort.Parse(stats[6]);
+                        CurrentCharacter.CurrentAccuracy = ushort.Parse(stats[7]);
+                        CurrentCharacter.CurrentEndurance = ushort.Parse(stats[8]);
+                        CurrentCharacter.CurrentEarth = ushort.Parse(stats[9]);
+                        CurrentCharacter.CurrentAir = ushort.Parse(stats[10]);
+                        CurrentCharacter.CurrentWater = ushort.Parse(stats[11]);
+                        CurrentCharacter.CurrentFire = ushort.Parse(stats[12]);
+                        CurrentCharacter.PDef = ushort.Parse(stats[13]);
+                        CurrentCharacter.MDef = ushort.Parse(stats[14]);
+                        CurrentCharacter.TitleMinusOne = ushort.Parse(stats[15]);
+                        CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[16]);
+                        CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[17]);
+                        CurrentCharacter.KarmaCount = ushort.Parse(stats[18]);
+                        CurrentCharacter.TitleXP = uint.Parse(stats[19]);
+                        CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
+                        CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[21]);
+                        CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[22]);
+                        CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[23]);
+                        CurrentCharacter.Money = int.Parse(stats[24]);
+                        CurrentCharacter.PAtk = int.Parse(stats[25]);
+                        CurrentCharacter.MAtk = int.Parse(stats[26]);
+                        UpdateStatsForClient();
                     }
-                    else
+
+                    else if (input.StartsWith("/money"))
                     {
-                        var chatType = int.Parse(chatData[1]);
-                        Console.WriteLine(chatType);
-
-                        var name = chatData[2].Replace("_", " ");
-                        var message = string.Join(" ", chatData[3..]);
-
-                        message = name + ": " + message;
-// <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
-                        var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
-                        StreamPeer.PutData(response);
+                        var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        CurrentCharacter.Money = int.Parse(stats[1]);
+                        UpdateStatsForClient();
                     }
-                }
 
-                else if (input.StartsWith("/clan"))
-                {
-                    var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    if (chatData.Length < 2)
+                    else if (input.StartsWith("/msg"))
                     {
-                        Console.WriteLine("usage: /clan action value");
-                    }
-                    else
-                    {
-                        var action = chatData[1].ToLowerInvariant();
-                        var targetRank = int.Parse(chatData[2]);
-                        switch (action)
+                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        if (chatData.Length < 4)
                         {
-                            case "rank":
-                                var responseStream = GetWriteBitStream();
-                                var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
-                                responseStream.WriteBytes(new byte[]
-                                {
-                                    (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                                    MajorByte(LocalId),
-                                    MinorByte(LocalId), 0x08,
-                                    0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
-                                });
+                            Console.WriteLine("usage: /msg chat_type name message");
+                        }
+                        else
+                        {
+                            var chatType = int.Parse(chatData[1]);
+                            Console.WriteLine(chatType);
 
-                                // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
-                                responseStream.WriteByte(0x0, 5);
-                                responseStream.WriteByte(MajorByte(LocalId));
-                                responseStream.WriteByte(MinorByte(LocalId));
-                                responseStream.WriteByte(0x0, 7);
-                                responseStream.WriteByte(0x1A);
-                                responseStream.WriteByte(0x16);
-                                responseStream.WriteByte((byte) (nameBytes.Length + 2));
-                                responseStream.WriteByte((byte) targetRank);
-                                responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
-                                responseStream.WriteByte(0x0, 4);
-                                responseStream.WriteByte(0x0);
+                            var name = chatData[2].Replace("_", " ");
+                            var message = string.Join(" ", chatData[3..]);
 
-                                var response = responseStream.GetStreamData();
-                                Console.WriteLine(Convert.ToHexString(response));
-                                StreamPeer.PutData(response);
-                                break;
+                            message = name + ": " + message;
+// <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
+                            var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
+                            StreamPeer.PutData(response);
                         }
                     }
-                }
 
-                else if (input.StartsWith("/sendpackethex"))
-                {
-                    var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    if (chatData.Length < 2)
+                    else if (input.StartsWith("/clan"))
                     {
-                        Console.WriteLine("usage: /sendpackethex packet");
+                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        if (chatData.Length < 2)
+                        {
+                            Console.WriteLine("usage: /clan action value");
+                        }
+                        else
+                        {
+                            var action = chatData[1].ToLowerInvariant();
+                            var targetRank = int.Parse(chatData[2]);
+                            switch (action)
+                            {
+                                case "rank":
+                                    var responseStream = GetWriteBitStream();
+                                    var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
+                                    responseStream.WriteBytes(new byte[]
+                                    {
+                                        (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
+                                        MajorByte(LocalId),
+                                        MinorByte(LocalId), 0x08,
+                                        0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
+                                    });
+
+                                    // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
+                                    responseStream.WriteByte(0x0, 5);
+                                    responseStream.WriteByte(MajorByte(LocalId));
+                                    responseStream.WriteByte(MinorByte(LocalId));
+                                    responseStream.WriteByte(0x0, 7);
+                                    responseStream.WriteByte(0x1A);
+                                    responseStream.WriteByte(0x16);
+                                    responseStream.WriteByte((byte) (nameBytes.Length + 2));
+                                    responseStream.WriteByte((byte) targetRank);
+                                    responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
+                                    responseStream.WriteByte(0x0, 4);
+                                    responseStream.WriteByte(0x0);
+
+                                    var response = responseStream.GetStreamData();
+                                    Console.WriteLine(Convert.ToHexString(response));
+                                    StreamPeer.PutData(response);
+                                    break;
+                            }
+                        }
                     }
-                    else
+
+                    else if (input.StartsWith("/sendpackethex"))
+                    {
+                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        if (chatData.Length < 2)
+                        {
+                            Console.WriteLine("usage: /sendpackethex packet");
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var content = Convert.FromHexString(chatData[1]);
+                                StreamPeer.PutData(content);
+                            }
+                            catch (Exception ex)
+                            {
+                                ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
+                            }
+                        }
+                    }
+                    else if (input.StartsWith("/buff"))
+                    {
+                        var jumpx4 =
+                            "3F002C01006AF6B98878800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF9994D83C00A0F07F70391E1004F6F";
+                        //	 03C0120080DE7E0D8307F80048E8920000000000000000001459640028000C9430001C0000000000000000000040D49E9FD93408ACF070703F10F90D50C200
+                        // var runSpeed =
+                        // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
+                        //   3F002C01002CEF8F9578800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF91C4E83800A0F0704046C2800250C
+                        // var test =
+                        // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
+                        StreamPeer.PutData(Convert.FromHexString(jumpx4));
+                        // StreamPeer.PutData(Convert.FromHexString(runSpeed));
+                        // StreamPeer.PutData(Convert.FromHexString(test));
+                    }
+                    else if (input.StartsWith("/packet"))
+                    {
+                        TestHelper.SendSpherePacketFromConsole(input, StreamPeer);
+                    }
+                    else if (input.StartsWith("/mob"))
+                    {
+                        var split = input.Split(' ',
+                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var mobPacketName = split.Length == 1
+                            ? "mob"
+                            : "mob_" + split;
+                        TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+                    }
+                    else if (input.StartsWith("/spawn_mob_id"))
+                    {
+                        var split = input.Split(' ',
+                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        if (split.Length != 2 || !int.TryParse(split[1], out var mobId))
+                        {
+                            Console.WriteLine(
+                                "Usage: /spawn_mob_id <id>. For the list of IDs check entityNamesCollected file");
+                        }
+                        else
+                        {
+                            TestHelper.SendSpherePacketFromConsole($"/packet mob_assassin onme", StreamPeer, true,
+                                list =>
+                                {
+                                    foreach (var idPart in list.Where(x => x.Name == "mob_type"))
+                                    {
+                                        var bits = BitStreamExtensions.IntToBits(mobId, 16).ToList();
+                                        idPart.Value = bits;
+                                    }
+                                });
+                        }
+                    }
+                    else if (input.StartsWith("/loot"))
+                    {
+                        // var mobPacketName = input.Length == 1
+                        //     ? "mob"
+                        //     : "mob_" + input.Split(' ',
+                        //         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+                        // TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+                        var bag1 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 1,
+                            1,
+                            LootRatity.DEFAULT_MOB);
+                        var bag2 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 2,
+                            1,
+                            LootRatity.DEFAULT_MOB);
+                        var bag3 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 3,
+                            1,
+                            LootRatity.DEFAULT_MOB);
+                    }
+                    else if (input.StartsWith("/tp"))
                     {
                         try
                         {
-                            var content = Convert.FromHexString(chatData[1]);
-                            StreamPeer.PutData(content);
+                            var coords = input.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1..]
+                                .Select(double.Parse)
+                                .ToArray();
+                            StreamPeer.PutData(
+                                CurrentCharacter.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
+                                    0)));
                         }
                         catch (Exception ex)
                         {
-                            ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
+                            Console.WriteLine(ex.Message);
                         }
-                    }
-                }
-                else if (input.StartsWith("/buff"))
-                {
-                    var jumpx4 =
-                        "3F002C01006AF6B98878800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF9994D83C00A0F07F70391E1004F6F";
-                    //	 03C0120080DE7E0D8307F80048E8920000000000000000001459640028000C9430001C0000000000000000000040D49E9FD93408ACF070703F10F90D50C200
-                    // var runSpeed =
-                    // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
-                    //   3F002C01002CEF8F9578800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF91C4E83800A0F0704046C2800250C
-                    // var test =
-                    // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
-                    StreamPeer.PutData(Convert.FromHexString(jumpx4));
-                    // StreamPeer.PutData(Convert.FromHexString(runSpeed));
-                    // StreamPeer.PutData(Convert.FromHexString(test));
-                }
-                else if (input.StartsWith("/packet"))
-                {
-                    TestHelper.SendSpherePacketFromConsole(input, StreamPeer);
-                }
-                else if (input.StartsWith("/mob"))
-                {
-                    var split = input.Split(' ',
-                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    var mobPacketName = split.Length == 1
-                        ? "mob"
-                        : "mob_" + split;
-                    TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
-                }
-                else if (input.StartsWith("/spawn_mob_id"))
-                {
-                    var split = input.Split(' ',
-                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    if (split.Length != 2 || !int.TryParse(split[1], out var mobId))
-                    {
-                        Console.WriteLine(
-                            "Usage: /spawn_mob_id <id>. For the list of IDs check entityNamesCollected file");
                     }
                     else
                     {
-                        TestHelper.SendSpherePacketFromConsole($"/packet mob_assassin onme", StreamPeer, true, list =>
-                        {
-                            foreach (var idPart in list.Where(x => x.Name == "mob_type"))
-                            {
-                                var bits = BitStreamExtensions.IntToBits(mobId, 16).ToList();
-                                idPart.Value = bits;
-                            }
-                        });
+                        shouldSaveCommand = false;
                     }
-                }
-                else if (input.StartsWith("/loot"))
-                {
-                    // var mobPacketName = input.Length == 1
-                    //     ? "mob"
-                    //     : "mob_" + input.Split(' ',
-                    //         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
-                    // TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
-                    var bag1 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 1, 1,
-                        LootRatity.DEFAULT_MOB);
-                    var bag2 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 2, 1,
-                        LootRatity.DEFAULT_MOB);
-                    var bag3 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 3, 1,
-                        LootRatity.DEFAULT_MOB);
-                }
-                else if (input.StartsWith("/tp"))
-                {
-                    try
-                    {
-                        var coords = input.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1..].Select(double.Parse)
-                            .ToArray();
-                        StreamPeer.PutData(
-                            CurrentCharacter.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2], 0)));
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else
-                {
-                    shouldSaveCommand = false;
-                }
 
-                if (shouldSaveCommand)
+                    if (shouldSaveCommand)
+                    {
+                        // File.AppendAllText(consoleHistoryFilePath, input + "\n");
+                        // consoleHistory.Add(input);
+                        // consoleHistoryIndex = consoleHistory.Count;
+                    }
+                }
+                catch (Exception ex)
                 {
-                    // File.AppendAllText(consoleHistoryFilePath, input + "\n");
-                    // consoleHistory.Add(input);
-                    // consoleHistoryIndex = consoleHistory.Count;
+                    Console.WriteLine(ex.Message);
                 }
             }
         });
@@ -469,10 +481,14 @@ public partial class Client : Node
 
                 CurrentCharacter = player!.Characters[selectedCharacterIndex];
                 CurrentCharacter.ClientIndex = LocalId;
-                CurrentCharacter.X = 419;
+                // CurrentCharacter.X = 337;
+                // CurrentCharacter.Y = -158;
+                // CurrentCharacter.Z = -1450;
+                CurrentCharacter.X = 424;
                 CurrentCharacter.Y = -153;
-                CurrentCharacter.Z = -1314;
+                CurrentCharacter.Z = -1278;
                 CurrentCharacter.Angle = 4;
+                CurrentCharacter.Money = 99999999;
 
                 Console.WriteLine("CLI: Enter game");
                 StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
@@ -1125,10 +1141,13 @@ public partial class Client : Node
             if (pingHasChanges != 0)
             {
                 var coords = CoordsHelper.GetCoordsFromPingBytes(rcvBuffer);
-                CurrentCharacter.X = coords.x;
-                CurrentCharacter.Y = coords.y;
-                CurrentCharacter.Z = coords.z;
-                CurrentCharacter.Angle = coords.turn;
+                if (Math.Abs(coords.x - CurrentCharacter.X) < 100000)
+                {
+                    CurrentCharacter.X = coords.x;
+                    CurrentCharacter.Y = coords.y;
+                    CurrentCharacter.Z = coords.z;
+                    CurrentCharacter.Angle = coords.turn;
+                }
                 // Console.WriteLine(coords.ToDebugString());
 
                 pingPreviousClientPingString = clientPingBinaryStr;
@@ -1886,7 +1905,7 @@ public partial class Client : Node
             var negativeBit = statValue < 0 ? 1 : 0;
             var fieldSeparator = (ushort) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
             stream.WriteUInt16(fieldSeparator);
-            var valueBits = ObjectPacketTools.IntToBits(statValueAbs, fieldLength);
+            var valueBits = ObjectPacketTools.IntToBits((uint) statValueAbs, fieldLength);
             stream.WriteBits(valueBits, fieldLength);
         }
 

@@ -9,11 +9,13 @@
 [node name="NpcInteractable" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.6, -152.93, -1280.73)
 script = ExtResource("1_lxa1o")
-NameID = null
 ModelName = "npc14"
 IconName = "npc_trade_magic"
-NpcType = null
+VendorItemTierMin = 1
+VendorItemTierMax = 1
+VendorLocation = null
 Angle = null
+ID = null
 ObjectType = 213
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]

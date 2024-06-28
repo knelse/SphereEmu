@@ -74,6 +74,7 @@ public class Item
     public Dictionary<Locale, string> Localisation { get; set; } = new ();
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
+    public Dictionary<string, object> ContentsData { get; set; } = new ();
 
     public string ToDebugString ()
     {
@@ -125,8 +126,9 @@ public class Item
         if (item.Suffix != ItemSuffix.None)
         {
             item.UpdateStatsForSuffix();
-            ;
         }
+
+        item.ObjectType = go.GameObjectType.GetPacketObjectType();
 
         return item;
     }

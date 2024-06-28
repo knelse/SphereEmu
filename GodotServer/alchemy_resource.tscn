@@ -9,6 +9,10 @@
 [node name="AlchemyResource" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_1jq64")
+GameObjectID = null
+Angle = null
+ID = null
+ObjectType = null
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 

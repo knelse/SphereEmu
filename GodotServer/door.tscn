@@ -9,6 +9,13 @@
 [node name="Door" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_ketn1")
+DoorID = null
+HasTarget = null
+TargetX = null
+TargetY = null
+TargetZ = null
+Angle = null
+ID = null
 ObjectType = 60
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]

@@ -23,6 +23,10 @@ window/size/mode=1
 
 project/assembly_name="SphServer"
 
+[filesystem]
+
+import/fbx/enabled=false
+
 [mono]
 
 project/assembly_name="SphServer"
