@@ -18,20 +18,18 @@ If that happens to you, dgVoodoo2 might help:
 8. If not, try different Output APIs and/or Videocards
 
 ## Running the server
-This is too involved as is, I will make it easier in future:
+Currently relies on pre-built release package, as it has way too many interdependencies with SphereTools repo:
 1. Get and install prerequisities
-   1. Godot v4.* with Mono included
-   2. Mono runtime
+   1. .NET 8.0 SDK
    3. LiteDB (https://www.litedb.org/)
-2. Download and unpack game client from the Releases page
-   - Edit _connect.cfg_ if you wish to use different connection settings, but default should be ok
-3. Build and run the Godot project
+2. Download the current release package from https://github.com/knelse/SphereEmu/releases/edit/package-v0.0.1
+3. Unpack and run:
+   1. `StartEmulator.bat` for the server
+   2. `SphereClientModded\sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
 4. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
 5. Next time, use those credentials or create a new user if you like
 
 Multiplayer is technically supported at this moment, but everything would act strangely.
-
-If you want to roam around the game world instead of going to the new player dungeon, navigate to `GodotServer\Client.cs` and comment _StreamPeer.PutData_ lines in _MoveToNewPlayerDungeonAsync_ method.
 
 ## File structure
 Server code resides under `GodotServer`. Everything else is due for a cleanup, one day...
@@ -47,10 +45,7 @@ For the client class, go to `GodotServer\Client.cs`. Right now, it's a bit of a 
 6. Ingame loop
 
 ## Scene structure
-Supports only the new player dungeon for the moment, I'm yet to figure out the game's terrain generation.
 
+TODO
 - MainServer
-  - NewPlayerDungeon
-    - Navmesh with geometry
-    - Mob / loot
   - Client
