@@ -21,7 +21,6 @@ If that happens to you, dgVoodoo2 might help:
 Currently relies on pre-built release package, as it has way too many interdependencies with SphereTools repo:
 1. Get and install prerequisities
    1. .NET 8.0 SDK
-   3. LiteDB (https://www.litedb.org/)
 2. Download the current release package from https://github.com/knelse/SphereEmu/releases/edit/package-v0.0.1
 3. Unpack and run:
    1. `StartEmulator.bat` for the server
