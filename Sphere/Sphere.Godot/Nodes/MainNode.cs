@@ -12,15 +12,12 @@ using System.Threading.Tasks;
 namespace Sphere.Godot.Nodes
 {
     public partial class MainNode : Node
-	{
-        SceneTree tree = new SceneTree();
-
-		public static void Main(string[] args)
-		{
-            
+    {
+        public static void Main(string[] args)
+        {
         }
 
-        public override void _Ready()
+        public override async void _Ready()
         {
             var running = true;
 
@@ -42,8 +39,8 @@ namespace Sphere.Godot.Nodes
             this.AddChild((Node)server);
 
             server.StartAsync();
-            
-            Task.Run(() =>
+
+            await Task.Run(() =>
             {
                 while (running)
                 {
@@ -71,7 +68,7 @@ namespace Sphere.Godot.Nodes
     }
 
     public partial class Server : Node, IServer
-	{
+    {
         private readonly TcpServer _listener;
         private readonly ILogger<Server> _logger;
         private readonly IOptions<ServerConfiguration> _serverConfiguration;
@@ -79,8 +76,8 @@ namespace Sphere.Godot.Nodes
         private Dictionary<int, IClient> _portClientMap = new Dictionary<int, IClient>();
 
         public Server(ILogger<Server> logger, IOptions<ServerConfiguration> options)
-		{
-			_listener = new TcpServer();
+        {
+            _listener = new TcpServer();
             _logger = logger;
             _serverConfiguration = options;
 
@@ -95,20 +92,17 @@ namespace Sphere.Godot.Nodes
 
         public override async void _Process(double delta)
         {
-            while (_listener.IsListening())
+            var tcpClient = _listener.TakeConnection();
+
+            if (tcpClient != null)
             {
-                var tcpClient = _listener.TakeConnection();
+                _logger.LogInformation("Connection accepted on port: [{port}]", tcpClient.GetLocalPort());
 
-                if (tcpClient != null)
-                {
-                    _logger.LogInformation("Connection accepted on port: [{port}]", tcpClient.GetLocalPort());
-
-                    await HandleConnection(tcpClient);
-                }
+                await HandleConnection(tcpClient);
             }
         }
 
-        private async Task HandleConnection(StreamPeerTcp client)
+        private Task HandleConnection(StreamPeerTcp client)
         {
             _logger.LogInformation("Handle connection started");
 
@@ -116,9 +110,11 @@ namespace Sphere.Godot.Nodes
 
             var clientNode = _clientScene.Instantiate<ClientNode>();
 
+            this.AddChild(clientNode);
+
             _logger.LogInformation("Handle connection finished");
 
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         public Task StartAsync()
@@ -130,7 +126,10 @@ namespace Sphere.Godot.Nodes
                 _listener.Listen(_serverConfiguration.Value.Port);
 
                 _logger.LogInformation("Started server on port: [{port}]", _serverConfiguration.Value.Port);
-
+            }
+            else
+            {
+                _logger.LogInformation("Server is already listening on port [{port}]", _serverConfiguration.Value.Port);
             }
 
             return Task.CompletedTask;
@@ -141,7 +140,7 @@ namespace Sphere.Godot.Nodes
             _logger.LogInformation("Stopping server on port: [{port}]", _serverConfiguration.Value.Port);
 
             _listener.Stop();
-            
+
             _logger.LogInformation("Stopped server on port: [{port}]", _serverConfiguration.Value.Port);
 
             return Task.CompletedTask;

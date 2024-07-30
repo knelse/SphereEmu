@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -20,13 +18,10 @@ namespace Sphere.Godot.Configuration.Services
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            //NLog.Config.LoggingConfiguration nlogConfig = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
-
             services.AddLogging(builder =>
             {
                 builder.ClearProviders();
                 builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
-                //LogManager.Configuration.Variables["mydir"] = Path.Combine(Directory.GetCurrentDirectory(), "Log");
                 builder.AddNLog("nlog.config");
             });
 
