@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34804.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sphere.Godot", "Sphere.Godot\Sphere.Godot.csproj", "{B2C11F4C-8644-403B-906A-AC867A5CE953}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sphere.Common", "Sphere.Common\Sphere.Common.csproj", "{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sphere.Client", "Sphere.Client\Sphere.Client.csproj", "{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9522B99B-1FDC-4E63-B2FB-113EB51929AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GodotFiles", "GodotFiles", "{12FA0C7B-C0EA-4703-AAA3-7633A0F981A5}"
+	ProjectSection(SolutionItems) = preProject
+		Sphere.Godot\Client.tscn = Sphere.Godot\Client.tscn
+		Sphere.Godot\MainServer.tscn = Sphere.Godot\MainServer.tscn
+		Sphere.Godot\project.godot = Sphere.Godot\project.godot
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B2C11F4C-8644-403B-906A-AC867A5CE953}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{24ACC0C0-F93C-44C6-9BA2-E1FF2CE491DA}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{0989B3A2-8D05-440F-BFD0-A90AFA54D7E4}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C0811D0-EE36-4FA8-8C80-EA00E6846E40}
+	EndGlobalSection
+EndGlobal
