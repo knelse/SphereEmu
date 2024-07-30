@@ -415,7 +415,7 @@ public partial class Client : Node
                 {
                     // TODO: actual incorrect pwd packet
                     Console.WriteLine($"SRV {playerIndexStr}: Incorrect password!");
-                    StreamPeer.PutData(CommonPackets.AccountAlreadyInUse(LocalId));
+                    StreamPeer.PutData(CommonPackets.CannotConnect(LocalId));
                     CloseConnection();
 
                     return;
@@ -481,12 +481,16 @@ public partial class Client : Node
 
                 CurrentCharacter = player!.Characters[selectedCharacterIndex];
                 CurrentCharacter.ClientIndex = LocalId;
+                // CurrentCharacter.ClientIndex = 0x20E8;
                 // CurrentCharacter.X = 337;
                 // CurrentCharacter.Y = -158;
                 // CurrentCharacter.Z = -1450;
-                CurrentCharacter.X = 424;
-                CurrentCharacter.Y = -153;
-                CurrentCharacter.Z = -1278;
+                // CurrentCharacter.X = 424;
+                // CurrentCharacter.Y = -153;
+                // CurrentCharacter.Z = -1278;
+                CurrentCharacter.X = 407;
+                CurrentCharacter.Y = -160;
+                CurrentCharacter.Z = -1188;
                 CurrentCharacter.Angle = 4;
                 CurrentCharacter.Money = 99999999;
 
@@ -503,6 +507,11 @@ public partial class Client : Node
 
                 var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.ClientIndex);
                 StreamPeer.PutData(worldData[0]);
+                StreamPeer.PutData(Convert.FromHexString(
+                    "BA002C010000004F6F08C002D07911C8BD10445E0C222F08C91685C80B03581CC002011609B05080C5022C1860D1000B07593CC802021611B09080C5042C286051010B0B585CC00213799189BCD0445E6CC08203161DB0F080C5072C406011020B11588CC882441625B03081C5892D506091020B1558AC422C5870D1820B1758CCD082061635B0B0C1C603848F1535B10F2B6391702035D1F643F24F411072A0D901900100000A5290530F0000D0001170AA2A48410E32000000"));
+                StreamPeer.PutData(Convert.FromHexString(
+                    "83002C010000004F6F08406102000A824011820E400600005010841C000000000000808220E888A00300000000140461A70B1D0068890920445DE8000005419820480768010000280802402D3B007D0000404110706CD901060000000A120050908089820450142400A720013B0541A0C041072003000068E010280000003436020200"));
+
                 Thread.Sleep(50);
                 // StreamPeer.PutData(worldData[1]);
                 // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;

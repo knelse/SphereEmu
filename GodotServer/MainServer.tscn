@@ -43,8 +43,9 @@ ObjectType = 63
 [node name="NPC" type="Node3D" parent="."]
 
 [node name="Sunpool_Magic_AlmaMaddocks" parent="NPC" instance=ExtResource("5_5rg3u")]
+NameID = null
+NpcType = null
 VendorItemTierMax = 3
-VendorLocation = 0
 
 [node name="Sunpool_Armor_SamuelNectarus" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 424.381, -153.467, -1287.3)
@@ -53,7 +54,6 @@ ModelName = "npc29c"
 IconName = "npc_trade_armor"
 NpcType = 4
 VendorItemTierMax = 2
-VendorLocation = 0
 Angle = 90
 
 [node name="Sunpool_Travel_GeorgeBashner" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -63,7 +63,6 @@ ModelName = "npc29b"
 IconName = "npc_trade_travl"
 NpcType = 5
 VendorItemTierMax = 15
-VendorLocation = 0
 
 [node name="Sunpool_Weapon_SimonPike" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 390.999, -153.363, -1308.51)
@@ -72,7 +71,6 @@ ModelName = "npc08"
 IconName = "npc_trade_wpon"
 NpcType = 2
 VendorItemTierMax = 2
-VendorLocation = 0
 Angle = 193
 
 [node name="Sunpool_Jewel_AnitaThompson" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -82,7 +80,6 @@ ModelName = "npc14b"
 IconName = "npc_trade_jewel"
 NpcType = 3
 VendorItemTierMax = 3
-VendorLocation = 0
 Angle = 59
 
 [node name="Sunpool_Alch_TemporaTempus" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -92,7 +89,6 @@ ModelName = "npc14a"
 IconName = "npc_trade_alchm"
 NpcType = 1
 VendorItemTierMax = 3
-VendorLocation = 0
 Angle = 57
 
 [node name="Sunpool_Degree_EugeneZelenski" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -101,7 +97,6 @@ NameID = 4407
 ModelName = "<null>"
 IconName = "npc_quest_dgree"
 NpcType = 9
-VendorLocation = 0
 Angle = 230
 ObjectType = 209
 
@@ -111,7 +106,6 @@ NameID = 4270
 ModelName = "npc29d"
 IconName = "npc_banker"
 NpcType = 12
-VendorLocation = 0
 Angle = 158
 ObjectType = 225
 
@@ -121,7 +115,6 @@ NameID = 4402
 ModelName = "<null>"
 IconName = "npc_quest_title"
 NpcType = 8
-VendorLocation = 0
 Angle = 154
 ObjectType = 205
 
@@ -131,13 +124,13 @@ NameID = 4390
 ModelName = "npc55"
 IconName = "npc_guilder"
 NpcType = 11
-VendorLocation = 0
 Angle = 179
 ObjectType = 239
 
 [node name="Sunpool_Tower_Magic_SelmaRagel" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 337.372, -158.516, -1453.38)
 NameID = 4138
+NpcType = null
 VendorItemTierMin = 4
 VendorItemTierMax = 6
 VendorLocation = 7
