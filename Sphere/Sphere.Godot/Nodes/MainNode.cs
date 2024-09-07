@@ -1,27 +1,44 @@
 using Godot;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sphere.Common.Interfaces;
-using Sphere.Godot.Configuration.Services;
-using Sphere.Server.Configuration.Options;
+using Sphere.Common.Interfaces.Nodes;
+using Sphere.Common.Interfaces.Providers;
+using Sphere.Common.Interfaces.Tcp;
+using Sphere.Godot.Configuration;
+using Sphere.Godot.Configuration.Options;
+using Sphere.Repository.Configuration;
+using Sphere.Services.Services;
+using Sphere.Services.Services.Tcp;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Sphere.Godot.Nodes
 {
     public partial class MainNode : Node
-	{
-        SceneTree tree = new SceneTree();
-
-		public static void Main(string[] args)
-		{
+    {
+        public static void Main(string[] args)
+        {
             
         }
 
         public override void _Ready()
         {
+            // add support for Win1251
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
             var running = true;
 
             Console.WriteLine("Sphere server startup...");
@@ -30,8 +47,9 @@ namespace Sphere.Godot.Nodes
             var serviceCollection = new ServiceCollection();
 
             var serviceProvider = serviceCollection
-                .RegisterCommon()
+                .RegisterCommon(configuration)
                 .RegisterServices()
+                .RegisterRepositories()
                 .BuildServiceProvider();
 
             Console.WriteLine("End service registration...");
@@ -42,7 +60,7 @@ namespace Sphere.Godot.Nodes
             this.AddChild((Node)server);
 
             server.StartAsync();
-            
+
             Task.Run(() =>
             {
                 while (running)
@@ -63,58 +81,64 @@ namespace Sphere.Godot.Nodes
                             break;
                     }
                 }
-
-                ((Node)server).QueueFree();
-                this.QueueFree();
             });
         }
     }
 
     public partial class Server : Node, IServer
-	{
-        private readonly TcpServer _listener;
+    {
+        private readonly TcpListener _listener;
         private readonly ILogger<Server> _logger;
         private readonly IOptions<ServerConfiguration> _serverConfiguration;
-        private PackedScene _clientScene;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILocalIdProvider _localIdProvider;
+
+        // private PackedScene _clientScene;
         private Dictionary<int, IClient> _portClientMap = new Dictionary<int, IClient>();
 
-        public Server(ILogger<Server> logger, IOptions<ServerConfiguration> options)
-		{
-			_listener = new TcpServer();
+        public Server(ILogger<Server> logger, IOptions<ServerConfiguration> options, IServiceProvider serviceProvider, ILocalIdProvider localIdProvider)
+        {
+            _listener = new TcpListener(IPAddress.Any, options.Value.Port);
             _logger = logger;
             _serverConfiguration = options;
-
-            _clientScene = (PackedScene)ResourceLoader.Load("res://Client.tscn");
+            _serviceProvider = serviceProvider;
+            _localIdProvider = localIdProvider;
         }
 
         public override async void _Ready()
         {
-            _listener.Listen(_serverConfiguration.Value.Port);
-            _logger.LogInformation("Started server on port: [{port}]", _serverConfiguration.Value.Port);
         }
 
-        public override async void _Process(double delta)
+        public override void _Process(double delta)
         {
-            while (_listener.IsListening())
+            if (!_listener.Pending())
+                return;
+            var tcpClient = _listener.AcceptTcpClient();
+
+            if (tcpClient != null)
             {
-                var tcpClient = _listener.TakeConnection();
-
-                if (tcpClient != null)
-                {
-                    _logger.LogInformation("Connection accepted on port: [{port}]", tcpClient.GetLocalPort());
-
-                    await HandleConnection(tcpClient);
-                }
+                _logger.LogInformation("Connection accepted on port: [{port}]", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port);
+                tcpClient.NoDelay = true;
+                
+                HandleConnection(tcpClient);
             }
         }
 
-        private async Task HandleConnection(StreamPeerTcp client)
+        private async Task HandleConnection(TcpClient tcpClient)
         {
             _logger.LogInformation("Handle connection started");
 
-            client.SetNoDelay(true);
+            var scope = _serviceProvider.CreateScope();
 
-            var clientNode = _clientScene.Instantiate<ClientNode>();
+            // setup current "context" accessor which grants access to tcpClient and clientId in all subsequent services in that scope
+            var tcpClientAccessor = scope.ServiceProvider.GetRequiredService<ITcpClientAccessor>();
+            tcpClientAccessor.Client = new SphereTcpClient(tcpClient);
+            tcpClientAccessor.ClientId = _localIdProvider.GetIdentifier();
+            tcpClientAccessor.ClientState = Common.Enums.ClientState.I_AM_BREAD;
+
+            var client = scope.ServiceProvider.GetRequiredService<IClient>();
+
+            this.AddChild(client.Node);
 
             _logger.LogInformation("Handle connection finished");
 
@@ -123,11 +147,11 @@ namespace Sphere.Godot.Nodes
 
         public Task StartAsync()
         {
-            if (!_listener.IsListening())
+            if (!_listener.Server.IsBound)
             {
                 _logger.LogInformation("Starting server on port: [{port}]", _serverConfiguration.Value.Port);
 
-                _listener.Listen(_serverConfiguration.Value.Port);
+                _listener.Start();
 
                 _logger.LogInformation("Started server on port: [{port}]", _serverConfiguration.Value.Port);
 
