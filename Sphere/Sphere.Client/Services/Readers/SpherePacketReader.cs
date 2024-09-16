@@ -12,10 +12,10 @@ namespace Sphere.Services.Readers
     /// </summary>
     public class SpherePacketReader : IPacketReader
     {
-        private readonly ITcpClientAccessor _tcpClientAccessor;
+        private readonly IClientAccessor _tcpClientAccessor;
         private PacketBase  _current;
 
-        public SpherePacketReader(ITcpClientAccessor tcpClientAccessor)
+        public SpherePacketReader(IClientAccessor tcpClientAccessor)
         {
             _tcpClientAccessor = tcpClientAccessor;
         }

@@ -11,7 +11,7 @@ namespace Sphere.Test.Unit.Readers
 {
     public class PacketReaderTests
     {
-        private readonly Mock<ITcpClientAccessor> _tcpClientAccessor = new Mock<ITcpClientAccessor>();
+        private readonly Mock<IClientAccessor> _tcpClientAccessor = new Mock<IClientAccessor>();
         private readonly Mock<ITcpClient> _tcpClientMock = new Mock<ITcpClient>();
         private readonly Stream _stream = new MemoryStream();
         public PacketReaderTests()
@@ -51,7 +51,7 @@ namespace Sphere.Test.Unit.Readers
             // Arrange
             var stream = new MemoryStream();
 
-            var tcpClientAccessor = new Mock<ITcpClientAccessor>();
+            var tcpClientAccessor = new Mock<IClientAccessor>();
             var tcpClient = new Mock<ITcpClient>();
             tcpClient.Setup(x => x.GetStream()).Returns(stream);
             tcpClientAccessor.Setup(x => x.Client).Returns(tcpClient.Object);
@@ -75,7 +75,7 @@ namespace Sphere.Test.Unit.Readers
             stream.Write(Convert.FromHexString(data));
             stream.Seek(0, SeekOrigin.Begin);
 
-            var tcpClientAccessor = new Mock<ITcpClientAccessor>();
+            var tcpClientAccessor = new Mock<IClientAccessor>();
             var tcpClient = new Mock<ITcpClient>();
             tcpClientAccessor.Setup(x => x.Client).Returns(tcpClient.Object);
             tcpClientAccessor.Setup(x => x.ClientId).Returns(1);

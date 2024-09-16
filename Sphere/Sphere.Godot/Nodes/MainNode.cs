@@ -10,7 +10,6 @@ using Sphere.Common.Interfaces.Tcp;
 using Sphere.Godot.Configuration;
 using Sphere.Godot.Configuration.Options;
 using Sphere.Repository.Configuration;
-using Sphere.Services.Services;
 using Sphere.Services.Services.Tcp;
 using System;
 using System.Collections.Generic;
@@ -24,6 +23,8 @@ namespace Sphere.Godot.Nodes
 {
     public partial class MainNode : Node
     {
+        private ILogger _logger;
+
         public static void Main(string[] args)
         {
             
@@ -31,6 +32,7 @@ namespace Sphere.Godot.Nodes
 
         public override void _Ready()
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             // add support for Win1251
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -54,7 +56,7 @@ namespace Sphere.Godot.Nodes
 
             Console.WriteLine("End service registration...");
 
-            var logger = serviceProvider.GetRequiredService<ILogger<MainNode>>();
+            _logger = serviceProvider.GetRequiredService<ILogger<MainNode>>();
 
             var server = serviceProvider.GetRequiredService<IServer>();
             this.AddChild((Node)server);
@@ -82,6 +84,11 @@ namespace Sphere.Godot.Nodes
                     }
                 }
             });
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            _logger.LogError("Unhandled exception happened: {exception}", e.ExceptionObject);
         }
     }
 
@@ -131,7 +138,7 @@ namespace Sphere.Godot.Nodes
             var scope = _serviceProvider.CreateScope();
 
             // setup current "context" accessor which grants access to tcpClient and clientId in all subsequent services in that scope
-            var tcpClientAccessor = scope.ServiceProvider.GetRequiredService<ITcpClientAccessor>();
+            var tcpClientAccessor = scope.ServiceProvider.GetRequiredService<IClientAccessor>();
             tcpClientAccessor.Client = new SphereTcpClient(tcpClient);
             tcpClientAccessor.ClientId = _localIdProvider.GetIdentifier();
             tcpClientAccessor.ClientState = Common.Enums.ClientState.I_AM_BREAD;

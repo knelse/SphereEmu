@@ -9,6 +9,8 @@ using Sphere.Common.Interfaces.Readers;
 using Sphere.Common.Interfaces.Repository;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
+using Sphere.Common.Packets;
+using Sphere.Services.Misc;
 using System;
 using System.Threading.Tasks;
 using static Sphere.Common.Packets.CommonPackets;
@@ -27,18 +29,22 @@ namespace Sphere.Godot.Nodes
         private readonly IPacketHandler _basePacketHandler;
         private readonly IPacketParser _parser;
         private readonly IPlayersRepository _playerRepository;
-        private readonly ITcpClientAccessor _tcpClientAccessor;
+        private readonly IClientAccessor _tcpClientAccessor;
 
         public Node Node { get; private set; }
 
-		public bool IsInGame => _clientState == ClientState.INGAME_DEFAULT;
+        private double timeSinceLastFifteenSecondPing = 1000;
+        private double timeSinceLastSixSecondPing = 1000;
+        private double timeSinceLastTransmissionEndPing = 1000;
+
+        public bool IsInGame => _clientState == ClientState.INGAME_DEFAULT;
 
         static Client()
         {
             _clientScene = (PackedScene)ResourceLoader.Load("res://Client.tscn");
         }
 
-        public Client(ILogger<Client> logger, ILocalIdProvider localIdProvider, IPlayersRepository playersRepository, ITcpClientAccessor tcpClientAccessor, IPacketReader packetReader, IPacketHandler basePacketHandler, IPacketParser parser)
+        public Client(ILogger<Client> logger, ILocalIdProvider localIdProvider, IPlayersRepository playersRepository, IClientAccessor tcpClientAccessor, IPacketReader packetReader, IPacketHandler basePacketHandler, IPacketParser parser)
         {
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _localIdProvider = localIdProvider ?? throw new ArgumentNullException(nameof(localIdProvider));
@@ -247,6 +253,8 @@ namespace Sphere.Godot.Nodes
                 return;
 
             var parsedPacket = _parser.Parse(packet);
+
+            if (parsedPacket == null) return;
 
             await parsedPacket.Handle(_basePacketHandler, default);
 

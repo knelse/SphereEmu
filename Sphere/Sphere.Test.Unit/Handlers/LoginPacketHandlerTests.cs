@@ -20,7 +20,7 @@ namespace Sphere.Test.Unit.Handlers
 
         private readonly IPacketHandler<LoginPacket> _handler;
         private readonly Mock<ILogger<LoginPacketHandler>> _loggerMock = new Mock<ILogger<LoginPacketHandler>>();
-        private readonly Mock<ITcpClientAccessor> _tcpClientAccessorMock = new Mock<ITcpClientAccessor>();
+        private readonly Mock<IClientAccessor> _tcpClientAccessorMock = new Mock<IClientAccessor>();
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
         private readonly Mock<ITcpClient> _tcpClientMock = new Mock<ITcpClient>();
         private readonly Mock<IPlayersRepository> _playersRepositoryMock = new Mock<IPlayersRepository>();

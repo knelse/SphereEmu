@@ -9,13 +9,13 @@ namespace Sphere.Services.Services.Handlers
 {
     public class ClientPingPacketLongHandler : BaseHandler, IPacketHandler<ClientPingPacketLong>
     {
-        public ClientPingPacketLongHandler(ILogger<ClientPingPacketLongHandler> logger, ITcpClientAccessor tcpClientAccessor) : base(logger, tcpClientAccessor)
+        public ClientPingPacketLongHandler(ILogger<ClientPingPacketLongHandler> logger, IClientAccessor tcpClientAccessor) : base(logger, tcpClientAccessor)
         {
         }
 
         public async Task Handle(IPacket packet, CancellationToken cancellationToken)
         {
-            await SendPacket(FifteenSecondPing(_tcpClientAccessor.ClientId));
+            await SendPacket(FifteenSecondPing(_clientAccessor.ClientId));
         }
     }
 }

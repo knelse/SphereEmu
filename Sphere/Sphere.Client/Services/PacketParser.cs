@@ -2,6 +2,7 @@
 using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Packets;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Sphere.Client.Services
 {
@@ -17,21 +18,22 @@ namespace Sphere.Client.Services
         {
         }
 
-        public IPacket Parse(PacketBase packet)
+        public IPacket? Parse(PacketBase packet)
         {
-            if (packet.Size == 0x08)
+            return packet.Size switch
             {
-                return new ClientPingPacketShort(packet);
-            }
-            else if (packet.Size == 0x0C)
-            {
-                return new ClientPingPacketLong(packet);
-            }
+                0x08 => new ClientPingPacketShort(packet),
+                0x0C => new ClientPingPacketLong(packet),
+                0x26 => new IngamePingPacket(packet),
+                0x15 => new CharacterSelectPacket(packet),
+                0x13 => new IngameAcknowledgePacket(packet),
 
-            if (!_packetTypeMap.TryGetValue(packet.PacketType, out var func))
-                throw new ArgumentOutOfRangeException($"Packet type [{packet.PacketType}] can not be parsed");
+                //_ when packet.OriginalMessage[15] == 0x80 => new CharacterCreatePacket(packet),
+                _ when packet.OriginalMessage[15] == 0x40 => new LoginPacket(packet),
+                _ => null// throw new ArgumentException($"Unknown packet: {packet}")
+            };
 
-            return func(packet);
+           
         }
     }
 }

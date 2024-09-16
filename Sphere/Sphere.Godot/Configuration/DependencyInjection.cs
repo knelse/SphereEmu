@@ -47,13 +47,16 @@ namespace Sphere.Godot.Configuration
             services.AddSingleton<IIdentifierProvider<Guid>, GuidIdentifierProvider>();
 
             services.AddScoped<IClient, Nodes.Client>();
-            services.AddScoped<ITcpClientAccessor, TcpClientAccessor>();
+            services.AddScoped<IClientAccessor, ClientAccessor>();
             services.AddScoped<IPacketReader, SpherePacketReader>();
             services.AddScoped<IPacketHandler, PacketHandlerBase>();
             services.AddScoped<IPacketHandler<LoginPacket>, LoginPacketHandler>();
             services.AddScoped<IPacketHandler<ClientPingPacketShort>, ClientPingPacketShortHandler>();
             services.AddScoped<IPacketHandler<ClientPingPacketLong>, ClientPingPacketLongHandler>();
+            services.AddScoped<IPacketHandler<IngamePingPacket>, IngamePingPacketHandler>();
             services.AddScoped<IPacketHandler<CharacterCreatePacket>, CharacterCreatePacketHandler>();
+            services.AddScoped<IPacketHandler<CharacterSelectPacket>, CharacterSelectPacketHandler>();
+            services.AddScoped<IPacketHandler<IngameAcknowledgePacket>, IngameAcknowledgePacketHandler>();
 
             services.RegisterRepositories();
 

@@ -4,6 +4,6 @@ namespace Sphere.Common.Interfaces.Services
 {
     public interface IPacketParser
     {
-        IPacket Parse(PacketBase packet);
+        IPacket? Parse(PacketBase packet);
     }
 }

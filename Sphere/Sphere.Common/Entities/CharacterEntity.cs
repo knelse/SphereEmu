@@ -225,7 +225,7 @@ namespace Sphere.Common.Entities
             data.Add((byte)((CurrentHP & 0b11111111000) >> 3));
             data.Add((byte)(((MaxHP & 0b11) << 6) + (0b100 << 3) + ((CurrentHP & 0b11100000000000) >> 11)));
             data.Add((byte)((MaxHP & 0b1111111100) >> 2));
-            data.Add((byte)(((byte)Karma << 4) + ((MaxHP & 0b11110000000000) >> 10)));
+            data.Add((byte)(((byte)KarmaTier << 4) + ((MaxHP & 0b11110000000000) >> 10)));
             data.AddRange(Level.ToBytes());
             data.Add(0x80);
 
@@ -274,8 +274,8 @@ namespace Sphere.Common.Entities
             var pdef2 = (byte)((PDef & 0b11111111000000) >> 6);
             var mdef1 = (byte)(((MDef & 0b111111) << 2) + ((PDef & 0b1100000000000000) >> 14));
             var mdef2 = (byte)((MDef & 0b11111111000000) >> 6);
-            var karma1 = (byte)((((byte)Karma & 0b111111) << 2) + ((MDef & 0b1100000000000000) >> 14));
-            var satietyMax1 = (byte)(((MaxSatiety & 0b111111) << 2) + (((byte)Karma & 0b11000000) >> 14));
+            var karma1 = (byte)((((byte)KarmaTier & 0b111111) << 2) + ((MDef & 0b1100000000000000) >> 14));
+            var satietyMax1 = (byte)(((MaxSatiety & 0b111111) << 2) + (((byte)KarmaTier & 0b11000000) >> 14));
             var satietyMax2 = (byte)((MaxSatiety & 0b11111111000000) >> 6);
             var titleLvl1 = (byte)(((Level.TitleLvl & 0b111111) << 2) + ((MaxSatiety & 0b1100000000000000) >> 14));
             var titleLvl2 = (byte)((Level.TitleLvl & 0b11111111000000) >> 6);

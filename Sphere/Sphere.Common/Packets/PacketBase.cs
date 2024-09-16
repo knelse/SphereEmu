@@ -12,7 +12,7 @@ namespace Sphere.Common.Interfaces.Packets
 
         public byte[] PayloadRaw => _originalMessage[2..];
 
-        public virtual PacketType PacketType => (PacketType)_originalMessage[15];
+        public virtual PacketType PacketType => PacketType.Unknown; // (PacketType)_originalMessage[15];
 
         public byte[] OriginalMessage => _originalMessage;
 

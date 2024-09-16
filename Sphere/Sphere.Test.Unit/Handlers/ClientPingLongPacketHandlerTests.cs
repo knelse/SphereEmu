@@ -15,7 +15,7 @@ namespace Sphere.Test.Unit.Handlers
 
         private readonly IPacketHandler<ClientPingPacketLong> _handler;
         private readonly Mock<ILogger<ClientPingPacketLongHandler>> _loggerMock = new Mock<ILogger<ClientPingPacketLongHandler>>();
-        private readonly Mock<ITcpClientAccessor> _tcpClientAccessorMock = new Mock<ITcpClientAccessor>();
+        private readonly Mock<IClientAccessor> _tcpClientAccessorMock = new Mock<IClientAccessor>();
         private readonly Mock<ITcpClient> _tcpClientMock = new Mock<ITcpClient>();
 
         public ClientPingLongPacketHandlerTests()

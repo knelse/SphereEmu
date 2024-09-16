@@ -16,7 +16,7 @@
 
         public byte[] ToBytes()
         {
-            var toEncode = (DegreeLvl - 1) * 100 + (TitleLvl - 1);
+            var toEncode = (DegreeLvl) * 100 + (TitleLvl);
 
             return [
                 (byte)(((toEncode & 0b111111) << 2) + 2),

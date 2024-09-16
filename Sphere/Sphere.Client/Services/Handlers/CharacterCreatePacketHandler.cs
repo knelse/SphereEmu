@@ -16,7 +16,7 @@ namespace Sphere.Services.Services.Handlers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CharacterCreatePacketHandler(IUnitOfWork unitOfWork, ILogger<CharacterCreatePacketHandler> logger, ITcpClientAccessor tcpClientAccessor) : base(logger, tcpClientAccessor)
+        public CharacterCreatePacketHandler(IUnitOfWork unitOfWork, ILogger<CharacterCreatePacketHandler> logger, IClientAccessor tcpClientAccessor) : base(logger, tcpClientAccessor)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
@@ -33,18 +33,17 @@ namespace Sphere.Services.Services.Handlers
             if (await _unitOfWork.CharacterRepository.IsNicknameOccupied(name, cancellationToken))
             {
                 _logger.LogInformation("Character name is already occupied: [{nickname}]", name);
-                await SendPacket(CommonPackets.NameAlreadyExists(_tcpClientAccessor.ClientId));
+                await SendPacket(CommonPackets.NameAlreadyExists(_clientAccessor.ClientId));
 
                 return;
             }
 
-            var existingPlayerChars = await _unitOfWork.CharacterRepository.GetPlayerCharacters(_tcpClientAccessor.PlayerId, cancellationToken);
+            var existingPlayerChars = await _unitOfWork.CharacterRepository.GetPlayerCharacters(_clientAccessor.PlayerId, cancellationToken);
 
             if (existingPlayerChars.Count >= 3)
             {
-                _logger.LogError("Player {id} already has 3 or more characters", _tcpClientAccessor.PlayerId);
-                await SendPacket(CommonPackets.TransmissionEndPacket);
-                _tcpClientAccessor.Client.Close();
+                _logger.LogError("Player {id} already has 3 or more characters", _clientAccessor.PlayerId);
+                await TerminateConnection();
             }
 
             var charInfo = DecodeCharacterInfo(createPacket.CharacterInfo);
@@ -52,7 +51,7 @@ namespace Sphere.Services.Services.Handlers
 
             var newChar = new CharacterEntity()
             {
-                PlayerId = _tcpClientAccessor.PlayerId,
+                PlayerId = _clientAccessor.PlayerId,
                 Nickname = name,
                 Gender = charInfo.Gender,
                 FaceType = charInfo.Face,
@@ -63,8 +62,18 @@ namespace Sphere.Services.Services.Handlers
 
             await _unitOfWork.CharacterRepository.CreateAsync(newChar, cancellationToken);
 
-            await SendPacket(CommonPackets.NameCheckPassed(_tcpClientAccessor.ClientId));
-            await SendPacket(newChar.ToBytes(_tcpClientAccessor.ClientId));
+            newChar.Coordinates = new Common.Models.Coordinates(424, -153, -1278, 4);
+            newChar.Money = 99999999;
+
+            await SendPacket(CommonPackets.NameCheckPassed(_clientAccessor.ClientId));
+            await SendPacket(newChar.ToBytes(_clientAccessor.ClientId));
+
+            var worldData = CommonPackets.NewCharacterWorldData(_clientAccessor.ClientId);
+            await SendPacket(worldData);
+
+            _clientAccessor.Character = newChar;
+
+            _clientAccessor.ClientState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
         }
 
         private static CharacterInfo DecodeCharacterInfo(byte[] bytes)

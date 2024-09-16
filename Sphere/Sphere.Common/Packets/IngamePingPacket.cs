@@ -4,16 +4,16 @@ using Sphere.Common.Interfaces.Services;
 
 namespace Sphere.Common.Packets
 {
-    public class ClientPingPacketShort : Packet
+    public class IngamePingPacket : Packet, IPacket
     {
         public readonly PacketBase BasePacket;
 
-        public ClientPingPacketShort(PacketBase basePacket) : base(basePacket)
+        public IngamePingPacket(PacketBase basePacket) : base(basePacket)
         {
             BasePacket = basePacket ?? throw new ArgumentNullException(nameof(basePacket));
         }
 
-        public override PacketType PacketType => PacketType.ClientPingShort;
+        public override PacketType PacketType => PacketType.IngamePingPacket;
 
         public override Task Handle(IPacketHandler handler, CancellationToken cancellationToken)
         {

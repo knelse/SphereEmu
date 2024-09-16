@@ -20,7 +20,7 @@ namespace Sphere.Services.Services.Handlers
         private readonly IUnitOfWork _unitOfWork;
         private static readonly Regex _validSymbols = new Regex("[A-z0-9_]{1,}");
 
-        public LoginPacketHandler(ILogger<LoginPacketHandler> logger, ITcpClientAccessor tcpClientAccessor, IUnitOfWork unitOfWork) : base(logger, tcpClientAccessor)
+        public LoginPacketHandler(ILogger<LoginPacketHandler> logger, IClientAccessor tcpClientAccessor, IUnitOfWork unitOfWork) : base(logger, tcpClientAccessor)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
@@ -33,12 +33,11 @@ namespace Sphere.Services.Services.Handlers
                 throw new ArgumentException($"Packet is not type of [{typeof(LoginPacket)}]");
             }
 
-            if (_tcpClientAccessor.ClientState != ClientState.INIT_WAITING_FOR_LOGIN_DATA)
+            if (_clientAccessor.ClientState != ClientState.INIT_WAITING_FOR_LOGIN_DATA)
             {
-                _logger.LogError("Client is in wrong state [{currentState}], expected [{expectedState}]", _tcpClientAccessor.ClientState, ClientState.INIT_WAITING_FOR_LOGIN_DATA);
+                _logger.LogError("Client is in wrong state [{currentState}], expected [{expectedState}]", _clientAccessor.ClientState, ClientState.INIT_WAITING_FOR_LOGIN_DATA);
 
-                await SendPacket(TransmissionEndPacket);
-                _tcpClientAccessor.Client.Close();
+                await TerminateConnection();
                 return;
             }
 
@@ -46,10 +45,9 @@ namespace Sphere.Services.Services.Handlers
             {
                 _logger.LogError(
                     "Exception occurred while parsing login and password from client [{clientId}]",
-                    _tcpClientAccessor.ClientId);
+                    _clientAccessor.ClientId);
 
-                await SendPacket(TransmissionEndPacket);
-                _tcpClientAccessor.Client.Close();
+                await TerminateConnection();
                 return;
             }
 
@@ -68,16 +66,16 @@ namespace Sphere.Services.Services.Handlers
             
             if (!loginPassword.Value.password.EqualsHashed(playerEntity.Password))
             {
-                await SendPacket(AccountAlreadyInUse(_tcpClientAccessor.ClientId));
-                _logger.LogError("Incorrect password for player [{login}], clientId [{clientId}]", loginPassword.Value.login, _tcpClientAccessor.ClientId);
+                await SendPacket(AccountAlreadyInUse(_clientAccessor.ClientId));
+                _logger.LogError("Incorrect password for player [{login}], clientId [{clientId}]", loginPassword.Value.login, _clientAccessor.ClientId);
                 return;
             }
 
-            _tcpClientAccessor.PlayerId = playerEntity.Id;
+            _clientAccessor.PlayerId = playerEntity.Id;
 
             _logger.LogInformation("Fetched char list data");
 
-            await SendPacket(CharacterSelectStartData(_tcpClientAccessor.ClientId));
+            await SendPacket(CharacterSelectStartData(_clientAccessor.ClientId));
             _logger.LogInformation("SRV: Character select screen data - initial");
 
             var characters = await _unitOfWork.CharacterRepository.GetPlayerCharacters(playerEntity.Id, cancellationToken);
@@ -86,20 +84,20 @@ namespace Sphere.Services.Services.Handlers
             {
                 if (characters.Any(x => x.Index == i))
                 {
-                    bytes.AddRange(characters.ElementAt(i).ToCharacterListByteArray(_tcpClientAccessor.ClientId));
+                    bytes.AddRange(characters.ElementAt(i).ToCharacterListByteArray(_clientAccessor.ClientId));
                 }
                 else
                 {
-                    bytes.AddRange(CreateNewCharacterData(_tcpClientAccessor.ClientId));
+                    bytes.AddRange(CreateNewCharacterData(_clientAccessor.ClientId));
                 }
             }
 
-            var playerInitialData = playerEntity.ToInitialDataByteArray(_tcpClientAccessor.ClientId);
+            var playerInitialData = playerEntity.ToInitialDataByteArray(_clientAccessor.ClientId);
 
             await SendPacket(bytes.ToArray());
             _logger.LogInformation("SRV: Character select screen data - player characters");
 
-            _tcpClientAccessor.ClientState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
+            _clientAccessor.ClientState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
         }
 
         private bool TryGetLoginAndPassword(byte[] rcvBuffer, out (string login, string password)? loginPassword)
