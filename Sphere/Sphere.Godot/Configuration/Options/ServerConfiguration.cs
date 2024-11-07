@@ -1,4 +1,4 @@
-﻿namespace Sphere.Server.Configuration.Options
+﻿namespace Sphere.Godot.Configuration.Options
 {
     public class ServerConfiguration
     {

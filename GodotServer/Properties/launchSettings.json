@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "SphServer": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "D:\\Games\\Sphere\\src\\Godot_v4.2.2-stable_mono_win64.exe",
+      "workingDirectory": ".",
+      "nativeDebugging": true
+    }
+  }
+}

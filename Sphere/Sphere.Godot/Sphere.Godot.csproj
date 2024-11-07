@@ -7,6 +7,9 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -19,9 +22,11 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="NLog" Version="5.3.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Client\Sphere.Client.csproj" />
+    <ProjectReference Include="..\Sphere.Client\Sphere.Services.csproj" />
     <ProjectReference Include="..\Sphere.Common\Sphere.Common.csproj" />
+    <ProjectReference Include="..\Sphere.Repository\Sphere.Repository.csproj" />
   </ItemGroup>
 </Project>

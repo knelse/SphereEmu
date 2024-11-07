@@ -351,3 +351,4 @@ emu/obj
 emu/bin
 GodotServer/.mono/temp
 GodotServer/.godot
+.db
