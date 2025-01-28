@@ -14,6 +14,7 @@ using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
 using SphServer.Helpers;
+using SphServer.Helpers.ConsoleCommands;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
 using static SphServer.Helpers.Cities;
@@ -53,7 +54,7 @@ public partial class Client : Node
     // private readonly FileSystemWatcher watcher = new ("C:\\source\\", "statUpdatePacket.txt");
     private StaticBody3D? clientModel;
     private ushort counter;
-    public Character CurrentCharacter = null!;
+    public Character? CurrentCharacter;
     private ClientState currentState = ClientState.I_AM_BREAD;
     public int GlobalId;
     public ushort LocalId = 0x4F6F;
@@ -131,227 +132,14 @@ public partial class Client : Node
                 var input = Console.ReadLine();
                 try
                 {
-                    var shouldSaveCommand = true;
-                    // TODO: more commands at some point
-                    if (input.StartsWith("/stats"))
+                    if (CurrentCharacter is null)
                     {
-                        var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        CurrentCharacter.MaxHP = ushort.Parse(stats[1]);
-                        CurrentCharacter.MaxMP = ushort.Parse(stats[2]);
-                        CurrentCharacter.CurrentSatiety = ushort.Parse(stats[3]);
-                        CurrentCharacter.MaxSatiety = ushort.Parse(stats[4]);
-                        CurrentCharacter.CurrentStrength = ushort.Parse(stats[5]);
-                        CurrentCharacter.CurrentAgility = ushort.Parse(stats[6]);
-                        CurrentCharacter.CurrentAccuracy = ushort.Parse(stats[7]);
-                        CurrentCharacter.CurrentEndurance = ushort.Parse(stats[8]);
-                        CurrentCharacter.CurrentEarth = ushort.Parse(stats[9]);
-                        CurrentCharacter.CurrentAir = ushort.Parse(stats[10]);
-                        CurrentCharacter.CurrentWater = ushort.Parse(stats[11]);
-                        CurrentCharacter.CurrentFire = ushort.Parse(stats[12]);
-                        CurrentCharacter.PDef = ushort.Parse(stats[13]);
-                        CurrentCharacter.MDef = ushort.Parse(stats[14]);
-                        CurrentCharacter.TitleMinusOne = ushort.Parse(stats[15]);
-                        CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[16]);
-                        CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[17]);
-                        CurrentCharacter.KarmaCount = ushort.Parse(stats[18]);
-                        CurrentCharacter.TitleXP = uint.Parse(stats[19]);
-                        CurrentCharacter.DegreeXP = uint.Parse(stats[20]);
-                        CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[21]);
-                        CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[22]);
-                        CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[23]);
-                        CurrentCharacter.Money = int.Parse(stats[24]);
-                        CurrentCharacter.PAtk = int.Parse(stats[25]);
-                        CurrentCharacter.MAtk = int.Parse(stats[26]);
-                        UpdateStatsForClient();
+                        Console.WriteLine("Character is null");
+                        continue;
                     }
 
-                    else if (input.StartsWith("/money"))
-                    {
-                        var stats = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        CurrentCharacter.Money = int.Parse(stats[1]);
-                        UpdateStatsForClient();
-                    }
-
-                    else if (input.StartsWith("/msg"))
-                    {
-                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        if (chatData.Length < 4)
-                        {
-                            Console.WriteLine("usage: /msg chat_type name message");
-                        }
-                        else
-                        {
-                            var chatType = int.Parse(chatData[1]);
-                            Console.WriteLine(chatType);
-
-                            var name = chatData[2].Replace("_", " ");
-                            var message = string.Join(" ", chatData[3..]);
-
-                            message = name + ": " + message;
-// <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
-                            var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
-                            StreamPeer.PutData(response);
-                        }
-                    }
-
-                    else if (input.StartsWith("/clan"))
-                    {
-                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        if (chatData.Length < 2)
-                        {
-                            Console.WriteLine("usage: /clan action value");
-                        }
-                        else
-                        {
-                            var action = chatData[1].ToLowerInvariant();
-                            var targetRank = int.Parse(chatData[2]);
-                            switch (action)
-                            {
-                                case "rank":
-                                    var responseStream = GetWriteBitStream();
-                                    var nameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
-                                    responseStream.WriteBytes(new byte[]
-                                    {
-                                        (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                                        MajorByte(LocalId),
-                                        MinorByte(LocalId), 0x08,
-                                        0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
-                                    });
-
-                                    // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
-                                    responseStream.WriteByte(0x0, 5);
-                                    responseStream.WriteByte(MajorByte(LocalId));
-                                    responseStream.WriteByte(MinorByte(LocalId));
-                                    responseStream.WriteByte(0x0, 7);
-                                    responseStream.WriteByte(0x1A);
-                                    responseStream.WriteByte(0x16);
-                                    responseStream.WriteByte((byte) (nameBytes.Length + 2));
-                                    responseStream.WriteByte((byte) targetRank);
-                                    responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
-                                    responseStream.WriteByte(0x0, 4);
-                                    responseStream.WriteByte(0x0);
-
-                                    var response = responseStream.GetStreamData();
-                                    Console.WriteLine(Convert.ToHexString(response));
-                                    StreamPeer.PutData(response);
-                                    break;
-                            }
-                        }
-                    }
-
-                    else if (input.StartsWith("/sendpackethex"))
-                    {
-                        var chatData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        if (chatData.Length < 2)
-                        {
-                            Console.WriteLine("usage: /sendpackethex packet");
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var content = Convert.FromHexString(chatData[1]);
-                                StreamPeer.PutData(content);
-                            }
-                            catch (Exception ex)
-                            {
-                                ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
-                            }
-                        }
-                    }
-                    else if (input.StartsWith("/buff"))
-                    {
-                        var jumpx4 =
-                            "3F002C01006AF6B98878800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF9994D83C00A0F07F70391E1004F6F";
-                        //	 03C0120080DE7E0D8307F80048E8920000000000000000001459640028000C9430001C0000000000000000000040D49E9FD93408ACF070703F10F90D50C200
-                        // var runSpeed =
-                        // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
-                        //   3F002C01002CEF8F9578800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF91C4E83800A0F0704046C2800250C
-                        // var test =
-                        // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
-                        StreamPeer.PutData(Convert.FromHexString(jumpx4));
-                        // StreamPeer.PutData(Convert.FromHexString(runSpeed));
-                        // StreamPeer.PutData(Convert.FromHexString(test));
-                    }
-                    else if (input.StartsWith("/packet"))
-                    {
-                        TestHelper.SendSpherePacketFromConsole(input, StreamPeer);
-                    }
-                    else if (input.StartsWith("/mob"))
-                    {
-                        var split = input.Split(' ',
-                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                        var mobPacketName = split.Length == 1
-                            ? "mob"
-                            : "mob_" + split;
-                        TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
-                    }
-                    else if (input.StartsWith("/spawn_mob_id"))
-                    {
-                        var split = input.Split(' ',
-                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                        if (split.Length != 2 || !int.TryParse(split[1], out var mobId))
-                        {
-                            Console.WriteLine(
-                                "Usage: /spawn_mob_id <id>. For the list of IDs check entityNamesCollected file");
-                        }
-                        else
-                        {
-                            TestHelper.SendSpherePacketFromConsole($"/packet mob_assassin onme", StreamPeer, true,
-                                list =>
-                                {
-                                    foreach (var idPart in list.Where(x => x.Name == "mob_type"))
-                                    {
-                                        var bits = BitStreamExtensions.IntToBits(mobId, 16).ToList();
-                                        idPart.Value = bits;
-                                    }
-                                });
-                        }
-                    }
-                    else if (input.StartsWith("/loot"))
-                    {
-                        // var mobPacketName = input.Length == 1
-                        //     ? "mob"
-                        //     : "mob_" + input.Split(' ',
-                        //         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
-                        // TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
-                        var bag1 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 1,
-                            1,
-                            LootRatity.DEFAULT_MOB);
-                        var bag2 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 2,
-                            1,
-                            LootRatity.DEFAULT_MOB);
-                        var bag3 = ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 3,
-                            1,
-                            LootRatity.DEFAULT_MOB);
-                    }
-                    else if (input.StartsWith("/tp"))
-                    {
-                        try
-                        {
-                            var coords = input.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1..]
-                                .Select(double.Parse)
-                                .ToArray();
-                            StreamPeer.PutData(
-                                CurrentCharacter.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
-                                    0)));
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        shouldSaveCommand = false;
-                    }
-
-                    if (shouldSaveCommand)
-                    {
-                        // File.AppendAllText(consoleHistoryFilePath, input + "\n");
-                        // consoleHistory.Add(input);
-                        // consoleHistoryIndex = consoleHistory.Count;
-                    }
+                    var parser = ConsoleCommandParser.Get(CurrentCharacter);
+                    var result = parser.Parse(input);
                 }
                 catch (Exception ex)
                 {
@@ -1266,7 +1054,7 @@ public partial class Client : Node
         {
             if (CurrentCharacter.UpdateCurrentStats())
             {
-                UpdateStatsForClient();
+                PacketHelper.UpdateStatsForClient(CurrentCharacter);
             }
         }
     }
@@ -1408,7 +1196,7 @@ public partial class Client : Node
 
             if (CurrentCharacter.UpdateCurrentStats())
             {
-                UpdateStatsForClient();
+                PacketHelper.UpdateStatsForClient(CurrentCharacter);
             }
             // TODO: character state shouldn't be stored in starting dungeon
             // MainServer.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
@@ -1811,115 +1599,6 @@ public partial class Client : Node
         var destBytes = rcvBuffer[28..];
 
         return ((destBytes[2] & 0b11111) << 11) + (destBytes[1] << 3) + ((destBytes[0] & 0b11100000) >> 5);
-    }
-
-    public void UpdateStatsForClient ()
-    {
-        var divider = 0b0001011;
-        var fieldMarker7Bit = 0b01;
-        var fieldMarker14Bit = 0b10;
-        var fieldMarker31Bit = 0b11;
-
-        // to write 0x08 0xC0 instead
-        var hpMaxMarker = 0b10000000100010;
-
-        // TODO: change char fields and game objects to dict too, maybe
-        var fieldMarkers = new Dictionary<Stat, int>
-        {
-            // // [HpCurrent] =				0b000000,
-            // already used // // // // [HpMax] =					0b000001,
-            // not applicable? [MpCurrent] =				0b000010,
-            [MpMax] = 0b000011,
-            [SatietyCurrent] = 0b000100,
-            [SatietyMax] = 0b000101,
-            [Strength] = 0b000110,
-            [Agility] = 0b000111,
-            [Accuracy] = 0b001000,
-            [Endurance] = 0b001001,
-            [Earth] = 0b001010,
-            [Air] = 0b001011,
-            [Water] = 0b001100,
-            [Fire] = 0b001101,
-            [PD] = 0b010000,
-            [MD] = 0b010001,
-            // // [IsInvisible] =				0b010100, later
-            [TitleLevel] = 0b100101,
-            [DegreeLevel] = 0b100110,
-            [KarmaType] = 0b100111,
-            [Karma] = 0b101000,
-            [TitleXp] = 0b101001,
-            [DegreeXp] = 0b101010,
-            [TitleStatsAvailable] = 0b101100,
-            [DegreeStatsAvailable] = 0b101101,
-            [ClanRankType] = 0b101111,
-            [Money] = 0b111001,
-            [PA] = 0b010010,
-            [MA] = 0b010011
-        };
-
-        var characterFieldMap = new Dictionary<Stat, int>
-        {
-            [HpCurrent] = CurrentCharacter.CurrentHP,
-            [HpMax] = CurrentCharacter.MaxHP,
-            [MpCurrent] = CurrentCharacter.CurrentMP,
-            [MpMax] = CurrentCharacter.MaxMP,
-            [SatietyCurrent] = CurrentCharacter.CurrentSatiety,
-            [SatietyMax] = CurrentCharacter.MaxSatiety,
-            [Strength] = CurrentCharacter.CurrentStrength,
-            [Agility] = CurrentCharacter.CurrentAgility,
-            [Accuracy] = CurrentCharacter.CurrentAccuracy,
-            [Endurance] = CurrentCharacter.CurrentEndurance,
-            [Earth] = CurrentCharacter.CurrentEarth,
-            [Air] = CurrentCharacter.CurrentAir,
-            [Water] = CurrentCharacter.CurrentWater,
-            [Fire] = CurrentCharacter.CurrentFire,
-            [PD] = CurrentCharacter.PDef,
-            [MD] = CurrentCharacter.MDef,
-            [TitleLevel] = CurrentCharacter.TitleMinusOne,
-            [DegreeLevel] = CurrentCharacter.DegreeMinusOne,
-            [KarmaType] = (int) CurrentCharacter.Karma,
-            [Karma] = CurrentCharacter.KarmaCount,
-            [TitleXp] = (int) CurrentCharacter.TitleXP,
-            [DegreeXp] = (int) CurrentCharacter.DegreeXP,
-            [TitleStatsAvailable] = CurrentCharacter.AvailableTitleStats,
-            [DegreeStatsAvailable] = CurrentCharacter.AvailableDegreeStats,
-            [ClanRankType] = (int) CurrentCharacter.ClanRank,
-            [Money] = CurrentCharacter.Money,
-            [PA] = CurrentCharacter.PAtk,
-            [MA] = CurrentCharacter.MAtk
-        };
-
-        var memoryStream = new MemoryStream();
-        var stream = new BitStream(memoryStream)
-        {
-            AutoIncreaseStream = true
-        };
-
-        stream.WriteBytes(new byte[] { MajorByte(LocalId), MinorByte(LocalId), 0x08, 0xC0 }, 4, true);
-        stream.WriteUInt16((ushort) hpMaxMarker, 14);
-        stream.WriteUInt16(CurrentCharacter.MaxHP, 14);
-
-        foreach (var (field, marker) in fieldMarkers)
-        {
-            var statValue = characterFieldMap[field];
-            var statValueAbs = Math.Abs(statValue);
-            var fieldLength = statValueAbs <= 127 ? 7 :
-                statValueAbs <= 16383 ? 14 : 31;
-            var fieldLengthMarker = fieldLength switch
-            {
-                7 => fieldMarker7Bit,
-                14 => fieldMarker14Bit,
-                _ => fieldMarker31Bit
-            };
-            var negativeBit = statValue < 0 ? 1 : 0;
-            var fieldSeparator = (ushort) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
-            stream.WriteUInt16(fieldSeparator);
-            var valueBits = ObjectPacketTools.IntToBits((uint) statValueAbs, fieldLength);
-            stream.WriteBits(valueBits, fieldLength);
-        }
-
-        StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
-        Console.WriteLine("Stat update");
     }
 
     public bool IsReadyForGameLogic => currentState == ClientState.INGAME_DEFAULT;

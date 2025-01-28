@@ -202,4 +202,9 @@ public partial class MainServer : Node
         ActiveNodes[client.GetInstanceId()] = client;
         AddChild(client);
     }
+
+    public static Client? GetClient (ushort localId)
+    {
+        return ActiveClients.ContainsKey(localId) ? ActiveClients[localId] : null;
+    }
 }
