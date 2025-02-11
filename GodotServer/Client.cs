@@ -498,18 +498,18 @@ public partial class Client : Node
             //         // StreamPeer.PutData(CommonPackets.Echo(ID));
             //         break;
             //     // damage or trade
-            //     // case 0x19:
-            //     case 0x20:
-            //         if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x03)
-            //         {
-            //             BuyItemFromTarget();
-            //         }
-            //         else
-            //         {
-            //             DamageTarget();
-            //         }
-            //
-            //         break;
+            case 0x19:
+            case 0x20:
+                if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0x03)
+                {
+                    // BuyItemFromTarget();
+                }
+                else
+                {
+                    DamageTarget();
+                }
+
+                break;
             // vendor trade
             case 0x31:
             case 0x36:
@@ -1387,6 +1387,18 @@ public partial class Client : Node
 
     private void DamageTarget ()
     {
+        // TODO: actual damage with actual mob node
+        var receiveStream = new BitStream(rcvBuffer);
+        receiveStream.ReadBits(172);
+        var targetId = receiveStream.ReadUInt16();
+        var packet = PacketPart.LoadDefinedWithOverride("fist_attack_target");
+        PacketPart.UpdateEntityId(packet, targetId);
+        PacketPart.UpdateValue(packet, "attacker_id", CurrentCharacter.ClientIndex, 16);
+        PacketPart.UpdateValue(packet, "30000_minus_damage", 30000);
+        var packetBytes = PacketPart.GetBytesToWrite(packet);
+        StreamPeer.PutData(packetBytes);
+        return;
+
         var paAbs = Math.Abs(CurrentCharacter.PAtk);
         var currentItem = MainServer.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand]);
         var damagePa = currentItem.PAtkNegative == 0
