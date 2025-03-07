@@ -1,0 +1,4 @@
+delimiter_test	UINT64	0	8	__undef	23	77	35	150	00001011
+next_field	UINT64	8	8	next_field_types	70	174	231	150	00001100
+count_length	UINT64	16	8	__undef	101	210	194	150	00000010
+count	UINT64	24	15	__undef	156	237	139	150	010011001111000
