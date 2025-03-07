@@ -1,0 +1,4 @@
+entity_id	UINT64	0	16	__undef	255	255	0	255	0001011110110000
+__undef	BITS	16	2	__undef	100	100	100	100	00
+entity_type	UINT64	18	10	object_types	4	255	23	255	1011000000
+__undef	BITS	28	4	__undef	100	100	100	100	1000
