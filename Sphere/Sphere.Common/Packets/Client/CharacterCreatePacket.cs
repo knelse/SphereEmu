@@ -2,11 +2,11 @@
 using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 
-namespace Sphere.Common.Packets
+namespace Sphere.Common.Packets.Client
 {
-    public class LoginPacket : Packet, IPacket
+    public class CharacterCreatePacket : Packet, IPacket
     {
-        public LoginPacket(PacketBase basePacket) : base(basePacket)
+        public CharacterCreatePacket(PacketBase packet) : base(packet)
         {
         }
 
@@ -18,13 +18,16 @@ namespace Sphere.Common.Packets
 
         public byte[] BeginPayload => _packet.OriginalMessage[13..15]; // 0x08 0x40
 
-        public override PacketType PacketType => PacketType.Login;
+        public override PacketType PacketType => PacketType.CreateCharacter;
 
         public byte LoginLength => _packet.OriginalMessage[16]; // 0x45
 
-        public byte StartLogin => _packet.OriginalMessage[17]; // 0xFC
+        public byte CharacterIndex => _packet.OriginalMessage[17];
 
-        public byte[] Payload => _packet.OriginalMessage[18..];
+        public byte[] Nickname => _packet.OriginalMessage[20..^5];
+
+        public byte[] CharacterInfo => _packet.OriginalMessage[^5..];
+
 
         public override Task Handle(IPacketHandler handler, CancellationToken cancellationToken)
         {

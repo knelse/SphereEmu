@@ -1,5 +1,7 @@
 ﻿using Sphere.Common.Entities;
 using Sphere.Common.Enums;
+using Sphere.Common.Interfaces;
+using Sphere.Common.Interfaces.Nodes;
 using Sphere.Common.Interfaces.Tcp;
 
 namespace Sphere.Services.Misc
@@ -19,6 +21,10 @@ namespace Sphere.Services.Misc
         public byte[] LastPing { get; set; }
 
         public ushort PingCounter { get; set; }
+
+        public IServer Server { get; init; }
+
+        public IClient GameClient { get; set; }
 
         public override string ToString()
         {

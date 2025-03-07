@@ -6,7 +6,7 @@ using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Repository;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 using Sphere.Services.Services.Readers;
 using System.Text.RegularExpressions;
 using static Sphere.Common.Packets.CommonPackets;

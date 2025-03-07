@@ -1,7 +1,7 @@
 ﻿using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 
-namespace Sphere.Common.Packets
+namespace Sphere.Common.Packets.Client
 {
     public class CharacterSelectPacket : Packet
     {

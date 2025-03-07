@@ -2,7 +2,7 @@
 using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 
 namespace Sphere.Services.Services.Handlers
 {
@@ -20,6 +20,7 @@ namespace Sphere.Services.Services.Handlers
             }
 
             _clientAccessor.ClientState = Common.Enums.ClientState.INGAME_DEFAULT;
+            _clientAccessor.GameClient.ClientConnected();
         }
     }
 }

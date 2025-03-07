@@ -2,18 +2,18 @@
 using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 
-namespace Sphere.Common.Packets
+namespace Sphere.Common.Packets.Client
 {
-    public class ClientPingPacketShort : Packet
+    public class IngameAcknowledgePacket : Packet, IPacket
     {
         public readonly PacketBase BasePacket;
 
-        public ClientPingPacketShort(PacketBase basePacket) : base(basePacket)
+        public IngameAcknowledgePacket(PacketBase basePacket) : base(basePacket)
         {
             BasePacket = basePacket ?? throw new ArgumentNullException(nameof(basePacket));
         }
 
-        public override PacketType PacketType => PacketType.ClientPingShort;
+        public override PacketType PacketType => PacketType.IngameAcknowledge;
 
         public override Task Handle(IPacketHandler handler, CancellationToken cancellationToken)
         {
