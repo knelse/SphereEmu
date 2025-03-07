@@ -7,5 +7,7 @@ namespace Sphere.Common.Interfaces.Nodes
         bool IsInGame { get; }
 
         Node Node { get; }
+
+        void ClientConnected();
     }
 }

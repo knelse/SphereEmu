@@ -1,5 +1,5 @@
 ﻿using Sphere.Common.Interfaces.Packets;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 
 namespace Sphere.Test.Common
 {

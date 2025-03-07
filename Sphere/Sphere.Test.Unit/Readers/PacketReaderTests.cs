@@ -1,9 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
-using Sphere.Client.Services;
-using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 using Sphere.Services.Readers;
 using Sphere.Test.Common;
 

@@ -2,7 +2,7 @@
 using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 using static Sphere.Common.Packets.CommonPackets;
 
 namespace Sphere.Services.Services.Handlers

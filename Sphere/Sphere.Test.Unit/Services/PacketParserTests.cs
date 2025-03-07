@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Sphere.Client.Services;
 using Sphere.Common.Interfaces.Packets;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 
 namespace Sphere.Test.Unit.Services
 {

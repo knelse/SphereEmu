@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
-using Sphere.Common.Enums;
 using Sphere.Common.Interfaces.Services;
-using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Packets.Client;
 using Sphere.Services.Services.Handlers;
 using Sphere.Test.Common;
 
