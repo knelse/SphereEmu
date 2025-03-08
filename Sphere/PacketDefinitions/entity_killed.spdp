@@ -1,9 +1,0 @@
-entity_id	UINT64	0	16	__undef	111	84	11	150	1000111101001011
-__undef	BITS	16	2	__undef	100	100	100	100	00
-entity_type	UINT64	18	10	object_types	248	10	215	150	0011010010
-__undef	BITS	28	1	__undef	100	100	100	100	0
-action_type	UINT64	29	8	spawn_action_types	127	255	212	255	00001010
-interaction_type	UINT64	37	16	spawn_interaction_types	0	206	171	150	0000010000001101
-killed_by_id	UINT64	53	16	__undef	249	112	38	150	0110110011110010
-__undef	BITS	69	14	__undef	100	100	100	100	00000000000000
-skip	BITS	83	1	__undef	152	198	51	150	0
