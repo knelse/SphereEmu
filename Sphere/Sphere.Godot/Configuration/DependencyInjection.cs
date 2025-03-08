@@ -10,13 +10,15 @@ using Sphere.Common.Interfaces.Providers;
 using Sphere.Common.Interfaces.Readers;
 using Sphere.Common.Interfaces.Services;
 using Sphere.Common.Interfaces.Tcp;
-using Sphere.Common.Packets;
+using Sphere.Common.Interfaces.Utils;
+using Sphere.Common.Packets.Client;
 using Sphere.Godot.Configuration.Options;
 using Sphere.Repository.Configuration;
 using Sphere.Services.Misc;
 using Sphere.Services.Providers;
 using Sphere.Services.Readers;
 using Sphere.Services.Services.Handlers;
+using Sphere.Services.Services.Utils;
 using System;
 
 namespace Sphere.Godot.Configuration
@@ -45,9 +47,10 @@ namespace Sphere.Godot.Configuration
             services.AddSingleton<ILocalIdProvider, LocalIdProvider>();
             services.AddSingleton<IPacketParser, PacketParser>();
             services.AddSingleton<IIdentifierProvider<Guid>, GuidIdentifierProvider>();
+            services.AddSingleton<IPacketDefinitionParser, PacketDefinitionParser>();
 
             services.AddScoped<IClient, Nodes.Client>();
-            services.AddScoped<IClientAccessor, ClientAccessor>();
+            services.AddScoped<IClientAccessor, ClientAccessor>((provider) => new ClientAccessor { Server = provider.GetRequiredService<IServer>() });
             services.AddScoped<IPacketReader, SpherePacketReader>();
             services.AddScoped<IPacketHandler, PacketHandlerBase>();
             services.AddScoped<IPacketHandler<LoginPacket>, LoginPacketHandler>();

@@ -3,15 +3,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Sphere.Common.Events.SpawnObject;
 using Sphere.Common.Interfaces;
 using Sphere.Common.Interfaces.Nodes;
 using Sphere.Common.Interfaces.Providers;
 using Sphere.Common.Interfaces.Tcp;
+using Sphere.Common.Interfaces.Utils;
+using Sphere.Common.Models;
+using Sphere.Common.Packets;
 using Sphere.Godot.Configuration;
 using Sphere.Godot.Configuration.Options;
 using Sphere.Repository.Configuration;
 using Sphere.Services.Services.Tcp;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -56,6 +61,14 @@ namespace Sphere.Godot.Nodes
 
             Console.WriteLine("End service registration...");
 
+            Console.WriteLine("Start loading packet definitions...");
+
+            var packetsDefinitionParser = serviceProvider.GetRequiredService<IPacketDefinitionParser>();
+            var packets = packetsDefinitionParser.Load();
+            PacketsLibrary.Create(packets.AsReadOnly());
+
+            Console.WriteLine("End loading packet definitions...");
+
             _logger = serviceProvider.GetRequiredService<ILogger<MainNode>>();
 
             var server = serviceProvider.GetRequiredService<IServer>();
@@ -81,6 +94,17 @@ namespace Sphere.Godot.Nodes
                             server.StopAsync();
                             running = false;
                             break;
+                        case "spawn_mob":
+                            Console.WriteLine("Enter client id: ");
+                            var clientId = Convert.ToInt16(Console.ReadLine());
+                            server.SpawnMob(clientId, new SpawnMobModel
+                            {
+                                CurrentHP = 100,
+                                Level = 1,
+                                MaxHP = 100,
+                                Type = Common.Enums.MonsterType.Assassin
+                            });
+                            break;
                     }
                 }
             });
@@ -99,9 +123,12 @@ namespace Sphere.Godot.Nodes
         private readonly IOptions<ServerConfiguration> _serverConfiguration;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILocalIdProvider _localIdProvider;
+        private readonly ConcurrentDictionary<int, IClientAccessor> _clients = new ConcurrentDictionary<int, IClientAccessor>();
 
         // private PackedScene _clientScene;
         private Dictionary<int, IClient> _portClientMap = new Dictionary<int, IClient>();
+
+        public event EventHandler<SpawnObjectEventArgs> SpawnEvent;
 
         public Server(ILogger<Server> logger, IOptions<ServerConfiguration> options, IServiceProvider serviceProvider, ILocalIdProvider localIdProvider)
         {
@@ -139,11 +166,20 @@ namespace Sphere.Godot.Nodes
 
             // setup current "context" accessor which grants access to tcpClient and clientId in all subsequent services in that scope
             var tcpClientAccessor = scope.ServiceProvider.GetRequiredService<IClientAccessor>();
-            tcpClientAccessor.Client = new SphereTcpClient(tcpClient);
-            tcpClientAccessor.ClientId = _localIdProvider.GetIdentifier();
-            tcpClientAccessor.ClientState = Common.Enums.ClientState.I_AM_BREAD;
+            var tcpLogger = scope.ServiceProvider.GetRequiredService<ILogger<SphereTcpClient>>();
 
+            tcpClientAccessor.ClientId = _localIdProvider.GetIdentifier();
+            tcpClientAccessor.Client = new SphereTcpClient(tcpLogger, tcpClient, tcpClientAccessor);
+            tcpClientAccessor.ClientState = Common.Enums.ClientState.I_AM_BREAD;
+            
             var client = scope.ServiceProvider.GetRequiredService<IClient>();
+            tcpClientAccessor.GameClient = client;
+
+            if (!this._clients.TryAdd(tcpClientAccessor.ClientId, tcpClientAccessor))
+            {
+                tcpClientAccessor.Client.Close();
+                return;
+            }
 
             this.AddChild(client.Node);
 
@@ -176,6 +212,22 @@ namespace Sphere.Godot.Nodes
             _logger.LogInformation("Stopped server on port: [{port}]", _serverConfiguration.Value.Port);
 
             return Task.CompletedTask;
+        }
+
+        public void SpawnMob(int clientId, SpawnMobModel model)
+        {
+            if (!this._clients.TryGetValue(clientId, out var clientAccessor))
+            {
+                return;
+            }
+
+            model.EntityId = _localIdProvider.GetIdentifier();
+            model.Coordinates = clientAccessor.Character.Coordinates;
+
+            this.SpawnEvent?.Invoke(this, new SpawnObjectEventArgs
+            {
+                Object = model,
+            });
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Xunit.Extensions.AssemblyFixture;
 
@@ -17,3 +18,4 @@ using Xunit.Extensions.AssemblyFixture;
 
 [assembly: Guid("f91221b8-2065-4217-ad15-b75cdfdffd1a")]
 [assembly: TestFramework(AssemblyFixtureFramework.TypeName, AssemblyFixtureFramework.AssemblyName)]
+[assembly: InternalsVisibleTo("Sphere.Test.Unit")]

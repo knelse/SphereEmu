@@ -1,6 +1,9 @@
-﻿using Sphere.Common.Interfaces.Packets;
+﻿using Microsoft.Extensions.Logging;
+using Sphere.Common.Helpers.Extensions;
+using Sphere.Common.Interfaces.Packets;
 using Sphere.Common.Interfaces.Readers;
 using Sphere.Common.Interfaces.Tcp;
+using Sphere.Services.Services.Tcp;
 
 namespace Sphere.Services.Readers
 {
@@ -13,11 +16,13 @@ namespace Sphere.Services.Readers
     public class SpherePacketReader : IPacketReader
     {
         private readonly IClientAccessor _tcpClientAccessor;
+        private readonly ILogger<SphereTcpClient> _logger;
         private PacketBase  _current;
 
-        public SpherePacketReader(IClientAccessor tcpClientAccessor)
+        public SpherePacketReader(IClientAccessor tcpClientAccessor, ILogger<SphereTcpClient> logger)
         {
             _tcpClientAccessor = tcpClientAccessor;
+            _logger = logger;
         }
 
         public PacketBase Current => _current;
@@ -54,6 +59,8 @@ namespace Sphere.Services.Readers
             var basePacket = new PacketBase(buff[..packetSize], _tcpClientAccessor.ClientId);
 
             _current = basePacket;
+
+            _logger.PacketReceived(_current.OriginalMessage, _tcpClientAccessor.ClientId);
 
             return true;
         }

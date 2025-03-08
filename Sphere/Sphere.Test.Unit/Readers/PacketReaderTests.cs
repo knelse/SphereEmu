@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Sphere.Common.Interfaces.Tcp;
 using Sphere.Common.Packets.Client;
 using Sphere.Services.Readers;
+using Sphere.Services.Services.Tcp;
 using Sphere.Test.Common;
 
 namespace Sphere.Test.Unit.Readers
@@ -11,6 +13,7 @@ namespace Sphere.Test.Unit.Readers
     {
         private readonly Mock<IClientAccessor> _tcpClientAccessor = new Mock<IClientAccessor>();
         private readonly Mock<ITcpClient> _tcpClientMock = new Mock<ITcpClient>();
+        private readonly Mock<ILogger<SphereTcpClient>> _loggerMock = new Mock<ILogger<SphereTcpClient>>();
         private readonly Stream _stream = new MemoryStream();
         public PacketReaderTests()
         {
@@ -32,7 +35,7 @@ namespace Sphere.Test.Unit.Readers
             _tcpClientAccessor.Setup(x => x.Client).Returns(_tcpClientMock.Object);
             _tcpClientAccessor.Setup(x => x.ClientId).Returns(1);
 
-            var reader = new SpherePacketReader(_tcpClientAccessor.Object);
+            var reader = new SpherePacketReader(_tcpClientAccessor.Object, _loggerMock.Object);
 
             // Act
             await reader.MoveNextAsync();
@@ -55,7 +58,7 @@ namespace Sphere.Test.Unit.Readers
             tcpClientAccessor.Setup(x => x.Client).Returns(tcpClient.Object);
             tcpClientAccessor.Setup(x => x.ClientId).Returns(1);
 
-            var reader = new SpherePacketReader(tcpClientAccessor.Object);
+            var reader = new SpherePacketReader(tcpClientAccessor.Object, _loggerMock.Object);
 
             // Act
             var result = await reader.MoveNextAsync();
@@ -78,7 +81,7 @@ namespace Sphere.Test.Unit.Readers
             tcpClientAccessor.Setup(x => x.Client).Returns(tcpClient.Object);
             tcpClientAccessor.Setup(x => x.ClientId).Returns(1);
 
-            var reader = new SpherePacketReader(tcpClientAccessor.Object);
+            var reader = new SpherePacketReader(tcpClientAccessor.Object, _loggerMock.Object);
 
             // Act
             var result = await reader.MoveNextAsync();

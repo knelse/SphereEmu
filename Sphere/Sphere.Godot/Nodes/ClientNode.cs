@@ -1,6 +1,7 @@
 using Godot;
 using Microsoft.Extensions.Logging;
 using Sphere.Common.Enums;
+using Sphere.Common.Events.SpawnObject;
 using Sphere.Common.Helpers.Extensions;
 using Sphere.Common.Interfaces.Nodes;
 using Sphere.Common.Interfaces.Packets;
@@ -16,7 +17,7 @@ using static Sphere.Common.Packets.CommonPackets;
 namespace Sphere.Godot.Nodes
 {
     public class Client : IClient
-	{
+    {
 		private readonly ILogger<Client> _logger;
         private readonly ILocalIdProvider _localIdProvider;
         private static readonly PackedScene _clientScene;
@@ -98,8 +99,6 @@ namespace Sphere.Godot.Nodes
             {
                 var packet = _packetReader.Current;
 
-                _logger.PacketReceived(packet, _tcpClientAccessor.ClientId);
-
                 return packet;
             }
 
@@ -111,6 +110,34 @@ namespace Sphere.Godot.Nodes
             await _tcpClientAccessor.Client.WriteAsync(rcvBuffer);
 
             _logger.PacketSent(rcvBuffer, _tcpClientAccessor.ClientId);
+        }
+
+        public void ClientConnected()
+        {
+            this._clientState = this._tcpClientAccessor.ClientState = ClientState.INGAME_DEFAULT;
+            this._tcpClientAccessor.Server.SpawnEvent += Server_SpawnEvent;
+            
+        }
+
+        private void Server_SpawnEvent(object sender, SpawnObjectEventArgs e)
+        {
+            try
+            {
+                var coordinates = e.Object.Coordinates;
+
+                var playerCoords = this._tcpClientAccessor.Character.Coordinates;
+
+                if (coordinates.Distance(playerCoords) >= 100)
+                    return;
+
+                var packet = e.Object.ToServerPacket();
+
+                this.SendPacket(packet.GetBytes()).GetAwaiter().GetResult();
+            }
+            catch (Exception)
+            {
+             //   _logger.LogError(ex, "Unhandled exception.");
+            }
         }
     }
 
