@@ -21,6 +21,11 @@ namespace Sphere.Services.Services.Utils
         /// <returns></returns>
         public Dictionary<string, PacketDefinition?> Load()
         {
+            if (!Directory.Exists(Folder))
+            {
+                return new Dictionary<string, PacketDefinition?>();
+            }
+
             var parts = Directory.EnumerateFiles(Folder, "*.spdp", SearchOption.AllDirectories).Select(file =>
             {
                 try
