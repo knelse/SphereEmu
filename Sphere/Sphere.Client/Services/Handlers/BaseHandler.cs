@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Sphere.Common.Helpers.Extensions;
 using Sphere.Common.Interfaces.Tcp;
 using Sphere.Common.Packets;
 
@@ -19,7 +18,6 @@ namespace Sphere.Services.Services.Handlers
         protected async Task SendPacket(byte[] rcvBuffer)
         {
             await _clientAccessor.Client.WriteAsync(rcvBuffer);
-            _logger.PacketSent(rcvBuffer, _clientAccessor.ClientId);
         }
 
         protected async Task TerminateConnection()

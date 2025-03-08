@@ -79,47 +79,20 @@ namespace Sphere.Common.Helpers
             return sign * (1 + (double)numToEncode / 0b100000000000000000000000) * baseCoord;
         }
 
-        //public static double DecodeClientCoordinateWithoutShift(byte[] a, bool shouldReverse = true)
-        //{
-        //    if (a.Length < 4)
-        //    {
-        //        return 0;
-        //    }
-
-        //    if (shouldReverse)
-        //    {
-        //        a = a.Reverse().ToArray();
-        //    }
-        //    BitOperations.
-        //    var stream = new BitStream(a);
-        //    var fraction = stream.ReadInt64(23);
-        //    var scale = stream.ReadByte();
-        //    var sign = stream.ReadBit().AsBool() ? -1 : 1;
-
-        //    if (scale == 126)
-        //    {
-        //        return 0.0;
-        //    }
-
-        //    var baseCoord = Math.Pow(2, scale - 127);
-
-        //    return (1 + (float)fraction / 0b100000000000000000000000) * baseCoord * sign;
-        //}
-
-        public static double DecodeClientCoordinate(byte[] a)
+        public static float DecodeClientCoordinate(byte[] a)
         {
             var x_scale = ((a[4] & 0b11111) << 3) + ((a[3] & 0b11100000) >> 5);
 
             if (x_scale == 126)
             {
-                return 0.0;
+                return 0.0f;
             }
 
             var baseCoord = Math.Pow(2, x_scale - 127);
             var sign = (a[4] & 0b100000) > 0 ? -1 : 1;
 
-            return (1 + (float)(((a[3] & 0b11111) << 18) + (a[2] << 10) + (a[1] << 2) +
-                                 ((a[0] & 0b11000000) >> 6)) / 0b100000000000000000000000) * baseCoord * sign;
+            return (float)((1 + (float)(((a[3] & 0b11111) << 18) + (a[2] << 10) + (a[1] << 2) +
+                                 ((a[0] & 0b11000000) >> 6)) / 0b100000000000000000000000) * baseCoord * sign);
         }
 
         public static Coordinates GetCoordsFromPingBytes(byte[] rcvBuffer)
@@ -127,7 +100,7 @@ namespace Sphere.Common.Helpers
             var x = DecodeClientCoordinate(rcvBuffer.AsSpan(21, 5).ToArray());
             var y = -DecodeClientCoordinate(rcvBuffer.AsSpan(25, 5).ToArray());
             var z = DecodeClientCoordinate(rcvBuffer.AsSpan(29, 5).ToArray());
-            var turn = DecodeClientCoordinate(rcvBuffer.AsSpan(33, 5).ToArray());
+            var turn = (int)DecodeClientCoordinate(rcvBuffer.AsSpan(33, 5).ToArray());
 
             return new Coordinates(x, y, z, turn);
         }
