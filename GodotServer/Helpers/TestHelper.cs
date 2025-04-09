@@ -22,7 +22,7 @@ public class TestHelper
 {
     // public static void DumpLoginData(byte[] rcvBuffer)
     // {
-    //     var clientLoginDataFile = File.Open("C:\\source\\client_login_dump", File.READWRITE);
+    //     var clientLoginDataFile = File.Open("D:\\SphereDev\\SphereSource\\source\\client_login_dump", File.READWRITE);
     //     var loginEnd = 18;
     //
     //     for (; loginEnd < rcvBuffer.Length; loginEnd++)
@@ -112,7 +112,7 @@ public class TestHelper
     //
     // public static byte[] GetTestEntityData(int index)
     // {
-    //     var entityData = System.IO.File.ReadAllLines("C:\\source\\entityData");
+    //     var entityData = System.IO.File.ReadAllLines("D:\\SphereDev\\SphereSource\\source\\entityData");
     //     var entity = new GameEntity
     //     {
     //         Unknown = Convert.ToUInt16(entityData[1]),

@@ -17,7 +17,7 @@ namespace SphServer
 		public override void _Process(double delta)
 		{
 			// try {
-			// 	var savedCoords = System.IO.File.ReadAllText("C:\\source\\clientCoordsSaved").Split("\n");
+			// 	var savedCoords = System.IO.File.ReadAllText("D:\\SphereDev\\SphereSource\\source\\clientCoordsSaved").Split("\n");
 			// 	var x = Convert.ToDouble(savedCoords[0]) + 1093 + 37;
 			// 	var y = - (Convert.ToDouble(savedCoords[1]) - 4503);
 			// 	var z = - (Convert.ToDouble(savedCoords[2]) - 1900);

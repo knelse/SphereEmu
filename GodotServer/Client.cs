@@ -44,14 +44,14 @@ public partial class Client : Node
 
     // public static readonly string PingCoordsFilePath = LiveServerCoords
     //     ? "C:\\_sphereDumps\\currentWorldCoords"
-    //     : "C:\\source\\clientCoordsSaved";
+    //     : "D:\\SphereDev\\SphereSource\\source\\clientCoordsSaved";
 
     private static ItemContainer _testItemContainer = null!;
     public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new ();
 
     private readonly byte[] rcvBuffer = new byte[BUFSIZE];
 
-    // private readonly FileSystemWatcher watcher = new ("C:\\source\\", "statUpdatePacket.txt");
+    // private readonly FileSystemWatcher watcher = new ("D:\\SphereDev\\SphereSource\\source\\", "statUpdatePacket.txt");
     private StaticBody3D? clientModel;
     private ushort counter;
     public Character? CurrentCharacter;

@@ -12,7 +12,7 @@ public static class WorldDataTest
 {
     //     public static async Task SendWorldDataGirasAsync(NetworkStream ns)
     //     {
-    //         var watcher = new FileSystemWatcher("C:\\source\\packets\\");
+    //         var watcher = new FileSystemWatcher("D:\\SphereDev\\SphereSource\\source\\packets\\");
     //         watcher.Filter = "world_load_data.txt";
     //         watcher.EnableRaisingEvents = true;
     //         watcher.Changed += (_, _) =>
@@ -122,7 +122,7 @@ public static class WorldDataTest
     //             // slot 2-6
     //             //"c9002c0100ac0407dbd0870f08a42c09e08d0e190078ae88489145665d831560003a12a0900500ffffffffbf29388ac3074c409704a8388b0c001c54ecadc8223345880a30001d0950c80280ffffffff020b9001143c20e0b7f64971f80048e8920000000000000000e6155964ba08510106a023010a5900f0ffffff5f60010d80820704fc10be390e1f90675a12a01d3832006fcc3180228b4c19212ac000742440210b00feffffff0b2cf03e50f080809fbe23c5e10320a14b020000000000000058516491592244" +
     //             Convert.ToHexString(BitHelper.BinaryStringToByteArray(
-    //                 (File.ReadAllText("C:\\source\\packets\\world_load_data.txt")).RemoveLineEndings())) +
+    //                 (File.ReadAllText("D:\\SphereDev\\SphereSource\\source\\packets\\world_load_data.txt")).RemoveLineEndings())) +
     //             // slot 7-10
     //             "bd002c0100ac04fa8e14470106a023010a5900f0ffffff5f608152815fbd3bc5e10320a14b020000000000000028576491b927440518808e04286401c0ffffff7f8105b0047ed4c8c08b0f80842e090000000000000000409145261e031760003a12a0900500ffffffffbf38218ac307404297040000000000000000a0c8227346880a30001d0950c80280ffffffff020b6000fcaac2290e1f00095d1200000000000000c0bc228b4c0f212ac000742440210b00feffffff0b2c501100" +
     //             // spec abilities 1-3 speedhack_mantra

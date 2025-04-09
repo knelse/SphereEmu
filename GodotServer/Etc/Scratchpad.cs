@@ -526,7 +526,7 @@
                 //     // }
                 // });
 
-                // var enterGame2Binary = (await File.ReadAllTextAsync("C:\\source\\enterGame2.txt")).RemoveLineEndings();
+                // var enterGame2Binary = (await File.ReadAllTextAsync("D:\\SphereDev\\SphereSource\\source\\enterGame2.txt")).RemoveLineEndings();
 
                 // Giras, Anhelm near portal
                 // var enterGameResponse_3 =
