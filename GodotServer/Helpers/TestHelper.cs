@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BitStreams;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Packets;

@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BitStreams;
 using Godot;
-using SphereHelpers.Extensions;
 using SphServer;
 using SphServer.DataModels;
 using SphServer.Db;
@@ -20,7 +16,6 @@ using static SphServer.Helpers.BitHelper;
 using static SphServer.Helpers.Cities;
 using static SphServer.Helpers.Continents;
 using static SphServer.Helpers.PoiType;
-using static Stat;
 
 public enum ClientState
 {

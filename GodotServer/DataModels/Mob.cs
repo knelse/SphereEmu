@@ -2,7 +2,6 @@ using System.Text;
 using Godot;
 using SphServer;
 using SphServer.Helpers;
-using SphServer.Packets;
 
 public class Mob
 {

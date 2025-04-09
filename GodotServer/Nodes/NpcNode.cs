@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using SphServer.Helpers;
-using SphServer.Packets;
 
 namespace SphServer.Nodes;
 

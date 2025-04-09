@@ -10,7 +10,6 @@ using LiteDB;
 using Newtonsoft.Json;
 using SphereHelpers.Extensions;
 using SphServer.DataModels;
-using SphServer.Enums;
 
 // ReSharper disable NotAccessedField.Local
 

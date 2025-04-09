@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using BitStreams;
-using Godot;
 using SphServer.DataModels;
 using SphServer.Packets;
 using static SphServer.Helpers.BitHelper;
