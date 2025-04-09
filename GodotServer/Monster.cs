@@ -12,21 +12,22 @@ public partial class Monster : WorldObject
     [Export] public int NameID_1 { get; set; }
     [Export] public int NameID_2 { get; set; }
     [Export] public int NameID_3 { get; set; }
-    public SphMonsterInstance MonsterInstance { get; set; }
+    public required SphMonsterInstance? MonsterInstance { get; set; }
 
     public override List<PacketPart> GetPacketParts ()
     {
+        // TODO some cats are placed by hand and got no MonsterInstance
         // TODO named and higher levels
-        return MonsterInstance.Level - 1 == 0
+        return (MonsterInstance?.Level ?? 1) - 1 == 0
             ? PacketPart.LoadDefinedWithOverride("monster_level_1")
             : PacketPart.LoadDefinedWithOverride("monster_full");
     }
 
     public override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
-        var hpSize = MonsterInstance.MaxHp >= 128 ? 16 : 8;
-        PacketPart.UpdateValue(packetParts, "current_hp", MonsterInstance.CurrentHp, hpSize);
-        PacketPart.UpdateValue(packetParts, "max_hp", MonsterInstance.MaxHp, hpSize);
+        var hpSize = (MonsterInstance?.MaxHp ?? 50) >= 128 ? 16 : 8;
+        PacketPart.UpdateValue(packetParts, "current_hp", MonsterInstance?.CurrentHp ?? 50, hpSize);
+        PacketPart.UpdateValue(packetParts, "max_hp", MonsterInstance?.MaxHp ?? 50, hpSize);
         if (hpSize == 16)
         {
             PacketPart.UpdateValue(packetParts, "hp_size_t", 17, 5);
@@ -34,9 +35,16 @@ public partial class Monster : WorldObject
             PacketPart.UpdateValue(packetParts, "skip_2", 1, 1);
         }
 
+        var objectType = MonsterInstance?.MonsterDataOrigin.ObjectType ?? GameObjectType.Monster;
+        if (objectType is GameObjectType.Monster_Flying or GameObjectType.Monster_Event_Flying
+            or GameObjectType.Special_Necromancer_Flyer)
+        {
+            PacketPart.UpdateValue(packetParts, "entity_type", (int) ObjectType.MonsterFlyer, 10);
+        }
+
         var mobTypeId = MonsterTypeMapping.MonsterNameToMonsterTypeMapping[MonsterType];
         PacketPart.UpdateValue(packetParts, "mob_type", mobTypeId, 14);
-        var levelToEncode = MonsterInstance.Level - 1;
+        var levelToEncode = (MonsterInstance?.Level ?? 1) - 1;
         // TODO level without these
         if (levelToEncode > 0)
         {
