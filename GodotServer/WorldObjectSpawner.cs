@@ -24,21 +24,18 @@ public static class WorldObjectSpawner
                 var y = float.Parse(split[4]);
                 var z = float.Parse(split[5]);
                 var angle = int.Parse(split[6]);
-                var currentHp = int.Parse(split[7]);
-                var maxHp = int.Parse(split[8]);
                 var type = int.Parse(split[9]);
-                var level = int.Parse(split[10]) - 1;
+                var level = int.Parse(split[10]);
                 if (level > 30)
                 {
-                    level = 0;
+                    level = 1;
                 }
 
                 var monsterNode = MonsterScene.Instantiate<Monster>();
                 monsterNode.MonsterType = MonsterTypeMapping.MonsterTypeToMonsterNameMapping[type];
-                monsterNode.Level = level;
+                monsterNode.MonsterInstance =
+                    new SphMonsterInstance(new SphMonsterData(MainServer.SphGameObjectDb[type]), level, false);
                 monsterNode.Angle = angle;
-                monsterNode.CurrentHP = currentHp;
-                monsterNode.MaxHP = maxHp;
                 monsterNode.Name = Enum.GetName(typeof (MonsterType), monsterNode.MonsterType);
                 MainServer.MainServerNode.CallDeferred("add_child", monsterNode);
                 monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
