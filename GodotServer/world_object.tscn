@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c75fu8t5hnes4"]
 
-[ext_resource type="Script" path="res://WorldObject.cs" id="1_5ouvc"]
+[ext_resource type="Script" uid="uid://c2t3mvyqs5fp3" path="res://WorldObject.cs" id="1_5ouvc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 

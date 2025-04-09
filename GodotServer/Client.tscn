@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dgnwpy1raisjd"]
 
-[ext_resource type="Script" path="res://Client.cs" id="1"]
+[ext_resource type="Script" uid="uid://draw18x78ioua" path="res://Client.cs" id="1"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 

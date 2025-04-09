@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://6qegskoxrqr4"]
 
-[ext_resource type="Script" path="res://NpcInteractable.cs" id="1_lxa1o"]
+[ext_resource type="Script" uid="uid://c0uct10qujbaj" path="res://NpcInteractable.cs" id="1_lxa1o"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 

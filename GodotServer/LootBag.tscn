@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cvst2imwssdnc"]
 
-[ext_resource type="Script" path="res://Nodes/LootBagNode.cs" id="2"]
+[ext_resource type="Script" uid="uid://c0c7g8fg8o0ux" path="res://Nodes/LootBagNode.cs" id="2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a4eco"]
 albedo_color = Color(0.247059, 0.682353, 0.423529, 1)
