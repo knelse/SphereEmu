@@ -18,13 +18,11 @@ public class ConsoleCommandParser
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
     private readonly Character CurrentCharacter;
-    private readonly StreamPeerTcp StreamPeer;
+    private StreamPeerTcp StreamPeer => getStreamPeer();
 
     private ConsoleCommandParser (Character character)
     {
         CurrentCharacter = character;
-        var client = MainServer.GetClient(CurrentCharacter.ClientIndex);
-        StreamPeer = client?.StreamPeer;
     }
 
     public static ConsoleCommandParser Get (Character character)
@@ -66,6 +64,11 @@ public class ConsoleCommandParser
         }
 
         var split = input[1..].Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        if (split.Length < 2)
+        {
+            return ConsoleCommandParseResult.ERROR;
+        }
+
         var command = split[0];
         var args = split[1];
 
@@ -310,5 +313,11 @@ public class ConsoleCommandParser
                 Console.WriteLine(ex.Message);
             }
         }
+    }
+
+    private StreamPeerTcp getStreamPeer ()
+    {
+        var client = MainServer.GetClient(CurrentCharacter.ClientIndex);
+        return client.StreamPeer;
     }
 }
