@@ -271,10 +271,10 @@ public partial class Client : Node
                 // CurrentCharacter.X = 424;
                 // CurrentCharacter.Y = -153;
                 // CurrentCharacter.Z = -1278;
-                CurrentCharacter.X = 407;
-                CurrentCharacter.Y = -160;
-                CurrentCharacter.Z = -1188;
-                CurrentCharacter.Angle = 4;
+                CurrentCharacter.X = 80;
+                CurrentCharacter.Y = -150;
+                CurrentCharacter.Z = 200;
+                CurrentCharacter.Angle = 0.75;
                 CurrentCharacter.Money = 99999999;
 
                 Console.WriteLine("CLI: Enter game");
@@ -830,7 +830,7 @@ public partial class Client : Node
             name = sb.ToString();
         }
 
-        var isNameValid = Login.IsNameValid(name);
+        var isNameValid = true; // Login.IsNameValid(name);
         Console.WriteLine(isNameValid ? $"SRV: Name [{name}] OK" : $"SRV: Name [{name}] already exists!");
 
         if (!isNameValid)
