@@ -1,8 +1,8 @@
 ﻿.vs
 .idea
-emu/obj
-emu/bin
-GodotServer/.mono/temp
-GodotServer/.godot
-GodotServer/.import
-GodotServer/.mono
+obj
+bin
+.mono/temp
+.godot
+.import
+.mono
