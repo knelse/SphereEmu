@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bhf55t2qcp114"]
 
-[ext_resource type="Script" uid="uid://dl82wowllesny" path="res://MainServer.cs" id="2"]
+[ext_resource type="Script" uid="uid://dl82wowllesny" path="res://Server/SphereServer.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://c75fu8t5hnes4" path="res://world_object.tscn" id="4_61mkd"]
 [ext_resource type="PackedScene" uid="uid://b4c83wln6qro8" path="res://teleport_with_target.tscn" id="4_s22ep"]
 [ext_resource type="PackedScene" uid="uid://6qegskoxrqr4" path="res://npc_interactable.tscn" id="5_5rg3u"]
@@ -15,37 +15,46 @@ script = ExtResource("2")
 [node name="Sunpool_1" parent="CityTeleports" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 401.599, -153.475, -1307.63)
 Angle = 11
+ID = 0
 ObjectType = 63
 
 [node name="Sunpool_2" parent="CityTeleports" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 408.878, -153.485, -1300.12)
 Angle = 54
+ID = 0
 ObjectType = 63
 
 [node name="Sunpool_Rodos" parent="CityTeleports" instance=ExtResource("4_s22ep")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 405.302, -159.785, -1186.47)
 SubtypeID = 996
+Angle = 0
+ID = 0
 
 [node name="Sunpool_Ils" parent="CityTeleports" instance=ExtResource("4_s22ep")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 251.422, -159.503, -1292.26)
 SubtypeID = 891
 Angle = 219
+ID = 0
 
 [node name="Sunpool_Tournament" parent="CityTeleports" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 293.295, -159.888, -1391.24)
 Angle = 215
+ID = 0
 ObjectType = 71
 
 [node name="Bangville_1" parent="CityTeleports" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1896.18, -156.926, -435.485)
+Angle = 0
+ID = 0
 ObjectType = 63
 
 [node name="NPC" type="Node3D" parent="."]
 
 [node name="Sunpool_Magic_AlmaMaddocks" parent="NPC" instance=ExtResource("5_5rg3u")]
-NameID = null
-NpcType = null
 VendorItemTierMax = 3
+VendorLocation = 0
+Angle = 0
+ID = 0
 
 [node name="Sunpool_Armor_SamuelNectarus" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 424.381, -153.467, -1287.3)
@@ -54,7 +63,9 @@ ModelName = "npc29c"
 IconName = "npc_trade_armor"
 NpcType = 4
 VendorItemTierMax = 2
+VendorLocation = 0
 Angle = 90
+ID = 0
 
 [node name="Sunpool_Travel_GeorgeBashner" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 401.71, -153.38, -1271.21)
@@ -63,6 +74,9 @@ ModelName = "npc29b"
 IconName = "npc_trade_travl"
 NpcType = 5
 VendorItemTierMax = 15
+VendorLocation = 0
+Angle = 0
+ID = 0
 
 [node name="Sunpool_Weapon_SimonPike" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 390.999, -153.363, -1308.51)
@@ -71,7 +85,9 @@ ModelName = "npc08"
 IconName = "npc_trade_wpon"
 NpcType = 2
 VendorItemTierMax = 2
+VendorLocation = 0
 Angle = 193
+ID = 0
 
 [node name="Sunpool_Jewel_AnitaThompson" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 421.55, -153.042, -1315.53)
@@ -80,7 +96,9 @@ ModelName = "npc14b"
 IconName = "npc_trade_jewel"
 NpcType = 3
 VendorItemTierMax = 3
+VendorLocation = 0
 Angle = 59
+ID = 0
 
 [node name="Sunpool_Alch_TemporaTempus" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 367.063, -158.561, -1338.48)
@@ -89,7 +107,9 @@ ModelName = "npc14a"
 IconName = "npc_trade_alchm"
 NpcType = 1
 VendorItemTierMax = 3
+VendorLocation = 0
 Angle = 57
+ID = 0
 
 [node name="Sunpool_Degree_EugeneZelenski" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 344.141, -160.069, -1405.19)
@@ -97,7 +117,9 @@ NameID = 4407
 ModelName = "<null>"
 IconName = "npc_quest_dgree"
 NpcType = 9
+VendorLocation = 0
 Angle = 230
+ID = 0
 ObjectType = 209
 
 [node name="Sunpool_Banker_MartinEden" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -106,7 +128,9 @@ NameID = 4270
 ModelName = "npc29d"
 IconName = "npc_banker"
 NpcType = 12
+VendorLocation = 0
 Angle = 158
+ID = 0
 ObjectType = 225
 
 [node name="Sunpool_Title_LeslieNolsen" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -115,7 +139,9 @@ NameID = 4402
 ModelName = "<null>"
 IconName = "npc_quest_title"
 NpcType = 8
+VendorLocation = 0
 Angle = 154
+ID = 0
 ObjectType = 205
 
 [node name="Sunpool_Tournaments_ClarkHammet" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -124,17 +150,19 @@ NameID = 4390
 ModelName = "npc55"
 IconName = "npc_guilder"
 NpcType = 11
+VendorLocation = 0
 Angle = 179
+ID = 0
 ObjectType = 239
 
 [node name="Sunpool_Tower_Magic_SelmaRagel" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 337.372, -158.516, -1453.38)
 NameID = 4138
-NpcType = null
 VendorItemTierMin = 4
 VendorItemTierMax = 6
 VendorLocation = 7
 Angle = 218
+ID = 0
 
 [node name="Sunpool_Tower_Jewel_PolinaFergusson" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 336.352, -158.989, -1449.31)
@@ -146,6 +174,7 @@ VendorItemTierMin = 4
 VendorItemTierMax = 6
 VendorLocation = 7
 Angle = 167
+ID = 0
 
 [node name="Sunpool_Out_Armor_LaionPoddel" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 380.042, -159.569, -1485.72)
@@ -157,6 +186,7 @@ VendorItemTierMin = 3
 VendorItemTierMax = 4
 VendorLocation = 7
 Angle = 87
+ID = 0
 
 [node name="Sunpool_Out_Weapon_JordanBaziro" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 381.909, -159.845, -1493.45)
@@ -168,6 +198,7 @@ VendorItemTierMin = 3
 VendorItemTierMax = 4
 VendorLocation = 7
 Angle = 36
+ID = 0
 
 [node name="Sunpool_Karma_TenusHarbalanzo" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 627.101, -159.829, -1811.09)
@@ -177,6 +208,7 @@ IconName = "npc_quest_karma"
 NpcType = 10
 VendorLocation = 7
 Angle = 175
+ID = 0
 ObjectType = 208
 
 [node name="Sunpool_TP_Travel_FrederikStrorn" parent="NPC" instance=ExtResource("5_5rg3u")]
@@ -187,6 +219,7 @@ IconName = "npc_trade_travl"
 NpcType = 5
 VendorLocation = 7
 Angle = 99
+ID = 0
 
 [node name="Sunpool_Tavern_BasilNoses" parent="NPC" instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3096.21, -1100.02, -3893.61)
@@ -194,28 +227,34 @@ NameID = 4202
 ModelName = "npc29c"
 IconName = "npc_tavernkeepr"
 NpcType = 7
+VendorLocation = 0
 Angle = 165
+ID = 0
 
 [node name="DungeonEntrances" type="Node3D" parent="."]
 
 [node name="Sunpool_1" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 422.273, -151.589, -1320.4)
 Angle = 32
+ID = 0
 ObjectType = 65
 
 [node name="Sunpool_2" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 431.388, -156.291, -1260.22)
 Angle = 30
+ID = 0
 ObjectType = 65
 
 [node name="Sunpool_3" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 386.095, -151.853, -1285.59)
 Angle = 34
+ID = 0
 ObjectType = 65
 
 [node name="Sunpool_4" parent="DungeonEntrances" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 365.087, -157.664, -1332.73)
 Angle = 221
+ID = 0
 ObjectType = 65
 
 [node name="Workshops" type="Node3D" parent="."]
@@ -223,11 +262,13 @@ ObjectType = 65
 [node name="Sunpool_1" parent="Workshops" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 440.04, -157.92, -1249.98)
 Angle = 227
+ID = 0
 ObjectType = 805
 
 [node name="Sunpool_2" parent="Workshops" instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 348.8, -158.69, -1333.41)
 Angle = 206
+ID = 0
 ObjectType = 805
 
 [node name="Doors" type="Node3D" parent="."]
@@ -235,32 +276,62 @@ ObjectType = 805
 [node name="Sunpool_Suites_External_1" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 414.212, -149.001, -1272.16)
 DoorID = 5011
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 31
+ID = 0
 
 [node name="Sunpool_Suites_External_2" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 411.438, -148.984, -1274.88)
 DoorID = 5012
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 31
+ID = 0
 
 [node name="Sunpool_Suites_External_3" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 408.611, -148.994, -1277.64)
 DoorID = 5013
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 31
+ID = 0
 
 [node name="Sunpool_Suites_External_4" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 405.812, -148.83, -1280.38)
 DoorID = 5014
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 31
+ID = 0
 
 [node name="Sunpool_Suites_Internal_1" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3091.18, -1095.43, -3898.94)
 DoorID = 5009
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 38
+ID = 0
 
 [node name="Sunpool_Suites_Internal_2" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3093.74, -1095.43, -3902.54)
 DoorID = 5010
+HasTarget = false
+TargetX = 0.0
+TargetY = 0.0
+TargetZ = 0.0
 Angle = 38
+ID = 0
 
 [node name="Sunpool_Tavern_To_1" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 413.649, -151.938, -1279.93)
@@ -270,6 +341,7 @@ TargetX = -3093.51
 TargetY = 1099.98
 TargetZ = -3901.05
 Angle = 30
+ID = 0
 
 [node name="Sunpool_Tavern_To_2" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 411.522, -152.216, -1274.96)
@@ -279,6 +351,7 @@ TargetX = -3099.7
 TargetY = 1099.95
 TargetZ = -3899.65
 Angle = 31
+ID = 0
 
 [node name="Sunpool_Tavern_From_1" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3091.89, -1098.51, -3902.16)
@@ -288,6 +361,7 @@ TargetX = 414.931
 TargetY = 153.352
 TargetZ = -1281.1
 Angle = 38
+ID = 0
 
 [node name="Sunpool_Tavern_From_2" parent="Doors" instance=ExtResource("5_h4gwc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3100.44, -1098.72, -3900.6)
@@ -297,31 +371,41 @@ TargetX = 410.67
 TargetY = 153.38
 TargetZ = -1274.05
 Angle = 102
+ID = 0
 
 [node name="Cats" type="Node3D" parent="."]
 
 [node name="Sunpool_1" parent="Cats" instance=ExtResource("7_wg6ka")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 425.92, -153.43, -1301.68)
 MonsterType = 87
-CurrentHP = 32
-MaxHP = 32
+HasName = false
+NameID_1 = 0
+NameID_2 = 0
+NameID_3 = 0
 Angle = 176
+ID = 0
 ObjectType = 210
 
 [node name="Sunpool_2" parent="Cats" instance=ExtResource("7_wg6ka")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 397.82, -152.96, -1289.73)
 MonsterType = 87
-CurrentHP = 32
-MaxHP = 32
+HasName = false
+NameID_1 = 0
+NameID_2 = 0
+NameID_3 = 0
 Angle = 250
+ID = 0
 ObjectType = 210
 
 [node name="Sunpool_3" parent="Cats" instance=ExtResource("7_wg6ka")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 406.7, -153.43, -1309.13)
 MonsterType = 87
-CurrentHP = 32
-MaxHP = 32
+HasName = false
+NameID_1 = 0
+NameID_2 = 0
+NameID_3 = 0
 Angle = 42
+ID = 0
 ObjectType = 210
 
 [node name="Monsters" type="Node3D" parent="."]

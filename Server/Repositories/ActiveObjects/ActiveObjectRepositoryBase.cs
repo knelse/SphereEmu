@@ -16,6 +16,7 @@ internal abstract class ActiveClientsRepository : ActiveObjectRepositoryBase<ush
             if (!storage.ContainsKey(i))
             {
                 index = i;
+                break;
             }
         }
 
