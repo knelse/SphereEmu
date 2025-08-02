@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.DataModels;
+using SphServer.Repositories;
 
 namespace SphServer.Helpers.ConsoleCommands;
 
@@ -317,7 +318,7 @@ public class ConsoleCommandParser
 
     private StreamPeerTcp getStreamPeer ()
     {
-        var client = SphereServer.GetClient(CurrentCharacter.ClientIndex);
+        var client = ActiveClientsRepository.Get(CurrentCharacter.ClientIndex);
         return client.StreamPeer;
     }
 }

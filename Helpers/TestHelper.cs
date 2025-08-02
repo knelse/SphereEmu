@@ -174,9 +174,9 @@ public class TestHelper
 
     private static void ChangeAllCoordsToFirstClient (List<PacketPart> list)
     {
-        var client = SphereServerActiveClients.First().Value;
-        PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
-            client.CurrentCharacter.Z);
+        // var client = SphereServerActiveClients.First().Value;
+        // PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
+        //     client.CurrentCharacter.Z);
     }
 
     public static void SendSpherePacketFromConsole (string input, StreamPeerTcp streamPeerTcp,

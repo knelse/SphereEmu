@@ -4,6 +4,7 @@ using System.IO;
 using BitStreams;
 using SphServer.DataModels;
 using SphServer.Packets;
+using SphServer.Repositories;
 using static SphServer.Helpers.BitHelper;
 
 namespace SphServer.Helpers;
@@ -117,7 +118,7 @@ public static class PacketHelper
             stream.WriteBits(valueBits, fieldLength);
         }
 
-        var client = SphereServer.GetClient(character.ClientIndex);
+        var client = ActiveClientsRepository.Get(character.ClientIndex);
 
         client?.StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
         Console.WriteLine("Stat update");

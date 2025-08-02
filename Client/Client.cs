@@ -13,6 +13,7 @@ using SphServer.Helpers;
 using SphServer.Helpers.ConsoleCommands;
 using SphServer.Packets;
 using SphServer.Providers;
+using SphServer.Repositories;
 using static SphServer.Helpers.BitHelper;
 using static SphServer.Helpers.Cities;
 using static SphServer.Helpers.Continents;
@@ -151,8 +152,8 @@ public partial class Client : Node
         {
             // TODO: sync state
             CloseConnection();
-            SphereServer.ActiveClients.Remove(LocalId, out _);
-            SphereServer.ActiveNodes.Remove(LocalId, out _);
+            ActiveClientsRepository.Delete(LocalId);
+            ActiveNodesRepository.Delete(LocalId);
             QueueFree();
         }
 
@@ -521,8 +522,7 @@ public partial class Client : Node
                     }
 
                     var vendorId = GetGlobalObjectId(vendorLocalId);
-                    var vendorWorldObject =
-                        SphereServer.ActiveWorldObjects.GetValueOrDefault((ushort) vendorId);
+                    var vendorWorldObject = ActiveWorldObjectRepository.Get((ushort) vendorId);
                     if (vendorWorldObject is null)
                     {
                         Console.WriteLine($"Vendor world object [{vendorId}] not found");
@@ -1493,13 +1493,16 @@ public partial class Client : Node
                 };
                 StreamPeer.PutData(Packet.ToByteArray(deathPacket));
                 var mob = DbConnectionProvider.MonsterCollection.FindById((int) destId);
-                if (mob?.ParentNodeId is not null)
+                if (mob.ParentNodeId is not null)
                 {
-                    var parentNode = SphereServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
-                    ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
-                        parentNode.GlobalTransform.Origin.Y,
-                        parentNode.GlobalTransform.Origin.Z, 0, LootRatity.DEFAULT_MOB);
-                    parentNode.SetInactive();
+                    var parentNode = ActiveNodesRepository.Get(mob.ParentNodeId.Value) as MobNode;
+                    if (parentNode is not null)
+                    {
+                        ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
+                            parentNode.GlobalTransform.Origin.Y,
+                            parentNode.GlobalTransform.Origin.Z, 0, LootRatity.DEFAULT_MOB);
+                        parentNode.SetInactive();
+                    }
                 }
             }
         }
@@ -1588,7 +1591,7 @@ public partial class Client : Node
 
     public static void TryFindClientByIdAndSendData (ushort clientId, byte[] data)
     {
-        var client = SphereServer.ActiveClients.GetValueOrDefault(clientId, null);
+        var client = ActiveClientsRepository.Get(clientId);
         if (client is null)
         {
             Console.WriteLine($"Trying to send packet to inexistent client [{clientId}]");

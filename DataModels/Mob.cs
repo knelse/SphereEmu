@@ -20,12 +20,12 @@ public class Mob
 
     public void ShowForEveryClientInRadius ()
     {
-        foreach (var client in SphereServer.ActiveClients.Values)
-        {
-            // TODO: proper load/unload for client
-            // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-            // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            // client.StreamPeer.PutData(Packet.ToByteArray(ToByteArray(client.LocalId), 1));
-        }
+        // foreach (var client in SphereServer.ActiveClients.Values)
+        // {
+        //     // TODO: proper load/unload for client
+        //     // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+        //     // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+        //     // client.StreamPeer.PutData(Packet.ToByteArray(ToByteArray(client.LocalId), 1));
+        // }
     }
 }

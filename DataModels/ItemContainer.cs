@@ -7,6 +7,7 @@ using SphServer;
 using SphServer.DataModels;
 using SphServer.Packets;
 using SphServer.Providers;
+using SphServer.Repositories;
 using static SphServer.Helpers.BitHelper;
 
 public class ItemContainer
@@ -29,7 +30,7 @@ public class ItemContainer
         LootRatity ratity, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
-        SphereServer.ActiveNodes[bag.GetInstanceId()] = bag;
+        ActiveNodesRepository.Set(bag.GetInstanceId(), bag);
         var levelOverride = SphereServer.Rng.Next(0, 61);
         bag.ItemContainer = new ItemContainer
         {
@@ -68,7 +69,7 @@ public class ItemContainer
 
         if (ParentNodeId != null)
         {
-            SphereServer.ActiveNodes[ParentNodeId.Value].QueueFree();
+            ActiveNodesRepository.Get(ParentNodeId.Value)?.QueueFree();
         }
 
         return true;
@@ -103,23 +104,23 @@ public class ItemContainer
 
     public void ShowForEveryClientInRadius ()
     {
-        foreach (var client in SphereServer.ActiveClients.Values)
-        {
-            // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-            // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            ShowForClient(client);
-        }
+        // foreach (var client in SphereServer.ActiveClients.Values)
+        // {
+        //     // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+        //     // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+        //     ShowForClient(client);
+        // }
     }
 
     public void UpdatePositionForEveryClientInRadius ()
     {
-        foreach (var client in SphereServer.ActiveClients.Values)
-        {
-            // TODO: proper load/unload for client
-            // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-            // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-            client.MoveEntity(X, -Y, Z, Angle, client.GetLocalObjectId(Id));
-        }
+        // foreach (var client in SphereServer.ActiveClients.Values)
+        // {
+        //     // TODO: proper load/unload for client
+        //     // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
+        //     // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
+        //     client.MoveEntity(X, -Y, Z, Angle, client.GetLocalObjectId(Id));
+        // }
     }
 
     public void ShowForClient (Client client)
