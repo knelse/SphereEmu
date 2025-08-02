@@ -117,7 +117,7 @@ public static class PacketHelper
             stream.WriteBits(valueBits, fieldLength);
         }
 
-        var client = Server.GetClient(character.ClientIndex);
+        var client = SphereServer.GetClient(character.ClientIndex);
 
         client?.StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
         Console.WriteLine("Stat update");

@@ -2,21 +2,21 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphServer", "SphServer.csproj", "{1614BE6D-811E-499B-9A1A-9DCA77CBDB5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphObjectDb", "..\..\source\SphObjectDb\SphObjectDb.csproj", "{D0341E9D-7901-4A92-A9D9-EEEC28BCB8FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphObjectDb", "..\source\SphObjectDb\SphObjectDb.csproj", "{D0341E9D-7901-4A92-A9D9-EEEC28BCB8FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphGameObject", "..\..\source\SphGameObject\SphGameObject.csproj", "{B08B19C1-0388-47C1-8639-3F78E62155FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphGameObject", "..\source\SphGameObject\SphGameObject.csproj", "{B08B19C1-0388-47C1-8639-3F78E62155FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitStream", "..\..\source\BitStream\BitStream.csproj", "{7F9B3E21-7824-4F77-9F6C-A9D31E3204D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitStream", "..\source\BitStream\BitStream.csproj", "{7F9B3E21-7824-4F77-9F6C-A9D31E3204D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectPacketTools", "..\..\source\ObjectPacketTools\ObjectPacketTools.csproj", "{7EDDA7CB-43C4-451D-87FD-D77BAE969787}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectPacketTools", "..\source\ObjectPacketTools\ObjectPacketTools.csproj", "{7EDDA7CB-43C4-451D-87FD-D77BAE969787}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteDB", "..\..\source\LiteDB\LiteDB\LiteDB.csproj", "{8B668485-B268-4E12-9EAF-3671A80D436C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteDB", "..\source\LiteDB\LiteDB\LiteDB.csproj", "{8B668485-B268-4E12-9EAF-3671A80D436C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "..\..\source\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{CD67B853-60F6-4959-91A5-49D34813BE33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "..\source\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{CD67B853-60F6-4959-91A5-49D34813BE33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphEntities", "..\..\source\SphEntities\SphEntities.csproj", "{1896DA4F-580B-426E-922E-2AFC72436C2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphEntities", "..\source\SphEntities\SphEntities.csproj", "{1896DA4F-580B-426E-922E-2AFC72436C2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereHelpers", "..\..\source\SphereHelpers\SphereHelpers.csproj", "{47355538-A87B-48F7-9BC4-6F7D00C67120}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereHelpers", "..\source\SphereHelpers\SphereHelpers.csproj", "{47355538-A87B-48F7-9BC4-6F7D00C67120}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

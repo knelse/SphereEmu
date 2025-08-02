@@ -17,9 +17,9 @@ public class AppConfig
     public string LogPath { get; set; } = @"logs\server.log";
 }
 
-public static class AppConfigProvider
+public static class ServerConfig
 {
-    public static AppConfig Provide()
+    public static AppConfig Get ()
     {
         const string configPath = "appsettings.json";
 
@@ -37,7 +37,7 @@ public static class AppConfigProvider
         using var configReader = new StreamReader(configFile);
         var configJson = configReader.ReadToEnd();
 
-        var configDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(configJson) ?? new();
+        var configDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(configJson) ?? new ();
 
         var defaultSettings = GetDefaultAppConfigDict();
         var configChanged = false;
@@ -69,7 +69,7 @@ public static class AppConfigProvider
         };
     }
 
-    private static void CreateDefaultAppConfig(string configPath)
+    private static void CreateDefaultAppConfig (string configPath)
     {
         var defaultConfig = GetDefaultAppConfigDict();
         var json = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
@@ -77,9 +77,9 @@ public static class AppConfigProvider
         SphLogger.Info($"Created default configuration file: {configPath}");
     }
 
-    private static Dictionary<string, string> GetDefaultAppConfigDict()
+    private static Dictionary<string, string> GetDefaultAppConfigDict ()
     {
-        return new()
+        return new ()
         {
             ["PacketPartPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
             ["PacketDefinitionPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
@@ -89,7 +89,7 @@ public static class AppConfigProvider
         };
     }
 
-    private static void SaveAppConfig(string configPath, Dictionary<string, string> config)
+    private static void SaveAppConfig (string configPath, Dictionary<string, string> config)
     {
         var json = JsonConvert.SerializeObject(config, Formatting.Indented);
         File.WriteAllText(configPath, json);

@@ -43,7 +43,7 @@ public partial class Client : Node
     //     : @"D:\SphereDev\SphereSource\source\clientCoordsSaved";
 
     private static ItemContainer _testItemContainer = null!;
-    public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new();
+    public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new ();
 
     private readonly byte[] rcvBuffer = new byte[BUFSIZE];
 
@@ -67,7 +67,7 @@ public partial class Client : Node
     private static ushort NewEntityIndex = 0x1000;
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public override void _Ready ()
     {
         playerIndexStr = Convert.ToHexString(new[]
         {
@@ -145,14 +145,14 @@ public partial class Client : Node
         });
     }
 
-    public override async void _Process(double delta)
+    public override async void _Process (double delta)
     {
         if (StreamPeer.GetStatus() != StreamPeerTcp.Status.Connected)
         {
             // TODO: sync state
             CloseConnection();
-            Server.ActiveClients.Remove(LocalId, out _);
-            Server.ActiveNodes.Remove(LocalId, out _);
+            SphereServer.ActiveClients.Remove(LocalId, out _);
+            SphereServer.ActiveNodes.Remove(LocalId, out _);
             QueueFree();
         }
 
@@ -312,10 +312,10 @@ public partial class Client : Node
             case ClientState.INGAME_DEFAULT:
                 break;
             default: return;
-                // only in dungeon?
-                // while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x12)
-                // {
-                // }
+            // only in dungeon?
+            // while (await ns.ReadAsync(rcvBuffer) == 0 || rcvBuffer[0] != 0x12)
+            // {
+            // }
         }
 
         if (currentState != ClientState.INGAME_DEFAULT)
@@ -522,7 +522,7 @@ public partial class Client : Node
 
                     var vendorId = GetGlobalObjectId(vendorLocalId);
                     var vendorWorldObject =
-                        Server.ActiveWorldObjects.GetValueOrDefault((ushort)vendorId);
+                        SphereServer.ActiveWorldObjects.GetValueOrDefault((ushort) vendorId);
                     if (vendorWorldObject is null)
                     {
                         Console.WriteLine($"Vendor world object [{vendorId}] not found");
@@ -548,45 +548,45 @@ public partial class Client : Node
                 }
 
                 break;
-                //     // group create/leave 08 40 23 23
-                //     case 0x13:
-                //         if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 ||
-                //             rcvBuffer[16] != 0x23)
-                //         {
-                //             break;
-                //         }
-                //
-                //         var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
-                //         var action = rcvBuffer[17];
-                //         switch (action)
-                //         {
-                //             case 0x00:
-                //             {
-                //                 // create
-                //                 Console.WriteLine($"[{clientLocalId:X}] Create group");
-                //                 var createResponse = new byte[]
-                //                 {
-                //                     0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
-                //                     MinorByte(clientLocalId),
-                //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
-                //                 };
-                //                 StreamPeer.PutData(createResponse);
-                //                 break;
-                //             }
-                //             case 0x80:
-                //                 // leave or disband
-                //                 Console.WriteLine($"[{clientLocalId:X}] Leave group");
-                //                 var leaveResponse = new byte[]
-                //                 {
-                //                     0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
-                //                     MinorByte(clientLocalId),
-                //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
-                //                 };
-                //                 StreamPeer.PutData(leaveResponse);
-                //                 break;
-                //         }
-                //
-                //         break;
+            //     // group create/leave 08 40 23 23
+            //     case 0x13:
+            //         if (rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x23 ||
+            //             rcvBuffer[16] != 0x23)
+            //         {
+            //             break;
+            //         }
+            //
+            //         var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);
+            //         var action = rcvBuffer[17];
+            //         switch (action)
+            //         {
+            //             case 0x00:
+            //             {
+            //                 // create
+            //                 Console.WriteLine($"[{clientLocalId:X}] Create group");
+            //                 var createResponse = new byte[]
+            //                 {
+            //                     0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
+            //                     MinorByte(clientLocalId),
+            //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
+            //                 };
+            //                 StreamPeer.PutData(createResponse);
+            //                 break;
+            //             }
+            //             case 0x80:
+            //                 // leave or disband
+            //                 Console.WriteLine($"[{clientLocalId:X}] Leave group");
+            //                 var leaveResponse = new byte[]
+            //                 {
+            //                     0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientLocalId),
+            //                     MinorByte(clientLocalId),
+            //                     0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
+            //                 };
+            //                 StreamPeer.PutData(leaveResponse);
+            //                 break;
+            //         }
+            //
+            //         break;
         }
         // }
 
@@ -597,12 +597,12 @@ public partial class Client : Node
         //         (float) (clientModelTransform.origin.y + oldY - CurrentCharacter.Y), (float)CurrentCharacter.Z)) < 50)
         // {
         clientModelTransform.Origin =
-            new Vector3((float)CurrentCharacter.X, (float)CurrentCharacter.Y, (float)CurrentCharacter.Z);
+            new Vector3((float) CurrentCharacter.X, (float) CurrentCharacter.Y, (float) CurrentCharacter.Z);
         clientModel.Transform = clientModelTransform;
         // }
     }
 
-    private void HandleChatMessage()
+    private void HandleChatMessage ()
     {
         // 1A002C4109222C01003C57	638B	084043	008120E0570000600000
         try
@@ -642,7 +642,7 @@ public partial class Client : Node
                 for (var j = 0; j < messagePart.Length - 1; j++)
                 {
                     var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
-                    msgBytes.Add((byte)msgByte);
+                    msgBytes.Add((byte) msgByte);
                 }
             }
 
@@ -655,11 +655,11 @@ public partial class Client : Node
             var serverResponseBytes = new List<byte>();
 
             // client_id 084043 content
-            byte[] GetResponseArray(byte[] clientBytes)
+            byte[] GetResponseArray (byte[] clientBytes)
             {
                 var responseBytes = new byte[clientBytes.Length + 7];
-                responseBytes[0] = (byte)(responseBytes.Length % 256);
-                responseBytes[1] = (byte)(responseBytes.Length / 256);
+                responseBytes[0] = (byte) (responseBytes.Length % 256);
+                responseBytes[1] = (byte) (responseBytes.Length / 256);
                 responseBytes[2] = 0x2C;
                 responseBytes[3] = 0x01;
                 responseBytes[4] = 0x00;
@@ -679,11 +679,11 @@ public partial class Client : Node
                 // Console.WriteLine(Convert.ToHexString(GetResponseArray(clientMessageContentBytes[i])));
             }
 
-            var chatString = Server.Win1251.GetString(msgBytes.ToArray());
+            var chatString = SphereServer.Win1251.GetString(msgBytes.ToArray());
             var nameClosingTagIndex = chatString.IndexOf("</l>: ", StringComparison.OrdinalIgnoreCase);
             var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
-            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char)0); // weird but necessary
+            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
 
             var response = ChatHelper.GetChatMessageBytesForServerSend(chatString, name, chatTypeVal);
             StreamPeer.PutData(response);
@@ -706,23 +706,23 @@ public partial class Client : Node
                     WorldCoords tpCoords;
                     if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Shipstone)];
+                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Shipstone)];
                     }
                     else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Bangville)];
+                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Bangville)];
                     }
                     else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Torweal)];
+                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Torweal)];
                     }
                     else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Sunpool)];
+                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Sunpool)];
                     }
                     else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof(Umrad)];
+                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Umrad)];
                     }
                     else if (coords[1].Equals("ChoiceIsland", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -780,7 +780,7 @@ public partial class Client : Node
         }
     }
 
-    private int CharacterScreenCreateDeleteSelect()
+    private int CharacterScreenCreateDeleteSelect ()
     {
         var len = rcvBuffer[0] - 20 - 5;
         var charDataBytesStart = rcvBuffer[0] - 5;
@@ -797,15 +797,15 @@ public partial class Client : Node
             if (currentCharCode % 2 == 0)
             {
                 // English
-                var currentLetter = (char)(currentCharCode / 2);
+                var currentLetter = (char) (currentCharCode / 2);
                 sb.Append(currentLetter);
             }
             else
             {
                 // Russian
                 var currentLetter = currentCharCode >= 193
-                    ? (char)((currentCharCode - 192) / 2 + 'а')
-                    : (char)((currentCharCode - 129) / 2 + 'А');
+                    ? (char) ((currentCharCode - 192) / 2 + 'а')
+                    : (char) ((currentCharCode - 129) / 2 + 'А');
                 sb.Append(currentLetter);
 
                 if (i == 2)
@@ -822,8 +822,8 @@ public partial class Client : Node
         {
             firstLetterCharCode += 1;
             var firstLetter = firstLetterCharCode >= 193
-                ? (char)((firstLetterCharCode - 192) / 2 + 'а')
-                : (char)((firstLetterCharCode - 129) / 2 + 'А');
+                ? (char) ((firstLetterCharCode - 192) / 2 + 'а')
+                : (char) ((firstLetterCharCode - 129) / 2 + 'А');
             name = firstLetter + sb.ToString()[1..];
         }
         else
@@ -871,7 +871,7 @@ public partial class Client : Node
         return -1;
     }
 
-    private async Task MoveToNewPlayerDungeonAsync(Character selectedCharacter)
+    private async Task MoveToNewPlayerDungeonAsync (Character selectedCharacter)
     {
         var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
         var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
@@ -890,9 +890,9 @@ public partial class Client : Node
 
         currentState = ClientState.INGAME_DEFAULT;
         var clientTransform = clientModel!.Transform;
-        clientTransform.Origin.X = (float)playerCoords.x;
-        clientTransform.Origin.Y = (float)playerCoords.y;
-        clientTransform.Origin.Z = (float)playerCoords.z;
+        clientTransform.Origin.X = (float) playerCoords.x;
+        clientTransform.Origin.Y = (float) playerCoords.y;
+        clientTransform.Origin.Z = (float) playerCoords.z;
         clientModel.Transform = clientTransform;
 
         CurrentCharacter.MaxHP = 110;
@@ -901,13 +901,13 @@ public partial class Client : Node
         CurrentCharacter.UpdateCurrentStats();
     }
 
-    public void CloseConnection()
+    public void CloseConnection ()
     {
         Console.WriteLine($"SRV {playerIndexStr}: Closing connection");
         QueueFree();
     }
 
-    public void SendPingResponse()
+    public void SendPingResponse ()
     {
         var clientPingBytesForComparison = rcvBuffer[17..55];
 
@@ -958,9 +958,9 @@ public partial class Client : Node
 
         if (counter == 0)
         {
-            var first = (ushort)((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
+            var first = (ushort) ((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
             first -= 0xE001;
-            counter = (ushort)(0xE001 + first / 12);
+            counter = (ushort) (0xE001 + first / 12);
         }
 
         var pong = new byte[]
@@ -981,20 +981,20 @@ public partial class Client : Node
         }
     }
 
-    private void PickupItemToTargetSlot()
+    private void PickupItemToTargetSlot ()
     {
         var clientItemID_1 = rcvBuffer[21] >> 1;
         var clientItemID_2 = rcvBuffer[22];
         var clientItemID_3 = rcvBuffer[23] % 2;
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
-        var globalItemId = GetGlobalObjectId((ushort)clientItemID);
+        var globalItemId = GetGlobalObjectId((ushort) clientItemID);
         var item = DbConnectionProvider.ItemCollection.FindById(globalItemId);
 
         var clientSlot_raw = rcvBuffer[24];
         var targetSlotId = clientSlot_raw >> 1;
-        var targetSlot = Enum.IsDefined(typeof(BelongingSlot), targetSlotId)
-            ? (BelongingSlot)targetSlotId
+        var targetSlot = Enum.IsDefined(typeof (BelongingSlot), targetSlotId)
+            ? (BelongingSlot) targetSlotId
             : BelongingSlot.Unknown;
 
         if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
@@ -1008,7 +1008,7 @@ public partial class Client : Node
         var clientSlot = (clientSlot_raw - 0x32) / 2;
         Console.WriteLine(
             $"CLI: Move item {item.Localisation[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
-            $"[{Enum.GetName(typeof(BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
+            $"[{Enum.GetName(typeof (BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
         var clientSync_1 = rcvBuffer[17];
         var clientSync_2 = rcvBuffer[18];
@@ -1016,7 +1016,7 @@ public partial class Client : Node
         var clientSyncOther_1 = (rcvBuffer[10] & 0b11000000) >> 4;
         var clientSyncOther_2 = rcvBuffer[11];
         var clientSyncOther_3 = rcvBuffer[12] & 0b111111;
-        var clientSyncOther = (ushort)((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
+        var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
         var serverItemID_1 = (clientItemID & 0b111111) << 2;
         var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
@@ -1034,7 +1034,7 @@ public partial class Client : Node
         };
 
         CurrentCharacter.Items[targetSlot] = globalItemId;
-        Console.WriteLine($"{Enum.GetName((BelongingSlot)targetSlotId)} now has {item.Localisation[Locale.Russian]} " +
+        Console.WriteLine($"{Enum.GetName((BelongingSlot) targetSlotId)} now has {item.Localisation[Locale.Russian]} " +
                           $"({item.ItemCount}) [{globalItemId}]");
         StreamPeer.PutData(moveResult);
         var oldContainer = item.ParentContainerId is null
@@ -1055,7 +1055,7 @@ public partial class Client : Node
         }
     }
 
-    private void DropItemToGround()
+    private void DropItemToGround ()
     {
         // TODO: support later
         // likely contains client coords to drop at and response should have server coords
@@ -1063,7 +1063,7 @@ public partial class Client : Node
         Console.WriteLine("Drop item to ground, TBD");
     }
 
-    private void PickupItemToInventory()
+    private void PickupItemToInventory ()
     {
         // TODO: remove kaitai
         // var packet = new PickupItemRequest(kaitaiStream);
@@ -1129,7 +1129,7 @@ public partial class Client : Node
         // StreamPeer.PutData(pickupResult);
     }
 
-    private void MoveItemToAnotherSlot()
+    private void MoveItemToAnotherSlot ()
     {
         // ideally we'd support swapping items but client simply doesn't send anything if slot is occupied
         // var clientID_1 = rcvBuffer[11];
@@ -1139,13 +1139,13 @@ public partial class Client : Node
         var oldSlotId = rcvBuffer[22] >> 1;
         var newSlotId = rcvBuffer[21] >> 1;
         Console.WriteLine(
-            $"Move to another slot request: from [{Enum.GetName(typeof(BelongingSlot), oldSlotId)}] " +
-            $"to [{Enum.GetName(typeof(BelongingSlot), newSlotId)}]");
-        var targetSlot = Enum.IsDefined(typeof(BelongingSlot), newSlotId)
-            ? (BelongingSlot)newSlotId
+            $"Move to another slot request: from [{Enum.GetName(typeof (BelongingSlot), oldSlotId)}] " +
+            $"to [{Enum.GetName(typeof (BelongingSlot), newSlotId)}]");
+        var targetSlot = Enum.IsDefined(typeof (BelongingSlot), newSlotId)
+            ? (BelongingSlot) newSlotId
             : BelongingSlot.Unknown;
-        var oldSlot = Enum.IsDefined(typeof(BelongingSlot), oldSlotId)
-            ? (BelongingSlot)oldSlotId
+        var oldSlot = Enum.IsDefined(typeof (BelongingSlot), oldSlotId)
+            ? (BelongingSlot) oldSlotId
             : BelongingSlot.Unknown;
 
         var returnToOldSlot = false;
@@ -1174,10 +1174,10 @@ public partial class Client : Node
 
         Console.WriteLine($"Item found: {globalOldItemId}");
         var oldItemLocalId = GetLocalObjectId(globalOldItemId);
-        var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
-        var newSlot_2 = (byte)(((oldItemLocalId & 0b1111) << 4) + (newSlotRaw >> 5));
-        var oldItem_1 = (byte)((oldItemLocalId >> 4) & 0b11111111);
-        var oldItem_2 = (byte)(oldItemLocalId >> 12);
+        var newSlot_1 = (byte) ((newSlotRaw & 0b11111) << 3);
+        var newSlot_2 = (byte) (((oldItemLocalId & 0b1111) << 4) + (newSlotRaw >> 5));
+        var oldItem_1 = (byte) ((oldItemLocalId >> 4) & 0b11111111);
+        var oldItem_2 = (byte) (oldItemLocalId >> 12);
 
         var moveResult = new byte[]
         {
@@ -1201,34 +1201,34 @@ public partial class Client : Node
         StreamPeer.PutData(moveResult);
     }
 
-    public ushort GetLocalObjectId(int globalId)
+    public ushort GetLocalObjectId (int globalId)
     {
         // TODO: at some point we'll run out of 65536 globalIds and will have to keep client-specific object lists
-        return (ushort)globalId;
+        return (ushort) globalId;
     }
 
-    public static ushort GetLocalObjectId(int clientId, int globalId)
+    public static ushort GetLocalObjectId (int clientId, int globalId)
     {
         // TODO: at some point we'll run out of 65536 globalIds and will have to keep client-specific object lists
-        return (ushort)globalId;
+        return (ushort) globalId;
     }
 
-    public int GetGlobalObjectId(ushort localId)
+    public int GetGlobalObjectId (ushort localId)
     {
         return localId;
     }
 
-    public static int GetGlobalObjectId(ushort clientId, ushort localId)
+    public static int GetGlobalObjectId (ushort clientId, ushort localId)
     {
         return localId;
     }
 
-    private void RemoveEntity(ushort id)
+    private void RemoveEntity (ushort id)
     {
         StreamPeer.PutData(CommonPackets.DespawnEntity(id));
     }
 
-    private void MainhandTakeItem()
+    private void MainhandTakeItem ()
     {
         // TODO: remove kaitai
         // dynamic packet = rcvBuffer[0] switch
@@ -1277,7 +1277,7 @@ public partial class Client : Node
         // }
     }
 
-    private void BuyItemFromTarget()
+    private void BuyItemFromTarget ()
     {
         // TODO: remove kaitai
         // var packet = new BuyItemRequest(kaitaiStream);
@@ -1370,9 +1370,9 @@ public partial class Client : Node
         // StreamPeer.PutData(buyResult);
     }
 
-    private void UseItem()
+    private void UseItem ()
     {
-        var itemId = (ushort)(rcvBuffer[11] + rcvBuffer[12] * 0x100);
+        var itemId = (ushort) (rcvBuffer[11] + rcvBuffer[12] * 0x100);
         Console.WriteLine($"Use item [{itemId}]");
 
         var teleportPacket =
@@ -1381,7 +1381,7 @@ public partial class Client : Node
         StreamPeer.PutData(teleportPacket);
     }
 
-    private void DamageTarget()
+    private void DamageTarget ()
     {
         // TODO: actual damage with actual mob node
         var receiveStream = new BitStream(rcvBuffer);
@@ -1399,27 +1399,27 @@ public partial class Client : Node
         var currentItem = DbConnectionProvider.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand]);
         var damagePa = currentItem.PAtkNegative == 0
             ? 0
-            : Server.Rng.Next((int)(paAbs * 0.65), (int)
+            : SphereServer.Rng.Next((int) (paAbs * 0.65), (int)
                 (paAbs * 1.4));
         var damageMa = CurrentCharacter.MAtk;
-        var totalDamage = (ushort)(damageMa + damagePa);
-        var destId = (ushort)GetDestinationIdFromDamagePacket(rcvBuffer);
+        var totalDamage = (ushort) (damageMa + damagePa);
+        var destId = (ushort) GetDestinationIdFromDamagePacket(rcvBuffer);
         var playerIndexByteSwap = ByteSwap(LocalId);
         var selfDamage = destId == playerIndexByteSwap;
         var selfHeal = damageMa > 0;
 
         if (selfDamage)
         {
-            var id_1 = (byte)(((ByteSwap(LocalId) & 0b111) << 5) + 0b00010);
-            var id_2 = (byte)((ByteSwap(LocalId) >> 3) & 0b11111111);
+            var id_1 = (byte) (((ByteSwap(LocalId) & 0b111) << 5) + 0b00010);
+            var id_2 = (byte) ((ByteSwap(LocalId) >> 3) & 0b11111111);
             var type = selfHeal ? 0b10000000 : 0b10100000;
-            var id_3 = (byte)(((ByteSwap(LocalId) >> 11) & 0b11111) + type);
+            var id_3 = (byte) (((ByteSwap(LocalId) >> 11) & 0b11111) + type);
 
             if (selfHeal)
             {
                 if (CurrentCharacter.CurrentHP + totalDamage > CurrentCharacter.MaxHP)
                 {
-                    totalDamage = (ushort)(CurrentCharacter.MaxHP - CurrentCharacter.CurrentHP);
+                    totalDamage = (ushort) (CurrentCharacter.MaxHP - CurrentCharacter.CurrentHP);
                 }
 
                 CurrentCharacter.CurrentHP += totalDamage;
@@ -1447,12 +1447,12 @@ public partial class Client : Node
 
             if (newPlayerDungeonMobHp > 0)
             {
-                var src_1 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-                var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
-                var src_3 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
-                var dmg_1 = (byte)(0x60 - totalDamage * 2);
-                var hp_1 = (byte)((newPlayerDungeonMobHp & 0b1111) << 4);
-                var hp_2 = (byte)((newPlayerDungeonMobHp & 0b11110000) >> 4);
+                var src_1 = (byte) ((playerIndexByteSwap & 0b1111111) << 1);
+                var src_2 = (byte) ((playerIndexByteSwap & 0b111111110000000) >> 7);
+                var src_3 = (byte) ((playerIndexByteSwap & 0b1000000000000000) >> 15);
+                var dmg_1 = (byte) (0x60 - totalDamage * 2);
+                var hp_1 = (byte) ((newPlayerDungeonMobHp & 0b1111) << 4);
+                var hp_2 = (byte) ((newPlayerDungeonMobHp & 0b11110000) >> 4);
                 var damagePacket = new byte[]
                 {
                     0x1B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MinorByte(destId), MajorByte(destId), 0x48,
@@ -1463,21 +1463,21 @@ public partial class Client : Node
             }
             else
             {
-                var moneyReward = (byte)(10 + Server.Rng.Next(0, 9));
+                var moneyReward = (byte) (10 + SphereServer.Rng.Next(0, 9));
                 CurrentCharacter.Money += moneyReward;
-                var totalMoney_1 = (byte)(((CurrentCharacter.Money & 0b11111) << 3) + 0b100);
-                var totalMoney_2 = (byte)((CurrentCharacter.Money & 0b11100000) >> 5);
+                var totalMoney_1 = (byte) (((CurrentCharacter.Money & 0b11111) << 3) + 0b100);
+                var totalMoney_2 = (byte) ((CurrentCharacter.Money & 0b11100000) >> 5);
                 CurrentCharacter.KarmaCount += 1;
-                var karma_1 = (byte)(((CurrentCharacter.KarmaCount & 0b1111111) << 1) + 1);
-                var src_1 = (byte)((playerIndexByteSwap & 0b1000000000000000) >> 15);
-                var src_2 = (byte)((playerIndexByteSwap & 0b111111110000000) >> 7);
-                var src_3 = (byte)((playerIndexByteSwap & 0b1111111) << 1);
-                var src_4 = (byte)(((playerIndexByteSwap & 0b111) << 5) + 0b01111);
-                var src_5 = (byte)((playerIndexByteSwap & 0b11111111000) >> 3);
-                var src_6 = (byte)((playerIndexByteSwap & 0b1111100000000000) >> 11);
+                var karma_1 = (byte) (((CurrentCharacter.KarmaCount & 0b1111111) << 1) + 1);
+                var src_1 = (byte) ((playerIndexByteSwap & 0b1000000000000000) >> 15);
+                var src_2 = (byte) ((playerIndexByteSwap & 0b111111110000000) >> 7);
+                var src_3 = (byte) ((playerIndexByteSwap & 0b1111111) << 1);
+                var src_4 = (byte) (((playerIndexByteSwap & 0b111) << 5) + 0b01111);
+                var src_5 = (byte) ((playerIndexByteSwap & 0b11111111000) >> 3);
+                var src_6 = (byte) ((playerIndexByteSwap & 0b1111100000000000) >> 11);
 
-                var moneyReward_1 = (byte)(((moneyReward & 0b11) << 6) + 1);
-                var moneyReward_2 = (byte)((moneyReward & 0b1111111100) >> 2);
+                var moneyReward_1 = (byte) (((moneyReward & 0b11) << 6) + 1);
+                var moneyReward_2 = (byte) ((moneyReward & 0b1111111100) >> 2);
 
                 // this packet can technically contain any stat, xp, level, hp/mp, etc
                 // for the new player dungeon we only care about giving karma and some money after a kill
@@ -1492,10 +1492,10 @@ public partial class Client : Node
                     moneyReward_1, moneyReward_2
                 };
                 StreamPeer.PutData(Packet.ToByteArray(deathPacket));
-                var mob = DbConnectionProvider.MonsterCollection.FindById((int)destId);
+                var mob = DbConnectionProvider.MonsterCollection.FindById((int) destId);
                 if (mob?.ParentNodeId is not null)
                 {
-                    var parentNode = Server.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
+                    var parentNode = SphereServer.ActiveNodes[mob.ParentNodeId.Value] as MobNode;
                     ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
                         parentNode.GlobalTransform.Origin.Y,
                         parentNode.GlobalTransform.Origin.Z, 0, LootRatity.DEFAULT_MOB);
@@ -1510,39 +1510,39 @@ public partial class Client : Node
     // 	MoveEntity(coords.x, coords.y, coords.z, coords.turn, entityId);
     // }
 
-    public void MoveEntity(double x0, double y0, double z0, double t0, ushort entityId)
+    public void MoveEntity (double x0, double y0, double z0, double t0, ushort entityId)
     {
         // best guess for X and Z: decimal value in packet = 4095 - coord_value, where coord_value is in 0..63 range
         // for Y max value becomes 2047 with the same formula
         // technically, it's not even decimal, as it's possible to move by ~50 units if 0 is sent instead of 4095 
-        var xDec = 4095 - (1 - (int)Math.Truncate(x0 - Math.Truncate(x0)) * 64);
-        var yDec = 2047 - (int)Math.Truncate((y0 - Math.Truncate(y0)) * 64);
-        var zDec = 4095 - (1 - (int)Math.Truncate(z0 - Math.Truncate(z0)) * 64);
-        var x = 32768 + (int)x0;
-        var y = 1200 + (int)y0;
-        var z = 32768 + (int)z0;
-        var x_1 = (byte)(((x & 0b1111111) << 1) + 1);
-        var x_2 = (byte)((x & 0b111111110000000) >> 7);
-        var y_1 = (byte)(((y & 0b1111111) << 1) + ((x & 0b1000000000000000) >> 15));
-        var z_1 = (byte)(((z & 0b11) << 6) + ((y & 0b1111110000000) >> 7));
-        var z_2 = (byte)((z & 0b1111111100) >> 2);
-        var z_3 = (byte)((z & 0b1111110000000000) >> 10);
-        var id_1 = (byte)(((entityId & 0b111) << 5) + 0b10001);
-        var id_2 = (byte)((entityId & 0b11111111000) >> 3);
-        var id_3 = (byte)((entityId & 0b1111100000000000) >> 11);
-        var xdec_1 = (byte)((xDec & 0b111111) << 2);
-        var ydec_1 = (byte)(((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
-        var ydec_2 = (byte)((yDec & 0b1111111100) >> 2);
-        var zdec_1 = (byte)(((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
+        var xDec = 4095 - (1 - (int) Math.Truncate(x0 - Math.Truncate(x0)) * 64);
+        var yDec = 2047 - (int) Math.Truncate((y0 - Math.Truncate(y0)) * 64);
+        var zDec = 4095 - (1 - (int) Math.Truncate(z0 - Math.Truncate(z0)) * 64);
+        var x = 32768 + (int) x0;
+        var y = 1200 + (int) y0;
+        var z = 32768 + (int) z0;
+        var x_1 = (byte) (((x & 0b1111111) << 1) + 1);
+        var x_2 = (byte) ((x & 0b111111110000000) >> 7);
+        var y_1 = (byte) (((y & 0b1111111) << 1) + ((x & 0b1000000000000000) >> 15));
+        var z_1 = (byte) (((z & 0b11) << 6) + ((y & 0b1111110000000) >> 7));
+        var z_2 = (byte) ((z & 0b1111111100) >> 2);
+        var z_3 = (byte) ((z & 0b1111110000000000) >> 10);
+        var id_1 = (byte) (((entityId & 0b111) << 5) + 0b10001);
+        var id_2 = (byte) ((entityId & 0b11111111000) >> 3);
+        var id_3 = (byte) ((entityId & 0b1111100000000000) >> 11);
+        var xdec_1 = (byte) ((xDec & 0b111111) << 2);
+        var ydec_1 = (byte) (((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
+        var ydec_2 = (byte) ((yDec & 0b1111111100) >> 2);
+        var zdec_1 = (byte) (((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
         while (Math.Abs(t0) > 2 * Mathf.Pi)
         {
             t0 -= Math.Sign(t0) * 2 * Mathf.Pi;
         }
 
-        var turn = (int)(t0 * 256 / 2 / Mathf.Pi);
+        var turn = (int) (t0 * 256 / 2 / Mathf.Pi);
 
-        var turn_1 = (byte)(((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
-        var turn_2 = (byte)((turn & 0b11111100) >> 2);
+        var turn_1 = (byte) (((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
+        var turn_2 = (byte) ((turn & 0b11111100) >> 2);
         var movePacket = new byte[]
         {
             0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1, id_2, id_3, 0x6A, 0x10, xdec_1,
@@ -1552,19 +1552,19 @@ public partial class Client : Node
         StreamPeer.PutData(movePacket);
     }
 
-    public void ChangeHealth(ushort entityId, int healthDiff)
+    public void ChangeHealth (ushort entityId, int healthDiff)
     {
         var currentPlayerId = ByteSwap(LocalId);
-        var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
-        var playerId_2 = (byte)((currentPlayerId & 0b111111110000) >> 4);
-        var mobId_1 = (byte)((entityId & 0b1111111) << 1);
-        var mobId_2 = (byte)((entityId & 0b111111110000000) >> 7);
+        var playerId_1 = (byte) (((currentPlayerId & 0b1111) << 4) + 0b0111);
+        var playerId_2 = (byte) ((currentPlayerId & 0b111111110000) >> 4);
+        var mobId_1 = (byte) ((entityId & 0b1111111) << 1);
+        var mobId_2 = (byte) ((entityId & 0b111111110000000) >> 7);
         var hpMod = healthDiff < 0 ? 0b1110 : 0b1100;
         healthDiff = Math.Abs(healthDiff);
-        var dmg_1 = (byte)(((healthDiff & 0b1111) << 4) + hpMod + ((entityId & 0b1000000000000000) >> 15));
-        var dmg_2 = (byte)((healthDiff & 0b111111110000) >> 4);
-        var dmg_3 = (byte)((healthDiff & 0b11111111000000000000) >> 12);
-        var playerId_3 = (byte)(0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
+        var dmg_1 = (byte) (((healthDiff & 0b1111) << 4) + hpMod + ((entityId & 0b1000000000000000) >> 15));
+        var dmg_2 = (byte) ((healthDiff & 0b111111110000) >> 4);
+        var dmg_3 = (byte) ((healthDiff & 0b11111111000000000000) >> 12);
+        var playerId_3 = (byte) (0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
         var dmgPacket = new byte[]
         {
             0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x48, 0x43, 0x65, 0x00,
@@ -1582,13 +1582,13 @@ public partial class Client : Node
             resultHp = 0;
         }
 
-        CurrentCharacter.CurrentHP = (ushort)resultHp;
+        CurrentCharacter.CurrentHP = (ushort) resultHp;
         StreamPeer.PutData(dmgPacket);
     }
 
-    public static void TryFindClientByIdAndSendData(ushort clientId, byte[] data)
+    public static void TryFindClientByIdAndSendData (ushort clientId, byte[] data)
     {
-        var client = Server.ActiveClients.GetValueOrDefault(clientId, null);
+        var client = SphereServer.ActiveClients.GetValueOrDefault(clientId, null);
         if (client is null)
         {
             Console.WriteLine($"Trying to send packet to inexistent client [{clientId}]");
@@ -1597,12 +1597,12 @@ public partial class Client : Node
         client?.StreamPeer.PutData(data);
     }
 
-    public float DistanceTo(Vector3 end)
+    public float DistanceTo (Vector3 end)
     {
         return clientModel?.GlobalTransform.Origin.DistanceTo(end) ?? float.MaxValue;
     }
 
-    private static int GetDestinationIdFromDamagePacket(byte[] rcvBuffer)
+    private static int GetDestinationIdFromDamagePacket (byte[] rcvBuffer)
     {
         var destBytes = rcvBuffer[28..];
 
@@ -1611,7 +1611,7 @@ public partial class Client : Node
 
     public bool IsReadyForGameLogic => currentState == ClientState.INGAME_DEFAULT;
 
-    public static ushort GetNewEntityIndex()
+    public static ushort GetNewEntityIndex ()
     {
         return NewEntityIndex++;
     }

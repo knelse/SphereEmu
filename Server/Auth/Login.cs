@@ -10,7 +10,7 @@ namespace SphServer.Db;
 
 public static class Login
 {
-    public static Player? CheckLoginAndGetPlayer(string login, string password,
+    public static Player? CheckLoginAndGetPlayer (string login, string password,
         ushort playerIndex, bool createOnNewLogin = true)
     {
         var playerCollection = DbConnectionProvider.PlayerCollection;
@@ -60,7 +60,7 @@ public static class Login
         return player;
     }
 
-    public static bool IsNameValid(string name)
+    public static bool IsNameValid (string name)
     {
         return !DbConnectionProvider.CharacterCollection.Exists(x => x.Name == name);
     }

@@ -5,6 +5,7 @@ using Godot;
 using SphServer;
 using SphServer.Helpers;
 using SphServer.Packets;
+using SphServer.Repositories;
 
 public enum ClientInteractionType
 {
@@ -31,59 +32,60 @@ public partial class WorldObject : Node3D
     [Export] public ushort ID { get; set; }
     [Export] public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
 
-    public readonly Dictionary<ushort, DateTime> ShownForClients = new();
-    public readonly Dictionary<ushort, DateTime> DeleteForClients = new();
+    public readonly Dictionary<ushort, DateTime> ShownForClients = new ();
+    public readonly Dictionary<ushort, DateTime> DeleteForClients = new ();
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public override void _Ready ()
     {
         if (ID == 0)
         {
-            ID = Server.GetNewWorldObjectIndex();
+            ID = SphereServer.GetNewWorldObjectIndex();
         }
-
-        Server.ActiveNodes[GetInstanceId()] = this;
-        Server.ActiveWorldObjects[ID] = this;
+        
+        ActiveNodesRepository.Set(GetInstanceId(), this);
+        ActiveNodesRepository.Set(GetInstanceId(), this);
+        ActiveWorldObjectRepository.Set(ID, this);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+    public override void _Process (double delta)
     {
-        foreach (var clientInRange in Server.ActiveClients.Where(x =>
-                     x.Value.IsReadyForGameLogic &&
-                     x.Value.DistanceTo(GlobalTransform.Origin) <= Server.CLIENT_OBJECT_VISIBILITY_DISTANCE))
-        {
-            if (!ShownForClients.ContainsKey(clientInRange.Key))
-            {
-                ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
-                ShowForClient(clientInRange.Value);
-            }
-
-            if (DeleteForClients.ContainsKey(clientInRange.Key))
-            {
-                DeleteForClients.Remove(clientInRange.Key);
-            }
-        }
-
-        foreach (var clientOutOfRange in Server.ActiveClients.Where(x =>
-                     ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) >
-                     Server.CLIENT_OBJECT_VISIBILITY_DISTANCE))
-        {
-            if (DeleteForClients.TryGetValue(clientOutOfRange.Key, out DateTime value) &&
-                (DateTime.UtcNow - value).Milliseconds > 500)
-            {
-                clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
-                ShownForClients.Remove(clientOutOfRange.Key);
-                DeleteForClients.Remove(clientOutOfRange.Key);
-            }
-            else if (!DeleteForClients.ContainsKey(clientOutOfRange.Key))
-            {
-                DeleteForClients.Add(clientOutOfRange.Key, DateTime.UtcNow);
-            }
-        }
+        // foreach (var clientInRange in SphereServer.ActiveClients.Where(x =>
+        //              x.Value.IsReadyForGameLogic &&
+        //              x.Value.DistanceTo(GlobalTransform.Origin) <= SphereServer.CLIENT_OBJECT_VISIBILITY_DISTANCE))
+        // {
+        //     if (!ShownForClients.ContainsKey(clientInRange.Key))
+        //     {
+        //         ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
+        //         ShowForClient(clientInRange.Value);
+        //     }
+        //
+        //     if (DeleteForClients.ContainsKey(clientInRange.Key))
+        //     {
+        //         DeleteForClients.Remove(clientInRange.Key);
+        //     }
+        // }
+        //
+        // foreach (var clientOutOfRange in SphereServer.ActiveClients.Where(x =>
+        //              ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) >
+        //              SphereServer.CLIENT_OBJECT_VISIBILITY_DISTANCE))
+        // {
+        //     if (DeleteForClients.TryGetValue(clientOutOfRange.Key, out var value) &&
+        //         (DateTime.UtcNow - value).Milliseconds > 500)
+        //     {
+        //         clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
+        //         ShownForClients.Remove(clientOutOfRange.Key);
+        //         DeleteForClients.Remove(clientOutOfRange.Key);
+        //     }
+        //     else if (!DeleteForClients.ContainsKey(clientOutOfRange.Key))
+        //     {
+        //         DeleteForClients.Add(clientOutOfRange.Key, DateTime.UtcNow);
+        //     }
+        // }
     }
 
-    public void ShowForClient(Client client)
+    public void ShowForClient (Client client)
     {
         var packetParts = GetPacketPartsAndUpdateCoordsAndID(client);
         packetParts = ModifyPacketParts(packetParts);
@@ -91,12 +93,12 @@ public partial class WorldObject : Node3D
         client.StreamPeer.PutData(packet);
     }
 
-    public virtual List<PacketPart> GetPacketParts()
+    public virtual List<PacketPart> GetPacketParts ()
     {
         return PacketPart.LoadDefinedPartsFromFile(ObjectType);
     }
 
-    public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID(Client client)
+    public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID (Client client)
     {
         var packetParts = GetPacketParts();
         PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, GlobalTransform.Origin.Y,
@@ -107,17 +109,17 @@ public partial class WorldObject : Node3D
         return packetParts;
     }
 
-    public virtual List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
+    public virtual List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
         return packetParts;
     }
 
-    public virtual byte[] PostprocesPacketBytes(byte[] packet)
+    public virtual byte[] PostprocesPacketBytes (byte[] packet)
     {
         return packet;
     }
 
-    public virtual void ClientInteract(ushort clientID,
+    public virtual void ClientInteract (ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
         Console.WriteLine($"Client [{clientID}] interacts with [{ID}] {ObjectType} -- {interactionType}");

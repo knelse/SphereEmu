@@ -11,7 +11,7 @@ namespace SphServer.Helpers;
 
 public static class Extensions
 {
-    public static string RemoveLineEndings(this string str)
+    public static string RemoveLineEndings (this string str)
     {
         return Regex.Replace(str, @"\r\n?|\n", "");
     }
@@ -85,7 +85,7 @@ public class TestHelper
     //     clientLoginDataFile.Close();
     // }
 
-    public static string ShortToBinaryString(short x, bool reverse = false)
+    public static string ShortToBinaryString (short x, bool reverse = false)
     {
         var str = Convert.ToString(x, 2).PadLeft(16, '0');
 
@@ -97,7 +97,7 @@ public class TestHelper
         return str;
     }
 
-    public static string UIntToBinaryString(uint x, bool reverse = false)
+    public static string UIntToBinaryString (uint x, bool reverse = false)
     {
         var str = Convert.ToString(x, 2).PadLeft(32, '0');
 
@@ -172,14 +172,14 @@ public class TestHelper
     //     return Packet.ToByteArray(entity.ToByteArray(), 1);
     // }
 
-    private static void ChangeAllCoordsToFirstClient(List<PacketPart> list)
+    private static void ChangeAllCoordsToFirstClient (List<PacketPart> list)
     {
-        var client = Server.ActiveClients.First().Value;
+        var client = SphereServerActiveClients.First().Value;
         PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
             client.CurrentCharacter.Z);
     }
 
-    public static void SendSpherePacketFromConsole(string input, StreamPeerTcp streamPeerTcp,
+    public static void SendSpherePacketFromConsole (string input, StreamPeerTcp streamPeerTcp,
         bool generateNewId = true,
         Action<List<PacketPart>>? transformPacketPartValueAction = null, bool isPacketPart = true)
     {
@@ -192,8 +192,8 @@ public class TestHelper
 
         var packetName = inputParams[1];
         var path = Path.Combine(
-            Server.AppConfig.PacketDefinitionPath,
-            packetName + (isPacketPart ? Server.ExportedPartExtension : Server.PacketDefinitionExtension));
+            SphereServer.AppConfig.PacketDefinitionPath,
+            packetName + (isPacketPart ? PacketPart.ExportedPartExtension : PacketPart.PacketDefinitionExtension));
 
         if (!Path.Exists(path))
         {

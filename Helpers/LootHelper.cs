@@ -9,7 +9,7 @@ public static class LootHelper
 {
     private static bool firstTypeRolled;
 
-    public static HashSet<ObjectType> ObjectTypesWithSuffixes = new()
+    public static HashSet<ObjectType> ObjectTypesWithSuffixes = new ()
     {
         ObjectType.ArmorAmulet,
         ObjectType.ArmorBracelet,
@@ -41,7 +41,7 @@ public static class LootHelper
         ObjectType.QuestWeaponSword
     };
 
-    public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
+    public static ObjectType GetPacketObjectType (this GameObjectType gameObjectType)
     {
         return gameObjectType switch
         {
@@ -158,7 +158,7 @@ public static class LootHelper
         };
     }
 
-    public static SphGameObject GetRandomObjectData(int titleLevelMinusOne, int gameIdOverride = -1)
+    public static SphGameObject GetRandomObjectData (int titleLevelMinusOne, int gameIdOverride = -1)
     {
         var gameIdsToRemove = new HashSet<int>
         {
@@ -243,14 +243,14 @@ public static class LootHelper
             };
 
             var time = DateTime.Now;
-            var lootPool = Server.SphGameObjectDb
+            var lootPool = SphereServer.SphGameObjectDb
                 .Where(x =>
                     !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) &&
                     typeFilter.Contains(x.Value.GameObjectType)
                     && (x.Value.Tier == tierFilter
                         || tierAgnosticTypes.Contains(x.Value.GameObjectType))).Select(x => x.Value)
                 .ToList();
-            var random = Server.Rng.Next(0, lootPool.Count);
+            var random = SphereServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
             var collectionItem = DbConnectionProvider.GameObjectCollection.FindOne(x => x.GameId == item.GameId);
             item.GameObjectDbId = collectionItem.GameObjectDbId;
@@ -282,7 +282,7 @@ public static class LootHelper
                 ItemSuffix.Precision,
                 ItemSuffix.Ether
             };
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -318,7 +318,7 @@ public static class LootHelper
                 ItemSuffix.Interdict
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -347,7 +347,7 @@ public static class LootHelper
                 ItemSuffix.Radiance
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -381,7 +381,7 @@ public static class LootHelper
                 // ItemSuffix.Ether_Old,
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -402,7 +402,7 @@ public static class LootHelper
                 ItemSuffix.Damage
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -421,7 +421,7 @@ public static class LootHelper
                 ItemSuffix.Ether
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
@@ -461,21 +461,21 @@ public static class LootHelper
                 // ItemSuffix.Elements_New,
             };
 
-            item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
             return item;
         }
 
         if (item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle
             or GameObjectType.Elixir_Trap)
         {
-            item.ItemCount = Server.Rng.Next(3, 20);
+            item.ItemCount = SphereServer.Rng.Next(3, 20);
         }
 
-        item.Suffix = suffixFilter.ElementAt(Server.Rng.Next(0, suffixFilter.Count));
+        item.Suffix = suffixFilter.ElementAt(SphereServer.Rng.Next(0, suffixFilter.Count));
         return item;
     }
 
-    public static bool IsSlotValidForItem(BelongingSlot slot, Item? item)
+    public static bool IsSlotValidForItem (BelongingSlot slot, Item? item)
     {
         // TODO: actual check
         return true;

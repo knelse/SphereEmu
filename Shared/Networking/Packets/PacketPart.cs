@@ -21,6 +21,8 @@ public class PacketPart
     public int BitPositionStart;
     public readonly string Name;
     public List<Bit> Value;
+    public const string PacketDefinitionExtension = ".spd";
+    public const string ExportedPartExtension = ".spdp";
 
     public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
@@ -37,13 +39,13 @@ public class PacketPart
     public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
     {
         var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
-        var partsPath = Server.AppConfig.PacketPartPath;
+        var partsPath = SphereServer.AppConfig.PacketPartPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
     public static List<PacketPart> LoadDefinedWithOverride (string name)
     {
-        var partsPath = Server.AppConfig.PacketPartPath;
+        var partsPath = SphereServer.AppConfig.PacketPartPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
@@ -63,7 +65,7 @@ public class PacketPart
             NpcType.Banker => "npc_banker",
             _ => "npc_trade"
         };
-        var partsPath = Server.AppConfig.PacketPartPath;
+        var partsPath = SphereServer.AppConfig.PacketPartPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
@@ -140,7 +142,7 @@ public class PacketPart
     public static void UpdateValue (List<PacketPart> list, string name, string val)
     {
         var part = list.FirstOrDefault(x => x.Name == name);
-        var valBytes = Server.Win1251.GetBytes(val);
+        var valBytes = SphereServer.Win1251.GetBytes(val);
         var stream = new BitStream(valBytes);
         var bits = stream.ReadBits(int.MaxValue);
         if (part is not null)

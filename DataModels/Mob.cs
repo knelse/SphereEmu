@@ -20,7 +20,7 @@ public class Mob
 
     public void ShowForEveryClientInRadius ()
     {
-        foreach (var client in Server.ActiveClients.Values)
+        foreach (var client in SphereServer.ActiveClients.Values)
         {
             // TODO: proper load/unload for client
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=

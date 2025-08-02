@@ -199,7 +199,7 @@ public partial class NpcInteractable : WorldObject
         foreach (var item in itemsOnSale)
         {
             item.ParentContainerId = ID;
-            item.Id = Server.GetNewWorldObjectIndex();
+            item.Id = SphereServer.GetNewWorldObjectIndex();
             ItemsOnSale.Add(item);
         }
     }
@@ -636,7 +636,7 @@ public partial class NpcInteractable : WorldObject
         }
 
         // dumb rng to have higher tiers have suffixes less often
-        var rand = Server.Rng.Next(tier * 2 + 1);
+        var rand = SphereServer.Rng.Next(tier * 2 + 1);
         return rand == tier * 2;
     }
 
@@ -651,7 +651,7 @@ public partial class NpcInteractable : WorldObject
                 objectTypes.Contains(x.Value.GameObjectType.GetPacketObjectType()) && x.Value.Tier == tier
                 && (!withSuffixMaybe || (x.Value.SuffixSetName.Length == 1 && x.Value.SuffixSetName != "-")))
             .ToList();
-        var randomObjectId = Server.Rng.Next(candidates.Count);
+        var randomObjectId = SphereServer.Rng.Next(candidates.Count);
         var randomGameObject = candidates.ElementAt(randomObjectId).Value;
         return GetItemForGameObject(randomGameObject, tier, withSuffixMaybe);
     }
@@ -666,7 +666,7 @@ public partial class NpcInteractable : WorldObject
                 GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.GetValueOrDefault(clone.GameObjectType, []);
             if (suffixes.Any())
             {
-                var randSuffixId = Server.Rng.Next(suffixes.Count);
+                var randSuffixId = SphereServer.Rng.Next(suffixes.Count);
                 var randSuffix = suffixes.ElementAt(randSuffixId);
                 clone.Suffix = randSuffix.Key;
             }

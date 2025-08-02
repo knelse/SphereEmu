@@ -158,7 +158,7 @@ public class ConsoleCommandParser
         {
             case "rank":
                 var responseStream = BitHelper.GetWriteBitStream();
-                var nameBytes = Server.Win1251.GetBytes(CurrentCharacter.Clan.Name);
+                var nameBytes = SphereServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
                 responseStream.WriteBytes([
                     (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
                     BitHelper.MajorByte(CurrentCharacter.ClientIndex),
@@ -317,7 +317,7 @@ public class ConsoleCommandParser
 
     private StreamPeerTcp getStreamPeer ()
     {
-        var client = Server.GetClient(CurrentCharacter.ClientIndex);
+        var client = SphereServer.GetClient(CurrentCharacter.ClientIndex);
         return client.StreamPeer;
     }
 }

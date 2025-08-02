@@ -18,7 +18,7 @@ public static class DbConnectionProvider
     public static ILiteCollection<Vendor> VendorCollection { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjectCollection { get; private set; } = null!;
 
-    public static void Initialize(AppConfig config)
+    public static void Initialize (AppConfig config)
     {
         SphLogger.Info("Initializing database connection...");
         Db = new LiteDatabase(config.LiteDbConnectionString);
@@ -61,7 +61,7 @@ public static class DbConnectionProvider
         // }
     }
 
-    private static void InitializeData()
+    private static void InitializeData ()
     {
         ItemCollection.DeleteAll();
         MonsterCollection.DeleteAll();
@@ -72,7 +72,7 @@ public static class DbConnectionProvider
         if (GameObjectCollection.Count() == 0)
         {
             SphLogger.Info("Filling object collection");
-            foreach (var dbEntry in Server.SphGameObjectDb)
+            foreach (var dbEntry in SphereServer.SphGameObjectDb)
             {
                 GameObjectCollection.Insert(dbEntry.Key, dbEntry.Value);
             }
@@ -91,7 +91,7 @@ public static class DbConnectionProvider
         }
     }
 
-    private static void CreateIndexes()
+    private static void CreateIndexes ()
     {
         ItemCollection.EnsureIndex(x => x.GameObjectDbId);
         ItemCollection.EnsureIndex(x => x.GameId);

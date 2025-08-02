@@ -28,14 +28,14 @@ public static class ChatHelper
                 (byte) (length / 0xFF), 0x00, 0x00, 0x02, (byte) (nameLength + 1)
             }, 18,
             true);
-        var nameBytes = Server.Win1251!.GetBytes(name);
+        var nameBytes = SphereServer.Win1251!.GetBytes(name);
         stream.WriteBytes(nameBytes, nameBytes.Length, true);
         stream.WriteByte(0x00);
         stream.WriteByte((byte) chatTypeVal);
 
         // client sometimes adds X bytes of 0x00 at the end, server does not send those back
         messageContent = messageContent.TrimEnd((char) 0);
-        var messageBytes = Server.Win1251.GetBytes(messageContent);
+        var messageBytes = SphereServer.Win1251.GetBytes(messageContent);
         var end = 0;
         var previousEnd = 0;
 

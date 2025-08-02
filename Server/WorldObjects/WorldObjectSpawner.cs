@@ -34,10 +34,10 @@ public static class WorldObjectSpawner
                 var monsterNode = MonsterScene.Instantiate<Monster>();
                 monsterNode.MonsterType = MonsterTypeMapping.MonsterTypeToMonsterNameMapping[type];
                 monsterNode.MonsterInstance =
-                    new SphMonsterInstance(new SphMonsterData(Server.SphGameObjectDb[type]), level, false);
+                    new SphMonsterInstance(new SphMonsterData(SphereServer.SphGameObjectDb[type]), level, false);
                 monsterNode.Angle = angle;
                 monsterNode.Name = Enum.GetName(typeof (MonsterType), monsterNode.MonsterType);
-                Server.ServerNode.CallDeferred("add_child", monsterNode);
+                SphereServer.ServerNode.CallDeferred("add_child", monsterNode);
                 monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ public static class WorldObjectSpawner
                 var node = AlchemyResourceScene.Instantiate<AlchemyResource>();
                 node.Angle = angle;
                 node.GameObjectID = gameId;
-                Server.ServerNode.CallDeferred("add_child", node);
+                SphereServer.ServerNode.CallDeferred("add_child", node);
                 node.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
                 node.ObjectType = Enum.TryParse(type, out ObjectType objectType)
                     ? objectType

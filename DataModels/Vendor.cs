@@ -23,13 +23,14 @@ public class Vendor
     public string Name { get; set; }
     public string FamilyName { get; set; }
 
-    public List<int> ItemIdsOnSale { get; set; } = new();
+    public List<int> ItemIdsOnSale { get; set; } = new ();
 
     [BsonIgnore]
-    public List<Item> ItemsOnSale => ItemIdsOnSale.Select(x => DbConnectionProvider.ItemCollection.FindById(x)).ToList();
+    public List<Item> ItemsOnSale =>
+        ItemIdsOnSale.Select(x => DbConnectionProvider.ItemCollection.FindById(x)).ToList();
     //public ulong? ParentNodeId { get; set; }
 
-    public byte[] GetItemSlotListForClient(ushort clientId)
+    public byte[] GetItemSlotListForClient (ushort clientId)
     {
         var localId = Client.GetLocalObjectId(clientId, Id);
 
@@ -44,17 +45,17 @@ public class Vendor
             true);
         stream.WriteBit(0);
 
-        var itemSeparator = (ushort)0b110000000001010;
+        var itemSeparator = (ushort) 0b110000000001010;
 
         for (var i = 0; i < ItemsOnSale.Count; i++)
         {
             var item = ItemsOnSale[i];
             stream.WriteUInt16(itemSeparator, 15);
-            stream.WriteByte((byte)i, 8);
+            stream.WriteByte((byte) i, 8);
             var itemLocalId = Client.GetLocalObjectId(clientId, item.Id);
             stream.WriteUInt16(itemLocalId);
             stream.WriteBytes(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, 5, true);
-            stream.WriteUInt32((uint)item.VendorCost);
+            stream.WriteUInt32((uint) item.VendorCost);
         }
 
         stream.WriteByte(0x3F, 7);

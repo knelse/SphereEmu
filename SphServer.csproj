@@ -1,6 +1,6 @@
 <Project Sdk="Godot.NET.Sdk/4.4.1">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latestmajor</LangVersion>
         <Nullable>enable</Nullable>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -14,14 +14,14 @@
         <PackageReference Update="Godot.SourceGenerators" Version="4.4.1"/>
         <PackageReference Update="GodotSharp" Version="4.4.1"/>
         <PackageReference Update="GodotSharpEditor" Version="4.4.1"/>
-        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="xunit" Version="2.9.3"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\source\LiteDB\LiteDB\LiteDB.csproj"/>
-        <ProjectReference Include="..\..\source\ObjectPacketTools\ObjectPacketTools.csproj"/>
-        <ProjectReference Include="..\..\source\SphEntities\SphEntities.csproj"/>
-        <ProjectReference Include="..\..\source\SphereHelpers\SphereHelpers.csproj"/>
-        <ProjectReference Include="..\..\source\SphObjectDb\SphObjectDb.csproj"/>
+        <ProjectReference Include="..\source\LiteDB\LiteDB\LiteDB.csproj"/>
+        <ProjectReference Include="..\source\ObjectPacketTools\ObjectPacketTools.csproj"/>
+        <ProjectReference Include="..\source\SphEntities\SphEntities.csproj"/>
+        <ProjectReference Include="..\source\SphereHelpers\SphereHelpers.csproj"/>
+        <ProjectReference Include="..\source\SphObjectDb\SphObjectDb.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <Content Include="appsettings.json">
@@ -43,6 +43,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Shared\" />
+        <Folder Include="Shared\"/>
     </ItemGroup>
 </Project>

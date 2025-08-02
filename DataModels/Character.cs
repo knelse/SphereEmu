@@ -72,7 +72,7 @@ public class Character
     public ushort PDef { get; set; }
     public ushort MDef { get; set; }
     public KarmaTier Karma { get; set; } = KarmaTier.Neutral;
-    public Dictionary<BelongingSlot, int> Items { get; set; } = new();
+    public Dictionary<BelongingSlot, int> Items { get; set; } = new ();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
     public int KarmaCount { get; set; }
@@ -81,158 +81,158 @@ public class Character
     public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
     public ulong XpToLevelUp => GetXpToLevelUp();
 
-    public readonly Item Fists = new()
+    public readonly Item Fists = new ()
     {
         ObjectKind = GameObjectKind.Fists,
         GameObjectType = GameObjectType.Fists
     };
 
-    public Character()
+    public Character ()
     {
         LookType = 0x7;
         IsTurnedOff = 0x9;
-        CurrentHP = (ushort)MaxHPBase;
-        MaxHP = (ushort)MaxHPBase;
-        CurrentMP = (ushort)MaxMPBase;
-        MaxMP = (ushort)MaxMPBase;
+        CurrentHP = (ushort) MaxHPBase;
+        MaxHP = (ushort) MaxHPBase;
+        CurrentMP = (ushort) MaxMPBase;
+        MaxMP = (ushort) MaxMPBase;
         CurrentSatiety = 100;
         MaxSatiety = 100;
-        AvailableDegreeStats = (ushort)AvailableStatsPrimary[0];
-        AvailableTitleStats = (ushort)AvailableStatsPrimary[0];
+        AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
+        AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
         Fists.Id = DbConnectionProvider.ItemCollection.Insert(Fists);
     }
 
-    public void LevelUp(int newTitleLevel, int newDegreeLevel)
+    public void LevelUp (int newTitleLevel, int newDegreeLevel)
     {
         if (newTitleLevel > TitleMinusOne)
         {
             var bonusStatsFromReset = TitleMinusOne / 60 * StatBonusForResets[TitleMinusOne];
             AvailableTitleStats =
-                (ushort)(AvailableTitleStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
-            AvailableDegreeStats = (ushort)(AvailableDegreeStats + AvailableStatsSecondary[newTitleLevel]);
+                (ushort) (AvailableTitleStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
+            AvailableDegreeStats = (ushort) (AvailableDegreeStats + AvailableStatsSecondary[newTitleLevel]);
         }
         else if (newDegreeLevel > DegreeMinusOne)
         {
             var bonusStatsFromReset = DegreeMinusOne / 60 * StatBonusForResets[DegreeMinusOne];
             AvailableDegreeStats =
-                (ushort)(AvailableDegreeStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
-            AvailableTitleStats = (ushort)(AvailableTitleStats + AvailableStatsSecondary[newTitleLevel]);
+                (ushort) (AvailableDegreeStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
+            AvailableTitleStats = (ushort) (AvailableTitleStats + AvailableStatsSecondary[newTitleLevel]);
         }
     }
 
-    public byte[] ToCharacterListByteArray()
+    public byte[] ToCharacterListByteArray ()
     {
         var nameEncodedWithPadding = new byte[19];
-        var nameEncoded = Server.Win1251!.GetBytes(Name);
+        var nameEncoded = SphereServer.Win1251!.GetBytes(Name);
         Array.Copy(nameEncoded, nameEncodedWithPadding, nameEncoded.Length);
 
         // 0x79 - look type
-        var hpMax1 = (byte)(((MaxHP & 0b111111) << 2) + 1);
-        var hpMax2 = (byte)((MaxHP & 0b11111111000000) >> 6);
-        var mpMax1 = (byte)(((MaxMP & 0b111111) << 2) + ((MaxHP & 0b1100000000000000) >> 14));
-        var mpMax2 = (byte)((MaxMP & 0b11111111000000) >> 6);
-        var strength1 = (byte)(((CurrentStrength & 0b111111) << 2) + ((MaxMP & 0b1100000000000000) >> 14));
-        var strenth2 = (byte)((CurrentStrength & 0b11111111000000) >> 6);
-        var agility1 = (byte)(((CurrentAgility & 0b111111) << 2) + ((CurrentStrength & 0b1100000000000000) >> 14));
-        var agility2 = (byte)((CurrentAgility & 0b11111111000000) >> 6);
-        var accuracy1 = (byte)(((CurrentAccuracy & 0b111111) << 2) + ((CurrentAgility & 0b1100000000000000) >> 14));
-        var accuracy2 = (byte)((CurrentAccuracy & 0b11111111000000) >> 6);
-        var endurance1 = (byte)(((CurrentEndurance & 0b111111) << 2) + ((CurrentAccuracy & 0b1100000000000000) >> 14));
-        var endurance2 = (byte)((CurrentEndurance & 0b11111111000000) >> 6);
-        var earth1 = (byte)(((CurrentEarth & 0b111111) << 2) + ((CurrentEndurance & 0b1100000000000000) >> 14));
-        var earth2 = (byte)((CurrentEarth & 0b11111111000000) >> 6);
-        var air1 = (byte)(((CurrentAir & 0b111111) << 2) + ((CurrentEarth & 0b1100000000000000) >> 14));
-        var air2 = (byte)((CurrentAir & 0b11111111000000) >> 6);
-        var water1 = (byte)(((CurrentWater & 0b111111) << 2) + ((CurrentAir & 0b1100000000000000) >> 14));
-        var water2 = (byte)((CurrentWater & 0b11111111000000) >> 6);
-        var fire1 = (byte)(((CurrentFire & 0b111111) << 2) + ((CurrentWater & 0b1100000000000000) >> 14));
-        var fire2 = (byte)((CurrentFire & 0b11111111000000) >> 6);
-        var pdef1 = (byte)(((PDef & 0b111111) << 2) + ((CurrentFire & 0b1100000000000000) >> 14));
-        var pdef2 = (byte)((PDef & 0b11111111000000) >> 6);
-        var mdef1 = (byte)(((MDef & 0b111111) << 2) + ((PDef & 0b1100000000000000) >> 14));
-        var mdef2 = (byte)((MDef & 0b11111111000000) >> 6);
-        var karma1 = (byte)((((byte)Karma & 0b111111) << 2) + ((MDef & 0b1100000000000000) >> 14));
-        var satietyMax1 = (byte)(((MaxSatiety & 0b111111) << 2) + (((byte)Karma & 0b11000000) >> 14));
-        var satietyMax2 = (byte)((MaxSatiety & 0b11111111000000) >> 6);
-        var titleLvl1 = (byte)(((TitleMinusOne & 0b111111) << 2) + ((MaxSatiety & 0b1100000000000000) >> 14));
-        var titleLvl2 = (byte)((TitleMinusOne & 0b11111111000000) >> 6);
-        var degreeLvl1 = (byte)(((DegreeMinusOne & 0b111111) << 2) +
+        var hpMax1 = (byte) (((MaxHP & 0b111111) << 2) + 1);
+        var hpMax2 = (byte) ((MaxHP & 0b11111111000000) >> 6);
+        var mpMax1 = (byte) (((MaxMP & 0b111111) << 2) + ((MaxHP & 0b1100000000000000) >> 14));
+        var mpMax2 = (byte) ((MaxMP & 0b11111111000000) >> 6);
+        var strength1 = (byte) (((CurrentStrength & 0b111111) << 2) + ((MaxMP & 0b1100000000000000) >> 14));
+        var strenth2 = (byte) ((CurrentStrength & 0b11111111000000) >> 6);
+        var agility1 = (byte) (((CurrentAgility & 0b111111) << 2) + ((CurrentStrength & 0b1100000000000000) >> 14));
+        var agility2 = (byte) ((CurrentAgility & 0b11111111000000) >> 6);
+        var accuracy1 = (byte) (((CurrentAccuracy & 0b111111) << 2) + ((CurrentAgility & 0b1100000000000000) >> 14));
+        var accuracy2 = (byte) ((CurrentAccuracy & 0b11111111000000) >> 6);
+        var endurance1 = (byte) (((CurrentEndurance & 0b111111) << 2) + ((CurrentAccuracy & 0b1100000000000000) >> 14));
+        var endurance2 = (byte) ((CurrentEndurance & 0b11111111000000) >> 6);
+        var earth1 = (byte) (((CurrentEarth & 0b111111) << 2) + ((CurrentEndurance & 0b1100000000000000) >> 14));
+        var earth2 = (byte) ((CurrentEarth & 0b11111111000000) >> 6);
+        var air1 = (byte) (((CurrentAir & 0b111111) << 2) + ((CurrentEarth & 0b1100000000000000) >> 14));
+        var air2 = (byte) ((CurrentAir & 0b11111111000000) >> 6);
+        var water1 = (byte) (((CurrentWater & 0b111111) << 2) + ((CurrentAir & 0b1100000000000000) >> 14));
+        var water2 = (byte) ((CurrentWater & 0b11111111000000) >> 6);
+        var fire1 = (byte) (((CurrentFire & 0b111111) << 2) + ((CurrentWater & 0b1100000000000000) >> 14));
+        var fire2 = (byte) ((CurrentFire & 0b11111111000000) >> 6);
+        var pdef1 = (byte) (((PDef & 0b111111) << 2) + ((CurrentFire & 0b1100000000000000) >> 14));
+        var pdef2 = (byte) ((PDef & 0b11111111000000) >> 6);
+        var mdef1 = (byte) (((MDef & 0b111111) << 2) + ((PDef & 0b1100000000000000) >> 14));
+        var mdef2 = (byte) ((MDef & 0b11111111000000) >> 6);
+        var karma1 = (byte) ((((byte) Karma & 0b111111) << 2) + ((MDef & 0b1100000000000000) >> 14));
+        var satietyMax1 = (byte) (((MaxSatiety & 0b111111) << 2) + (((byte) Karma & 0b11000000) >> 14));
+        var satietyMax2 = (byte) ((MaxSatiety & 0b11111111000000) >> 6);
+        var titleLvl1 = (byte) (((TitleMinusOne & 0b111111) << 2) + ((MaxSatiety & 0b1100000000000000) >> 14));
+        var titleLvl2 = (byte) ((TitleMinusOne & 0b11111111000000) >> 6);
+        var degreeLvl1 = (byte) (((DegreeMinusOne & 0b111111) << 2) +
                                  ((TitleMinusOne & 0b1100000000000000) >> 14));
-        var degreeLvl2 = (byte)((DegreeMinusOne & 0b11111111000000) >> 6);
-        var titleXp1 = (byte)(((TitleXP & 0b111111) << 2) + ((DegreeMinusOne & 0b1100000000000000) >> 14));
-        var titleXp2 = (byte)((TitleXP & 0b11111111000000) >> 6);
-        var titleXp3 = (byte)((TitleXP & 0b1111111100000000000000) >> 14);
-        var titleXp4 = (byte)((TitleXP & 0b111111110000000000000000000000) >> 22);
-        var degreeXp1 = (byte)(((DegreeXP & 0b111111) << 2) + ((TitleXP & 0b11000000000000000000000000000000) >> 30));
-        var degreeXp2 = (byte)((DegreeXP & 0b11111111000000) >> 6);
-        var degreeXp3 = (byte)((DegreeXP & 0b1111111100000000000000) >> 14);
-        var degreeXp4 = (byte)((DegreeXP & 0b111111110000000000000000000000) >> 22);
-        var satietyCurrent1 = (byte)(((CurrentSatiety & 0b111111) << 2) +
+        var degreeLvl2 = (byte) ((DegreeMinusOne & 0b11111111000000) >> 6);
+        var titleXp1 = (byte) (((TitleXP & 0b111111) << 2) + ((DegreeMinusOne & 0b1100000000000000) >> 14));
+        var titleXp2 = (byte) ((TitleXP & 0b11111111000000) >> 6);
+        var titleXp3 = (byte) ((TitleXP & 0b1111111100000000000000) >> 14);
+        var titleXp4 = (byte) ((TitleXP & 0b111111110000000000000000000000) >> 22);
+        var degreeXp1 = (byte) (((DegreeXP & 0b111111) << 2) + ((TitleXP & 0b11000000000000000000000000000000) >> 30));
+        var degreeXp2 = (byte) ((DegreeXP & 0b11111111000000) >> 6);
+        var degreeXp3 = (byte) ((DegreeXP & 0b1111111100000000000000) >> 14);
+        var degreeXp4 = (byte) ((DegreeXP & 0b111111110000000000000000000000) >> 22);
+        var satietyCurrent1 = (byte) (((CurrentSatiety & 0b111111) << 2) +
                                       ((DegreeXP & 0b11000000000000000000000000000000) >> 30));
-        var satietyCurrent2 = (byte)((CurrentSatiety & 0b11111111000000) >> 6);
-        var hpCurrent1 = (byte)(((CurrentHP & 0b111111) << 2) + ((CurrentSatiety & 0b1100000000000000) >> 14));
-        var hpCurrent2 = (byte)((CurrentHP & 0b11111111000000) >> 6);
-        var mpCurrent1 = (byte)(((CurrentMP & 0b111111) << 2) + ((CurrentHP & 0b1100000000000000) >> 14));
-        var mpCurrent2 = (byte)((CurrentMP & 0b11111111000000) >> 6);
+        var satietyCurrent2 = (byte) ((CurrentSatiety & 0b11111111000000) >> 6);
+        var hpCurrent1 = (byte) (((CurrentHP & 0b111111) << 2) + ((CurrentSatiety & 0b1100000000000000) >> 14));
+        var hpCurrent2 = (byte) ((CurrentHP & 0b11111111000000) >> 6);
+        var mpCurrent1 = (byte) (((CurrentMP & 0b111111) << 2) + ((CurrentHP & 0b1100000000000000) >> 14));
+        var mpCurrent2 = (byte) ((CurrentMP & 0b11111111000000) >> 6);
         var titleStats1 =
-            (byte)(((AvailableTitleStats & 0b111111) << 2) + ((CurrentMP & 0b1100000000000000) >> 14));
-        var titleStats2 = (byte)((AvailableTitleStats & 0b11111111000000) >> 6);
-        var degreeStats1 = (byte)(((AvailableDegreeStats & 0b111111) << 2) +
+            (byte) (((AvailableTitleStats & 0b111111) << 2) + ((CurrentMP & 0b1100000000000000) >> 14));
+        var titleStats2 = (byte) ((AvailableTitleStats & 0b11111111000000) >> 6);
+        var degreeStats1 = (byte) (((AvailableDegreeStats & 0b111111) << 2) +
                                    ((AvailableTitleStats & 0b1100000000000000) >> 14));
-        var degreeStats2 = (byte)((AvailableDegreeStats & 0b11111111000000) >> 6);
-        var degreeStats3 = (byte)((0b111010 << 2) + ((AvailableDegreeStats & 0b1100000000000000) >> 14));
-        var isFemale1 = (byte)((IsGenderFemale ? 1 : 0) << 2);
-        var name1 = (byte)((nameEncodedWithPadding[0] & 0b111111) << 2);
-        var name2 = (byte)(((nameEncodedWithPadding[1] & 0b111111) << 2) +
+        var degreeStats2 = (byte) ((AvailableDegreeStats & 0b11111111000000) >> 6);
+        var degreeStats3 = (byte) ((0b111010 << 2) + ((AvailableDegreeStats & 0b1100000000000000) >> 14));
+        var isFemale1 = (byte) ((IsGenderFemale ? 1 : 0) << 2);
+        var name1 = (byte) ((nameEncodedWithPadding[0] & 0b111111) << 2);
+        var name2 = (byte) (((nameEncodedWithPadding[1] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[0] & 0b11000000) >> 6));
-        var name3 = (byte)(((nameEncodedWithPadding[2] & 0b111111) << 2) +
+        var name3 = (byte) (((nameEncodedWithPadding[2] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[1] & 0b11000000) >> 6));
-        var name4 = (byte)(((nameEncodedWithPadding[3] & 0b111111) << 2) +
+        var name4 = (byte) (((nameEncodedWithPadding[3] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[2] & 0b11000000) >> 6));
-        var name5 = (byte)(((nameEncodedWithPadding[4] & 0b111111) << 2) +
+        var name5 = (byte) (((nameEncodedWithPadding[4] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[3] & 0b11000000) >> 6));
-        var name6 = (byte)(((nameEncodedWithPadding[5] & 0b111111) << 2) +
+        var name6 = (byte) (((nameEncodedWithPadding[5] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[4] & 0b11000000) >> 6));
-        var name7 = (byte)(((nameEncodedWithPadding[6] & 0b111111) << 2) +
+        var name7 = (byte) (((nameEncodedWithPadding[6] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[5] & 0b11000000) >> 6));
-        var name8 = (byte)(((nameEncodedWithPadding[7] & 0b111111) << 2) +
+        var name8 = (byte) (((nameEncodedWithPadding[7] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[6] & 0b11000000) >> 6));
-        var name9 = (byte)(((nameEncodedWithPadding[8] & 0b111111) << 2) +
+        var name9 = (byte) (((nameEncodedWithPadding[8] & 0b111111) << 2) +
                             ((nameEncodedWithPadding[7] & 0b11000000) >> 6));
-        var name10 = (byte)(((nameEncodedWithPadding[9] & 0b111111) << 2) +
+        var name10 = (byte) (((nameEncodedWithPadding[9] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[8] & 0b11000000) >> 6));
-        var name11 = (byte)(((nameEncodedWithPadding[10] & 0b111111) << 2) +
+        var name11 = (byte) (((nameEncodedWithPadding[10] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[9] & 0b11000000) >> 6));
-        var name12 = (byte)(((nameEncodedWithPadding[11] & 0b111111) << 2) +
+        var name12 = (byte) (((nameEncodedWithPadding[11] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[10] & 0b11000000) >> 6));
-        var name13 = (byte)(((nameEncodedWithPadding[12] & 0b111111) << 2) +
+        var name13 = (byte) (((nameEncodedWithPadding[12] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[11] & 0b11000000) >> 6));
-        var name14 = (byte)(((nameEncodedWithPadding[13] & 0b111111) << 2) +
+        var name14 = (byte) (((nameEncodedWithPadding[13] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[12] & 0b11000000) >> 6));
-        var name15 = (byte)(((nameEncodedWithPadding[14] & 0b111111) << 2) +
+        var name15 = (byte) (((nameEncodedWithPadding[14] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[13] & 0b11000000) >> 6));
-        var name16 = (byte)(((nameEncodedWithPadding[15] & 0b111111) << 2) +
+        var name16 = (byte) (((nameEncodedWithPadding[15] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[14] & 0b11000000) >> 6));
-        var name17 = (byte)(((nameEncodedWithPadding[16] & 0b111111) << 2) +
+        var name17 = (byte) (((nameEncodedWithPadding[16] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[15] & 0b11000000) >> 6));
-        var name18 = (byte)(((nameEncodedWithPadding[17] & 0b111111) << 2) +
+        var name18 = (byte) (((nameEncodedWithPadding[17] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[16] & 0b11000000) >> 6));
-        var name19 = (byte)(((nameEncodedWithPadding[18] & 0b111111) << 2) +
+        var name19 = (byte) (((nameEncodedWithPadding[18] & 0b111111) << 2) +
                              ((nameEncodedWithPadding[17] & 0b11000000) >> 6));
 
-        var face1 = (byte)(((FaceType & 0b111111) << 2) + ((nameEncodedWithPadding[18] & 0b11000000) >> 6));
-        var hairStyle1 = (byte)(((HairStyle & 0b111111) << 2) + ((FaceType & 0b11000000) >> 6));
-        var hairColor1 = (byte)(((HairColor & 0b111111) << 2) + ((HairStyle & 0b11000000) >> 6));
-        var tattoo1 = (byte)(((Tattoo & 0b111111) << 2) + ((HairColor & 0b11000000) >> 6));
-        var bootsModelId = (byte)(((BootModelId & 0b111111) << 2) + ((Tattoo & 0b11000000) >> 6));
-        var pantsModelId = (byte)(((PantsModelId & 0b111111) << 2) + ((BootModelId & 0b11000000) >> 6));
-        var armorModelId = (byte)(((ArmorModelId & 0b111111) << 2) + ((PantsModelId & 0b11000000) >> 6));
-        var helmetModelId = (byte)(((HelmetModelId & 0b111111) << 2) + ((ArmorModelId & 0b11000000) >> 6));
-        var glovesModelId1 = (byte)(((GlovesModelId & 0b111111) << 2) + ((HelmetModelId & 0b11000000) >> 6));
-        var glovesModelId2 = (byte)((GlovesModelId & 0b11000000) >> 6);
-        var isNotDeleted1 = (byte)(((IsNotQueuedForDeletion ? 1 : 0) << 1) + 1);
+        var face1 = (byte) (((FaceType & 0b111111) << 2) + ((nameEncodedWithPadding[18] & 0b11000000) >> 6));
+        var hairStyle1 = (byte) (((HairStyle & 0b111111) << 2) + ((FaceType & 0b11000000) >> 6));
+        var hairColor1 = (byte) (((HairColor & 0b111111) << 2) + ((HairStyle & 0b11000000) >> 6));
+        var tattoo1 = (byte) (((Tattoo & 0b111111) << 2) + ((HairColor & 0b11000000) >> 6));
+        var bootsModelId = (byte) (((BootModelId & 0b111111) << 2) + ((Tattoo & 0b11000000) >> 6));
+        var pantsModelId = (byte) (((PantsModelId & 0b111111) << 2) + ((BootModelId & 0b11000000) >> 6));
+        var armorModelId = (byte) (((ArmorModelId & 0b111111) << 2) + ((PantsModelId & 0b11000000) >> 6));
+        var helmetModelId = (byte) (((HelmetModelId & 0b111111) << 2) + ((ArmorModelId & 0b11000000) >> 6));
+        var glovesModelId1 = (byte) (((GlovesModelId & 0b111111) << 2) + ((HelmetModelId & 0b11000000) >> 6));
+        var glovesModelId2 = (byte) ((GlovesModelId & 0b11000000) >> 6);
+        var isNotDeleted1 = (byte) (((IsNotQueuedForDeletion ? 1 : 0) << 1) + 1);
 
-        var lookType = (byte)(IsNotQueuedForDeletion ? 0x79 : 0x19);
+        var lookType = (byte) (IsNotQueuedForDeletion ? 0x79 : 0x19);
 
         var charDataBytes = new byte[]
         {
@@ -252,9 +252,9 @@ public class Character
         return charDataBytes;
     }
 
-    public byte[] ToGameDataByteArray()
+    public byte[] ToGameDataByteArray ()
     {
-        var nameEncoded = Server.Win1251!.GetBytes(Name);
+        var nameEncoded = SphereServer.Win1251!.GetBytes(Name);
         var x = CoordsHelper.EncodeServerCoordinate(X);
         var y = CoordsHelper.EncodeServerCoordinate(-Y);
         var z = CoordsHelper.EncodeServerCoordinate(Z);
@@ -279,10 +279,10 @@ public class Character
 
         for (var i = 1; i < nameEncoded.Length; i++)
         {
-            data.Add((byte)(((nameEncoded[i] & 0b111) << 5) + ((nameEncoded[i - 1] & 0b11111000) >> 3)));
+            data.Add((byte) (((nameEncoded[i] & 0b111) << 5) + ((nameEncoded[i - 1] & 0b11111000) >> 3)));
         }
 
-        data.Add((byte)((nameEncoded[^1] & 0b11111000) >> 3));
+        data.Add((byte) ((nameEncoded[^1] & 0b11111000) >> 3));
 
         if (Clan?.Id == null || Clan?.Id == Clan.DefaultClan.Id)
         {
@@ -291,18 +291,18 @@ public class Character
         }
         else
         {
-            var clanNameEncoded = Server.Win1251.GetBytes(Clan!.Name);
+            var clanNameEncoded = SphereServer.Win1251.GetBytes(Clan!.Name);
             var clanNameLength = clanNameEncoded.Length;
-            data.Add((byte)((clanNameLength & 0b111) << 5));
-            data.Add((byte)(((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
+            data.Add((byte) ((clanNameLength & 0b111) << 5));
+            data.Add((byte) (((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
 
             for (var i = 1; i < clanNameLength; i++)
             {
-                data.Add((byte)(((clanNameEncoded[i] & 0b1111111) << 1) +
+                data.Add((byte) (((clanNameEncoded[i] & 0b1111111) << 1) +
                                  ((clanNameEncoded[i - 1] & 0b10000000) >> 7)));
             }
 
-            data.Add((byte)(0b01100000 + ((byte)ClanRank << 1) + ((clanNameEncoded[^1] & 0b10000000) >> 7)));
+            data.Add((byte) (0b01100000 + ((byte) ClanRank << 1) + ((clanNameEncoded[^1] & 0b10000000) >> 7)));
         }
 
         data.Add(0x1A);
@@ -318,77 +318,77 @@ public class Character
         data.Add(0x79);
         data.Add(0x00);
         data.Add(0xF0);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Helmet) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Helmet) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Amulet) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Amulet) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Shield) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Shield) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Chestplate) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Chestplate) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Gloves) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Gloves) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Belt) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Belt) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.BraceletLeft) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.BraceletLeft) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.BraceletRight) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.BraceletRight) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Ring_1) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Ring_1) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Ring_2) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Ring_2) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Ring_3) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Ring_3) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Ring_4) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Ring_4) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Pants) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Pants) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Boots) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Boots) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Guild) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Guild) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.MapBook) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.MapBook) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.RecipeBook) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.RecipeBook) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.MantraBook) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.MantraBook) ? 0x00 : 0x04));
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inkpot) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inkpot) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Money) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Money) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Backpack) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Backpack) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Key_1) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Key_1) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Key_2) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Key_2) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Mission) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Mission) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_1) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_1) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_2) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_2) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_3) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_3) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_4) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_4) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_5) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_5) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_6) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_6) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_7) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_7) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_8) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_8) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_9) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_9) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Inventory_10) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Inventory_10) ? 0x00 : 0x04));
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
@@ -410,27 +410,27 @@ public class Character
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_1) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_1) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_2) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_2) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_3) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_3) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_4) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_4) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_5) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_5) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_6) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_6) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_7) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_7) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_8) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_8) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Special_9) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Special_9) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.Ammo) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.Ammo) ? 0x00 : 0x04));
         data.Add(0x00);
-        data.Add((byte)(IsItemSlotEmpty(BelongingSlot.SpeedhackMantra) ? 0x00 : 0x04));
+        data.Add((byte) (IsItemSlotEmpty(BelongingSlot.SpeedhackMantra) ? 0x00 : 0x04));
         data.Add(0x00);
         data.Add(0x00);
         data.Add(0x00);
@@ -445,14 +445,14 @@ public class Character
             data.Add(0x00);
         }
 
-        data.Add((byte)(((CurrentHP & 0b111) << 5) + 0b10011));
-        data.Add((byte)((CurrentHP & 0b11111111000) >> 3));
-        data.Add((byte)(((MaxHP & 0b11) << 6) + (0b100 << 3) + ((CurrentHP & 0b11100000000000) >> 11)));
-        data.Add((byte)((MaxHP & 0b1111111100) >> 2));
-        data.Add((byte)(((byte)Karma << 4) + ((MaxHP & 0b11110000000000) >> 10)));
+        data.Add((byte) (((CurrentHP & 0b111) << 5) + 0b10011));
+        data.Add((byte) ((CurrentHP & 0b11111111000) >> 3));
+        data.Add((byte) (((MaxHP & 0b11) << 6) + (0b100 << 3) + ((CurrentHP & 0b11100000000000) >> 11)));
+        data.Add((byte) ((MaxHP & 0b1111111100) >> 2));
+        data.Add((byte) (((byte) Karma << 4) + ((MaxHP & 0b11110000000000) >> 10)));
         var toEncode = DegreeMinusOne * 100 + TitleMinusOne;
-        data.Add((byte)(((toEncode & 0b111111) << 2) + 2));
-        data.Add((byte)((toEncode & 0b11111111000000) >> 6));
+        data.Add((byte) (((toEncode & 0b111111) << 2) + 2));
+        data.Add((byte) ((toEncode & 0b11111111000000) >> 6));
 
         data.Add(0x80);
 
@@ -462,37 +462,37 @@ public class Character
         }
         else
         {
-            data.Add((byte)((1 << 7) + ((byte)Guild << 1)));
+            data.Add((byte) ((1 << 7) + ((byte) Guild << 1)));
         }
 
-        data.Add((byte)(((Money & 0b1111) << 4) + GuildLevelMinusOne));
-        data.Add((byte)((Money & 0b111111110000) >> 4));
-        data.Add((byte)((Money & 0b11111111000000000000) >> 12));
-        data.Add((byte)((Money & 0b1111111100000000000000000000) >> 20));
-        data.Add((byte)((Money & 0b11110000000000000000000000000000) >> 28));
+        data.Add((byte) (((Money & 0b1111) << 4) + GuildLevelMinusOne));
+        data.Add((byte) ((Money & 0b111111110000) >> 4));
+        data.Add((byte) ((Money & 0b11111111000000000000) >> 12));
+        data.Add((byte) ((Money & 0b1111111100000000000000000000) >> 20));
+        data.Add((byte) ((Money & 0b11110000000000000000000000000000) >> 28));
 
         var arr = data.ToArray();
-        arr[0] = (byte)arr.Length;
+        arr[0] = (byte) arr.Length;
 
         return arr;
     }
 
-    public static Character CreateNewCharacter(ushort clientIndex, string name, bool isFemale, int face,
+    public static Character CreateNewCharacter (ushort clientIndex, string name, bool isFemale, int face,
         int hairStyle, int hairColor, int tattoo)
     {
         return new Character
         {
             Name = name,
             IsGenderFemale = isFemale,
-            FaceType = (byte)face,
-            HairStyle = (byte)hairStyle,
-            HairColor = (byte)hairColor,
-            Tattoo = (byte)tattoo,
+            FaceType = (byte) face,
+            HairStyle = (byte) hairStyle,
+            HairColor = (byte) hairColor,
+            Tattoo = (byte) tattoo,
             ClientIndex = clientIndex
         };
     }
 
-    public byte[] GetTeleportByteArray(WorldCoords coords)
+    public byte[] GetTeleportByteArray (WorldCoords coords)
     {
         var x = CoordsHelper.EncodeServerCoordinate(coords.x);
         var y = CoordsHelper.EncodeServerCoordinate(coords.y);
@@ -526,7 +526,7 @@ public class Character
         return tpBytes;
     }
 
-    public byte[] GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(WorldCoords coords)
+    public byte[] GetNewPlayerDungeonTeleportAndUpdateStatsByteArray (WorldCoords coords)
     {
         var x = CoordsHelper.EncodeServerCoordinate(coords.x);
         var y = CoordsHelper.EncodeServerCoordinate(-coords.y);
@@ -570,12 +570,12 @@ public class Character
         return tpBytes;
     }
 
-    public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+    public bool HasEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         return FindEmptyInventorySlot != null;
     }
 
-    public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+    public BelongingSlot? FindEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         // TODO: equipped slots, bags, etc
         var lookup = new List<BelongingSlot>
@@ -603,12 +603,12 @@ public class Character
         return null;
     }
 
-    public bool IsItemSlotEmpty(BelongingSlot belongingSlot)
+    public bool IsItemSlotEmpty (BelongingSlot belongingSlot)
     {
         return !Items.ContainsKey(belongingSlot);
     }
 
-    private ulong GetXpToLevelUp()
+    private ulong GetXpToLevelUp ()
     {
         if (TitleMinusOne % 60 == 59 && DegreeMinusOne % 60 == 59)
         {
@@ -618,16 +618,16 @@ public class Character
         var minLevel = Math.Min(TitleMinusOne, DegreeMinusOne);
         var maxLevel = Math.Max(TitleMinusOne, DegreeMinusOne);
 
-        return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
+        return (ulong) (XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
-    public bool CanUseItem(Item item)
+    public bool CanUseItem (Item item)
     {
         // TODO: actual check
         return true;
     }
 
-    public bool UpdateCurrentStats()
+    public bool UpdateCurrentStats ()
     {
         var slotsToUpdate = new HashSet<BelongingSlot>
         {
@@ -637,14 +637,14 @@ public class Character
             BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight
         };
 
-        var str = (int)BaseStrength;
-        var agi = (int)BaseAgility;
-        var acc = (int)BaseAccuracy;
-        var end = (int)BaseEndurance;
-        var ear = (int)BaseEarth;
-        var wat = (int)BaseWater;
-        var air = (int)BaseAir;
-        var fir = (int)BaseFire;
+        var str = (int) BaseStrength;
+        var agi = (int) BaseAgility;
+        var acc = (int) BaseAccuracy;
+        var end = (int) BaseEndurance;
+        var ear = (int) BaseEarth;
+        var wat = (int) BaseWater;
+        var air = (int) BaseAir;
+        var fir = (int) BaseFire;
         // TODO: satiety not calculated atm
         var hpMax = MaxHPBase;
         var mpMax = MaxMPBase;
@@ -682,22 +682,22 @@ public class Character
             matk += item.MAtkUpNegative;
         }
 
-        CurrentStrength = (ushort)str;
-        CurrentAgility = (ushort)agi;
-        CurrentAccuracy = (ushort)acc;
-        CurrentEndurance = (ushort)end;
-        CurrentEarth = (ushort)ear;
-        CurrentWater = (ushort)wat;
-        CurrentAir = (ushort)air;
-        CurrentFire = (ushort)fir;
-        CurrentHP = (ushort)Math.Min(CurrentHP, hpMax);
-        CurrentMP = (ushort)Math.Min(CurrentMP, mpMax);
-        MaxHP = (ushort)hpMax;
-        MaxMP = (ushort)mpMax;
-        PDef = (ushort)pdef;
-        MDef = (ushort)mdef;
-        PAtk = (ushort)patk;
-        MAtk = (ushort)matk;
+        CurrentStrength = (ushort) str;
+        CurrentAgility = (ushort) agi;
+        CurrentAccuracy = (ushort) acc;
+        CurrentEndurance = (ushort) end;
+        CurrentEarth = (ushort) ear;
+        CurrentWater = (ushort) wat;
+        CurrentAir = (ushort) air;
+        CurrentFire = (ushort) fir;
+        CurrentHP = (ushort) Math.Min(CurrentHP, hpMax);
+        CurrentMP = (ushort) Math.Min(CurrentMP, mpMax);
+        MaxHP = (ushort) hpMax;
+        MaxMP = (ushort) mpMax;
+        PDef = (ushort) pdef;
+        MDef = (ushort) mdef;
+        PAtk = (ushort) patk;
+        MAtk = (ushort) matk;
 
         // TODO: character state shouldn't be updated in starting dungeon
         // MainServer.CharacterCollection.Update(Id, this);

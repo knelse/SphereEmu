@@ -47,21 +47,21 @@ public partial class NpcNode : CharacterBody3D
 
     public override void _Process (double delta)
     {
-        foreach (var clientInRange in Server.ActiveClients.Where(x =>
-                     !ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
-        {
-            ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
-            ShowForClient(clientInRange.Value);
-            Console.WriteLine($"NPC spawn: {ID:X4} {X:F2} {Y:F2} {Z:F2} {Angle} {NameID} {ModelName} {IconName}");
-        }
-
-        foreach (var clientOutOfRange in Server.ActiveClients.Where(x =>
-                     ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) > 100))
-        {
-            clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
-            ShownForClients.Remove(clientOutOfRange.Key);
-            Console.WriteLine($"Despawn: {ID:X4}");
-        }
+        // foreach (var clientInRange in SphereServer.ActiveClients.Where(x =>
+        //              !ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) <= 100))
+        // {
+        //     ShownForClients.Add(clientInRange.Key, DateTime.UtcNow);
+        //     ShowForClient(clientInRange.Value);
+        //     Console.WriteLine($"NPC spawn: {ID:X4} {X:F2} {Y:F2} {Z:F2} {Angle} {NameID} {ModelName} {IconName}");
+        // }
+        //
+        // foreach (var clientOutOfRange in SphereServer.ActiveClients.Where(x =>
+        //              ShownForClients.ContainsKey(x.Key) && x.Value.DistanceTo(GlobalTransform.Origin) > 100))
+        // {
+        //     clientOutOfRange.Value.StreamPeer.PutData(CommonPackets.DespawnEntity(ID));
+        //     ShownForClients.Remove(clientOutOfRange.Key);
+        //     Console.WriteLine($"Despawn: {ID:X4}");
+        // }
     }
 
     public void ShowForClient (Client client)

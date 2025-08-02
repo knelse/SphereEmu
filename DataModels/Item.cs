@@ -72,18 +72,18 @@ public class Item
     public int Duration { get; set; }
     public ItemSuffix Suffix { get; set; }
     public int ItemCount { get; set; }
-    public Dictionary<Locale, string> Localisation { get; set; } = new();
+    public Dictionary<Locale, string> Localisation { get; set; } = new ();
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
-    public Dictionary<string, object> ContentsData { get; set; } = new();
+    public Dictionary<string, object> ContentsData { get; set; } = new ();
 
-    public string ToDebugString()
+    public string ToDebugString ()
     {
         var itemCountStr = ItemCount > 1 ? $" ({ItemCount})" : "";
         return
             "===============================================================================================================================\n" +
-            $"GO: {Enum.GetName(typeof(GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
-            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof(ItemSuffix), Suffix)} \n" +
+            $"GO: {Enum.GetName(typeof (GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
+            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof (ItemSuffix), Suffix)} \n" +
             $"Str: {StrengthReq} Agi: {AgilityReq} Acc: {AccuracyReq} End: {EnduranceReq} Ear: {EarthReq} Air: {AirReq} Wat: {WaterReq} Fir: {FireReq}\n" +
             $"Str+: {StrengthUp} Agi+: {AgilityUp} Acc+: {AccuracyUp} End+: {EnduranceUp} Ear+: {EarthUp} Air+: {AirUp} Wat+: {WaterUp} Fir+: {FireUp}\n" +
             $"MaxHP+: {MaxHpUp} MaxMP+: {MaxMpUp} PD+: {PDefUp} MD+: {MDefUp} PA: {PAtkNegative} PA+: {PAtkUpNegative} MA: {MAtkNegativeOrHeal} MA+: {MAtkUpNegative} MP+: {MPHeal}";
@@ -99,7 +99,7 @@ public class Item
         //KarmaMax: {Enum.GetName(typeof(KarmaTypes), MaxKarmaLevel)} 
     }
 
-    public bool IsTierVisible()
+    public bool IsTierVisible ()
     {
         return ObjectKind is GameObjectKind.Armor or GameObjectKind.Axe or GameObjectKind.Guild
                    or GameObjectKind.Magical or GameObjectKind.Powder or GameObjectKind.Quest or GameObjectKind.Sword
@@ -110,7 +110,7 @@ public class Item
                && GameObjectType is not GameObjectType.Ear;
     }
 
-    public static Item CreateFromGameObject(SphGameObject go)
+    public static Item CreateFromGameObject (SphGameObject go)
     {
         var item = new Item();
         foreach (var prop in go.GetType().GetFields())
@@ -134,7 +134,7 @@ public class Item
         return item;
     }
 
-    public static Item Clone(Item source, bool insertIntoItemCollection = true)
+    public static Item Clone (Item source, bool insertIntoItemCollection = true)
     {
         var item = new Item();
         foreach (var prop in source.GetType().GetFields())
@@ -156,7 +156,7 @@ public class Item
         return item;
     }
 
-    private void UpdateStatsForSuffix()
+    private void UpdateStatsForSuffix ()
     {
         var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
         Durability *= (100 + suffixObj.Durability) / 100;
@@ -189,7 +189,7 @@ public class Item
         MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
     }
 
-    public static bool IsInventorySlot(BelongingSlot slot)
+    public static bool IsInventorySlot (BelongingSlot slot)
     {
         return slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
             or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
@@ -197,7 +197,7 @@ public class Item
             or BelongingSlot.Inventory_10;
     }
 
-    public bool IsValidForSlot(BelongingSlot slot)
+    public bool IsValidForSlot (BelongingSlot slot)
     {
         if (slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
             or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6

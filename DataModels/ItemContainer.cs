@@ -20,20 +20,20 @@ public class ItemContainer
     public int DegreeMinusOne { get; set; }
 
     [BsonIgnore]
-    private static readonly PackedScene LootBagScene = (PackedScene)ResourceLoader.Load("res://LootBag.tscn");
+    private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://LootBag.tscn");
 
-    public Dictionary<int, int> Contents { get; set; } = new();
+    public Dictionary<int, int> Contents { get; set; } = new ();
     public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainer Create(double x, double y, double z, int level, //int sourceTypeId,
+    public static ItemContainer Create (double x, double y, double z, int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
         var bag = LootBagScene.Instantiate<LootBagNode>();
-        Server.ActiveNodes[bag.GetInstanceId()] = bag;
-        var levelOverride = Server.Rng.Next(0, 61);
+        SphereServer.ActiveNodes[bag.GetInstanceId()] = bag;
+        var levelOverride = SphereServer.Rng.Next(0, 61);
         bag.ItemContainer = new ItemContainer
         {
-            TitleMinusOne = (byte)level,
+            TitleMinusOne = (byte) level,
             X = x,
             Y = y,
             Z = z,
@@ -41,7 +41,7 @@ public class ItemContainer
         };
         bag.ItemContainer.Id = DbConnectionProvider.ItemContainerCollection.Insert(bag.ItemContainer);
 
-        var itemCount = count == -1 ? Server.Rng.Next(1, 5) : count;
+        var itemCount = count == -1 ? SphereServer.Rng.Next(1, 5) : count;
 
         for (var i = 0; i < itemCount; i++)
         {
@@ -52,14 +52,14 @@ public class ItemContainer
             bag.ItemContainer.Contents[i] = item.Id;
         }
 
-        bag.Transform = bag.Transform.Translated(new Vector3((float)x, (float)y, (float)z));
-        Server.ServerNode.CallDeferred("add_child", bag);
+        bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
+        SphereServer.ServerNode.CallDeferred("add_child", bag);
         DbConnectionProvider.ItemContainerCollection.Update(bag.ItemContainer);
 
         return bag.ItemContainer;
     }
 
-    private bool RemoveIfEmpty()
+    private bool RemoveIfEmpty ()
     {
         if (Contents.Any())
         {
@@ -68,13 +68,13 @@ public class ItemContainer
 
         if (ParentNodeId != null)
         {
-            Server.ActiveNodes[ParentNodeId.Value].QueueFree();
+            SphereServer.ActiveNodes[ParentNodeId.Value].QueueFree();
         }
 
         return true;
     }
 
-    public bool RemoveItemByIdAndDestroyContainerIfEmpty(int itemGlobalId)
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
     {
         if (Contents.ContainsValue(itemGlobalId))
         {
@@ -88,9 +88,9 @@ public class ItemContainer
         return RemoveIfEmpty();
     }
 
-    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty(int slotId)
+    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty (int slotId)
     {
-        if (Contents.TryGetValue(slotId, out int value))
+        if (Contents.TryGetValue(slotId, out var value))
         {
             Console.WriteLine($"Removed at {slotId} ID {value} from container {Id}");
             Contents.Remove(slotId);
@@ -101,9 +101,9 @@ public class ItemContainer
         return RemoveIfEmpty();
     }
 
-    public void ShowForEveryClientInRadius()
+    public void ShowForEveryClientInRadius ()
     {
-        foreach (var client in Server.ActiveClients.Values)
+        foreach (var client in SphereServer.ActiveClients.Values)
         {
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
             // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
@@ -111,9 +111,9 @@ public class ItemContainer
         }
     }
 
-    public void UpdatePositionForEveryClientInRadius()
+    public void UpdatePositionForEveryClientInRadius ()
     {
-        foreach (var client in Server.ActiveClients.Values)
+        foreach (var client in SphereServer.ActiveClients.Values)
         {
             // TODO: proper load/unload for client
             // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
@@ -122,7 +122,7 @@ public class ItemContainer
         }
     }
 
-    public void ShowForClient(Client client)
+    public void ShowForClient (Client client)
     {
         var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.SackMobLoot);
         PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
@@ -133,7 +133,7 @@ public class ItemContainer
         client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowFourSlotBagDropitemListForClient(ushort clientId)
+    public void ShowFourSlotBagDropitemListForClient (ushort clientId)
     {
         byte[] itemList;
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
@@ -150,26 +150,26 @@ public class ItemContainer
         // var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         // var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
 
-        var item_0_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(0, out int value0) ? value0 : 0);
-        var item_1_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(1, out int value1) ? value1 : 0);
-        var item_2_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(2, out int value2) ? value2 : 0);
-        var item_3_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(3, out int value3) ? value3 : 0);
+        var item_0_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(0, out var value0) ? value0 : 0);
+        var item_1_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(1, out var value1) ? value1 : 0);
+        var item_2_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(2, out var value2) ? value2 : 0);
+        var item_3_id = Client.GetLocalObjectId(clientId, Contents.TryGetValue(3, out var value3) ? value3 : 0);
 
-        var item0_1 = (byte)((item_0_id & 0b1111) << 4);
-        var item0_2 = (byte)((item_0_id >> 4) & 0b11111111);
-        var item0_3 = (byte)((item_0_id >> 12) & 0b1111);
+        var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
+        var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
+        var item0_3 = (byte) ((item_0_id >> 12) & 0b1111);
 
-        var item1_1 = (byte)((item_1_id & 0b1) << 7);
-        var item1_2 = (byte)((item_1_id >> 1) & 0b11111111);
-        var item1_3 = (byte)((item_1_id >> 9) & 0b1111111);
+        var item1_1 = (byte) ((item_1_id & 0b1) << 7);
+        var item1_2 = (byte) ((item_1_id >> 1) & 0b11111111);
+        var item1_3 = (byte) ((item_1_id >> 9) & 0b1111111);
 
-        var item2_1 = (byte)((item_2_id & 0b111111) << 2);
-        var item2_2 = (byte)((item_2_id >> 6) & 0b11111111);
-        var item2_3 = (byte)((item_2_id >> 14) & 0b11);
+        var item2_1 = (byte) ((item_2_id & 0b111111) << 2);
+        var item2_2 = (byte) ((item_2_id >> 6) & 0b11111111);
+        var item2_3 = (byte) ((item_2_id >> 14) & 0b11);
 
-        var item3_1 = (byte)((item_3_id & 0b111) << 5);
-        var item3_2 = (byte)((item_3_id >> 3) & 0b11111111);
-        var item3_3 = (byte)((item_3_id >> 11) & 0b11111);
+        var item3_1 = (byte) ((item_3_id & 0b111) << 5);
+        var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
+        var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
         var localId = Client.GetLocalObjectId(clientId, Id);
 
         switch (Contents.Count)
@@ -221,7 +221,7 @@ public class ItemContainer
         Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    public byte[] GetContentsPacket(ushort clientId)
+    public byte[] GetContentsPacket (ushort clientId)
     {
         var items = Contents.Select(x => DbConnectionProvider.ItemCollection.FindById(x.Value)).ToList();
         return Packet.ItemsToPacket(clientId, Id, items);
