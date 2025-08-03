@@ -1,8 +1,6 @@
 using Godot;
-using System;
-using System.Collections.Concurrent;
-using SphServer.Providers;
-using SphServer.Repositories;
+using SphServer.Client;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Server.Handlers;
 
@@ -11,12 +9,9 @@ public class ConnectionHandler (PackedScene clientScene, Node parentNode)
     public void Handle (StreamPeerTcp streamPeer)
     {
         streamPeer.SetNoDelay(true);
-        var client = clientScene.Instantiate<Client>();
-        client.StreamPeer = streamPeer;
-        client.LocalId = ActiveClientsRepository.InsertAtFirstEmptyIndex(client);
-        ActiveNodesRepository.Set(client.GetInstanceId(), client);
-
-        SphLogger.Info($"New client connected. Client ID: {client.LocalId}");
+        var client = clientScene.Instantiate<SphereClient>();
+        client.Setup(streamPeer, ActiveClients.InsertAtFirstEmptyIndex(client));
+        ActiveNodes.Add(client.GetInstanceId(), client);
 
         parentNode.AddChild(client);
     }

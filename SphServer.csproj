@@ -27,15 +27,11 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Helpers\MonsterSpawnData\MonsterSpawnData.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <Content Include="sphdbsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="__OLD\__CUCKOLD\Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt" />
+        <Content Include="__OLD\__CUCKOLD\Helpers\MonsterSpawnData\MonsterSpawnData.txt" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="GodotSharp">
@@ -43,6 +39,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Shared\"/>
+        <Folder Include="__OLD\__CUCKOLD\" />
+        <Folder Include="__OLD\__CUCKOLD\Server\Configuration\" />
+        <Folder Include="__OLD\__CUCKOLD\Server\Handlers\" />
+        <Folder Include="__OLD\__CUCKOLD\Server\Repositories\ActiveObjects\" />
     </ItemGroup>
 </Project>
