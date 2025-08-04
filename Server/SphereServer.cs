@@ -13,7 +13,7 @@ public partial class SphereServer : Node
 {
 	private static int playerCount;
 	private static TcpServer tcpServer = null!;
-	private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Client.tscn");
+	private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Godot/Scenes/Client.tscn");
 	public static SphereServer ServerNode = null!;
 	private ConnectionHandler connectionHandler = null!;
 
