@@ -40,8 +40,9 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         currentHandler =
             BeforeGameHandlers.GetHandlerForState(sphereClient.ClientStateManager.CurrentState, streamPeerTcp, localId,
                 this);
+        var handlerNameStr = currentHandler?.ToString() ?? "{none}";
         SphLogger.Info(
-            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {currentHandler}. Client ID: {localId}");
+            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {handlerNameStr}. Client ID: {localId}");
     }
 
     public void Close ()

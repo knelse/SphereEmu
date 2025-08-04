@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace SphServer.Shared.Logger;
@@ -41,6 +42,8 @@ public static class SphLogger
                         Directory.CreateDirectory(directory);
                     }
 
+                    CleanupOldLogFiles(directory);
+
                     File.WriteAllText(logFilePath,
                         $"=== SphServer Log Started at {DateTime.Now:yyyy-MM-dd HH:mm:ss} ==={Environment.NewLine}");
                     Console.WriteLine($"Log file created: {logFilePath}");
@@ -51,6 +54,52 @@ public static class SphLogger
                     logToFile = false;
                 }
             }
+        }
+    }
+
+    private static void CleanupOldLogFiles(string? logDirectory)
+    {
+        if (string.IsNullOrEmpty(logDirectory) || !Directory.Exists(logDirectory))
+        {
+            return;
+        }
+
+        try
+        {
+            var logFiles = Directory.GetFiles(logDirectory, "server_*.log")
+                .Select(file => new FileInfo(file))
+                .OrderByDescending(fileInfo => fileInfo.CreationTime)
+                .ToList();
+
+            if (logFiles.Count <= 20)
+            {
+                return;
+            }
+
+            var filesToDelete = logFiles.Skip(20).ToList();
+            var deletedCount = 0;
+
+            foreach (var fileToDelete in filesToDelete)
+            {
+                try
+                {
+                    fileToDelete.Delete();
+                    deletedCount++;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete old log file {fileToDelete.Name}: {ex.Message}");
+                }
+            }
+
+            if (deletedCount > 0)
+            {
+                Console.WriteLine($"Cleaned up {deletedCount} old log files, keeping latest 20");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to cleanup old log files: {ex.Message}");
         }
     }
 
