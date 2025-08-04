@@ -10,22 +10,28 @@ namespace SphServer.Client.Networking.Handlers.BeforeGame;
 public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    private readonly SphereTimer WaitForClientTimer = new (0.01, false, () =>
-    {
-        SphLogger.Info($"CLI {localId:X4}: Connection initialized");
-        streamPeerTcp.PutData(CommonPackets.ServerCredentials(localId));
-        Console.WriteLine($"SRV {localId:X4}: Credentials sent");
-        clientConnection.MoveToNextBeforeGameStage();
-    });
+    private SphereTimer? WaitForClientTimer;
 
     public async Task Handle (double delta)
     {
+        if (WaitForClientTimer is not null)
+        {
+            WaitForClientTimer.Tick(delta);
+        }
+
         if (clientConnection.GetIncomingData() == 0)
         {
             return;
         }
-
-        WaitForClientTimer.Tick(delta);
+        
+        WaitForClientTimer = new (0.1, false, () =>
+        {
+            SphLogger.Info($"CLI {localId:X4}: Connection initialized");
+            streamPeerTcp.PutData(CommonPackets.ServerCredentials(localId));
+            Console.WriteLine($"SRV {localId:X4}: Credentials sent");
+            clientConnection.MoveToNextBeforeGameStage();
+        });
+        
         Console.WriteLine(delta);
     }
 }

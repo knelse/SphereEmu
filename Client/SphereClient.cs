@@ -169,7 +169,7 @@ public partial class SphereClient : Node
 		}
 
 		CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
-		CurrentCharacter.Y = ServerConfig.AppConfig.Spawn_Y;
+		CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
 		CurrentCharacter.Z = ServerConfig.AppConfig.Spawn_Z;
 		CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
 		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;

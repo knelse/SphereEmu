@@ -21,16 +21,17 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
             if (clientConnection.GetIncomingData() == 0x15)
             {
                 selectedCharacterIndex = clientConnection.ReceiveBuffer[17] / 4 - 1;
+                return;
             }
             // delete
-            else if (clientConnection.ReceiveBuffer[0] == 0x2A)
+            if (clientConnection.ReceiveBuffer[0] == 0x2A)
             {
                 var index = clientConnection.ReceiveBuffer[17] / 4 - 1;
                 clientConnection.DeletePlayerCharacter(index);
                 return;
             }
             // create
-            else if (clientConnection.ReceiveBuffer[0] < 0x1b ||
+            if (clientConnection.ReceiveBuffer[0] < 0x1b ||
                      clientConnection.ReceiveBuffer[13] != 0x08 ||
                      clientConnection.ReceiveBuffer[14] != 0x40 ||
                      clientConnection.ReceiveBuffer[15] != 0x80 ||
