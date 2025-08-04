@@ -11,59 +11,62 @@ namespace SphServer.Server;
 // ReSharper disable once ClassNeverInstantiated.Global
 public partial class SphereServer : Node
 {
-	private static int playerCount;
-	private static TcpServer tcpServer = null!;
-	private static readonly PackedScene ClientScene = (PackedScene) ResourceLoader.Load("res://Godot/Scenes/Client.tscn");
-	public static SphereServer ServerNode = null!;
-	private ConnectionHandler connectionHandler = null!;
+    private static int playerCount;
+    private static TcpServer tcpServer = null!;
 
-	public override void _Ready ()
-	{
-		SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
-		SphLogger.Info("Starting SphServer...");
+    private static readonly PackedScene ClientScene =
+        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/Client.tscn");
 
-		InitializeCollections();
-		SetupTcpServer();
-		ServerNode = this;
-		// WorldObjectSpawner.InstantiateObjects();
+    public static SphereServer ServerNode = null!;
+    private ConnectionHandler connectionHandler = null!;
 
-		connectionHandler = new ConnectionHandler(ClientScene, this);
+    public override void _Ready ()
+    {
+        SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
+        SphLogger.Info("Starting SphServer...");
 
-		SphLogger.Info("Server up, waiting for connections...");
-	}
+        InitializeCollections();
+        SetupTcpServer();
+        ServerNode = this;
+        // WorldObjectSpawner.InstantiateObjects();
 
-	public override void _Process (double delta)
-	{
-		if (!tcpServer.IsConnectionAvailable())
-		{
-			return;
-		}
+        connectionHandler = new ConnectionHandler(ClientScene, this);
 
-		var streamPeer = tcpServer.TakeConnection();
+        SphLogger.Info("Server up, waiting for connections...");
+    }
 
-		connectionHandler.Handle(streamPeer);
-	}
+    public override void _Process (double delta)
+    {
+        if (!tcpServer.IsConnectionAvailable())
+        {
+            return;
+        }
 
-	private static void InitializeCollections ()
-	{
-		DbConnection.Initialize(ServerConfig.AppConfig);
-	}
+        var streamPeer = tcpServer.TakeConnection();
 
-	private static void SetupTcpServer ()
-	{
-		var port = ServerConfig.AppConfig.Port;
+        connectionHandler.Handle(streamPeer);
+    }
 
-		tcpServer = new TcpServer();
-		BitStreamExtensions.RegisterBsonMapperForBit();
+    private static void InitializeCollections ()
+    {
+        DbConnection.Initialize(ServerConfig.AppConfig);
+    }
 
-		try
-		{
-			tcpServer.Listen(port);
-			SphLogger.Info($"TCP server listening on port {port}");
-		}
-		catch (SocketException se)
-		{
-			SphLogger.Error($"Failed to start TCP server on port {port}", se);
-		}
-	}
+    private static void SetupTcpServer ()
+    {
+        var port = ServerConfig.AppConfig.Port;
+
+        tcpServer = new TcpServer();
+        BitStreamExtensions.RegisterBsonMapperForBit();
+
+        try
+        {
+            tcpServer.Listen(port);
+            SphLogger.Info($"TCP server listening on port {port}");
+        }
+        catch (SocketException se)
+        {
+            SphLogger.Error($"Failed to start TCP server on port {port}", se);
+        }
+    }
 }

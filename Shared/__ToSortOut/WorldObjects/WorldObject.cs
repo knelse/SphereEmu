@@ -40,7 +40,7 @@ public partial class WorldObject : Node3D
         {
             ID = WorldObjectIndex.New();
         }
-        
+
         ActiveNodes.Add(GetInstanceId(), this);
         //ActiveWorldObjectRepository.Add(ID, this);
     }

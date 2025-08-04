@@ -10,7 +10,7 @@
         <PackageReference Include="IndexRange" Version="1.0.2"/>
         <PackageReference Include="System.IO" Version="4.3.0"/>
         <PackageReference Include="system.io.filesystem" Version="4.3.0"/>
-        <PackageReference Include="System.Runtime" Version="4.3.0" />
+        <PackageReference Include="System.Runtime" Version="4.3.0"/>
         <PackageReference Update="Godot.SourceGenerators" Version="4.4.1"/>
         <PackageReference Update="GodotSharp" Version="4.4.1"/>
         <PackageReference Update="GodotSharpEditor" Version="4.4.1"/>
@@ -27,22 +27,22 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Shared\Networking\Packets\Packet.cs.uid" />
-        <Content Include="Shared\Networking\Packets\PacketPart.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\AlchemyResource.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\Door.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\ItemWorldObject.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\Monster.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\NpcInteractable.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\PlayerDummy.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\TeleportWithTarget.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\WorldObject.cs.uid" />
-        <Content Include="Shared\__ToSortOut\WorldObjects\WorldObjectSpawner.cs.uid" />
+        <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>
+        <Content Include="Shared\Networking\Packets\PacketPart.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\AlchemyResource.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\Door.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\ItemWorldObject.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\Monster.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\NpcInteractable.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\PlayerDummy.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\TeleportWithTarget.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\WorldObject.cs.uid"/>
+        <Content Include="Shared\__ToSortOut\WorldObjects\WorldObjectSpawner.cs.uid"/>
         <Content Include="sphdbsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="__OLD\__CUCKOLD\Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt" />
-        <Content Include="__OLD\__CUCKOLD\Helpers\MonsterSpawnData\MonsterSpawnData.txt" />
+        <Content Include="__OLD\__CUCKOLD\Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt"/>
+        <Content Include="__OLD\__CUCKOLD\Helpers\MonsterSpawnData\MonsterSpawnData.txt"/>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="GodotSharp">
@@ -50,9 +50,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="__OLD\__CUCKOLD\" />
-        <Folder Include="__OLD\__CUCKOLD\Server\Auth\" />
-        <Folder Include="__OLD\__CUCKOLD\Server\Providers\" />
-        <Folder Include="__OLD\__CUCKOLD\Server\Repositories\ActiveObjects\" />
+        <Folder Include="__OLD\__CUCKOLD\"/>
+        <Folder Include="__OLD\__CUCKOLD\Server\Auth\"/>
+        <Folder Include="__OLD\__CUCKOLD\Server\Providers\"/>
+        <Folder Include="__OLD\__CUCKOLD\Server\Repositories\ActiveObjects\"/>
     </ItemGroup>
 </Project>

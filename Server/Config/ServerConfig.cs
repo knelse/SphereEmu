@@ -31,12 +31,12 @@ public static class ServerConfig
 {
     public static AppConfig AppConfig { get; set; }
 
-    static ServerConfig()
+    static ServerConfig ()
     {
         AppConfig = Get();
     }
 
-    public static AppConfig Get()
+    public static AppConfig Get ()
     {
         const string configPath = "appsettings.json";
 
@@ -54,12 +54,13 @@ public static class ServerConfig
         using var configReader = new StreamReader(configFile);
         var configJson = configReader.ReadToEnd();
 
-        var configDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(configJson) ?? new();
+        var configDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(configJson) ?? new ();
 
         var defaultSettings = GetDefaultAppConfigDict();
         var configChanged = false;
 
-        foreach (var defaultSetting in defaultSettings.Where(defaultSetting => !configDict.ContainsKey(defaultSetting.Key)))
+        foreach (var defaultSetting in defaultSettings.Where(defaultSetting =>
+                     !configDict.ContainsKey(defaultSetting.Key)))
         {
             configDict[defaultSetting.Key] = defaultSetting.Value;
             configChanged = true;
@@ -83,7 +84,8 @@ public static class ServerConfig
             DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
             ObjectVisibilityDistance = float.Parse(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0")),
             ReceiveBufferSize = int.Parse(configDict.GetValueOrDefault("ReceiveBufferSize", "1024")),
-            CurrentCharacterInventoryId = int.Parse(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
+            CurrentCharacterInventoryId =
+                int.Parse(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
             Spawn_X = float.Parse(configDict.GetValueOrDefault("Spawn_X", "80.0")),
             Spawn_Y = float.Parse(configDict.GetValueOrDefault("Spawn_Y", "150.0")),
             Spawn_Z = float.Parse(configDict.GetValueOrDefault("Spawn_Z", "200.0")),
@@ -92,7 +94,7 @@ public static class ServerConfig
         };
     }
 
-    private static void CreateDefaultAppConfig(string configPath)
+    private static void CreateDefaultAppConfig (string configPath)
     {
         var defaultConfig = GetDefaultAppConfigDict();
         var json = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
@@ -100,9 +102,9 @@ public static class ServerConfig
         SphLogger.Info($"Created default configuration file: {configPath}");
     }
 
-    private static Dictionary<string, string> GetDefaultAppConfigDict()
+    private static Dictionary<string, string> GetDefaultAppConfigDict ()
     {
-        return new()
+        return new ()
         {
             ["PacketPartPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
             ["PacketDefinitionPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
@@ -121,7 +123,7 @@ public static class ServerConfig
         };
     }
 
-    private static void SaveAppConfig(string configPath, Dictionary<string, string> config)
+    private static void SaveAppConfig (string configPath, Dictionary<string, string> config)
     {
         var json = JsonConvert.SerializeObject(config, Formatting.Indented);
         File.WriteAllText(configPath, json);

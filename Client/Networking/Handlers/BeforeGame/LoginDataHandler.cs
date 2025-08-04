@@ -22,7 +22,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
             WaitForClientTimer.Tick(delta);
             return;
         }
-        
+
         if (clientConnection.GetIncomingData() <= 12)
         {
             return;
@@ -51,14 +51,14 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         {
             streamPeerTcp.PutData(CommonPackets.CharacterSelectStartData(localId));
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - initial");
-            
+
             // WaitForClientTimer.Arm(0.05, () =>
             // {
-                var playerInitialData = new PlayerDbEntrySerializer (player).ToInitialDataByteArray();
+            var playerInitialData = new PlayerDbEntrySerializer(player).ToInitialDataByteArray();
 
-                streamPeerTcp.PutData(playerInitialData);
-                SphLogger.Info($"SRV {localId:X4}: Character select screen data - player characters");
-                clientConnection.MoveToNextBeforeGameStage();
+            streamPeerTcp.PutData(playerInitialData);
+            SphLogger.Info($"SRV {localId:X4}: Character select screen data - player characters");
+            clientConnection.MoveToNextBeforeGameStage();
             // });
         });
     }

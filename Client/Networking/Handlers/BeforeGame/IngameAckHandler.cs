@@ -11,6 +11,7 @@ public class IngameAckHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
+
     public async Task Handle (double delta)
     {
         if (WaitForClientTimer is not null)
@@ -18,12 +19,12 @@ public class IngameAckHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
             WaitForClientTimer.Tick(delta);
             return;
         }
-        
+
         if (clientConnection.GetIncomingData() != 0x13)
         {
             return;
         }
-        
+
         var character = clientConnection.GetSelectedCharacter();
 
         if (character is null)
@@ -32,9 +33,9 @@ public class IngameAckHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
             SphLogger.Error($"SRV {localId:X4}: Selected character is null");
             return;
         }
-        
+
         SphLogger.Info($"SRV {localId:X4}: Sending game world data");
-        
+
         var worldData = CommonPackets.NewCharacterWorldData(character.ClientIndex);
         streamPeerTcp.PutData(worldData[0]);
         streamPeerTcp.PutData(Convert.FromHexString(

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BitStreams;
 using Godot;
 using SphServer.Client.Networking.Handlers;
 using SphServer.Client.Networking.Handlers.BeforeGame;
@@ -11,19 +12,39 @@ namespace SphServer.Client.Networking;
 
 public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, SphereClient sphereClient)
 {
-    private readonly PingHandler pingHandler = new (streamPeerTcp, localId);
+    private PingHandler? pingHandler;
     private ISphereClientNetworkingHandler? currentHandler;
     public readonly byte[] ReceiveBuffer = new byte [ServerConfig.AppConfig.ReceiveBufferSize];
+    public BitStream DataStream;
 
     public async Task Process (double delta)
     {
         currentHandler ??= new HandshakeHandler(streamPeerTcp, localId, this);
+        pingHandler ??= new (streamPeerTcp, localId, this);
 
+        // handlers before game do their own data fetch. For ingame handlers, we need packet info here to figure out
+        // which handler they should be routed to
         if (sphereClient.ClientStateManager.IsInGameState())
         {
-            // TODO: ping handler should be the "default" ingame handler
+            // keepalive always happens - it's time-based instead of client input based
             await pingHandler.Keepalive(delta);
-            await pingHandler.Handle(delta);
+            var incomingDataLength = GetIncomingData();
+
+            if (incomingDataLength == 0)
+            {
+                // client hasn't sent anything
+                return;
+            }
+
+            DataStream = new BitStream(ReceiveBuffer);
+            DataStream.CutStream(0, incomingDataLength);
+
+            switch (ReceiveBuffer[0])
+            {
+                case 0x26:
+                    await pingHandler.Handle(delta);
+                    break;
+            }
         }
 
         else

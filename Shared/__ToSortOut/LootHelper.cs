@@ -6,6 +6,8 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Sphere.Game;
 using SphServer.System;
 
+namespace SphServer.Shared.__ToSortOut;
+
 public static class LootHelper
 {
     private static bool firstTypeRolled;

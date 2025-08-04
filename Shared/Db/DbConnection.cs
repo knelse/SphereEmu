@@ -13,9 +13,12 @@ public static class DbConnection
     public static ILiteCollection<ClanDbEntry> Clans { get; private set; } = null!;
     public static ILiteCollection<PlayerDbEntry> Players { get; private set; } = null!;
     public static ILiteCollection<CharacterDbEntry> Characters { get; private set; } = null!;
+
     public static ILiteCollection<ItemDbEntry> Items { get; private set; } = null!;
+
     // public static ILiteCollection<ItemContainer> ItemContainers { get; private set; } = null!;
     public static ILiteCollection<MonsterDbEntry> Monsters { get; private set; } = null!;
+
     // public static ILiteCollection<Vendor> Vendors { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjects { get; private set; } = null!;
 

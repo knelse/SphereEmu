@@ -9,7 +9,8 @@ namespace SphServer;
 
 public static class WorldObjectSpawner
 {
-    private static readonly PackedScene MonsterScene = (PackedScene) ResourceLoader.Load("res://Godot/Scenes/Monster.tscn");
+    private static readonly PackedScene MonsterScene =
+        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/Monster.tscn");
 
     private static readonly PackedScene AlchemyResourceScene =
         (PackedScene) ResourceLoader.Load("res://Godot/Scenes/alchemy_resource.tscn");

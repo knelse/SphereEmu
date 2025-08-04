@@ -23,7 +23,7 @@ public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort local
         {
             return;
         }
-        
+
         WaitForClientTimer = new (0.1, false, () =>
         {
             SphLogger.Info($"CLI {localId:X4}: Connection initialized");
@@ -31,7 +31,7 @@ public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort local
             Console.WriteLine($"SRV {localId:X4}: Credentials sent");
             clientConnection.MoveToNextBeforeGameStage();
         });
-        
+
         Console.WriteLine(delta);
     }
 }

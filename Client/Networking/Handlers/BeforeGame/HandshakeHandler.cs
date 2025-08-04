@@ -14,7 +14,7 @@ public class HandshakeHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
     public async Task Handle (double delta)
     {
         SphLogger.Info($"CLI {localId:X4}: Ready to load initial data");
-        
+
         streamPeerTcp.PutData(reconnect
             ? CommonPackets.ReadyToLoadInitialDataReconnect
             : CommonPackets.ReadyToLoadInitialData);

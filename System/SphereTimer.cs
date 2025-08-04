@@ -25,6 +25,7 @@ public class SphereTimer (double targetTime, bool autoRearm, Action onComplete)
             // prevent multiple activations
             return false;
         }
+
         remainingTime -= delta;
         if (remainingTime <= 0)
         {

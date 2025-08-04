@@ -6,7 +6,7 @@ using SphServer.System;
 
 namespace SphServer.Shared.Networking.Serializers;
 
-public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry): SphereDbEntrySerializerBase
+public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : SphereDbEntrySerializerBase
 {
     public byte[] ToCharacterListByteArray ()
     {

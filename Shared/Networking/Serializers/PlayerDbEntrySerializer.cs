@@ -3,7 +3,7 @@ using SphServer.Shared.Db.DataModels;
 
 namespace SphServer.Shared.Networking.Serializers;
 
-public class PlayerDbEntrySerializer (PlayerDbEntry playerDbEntry): SphereDbEntrySerializerBase
+public class PlayerDbEntrySerializer (PlayerDbEntry playerDbEntry) : SphereDbEntrySerializerBase
 {
     public byte[] ToInitialDataByteArray ()
     {

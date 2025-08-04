@@ -6,7 +6,8 @@ namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
 public static class BeforeGameHandlers
 {
-    public static ISphereClientNetworkingHandler? GetHandlerForState (ClientState currentState, StreamPeerTcp streamPeerTcp,
+    public static ISphereClientNetworkingHandler? GetHandlerForState (ClientState currentState,
+        StreamPeerTcp streamPeerTcp,
         ushort localId, ClientConnection clientConnection)
     {
         switch (currentState)

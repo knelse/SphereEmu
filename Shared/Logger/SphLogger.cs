@@ -15,14 +15,15 @@ public enum LogLevel
 
 public static class SphLogger
 {
-    private static readonly Lock lockObject = new();
+    private static readonly Lock lockObject = new ();
     private static string logFilePath = string.Empty;
     private static bool logToConsole = true;
     private static bool logToFile = true;
-    private static LogLevel minimumLogLevel = LogLevel.Info;
+    private static LogLevel minimumConsoleLogLevel = LogLevel.Info;
+    private static LogLevel minimumFileLogLevel = LogLevel.Debug;
 
-    public static void Initialize(string? filePath = null, bool enableConsole = true, bool enableFile = true,
-        LogLevel minLevel = LogLevel.Info)
+    public static void Initialize (string? filePath = null, bool enableConsole = true, bool enableFile = true,
+        LogLevel minConsoleLevel = LogLevel.Info, LogLevel minFileLevel = LogLevel.Debug)
     {
         lock (lockObject)
         {
@@ -30,7 +31,8 @@ public static class SphLogger
 
             logToConsole = enableConsole;
             logToFile = enableFile;
-            minimumLogLevel = minLevel;
+            minimumConsoleLogLevel = minConsoleLevel;
+            minimumFileLogLevel = minFileLevel;
 
             if (logToFile)
             {
@@ -57,7 +59,7 @@ public static class SphLogger
         }
     }
 
-    private static void CleanupOldLogFiles(string? logDirectory)
+    private static void CleanupOldLogFiles (string? logDirectory)
     {
         if (string.IsNullOrEmpty(logDirectory) || !Directory.Exists(logDirectory))
         {
@@ -103,7 +105,7 @@ public static class SphLogger
         }
     }
 
-    private static string GenerateTimestampedLogPath(string originalPath)
+    private static string GenerateTimestampedLogPath (string originalPath)
     {
         var directory = Path.GetDirectoryName(originalPath) ?? "";
         var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(originalPath);
@@ -114,34 +116,37 @@ public static class SphLogger
         return Path.Combine(directory, timestampedFileName);
     }
 
-    public static void Debug(string message)
+    public static void Debug (string message)
     {
         Log(LogLevel.Debug, message);
     }
 
-    public static void Info(string message)
+    public static void Info (string message)
     {
         Log(LogLevel.Info, message);
     }
 
-    public static void Warning(string message)
+    public static void Warning (string message)
     {
         Log(LogLevel.Warning, message);
     }
 
-    public static void Error(string message)
+    public static void Error (string message)
     {
         Log(LogLevel.Error, message);
     }
 
-    public static void Error(string message, Exception exception)
+    public static void Error (string message, Exception exception)
     {
         Log(LogLevel.Error, $"{message}: {exception}");
     }
 
-    private static void Log(LogLevel level, string message)
+    private static void Log (LogLevel level, string message)
     {
-        if (level < minimumLogLevel)
+        var shouldLogToConsole = logToConsole && level >= minimumConsoleLogLevel;
+        var shouldLogToFile = logToFile && level >= minimumFileLogLevel;
+
+        if (!shouldLogToConsole && !shouldLogToFile)
         {
             return;
         }
@@ -152,7 +157,7 @@ public static class SphLogger
 
         lock (lockObject)
         {
-            if (logToConsole)
+            if (shouldLogToConsole)
             {
                 var originalColor = Console.ForegroundColor;
                 Console.ForegroundColor = GetConsoleColor(level);
@@ -160,7 +165,7 @@ public static class SphLogger
                 Console.ForegroundColor = originalColor;
             }
 
-            if (logToFile)
+            if (shouldLogToFile)
             {
                 try
                 {
@@ -177,7 +182,7 @@ public static class SphLogger
         }
     }
 
-    private static ConsoleColor GetConsoleColor(LogLevel level)
+    private static ConsoleColor GetConsoleColor (LogLevel level)
     {
         return level switch
         {

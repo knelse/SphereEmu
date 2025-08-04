@@ -23,6 +23,7 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
                 selectedCharacterIndex = clientConnection.ReceiveBuffer[17] / 4 - 1;
                 return;
             }
+
             // delete
             if (clientConnection.ReceiveBuffer[0] == 0x2A)
             {
@@ -30,12 +31,13 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
                 clientConnection.DeletePlayerCharacter(index);
                 return;
             }
+
             // create
             if (clientConnection.ReceiveBuffer[0] < 0x1b ||
-                     clientConnection.ReceiveBuffer[13] != 0x08 ||
-                     clientConnection.ReceiveBuffer[14] != 0x40 ||
-                     clientConnection.ReceiveBuffer[15] != 0x80 ||
-                     clientConnection.ReceiveBuffer[16] != 0x05)
+                clientConnection.ReceiveBuffer[13] != 0x08 ||
+                clientConnection.ReceiveBuffer[14] != 0x40 ||
+                clientConnection.ReceiveBuffer[15] != 0x80 ||
+                clientConnection.ReceiveBuffer[16] != 0x05)
             {
                 return;
             }
@@ -48,7 +50,7 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
             // something went wrong
             return;
         }
-        
+
         clientConnection.SetSelectedCharacterIndex(selectedCharacterIndex);
 
         var character = clientConnection.GetSelectedCharacter();
@@ -128,7 +130,7 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
         }
 
         SphLogger.Info($"SRV {localId:X4}: Name [{name}] OK");
-        
+
         var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
         var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
         var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
@@ -147,11 +149,11 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
 
         var newCharacterData =
             CharacterDbEntry.CreateNewCharacter(localId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
-        
+
         clientConnection.CreatePlayerCharacter(newCharacterData, charIndex);
 
         streamPeerTcp.PutData(CommonPackets.NameCheckPassed(localId));
-        
+
         SphLogger.Info($"SRV {localId:X4}: Successfully created character [{name}]");
 
         return charIndex;
