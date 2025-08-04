@@ -1,10 +1,11 @@
 using System;
 using LiteDB;
-using SphServer.DataModels;
 using SphServer.Server.Config;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Logger;
 using SphServer.Sphere.Game;
 
-namespace SphServer.Providers;
+namespace SphServer.Shared.Db;
 
 public static class DbConnection
 {
@@ -13,9 +14,9 @@ public static class DbConnection
     public static ILiteCollection<PlayerDbEntry> Players { get; private set; } = null!;
     public static ILiteCollection<CharacterDbEntry> Characters { get; private set; } = null!;
     public static ILiteCollection<ItemDbEntry> Items { get; private set; } = null!;
-    public static ILiteCollection<ItemContainer> ItemContainers { get; private set; } = null!;
+    // public static ILiteCollection<ItemContainer> ItemContainers { get; private set; } = null!;
     public static ILiteCollection<MonsterDbEntry> Monsters { get; private set; } = null!;
-    public static ILiteCollection<Vendor> Vendors { get; private set; } = null!;
+    // public static ILiteCollection<Vendor> Vendors { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjects { get; private set; } = null!;
 
     public static void Initialize (AppConfig config)
@@ -28,9 +29,9 @@ public static class DbConnection
         Players = Db.GetCollection<PlayerDbEntry>("Players");
         Characters = Db.GetCollection<CharacterDbEntry>("Characters");
         Items = Db.GetCollection<ItemDbEntry>("Items");
-        ItemContainers = Db.GetCollection<ItemContainer>("ItemContainers");
+        // ItemContainers = Db.GetCollection<ItemContainer>("ItemContainers");
         Monsters = Db.GetCollection<MonsterDbEntry>("Monsters");
-        Vendors = Db.GetCollection<Vendor>("Vendors");
+        // Vendors = Db.GetCollection<Vendor>("Vendors");
         GameObjects = Db.GetCollection<SphGameObject>("GameObjects");
 
         InitializeData();
@@ -65,8 +66,8 @@ public static class DbConnection
     {
         Items.DeleteAll();
         Monsters.DeleteAll();
-        ItemContainers.DeleteAll();
-        Vendors.DeleteAll();
+        // ItemContainers.DeleteAll();
+        // Vendors.DeleteAll();
 
         var time = DateTime.Now;
         if (GameObjects.Count() == 0)

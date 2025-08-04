@@ -1,5 +1,7 @@
 using Godot;
 
+namespace SphServer.Shared.Db.DataModels;
+
 public class MonsterDbEntry
 {
     private static readonly PackedScene MobScene = (PackedScene) ResourceLoader.Load("res://Mob.tscn");

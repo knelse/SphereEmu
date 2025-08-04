@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using LiteDB;
-using SphServer.Helpers;
-using SphServer.Providers;
-using SphServer.Server;
-using static SphServer.Helpers.BitHelper;
 using static SphServer.Helpers.CharacterDataHelper;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace SphServer.DataModels;
+namespace SphServer.Shared.Db.DataModels;
 
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry

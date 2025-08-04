@@ -1,4 +1,4 @@
-namespace SphServer.DataModels;
+namespace SphServer.Shared.Db.DataModels;
 
 public class ClanDbEntry
 {

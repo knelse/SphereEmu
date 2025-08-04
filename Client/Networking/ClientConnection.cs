@@ -2,8 +2,10 @@
 using Godot;
 using SphServer.Client.Networking.Handlers;
 using SphServer.Client.Networking.Handlers.BeforeGame;
-using SphServer.DataModels;
-using SphServer.Providers;
+using SphServer.Client.Networking.Handlers.InGame;
+using SphServer.Server.Config;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Logger;
 
 namespace SphServer.Client.Networking;
 
@@ -11,7 +13,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 {
     private readonly PingHandler pingHandler = new (streamPeerTcp, localId);
     private ISphereClientNetworkingHandler? currentHandler;
-    public readonly byte[] ReceiveBuffer = new byte [Constants.RECEIVE_BUFFER_SIZE];
+    public readonly byte[] ReceiveBuffer = new byte [ServerConfig.AppConfig.ReceiveBufferSize];
 
     public async Task Process (double delta)
     {
@@ -34,10 +36,12 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     {
         SphLogger.Info(
             $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {localId}");
-        currentHandler =
-            BeforeGameHandlers.GetNextHandler(sphereClient.ClientStateManager.CurrentState, streamPeerTcp, localId,
-                this);
         sphereClient.ClientStateManager.Transition();
+        currentHandler =
+            BeforeGameHandlers.GetHandlerForState(sphereClient.ClientStateManager.CurrentState, streamPeerTcp, localId,
+                this);
+        SphLogger.Info(
+            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {currentHandler}. Client ID: {localId}");
     }
 
     public void Close ()
@@ -47,7 +51,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public int GetIncomingData ()
     {
-        var temp = streamPeerTcp.GetPartialData(Constants.RECEIVE_BUFFER_SIZE);
+        var temp = streamPeerTcp.GetPartialData(ServerConfig.AppConfig.ReceiveBufferSize);
         var arr = (byte[]?) temp[1];
 
         var i = 0;
@@ -66,5 +70,25 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     public void SetPlayerDbEntry (PlayerDbEntry? entry)
     {
         sphereClient.SetPlayerDbEntry(entry);
+    }
+
+    public void DeletePlayerCharacter (int index)
+    {
+        sphereClient.DeletePlayerCharacter(index);
+    }
+
+    public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
+    {
+        sphereClient.CreatePlayerCharacter(newCharacter, index);
+    }
+
+    public void SetSelectedCharacterIndex (int index)
+    {
+        sphereClient.SetSelectedCharacterIndex(index);
+    }
+
+    public CharacterDbEntry? GetSelectedCharacter ()
+    {
+        return sphereClient.GetSelecterCharacter();
     }
 }

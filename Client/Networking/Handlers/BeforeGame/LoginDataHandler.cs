@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Godot;
-using SphServer.Db;
-using SphServer.Helpers;
-using SphServer.Providers;
+using SphServer.Server.Login.Auth;
+using SphServer.Server.Login.Decoders;
+using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Serializers;
 using SphServer.System;
@@ -47,12 +47,12 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
 
         SphLogger.Info($"SRV {localId:X4}: Fetched char list data");
 
-        WaitForClientTimer = new (0.05, false, () =>
+        WaitForClientTimer = new (0.001, false, () =>
         {
             streamPeerTcp.PutData(CommonPackets.CharacterSelectStartData(localId));
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - initial");
             
-            WaitForClientTimer.Arm(0.1, () =>
+            WaitForClientTimer.Arm(0.01, () =>
             {
                 var playerInitialData = new PlayerDbEntrySerializer (player).ToInitialDataByteArray();
 

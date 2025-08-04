@@ -1,6 +1,6 @@
 using System;
 
-namespace SphServer.Helpers;
+namespace SphServer.Server.Login.Decoders;
 
 public static class LoginDecoder
 {
@@ -16,7 +16,7 @@ public static class LoginDecoder
             }
         }
 
-        var login = rcvBuffer[18..];
+        var login = rcvBuffer[18..loginEnd];
         var passwordEnd = loginEnd + 1;
 
         for (; passwordEnd < rcvBuffer.Length; passwordEnd++)
@@ -27,7 +27,7 @@ public static class LoginDecoder
             }
         }
 
-        var password = rcvBuffer[(loginEnd + 1)..];
+        var password = rcvBuffer[(loginEnd + 1)..passwordEnd];
 
         var loginDecode = new char[login.Length];
         login[0] -= 3;

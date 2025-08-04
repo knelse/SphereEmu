@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SphServer.DataModels;
+using SphServer.Shared.Db.DataModels;
 
 namespace SphServer.Shared.Networking.Serializers;
 

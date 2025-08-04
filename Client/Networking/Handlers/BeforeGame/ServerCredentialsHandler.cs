@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Godot;
-using SphServer.Providers;
+using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.System;
 
@@ -10,7 +10,7 @@ namespace SphServer.Client.Networking.Handlers.BeforeGame;
 public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    private readonly SphereTimer WaitForClientTimer = new (0.2, false, () =>
+    private readonly SphereTimer WaitForClientTimer = new (0.01, false, () =>
     {
         SphLogger.Info($"CLI {localId:X4}: Connection initialized");
         streamPeerTcp.PutData(CommonPackets.ServerCredentials(localId));
@@ -26,5 +26,6 @@ public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort local
         }
 
         WaitForClientTimer.Tick(delta);
+        Console.WriteLine(delta);
     }
 }

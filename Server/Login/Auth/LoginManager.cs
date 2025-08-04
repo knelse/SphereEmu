@@ -1,9 +1,10 @@
 using System;
 using System.Security.Cryptography;
-using SphServer.DataModels;
-using SphServer.Providers;
+using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Logger;
 
-namespace SphServer.Db;
+namespace SphServer.Server.Login.Auth;
 
 public static class LoginManager
 {
@@ -66,7 +67,7 @@ public static class LoginManager
         var salt = new byte[16];
         var rng = RandomNumberGenerator.Create();
         rng.GetBytes(salt);
-        var hash = Rfc2898DeriveBytes.Pbkdf2(str, salt, 100000, HashAlgorithmName.SHA3_256, 20);
+        var hash = Rfc2898DeriveBytes.Pbkdf2(str, salt, 100, HashAlgorithmName.SHA256, 20);
         var saltedHash = new byte[36];
         Array.Copy(salt, 0, saltedHash, 0, 16);
         Array.Copy(hash, 0, saltedHash, 16, 20);
@@ -79,7 +80,7 @@ public static class LoginManager
         var hashBytes = Convert.FromBase64String(hashedPassword);
         var salt = new byte[16];
         Array.Copy(hashBytes, 0, salt, 0, 16);
-        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, 100000, HashAlgorithmName.SHA3_256, 20);
+        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, 100, HashAlgorithmName.SHA256, 20);
 
         for (var i = 0; i < 20; i++)
         {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using static SphServer.Enums.MonsterType;
+using static SphServer.Shared.GameData.Enums.MonsterType;
 
-namespace SphServer.Enums;
+namespace SphServer.Shared.GameData.Enums;
 
 public enum MonsterType
 {

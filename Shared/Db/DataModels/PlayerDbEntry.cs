@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using LiteDB;
 
-namespace SphServer.DataModels;
+namespace SphServer.Shared.Db.DataModels;
 
 public class PlayerDbEntry
 {

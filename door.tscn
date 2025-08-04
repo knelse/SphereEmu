@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://2x20dwdkiyxi"]
 
-[ext_resource type="Script" uid="uid://bp68x4gui2d2j" path="res://Door.cs" id="1_ketn1"]
+[ext_resource type="Script" uid="uid://bp68x4gui2d2j" path="res://Shared/__ToSortOut/WorldObjects/Door.cs" id="1_ketn1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 

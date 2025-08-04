@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bhf55t2qcp114"]
 
-[ext_resource type="Script" uid="uid://dl82wowllesny" path="res://Server/SphereServer.cs" id="2"]
+[ext_resource type="Script" uid="uid://c6plta4xgx5uh" path="res://Server/SphereServer.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://c75fu8t5hnes4" path="res://world_object.tscn" id="4_61mkd"]
 [ext_resource type="PackedScene" uid="uid://b4c83wln6qro8" path="res://teleport_with_target.tscn" id="4_s22ep"]
 [ext_resource type="PackedScene" uid="uid://6qegskoxrqr4" path="res://npc_interactable.tscn" id="5_5rg3u"]

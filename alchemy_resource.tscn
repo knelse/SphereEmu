@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dpjd7468smaxw"]
 
-[ext_resource type="Script" uid="uid://psh0fqoc4hlo" path="res://AlchemyResource.cs" id="1_1jq64"]
+[ext_resource type="Script" uid="uid://psh0fqoc4hlo" path="res://Shared/__ToSortOut/WorldObjects/AlchemyResource.cs" id="1_1jq64"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 

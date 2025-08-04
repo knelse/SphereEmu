@@ -11,8 +11,8 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
     internal static ushort InsertAtFirstEmptyIndex (SphereClient value)
     {
         // TODO: this is horribly inefficient
-        var index = -1;
-        for (ushort i = 1; i < ushort.MaxValue; i++)
+        var index = 0x4F6F;
+        for (ushort i = 0x4F6F; i < ushort.MaxValue; i++)
         {
             if (!storage.ContainsKey(i))
             {
@@ -34,7 +34,7 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 
 internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
-internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
+// internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
 
 internal abstract class ActiveObjectCollectionBase<Tk, Tv>
 {

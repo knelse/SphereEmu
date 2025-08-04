@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using LiteDB;
-using SphServer.Providers;
 
-namespace SphServer.DataModels;
+namespace SphServer.Shared.Db.DataModels;
 
 public class ItemDbEntry
 {

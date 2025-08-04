@@ -3,7 +3,7 @@ using Godot;
 using SphServer.Shared.Networking;
 using SphServer.System;
 
-namespace SphServer.Client.Networking.Handlers;
+namespace SphServer.Client.Networking.Handlers.InGame;
 
 public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId)
     : ISphereClientNetworkingHandler
