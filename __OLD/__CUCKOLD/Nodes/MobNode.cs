@@ -16,11 +16,11 @@ public partial class MobNode : CharacterBody3D
     private double attackDelay;
     private NavigationAgent3D navigationAgent;
 
-    public Mob Mob;
+    public MonsterDbEntry MonsterDbEntry;
 
     public override void _Ready ()
     {
-        Mob.ShowForEveryClientInRadius();
+        MonsterDbEntry.ShowForEveryClientInRadius();
         navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
     }
 
@@ -61,14 +61,14 @@ public partial class MobNode : CharacterBody3D
             networkCoordsUpdateDelay = 0.5f;
 
             client?.MoveEntity(GlobalTransform.Origin.X, -GlobalTransform.Origin.Y + 1,
-                GlobalTransform.Origin.Z, Mathf.Pi - Transform.Basis.GetEuler().Y, client.GetLocalObjectId(Mob.Id));
+                GlobalTransform.Origin.Z, Mathf.Pi - Transform.Basis.GetEuler().Y, client.GetLocalObjectId(MonsterDbEntry.Id));
         }
 
         attackDelay -= delta;
 
         if (attackDelay <= 0 && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 2)
         {
-            client?.ChangeHealth(client.GetLocalObjectId(Mob.Id), -rng.RandiRange(5, 8));
+            client?.ChangeHealth(client.GetLocalObjectId(MonsterDbEntry.Id), -rng.RandiRange(5, 8));
             attackDelay = 3.5f;
         }
 

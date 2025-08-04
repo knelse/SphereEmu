@@ -80,7 +80,7 @@ public partial class NpcInteractable : WorldObject
     [Export] public int VendorItemTierMin { get; set; }
     [Export] public int VendorItemTierMax { get; set; }
     [Export] public VendorLocation VendorLocation { get; set; }
-    private readonly List<Item> ItemsOnSale = [];
+    private readonly List<ItemDbEntry> ItemsOnSale = [];
 
     private static readonly int[] AlchemyItemsOnSale =
     [
@@ -164,7 +164,7 @@ public partial class NpcInteractable : WorldObject
 
     private void GenerateItemsForSale ()
     {
-        var itemsOnSale = new List<Item>();
+        var itemsOnSale = new List<ItemDbEntry>();
 
         switch (NpcType)
         {
@@ -337,31 +337,31 @@ public partial class NpcInteractable : WorldObject
         // Client.TryFindClientByIdAndSendData(clientId, packet);
     }
 
-    private void WriteItemPacketToStream (ushort clientId, Item item, BitStream stream)
+    private void WriteItemPacketToStream (ushort clientId, ItemDbEntry itemDbEntry, BitStream stream)
     {
-        var actualObjectType = item.ObjectType == ObjectType.Unknown
-            ? item.GameObjectType.GetPacketObjectType()
-            : item.ObjectType;
+        var actualObjectType = itemDbEntry.ObjectType == ObjectType.Unknown
+            ? itemDbEntry.GameObjectType.GetPacketObjectType()
+            : itemDbEntry.ObjectType;
         var packetParts = PacketPart.LoadDefinedPartsFromFile(actualObjectType);
         PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0, 0);
-        var localId = Client.GetLocalObjectId(clientId, item.Id);
+        var localId = Client.GetLocalObjectId(clientId, itemDbEntry.Id);
         PacketPart.UpdateEntityId(packetParts, localId);
         PacketPart.UpdateValue(packetParts, "object_type", (int) actualObjectType, 10);
-        PacketPart.UpdateValue(packetParts, "game_object_id", item.GameId, 14);
-        PacketPart.UpdateValue(packetParts, "container_id", item.ParentContainerId ?? 0xFF00, 16);
-        if (item.ItemCount > 1)
+        PacketPart.UpdateValue(packetParts, "game_object_id", itemDbEntry.GameId, 14);
+        PacketPart.UpdateValue(packetParts, "container_id", itemDbEntry.ParentContainerId ?? 0xFF00, 16);
+        if (itemDbEntry.ItemCount > 1)
         {
-            PacketPart.UpdateValue(packetParts, "count", item.ItemCount, 15);
+            PacketPart.UpdateValue(packetParts, "count", itemDbEntry.ItemCount, 15);
         }
 
-        if (item.Suffix != ItemSuffix.None)
+        if (itemDbEntry.Suffix != ItemSuffix.None)
         {
             PacketPart.UpdateValue(packetParts, "__hasSuffix", 0, 1);
-            var suffixLengthValue = (int) item.Suffix < 7 ? 0 : 1;
+            var suffixLengthValue = (int) itemDbEntry.Suffix < 7 ? 0 : 1;
             PacketPart.UpdateValue(packetParts, "suffix_length", suffixLengthValue, 2);
             var suffixLength = suffixLengthValue == 0 ? 3 : 7;
             PacketPart.UpdateValue(packetParts, "suffix",
-                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[item.GameObjectType][item.Suffix].value,
+                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[itemDbEntry.GameObjectType][itemDbEntry.Suffix].value,
                 suffixLength);
         }
         else
@@ -371,7 +371,7 @@ public partial class NpcInteractable : WorldObject
             PacketPart.UpdateValue(packetParts, "suffix", 2, 3);
         }
 
-        if (item.ContentsData.TryGetValue("scroll_id", out var value))
+        if (itemDbEntry.ContentsData.TryGetValue("scroll_id", out var value))
         {
             PacketPart.UpdateValue(packetParts, "subtype_id", (int) value, 15);
         }
@@ -382,7 +382,7 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    private void GenerateItemsForSaleWeapon (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleWeapon (List<ItemDbEntry> itemsOnSale)
     {
         for (var i = VendorItemTierMin; i <= VendorItemTierMax; i++)
         {
@@ -391,7 +391,7 @@ public partial class NpcInteractable : WorldObject
                 x.Value.GameObjectType is GameObjectType.Sword or GameObjectType.Crossbow or GameObjectType.Axe &&
                 x.Value.SuffixSetName.Length == 1 && x.Value.SuffixSetName != "-" &&
                 x.Value.Tier == i).GroupBy(x => x.Value.GameObjectType).ToList();
-            var output = new List<Item>();
+            var output = new List<ItemDbEntry>();
             foreach (var weapons in weaponsForTier.Select(weapons => weapons.ToList()))
             {
                 weapons.Sort((a, b) => GameObjectComparator(a.Value, b.Value));
@@ -415,7 +415,7 @@ public partial class NpcInteractable : WorldObject
             itemsOnSale.AddRange(output);
         }
 
-        itemsOnSale.Add(new Item
+        itemsOnSale.Add(new ItemDbEntry
         {
             ObjectType = ObjectType.Arrows,
             Weight = 75,
@@ -426,7 +426,7 @@ public partial class NpcInteractable : WorldObject
         itemsOnSale.Sort(ItemComparator);
     }
 
-    private void GenerateItemsForSaleArmor (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleArmor (List<ItemDbEntry> itemsOnSale)
     {
         for (var i = VendorItemTierMin; i <= VendorItemTierMax; i++)
         {
@@ -437,7 +437,7 @@ public partial class NpcInteractable : WorldObject
                     or GameObjectType.Shield
                 && x.Value.SuffixSetName.Length == 1 && x.Value.SuffixSetName != "-" &&
                 x.Value.Tier == i).GroupBy(x => x.Value.GameObjectType).ToList();
-            var output = new List<Item>();
+            var output = new List<ItemDbEntry>();
             foreach (var armorTypeList in armorForTier.Select(armorType => armorType.ToList()))
             {
                 armorTypeList.Sort((a, b) => GameObjectComparator(a.Value, b.Value));
@@ -466,15 +466,15 @@ public partial class NpcInteractable : WorldObject
         itemsOnSale.Sort(ItemComparator);
     }
 
-    private void GenerateItemsForSaleTravelGeneric (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleTravelGeneric (List<ItemDbEntry> itemsOnSale)
     {
-        itemsOnSale.Add(new Item
+        itemsOnSale.Add(new ItemDbEntry
         {
             ObjectType = ObjectType.BackpackSmall,
             Weight = 200,
             VendorCost = 120
         });
-        itemsOnSale.Add(new Item
+        itemsOnSale.Add(new ItemDbEntry
         {
             ObjectType = ObjectType.BackpackLarge,
             Weight = 200,
@@ -482,7 +482,7 @@ public partial class NpcInteractable : WorldObject
         });
     }
 
-    private void GenerateItemsForSaleAlchemy (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleAlchemy (List<ItemDbEntry> itemsOnSale)
     {
         foreach (var alchemyItemId in AlchemyItemsOnSale)
         {
@@ -493,17 +493,17 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    private void GenerateItemsForSaleMagic (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleMagic (List<ItemDbEntry> itemsOnSale)
     {
         if (VendorItemTierMin == 1)
         {
-            itemsOnSale.Add(new Item
+            itemsOnSale.Add(new ItemDbEntry
             {
                 ObjectType = ObjectType.AlchemyPot,
                 Weight = 500,
                 VendorCost = 330
             });
-            itemsOnSale.Add(new Item
+            itemsOnSale.Add(new ItemDbEntry
             {
                 ObjectType = ObjectType.RecipeBook,
                 Weight = 200,
@@ -518,14 +518,14 @@ public partial class NpcInteractable : WorldObject
                 itemsOnSale.Add(item);
             }
 
-            itemsOnSale.Add(new Item
+            itemsOnSale.Add(new ItemDbEntry
             {
                 ObjectType = ObjectType.PowderAmilus,
                 Weight = 1,
                 VendorCost = 5,
                 ItemCount = 1000
             });
-            itemsOnSale.Add(new Item
+            itemsOnSale.Add(new ItemDbEntry
             {
                 ObjectType = ObjectType.PowderFinale,
                 Weight = 1,
@@ -543,9 +543,9 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    private void GenerateItemsForSaleJewelry (List<Item> itemsOnSale)
+    private void GenerateItemsForSaleJewelry (List<ItemDbEntry> itemsOnSale)
     {
-        itemsOnSale.Add(new Item
+        itemsOnSale.Add(new ItemDbEntry
         {
             ObjectType = ObjectType.MantraBookSmall,
             Weight = 200,
@@ -580,7 +580,7 @@ public partial class NpcInteractable : WorldObject
         {
             for (var i = 0; i <= 2; i++)
             {
-                var scroll = new Item
+                var scroll = new ItemDbEntry
                 {
                     ObjectType = ObjectType.ScrollLegend,
                     Weight = 25,
@@ -641,12 +641,12 @@ public partial class NpcInteractable : WorldObject
         return rand == tier * 2;
     }
 
-    private static Item GetItemForTier (ObjectType objectType, int tier, bool withSuffixMaybe = false)
+    private static ItemDbEntry GetItemForTier (ObjectType objectType, int tier, bool withSuffixMaybe = false)
     {
         return GetItemForTier([objectType], tier, withSuffixMaybe);
     }
 
-    private static Item GetItemForTier (HashSet<ObjectType> objectTypes, int tier, bool withSuffixMaybe = false)
+    private static ItemDbEntry GetItemForTier (HashSet<ObjectType> objectTypes, int tier, bool withSuffixMaybe = false)
     {
         var candidates = SphObjectDb.GameObjectDataDb.Where(x =>
                 objectTypes.Contains(x.Value.GameObjectType.GetPacketObjectType()) && x.Value.Tier == tier
@@ -657,7 +657,7 @@ public partial class NpcInteractable : WorldObject
         return GetItemForGameObject(randomGameObject, tier, withSuffixMaybe);
     }
 
-    private static Item GetItemForGameObject (SphGameObject gameObject, int tier, bool withSuffixMaybe = false)
+    private static ItemDbEntry GetItemForGameObject (SphGameObject gameObject, int tier, bool withSuffixMaybe = false)
     {
         var clone = SphGameObject.CreateFromGameObject(gameObject);
         var withSuffix = withSuffixMaybe && ShouldHaveSuffix(clone.GameObjectType.GetPacketObjectType(), tier);
@@ -673,7 +673,7 @@ public partial class NpcInteractable : WorldObject
             }
         }
 
-        return Item.CreateFromGameObject(clone);
+        return ItemDbEntry.CreateFromGameObject(clone);
     }
 
     private static int GameObjectComparator (SphGameObject a, SphGameObject b)
@@ -724,7 +724,7 @@ public partial class NpcInteractable : WorldObject
         return typeCompare != 0 ? typeCompare : a.GameId.CompareTo(b.GameId);
     }
 
-    private static int ItemComparator (Item a, Item b)
+    private static int ItemComparator (ItemDbEntry a, ItemDbEntry b)
     {
         var sortOrder = new Dictionary<GameObjectType, int>
         {

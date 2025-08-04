@@ -20,6 +20,11 @@ public class SphereTimer (double targetTime, bool autoRearm, Action onComplete)
 
     public bool Tick (double delta)
     {
+        if (remainingTime <= 0)
+        {
+            // prevent multiple activations
+            return false;
+        }
         remainingTime -= delta;
         if (remainingTime <= 0)
         {

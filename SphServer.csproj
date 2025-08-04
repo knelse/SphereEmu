@@ -10,7 +10,7 @@
         <PackageReference Include="IndexRange" Version="1.0.2"/>
         <PackageReference Include="System.IO" Version="4.3.0"/>
         <PackageReference Include="system.io.filesystem" Version="4.3.0"/>
-        <PackageReference Include="System.Runtime" Version="4.3.1"/>
+        <PackageReference Include="System.Runtime" Version="4.3.0" />
         <PackageReference Update="Godot.SourceGenerators" Version="4.4.1"/>
         <PackageReference Update="GodotSharp" Version="4.4.1"/>
         <PackageReference Update="GodotSharpEditor" Version="4.4.1"/>
@@ -40,8 +40,8 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="__OLD\__CUCKOLD\" />
-        <Folder Include="__OLD\__CUCKOLD\Server\Configuration\" />
-        <Folder Include="__OLD\__CUCKOLD\Server\Handlers\" />
+        <Folder Include="__OLD\__CUCKOLD\Server\Auth\" />
+        <Folder Include="__OLD\__CUCKOLD\Server\Providers\" />
         <Folder Include="__OLD\__CUCKOLD\Server\Repositories\ActiveObjects\" />
     </ItemGroup>
 </Project>

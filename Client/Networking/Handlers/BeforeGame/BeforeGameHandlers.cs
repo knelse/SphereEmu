@@ -15,10 +15,8 @@ public static class BeforeGameHandlers
                 return new HandshakeHandler(streamPeerTcp, localId, clientConnection);
             case ClientState.INIT_READY_FOR_INITIAL_DATA:
                 return new ServerCredentialsHandler(streamPeerTcp, localId, clientConnection);
-                break;
             case ClientState.INIT_WAITING_FOR_LOGIN_DATA:
-                currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
-                break;
+                return new LoginDataHandler(streamPeerTcp, localId, clientConnection);
             case ClientState.INIT_WAITING_FOR_CHARACTER_SELECT:
                 currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
                 break;

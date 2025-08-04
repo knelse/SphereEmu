@@ -19,23 +19,23 @@ public class ConsoleCommandParser
 {
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
-    private readonly Character CurrentCharacter;
+    private readonly CharacterDbEntry currentCharacterDbEntry;
     private StreamPeerTcp StreamPeer => getStreamPeer();
 
-    private ConsoleCommandParser (Character character)
+    private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
     {
-        CurrentCharacter = character;
+        currentCharacterDbEntry = characterDbEntry;
     }
 
-    public static ConsoleCommandParser Get (Character character)
+    public static ConsoleCommandParser Get (CharacterDbEntry characterDbEntry)
     {
-        if (!ParserCache.ContainsKey(character.ClientIndex))
+        if (!ParserCache.ContainsKey(characterDbEntry.ClientIndex))
         {
-            ParserCache.Add(character.ClientIndex, new ConsoleCommandParser(character));
-            ParserCache[character.ClientIndex].InitCommands();
+            ParserCache.Add(characterDbEntry.ClientIndex, new ConsoleCommandParser(characterDbEntry));
+            ParserCache[characterDbEntry.ClientIndex].InitCommands();
         }
 
-        return ParserCache[character.ClientIndex];
+        return ParserCache[characterDbEntry.ClientIndex];
     }
 
     private void InitCommands ()
@@ -88,40 +88,40 @@ public class ConsoleCommandParser
     {
         var stats = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        CurrentCharacter.MaxHP = ushort.Parse(stats[0]);
-        CurrentCharacter.MaxMP = ushort.Parse(stats[1]);
-        CurrentCharacter.CurrentSatiety = ushort.Parse(stats[2]);
-        CurrentCharacter.MaxSatiety = ushort.Parse(stats[3]);
-        CurrentCharacter.CurrentStrength = ushort.Parse(stats[4]);
-        CurrentCharacter.CurrentAgility = ushort.Parse(stats[5]);
-        CurrentCharacter.CurrentAccuracy = ushort.Parse(stats[6]);
-        CurrentCharacter.CurrentEndurance = ushort.Parse(stats[7]);
-        CurrentCharacter.CurrentEarth = ushort.Parse(stats[8]);
-        CurrentCharacter.CurrentAir = ushort.Parse(stats[9]);
-        CurrentCharacter.CurrentWater = ushort.Parse(stats[10]);
-        CurrentCharacter.CurrentFire = ushort.Parse(stats[11]);
-        CurrentCharacter.PDef = ushort.Parse(stats[12]);
-        CurrentCharacter.MDef = ushort.Parse(stats[13]);
-        CurrentCharacter.TitleMinusOne = ushort.Parse(stats[14]);
-        CurrentCharacter.DegreeMinusOne = ushort.Parse(stats[15]);
-        CurrentCharacter.Karma = (KarmaTier) ushort.Parse(stats[16]);
-        CurrentCharacter.KarmaCount = ushort.Parse(stats[17]);
-        CurrentCharacter.TitleXP = uint.Parse(stats[18]);
-        CurrentCharacter.DegreeXP = uint.Parse(stats[19]);
-        CurrentCharacter.AvailableTitleStats = ushort.Parse(stats[20]);
-        CurrentCharacter.AvailableDegreeStats = ushort.Parse(stats[21]);
-        CurrentCharacter.ClanRank = (ClanRank) ushort.Parse(stats[22]);
-        CurrentCharacter.Money = int.Parse(stats[23]);
-        CurrentCharacter.PAtk = int.Parse(stats[24]);
-        CurrentCharacter.MAtk = int.Parse(stats[25]);
-        PacketHelper.UpdateStatsForClient(CurrentCharacter);
+        currentCharacterDbEntry.MaxHP = ushort.Parse(stats[0]);
+        currentCharacterDbEntry.MaxMP = ushort.Parse(stats[1]);
+        currentCharacterDbEntry.CurrentSatiety = ushort.Parse(stats[2]);
+        currentCharacterDbEntry.MaxSatiety = ushort.Parse(stats[3]);
+        currentCharacterDbEntry.CurrentStrength = ushort.Parse(stats[4]);
+        currentCharacterDbEntry.CurrentAgility = ushort.Parse(stats[5]);
+        currentCharacterDbEntry.CurrentAccuracy = ushort.Parse(stats[6]);
+        currentCharacterDbEntry.CurrentEndurance = ushort.Parse(stats[7]);
+        currentCharacterDbEntry.CurrentEarth = ushort.Parse(stats[8]);
+        currentCharacterDbEntry.CurrentAir = ushort.Parse(stats[9]);
+        currentCharacterDbEntry.CurrentWater = ushort.Parse(stats[10]);
+        currentCharacterDbEntry.CurrentFire = ushort.Parse(stats[11]);
+        currentCharacterDbEntry.PDef = ushort.Parse(stats[12]);
+        currentCharacterDbEntry.MDef = ushort.Parse(stats[13]);
+        currentCharacterDbEntry.TitleMinusOne = ushort.Parse(stats[14]);
+        currentCharacterDbEntry.DegreeMinusOne = ushort.Parse(stats[15]);
+        currentCharacterDbEntry.Karma = (KarmaTier) ushort.Parse(stats[16]);
+        currentCharacterDbEntry.KarmaCount = ushort.Parse(stats[17]);
+        currentCharacterDbEntry.TitleXP = uint.Parse(stats[18]);
+        currentCharacterDbEntry.DegreeXP = uint.Parse(stats[19]);
+        currentCharacterDbEntry.AvailableTitleStats = ushort.Parse(stats[20]);
+        currentCharacterDbEntry.AvailableDegreeStats = ushort.Parse(stats[21]);
+        currentCharacterDbEntry.ClanRank = (ClanRank) ushort.Parse(stats[22]);
+        currentCharacterDbEntry.Money = int.Parse(stats[23]);
+        currentCharacterDbEntry.PAtk = int.Parse(stats[24]);
+        currentCharacterDbEntry.MAtk = int.Parse(stats[25]);
+        PacketHelper.UpdateStatsForClient(currentCharacterDbEntry);
     }
 
     private void UpdateMoney (string args)
     {
         var stats = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        CurrentCharacter.Money = int.Parse(stats[0]);
-        PacketHelper.UpdateStatsForClient(CurrentCharacter);
+        currentCharacterDbEntry.Money = int.Parse(stats[0]);
+        PacketHelper.UpdateStatsForClient(currentCharacterDbEntry);
     }
 
     private void SendMessage (string args)
@@ -160,18 +160,18 @@ public class ConsoleCommandParser
         {
             case "rank":
                 var responseStream = BitHelper.GetWriteBitStream();
-                var nameBytes = SphereServer.Win1251.GetBytes(CurrentCharacter.Clan.Name);
+                var nameBytes = SphereServer.Win1251.GetBytes(currentCharacterDbEntry.Clan.Name);
                 responseStream.WriteBytes([
                     (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                    BitHelper.MajorByte(CurrentCharacter.ClientIndex),
-                    BitHelper.MinorByte(CurrentCharacter.ClientIndex), 0x08,
+                    BitHelper.MajorByte(currentCharacterDbEntry.ClientIndex),
+                    BitHelper.MinorByte(currentCharacterDbEntry.ClientIndex), 0x08,
                     0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
                 ]);
 
                 // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
                 responseStream.WriteByte(0x0, 5);
-                responseStream.WriteByte(BitHelper.MajorByte(CurrentCharacter.ClientIndex));
-                responseStream.WriteByte(BitHelper.MinorByte(CurrentCharacter.ClientIndex));
+                responseStream.WriteByte(BitHelper.MajorByte(currentCharacterDbEntry.ClientIndex));
+                responseStream.WriteByte(BitHelper.MinorByte(currentCharacterDbEntry.ClientIndex));
                 responseStream.WriteByte(0x0, 7);
                 responseStream.WriteByte(0x1A);
                 responseStream.WriteByte(0x16);
@@ -264,13 +264,13 @@ public class ConsoleCommandParser
 
     private void Loot (string args)
     {
-        ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 1,
+        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 1,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 2,
+        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 2,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainer.Create(CurrentCharacter.X, CurrentCharacter.Y, CurrentCharacter.Z + 3,
+        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 3,
             1,
             LootRatity.DEFAULT_MOB);
     }
@@ -286,7 +286,7 @@ public class ConsoleCommandParser
                     .Select(double.Parse)
                     .ToArray();
                 StreamPeer.PutData(
-                    CurrentCharacter.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
+                    currentCharacterDbEntry.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
                         0)));
             }
             catch (Exception ex)
@@ -306,7 +306,7 @@ public class ConsoleCommandParser
                     {
                         var coords = SavedCoords.TeleportPoints[continent][poiType][location[2]];
                         StreamPeer.PutData(
-                            CurrentCharacter.GetTeleportByteArray(coords));
+                            currentCharacterDbEntry.GetTeleportByteArray(coords));
                     }
                 }
             }
@@ -319,7 +319,7 @@ public class ConsoleCommandParser
 
     private StreamPeerTcp getStreamPeer ()
     {
-        var client = ActiveClientsRepository.Get(CurrentCharacter.ClientIndex);
+        var client = ActiveClientsRepository.Get(currentCharacterDbEntry.ClientIndex);
         return client.StreamPeer;
     }
 }

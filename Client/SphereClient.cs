@@ -1,6 +1,7 @@
 ﻿using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.State;
+using SphServer.DataModels;
 using SphServer.Providers;
 using SphServer.Shared.WorldState;
 
@@ -17,6 +18,8 @@ public partial class SphereClient : Node
     public readonly ClientStateManager ClientStateManager = new (false);
     private ushort localId;
     private StreamPeerTcp streamPeerTcp = null!;
+    private PlayerDbEntry? playerDbEntry;
+    private bool isExiting;
 
     public override async void _Process (double delta)
     {
@@ -68,8 +71,21 @@ public partial class SphereClient : Node
         return this;
     }
 
-    private void RemoveClient ()
+    public void SetPlayerDbEntry (PlayerDbEntry? entry)
     {
+        playerDbEntry = entry;
+    }
+
+    public void RemoveClient ()
+    {
+        if (isExiting)
+        {
+            return;
+        }
+
+        SphLogger.Info($"Client disconnected. Client ID: {localId}");
+        
+        isExiting = true;
         // TODO: sync state
         clientConnection.Close();
         ActiveClients.Remove(localId);

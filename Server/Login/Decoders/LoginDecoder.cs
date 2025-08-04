@@ -1,11 +1,10 @@
 using System;
-using System.Security.Cryptography;
 
 namespace SphServer.Helpers;
 
-public class LoginHelper
+public static class LoginDecoder
 {
-    public static Tuple<string, string> GetLoginAndPassword (byte[] rcvBuffer)
+    public static Tuple<string, string> DecodeFromBuffer (byte[] rcvBuffer)
     {
         var loginEnd = 18;
 
@@ -17,7 +16,7 @@ public class LoginHelper
             }
         }
 
-        var login = rcvBuffer.AsSpan(18, loginEnd - 18).ToArray();
+        var login = rcvBuffer[18..];
         var passwordEnd = loginEnd + 1;
 
         for (; passwordEnd < rcvBuffer.Length; passwordEnd++)
@@ -28,7 +27,7 @@ public class LoginHelper
             }
         }
 
-        var password = rcvBuffer.AsSpan(loginEnd + 1, passwordEnd - (loginEnd + 1)).ToArray();
+        var password = rcvBuffer[(loginEnd + 1)..];
 
         var loginDecode = new char[login.Length];
         login[0] -= 3;
@@ -61,38 +60,5 @@ public class LoginHelper
         }
 
         return new Tuple<string, string>(new string(loginDecode), new string(passwordDecode));
-    }
-
-    public static string GetHashedString (string str)
-    {
-        var salt = new byte[16];
-        var rng = new RNGCryptoServiceProvider();
-        rng.GetBytes(salt);
-        using var pbkdf2 = new Rfc2898DeriveBytes(str, salt, 100000);
-        var hash = pbkdf2.GetBytes(20);
-        var saltedHash = new byte[36];
-        Array.Copy(salt, 0, saltedHash, 0, 16);
-        Array.Copy(hash, 0, saltedHash, 16, 20);
-
-        return Convert.ToBase64String(saltedHash);
-    }
-
-    public static bool EqualsHashed (string password, string hashedPassword)
-    {
-        var hashBytes = Convert.FromBase64String(hashedPassword);
-        var salt = new byte[16];
-        Array.Copy(hashBytes, 0, salt, 0, 16);
-        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
-        var hash = pbkdf2.GetBytes(20);
-
-        for (var i = 0; i < 20; i++)
-        {
-            if (hashBytes[i + 16] != hash[i])
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

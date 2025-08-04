@@ -36,7 +36,7 @@ public static class Packet
         return result;
     }
 
-    public static byte[] ItemsToPacket (ushort clientId, int bagId, List<Item> items)
+    public static byte[] ItemsToPacket (ushort clientId, int bagId, List<ItemDbEntry> items)
     {
         var stream = GetWriteBitStream();
 
@@ -75,7 +75,7 @@ public static class Packet
         return ToByteArray(stream.GetStreamData(), 3);
     }
 
-    private static ObjectPacket? FindSimilarObjectPacketInDb (ushort clientId, int bagId, Item? item)
+    private static ObjectPacket? FindSimilarObjectPacketInDb (ushort clientId, int bagId, ItemDbEntry? item)
     {
         if (item is null)
         {

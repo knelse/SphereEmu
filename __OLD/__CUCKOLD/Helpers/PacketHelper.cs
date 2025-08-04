@@ -13,7 +13,7 @@ using static Stat;
 
 public static class PacketHelper
 {
-    public static void UpdateStatsForClient (Character character)
+    public static void UpdateStatsForClient (CharacterDbEntry characterDbEntry)
     {
         var divider = 0b0001011;
         var fieldMarker7Bit = 0b01;
@@ -59,34 +59,34 @@ public static class PacketHelper
 
         var characterFieldMap = new Dictionary<Stat, int>
         {
-            [HpCurrent] = character.CurrentHP,
-            [HpMax] = character.MaxHP,
-            [MpCurrent] = character.CurrentMP,
-            [MpMax] = character.MaxMP,
-            [SatietyCurrent] = character.CurrentSatiety,
-            [SatietyMax] = character.MaxSatiety,
-            [Strength] = character.CurrentStrength,
-            [Agility] = character.CurrentAgility,
-            [Accuracy] = character.CurrentAccuracy,
-            [Endurance] = character.CurrentEndurance,
-            [Earth] = character.CurrentEarth,
-            [Air] = character.CurrentAir,
-            [Water] = character.CurrentWater,
-            [Fire] = character.CurrentFire,
-            [PD] = character.PDef,
-            [MD] = character.MDef,
-            [TitleLevel] = character.TitleMinusOne,
-            [DegreeLevel] = character.DegreeMinusOne,
-            [KarmaType] = (int) character.Karma,
-            [Karma] = character.KarmaCount,
-            [TitleXp] = (int) character.TitleXP,
-            [DegreeXp] = (int) character.DegreeXP,
-            [TitleStatsAvailable] = character.AvailableTitleStats,
-            [DegreeStatsAvailable] = character.AvailableDegreeStats,
-            [ClanRankType] = (int) character.ClanRank,
-            [Money] = character.Money,
-            [PA] = character.PAtk,
-            [MA] = character.MAtk
+            [HpCurrent] = characterDbEntry.CurrentHP,
+            [HpMax] = characterDbEntry.MaxHP,
+            [MpCurrent] = characterDbEntry.CurrentMP,
+            [MpMax] = characterDbEntry.MaxMP,
+            [SatietyCurrent] = characterDbEntry.CurrentSatiety,
+            [SatietyMax] = characterDbEntry.MaxSatiety,
+            [Strength] = characterDbEntry.CurrentStrength,
+            [Agility] = characterDbEntry.CurrentAgility,
+            [Accuracy] = characterDbEntry.CurrentAccuracy,
+            [Endurance] = characterDbEntry.CurrentEndurance,
+            [Earth] = characterDbEntry.CurrentEarth,
+            [Air] = characterDbEntry.CurrentAir,
+            [Water] = characterDbEntry.CurrentWater,
+            [Fire] = characterDbEntry.CurrentFire,
+            [PD] = characterDbEntry.PDef,
+            [MD] = characterDbEntry.MDef,
+            [TitleLevel] = characterDbEntry.TitleMinusOne,
+            [DegreeLevel] = characterDbEntry.DegreeMinusOne,
+            [KarmaType] = (int) characterDbEntry.Karma,
+            [Karma] = characterDbEntry.KarmaCount,
+            [TitleXp] = (int) characterDbEntry.TitleXP,
+            [DegreeXp] = (int) characterDbEntry.DegreeXP,
+            [TitleStatsAvailable] = characterDbEntry.AvailableTitleStats,
+            [DegreeStatsAvailable] = characterDbEntry.AvailableDegreeStats,
+            [ClanRankType] = (int) characterDbEntry.ClanRank,
+            [Money] = characterDbEntry.Money,
+            [PA] = characterDbEntry.PAtk,
+            [MA] = characterDbEntry.MAtk
         };
 
         var memoryStream = new MemoryStream();
@@ -95,9 +95,9 @@ public static class PacketHelper
             AutoIncreaseStream = true
         };
 
-        stream.WriteBytes([MajorByte(character.ClientIndex), MinorByte(character.ClientIndex), 0x08, 0xC0], 4, true);
+        stream.WriteBytes([MajorByte(characterDbEntry.ClientIndex), MinorByte(characterDbEntry.ClientIndex), 0x08, 0xC0], 4, true);
         stream.WriteUInt16((ushort) hpMaxMarker, 14);
-        stream.WriteUInt16(character.MaxHP, 14);
+        stream.WriteUInt16(characterDbEntry.MaxHP, 14);
 
         foreach (var (field, marker) in fieldMarkers)
         {
@@ -118,7 +118,7 @@ public static class PacketHelper
             stream.WriteBits(valueBits, fieldLength);
         }
 
-        var client = ActiveClientsRepository.Get(character.ClientIndex);
+        var client = ActiveClientsRepository.Get(characterDbEntry.ClientIndex);
 
         client?.StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
         Console.WriteLine("Stat update");

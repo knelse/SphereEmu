@@ -30,7 +30,6 @@ public partial class Client : Node
     public int GlobalId;
     public ushort LocalId = 0x4F6F;
     private int newPlayerDungeonMobHp = 64;
-    private Player? player;
     private string playerIndexStr = null!;
     private int selectedCharacterIndex = -1;
     private static ushort NewEntityIndex = 0x1000;
@@ -42,44 +41,6 @@ public partial class Client : Node
 
         switch (currentState)
         {
-            case ClientState.INIT_WAITING_FOR_LOGIN_DATA:
-                if (StreamPeer.GetBytes(rcvBuffer) <= 12)
-                {
-                    return;
-                }
-
-                Console.WriteLine($"CLI {playerIndexStr}: Login data sent");
-                var (login, password) = LoginHelper.GetLoginAndPassword(rcvBuffer);
-
-                player =
-                    Login.CheckLoginAndGetPlayer(login, password, LocalId);
-                Console.WriteLine("Fetched char list data");
-                await ToSignal(GetTree().CreateTimer(0.05f), "timeout");
-
-                if (player == null)
-                {
-                    // TODO: actual incorrect pwd packet
-                    Console.WriteLine($"SRV {playerIndexStr}: Incorrect password!");
-                    StreamPeer.PutData(CommonPackets.CannotConnect(LocalId));
-                    CloseConnection();
-
-                    return;
-                }
-
-                player.Index = LocalId;
-
-                StreamPeer.PutData(CommonPackets.CharacterSelectStartData(LocalId));
-                Console.WriteLine("SRV: Character select screen data - initial");
-                Thread.Sleep(100);
-
-                var playerInitialData = player.ToInitialDataByteArray();
-
-                StreamPeer.PutData(playerInitialData);
-                Console.WriteLine("SRV: Character select screen data - player characters");
-                Thread.Sleep(100);
-                currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
-
-                break;
             case ClientState.INIT_WAITING_FOR_CHARACTER_SELECT:
                 if (selectedCharacterIndex == -1)
                 {
@@ -99,8 +60,8 @@ public partial class Client : Node
                             Console.WriteLine(
                                 $"Delete character [{charIndex}] - [{player!.Characters[charIndex].Name}]");
                             player!.Characters.RemoveAt(charIndex);
-                            DbConnectionProvider.PlayerCollection.Update(player);
-                            DbConnectionProvider.CharacterCollection.Delete(charId);
+                            DbConnection.Players.Update(player);
+                            DbConnection.Characters.Delete(charId);
 
                             // TODO: reinit session after delete
                             // await HandleClientAsync(client, (ushort) (ID + 1), true);
@@ -692,11 +653,11 @@ public partial class Client : Node
             var charIndex = rcvBuffer[17] / 4 - 1;
 
             var newCharacterData =
-                Character.CreateNewCharacter(LocalId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+                CharacterDbEntry.CreateNewCharacter(LocalId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
-            DbConnectionProvider.CharacterCollection.Insert(newCharacterData);
+            DbConnection.Characters.Insert(newCharacterData);
             player!.Characters.Insert(charIndex, newCharacterData);
-            DbConnectionProvider.PlayerCollection.Update(player!);
+            DbConnection.Players.Update(player!);
 
             StreamPeer.PutData(CommonPackets.NameCheckPassed(player!.Index));
 
@@ -706,7 +667,7 @@ public partial class Client : Node
         return -1;
     }
 
-    private async Task MoveToNewPlayerDungeonAsync (Character selectedCharacter)
+    private async Task MoveToNewPlayerDungeonAsync (CharacterDbEntry selectedCharacterDbEntry)
     {
         var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
         var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
@@ -824,7 +785,7 @@ public partial class Client : Node
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
         var globalItemId = GetGlobalObjectId((ushort) clientItemID);
-        var item = DbConnectionProvider.ItemCollection.FindById(globalItemId);
+        var item = DbConnection.Items.FindById(globalItemId);
 
         var clientSlot_raw = rcvBuffer[24];
         var targetSlotId = clientSlot_raw >> 1;
@@ -836,13 +797,13 @@ public partial class Client : Node
             !CurrentCharacter.CanUseItem(item))
         {
             Console.WriteLine(
-                $"Item {item.Localisation[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+                $"Item {item.Localization[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
             return;
         }
 
         var clientSlot = (clientSlot_raw - 0x32) / 2;
         Console.WriteLine(
-            $"CLI: Move item {item.Localisation[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
+            $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
             $"[{Enum.GetName(typeof (BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
         var clientSync_1 = rcvBuffer[17];
@@ -869,19 +830,19 @@ public partial class Client : Node
         };
 
         CurrentCharacter.Items[targetSlot] = globalItemId;
-        Console.WriteLine($"{Enum.GetName((BelongingSlot) targetSlotId)} now has {item.Localisation[Locale.Russian]} " +
+        Console.WriteLine($"{Enum.GetName((BelongingSlot) targetSlotId)} now has {item.Localization[Locale.Russian]} " +
                           $"({item.ItemCount}) [{globalItemId}]");
         StreamPeer.PutData(moveResult);
         var oldContainer = item.ParentContainerId is null
             ? null
-            : DbConnectionProvider.ItemContainerCollection.FindById(item.ParentContainerId);
+            : DbConnection.ItemContainers.FindById(item.ParentContainerId);
         // TODO: check in next process in node instead of this
         if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty(globalItemId) ?? false)
         {
             RemoveEntity(GetLocalObjectId(LocalId, oldContainer.Id));
         }
 
-        if (!Item.IsInventorySlot(targetSlot))
+        if (!ItemDbEntry.IsInventorySlot(targetSlot))
         {
             if (CurrentCharacter.UpdateCurrentStats())
             {
@@ -994,7 +955,7 @@ public partial class Client : Node
 
         var globalOldItemId = CurrentCharacter.Items[oldSlot];
 
-        var item = DbConnectionProvider.ItemCollection.FindById(globalOldItemId);
+        var item = DbConnection.Items.FindById(globalOldItemId);
 
         if (!item.IsValidForSlot(targetSlot) || !CurrentCharacter.CanUseItem(item))
         {
@@ -1231,7 +1192,7 @@ public partial class Client : Node
         return;
 
         var paAbs = Math.Abs(CurrentCharacter.PAtk);
-        var currentItem = DbConnectionProvider.ItemCollection.FindById(CurrentCharacter.Items[BelongingSlot.MainHand]);
+        var currentItem = DbConnection.Items.FindById(CurrentCharacter.Items[BelongingSlot.MainHand]);
         var damagePa = currentItem.PAtkNegative == 0
             ? 0
             : SphereServer.Rng.Next((int) (paAbs * 0.65), (int)
@@ -1327,7 +1288,7 @@ public partial class Client : Node
                     moneyReward_1, moneyReward_2
                 };
                 StreamPeer.PutData(Packet.ToByteArray(deathPacket));
-                var mob = DbConnectionProvider.MonsterCollection.FindById((int) destId);
+                var mob = DbConnection.Monsters.FindById((int) destId);
                 if (mob.ParentNodeId is not null)
                 {
                     var parentNode = ActiveNodesRepository.Get(mob.ParentNodeId.Value) as MobNode;

@@ -2,6 +2,7 @@
 using Godot;
 using SphServer.Client.Networking.Handlers;
 using SphServer.Client.Networking.Handlers.BeforeGame;
+using SphServer.DataModels;
 using SphServer.Providers;
 
 namespace SphServer.Client.Networking;
@@ -10,7 +11,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 {
     private readonly PingHandler pingHandler = new (streamPeerTcp, localId);
     private ISphereClientNetworkingHandler? currentHandler;
-    public byte[] ReceiveBuffer = new byte [Constants.RECEIVE_BUFFER_SIZE];
+    public readonly byte[] ReceiveBuffer = new byte [Constants.RECEIVE_BUFFER_SIZE];
 
     public async Task Process (double delta)
     {
@@ -19,6 +20,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         if (sphereClient.ClientStateManager.IsInGameState())
         {
             // TODO: ping handler should be the "default" ingame handler
+            await pingHandler.Keepalive(delta);
             await pingHandler.Handle(delta);
         }
 
@@ -40,7 +42,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public void Close ()
     {
-        SphLogger.Info($"Client disconnected. Client ID: {localId}");
+        sphereClient.RemoveClient();
     }
 
     public int GetIncomingData ()
@@ -59,5 +61,10 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         }
 
         return i;
+    }
+
+    public void SetPlayerDbEntry (PlayerDbEntry? entry)
+    {
+        sphereClient.SetPlayerDbEntry(entry);
     }
 }

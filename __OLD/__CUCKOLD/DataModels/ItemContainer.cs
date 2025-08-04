@@ -41,22 +41,22 @@ public class ItemContainer
             Z = z,
             ParentNodeId = bag.GetInstanceId()
         };
-        bag.ItemContainer.Id = DbConnectionProvider.ItemContainerCollection.Insert(bag.ItemContainer);
+        bag.ItemContainer.Id = DbConnection.ItemContainers.Insert(bag.ItemContainer);
 
         var itemCount = count == -1 ? SphereServer.Rng.Next(1, 5) : count;
 
         for (var i = 0; i < itemCount; i++)
         {
             var randomObj = LootHelper.GetRandomObjectData(levelOverride > 0 ? levelOverride : level);
-            var item = Item.CreateFromGameObject(randomObj);
+            var item = ItemDbEntry.CreateFromGameObject(randomObj);
             item.ParentContainerId = bag.ItemContainer.Id;
-            DbConnectionProvider.ItemCollection.Insert(item);
+            DbConnection.Items.Insert(item);
             bag.ItemContainer.Contents[i] = item.Id;
         }
 
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
         SphereServer.ServerNode.CallDeferred("add_child", bag);
-        DbConnectionProvider.ItemContainerCollection.Update(bag.ItemContainer);
+        DbConnection.ItemContainers.Update(bag.ItemContainer);
 
         return bag.ItemContainer;
     }
@@ -85,7 +85,7 @@ public class ItemContainer
             Console.WriteLine($"Removed at {key} ID {itemGlobalId} from container {Id}");
         }
 
-        DbConnectionProvider.ItemContainerCollection.Update(Id, this);
+        DbConnection.ItemContainers.Update(Id, this);
 
         return RemoveIfEmpty();
     }
@@ -98,7 +98,7 @@ public class ItemContainer
             Contents.Remove(slotId);
         }
 
-        DbConnectionProvider.ItemContainerCollection.Update(Id, this);
+        DbConnection.ItemContainers.Update(Id, this);
 
         return RemoveIfEmpty();
     }
@@ -225,7 +225,7 @@ public class ItemContainer
 
     public byte[] GetContentsPacket (ushort clientId)
     {
-        var items = Contents.Select(x => DbConnectionProvider.ItemCollection.FindById(x.Value)).ToList();
+        var items = Contents.Select(x => DbConnection.Items.FindById(x.Value)).ToList();
         return Packet.ItemsToPacket(clientId, Id, items);
     }
 }

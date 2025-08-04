@@ -45,7 +45,7 @@ public partial class SphereServer : Node
 
     private static void InitializeCollections ()
     {
-        DbConnectionProvider.Initialize(ServerConfig.AppConfig);
+        DbConnection.Initialize(ServerConfig.AppConfig);
     }
 
     private static void SetupTcpServer ()

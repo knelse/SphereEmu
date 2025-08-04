@@ -170,7 +170,7 @@ public static class LootHelper
         SphGameObject item;
         if (gameIdOverride != -1)
         {
-            item = DbConnectionProvider.GameObjectCollection.FindById(gameIdOverride);
+            item = DbConnection.GameObjects.FindById(gameIdOverride);
         }
 
         else
@@ -253,7 +253,7 @@ public static class LootHelper
                 .ToList();
             var random = SphereServer.Rng.Next(0, lootPool.Count);
             item = lootPool.ElementAt(random);
-            var collectionItem = DbConnectionProvider.GameObjectCollection.FindOne(x => x.GameId == item.GameId);
+            var collectionItem = DbConnection.GameObjects.FindOne(x => x.GameId == item.GameId);
             item.GameObjectDbId = collectionItem.GameObjectDbId;
         }
 
@@ -476,7 +476,7 @@ public static class LootHelper
         return item;
     }
 
-    public static bool IsSlotValidForItem (BelongingSlot slot, Item? item)
+    public static bool IsSlotValidForItem (BelongingSlot slot, ItemDbEntry? item)
     {
         // TODO: actual check
         return true;

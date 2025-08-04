@@ -26,24 +26,6 @@ public static class BitHelper
         return new BitStream(buffer);
     }
 
-    public static int GetBytes (this StreamPeerTcp streamPeerTcp, byte[] bytes)
-    {
-        var temp = streamPeerTcp.GetPartialData(Client.BUFSIZE);
-        var arr = (byte[]?) temp[1];
-
-        var i = 0;
-
-        if (arr is not null)
-        {
-            for (; i < arr.Length; i++)
-            {
-                bytes[i] = arr[i];
-            }
-        }
-
-        return i;
-    }
-
     public static string ToBinaryString (this byte b)
     {
         return Convert.ToString(b, 2).PadLeft(8, '0');
@@ -119,17 +101,6 @@ public static class BitHelper
     public static StringBuilder AppendBinary (this StringBuilder sb, bool val)
     {
         return sb.Append(val ? '1' : '0');
-    }
-
-
-    public static byte MinorByte (ushort input)
-    {
-        return (byte) (input & 0xFF);
-    }
-
-    public static byte MajorByte (ushort input)
-    {
-        return (byte) (input >> 8);
     }
 
     // public static string GetLittleEndianBinaryString(ushort input)

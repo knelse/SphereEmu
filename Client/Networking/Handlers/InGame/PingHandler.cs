@@ -12,7 +12,7 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId)
     private string? pingPreviousClientPingString;
     private bool pingShouldXorTopBit;
 
-    private async Task Keepalive (double delta)
+    public async Task Keepalive (double delta)
     {
         FifteenSecondPing.Tick(delta);
         SixSecondPing.Tick(delta);
@@ -30,6 +30,5 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId)
 
     public async Task Handle (double delta)
     {
-        await Keepalive(delta);
     }
 }

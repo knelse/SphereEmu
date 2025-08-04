@@ -26,8 +26,8 @@ public class Vendor
     public List<int> ItemIdsOnSale { get; set; } = new ();
 
     [BsonIgnore]
-    public List<Item> ItemsOnSale =>
-        ItemIdsOnSale.Select(x => DbConnectionProvider.ItemCollection.FindById(x)).ToList();
+    public List<ItemDbEntry> ItemsOnSale =>
+        ItemIdsOnSale.Select(x => DbConnection.Items.FindById(x)).ToList();
     //public ulong? ParentNodeId { get; set; }
 
     public byte[] GetItemSlotListForClient (ushort clientId)
