@@ -40,7 +40,7 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 
 internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
-// internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
+internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
 
 internal abstract class ActiveObjectCollectionBase<Tk, Tv>
 {

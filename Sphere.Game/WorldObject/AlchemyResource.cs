@@ -8,7 +8,7 @@ public partial class AlchemyResource : WorldObject
 {
     [Export] public int GameObjectID { get; set; }
 
-    public override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
         // PacketPart.UpdateValue(packetParts, "__hasGameId", 1, 1);
         PacketPart.UpdateValue(packetParts, "game_object_id", GameObjectID, 14);

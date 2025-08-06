@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using LiteDB;
+using SphServer.Client;
 using SphServer.Packets;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
@@ -131,13 +132,13 @@ public class ItemContainerDbEntry
         // }
     }
 
-    public void ShowForClient (global::Client client)
+    public void ShowForClient (SphereClient client)
     {
-        var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.SackMobLoot);
-        PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
-        var localId = client.GetLocalObjectId(Id);
-        PacketPart.UpdateEntityId(packetParts, localId);
-        var lootBagPacket = PacketPart.GetBytesToWrite(packetParts);
+        // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.SackMobLoot);
+        // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
+        // var localId = client.GetLocalObjectId(Id);
+        // PacketPart.UpdateEntityId(packetParts, localId);
+        // var lootBagPacket = PacketPart.GetBytesToWrite(packetParts);
 
         // client.StreamPeer.PutData(lootBagPacket);
     }
@@ -159,75 +160,75 @@ public class ItemContainerDbEntry
         // var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
         // var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
 
-        var item_0_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(0, 0));
-        var item_1_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(1, 0));
-        var item_2_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(2, 0));
-        var item_3_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(3, 0));
-
-        var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
-        var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
-        var item0_3 = (byte) ((item_0_id >> 12) & 0b1111);
-
-        var item1_1 = (byte) ((item_1_id & 0b1) << 7);
-        var item1_2 = (byte) ((item_1_id >> 1) & 0b11111111);
-        var item1_3 = (byte) ((item_1_id >> 9) & 0b1111111);
-
-        var item2_1 = (byte) ((item_2_id & 0b111111) << 2);
-        var item2_2 = (byte) ((item_2_id >> 6) & 0b11111111);
-        var item2_3 = (byte) ((item_2_id >> 14) & 0b11);
-
-        var item3_1 = (byte) ((item_3_id & 0b111) << 5);
-        var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
-        var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
-        var localId = global::Client.GetLocalObjectId(clientId, Id);
-
-        switch (Contents.Count)
-        {
-            case 1:
-                itemList =
-                [
-                    0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00, 0x00, 0x00
-                ];
-
-                break;
-            case 2:
-                itemList =
-                [
-                    0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00,
-                    0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
-                ];
-
-                break;
-            case 3:
-                itemList =
-                [
-                    0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
-                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
-                    item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x00
-                ];
-
-                break;
-            case 4:
-                itemList =
-                [
-                    0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-                    0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
-                    0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
-                    item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19,
-                    0x00, 0x00, 0x00
-                ];
-
-                break;
-            default:
-                Console.WriteLine($"Item list for count {Contents.Count} not implemented");
-
-                return;
-        }
-
-        global::Client.TryFindClientByIdAndSendData(clientId, itemList);
+        // var item_0_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(0, 0));
+        // var item_1_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(1, 0));
+        // var item_2_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(2, 0));
+        // var item_3_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(3, 0));
+        //
+        // var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
+        // var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
+        // var item0_3 = (byte) ((item_0_id >> 12) & 0b1111);
+        //
+        // var item1_1 = (byte) ((item_1_id & 0b1) << 7);
+        // var item1_2 = (byte) ((item_1_id >> 1) & 0b11111111);
+        // var item1_3 = (byte) ((item_1_id >> 9) & 0b1111111);
+        //
+        // var item2_1 = (byte) ((item_2_id & 0b111111) << 2);
+        // var item2_2 = (byte) ((item_2_id >> 6) & 0b11111111);
+        // var item2_3 = (byte) ((item_2_id >> 14) & 0b11);
+        //
+        // var item3_1 = (byte) ((item_3_id & 0b111) << 5);
+        // var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
+        // var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
+        // var localId = global::Client.GetLocalObjectId(clientId, Id);
+        //
+        // switch (Contents.Count)
+        // {
+        //     case 1:
+        //         itemList =
+        //         [
+        //             0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00, 0x00, 0x00
+        //         ];
+        //
+        //         break;
+        //     case 2:
+        //         itemList =
+        //         [
+        //             0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00,
+        //             0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
+        //         ];
+        //
+        //         break;
+        //     case 3:
+        //         itemList =
+        //         [
+        //             0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
+        //             0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
+        //             item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x00
+        //         ];
+        //
+        //         break;
+        //     case 4:
+        //         itemList =
+        //         [
+        //             0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
+        //             0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
+        //             item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19,
+        //             0x00, 0x00, 0x00
+        //         ];
+        //
+        //         break;
+        //     default:
+        //         Console.WriteLine($"Item list for count {Contents.Count} not implemented");
+        //
+        //         return;
+        // }
+        //
+        // global::Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
     public byte[] GetContentsPacket (ushort clientId)

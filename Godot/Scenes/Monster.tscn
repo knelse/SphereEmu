@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://jecy1l185txr"]
 
-[ext_resource type="Script" uid="uid://c50t8tdfgk4jf" path="res://Shared/__ToSortOut/WorldObjects/Monster.cs" id="1_4avj5"]
+[ext_resource type="Script" uid="uid://c50t8tdfgk4jf" path="res://Sphere.Game/WorldObjectSpawn/Monster.cs" id="1_8qwjm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijfgl"]
 albedo_color = Color(0.819608, 0.0117647, 0, 1)
@@ -22,18 +22,7 @@ size = Vector3(0.1, 0.1, 1)
 
 [node name="Monster" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
-script = ExtResource("1_4avj5")
-MonsterType = null
-HasName = null
-NameID_1 = null
-NameID_2 = null
-NameID_3 = null
-CurrentHP = null
-MaxHP = null
-Level = null
-Angle = null
-ID = null
-ObjectType = null
+script = ExtResource("1_8qwjm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("66")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dgnwpy1raisjd"]
 
-[ext_resource type="Script" uid="uid://f08ocdjti7i0" path="res://Client/SphereClient.cs" id="1_dsyj5"]
+[ext_resource type="Script" uid="uid://cg6buhiqkg43s" path="res://Client/SphereClient.cs" id="1_dsyj5"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 
@@ -9,7 +9,8 @@
 [node name="Client" type="Node"]
 script = ExtResource("1_dsyj5")
 
-[node name="ClientModel" type="StaticBody3D" parent="."]
+[node name="ClientModel" type="CharacterBody3D" parent="."]
+collision_layer = 2
 
 [node name="ClientShape" type="CollisionShape3D" parent="ClientModel"]
 shape = SubResource("1")

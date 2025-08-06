@@ -65,12 +65,12 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    public override List<PacketPart> GetPacketParts ()
+    protected override List<PacketPart> GetPacketParts ()
     {
         return PacketPart.LoadDefinedPartsFromFile(NpcType);
     }
 
-    public override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
         PacketPart.UpdateValue(packetParts, "name_id", NameID - 4000, 11);
         var modelName = ModelNameSph;
@@ -88,13 +88,13 @@ public partial class NpcInteractable : WorldObject
         return packetParts;
     }
 
-    public override byte[] PostprocessPacketBytes (byte[] packet)
+    protected override byte[] PostprocessPacketBytes (byte[] packet)
     {
         packet[^1] = 0;
         return packet;
     }
 
-    public override void ClientInteract (ushort clientID,
+    protected override void ClientInteract (ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
         Console.WriteLine($"FROM NPC: Client [{clientID}] interacts with [{ID}] {ObjectType} -- {interactionType}");

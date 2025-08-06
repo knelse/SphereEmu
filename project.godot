@@ -27,6 +27,11 @@ project/assembly_name="SphServer"
 
 import/fbx/enabled=false
 
+[layer_names]
+
+3d_physics/layer_1="world_objects"
+3d_physics/layer_2="clients"
+
 [mono]
 
 project/assembly_name="SphServer"

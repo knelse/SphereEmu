@@ -24,6 +24,9 @@
         <ProjectReference Include="..\source\SphObjectDb\SphObjectDb.csproj"/>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="AlchemyResourceSpawnData.txt">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -39,21 +42,17 @@
         <Content Include="Godot\Scenes\npc_interactable.tscn" />
         <Content Include="Godot\Scenes\teleport_with_target.tscn" />
         <Content Include="Godot\Scenes\world_object.tscn" />
+        <Content Include="MonsterSpawnData.txt">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>
         <Content Include="Shared\Networking\Packets\PacketPart.cs.uid"/>
         <Content Include="sphdbsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Sphere.Game\WorldObjectSpawn\AlchemyResource.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\Door.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\ItemWorldObject.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\Monster.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\NpcInteractable.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\SpawnData\AlchemyResourceSpawnData.txt" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\SpawnData\MonsterSpawnData.txt" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\TeleportWithTarget.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\WorldObject.cs.uid" />
-        <Content Include="Sphere.Game\WorldObjectSpawn\WorldObjectSpawner.cs.uid" />
+        <Content Include="Sphere.Game\WorldObject\AlchemyResource.cs.uid" />
+        <Content Include="Sphere.Game\WorldObject\Door.cs.uid" />
+        <Content Include="Sphere.Game\WorldObject\Spawner\WorldObjectSpawner.cs.uid" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="GodotSharp">

@@ -15,12 +15,12 @@ public partial class Door : WorldObject
     [Export] public double TargetY { get; set; }
     [Export] public double TargetZ { get; set; }
 
-    public override List<PacketPart> GetPacketParts ()
+    protected override List<PacketPart> GetPacketParts ()
     {
         return HasTarget ? PacketPart.LoadDefinedWithOverride("door_entrance_tp") : base.GetPacketParts();
     }
 
-    public override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
         PacketPart.UpdateValue(packetParts, "door_id", DoorID, 7);
         if (HasTarget)

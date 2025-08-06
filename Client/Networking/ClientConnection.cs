@@ -43,6 +43,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             {
                 case 0x26:
                     await pingHandler.Handle(delta);
+                    sphereClient.UpdateModelCoordinates();
                     break;
             }
         }
