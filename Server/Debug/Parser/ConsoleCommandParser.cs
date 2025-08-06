@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using SphereHelpers.Extensions;
-using SphServer.Repositories;
-using SphServer.Server;
+using SphServer.Client;
+using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Helpers;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Networking.Chat.Encoders;
+using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Shared.WorldState;
+using SphServer.System;
+using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
-namespace SphServer.Helpers.ConsoleCommands;
+namespace SphServer.Server.Debug.Parser;
 
 public enum ConsoleCommandParseResult
 {
@@ -22,11 +27,12 @@ public class ConsoleCommandParser
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
     private readonly CharacterDbEntry currentCharacterDbEntry;
-    private StreamPeerTcp StreamPeer => getStreamPeer();
+    private readonly SphereClient? sphereClient;
 
     private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
     {
         currentCharacterDbEntry = characterDbEntry;
+        sphereClient = ActiveClients.Get(characterDbEntry.ClientIndex);
     }
 
     public static ConsoleCommandParser Get (CharacterDbEntry characterDbEntry)
@@ -144,7 +150,8 @@ public class ConsoleCommandParser
         message = name + ": " + message;
         // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
         var response = MessageEncoder.EncodeToSendFromServer(message, name, chatType);
-        StreamPeer.PutData(response);
+        
+        sphereClient?.MaybeQueueNetworkPacketSend(response);
     }
 
     private void UpdateClan (string args)
@@ -161,19 +168,19 @@ public class ConsoleCommandParser
         switch (action)
         {
             case "rank":
-                var responseStream = BitHelper.GetWriteBitStream();
-                var nameBytes = SphereServer.Win1251.GetBytes(currentCharacterDbEntry.Clan.Name);
+                var responseStream = SphBitStream.GetWriteBitStream();
+                var nameBytes = SphEncoding.Win1251.GetBytes(currentCharacterDbEntry.Clan.Name);
                 responseStream.WriteBytes([
                     (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                    BitHelper.MajorByte(currentCharacterDbEntry.ClientIndex),
-                    BitHelper.MinorByte(currentCharacterDbEntry.ClientIndex), 0x08,
+                    MajorByte(currentCharacterDbEntry.ClientIndex),
+                    MinorByte(currentCharacterDbEntry.ClientIndex), 0x08,
                     0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
                 ]);
 
                 // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
                 responseStream.WriteByte(0x0, 5);
-                responseStream.WriteByte(BitHelper.MajorByte(currentCharacterDbEntry.ClientIndex));
-                responseStream.WriteByte(BitHelper.MinorByte(currentCharacterDbEntry.ClientIndex));
+                responseStream.WriteByte(MajorByte(currentCharacterDbEntry.ClientIndex));
+                responseStream.WriteByte(MinorByte(currentCharacterDbEntry.ClientIndex));
                 responseStream.WriteByte(0x0, 7);
                 responseStream.WriteByte(0x1A);
                 responseStream.WriteByte(0x16);
@@ -185,7 +192,7 @@ public class ConsoleCommandParser
 
                 var response = responseStream.GetStreamData();
                 Console.WriteLine(Convert.ToHexString(response));
-                StreamPeer.PutData(response);
+                sphereClient?.MaybeQueueNetworkPacketSend(response);
                 break;
         }
     }
@@ -202,18 +209,18 @@ public class ConsoleCommandParser
             try
             {
                 var content = Convert.FromHexString(chatData[1]);
-                StreamPeer.PutData(content);
+                sphereClient?.MaybeQueueNetworkPacketSend(content);
             }
             catch (Exception ex)
             {
-                ConsoleHelper.WriteLine("Not a hex string: " + ex.Message);
+                Console.WriteLine("Not a hex string: " + ex.Message);
             }
         }
     }
 
     private void SendPacket (string args)
     {
-        TestHelper.SendSpherePacketFromConsole($"/packet {args}", StreamPeer);
+        DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
     }
 
     private void Buff (string args)
@@ -226,8 +233,8 @@ public class ConsoleCommandParser
         //   3F002C01002CEF8F9578800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF91C4E83800A0F0704046C2800250C
         // var test =
         // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
-        StreamPeer.PutData(Convert.FromHexString(jumpx4));
-        StreamPeer.PutData(Convert.FromHexString(runSpeed));
+        sphereClient?.MaybeQueueNetworkPacketSend(Convert.FromHexString(jumpx4));
+        sphereClient?.MaybeQueueNetworkPacketSend(Convert.FromHexString(runSpeed));
         // StreamPeer.PutData(Convert.FromHexString(test));
     }
 
@@ -238,7 +245,8 @@ public class ConsoleCommandParser
         var mobPacketName = split.Length == 0
             ? "mob"
             : "mob_" + split[0];
-        TestHelper.SendSpherePacketFromConsole($"/packet {mobPacketName} onme", StreamPeer);
+        DebugConsole.SendSpherePacket($"/packet {mobPacketName} onme",
+            bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
     }
 
     private void MobById (string args)
@@ -252,7 +260,7 @@ public class ConsoleCommandParser
         }
         else
         {
-            TestHelper.SendSpherePacketFromConsole($"/packet mob_assassin onme", StreamPeer, true,
+            DebugConsole.SendSpherePacket($"/packet mob_assassin onme", bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes), true,
                 list =>
                 {
                     foreach (var idPart in list.Where(x => x.Name == "mob_type"))
@@ -266,13 +274,13 @@ public class ConsoleCommandParser
 
     private void Loot (string args)
     {
-        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 1,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 1,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 2,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 2,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainer.Create(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 3,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 3,
             1,
             LootRatity.DEFAULT_MOB);
     }
@@ -287,8 +295,8 @@ public class ConsoleCommandParser
                 var coords = split
                     .Select(double.Parse)
                     .ToArray();
-                StreamPeer.PutData(
-                    currentCharacterDbEntry.GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
+                sphereClient?.MaybeQueueNetworkPacketSend(
+                    new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
                         0)));
             }
             catch (Exception ex)
@@ -307,8 +315,8 @@ public class ConsoleCommandParser
                     if (Enum.TryParse<PoiType>(location[1], out var poiType))
                     {
                         var coords = SavedCoords.TeleportPoints[continent][poiType][location[2]];
-                        StreamPeer.PutData(
-                            currentCharacterDbEntry.GetTeleportByteArray(coords));
+                        sphereClient?.MaybeQueueNetworkPacketSend(
+                            new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(coords));
                     }
                 }
             }
@@ -317,11 +325,5 @@ public class ConsoleCommandParser
                 Console.WriteLine(ex.Message);
             }
         }
-    }
-
-    private StreamPeerTcp getStreamPeer ()
-    {
-        var client = ActiveClientsRepository.Get(currentCharacterDbEntry.ClientIndex);
-        return client.StreamPeer;
     }
 }

@@ -5,7 +5,7 @@ using SphServer.Server.Login.Auth;
 using SphServer.Server.Login.Decoders;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
-using SphServer.Shared.Networking.Serializers;
+using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;

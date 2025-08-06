@@ -1,5 +1,5 @@
 using SphServer.Helpers;
-using static SphServer.Shared.Networking.Serializers.SphereDbEntrySerializerBase;
+using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
 

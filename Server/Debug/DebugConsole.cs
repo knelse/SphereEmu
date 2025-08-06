@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Server.Config;
@@ -14,7 +13,7 @@ namespace SphServer.Server.Debug;
 
 public class DebugConsole
 {
-    public static void SendSpherePacket (string input, StreamPeerTcp streamPeerTcp, bool generateNewId = true,
+    public static void SendSpherePacket (string input, Action<byte[]> sendPacketAction, bool generateNewId = true,
         Action<List<PacketPart>>? transformPacketPartValueAction = null, bool isPacketPart = true)
     {
         if (!ServerConfig.AppConfig.DebugMode)
@@ -71,7 +70,7 @@ public class DebugConsole
         var streamBytes = stream.GetStreamData();
         var packetBytes = Packet.ToByteArray(streamBytes, 3);
         Console.WriteLine($"Sending {packetName} as {Convert.ToHexString(packetBytes)}");
-        streamPeerTcp.PutData(packetBytes);
+        sendPacketAction(packetBytes);
     }
 
     private static void ChangeAllCoordsToFirstClient (List<PacketPart> list)

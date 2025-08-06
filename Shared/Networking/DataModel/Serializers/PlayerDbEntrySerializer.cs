@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SphServer.Shared.Db.DataModels;
 
-namespace SphServer.Shared.Networking.Serializers;
+namespace SphServer.Shared.Networking.DataModel.Serializers;
 
 public class PlayerDbEntrySerializer (PlayerDbEntry playerDbEntry) : SphereDbEntrySerializerBase
 {

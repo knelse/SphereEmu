@@ -4,7 +4,7 @@ using SphServer.Helpers;
 using SphServer.Shared.Db.DataModels;
 using SphServer.System;
 
-namespace SphServer.Shared.Networking.Serializers;
+namespace SphServer.Shared.Networking.DataModel.Serializers;
 
 public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : SphereDbEntrySerializerBase
 {

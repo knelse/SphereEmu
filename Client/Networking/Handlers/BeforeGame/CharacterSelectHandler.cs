@@ -4,7 +4,7 @@ using Godot;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
-using SphServer.Shared.Networking.Serializers;
+using SphServer.Shared.Networking.DataModel.Serializers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 

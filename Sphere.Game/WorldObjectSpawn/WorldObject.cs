@@ -3,26 +3,8 @@ using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
 using SphServer.Packets;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.WorldState;
-
-public enum ClientInteractionType
-{
-    OpenTrade,
-    Buy,
-    Sell,
-    ChangeHealth,
-    TakeMission,
-    MoveInWorld,
-    MoveInInventory,
-    OpenContainer,
-    PickupToSlot,
-    Pickup,
-    Drop,
-    Use,
-    EquipToMainhand,
-    EquipToCharacter,
-    Unknown
-}
 
 public partial class WorldObject : Node3D
 {

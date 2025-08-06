@@ -8,6 +8,7 @@ using SphServer.Helpers;
 using SphServer.Helpers.Enums;
 using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
+using SphServer.Shared.GameData.Enums;
 using SphServer.System;
 
 namespace SphServer.Packets;

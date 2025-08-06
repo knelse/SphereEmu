@@ -14,7 +14,7 @@ public static class DbConnection
     public static ILiteCollection<PlayerDbEntry> Players { get; private set; } = null!;
     public static ILiteCollection<CharacterDbEntry> Characters { get; private set; } = null!;
     public static ILiteCollection<ItemDbEntry> Items { get; private set; } = null!;
-    public static ILiteCollection<ItemContainer> ItemContainers { get; private set; } = null!;
+    public static ILiteCollection<ItemContainerDbEntry> ItemContainers { get; private set; } = null!;
     public static ILiteCollection<MonsterDbEntry> Monsters { get; private set; } = null!;
     public static ILiteCollection<NpcInteractable> NpcInteractables { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjects { get; private set; } = null!;
@@ -29,7 +29,7 @@ public static class DbConnection
         Players = Db.GetCollection<PlayerDbEntry>("Players");
         Characters = Db.GetCollection<CharacterDbEntry>("Characters");
         Items = Db.GetCollection<ItemDbEntry>("Items");
-        ItemContainers = Db.GetCollection<ItemContainer>("ItemContainers");
+        ItemContainers = Db.GetCollection<ItemContainerDbEntry>("ItemContainers");
         Monsters = Db.GetCollection<MonsterDbEntry>("Monsters");
         NpcInteractables = Db.GetCollection<NpcInteractable>("NpcInteractables");
         GameObjects = Db.GetCollection<SphGameObject>("GameObjects");

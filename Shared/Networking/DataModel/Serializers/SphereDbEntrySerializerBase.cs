@@ -1,4 +1,4 @@
-﻿namespace SphServer.Shared.Networking.Serializers;
+﻿namespace SphServer.Shared.Networking.DataModel.Serializers;
 
 public class SphereDbEntrySerializerBase
 {

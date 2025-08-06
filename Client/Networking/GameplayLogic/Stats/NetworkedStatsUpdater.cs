@@ -7,9 +7,9 @@ using SphServer.Packets;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
-using static SphServer.Shared.Networking.Serializers.SphereDbEntrySerializerBase;
+using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
-namespace SphServer.Helpers;
+namespace SphServer.Client.Networking.GameplayLogic.Stats;
 
 using static Stat;
 

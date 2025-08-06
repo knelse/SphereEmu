@@ -1,7 +1,11 @@
+// TODO: old, would probably be refactored/removed
+
 using Godot;
 using SphServer.Client;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.WorldState;
+
+namespace SphServer.Godot.Nodes;
 
 public partial class MobNode : CharacterBody3D
 {

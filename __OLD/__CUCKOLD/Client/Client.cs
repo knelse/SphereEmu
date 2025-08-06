@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using BitStreams;
 using Godot;
 using SphServer;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
-using SphServer.Helpers.ConsoleCommands;
 using SphServer.Packets;
 using SphServer.Providers;
 using SphServer.Repositories;
@@ -26,7 +26,7 @@ using SphereServer = SphServer.Server.SphereServer;
 public partial class Client : Node
 {
 
-    private static ItemContainer _testItemContainer = null!;
+    private static ItemContainerDbEntry _testItemContainerDbEntry = null!;
     public static readonly ConcurrentDictionary<int, ushort> GlobalToLocalIdMap = new ();
 
     public int GlobalId;
@@ -1017,10 +1017,10 @@ public partial class Client : Node
                 var mob = DbConnection.Monsters.FindById((int) destId);
                 if (mob.ParentNodeId is not null)
                 {
-                    var parentNode = ActiveNodesRepository.Get(mob.ParentNodeId.Value) as MobNode;
+                    var parentNode = ActiveNodesRepository.Get(mob.ParentNodeId.Value) as SphServer.Godot.Nodes.MobNode;
                     if (parentNode is not null)
                     {
-                        ItemContainer.Create(parentNode.GlobalTransform.Origin.X,
+                        ItemContainerDbEntry.CreateHierarchyWithContents(parentNode.GlobalTransform.Origin.X,
                             parentNode.GlobalTransform.Origin.Y,
                             parentNode.GlobalTransform.Origin.Z, 0, LootRatity.DEFAULT_MOB);
                         parentNode.SetInactive();

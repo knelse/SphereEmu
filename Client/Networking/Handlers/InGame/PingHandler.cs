@@ -4,7 +4,7 @@ using Godot;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.Networking;
-using SphServer.Shared.Networking.Serializers;
+using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame;

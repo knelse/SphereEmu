@@ -1,71 +1,18 @@
+// TODO: needs refactor and splitting into multiple files
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using BitStreams;
 using Godot;
 using SphServer.Packets;
-using SphServer.Shared.__ToSortOut;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game;
+using SphServer.Sphere.Game.IngameToEmulatorTypeConverters;
+using SphServer.Sphere.Game.Loot;
 using SphServer.System;
-
-public enum NpcType
-{
-    TradeMagic,
-    TradeAlchemy,
-    TradeWeapon,
-    TradeJewelry,
-    TradeArmor,
-    TradeTravelGeneric,
-    TradeTravelTokens,
-    TradeTavernkeeper,
-    QuestTitle,
-    QuestDegree,
-    QuestKarma,
-    Guilder,
-    Banker,
-    Prefix,
-    Tournament
-}
-
-public enum VendorLocation
-{
-    Sunpool,
-    Shipstone,
-    Torweal,
-    Bangville,
-    Nomrad,
-    Gifes,
-    Anhelm,
-    Outside,
-    Castle
-}
-
-public static class NpcInteractableMappings
-{
-    public static int NpcTypeToNpcTradeTypeSph (NpcType npcType)
-    {
-        return npcType switch
-        {
-            NpcType.TradeMagic => 9,
-            NpcType.TradeAlchemy => 6,
-            NpcType.TradeWeapon => 11,
-            NpcType.TradeJewelry => 8,
-            NpcType.TradeArmor => 7,
-            NpcType.TradeTavernkeeper => 5,
-            NpcType.TradeTravelGeneric => 10,
-            NpcType.TradeTravelTokens => 10,
-            NpcType.QuestTitle => 4,
-            NpcType.QuestDegree => 2,
-            NpcType.QuestKarma => 3,
-            NpcType.Guilder => 1,
-            NpcType.Banker => 0,
-            NpcType.Prefix => 12,
-            NpcType.Tournament => 13,
-            _ => 0
-        };
-    }
-}
 
 public partial class NpcInteractable : WorldObject
 {
@@ -136,7 +83,7 @@ public partial class NpcInteractable : WorldObject
         PacketPart.UpdateValue(packetParts, "entity_type_name", modelName);
         PacketPart.UpdateValue(packetParts, "icon_name_length", IconNameLength, 8);
         PacketPart.UpdateValue(packetParts, "icon_name", IconNameSph);
-        var tradeType = NpcInteractableMappings.NpcTypeToNpcTradeTypeSph(NpcType);
+        var tradeType = NpcTypeToNpcTradeTypeSph.Convert(NpcType);
         PacketPart.UpdateValue(packetParts, "npc_trade_type", tradeType, 4);
         return packetParts;
     }
@@ -631,7 +578,7 @@ public partial class NpcInteractable : WorldObject
             return true;
         }
 
-        if (!LootHelper.ObjectTypesWithSuffixes.Contains(objectType))
+        if (!LootData.ObjectTypesWithSuffixes.Contains(objectType))
         {
             return false;
         }

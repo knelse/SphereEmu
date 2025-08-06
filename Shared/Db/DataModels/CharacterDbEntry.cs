@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LiteDB;
+using SphServer.Shared.Logger;
 using static SphServer.Helpers.CharacterDataHelper;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -264,11 +265,7 @@ public class CharacterDbEntry
         // TODO: character state shouldn't be updated in starting dungeon
         // MainServer.CharacterCollection.Update(Id, this);
 
-        // Would be cool but Rider console doesn't support emoji until 2023.1 or smth
-        // Console.WriteLine($"💪{CurrentStrength} 🦵{CurrentAgility} 👀{CurrentAccuracy} 🏃{CurrentEndurance} 🌍{CurrentEarth} " +
-        //                   $"💧{CurrentWater} ⛅{CurrentAir} 🔥{CurrentFire} 💖{CurrentHP}/{MaxHP} 💙{CurrentMP}/{MaxMP} " +
-        //                   $"🧿{PDef} 🛐{MDef} 🪓{PAtk} 💥{MAtk}");
-        Console.WriteLine(
+        SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
             $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
             $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
             $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
