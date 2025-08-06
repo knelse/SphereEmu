@@ -103,6 +103,6 @@ public partial class WorldObject : Node3D
 	protected virtual void ClientInteract (ushort clientID,
 		ClientInteractionType interactionType = ClientInteractionType.Unknown)
 	{
-		SphLogger.Info($"Client [{clientID}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+		SphLogger.Info($"Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
 	}
 }

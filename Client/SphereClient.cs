@@ -40,7 +40,7 @@ public partial class SphereClient : Node
 	public override void _Ready ()
 	{
 		// TODO: client logs in separate files
-		SphLogger.Info($"New client connected. Client ID: {localId}");
+		SphLogger.Info($"New client connected. Client ID: {localId:X4}");
 		// Task.Run(() =>
 		// {
 		//     while (true)
@@ -95,7 +95,7 @@ public partial class SphereClient : Node
 		}
 		catch (Exception ex)
 		{
-			SphLogger.Error($"Unable to select character at index: {index}. Client ID: {localId}.", ex);
+			SphLogger.Error($"Unable to select character at index: {index}. Client ID: {localId:X4}.", ex);
 		}
 	}
 
@@ -109,7 +109,7 @@ public partial class SphereClient : Node
 		}
 		catch (Exception ex)
 		{
-			SphLogger.Error($"Unable to create character at index: {index}. Client ID: {localId}.", ex);
+			SphLogger.Error($"Unable to create character at index: {index}. Client ID: {localId:X4}.", ex);
 		}
 	}
 
@@ -121,7 +121,7 @@ public partial class SphereClient : Node
 			var characterToDelete = playerDbEntry!.Characters[index];
 			var id = characterToDelete.Id;
 			var name = characterToDelete.Name;
-			SphLogger.Info($"Delete character [{index}] - [{name}]. Client ID: {localId}");
+			SphLogger.Info($"Delete character [{index}] - [{name}]. Client ID: {localId:X4}");
 			playerDbEntry!.Characters.RemoveAt(index);
 			DbConnection.Players.Update(playerDbEntry);
 			DbConnection.Characters.Delete(id);
@@ -131,7 +131,7 @@ public partial class SphereClient : Node
 		}
 		catch (Exception ex)
 		{
-			SphLogger.Error($"Unable to delete character at index: {index}. Client ID: {localId}.", ex);
+			SphLogger.Error($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
 		}
 	}
 
@@ -142,7 +142,7 @@ public partial class SphereClient : Node
 			return;
 		}
 
-		SphLogger.Info($"Client disconnected. Client ID: {localId}");
+		SphLogger.Info($"Client disconnected. Client ID: {localId:X4}");
 
 		isExiting = true;
 		// TODO: sync state
@@ -157,10 +157,16 @@ public partial class SphereClient : Node
 		clientConnection.MaybeQueueNetworkPacketSend(packet);
 	}
 
-	public ushort GetLocalObjectId (ushort id)
+	public ushort GetLocalObjectId (int id)
 	{
 		// TODO: implement
-		return id;
+		return (ushort) id;
+	}
+
+	public static ushort GetLocalObjectId (ushort clientId, int id)
+	{
+		// TODO: implement
+		return (ushort) id;
 	}
 
 	public void UpdateModelCoordinates ()
@@ -176,13 +182,13 @@ public partial class SphereClient : Node
 		// TODO: move to db entry
 		if (!ServerConfig.AppConfig.DebugMode)
 		{
-			SphLogger.Info($"Skipping debug mode update (debug mode off). Client ID: {localId}");
+			SphLogger.Info($"Skipping debug mode update (debug mode off). Client ID: {localId:X4}");
 			return;
 		}
 
 		if (CurrentCharacter is null)
 		{
-			SphLogger.Info($"Skipping debug mode update (character is null). Client ID: {localId}");
+			SphLogger.Info($"Skipping debug mode update (character is null). Client ID: {localId:X4}");
 			return;
 		}
 

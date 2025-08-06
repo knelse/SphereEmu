@@ -57,14 +57,14 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     public void MoveToNextBeforeGameStage ()
     {
         SphLogger.Info(
-            $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {localId}");
+            $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {localId:X4}");
         sphereClient.ClientStateManager.Transition();
         currentHandler =
             BeforeGameHandlers.GetHandlerForState(sphereClient.ClientStateManager.CurrentState, streamPeerTcp, localId,
                 this);
         var handlerNameStr = currentHandler?.ToString() ?? "{none}";
         SphLogger.Info(
-            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {handlerNameStr}. Client ID: {localId}");
+            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {handlerNameStr}. Client ID: {localId:X4}");
     }
 
     public void Close ()
