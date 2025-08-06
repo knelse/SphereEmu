@@ -4,6 +4,7 @@ using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Sphere.Game;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Shared.Networking.WorldObject.Serializers;
 

@@ -61,6 +61,5 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Shared\Networking\DataModel\" />
-        <Folder Include="__OLD\__CUCKOLD\"/>
     </ItemGroup>
 </Project>

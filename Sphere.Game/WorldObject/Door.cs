@@ -5,7 +5,7 @@ using Godot;
 using SphServer.Helpers;
 using SphServer.Packets;
 
-namespace SphServer;
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class Door : WorldObject
 {

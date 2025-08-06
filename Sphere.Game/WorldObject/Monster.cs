@@ -3,7 +3,7 @@ using Godot;
 using SphServer.Packets;
 using SphServer.Shared.GameData.Enums;
 
-namespace SphServer;
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class Monster : WorldObject
 {

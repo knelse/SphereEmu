@@ -2,22 +2,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BitStreams;
 using Godot;
-using SphServer.Client;
 using SphServer.Packets;
-using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.WorldObject.Serializers;
 using SphServer.Shared.WorldState;
-using SphServer.Sphere.Game;
 using SphServer.Sphere.Game.IngameToEmulatorTypeConverters;
-using SphServer.Sphere.Game.Loot;
 using SphServer.Sphere.Game.NpcTrade.ItemsOnSale;
-using SphServer.System;
+
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class NpcInteractable : WorldObject
 {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using SphServer.Packets;
 
-namespace SphServer;
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class AlchemyResource : WorldObject
 {

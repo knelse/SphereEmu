@@ -2,6 +2,7 @@
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking.Handlers.InGame;
 

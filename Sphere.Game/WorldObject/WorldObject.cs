@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
@@ -8,6 +7,8 @@ using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
+
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class WorldObject : Node3D
 {
@@ -83,7 +84,7 @@ public partial class WorldObject : Node3D
 	{
 		var packetParts = GetPacketParts();
 		PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, GlobalTransform.Origin.Y,
-		    GlobalTransform.Origin.Z, Angle);
+			GlobalTransform.Origin.Z, Angle);
 		var localId = client.GetLocalObjectId(ID);
 		PacketPart.UpdateEntityId(packetParts, localId);
 

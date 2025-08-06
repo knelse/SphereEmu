@@ -4,8 +4,9 @@ using Godot;
 using SphServer.Server;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Sphere.Game;
+using SphServer.Sphere.Game.WorldObject;
 
-namespace SphServer;
+namespace SphServer.Sphere.Game.WorldObject.Spawner;
 
 public static class WorldObjectSpawner
 {

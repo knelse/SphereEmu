@@ -5,6 +5,7 @@ using SphServer.Server.Config;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
+using SphServer.Sphere.Game.WorldObject.Spawner;
 
 namespace SphServer.Server;
 

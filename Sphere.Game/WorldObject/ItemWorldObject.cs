@@ -1,6 +1,6 @@
 using SphServer.Shared.Db.DataModels;
 
-namespace SphServer;
+namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class ItemWorldObject : WorldObject
 {
