@@ -13,6 +13,7 @@ namespace SphServer.Client.Networking;
 public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, SphereClient sphereClient)
 {
     private PingHandler? pingHandler;
+    private NpcInteractionHandler? npcInteractionHandler;
     private ISphereClientNetworkingHandler? currentHandler;
     public readonly byte[] ReceiveBuffer = new byte [ServerConfig.AppConfig.ReceiveBufferSize];
     public BitStream DataStream = null!;
@@ -21,6 +22,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     {
         currentHandler ??= new HandshakeHandler(streamPeerTcp, localId, this);
         pingHandler ??= new (streamPeerTcp, localId, this);
+        npcInteractionHandler ??= new (localId, this);
 
         // handlers before game do their own data fetch. For ingame handlers, we need packet info here to figure out
         // which handler they should be routed to
@@ -44,6 +46,14 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
                 case 0x26:
                     await pingHandler.Handle(delta);
                     sphereClient.UpdateModelCoordinates();
+                    break;
+                case 0x31:
+                case 0x36:
+                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0xA3)
+                    {
+                        await npcInteractionHandler.Handle(delta);
+                    }
+
                     break;
             }
         }
@@ -114,7 +124,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     {
         return sphereClient.GetSelecterCharacter();
     }
-    
+
     public void MaybeQueueNetworkPacketSend (byte[] packet)
     {
         // TODO: might need an actual queue. For now, just send

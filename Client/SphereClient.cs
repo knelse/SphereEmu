@@ -163,6 +163,12 @@ public partial class SphereClient : Node
 		return (ushort) id;
 	}
 
+	public ushort GetGlobalObjectId (int id)
+	{
+		// TODO: implement
+		return (ushort) id;
+	}
+
 	public static ushort GetLocalObjectId (ushort clientId, int id)
 	{
 		// TODO: implement

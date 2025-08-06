@@ -13,7 +13,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
     {
         var localId = SphereClient.GetLocalObjectId(clientId, npcInteractable.ID);
         var stream = SphBitStream.GetWriteBitStream();
-        
+
         // return;
         stream.WriteUInt16(localId);
         stream.WriteByte(0, 2);
@@ -24,9 +24,9 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
         // open container
         stream.WriteUInt16(0x0103, 16);
         stream.WriteByte(0, 8);
-        
+
         var itemSeparator = (ushort) 0b110000000001010;
-        
+
         var packetBytes = new List<byte>();
         for (var i = 0; i < npcInteractable.GetMaxItemsOnSale(); i++)
         {
@@ -34,7 +34,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             var slotId = i + 1;
             stream.WriteUInt16(itemSeparator, 15);
             stream.WriteByte((byte) slotId, 8);
-        
+
             var itemLocalId = SphereClient.GetLocalObjectId(clientId, item.Id);
             stream.WriteUInt16(itemLocalId);
             stream.WriteBytes([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
@@ -44,7 +44,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             {
                 continue;
             }
-        
+
             // split
             var packetPiece2 = Packet.ToByteArray(stream.GetStreamData(), 3);
             packetPiece2[^1] = 0;
@@ -54,13 +54,13 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             {
                 break;
             }
-        
+
             stream.WriteUInt16(localId);
             stream.WriteByte(0, 2);
             stream.WriteUInt16((ushort) npcInteractable.ObjectType, 10);
             stream.WriteByte(0, 2);
         }
-        
+
         stream.WriteByte(0x3F, 7);
         stream.WriteUInt16(clientId);
         stream.WriteUInt32(0x62A34008);
@@ -95,7 +95,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             {
                 stream.WriteByte(0, 8 - stream.Bit);
             }
-        
+
             var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
             stream.CutStream(0, 0);
             // Client.TryFindClientByIdAndSendData(clientId, packet);
@@ -143,7 +143,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
         {
             PacketPart.UpdateValue(packetParts, "count", itemDbEntry.ItemCount, 15);
         }
-        
+
         if (itemDbEntry.Suffix != ItemSuffix.None)
         {
             PacketPart.UpdateValue(packetParts, "__hasSuffix", 0, 1);
@@ -151,7 +151,8 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             PacketPart.UpdateValue(packetParts, "suffix_length", suffixLengthValue, 2);
             var suffixLength = suffixLengthValue == 0 ? 3 : 7;
             PacketPart.UpdateValue(packetParts, "suffix",
-                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[itemDbEntry.GameObjectType][itemDbEntry.Suffix].value,
+                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[itemDbEntry.GameObjectType][itemDbEntry.Suffix]
+                    .value,
                 suffixLength);
         }
         else
@@ -160,12 +161,12 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             PacketPart.UpdateValue(packetParts, "suffix_length", 0, 2);
             PacketPart.UpdateValue(packetParts, "suffix", 2, 3);
         }
-        
+
         if (itemDbEntry.ContentsData.TryGetValue("scroll_id", out var value))
         {
             PacketPart.UpdateValue(packetParts, "subtype_id", (int) value, 15);
         }
-        
+
         foreach (var part in packetParts)
         {
             stream.WriteBits(part.Value);

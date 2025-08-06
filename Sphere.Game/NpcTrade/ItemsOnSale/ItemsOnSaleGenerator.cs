@@ -31,14 +31,19 @@ public static class ItemsOnSaleGenerator
             734, 740, 706, 715, 727, 707, 716, 803, 814, 818, 823, 837, 809, 804, 815, 819
         ]
     };
-    
-        public static List<ItemDbEntry> Weapons (int minTier, int maxTier)
-        {
-            var itemsOnSale = new List<ItemDbEntry>();
+
+    public static List<ItemDbEntry> Weapons (int minTier, int maxTier)
+    {
+        var itemsOnSale = new List<ItemDbEntry>();
         for (var i = minTier; i <= maxTier; i++)
         {
             var weaponsForTier = SphObjectDb.GameObjectDataDb.Where(x =>
-                x.Value is { GameId: > 1000, GameObjectType: GameObjectType.Sword or GameObjectType.Crossbow or GameObjectType.Axe, SuffixSetName.Length: 1 } && x.Value.SuffixSetName != "-" &&
+                x.Value is
+                {
+                    GameId: > 1000,
+                    GameObjectType: GameObjectType.Sword or GameObjectType.Crossbow or GameObjectType.Axe,
+                    SuffixSetName.Length: 1
+                } && x.Value.SuffixSetName != "-" &&
                 x.Value.Tier == i).GroupBy(x => x.Value.GameObjectType).ToList();
             var output = new List<ItemDbEntry>();
             foreach (var weapons in weaponsForTier.Select(weapons => weapons.ToList()))
@@ -75,15 +80,18 @@ public static class ItemsOnSaleGenerator
         itemsOnSale.Sort(ItemComparator);
 
         return itemsOnSale;
-        }
+    }
 
-        public static List<ItemDbEntry> Armor (int minTier, int maxTier)
+    public static List<ItemDbEntry> Armor (int minTier, int maxTier)
     {
         var itemsOnSale = new List<ItemDbEntry>();
         for (var i = minTier; i <= maxTier; i++)
         {
             var armorForTier = SphObjectDb.GameObjectDataDb.Where(x =>
-                x.Value is { GameId: > 1000, GameObjectType: GameObjectType.Chestplate or GameObjectType.Pants or GameObjectType.Gloves
+                x.Value is
+                {
+                    GameId: > 1000, GameObjectType: GameObjectType.Chestplate or GameObjectType.Pants
+                    or GameObjectType.Gloves
                     or GameObjectType.Boots or GameObjectType.Belt or GameObjectType.Helmet
                     or GameObjectType.Shield,
                     SuffixSetName.Length: 1
@@ -124,20 +132,20 @@ public static class ItemsOnSaleGenerator
     {
         var itemsOnSale = new List<ItemDbEntry>
         {
-            new ItemDbEntry
+            new()
             {
                 ObjectType = ObjectType.BackpackSmall,
                 Weight = 200,
                 VendorCost = 120
             },
-            new ItemDbEntry
+            new()
             {
                 ObjectType = ObjectType.BackpackLarge,
                 Weight = 200,
                 VendorCost = 240
             }
         };
-        
+
         return itemsOnSale;
     }
 
@@ -151,7 +159,7 @@ public static class ItemsOnSaleGenerator
             item.ItemCount = 1000;
             itemsOnSale.Add(item);
         }
-        
+
         return itemsOnSale;
     }
 
@@ -204,7 +212,7 @@ public static class ItemsOnSaleGenerator
             item.ItemCount = 1000;
             itemsOnSale.Add(item);
         }
-        
+
         return itemsOnSale;
     }
 
@@ -212,7 +220,7 @@ public static class ItemsOnSaleGenerator
     {
         var itemsOnSale = new List<ItemDbEntry>
         {
-            new ItemDbEntry
+            new()
             {
                 ObjectType = ObjectType.MantraBookSmall,
                 Weight = 200,
@@ -290,10 +298,10 @@ public static class ItemsOnSaleGenerator
                 itemsOnSale.Add(item);
             }
         }
-        
+
         return itemsOnSale;
     }
-    
+
     private static bool ShouldHaveSuffix (ObjectType objectType, int tier)
     {
         if (objectType is ObjectType.Ring)

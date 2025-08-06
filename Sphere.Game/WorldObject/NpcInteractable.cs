@@ -1,4 +1,4 @@
-// TODO: needs refactor and splitting into multiple files
+// TODO: probably needs refactor and splitting into multiple files
 
 using System;
 using System.Collections.Generic;
@@ -80,10 +80,16 @@ public partial class NpcInteractable : WorldObject
         return packet;
     }
 
+    public void ClientInteraction (ushort clientID,
+        ClientInteractionType interactionType = ClientInteractionType.Unknown)
+    {
+        ClientInteract(clientID, interactionType);
+    }
+
     protected override void ClientInteract (ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
-        SphLogger.Info($"FROM NPC: Client [{clientID}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+        SphLogger.Info($"FROM NPC: Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
         switch (interactionType)
         {
             case ClientInteractionType.OpenTrade:
@@ -161,6 +167,7 @@ public partial class NpcInteractable : WorldObject
             SphLogger.Warning($"Unable to find client with ID: {clientId:X4} when trading with NPC ID: {ID:X4}");
             return;
         }
+        SphLogger.Info(Convert.ToHexString(packet));
         
         client.MaybeQueueNetworkPacketSend(packet);
     }
