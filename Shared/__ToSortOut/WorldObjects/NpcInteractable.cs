@@ -141,7 +141,7 @@ public partial class NpcInteractable : WorldObject
         return packetParts;
     }
 
-    public override byte[] PostprocesPacketBytes (byte[] packet)
+    public override byte[] PostprocessPacketBytes (byte[] packet)
     {
         packet[^1] = 0;
         return packet;
@@ -704,7 +704,6 @@ public partial class NpcInteractable : WorldObject
             [GameObjectType.Gloves_Unique] = 7,
             [GameObjectType.Sword] = 8,
             [GameObjectType.Sword_Quest] = 8,
-            [GameObjectType.Sword_Unique] = 8,
             [GameObjectType.Sword_Unique] = 8,
             [GameObjectType.Crossbow] = 9,
             [GameObjectType.Crossbow_Quest] = 9,

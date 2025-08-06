@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using BitStreams;
-using SphServer.DataModels;
+using Newtonsoft.Json;
 using SphServer.Packets;
-using SphServer.Repositories;
-using static SphServer.Helpers.BitHelper;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Logger;
+using SphServer.Shared.WorldState;
+using static SphServer.Shared.Networking.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Helpers;
 
 using static Stat;
 
-public static class PacketHelper
+public static class NetworkedStatsUpdater
 {
-    public static void UpdateStatsForClient (CharacterDbEntry characterDbEntry)
+    public static void Update (CharacterDbEntry characterDbEntry)
     {
         var divider = 0b0001011;
         var fieldMarker7Bit = 0b01;
@@ -95,7 +97,8 @@ public static class PacketHelper
             AutoIncreaseStream = true
         };
 
-        stream.WriteBytes([MajorByte(characterDbEntry.ClientIndex), MinorByte(characterDbEntry.ClientIndex), 0x08, 0xC0], 4, true);
+        stream.WriteBytes(
+            [MajorByte(characterDbEntry.ClientIndex), MinorByte(characterDbEntry.ClientIndex), 0x08, 0xC0], 4, true);
         stream.WriteUInt16((ushort) hpMaxMarker, 14);
         stream.WriteUInt16(characterDbEntry.MaxHP, 14);
 
@@ -118,9 +121,16 @@ public static class PacketHelper
             stream.WriteBits(valueBits, fieldLength);
         }
 
-        var client = ActiveClientsRepository.Get(characterDbEntry.ClientIndex);
+        var client = ActiveClients.Get(characterDbEntry.ClientIndex);
 
-        client?.StreamPeer.PutData(Packet.ToByteArray(stream.GetStreamData(), 3));
-        Console.WriteLine("Stat update");
+        if (client is null)
+        {
+            SphLogger.Warning($"No client found by ID: {characterDbEntry.ClientIndex}");
+            return;
+        }
+
+        client.MaybeQueueNetworkPacketSend(Packet.ToByteArray(stream.GetStreamData(), 3));
+        var updatedStats = JsonConvert.SerializeObject(characterFieldMap);
+        SphLogger.Info($"Stat update for client ID: {characterDbEntry.ClientIndex}. New stat values: {updatedStats}");
     }
 }

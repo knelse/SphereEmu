@@ -15,7 +15,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     private PingHandler? pingHandler;
     private ISphereClientNetworkingHandler? currentHandler;
     public readonly byte[] ReceiveBuffer = new byte [ServerConfig.AppConfig.ReceiveBufferSize];
-    public BitStream DataStream;
+    public BitStream DataStream = null!;
 
     public async Task Process (double delta)
     {
@@ -112,5 +112,11 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     public CharacterDbEntry? GetSelectedCharacter ()
     {
         return sphereClient.GetSelecterCharacter();
+    }
+    
+    public void MaybeQueueNetworkPacketSend (byte[] packet)
+    {
+        // TODO: might need an actual queue. For now, just send
+        streamPeerTcp.PutData(packet);
     }
 }

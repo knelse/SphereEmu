@@ -1,13 +1,13 @@
-using System.Collections.Generic;
 using Godot;
-using SphServer;
-using SphServer.Repositories;
+using SphServer.Client;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.WorldState;
 
 public partial class MobNode : CharacterBody3D
 {
     private bool followActive;
     private Node3D? clientModel;
-    private Client? client;
+    private SphereClient? client;
     private const float speed = 5.5f;
     private Vector3 lastKnownClientPosition = Vector3.Zero;
     private readonly RandomNumberGenerator rng = new ();
@@ -20,7 +20,7 @@ public partial class MobNode : CharacterBody3D
 
     public override void _Ready ()
     {
-        MonsterDbEntry.ShowForEveryClientInRadius();
+        // MonsterDbEntry.ShowForEveryClientInRadius();
         navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
     }
 
@@ -28,14 +28,14 @@ public partial class MobNode : CharacterBody3D
     {
         // TODO: replace with signal later
         clientModel ??= GetNodeOrNull<Node3D>("/root/MainServer/Client/ClientModel");
-        client ??= GetNodeOrNull<Client>("/root/MainServer/Client");
-        if ((client?.StreamPeer.GetStatus() ?? StreamPeerTcp.Status.None) != StreamPeerTcp.Status.Connected)
-        {
-            clientModel = null;
-            client = null;
-            followActive = false;
-            lastKnownClientPosition = Vector3.Zero;
-        }
+        client ??= GetNodeOrNull<SphereClient>("/root/MainServer/Client");
+        // if ((client?.StreamPeer.GetStatus() ?? StreamPeerTcp.Status.None) != StreamPeerTcp.Status.Connected)
+        // {
+        //     clientModel = null;
+        //     client = null;
+        //     followActive = false;
+        //     lastKnownClientPosition = Vector3.Zero;
+        // }
 
         if (clientModel == null)
         {
@@ -60,15 +60,15 @@ public partial class MobNode : CharacterBody3D
         {
             networkCoordsUpdateDelay = 0.5f;
 
-            client?.MoveEntity(GlobalTransform.Origin.X, -GlobalTransform.Origin.Y + 1,
-                GlobalTransform.Origin.Z, Mathf.Pi - Transform.Basis.GetEuler().Y, client.GetLocalObjectId(MonsterDbEntry.Id));
+            // client?.MoveEntity(GlobalTransform.Origin.X, -GlobalTransform.Origin.Y + 1,
+            //     GlobalTransform.Origin.Z, Mathf.Pi - Transform.Basis.GetEuler().Y, client.GetLocalObjectId(MonsterDbEntry.Id));
         }
 
         attackDelay -= delta;
 
         if (attackDelay <= 0 && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 2)
         {
-            client?.ChangeHealth(client.GetLocalObjectId(MonsterDbEntry.Id), -rng.RandiRange(5, 8));
+            // client?.ChangeHealth(client.GetLocalObjectId(MonsterDbEntry.Id), -rng.RandiRange(5, 8));
             attackDelay = 3.5f;
         }
 
@@ -93,7 +93,7 @@ public partial class MobNode : CharacterBody3D
 
     public void SetInactive ()
     {
-        ActiveNodesRepository.Remove(GetInstanceId());
+        ActiveNodes.Remove(GetInstanceId());
         QueueFree();
     }
 }

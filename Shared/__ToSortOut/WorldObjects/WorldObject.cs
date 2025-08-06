@@ -111,7 +111,7 @@ public partial class WorldObject : Node3D
         return packetParts;
     }
 
-    public virtual byte[] PostprocesPacketBytes (byte[] packet)
+    public virtual byte[] PostprocessPacketBytes (byte[] packet)
     {
         return packet;
     }

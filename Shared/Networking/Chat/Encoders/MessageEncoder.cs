@@ -1,16 +1,17 @@
 using System;
-using SphServer.Server;
+using SphServer.Shared.BitStream;
+using SphServer.System;
 
-namespace SphServer.Helpers;
+namespace SphServer.Shared.Networking.Chat.Encoders;
 
-public static class ChatHelper
+public static class MessageEncoder
 {
-    public static byte[] GetChatMessageBytesForServerSend (string messageContent, string name, int chatTypeVal)
+    public static byte[] EncodeToSendFromServer (string messageContent, string name, int chatTypeVal)
     {
         if (Enum.IsDefined(typeof (PrivateChatType), chatTypeVal))
         {
             // todo
-            return Array.Empty<byte>();
+            return [];
         }
 
         if (chatTypeVal == (int) PublicChatType.GM_Outgoing)
@@ -18,25 +19,23 @@ public static class ChatHelper
             chatTypeVal = (int) PublicChatType.GM;
         }
 
-        var stream = BitHelper.GetWriteBitStream();
+        var stream = SphBitStream.GetWriteBitStream();
         var length = messageContent.Length;
         var nameLength = name.Length;
         var firstPacketLength = (byte) (nameLength + 20);
-        stream.WriteBytes(new byte[]
-            {
-                firstPacketLength, 0x00, 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45, 0xF0, 0x14, 0x80, 0x4F, (byte)
-                (length % 0xFF),
-                (byte) (length / 0xFF), 0x00, 0x00, 0x02, (byte) (nameLength + 1)
-            }, 18,
+        stream.WriteBytes([
+                firstPacketLength, 0x00, 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45, 0xF0, 0x14, 0x80, 0x4F,
+                (byte) (length % 0xFF), (byte) (length / 0xFF), 0x00, 0x00, 0x02, (byte) (nameLength + 1)
+            ], 18,
             true);
-        var nameBytes = SphereServer.Win1251!.GetBytes(name);
+        var nameBytes = SphEncoding.Win1251!.GetBytes(name);
         stream.WriteBytes(nameBytes, nameBytes.Length, true);
         stream.WriteByte(0x00);
         stream.WriteByte((byte) chatTypeVal);
 
         // client sometimes adds X bytes of 0x00 at the end, server does not send those back
         messageContent = messageContent.TrimEnd((char) 0);
-        var messageBytes = SphereServer.Win1251.GetBytes(messageContent);
+        var messageBytes = SphEncoding.Win1251.GetBytes(messageContent);
         var end = 0;
         var previousEnd = 0;
 
@@ -48,12 +47,11 @@ public static class ChatHelper
             var currentTextLength = end - previousEnd;
             var currentLength = currentTextLength + 13;
             stream.WriteBytes(
-                new byte[]
-                {
-                    (byte) (currentLength % 256), (byte) (currentLength / 256), 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45,
-                    0xF0,
-                    0x14, 0xC0
-                }, 11, true);
+            [
+                (byte) (currentLength % 256), (byte) (currentLength / 256), 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45,
+                0xF0,
+                0x14, 0xC0
+            ], 11, true);
             stream.WriteByte(0, 5);
             stream.WriteByte((byte) currentTextLength);
             stream.WriteBytes(messageBytes[previousEnd..end], currentTextLength, true);
@@ -68,10 +66,9 @@ public static class ChatHelper
         if (packetCount < 2)
         {
             stream.WriteBytes(
-                new byte[]
-                {
-                    0x0E, 0x00, 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45, 0xF0, 0x14, 0xC0
-                }, 11, true);
+            [
+                0x0E, 0x00, 0x2C, 0x01, 0x00, 0x22, 0xE4, 0x45, 0xF0, 0x14, 0xC0
+            ], 11, true);
             stream.WriteByte(0, 5);
             stream.WriteByte(1);
             stream.WriteByte(0);

@@ -10,7 +10,7 @@ namespace SphServer.Packets;
 public static class Packet
 {
     private static readonly ushort PacketValidationCodeOK = 0x2C01;
-    private static readonly byte[] EmptyPacketByteArray = { 0x04, 0x00, 0xF4, 0x01 };
+    private static readonly byte[] EmptyPacketByteArray = [0x04, 0x00, 0xF4, 0x01];
 
     public static byte[] ToByteArray (byte[]? content = null, int padZeros = 2)
     {

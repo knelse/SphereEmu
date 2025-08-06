@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using SphereHelpers.Extensions;
-using SphServer.DataModels;
 using SphServer.Repositories;
 using SphServer.Server;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.GameData.Enums;
+using SphServer.Shared.Networking.Chat.Encoders;
 
 namespace SphServer.Helpers.ConsoleCommands;
 
@@ -114,14 +116,14 @@ public class ConsoleCommandParser
         currentCharacterDbEntry.Money = int.Parse(stats[23]);
         currentCharacterDbEntry.PAtk = int.Parse(stats[24]);
         currentCharacterDbEntry.MAtk = int.Parse(stats[25]);
-        PacketHelper.UpdateStatsForClient(currentCharacterDbEntry);
+        NetworkedStatsUpdater.Update(currentCharacterDbEntry);
     }
 
     private void UpdateMoney (string args)
     {
         var stats = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         currentCharacterDbEntry.Money = int.Parse(stats[0]);
-        PacketHelper.UpdateStatsForClient(currentCharacterDbEntry);
+        NetworkedStatsUpdater.Update(currentCharacterDbEntry);
     }
 
     private void SendMessage (string args)
@@ -141,7 +143,7 @@ public class ConsoleCommandParser
 
         message = name + ": " + message;
         // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
-        var response = ChatHelper.GetChatMessageBytesForServerSend(message, name, chatType);
+        var response = MessageEncoder.EncodeToSendFromServer(message, name, chatType);
         StreamPeer.PutData(response);
     }
 

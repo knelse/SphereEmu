@@ -189,7 +189,7 @@ public class CharacterDbEntry
         return true;
     }
 
-    public bool UpdateCurrentStats ()
+    public bool RecalcCurrentStats ()
     {
         var slotsToUpdate = new HashSet<BelongingSlot>
         {

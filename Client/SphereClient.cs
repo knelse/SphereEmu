@@ -153,6 +153,11 @@ public partial class SphereClient : Node
         QueueFree();
     }
 
+    public void MaybeQueueNetworkPacketSend (byte[] packet)
+    {
+        clientConnection.MaybeQueueNetworkPacketSend(packet);
+    }
+
     private void UpdateCharacterForDebugMode ()
     {
         // TODO: move to db entry

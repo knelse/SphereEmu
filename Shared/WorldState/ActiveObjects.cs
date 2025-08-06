@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using SphServer.Client;
 
@@ -29,6 +30,11 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
         Add((ushort) index, value);
 
         return (ushort) index;
+    }
+
+    internal static SphereClient? FirstOrDefault ()
+    {
+        return storage.Values.FirstOrDefault();
     }
 }
 

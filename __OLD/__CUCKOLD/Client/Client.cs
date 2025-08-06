@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using BitStreams;
 using Godot;
 using SphServer;
-using SphServer.DataModels;
-using SphServer.Db;
 using SphServer.Helpers;
 using SphServer.Helpers.ConsoleCommands;
 using SphServer.Packets;
 using SphServer.Providers;
 using SphServer.Repositories;
+using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Networking;
+using SphServer.Shared.Networking.Chat.Encoders;
 using static SphServer.Helpers.BitHelper;
 using static SphServer.Helpers.Cities;
 using static SphServer.Helpers.Continents;
@@ -38,122 +40,6 @@ public partial class Client : Node
 
     public override async void _Process (double delta)
     {
-
-        switch (currentState)
-        {
-            case ClientState.INIT_WAITING_FOR_CHARACTER_SELECT:
-                if (selectedCharacterIndex == -1)
-                {
-                    if (StreamPeer.GetBytes(rcvBuffer) == 0x15)
-                    {
-                        selectedCharacterIndex = rcvBuffer[17] / 4 - 1;
-
-                        return;
-                    }
-
-                    if (rcvBuffer[0] == 0x2A)
-                    {
-                        if (rcvBuffer[0] == 0x2A)
-                        {
-                            var charIndex = rcvBuffer[17] / 4 - 1;
-                            var charId = player!.Characters[charIndex].Id;
-                            Console.WriteLine(
-                                $"Delete character [{charIndex}] - [{player!.Characters[charIndex].Name}]");
-                            player!.Characters.RemoveAt(charIndex);
-                            DbConnection.Players.Update(player);
-                            DbConnection.Characters.Delete(charId);
-
-                            // TODO: reinit session after delete
-                            // await HandleClientAsync(client, (ushort) (ID + 1), true);
-
-                            CloseConnection();
-                        }
-                    }
-
-                    if (rcvBuffer[0] < 0x1b ||
-                        rcvBuffer[13] != 0x08 || rcvBuffer[14] != 0x40 || rcvBuffer[15] != 0x80 ||
-                        rcvBuffer[16] != 0x05)
-                    {
-                        return;
-                    }
-
-                    selectedCharacterIndex = CharacterScreenCreateDeleteSelect();
-                }
-
-                if (selectedCharacterIndex == -1)
-                {
-                    return;
-                }
-
-                CurrentCharacter = player!.Characters[selectedCharacterIndex];
-                CurrentCharacter.ClientIndex = LocalId;
-                // CurrentCharacter.ClientIndex = 0x20E8;
-                // CurrentCharacter.X = 337;
-                // CurrentCharacter.Y = -158;
-                // CurrentCharacter.Z = -1450;
-                // CurrentCharacter.X = 424;
-                // CurrentCharacter.Y = -153;
-                // CurrentCharacter.Z = -1278;
-                CurrentCharacter.X = 80;
-                CurrentCharacter.Y = -150;
-                CurrentCharacter.Z = 200;
-                CurrentCharacter.Angle = 0.75;
-                CurrentCharacter.Money = 99999999;
-
-                Console.WriteLine("CLI: Enter game");
-                StreamPeer.PutData(CurrentCharacter.ToGameDataByteArray());
-                currentState = ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK;
-                break;
-            case ClientState.INIT_WAITING_FOR_CLIENT_INGAME_ACK:
-                if (StreamPeer.GetBytes(rcvBuffer) == 0x13)
-                {
-                    return;
-                }
-                // Interlocked.Increment(ref playerCount);
-
-                var worldData = CommonPackets.NewCharacterWorldData(CurrentCharacter.ClientIndex);
-                StreamPeer.PutData(worldData[0]);
-                StreamPeer.PutData(Convert.FromHexString(
-                    "BA002C010000004F6F08C002D07911C8BD10445E0C222F08C91685C80B03581CC002011609B05080C5022C1860D1000B07593CC802021611B09080C5042C286051010B0B585CC00213799189BCD0445E6CC08203161DB0F080C5072C406011020B11588CC882441625B03081C5892D506091020B1558AC422C5870D1820B1758CCD082061635B0B0C1C603848F1535B10F2B6391702035D1F643F24F411072A0D901900100000A5290530F0000D0001170AA2A48410E32000000"));
-                StreamPeer.PutData(Convert.FromHexString(
-                    "83002C010000004F6F08406102000A824011820E400600005010841C000000000000808220E888A00300000000140461A70B1D0068890920445DE8000005419820480768010000280802402D3B007D0000404110706CD901060000000A120050908089820450142400A720013B0541A0C041072003000068E010280000003436020200"));
-
-                Thread.Sleep(50);
-                // StreamPeer.PutData(worldData[1]);
-                // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY;
-                // await ToSignal(GetTree().CreateTimer(3), "timeout");
-                // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT;
-                currentState = ClientState.INGAME_DEFAULT;
-                break;
-            case ClientState.INIT_NEW_DUNGEON_TELEPORT_DELAY:
-                return;
-            case ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT:
-                await MoveToNewPlayerDungeonAsync(CurrentCharacter);
-                // StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(new WorldCoords(2584, 160, 1426, -1.5)));
-                break;
-            case ClientState.INGAME_DEFAULT:
-                break;
-            default: return;
-        }
-
-        if (currentState != ClientState.INGAME_DEFAULT)
-        {
-            return;
-        }
-
-        // Echo and keepalive
-
-        var length = StreamPeer.GetBytes(rcvBuffer);
-
-        if (length == 0)
-        {
-            return;
-        }
-
-        // todo: proper handling by packet type
-        var receiveStream = new BitStream(rcvBuffer);
-        receiveStream.CutStream(0, length);
-
         // if (rcvBuffer[13] == 0x08 && rcvBuffer[14] == 0x40 && rcvBuffer[15] == 0xC3)
         // {
         //     // clan
@@ -481,7 +367,7 @@ public partial class Client : Node
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
             var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
 
-            var response = ChatHelper.GetChatMessageBytesForServerSend(chatString, name, chatTypeVal);
+            var response = MessageEncoder.EncodeToSendFromServer(chatString, name, chatTypeVal);
             StreamPeer.PutData(response);
 
             Console.WriteLine($"CLI: [{chatTypeVal}] {name}: {message}");
@@ -576,97 +462,6 @@ public partial class Client : Node
         }
     }
 
-    private int CharacterScreenCreateDeleteSelect ()
-    {
-        var len = rcvBuffer[0] - 20 - 5;
-        var charDataBytesStart = rcvBuffer[0] - 5;
-        var nameCheckBytes = rcvBuffer[20..];
-        var charDataBytes = rcvBuffer[charDataBytesStart..(charDataBytesStart + rcvBuffer[0])];
-        var sb = new StringBuilder();
-        var firstLetterCharCode = ((nameCheckBytes[1] & 0b11111) << 3) + (nameCheckBytes[0] >> 5);
-        var firstLetterShouldBeRussian = false;
-
-        for (var i = 1; i < len; i++)
-        {
-            var currentCharCode = ((nameCheckBytes[i] & 0b11111) << 3) + (nameCheckBytes[i - 1] >> 5);
-
-            if (currentCharCode % 2 == 0)
-            {
-                // English
-                var currentLetter = (char) (currentCharCode / 2);
-                sb.Append(currentLetter);
-            }
-            else
-            {
-                // Russian
-                var currentLetter = currentCharCode >= 193
-                    ? (char) ((currentCharCode - 192) / 2 + 'а')
-                    : (char) ((currentCharCode - 129) / 2 + 'А');
-                sb.Append(currentLetter);
-
-                if (i == 2)
-                {
-                    // we assume first letter was russian if second letter is, this is a hack
-                    firstLetterShouldBeRussian = true;
-                }
-            }
-        }
-
-        string name;
-
-        if (firstLetterShouldBeRussian)
-        {
-            firstLetterCharCode += 1;
-            var firstLetter = firstLetterCharCode >= 193
-                ? (char) ((firstLetterCharCode - 192) / 2 + 'а')
-                : (char) ((firstLetterCharCode - 129) / 2 + 'А');
-            name = firstLetter + sb.ToString()[1..];
-        }
-        else
-        {
-            name = sb.ToString();
-        }
-
-        var isNameValid = true; // Login.IsNameValid(name);
-        Console.WriteLine(isNameValid ? $"SRV: Name [{name}] OK" : $"SRV: Name [{name}] already exists!");
-
-        if (!isNameValid)
-        {
-            StreamPeer.PutData(CommonPackets.NameAlreadyExists(LocalId));
-        }
-        else
-        {
-            var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
-            var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
-            var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
-            var hairColor = ((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6);
-            var tattoo = ((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6);
-
-            if (isGenderFemale)
-            {
-                faceType = 256 - faceType;
-                hairStyle = 255 - hairStyle;
-                hairColor = 255 - hairColor;
-                tattoo = 255 - tattoo;
-            }
-
-            var charIndex = rcvBuffer[17] / 4 - 1;
-
-            var newCharacterData =
-                CharacterDbEntry.CreateNewCharacter(LocalId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
-
-            DbConnection.Characters.Insert(newCharacterData);
-            player!.Characters.Insert(charIndex, newCharacterData);
-            DbConnection.Players.Update(player!);
-
-            StreamPeer.PutData(CommonPackets.NameCheckPassed(player!.Index));
-
-            return charIndex;
-        }
-
-        return -1;
-    }
-
     private async Task MoveToNewPlayerDungeonAsync (CharacterDbEntry selectedCharacterDbEntry)
     {
         var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
@@ -705,76 +500,7 @@ public partial class Client : Node
 
     public void SendPingResponse ()
     {
-        var clientPingBytesForComparison = rcvBuffer[17..55];
 
-        var clientPingBytesForPong = rcvBuffer[9..30];
-        var clientPingBinaryStr =
-            StringConvertHelpers.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
-
-        // if (clientPingBinaryStr[0] == '0')
-        // {
-        //     // random different packet, idk
-        //     return;
-        // }
-
-        if (string.IsNullOrEmpty(pingPreviousClientPingString))
-        {
-            pingPreviousClientPingString = clientPingBinaryStr;
-        }
-
-        else
-        {
-            var pingHasChanges = string.Compare(clientPingBinaryStr, pingPreviousClientPingString,
-                StringComparison.Ordinal);
-
-            if (pingHasChanges != 0)
-            {
-                var coords = CoordsHelper.GetCoordsFromPingBytes(rcvBuffer);
-                if (Math.Abs(coords.x - CurrentCharacter.X) < 100000)
-                {
-                    CurrentCharacter.X = coords.x;
-                    CurrentCharacter.Y = coords.y;
-                    CurrentCharacter.Z = coords.z;
-                    CurrentCharacter.Angle = coords.turn;
-                }
-                // Console.WriteLine(coords.ToDebugString());
-
-                pingPreviousClientPingString = clientPingBinaryStr;
-
-                // File.WriteAllText(@"c:\_sphereDumps\localPing", $"{coords.x} {coords.y} {coords.z}");
-            }
-        }
-
-        var xored = clientPingBytesForPong[5];
-
-        if (pingShouldXorTopBit)
-        {
-            xored ^= 0b10000000;
-        }
-
-        if (counter == 0)
-        {
-            var first = (ushort) ((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
-            first -= 0xE001;
-            counter = (ushort) (0xE001 + first / 12);
-        }
-
-        var pong = new byte[]
-        {
-            0x00, 0x00, 0x00, 0x00, 0x00, xored, MinorByte(counter), MajorByte(counter), 0x00, 0x00, 0x00, 0x00, 0x00
-        };
-
-        Array.Copy(clientPingBytesForPong, pong, 5);
-        Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
-        StreamPeer.PutData(Packet.ToByteArray(pong, 1));
-        pingShouldXorTopBit = !pingShouldXorTopBit;
-        counter++;
-
-        //overflow
-        if (counter < 0xE001)
-        {
-            counter = 0xE001;
-        }
     }
 
     private void PickupItemToTargetSlot ()
@@ -846,7 +572,7 @@ public partial class Client : Node
         {
             if (CurrentCharacter.UpdateCurrentStats())
             {
-                PacketHelper.UpdateStatsForClient(CurrentCharacter);
+                NetworkedStatsUpdater.Update(CurrentCharacter);
             }
         }
     }
@@ -988,7 +714,7 @@ public partial class Client : Node
 
             if (CurrentCharacter.UpdateCurrentStats())
             {
-                PacketHelper.UpdateStatsForClient(CurrentCharacter);
+                NetworkedStatsUpdater.Update(CurrentCharacter);
             }
             // TODO: character state shouldn't be stored in starting dungeon
             // DbConnectionProvider.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);

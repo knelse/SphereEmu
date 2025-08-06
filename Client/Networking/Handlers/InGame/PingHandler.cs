@@ -34,6 +34,7 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
 
     public async Task Handle (double delta)
     {
+        // TODO: rewrite without hex strings
         var clientPingBytesForComparison = clientConnection.ReceiveBuffer[17..55];
 
         var clientPingBytesForPong = clientConnection.ReceiveBuffer[9..30];

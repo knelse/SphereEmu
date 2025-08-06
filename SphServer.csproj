@@ -27,6 +27,18 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="Godot\Scenes\alchemy_resource.tscn" />
+        <Content Include="Godot\Scenes\Client.tscn" />
+        <Content Include="Godot\Scenes\door.tscn" />
+        <Content Include="Godot\Scenes\item_world_object.tscn" />
+        <Content Include="Godot\Scenes\LootBag.tscn" />
+        <Content Include="Godot\Scenes\MainServer.tscn" />
+        <Content Include="Godot\Scenes\Monster.tscn" />
+        <Content Include="Godot\Scenes\NewPlayerDungeon.tscn" />
+        <Content Include="Godot\Scenes\Npc.tscn" />
+        <Content Include="Godot\Scenes\npc_interactable.tscn" />
+        <Content Include="Godot\Scenes\teleport_with_target.tscn" />
+        <Content Include="Godot\Scenes\world_object.tscn" />
         <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>
         <Content Include="Shared\Networking\Packets\PacketPart.cs.uid"/>
         <Content Include="Shared\__ToSortOut\WorldObjects\AlchemyResource.cs.uid"/>
@@ -41,8 +53,8 @@
         <Content Include="sphdbsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="__OLD\__CUCKOLD\Helpers\ItemOnGroundSpawnData\AlchemyResourceSpawnData.txt"/>
-        <Content Include="__OLD\__CUCKOLD\Helpers\MonsterSpawnData\MonsterSpawnData.txt"/>
+        <Content Include="Sphere.Game\SpawnData\AlchemyResourceSpawnData.txt" />
+        <Content Include="Sphere.Game\SpawnData\MonsterSpawnData.txt" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="GodotSharp">
@@ -50,9 +62,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Folder Include="Shared\Networking\DataModel\" />
         <Folder Include="__OLD\__CUCKOLD\"/>
-        <Folder Include="__OLD\__CUCKOLD\Server\Auth\"/>
-        <Folder Include="__OLD\__CUCKOLD\Server\Providers\"/>
-        <Folder Include="__OLD\__CUCKOLD\Server\Repositories\ActiveObjects\"/>
     </ItemGroup>
 </Project>
