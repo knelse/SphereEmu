@@ -24,7 +24,8 @@ public class NpcInteractionHandler (ushort localId, ClientConnection clientConne
         var vendorWorldObject = ActiveWorldObjects.Get(vendorLocalId);
         if (vendorWorldObject is not NpcInteractable interactable)
         {
-            SphLogger.Warning($"Unable to interact with vendor [{vendorLocalId}]. Object not found. Client ID {localId:X4}");
+            SphLogger.Warning(
+                $"Unable to interact with vendor [{vendorLocalId}]. Object not found. Client ID {localId:X4}");
             return;
         }
 

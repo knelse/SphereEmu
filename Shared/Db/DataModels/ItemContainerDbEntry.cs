@@ -28,12 +28,14 @@ public class ItemContainerDbEntry
     public int DegreeMinusOne { get; set; }
 
     [BsonIgnore]
-    private static readonly PackedScene LootBagScene = (PackedScene) ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
+    private static readonly PackedScene LootBagScene =
+        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
 
     public Dictionary<int, int> Contents { get; set; } = new ();
     public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z, int level, //int sourceTypeId,
+    public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
+        int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
         var bag = LootBagScene.Instantiate<Godot.Nodes.LootBagNode>();
@@ -63,7 +65,7 @@ public class ItemContainerDbEntry
         bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
         SphereServer.ServerNode.CallDeferred("add_child", bag);
         DbConnection.ItemContainers.Update(bag.ItemContainerDbEntry);
-        
+
         SphLogger.Info($"Added item container ID: {bag.ItemContainerDbEntry.Id} at: ({x:F2}, {y: F2}, {z: F2})");
 
         return bag.ItemContainerDbEntry;

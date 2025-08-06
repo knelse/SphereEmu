@@ -266,9 +266,9 @@ public class CharacterDbEntry
         // MainServer.CharacterCollection.Update(Id, this);
 
         SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
-            $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
-            $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
-            $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
+                       $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
+                       $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
+                       $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
 
         return true;
     }

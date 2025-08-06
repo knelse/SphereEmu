@@ -53,7 +53,7 @@ public static class LootRandomizer
                 GameObjectType.Axe,
                 GameObjectType.Sword
             };
-            
+
             var overrideFilter = new HashSet<GameObjectType>
             {
                 // GameObjectType.Ring,

@@ -150,7 +150,7 @@ public class ConsoleCommandParser
         message = name + ": " + message;
         // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
         var response = MessageEncoder.EncodeToSendFromServer(message, name, chatType);
-        
+
         sphereClient?.MaybeQueueNetworkPacketSend(response);
     }
 
@@ -260,7 +260,8 @@ public class ConsoleCommandParser
         }
         else
         {
-            DebugConsole.SendSpherePacket($"/packet mob_assassin onme", bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes), true,
+            DebugConsole.SendSpherePacket($"/packet mob_assassin onme",
+                bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes), true,
                 list =>
                 {
                     foreach (var idPart in list.Where(x => x.Name == "mob_type"))
@@ -274,13 +275,16 @@ public class ConsoleCommandParser
 
     private void Loot (string args)
     {
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 1,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+            currentCharacterDbEntry.Z + 1,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 2,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+            currentCharacterDbEntry.Z + 2,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y, currentCharacterDbEntry.Z + 3,
+        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+            currentCharacterDbEntry.Z + 3,
             1,
             LootRatity.DEFAULT_MOB);
     }
@@ -296,7 +300,8 @@ public class ConsoleCommandParser
                     .Select(double.Parse)
                     .ToArray();
                 sphereClient?.MaybeQueueNetworkPacketSend(
-                    new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(new WorldCoords(coords[0], coords[1], coords[2],
+                    new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(new WorldCoords(
+                        coords[0], coords[1], coords[2],
                         0)));
             }
             catch (Exception ex)

@@ -25,34 +25,34 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include="AlchemyResourceSpawnData.txt">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Godot\Scenes\alchemy_resource.tscn" />
-        <Content Include="Godot\Scenes\Client.tscn" />
-        <Content Include="Godot\Scenes\door.tscn" />
-        <Content Include="Godot\Scenes\item_world_object.tscn" />
-        <Content Include="Godot\Scenes\LootBag.tscn" />
-        <Content Include="Godot\Scenes\MainServer.tscn" />
-        <Content Include="Godot\Scenes\Monster.tscn" />
-        <Content Include="Godot\Scenes\NewPlayerDungeon.tscn" />
-        <Content Include="Godot\Scenes\Npc.tscn" />
-        <Content Include="Godot\Scenes\npc_interactable.tscn" />
-        <Content Include="Godot\Scenes\teleport_with_target.tscn" />
-        <Content Include="Godot\Scenes\world_object.tscn" />
+        <Content Include="Godot\Scenes\alchemy_resource.tscn"/>
+        <Content Include="Godot\Scenes\Client.tscn"/>
+        <Content Include="Godot\Scenes\door.tscn"/>
+        <Content Include="Godot\Scenes\item_world_object.tscn"/>
+        <Content Include="Godot\Scenes\LootBag.tscn"/>
+        <Content Include="Godot\Scenes\MainServer.tscn"/>
+        <Content Include="Godot\Scenes\Monster.tscn"/>
+        <Content Include="Godot\Scenes\NewPlayerDungeon.tscn"/>
+        <Content Include="Godot\Scenes\Npc.tscn"/>
+        <Content Include="Godot\Scenes\npc_interactable.tscn"/>
+        <Content Include="Godot\Scenes\teleport_with_target.tscn"/>
+        <Content Include="Godot\Scenes\world_object.tscn"/>
         <Content Include="MonsterSpawnData.txt">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>
         <Content Include="Shared\Networking\Packets\PacketPart.cs.uid"/>
         <Content Include="sphdbsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Sphere.Game\WorldObject\AlchemyResource.cs.uid" />
-        <Content Include="Sphere.Game\WorldObject\Door.cs.uid" />
-        <Content Include="Sphere.Game\WorldObject\Spawner\WorldObjectSpawner.cs.uid" />
+        <Content Include="Sphere.Game\WorldObject\AlchemyResource.cs.uid"/>
+        <Content Include="Sphere.Game\WorldObject\Door.cs.uid"/>
+        <Content Include="Sphere.Game\WorldObject\Spawner\WorldObjectSpawner.cs.uid"/>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="GodotSharp">
@@ -60,6 +60,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Shared\Networking\DataModel\" />
+        <Folder Include="Shared\Networking\DataModel\"/>
     </ItemGroup>
 </Project>

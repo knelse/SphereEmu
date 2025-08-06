@@ -132,13 +132,13 @@ public static class ItemsOnSaleGenerator
     {
         var itemsOnSale = new List<ItemDbEntry>
         {
-            new()
+            new ()
             {
                 ObjectType = ObjectType.BackpackSmall,
                 Weight = 200,
                 VendorCost = 120
             },
-            new()
+            new ()
             {
                 ObjectType = ObjectType.BackpackLarge,
                 Weight = 200,
@@ -220,7 +220,7 @@ public static class ItemsOnSaleGenerator
     {
         var itemsOnSale = new List<ItemDbEntry>
         {
-            new()
+            new ()
             {
                 ObjectType = ObjectType.MantraBookSmall,
                 Weight = 200,

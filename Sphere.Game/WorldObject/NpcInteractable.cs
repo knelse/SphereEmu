@@ -155,15 +155,15 @@ public partial class NpcInteractable : WorldObject
 
     private void FindClientAndScheduleSend (byte[] packet, ushort clientId)
     {
-        
         var client = ActiveClients.Get(clientId);
         if (client is null)
         {
             SphLogger.Warning($"Unable to find client with ID: {clientId:X4} when trading with NPC ID: {ID:X4}");
             return;
         }
+
         SphLogger.Info(Convert.ToHexString(packet));
-        
+
         client.MaybeQueueNetworkPacketSend(packet);
     }
 
