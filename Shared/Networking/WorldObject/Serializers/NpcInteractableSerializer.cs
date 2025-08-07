@@ -15,7 +15,6 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
         var localId = SphereClient.GetLocalObjectId(clientId, npcInteractable.ID);
         var stream = SphBitStream.GetWriteBitStream();
 
-        // return;
         stream.WriteUInt16(localId);
         stream.WriteByte(0, 2);
         stream.WriteUInt16((ushort) npcInteractable.ObjectType, 10);

@@ -34,6 +34,17 @@ public partial class NpcInteractable : WorldObject
     public override void _Ready ()
     {
         base._Ready();
+        ObjectType = NpcType switch
+        {
+            NpcType.Banker => ObjectType.NpcBanker,
+            NpcType.Guilder => ObjectType.NpcGuilder,
+            NpcType.QuestTitle => ObjectType.NpcQuestTitle,
+            NpcType.QuestKarma => ObjectType.NpcQuestKarma,
+            NpcType.QuestDegree => ObjectType.NpcQuestDegree,
+            NpcType.Tournament => ObjectType.NpcGuilder,
+            _ => ObjectType.NpcTrade
+        };
+        
         if (VendorItemTierMax == 0 || VendorItemTierMin == 0)
         {
             SphLogger.Warning($"Vendor [{ID}] ({NpcType}) has no item tiers set");
@@ -161,8 +172,6 @@ public partial class NpcInteractable : WorldObject
             SphLogger.Warning($"Unable to find client with ID: {clientId:X4} when trading with NPC ID: {ID:X4}");
             return;
         }
-
-        SphLogger.Info(Convert.ToHexString(packet));
 
         client.MaybeQueueNetworkPacketSend(packet);
     }
