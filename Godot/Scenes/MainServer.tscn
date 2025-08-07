@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhf55t2qcp114"]
+[gd_scene load_steps=9 format=3 uid="uid://bhf55t2qcp114"]
 
 [ext_resource type="Script" uid="uid://c6plta4xgx5uh" path="res://Server/SphereServer.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://c75fu8t5hnes4" path="res://Godot/Scenes/world_object.tscn" id="4_61mkd"]
 [ext_resource type="PackedScene" uid="uid://b4c83wln6qro8" path="res://Godot/Scenes/teleport_with_target.tscn" id="4_s22ep"]
 [ext_resource type="PackedScene" uid="uid://6qegskoxrqr4" path="res://Godot/Scenes/npc_interactable.tscn" id="5_5rg3u"]
 [ext_resource type="PackedScene" uid="uid://2x20dwdkiyxi" path="res://Godot/Scenes/door.tscn" id="5_h4gwc"]
+[ext_resource type="Script" uid="uid://cs50b4byaauol" path="res://Server/UI/ConnectedClients/ConnectedClientsUI.cs" id="7_v85dg"]
 [ext_resource type="PackedScene" uid="uid://jecy1l185txr" path="res://Godot/Scenes/Monster.tscn" id="7_wg6ka"]
+[ext_resource type="Script" uid="uid://cuq7362rbruhh" path="res://Server/UI/ConnectedClients/ConnectedClientsPopupUI.cs" id="8_w4ogy"]
 
 [node name="MainServer" type="Node"]
 script = ExtResource("2")
@@ -403,3 +405,17 @@ MonsterType = 87
 [node name="Monsters" type="Node3D" parent="."]
 
 [node name="Resources" type="Node3D" parent="."]
+
+[node name="ConnectedClients" type="Tree" parent="."]
+offset_right = 551.0
+offset_bottom = 294.0
+columns = 9
+column_titles_visible = true
+hide_folding = true
+hide_root = true
+scroll_horizontal_enabled = false
+script = ExtResource("7_v85dg")
+
+[node name="ConnectedClientPopup" type="PopupMenu" parent="ConnectedClients"]
+submenu_popup_delay = 0.1
+script = ExtResource("8_w4ogy")

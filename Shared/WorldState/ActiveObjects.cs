@@ -37,6 +37,11 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
     {
         return storage.Values.FirstOrDefault();
     }
+
+    internal static ConcurrentDictionary<ushort, SphereClient> GetAll ()
+    {
+        return storage;
+    }
 }
 
 internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
