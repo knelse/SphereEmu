@@ -39,7 +39,7 @@ public partial class Monster : WorldObject
 		if (objectType is GameObjectType.Monster_Flying or GameObjectType.Monster_Event_Flying
 			or GameObjectType.Special_Necromancer_Flyer)
 		{
-			PacketPart.UpdateValue(packetParts, "entity_type", (int) PacketObjectTypes.MonsterFlyer, 10);
+			PacketPart.UpdateValue(packetParts, "entity_type", (int) ObjectType.MonsterFlyer, 10);
 		}
 
 		var mobTypeId = MonsterTypeMapping.MonsterNameToMonsterTypeMapping[MonsterType];

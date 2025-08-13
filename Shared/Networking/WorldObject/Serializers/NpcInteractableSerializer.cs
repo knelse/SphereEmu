@@ -17,7 +17,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 
         stream.WriteUInt16(localId);
         stream.WriteByte(0, 2);
-        stream.WriteUInt16((ushort) npcInteractable.PacketObjectType, 10);
+        stream.WriteUInt16((ushort) npcInteractable.ObjectType, 10);
         stream.WriteByte(0, 1);
         // interaction
         stream.WriteByte(0x0A, 8);
@@ -57,7 +57,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 
             stream.WriteUInt16(localId);
             stream.WriteByte(0, 2);
-            stream.WriteUInt16((ushort) npcInteractable.PacketObjectType, 10);
+            stream.WriteUInt16((ushort) npcInteractable.ObjectType, 10);
             stream.WriteByte(0, 2);
         }
 
@@ -129,9 +129,9 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 
     private void WriteItemPacketToStream (ushort clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
     {
-        var actualObjectType = itemDbEntry.PacketObjectTypes == PacketObjectTypes.Unknown
+        var actualObjectType = itemDbEntry.ObjectType == ObjectType.Unknown
             ? itemDbEntry.GameObjectType.GetPacketObjectType()
-            : itemDbEntry.PacketObjectTypes;
+            : itemDbEntry.ObjectType;
         var packetParts = PacketPart.LoadDefinedPartsFromFile(actualObjectType);
         PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0, 0);
         var localId = SphereClient.GetLocalObjectId(clientId, itemDbEntry.Id);

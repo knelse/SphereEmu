@@ -71,7 +71,7 @@ public static class ItemsOnSaleGenerator
 
         itemsOnSale.Add(new ItemDbEntry
         {
-            PacketObjectTypes = PacketObjectTypes.Arrows,
+            ObjectType = ObjectType.Arrows,
             Weight = 75,
             VendorCost = 4,
             ItemCount = 1000
@@ -134,13 +134,13 @@ public static class ItemsOnSaleGenerator
         {
             new ()
             {
-                PacketObjectTypes = PacketObjectTypes.BackpackSmall,
+                ObjectType = ObjectType.BackpackSmall,
                 Weight = 200,
                 VendorCost = 120
             },
             new ()
             {
-                PacketObjectTypes = PacketObjectTypes.BackpackLarge,
+                ObjectType = ObjectType.BackpackLarge,
                 Weight = 200,
                 VendorCost = 240
             }
@@ -170,13 +170,13 @@ public static class ItemsOnSaleGenerator
         {
             itemsOnSale.Add(new ItemDbEntry
             {
-                PacketObjectTypes = PacketObjectTypes.AlchemyPot,
+                ObjectType = ObjectType.AlchemyPot,
                 Weight = 500,
                 VendorCost = 330
             });
             itemsOnSale.Add(new ItemDbEntry
             {
-                PacketObjectTypes = PacketObjectTypes.RecipeBook,
+                ObjectType = ObjectType.RecipeBook,
                 Weight = 200,
                 VendorCost = 120
             });
@@ -191,14 +191,14 @@ public static class ItemsOnSaleGenerator
 
             itemsOnSale.Add(new ItemDbEntry
             {
-                PacketObjectTypes = PacketObjectTypes.PowderAmilus,
+                ObjectType = ObjectType.PowderAmilus,
                 Weight = 1,
                 VendorCost = 5,
                 ItemCount = 1000
             });
             itemsOnSale.Add(new ItemDbEntry
             {
-                PacketObjectTypes = PacketObjectTypes.PowderFinale,
+                ObjectType = ObjectType.PowderFinale,
                 Weight = 1,
                 VendorCost = 3,
                 ItemCount = 1000
@@ -222,35 +222,35 @@ public static class ItemsOnSaleGenerator
         {
             new ()
             {
-                PacketObjectTypes = PacketObjectTypes.MantraBookSmall,
+                ObjectType = ObjectType.MantraBookSmall,
                 Weight = 200,
                 VendorCost = 350
             }
         };
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier(PacketObjectTypes.Ring, i, true));
-            itemsOnSale.Add(GetItemForTier(PacketObjectTypes.Ring, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier(PacketObjectTypes.Ring, maxTier, true));
+        itemsOnSale.Add(GetItemForTier(ObjectType.Ring, maxTier, true));
         if (minTier != 1)
         {
-            itemsOnSale.Add(GetItemForTier(PacketObjectTypes.Ring, minTier, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, minTier, true));
         }
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier([PacketObjectTypes.ArmorAmulet, PacketObjectTypes.ArmorBracelet], i, true));
+            itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], i, true));
             if (i == minTier && i != 1)
             {
                 continue;
             }
 
-            itemsOnSale.Add(GetItemForTier([PacketObjectTypes.ArmorAmulet, PacketObjectTypes.ArmorBracelet], i, true));
+            itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier([PacketObjectTypes.ArmorAmulet, PacketObjectTypes.ArmorBracelet], maxTier,
+        itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], maxTier,
             true));
         if (minTier == 1)
         {
@@ -258,7 +258,7 @@ public static class ItemsOnSaleGenerator
             {
                 var scroll = new ItemDbEntry
                 {
-                    PacketObjectTypes = PacketObjectTypes.ScrollLegend,
+                    ObjectType = ObjectType.ScrollLegend,
                     Weight = 25,
                     VendorCost = 50,
                     ItemCount = 1000,
@@ -273,11 +273,11 @@ public static class ItemsOnSaleGenerator
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier(PacketObjectTypes.ArmorRobe, i, true));
-            itemsOnSale.Add(GetItemForTier(PacketObjectTypes.ArmorRobe, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier(PacketObjectTypes.ArmorRobe, maxTier, true));
+        itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, maxTier, true));
 
         if (minTier != 1)
         {
@@ -302,14 +302,14 @@ public static class ItemsOnSaleGenerator
         return itemsOnSale;
     }
 
-    private static bool ShouldHaveSuffix (PacketObjectTypes packetObjectTypes, int tier)
+    private static bool ShouldHaveSuffix (ObjectType objectType, int tier)
     {
-        if (packetObjectTypes is PacketObjectTypes.Ring)
+        if (objectType is ObjectType.Ring)
         {
             return true;
         }
 
-        if (!LootData.ObjectTypesWithSuffixes.Contains(packetObjectTypes))
+        if (!LootData.ObjectTypesWithSuffixes.Contains(objectType))
         {
             return false;
         }
@@ -319,12 +319,12 @@ public static class ItemsOnSaleGenerator
         return true; // rand == tier * 2;
     }
 
-    private static ItemDbEntry GetItemForTier (PacketObjectTypes packetObjectTypes, int tier, bool withSuffixMaybe = false)
+    private static ItemDbEntry GetItemForTier (ObjectType objectType, int tier, bool withSuffixMaybe = false)
     {
-        return GetItemForTier([packetObjectTypes], tier, withSuffixMaybe);
+        return GetItemForTier([objectType], tier, withSuffixMaybe);
     }
 
-    private static ItemDbEntry GetItemForTier (HashSet<PacketObjectTypes> objectTypes, int tier, bool withSuffixMaybe = false)
+    private static ItemDbEntry GetItemForTier (HashSet<ObjectType> objectTypes, int tier, bool withSuffixMaybe = false)
     {
         var candidates = SphObjectDb.GameObjectDataDb.Where(x =>
                 objectTypes.Contains(x.Value.GameObjectType.GetPacketObjectType()) && x.Value.Tier == tier
