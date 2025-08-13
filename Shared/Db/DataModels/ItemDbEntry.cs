@@ -13,7 +13,7 @@ public class ItemDbEntry
     public int GameId { get; set; }
     public string SphereType { get; set; } = string.Empty;
     public GameObjectType GameObjectType { get; set; }
-    public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
+    public PacketObjectTypes PacketObjectTypes { get; set; } = PacketObjectTypes.Unknown;
     public string ModelNameGround { get; set; } = string.Empty;
     public string ModelNameInventory { get; set; } = string.Empty;
     public int HpCost { get; set; }
@@ -107,7 +107,7 @@ public class ItemDbEntry
             item.UpdateStatsForSuffix();
         }
 
-        item.ObjectType = go.GameObjectType.GetPacketObjectType();
+        item.PacketObjectTypes = go.GameObjectType.GetPacketObjectType();
 
         return item;
     }

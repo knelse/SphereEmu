@@ -40,9 +40,9 @@ public class PacketPart
         Value = value;
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
+    public static List<PacketPart> LoadDefinedPartsFromFile (PacketObjectTypes packetObjectTypes)
     {
-        var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
+        var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(packetObjectTypes, "teleport");
         var partsPath = ServerConfig.AppConfig.PacketPartPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }

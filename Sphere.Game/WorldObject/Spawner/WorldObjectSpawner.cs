@@ -66,9 +66,9 @@ public static class WorldObjectSpawner
                 node.GameObjectID = gameId;
                 SphereServer.ServerNode.CallDeferred("add_child", node);
                 node.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
-                node.ObjectType = Enum.TryParse(type, out ObjectType objectType)
+                node.PacketObjectType = (int) (Enum.TryParse(type, out PacketObjectTypes objectType)
                     ? objectType
-                    : ObjectType.AlchemyMetal;
+                    : PacketObjectTypes.AlchemyMetal);
             }
             catch (Exception ex)
             {

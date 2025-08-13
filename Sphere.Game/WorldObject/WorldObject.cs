@@ -14,7 +14,7 @@ public partial class WorldObject : Node3D
 {
 	[Export] public int Angle { get; set; }
 	[Export] public ushort ID { get; set; }
-	[Export] public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
+	[Export] public int PacketObjectType { get; set; } = (int) PacketObjectTypes.Unknown;
 
 	public override void _Ready ()
 	{
@@ -77,7 +77,7 @@ public partial class WorldObject : Node3D
 
 	protected virtual List<PacketPart> GetPacketParts ()
 	{
-		return PacketPart.LoadDefinedPartsFromFile(ObjectType);
+		return PacketPart.LoadDefinedPartsFromFile((PacketObjectTypes) PacketObjectType);
 	}
 
 	public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID (SphereClient client)
@@ -104,6 +104,6 @@ public partial class WorldObject : Node3D
 	protected virtual void ClientInteract (ushort clientID,
 		ClientInteractionType interactionType = ClientInteractionType.Unknown)
 	{
-		SphLogger.Info($"Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+		SphLogger.Info($"Client [{clientID:X4}] interacts with [{ID}] {PacketObjectType} -- {interactionType}");
 	}
 }

@@ -34,16 +34,16 @@ public partial class NpcInteractable : WorldObject
     public override void _Ready ()
     {
         base._Ready();
-        ObjectType = NpcType switch
+        PacketObjectType = (int) (NpcType switch
         {
-            NpcType.Banker => ObjectType.NpcBanker,
-            NpcType.Guilder => ObjectType.NpcGuilder,
-            NpcType.QuestTitle => ObjectType.NpcQuestTitle,
-            NpcType.QuestKarma => ObjectType.NpcQuestKarma,
-            NpcType.QuestDegree => ObjectType.NpcQuestDegree,
-            NpcType.Tournament => ObjectType.NpcGuilder,
-            _ => ObjectType.NpcTrade
-        };
+            NpcType.Banker => PacketObjectTypes.NpcBanker,
+            NpcType.Guilder => PacketObjectTypes.NpcGuilder,
+            NpcType.QuestTitle => PacketObjectTypes.NpcQuestTitle,
+            NpcType.QuestKarma => PacketObjectTypes.NpcQuestKarma,
+            NpcType.QuestDegree => PacketObjectTypes.NpcQuestDegree,
+            NpcType.Tournament => PacketObjectTypes.NpcGuilder,
+            _ => PacketObjectTypes.NpcTrade
+        });
         
         if (VendorItemTierMax == 0 || VendorItemTierMin == 0)
         {
@@ -95,7 +95,7 @@ public partial class NpcInteractable : WorldObject
     protected override void ClientInteract (ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
-        SphLogger.Info($"FROM NPC: Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+        SphLogger.Info($"FROM NPC: Client [{clientID:X4}] interacts with [{ID}] {PacketObjectType} -- {interactionType}");
         switch (interactionType)
         {
             case ClientInteractionType.OpenTrade:
