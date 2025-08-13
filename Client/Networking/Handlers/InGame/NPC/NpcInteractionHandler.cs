@@ -4,7 +4,7 @@ using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 
-namespace SphServer.Client.Networking.Handlers.InGame;
+namespace SphServer.Client.Networking.Handlers.InGame.NPC;
 
 public class NpcInteractionHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler

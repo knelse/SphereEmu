@@ -12,212 +12,214 @@ namespace SphServer.Client;
 
 public partial class SphereClient : Node
 {
-	private ClientState currentState = ClientState.I_AM_BREAD;
+    private ClientState currentState = ClientState.I_AM_BREAD;
 
-	private CharacterBody3D? clientModel;
-	public CharacterDbEntry? CurrentCharacter;
-	private ClientConnection clientConnection;
-	public readonly ClientStateManager ClientStateManager = new (false);
-	public ushort localId;
-	private StreamPeerTcp streamPeerTcp = null!;
-	private PlayerDbEntry? playerDbEntry;
-	private bool isExiting;
-	private int selectedCharacterIndex;
-	public delegate void ClientConnectEventHandler ();
-	public delegate void ClientDisconnectEventHandler ();
+    private CharacterBody3D? clientModel;
+    public CharacterDbEntry? CurrentCharacter;
+    private ClientConnection clientConnection;
+    public readonly ClientStateManager ClientStateManager = new (false);
+    public ushort localId;
+    private StreamPeerTcp streamPeerTcp = null!;
+    private PlayerDbEntry? playerDbEntry;
+    private bool isExiting;
+    private int selectedCharacterIndex;
 
-	public event ClientConnectEventHandler OnClientConnected;
-	public event ClientDisconnectEventHandler OnClientDisconnected;
-	
-	public override async void _PhysicsProcess (double delta)
-	{
-		if (streamPeerTcp.GetStatus() != StreamPeerTcp.Status.Connected)
-		{
-			RemoveClient();
-			return;
-		}
+    public delegate void ClientConnectEventHandler ();
 
-		clientModel ??= GetNode<CharacterBody3D>("ClientModel");
+    public delegate void ClientDisconnectEventHandler ();
 
-		await clientConnection.Process(delta);
-	}
+    public event ClientConnectEventHandler OnClientConnected;
+    public event ClientDisconnectEventHandler OnClientDisconnected;
 
-	public override void _Ready ()
-	{
-		// TODO: client logs in separate files
-		SphLogger.Info($"New client connected. Client ID: {localId:X4}");
-		
-		// Task.Run(() =>
-		// {
-		//     while (true)
-		//     {
-		//         var input = Console.ReadLine();
-		//         try
-		//         {
-		//             if (CurrentCharacter is null)
-		//             {
-		//                 Console.WriteLine("Character is null");
-		//                 continue;
-		//             }
-		//
-		//             var parser = ConsoleCommandParser.Get(CurrentCharacter);
-		//             var result = parser.Parse(input);
-		//         }
-		//         catch (Exception ex)
-		//         {
-		//             Console.WriteLine(ex.Message);
-		//         }
-		//     }
-		// });
-	}
+    public override async void _PhysicsProcess (double delta)
+    {
+        if (streamPeerTcp.GetStatus() != StreamPeerTcp.Status.Connected)
+        {
+            RemoveClient();
+            return;
+        }
 
-	public override void _ExitTree ()
-	{
-		base._ExitTree();
-	}
+        clientModel ??= GetNode<CharacterBody3D>("ClientModel");
 
-	public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
-	{
-		clientConnection = new ClientConnection(streamPeer, id, this);
-		localId = id;
-		streamPeerTcp = streamPeer;
+        await clientConnection.Process(delta);
+    }
 
-		return this;
-	}
+    public override void _Ready ()
+    {
+        // TODO: client logs in separate files
+        SphLogger.Info($"New client connected. Client ID: {localId:X4}");
 
-	public void SetPlayerDbEntry (PlayerDbEntry? entry)
-	{
-		playerDbEntry = entry;
-	}
+        // Task.Run(() =>
+        // {
+        //     while (true)
+        //     {
+        //         var input = Console.ReadLine();
+        //         try
+        //         {
+        //             if (CurrentCharacter is null)
+        //             {
+        //                 Console.WriteLine("Character is null");
+        //                 continue;
+        //             }
+        //
+        //             var parser = ConsoleCommandParser.Get(CurrentCharacter);
+        //             var result = parser.Parse(input);
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             Console.WriteLine(ex.Message);
+        //         }
+        //     }
+        // });
+    }
 
-	public CharacterDbEntry? GetSelecterCharacter ()
-	{
-		return CurrentCharacter;
-	}
+    public override void _ExitTree ()
+    {
+        base._ExitTree();
+    }
 
-	public void SetSelectedCharacterIndex (int index)
-	{
-		selectedCharacterIndex = index;
-		try
-		{
-			CurrentCharacter = playerDbEntry!.Characters[index];
-			CurrentCharacter.ClientIndex = localId;
-			UpdateCharacterForDebugMode();
-		}
-		catch (Exception ex)
-		{
-			SphLogger.Error($"Unable to select character at index: {index}. Client ID: {localId:X4}.", ex);
-		}
-	}
+    public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
+    {
+        clientConnection = new ClientConnection(streamPeer, id, this);
+        localId = id;
+        streamPeerTcp = streamPeer;
 
-	public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
-	{
-		try
-		{
-			DbConnection.Characters.Insert(newCharacter);
-			playerDbEntry!.Characters.Insert(index, newCharacter);
-			DbConnection.Players.Update(playerDbEntry!);
-		}
-		catch (Exception ex)
-		{
-			SphLogger.Error($"Unable to create character at index: {index}. Client ID: {localId:X4}.", ex);
-		}
-	}
+        return this;
+    }
 
-	public void DeletePlayerCharacter (int index)
-	{
-		// TODO: move to db entry
-		try
-		{
-			var characterToDelete = playerDbEntry!.Characters[index];
-			var id = characterToDelete.Id;
-			var name = characterToDelete.Name;
-			SphLogger.Info($"Delete character [{index}] - [{name}]. Client ID: {localId:X4}");
-			playerDbEntry!.Characters.RemoveAt(index);
-			DbConnection.Players.Update(playerDbEntry);
-			DbConnection.Characters.Delete(id);
+    public void SetPlayerDbEntry (PlayerDbEntry? entry)
+    {
+        playerDbEntry = entry;
+    }
 
-			// TODO: reinit session after delete
-			RemoveClient();
-		}
-		catch (Exception ex)
-		{
-			SphLogger.Error($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
-		}
-	}
+    public CharacterDbEntry? GetSelecterCharacter ()
+    {
+        return CurrentCharacter;
+    }
 
-	public void RemoveClient ()
-	{
-		if (isExiting)
-		{
-			return;
-		}
+    public void SetSelectedCharacterIndex (int index)
+    {
+        selectedCharacterIndex = index;
+        try
+        {
+            CurrentCharacter = playerDbEntry!.Characters[index];
+            CurrentCharacter.ClientIndex = localId;
+            UpdateCharacterForDebugMode();
+        }
+        catch (Exception ex)
+        {
+            SphLogger.Error($"Unable to select character at index: {index}. Client ID: {localId:X4}.", ex);
+        }
+    }
 
-		SphLogger.Info($"Client disconnected. Client ID: {localId:X4}");
+    public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
+    {
+        try
+        {
+            DbConnection.Characters.Insert(newCharacter);
+            playerDbEntry!.Characters.Insert(index, newCharacter);
+            DbConnection.Players.Update(playerDbEntry!);
+        }
+        catch (Exception ex)
+        {
+            SphLogger.Error($"Unable to create character at index: {index}. Client ID: {localId:X4}.", ex);
+        }
+    }
 
-		isExiting = true;
-		// TODO: sync state
-		clientConnection.Close();
-		ActiveClients.Remove(localId);
-		ActiveClients.Remove(localId);
-		QueueFree();
-	}
+    public void DeletePlayerCharacter (int index)
+    {
+        // TODO: move to db entry
+        try
+        {
+            var characterToDelete = playerDbEntry!.Characters[index];
+            var id = characterToDelete.Id;
+            var name = characterToDelete.Name;
+            SphLogger.Info($"Delete character [{index}] - [{name}]. Client ID: {localId:X4}");
+            playerDbEntry!.Characters.RemoveAt(index);
+            DbConnection.Players.Update(playerDbEntry);
+            DbConnection.Characters.Delete(id);
 
-	public void MaybeQueueNetworkPacketSend (byte[] packet)
-	{
-		clientConnection.MaybeQueueNetworkPacketSend(packet);
-	}
+            // TODO: reinit session after delete
+            RemoveClient();
+        }
+        catch (Exception ex)
+        {
+            SphLogger.Error($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
+        }
+    }
 
-	public ushort GetLocalObjectId (int id)
-	{
-		// TODO: implement
-		return (ushort) id;
-	}
+    public void RemoveClient ()
+    {
+        if (isExiting)
+        {
+            return;
+        }
 
-	public ushort GetGlobalObjectId (int id)
-	{
-		// TODO: implement
-		return (ushort) id;
-	}
+        SphLogger.Info($"Client disconnected. Client ID: {localId:X4}");
 
-	public static ushort GetLocalObjectId (ushort clientId, int id)
-	{
-		// TODO: implement
-		return (ushort) id;
-	}
+        isExiting = true;
+        // TODO: sync state
+        clientConnection.Close();
+        ActiveClients.Remove(localId);
+        ActiveClients.Remove(localId);
+        QueueFree();
+    }
 
-	public void UpdateModelCoordinates ()
-	{
-		var clientModelTransform = clientModel.Transform;
-		clientModelTransform.Origin =
-			new Vector3((float) CurrentCharacter.X, (float) CurrentCharacter.Y, (float) CurrentCharacter.Z);
-		clientModel.Transform = clientModelTransform;
-	}
+    public void MaybeQueueNetworkPacketSend (byte[] packet)
+    {
+        clientConnection.MaybeQueueNetworkPacketSend(packet);
+    }
 
-	public string GetIpAddressAndPort ()
-	{
-		return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
-	}
+    public ushort GetLocalObjectId (int id)
+    {
+        // TODO: implement
+        return (ushort) id;
+    }
 
-	private void UpdateCharacterForDebugMode ()
-	{
-		// TODO: move to db entry
-		if (!ServerConfig.AppConfig.DebugMode)
-		{
-			SphLogger.Info($"Skipping debug mode update (debug mode off). Client ID: {localId:X4}");
-			return;
-		}
+    public ushort GetGlobalObjectId (int id)
+    {
+        // TODO: implement
+        return (ushort) id;
+    }
 
-		if (CurrentCharacter is null)
-		{
-			SphLogger.Info($"Skipping debug mode update (character is null). Client ID: {localId:X4}");
-			return;
-		}
+    public static ushort GetLocalObjectId (ushort clientId, int id)
+    {
+        // TODO: implement
+        return (ushort) id;
+    }
 
-		CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
-		CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
-		CurrentCharacter.Z = ServerConfig.AppConfig.Spawn_Z;
-		CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
-		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
-	}
+    public void UpdateModelCoordinates ()
+    {
+        var clientModelTransform = clientModel.Transform;
+        clientModelTransform.Origin =
+            new Vector3((float) CurrentCharacter.X, (float) CurrentCharacter.Y, (float) CurrentCharacter.Z);
+        clientModel.Transform = clientModelTransform;
+    }
+
+    public string GetIpAddressAndPort ()
+    {
+        return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
+    }
+
+    private void UpdateCharacterForDebugMode ()
+    {
+        // TODO: move to db entry
+        if (!ServerConfig.AppConfig.DebugMode)
+        {
+            SphLogger.Info($"Skipping debug mode update (debug mode off). Client ID: {localId:X4}");
+            return;
+        }
+
+        if (CurrentCharacter is null)
+        {
+            SphLogger.Info($"Skipping debug mode update (character is null). Client ID: {localId:X4}");
+            return;
+        }
+
+        CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
+        CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
+        CurrentCharacter.Z = ServerConfig.AppConfig.Spawn_Z;
+        CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
+        CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
+    }
 }

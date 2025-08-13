@@ -12,7 +12,6 @@ using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.Loot;
 using SphServer.System;
-using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 using SphereServer = SphServer.Server.SphereServer;
 
 namespace SphServer.Shared.Db.DataModels;
