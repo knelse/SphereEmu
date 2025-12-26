@@ -12,21 +12,21 @@ namespace SphServer.Client;
 
 public partial class SphereClient : Node
 {
-    private ClientState currentState = ClientState.I_AM_BREAD;
-
-    private CharacterBody3D? clientModel;
-    public CharacterDbEntry? CurrentCharacter;
-    private ClientConnection clientConnection;
-    public readonly ClientStateManager ClientStateManager = new (false);
-    public ushort localId;
-    private StreamPeerTcp streamPeerTcp = null!;
-    private PlayerDbEntry? playerDbEntry;
-    private bool isExiting;
-    private int selectedCharacterIndex;
-
     public delegate void ClientConnectEventHandler ();
 
     public delegate void ClientDisconnectEventHandler ();
+
+    public readonly ClientStateManager ClientStateManager = new (false);
+    private ClientConnection clientConnection;
+
+    private CharacterBody3D? clientModel;
+    public CharacterDbEntry? CurrentCharacter;
+    private ClientState currentState = ClientState.I_AM_BREAD;
+    private bool isExiting;
+    public ushort localId;
+    private PlayerDbEntry? playerDbEntry;
+    private int selectedCharacterIndex;
+    private StreamPeerTcp streamPeerTcp = null!;
 
     public event ClientConnectEventHandler OnClientConnected;
     public event ClientDisconnectEventHandler OnClientDisconnected;
@@ -167,7 +167,7 @@ public partial class SphereClient : Node
 
     public void MaybeQueueNetworkPacketSend (byte[] packet)
     {
-        clientConnection.MaybeQueueNetworkPacketSend(packet);
+        clientConnection.MaybeScheduleNetworkPacketSend(packet);
     }
 
     public ushort GetLocalObjectId (int id)
@@ -191,8 +191,7 @@ public partial class SphereClient : Node
     public void UpdateModelCoordinates ()
     {
         var clientModelTransform = clientModel.Transform;
-        clientModelTransform.Origin =
-            new Vector3((float) CurrentCharacter.X, (float) CurrentCharacter.Y, (float) CurrentCharacter.Z);
+        clientModelTransform.Origin = CurrentCharacter.Origin;
         clientModel.Transform = clientModelTransform;
     }
 

@@ -15,7 +15,7 @@ public class OpenLootContainerHandler (ushort localId, ClientConnection clientCo
             bag.ShowItemListForClient(localId);
             var packet = bag.GetContentsPacket(localId);
             packet[6] = 0x04;
-            clientConnection.MaybeQueueNetworkPacketSend(packet);
+            clientConnection.MaybeScheduleNetworkPacketSend(packet);
         }
     }
 }

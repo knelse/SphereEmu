@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SphServer.Helpers;
+using SphServer.Server.Broadcast;
 using SphServer.Shared.Logger;
-using SphServer.Shared.Networking.Chat.Encoders;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.System;
 using static SphServer.Helpers.Continents;
@@ -98,8 +98,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
             var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
 
-            var response = MessageEncoder.EncodeToSendFromServer(chatString, name, chatTypeVal);
-            clientConnection.MaybeQueueNetworkPacketSend(response);
+            ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, name, chatTypeVal, clientConnection);
 
             SphLogger.Info($"CLI: [{chatTypeVal}] {name}: {message}");
 
@@ -151,7 +150,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                         return;
                     }
 
-                    clientConnection.MaybeQueueNetworkPacketSend(
+                    clientConnection.MaybeScheduleNetworkPacketSend(
                         new CharacterDbEntrySerializer(clientConnection.GetSelectedCharacter()!).GetTeleportByteArray(
                             tpCoords));
                     return;
@@ -166,7 +165,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 var teleportCoords =
                     new WorldCoords(double.Parse(coords[1]), -double.Parse(coords[2]), double.Parse(coords[3]));
 
-                clientConnection.MaybeQueueNetworkPacketSend(
+                clientConnection.MaybeScheduleNetworkPacketSend(
                     new CharacterDbEntrySerializer(clientConnection.GetSelectedCharacter()!).GetTeleportByteArray(
                         teleportCoords));
             }
@@ -186,9 +185,9 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 // 	"3F002C010082EB07B278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49E9FD93408ACF007F70391E0004F6F00";
                 // var runSpeed =
                 // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
-                clientConnection.MaybeQueueNetworkPacketSend(Convert.FromHexString(jumpx4));
+                clientConnection.MaybeScheduleNetworkPacketSend(Convert.FromHexString(jumpx4));
                 // StreamPeer.PutData(Convert.FromHexString(runSpeed));
-                clientConnection.MaybeQueueNetworkPacketSend(Convert.FromHexString(test));
+                clientConnection.MaybeScheduleNetworkPacketSend(Convert.FromHexString(test));
             }
         }
         catch (Exception ex)

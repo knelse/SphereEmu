@@ -10,7 +10,6 @@ public class ChangeCharacterHealthHandler (ushort localId, ClientConnection clie
 {
     public async Task Handle (double delta)
     {
-        return;
     }
 
     public async Task HandleHealthChange (ushort entityId, int healthDiff)
@@ -45,6 +44,6 @@ public class ChangeCharacterHealthHandler (ushort localId, ClientConnection clie
         }
 
         character.CurrentHP = (ushort) resultHp;
-        clientConnection.MaybeQueueNetworkPacketSend(dmgPacket);
+        clientConnection.MaybeScheduleNetworkPacketSend(dmgPacket);
     }
 }

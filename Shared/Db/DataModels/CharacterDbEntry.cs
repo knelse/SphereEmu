@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Godot;
 using LiteDB;
 using SphServer.Shared.Logger;
 using static SphServer.Helpers.CharacterDataHelper;
@@ -13,6 +14,27 @@ namespace SphServer.Shared.Db.DataModels;
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry
 {
+    public readonly ItemDbEntry Fists = new ()
+    {
+        ObjectKind = GameObjectKind.Fists,
+        GameObjectType = GameObjectType.Fists
+    };
+
+    public CharacterDbEntry ()
+    {
+        LookType = 0x7;
+        IsTurnedOff = 0x9;
+        CurrentHP = (ushort) MaxHPBase;
+        MaxHP = (ushort) MaxHPBase;
+        CurrentMP = (ushort) MaxMPBase;
+        MaxMP = (ushort) MaxMPBase;
+        CurrentSatiety = 100;
+        MaxSatiety = 100;
+        AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
+        AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
+        Fists.Id = DbConnection.Items.Insert(Fists);
+    }
+
     public int Id { get; set; }
     [BsonIgnore] public int ClientLocalId { get; set; }
     public byte LookType { get; set; }
@@ -78,27 +100,7 @@ public class CharacterDbEntry
     public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
     public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
     public ulong XpToLevelUp => GetXpToLevelUp();
-
-    public readonly ItemDbEntry Fists = new ()
-    {
-        ObjectKind = GameObjectKind.Fists,
-        GameObjectType = GameObjectType.Fists
-    };
-
-    public CharacterDbEntry ()
-    {
-        LookType = 0x7;
-        IsTurnedOff = 0x9;
-        CurrentHP = (ushort) MaxHPBase;
-        MaxHP = (ushort) MaxHPBase;
-        CurrentMP = (ushort) MaxMPBase;
-        MaxMP = (ushort) MaxMPBase;
-        CurrentSatiety = 100;
-        MaxSatiety = 100;
-        AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
-        AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
-        Fists.Id = DbConnection.Items.Insert(Fists);
-    }
+    public Vector3 Origin => new ((float) X, (float) Y, (float) Z);
 
     public void LevelUp (int newTitleLevel, int newDegreeLevel)
     {

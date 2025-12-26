@@ -15,7 +15,6 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
 {
     public async Task Handle (double delta)
     {
-        return;
     }
 
     public async Task HandlePickupToNextAvailableEmptySlot (double delta)
@@ -145,7 +144,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         character.Items[targetSlot] = globalItemId;
         SphLogger.Info($"{Enum.GetName((BelongingSlot) targetSlotId)} now has {item.Localization[Locale.Russian]} " +
                        $"({item.ItemCount}) [{globalItemId}]");
-        clientConnection.MaybeQueueNetworkPacketSend(moveResult);
+        clientConnection.MaybeScheduleNetworkPacketSend(moveResult);
 
         var oldContainer = item.ParentContainerId is null
             ? null
@@ -154,7 +153,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // TODO: check in next process in node instead of this
         if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty(globalItemId) ?? false)
         {
-            clientConnection.MaybeQueueNetworkPacketSend(CommonPackets.DespawnEntity((ushort) oldContainer.Id));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort) oldContainer.Id));
         }
 
         if (!ItemDbEntry.IsInventorySlot(targetSlot))

@@ -19,24 +19,24 @@ namespace SphServer.Client.Networking;
 
 public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, SphereClient sphereClient)
 {
-    private PingHandler? pingHandler;
-    private NpcInteractionHandler? npcInteractionHandler;
-    private ISphereClientNetworkingHandler? currentHandler;
-    private ClanActionsHandler? clanActionsHandler;
-    private GroupActionsHandler? groupActionsHandler;
-    private OpenLootContainerHandler? openLootContainerHandler;
-    private ClientChatHandler? clientChatHandler;
-    private PickupItemHandler? pickupItemHandler;
-    private MoveItemHandler? moveItemHandler;
-    private UseItemHandler? useItemHandler;
-    private DropItemToGroundHandler? dropItemToGroundHandler;
-    private MainhandTakeItemHandler? mainhandTakeItemHandler;
-    private BuyItemFromTargetHandler? buyItemFromTargetHandler;
-    private DamageTargetHandler? damageTargetHandler;
-    private MoveObjectForClientHandler? moveObjectForClientHandler;
-    private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
     public readonly byte[] ReceiveBuffer = new byte [ServerConfig.AppConfig.ReceiveBufferSize];
+    private BuyItemFromTargetHandler? buyItemFromTargetHandler;
+    private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
+    private ClanActionsHandler? clanActionsHandler;
+    private ClientChatHandler? clientChatHandler;
+    private ISphereClientNetworkingHandler? currentHandler;
+    private DamageTargetHandler? damageTargetHandler;
     public BitStream DataStream = null!;
+    private DropItemToGroundHandler? dropItemToGroundHandler;
+    private GroupActionsHandler? groupActionsHandler;
+    private MainhandTakeItemHandler? mainhandTakeItemHandler;
+    private MoveItemHandler? moveItemHandler;
+    private MoveObjectForClientHandler? moveObjectForClientHandler;
+    private NpcInteractionHandler? npcInteractionHandler;
+    private OpenLootContainerHandler? openLootContainerHandler;
+    private PickupItemHandler? pickupItemHandler;
+    private PingHandler? pingHandler;
+    private UseItemHandler? useItemHandler;
 
     public async Task Process (double delta)
     {
@@ -242,7 +242,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         return sphereClient.GetSelecterCharacter();
     }
 
-    public void MaybeQueueNetworkPacketSend (byte[] packet)
+    public void MaybeScheduleNetworkPacketSend (byte[] packet)
     {
         // TODO: might need an actual queue. For now, just send
         streamPeerTcp.PutData(packet);

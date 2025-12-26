@@ -80,6 +80,6 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
             // DbConnectionProvider.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
         }
 
-        clientConnection.MaybeQueueNetworkPacketSend(moveResult);
+        clientConnection.MaybeScheduleNetworkPacketSend(moveResult);
     }
 }

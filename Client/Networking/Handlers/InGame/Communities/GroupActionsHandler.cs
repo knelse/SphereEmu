@@ -22,7 +22,7 @@ public class GroupActionsHandler (ushort localId, ClientConnection clientConnect
                     0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientlocalId),
                     MinorByte(clientlocalId), 0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
                 };
-                clientConnection.MaybeQueueNetworkPacketSend(createResponse);
+                clientConnection.MaybeScheduleNetworkPacketSend(createResponse);
                 break;
             }
             case 0x80:
@@ -33,7 +33,7 @@ public class GroupActionsHandler (ushort localId, ClientConnection clientConnect
                     0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientlocalId),
                     MinorByte(clientlocalId), 0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
                 };
-                clientConnection.MaybeQueueNetworkPacketSend(leaveResponse);
+                clientConnection.MaybeScheduleNetworkPacketSend(leaveResponse);
                 break;
         }
     }

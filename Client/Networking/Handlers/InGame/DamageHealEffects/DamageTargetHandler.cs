@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BitStreams;
+using SphServer.Godot.Nodes;
 using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -29,7 +30,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         PacketPart.UpdateValue(packet, "attacker_id", character.ClientIndex, 16);
         PacketPart.UpdateValue(packet, "30000_minus_damage", 30000);
         var packetBytes = PacketPart.GetBytesToWrite(packet);
-        clientConnection.MaybeQueueNetworkPacketSend(packetBytes);
+        clientConnection.MaybeScheduleNetworkPacketSend(packetBytes);
         return;
 
         var paAbs = Math.Abs(character.PAtk);
@@ -76,7 +77,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 0x11, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(localId), MinorByte(localId), 0x08, 0x40, id_1,
                 id_2, id_3, MinorByte(totalDamage), MajorByte(totalDamage), 0x00
             };
-            clientConnection.MaybeQueueNetworkPacketSend(selfDamagePacket);
+            clientConnection.MaybeScheduleNetworkPacketSend(selfDamagePacket);
         }
         else
         {
@@ -96,7 +97,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                     0x43, 0xA1, 0x0B, src_1, src_2, src_3, dmg_1, 0xEA, 0x0A, 0x6D, hp_1, hp_2, 0x00,
                     0x04, 0x50, 0x07, 0x00
                 };
-                clientConnection.MaybeQueueNetworkPacketSend(damagePacket);
+                clientConnection.MaybeScheduleNetworkPacketSend(damagePacket);
             }
             else
             {
@@ -128,11 +129,11 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                     0x58, 0xE4, totalMoney_1, totalMoney_2, 0x16, 0x28, karma_1, 0x80, 0x46, 0x40,
                     moneyReward_1, moneyReward_2
                 };
-                clientConnection.MaybeQueueNetworkPacketSend(Packet.ToByteArray(deathPacket));
+                clientConnection.MaybeScheduleNetworkPacketSend(Packet.ToByteArray(deathPacket));
                 var mob = DbConnection.Monsters.FindById((int) destId);
                 if (mob.ParentNodeId is not null)
                 {
-                    var parentNode = ActiveNodes.Get(mob.ParentNodeId.Value) as Godot.Nodes.MobNode;
+                    var parentNode = ActiveNodes.Get(mob.ParentNodeId.Value) as MobNode;
                     if (parentNode is not null)
                     {
                         ItemContainerDbEntry.CreateHierarchyWithContents(parentNode.GlobalTransform.Origin.X,

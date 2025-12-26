@@ -9,7 +9,6 @@ public class MoveObjectForClientHandler (ushort localId, ClientConnection client
 {
     public async Task Handle (double delta)
     {
-        return;
     }
 
     public async Task HandleObjectMovement (double x0, double y0, double z0, double t0, ushort entityId)
@@ -51,6 +50,6 @@ public class MoveObjectForClientHandler (ushort localId, ClientConnection client
             ydec_1, ydec_2, zdec_1, turn_1, turn_2
         };
 
-        clientConnection.MaybeQueueNetworkPacketSend(movePacket);
+        clientConnection.MaybeScheduleNetworkPacketSend(movePacket);
     }
 }
