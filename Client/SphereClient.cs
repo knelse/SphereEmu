@@ -28,9 +28,6 @@ public partial class SphereClient : Node
     private int selectedCharacterIndex;
     private StreamPeerTcp streamPeerTcp = null!;
 
-    public event ClientConnectEventHandler OnClientConnected;
-    public event ClientDisconnectEventHandler OnClientDisconnected;
-
     public override async void _PhysicsProcess (double delta)
     {
         if (streamPeerTcp.GetStatus() != StreamPeerTcp.Status.Connected)

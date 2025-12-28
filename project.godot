@@ -34,6 +34,8 @@ import/fbx/enabled=false
 
 3d_physics/layer_1="world_objects"
 3d_physics/layer_2="clients"
+3d_physics/layer_31="empty"
+3d_physics/layer_32="clients_inactive"
 
 [mono]
 
