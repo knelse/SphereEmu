@@ -29,6 +29,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     public BitStream DataStream = null!;
     private DropItemToGroundHandler? dropItemToGroundHandler;
     private GroupActionsHandler? groupActionsHandler;
+    private bool interactionWithOtherObjectsInitialized;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
     private MoveItemHandler? moveItemHandler;
     private MoveObjectForClientHandler? moveObjectForClientHandler;
@@ -47,6 +48,12 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         // which handler they should be routed to
         if (sphereClient.ClientStateManager.IsInGameState())
         {
+            if (!interactionWithOtherObjectsInitialized)
+            {
+                sphereClient.InitializeInteractions();
+                interactionWithOtherObjectsInitialized = true;
+            }
+
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive(delta);
             var incomingDataLength = GetIncomingData();
@@ -64,7 +71,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             {
                 case 0x26:
                     await pingHandler.Handle(delta);
-                    sphereClient.UpdateModelCoordinates();
+                    sphereClient.UpdateCoordinatesInWorld();
                     break;
                 case 0x13:
                     if (ReceiveBuffer[13] != 0x08 || ReceiveBuffer[14] != 0x40 || ReceiveBuffer[15] != 0x23 ||

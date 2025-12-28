@@ -7,10 +7,11 @@ using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client;
 
-public partial class SphereClient : Node
+public partial class SphereClient : WorldObject
 {
     public delegate void ClientConnectEventHandler ();
 
@@ -68,11 +69,6 @@ public partial class SphereClient : Node
         //         }
         //     }
         // });
-    }
-
-    public override void _ExitTree ()
-    {
-        base._ExitTree();
     }
 
     public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
@@ -185,16 +181,47 @@ public partial class SphereClient : Node
         return (ushort) id;
     }
 
-    public void UpdateModelCoordinates ()
+    public void UpdateCoordinatesInWorld ()
     {
-        var clientModelTransform = clientModel.Transform;
-        clientModelTransform.Origin = CurrentCharacter.Origin;
-        clientModel.Transform = clientModelTransform;
+        var transform = Transform;
+        transform.Origin = CurrentCharacter!.Origin;
+        Transform = transform;
+    }
+
+    public void InitializeInteractions ()
+    {
+        SphLogger.Info($"Initializing client interactions. Client ID: {localId:X4}");
+
+        if (clientModel is null)
+        {
+            SphLogger.Error($"Cannot initialize client interactions: client model is null. Client ID: {localId:X4}");
+            return;
+        }
+
+        clientModel.ProcessMode = ProcessModeEnum.Inherit;
+        clientModel.CollisionLayer = 2;
+        clientModel.CollisionMask = 0b11;
+
+        // base.Ready sets up collision. For clients, we only want that to happen when they're ready for interactions
+        // aka when they're in game
+        base._Ready();
     }
 
     public string GetIpAddressAndPort ()
     {
         return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
+    }
+
+    protected override void ShowForClient (SphereClient client)
+    {
+        if (client.GetInstanceId() == GetInstanceId())
+        {
+            // do not show for itself
+            return;
+        }
+
+        SphLogger.Info($"Showing for other client: {client.localId:X4}. Client ID: {localId:X4}");
+        base.ShowForClient(client);
     }
 
     private void UpdateCharacterForDebugMode ()

@@ -23,6 +23,8 @@ public partial class WorldObject : Node3D
 			ID = WorldObjectIndex.New();
 		}
 
+		Name = Name + $"_{ID}";
+
 		ActiveNodes.Add(GetInstanceId(), this);
 		ActiveWorldObjects.Add(ID, this);
 
@@ -67,7 +69,7 @@ public partial class WorldObject : Node3D
 		AddChild(area3D);
 	}
 
-	public void ShowForClient (SphereClient client)
+	protected virtual void ShowForClient (SphereClient client)
 	{
 		var packetParts = GetPacketPartsAndUpdateCoordsAndID(client);
 		packetParts = ModifyPacketParts(packetParts);
