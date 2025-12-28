@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.State;
+using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
@@ -13,10 +16,6 @@ namespace SphServer.Client;
 
 public partial class SphereClient : WorldObject
 {
-    public delegate void ClientConnectEventHandler ();
-
-    public delegate void ClientDisconnectEventHandler ();
-
     public readonly ClientStateManager ClientStateManager = new (false);
     private ClientConnection clientConnection;
 
@@ -202,6 +201,9 @@ public partial class SphereClient : WorldObject
         clientModel.CollisionLayer = 2;
         clientModel.CollisionMask = 0b11;
 
+        // WorldObject.ID
+        ID = localId;
+
         // base.Ready sets up collision. For clients, we only want that to happen when they're ready for interactions
         // aka when they're in game
         base._Ready();
@@ -244,5 +246,25 @@ public partial class SphereClient : WorldObject
         CurrentCharacter.Z = ServerConfig.AppConfig.Spawn_Z;
         CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
         CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
+    }
+
+    // TODO: change to actual character spawn
+    protected override List<PacketPart> GetPacketParts ()
+    {
+        // TODO some cats are placed by hand and got no MonsterInstance
+        // TODO named and higher levels
+        return PacketPart.LoadDefinedWithOverride("monster_level_1");
+    }
+
+    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    {
+        var hpSize = 8;
+        PacketPart.UpdateValue(packetParts, "current_hp", 50, hpSize);
+        PacketPart.UpdateValue(packetParts, "max_hp", 50, hpSize);
+
+        var mobTypeId = MonsterTypeMapping.MonsterNameToMonsterTypeMapping[MonsterType.Земляной_голем];
+        PacketPart.UpdateValue(packetParts, "mob_type", mobTypeId, 14);
+
+        return packetParts;
     }
 }

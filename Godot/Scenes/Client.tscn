@@ -8,7 +8,7 @@
 
 [node name="Client" type="Node3D"]
 script = ExtResource("1_dsyj5")
-ObjectType = 63
+ObjectType = 4
 
 [node name="ClientModel" type="CharacterBody3D" parent="."]
 process_mode = 4
