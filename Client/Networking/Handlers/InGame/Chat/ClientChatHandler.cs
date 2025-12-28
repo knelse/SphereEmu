@@ -98,7 +98,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
             var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
 
-            ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, name, chatTypeVal, clientConnection);
+            ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, message, name, chatTypeVal, clientConnection);
 
             SphLogger.Info($"CLI: [{chatTypeVal}] {name}: {message}");
 

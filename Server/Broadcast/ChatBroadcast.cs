@@ -7,16 +7,15 @@ namespace SphServer.Server.Broadcast;
 
 public static class ChatBroadcast
 {
-    public static void MaybeScheduleBroadcastToClients (string message, string characterName, int chatTypeVal,
+    public static void MaybeScheduleBroadcastToClients (string fullMessage, string actualText, string characterName,
+        int chatTypeVal,
         ClientConnection? clientOriginConnection = null)
     {
         // TODO logging for broadcast targets
-        var encodedMessage = MessageEncoder.EncodeToSendFromServer(message, characterName, chatTypeVal);
+        var encodedMessage = MessageEncoder.EncodeToSendFromServer(fullMessage, characterName, chatTypeVal);
 
-        if (message.StartsWith('/'))
+        if (actualText.StartsWith('/'))
         {
-            // for now, only sending commands back to their origin
-            clientOriginConnection?.MaybeScheduleNetworkPacketSend(encodedMessage);
             return;
         }
 
