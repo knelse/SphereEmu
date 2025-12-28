@@ -6,6 +6,7 @@ using SphServer.Server.Login.Decoders;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Shared.WorldState;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
@@ -36,6 +37,14 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         if (player is null)
         {
             SphLogger.Error($"SRV {localId:X4}: Incorrect password");
+            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.Close();
+            return;
+        }
+
+        if (!ActiveWorldObjects.LoggedInClients.TryAdd(login, 1))
+        {
+            SphLogger.Error($"SRV {localId:X4}: Already logged in. Login: {login}");
             streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;

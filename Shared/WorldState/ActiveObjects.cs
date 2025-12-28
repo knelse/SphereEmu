@@ -52,6 +52,8 @@ internal abstract class ActiveObjectCollectionBase<Tk, Tv>
 {
     protected static readonly ConcurrentDictionary<Tk, Tv> storage = new ();
 
+    public static readonly ConcurrentDictionary<string, int> LoggedInClients = new ();
+
     public static Tv? Get (Tk key)
     {
         return storage.GetValueOrDefault(key);

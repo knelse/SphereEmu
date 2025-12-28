@@ -153,7 +153,13 @@ public partial class SphereClient : WorldObject
         // TODO: sync state
         clientConnection.Close();
         ActiveClients.Remove(localId);
-        ActiveClients.Remove(localId);
+        ActiveNodes.Remove(GetInstanceId());
+
+        if (playerDbEntry is not null)
+        {
+            ActiveWorldObjects.LoggedInClients.Remove(playerDbEntry.Login, out _);
+        }
+
         QueueFree();
     }
 
