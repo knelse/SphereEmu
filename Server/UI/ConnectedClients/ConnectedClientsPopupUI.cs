@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Godot;
 using SphServer.Helpers;
+using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
 
@@ -9,24 +10,57 @@ namespace SphServer.Server.UI.ConnectedClients;
 
 public partial class ConnectedClientsPopupUI : PopupMenu
 {
+    private const string KICK_MENU_LABEL = "Kick";
     public ushort currentClientId;
+
     public override void _Ready ()
     {
+        AddKickMenuItem();
         CreateTeleportMenuHierarchy();
+        IndexPressed += OnMenuIndexPressed;
+    }
+
+    private void AddKickMenuItem ()
+    {
+        AddItem(KICK_MENU_LABEL);
+        AddSeparator();
+    }
+
+    private void OnMenuIndexPressed (long index)
+    {
+        var itemText = GetItemText((int) index);
+
+        if (itemText == KICK_MENU_LABEL)
+        {
+            HandleKickClient();
+        }
+    }
+
+    private void HandleKickClient ()
+    {
+        var client = ActiveClients.Get(currentClientId);
+
+        if (client is null)
+        {
+            return;
+        }
+
+        SphLogger.Info($"Kicking client via UI. Client ID: {currentClientId:X4}");
+        client.RemoveClient();
     }
 
     private void CreateTeleportMenuHierarchy ()
     {
         var teleportMenu = new PopupMenu();
         teleportMenu.Name = "Teleport";
-        
+
         foreach (var continent in Enum.GetValues<Continents>())
         {
             var submenu = CreateSubmenuForContinent(continent);
             submenu.Name = continent.ToString();
             teleportMenu.AddSubmenuNodeItem(continent.ToString(), submenu);
         }
-        
+
         AddSubmenuNodeItem("Teleport", teleportMenu);
     }
 
@@ -36,7 +70,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         continentMenu.Name = continent.ToString();
         var respawnPoints = new PopupMenu();
         respawnPoints.Name = "RespawnPoints";
-        
+
         var respawnsForContinent = SavedCoords.RespawnPoints.GetValueOrDefault(continent, []);
 
         foreach (var respawnsForCity in respawnsForContinent)
@@ -50,12 +84,12 @@ public partial class ConnectedClientsPopupUI : PopupMenu
             }
 
             cityMenu.IndexPressed += GenerateOnIndexPressedForMenu(cityMenu);
-            
+
             respawnPoints.AddSubmenuNodeItem(respawnsForCity.Key.ToString(), cityMenu);
         }
-        
+
         continentMenu.AddSubmenuNodeItem("Respawn points", respawnPoints);
-        
+
         var poiForContinent = SavedCoords.TeleportPoints.GetValueOrDefault(continent, []);
 
         foreach (var poiForCity in poiForContinent)
@@ -73,7 +107,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
 
         return continentMenu;
     }
-            
+
     // TODO: this is awful and relies on item text, but good enough for now
     private IndexPressedEventHandler GenerateOnIndexPressedForMenu (PopupMenu popupMenu)
     {
@@ -89,7 +123,8 @@ public partial class ConnectedClientsPopupUI : PopupMenu
             var coordsString =
                 itemText.Split('[', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[1];
 
-            var coordsSplit = coordsString[..^1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var coordsSplit = coordsString[..^1]
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             var x = float.Parse(coordsSplit[0]);
             var y = float.Parse(coordsSplit[1]);
             var z = float.Parse(coordsSplit[2]);
