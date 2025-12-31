@@ -220,6 +220,16 @@ public partial class SphereClient : WorldObject
         return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
     }
 
+    public string GetIpAddressWithoutPort ()
+    {
+        return streamPeerTcp.GetConnectedHost();
+    }
+
+    public string? GetLogin ()
+    {
+        return playerDbEntry?.Login;
+    }
+
     protected override void ShowForClient (SphereClient client)
     {
         if (client.GetInstanceId() == GetInstanceId())

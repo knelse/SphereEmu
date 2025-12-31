@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Server.Config;
 using SphServer.Server.Login.Auth;
 using SphServer.Server.Login.Decoders;
 using SphServer.Shared.Logger;
@@ -31,6 +32,15 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
 
         SphLogger.Info($"CLI {localId:X4}: Login data sent");
         var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer);
+        
+        if (BannedClients.IsLoginBanned(login))
+        {
+            SphLogger.Error($"SRV {localId:X4}: Login is banned. Login: {login}");
+            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.Close();
+            return;
+        }
+        
         var player =
             LoginManager.CheckLoginAndGetPlayer(login, password, localId);
 

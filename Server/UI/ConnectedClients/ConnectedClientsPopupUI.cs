@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Godot;
 using SphServer.Helpers;
+using SphServer.Server.Config;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
@@ -11,11 +12,13 @@ namespace SphServer.Server.UI.ConnectedClients;
 public partial class ConnectedClientsPopupUI : PopupMenu
 {
     private const string KICK_MENU_LABEL = "Kick";
+    private const string BAN_MENU_LABEL = "Ban";
     public ushort currentClientId;
 
     public override void _Ready ()
     {
         AddKickMenuItem();
+        AddBanMenuItem();
         CreateTeleportMenuHierarchy();
         IndexPressed += OnMenuIndexPressed;
     }
@@ -23,6 +26,11 @@ public partial class ConnectedClientsPopupUI : PopupMenu
     private void AddKickMenuItem ()
     {
         AddItem(KICK_MENU_LABEL);
+    }
+
+    private void AddBanMenuItem ()
+    {
+        AddItem(BAN_MENU_LABEL);
         AddSeparator();
     }
 
@@ -33,6 +41,10 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         if (itemText == KICK_MENU_LABEL)
         {
             HandleKickClient();
+        }
+        else if (itemText == BAN_MENU_LABEL)
+        {
+            HandleBanClient();
         }
     }
 
@@ -46,6 +58,29 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         }
 
         SphLogger.Info($"Kicking client via UI. Client ID: {currentClientId:X4}");
+        client.RemoveClient();
+    }
+
+    private void HandleBanClient ()
+    {
+        var client = ActiveClients.Get(currentClientId);
+
+        if (client is null)
+        {
+            return;
+        }
+
+        var login = client.GetLogin();
+        var ipAddress = client.GetIpAddressWithoutPort();
+
+        if (string.IsNullOrEmpty(login))
+        {
+            SphLogger.Warning($"Cannot ban client: login is null. Client ID: {currentClientId:X4}");
+            return;
+        }
+
+        SphLogger.Info($"Banning client via UI. Client ID: {currentClientId:X4}, Login: {login}, IP: {ipAddress}");
+        BannedClients.BanClient(login, ipAddress);
         client.RemoveClient();
     }
 
