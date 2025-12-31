@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Shared.Logger;
 
 namespace SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 
@@ -10,6 +11,19 @@ public class MoveObjectForClientHandler (ushort localId, ClientConnection client
     public async Task Handle (double delta)
     {
     }
+
+    // public void MoveObject (double x0, double y0, double z0, int angle, ushort entityId)
+    // {
+    //     var packetParts = PacketPart.LoadDefinedWithOverride("server_move_entity", true);
+    //     PacketPart.UpdateValue(packetParts, "x_plus_32768", (int) x0 + 32768, 16);
+    //     PacketPart.UpdateValue(packetParts, "y_plus_1200", (int) -y0 + 1200, 13);
+    //     PacketPart.UpdateValue(packetParts, "z_plus_32768", (int) z0 + 32768, 16);
+    //     PacketPart.UpdateEntityId(packetParts, entityId);
+    //     PacketPart.UpdateValue(packetParts, "angle", angle, 8);
+    //     var packet = PacketPart.GetBytesToWrite(packetParts, PacketPartByteEncodingStrategy.NO_PADDING);
+    //     clientConnection.MaybeScheduleNetworkPacketSend(packet);
+    //     SphLogger.Info($"Move packet: {Convert.ToHexString(packet)}");
+    // }
 
     public async Task HandleObjectMovement (double x0, double y0, double z0, double t0, ushort entityId)
     {
@@ -49,6 +63,8 @@ public class MoveObjectForClientHandler (ushort localId, ClientConnection client
             0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1, id_2, id_3, 0x6A, 0x10, xdec_1,
             ydec_1, ydec_2, zdec_1, turn_1, turn_2
         };
+
+        SphLogger.Info($"Move packet: {Convert.ToHexString(movePacket)}");
 
         clientConnection.MaybeScheduleNetworkPacketSend(movePacket);
     }

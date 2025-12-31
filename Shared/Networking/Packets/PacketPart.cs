@@ -13,20 +13,26 @@ using SphServer.System;
 
 namespace SphServer.Packets;
 
+public enum PacketPartByteEncodingStrategy
+{
+    NO_PADDING,
+    WITH_PADDING
+}
+
 public class PacketPart
 {
     // this is a server-side stub, main implementation in PacketLogViewer
 
     public const string UndefinedFieldValue = "__undef";
     public const string LengthFromPreviousFieldValue = "__fromPrevious";
+    public const string PacketDefinitionExtension = ".spd";
+    public const string ExportedPartExtension = ".spdp";
     public readonly string? EnumName;
+    public readonly string Name;
     public readonly PacketPartType PacketPartType;
     public int BitLength;
     public int BitPositionStart;
-    public readonly string Name;
     public List<Bit> Value;
-    public const string PacketDefinitionExtension = ".spd";
-    public const string ExportedPartExtension = ".spdp";
 
     public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
@@ -47,10 +53,11 @@ public class PacketPart
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadDefinedWithOverride (string name)
+    public static List<PacketPart> LoadDefinedWithOverride (string name, bool isFullPacket = false)
     {
         var partsPath = ServerConfig.AppConfig.PacketPartPath;
-        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+        return LoadFromFile(Path.Combine(partsPath,
+            name + (isFullPacket ? PacketDefinitionExtension : ExportedPartExtension)));
     }
 
     public static List<PacketPart> LoadDefinedPartsFromFile (NpcType npcType)
@@ -164,7 +171,8 @@ public class PacketPart
         }
     }
 
-    public static byte[] GetBytesToWrite (List<PacketPart> list)
+    public static byte[] GetBytesToWrite (List<PacketPart> list,
+        PacketPartByteEncodingStrategy paddingStrategy = PacketPartByteEncodingStrategy.WITH_PADDING)
     {
         var stream = SphBitStream.GetWriteBitStream();
         foreach (var part in list)
@@ -172,6 +180,12 @@ public class PacketPart
             stream.WriteBits(part.Value);
         }
 
-        return Packet.ToByteArray(stream.GetStreamData(), 3);
+        var streamBytes = stream.GetStreamData();
+        if (paddingStrategy == PacketPartByteEncodingStrategy.WITH_PADDING)
+        {
+            streamBytes = Packet.ToByteArray(streamBytes, 3);
+        }
+
+        return streamBytes;
     }
 }
