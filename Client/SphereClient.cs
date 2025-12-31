@@ -7,10 +7,10 @@ using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
-using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
+using SphServer.System;
 
 namespace SphServer.Client;
 
@@ -264,22 +264,23 @@ public partial class SphereClient : WorldObject
         CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
     }
 
-    // TODO: change to actual character spawn
+    // TODO: find other fields (look, level, hp, gender, etc)
     protected override List<PacketPart> GetPacketParts ()
     {
-        // TODO some cats are placed by hand and got no MonsterInstance
-        // TODO named and higher levels
-        return PacketPart.LoadDefinedWithOverride("monster_level_1");
+        return PacketPart.LoadDefinedWithOverride("entity_character");
     }
 
     protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
-        var hpSize = 8;
-        PacketPart.UpdateValue(packetParts, "current_hp", 50, hpSize);
-        PacketPart.UpdateValue(packetParts, "max_hp", 50, hpSize);
+        var nameBytes = SphEncoding.Win1251.GetBytes(CurrentCharacter!.Name);
+        PacketPart.UpdateValue(packetParts, "name_length", nameBytes.Length, 8);
+        PacketPart.UpdateValue(packetParts, "name", CurrentCharacter!.Name);
 
-        var mobTypeId = MonsterTypeMapping.MonsterNameToMonsterTypeMapping[MonsterType.Земляной_голем];
-        PacketPart.UpdateValue(packetParts, "mob_type", mobTypeId, 14);
+        var clanName = "НОВЫЙ ГОД";
+        var clanNameBytes = SphEncoding.Win1251.GetBytes(clanName);
+
+        PacketPart.UpdateValue(packetParts, "clan_name_length", clanNameBytes.Length, 4);
+        PacketPart.UpdateValue(packetParts, "clan_name", clanName);
 
         return packetParts;
     }
