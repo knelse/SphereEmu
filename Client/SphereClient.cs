@@ -4,7 +4,6 @@ using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.State;
 using SphServer.Packets;
-using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -26,7 +25,6 @@ public partial class SphereClient : WorldObject
     private bool isExiting;
     public ushort localId;
     private PlayerDbEntry? playerDbEntry;
-    private Vector3 previousOrigin;
     private int selectedCharacterIndex;
     private StreamPeerTcp streamPeerTcp = null!;
 
@@ -188,25 +186,11 @@ public partial class SphereClient : WorldObject
         return (ushort) id;
     }
 
-    public void ScheduleObjectMovement (double x0, double y0, double z0, double angle, ushort entityId)
-    {
-        clientConnection.ScheduleObjectMovement(x0, y0, z0, angle, entityId);
-    }
-
     public void UpdateCoordinatesInWorld ()
     {
-        var newOrigin = CurrentCharacter!.Origin;
-
         var transform = Transform;
-        transform.Origin = newOrigin;
+        transform.Origin = CurrentCharacter!.Origin;
         Transform = transform;
-
-        if (previousOrigin.DistanceTo(newOrigin) >= 0.1f)
-        {
-            MovementBroadcast.BroadcastMovementToNearbyClients(this, collisionArea);
-        }
-
-        previousOrigin = newOrigin;
     }
 
     public void InitializeInteractions ()
@@ -288,11 +272,5 @@ public partial class SphereClient : WorldObject
         PacketPart.UpdateValue(packetParts, "mob_type", mobTypeId, 14);
 
         return packetParts;
-    }
-
-    protected override byte[] PostprocessPacketBytes (byte[] packet)
-    {
-        SphLogger.Info($"Sending as {Convert.ToHexString(packet)}. Client ID: {localId}");
-        return packet;
     }
 }

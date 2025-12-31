@@ -254,10 +254,4 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         // TODO: might need an actual queue. For now, just send
         streamPeerTcp.PutData(packet);
     }
-
-    public void ScheduleObjectMovement (double x0, double y0, double z0, double angle, ushort entityId)
-    {
-        // TODO: actual async
-        moveObjectForClientHandler.HandleObjectMovement(x0, y0, z0, angle, entityId).GetAwaiter().GetResult();
-    }
 }
