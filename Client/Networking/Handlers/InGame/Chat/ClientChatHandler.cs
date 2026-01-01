@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Godot;
 using SphServer.Helpers;
+using SphServer.Server;
 using SphServer.Server.Broadcast;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
 using static SphServer.Helpers.Continents;
 using static SphServer.Helpers.PoiType;
@@ -14,7 +17,13 @@ namespace SphServer.Client.Networking.Handlers.InGame.Chat;
 
 public class ClientChatHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
+
 {
+    private static readonly PackedScene FireworkScene =
+        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
+
+    private string previousMessageContent = string.Empty;
+
     public async Task Handle (double delta)
     {
         try
@@ -97,6 +106,14 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
             var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
+
+            if (message == previousMessageContent)
+            {
+                SphLogger.Info($"Skipping client message (same content): {message}. Client ID: {localId}");
+                return;
+            }
+
+            previousMessageContent = message;
 
             ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, message, name, chatTypeVal, clientConnection);
 
@@ -188,6 +205,17 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 clientConnection.MaybeScheduleNetworkPacketSend(Convert.FromHexString(jumpx4));
                 // StreamPeer.PutData(Convert.FromHexString(runSpeed));
                 clientConnection.MaybeScheduleNetworkPacketSend(Convert.FromHexString(test));
+            }
+
+            if (message.StartsWith("/fire"))
+            {
+                var firework = FireworkScene.Instantiate<WorldObject>();
+                firework.Angle = 0;
+                firework.ObjectType = ObjectType.Firework;
+                var origin = clientConnection.GetSelectedCharacter().Origin;
+                SphLogger.Info($"Spawning firework at: {origin.X:F1} | {origin.Y:F1} | {origin.Z:F1}");
+                SphereServer.ServerNode.CallDeferred(Node.MethodName.AddChild, firework);
+                firework.Transform = new Transform3D(Basis.Identity, origin);
             }
         }
         catch (Exception ex)

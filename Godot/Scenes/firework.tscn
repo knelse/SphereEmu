@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://id00aeux6mxl"]
+
+[ext_resource type="Script" uid="uid://c2t3mvyqs5fp3" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_r6eqx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_tb2jr"]
+
+[node name="Firework" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_r6eqx")
+ObjectType = 712
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_tb2jr")
