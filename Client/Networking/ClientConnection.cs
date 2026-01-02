@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BitStreams;
 using Godot;
 using SphServer.Client.Networking.Handlers;
@@ -57,6 +59,13 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive(delta);
+            var incomingDataLength = GetIncomingData();
+
+            if (incomingDataLength == 0)
+            {
+                // client hasn't sent anything
+                return;
+            }
 
             switch (ReceiveBuffer[0])
             {
@@ -199,29 +208,57 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public int GetIncomingData ()
     {
+        // var packetInput = Convert.FromHexString(
+        //     "1A005AF0ED022C0100710AA7A364B027B4169B8DC8CD936E98DE1101E2F8EE022C0100710AA7A364B02754E82B8DEFE04EEC1B8BCF942F204093A1EC017FD2261C5BCBE1BBE9E3A61EC33B0995652349C9C3E7D27472A93DE82886C6CB3691752B3C8E772644B1588B32184D916A21A0F4B2FB165FC1247B4937E74F838FA1A0188EB3C2F741BE76B6D40D6B7D778A70095847D3C8FDC2801D16E37B5BAF4E459C4860A52E74C7B1D487AB8DF7231C917CBA4702286FB9E211B385E786BEF4EC7B0EF00EFB8B064545B1972D73074C17A586369CB1CAE9FE162CA2EBB39B42F3CC30DF01F4A1E0B6DB64437413B1259CBD2ABE4BC1D51E5DDDFBEFB0D46FC0D09883CAF811368FB54515914B4A879DFE33E2049CAE93833E682229B8A6074C87FA96B750619ABD7EF48FDB5D0022F3F0022C0100710AA7A364B027D47E7B0D6FC0E1BA98FE9B4B0695B561A79DB357FC4795E6D60C81DA1AA9D3A8A12C965EBCF466694B61B789D0F585B0817AC0CEC7C1B3F1C25A34D74BBD2952745DF3122E2C18D20A0B5B2DAF");
         var temp = streamPeerTcp.GetPartialData(ServerConfig.AppConfig.ReceiveBufferSize);
         var arr = (byte[]?) temp[1];
-
-        var i = 0;
-
-        if (arr is not null && arr.Length > 0)
+        try
         {
-            var shouldDecode = arr.Length > 12 && (arr[11] != localId >> 8 || arr[12] != (localId & 0b11111111));
-            var decoded = shouldDecode ? Packet.DecodeClientPacket(arr) : arr;
-            for (; i < decoded.Length; i++)
+            var resultLength = 0;
+
+            if (arr is not null && arr.Length > 0)
             {
-                ReceiveBuffer[i] = decoded[i];
+                var subpackets = new List<byte[]>();
+                var decodedSubpackets = new List<byte>();
+                for (var i = 0; i < arr.Length;)
+                {
+                    var packetLength = arr[i + 1] * 256 + arr[i];
+                    subpackets.Add(arr[i..(i + packetLength)]);
+                    i += packetLength;
+                }
+
+                foreach (var subpacket in subpackets)
+                {
+                    var shouldDecode = subpacket.Length > 12 &&
+                                       (subpacket[11] != localId >> 8 || subpacket[12] != (localId & 0b11111111));
+                    var currentDecode = shouldDecode ? Packet.DecodeClientPacket(subpacket) : subpacket;
+                    decodedSubpackets.AddRange(currentDecode);
+                }
+
+                var decoded = decodedSubpackets.ToArray();
+
+                for (; resultLength < decoded.Length; resultLength++)
+                {
+                    ReceiveBuffer[resultLength] = decoded[resultLength];
+                }
+
+                DataStream = new BitStream(ReceiveBuffer);
+                DataStream.CutStream(0, decoded.Length);
+            }
+            else
+            {
+                ReceiveBuffer[0] = 0;
             }
 
-            DataStream = new BitStream(ReceiveBuffer);
-            DataStream.CutStream(0, decoded.Length * 8);
+            return resultLength;
         }
-        else
+        catch (Exception ex)
         {
+            var output = (arr?.Length ?? 0) > 0 ? Convert.ToHexString(arr) : "<empty>";
+            SphLogger.Error($"Incorrect packet from client: {output}. Client ID: {localId}", ex);
             ReceiveBuffer[0] = 0;
+            return 0;
         }
-
-        return i;
     }
 
     public void SetPlayerDbEntry (PlayerDbEntry? entry)
