@@ -33,7 +33,8 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         }
 
         SphLogger.Info($"CLI {localId:X4}: Login data sent");
-        var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer[..incomingDataLength]);
+        var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer[..incomingDataLength],
+            clientConnection.DataStream);
         if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
         {
             SphLogger.Error($"SRV {localId:X4}: Invalid login.");

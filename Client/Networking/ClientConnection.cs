@@ -57,16 +57,6 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive(delta);
-            var incomingDataLength = GetIncomingData();
-
-            if (incomingDataLength == 0)
-            {
-                // client hasn't sent anything
-                return;
-            }
-
-            DataStream = new BitStream(ReceiveBuffer);
-            DataStream.CutStream(0, incomingDataLength);
 
             switch (ReceiveBuffer[0])
             {
@@ -214,7 +204,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
         var i = 0;
 
-        if (arr is not null)
+        if (arr is not null && arr.Length > 0)
         {
             var shouldDecode = arr.Length > 12 && (arr[11] != localId >> 8 || arr[12] != (localId & 0b11111111));
             var decoded = shouldDecode ? Packet.DecodeClientPacket(arr) : arr;
@@ -222,6 +212,13 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             {
                 ReceiveBuffer[i] = decoded[i];
             }
+
+            DataStream = new BitStream(ReceiveBuffer);
+            DataStream.CutStream(0, decoded.Length * 8);
+        }
+        else
+        {
+            ReceiveBuffer[0] = 0;
         }
 
         return i;
