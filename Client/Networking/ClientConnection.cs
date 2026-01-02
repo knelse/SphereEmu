@@ -11,6 +11,7 @@ using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Client.Networking.Handlers.InGame.Items;
 using SphServer.Client.Networking.Handlers.InGame.NPC;
 using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
+using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -215,9 +216,11 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
         if (arr is not null)
         {
-            for (; i < arr.Length; i++)
+            var shouldDecode = arr.Length > 12 && (arr[11] != localId >> 8 || arr[12] != (localId & 0b11111111));
+            var decoded = shouldDecode ? Packet.DecodeClientPacket(arr) : arr;
+            for (; i < decoded.Length; i++)
             {
-                ReceiveBuffer[i] = arr[i];
+                ReceiveBuffer[i] = decoded[i];
             }
         }
 

@@ -9,6 +9,7 @@ public static class LoginDecoder
     {
         try
         {
+            SphLogger.Info($"Login decode input: {Convert.ToHexString(rcvBuffer)}");
             var loginEnd = 18;
 
             for (; loginEnd < rcvBuffer.Length; loginEnd++)
@@ -67,7 +68,7 @@ public static class LoginDecoder
         catch (Exception ex)
         {
             SphLogger.Error("Unable to decode login and password.", ex);
-            return new Tuple<string, string>("no_such_login", "abc");
+            return new Tuple<string, string>(string.Empty, string.Empty);
         }
     }
 }

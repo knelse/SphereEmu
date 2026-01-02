@@ -25,14 +25,23 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
             return;
         }
 
-        if (clientConnection.GetIncomingData() <= 12)
+        var incomingDataLength = clientConnection.GetIncomingData();
+
+        if (incomingDataLength <= 12)
         {
             return;
         }
 
         SphLogger.Info($"CLI {localId:X4}: Login data sent");
-        var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer);
-        
+        var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer[..incomingDataLength]);
+        if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+        {
+            SphLogger.Error($"SRV {localId:X4}: Invalid login.");
+            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.Close();
+            return;
+        }
+
         if (BannedClients.IsLoginBanned(login))
         {
             SphLogger.Error($"SRV {localId:X4}: Login is banned. Login: {login}");
@@ -40,7 +49,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
             clientConnection.Close();
             return;
         }
-        
+
         var player =
             LoginManager.CheckLoginAndGetPlayer(login, password, localId);
 
