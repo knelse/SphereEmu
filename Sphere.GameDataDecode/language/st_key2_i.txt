@@ -1,0 +1,28 @@
+01 chiave per il dungeon
+03 chiave per il dungeon
+10 Questa chiave è sbagliata.
+
+#240
+01 chiave per la stanza oscura dell'acqua
+03 chiave
+#241
+01 chiave per la stanza oscura del fuoco
+03 chiave
+#242
+01 chiave per la stanza oscura della terra
+03 chiave
+#243
+01 chiave per la stanza oscura dell'aria
+03 chiave
+#244
+01 chiave per l'argentea stanza dell'acqua
+03 chiave
+#245
+01 chiave per l'argentea stanza del fuoco
+03 chiave
+#246
+01 chiave per l'argentea stanza della terra
+03 chiave
+#247
+01 chiave per l'argentea stanza dell'aria
+03 chiave

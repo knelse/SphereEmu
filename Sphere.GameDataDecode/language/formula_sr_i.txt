@@ -1,0 +1,9 @@
+01 Formula
+02 formula
+03 formula
+
+100 Formula di riparazione della gilda dei fabbri
+
+10000 Questa formula è utilizzata per riparare i seguenti oggetti: %l1 Lo stadio dell'artigiano nella gilda dei fabbri deve essere almeno %z1. La riparazione richiede %a1.
+10001 Questa formula è utilizzata per riparare i seguenti oggetti: %l1 Lo stadio dell'artigiano nella gilda dei fabbri deve essere almeno %z1. La riparazione richiede %a1 e %a2.
+10002 Questa formula è utilizzata per riparare i seguenti oggetti: %l1 Lo stadio dell'artigiano nella gilda dei fabbri deve essere almeno %z1. La riparazione richiede %a1, %a2 e %a3.

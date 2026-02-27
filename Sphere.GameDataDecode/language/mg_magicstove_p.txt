@@ -1,0 +1,10 @@
+01 Forno químico
+03 forno químico
+11 Reação impossível:
+12 prana<%d
+13 terra<%d
+14 ar<%d
+15 água<%d
+16 fogo<%d
+
+100 Este é um dos únicos fornos químicos que restaram , fornos que em suas primeiras magia em Sphere cozinharam suas poções e pós.

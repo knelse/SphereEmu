@@ -1,0 +1,245 @@
+01 Crossbow
+03 crossbow
+10 You have no bolts
+
+100 Throwing weapon. Allows to hit the enemy from a large distance; requires a large stock of bolts.
+
+200 of exhaustion
+201 of valour
+202 of damage
+203 of cruelty
+204 of rush
+205 of speed
+206 of disorder
+207 of chaos
+208 of penetration
+209 of instability
+210 of deterioration
+211 of length
+212 of distance
+213 of mastership
+214 of tiredness
+215 of ether
+216 of glow
+217 of sickness
+218 of value
+
+#201
+01 hand crossbow
+03 hand crossbow
+#202
+01 copper crossbow
+03 copper crossbow
+#203
+01 light crossbow
+03 light crossbow
+#204
+01 silver crossbow
+03 silver crossbow
+#205
+01 golden crossbow
+03 golden crossbow
+#206
+01 hunting crossbow
+03 hunting crossbow
+#207
+01 duel crossbow
+03 duel crossbow
+#208
+01 elite hand crossbow
+03 elite hand crossbow
+#209
+01 elite light crossbow
+03 elite light crossbow
+#210
+01 elite golden crossbow
+03 elite golden crossbow
+#211
+01 elite duel crossbow
+03 elite duel crossbow
+#212
+01 rune hand crossbow
+03 rune hand crossbow
+#213
+01 rune light crossbow
+03 rune light crossbow
+#214
+01 rune golden crossbow
+03 rune golden crossbow
+#215
+01 rune duel crossbow
+03 rune duel crossbow
+#216
+01 crossbow
+03 crossbow
+#217
+01 great crossbow
+03 great crossbow
+#218
+01 heavy crossbow
+03 heavy crossbow
+#219
+01 iron crossbow
+03 iron crossbow
+#220
+01 steel crossbow
+03 steel crossbow
+#221
+01 battle crossbow
+03 battle crossbow
+#222
+01 siege crossbow
+03 siege crossbow
+#223
+01 elite crossbow
+03 elite crossbow
+#224
+01 elite heavy crossbow
+03 elite heavy crossbow
+#225
+01 elite steel crossbow
+03 elite steel crossbow
+#226
+01 elite siege crossbow
+03 elite siege crossbow
+#227
+01 rune crossbow
+03 rune crossbow
+#228
+01 rune heavy crossbow
+03 rune heavy crossbow
+#229
+01 rune steel crossbow
+03 rune steel crossbow
+#230
+01 rune siege crossbow
+03 rune siege crossbow
+#3751-3752
+01 hand crossbow
+03 hand crossbow
+#3753-3754
+01 copper crossbow
+03 copper crossbow
+#3755-3757
+01 light crossbow
+03 light crossbow
+#3758-3759
+01 silver crossbow
+03 silver crossbow
+#3760-3762
+01 golden crossbow
+03 golden crossbow
+#3763-3764
+01 hunting crossbow
+03 hunting crossbow
+#3765-3769
+01 duel crossbow
+03 duel crossbow
+#3770-3774
+01 elite hand crossbow
+03 elite hand crossbow
+#3775-3779
+01 elite light crossbow
+03 elite light crossbow
+#3780-3784
+01 elite golden crossbow
+03 elite golden crossbow
+#3785-3789
+01 elite duel crossbow
+03 elite duel crossbow
+#3790-3794
+01 rune hand crossbow
+03 rune hand crossbow
+#3795-3799
+01 rune light crossbow
+03 rune light crossbow
+#3800-3804
+01 rune golden crossbow
+03 rune golden crossbow
+#3805-3810
+01 rune duel crossbow
+03 rune duel crossbow
+#3811-3812
+01 crossbow
+03 crossbow
+#3813-3814
+01 great crossbow
+03 great crossbow
+#3815-3817
+01 heavy crossbow
+03 heavy crossbow
+#3818-3819
+01 iron crossbow
+03 iron crossbow
+#3820-3822
+01 steel crossbow
+03 steel crossbow
+#3823-3824
+01 battle crossbow
+03 battle crossbow
+#3825-3829
+01 siege crossbow
+03 siege crossbow
+#3830-3834
+01 elite crossbow
+03 elite crossbow
+#3835-3839
+01 elite heavy crossbow
+03 elite heavy crossbow
+#3840-3844
+01 elite steel crossbow
+03 elite steel crossbow
+#3845-3849
+01 elite siege crossbow
+03 elite siege crossbow
+#3850-3854
+01 rune crossbow
+03 rune crossbow
+#3855-3859
+01 rune heavy crossbow
+03 rune heavy crossbow
+#3860-3864
+01 rune steel crossbow
+03 rune steel crossbow
+#3865-3870
+01 rune siege crossbow
+03 rune siege crossbow
+#3871-3873
+01 legendary duel crossbow
+03 legendary duel crossbow
+#3874-3876
+01 eerie duel crossbow
+03 eerie duel crossbow
+#3877-3879
+01 dragon duel crossbow
+03 dragon duel crossbow
+#3880-3882
+01 legendary siege crossbow
+03 legendary siege crossbow
+#3883-3885
+01 eerie siege crossbow
+03 eerie siege crossbow
+#3886-3888
+01 dragon siege crossbow
+03 dragon siege crossbow
+#5883
+01 Hunter's arbalest
+03 Hunter's arbalest
+#5884
+01 Big Hunter's arbalest
+03 Hunter's arbalest
+#5885
+01 Great Hunter's arbalest
+03 great Hunter's arbalest
+#5886
+01 Heavy Hunter's arbalest
+03 Hunter's arbalest
+#5887
+01 Steel Hunter's arbalest
+03 Hunter's arbalest
+#5888
+01 Great Hunter's arbalest
+03 Hunter's arbalest
+#6454
+01 Albeorn's arbalest
+03 Albeorn's arbalest

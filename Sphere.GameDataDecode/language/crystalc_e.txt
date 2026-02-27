@@ -1,0 +1,90 @@
+01 Crystal
+03 Crystal
+10 Your level is too low, you cannot receive the castle attribute.
+11 Belongs to:
+100 Once placed into the scroll of a certain castle, the crystal will provide anyone who touches it with an attribute of additional abilities.
+
+#5081
+01 small crystal of power
+03 small crystal of power
+#5082
+01 small crystal of energy
+03 small crystal of energy
+#5083
+01 small crystal of stability
+03 small crystal of stability
+#5084
+01 small crystal of reflection
+03 small crystal of reflection
+#5085
+01 middle crystal of power
+03 middle crystal of power
+#5086
+01 middle crystal of energy
+03 middle crystal of energy
+#5087
+01 middle crystal of stability
+03 middle crystal of stability
+#5088
+01 middle crystal of reflection
+03 middle crystal of reflection
+#5089
+01 big crystal of power
+03 big crystal of power
+#5090
+01 big crystal of energy
+03 big crystal of energy
+#5091
+01 big crystal of stability
+03 big crystal of stability
+#5092
+01 big crystal of reflection
+03 big crystal of reflection
+#5093
+01 small dark crystal of power
+03 small dark crystal of power
+#5094
+01 small dark crystal of energy
+03 small dark crystal of energy
+#5095
+01 small dark crystal of stability
+03 small dark crystal of stability
+#5096
+01 small dark crystal of reflection
+03 small dark crystal of reflection
+#5097
+01 middle dark crystal of power
+03 middle dark crystal of power
+#5098
+01 middle dark crystal of energy
+03 middle dark crystal of energy
+#5099
+01 middle dark crystal of stability
+03 middle dark crystal of stability
+#5100
+01 middle dark crystal of reflection
+03 middle dark crystal of reflection
+#5101
+01 big dark crystal of power
+03 big dark crystal of power
+#5102
+01 big dark crystal of energy
+03 big dark crystal of energy
+#5103
+01 big dark crystal of stability
+03 big dark crystal of stability
+#5104
+01 great crystal of power
+03 great crystal of power
+#5105
+01 great crystal of energy
+03 great crystal of energy
+#5106
+01 great crystal of stability
+03 great crystal of stability
+#5107
+01 great crystal of reflection
+03 great crystal of reflection
+#5108
+01 big dark crystal of reflection
+03 big dark crystal of reflection

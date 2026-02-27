@@ -1,0 +1,25 @@
+01 Laboratorio
+03 laboratorio
+
+10 L'oggetto ha ottenuto proprietà speciali
+11 Oggetto pronto.
+12 Oggetto riparato.
+13 Oggetto riparato, ma le sue condizioni non sono buone.
+14 Oggetto riparato, ma le sue condizioni sono pessime.
+
+15 E' impossibile dare proprietà speciali all'oggetto utilizzando questa formula:
+16 E' impossibile creare l'oggetto utilizzando questa formula:
+17 E' impossibile riparare l'oggetto:
+
+18 La formula non coincide con l'oggetto
+19 non ci sono abbastanza componenti
+20 stadio nella gilda troppo basso
+21 l'oggetto si è accidentalmente rotto nella riparazione
+22 troppi oggetti
+23 l'oggetto si è rotto nella riparazione perchè troppo vecchio
+
+90 Nel creare l'oggetto, la formula ha terminato il suo potere magico e si è distrutta.
+91 Nel dare all'oggetto proprietà speciali, la formula ha terminato il suo potere magico e si è distrutta.
+92 Nella riparazione, la formula ha terminato il suo potere magico e si è distrutta.
+
+100 Questo è un laboratorio dove i fabbri e gli armaioli costruiscono armi e armature. Anche gli stregoni usano il laboratorio per infondere proprietà speciali agli oggetti lì costruiti.

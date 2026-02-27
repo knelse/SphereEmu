@@ -1,0 +1,10 @@
+01 Licenza per azzeramento della specializzazione
+03 licenza per azzeramento della specializzazione
+
+100 ќтмен€ет специализацию персонажа. ѕри этом сбрасывает распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земл€, воздух, вода и огонь. ”ровень титула и степени персонажа остаетс€ неизменным.
+
+101 Vuoi veramente azzerare la tua specializzazione?
+102 La specializzazione и stata azzerata.
+103 Ora non hai bisogno di usare la licenza.
+
+

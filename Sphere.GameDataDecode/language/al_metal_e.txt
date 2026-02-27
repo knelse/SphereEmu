@@ -1,0 +1,57 @@
+01 Metal
+02 metal
+03 metal
+
+#970
+01 Gold
+02 gold
+03 gold
+100 Used in alchemic reactions. Factor of 6.
+
+#971
+01 Silver
+02 silver
+03 silver
+100 Used in alchemic reactions. Factor of 3.
+
+#972
+01 Copper
+02 copper
+03 copper
+100 Used in alchemic reactions. Factor of 1.
+
+#973
+01 Iron
+02 iron
+03 iron
+100 Used in alchemic reactions. Factor of 3.
+
+#974
+01 Lead
+02 lead
+03 lead
+100 Used in alchemic reactions. Factor of 6.
+
+#975
+01 Tin
+02 tin
+03 tin
+100 Used in alchemic reactions. Factor of 12.
+
+#976
+01 Platinum
+02 platinum
+03 platinum
+100 Used in alchemic reactions. Factor of 24.
+
+#977
+01 Mithril
+02 mithril
+03 mithril
+100 Used in alchemic reactions. Factor of 48.
+
+#978
+01 Aluminium
+02 aluminium
+03 aluminium
+100 Used in alchemic reactions. Factor of 72.

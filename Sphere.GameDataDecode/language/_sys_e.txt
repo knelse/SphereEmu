@@ -1,0 +1,1149 @@
+0001 Domain change...
+0002 Connecting to 
+0003 Loading background data from %s...
+0004 Welcome to Sphere!
+0005 Access denied, name already in use
+0006 Access denied, incorrect name or password
+0007 Authorization server is inaccessible
+0008 *Offline*
+0009 File: %s (%d%%)
+0010 Refresh
+0011 Download from server error.
+0012 Connection impossible 
+0013 Offline mode 
+0014 Players:
+0015 Echo:
+0016 Channel perform.:
+0017 Bytes received:
+0018 Bytes sent:
+0019 Resent:
+0020 Your appearance
+0021 Your name:
+0022 Is everything correct? You will not be able to change your name or appearance in the future.
+0023 Access denied, account outdated.
+0024 You havenТt chosen your name.
+0025 weight: %4.3f
+0026 This name is already in use or invalid, try another.
+0027 Name check...
+0028 max. weight: %4.3f
+0029 Price
+0030 Offer
+0031 Are you sure you want to quit?
+0032 Hot keys
+0033 %d %s %d
+0034 %02d:%02d
+0035 Jan
+0036 Feb
+0037 Mar
+0038 Apr
+0039 May
+0040 Jun
+0041 Jul
+0042 Aug
+0043 Set
+0044 Oct
+0045 Nov
+0046 Dec
+0047 YOU NEED:
+0048 raise your title
+0049 raise your degree
+0050 receive money
+0051 improve your karma 
+0052 WHERE:
+0053 Man
+0054 Woman
+0055 Confirm your choice. You will not be able to change your name and appearance in the future.
+0056 Authorization server not found.
+0057 File synchronization error.
+0058 Leon
+0059 Charon 
+0060 PARTICIPANTS:
+0061 © Mission ©
+0062 Checking files...
+0063 Enter your name and password.
+0064 Name #%d
+0065 Your account has been blocked
+0066 You cannot receive a mission:
+0067 low title ( < %d )
+0068 too high title ( > %d )
+0069 low degree  ( < %d )
+0070 too high degree ( > %d )
+0071 bad karma
+0072 too good karma
+0073 Mission complete!
+0074 No place for mission key.
+0075 You have received a mission.
+0076 Your key is incorrect.
+0077 Mission time out.
+0078 receiving mission 
+0079 You have received %d$.
+0080 Mission still incomplete.
+0081 No place for mission object.
+0085 apply
+0086 lay out
+0089 Karma: %s
+0090 very bad 
+0091 bad
+0092 neutral 
+0093 good
+0094 benign
+0099 You are dead.
+0100 They cannot be used together.
+0101 This cannot be placed here.
+0102 To use this, place it in inventory.
+0103 You are killed. Your killer: %s
+0104 %s offers, %s receives mission key.
+0105 You have not enough money.
+0106 You cannot take this.
+0107 %s bought %s for %d$.
+0108 %s offers %d$ for %s
+0109 The token to buy must be one level up to the current.
+0110 You cannot use this (low title).
+0111 You cannot use this (low degree).
+0112 You cannot use this (bad karma).
+0113 He cannot accept this mission key.
+0114 She cannot accept this mission key.
+0115 Tablet inaccessible: castle in the power of monsters.
+0116 You have lost %s.
+0117 Tablet inaccessible: castle belongs to another clan and guarded.
+0118 Tablet inaccessible: castle gate locked.
+0119 inappropriate guild or low stage
+0120 health: %+d
+0121 prana: %+d
+0122 Premium level %d required.
+0123 Cannot buy token: someone is on the island.
+0124 The token can be bought only on Rodos
+0126 title marks: %+d 
+0127 degree marks: %+d
+0128 You have been given a title: %s
+0129 You have been given a degree: %s
+0130 clan %s (%s)
+0131 You have bought %s for %d$.
+0132 Request sent to clan %s.
+0133 %s requests clanship.
+0134 Join clan
+0135 Join group
+0136 Request sent to join group.
+0137 Check name clan...
+0138 Clan %s created.
+0139 Impossible to create a clan with the name %s.
+0140 © %s ©
+0141 Liege lord	
+0142 Liege lady
+0143 Seneschal
+0144 Seneschal
+0145 Vassal
+0146 Vassal
+0147 Neophyte
+0148 Neophyte
+0150 Grant clanship
+0151 Deny
+0152 Banish
+0153 Raise
+0154 Reduce
+0155 Quit clan
+0156 Lay out %s?
+0160 Your new degree in the clan: %s.
+0161 Your have been banished from clan %s.
+0162 Your have been admitted to clan %s.
+0163 Your have quit clan %s.
+0164 owner: clan %s
+0165 no owner 
+0166 Castle now belongs to clan %s.
+0167 Your are not in the clan!
+0168 Castle belongs to another clan.
+0169 clan %s
+0170 Castle %s
+0171 Get key 
+0172 %s busy and cannot trade with you.
+0173 You cannot take mission to often.
+0174 You have been excluded from the group.
+0175 You have admitted to the group.
+0176 You have quit the group.
+0177 You have become head of the group.
+0178 Request sent to the group.
+0179 %s requests membership of the group.
+0180 night
+0181 morning
+0182 day
+0183 evening
+0185 %s cannot be used 
+0186 title<%d
+0187 degree<%d
+0188 karma too bad
+0189 karma too good
+0190 power<%d
+0191 dexterity<%d
+0192 accuracy<%d
+0193 endurance<%d
+0194 earth<%d
+0195 air<%d
+0196 water<%d
+0197 fire<%d
+0198 health<%d
+0199 prana<%d
+0200 Health
+0201 Prana
+0202 Satiety
+
+0203 Power 
+0204 Dexterity 
+0205 Accuracy 
+0206 Endurance 
+0207 Earth 
+0208 Air 
+0209 Water 
+0210 Fire 
+
+0211 Head
+0212 Head
+0213 Participant
+0214 Participant 
+0215 Creating group...
+0216 Group disbanded.
+
+0217 MS
+0218 Elementals:
+
+0220 Conditions
+
+0222 Candidate (1)
+0223 Candidate (1)
+0224 Schoolboy (2)
+0225 Schoolgirl(2)
+0226 Apprentice (3)
+0227 Apprentice (3)
+0228 Craftsman (4)
+0229 Craftsman (4)
+0230 Senior (5)
+0231 Senior (5)
+0232 Expert (6)
+0233 Expert (6)
+
+
+0234 Consumption
+0235 health: %d
+0236 prana: %d
+
+0240 Premium level: %d
+
+0241 Action
+0242 combat: %+d
+0243 magic: %+d
+0244 prana: %+d
+0245 health: %+d
+
+0254 ¬ы повысили уровень своего острова
+0255 alchemic ingredient
+0256 relative element: earth
+0257 relative element: air
+0258 relative element: water
+0259 relative element: fire
+0260 class "love-hatred"
+0261 class "wisdom-ignorance"
+0262 class "lightness-heaviness"
+0263 class "heat-cold"
+0264 class "power-weakness"
+0265 class "light-dark"
+0266 class "order-chaos"
+0267 class "life-death"
+0268 active at night
+0269 active in the morning
+0270 active by day
+0271 active in the evening
+0272 shows positive aspect
+0273 shows slight positive aspect
+0274 neutral to aspects
+0275 shows slight negative aspect
+0276 shows negative aspect
+0277 earth consumption: %d
+0278 air consumption: %d
+0279 water consumption: %d
+0280 fire consumption: %d
+0281 consumption factor: 6
+0282 consumption factor: 3
+0283 consumption factor: 1
+0284 consumption factor: 3
+0285 consumption factor: 6
+0290 Reaction impossible:
+
+0295 Mantra learned.
+0296 Mantra not learned!
+0297 No oftener than once in %d h.
+0298 Use time is not out yet. Remain
+0299 Mantra lost!
+
+
+0700 Modifies
+0701 max. health: %+d
+0702 max. prana: %+d
+0703 max. satiety: %+d
+0704 physical protection: %+d
+0705 magical protection: %+d
+0706 power: %+d
+0707 dexterity: %+d
+0708 accuracy: %+d
+0709 endurance: %+d
+0710 earth: %+d
+0711 air: %+d
+0712 water: %+d
+0713 fire: %+d
+0714 speed: %+d
+
+0715 %d hour(s)
+0716 %d hour(s)
+0717 %d hour(s)
+0718 %d hour(s) left
+0719 %d hour(s) left 
+0720 %d hour(s) left 
+0721 period expires 
+0722 Parameters
+0723 %2.1f sec.
+0724 %d m.
+0725 %d min.
+0726 Mutator fixed to target 
+0727 Mutator fixed to you (%s)
+0728 %d m. / [%d m.]
+0729 This mantra cannot be saved to a book.
+
+0730 Clan %s domain. Passage duty - %d$. Pay or retire.
+0731 You have not enough money to pay the duty.
+0732 You have paid duty %d$ of clan %s.
+
+0750 falling
+0751 You are smashed.
+0752 air shortage
+0753 You are drowned.
+0754 You have been destroyed by KingТs Wrath.
+0755 KingТs Wrath
+0756 TabletТs Wrath
+0757 You have been destroyed by TabletТs Wrath.
+0758 Tablet: %s under attack! 
+0760 Tablet: %s has not paid the duty.
+0761 %s killed (%s)
+0762 %s killed (%s)
+0763 %s dead
+0764 %s dead
+0765 The stone cannot be activated, there are already two stones nearby.
+0766 The stone cannot be activated outside the castle.
+0767 The stone cannot exist in a foreign territory.
+0768 burn
+0769 You have died of burns.
+0770 Luminescence
+0771 You have been killed by Luminescence.
+0772 trap
+0773 You have been killed by trap.
+0780 %s stole your %s (%d).
+0781 %s stole your %s (%d).
+0782 You have been teleported by %s.
+0783 %s stole %d$ from you.
+0784 %s stole %d$ from you.
+
+0800  Commands for GM:
+0801  "/set t <N>" - set title
+0802  "/set d <N>" - set degree
+0803  "/heal" - full health, prana and satiety
+0804  "/money <N>" - get money
+0805  "/jump <char name>" - jump to given character within server 
+0806  "/pull <char name>" - pull character
+0807  "/sayall <message>" - say to all servers 
+0808  "/save <position name>" - save position 
+0809  "/load <position name>" - jump to saved position 
+0810  "/plist" - get list of petitions with numbers 
+0811  "/pgot <petition number>" - accept petition
+0812  "/pdone <petition number>" - petition processed
+0813  "/set clan <clan name>" - join clan for a while
+0814  "/char <char name>" - log in the game under another character 
+0815  "/invis" - invisibility
+0816  "/vis" - turn off invisibility 
+0817  "/turn <skin number>" - turning into
+0818  "/anger off" - turn off kingТs wrath for an hour
+0819  "/anger on" - turn on kingТs wrath
+0820  "/ban [reason] <hours>" - block current character
+0821  "/ban [reason] <hours> <char>" - block character within server
+0822     Optional parameter "reason" when blocking:
+0823     a - bad language, insult, aggression to GM
+0824     k - killing in the wrong place
+0825     d - duplicating things or money 
+0826     t - selling for real money 
+0827     n - prophylactic ban when stolen 
+0828     e - failure character 
+0829     r - cheating or use of game errors 
+
+
+0830  Commands:
+//831  "/say <player name> <message>" - private message
+0831  "/help" - help
+0832  "/petition <your petition>" - send petition game master. Describe your problem in petition clearly and briefly.
+0833  "/sayclan <your message>" - send message to clan on all servers (no oftener than once in 15 seconds).
+0834  "/saygrp <your message>" - send message to group on all servers (no oftener than once in 15 seconds).
+0835  "/sayally <your message>" - send message to alliance on all servers (no oftener than once in 30 seconds).
+0836  "/clanlist" - get list of all clan members (for liege lord only).
+0837  "/kick <player name>" - banish character from clan regardless of his/her presence in game (for liege lord only).
+0838  "/resetcastle" - return all castle things into treasury. Works near castle scroll, only for liege lords.
+0839  "/resetskills" - convert all skills back to elementals (possible once).
+0840  "/titledown" - drop title to 15th level. One degree level is given for five dropped title levels (possible once). Does not work after degreedown!
+0841  "/degreedown" - drop degree to 15th level. One title level is given for five degree levels (possible once). Does not work after titledown!
+0842  "/rebirth" - rebirth (title or degree must be of level 60). Character becomes of level 15/15!
+0843  "/ignore <player name>" - add character to ignore list.
+0844  "/unignore <player name>" - remove character from ignore list.
+0845  "/unignore all" - clear contents of ignore list.
+0846  "/resetguild" - resets current specialization (only for premium accounts).
+0847  "/resetimage" - resets character image (only for premium accounts).
+
+0850  Properties reset!
+0851  You have already reset characterТs properties.
+0852  Petition sent.
+0853  Petition can be sent no oftener than once in 12 hours.
+0854  Petition queued for processing.
+0855  Petition marked as complete.
+0856  Petition already marked or processed.
+0857  Character not found.
+0858  You can choose a new appearance for your character without changing the gender and name.
+0859  Command is not allowed.
+
+0860  Clan %s offers alliance
+0861  Clan %s declares war.
+0862  Clan %s and clan %s entered into alliance
+0863  Clan %s and clan %s declared war on each other.
+0864  Clan %s broke off alliance with clan %s.
+0865  Clan %s offers peace.
+0866  Clans %s and %s have declared peace.
+0867  Clan %s refused alliance with clan.
+0868  Clan %s refused war with clan.
+0869  Clan %s refused clanТs peace offer.
+0870  Clan %s is already in 5 alliances.
+0871  Clan %s already at war with 5 clans.
+0872  Tablet inaccessible: castle belongs to allied clan.
+
+0876  List saved to file clanlist.xls
+0877  Request for clan list possible once in 24 hours.
+0878  Incorrect character name or no rights to banish.
+0879  Character banished from your clan.
+
+0880  "/msg player name>text" - send private message to another character.
+0881  "/reg" - registered mobile phone number on your account.
+0882  "/unreg" - cancel registration of phone number.
+0883  "/claim" - show list of available presents.
+0884  "/removebankpass" - reset bank password.
+
+0900 Assassin
+0901 Crusader
+0902 Inquisitor
+0903 Hunter
+0904 Archimagician
+0905 Barbarian
+0906 Druid
+0907 Thief
+0908 Steel master
+0909 Armorer
+0910 Blacksmith
+0911 Sorcerer
+0912 Necromancer
+0913 Bandier
+
+0919 (%d stage)
+0920 Created by candidate (1st stage)
+0921 Created by schoolboy (2nd stage)
+0922 Created by apprentice (3rd stage)
+0923 Created by master (4th stage)
+0924 Created by senior (5th stage)
+0925 Created by expert (6th stage)
+
+0930 Requirements
+0931 Level to go to 2nd stage
+0932 Level to go to 3rd stage
+0933 Level to go to 4th stage
+0934 Level to go to 5th stage
+0935 Level to go to 6th stage
+0936 Title not lower than %s
+0937 Title not higher than %s
+0938 Degree not lower than %s
+0939 Degree not higher than %s
+0940 Guild closed for you.
+0941 You are already in 6th stage
+0942 Join the guild 
+0943 Get new stage
+
+0950 Game files damaged, restart.
+
+0955 Wrong server address, connection impossible.
+0956 Connection
+0957 Refresh
+0958 Total
+0959 - Empty -
+0960 Are you sure you want to delete the character?
+0961 Domain change...
+0962 Character marked as deleted and will be deleted from disk in five days.
+0963 Illegally duplicated thing found and deleted.
+0964 Update Charon continent
+0965 Load update with new lands?
+0966 Quit Sphere with character in selling mode?
+0967 License valid only in marketplace.
+0968 Character blocked (game rules broken). Block ends in %dh.
+0969 Character blocked for %dh.
+0970 Character unblocked.
+0971 Messages cannot be sent too often.
+0972 Third-part application use detected to interfere with client work.
+0973 You have no rights for this command.
+0974 You cannot ban character for more than 12 hours.
+0975 Save error when trying to update file %s. Check access rights to the selected file and folder.
+0976 File %s load error
+0977 Update Phoebe continent
+0978 Deletion mark removed from character.
+0979 Incorrect client version: start game with full file check.
+
+0980 Character blocked (use of application interfering with client work). Block ends in %dh.
+0981 Character blocked (incorrect or damaged game files). Block ends in %dh.
+0982 Character blocked (bad language in main chat, insulting players or administration). Block ends in %dh.
+0983 Character blocked (killing at rebirth point, in city or marketplace). Block ends in %dh.
+0984 Character blocked (illegal duplication of things or money). Block ends in %dh.
+0985 Character blocked (trade in game valuables or PINs for real money). Block ends in %dh.
+0986 Character blocked (account theft suspected). Block ends in %dh.
+0987 Character blocked (character data fail! Contact technical support). Block ends in %dh.
+0988 Character blocked (cheating or conscious use of game errors). Block ends in %dh.
+0989 Character blocked (sending messages too frequently).  Block ends in %dh.
+
+0990 The character is not in clan
+0991 The character is not in group
+0992 The character is not in alliance
+
+0995 Warning: You are sending messages too frequently! Your character may be banned.
+
+0997 Update Rodos continent (premium account required)
+
+0300 wanderer (1)
+0301 wanderer (1)
+0302 wanderer (2)
+0303 wanderer (2)
+0304 wanderer (3) 
+0305 wanderer (3)
+0306 wanderer (4) 
+0307 wanderer (4)
+0308 wanderer (5)
+0309 wanderer (5)
+0310 guest (6)
+0311 guest (6)
+0312 guest (7)
+0313 guest (7)
+0314 guest (8)
+0315 guest (8)
+0316 guest (9)
+0317 guest (9)
+0318 guest (10)
+0319 guest (10)
+0320 citizen (11)
+0321 citizen (11)
+0322 citizen (12)
+0323 citizen (12)
+0324 citizen (13)
+0325 citizen (13)
+0326 citizen (14)
+0327 citizen (14)
+0328 citizen (15)
+0329 citizen (15)
+0330 city dweller (16)
+0331 city dweller (16)
+0332 city dweller (17)
+0333 city dweller (17)
+0334 city dweller (18)
+0335 city dweller (18)
+0336 city dweller (19)
+0337 city dweller (19)
+0338 city dweller (20)
+0339 city dweller (20)
+0340 squire (21)
+0341 squire (21)
+0342 squire (22)
+0343 squire (22)
+0344 squire (23)
+0345 squire (23)
+0346 squire (24)
+0347 squire (24)
+0348 squire (25)
+0349 squire (25)
+0350 chevalier (26)
+0351 lady (26)
+0352 chevalier (27)
+0353 lady (27)
+0354 chevalier (28)
+0355 lady (28)
+0356 chevalier (29)
+0357 lady (29) 
+0358 chevalier (30)
+0359 lady (30)
+0360 baron (31)
+0361 baroness (31)
+0362 baron (32)
+0363 baroness (32)
+0364 baron (33)
+0365 baroness (33)
+0366 baron (34)
+0367 baroness (34)
+0368 baron (35)
+0369 baroness (35)
+0370 viscount (36)
+0371 viscountess (36)
+0372 viscount (37)
+0373 viscountess (37)
+0374 viscount (38)
+0375 viscountess (38)
+0376 viscount (39)
+0377 viscountess (39)
+0378 viscount (40)
+0379 viscountess (40)
+0380 count (41)
+0381 countess (41)
+0382 count (42)
+0383 countess (42)
+0384 count (43)
+0385 countess (43)
+0386 count (44)
+0387 countess (44)
+0388 count (45)
+0389 countess (45)
+0390 marquis (46)
+0391 marquise (46)
+0392 marquis (47)
+0393 marquise (47)
+0394 marquis (48)
+0395 marquise (48)
+0396 marquis (49)
+0397 marquise (49)
+0398 marquis (50)
+0399 marquise (50)
+0400 duke (51)
+0401 duchess (51)
+0402 duke (52)
+0403 duchess (52)
+0404 duke (53)
+0405 duchess (53)
+0406 duke (54)
+0407 duchess (54)
+0408 duke (55)
+0409 duchess (55)
+0410 prince (56)
+0411 princess (56)
+0412 prince (57)
+0413 princess (57)
+0414 prince (58)
+0415 princess (58)
+0416 prince (59)
+0417 princess (59)
+0418 prince (60)
+0419 princess (60)
+
+0500 ignorant (1)
+0501 ignorant (1)
+0502 ignorant (2)
+0503 ignorant (2)
+0504 ignorant (3)
+0505 ignorant (3)
+0506 ignorant (4)
+0507 ignorant (4)
+0508 ignorant (5)
+0509 ignorant (5)
+0510 candidate (6)
+0511 candidate (6)
+0512 candidate (7)
+0513 candidate (7)
+0514 candidate (8)
+0515 candidate (8)
+0516 candidate (9)
+0517 candidate (9)
+0518 candidate (10)
+0519 candidate (10)
+0520 pupil (11)
+0521 pupil (11)
+0522 pupil (12)
+0523 pupil (12)
+0524 pupil (13)
+0525 pupil (13)
+0526 pupil (14)
+0527 pupil (14)
+0528 pupil (15)
+0529 pupil (15)
+0530 novice (16)
+0531 novice (16)
+0532 novice (17)
+0533 novice (17)
+0534 novice (18)
+0535 novice (18)
+0536 novice (19)
+0537 novice (19)
+0538 novice (20)
+0539 novice (20)
+0540 entrant (21)
+0541 entrant (21)
+0542 entrant (22)
+0543 entrant (22)
+0544 entrant (23)
+0545 entrant (23)
+0546 entrant (24)
+0547 entrant (24)
+0548 entrant (25)
+0549 entrant (25)
+0550 student (26)
+0551 student (26)
+0552 student (27)
+0553 student (27)
+0554 student (28)
+0555 student (28)
+0556 student (29)
+0557 student (29)
+0558 student (30)
+0559 student (30)
+0560 bachelor (31)
+0561 bachelor (31)
+0562 bachelor (32)
+0563 bachelor (32)
+0564 bachelor (33)
+0565 bachelor (33)
+0566 bachelor (34)
+0567 bachelor (34)
+0568 bachelor (35)
+0569 bachelor (35)
+0570 master (36)
+0571 master (36)
+0572 master (37)
+0573 master (37)
+0574 master (38)
+0575 master (38)
+0576 master (39)
+0577 master (39)
+0578 master (40)
+0579 master (40)
+0580 doctor (41)
+0581 doctor (41)
+0582 doctor (42)
+0583 doctor (42)
+0584 doctor (43)
+0585 doctor (43)
+0586 doctor (44)
+0587 doctor (44)
+0588 doctor (45)
+0589 doctor (45)
+0590 professor (46)
+0591 professor (46)
+0592 professor (47)
+0593 professor (47)
+0594 professor (48)
+0595 professor (48)
+0596 professor (49)
+0597 professor (49)
+0598 professor (50)
+0599 professor (50)
+0600 dean (51)
+0601 dean (51)
+0602 dean (52)
+0603 dean (52)
+0604 dean (53)
+0605 dean (53)
+0606 dean (54)
+0607 dean (54)
+0608 dean (55)
+0609 dean (55)
+0610 chancellor (56)
+0611 chancellor (56)
+0612 chancellor (57)
+0613 chancellor (57)
+0614 chancellor (58)
+0615 chancellor (58)
+0616 chancellor (59)
+0617 chancellor (59)
+0618 chancellor (60)
+0619 chancellor (60)
+
+0650 great
+0651 great
+0652 greatest
+0653 greatest
+0654 legendary
+0655 legendary
+
+0660 —оветник
+
+4000 Liege Castle domain
+4001 Fief Castle domain 
+4002 Aris Castle domain 
+4003 Lator Castle domain 
+4004 Eikum-kas Castle domain 
+4005 Gedeon Castle domain 
+4006 Chatelier Castle domain 
+4007 Tuanod Castle domain 
+4008 Peltier Castle domain 
+4009 Kare-Royal Castle domain 
+4010 Blessendor Castle domain 
+4011 Ternoval Castle domain 
+4012 Ammalael Castle domain 
+4013 Kablak Castle domain 
+4014 Dewangari Castle domain 
+4015 Sabulat Castle domain 
+4016 Deffensat Castle domain 
+4017 Aionat Castle domain 
+4018 Triumphaler Castle domain 
+
+4019 Bagarnak Castle domain 
+4020 Kabrad Castle domain 
+4021 Set Castle domain 
+4022 Lender Castle domain 
+4023 Keles Castle domain 
+4024 Sheprostan Castle domain 
+4025 Orkobien Castle domain 
+4026 Kanuak Castle domain 
+4027 Aldarnon Castle domain 
+4028 Iong Castle domain 
+
+4029 Elek Castle domain 
+4030 Gavot Castle domain 
+4031 Kandur Castle domain 
+
+4032 Immertel Castle domain
+4033 Narcissus Castle domain
+4034 Randen Castle domain
+4035 Nirgun Castle domain
+4036 Gelgivinn Castle domain
+
+4200 Shipstone City
+4201 Bangville City
+4202 Sanpul City
+4203 Torwil City
+4204 Nomrad City
+4205 Gifes City
+4206 Umrad City
+4207 Anhelm City
+4998 Marketplace 
+4999 Neutral territory 
+
+4301 Hyperion
+4302 Helios  
+4303 Rhodes
+4304 Phoebe
+4305 Leon
+4306 Charon 
+
+3000 Liege Castle 
+3001 Fief Castle 
+3002 Aris Castle 
+3003 Lator Castle 
+3004 Eikum-kas Castle 
+3005 Gedeon Castle 
+3006 Chatelier Castle 
+3007 Tuanod Castle 
+3008 Peltier Castle 
+3009 Kare-Royal Castle 
+3010 Blessendor Castle 
+3011 Ternoval Castle 
+3012 Ammalael Castle 
+3013 Kablak Castle 
+3014 Dewangari Castle 
+3015 Sabulat Castle 
+3016 Deffensat Castle 
+3017 Aionat Castle 
+3018 Triumphaler Castle 
+
+3019 Bagarnak Castle 
+3020 Kabrad Castle 
+3021 Set Castle 
+3022 Lender Castle 
+3023 Keles Castle 
+3024 Sheprostan Castle 
+3025 Orkobien Castle 
+3026 Kanuak Castle 
+3027 Aldarnon Castle 
+3028 Iong Castle 
+
+3029 Elek Castle 
+3030 Gavot Castle 
+3031 Kandur Castle
+
+3032 Immertel Castle
+3033 Narcissus Castle
+3034 Randen Castle
+3035 Nirgun Castle
+3036 Gelgivinn Castle
+
+9990 Send SMS with the word SPHERE on number 8883 - receive screenshots
+9991 and PIN-code as a present. Visit official site for details.
+
+10000 To register your mobile phone on your account, send SMS to number 8881 with text SPGOLD %s.
+10001 The number <%s> is already registered on your account. Use /unreg command to delete current number.
+10002 The number <%s> has been registered on your account. Use "Delete" button to remove current number.
+10003 There is no number registered on your account. Use /reg command to register a number.
+10004 You want to take %s as a present. Are you sure?
+10005 No presents available
+10006 Delete
+10007 Yes
+10008 OK
+10009 No room for the present.
+10010 Select one item from the list:
+10011 You already have such possibility.
+10020 The room is not empty.
+10021 The object is under protection.
+10022 Your level is too low, you cannot receive the castle attribute.
+10023 You have not enough cash to pay for the goods. Do you want to pay via bank? The bank rate will make up %d$.
+10024 Wrong password entered.
+10025 Wrong old password is entered.
+10026 The password changed successfully.
+10027 The bank has not been initialized.
+10028 The money from your room have been moved to bank.
+10029 The money from your island have been moved to bank.
+10030 The passwords entered are different.
+10031 The bank password has been reset.
+10032 Apply the needed key to the door to enter the room.
+10033 Wrong amount of money.
+10034 The seller cannot take payment.
+10035 Sale of non-empty containers is prohibited.
+10036 You cannot drop non-empty container.
+10037 You have bought %s for %d.
+10038 put money into bank
+10039 take money from bank
+10043 You have untaken presents.
+10044 Error.
+10045 You have to reset specialization before dropping title or degree.
+10046 Created guest token for character %s.
+10048 Invalid command. You have crystal(s) that do not match low level.
+
+10053 The servers are being updated, please try to connect a bit later.
+10059 This item does not belong to you.
+10061 The crystal does not match this castle.
+10071 ¬ы применили порошок у€звимости.
+10078 ¬ы применили эликсир физической атаки.
+10079 ¬ы применили эликсир магической атаки.
+10080 ¬ы применили эликсир физической защиты.
+10081 ¬ы применили эликсир магической защиты.
+10112 The item is not charged
+10121 Your karma is neutral or better - you cannot use the stone.
+
+
+10124 One of your characters is standing in the market square. Logging in with any character will revoke your trade license.
+10125 This item can only be used by a female character!
+10126 Increases physical and magic defense by 600.
+10127 Recovers half of your maximum stamina.
+10128 Recovers half of your maximum prana.
+10129 Recovers half of your maximum health.
+10130 Doubles your running speed.
+10131 Doubles your jump distance.
+10132 Loss of coordination.
+10133 Fireworks!
+10134 Seeing hidden traps.
+10135 Increases physical defense by 1000.
+10136 Could not delete character. Please try again after a few minutes
+10137 Could not delete character. You have no character with such name
+10138 Magic mirror.
+
+10139 You used a satiation potion
+10140 Not enough money to pay the tax
+10141 You used an enlightenment stone
+10142 You used a karma stone
+10143 You used a recall stone
+10144 You used a large recall stone
+10145 Character deletion limit is exceeded. Please contact technical support.
+
+10146 Your arms feel stronger!
+10147 You feel refreshed and invigorated!
+
+10201 s
+
+10216 Only game masters can currently log in to server.
+10217 Castle items cannot be stacked.
+
+10218 item
+10219 taler
+
+10300 You cannot attack a player since your title and level are below %d.
+10301 You cannot attack a player whose title and level are below %d.
+10302 You cannot attack a player since you are in a sanctuary zone (town, market square).
+10303 You cannot attack a player since they are in a sanctuary zone (town, market square).
+
+10304 Evacuation cancelled successfully.
+10305 Evacuation time-out has not yet expired.
+10306 Evacuation in %d sec.
+10307 You cannot move or hold any items during evacuation.
+10308 Fists
+
+10324 Send private message
+10325 Invite to group
+10326 %s invites you to group. Accept invitation?
+10327 %s is already invited.
+10328 %s is already invited.
+10329 %s accepts invitation.
+10330 %s declines invitation.
+10331 You cannot invite %s to group, they are too far away.
+10332 %s is already in a group.
+
+10333 Send report
+10334 Report player
+
+10335 You cannot join the group because it is full.
+10336 Technical support: Some items have been restored:
+10337 Technical support: You received the following item: '%s'
+10338 Technical support: There is no room in your inventory for the following item: '%s'
+10339 Technical support: Error creating item
+
+10340 You received a random item.
+10341 No room for the random item.
+10342 Error creating item.
+
+10343 %d minute
+10344 %d minutes
+10345 %d minutes
+
+10346 Miss!
+10347 Stone of defense can only be used inside your castle
+10348 Stone of defense cannot be used in the castle of current level
+10349 Stone of defense activated
+10350 Monster level has increased
+
+10351 You entered the arena during the tournament. Go away!
+10352 Arena
+10353 The portals are open. You may teleport to the tournament arena. The battle will start in a few minutes.
+10354 The tournament has begun.
+10355 1/%d final. Participants:
+10356 final
+10357 %s and %s are summoned into the arena!
+10358 %s wins the battle
+10359 %s wins the tournament.
+10360 Neither player showed up. %s advances to the next stage according to the rules of tournament draft.
+10361 %s did not show up. %s wins.
+10362 Both players have the same amount of hit points. %s wins and advances to the next stage according to the rules of tournament draft.
+10363 %s has more hit points and wins the battle.
+10364 Attention! Tournament registration is now available.
+10365 tournament
+10366 You cannot help players during the tournament!
+10367 You receive a prize!
+10368 Go back to the tournament arena or you will automatically forfeit.
+10369 %s has fled from battle. %s wins.
+10370 %s refused to participate in the tournament.
+10371 Tournament registration is not available yet.
+10372 %s has registered for the tournament.
+10373 Tournament registration is over.
+10374 %s has died and drops out of the tournament.
+10375 You lost the tournament.
+10376 %s has fled from battle.
+10377 Participants:
+10378 standard
+10379 king of the hill
+10380 cannot register - too many participants.
+
+10381 This mission can be completed once every 12 hours
+10382 You receive a gift for 150 minutes of active playing.
+
+10383 The castle cannot be captured at the moment
+10384 You have reclaimed the castle. The upgrades are gone because %d days have passed.
+10385 You have reclaimed the castle. It lost %d upgrades because %d days have passed.
+10386 You have reclaimed the castle.
+10387 The castle has been taken over by %s clan for the first time.
+
+10388 You cannot use a castle item since you joined the clan only recently (you need to be a member for %d days). The item has been removed.
+10389 You cannot interact with lower level players in this castle area
+10390 You cannot use this (castle item).
+
+10391 From now on this item will serve only you.
+10392 You cannot join a clan without leaving your faction.
+
+10393 register
+10394 cancel registration
+
+10395 Only a quest owner can share the quest
+10396 You cannot share this quest anymore
+10397 You cannot share this quest - the level difference between players is too great
+
+10399 You cannot register - your level is incorrect.
+10400 You cannot fight now - prepare for battle!
+10401 You cannot fight now - you are in a sanctuary!
+10402 The battle has begun!
+10403 The battle begins in %d seconds. Get ready.
+10450 You reach the limit of items.
+
+10461 Ётот предмет будет удалЄн при выходе из игры - не забудьте подобрать его обратно.
+10462 Cannot teleport into the castle. %d seconds remaining.
+
+10463 Temporary item
+10464 A temporary item has expired.
+
+10466 (%s remaining).
+10467 %d day
+10468 %d days
+10469 %d days
+
+10470 Time until New Year: %s.
+10471 less than a minute
+10472 You received a New Year's gift.
+10473 You have already received a New Year's gift.
+
+10474 Invalid action: this mantra cannot be used during the tournament.
+
+10475 You cannot teleport at the moment.
+
+10476 "Mammoth runs" have begun.
+10477 %s finishes first.
+
+10479 Ability failed
+
+10481 Spell does not affect monsters
+
+10483 You cannot activate a crystal while inside the invulnerability sphere.
+10484 Closed
+
+10490 %s wins the tournament.
+10491 %s wins the tournament amongst the great.
+10492 %s wins the tournament amongst the greatest.
+10493 %s wins the tournament amongst the legends.
+10494 %s does not have worthy opponents.
+10495 The following participants are being summoned into the arena:
+10496 The participants have %d seconds to prepare
+10497 %s dies.
+10498 It's a draw. Everybody loses.
+10499 Red team wins.
+10500 Green team wins.
+10501 Teams are imbalanced. The tournament is cancelled.
+
+10502 You changed groups.
+10503 You are already registered.
+
+10505  
+10506 g
+10507 gg
+10508 gg2
+
+10509 %s did not show up for the tournament.
+10510 group
+10511 current tournament
+10512 results
+
+10513 Red: %d
+10514 Green: %d
+
+10520 Time's up
+10521 Enemies are growing few in number
+10522 The hostage has escaped
+10523 There is nobody left
+
+10530 hostage rescue
+10532 killed
+10533 fled
+10534 did not show up
+
+10540 You are in the red team
+10541 You are in the green team
+10542 This player's ear is already on your string
+10543 This ear does not fit this string
+
+10545 Lost connection to server.
+
+10550 Authorization session has expired. Please try logging in again. If the error persists, contact technical support at help.gamexp.ru
+10551 Connection attempt failed.
+10552 Would you like to try again?
+10553 Would you like to reconnect?
+10554 This function is not currently available.
+10555 Stone of recall fizzled!
+10556 ’2 title activated.
+10557 ’2 degree activated.
+10558 The ability cannot be used here
+10559 You cannot nest any more bags
+10560 New Year's amulet has expired
+10561 Operation not available now
+10562 It is forbidden to place a bag here if it contains other bags
+10563 Too far
+10564 The tablet is already being captured by another player

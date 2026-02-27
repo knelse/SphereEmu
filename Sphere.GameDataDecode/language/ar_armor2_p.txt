@@ -1,0 +1,354 @@
+01 Manto
+03 Manto
+
+100 Vestimenta tradicional dos Magos.
+
+200 de valor
+201 de durabilidade
+202 de reflexão
+203 de proteção
+204 de saúde
+205 de vida
+206 de meditação
+207 de prana
+208 da terra
+209 da água
+210 do ar
+211 do fogo
+212 do éter
+213 do eclipse
+214 do Mestre Mago
+215 de durabilidade
+216 de reflexão
+217 de proteção
+218 de saúde
+219 de vida
+220 de meditação
+221 de prana
+222 de éter
+223 do dragão
+
+#4251
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4253
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4255
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4257
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4259
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4261
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4263
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4265
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4267
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4269
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4271
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4273
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4275
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4277
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4279
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4281
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4283
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4285
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4287
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4289
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4291
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4293
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4295
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4297
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4299
+01 "Velho" manto verde
+03 "Velho" manto verde
+#4301
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4303
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4305
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4307
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4309
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4311
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4313
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4315
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4317
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4319
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4321
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4323
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4325
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4327
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4329
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4331
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4333
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4335
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4337
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4339
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4341
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4343
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4345
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4347
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4349
+01 "Velho" manto branco
+03 "Velho" manto branco
+#4351
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4353
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4355
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4357
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4359
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4361
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4363
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4365
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4367
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4369
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4371
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4373
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4375
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4377
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4379
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4381
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4383
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4385
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4387
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4389
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4391
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4393
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4395
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4397
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4399
+01 "Velho" manto azul
+03 "Velho" manto azul
+#4401
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4403
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4405
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4407
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4409
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4411
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4413
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4415
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4417
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4419
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4421
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4423
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4425
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4427
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4429
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4431
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4433
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4435
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4437
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4439
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4441
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4443
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4445
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4447
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4449
+01 "Velho" manto vermelho
+03 "Velho" manto vermelho
+#4450
+01 Manto de GM
+03 manto de GM
+#4451-4452
+01 Manto de Culto
+03 manto de Culto
+#4600-4633
+01 Manto verde
+03 manto verde
+#4634-4667
+01 Manto azul
+03 manto azul
+#4668-4701
+01 Manto branco
+03 manto branco
+#4702-4735
+01 Manto vermelho
+03 manto vermelho
+#6271-6276
+01 Capa da Deflexão
+03 Capa da Deflexão
+#6757
+01 Manto negro
+03 manto negro

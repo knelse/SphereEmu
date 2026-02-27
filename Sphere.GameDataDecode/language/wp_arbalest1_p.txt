@@ -1,0 +1,245 @@
+01 Besta
+03 besta
+10 Você não tem dardos
+
+100 Arma de projéteis. Permite acertar um inimigo a uma grande distancia; requer um grande estoque de dardos.
+
+200 de exaustão
+201 de valor
+202 de dano
+203 de crueldade
+204 de corrida
+205 de velocidade
+206 de desordem
+207 de caos
+208 de penetração
+209 de instabilidade
+210 de deterioração
+211 de tamanho
+212 de distância
+213 de poder
+214 de cansaço
+215 de éter
+216 de brilho
+217 de doença
+218 de valor
+
+#201
+01 besta de mão
+03 besta de mão
+#202
+01 besta de cobre
+03 besta de cobre
+#203
+01 besta leve
+03 besta leve
+#204
+01 besta de prata
+03 besta de prata
+#205
+01 besta de ouro
+03 besta de ouro
+#206
+01 besta de caça
+03 besta de caça
+#207
+01 besta de luta
+03 besta de luta
+#208
+01 besta manual de elite
+03 besta manual de elite
+#209
+01 besta leve de elite
+03 besta leve de elite
+#210
+01 besta dourada de elite
+03 besta dourada de elite
+#211
+01 besta de luta de elite
+03 besta de luta de elite
+#212
+01 besta de mão rúnica
+03 besta de mão rúnica
+#213
+01 besta leve rúnica
+03 besta leve rúnica
+#214
+01 besta de ouro rúnica
+03 besta de ouro rúnica
+#215
+01 besta de luta rúnica
+03 besta de luta rúnica
+#216
+01 besta
+03 besta
+#217
+01 besta grande
+03 besta grande
+#218
+01 besta pesada
+03 besta pesada
+#219
+01 besta de ferro
+03 besta de ferro
+#220
+01 besta de aço
+03 besta de aço
+#221
+01 besta de batalha
+03 besta de batalha
+#222
+01 besta de cerco
+03 besta de cerco
+#223
+01 besta de elite
+03 besta de elite
+#224
+01 besta pesada de elite
+03 besta pesada de elite
+#225
+01 besta de ferro de elite
+03 besta de ferro de elite
+#226
+01 besta de cerco de elite
+03 besta de cerco de elite
+#227
+01 besta rúnica
+03 besta rúnica
+#228
+01 besta rúnica pesada
+03 besta rúnica pesada
+#229
+01 besta rúnica de aço
+03 besta rúnica de aço
+#230
+01 besta rúnica de cerco
+03 besta rúnica de cerco
+#3751-3752
+01 besta de mão
+03 besta de mão
+#3753-3754
+01 besta de cobre
+03 besta de cobre
+#3755-3757
+01 besta leve
+03 besta leve
+#3758-3759
+01 besta de prata
+03 besta de prata
+#3760-3762
+01 besta dourada
+03 besta dourada
+#3763-3764
+01 besta de caça
+03 besta de caça
+#3765-3769
+01 besta de luta
+03 besta de luta
+#3770-3774
+01 besta manual de elite
+03 besta manual de elite
+#3775-3779
+01 besta leve de elite
+03 besta leve de elite
+#3780-3784
+01 besta dourada de elite
+03 besta dourada de elite 
+#3785-3789
+01 besta de luta de elite
+03 besta de luta de elite
+#3790-3794
+01 besta rúnica de mão
+03 besta rúnica de mão
+#3795-3799
+01 besta rúnica leve
+03 besta rúnica leve
+#3800-3804
+01 besta rúnica dourada
+03 besta rúnica dourada
+#3805-3810
+01 besta rúnica de luta
+03 besta rúnica de luta
+#3811-3812
+01 besta
+03 besta
+#3813-3814
+01 besta grande
+03 besta grande
+#3815-3817
+01 besta pesada
+03 besta pesada
+#3818-3819
+01 besta de aço
+03 besta de aço
+#3820-3822
+01 besta de ferro
+03 besta de ferro
+#3823-3824
+01 besta de batalha
+03 besta de batalha
+#3825-3829
+01 besta de cerco
+03 besta de cerco
+#3830-3834
+01 besta de elite
+03 besta de elite
+#3835-3839
+01 besta pesada de elite
+03 besta pesada de elite
+#3840-3844
+01 besta de aço de elite
+03 besta de aço de elite
+#3845-3849
+01 besta de cerco de elite
+03 besta de cerco de elite
+#3850-3854
+01 besta rúnica
+03 besta rúnica
+#3855-3859
+01 besta rúnica pesada
+03 besta rúnica pesada
+#3860-3864
+01 besta rúnica de aço
+03 besta rúnica de aço
+#3865-3870
+01 besta rúnica de cerco
+03 besta rúnica de cerco
+#3871-3873
+01 besta lendária de luta
+03 besta lendária de luta
+#3874-3876
+01 besta de luta eerie
+03 besta de luta eerie
+#3877-3879
+01 besta de luta do dragão
+03 besta de luta do dragão
+#3880-3882
+01 besta lendária de cerco
+03 besta lendária de cerco
+#3883-3885
+01 besta de cerco eerie
+03 besta de cerco eerie
+#3886-3888
+01 besta de cerco do dragão
+03 besta de cerco do dragão
+#5883
+01 Besta do caçador
+03 Besta do Caçador
+#5884
+01 Besta grande do Caçador
+03 Besta do Caçador
+#5885
+01 Balista de caçador pesado
+03 balista de caçador pesado
+#5886
+01 Besta pesada do Caçador
+03 Besta do Caçador
+#5887
+01 Besta de aça do Caçador
+03 Besta do Caçador
+#5888
+01 Grã Besta do Caçador
+03 Besta do Caçador
+#6454
+01 Besta de Albeorn 
+03 Besta de Albeorn

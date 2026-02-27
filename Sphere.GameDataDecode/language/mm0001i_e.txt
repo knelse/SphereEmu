@@ -1,0 +1,37 @@
+10000 I
+
+10100 Welcome %p1! I see you are ready for promotion in our guild. Prove me that you deserve it and that I am not mistaken about you.
+10101 To get the second stage, bring me the proof of your loyalty and power. There is a place in a dungeon on Hyperion where %z1 dwells. It must have what our friend lost who last was there. Bring it me back.
+
+10200 You grow so fast! I remember you when you just chose our guild. You were then quite a young warrior! Well, a have a job for a developed warrior like you are now. One of our allies is in trouble, he needs our help. Help him and he will give me a recommendation...
+10201 Here's a letter, give it to %m2 and he'll tell you what the gist of the problem is. %m1.
+10202 At last! He's sent you. I hope very much you will make it! An awful thing has happened: my best friend %a1 has been imprisoned! Set him free and show him the exit! He will next find his way. %m2.
+10203 Thank you very much for helping me get out of here. I see my friend hasn't forsaken me in trouble. You say you need a recommendation? No problem, take it and thanks to your entire guild into the bargain. Bring it to your master. %a1.
+
+10300 Yeah, the fourth stage: I know you deserve it, but, unfortunately, I have neither strength nor wish to start bureaucratic games and promote you. I have a great woe, I have not time for the guild currently.
+10301 My close relative, %m2, is seriously ill. His disease is painful and incurable and even the best physicians in Sphere can't help him. They say %m3 is a great witch-doctor and has cured people of such diseases. Alas, the guild authorities have refused to let me set off on this long journey. If you helped me, I would then settle the fourth stage issue without delay. %m1.
+10302 I know the disease you are telling me about, %p1. It is caused by the venom of a scorpion and can only be cured with an elixir of the same venom in combination with certain herbs. To begin with, bring me 20 scorpion stings. %m3.
+10303 Fine, now some herbs and the elixir is ready! I am sure it'll cure %m1! %m3.
+10304 The elixir is ready, %p1. Don't waste time, bring it at once to %m2. With the disease he is having, every minute may be critical. %m3.
+10305 Thank you, %p1! Take this letter, I've described in it everything you've done for me. I think %m1 will at once admit you to the fourth stage of the Steel Masters guild once he receives it. %m2.
+
+10400 We, Steel Masters, are so called not only because of our masterful command of weapons. We also know the secrets of magical blades of an unheard-of power. Before getting the fifth stage in the guild you'll have to obtain a blade like that for you.
+10401 Old Armorer %m2 has helped generations of Steel Masters to obtain the cherished weapons. However, it is not suitable to come to him empty-handed. I have a perfect diamond for him and I'll be pleased to give it to you for 20 mammoth tusks. %m1. Bring it to %m2 and tell him you've come from me. I think he'll be glad to help you. %m1.
+10403 Hello, %p1. I'll help you get your weapon. I've already got a suitable formula that describes how to make one, great, blade out of three unusual ones. The first of the three is kept in a dungeon guarded by %a1. If you can talk to him heart-to-heart, he'll give it to you and tell you where the second blade is.
+10404 Ooh, we can talk quietly here, without the troublesome vermin. Take this blade. You'll have to go to %z1 for the second. We used to talk to each other once, but he's now lost what remained of his mind. You're unlikely to be able to agree on anything with him. Take the weapon from him and bring it to %m2. %a1.
+10405 "...bring %z1's blade to old Armorer %m2...". %a1.
+10406 Fine, only one blade's left. To tell the truth, I bought it several years ago, so if you reimburse me its price, 2 million thalers, I'll part with it and we'll make you a sword worthy even of the head of the guild of Steel Masters. %m2.
+10407 The sword is ready, take it, as well as my personal quality certificate for it. Show the certificate to m1 and the fifth stage in your guild is yours. %m2.
+
+10500 You are now indeed a real Steel Master, %p1! However, the sixth stage in our guild is a reward for a real hero, so if you want to prove you deserve it, I have a suitable task for you.
+10501 Our sworn enemies, Archimagicians, are again contriving something against us. I have reliable information they are trying to restore the population of dragons and set those nasty creatures on us! We'll destroy them before Archimagicians carry out their plan! Each member of our guild must bring me at least 20 dragon teeth. %m1.
+10502 The plans of Archimagicians have been disrupted, but the danger still exists. While I am thinking where you skills and experience may be of most use, perform another task. Archimagicians have stolen %a1, the treasurer of our guild, and confined him to a dungeon guarded by horrible monsters. He mustn't be abandoned in the enemies' hands, for he knows too much about our affairs. Set him free, %p1! %m1.
+10503 Thank you, %p1! I need to take a rest after everything I've gone through in the dungeon, while you bring my accounts to %m1, they'll be safe with him. %a1.
+10504 We've collected enough evidence to prove Archimagicians were preparing an attack on us. The Council of our guild has made a decision to declare official war on their guild. . Bring this feather, the sign of war, to the head of Archimagicians, %m2. %m1.
+10505 You want war - good. I wish you'd take part in it, %p1! While passing the sign over to me, you've broken almost 20 rules of your guild's warrior's etiquette. You get excluded from the guild immediately for such things: But: if you do me a service, I won't tell %m1 about your mistakes. My good friend %a2 has been lost in forests full of dangerous monsters. Find him and lead him to the nearest Teleport. %m2.
+10506 Thank you for help, %p1. Here's a note that confirms I am all right, bring it to %m2. %a2.
+10507 Well, you've met your obligations and I won't write %m1 about your blunder. Take my letter to %m1, it reads we accept the challenge and will fight to the bitter end! %m2.
+10508 The war has begun and if you want to become a Master in the sixth stage, you must distinguish yourself in it. Bring me at least 30 ears of Archimagicians. %m1.
+10509 Fine, %p1! Archimagicians are practically defeated. Their last hope is %z1, a terrible monster created specially against us! Steel Masters have died repeatedly in trying to combat it. But I believe in you and wish you victory! Once you've done away with it, there'll be no other obstacles to admit you to the sixth stage of the guild. %m1.
+
+121212 Test of LoadMsgGroup

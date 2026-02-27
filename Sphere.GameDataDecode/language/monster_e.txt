@@ -1,0 +1,291 @@
+01 Creature
+
+#1000
+01 Leaf insect
+#1001
+01 Steppe leaf insect
+#1002
+01 Forest leaf insect
+#1003
+01 Cave leaf insect
+#1010
+01 Doghead
+#1011
+01 Steppe doghead
+#1012
+01 Forest doghead
+#1013
+01 Cave doghead
+#1020
+01 Rotten knight
+#1021
+01 Rusted knight
+#1022
+01 Outcast knight
+#1023
+01 Golden knight
+#1024
+01 Giant knight
+#1025
+01 Air knight
+#1040
+01 Earth golem
+#1041
+01 Sand golem
+#1042
+01 Clay golem
+#1043
+01 Free golem
+#1044
+01 Giant golem
+#1050
+01 Bangville scolopendra
+#1051
+01 Zar scolopendra
+#1060
+01 Skeleton
+#1061
+01 Forest skeleton
+#1062
+01 Umrad skeleton
+#1063
+01 Air skeleton
+#1064
+01 Cave skeleton
+#1065
+01 Leach
+#1066
+01 Giant skeleton
+#1067
+01 Air leach
+#1069
+01 Skeleton
+#1070
+01 Wild boar
+#1071
+01 Rabid boar
+#1072
+01 Dry boar
+#1073
+01 Air boar
+#1074
+01 Iron boar
+#1075
+01 Fire boar
+#1076
+01 Giant boar
+03 Giant boar
+#1080
+01 Cyanos
+#1081
+01 Dark cyanos
+#1082
+01 Dry cyanos
+#1083
+01 Iron cyanos
+#1084
+01 Air cyanos
+#1085
+01 Giant cyanos
+#1090
+01 Wolf
+#1091
+01 Steppe wolf
+#1092
+01 Ice wolf
+#1093
+01 Dry wolf
+#1094
+01 Iron wolf
+#1095
+01 Hell wolf
+#1100
+01 Spider
+#1101
+01 Sulphuric spider
+#1102
+01 Dry spider
+#1103
+01 Iron spider
+#1104
+01 Fire spider
+#1105
+01 Black Widow
+#1106
+01 Giant spider
+#1107
+01 Air spider
+#1110
+01 Salamandra
+#1111
+01 Nomrad salamandra
+#1112
+01 Earth salamandra
+#1113
+01 Iron salamandra
+#1114
+01 Salamandiga
+#1120
+01 Red scorpion
+#1121
+01 Scorpion
+#1122
+01 Blue scorpion
+#1123
+01 Fire scorpion
+#1130
+01 Typhon
+#1131
+01 Smoke typhon
+#1132
+01 Screaming typhon
+#1133
+01 Iroin typhon
+#1134
+01 Fire typhon
+#1135
+01 Giant typhon
+#1140
+01 Cannibal
+#1141
+01 Sulphuric cannibal
+#1142
+01 Cave cannibal
+#1143
+01 Giant cannibal
+#1150
+01 Nyphon
+#1170
+01 Cat
+#1180
+01 Bull
+#1190
+01 Thropos
+#1191
+01 Mad thropos
+#1192
+01 Peat thropos
+#1193
+01 Royal thropos
+#1194
+01 Air thropos
+#1200
+01 Mammoth
+#1201
+01 Iron mammoth
+#1202
+01 Snow mammoth
+#1203
+01 Coal mammoth
+#1210
+01 Sombie
+#1211
+01 Grey sombie
+#1212
+01 Zombader
+#1213
+01 Giant zombie
+#1220
+01 Enchanted tree
+#1221
+01 Red tree
+#1222
+01 Dead tree
+#1230
+01 Granite stoneater
+#1231
+01 Emerald stoneater
+#1232
+01 Sapphire stoneater
+#1233
+01 Rockmaster
+#1240
+01 Undead
+#1241
+01 Cadaver
+#1242
+01 Cadaver-spider
+#1243
+01 Bone cadaver
+#1244
+01 Fiant cadaver
+#1250
+01 Bat
+#1251
+01 Grey bat
+#1252
+01 Fire bat
+#1253
+01 Giant bat
+#1260
+01 Forest maenad
+#1261
+01 Steppe maenad
+#1262
+01 Cave maenad
+#1263
+01 Magic maenad
+#1264
+01 Air maenad
+#1270
+01 Midget
+#1271
+01 Forest midget
+#1272
+01 Crater midget
+#1273
+01 Air midget
+#1290
+01 Assasin
+#1291
+01 Free assasin
+#1292
+01 Spectral assasin
+#1310
+01 Devourer
+#1311
+01 Bog devourer
+#1320
+01 Bringer of death
+#1330
+01 Barrower
+#1340-1343
+01 Rogue
+#1410
+01 Subterranean worm
+#1420
+01 Mermaid
+#1430
+01 Meat prober
+#1431
+01 Iron prober
+#1440
+01 Bone dog
+#1450
+01 Charon hunter
+#1451
+01 Fire hunter
+#1452
+01 Iron hunter
+#1453
+01 Dead hunter
+#1460
+01 Fire huntress
+#1461
+01 Iron huntress
+#1462
+01 Charon huntress
+#1463
+01 Dead huntress
+#1470
+01 Abyss guardian
+#1480
+01 Chimera
+#1880
+01 Bangville scolopendra
+#1881
+01 Leaf insect
+#1882
+01 Thropos
+#1883
+01 Rusted knight

@@ -1,0 +1,14 @@
+01 Seguro
+03 seguro
+
+101 O uso do seguro lhe custará %d$.
+102 Você usou o seguro.
+103 O seguro não tem mais validade.
+104 Precisa usar o seguro agora.
+
+110 Nome do personagem: %s
+111 Título: %s
+112 Ranque: %s
+113 Marcas de título: %d
+114 Marcas de ranque: %d
+

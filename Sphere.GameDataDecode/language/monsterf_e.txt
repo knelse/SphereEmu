@@ -1,0 +1,60 @@
+01 Creature
+
+#1030
+01 Flyer
+#1031
+01 Storm flyer
+#1032
+01 Fire flyer
+#1033
+01 Amber flyer
+#1034
+01 Giant flyer
+#1160
+01 Green dragon
+#1161
+01 Blue dragon
+#1162
+01 Red dragon
+#1163
+01 Steel dragon
+#1164
+01 Giant dragon
+#1300
+01 Dragon
+#1301
+01 Gold dragon
+#1302
+01 Ice dragon
+#1360
+01 Black dragon
+#1361
+01 White dragon
+#1362
+01 Black dragon
+#1363
+01 White dragon
+#1364
+01 Black dragon
+#1365
+01 White dragon
+#1366
+01 Great black dragon
+#1367
+01 Great white dragon
+#1368
+01 Wounded black dragon
+#1370
+01 Black rider
+#1371
+01 White rider
+#1380
+01 Water-dog
+#1400
+01 Fire serpent
+#1401
+01 Bone serpent
+#1402
+01 Iron serpent
+#1850-1855
+01 Flyer of Necromancer

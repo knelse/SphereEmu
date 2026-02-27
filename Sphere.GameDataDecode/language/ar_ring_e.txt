@@ -1,0 +1,69 @@
+01 ring
+03 ring
+
+100 Piece of jewelry. Can enhance the character with magic powers. If rings could talk they would have told many an interesting story about their former owners. History knows a lot of examples when people were prepared to pay a very dear price for the power that a magic ring can provide.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of life
+205 of meditation
+206 of prana
+207 of ether
+208 of accuracy
+209 of strength
+210 of dexterity
+211 of accuracy
+212 of endurance
+213 of earth
+214 of water
+215 of air
+216 of fire
+217 of value
+
+#425-448
+01 Ring
+03 ring
+#4047-4166
+01 Ring
+03 ring
+#5954
+01 Ring of Magician
+03 ring of Magician
+#5955
+01 Ring of Archimagician
+03 ring of Archimagician
+#5956
+01 Ring of Grand Archimagician
+03 ring of Grand Archimagician
+#5977
+01 Ring of Magician
+03 ring of Magician
+#5978-5981
+01 Ring of Archimagician
+03 ring of Archimagician
+#5982
+01 Ring of Grand Archimagician
+03 ring of Grand Archimagician
+#6249-6254
+01 Ring of skills
+03 ring of skills
+#6555
+01 Steel ring
+03 steel ring
+#6556
+01 Silver ring
+03 silver ring
+#6654
+01 Ring of skilled man
+03 ring of skilled man
+#6655
+01 Ring of aura
+03 ring of aura
+#6656
+01 Four-colored ring
+03 four-colored ring
+#6754
+01 Ring of lich
+03 ring of lich

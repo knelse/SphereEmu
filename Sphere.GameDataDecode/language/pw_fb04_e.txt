@@ -1,0 +1,34 @@
+01 Powder
+02 powder
+03 powder
+
+#680
+01 Sisters powder of defense
+02 powder
+03 powder
+100 This powder effects only members of the Sister clan
+#850
+01 Cultist powder of attack
+02 Cultist powder of attack
+03 Cultist powder of attack
+#851
+01 Saidakra
+02 Saidakra
+03 saidakra
+100 This powder is the only way of immediately banishing anyone of the Six from the Sphere.
+#852
+01 Cultist healing powder 
+02 cultist healing powder 
+03 cultist healing powder 
+#853
+01 Cultist powder of defense
+02 cultist powder of defense
+03 cultist powder of defense
+#875
+01 Powder of justice
+02 powder of justice
+03 powder of justice
+#876
+01 Powder of evil spirits
+02 powder of evil spirits
+03 powder of evil spirits

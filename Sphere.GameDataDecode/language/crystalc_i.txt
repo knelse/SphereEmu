@@ -1,0 +1,90 @@
+01 Cristallo
+03 cristallo
+10 Il tuo livello è troppo basso, non puoi ricevere l'attributo del castello.
+11 Appartenenza:
+100 Quando il cristallo viene posizionato nel Grande Libro castello, tutti i membri del Clan che lo toccano, ricevono immediatamente un attributo del castello, che dà loro un bonus alle caratteristiche.
+
+#5081
+01 piccolo cristallo della forza
+03 piccolo cristallo della forza
+#5082
+01 piccolo cristallo dell'energia
+03 piccolo cristallo dell'energia
+#5083
+01 piccolo cristallo della resistenza
+03 piccolo cristallo della resistenza
+#5084
+01 piccolo cristallo del riflesso
+03 piccolo cristallo del riflesso
+#5085
+01 cristallo medio della forza
+03 cristallo medio della forza
+#5086
+01 cristallo medio dell'energia
+03 cristallo medio dell'energia
+#5087
+01 cristallo medio della resistenza
+03 cristallo medio della resistenza
+#5088
+01 cristallo medio del riflesso
+03 cristallo medio del riflesso
+#5089
+01 grande cristallo della forza
+03 grande cristallo della forza
+#5090
+01 grande cristallo dell'energia
+03 grande cristallo dell'energia
+#5091
+01 grande cristallo della resistenza
+03 grande cristallo della resistenza
+#5092
+01 grande cristallo del riflesso
+03 grande cristallo del riflesso
+#5093
+01 piccolo cristallo oscuro della forza
+03 piccolo cristallo oscuro della forza
+#5094
+01 piccolo cristallo oscuro dell'energia
+03 piccolo cristallo oscuro dell'energia
+#5095
+01 piccolo cristallo oscuro della resistenza
+03 piccolo cristallo oscuro della resistenza
+#5096
+01 piccolo cristallo oscuro del riflesso
+03 piccolo cristallo oscuro del riflesso
+#5097
+01 cristallo oscuro medio della forza
+03 cristallo oscuro medio della forza
+#5098
+01 cristallo oscuro medio dell'energia
+03 cristallo oscuro medio dell'energia
+#5099
+01 cristallo oscuro medio della resistenza
+03 cristallo oscuro medio della resistenza
+#5100
+01 cristallo oscuro medio del riflesso
+03 cristallo oscuro medio del riflesso
+#5101
+01 grande cristallo oscuro della forza
+03 grande cristallo oscuro della forza
+#5102
+01 grande cristallo oscuro dell'energia
+03 grande cristallo oscuro dell'energia
+#5103
+01 grande cristallo oscuro del resistenza
+03 grande cristallo oscuro del resistenza
+#5104
+01 grandioso cristallo della forza
+03 grandioso cristallo della forza
+#5105
+01 grandioso cristallo dell'energia
+03 grandioso cristallo dell'energia
+#5106
+01 grandioso cristallo della resistenza
+03 grandioso cristallo della resistenza
+#5107
+01 grandioso cristallo del riflesso
+03 grandioso cristallo del riflesso
+#5108
+01 grande cristallo oscuro del riflesso
+03 grande cristallo oscuro del riflesso

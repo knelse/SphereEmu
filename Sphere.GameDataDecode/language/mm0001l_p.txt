@@ -1,0 +1,38 @@
+10000 L
+
+10100 O caminho de um encantador é muito mais difícil do que você pensa! Componentes para nossas fórmulas são muito mais raros dos que os usados por Armeiros e Ferreiros. Você entenderá melhor por você mesmo se quiser alcançar algo mais do que o primeiro estágio.
+10101 Aqui está uma fórmula especial. Ache o artigo que é indicado nela e o faça mágico. %m1.
+
+10200 Alguns Encantadores nos estágios mais baixos acham que armas são mais difíceis de receber propriedades mágicas do que armaduras. Antes de obter o terceiro estágio, você pessoalmente irá ter certeza de que é diferente.
+10201 %z1, um monstro terrível, é famoso pela sua forte pele. Talvez, se nós tivéssemos um pedaço de seu corpo, poderíamos fazer uma arma mais poderosa. %m1.
+10202 Parece que %z1 nos ajudou muito. A fórmula será um sucesso. Mas eu assumo que não poderemos sem alguns componentes que estão faltando. Pegue a lista e traga para mim. %m1.
+10203 Well, here's a ready-made formula for excellent armor. Make it and the third stage is yours! %m1.
+
+10300 O quarto estágio somente é dado para aqueles que tiverem uma boa performance na busca de leis de alquimia e fórmulas. No momento estou trabalhando numa fórmula complexa e se você concordar em me ajudar na busca por componentes, ajudarei você a pegar o quarto estágio.
+10301 Tem alguns cogumelos especiais crescendo em algumas cavernas. Quando a lua brilhar lá fora, eles também brilham no subsolo. Find me one, e.g. in this dungeon. %m1.
+10302 Você está fazendo progresso, %p1! Mas preciso de mais componentes. %m2, um conhecido mercador, com certeza tem eles. Infelizmente, ele também é conhecido pelos seus preços explosivos. Estou com azar de não ter o dinheiro no momento, então vou escrever uma receita para ele. Não posso descobrir como você pode persuadir %m2 a aceitar, mas não volte sem os componentes. %m2.
+10303 Eu não estou vendendo por receitas. E alem disso, este pão duro %m1 escreveu uma receita que não vale nem a metade do preço dos componentes. Para começar, você pode me pagar a diferença, 2 milhões de thalers. Não quero nem discutir sobre o assunto antes que você me pague. %m2.
+10304 Ok, que seja assim, aceitarei a receita. Mas terá que me fazer um serviço. Muitos mercadores sofreram os abusos de %z1, um mostro terrível. Mate-o e você terá seus componentes. %m2.
+10305 Apesar de vender em confiança seja contra meus princípios, promessa é promessa. Eis um pacote com os componentes, leve para %m1 e não agite durante sua viajem. %m2.
+ 
+10400 Algo estranho tem ocorrido ultimamente. Lideres de nossa organização tem desaparecido um após o outro. Sua admissão no quinto estágio será suspensa até termos certeza do que está acontecendo.
+10401 Fui capaz de descobrir o paradeiro de 2 dos que sumiram. Um deles, %a1, está numa masmorra. Liberte-o! %m1.
+10402 Obrigado, %p1! Infelizmente, Não consegui reconhecer nenhum dos bandidos que me atacaram, então será impossível dizer algo sobre eles. Mas um deles deixou cair esta carta. Leve para %m1, talvez ele será capaz de alguma maneira de decifrá-la. %a1.
+10403 Hum, a criptografia é desconhecida para mim, mas tentarei achar uma pista para ela. Entretanto, va atras do outro que desapareceu. Parece que ele foi capaz de sair da masmorra e agora esta solto em algum lugar da floresta. Mostre para ele o teleporte mais próximo. %m1.
+10404 Sim, %m1 nem suspeitou da trama daquelas três organizações contra nós. Ouvi que os Bárbaros, Cruzados e Mestres de aço decidiram que somos culpados pela alta dos preços das armas. Pegando eu e %a1 como reféns, eles iriam mandar nossa organização baixar os preços. Felizmente, você acabou com os planos desse bando. Agora diga para %m1 tudo que disse para você, Acho que ele vai se interessar. Entregue meu anel para ele acreditar em você, tome. %a2.
+10405 Bem, Encantadores não estão entre os que permitem serem esbofeteados e deixam por isso mesmo. Nossa resposta não será fraca! Traga-me 10 orelhas de Bárbaros, 10 de Cruzados e 10 de Mestres de aço. Isto será uma lição para eles.
+10406 Não acho que seu ato irá trazer alguma resposta. Existem algumas dificuldades diplomáticas e você terá que ir até a corte das 12 organizações para depor. Eis nossos documentos. Espero que você seja absolvido. Você deve entregá-los ao seu advogado, %m2. Assim que você for inocentado, ira ser admitido no quinto estágio. %m1.
+10407 %p1, Já era o tempo em que a corte era direita e justa. Acredite em mim, a melhor prova de sua inocência é de 2 a 3 milhões de thalers! Traga para mim, Entregarei nas mãos certas e o julgamento estará encerrado em cinco minutos! %m2.
+
+10500 Logo você será capaz de trabalhar com os mais complexos artigos, transformando em artigos mágicos. O sexto estágio já está aguardando você. Tudo que tem a fazer é destruir %z1, um grande inimigo nosso. Ele misteriosamente aparece a cada 1.000 anos e sempre nós fomos capazes de pará-lo. Por alguma razão, desta vez só tem você.
+10501 Só tem um pequeno problema: ele não pode ser derrotado por nenhuma arma que conhecemos. Tentamos tudo, mas o danado ainda está invulnerável. Dizem que %m2, o mais velho membro de nossa casa, lembra de algumas historias que seu grande avô contou sobre como %z1 foi destruído na ultima vez. Encontre e pergunte sobre tudo que ele possa responder! %m1.
+10502 Como? O que? Sou ruim do ouvido! Sim, %z1! Infelizmente, Eu tenho uma péssima memória. Se trouxer minhas notas, talvez possa me lembrar o que ouvi: %m2.
+10503 Aqui estão! Diz algo sobre uma certa espada mágica! Também diz os componentes para se transformar uma espada comum. Infelizmente, a fórmula está perdida em algum lugar: Irei procurar, e você me traga os componentes. %m2.
+10504 O que você quer dizer com "eu mesmo"? Não se esqueça que minha experiência é bem maior que a sua. Irei fazer essa espada e ninguém mais fará!.. Oh!.. Oops: Sim, minhas mãos já não obedecem como antes: Ok, eis a fórmula, faça você mesmo: Infelizmente, terá que pegar os componentes mais uma vez. Assim que estiver pronta, leve a espada para %m1. %m2.
+10505 Você voltou! Bem, e onde está a cabeça de %z1? Como? Ainda está vivo? Sabe onde ele está? Você realmente acha que não tenho mais nada para fazer alem de designar tarefas para você? Bem, ok, Eu conheço um caçador, %m3, ele irá ajudá-lo a encontrar qualquer um por 2 milhões de thalers. %m1.
+10506 Claro, sei onde %z1 esta, entregue o dinheiro. Lá está ele, se escondendo de sua ira certeira. %m3.
+10507 Ha Ha: Você encontrou meu pacote! Desculpe-me por ter recorrido para algumas manhas, mas este pacote é realmente muito importante para mim. Não seja mal, encantador, eis, pegue de volta seus 2 milhões. Direi para você o correto local de onde encontrar %z1! %m3 é aquele que realmente pode ajudá-lo! %m3.
+10508 Realmente, sou o mestre da busca, sem mentiras. É tudo simples: me traga os componentes e 1 milhão de thalers que mostrarei o paradeiro do monstro. %m3.
+10509 Este é o local onde realmente %z1 está. Corra ou então ele vai para outro local. %m3.
+
+121212 Teste de LoadMsgGroup

@@ -1,0 +1,172 @@
+01 Pacote
+02 Pacotes
+03 Pacote
+10 Remetente: %s, Destinatário: %s.
+#155
+01 Âîäà
+02 âîäà
+03 âîäó
+10 Îòïğàâèòåëü: %s, ïîëó÷àòåëü: %s.
+#160
+01 Pacote
+02 Pacotes
+03 Pacote
+10 Remetente: %s, Destinatário: %s.
+#161
+01 Carta
+02 Cartas
+03 Carta
+10 Remetente: %s, Destinatário: %s.
+#162
+01 Bilhete
+02 Bilhetes
+03 Bilhete
+10 Escrito por %s, Destinatário: %s.
+#163
+01 Envelope
+02 envelopes
+03 envelope
+10 Remetente: %s, Destinatário: %s.
+#164
+01 Documentos
+02 documentos
+03 documentos
+10 Proprietário: %s, Destinatário: %s.
+#165
+01 espada
+02 espadas 
+03 espada 
+10 Proprietário: %s, enviar para: %s.
+#166
+01 Peixe envenenado
+03 peixe envenenado 
+10 Dado por %s, Dar para: %s.
+#167
+01 Figura
+03 figura
+10 Remetente: %s, Destinatário: %s.
+#168
+01 Receita
+03 receita
+10 Remetente: %s, Destinatário: %s.
+#169
+01 Sangue de monstro
+03 sangue de monstro
+10 sangue do monstro %s. %s quer obtê-lo.
+#170
+01 Pergaminho
+02 pergaminho
+03 pergaminho
+10 Remetente: %s, Destinatário: %s.
+#171
+01 Cabeça
+02 cabeças
+03 cabeça
+10 Cabeça que %s costumava ter sobre seus ombros.
+#172
+01 Cabeça de monstro
+02 cabeças de monstros
+03 cabeça de monstro
+10 Esta cabeça pertencia ao monstro %s. %s suplicou para obtê-la.
+#173
+01 Livro
+02 livros
+03 livro
+10 Remetente: %s, Destinatário: %s.
+#174
+01 Livro 
+02 livros 
+03 livro 
+#175
+01 Caveira
+02 caveiras 
+03 caveira 
+10 Esta caveira costumava ser de %s. %s quer pegar ela.
+#176
+01 Olho
+02 olhos
+03 olho
+10 Remetente: %s, Destinatário: %s.
+#177
+01 Arquivo
+02 arquivos 
+03 arquivo 
+10 Remetente: %s, Destinatário: %s.
+#178
+01 Fórmula
+02 fórmulas
+03 fórmula
+10 Remetente: %s, Destinatário: %s.
+#179
+01 UC
+03 UC
+#180
+01 Cogumelo
+02 cogumelos 
+03 cogumelo 
+10 Remetente: %s, Destinatário: %s.
+#181-183
+01 Elixir
+02 elixires
+03 elixir
+10 Remetente: %s, Destinatário: %s.
+#184-185
+01 Pena
+02 penas
+03 pena
+10 Remetente: %s, Destinatário: %s.
+#186
+01 Diamante
+02 diamantes
+03 diamante
+10 Remetente: %s, Destinatário: %s.
+#187
+01 Rubi
+02 rubis
+03 rubi
+10 Remetente: %s, Destinatário: %s.
+#188
+01 Esmeralda
+02 esmeraldas
+03 esmeralda
+10 Remetente: %s, Destinatário: %s.
+#189
+01 Pedra
+02 pedras
+03 pedra
+10 Remetente: %s, Destinatário: %s.
+#190
+01 Fórmula
+02 fórmulas
+03 fórmula
+10 Remetente: %s, Destinatário: %s.
+#191
+01 Vinho
+02 vinhos
+03 vinho
+10 Remetente: %s, Destinatário: %s.
+#192
+01 Veneno
+02 venenos
+03 veneno
+10 Remetente: %s, Destinatário: %s.
+#193-194
+01 Anel
+02 anéis
+03 anel
+10 Remetente: %s, Destinatário: %s.
+#195
+01 Chave velha
+02 chaves velhas
+03 chave velha
+10 Chave que pertencia ao dragão de nome %s. %s queria pegar seu coração, mas foi destruído na batalha.
+#196
+01 Coração de dragão
+02 corações de dragão
+03 coração de dragão
+10 Coração do dragão %s
+#197-199
+01 Sangue de dragão
+02 sangue de dragão
+03 sangue de dragão
+10 Sangue do próprio %s. %s irá usá-lo para fazer uma espada mágica.

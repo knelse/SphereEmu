@@ -1,0 +1,96 @@
+01 Amuleto de vidro
+03 amuleto de vidro
+
+100 Proporciona proteзгo extra contra ataques mбgicos. Vocк certemente perderб uma batalha sem um bom amuleto. Houve uma mago que disse poder atacar um poderoso monstro sem um amuleto. A histуria nгo lembra o nome do tolo.
+
+200 da durabilidade
+201 de absorзгo
+202 de proteзгo 
+203 de seguranзao
+204 de vida 
+205 de meditaзгo
+206 de precisгo
+207 de йter
+208 brilhante
+209 valoroso
+210 de dano
+
+#401-412
+01 Amuleto de vidro
+03 amuleto de vidro
+#4001-4023
+01 Amuleto de vidro
+03 amuleto de vidro
+#4167-4175
+01 Amuleto de vidro
+03 amuleto de vidro
+#4185-4187
+01 Amuleto da Celebraзгo
+03 Amuleto da Celebraзгo
+100 Amuleto da Celebraзгo
+#4190
+01 Amuleto de vidro da alegria
+03 amuleto de vidro da alegria
+#4191
+01 Amuleto de vidro da felicidade
+03 amuleto de vidro da felicidade
+#4192
+01 Amuleto de vidro da virtude
+03 amuleto de vidro da virtude
+#4193
+01 Amuleto de cristal da Consolaзгo
+03 amuleto de cristal da Consolaзгo
+#4194
+01 Amuleto de cristal da Exaltaзгo
+03 amuleto de cristal da Exaltaзгo
+#4199
+01 Amuleto da Vida
+03 Amuleto da Vida
+#4242
+01 Хризантема
+03 хризантему
+#4243-4244
+01 Роза
+03 розу
+#4245-4246
+01 Ирис
+03 ирис
+#4247-4248
+01 Тюльпан
+03 тюльпан
+#4249-4250
+01 Гербера
+03 герберу
+#4251-4252
+01 Орхидея
+03 орхидею
+#4302
+01 Большой новогодний амулет
+03 Большой новогодний амулет
+#4304
+01 Малый новогодний амулет
+03 Малый новогодний амулет
+#4306
+01 Недолговечный амулет ликования
+03 недолговечный амулет ликования
+#5671-5676
+01 Amuleto Abenзoado
+03 amuleto Abenзoado
+#5877-5882
+01 Amuleto da Besta
+03 amuleto da Besta
+#5957
+01 Amuleto do Mago
+03 Amuleto do Mago
+#5958
+01 Amuleto do Mestre Mago
+03 Amuleto do Mestre Mago
+#5959
+01 Amuleto do Grande Mestre Mago
+03 Amuleto do Grande Mestre Mago 
+#6753
+01 Roger
+03 Roger
+#6755
+01 Amuleto de osso
+03 amuleto de osso

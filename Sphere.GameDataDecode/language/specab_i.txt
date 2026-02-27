@@ -1,0 +1,81 @@
+#5510-5515
+01 Invisibilità
+100 Un assassino può nascondersi grazie agli incantesimi speciali della sua gilda, ma come brandisce un'arma magica o del freddo acciaio, il mantello dell'invisibilità cade immediatamente.
+#5520-5525
+01 Colpo critico
+100 Quando il momento arriva, un preciso e meticoloso colpo è necessario. Gli assassini trascorrono anni allenandosi in questo colpo mortale, il segreto della loro scuola.
+#5530-5535
+01 Veleno
+100 Un potente veleno basato sul cianuro e su antichi incantesimi.
+#5620-5625
+01 Scudo del prana
+100 Un'aura divina che copre il crociato assorbe i danni utilizzando il prana del guerriero.
+#5630-5635
+01 Scorrere del tempo
+100 Istantanea transizione in uno stato in cui gli attacchi del crociato diventano due volte più veloce. Logicamente è difficile rimanere in questo stato per lungo tempo, così che la durata di questo stato è breve persino per il più allenato.
+#5720-5725
+01 Pastoie
+100 Una sacra parola lega le mani. Finchè la magia ha effetto, non una spada può essere brandita, non un incantesimo lanciato. Persino slegare il laccio di una borsa per polveri è uno sforzo insuperabile per qualsiasi persona.
+#5730-5735
+01 Purificazione
+100 Più alto è il livello di un sacro inquisitore, più forte è il suo spirito. I giovani inquisitori possono rimuovere solamente uno o due mutatori, ma gli inquisitori più esperti possono rimuovere fino a sei mutatori.
+#5810-5815
+01 Occhio dello scoiattolo
+100 La mano forte e l'occhio vigile del cacciatore delle foreste sono famose in tutta Sphere. Se lo desiderano possono anche usare una semplice balestra in maniera estremamente efficiente, aumentando la sua abilità distruttiva.
+#5820-5825
+01 Doppio dardo
+100 Solo i cacciatori sono in grado di usare due dardi in un colpo solo utilizzando una semplice balestra e non mancano il bersaglio!
+#5830-5835
+01 Girovago
+100 A seguito di costanti viaggi nella ricerca di prede e nel rincorrere i più silenziosi animali, il cacciatore, quando vuole, può sviluppare una sbalorditiva velocità di corsa.
+#5920-5925
+01 Nega vista
+100 Infligge un effetto su un bersaglio che rende confusa la visione dell'intero mondo agl'occhi di qualcuno. E' impossibile utilizzare qualsiasi arma a una distanza superiore di due metri.
+#5930-5935
+01 Maledizione
+100 Un uomo maledetto si trasforma in un maiale, sebbene la coscienza interna all'animale rimane invariata, anche il corpo è sotto controllo. Una maledizione non può fermare le sue gambe o utilizzare un arma.
+#6010-6015
+01 Visione ampliata
+100 Utilizzando una pozione segreta dei druidi, un barbaro può colpire con qualsiasi arma a una distanza di trenta metri; questa è infatti un trasferimento telecinetico del danno a un bersaglio lontano.
+#6020-6025
+01 Berserker
+100 Un guerriero può entrare nello stato di Berserk in qualsiasi momento. Sferra colpi distruttivi, però si dimentica completamente della sua incolumità.
+#6030-6035
+01 Stordimento
+100 Il bersaglio viene quasi derubato dei propri sensi. Per un attimo è cieco e le sue mani non gli obbediscono.
+#6110-6115
+01 Vita della natura
+100 Utilizzando la saggezza della foresta un druido conosce come allungare la vita dell'uomo, ma non può renderlo immortale.
+#6130-6135
+01 Metamorfosi
+100 Ripetendo antiche rune a se stesso un druido può trasformarsi in un potente e silenzioso lupo.
+#6220-6225
+01 Fuga
+100 Scomparire è la mossa più importante nell'arte del furto.
+#6230-6235
+01 Ombra della notte
+100 Un ladro può diventare invisibile seguendo la sua preda di notte, utilizzando tutte le ombre per nascondersi. Basta però un movimento incauto e il ladro è scoperto.
+#6320-6325
+01 Kamae
+100 Uno stato simile alla trance o alla meditazione che permette a un guerriero di concentrarsi sulla propria protezione e neutralizzare quasi tutti i colpi rivolti a lui.
+#6410-6415
+01 Maestria
+100 Utilizzando le formule raccimolate un armoriere può creare o riparare qualsiasi arma se possiebe abbastanza maestria.
+#6420-6425
+01 Fuga
+100 Gli artigiani non si sono mai fatti notare per le loro abilità di combattimento, quindi è meglio correre via, senza fermarsi, lontano dai guai.
+#6510-6515
+01 Maestria
+100 Utilizzando le formule raccimolate un fabbro può creare o riparare qualsiasi arma se possiebe abbastanza maestria.
+#6520-6525
+01 Fuga
+100 Gli artigiani non si sono mai fatti notare per le loro abilità di combattimento, quindi è meglio correre via, senza fermarsi, lontano dai guai.
+#6610-6615
+01 Incantesimo
+100 Se uno stregone trova una formula particolare, allora può utilizzare il suo sapere magico per dare a un'arma o a un'armatura proprietà speciali.
+#6620-6625
+01 Tornado
+100 Per nascondersi da coloro che lo attacca uno stregone usa la magia della mente e il bersaglio di quella stregoneria inizia a girare su se stesso perdendo il controllo dei suoi movimento per un attimo.
+#6630-6635
+01 Armatura arrugginita
+100 Un semplice gioco della mente. L'abilità di incantare qualcuno come se vestisse con un'armatura arrugginita, così che possa muoversi solamente lateralmente o avanti e indietro. 

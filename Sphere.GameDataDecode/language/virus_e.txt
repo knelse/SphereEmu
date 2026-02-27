@@ -1,0 +1,56 @@
+01 Mutator
+
+// special viruses descriptions
+1000 Magical light invisible to others.
+1001 "Berserker". Leaves one hungry and exhausted.
+1002 Allows seeing the invisible.
+1003 "Wrath of Tablet". Causes damage every 2 minutes.
+1004 Takes off one mutator.
+1005 Reduces health every 2 minutes.
+1006 Boosts health every 2 minutes.
+1007 Reduces health and prana every 2 minutes.
+1008 Boosts health and prana every 2 minutes.
+1009 "Purification". Complete recovery of health and prana, takes off all mutators.
+1010 Prohibits running.
+1011 Prohibits running and walking.
+1012 Hypotaxia.
+1013 Prohibits jumps.
+1014 2 times longer jumps.
+1015 4 times longer jumps.
+1016 Half blindness.
+1017 Complete blindness.
+1018 Allows breathing under water.
+1019 Protects from falling from any height.
+1020 Takes off jump boosting mutator.
+1021 Kills members of Naath clan. Frees from the curse of evil spirits.
+1022 Allows seeing hidden traps.
+1023 Makes owner invisible. Effect ends when something taken in hand.
+1024 Takes off 2 mutators.
+1025 Takes off 4 mutators.
+1026 Takes off 6 mutators.
+1027 Allows shooting 2 bolts simultaneously.
+1028 Boosts running speed.
+1029 Thievery
+1030 Makes owner invisible at night. Effect ends when something taken in hand.
+1031 Kamae. Protective stand. Prohibits running and slows down any actions.
+1032 Fixing agent. Blocks the effect of complete purification on mutators below.
+1033 Resource. Higher chance of handicraft resources falling from killed monster.
+1034 Long sight. Boosts range of any weapon's effect to 30 meters.
+1035 Run of time. Makes attack frequency 2 times higher.
+1036 Fetters. Prohibits taking anything in hand.
+1037 Short sight. Reduces range of any weapon's effect to 2 meters.
+1038 Meditation. Plunges in a state of silence, gives higher protection.
+1039 Curse. Transforms into a wild boar rushing about. 
+1040 Stunning. Blinds and prevents from string hands.
+1041 Metamorphosis. Turns into a wolf.
+1042 Quick run before first stop.
+1043 Rusty armor. Prohibits turning around.
+1044 Tornado. Spins up character.
+1045 Berserker. Higher attack, but lower run.
+1046 Shield of prana. Reduces damage to health with prana consumption.
+1047 Metamorphosis. Turns into a vampire.
+1048 Metamorphosis. Turns into a snowman.
+1049 Magic Mirror. Protects and returns half damage to attacker.
+1111 Support of bandier.
+2020 Boosts castle gate protection.
+2021 Causes damage to castle gate every 2 minutes.

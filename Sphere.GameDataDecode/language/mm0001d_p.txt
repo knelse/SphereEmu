@@ -1,0 +1,38 @@
+10000 D
+
+10100 você quer o segundo estágio na organização de caçadores? Rindo muito alto! Eu visitei sua esposa enquanto você caçava, então o que vi em sua casa? Nada mais do que uma simples cabeça de um monstro na parede! você deveria passar mais tempo na floresta caçando, %p1!
+10101 Para começar, seria bom se trouxesse a cabeça de %z1. É um belo e macio mostro que vai decorar sua sala de estar. %m1.
+
+10200 Um caçador experiente sabe como sobreviver na floresta por um longo período. Vamos checar suas habilidades antes de falarmos sobre o terceiro estágio da organização.
+10201 você deve ir sem armas e flechas, tem que ser capaz de se auto alimentar. Aqui está uma lista de plantas, traga para mim e eu ensinarei como preparar uma bela sopa feita dessas plantas, isto é o segredo de nossa organização. %m1.
+10202 Para sobreviver na floresta, um caçador precisa de fogo. Traga-me 20 braçadas de gravetos e eu ensinarei como fazer fogo da mesma maneira que fazemos. %m1.
+10203 Bem, o mais importante é que você é um caçador acima de tudo e deverá ser capaz de matar vários tipos de perigosas criaturas. %z1 é um valioso rival, tente competir com ele. Se for capaz de vencê-lo, o terceiro estágio dos caçadores será seu.
+
+10300 Quer alcançar o quarto estágio? você está com sorte, pois tenho uma tarefa para você, %p1!
+10301 Vários lobos tem procriado aqui nas nossas florestas. Moradores locais, indignados sobre seus ataques prometeram pagar nossa organização generosamente se ajudarmos eles a se livrarem dessa praga destruindo 1.000 lobos. Nós concordamos e cada membro da organização deverá trazer 50 rabos de lobo. Esta é uma chance de ganhar sua promoção para o quarto estágio. %m1.
+10302 Esses rabos são exatamente o que precisamos! Tudo está pronto, pegue esta carta e entregue ao sênior destes locais, %m2. Ele nos pagará, 5 por cento deste total será seu, traga o resto aqui, Levarei os thalers para a tesouraria de nossa organização. Conte cuidadosamente, devem ter 3.000 thalers! %m1.
+10303 Ha ha! Monstros estúpidos! Certo, Eu não vou pagar você, nunca tive tanto dinheiro assim aqui comigo. Leve minha resposta para quem te enviou, Saia daqui! %m2.
+10304 Isto %m2 está muito satisfeito consigo mesmo, não está?não está? Mas não fique triste, logo terá compaixão do que fez, quando isto acontecer será tarde demais, ha! Suas casas são constantemente atacadas por assaltantes. Eles recentemente fizeram um contrato com os bárbaros que deveriam protegê-los dos assaltantes. Felizmente, tem um antigo contrato entre nossas organizações em uma de nossas masmorras. Está proibido dos bárbaros ajudarem nosso inimigos. Veremos isto %m2 estarão conversando sem proteção. Mostre o contrato para ele, Acho que ele finalmente encontrará o dinheiro. %m1.
+10305 Maldito dia em que me misturei com sua organização! Pegue seu dinheiro e suma daqui. %m1 disse que 5 por cento do dinheiro era seu, então entregue 2.750 thalers para ele. %m2.
+
+10400 você é fortemente armado e bom de mira, %p1, mas terá que melhorar sua perícia para alcançar o quinto estágio na organização.
+10401 Nós, Caçadores, pertencemos à aliança das organizações leves e alguma vezes ajudamos nossos aliados, cruzados nas suas causas penosas. É hora de utilizar sua arte, também. Traga para mim 30 orelhas de pessoas más com karma ruim. %m1.
+10402 Nossas obrigações aliadas foram achadas, agora é a vez deles. As escamas de typhons são especialmente fortes. Pode servir para fazer ótimas armaduras e todos caçadores, como nossos aliados, estão caçando typhons. O básico para nós são 25 escamas por cada caçador. %m1.
+10403 Bom, Você finalizou a tarefa que não é o caso com nossos “aliados”. Somente imagine, eles declararam que typhons são criaturas inocentes e estão tentando nos proibir de matá-los! Leve esta nota de protesto para o líder dos cruzados, seu nome é %m2. %m1.
+10404 Typhons nunca atacam primeiro, de acordo com nossa mais recente informação, então você se transforma num vilão se matá-los. Dizemos que é intolerável matar essas inocentes criaturas! Aqui está minha resposta, leve para %m1. %m2.
+10405 Então é assim, esses cavaleiros burros acham que podem nos enganar baseados na fantasia de algum desmiolado? Nós estamos declarando guerra, de hoje até os deuses trazerem a razão até. Traga-me quantas orelhas você puder, mas pelo menos eu quero 20. %m1.
+10406 A guerra puxa de nossa organização muita força: precisamos de um aliado forte. Os mestres do aço provavelmente nos sirvam. Uma vez fomos inimigos deles e muitos prisioneiros de sua organização estão presos em nossas masmorras. você irá soltar um deles, %a1, para abrir caminho para uma negociação com eles. Seu empreendimento neste problema é bem significativo e você será promovido para o quinto estágio após esta tarefa. %m1.
+10407 Obrigado, por me tirar desta prisão, %p1! Leve esta carta ao seu mestre, %m1.
+
+10500 Membros do sexto estágio nos caçadores são todos grandes heróis. Não poso te dizer, %p1, são um deles, embora eu goste de você. Você terá que realizar algumas façanhas e eu tenho uma tarefa que serve perfeitamente para você.
+10501 Muitos dragões têm procriado em nosso território ultimamente. Um dragão é muito duro de matar, então me trazendo 10 dentes de dragão você provará sua habilidade como caçador. %m1.
+10502 Bem, é uma coisa má. A organização dos mágicos está fazendo criação de dragões em busca da magia do fogo. Você destruiu o trabalho de anos e agora o conflito terá que ser resolvido de alguma maneira. Conversei com o líder deles, %m2, e arranjamos que você irá concluir suas três tarefas. Leve a carta para ele, faça o que ele mandar e volte. Se o conflito for encerrado, você será promovido ao sexto estágio. %m1.
+10503 Aha, você veio. Não pense que vai se livrar fácil por ter destruído nosso trabalho de anos matando nossa criação. Aqui está sua primeira missão. O terrível %z1 se apossou de uma masmorra nossa. Por razões que você nem precisa saber, esta masmorra é muito importante para nós. Vá até a masmorra e limpe de todos os vermes presentes nela! Quando estiver dentro, abra este pacote, dentro terá mais instruções. %m2.
+10504 Quando a masmorra estiver livre de %z1, você pode começar com a segunda missão. Uma de nossas melhores alunas, %b1, foi raptado por assassinos cruéis. Felizmente, ela conseguiu correr e agora esta vagando em algum lugar das matas. Você é um caçador, então não será difícil encontrá-la e acompanhá-la até o portal mais próximo. %m2.
+10505 %p1... Eu vejo você fazer o que %m2 te disse. Entretanto, desde que ele é meu tio, você fará o que eu disser também. Aqueles desprezíveis Assassinos que me raptaram - Odeio aqueles idiotas. Leve 20 orelhas desses insanos para o meu tio ou farei com que seu serviço não acabe nunca! %b1.
+10506 Bom, %p1, esta é sua ultima missão. Aqui esta uma lista de componentes que eu necessito com certa urgência para meus experimentos mágicos. Traga para mim. %m2.
+10507 Três tarefas foram realizadas e eu pessoalmente não tenho nada contra você. Mas sua organização ficou de pagar 2 milhões de thalers pela compensação do contrato dos dragões. Ainda não recebi nenhuma quantia de %m1, então você paga. %m2.
+10508 Bom, Eu escrevi uma carta oficial de reconciliação, leve para %m1 e vamos deixar a paz entre nossas organizações ser restabelecida. %m2.
+10509 Você fez um bom trabalho, %p1, e pode clamar pelo sexto estágio agora. Um simples teste e você terá o que deseja. Somente mate %z2, este será seu melhor troféu. %m1.
+
+121212 Teste de LoadMsgGroup

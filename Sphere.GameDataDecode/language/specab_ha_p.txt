@@ -1,0 +1,7 @@
+01 Roubo
+100 Uma habilidade profissional definida. Ladrões inexperientes podem apenas pegar poucas moedas de ouro, mas a lenda diz que tem velhas raposas que podem até pegar coisas das bolsas dos cidadões distraídos. 
+
+1000 Para efetuar o roubo, é necessário uma célula livre no inventário.
+1001 Você roubou %s.
+1002 Você falhou na tentativa de roubo.
+1003 Você roubou %d$.

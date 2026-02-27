@@ -1,0 +1,13 @@
+01 Ressuscitação
+03 Ressuscitação
+
+100 Aplicando esta arte negra nos restos de um herói morto, um necromante reanima onde ele foi morto.
+
+#6720-6724
+01 Reviver
+03 reviver
+100 Usando esta arte sombria nos restos mortais de um herói o necromante fará ele voltar a vida onde ele morreu.
+#6725
+01 Reviver
+03 reviver
+100 Usando esta arte sombria nos restos mortais de um herói o necromante fará ele voltar a vida onde ele morreu.

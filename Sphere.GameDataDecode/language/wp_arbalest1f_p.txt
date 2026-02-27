@@ -1,0 +1,36 @@
+01 Balista
+03 balista
+10 Você não tem dardos.
+
+100 Uma arma de projéteis. Permite atingir um inimigo de uma certa distancia; requer um numero significativo de dardos.
+
+
+200 De aventura
+201 De silêncio
+202 De profecia
+203 De segredo
+204 De mitos
+205 De propriedade
+206 De campanhas
+207 De existência
+208 De lenda
+209 De paz
+
+#2730-2731
+01 Balista simples
+03 balista simples
+#2732-2733
+01 Balista pesada
+03 balista pesada
+#2734-2735
+01 Balista simples de elite
+03 balista simples de elite
+#2736-2737
+01 Balista rúnica leve
+03 balista rúnica leve
+#2738-2740
+01 Balista espiritual de aço
+03 balista espiritual de aço
+#2741-2744
+01 Balista de dragão
+03 balista de dragão

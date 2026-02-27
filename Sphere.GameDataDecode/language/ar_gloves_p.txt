@@ -1,0 +1,101 @@
+01 Luvas
+03 luvas
+
+100 Proporciona proteção extra contra ataques.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de vida
+204 de meditação
+205 de precisão
+206 de éter
+207 de valor
+
+#325
+01 Luvas
+03 luvas
+#326
+01 Luvas de couro
+03 luvas de couro
+#327-328
+01 Luvas de couro reforçado
+03 luvas de couro reforçado
+#329-330
+01 Luvas de aneis
+03 luvas de aneis
+#331-333
+01 Mitenes
+03 mitenes
+#334-336
+01 Mitenes acenstrais
+03 mitenes acenstrais
+#3195
+01 Luvas
+03 luvas
+#3196
+01 Luvas de couro
+03 luvas de couro
+#3197-3198
+01 Luvas de couro reforçado
+03 luvas de couro reforçado
+#3199-3200
+01 Luvas de aneis
+03 luvas de aneis
+#3201-3203
+01 Mitenes
+03 mitenes
+#3204-3206
+01 Mitenes acenstrais
+03 mitenes acenstrais
+#4507-4515
+01 Mitenes acenstrais
+03 mitenes acenstrais
+#4748
+01 Luvas negras
+03 luvas negras
+#4749
+01 Luvas brancas
+03 luvas brancas
+#5960
+01 Luvas
+03 luvas
+#6177
+01 Luvas da sabedoria
+03 luvas da sabedoria
+#6178
+01 Luvas de couro da Sabedoria
+03 luvas da sabedoria
+#6179
+01 Luvas de rebite da Sabedoria
+03 luvas da sabedoria
+#6180
+01 Luvas de malha da Sabedoria
+03 luvas da sabedoria
+#6181
+01 Luvas sem dedos da Sabedoria
+03 luvas sem dedos da Sabedoria
+#6182
+01 Luvas sem dedos antigas da Sabedoria
+03 luvas sem dedos antigas da Sabedoria
+#6456
+01 Luvas de artezão
+02 luvas se artezão
+#6457
+01 Luvas de couro de artezão
+02 luvas de couro de artezão
+#6458
+01 Luvas de rebites de artezão
+02 luvas de rebites de artezão
+#6459
+01 Luvas de malha de artezão
+02 Luvas de malha de artezão
+#6460
+01 Luvas sem dedos de artezão
+02 luvas sem dedos de artezão
+#6461
+01 Luvas sem dedos antigas de artezão
+02 luvas sem dedos antigas de artezão
+#6762
+01 Garras
+03 garras

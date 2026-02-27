@@ -1,0 +1,192 @@
+01 Pó mágico
+02 Pó mágico
+03 Pó mágico
+
+#501-508
+01 Pó de proteção física
+02 Pó de proteção física
+03 Pó de proteção física
+#509-520
+01 Pó de ataque terrestre
+02 Pó de ataque terrestre
+03 Pó de ataque terrestre
+#521-528
+01 Pó de proteção mágica
+02 Pó de proteção mágica
+03 Pó de proteção mágica
+#537-542
+01 Pó da saúde
+02 Pó da saúde
+03 Pó da saúde
+#543-546
+01 Pó da fraqueza
+02 Pó da fraqueza
+03 Pó da fraqueza
+#547-549
+01 Pó da super proteção
+02 Pó da super proteção
+03 Pó da super proteção
+#550
+01 Pó da cegueira
+02 Pó da cegueira
+03 Pó da cegueira
+#551-553
+01 Pó de proteção física
+02 Pó de proteção física
+03 Pó de proteção física
+#554-556
+01 Pó de ataque terrestre
+02 Pó de ataque terrestre
+03 Pó de ataque terrestre
+#557-559
+01 Pó de proteção mágica
+02 Pó de proteção mágica
+03 Pó de proteção mágica
+#563-565
+01 Pó da super proteção
+02 Pó da super proteção
+03 Pó da super proteção
+#601-606
+01 Pó da saúde
+02 Pó da saúde
+03 Pó da saúde
+#607-618
+01 Pó do ataque gelado
+02 Pó do ataque gelado
+03 Pó do ataque gelado
+#626-631
+01 Pó da doença
+02 Pó da doença
+03 Pó da doença
+#635
+01 Pó da purificação
+02 Pó da purificação
+03 Pó da purificação
+#636-640
+01 Pó venenoso
+02 Pó venenoso
+03 Pó venenoso
+#641-644
+01 Pó da regeneração
+02 Pó da regeneração
+03 Pó da regeneração
+#645
+01 Pó da plena regeneração
+02 Pó da plena regeneração
+03 Pó da plena regeneração
+#646-654
+01 Pó da saúde
+02 Pó da saúde
+03 Pó da saúde
+#655-657
+01 Pó do ataque gelado
+02 Pó do ataque gelado
+03 Pó do ataque gelado
+#661-663
+01 Pó da doença
+02 Pó da doença
+03 Pó da doença
+#701-712
+01 Pó repelente
+02 Pó repelente
+03 Pó repelente
+#713-721
+01 Pó da luz
+02 Pó da luz
+03 Pó da luz
+#722-726
+01 Pó da força
+02 Pó da força
+03 Pó da força
+#734-737
+01 Pó da fraqueza
+02 Pó da fraqueza
+03 Pó da fraqueza
+#738-739
+01 Pó da tempestade
+02 Pó da tempestade
+03 Pó da tempestade
+#740
+01 Pó da lentidão
+02 Pó da lentidão
+03 Pó da lentidão
+#741-743
+01 Pó repelente
+02 Pó repelente
+03 Pó repelente
+#744-746
+01 Pó da luz
+02 Pó da luz
+03 Pó da luz
+#750-752
+01 Pó da fraqueza
+02 Pó da fraqueza
+03 Pó da fraqueza
+#753-755
+01 Pó da força
+02 Pó da força
+03 Pó da força
+#801-806
+01 Pó da flecha ardente
+02 Pó da flecha ardente
+03 Pó da flecha ardente
+#812-817
+01 Pó da força
+02 Pó da força
+03 Pó da força
+#822-826
+01 Pó das chamas
+02 Pó das chamas
+03 Pó das chamas
+#827-831
+01 Pó da incineração
+02 Pó da incineração
+03 Pó da incineração
+#835
+01 Pó do grande fogo
+02 Pó do grande fogo
+03 Pó do grande fogo
+#836-840
+01 Pó da chama venenosa
+02 Pó da chama venenosa
+03 Pó da chama venenosa
+#841
+01 Pó do fogo cego
+02 Pó do fogo cego
+03 Pó do fogo cego
+#854-856
+01 Pó da flecha ardente
+02 Pó da flecha ardente
+03 Pó da flecha ardente
+#860-862
+01 Pó da força
+02 Pó da força
+03 Pó da força
+#866-868
+01 Pó das chamas
+02 Pó das chamas
+03 Pó das chamas
+#869-871
+01 Pó da incineração
+02 Pó da incineração
+03 Pó da incineração
+#6265-6270
+01 Faca de arremesso
+02 faca de arremesso
+03 faca de arremesso
+#6557-6558
+01 Pó do ferreiro
+03 Pó do ferreiro
+03 Pó do ferreiro
+#6455
+01 Elixir do armadureiro
+02 Elixir do armadureiro
+03 Elixir do armadureiro
+#6653
+01 Elixir da liberdade
+02 elixir da liberdade
+03 elixir da liberdade
+#6759
+01 Pó da degradação
+02 pó da degradação
+03 Pó da degradação

@@ -1,0 +1,22 @@
+01 Trade license
+03 Trade license
+05 The license can only be used at the market square.
+10 Validity term: 12 hours
+11 Validity term: 1 day
+12 Validity term: 1,5 days
+13 Validity term: 2 days
+14 Validity term: 2,5 days
+15 Validity term: 3 days
+16 Validity term: 3,5 days
+17 Validity term: 4 days
+18 Validity term: 4,5 days
+19 Validity term: 5 days
+20 Validity term: 5,5 days
+21 Validity term: 6 days
+23 Validity term: 7 days
+25 Validity term: 8 days
+27 Validity term: 9 days
+29 Validity term: 10 days
+31 Validity term: 11 days
+33 Validity term: 12 days
+100 If when using a license you quit the Sphere, the character will remain trading for the specified number of Spheric days. The license can only be used at the market square.

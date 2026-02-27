@@ -46,4 +46,10 @@
         </Page>
     </ItemGroup>
 
+    <ItemGroup>
+        <Reference Include="BitStreams">
+            <HintPath>..\..\.references\BitStreams.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
 </Project>

@@ -1,0 +1,152 @@
+01 bota
+03 bota
+
+100 Protege você contra armas inimigas durante uma batalha.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de saúde
+204 de meditação
+205 de precisão
+206 de éter
+207 de valor
+
+#361
+01 bota alta
+03 bota alta 
+#362
+01 bota de couro
+03 bota de couro
+#363-364
+01 bota de couro reforçado
+03 bota de couro reforçado
+#365-366
+01 bota de corrente reforçada
+03 bota de corrente reforçada
+#367-369
+01 bota alta de armadura
+03 bota alta de armadura
+#370-372
+01 bota alta de armadura ancestral 
+03 bota alta de armadura ancestral 
+#3183
+01 bota alta
+03 bota alta
+#3184
+01 bota de couro
+03 bota de couro
+#3185-3186
+01 bota de couro reforçado
+03 bota de couro reforçado
+#3187-3188
+01 bota de corrente reforçada
+03 bota de corrente reforçada
+#3189-3191
+01 bota alta de armadura
+03 bota alta de armadura
+#3192-3194
+01 bota alta de armadura ancestral
+03 bota alta de armadura ancestral
+#4498-4506
+01 bota alta de armadura ancestral 
+03 bota alta de armadura ancestral 
+#4746
+01 Bota completa preta
+03 bota completa preta
+#4747
+01 Bota completa branca 
+03 Bota completa branca 
+#5571
+01 Botas de assassino
+03 botas de assassino
+#5572
+01 Botas de couro de assassino
+03 botas de assassino
+#5573
+01 Botas de rebite de assassino
+03 botas de assassino
+#5574
+01 Botas de malha de assassino
+03 botas de assassino
+#5575
+01 Botas armaduradas de assassino
+03 botas de assassino
+#5576
+01 Botas antigas de assassino
+03 botas de assassino
+#5961
+01 Bota elevada
+03 bota elevada
+#5983
+01 Botas de Arquimago
+03 botas de Arquimago
+#5984
+01 Botas de couro de Arquimago
+03 botas de Arquimago
+#5985
+01 Botas de rebite de Arquimago
+03 botas de Arquimago
+#5986
+01 Botas de malha de Arquimago
+03 botas de Arquimago
+#5987
+01 Botas armaduradas de Arquimago
+03 botas de Arquimago
+#5988
+01 Botas antigas de Arquimago
+03 botas de Arquimago
+#6571
+01 Botas da Independência
+03 botas da Independência
+#6572
+01 Botas de couro da Independência
+03 botas da Independência
+#6573
+01 Botas de rebite da Independência
+03 botas da Independência
+#6574
+01 Botas de malha da Independência
+03 botas da Independência
+#6575
+01 Botas armaduradas da Independência
+03 botas da Independência
+#6576
+01 Botas antigas da Independência
+03 botas da Independência
+#6666
+01 Botas encantadas
+03 botas encantadas
+#6667
+01 Botas de couro encantadas
+03 botas encantadas
+#6668
+01 Botas de rebite encantadas
+03 botas encantadas
+#6669
+01 Botas de malha encantadas
+03 botas encantadas
+#6670
+01 Botas armaduradas encantadas
+03 botas encantadas
+#6671
+01 Botas antigas encantadas
+03 botas encantadas
+#6763
+01 Botas de conforto
+03 botas de conforto
+#6764
+01 Botas de couro de conforto
+03 botas de conforto
+#6765
+01 Botas de rebite de conforto
+03 botas de conforto
+#6766
+01 Botas de malha de conforto
+03 botas de conforto
+#6767
+01 Botas armaduradas de conforto
+03 botas de conforto
+#6768
+01 Botas antigas de conforto
+03 botas de conforto

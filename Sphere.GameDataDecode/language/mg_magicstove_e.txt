@@ -1,0 +1,10 @@
+01 Alchemical furnace
+03 alchemical furnace
+11 Reaction impossible:
+12 prana<%d
+13 earth<%d
+14 air<%d
+15 water<%d
+16 fire<%d
+
+100 This is one of the few alchemical furnaces that have survived to the present, furnaces in which first magicians in Sphere boiled their potions and powders.

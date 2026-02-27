@@ -1,0 +1,172 @@
+01 Parcel
+02 parcels
+03 parcel
+10 Sender: %s, recipient: %s.
+#155
+01 Вода
+02 вода
+03 воду
+10 Отправитель: %s, получатель: %s.
+#160
+01 Parcel
+02 parcels
+03 parcel
+10 Sender: %s, recipient: %s.
+#161
+01 Letter
+02 letters
+03 letter
+10 Sender: %s, recipient: %s.
+#162
+01 Short letter
+02 short letters
+03 short letter
+10 Written by %s, recipient: %s.
+#163
+01 Envelope
+02 envelopes
+03 envelope
+10 Sender: %s, recipient: %s.
+#164
+01 Documents
+02 documents
+03 documents
+10 Owner: %s, recipient: %s.
+#165
+01 sword
+02 swords
+03 sword
+10 Owner: %s, deliver to: %s.
+#166
+01 Poisoned fish
+03 poisoned fish
+10 Given by %s, bring to: %s.
+#167
+01 Picture
+03 picture
+10 Sender: %s, recipient: %s.
+#168
+01 Recipe
+03 recipe
+10 Sender: %s, recipient: %s.
+#169
+01 Blood of monster
+03 blood of monster
+10 blood of monster %s by name. %s wants to obtain it.
+#170
+01 Scroll
+02 scrolls
+03 scroll
+10 Sender: %s, recipient: %s.
+#171
+01 Head
+02 heads
+03 head
+10 Head that %s used to have on his shoulders.
+#172
+01 Head of monster
+02 heads of monsters
+03 head of monster
+10 This head belonged to a monster %s by name. %s craves to obtain it.
+#173
+01 Book
+02 books
+03 book
+10 Sender: %s, recipient: %s.
+#174
+01 Book
+02 books
+03 book
+#175
+01 Skull
+02 skulls
+03 skull
+10 Skull that used to be %s's. %s wants to obtain it.
+#176
+01 Eye
+02 eyes
+03 eye
+10 Sender: %s, recipient: %s.
+#177
+01 Archives
+02 archives
+03 archives
+10 Sender: %s, recipient: %s.
+#178
+01 Formula
+02 formulas
+03 formula
+10 Sender: %s, recipient: %s.
+#179
+01 UC
+03 UC
+#180
+01 Mushroom
+02 mushrooms
+03 mushroom
+10 Sender: %s, recipient: %s.
+#181-183
+01 Elixir
+02 elixirs
+03 elixir
+10 Sender: %s, recipient: %s.
+#184-185
+01 Feather
+02 feathers
+03 feather
+10 Sender: %s, recipient: %s.
+#186
+01 Diamond
+02 diamonds
+03 diamond
+10 Sender: %s, recipient: %s.
+#187
+01 Ruby
+02 rubies
+03 ruby
+10 Sender: %s, recipient: %s.
+#188
+01 Emerald
+02 emeralds
+03 emerald
+10 Sender: %s, recipient: %s.
+#189
+01 Stone
+02 stones
+03 stone
+10 Sender: %s, recipient: %s.
+#190
+01 Formula
+02 formulas
+03 formula
+10 Sender: %s, recipient: %s.
+#191
+01 Wine
+02 wines
+03 wine
+10 Sender: %s, recipient: %s.
+#192
+01 Poison
+02 poisons
+03 poison
+10 Sender: %s, recipient: %s.
+#193-194
+01 Ring
+02 rings
+03 ring
+10 Sender: %s, recipient: %s.
+#195
+01 Old key
+02 old keys
+03 old key
+10 Key that belonged to a dragon %s by name. %s wanted to obtain its heart, but it was destroyed in battle.
+#196
+01 Heart of dragon
+02 hearts of dragons
+03 heart of dragon
+10 Heart of dragon %s by name
+#197-199
+01 Blood of dragon
+02 blood of dragon
+03 blood of dragon
+10 Blood of dragon that %s owned. %s will use it to make a magical sword.

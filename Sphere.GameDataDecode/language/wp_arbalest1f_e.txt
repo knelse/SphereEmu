@@ -1,0 +1,36 @@
+01 Arbalest
+03 arbalest
+10 You have no bolts.
+
+100 A projectile weapon. Allows hitting the enemy at long range; requires a significant stock of bolts.
+
+
+200 Of adventure
+201 Of silence
+202 Of prophecy
+203 Of secret
+204 Of myths
+205 Of being
+206 Of campaigns
+207 Of existence
+208 Of legend
+209 Of peace
+
+#2730-2731
+01 Handheld arbalest
+03 handheld arbalest
+#2732-2733
+01 Heavy arbalest
+03 heavy arbalest
+#2734-2735
+01 Elite handheld arbalest
+03 elite handheld arbalest
+#2736-2737
+01 Runic light arbalest
+03 runic light arbalest
+#2738-2740
+01 Ghostly steel arbalest
+03 ghostly steel arbalest
+#2741-2744
+01 Dragon's siege arbalest
+03 dragon's siege arbalest

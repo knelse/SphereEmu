@@ -1,0 +1,24 @@
+01 Licenza commerciale
+03 Licenza commerciale
+05 La licenza può essere utilizzata solo nelle piazze del mercato.
+06 Non pui stare vicino più di 5 metri da un altro mercante.
+10 Termine di validità: 12 ore
+11 Termine di validità: 1 giorno
+12 Termine di validità: 1,5 giorni
+13 Termine di validità: 2 giorni
+14 Termine di validità: 2,5 giorni
+15 Termine di validità: 3 giorni
+16 Termine di validità: 3,5 giorni
+17 Termine di validità: 4 giorni
+18 Termine di validità: 4,5 giorni
+19 Termine di validità: 5 giorni
+20 Termine di validità: 5,5 giorni
+21 Termine di validità: 6 giorni
+23 Termine di validità: 7 giorni
+25 Termine di validità: 8 giorni
+27 Termine di validità: 9 giorni
+29 Termine di validità: 10 giorni
+31 Termine di validità: 11 giorni
+33 Termine di validità: 12 giorni
+100 Se mentre stai usando una licenza esci da Sphere, il personaggio resterà in modalità commercio per lo specifico numero di giorni di Sphere.
+La licenza può essere utilizzata solamente nelle piazze del mercato, e puoi prendere posto non più vicino di 5 metri dagli altri mercanti.

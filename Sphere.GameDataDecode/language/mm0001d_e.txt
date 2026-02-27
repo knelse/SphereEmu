@@ -1,0 +1,38 @@
+10000 D
+
+10100 You want the second stage in the guild of hunters? Laughing out loud! I've paid a visit to your wife while you were hunting, so what did I see in your house? Not a single head of a serious monster on the walls! You should spend more time hunting, %p1!
+10101 To begin with, it would be good if you come by the head of %z1. This is a very nice and swift monster and it'll decorate your living room. %m1.
+
+10200 An experienced hunter knows how to survive in the forest for a long time. Let's check your abilities before we may talk about the third stage in the guild.
+10201 Should you be without weapons and arrows, you have to be able to feed yourself. Here's a list of plants, bring them to me and I'll teach you to boil a fair soup of them, the secret of our guild. %m1.
+10202 To survive in the forest, a hunter needs fire. Bring me 20 armfuls of brushwood and I'll teach you to get fire as our guild does. %m1.
+10203 Well, the most important is that you are a hunter after all and you should be able to kill various dangerous creatures. %z1 is a worthy rival, try to compete with it. If you manage to overcome it, the third stage in the hunters guild is yours.
+
+10300 Want to get the fourth stage in the guild? You are luck, as I have just got a task for you, %p1!
+10301 Lot's of wolves have bred in the forests here. Local residents, indignant about their outrages have promised to pay our guild generously if we help them get rid of this plague by destroying 1,000 wolves. We've agreed and each guild member must bring 50 wolf tails. This is a chance for you to get promoted to the fourth stage in the guild. %m1.
+10302 These tails are exactly what we needed! Everything's ready now, take this letter and bring it to the senior of these locals, %m2. He is to pay us, 5 percent of this amount is yours, bring the rest here, I'll take the thalers to the treasury of our guild. Count carefully, there must be 3,000 thalers sharp! %m1.
+10303 Ha ha! Stupid hunters! Sure, I am not going to pay you, I've never even had such money. Bring my answer to the one who sent you. Get out of here! %m2.
+10304 This %m2 is very pleased with himself, isn't he? But don't be sad, he will soon pity what he has done, when it'll be too late, ha! Their houses are constantly attacked by robbers. They recently made a contract with the barbarians guild for who would protect them from robbers. Fortunately, there is an ancient contract between our guilds in one of our dungeons. It prohibits Barbarians from helping our enemies. We'll se what %m2 will be talking without protection. Show him the contract, I think he'll find the money at once. %m1.
+10305 Damn be the day when I got mixed up with your guild! Take your money and beat it. %m1 said 5 percent of this amount is yours, so give him 2750 thalers. %m2.
+
+10400 You are strong-armed and sharp-eyed, %p1, but you'll have to improve your skills to get the fifth stage in the guild.
+10401 We, Hunters, belong to the alliance of Light Guilds and sometimes help our allies, e.g. Crusaders in their uneasy cause. It is time to utilize your art, too. Bring me 30 ears of villains with very bad karma. %m1.
+10402 Our allied obligations have been met, now it's their turn. It is currently time when the scales of typhons are especially strong. It can serve to make excellent armor and all Hunters, like our allies, are hunting typhons. The standard for our guild is 25 scales per Hunter. %m1.
+10403 Fine, you've coped with the task, which is not the case with our so-called "allies." Just imagine, they've declared typhons harmless creatures and are trying to prohibit us from killing them! Bring this note of protest to the head of Crusaders, his name is %m2. %m1.
+10404 Typhons never attack first, according to our most recent information, so you become villains in our eyes when you kill them. We tell you that it is intolerable to kill those innocent! Here is my answer, bring it to %m1. %m2.
+10405 So what, have these dumb Crusaders taken it to their heads they can strip us of a huge income item just because of someone's fancy? We are declaring war on them, from this day on until gods bring them to reason. Bring me as many ears of Crusaders as possible, but at least 20. %m1.
+10406 War takes our guild lots of strength: we need a strong ally. The Steel Masters guild probably suits us. We were once enemies and many prisoners from their guild are kept in our dungeons. You will release one of them, %a1, for us to start talks with their guild. Your achievements in this matter are significant and you will be admitted to the fifth stage in the guild after this task. %m1.
+10407 Thank you, for getting me out of this dungeon, %p1! Bring this letter to yor master, %m1.
+
+10500 Members of the sixth stage in the Hunters guild are all great heroes. I cannot say you, %p1, are one of them, even though I like you so. You'll have to perform some feats and I have just got a suitable task for you.
+10501 Lots of dragons have bred in our parts lately. A dragon is very hard to kill, so by bringing me 10 dragon's teeth you will prove your skill as hunter. %m1.
+10502 Well, it's a bad thing. It turns out the guild of Archimagicians has bred dragons in search of the magic of fire. You have destroyed their work of many years and now the conflict will have to be dealt with somehow. I've talked to the head of their guild, %m2, and we've arranged you are to accomplish his three tasks. Bring him my letter, do what he says and come back. If the conflict is settled, you'll get the sixth stage in the guild. %m1.
+10503 Aha, you've come. Don't think you might get off easy having destroyed the fruit of our work of years. Here is your first task. Terrible %z1 has settled in a dungeon of our guild. For reasons you don't necessarily need to know, this dungeon is very important to us. Go there and clean it from the vermin! When you are through, unseal this packet, there are further instructions in it. %m2.
+10504 When the dungeon is free of %z1, you may start with the second tasks. One of the most promising students of our guild, %b1, has been abducted by vicious Assassins. Fortunately, she's been able to run away and is now roaming somewhere in the woods. You are a Hunter, so you won't find it difficult to find her and bring to the nearest portal. %m2.
+10505 %p1... I hear you do what %m2 tells you. However, since he is my uncle, you will do what I say too. Those worthless Assassins who abducted me - I hate those scoundrels. Bring 20 ears of these rascals to my uncle or I'll make sure your service never ends! %b1.
+10506 Good, %p1, this is your last task. Here is a list of components I need badly for my magical experiments. Bring them to me. %m2.
+10507 Three tasks have been accomplished and I personally don't have any grievances against you. But your guild was to pay us 2 million thalers under the dragons compensation contract. I haven't yet received anything from %m1, so you pay. %m2.
+10508 Good, I've written an official letter of reconciliation, bring it to %m1 and let's think peace between our guilds reestablished. %m2.
+10509 You've done a good job, %p1, and can quite claim to the sixth stage in our guild. A usual test and you get what you want. Just kill %z2, this will be your best trophy. %m1.
+
+121212 Test of LoadMsgGroup

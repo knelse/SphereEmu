@@ -1,6 +1,6 @@
 ﻿{
   "Settings": {
-    "PacketDefinitionPath": "D:\\SphereDev\\SphereSource\\source\\sphPacketDefinitions",
+    "PacketDefinitionPath": "D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.PacketDefinitions",
     "MacAddress": "345A6048EBF0",
     "OutputFolder": "d:\\SphereDev\\_sphereDumps"
   },

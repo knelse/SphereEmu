@@ -11,7 +11,9 @@
         <ProjectReference Include="..\SphGameObject\SphGameObject.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="sphdbsettings.json"/>
+        <Content Include="sphdbsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="Newtonsoft.Json">

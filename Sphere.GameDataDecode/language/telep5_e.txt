@@ -1,0 +1,7 @@
+01 Tournament teleport
+10 Travel prohibited now.
+11 Maximum travel level: %d
+12 Minimum travel level: %d
+13 Teleport off now.
+14 Teleport open for levels %d to %d.
+100 This teleport can only be used to travel to Arena. After death on Arena you return to this teleport.

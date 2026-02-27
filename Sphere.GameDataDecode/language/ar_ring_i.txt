@@ -1,0 +1,69 @@
+01 anello
+03 anello
+
+100 Pezzo di gioielleria. Può migliorare il personaggio con poteri magici. Se gli anelli potessero parlare racconterebbero innumerevoli interessanti storie riguardanti i loro primi proprietari. La storia racconta di molteplici esempi di persone disposte a pagare ingenti somme per ottenere il potere che un anello può conferire.
+
+200 della durata
+201 dell'assorbimento
+202 della protezione
+203 della salute
+204 della vita
+205 della meditazione
+206 del prana
+207 dell'etere
+208 della precisione
+209 della forza
+210 della destrezza
+211 della precisione
+212 della resistenza
+213 della terra
+214 dell'acqua
+215 dell'aria
+216 del fuoco
+217 della stima
+
+#425-448
+01 Anello
+03 anello
+#4047-4166
+01 Anello
+03 anello
+#5954
+01 Anello del Mago
+03 anello del Mago
+#5955
+01 Anello dell'Arcimago
+03 anello dell'Arcimago
+#5956
+01 Anello del Grande Arcimago
+03 anello del Grande Arcimago
+#5977
+01 Anello del Mago
+03 anello del Mago
+#5978-5981
+01 Anello dell'Arcimago
+03 anello dell'Arcimago
+#5982
+01 Anello del Grande Arcimago
+03 anello del Grande Arcimago
+#6249-6254
+01 Anello delle abilità
+03 anello delle abilità
+#6555
+01 Anello di acciaio
+03 anello di acciaio
+#6556
+01 Anello di argento
+03 anello di argento
+#6654
+01 Anello dell'esperto
+03 anello dell'esperto
+#6655
+01 Anello dell'aura
+03 anello dell'aura
+#6656
+01 Anello dai quattro colori
+03 anello dai quattro colori
+#6754
+01 Anello del lich
+03 anello del lich

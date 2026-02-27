@@ -1,0 +1,11 @@
+01 Pote alquimista
+03 Pote alquimista 
+10 Para usar coloque o pote no chão.
+11 Reação impossível:
+12 prana<%d
+13 terra<%d
+14 ar<%d
+15 água<%d
+16 fogo<%d
+
+100 A história do pote vem desde data de 1008 quando Amilus - O mago real do rei Valentine - fez sua primeira amostra. Antes da invenção do pote, os magos utilizavam imensos fornos que ocupavam uma casa inteira. Com o pote na mão, foi permitido fazer a maioria das necessárias transformações mágicas. Somente as  reações mais complexas e dispendiosas ainda necessitam o uso de um forno. Durante muitos séculos a arte do cozimento mágico foi gradativamente sumindo assim como também foram desaparecendo os operadores de fornos durante as guerras.  A Sphere de hoje não sabe da Existência de nenhum forno em funcionamento. Alguém deveria encontrar algum forno, ele ou ela será capaz de completar alguma rara e valiosa transformação mágica.

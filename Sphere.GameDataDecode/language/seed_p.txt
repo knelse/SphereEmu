@@ -1,0 +1,10 @@
+01 Semente
+03 semente
+05 nova
+06 velha
+07 murcha
+10 para plantar, coloque a semente no chão.
+101 Dentro do carniceiro
+102 Dentro do baú
+103 Cristal de castelo (para ser ativada dentro de um castelo)
+104 Protective stone inside (to be activated within a castle)

@@ -1,0 +1,152 @@
+01 boots
+03 boots
+
+100 Protect from enemy weapons in battle.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of meditation
+205 of accuracy
+206 of ether
+207 of value
+
+#361
+01 high-boots
+03 high-boots
+#362
+01 leather boots
+03 leather boots
+#363-364
+01 riveted leather boots
+03 riveted leather boots
+#365-366
+01 chainmail boots
+03 chainmail boots
+#367-369
+01 armor high-boots
+03 armor high-boots
+#370-372
+01 ancient armor high-boots
+03 ancient armor high-boots
+#3183
+01 high-boots
+03 high-boots
+#3184
+01 leather boots
+03 leather boots
+#3185-3186
+01 riveted leather boots
+03 riveted leather boots
+#3187-3188
+01 chainmail boots
+03 chainmail boots
+#3189-3191
+01 armor high-boots
+03 armor high-boots
+#3192-3194
+01 ancient armor high-boots
+03 ancient armor high-boots
+#4498-4506
+01 ancient armor high-boots
+03 ancient armor high-boots
+#4746
+01 Black top-boots
+03 black top-boots
+#4747
+01 White top-boots
+03 white top-boots
+#5571
+01 Boots of killer
+03 boots of killer
+#5572
+01 Leather boots of killer
+03 boots of killer
+#5573
+01 Riveted boots of killer
+03 boots of killer
+#5574
+01 Chainmail boots of killer
+03 boots of killer
+#5575
+01 Armor boots of killer
+03 boots of killer
+#5576
+01 Ancient boots of killer
+03 boots of killer
+#5961
+01 Top-boots
+03 top-boots
+#5983
+01 Boots of Archimagician
+03 boots of Archimagician
+#5984
+01 Leather boots of Archimagician
+03 boots of Archimagician
+#5985
+01 Riveted boots of Archimagician
+03 boots of Archimagician
+#5986
+01 Chainmail boots of Archimagician
+03 boots of Archimagician
+#5987
+01 Armor boots of Archimagician
+03 boots of Archimagician
+#5988
+01 Ancient boots of Archimagician
+03 boots of Archimagician
+#6571
+01 Boots of independence
+03 boots of independence
+#6572
+01 Leather boots of independence
+03 boots of independence
+#6573
+01 Riveted boots of independence
+03 boots of independence
+#6574
+01 Chainmail boots of independence
+03 boots of independence
+#6575
+01 Armor boots of independence
+03 boots of independence
+#6576
+01 Ancient boots of independence
+03 boots of independence
+#6666
+01 Enchanted boots
+03 enchanted boots
+#6667
+01 Leather enchanted boots
+03 enchanted boots
+#6668
+01 Riveted enchanted boots
+03 enchanted boots
+#6669
+01 Chainmail enchanted boots
+03 enchanted boots
+#6670
+01 Armor enchanted boots
+03 enchanted boots
+#6671
+01 Ancient enchanted boots
+03 enchanted boots
+#6763
+01 Boots of coddle
+03 boots of coddle
+#6764
+01 Leather boots of coddle
+03 boots of coddle
+#6765
+01 Riveted boots of coddle
+03 boots of coddle
+#6766
+01 Chainmail boots of coddle
+03 boots of coddle
+#6767
+01 Armor boots of coddle
+03 boots of coddle
+#6768
+01 Ancient boots of coddle
+03 boots of coddle

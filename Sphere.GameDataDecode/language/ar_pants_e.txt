@@ -1,0 +1,80 @@
+01 pants
+03 pants
+
+100 Protect from enemy weapons in battle.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of meditation
+205 of accuracy
+206 of ether
+207 of value
+
+#373
+01 pants
+03 pants
+#374
+01 leather pants
+03 leather pants
+#375-376
+01 riveted leather pants
+03 riveted leather pants
+#377-378
+01 chainmail pants
+03 chainmail pants
+#379-381
+01 armor chausses
+03 armor chausses
+#382-384
+01 ancient armor chausses
+03 ancient armor chausses
+#3121-3122
+01 pants
+03 pants
+#3123-3124
+01 leather pants
+03 leather pants
+#3125-3128
+01 riveted leather pants
+03 riveted leather pants
+#3129-3132
+01 chainmail pants
+03 chainmail pants
+#3133-3138
+01 armor chausses
+03 armor chausses
+#3139-3145
+01 ancient armor chausses
+03 ancient armor chausses
+#4471-4479
+01 ancient armor chausses
+03 ancient armor chausses
+#4742
+01 Black armor chausses
+03 black armor chausses
+#4743
+01 White armor chausses
+03 white armor chausses
+#6371
+01 Battle chausses
+03 battle chausses
+#6372
+01 Leather battle chausses
+03 battle chausses
+#6373
+01 Riveted battle chausses
+03 battle chausses
+#6374
+01 Chainmail battle chausses
+03 battle chausses
+#6375
+01 Armor battle chausses
+03 battle chausses
+#6376
+01 Ancient battle chausses
+03 battle chausses
+#6760
+01 Bone chausses
+03 bone chausses

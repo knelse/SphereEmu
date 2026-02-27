@@ -1,0 +1,47 @@
+01 Cota de malha
+03 cota de malha
+
+100 Armadura feita de aneis de ferro, protege contra ataques de armas convencionais.
+
+200 da eliminação
+201 da devastação
+202 da confiança
+203 da invulnerabilidade
+204 da vida
+205 da eliminação
+206 da devastação
+207 da conviança
+208 da invulenarabilidade
+209 da vida
+210 das regras
+211 da cegueira
+212 do medo
+213 da parada
+214 da deliberação
+215 da purificação
+216 da punição
+217 do grilhões
+218 do redemoinho
+219 da maldição
+
+#5001
+01 Armadura de couro reforçada
+03 armadura de couro reforçada
+#5021
+01 Placa de torso
+03 placa de torso
+#5041
+01 Armadura ancestral
+03 armadura ancestral
+#5061
+01 Armadura ancestral
+03 Armadura ancestral
+#5111
+01 Armadura ancestral
+03 Armadura ancestral
+#5131
+01 Armadura ancestral
+03 Armadura ancestral
+#5160
+01 Armadura ancestral
+03 Armadura ancestral

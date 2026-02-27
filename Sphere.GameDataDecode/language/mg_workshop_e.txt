@@ -1,0 +1,25 @@
+01 Workshop
+03 workshop
+
+10 Article given special property
+11 Article ready.
+12 Article repaired.
+13 Article repaired, but its condition worse.
+14 Article repaired, but its condition much worse.
+
+15 Is impossible to give a special property to article using this formula:
+16 Is impossible to make article using this formula:
+17 Is impossible to repair article:
+
+18 article doesn't match formula
+19 not enough components
+20 too low stage in guild
+21 article accidentaly broken while repaired
+22 too many articles
+23 article broken while repaired as too old
+
+90 While creating the article, the formula exhausted its magical power and was destroyed.
+91 While providing the article with magical properties, the formula exhausted its magical power and was destroyed.
+92 While repairing, the formula exhausted its magical power and was destroyed.
+
+100 This is a workshop where blacksmiths and armorers make armor and arms. Sorcerers also use workshops to give magical properties to articles made there.

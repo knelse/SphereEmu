@@ -1,0 +1,346 @@
+01 Espada
+03 espada
+100 Aço gelado. O poder da espada é rápido, porém com pouca força.
+
+200 de exaustão
+201 de coragem
+202 de dano
+203 de crueldade
+204 de pressa
+205 de velocidade
+206 de tumulto
+207 de caos
+208 de éter
+209 de cansaço
+210 de doença
+211 de instabilidade
+212 de alcance
+213 de distancia
+214 de abatimento
+215 de devastação
+216 de fraqueza
+217 de toque
+218 de proibição
+219 de valor
+
+#1
+01 Espada curva
+03 espada curva
+#2
+01 Sabre
+03 sabre
+#3
+01 Sabre largo
+
+03 sabre largo
+#4
+01 Skimitar
+03 skimitar
+#5
+01 Yataghan
+03 yataghan
+#6
+01 Katana
+03 katana
+#7
+01 Shamsher
+03 shamsher
+#8
+01 Sabre de elite
+03 sabre de elite
+#9
+01 Sabre largo de elite
+03 sabre de elite largo
+#10
+01 Yataghan de elite
+03 yataghan de elite
+#11
+01 Katana de elite
+03 katana de elite
+#12
+01 Sabre rúnico
+03 sabre rúnico
+#13
+01 Sabre rúnico largo
+03 sabre rúnico largo
+#14
+01 Yataghan rúnica
+03 yataghan rúnica
+#15
+01 Katana rúnica
+03 katana rúnica
+#16
+01 Espada sesquilateral
+03 espada sesquilateral
+#17
+01 Espada de duas mãos
+03 espada de duas mãos
+#18
+01 Kleimor
+03 kleimor
+#19
+01 Espadon
+03 espadon
+#20
+01 Flamberg
+03 flamberg
+#21
+01 Espada grande
+03 espada grande
+#22
+01 Espada gigante
+03 espada gigante
+#23
+01 Espada de elite de duas mãos
+03 espada de elite de duas mãos
+#24
+01 Kleimor de elite
+03 kleimor de elite
+#25
+01 Flamberg de elite
+03 flamberg de elite
+#26
+01 Espada grande de elite
+03 espada grande de elite
+#27
+01 Espada rúnica de duas mãos
+03 espada rúnica de duas mãos
+#28
+01 Kleimor rúnico
+03 kleimor rúnico
+#29
+01 Flamberg rúnico
+03 flamberg rúnico
+#30
+01 Espada rúnica grande
+03 espada rúnica grande
+#31
+01 Espada curta
+03 espada curta
+#32
+01 Espada larga
+03 espada larga
+#33
+01 Gladius
+03 gladius
+#34
+01 Espada de infantaria
+03 espada de infantaria
+#35
+01 Espada longa
+03 espada longa
+#36
+01 Espada de cristal
+03 espada de cristal
+#37
+01 Espada dourada
+03 espada dourada
+#38
+01 Espada de elite curta
+03 espada de elite curta
+#39
+01 Gladius de elite
+03 gladius de elite
+#40
+01 Espada de elite longa
+03 espada de elite longa
+#41
+01 Espada de elite de cristal
+03 espada de elite de cristal 
+#42
+01 Espada rúnica curta 
+03 espada rúnica curta
+#43
+01 Gladius rúnico
+03 gladius rúnico
+#44
+01 Espada rúnica longa
+03 espada rúnica longa
+#45
+01 Espada rúnica de cristal
+03 espada rúnica de cristal
+#130
+01 Espada de dragão
+03 espada de dragão
+#3251-3252
+01 Espada curva
+03 Espada curva
+#3253-3254
+01 Sabre
+03 Sabre
+#3255-3257
+01 Sabre largo
+03 Sabre largo
+#3258-3259
+01 Skimitar
+03 skimitar
+#3260-3262
+01 Yataghan
+03 yataghan
+#3263-3264
+01 Katana
+03 katana
+#3265-3269
+01 Shamsher
+03 shamsher
+#3270-3274
+01 Sabre de elite
+03 Sabre de elite
+#3275-3279
+01 Sabre de elite largo
+03 Sabre de elite largo
+#3280-3284
+01 Yataghan de elite
+03 Yataghan de elite
+#3285-3289
+01 Katana de elite
+03 Katana de elite
+#3290-3294
+01 Sabre rúnico
+03 Sabre rúnico
+#3295-3299
+01 Sabre rúnico largo
+03 Sabre rúnico largo
+#3300-3304
+01 Yataghan rúnica
+03 Yataghan rúnica
+#3305-3310
+01 Katana rúnica
+03 Katana rúnica
+#3311-3312
+01 Espada sesquilateral
+03 Espada sesquilateral
+#3313-3314
+01 Espada de duas mãos
+03 Espada de duas mãos
+#3315-3317
+01 Kleimor
+03 kleimor
+#3318-3319
+01 Espadon
+03 espadon
+#3320-3322
+01 Flamberg
+03 flamberg
+#3323-3324
+01 Espada grande
+03 Espada grande
+#3325-3329
+01 Espada gigante
+03 Espada gigante
+#3330-3334
+01 Espada de elite de duas mãos
+03 espada de elite de duas mãos
+#3335-3339
+01 Kleimor de elite
+03 Kleimor de elite
+#3340-3344
+01 Flamberg de elite
+03 Flamberg de elite
+#3345-3349
+01 Espada de elite grande
+03 Espada de elite grande
+#3350-3354
+01 Espada rúnica de duas mãos
+03 Espada rúnica de duas mãos
+#3355-3359
+01 Kleimor rúnico
+03 Kleimor rúnico
+#3360-3364
+01 Flamberg rúnico
+03 Flamberg rúnico
+#3365-3370
+01 Espada rúnica grande
+03 Espada rúnica grande
+#3371-3372
+01 Espada curta
+03 Espada curta
+#3373-3374
+01 Espada larga
+03 Espada larga
+#3375-3377
+01 Gladius
+03 gladius
+#3378-3379
+01 Espada de infantaria
+03 espada de infantaria
+#3380-3382
+01 Espada longa
+03 Espada longa
+#3383-3384
+01 Espada de cristal
+03 espada de cristal
+#3385-3389
+01 Espada dourada
+03 espada dourada
+#3390-3394
+01 Espada de elite curta
+03 espada de elite curta
+#3395-339901 Gladius de elite
+03 Gladius de elite
+#3400-3404
+01 Espada de elite longa
+03 Espada de elite longa
+#3405-3409
+01 Espada de elite de cristal
+03 Espada de elite de cristal
+#3410-3414
+01 Espada rúnica curta
+03 Espada rúnica curta
+#3415-3419
+01 Gladius rúnico
+03 Gladius rúnico
+#3420-3424
+01 Espada rúnica longa
+03 Espada rúnica longa
+#3425-3430
+01 Espada rúnica de cristal
+03 Espada rúnica de cristal
+#3431-3433
+01 Legendary katana
+03 legendary katana
+#3434-3436
+01 Ghostly katana
+03 ghostly katana
+#3437-3439
+01 Dragon's katana
+03 dragon's katana
+#3440-3442
+01 Espada grande lendária
+03 espada grande lendária
+#3443-3445
+01 Espada grande espiritual
+03 espada grande espiritual
+#3446-3448
+01 Espada grande de dragão
+03 espada grande de dragão
+#3449-3451
+01 Espada de cristal lendária
+03 espada de cristal lendária
+#3452-3454
+01 Espada de cristal espiritual
+03 espada de cristal espiritual
+#3455-3457
+01 Espada de cristal de dragão
+03 espada de cristal de dragão
+#5565-5570
+01 Punhal de assassino
+03 punhal de assassino
+#5683
+01 Espada longa da justiça
+03 Espada da justiça
+#5684-5686
+01 Espada de elite da justiça
+03 espada da justiça
+#5687
+01 Espadagão da justiça
+03 espada da justiça
+#5688
+01 Grã espada da justiça
+03 espada da justiça
+#6071-6076
+01 Espada da inimizade
+03 espada da inimizade
+#6451
+01 Espada runica
+03 espada runica

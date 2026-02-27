@@ -1,0 +1,84 @@
+#5510-5515
+01 Invisibilidade
+100 Um assassino pode ser imperceptível graças à magia de sua organização, mas assim que ele empunhar uma arma mágica ou aço, o efeito passa imediatamente. 
+#5520-5525
+01 Ataque critico
+100 Quando a hora chega, um tiro certeiro e sem perdão é necessário. Assassinos passam anos treinando seu tiro mortal - o segredo de sua escola.
+#5530-5535
+01 Veneno
+100 Um forte veneno baseado em cyanide e uma magia antiga.
+#5620-5625
+01 Escudo de prana
+100 Uma áurea divina encobre um cavaleiro e absorve o dano usando a prana do guerreiro.
+#5630-5635
+01 Corrida do tempo
+100 Uma transição instantânea quando o ataque vem dobrado e rápido. Claro, é difícil de manter este estado por muito tempo, então é curto o periodo de duração, mesmo com o melhor treinamento.
+#5720-5725
+01 Algemas
+100 Uma santa palavra que amarra as mãos. Durante seu efeito, nenhuma espada pode ser empunhada ou algum mantra pode ser vestido.
+#5730-5735
+01 Purificação
+100 Quanto mais alto o estágio de um santo inquisidor, mais forte é seu espírito. Novatos somente podem aliviar o peso de um modificador uma ou duas vezes, mas o estágio mais alto pode suportar 6 modificadores.
+#5810-5815
+01 Olho de esquilo
+100 As fortes mãos e olhos afiados são famosos nos caçadores de Sphere. Se eles gostam, também podem usar uma balista mais eficiente, elevando sua habilidade destrutiva.
+#5820-5825
+01 Dardo duplo
+100 Somente caçadores são capazes de lançar dois dardos ao mesmo tempo numa balista comum e não errar o alvo!
+#5830-5835
+01 Peregrino
+100 Usado constantemente em viagens na busca e escolha da melhor presa para ser caçada, caçadores, quando querem, podem desenvolver uma impressionante velocidade.
+#5920-5925
+01 Visão curta
+100 Impõe uma magia no alvo fazendo com que tudo ao redor do campo de visão seja direcionado num só olho. Não é possível utilizar a arma num campo maior que 2 metros.
+#5930-5935
+01 Malidção
+100 Um homem amaldiçoado se transforma em um porco e, apesar da consciência permanecer inalterada, o corpo fica dominado. O amaldiçoado não consegue parar suas pernas e também não pode usar nenhuma arma.
+#6010-6015
+01 Visão longa
+100 Usando uma poção secreta dos druidas, um bárbaro pode atacar com qualquer arma numa distancia de até 3 metros; na verdade é uma transferência de danos para o alvo remoto.
+#6020-6025
+01 Furioso
+100 Um guerreiro pode usar a magia furioso por seu próprio risco. Atacando com explosões destrutivas, um bárbaro esquece sua própria segurança.
+#6030-6035
+01 Surpresa
+100 Alguém é surpreendido e fica sem alguns sentidos. Por um momento, fica cego e suas mãos não obedecem mais seus comandos.
+#6110-6115
+01 Natureza
+100 Usando a sabedoria da floresta, um druida sabe como estender a vida humana, mas ainda não pode fazê-lo imortal.
+#6130-6135
+01 Metamorfose
+100 Utilizando antigas magias em seu próprio corpo, um druida pode se transformar num forte e macio lobo.
+#6220-6225
+01 Fuga
+100 Livrar-se de problemas é a mais importante habilidade de um bom ladrão.
+#6230-6235
+01 Sombra da noite
+100 Um ladrão pode se tornar invisível seguindo sua presa à noite, usando toda sombra como disfarce. Mas qualquer movimento imprudente pode revelá-lo.
+#6320-6325
+01 Kamae
+100 Um estado similar ao transe ou meditação que deixa um guerreiro focado em sua própria proteção e defende quase todos ataques feitos nele.
+#6410-6415
+01 Perícia
+100 Usando as fórmulas encontradas, um armeiro pode fazer ou reparar qualquer arma se ele tiver habilidade suficiente, claro.
+#6420-6425
+01 Fuga 
+100 Artesãos nunca tiveram habilidades em lutas, então é melhor correr, sem parada, pra longe do perigo.
+#6510-6515
+01 Perícia 
+100 Usando fórmulas e figuras encontradas, um ferreiro pode fazer ou reparar qualquer armadura ou manto se tiver habilidade suficiente é óbvio.
+#6520-6525
+01 Fuga
+100 Artesões nunca tiveram habilidades em lutas, então é melhor correr, sem parada, pra longe do perigo.
+#6610-6615
+01 Spell
+100 Se um encantador achar a fórmula apropriada, poderá usar seu conhecimento em magias para inserir em armas propriedades especiais.
+#6620-6625
+01 Tornado
+100 Para ser capaz de se esconder dos inimigos, um encantador usa a magia no pensamento e o alvo do encantador fica rodando, perdendo controle de seus movimentos momentaneamente.
+#6630-6635
+01 Armadura decadente
+100 Uma brincadeira bem prática. O feitiço faz com que ele ande somente de lado ou para frente e para trás. 
+#6810-6815
+01 Estandarte
+100 Se um bandido possuir um estandarte mágico, ele pode dar efeitos mágicos para todos membros de seu grupo.

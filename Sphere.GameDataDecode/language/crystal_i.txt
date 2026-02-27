@@ -1,0 +1,426 @@
+01 Cristallo
+03 cristallo
+10 Il tuo livello и troppo basso, non puoi ricevere l'attributo del castello.
+11 Appartenenza:
+100 Quando il cristallo viene posizionato nel Grande Libro castello, tutti i membri del Clan che lo toccano, ricevono immediatamente un attributo del castello, che dа loro un bonus alle caratteristiche.
+
+#5081
+01 piccolo cristallo della forza
+03 piccolo cristallo della forza
+#5082
+01 piccolo cristallo dell'energia
+03 piccolo cristallo dell'energia
+#5083
+01 piccolo cristallo della resistenza
+03 piccolo cristallo della resistenza
+#5084
+01 piccolo cristallo del riflesso
+03 piccolo cristallo del riflesso
+#5085
+01 cristallo medio della forza
+03 cristallo medio della forza
+#5086
+01 cristallo medio dell'energia
+03 cristallo medio dell'energia
+#5087
+01 cristallo medio della resistenza
+03 cristallo medio della resistenza
+#5088
+01 cristallo medio del riflesso
+03 cristallo medio del riflesso
+#5089
+01 grande cristallo della forza
+03 grande cristallo della forza
+#5090
+01 grande cristallo dell'energia
+03 grande cristallo dell'energia
+#5091
+01 grande cristallo della resistenza
+03 grande cristallo della resistenza
+#5092
+01 grande cristallo del riflesso
+03 grande cristallo del riflesso
+#5093
+01 piccolo cristallo oscuro della forza
+03 piccolo cristallo oscuro della forza
+#5094
+01 piccolo cristallo oscuro dell'energia
+03 piccolo cristallo oscuro dell'energia
+#5095
+01 piccolo cristallo oscuro della resistenza
+03 piccolo cristallo oscuro della resistenza
+#5096
+01 piccolo cristallo oscuro del riflesso
+03 piccolo cristallo oscuro del riflesso
+#5097
+01 cristallo medio oscuro della forza
+03 cristallo medio oscuro della forza
+#5098
+01 cristallo medio oscuro dell'energia
+03 cristallo medio oscuro dell'energia
+#5099
+01 cristallo medio oscuro della resistenza
+03 cristallo medio oscuro della resistenza
+#5100
+01 cristallo medio oscuro del riflesso
+03 cristallo medio oscuro del riflesso
+#5101
+01 grande cristallo oscuro della forza
+03 grande cristallo oscuro della forza
+#5102
+01 grande cristallo oscuro dell'energia
+03 grande cristallo oscuro dell'energia
+#5103
+01 grande cristallo oscuro del riflesso
+03 grande cristallo oscuro del riflesso
+#5104
+01 grande cristallo della forza
+03 grande cristallo della forza
+#5105
+01 grande cristallo dell'energia
+03 grande cristallo dell'energia
+#5106
+01 grande cristallo della resistenza
+03 grande cristallo della resistenza
+#5107
+01 grande cristallo del riflesso
+03 grande cristallo del riflesso
+#5108
+01 grande cristallo oscuro della resistenza
+03 grande cristallo oscuro della resistenza
+#5181
+01 Piccolo cristallo della della forza
+03 piccolo cristallo della della forza
+#5182
+01 Piccolo cristallo dell'energia
+03 piccolo cristallo dell'energia
+#5183
+01 Piccolo cristallo della resistenza
+03 piccolo cristallo della resistenza
+#5184
+01 Piccolo cristallo del riflesso
+03 piccolo cristallo del riflesso
+#5185
+01 Cristallo medio della forza
+03 cristallo medio della forza
+#5186
+01 Cristallo medio dell'energia
+03 cristallo medio dell'energia
+#5187
+01 Cristallo medio della resistenza
+03 cristallo medio della resistenza
+#5188
+01 Cristallo medio del riflesso
+03 cristallo medio del riflesso
+#5189
+01 Grande cristallo della forza
+03 grande cristallo della forza
+#5190
+01 Grande cristallo dell'energia
+03 grande cristallo dell'energia
+#5191
+01 Grande cristallo della resistenza
+03 grande cristallo della resistenza
+#5192
+01 Grande cristallo del riflesso
+03 grande cristallo del riflesso
+#5193
+01 Piccolo cristalloo scuro della forza
+03 piccolo cristallo oscuro della forza
+#5194
+01 Piccolo cristallo oscuro dell'energia
+03 piccolo cristallo oscuro dell'energia
+#5195
+01 Piccolo cristallo oscuro della resistenza
+03 piccolo cristallo oscuro della resistenza
+#5196
+01 Piccolo cristallo oscuro del riflesso
+03 piccolo cristallo oscuro del riflesso
+#5197
+01 Cristallo medio oscuro della forza
+03 cristallo medio oscuro della forza
+#5198
+01 Cristallo medio oscuro dell'energia
+03 cristallo medio oscuro dell'energia
+#5199
+01 Cristallo medio oscuro della resistenza
+03 cristallo medio oscuro della resistenza
+#5200
+01 Cristallo medio oscuro del riflesso
+03 cristallo medio oscuro del riflesso
+#5201
+01 Grande cristallo oscuro della forza
+03 grande cristallo oscuro  della forza
+#5202
+01 Grande cristallo oscuro dell'energia
+03 grande cristallo oscuro  dell'energia
+#5203
+01 Grande cristallo oscuro del riflesso
+03 grande cristallo oscuro del riflesso
+#5204
+01 Grandioso cristallo della forza
+03 grandioso cristallo della forza
+#5205
+01 Grandioso cristallo dell'energia
+03 grandioso cristallo dell'energia
+#5206
+01 Grandioso cristallo della resistenza
+03 grandioso cristallo della resistenza
+#5207
+01 Grandioso cristallo del riflesso
+03 grandioso cristallo del riflesso
+#5208
+01 Grande cristallo oscuro della resistenza
+03 grande cristallo oscuro della resistenza
+#5281
+01 Piccolo cristallo della forza
+03 piccolo cristallo della forza
+#5282
+01 Piccolo cristallo dell'energia
+03 piccolo cristallo dell'energia
+#5283
+01 Piccolo cristallo della resistenza
+03 piccolo cristallo della resistenza
+#5284
+01 Piccolo cristallo del riflesso
+03 piccolo cristallo del riflesso
+#5285
+01 Cristallo medio della forza
+03 cristallo medio della forza
+#5286
+01 Cristallo medio dell'energia
+03 cristallo medio dell'energia
+#5287
+01 Cristallo medio della resistenza
+03 cristallo medio della resistenza
+#5288
+01 Cristallo medio del riflesso
+03 cristallo medio del riflesso
+#5289
+01 Grande cristallo della forza
+03 grande cristallo della forza
+#5290
+01 Grande cristallo dell'energia
+03 grande cristallo dell'energia
+#5291
+01 Grande cristallo della resistenza
+03 grande cristallo della resistenza
+#5292
+01 Grande cristallo del riflesso
+03 grande cristallo del riflesso
+#5293
+01 Piccolo cristallo oscuro della forza
+03 piccolo cristallo oscuro della forza
+#5294
+01 Piccolo cristallo oscuro dell'energia
+03 piccolo cristallo oscuro dell'energia
+#5295
+01 Piccolo cristallo oscuro della resistenza
+03 piccolo cristallo oscuro della resistenza
+#5296
+01 Piccolo cristallo oscuro del riflesso
+03 piccolo cristallo oscuro del riflesso
+#5297
+01 Cristallo medio oscuro della forza
+03 cristallo medio oscuro della forza
+#5298
+01 Cristallo medio oscuro dell'energia
+03 cristallo medio oscuro dell'energia
+#5299
+01 Cristallo medio oscuro della resistenza
+03 cristallo medio oscuro della resistenza
+#5300
+01 Cristallo medio oscuro del riflesso
+03 cristallo medio oscuro del riflesso
+#5301
+01 Grande cristallo oscuro della forza
+03 grande cristallo oscuro della forza
+#5302
+01 Grande cristallo oscuro dell'energia
+03 grande cristallo oscuro dell'energia
+#5303
+01 Grande cristallo oscuro della resistenza
+03 grande cristallo oscuro della resistenza
+#5304
+01 Grandioso cristallo della forza
+03 grandioso cristallo della forza
+#5305
+01 Grandioso cristallo dell'energia
+03 grandioso cristallo dell'energia
+#5306
+01 Grandioso cristallo della resistenza
+03 grandioso cristallo della resistenza
+#5307
+01 Grandioso cristallo del riflesso
+03 grandioso cristallo del riflesso
+#5308
+01 Grande cristallo oscuro del riflesso
+03 grande cristallo oscuro del riflesso
+#5181
+01 Малый кристалл силы
+03 малый кристалл силы
+#5182
+01 Малый кристалл энергии
+03 малый кристалл энергии
+#5183
+01 Малый кристалл стойкости
+03 малый кристалл стойкости
+#5184
+01 Малый кристалл отражения
+03 малый кристалл отражения
+#5185
+01 Средний кристалл силы
+03 средний кристалл силы
+#5186
+01 Средний кристалл энергии
+03 средний кристалл энергии
+#5187
+01 Средний кристалл стойкости
+03 средний кристалл стойкости
+#5188
+01 Средний кристалл отражения
+03 средний кристалл отражения
+#5189
+01 Большой кристалл силы
+03 большой кристалл силы
+#5190
+01 Большой кристалл энергии
+03 большой кристалл энергии
+#5191
+01 Большой кристалл стойкости
+03 большой кристалл стойкости
+#5192
+01 Большой кристалл отражения
+03 большой кристалл отражения
+#5193
+01 Малый темный кристалл силы
+03 малый темный кристалл силы
+#5194
+01 Малый темный кристалл энергии
+03 малый темный кристалл энергии
+#5195
+01 Малый темный кристалл стойкости
+03 малый темный кристалл стойкости
+#5196
+01 Малый темный кристалл отражения
+03 малый темный кристалл отражения
+#5197
+01 Средний темный кристалл силы
+03 средний темный кристалл силы
+#5198
+01 Средний темный кристалл энергии
+03 средний темный кристалл энергии
+#5199
+01 Средний темный кристалл стойкости
+03 средний темный кристалл стойкости
+#5200
+01 Средний темный кристалл отражения
+03 средний темный кристалл отражения
+#5201
+01 Большой темный кристалл силы
+03 большой темный кристалл силы
+#5202
+01 Большой темный кристалл энергии
+03 большой темный кристалл энергии
+#5203
+01 Большой темный кристалл стойкости
+03 большой темный кристалл стойкости
+#5204
+01 Великий кристалл силы
+03 великий кристалл силы
+#5205
+01 Великий кристалл энергии
+03 великий кристалл кристалл энергии
+#5206
+01 Великий кристалл кристалл стойкости
+03 великий кристалл стойкости
+#5207
+01 Великий кристалл отражения
+03 великий кристалл отражения
+#5208
+01 Большой темный кристалл отражения
+03 большой темный кристалл отражения
+#5281
+01 Малый кристалл силы
+03 малый кристалл силы
+#5282
+01 Малый кристалл энергии
+03 малый кристалл энергии
+#5283
+01 Малый кристалл стойкости
+03 малый кристалл стойкости
+#5284
+01 Малый кристалл отражения
+03 малый кристалл отражения
+#5285
+01 Средний кристалл силы
+03 средний кристалл силы
+#5286
+01 Средний кристалл энергии
+03 средний кристалл энергии
+#5287
+01 Средний кристалл стойкости
+03 средний кристалл стойкости
+#5288
+01 Средний кристалл отражения
+03 средний кристалл отражения
+#5289
+01 Большой кристалл силы
+03 большой кристалл силы
+#5290
+01 Большой кристалл энергии
+03 большой кристалл энергии
+#5291
+01 Большой кристалл стойкости
+03 большой кристалл стойкости
+#5292
+01 Большой кристалл отражения
+03 большой кристалл отражения
+#5293
+01 Малый темный кристалл силы
+03 малый темный кристалл силы
+#5294
+01 Малый темный кристалл энергии
+03 малый темный кристалл энергии
+#5295
+01 Малый темный кристалл стойкости
+03 малый темный кристалл стойкости
+#5296
+01 Малый темный кристалл отражения
+03 малый темный кристалл отражения
+#5297
+01 Средний темный кристалл силы
+03 средний темный кристалл силы
+#5298
+01 Средний темный кристалл энергии
+03 средний темный кристалл энергии
+#5299
+01 Средний темный кристалл стойкости
+03 средний темный кристалл стойкости
+#5300
+01 Средний темный кристалл отражения
+03 средний темный кристалл отражения
+#5301
+01 Большой темный кристалл силы
+03 большой темный кристалл силы
+#5302
+01 Большой темный кристалл энергии
+03 большой темный кристалл энергии
+#5303
+01 Большой темный кристалл стойкости
+03 большой темный кристалл стойкости
+#5304
+01 Великий кристалл силы
+03 великий кристалл силы
+#5305
+01 Великий кристалл энергии
+03 великий кристалл кристалл энергии
+#5306
+01 Великий кристалл кристалл стойкости
+03 великий кристалл стойкости
+#5307
+01 Великий кристалл отражения
+03 великий кристалл отражения
+#5308
+01 Большой темный кристалл отражения
+03 большой темный кристалл отражения

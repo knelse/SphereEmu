@@ -1,4 +1,4 @@
-public enum ObjectType
+public enum ObjectType : ushort
 {
     Despawn = 0,
     UpdateState = 2,

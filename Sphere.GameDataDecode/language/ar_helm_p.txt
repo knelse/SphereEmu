@@ -1,0 +1,80 @@
+01 Elmo de ferro
+03 elmo de ferro
+
+100 Proteje você contra armas inimigas durante uma batalha.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de saúde
+204 de meditação
+205 de precisão
+206 de éter
+207 de valor
+
+#262-273
+01 New Year Boné
+03 Boné
+#337
+01 Boné
+03 Boné
+#338
+01 Elmo de couro
+03 elmo de couro
+#339-340
+01 Elmo de couro reforçado
+03 elmo de couro reforçado
+#341-342
+01 Elmo de correntes reforçadas
+03 elmo de correntes reforçadas
+#343-345
+01 Elmo de ferro
+03 elmo de ferro
+#346-348
+01 Elmo de ferro ancestral
+03 elmo de ferro ancestral
+#3146-3147
+01 Boné
+03 Boné
+#3148-3149
+01 Elmo de couro
+03 elmo de couro
+#3150-3153
+01 Elmo de couro reforçado
+03 elmo de couro reforçado
+#3154-3157
+01 Elmo de correntes reforçadas
+03 elmo de correntes reforçadas
+#3158-3163
+01 Elmo de ferro
+03 elmo de ferro
+#3164-3170
+01 Elmo de ferro ancestral
+03 elmo de ferro ancestral
+#4480-4488
+01 Elmo de ferro ancestral
+03 elmo de ferro ancestral
+#4744
+01 Elmo preto
+03 elmo preto
+#4745
+01 Elmo branco
+03 elmo branco
+#5771
+01 Gorro de Inquisidor
+03 gorro de Inquisidor
+#5772
+01 Elmo de couro de Inquisidor
+03 elmo de Inquisidor
+#5773
+01 Elmo de rebites de Inquisidor
+03 elmo de Inquisidor
+#5774
+01 Elmo de malha de Inquisidor
+03 elmo de Inquisidor
+#5775
+01 Elmo de ferro de Inquisidor
+03 elmo de Inquisidor
+#5776
+01 Elmo antigo de Inquisidor
+03 elmo de Inquisidor

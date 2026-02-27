@@ -1,0 +1,10 @@
+01 Fornace alchemica
+03 Fornace alchemica
+11 Reazione impossibile:
+12 prana<%d
+13 terra<%d
+14 aria<%d
+15 acqua<%d
+16 fuoco<%d
+
+100 QUesta è una delle poche fornaci alchemiche sopravvissute fino al presente, fornace nella quale i primi maghi di Sphere bollirono pozioni e polveri.

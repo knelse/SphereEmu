@@ -1,0 +1,33 @@
+01 Laccio
+03 laccio
+
+10 Questo laccio unisce le orecchie di coloro che hanno un karma %s.
+11 Questo laccio unisce le orecchie dei membri della gilda degli Admin. //never comes
+12 Questo laccio unisce le orecchie dei membri del clan %s.
+
+50 Collezionati: %d pezzi.
+
+0900 Questo laccio unisce le orecchie dei membri della gilda degli Assassini.
+0901 Questo laccio unisce le orecchie dei membri della gilda dei Crociati.
+0902 Questo laccio unisce le orecchie dei membri della gilda degli Inquisitori.
+0903 Questo laccio unisce le orecchie dei membri della gilda dei Cacciatori.
+0904 Questo laccio unisce le orecchie dei membri della gilda degli Arcimaghi.
+0905 Questo laccio unisce le orecchie dei membri della gilda dei Barbari.
+0906 Questo laccio unisce le orecchie dei membri della gilda dei Druidi.
+0907 Questo laccio unisce le orecchie dei membri della gilda dei Ladri.
+0908 Questo laccio unisce le orecchie dei membri della gilda dei Mastri dell'Acciaio.
+0909 Questo laccio unisce le orecchie dei membri della gilda degli Armorieri.
+0910 Questo laccio unisce le orecchie dei membri della gilda dei Fabbri.
+0911 Questo laccio unisce le orecchie dei membri della gilda degli Stregoni.
+0912 Questo laccio unisce le orecchie dei membri della gilda dei Necromanti.
+0913 Questo laccio unisce le orecchie dei membri della gilda degli Alfieri.
+
+#90
+01 Laccio rosso per orecchie
+03 laccio rosso per orecchie
+#91
+01 Laccio verde per le orecchie
+03 laccio verde per le orecchie
+#92
+01 Laccio blu per le orecchie
+03 laccio blu per le orecchie

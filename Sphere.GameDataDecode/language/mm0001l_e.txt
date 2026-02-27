@@ -1,0 +1,38 @@
+10000 L
+
+10100 The path of a sorcerer is much more difficult than you think! Components for our formulas are much rarer than those used by Blacksmiths or Armorers. You'll make sure of it yourself if you want to rise higher than the first stage.
+10101 Here's a special formula. Find the article that it indicates and make it magical. %m1.
+
+10200 Some Sorcerers in lower stages of our guild think that weapons are more difficult to render special properties than armor. Before obtaining the third stage, you'll personally make sure it's different.
+10201 %z1, a terrible monster, is famous for its strong skin. Perhaps, if we had a part of its body, we could make especially strong armor. %m1.
+10202 It looks like %z1 has helped us a lot. The formula will be a success. But I assume we can't get by without some alchemical components. Take the list and bring them to me. %m1.
+10203 Well, here's a ready-made formula for excellent armor. Make it and the third stage is yours! %m1.
+
+10300 The fourth stage in the guild is only given to those who perform well in searching for alchemical laws and formulas. Right now I am working on a very complex formula and if you agree to help me in searching for some components, I'll help you to get the fourth stage.
+10301 There are special mushrooms growing in some dungeons. When the moon shines outside, they also shine deep underground. Find me one, e.g. in this dungeon. %m1.
+10302 You're making progress, %p1! But I need more components. %m2, a well-known merchant, is sure to have them. Unfortunately, he is mostly known for his blown-up prices. I am unlucky to have no money right now, so I'll write him a receipt. I can't figure out how you can persuade %m2 to accept it, but don't come back without the components. %m2.
+10303 I am not selling against receipts and that's all. Besides, this miser %m1 has written a receipt for an amount that is not even a half of the price of these components. To begin with, you can pay me the difference, 2 million thalers. I don't want even to discuss anything before that. %m2.
+10304 Okay, so be it, I'll take the receipt. But you'll have to do me a service. Many merchants have suffered because of the outrages of %z1, a terrible monster. Kill it and you'll get your components. %m2.
+10305 Although selling on credit is against my rules, a promise is a promice. Here is a packet with the alchemical components, bring it to %m1 and don't shake it while on your way. %m2.
+ 
+10400 Something strange has been on lately. Leaders of our guild disappear one after another. Admitting you to the fifth stage will have to be postponed until we know for sure what's up.
+10401 I've been able to learn the whereabouts of two of those who disappeared. One of the, %a1, is kept in a dungeon. Set him free! %m1.
+10402 Thank you, %p1! Unfortunately, I didn't recognize any one of the attackers, so I can't tell you anything about them. But one of them dropped this letter. Bring it to %m1, perhaps he'll be able to decipher it. %a1.
+10403 Hum, the cipher is unknown to me, but I'll try to find a clue to it. Meanwhile, you take up another one of those who disappeared. He is rumored to have been able to run away from a dungeon and he is currently wandering somewhere in forests. Show him to the nearest Teleport. %m1.
+10404 Yeah, %m1 dosen't even suspect about the plot of three guilds against us. I've learnt that Barbarians, Crusaders and Steel Masters have decided that we are to blame for rising prices for weapons. Taking my and %a1 hostage, they would demand that our guild bring the prices down. Fortunately, you've destroyed these plans. Now tell %m1 everything I've told you, I think he'll be interested. Give him my ring for him to believe you, here it is. %a2.
+10405 Well, Sorcerers are not among those who turns the left cheek after being slapped on the right one. Our blow won't be any weaker! Bring me 10 ears of Barbarians, 10 of Crusaders and 10 of Steel Masters. This will be a lesson to them.
+10406 I didn't think you retribution action will cause such a response. There are some diplomatic difficulties and you'll have to come to the Court of the Twelve Guilds for trial. Here are our documents in this case. I hope you'll be acquitted. You should give them to your lawyer, %m2. As soon as you are acquitted of the charges, you'll be admitted to the fifth stage our guild. %m1.
+10407 %p1, time has passed when the Court of the Twelve was strict and fair. Trust me, the best proof of your innocence is 2-3 million hard thalers! Bring them to me, I'll pass them to the right hands and the trial will be over in five minutes! %m2.
+
+10500 You'll soon be able to work with the most complex articles, turning them into magical ones. The sixth stage is already awaiting you. All you have to do is to destroy %z1, a sworn enemy of our guild. He mysteriously arises once in 1,000 yaers and every time our guild was able stop him. For some reason, there are no heroes except you this time.
+10501 By the way, there's a small trouble: he can't be killed with any weapon we know. We've tried everything, but the villain is still invulnerable. They say %m2, the oldest member of our guild, remembers some stories his great grandfather told him about how %z1 was destroyed last time. Find him and ask him about everthing! %m1.
+10502 Eh? What? I am very hard of hearing! Yeah, %z1! Unfortunately, I have a very poor memory. If you bring my notes from the basement, I may recollect what I heard once: %m2.
+10503 Here it is! This reads about a certain magical sword! It even gives components to improve a usual sword. Unfortunately, the formula is lost somewhere:I'll look for it, and you bring me the components. %m2.
+10504 What do you mean by "myself"? Don't forget that my experience is much greater than yours. I'll make this sword and no one else!.. Oh!.. Oops: Yeah, my hands don't obey me as before: Okay, here's the formula, make it yourself: Unfortunately, you'll have to search for the components once again. As soon as it's ready, bring the sword to %m1. %m2.
+10505 You're back! Fine, and where's the head of %z1? What? He's still alive? Do you know where he is? Do you really think I have nothing to do but carry out your assignment for you? Well, okay, I know one hunter, %m3, he'll help you find anyone for 2 million thalers. %m1.
+10506 Sure, I know where %z1 is, give me the money. There he is, hiding in that dungeon from your righteous wrath. %m3.
+10507 Ha ha: You've found my parcel! I am sorry to have had to resort to some cheating, but this parcel is really very important to me. Don't be mad at me, sorcerer, here, take back your 2 million. I'll tell you whom to address to really find %z1! %m3 is the one who really can help you! %m3.
+10508 Indeed, I master the magic of search, no cheating. It's all simple: you bring me alchemical components and 1 million thalers and I show you the whereabouts of the monster. %m3.
+10509 This is where %z1 currently is. Hurry up or he'll move somewhere else. %m3.
+
+121212 Test of LoadMsgGroup

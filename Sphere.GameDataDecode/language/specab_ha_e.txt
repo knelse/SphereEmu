@@ -1,0 +1,7 @@
+01 Thievery
+100 A profession-defining ability. An inexperienced pickpocket can reckon on just a couple of thalers, but legend has it there are such old foxes that can even pinch things from the bag of an absent-minded citizen. 
+
+1000 Thievery requires at least one vacant cell in the inventory.
+1001 You have stolen %s.
+1002 Theft fails.
+1003 You have stolen %d$.

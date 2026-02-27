@@ -1,0 +1,39 @@
+10000 L
+
+10100 La via di uno stregone è molto più difficoltosa di quanto tu possa pensare! I componenti per le nostre formule sono più rari di quelli necessari ai Fabbri o agli Armaioli. Devi essere consapevole di ciò se le tue mire vanno oltre il primo stadio.
+10101 Ecco qui una formula speciale. Trova gli oggetti che vi sono indicati e rendila magica. %m1.
+
+10200 Alcuni stregoni di basso rango all'interno della gilda, pensano che infondere abilità speciali alle armi sia più difficile che con le armature. Prima di ottenere il terzo stadio, assicuratene personalmente. 
+10201 %z1, un mostro terribile, è famoso per la resistenza della sua pelle. Forse, avendo una parte del suo corpo, riusciremmo a produrre una speciale armatura molto resistente. %m1.
+10202 Sembra proprio che %z1 ci abbia aiutato molto. La formula sarà un success. Ma avremo bisogno anche di alcuni componenti alchemici. Prendi la lista e portami i componenti. %m1.
+10203 Bene, ecco una formula pronta per un'eccellente armatura. Fai ciò che sai e il terzo stadio sarà tuo!. %m1.
+
+10300 Il quarto stadio della gilda è solo per chi è competente nelle leggi alchemiche e possiede ottima conoscenza delle formule. Giusto ora sto lavorando su una formula decisamente complessa e se accetterai di aiutarmi nella ricerca di alcuni componenti, ti aiuterò nel raggiungere il quarto stadio.
+10301 Esistono particolari funghi che crescono in alcuni sotterranei. Quando la luna brilla nel cielo, risplende anche nelle profondità sotterranee. Trovamene uno, puoi cercalo in questo sotterraneo. %m1.
+10302 Stai facendo progressi %p1! Ma ho bisogno di altri componenti. %m2, un ben conosciuto mercante, è sicuro di possederli. Sfortunatamente è conosciuto anche per i suoi prezzi decisamente troppo cari a volte. E purtroppo al momento non sono in possesso di denaro, per questo gli scriverò una ricevuta. Non ho idea di come tu possa persuaderlo ad accettarla, ma non tornare indietro senza i componenti. %m2.
+10303 Io non vendo nulla se devo essere pagato con una ricevuta! E se vogliamo dirla tutta, questo avaro di %m1 ha scritto una ricevuta che non copre nemmeno la metà del prezzo dei componenti che mi richiede. Giusto per iniziare, puoi pagarmi tu la differenza, 2 milioni di talleri. Non abbiamo altro da dirci noi due. %m2.
+10304 E sia, prenderò la ricevuta. Ma tu dovrai fare qualcosa per me. Molti mercanti hanno sofferto a causa della violenza di %z1, un mostro terrificante. Uccidilo e avrai i componenti. %m2.
+10305 Nonostante vendere a credito sia contro le mie regole, una promessa resta pur sempre una promessa. Eccoti il pacco con i componenti alchemici che mi avevi richiesto, portali a %m1 e stai molto attento a non agitarli nel tragitto di ritorno. %m2.
+
+10400 Qualcosa di strano è avvenuto ultimamente. I capi della nostra gilda sono scomparsi... uno dopo l'altro. La tua ammissione al quinto stadio è di secondaria importanza al momento, almeno finchè non sapremo di per certo cosa sia accaduto.
+10401 Sono riuscito a scoprire il luogo dove due di loro sono scomparsi. Uno di loro, %a1, è prigioniero in un sotterraneo. Liberalo! %m1.
+10402 Grazie %p1! Purtroppo non ricordo nulla degli aggressori, quindi non potrò esserti d'aiuto per scoprire chi essi siano. Ma a uno di loro è caduta questa lettera. Portala a %m1 forse lui riuscirà a decifrarla. %a1.
+10403 Uhm, conosco il codice, ma sto cercando di carpire che indizi possa darci. Nel mentre cerca di recuperare un altro degli scomparsi. Pare che sia riuscito a fuggire dal sotterraneo dove era imprigionato e stia vagando da qualche parte nella foresta.  Vai e mostragli il teletrasporto più vicino. %m1.
+10404 Sì, %m1 non sospetta ancora nulla riguardo al complotto delle tre gilde contro di noi. Ho saputo che i Barbari, i Crociati e i Maestri dell'Acciaio hanno deciso che siamo noi i colpevoli dell'aumento dei prezzi delle armi. Prendendo me e %a1, volevano ricattare la gilda imponendo una diminuzione dei prezzi. Ma fortunatamente grazie al tuo aiuto i loro piani sono andati distrutti. Ora vai e riferisci ogni cosa a %m1, credo proprio che ne sarà molto interessato. Ecco, prendi il mio anello, sarà la prova che quello che dici corrisponde a verità. %a2.
+10405 E sia, gli Stregoni non saranno più coloro che porgono la guancia sinistra se schiaffeggiati sulla destra. Da ora i nostri colpi faranno male! Portami 10 orecchie di Barbari, 10 di Crociati e 10 di  Maestri dell'Acciaio. Questa deve essere una lezione per loro.
+10406 Non avrei mai pensato che la tua azione punitiva portasse ad una tale reazione. Ci sono alcune difficoltà diplomatiche e sei stato richiesto alla Corte delle Dodici Gilde per un processo. Qui ci sono i nostri documenti a riguardo. Spero tu venga assolto. Consegnali al tuo avvocato, %m2. Quando sarai prosciolto dalle accuse, sarai anche ammesso al quinto stadio della nostra gilda. %m1.
+10407 %p1, è passato il tempo in cui la Corte dei Dodici era giusta e imparziale. Credimi se ti dico che la migliore prova della tua innocenza sono 2-3 milioni di talleri! Portameli, io li passerò nelle giuste mani e l'accusa cadrà in meno di cinque minuti! %m2.
+
+10500 Tra non molto sarai in grado di lavorare con i più complessi oggetti, trasformandoli in preziosi oggetti magici. Il sesto stadio ti attende. Tutto ciò che ti resta da fare è uccidere %z1, un acerrimo nemico della nostra gilda. Non sappiamo come, ma ogni 1000 anni risorge e ogni volta la nostra gilda è riuscito a fermarlo. Per ragioni che mi sfuggono, non ci sono eroi in questo periodo, ad eccezione tua.
+10501 Purtroppo c'è un piccolo problema: non può essere ucciso da nessuna delle armi di nostra conoscenza. Abbiamo provato di tutto, ma il malvagio è tutt'ora invulnerabile. Si dice che %m2, il più anziano membro della nostra gilda, ricordi delle storie che suo nonno gli raccontò riguardo all'ultima distruzione di %z1. Trovalo e chiedigli di raccontarti quanto più possibile. %m1.
+10502 Eh? Cosa? Non sento molto bene! Sì, %z1! Mio malgrado, ho una pessima memoria... Se mi recuperi  gli appunti che si trovano nel seminterrato, forse riuscirò a ricordare qualcosa: %m2.
+10503 Eccoli! Qui c'è scritto qualcosa riguardante una spada magica! Inoltre sono segnati dei componenti per infondere potere ad una normale spada. Ma la formula è persa chissà dove: la cercherò, intanto vai a prendere gli ingredienti. %m2.
+10504 Cosa intendi dire con "faccio da solo"? Non dimenticarti che la mia esperienza è molto maggiore della tua. Io farò questa spada, e nessun altro!.. Oh!.. Oops... Dannazione, le mie mani non mi ubbidiscono più come un tempo. Va bene, eccotila formula, falla da te. Purtroppo dovrai cercare nuovamente i componenti... Non appena sarà pronta, porta la spada a %m1. %m2.
+10505 Sei tornato! Bene, e dov'è la testa di %z1? Cosa? E' ancora vivo? Tu sai dove si trova? Credi davvero io non abbia niente di meglio che portare a termine il tuo compito? Bene, e sia, conosco un cacciatore di nome %m3, lui ti aiuterà a ritrovare chiunque per 2 milioni di talleri. %m1.
+10506 Certo, i so dove %z1 sta, dammi i soldi. Ecco, è nascosto in quel sotterraneo, si nasconde dalla tua collera. %m3.
+10507 Ah ah ah! Hai trovato il mio pacco! Sono spiacente per aver dovuto ricorrere all'inganno, ma questo pacchetto ha un'enorme importanza per me. Non volermene stregone, eccoti i tuoi 2 milioni di talleri. Ti dirò chi davvero potrà aiutarti a trovare %z1. %m3 è colui che può dirti qualcosa. %m3.
+10508 Indubbiamente, sono un maestro nella magia della ricerca, non sto scherzando. E' tutto molto semplice: tu mi porti i componenti alchemici e 1 milione di talleri e io ti mostrerò dove il mostro si trova. %m3.
+10509 Questo è il luogo dove %z1 si trova. Muoviti o si sposterà da qualche altra parte. %m3.
+
+
+121212 Test of LoadMsgGroup

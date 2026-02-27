@@ -1,0 +1,178 @@
+01 Chainmail
+03 Chainmail
+05 new
+06 used
+07 rusted
+
+100 Protects from enemy weapons in battle.
+
+200 of valor
+201 of durability
+202 of absorption
+203 of deflection
+204 of safety
+205 of invulnerability
+206 of health
+207 of life
+208 of meditation
+209 of prana
+210 of power
+211 of dexterity
+212 of greatness
+213 of concentration
+214 of earth
+215 of water
+216 of air
+217 of fire
+218 of elements
+219 of value
+220 of power
+221 of dexterity
+222 of greatness
+223 of concentration
+224 of integrity
+
+#301
+01 jacket
+03 jacket
+#302
+01 leather armor
+03 leather armor
+#303-304
+01 riveted leather armor
+03 riveted leather armor
+#305-306
+01 chainmail
+03 chainmail
+#307-309
+01 breastplate
+03 breastplate
+#310-312
+01 ancient armor
+03 ancient armor
+#3001-3004
+01 jacket
+03 jacket
+#3005-3009
+01 leather armor
+03 leather armor
+#3010-3019
+01 riveted leather armor
+03 riveted leather armor
+#3020-3029
+01 chainmail
+03 chainmail
+#3030-3044
+01 breastplate
+03 breastplate
+#3045-3060
+01 ancient armor
+03 ancient armor
+#4453-4461
+01 breastplate
+03 breastplate
+#4740
+01 Great Black Cuirass
+03 Great Black Cuirass
+#4741
+01 Great White Cuirass
+03 Great White Cuirass
+#4750
+01 Great Black Cuirass
+03 Great Black Cuirass
+#4751
+01 Great White Cuirass
+03 Great White Cuirass
+#5586
+01 Jacket of villain
+03 jacket of villain
+#5587
+01 Leather jacket of villain
+03 jacket of villain
+#5588
+01 Riveted jacket of villain
+03 jacket of villain
+#5589
+01 Chainmail of villain
+03 chainmail of villain
+#5590
+01 Breastplate of villain
+03 breastplate of villain
+#5591
+01 Armor of villain
+03 armor of villain
+#5677
+01 Jacket of radiance
+03 jacket of radiance
+#5678
+01 Leather jacket of radiance
+03 jacket of radiance
+#5679
+01 Riveted jacket of radiance
+03 jacket of radiance
+#5680
+01 Chainmail of radiance
+03 chainmail of radiance
+#5681
+01 Breastplate of radiance
+03 breastplate of radiance
+#5682
+01 Armor of radiance
+03 armor of radiance
+#5865
+01 Jacket of secrecy
+03 jacket of secrecy
+#5866
+01 Leather jacket of secrecy
+03 jacket of secrecy
+#5867
+01 Riveted jacket of secrecy
+03 jacket of secrecy
+#5868
+01 Chainmail of secrecy
+03 chainmail of secrecy
+#5869
+01 Breastplate of secrecy
+03 breastplate of secrecy
+#5870
+01 Armor of secrecy
+03 armor of secrecy
+#6083
+01 Jacket of Titan
+03 jacket of Titan
+#6084
+01 Leather jacket of Titan
+03 jacket of Titan
+#6085
+01 Riveted jacket of Titan
+03 jacket of Titan
+#6086
+01 Chainmail of Titan
+03 chainmail of Titan
+#6087
+01 Breastplate of Titan
+03 breastplate of Titan
+#6088
+01 Armor of Titan
+03 armor of Titan
+#6551
+01 Heavy armor of Caliester
+03 heavy armor of Caliester
+#6868
+01 Jacket of reliability
+03 jacket of reliability
+#6869
+01 Leather jacket of reliability
+03 jacket of reliability
+#6870
+01 Riveted jacket of reliability
+03 jacket of reliability
+#6871
+01 Chainmail of reliability
+03 chainmail of reliability
+#6872
+01 Breastplate of reliability
+03 breastplate of reliability
+#6873
+01 Armor of reliability
+03 armor of reliability

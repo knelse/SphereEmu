@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectPacketTools", "..\Obj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereHelpers", "..\SphereHelpers\SphereHelpers.csproj", "{5E3B7F70-99EE-4354-A716-C91770A2AAAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphObjectDb", "..\SphObjectDb\SphObjectDb.csproj", "{E05B2EA5-51B6-4B9A-9DA0-EAFB526A1DC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphEntities", "..\SphEntities\SphEntities.csproj", "{965D10F0-D36C-41B5-9792-AB60EDCFF625}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{5E3B7F70-99EE-4354-A716-C91770A2AAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E3B7F70-99EE-4354-A716-C91770A2AAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E3B7F70-99EE-4354-A716-C91770A2AAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E05B2EA5-51B6-4B9A-9DA0-EAFB526A1DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05B2EA5-51B6-4B9A-9DA0-EAFB526A1DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E05B2EA5-51B6-4B9A-9DA0-EAFB526A1DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E05B2EA5-51B6-4B9A-9DA0-EAFB526A1DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965D10F0-D36C-41B5-9792-AB60EDCFF625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965D10F0-D36C-41B5-9792-AB60EDCFF625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965D10F0-D36C-41B5-9792-AB60EDCFF625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965D10F0-D36C-41B5-9792-AB60EDCFF625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,8 @@
+01 Fórmula
+02 fórmula
+03 fórmula
+
+100 Fórmula da organização de encantadores
+10000 Esta fórmula (se aplicada por um encantador num estágio superior a %z1) restitui uma das propriedades mágicas seguintes : necessário ter reação 11 %l1 Reação requer %a1.
+10001 Esta fórmula (se aplicada por um encantador num estágio superior a %z1) restitui uma das propriedades mágicas seguintes : necessário ter reação 11 %l1 Reação requer %a1 e %a2.
+10002 Esta fórmula (se aplicada por um encantador num estágio superior a %z1) restitui uma das propriedades mágicas seguintes : necessário ter reação 11 %l1 Reação requer %a1, %a2 e %a3.

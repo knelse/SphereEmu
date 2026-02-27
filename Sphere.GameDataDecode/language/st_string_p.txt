@@ -1,0 +1,33 @@
+01 Cordão
+03 cordão
+
+10 Este cordão segura as orelhas de quem o karma era %s.
+11 Este cordão segura as orelhas de administradores das organizações. //nunca vem.
+12 Este cordão segura as orelhas dos membros do clã %s.
+
+50 Coletados: %d peças.
+
+0900 Este cordão segura as orelhas de membros da organização dos assassinos.
+0901 Este cordão segura as orelhas de membros da organização dos cruzados.
+0902 Este cordão segura as orelhas de membros da organização dos inquisidores.
+0903 Este cordão segura as orelhas de membros da organização dos caçadores.
+0904 Este cordão segura as orelhas de membros da organização dos mágicos.
+0905 Este cordão segura as orelhas de membros da organização dos bárbaros.
+0906 Este cordão segura as orelhas de membros da organização dos druidas.
+0907 Este cordão segura as orelhas de membros da organização dos ladrões.
+0908 Este cordão segura as orelhas de membros da organização dos mestres do aço.
+0909 Este cordão segura as orelhas de membros da organização dos armeiros.
+0910 Este cordão segura as orelhas de membros da organização dos ferreiros.
+0911 Este cordão segura as orelhas de membros da organização dos encantadores.
+0912 Este cordão segura as orelhas de membros da organização dos necromantes.
+0913 Este cordão segura as orelhas de membros da organização dos bandidos.
+
+#90
+01 Cordão vermelho para orelhas
+03 cordão vermelho para orelhas
+#91
+01 Cordão verde para orelhas
+03 cordão verde para orelhas
+#92
+01 Cordão azul para orelhas
+03 cordão azul para orelhas

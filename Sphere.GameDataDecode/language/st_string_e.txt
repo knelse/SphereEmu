@@ -1,0 +1,33 @@
+01 String
+03 string
+
+10 This string ties the ears of those whose karma was %s.
+11 This string ties the ears of Admins guild members. //never comes
+12 This string ties the ears of %s clan members.
+
+50 Collected: %d pieces.
+
+0900 This string ties the ears of Assassins guild members.
+0901 This string ties the ears of Crusaders guild members.
+0902 This string ties the ears of Inquisitors guild members.
+0903 This string ties the ears of Hunters guild members.
+0904 This string ties the ears of Archimagicians guild members.
+0905 This string ties the ears of Barbarians guild members.
+0906 This string ties the ears of Druids guild members.
+0907 This string ties the ears of Thieves guild members.
+0908 This string ties the ears of Steel Masters guild members.
+0909 This string ties the ears of Armorers guild members.
+0910 This string ties the ears of Blacksmiths guild members.
+0911 This string ties the ears of Sorcerers guild members.
+0912 This string ties the ears of Necromancers guild members.
+0913 This string ties the ears of Bandiers guild members.
+
+#90
+01 Red string for ears
+03 red string for ears 
+#91
+01 Green string for ears
+03 green string for ears
+#92
+01 Blue string for ears
+03 blue string for ears

@@ -1,0 +1,9 @@
+01 Fórmula
+02 fórmula
+03 fórmula
+
+100 Fórmula da organização de armeiros 
+
+10000 Usando esta fórmula você pode ter %r1. Isto requer %a1, e o aprendizado na organização dos armeiros deve ser de pelo menos %z1.
+10001 Usando esta fórmula você pode ter %r1. Isto requer %a1 e %a2, e o aprendizado na organização dos armeiros deve ser de pelo menos %z1.
+10002 Usando esta fórmula você pode ter %r1. Isto requer %a1, %a2 e %a3, ae o aprendizado na organização dos armeiros deve ser de pelo menos %z1.

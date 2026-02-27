@@ -1,0 +1,89 @@
+1000 Castle just seized (no taxes)
+1001 Land tax: %d$
+1002 Land tax paid.
+1003 Gate tax: %d$
+1004 Gate tax paid.
+1005 Tablet tax: %d$
+1006 Tablet tax paid.
+1007 Dungeon tax: %d$
+1008 Dungeon tax paid.
+
+8000 Scroll of Castle Liege
+8200 Gates of Castle Liege
+8001 Scroll of Castle Feoff
+8201 Gates of Castle Feoff
+8002 Scroll of Castle Aris
+8202 Gates of Castle Aris
+8003 Scroll of Castle Latour
+8203 Gates of Castle Latour
+8004 Scroll of Castle Eikum-Cas
+8204 Gates of Castle Eikum-Cas
+8005 Scroll of Castle Gideon
+8205 Gates of Castle Gideon
+8006 Scroll of Castle Chatelie
+8206 Gates of Castle Chatelie
+8007 Scroll of Castle Tyanod
+8207 Gates of Castle Tyanod
+8008 Scroll of Castle Peltier
+8208 Gates of Castle Peltier
+8009 Scroll of Castle Kare-Royal
+8209 Gates of Castle Kare-Royal
+8010 Scroll of Castle Blessendour
+8210 Gates of Castle Blessendour
+8011 Scroll of Castle Ternoval
+8211 Gates of Castle Ternoval
+8012 Scroll of Castle Ammalaelle
+8212 Gates of Castle Ammalaelle
+8013 Scroll of Castle Cablac
+8213 Gates of Castle Cablac
+8014 Scroll of Castle Devanagary
+8214 Gates of Castle Devanagary
+8015 Scroll of Castle Sabulat
+8215 Gates of Castle Sabulat
+8016 Scroll of Castle Diffensat
+8216 Gates of Castle Diffensat
+8017 Scroll of Castle Ionat
+8217 Gates of Castle Ionat
+8018 Scroll of Castle Triumphaler
+8218 Gates of Castle Triumphaler
+
+8019 Scroll of Castle Bagarnak
+8219 Gates of Castle Bagarnak
+8020 Scroll of Castle Kabrad
+8220 Gates of Castle Kabrad
+8021 Scroll of Castle Set
+8221 Gates of Castle Set
+8022 Scroll of castle Lender
+8222 Gates of castle Lender
+8023 Scroll of castle Keles
+8223 Gates of castle Keles
+8024 Scroll of Castle Sheprostan
+8224 Gates of Castle Sheprostan
+8025 Scroll of Castle Orkobien
+8225 Gates of Castle Orkobien
+8026 Scroll of Castle Kanuak
+8226 Gates of Castle Kanuak
+8027 Scroll of Castle Aldarnon
+8227 Gates of Castle Aldarnon
+8028 Scroll of Castle Iong
+8228 Gates of Castle Iong
+8029 Scroll of Castle Elek
+8229 Gates of Castle Elek
+8030 Scroll of Castle Gavot
+8230 Gates of Castle Gavot
+8031 Scroll of Castle Kandur
+8231 Gates of Castle Kandur
+
+8032 Scroll of Immertel Castle
+8232 Gates of Immertel Castle
+8033 Scroll of Narcissus Castle
+8233 Gates of Narcissus Castle
+8034 Scroll of Randen Castle
+8234 Gates of Randen Castle
+8035 Scroll of Nirgun Castle
+8235 Gates of Nirgun Castle
+8036 Scroll of Gelgivinn Castle
+8236 Gates of Gelgivinn Castle
+1090 Собрано налогов: %d$
+1091 Снять
+8090 Скрижаль города Анхельм

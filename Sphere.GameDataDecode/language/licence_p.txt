@@ -1,0 +1,22 @@
+01 Licença de comércio
+03 Licença de comércio 
+05 A licença só poderá ser usada na área de comércio.
+10 Validade: 12 horas
+11 Validade: 1 dia
+12 Validade: 1,5 dias
+13 Validade: 2 dias
+14 Validade: 2,5 dias
+15 Validade: 3 dias
+16 Validade: 3,5 dias
+17 Validade: 4 dias
+18 Validade: 4,5 dias
+19 Validade: 5 dias
+20 Validade: 5,5 dias
+21 Validade: 6 dias
+23 Validade: 7 dias
+25 Validade: 8 dias
+27 Validade: 9 dias
+29 Validade: 10 dias
+31 Validade: 11 dias
+33 Validade: 12 dias
+100 Se durante utilização da licença você sair da Sphere, o jogador continuará comercializando pelo tempo restante no calendário Sphere. A licença só poderá ser usada na área de comércio.

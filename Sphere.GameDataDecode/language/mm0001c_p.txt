@@ -1,0 +1,39 @@
+10000 C
+
+10100 Talvez você mereça o segundo estágio em nossa organização. Mas eu não sou o único que toma esta decisão, então converse com %m2, ele que toma decisão sobre os novatos aqui.
+10101 Vá até %m2 e lhe dê minha carta. Se ele não se opor, você será aceito no segundo estágio da organização de inquisidores. %m1.
+
+10200 Julgamento justo para criminosos - essa é nossa doutrina. Deve dar aos rufiões o que eles merecem. Ganhará o terceiro estácio apenas se obtiver sucesso.
+10201 Acabe com o mal em qualquer lugar, %p1! Há criminosos de mais vagando pela vizinhança. Nos entregue pelomenos dez deles. Também tenho uma tarefa especial. Druidas não andam obedecendo as leis de Sphere ultimamente. Fazem assentamentos nas florestas fazendo suas próprias leis. Não pode ficar assim, devemos punir druidas e o clã que os ajudou. %m1.
+10202 O que você fez foi retribuição, %p1, não assassinato! porém, nossos inimigos procuram falhas no nosso trabalho sempre, por isso tudo que aconteceu deve ser arquivado e aprovado pela Supervisão Real. Você deve ir até a masmorra onde nosso arquivo está guardado e trazê-lo aqui. %m1.
+10203 Nossos companheiros caçadores nos ajudam a lutar contra o mal na forma de animal. Infelizmente eles nem sempre chegam a tempo. Um monstro horrível apareceu nos arredores, seu nome é %z1. Destrua-o antes que seja tarde. Traga-me sua cabeça e o terceiro estágio na organização será seu.
+
+10300 Sendo o Chanceler deste distrito, estou muito ocupado e não posso ajudar. A passagem para o quarto estágio é muito árdua. Se me ajudar com alguns afazeres,talves eu tenha tempo para fazer algo por você.
+10301 Agora preciso tomar uma decisão problemática. Infezlimente, nenhum dos lados diz algo. O princípio do inquisidor é julgamento justo, você precisa descobrir, o que acusado e acusador têm em mente. Para começar devemos interrogar %a1. Ele está escondido da justiça numa masmorra aqui perto guardada por monstros. Tire-o dali. %m1.
+10302 O que? Não vou para a corte! Se os acusadores me virem me matarão imediatamente! Aqui, pegue a evidência e leve para %m1, e eu me esconderei enquanto estou vivo. %a1.
+10303 Excelente! Agora eu sei mais sobre a acusação, o acusado não parece ser responsável. Devemos tirá-lo de lá de qualquer maneira. Parece que a acusação de roubo é falsa. Eu vou detê-lo e você leve a carta com a letra dele, ela diz que você é seu amigo e é confiável. Leve a carta para a esposa do acusado, %m3, e pergunte sobre o caso. Sim, é errado falsificar uma carta, mas seria pior duvidar de sua inocência. %m1.
+10304 Meu marido isse que você é confiável - isso é bom. Também diz que o caso está quase ganho, é hora de tirar as coisas supostamente roubadas do porão. Ajude-me a fazer, tenhop medo por causa dos espíritos malígnos. %m3.
+10305 Excelente, %p1! Agora farei uma decisão justa. Suponho que já possa enxergar as mentiras dos criminosos e está pronto para buscar a Verdade. O quarto estágio da organização é de seu merecimento! Mas primeiro um teste - traga-me 10 orelhas de criminosos. %m1.
+      
+10400 É chegada a hora de lhe dar uma tarefa difícil. A bruxa %m2, que cometeu muitos atos impuros, será punida finalmente. Se conseguir fazer o melhor, receberá o quinto estágio da organização.
+10401 Não é justo chegar nela sem uma devida preparação, ou então ela escapará como sempre fez antes. Para começar, encontre algemas mágicas que podem prendê-la. Vá até a nossa organização de ferreiros, seu nome é %m3, ele pode ajudá-lo. Entregue para ele este bilhete que escrevi. %m1.
+10402 Sim, Tenho algo que serve para você. Infelizmente, as algemas são mantidas no armazém da organização, então você terá que ir até lá. Uma vez encontradas , traga para mim que vou adicionar algumas propriedades mágicas nela, especialmente contra %m2. %m3.
+10403 Não gosto de mantras, Eu prefiro uma boa velha alquimia. Para finalizar com as algemas, Eu necessito alguns ingredientes. Eu darei para você a lista. %m3.
+10404 As algemas estão prontas, %p1! Leve para %m1 então ele vai abençoar em nome de Weaver! %m3.
+10405 No momento %m2 esta presa, tudo deve estar pronto. Eu recomendo que você apanhe gravetos para o fogo antecipadamente, para não perder tempo nisso depois. %m1.
+10406 Bom, Tudo esta pronto para consolidar o fato! Vá para %m2 e prenda ela. O quinto estágio será seu após isto ocorrer. %m1.
+10407 Pela lei, Eu tenho direito de proteção. Eu tenho o mandado escrito pelo Duque de Tantal assinado por ele mesmo! Traga para cá %m1.
+
+10500 Você foi perfeito na organização. Pela captura da ultima bruxa que nunca conseguimos queimar, seu registro é perfeito. Você provavelmente merece o sexto estágio na organização, mas antes que você seja promovido, você terá que fazer um serviço. 
+10501 O alto conselho e eu queremos que você encontre o anel do lobo para nós. Este antigo artefato permite você se transformar em um lobo. Em certas oportunidades, nós poderemos penetrar em reuniões de lobos e outros bichos, que sem duvida alguma nos ajudaria. O responsável por esta operação é %m2, vá até ele. Quanto antes você pegar a recomendação dele, mais cedo você será promovido. %m1.
+10502 Oi, %p1! Eu espero que sua perícia seja suficiente, já que enfrentaremos uma difícil tarefa. O anel do lobo não pertence mais as pessoas, o famoso rei lobo %z1 matou o mágico que tinha o anel muitos anos atrás e pegou para ele. %z1 é muito cauteloso, ninguém sabe onde ele está escondido. Teremos que atrair ele da floresta com um assunto que desperte atenção especial nele. você terá que matar todos lobos que encontrar. Eu acredito que centenas de motivos o fariam sair de seu esconderijo. Não perca os rabos dos lobos, estamos precisando deles no momento, traga-os para mim. %m2.
+10503 Alguns caçadores de aluguel medisseram que sua atividades tem sido boas: %z1 foi avistado nas matas não muito longe daqui. Esta floresta está correntemente sendo observada por nossos espiões, então %z1 não escapará. Ele não morre tão facilmente, por outro lado talvez outra pessoa esteja com o anel no momento. %z1 está protegido por uma poderosa magia e somente uma arma especial poderá penetrar em sua proteção. Os mágicos que conhecem que tipo de arma é essa, pedem 1 milhão de thalers pelo segredo. Se quisermos pegar o anel, teremos que pagar. %m2.
+10504 Os mágicos divulgaram o local onde se encontra a arma que destruirá %z1. É numa masmorra, cheia de monstros, então tenha cuidado. Pegue a arma e volte aqui. %m2.
+10505 Uma arma superior, %p1! Infelizmente, ficou no subsolo muito tempo. Tem que ser reformada agora, assim como suas propriedades mágicas também devem ser renovadas. Felizmente, Eu sou familiarizado com esta magia, então vou arruma-la rapidamente se me trouxer alguns ingredientes. %m2.
+10506 Tudo está pronto para a batalha. Os caçadores localizaram com precisão %z1. Vá até lá e traga o anel do lobo. %m2.
+10507 A-a-a: Eu estou morrendo por causa do a-a-anel, mas não pense que vai pega-lo facilmente. Ele está escondido. Esta em mãos seguras, as mãos de um humano: %a1. Nunca vai encontrá-lo, mas se achar, você nunca conversará com ele, porque ele usa o anel. E está perdido na floresta onde eu deixei ele, e ele nunca vai encontrar o caminho de volta, pelo menos para o portal de teleporte: Adeus, inquisidor. você nunca encontrará o anel do lobo! %z1.
+10508 Obrigado, %p1! Eu perdi as esperanças de um dia sair dessa floresta novamente. Pegue este anel, Usei ele muito mais do que eu gostaria. Eu acho que seu chefe %m2 ficará muito feliz em vê-lo novamente. %a1.
+10509 você agiu perfeitamente, %p1! Darei para você a melhor recomendação para %m1! você realmente é um verdadeiro grande inquisidor e tenho certeza que o sexto estágio será utilizado por você com grande sabedoria e presteza para grande glória de Weaver! %m2.
+
+121212 Teste de LoadMsgGroup
+

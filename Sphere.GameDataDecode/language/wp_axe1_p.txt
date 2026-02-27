@@ -1,0 +1,299 @@
+01 machado
+03 machado
+
+100 Uma notável arma. Explosão pesada mas lenta.
+
+200 de exaustão
+201 de valor
+202 de dano
+203 de crueldade
+204 de investida
+205 de velocidade
+206 de desordem
+207 de caos
+208 de éter
+209 de fadiga
+210 de doença
+211 de instabilidade
+212 de extensão
+213 de distancia
+214 de deterioração
+215 de devastação
+216 de fraqueza
+217 de penetração
+218 de proibição
+219 de valor
+
+#101
+01 machado
+03 machado
+#102
+01 machado grande
+03 machado grande
+#103
+01 machado de batalha
+03 machado de batalha
+#104
+01 machado de infantaria
+03 machado de infantaria
+#105
+01 Frances
+03 Frances
+#106
+01 machado de cabo
+03 machado de cabo
+#107
+01 Tabar
+03 Tabar
+#108
+01 machado de elite grande
+03 machado de elite grande
+#109
+01 Machado de batalha de elite
+03 Machado de batalha de elite
+#110
+01 Frances de elite
+03 frances de elite
+#111
+01 Machado de cabo de elite
+03 machado de cabo de elite
+#112
+01 Machado rúnico grande
+03 machado rúnico grande
+#113
+01 Machado rúnico de batalha
+03 machado rúnico de batalha
+#114
+01 Frances rúnico
+03 frances rúnico
+#115
+01 Machado rúnico de cabo
+03 machado rúnico de cabo
+#116
+01 Porrete
+03 porrete
+#117
+01 clava
+03 clava
+#118
+01 cacetete
+03 cacetete
+#119
+01 martelo
+03 martelo
+#120
+01 martelo de guerra
+03 martelo de guerra 
+#121
+01 estrela da manhã
+03 estrela da manhã
+#122
+01 martelo de ferreiro
+03 martelo de ferreiro
+#123
+01 clava de elite
+03 clava de elite
+#124
+01 cacetete de elite
+03 cacetete de elite
+#125
+01 martelo de guerra de elite
+03 martelo de guerra de elite 
+#126
+01 estrela da manha de elite
+03 estrela da manha de elite
+#127
+01 clava rúnica
+03 clava rúnica 
+#128
+01 cassetete rúnico
+03 cassetete rúnico
+#129
+01 martelo de guerra rúnico
+03 martelo de guerra rúnico
+#3501-3502
+01 machado
+03 machado
+#3503-3504
+01 machado grande
+03 machado grande
+#3505-3507
+01 machado de batalha
+03 machado de batalha
+#3508-3509
+01 machado de infantaria
+03 machado de infantaria
+#3510-3512
+01 frances
+03 frances
+#3513-3514
+01 machado de cabo
+03 machado de cabo
+#3515-3519
+01 Tabar
+03 Tabar
+#3520-3524
+01 machado de elite grande
+03 machado de elite grande
+#3525-3529
+01 Machado de batalha de elite
+03 Machado de batalha de elite
+#3530-3534
+01 Frances de elite
+03 Frances de elite
+#3535-3539
+01 Machado de cabo de elite
+03 Machado de cabo de elite
+#3540-3544
+01 Machado rúnico grande
+03 Machado rúnico grande
+#3545-3549
+01 Machado rúnico de batalha
+03 Machado rúnico de batalha
+#3550-3554
+01 Frances rúnico
+03 Frances rúnico
+#3555-3560
+01 Machado rúnico de cabo
+03 Machado rúnico de cabo
+#3561-3562
+01 porrete
+03 porrete
+#3563-3564
+01 clava
+03 clava
+#3565-3567
+01 cacetete
+03 cacetete
+#3568-3569
+01 martelo
+03 martelo
+#3570-3572
+01 martelo de guerra
+03 martelo de guerra
+#3573-3574
+01 estrela da manhã
+03 estrela da manhã
+#3575-3579
+01 martelo de ferreiro
+03 martelo de ferreiro
+#3580-3584
+01 clava de elite
+03 clava de elite
+#3585-3589
+01 cacetete de elite
+03 cacetete de elite
+#3590-3594
+01 martelo de guerra de elite
+03 martelo de guerra de elite
+#3595-3599
+01 estrela da manhã de elite
+03 estrela da manhã de elite
+#3600-3604
+01 clava rúnica
+03 clava rúnica
+#3605-3609
+01 cassetete rúnico
+03 cassetete rúnico
+#3610-3614
+01 martelo de guerra rúnico
+03 martelo de guerra rúnico
+#3615-3620
+01 estrela da manhã rúnica
+03 estrela da manhã rúnica
+#3621
+01 cajado mestre
+03 Cajado mestre
+#3622-3624
+01 machado lendário
+03 machado lendário
+#3625-3627
+01 machado eerie
+03 machado eerie
+#3628-3630
+01 machado de dragão
+03 machado de dragão
+#3631-3633
+01 martelo lendário
+03 martelo lendário
+#3634-3636
+01 martelo eerie
+03 martelo eerie
+#3637-3639
+01 martelo de dragão
+03 martelo de dragão
+#5750
+01 Cajado de inquisidor 
+03 cajado de inquisidor 
+#5751
+01 Cajado grande de inquisidor
+03 cajado grande de inquisidor 
+#5950
+01 Cajado de Orko
+03 cajado de Orko
+#5951
+01 Cajado de arqueiro
+03 cajado de arqueiro
+#5952
+01 Pequeno cajado do Arquimagus
+01 Cajado de mágico
+#5953
+01 Cajado dos elementos
+03 cajado dos elementos
+#5965
+01 Pequeno cajado do Arquimagus
+03 cajado of Archimagus
+#5966-5968
+01 Cajado do Arquimagus
+03 cajado do Arquimagus
+#5969
+01 Cajado grande do Arquimagus
+03 cajado do Arquimagus
+#5970
+01 Great staff of Archimagician
+03 cajado do Arquimagus
+#6065-6070
+01 Martelo de trovão
+03 martelo de trovão
+#6183
+01 Cajado pequeno da recuperação
+03 cajado da recuperação
+#6184-6185
+01 Cajado médio da recuperação
+03 cajado da recuperação
+#6186-6187
+01 Cajado grande da recuperação
+03 cajado da recuperação
+#6188
+01 Grão cajado da recuperação
+03 cajado da recuperação
+#6365-6368
+01 Labris
+03 labris
+#6369
+01 Labris de aço
+03 labris
+#6370
+01 Grão Labris
+03 labris
+#6452
+01 Machado do Artesão
+03 machado do artesão
+#6453
+01 Martelo de durabilidade
+03 Martelo de durabilidade
+#6552-6554
+01 Malho da forja
+03 Malho da forja
+#6658
+01 Cajado de Encantador
+03 cajado de Encantador
+#6750
+01 Cajado de mutilação
+03 cajado de mutilação
+#6751
+01 Cajado da escuridão
+03 cajado da escuridão
+#6752
+01 Cajado do sacrifício
+03 cajado do sacrifício

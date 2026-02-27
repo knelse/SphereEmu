@@ -1,0 +1,37 @@
+10000 I
+
+10100 Benvenuto %p1! Vedo che sei pronto per una promozione nella nostra gilda. Provami che ne sei meritevole e che non mi sbaglio sul tuo conto.
+10101 Per guadagnare il secondo stadio, portami le prove della tua lealtà e della tua potenza. Esiste un luogo in un sotterraneo di Hyperion dove abita %z1. Dovrebbe avere ciò che il nostro amico ha perso quando ci andò. Portamelo indietro.
+
+10200 Cresci molto in fretta! Ricordo quando scegliesti di unirti alla nostra gilda. Eri un così giovane guerriero! Bene, ho giusto un lavoro per un guerriero del tuo livello. Uno dei nostri alleati ha un problema, ha bisogno del nostro aiuto. Avrai una raccomandazione quando sarai riuscito a dargli una mano.
+10201 Ecco una lettera, portala a %m2 ed egli stesso ti dirà qual'è il nocciolo del problema. %m1.
+10202 Finalmente! Ti ha mandato. Spero fortemente tu riesca a sistemare le cose! Qualcosa di terribile è accaduto: il mio migliore amico %a1 è stato imprigionato. Liberalo e mostragli l'uscita, poi sarà in grado di trovare la sua strada. %m2.
+10203 Graie infinite per avermi aiutato ad uscire da qui. Vedo che il mio amico non mi ha abbandonato ai miei guai. Mi hai detto che hai bisogno di una raccomandazione? Nessun problema, prendila e ringrazia la tua gilda. Portala al tuo maestro. %a1.
+
+10300 Sì, il quarto stadio:: so che te lo meriti, ma non ho ne la forza ne la voglia di cominciare dei giochi burocratici. Porto con me un grande dolore e non ho tempo da dedicare alla gilda sfortunatamente. 
+10301 %m2, un mio vicino parente, è seriamente malato. Il suo malanno è doloroso e incurabile e nemmeno il migliore medico in Sphere può aiutarlo. SI dice che %m3 sia un grande stregone e che abbia già curato persone con questo male. Mio malgrado, le autorità della gilda hanno rifiutato di imbarcarmi per questo lungo viaggio. Se mi aiuterai, Vedrò di preparare la tua promozione al quarto stadio in poco tempo e senza ulteriori ritardi. %m1.
+10302 Conosco il male di cui mi stai parlando, %p1. E' causato dal veleno di scorpione e può essere curato esclusivamente con un elisir prodotto con il medesimo veleno in combinazione con particolari erbe. Inizia con il portarmi 20 pungiglioni di scorpione. %m3. 
+10303 Ora servono alcune erbe e l'elisir sarà pronto. Sono sicuro che potrà curare %m2. %m3.
+10304 L?elisir è pronto %p1. Non perdere tempo e portalo a %m2. Con la malattia che lo ha colpito, ogni minuto perso potrebbe essergli fatale. %m3.
+10305 Grazie %p1! Prendi questa lettera, vi ho descritto tutto quanto hai fatto per me. Credo proprio che %m1 ti permetterà di accedere al quarto stadio della gilda dei Maestri d'Acciaio una volta ricevuta. %m2.
+
+10400 Noi Maestri d'Acciaio siamo chiamati in questo modo non solo per la nostra assoluta padronanza delle armi. Noi conosciamo anche i segreti delle lame magiche dal potere inaudito. Prima di poter raggiungere il quinto stadio nella gilda, dovrai ottenere una lama come quella, per me.
+10401 Il vecchio Armaiolo %m2 ha aiutato generazioni di Maestri d'Acciaio ad ottenere le preziose armi. E' comunque non una buona idea presentarsi a lui con le mani vuote. Ho un diamante perfetto ler lui e sarò felice di dartelo in cambio di 20 zanne di mammoth. %m1. Portalo a %m2 e digli che sei stato mandato da me. Penso proprio sarà felice di aiutarti. %m1.
+10403 Salve %p1. Ti aiuterò ad avere la tua arma. Ho appena preparato una formula che spiega come produrne una grandiosa, utilizzandone altre tre. La prima di queste è tenuta in un sotterraneo protetto da %a1. Se gli parlerai aprendo il tuo cuore, ti darà la lama dicendoti anche dove trovare la successiva. 
+10404 Ohh, qui possiamo parlare con calma, senza la rottura di quella feccia. Prendi questa lama. Dovrai andare da %z1 per la seconda. Solitamente ci sentiamo spesso, ma ormai ha perso quasi del tutto la ragione. Sappi che dovrai sempre dargli ragione e assecondarlo. Prendigli l'arma e portala a %m2. %a1.
+10405 "...porta la lama di %z1 al vecchio Armaiolo %m2...".%a1.
+10406 Bene, rimane solo una spada. A dire la verità la comprai parecchi anni fa, quindi se mi ripagherai della spesa fatta, circa 2 milioni di talleri, sarà tua e potremo fare una spada degna di un capo della gilda dei Maestri d'Acciaio. %m2.
+10407 La spada è pronta, prendila e prendi anche il mio personale certificato di qualità. Mostra il certificato a %m1 e ti sarai guadagnato il raggiungimento del quinto stadio nella tua gilda. %m2.
+
+10500 Ora sei indubbiamente un vero Maestro d'Acciaio %p1! In ogni caso, il sesto grado nella nostra gilda è un riconoscimento esclusivo per un vero eroe, quindi se vuoi dimostrare di meritarlo, ho la giusta missione per te.
+10501 I nostri nemici giurati, gli Arcimaghi, stanno nuovamente tramando contro di noi. Ho delle sicure informazioni che dicono che stanno cercando di ricreare la popolazione dei draghi e di scagliarceli contro! Dobbiamo distruggerli prima che gli Arcimaghi possano portare a termine il loro piano. Ogni membro della nostra gilda dovrà portarmi almeno 20 denti di drago. %m1.
+10502 Il progetto degli Arcimaghi è stato interrotto, ma il pericolo esiste ancora. Mentre penso dove la tua abilità ed esperienza possa essere di maggior aiuto, preparati per un'altra missione. Gli Arcimaghi hanno rapito %a1, il tesoriere della nostra gilda, portandolo in un sotterraneo difeso da terribili mostri. Non va assolutamente lasciato nelle mani del nemico, non devono sapere troppo dei nostri affari. Liberalo %p1! %m1.
+10503 Grazie %p1! Ho bisogno di riposare prima di tutto, mentre tu porta questi appunti a %m1, nelle sue mani saranno più al sicuro. %a1.
+10504 Abbiamo raccolto abbastanza prove per dimostrare che gli Arcimaghi stavano preparando un attacco contro di noi. Il Concilio della nostra gilda ha preso la decisione di dichiarare guerra alla loro gilda. Porta questa penna simbolo di guerra, al capo degli Arcimaghi, %m2. %m1.
+10505 Volete guerra, bene. Spero tu vi prenda parte, %p1! Mentre mi consegnavi la piuma, hai mancato ad almeno 20 regole dell'etichetta del guerriero della tua gilda. Sarai escluso dalla gilda immediatamente per questo motiv. Ma... se ti prodigherai in un servigio per me, non dirò nulla a %m1 dei tuoi errori. Il buon %a2 si è perso nella foresta, luogo pieno di mostri pericolosi. Trovalo e portalo al più vicino teletrasporto. %m2.
+10506 Grazie per l'aiuto %p1. Eccoti un appunto che conferma che sto bene, portalo a %m2. %a2.
+10507 Bene, hai mantenuto la parola e non ho intenzione di scrivere nulla a %m1 a riguardo delle tue negligenze. Porta la mia lettera a %m1, saprà che accettiamo lo scontro e che combatteremo fino alla fine, una fine amara per voi! %m2.
+10508 La guerra è cominciata e se vuoi diventare un Maestro del sesto stadio, dovrai distinguerti in battaglia. Portami almeno 30 orecchie di Arcimaghi. %m1.
+10509 Bene %p1. Gli Arcimaghi sono praticamente sconfitti. La loro ultima speranza è %z1, un temibile mostro creato appositamente per combatterci. Molti i Maestri d'Acciaio sono morti nel tentativo di combatterlo. Ma io credo in te, e confido nella tua vittoria! Una volta che avrai concluso anche questo compito, non ci sarà più alcun ostacolo per ammetterti al sesto stadio della gilda. %m1.
+
+121212 Test of LoadMsgGroup

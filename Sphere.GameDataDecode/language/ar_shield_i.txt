@@ -1,0 +1,130 @@
+01 Scudo di legno
+03 scudo di legno
+
+200 del valore
+201 della durata
+202 dell'assorbimento
+203 della deflessione
+204 della protezione
+205 dell'invincibilità
+206 della salute
+207 della vita
+208 della meditazione
+209 del prana
+210 della potenza
+211 della destrezza
+212 della grandezza
+213 della concentrazione
+214 della terra
+215 dell'acqua
+216 dell'aria
+217 del fuoco
+218 degi elementi
+219 della stima
+220 della forza
+221 della destrezza
+222 della grandezza
+223 della concentrazione
+224 dell'integrità
+225 degli elementi
+226 degli elementi
+
+#313
+01 scudo di legno
+03 scudo di legno
+#314-316
+01 grande scudo
+03 grande scudo
+#317-319
+01 scudo di legno rinforzato
+03 scudo di legno rinforzato
+#320-322
+01 grande scudo di legno rinforzato
+03 grande scudo di legno rinforzato
+#323-324
+01 scudo di ferro
+03 scudo di ferro
+#3061-3064
+01 scudo di legno
+03 scudo di legno
+#3065-3079
+01 grande scudo
+03 grande scudo
+#3080-3094
+01 scudo di legno rinforzato
+03 scudo di legno rinforzato
+#3095-3109
+01 grande scudo di legno rinforzato
+03 grande scudo di legno rinforzato
+#3110-3120
+01 scudo di ferro
+03 scudo di ferro
+#4462-4470
+01 scudo di ferro
+03 scudo di ferro
+#5871-5876
+01 Scudo del cacciatore
+03 scudo del cacciatore
+#6386-6388
+01 Aspis
+03 aspis
+#6389
+01 Aspis di ferro
+03 aspis
+#6390
+01 Aspis di acciaio
+03 aspis
+#6391
+01 Grande Aspis
+03 aspis
+#6470
+01 Scudo di legno della longevità
+03 scudo della longevità
+#6471
+01 Grande scudo della longevità
+03 scudo della longevità
+#6472
+01 Scudo rinforzato della longevità
+03 scudo della longevità
+#6473
+01 Grande sucdo rinforzato della longevità
+03 scudo della longevità
+#6474
+01 Scudo di ferro della longevità
+03 scudo della longevità
+#6475
+01 Scudo antico della longevità
+03 scudo della longevità
+#6559
+01 Scudo di legno del fabbro
+03 scudo del fabbro
+#6560
+01 Grande scudo del fabbro
+03 scudo del fabbro
+#6561-6562
+01 Scudo rinforzato del fabbro
+03 scudo del fabbro
+#6563
+01 Scudo di ferro del fabbro
+03 scudo del fabbro
+#6564
+01 Scudo antico del fabbro
+03 scudo del fabbro
+#6660
+01 Scudo incantato di legno
+03 scudo incantato
+#6661
+01 Grande scudo incantato
+03 scudo incantato
+#6662-6663
+01 Scudo incantato rinforzato
+03 scudo incantato
+#6664
+01 Scudo incantato di ferro
+03 scudo incantato
+#6665
+01 Scudo incantato antico
+03 scudo incantato
+#6756
+01 Scudo di ossa
+03 scudo di ossa

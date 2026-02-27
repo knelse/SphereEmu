@@ -1,0 +1,89 @@
+1000 Castello appena conquistato (no tasse)
+1001 Tassa sulla terra: %d$
+1002 Tassa sulla terra pagata.
+1003 Tassa sui cancelli: %d$
+1004 Tassa sui cancelli pagata.
+1005 Tassa sul Grande Libro: %d$
+1006 Tassa sul Grande Libro pagata.
+1007 Tassa sul sotterraneo: %d$
+1008 Tassa sul sotterraneo pagata.
+
+8000 Grande Libro del Castello Liege
+8200 Cancelli del Castello Liege
+8001 Grande Libro del Castello Feoff
+8201 Cancelli del Castello Feoff
+8002 Grande Libro del Castello Aris
+8202 Cancelli del Castello Aris
+8003 Grande Libro del Castello Latour
+8203 Cancelli del Castello Latour
+8004 Grande Libro del Castello Eikum-Cas
+8204 Cancelli del Castello Eikum-Cas
+8005 Grande Libro del Castello Gideon
+8205 Cancelli del Castello Gideon
+8006 Grande Libro del Castello Chatelie
+8206 Cancelli del Castello Chatelie
+8007 Grande Libro del Castello Tyanod
+8207 Cancelli del Castello Tyanod
+8008 Grande Libro del Castello Peltier
+8208 Cancelli del Castello Peltier
+8009 Grande Libro del Castello Kare-Royal
+8209 Cancelli del Castello Kare-Royal
+8010 Grande Libro del Castello Blessendour
+8210 Cancelli del Castello Blessendour
+8011 Grande Libro del Castello Ternoval
+8211 Cancelli del Castello Ternoval
+8012 Grande Libro del Castello Ammalaelle
+8212 Cancelli del Castello Ammalaelle
+8013 Grande Libro del Castello Cablac
+8213 Cancelli del Castello Cablac
+8014 Grande Libro del Castello Devanagary
+8214 Cancelli del Castello Devanagary
+8015 Grande Libro del Castello Sabulat
+8215 Cancelli del Castello Sabulat
+8016 Grande Libro del Castello Diffensat
+8216 Cancelli del Castello Diffensat
+8017 Grande Libro del Castello Ionat
+8217 Cancelli del Castello Ionat
+8018 Grande Libro del Castello Triumphaler
+8218 Cancelli del Castello Triumphaler
+
+8019 Grande Libro del Castello Bagarnak
+8219 Cancelli del Castello Bagarnak
+8020 Grande Libro del Castello Kabrad
+8220 Cancelli del Castello Kabrad
+8021 Grande Libro del Castello Set
+8221 Cancelli del Castello Set
+8022 Grande Libro del Castello Lender
+8222 Cancelli del Castello Lender
+8023 Grande Libro del Castello Keles
+8223 Cancelli del Castello Keles
+8024 Grande Libro del Castello Sheprostan
+8224 Cancelli del Castello Sheprostan
+8025 Grande Libro del Castello Orkobien
+8225 Cancelli del Castello Orkobien
+8026 Grande Libro del Castello Kanuak
+8226 Cancelli del Castello Kanuak
+8027 Grande Libro del Castello Aldarnon
+8227 Cancelli del Castello Aldarnon
+8028 Grande Libro del Castello Iong
+8228 Cancelli del Castello Iong
+8029 Grande Libro del Castello Elek
+8229 Cancelli del Castello Elek
+8030 Grande Libro del Castello Gavot
+8230 Cancelli del Castello Gavot
+8031 Grande Libro del Castello Kandur
+8231 Cancelli del Castello Kandur
+
+8032 Grande Libro del Castello Immertel
+8232 Cancelli del Castello Immertel
+8033 Grande Libro del Castello Narcissus
+8233 Cancelli del Castello Narcissus
+8034 Grande Libro del Castello Randen
+8234 Cancelli del Castello Randen
+8035 Grande Libro del Castello Nirgun
+8235 Cancelli del Castello Nirgun
+8036 Grande Libro del Castello Gelgivinn
+8236 Cancelli del Castello Gelgivinn
+1090 Собрано налогов: %d$
+1091 Снять
+8090 Скрижаль города Анхельм

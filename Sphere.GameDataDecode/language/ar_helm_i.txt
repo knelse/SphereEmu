@@ -1,0 +1,101 @@
+01 elmo di ferro
+03 elmo di ferro
+
+100 Protegge dalle armi dei nemici in battaglia.
+
+200 della durata
+201 dell'assorbimento
+202 della protezione
+203 della salute
+204 della meditazione
+205 della precisione
+206 dell'etere
+207 della stima
+
+#262-273
+01 New Year copricapo
+03 copricapo
+#337
+01 copricapo
+03 copricapo
+#338
+01 elmo di pelle
+03 elmo di pelle
+#339-340
+01 elmo di pelle rinforzata
+03 elmo di pelle rinforzata
+#341-342
+01 elmo di maglia
+03 elmo di maglia
+#343-345
+01 elmo di ferro
+03 elmo di ferro
+#346-348
+01 elmo antico di ferro 
+03 elmo antico di ferro 
+#3146-3147
+01 copricapo
+03 copricapo
+#3148-3149
+01 elmo di pelle
+03 elmo di pelle
+#3150-3153
+01 elmo di pelle rinforzata
+03 elmo di pelle rinforzata
+#3154-3157
+01 elmo di maglia
+03 elmo di maglia
+#3158-3163
+01 elmo di ferro
+03 elmo di ferro
+#3164-3170
+01 elmo antico di ferro 
+03 elmo antico di ferro 
+#4480-4488
+01 elmo antico di ferro 
+03 elmo antico di ferro 
+#4744
+01 Elmo nero
+03 elmo nero
+#4745
+01 Elmo bianco
+03 elmo bianco
+#5771
+01 Copricapo dell'Inquisitore 
+03 copricapo dell'Inquisitore 
+#5772
+01 Elmo di pelle dell'Inquisitore
+03 elmo dell'inquisitore
+#5773
+01 Elmo rinforzato dell'Inquisitore
+03 elmo dell'inquisitore
+#5774
+01 Elmo di maglia dell'Inquisitore
+03 elmo dell'inquisitore
+#5775
+01 Elmo di ferro dell'Inquisitore
+03 elmo dell'inquisitore
+#5776
+01 Elmo antico dell'Inquisitore
+03 elmo dell'inquisitore
+#5785
+01 Elmo rinforzato dell'Inquisitore
+03 elmo dell'inquisitore
+#5785
+01 Клепанный шлем Инквизитора
+03 шлем Инквизитора
+#5787
+01 Древний шлем Инквизитора
+03 шлем Инквизитора
+#5790
+01 Шапка Инквизитора
+03 шапку Инквизитора
+#7200
+01 Кольчужный шлем Инквизитора
+03 шлем Инквизитора
+#7202
+01 Железный шлем Инквизитора
+03 шлем Инквизитора
+#7204
+01 Кольчужный шлем Инквизитора
+03 шлем Инквизитора

@@ -1,0 +1,28 @@
+01 Key to dungeon
+03 key to dungeon
+10 This key is wrong.
+
+#240
+01 Key to black room of water
+03 key
+#241
+01 Key to black room of fire
+03 key
+#242
+01 Key to black room of earth
+03 key
+#243
+01 Key to black room of air
+03 key
+#244
+01 Key to white room of water
+03 key
+#245
+01 Key to white room of fire
+03 key
+#246
+01 Key to white room of earth
+03 key
+#247
+01 Key to white room of air
+03 key

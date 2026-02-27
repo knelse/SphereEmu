@@ -1,0 +1,172 @@
+01 Pacco
+02 pacchi
+03 pacco
+10 Mandante: %s, destinatario: %s.
+#155
+01 Вода
+02 вода
+03 воду
+10 Отправитель: %s, получатель: %s.
+#160
+01 Pacco
+02 pacchi
+03 pacco
+10 Mandante: %s, destinatario: %s.
+#161
+01 Lettera
+02 lettere
+03 lettera
+10 Mandante: %s, destinatario: %s.
+#162
+01 Lettera breve
+02 lettere brevi
+03 lettera breve
+10 Written by %s, destinatario: %s.
+#163
+01 Busta
+02 buste
+03 busta
+10 Mandante: %s, destinatario: %s.
+#164
+01 Documenti
+02 documenti
+03 documenti
+10 Proprietario: %s, destinatario: %s.
+#165
+01 spada
+02 spade
+03 spada
+10 Proprietario: %s, consegnata a: %s.
+#166
+01 Pesce avvelenato
+03 pesce avvelenato
+10 Data da %s, portata a: %s.
+#167
+01 Dipinto
+03 dipinto
+10 Mandante: %s, destinatario: %s.
+#168
+01 Formula
+03 formula
+10 Mandante: %s, destinatario: %s.
+#169
+01 Sangue di mostro
+03 sangue di mostro
+10 Sangue di mostro di %s. %s vuole ottenerlo.
+#170
+01 Pergamena
+02 pergamene
+03 pergamena
+10 Mandante: %s, destinatario: %s.
+#171
+01 Testa
+02 teste
+03 testa
+10 La testa che %s ha sulle spalle.
+#172
+01 Testa di mostro
+02 teste di mostri
+03 testa di mostro
+10 Questa testa appartiene al mostro chiamato %s. %s brama ottenerla.
+#173
+01 Libro
+02 libri
+03 libro
+10 Mandante: %s, destinatario: %s.
+#174
+01 Libro
+02 libri
+03 libro
+#175
+01 Teschio
+02 teschi
+03 teschio
+10 Il teschio di %s. %s vuole ottenerlo.
+#176
+01 Occhio
+02 occhi
+03 occhio
+10 Mandante: %s, destinatario: %s.
+#177
+01 Archivi
+02 archivi
+03 archivi
+10 Mandante: %s, destinatario: %s.
+#178
+01 Formula
+02 formule
+03 formula
+10 Mandante: %s, destinatario: %s.
+#179
+01 UC
+03 UC
+#180
+01 Fungo
+02 funghi
+03 fungo
+10 Mandante: %s, destinatario: %s.
+#181-183
+01 Elisir
+02 elisir
+03 elisir
+10 Mandante: %s, destinatario: %s.
+#184-185
+01 Piuma
+02 Piume
+03 piuma
+10 Mandante: %s, destinatario: %s.
+#186
+01 Diamante
+02 diamanti
+03 diamante
+10 Mandante: %s, destinatario: %s.
+#187
+01 Rubino
+02 rubini
+03 rubino
+10 Mandante: %s, destinatario: %s.
+#188
+01 Smeraldo
+02 smeraldi
+03 smeraldo
+10 Mandante: %s, destinatario: %s.
+#189
+01 Pietra
+02 pietre
+03 pietra
+10 Mandante: %s, destinatario: %s.
+#190
+01 Formula
+02 formule
+03 formula
+10 Mandante: %s, destinatario: %s.
+#191
+01 Vino
+02 vini
+03 vino
+10 Mandante: %s, destinatario: %s.
+#192
+01 Veleno
+02 veleni
+03 veleno
+10 Mandante: %s, destinatario: %s.
+#193-194
+01 Anello
+02 anelli
+03 anello
+10 Mandante: %s, destinatario: %s.
+#195
+01 Vecchia chiave
+02 vecchie chiavi
+03 vecchia chiave
+10 Chiavi appartenente al drago %s. %s voleva ottenerlo, ma и andato distrutto in battaglia.
+#196
+01 Cuore di drago
+02 Cuori di drago
+03 Cuore di drago
+10 Cuore del drago %s
+#197-199
+01 Sangue di drago
+02 sangue di drago
+03 sangue di drago
+10 Sangue di drago che %s ha posseduto. %s lo userа per forgiare una spada magica.

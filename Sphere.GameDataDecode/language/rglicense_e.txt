@@ -1,0 +1,10 @@
+01 License to reset guild
+03 license to reset guild
+
+100 ќтмен€ет специализацию персонажа. ѕри этом сбрасывает распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земл€, воздух, вода и огонь. ”ровень титула и степени персонажа остаетс€ неизменным.
+
+101 Do you really want to reset guild?
+102 The guild has been reset.
+103 There is no need to use the license now.
+
+

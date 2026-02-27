@@ -1,0 +1,11 @@
+01 Grande calderone alchemico
+03 Grande calderone alchemico
+10 Per usarla mettere la pentola in terra.
+11 Reazione impossibile:
+12 prana<%d
+13 terra<%d
+14 aria<%d
+15 acqua<%d
+16 fuoco<%d
+
+100 Nel grande calderone alchemico puoi cuocere il doppio delle polveri rispetto al calderone normale. Il calderone alchemico nasce nel 1008 quando Amilus, il mago di corte del Re Valentine, ne fece il primo esemplare. Prima di questa invenzione si usavano grosse fornaci alchemiche che occupavano intere case. Il calderone invece permette di cuocere la maggior parte delle polveri in spazi molto ristretti. Solo le più complesse e costose hanno ancora bisogno di una fornace alchemica. Con il passare dei secoli l'arte della creazione delle fornaci è andata lentamente persa e il numero di fornaci attive si è ridotto a causa delle guerre e dei cataclismi. Nel mondo di Sphere dei nostri giorni non si conoscono fornaci funzionanti. Se qualcuno riuscisse a trovarne una, sarebbe in grado di portare a termine trasformazioni molto rare e di enorme valore.

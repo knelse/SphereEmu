@@ -1,0 +1,9 @@
+01 Formula
+02 formula
+03 formula
+
+100 Formula of sorcerers guild
+
+10000 This formula (if applied by a sorcerer in a stage not lower than %z1) renders one of the following articles magical properties: %l1 Reaction requires %a1.
+10001 This formula (if applied by a sorcerer in a stage not lower than %z1) renders one of the following articles magical properties: %l1 Reaction requires %a1 and %a2.
+10002 This formula (if applied by a sorcerer in a stage not lower than %z1) renders one of the following articles magical properties: %l1 Reaction requires %a1, %a2 and %a3.

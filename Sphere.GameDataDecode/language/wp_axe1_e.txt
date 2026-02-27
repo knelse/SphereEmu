@@ -1,0 +1,299 @@
+01 axe
+03 axe
+
+100 A striking weapon. Blows are heavy but slow.
+
+200 of exhaustion
+201 of valour
+202 of damage
+203 of cruelty
+204 of rush
+205 of speed
+206 of disorder
+207 of chaos
+208 of ether
+209 of tiredness
+210 of sickness
+211 of instability
+212 of length
+213 of distance
+214 of deterioration
+215 of devastation
+216 of weakness
+217 of penetration
+218 of prohibition
+219 of value
+
+#101
+01 axe
+03 axe
+#102
+01 great axe
+03 great axe
+#103
+01 battle axe
+03 battle axe
+#104
+01 infantry axe
+03 infantry axe
+#105
+01 Frances
+03 Frances
+#106
+01 poleaxe
+03 poleaxe
+#107
+01 Tabar
+03 Tabar
+#108
+01 elite great axe
+03 elite great axe
+#109
+01 elite battle axe
+03 elite battle axe
+#110
+01 elite frances
+03 elite frances
+#111
+01 elite poleaxe
+03 elite poleaxe
+#112
+01 rune great axe
+03 rune great axe
+#113
+01 rune battle axe
+03 rune battle axe
+#114
+01 rune frances
+03 rune frances
+#115
+01 rune poleaxe
+03 rune poleaxe
+#116
+01 club
+03 club
+#117
+01 mace
+03 mace
+#118
+01 cudgel
+03 cudgel
+#119
+01 hammer
+03 hammer
+#120
+01 war hammer
+03 war hammer
+#121
+01 morning star
+03 morning star
+#122
+01 blacksmith hammer
+03 blacksmith hammer
+#123
+01 elite mace
+03 elite mace
+#124
+01 elite cudgel
+03 elite cudgel
+#125
+01 elite war hammer
+03 elite war hammer
+#126
+01 elite morning star
+03 elite morning star
+#127
+01 rune mace
+03 rune mace
+#128
+01 rune cudgel
+03 rune cudgel
+#129
+01 rune war hammer
+03 rune war hammer
+#3501-3502
+01 axe
+03 axe
+#3503-3504
+01 great axe
+03 great axe
+#3505-3507
+01 battle axe
+03 battle axe
+#3508-3509
+01 infantry axe
+03 infantry axe
+#3510-3512
+01 frances
+03 frances
+#3513-3514
+01 poleaxe
+03 poleaxe
+#3515-3519
+01 Tabar
+03 Tabar
+#3520-3524
+01 elite great axe
+03 elite great axe
+#3525-3529
+01 elite battle axe
+03 elite battle axe
+#3530-3534
+01 elite frances
+03 elite frances
+#3535-3539
+01 elite poleaxe
+03 elite poleaxe
+#3540-3544
+01 rune great axe
+03 rune great axe
+#3545-3549
+01 rune battle axe
+03 rune battle axe
+#3550-3554
+01 rune frances
+03 rune frances
+#3555-3560
+01 rune poleaxe
+03 rune poleaxe
+#3561-3562
+01 club
+03 club
+#3563-3564
+01 mace
+03 mace
+#3565-3567
+01 cudgel
+03 cudgel
+#3568-3569
+01 hammer
+03 hammer
+#3570-3572
+01 war hammer
+03 war hammer
+#3573-3574
+01 morning star
+03 morning star
+#3575-3579
+01 blacksmith hammer
+03 blacksmith hammer
+#3580-3584
+01 elite mace
+03 elite mace
+#3585-3589
+01 elite cudgel
+03 elite cudgel
+#3590-3594
+01 elite war hammer
+03 elite war hammer
+#3595-3599
+01 elite morning star
+03 elite morning star
+#3600-3604
+01 rune mace
+03 rune mace
+#3605-3609
+01 rune cudgel
+03 rune cudgel
+#3610-3614
+01 rune war hammer
+03 rune war hammer
+#3615-3620
+01 rune morning star
+03 rune morning star
+#3621
+01 Game-master staff
+03 Game-master staff
+#3622-3624
+01 legendary axe
+03 legendary axe
+#3625-3627
+01 eerie axe
+03 eerie axe
+#3628-3630
+01 dragon axe
+03 dragon axe
+#3631-3633
+01 legendary hammer
+03 legendary hammer
+#3634-3636
+01 eerie hammer
+03 eerie hammer
+#3637-3639
+01 dragon hammer
+03 dragon hammer
+#5750
+01 Staff of Inquisitor 
+03 staff of Inquisitor 
+#5751
+01 Staff of Great Inquisitor
+03 staff of Great Inquisitor 
+#5950
+01 Staff de Orko
+03 staff de Orko
+#5951
+01 Staff of Archimagician
+03 staff of Archimagician
+#5952
+01 Staff of Magician
+03 staff of Magician
+#5953
+01 Staff of Elements
+03 staff of Elements
+#5965
+01 Small staff of Archimagician
+03 staff of Archimagician
+#5966-5968
+01 Staff of Archimagician
+03 staff of Archimagician
+#5969
+01 Big staff of Archimagician
+03 staff of Archimagician
+#5970
+01 Great staff of Archimagician
+03 staff of Archimagician
+#6065-6070
+01 hammer of thunder
+03 hammer of thunder
+#6183
+01 Small staff of recovery
+03 staff of recovery
+#6184-6185
+01 Middle staff of recovery
+03 staff of recovery
+#6186-6187
+01 Big staff of recovery
+03 staff of recovery
+#6188
+01 Great staff of recovery
+03 staff of recovery
+#6365-6368
+01 Labris
+03 labris
+#6369
+01 Steel Labris
+03 labris
+#6370
+01 Great Labris
+03 labris
+#6452
+01 Axe of Craftsman
+03 axe of Craftsman
+#6453
+01 Hammer of durability
+03 Hammer of durability
+#6552-6554
+01 Blacksmithing hammer
+03 blacksmithing hammer
+#6658
+01 Staff of Sorcerer
+03 staff of Sorcerer
+#6750
+01 Staff of mutilation
+03 staff of mutilation
+#6751
+01 Staff of darkness
+03 staff of darkness
+#6752
+01 Staff of sacrifice
+03 staff of sacrifice

@@ -1,0 +1,7 @@
+01 Furto
+100 Un'abilità di professione. Un inesperto borsaiolo può racimolare giusto qualche tallero, ma le leggende narrano che ci sono così abili truffatori che possono perfino rubare oggetti dalle borse delle guardie delle città. 
+
+1000 Il furto richiede almeno uno slot libero nell'inventario.
+1001 Hai rubato %s.
+1002 Furto fallito.
+1003 Hai rubato %d$.

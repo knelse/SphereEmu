@@ -1,0 +1,140 @@
+01 chiave
+03 chiave
+
+5000 Locanda, stanza economica, Sheepstone
+5001 Locanda, stanza economica, Sheepstone
+5002 Locanda, suite, Sheepstone (porta sul retro)
+5003 Locanda, suite, Sheepstone (porta sul retro)
+5007 Locanda, stanza economica, Bangville
+5008 Locanda, suite, Bangville
+5009 Locanda, stanza economica, Sunpool
+5010 Locanda, stanza economica, Sunpool
+5011 Locanda, suite, Sunpool (porta sul retro)
+5012 Locanda, suite, Sunpool (porta sul retro)
+5013 Locanda, suite, Sunpool (porta sul retro)
+5014 Locanda, suite, Sunpool (porta sul retro)
+5015 Locanda, stanza economica, Torweal
+5016 Locanda, suite, Torweal
+5017 Locanda, appartamento economico, Nomrad
+5018 Locanda, suite di lusso, Nomrad
+5019 Locanda, appartamento economico, Gifes
+5020 Locanda, suite di lusso, Gifes
+5004 Ostello, appartamento economico, Umrad
+5005 Ostello, suite di lusso, Umrad
+5006 Ostello, suite di lusso con grande baule, Umrad (entrata dal recinto)
+5025 Ostello, suite di lusso con grande baule, Umrad (entrata dal recinto)
+5026 Ostello, suite di lusso con grande baule, Umrad (entrata dal recinto)
+5027 Laboratorio, Sheepstone
+5028 Laboratorio, Bangville
+5029 Laboratorio, Sunpool
+5030 Laboratorio, Torweal
+5031 Laboratorio, Nomrad
+5032 Laboratorio, Gifes
+5033 Laboratorio, Umrad
+5034 Ostello, suite con grande baule, Anhelm (entrata dal recinto)
+5035 Ostello, suite con grande baule, Anhelm (entrata dal recinto)
+5036 Ostello, suite con grande baule, Anhelm (entrata dal recinto)
+5037 Ostello, suite di lusso con grande baule, Anhelm
+
+5200 Ostello di campagna, stanza economica
+5201 Ostello di campagna, stanza economica
+5202 Ostello di campagna, stanza economica
+5203 Ostello di campagna, stanza economica
+5204 Ostello di campagna, stanza economica
+5205 Ostello di campagna, stanza economica
+5206 Ostello di campagna, stanza economica
+5207 Ostello di campagna, stanza economica
+
+5400 Stanza nel castello Liege
+5401 Stanza nel castello Liege
+5402 Stanza nel castello Feoff
+5403 Stanza nel castello Aris
+5404 Stanza nel castello Aris
+5405 Stanza nel castello Latour
+5406 Stanza nel castello Eikum-Cas
+5407 Stanza nel castello Gideon
+5408 Stanza nel castello Gideon
+5409 Stanza nel castello Gideon
+5410 Stanza nel castello Chatelie
+5411 Stanza nel castello Chatelie
+5412 Stanza nel castello Chatelie
+5413 Stanza nel castello Tyanod
+5414 Stanza nel castello Tyanod
+5415 Stanza nel castello Tyanod
+5416 Stanza nel castello Peltier
+5417 Stanza nel castello Peltier
+5418 Stanza nel castello Peltier
+5419 Stanza nel castello Kare-Royal
+5420 Stanza nel castello Kare-Royal
+5421 Stanza nel castello Kare-Royal
+5422 Stanza nel castello Blessendour
+5423 Stanza nel castello Blessendour
+5424 Stanza nel castello Blessendour
+5425 Stanza nel castello Ternoval
+5426 Stanza nel castello Ternoval
+5427 Stanza nel castello Ternoval
+5428 Stanza nel castello Ammalaelle
+5429 Stanza nel castello Ammalaelle
+5430 Stanza nel castello Ammalaelle
+5431 Stanza nel castello Cablac 
+5432 Stanza nel castello Cablac
+5433 Stanza nel castello Cablac
+5434 Stanza nel castello Devanagary
+5435 Stanza nel castello Devanagary
+5436 Stanza nel castello Devanagary
+5437 Stanza nel castello Sabulat
+5438 Stanza nel castello Sabulat
+5439 Stanza nel castello Sabulat
+5440 Stanza nel castello Diffensat
+5441 Stanza nel castello Diffensat
+5442 Stanza nel castello Diffensat
+5443 Stanza nel castello Ionat 
+5444 Stanza nel castello Ionat
+5445 Stanza nel castello Ionat
+5446 Stanza nel castello Triumphaler
+5447 Stanza nel castello Triumphaler
+5448 Stanza nel castello Triumphaler
+5449 Stanza nel castello Bagnarak 
+5450 Stanza nel castello Bagnarak 
+5451 Stanza nel castello Bagnarak 
+5452 Stanza nel castello Kabrad 
+5453 Stanza nel castello Kabrad 
+5454 Stanza nel castello Kabrad 
+5455 Una stanza nel castello Set 
+5456 Una stanza nel castello Set 
+5457 Una stanza nel castello Set 
+5458 Una stanza nel castello Lender 
+5459 Una stanza nel castello Lender 
+5460 Una stanza nel castello Lender 
+5461 Stanza nel castello Keles 
+5462 Stanza nel castello Keles 
+5463 Stanza nel castello Keles 
+5464 Una stanza nel castello Sheprostan 
+5465 Una stanza nel castello Sheprostan 
+5466 Una stanza nel castello Sheprostan 
+5467 Stanza nel castello Orkobien 
+5468 Stanza nel castello Orkobien 
+5469 Stanza nel castello Orkobien 
+5470 Stanza nel castello Kanuak 
+5471 Stanza nel castello Kanuak 
+5472 Stanza nel castello Kanuak 
+5473 Stanza nel castello Aldarnon 
+5474 Stanza nel castello Aldarnon 
+5475 Stanza nel castello Aldarnon 
+5476 Una stanza nel castello Yong 
+5477 Una stanza nel castello Yong 
+5478 Una stanza nel castello Yong 
+5479 Stanza nel castello Elek 
+5480 Stanza nel castello Elek 
+5481 Stanza nel castello Elek 
+5482 Stanza nel castello Gavot 
+5483 Stanza nel castello Gavot 
+5484 Stanza nel castello Gavot 
+5485 Stanza nel castello Kandur 
+5486 Stanza nel castello Kandur 
+5487 Stanza nel castello Kandur 
+5488 Stanza nel castello Immertel 
+5489 Stanza nel castello Narcissus 
+5490 Stanza nel castello Randen 
+5491 Stanza nel castello Nirgun 
+5492 Stanza nel castello Gelgivinn 

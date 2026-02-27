@@ -1,0 +1,25 @@
+01 Oficina
+03 Oficina
+
+10 Artigo possui propriedades especiais
+11 Artigo pronto.
+12 Artigo reparado.
+13 Artigo reparado, mas está em pior situação.
+14 Artigo reparado, mas está em muito pior situação..
+
+15 É impossível dar propriedade especial para este artigo usando esta fórmula:
+16 É impossível criar artigo usando esta fórmula:
+17 É impossível reparar artigo:
+
+18 artigo não combina com a fórmula
+19 componentes insuficientes
+20 Estágio muito baixo na organização
+21 Artigo foi acidentalmente quebrado enquanto estava sendo reparado
+22 Muitos artigos
+23 artigo quebrado durante reparo era muito velho
+
+90 Enquanto criava um artigo, a fórmula esgotou seus poderes mágicos e foi destruída.
+91 Enquanto fornecia ao artigo propriedades mágicas, a fórmula esgotou seus poderes mágicos e foi destruída.
+92 Enquanto reparava, a fórmula esgotou seus poderes mágicos e foi destruída.
+
+100 Esta é uma oficina onde ferreiros e armeiros fazem armaduras e armas. Encantadores também utilizam para dar propriedades mágicas aos artigos feitos lá.

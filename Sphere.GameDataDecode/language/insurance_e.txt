@@ -1,0 +1,14 @@
+01 Insurance
+03 insurance
+
+101 Using the insurance will cost you %d$.
+102 You have used the insurance.
+103 The insurance is no longer valid.
+104 You have no need to use the insurance right now.
+
+110 Name of character: %s
+111 Title: %s
+112 Degree: %s
+113 Title marks: %d
+114 Degree marks: %d
+

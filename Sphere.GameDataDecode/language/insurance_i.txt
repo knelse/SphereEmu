@@ -1,0 +1,14 @@
+01 Assicurazione
+03 assicurazione
+
+101 Per usare l'assicurazione servono %d$.
+102 Hai usato l'assicurazione.
+103 Assicurazione non è valida.
+104 Ora non hai bisogno di usare l'assicurazione.
+
+110 Nome del personaggio: %s
+111 Titolo: %s
+112 Grado: %s
+113 Marchi del titolo: %d
+114 Marchi del grado: %d
+

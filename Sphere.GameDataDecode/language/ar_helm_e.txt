@@ -1,0 +1,80 @@
+01 iron helm
+03 iron helm
+
+100 Protects from enemy weapons in battle.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of meditation
+205 of accuracy
+206 of ether
+207 of value
+
+#262-273
+01 New Year cap
+03 cap
+#337
+01 cap
+03 cap
+#338
+01 leather helm
+03 leather helm
+#339-340
+01 riveted leather helm
+03 riveted leather helm
+#341-342
+01 chainmail helm
+03 chainmail helm
+#343-345
+01 iron helm
+03 iron helm
+#346-348
+01 ancient iron helm
+03 ancient iron helm
+#3146-3147
+01 cap
+03 cap
+#3148-3149
+01 leather helm
+03 leather helm
+#3150-3153
+01 riveted leather helm
+03 riveted leather helm
+#3154-3157
+01 chainmail helm
+03 chainmail helm
+#3158-3163
+01 iron helm
+03 iron helm
+#3164-3170
+01 ancient iron helm
+03 ancient iron helm
+#4480-4488
+01 ancient iron helm
+03 ancient iron helm
+#4744
+01 Black helmet
+03 black helmet
+#4745
+01 White helmet
+03 white helmet
+#5771
+01 Cap of Inquisitor
+03 cap of Inquisitor
+#5772
+01 Leather helm of Inquisitor
+03 helm of Inquisitor
+#5773
+01 Riveted helm of Inquisitor
+03 helm of Inquisitor
+#5774
+01 Chainmail helm of Inquisitor
+03 helm of Inquisitor
+#5775
+01 Iron helm of Inquisitor
+03 helm of Inquisitor
+#5776
+01 Ancient helm of Inquisitor
+03 helm of Inquisitor

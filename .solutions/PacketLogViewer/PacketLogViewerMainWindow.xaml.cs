@@ -1829,7 +1829,7 @@ public partial class PacketLogViewerMainWindow
             bson =>
             {
                 var colors = ((string) bson).Split(',').Select(byte.Parse).ToArray();
-                return new SolidColorBrush()
+                return new SolidColorBrush
                 {
                     Color = new Color
                     {
@@ -1844,7 +1844,7 @@ public partial class PacketLogViewerMainWindow
 
     private void AddPacketButton_OnClick (object sender, RoutedEventArgs e)
     {
-        var dialog = new AddPacketManuallyDialog()
+        var dialog = new AddPacketManuallyDialog
         {
             Owner = this
         };

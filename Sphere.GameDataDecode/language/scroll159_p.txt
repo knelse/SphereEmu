@@ -1,0 +1,9 @@
+01 Fórmula da proteção mágica
+02 Fórmula da proteção mágica
+03 Fórmula da proteção mágica
+
+100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas.
+
+TEXT
+
+    Para se obter o pó de proteção mágica , primeiro ache spherite e prata. O resultado será zero se você não tiver a planta mandragora. Mixture os componentes na fornalha e alimente o fogo com lenha e use o pó obtido. Não se esqueça que você precisa ser bacharel ou acima para obter a reação.

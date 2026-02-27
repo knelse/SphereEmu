@@ -1,0 +1,134 @@
+01 Cinto
+03 Cinto
+
+100 Protege de armas inimigas em batalha.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de vida
+204 de duração 
+205 de precisão
+206 do éter
+207 de valor
+
+#349
+01 Cinto de pano
+03 cinto de pano
+#350
+01 Cinto de couro
+03 cinto de couro
+#351-352
+01 Cinto de couro reforçado
+03 cinto de couro reforçado
+#353-354
+01 Cinto de correntes
+03 cinto de correntes
+#355-357
+01 Cinto de ferro
+03 cinto de ferro
+#358-360
+01 Cinto de ferro ancestral
+03 cinto de ferro ancestral
+#3171
+01 Cinto de pano
+03 cinto de pano
+#3172
+01 Cinto de couro
+03 cinto de couro
+#3173-3174
+01 Cinto de couro reforçado
+03 cinto de couro reforçado
+#3175-3176
+01 Cinto de correntes
+03 cinto de correntes
+#3177-3179
+01 Cinto de ferro
+03 cinto de ferro
+#3180-3182
+01 Cinto de ferro ancestral
+03 cinto de ferro ancestral
+#4489-4497
+01 Cinto de ferro ancestral
+03 cinto de ferro ancestral
+#5665
+01 Cinto da Coragem
+03 cinto da Coragem
+#5666
+01 Cinto de couro da Coragem
+03 cinto da Coragem
+#5667
+01 Cinto de rebites da Coragem
+03 cinto da Coragem
+#5668
+01 Cinto de malha da Coragem
+03 cinto da Coragem
+#5669
+01 Cinto de ferro da Coragem
+03 cinto da Coragem
+#5670
+01 Cinto antigo Ancient c
+03 cinto Ancient c
+#5777
+01 Cinto do Tribunal
+03 cinto do Tribunal
+#5778
+01 Cinto de couro do Tribunal
+03 cinto do Tribunal
+#5779
+01 Cinto de rebites do Tribunal
+03 cinto do Tribunal
+#5780
+01 Cinto de malha do Tribunal
+03 cinto do Tribunal
+#5781
+01 Cinto de ferro do Tribunal
+03 cinto do Tribunal
+#5782
+01 Cinto antigo do Tribunal
+03 cinto do Tribunal
+#5962
+01 Cinto
+03 cinto
+#6077
+01 Cinto de Titã
+03 cinto de Titã
+#6078
+01 Cinto de couro de Titã
+03 cinto de Titã
+#6079
+01 Cinto de rebites de Titã
+03 cinto of de Titã
+#6080
+01 Cinto de malha de Titã
+03 cinto de Titã
+#6081
+01 Cinto de ferro de Titã
+03 cinto de Titã
+#6082
+01 Cinto antigo de Titã
+03 cinto de Titã
+#6476
+01 Cinto da Longevidade
+03 cinto da Longevidade
+#6477
+01 Cinto de couro da Longevidade
+03 cinto da Longevidade
+#6478
+01 Cinto de rebites da Longevidade
+03 cinto da Longevidade
+#6479
+01 Cinto de malha da Longevidade
+03 cinto da Longevidade
+#6480
+01 Cinto de ferro da Longevidade
+03 cinto da Longevidade
+#6481
+01 Cinto antigo da Longevidade
+03 cinto da Longevidade
+#6657
+01 Cinto da leveza
+03 cinta da leveza
+#6758
+01 Cinto do Pântano
+03 Cinto do Pântano

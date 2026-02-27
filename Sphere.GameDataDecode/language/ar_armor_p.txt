@@ -1,0 +1,178 @@
+01 Cota de malha
+03 Cota de malha
+05 nova
+06 usada
+07 enferujada
+
+100 Protege contra os ataques de armas inimigas.
+
+200 do valor
+201 da durabilidade
+202 da absorsão
+203 da deflexão
+204 da segurança
+205 da invulnerabilidade
+206 da saúde
+207 da vida
+208 da meditação
+209 de prana
+210 do poder
+211 da destreza
+212 da grandiosidade
+213 da concentração
+214 da terra
+215 da água
+216 do ar
+217 do fogo
+218 dos elementos
+219 do valor
+220 do poder
+221 da destreza
+222 da grandiosidade
+223 da concentração
+224 da integridade
+
+#301
+01 Jaqueta
+03 jaqueta
+#302
+01 Armadura de couro
+03 armadura de couro
+#303-304
+01 Armadura de couro reforçada
+03 armadura de couro reforçada
+#305-306
+01 Cota de malha
+03 cota de malha
+#307-309
+01 Placa de torso
+03 placa de torso
+#310-312
+01 Armadura ancestral
+03 armadura ancestral
+#3001-3004
+01 Jaqueta
+03 jaqueta
+#3005-3009
+01 Armadura de couro
+03 armadura de couro
+#3010-3019
+01 Armadura de couro reforçada
+03 armadura de couro reforçada
+#3020-3029
+01 Cota de malha
+03 cota de malha
+#3030-3044
+01 Placa de torso
+03 placa de torso
+#3045-3060
+01 Armadura ancestral
+03 armadura ancestral
+#4453-4461
+01 Placa de torso
+03 placa de torso
+#4740
+01 Grande couraça negra
+03 grande couraça negra
+#4741
+01 Grande couraça branca
+03 Grande couraça branca
+#4750
+01 Grã Couraça Negra
+03 Grã Couraça Negra
+#4751
+01 Grã Couraça Branca
+03 Grã Couraça Branca
+#5586
+01 Jaqueta da Vilania
+03 jaqueta da Vilania
+#5587
+01 Jaqueta de couro da Vilania
+03 jaqueta de couro da Vilania
+#5588
+01 Jaqueta de rebites da Vilania
+03 jaqueta da Vilania
+#5589
+01 Malha da Vilania
+03 malha da Vilania
+#5590
+01 Meia armadura da Vilania
+03 meia armadura da Vilania
+#5591
+01 Armadura da Vilania
+03 armadura da Vilania
+#5677
+01 Jaqueta da Radiância
+03 jaqueta da Radiância
+#5678
+01 Jaqueta de couro da Radiância
+03 jaqueta da Radiância
+#5679
+01 Jaqueta de rebites da Radiância
+03 jaqueta da Radiância
+#5680
+01 Malha da Radiância
+03 malha da Radiância
+#5681
+01 Meia armadura da Radiância
+03 meia armadura da Radiância
+#5682
+01 Armadura radiante
+03 armadura radiante
+#5865
+01 Jaqueta do Segredo
+03 jaqueta do Segredo
+#5866
+01 Jaqueta de couro do Segredo
+03 jaqueta do Segredo
+#5867
+01 Jaqueta de rebites do Segredo
+03 jaqueta do Segredo
+#5868
+01 Malha do Segredo
+03 malha do Segredo
+#5869
+01 Meia armadura do Segredo
+03 meia armadura do Segredo
+#5870
+01 Armadura do Segredo
+03 armadura do Segredo
+#6083
+01 Jaqueta de Titã
+03 jaqueta de Titã
+#6084
+01 Jaqueta de couro de Titã
+03 jaqueta de Titã
+#6085
+01 Jaqueta de rebites de Titã
+03 jaqueta de Titã
+#6086
+01 Malha de Titã
+03 malha de Titã
+#6087
+01 Meia armadura de Titã
+03 meia armadura de Titã
+#6088
+01 Armadura de Titã
+03 armadura de Titã
+#6551
+01 Armadura pesada de Caliester
+03 armadura pesada de Caliester
+#6868
+01 Jaqueta da Confiabilidade
+03 jaqueta da Confiabilidade
+#6869
+01 Jaqueta de couro da Confiabilidade
+03 jaqueta da Confiabilidade
+#6870
+01 Jaqueta de rebites da Confiabilidade
+03 jaqueta da Confiabilidade
+#6871
+01 Malha da Confiabilidade
+03 malha da Confiabilidade
+#6872
+01 Meia armadura da Confiabilidade
+03 meia armadura da Confiabilidade
+#6873
+01 Armadura da Confiabilidade
+03 armadura da Confiabilidade

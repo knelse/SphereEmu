@@ -1,0 +1,84 @@
+#5510-5515
+01 Invisibility
+100 An assassin disguises himself thanks to a special guild spell, but as soon as he draws a magical weapon or cold steel, the cloak of invisibility falls off at once. 
+#5520-5525
+01 Critical strike
+100 When the moment comes, one accurate and merciless hit is needed. Assassins spend years training just this mortal hit - the secret of their school.
+#5530-5535
+01 Poison
+100 A strong poison based on cyanide and an ancient spell.
+#5620-5625
+01 Shield of prana
+100 A divine aura covers a crusader that absorbs damage using the warrior's prana.
+#5630-5635
+01 Run of time
+100 Instantaneous transition to a state when a crusader's attacks become twice as fast. Of course, it is difficult to maintain this state for a long time, so it is short-lived even with the best trained.
+#5720-5725
+01 Fetters
+100 A holy word ties up hands. As long as it is in effect, neither a sword can be raised, nor a mantra drawn. Even untying the lace of a powder bag is a beyond one's strength.
+#5730-5735
+01 Purification
+100 The higher the stage of a holy inquisitor, the stronger is his spirit. Junior orders can only relieve the burden of mutators by one or two, but the highest stage will relieve of six mutators.
+#5810-5815
+01 Squirrel's eye
+100 The strong hand and sharp eye of forest hunter are famous throughout Sphere. If they like, they can use even a usual arbalest more efficiently, boosting its destructive ability.
+#5820-5825
+01 Double bolt
+100 Only hunters contrive to use two bolts at once with a usual arbalest and not to miss!
+#5830-5835
+01 Wanderer
+100 Used to constant travels in search of prey and capable of chasing the swiftest animals, hunters, when they like, can develop a truly impressive running speed.
+#5920-5925
+01 Short sight
+100 Imposes a conjuration on the target that blurs the entire world in one's eyes. It is impossible to use one's weapons at a longer range than two meters.
+#5930-5935
+01 Curse
+100 A cursed man turns into a pig and, although the consciousness inside the animal remains unchanged, the body is in one's full control. A cursed one cannot stop their legs and use any weapon.
+#6010-6015
+01 Long sight
+100 Using a secret potion of druids, a barbarian can strike with any weapon at a range of up to thirty meters; this is in fact a telekinetic transportation of damage to the remote target.
+#6020-6025
+01 Berserker
+100 A warrior can run berserker at his own discretion. Striking destructive blows, a barbarian forgets about his own safety.
+#6030-6035
+01 Stunning
+100 One is nearly stripped of his senses. For a while, he gets blind and his hands do not obey him.
+#6110-6115
+01 Life of nature
+100 Using the wisdom of the forest, a druid knows how to extend a human's life, but he still cannot make him immortal.
+#6130-6135
+01 Metamorphosis
+100 Reiterating ancient runes to himself, a druid turns into a strong and swift wolf.
+#6220-6225
+01 Escape
+100 Clearing out is a most important point in the thief's craft.
+#6230-6235
+01 Night shadow
+100 A thief can become invisible following his prey at night, using every shadow as disguise. Buy any incautious movement can betray the thief.
+#6320-6325
+01 Kamae
+100 A state similar to trance or meditation that enables a warrior to focus on his own protection and beat off almost all hits aimed at him.
+#6410-6415
+01 Craftsmanship
+100 Using the formulas found, an armorer can make or repair any weapon if he has enough craftsmanship, of course.
+#6420-6425
+01 Escape 
+100 Craftsmen have never noted for their ability to fight, so it's better to run away, without stops, away from danger.
+#6510-6515
+01 Craftsmanship 
+100 Using the formulas and pictures found, a blacksmith can make or repair any armor or a magical robe if he has enough craftsmanship, of course.
+#6520-6525
+01 Escape 
+100 Craftsmen have never noted for their ability to fight, so it's better to run away, without stops, away from danger.
+#6610-6615
+01 Spell
+100 If a sorcerer finds the relevant formula, then he can use his knowledge in magic to render a weapon or armor special properties.
+#6620-6625
+01 Tornado
+100 To be able to hide from the attackers, a sorcerer uses the magic of thought and the target of sorcery spins around, losing control of his movements for a while.
+#6630-6635
+01 Rusty armor
+100 A practical joke on mind. The ability to charm one as if he had a rusty armor on, so he will move only sideways or forward and backward. 
+#6810-6815
+01 Raise Banner
+100 If a bandier owns a magical banner, he can render its effect to all members of his group.

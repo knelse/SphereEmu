@@ -1,0 +1,80 @@
+01 calça
+03 calça
+
+100 Proteje você contra armas inimigas durante uma batalha.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de saúde
+204 de meditação
+205 de precisão
+206 de éter
+207 de valor
+
+#373
+01 Calça
+03 calça
+#374
+01 Calça de couro
+03 calça de couro
+#375-376
+01 Calça de couro reforçada
+03 calça de couro reforçada
+#377-378
+01 Calça de correntes reforçadas
+03 calça de correntes reforçadas
+#379-381
+01 Cobertura de armadura
+03 cobertura de armadura
+#382-384
+01 Cobertura de armadura ancestral
+03 cobertura de armadura ancestral
+#3121-3122
+01 Calça
+03 calça
+#3123-3124
+01 Calça de couro
+03 calça de couro
+#3125-3128
+01 Calça de couro reforçada
+03 calça de couro reforçada
+#3129-3132
+01 Calça de correntes reforçadas
+03 calça de correntes reforçadas
+#3133-3138
+01 Cobertura de armadura
+03 cobertura de armadura
+#3139-3145
+01 Cobertura de armadura ancestral
+03 cobertura de armadura ancestral
+#4471-4479
+01 Cobertura de armadura ancestral
+03 cobertura de armadura ancestral
+#4742
+01 Cobertura de armadura preta
+03 cobertura de armadura preta
+#4743
+01 Cobertura de armadura branca
+03 cobertura de armadura branca
+#6371
+01 Pantalona de rebite de Batalha
+03 pantalona de Batalha
+#6372
+01 Pantalona de couro de Batalha
+03 pantalona de Batalha
+#6373
+01 Pantalona de rebite de Batalha
+03 pantalona de Batalha
+#6374
+01 Pantalona de malha de Batalha
+03 pantalona de Batalha
+#6375
+01 Pantalona armadurada de Batalha
+03 pantalona de Batalha
+#6376
+01 Pantalona antiga de Batalha
+03 pantalona de Batalha
+#6760
+01 Cobertura de ossos
+03 cobertura de osso

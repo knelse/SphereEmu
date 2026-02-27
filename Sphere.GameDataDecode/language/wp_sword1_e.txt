@@ -1,0 +1,346 @@
+01 Sword
+03 sword
+100 Cold steel. The power of the sword is that it hits fast, althouth not too heavily.
+
+200 of exhaustion
+201 of valor
+202 of damage
+203 of cruelty
+204 of hurry
+205 of speed
+206 of disorder
+207 of chaos
+208 of ether
+209 of fatigue
+210 of disease
+211 of instability
+212 of range
+213 of distance
+214 of decay
+215 of devastation
+216 of weakness
+217 of touch
+218 of prohibition
+219 of value
+
+#1
+01 Curved sword
+03 curved sword
+#2
+01 Saber
+03 saber
+#3
+01 Broad saber
+03 broad saber
+#4
+01 Skimitar
+03 skimitar
+#5
+01 Yataghan
+03 yataghan
+#6
+01 Katana
+03 katana
+#7
+01 Shamsher
+03 shamsher
+#8
+01 Elite saber
+03 elite saber
+#9
+01 Elite broad saber
+03 elite broad saber
+#10
+01 Elite yataghan
+03 elite yataghan
+#11
+01 Elite katana
+03 elite katana
+#12
+01 Runic saber
+03 runic saber
+#13
+01 Runic broad saber
+03 Runic broad saber
+#14
+01 Runic yataghan
+03 runic yataghan
+#15
+01 Runic katana
+03 runic katana
+#16
+01 Sesquialteral sword
+03 sesquialteral sword
+#17
+01 Two-handed sword
+03 two-handed sword
+#18
+01 Kleimor
+03 kleimor
+#19
+01 Espadon
+03 espadon
+#20
+01 Flamberg
+03 flamberg
+#21
+01 Great sword
+03 great sword
+#22
+01 Giant sword
+03 giant sword
+#23
+01 Elite two-handed sword
+03 elite two-handed sword
+#24
+01 Elite kleimor
+03 elite kleimor
+#25
+01 Elite flamberg
+03 elite flamberg
+#26
+01 Elite great sword
+03 elite great sword
+#27
+01 Runic two-handed sword
+03 runic two-handed sword
+#28
+01 Runic kleimor
+03 runic kleimor
+#29
+01 Runic flamberg
+03 runic flamberg
+#30
+01 Runic great sword
+03 runic great sword
+#31
+01 Short sword
+03 short sword
+#32
+01 Broad sword
+03 broad sword
+#33
+01 Gladius
+03 gladius
+#34
+01 Infantry sword
+03 infantry sword
+#35
+01 Long sword
+03 long sword
+#36
+01 Crystal sword
+03 crystal sword
+#37
+01 Gold sword
+03 gold sword
+#38
+01 Elite short sword
+03 elite short sword
+#39
+01 Elite gladius
+03 elite gladius
+#40
+01 Elite long sword
+03 elite long sword
+#41
+01 Elite crystal sword
+03 elite crystal sword
+#42
+01 Runic short sword
+03 runic short sword
+#43
+01 Runic gladius
+03 runic gladius
+#44
+01 Runic long sword
+03 runic long sword
+#45
+01 Runic crystal sword
+03 runic crystal sword
+#130
+01 Sword of Dragon
+03 sword of dragon
+#3251-3252
+01 Curved sword
+03 curved sword
+#3253-3254
+01 Saber
+03 saber
+#3255-3257
+01 broad saber
+03 broad saber
+#3258-3259
+01 Skimitar
+03 skimitar
+#3260-3262
+01 Yataghan
+03 yataghan
+#3263-3264
+01 Katana
+03 katana
+#3265-3269
+01 Shamsher
+03 shamsher
+#3270-3274
+01 Elite saber
+03 elite saber
+#3275-3279
+01 Elite broad saber
+03 Elite broad saber
+#3280-3284
+01 Elite yataghan
+03 elite yataghan
+#3285-3289
+01 Elite katana
+03 elite katana
+#3290-3294
+01 Runic saber
+03 runic saber
+#3295-3299
+01 Runic broad saber
+03 Runic broad saber
+#3300-3304
+01 Runic yataghan
+03 runic yataghan
+#3305-3310
+01 Runic katana
+03 runic katana
+#3311-3312
+01 Sesquialteral sword
+03 sesquialteral sword
+#3313-3314
+01 Two-handed sword
+03 two-handed sword
+#3315-3317
+01 Kleimor
+03 kleimor
+#3318-3319
+01 Espadon
+03 espadon
+#3320-3322
+01 Flamberg
+03 flamberg
+#3323-3324
+01 Great sword
+03 great sword
+#3325-3329
+01 Giant sword
+03 giant sword
+#3330-3334
+01 Elite two-handed sword
+03 elite two-handed sword
+#3335-3339
+01 Elite kleimor
+03 elite kleimor
+#3340-3344
+01 Elite flamberg
+03 elite flamberg
+#3345-3349
+01 Elite great sword
+03 elite great sword
+#3350-3354
+01 Runic two-handed sword
+03 runic two-handed sword
+#3355-3359
+01 Runic kleimor
+03 runic kleimor
+#3360-3364
+01 Runic flamberg
+03 runic flamberg
+#3365-3370
+01 Runic great sword
+03 runic great sword
+#3371-3372
+01 Short sword
+03 short sword
+#3373-3374
+01 Broad sword
+03 broad sword
+#3375-3377
+01 Gladius
+03 gladius
+#3378-3379
+01 Infantry sword
+03 infantry sword
+#3380-3382
+01 Long sword
+03 long sword
+#3383-3384
+01 Crystal sword
+03 crystal sword
+#3385-3389
+01 Gold sword
+03 gold sword
+#3390-3394
+01 Elite short sword
+03 elite short sword
+#3395-3399
+01 Elite gladius
+03 elite gladius
+#3400-3404
+01 Elite long sword
+03 elite long sword
+#3405-3409
+01 Elite crystal sword
+03 elite crystal sword
+#3410-3414
+01 Runic short sword
+03 runic short sword
+#3415-3419
+01 Runic gladius
+03 runic gladius
+#3420-3424
+01 Runic long sword
+03 runic long sword
+#3425-3430
+01 Runic crystal sword
+03 runic crystal sword
+#3431-3433
+01 Legendary katana
+03 legendary katana
+#3434-3436
+01 Ghostly katana
+03 ghostly katana
+#3437-3439
+01 Dragon's katana
+03 dragon's katana
+#3440-3442
+01 Legendary great sword
+03 legendary great sword
+#3443-3445
+01 Ghostly great sword
+03 ghostly great sword
+#3446-3448
+01 Dragon's great sword
+03 dragon's great sword
+#3449-3451
+01 Legendary crystal sword
+03 legendary crystal sword
+#3452-3454
+01 Ghostly crystal sword
+03 ghostly crystal sword
+#3455-3457
+01 Dragon's crystal sword
+03 dragon's crystal sword
+#5565-5570
+01 Dagger of murder
+03 dagger of murder
+#5683
+01 Long sword of justice
+03 sword of justice
+#5684-5686
+01 Elite sword of justice
+03 sword of justice
+#5687
+01 Big sword of justice
+03 sword of justice
+#5688
+01 Great sword of justice
+03 sword of justice
+#6071-6076
+01 Sword of enmity
+03 sword of enmity
+#6451
+01 Runic sword
+03 runic sword

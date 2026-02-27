@@ -1,0 +1,9 @@
+01 Fórmula do pó do veneno
+02 Fórmula do pó do veneno
+03 Fórmula do pó do veneno
+
+100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas.
+
+TEXT
+
+    Mágicos experientes (grau não menor que de um pupilo) deverão misturar Aquamarine, Ferengon e Ferro no pote e então adicionar pó de Amilus na mistura para se completar a reação. 

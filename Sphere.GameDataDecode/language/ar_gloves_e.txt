@@ -1,0 +1,101 @@
+01 gloves
+03 gloves
+
+100 Protect from enemy weapons in battle.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of meditation
+205 of accuracy
+206 of ether
+207 of value
+
+#325
+01 gloves
+03 gloves
+#326
+01 leather gloves
+03 leather gloves
+#327-328
+01 riveted leather gloves
+03 riveted leather gloves
+#329-330
+01 chainmail gloves
+03 chainmail gloves
+#331-333
+01 mittens
+03 mittens
+#334-336
+01 ancient mittens
+03 ancient mittens
+#3195
+01 gloves
+03 gloves
+#3196
+01 leather gloves
+03 leather gloves
+#3197-3198
+01 riveted leather gloves
+03 riveted leather gloves
+#3199-3200
+01 chainmail gloves
+03 chainmail gloves
+#3201-3203
+01 mittens
+03 mittens
+#3204-3206
+01 ancient mittens
+03 ancient mittens
+#4507-4515
+01 ancient mittens
+03 ancient mittens
+#4748
+01 Black gloves
+03 black gloves
+#4749
+01 White gloves
+03 white gloves
+#5960
+01 Gloves
+03 gloves
+#6177
+01 Gloves of wise
+03 gloves of wise
+#6178
+01 Leather gloves of wise
+03 gloves of wise
+#6179
+01 Riveted gloves of wise
+03 gloves of wise
+#6180
+01 Chainmail gloves of wise
+03 gloves of wise
+#6181
+01 Mittens of wise
+03 mittens of wise
+#6182
+01 Ancient mittens of wise
+03 ancient mittens of wise
+#6456
+01 Gloves of craftsman
+02 gloves of craftsman
+#6457
+01 Leather gloves of craftsman
+02 leather gloves of craftsman
+#6458
+01 Riveted gloves of craftsman
+02 riveted gloves of craftsman
+#6459
+01 Chainmail gloves of craftsman
+02 chainmail gloves of craftsman
+#6460
+01 Mittens of craftsman
+02 mittens of craftsman
+#6461
+01 Ancient mittens of craftsman
+02 ancient mittens of craftsman
+#6762
+01 Claws
+03 claws

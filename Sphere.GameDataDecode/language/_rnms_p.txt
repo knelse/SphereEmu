@@ -1,0 +1,1273 @@
+// noname
+FULL
+4000 George Banchrus
+4001 Samania Rolse
+4002 Hugo Bod
+4003 Susan Gold
+4004 Simon Pike
+4005 Anita Thompson
+4006 Andrew Bambch
+4007 Sola Marques
+4008 Quentin Dourboon
+4009 Seymour Botus
+4010 Sarah Bonnor
+4011 Alfred Cromwell
+4012 Dean Gabbe
+4013 Doris Nite
+4014 Samual Nectarus
+4015 George Bashner
+4016 Alma Maddox
+4017 Allan Poe
+4018 Claude Odoraux
+4019 Grace Polyanski
+4100 Jelay Baboono
+4101 John Ramino
+4102 Lion Pordell
+4103 Benjamin Simpson
+4104 Michael Beener
+4105 Scott Fugas
+4106 Jackie Fine
+4107 Bob Bonborauss
+4108 Anagorad Karathagor
+4109 Labanar Saranaman
+4110 Capo Dushandes
+4111 Iwalen Hanared
+4112 Karamil Belendo
+4113 Tenus Harbalanzo
+4114 Manokar Arabrahnar
+4115 Sandal Nagoradus
+4120 Didier Dussaque
+4121 Camilus Torogus
+4122 Jordan Basiraux
+4123 Kevin Doltere
+4124 Ramone Ganulieaux
+4125 Timothy Folaune
+4126 Ronald Bush
+4127 Seymour Heffer
+4128 Jean Fale
+4129 Bob Dooginos
+4130 Jacque Lier
+4131 Marsele Darsaux
+4132 Benedict Celvin
+4133 Paris Lemon
+4134 Luke Rouson
+4135 Charles Austin
+4136 Martha Malley
+4137 Sarah Eden
+4138 Selma Raguelle
+4139 Daisy McThaullen
+4140 Irma Talles
+4141 Jenny Baroc
+4142 Rose Clarense
+4143 Clara Rosens
+4144 Lina Parker
+4145 Kreola Aurunus
+4146 Kathrine Rochester
+4147 Sathina Magalli 
+4148 Virginia York
+4149 Gertrude Schlaussen
+4150 Tempora Tempus
+4151 Magina Lamander
+4152 Gilliome Angouch
+4153 Edwin Tearse
+4154 Lion Poddel
+4155 James Cudd 
+4156 Donal Hewbert
+4157 Elgar Papper
+4158 Emile Fewtcher
+4159 Griffin Toy
+4160 Zak Pappers
+4161 Ned Sand 
+4162 Philipp Octawelle
+4163 Shawn Pen
+4164 Lucas Archer
+4165 Michael Bore
+4168 Genewa Mallet
+4169 Deborah Onomans
+4170 Polina Gergusson
+4171 Biba Dalton
+4172 Kara Mardock
+4173 Lora Lions
+4174 Eclera Taranton
+4175 Wanda Ramones
+4176 Fabia Nandor
+4177 Isolda Rubalski
+4178 Albina Anner
+4179 Alisa Ducher
+4180 Cynthia Sammons
+4181 Terra Line
+4182 Roger Haggar
+4183 Amelia Simons
+4184 Ramina Monde
+4200 Freddie Malk
+4201 Scott Folk
+4202 Basil Noses
+4203 Jean Celvin
+4250 Pew Barnes
+4251 Luckie Magnus
+4252 Frederick Strorn
+4253 Felix Deregeneratto
+4254 Mark Zanderlos
+4255 Roy Fugandt
+4300 Edwin Feronier
+4301 John Dravor
+4302 Max Clayton
+4303 Perry Brook
+4304 Rick Barson
+4305 Ronald Armanski
+4306 Barry Thorson
+4307 Ian McMilton
+4308 Donald Sanders
+4309 Alex Ulman
+4310 Jacque Pergisson
+4311 Michael Glaymore
+4312 Daniel Kadar
+4313 Craig Denford 
+4314 Edward Cassore
+4315 Brick Lancher
+4316 Hank Elliot
+4317 Geoffrey Rider
+4318 Pierre Waidere
+4400 Even Sow
+4401 Marchan Busicko
+4402 Leslie Nolsen
+4403 Aminick Ion
+4404 Hebesh Dantar
+4405 Edgar Houverer
+4406 Damber Danadon
+4407 Eugene Zelenski
+4408 Camille Roston
+
+//новогодние квесты ---------
+4420 Дед Мороз
+4421 Дарья
+4422 Медарья
+4423 Светлана
+4424 Де Владос
+4425 Корбен Денвер
+4426 Инара Серра
+4427 Мик Ричардс
+4428 Гудвин Хьюз
+4429 Аделина Тэм
+4430 Кейли Фрай
+4431 Рик Брэнсон
+
+4432 Мэри Нокс
+4433 Билл Тернер
+4434 Линус Балмер
+4435 Элис Фурье
+4436 Мэл Рейнольдс
+4437 Клайв Рикман
+
+4439 Йоулупукки
+4440 Санта-Клаус
+4441 Дед Мороз
+4442 Шэнь Дань Лаожэнь
+//-----------------------------
+//4438 Катерина Акино
+//4439 Мина Коттон
+//4440 Лиза Симпсон
+//4441 Мелинда Хилтон
+//4442 Триша Мастерс
+
+//4425 Эпистемон Дипсод
+//4426 Рондибилис Дипсод
+//4427 Брат Жан
+//4428 Ри-Тлен
+//4429 Су-Раса
+//4430 Брат Маллет
+//4431 Брат Трантшон
+
+//4425 Джозеф Панник
+//4426 Виттео Коммоушн
+//4427 Карл Перплекстор
+//4428 Сальватор Де Жект
+//4429 Джек Айлшаттер
+
+// Февральский эвент --------------------
+//4429 Сабина Класген
+//4430 Анжела Воссов
+//4431 Дороти Сплеш
+//4432 Дарья Турумен
+//
+////4432 Мэри Нокс
+//4433 Билл Тернер
+//4434 Линус Балмер
+//4435 Элис Фурье
+//4436 Мэл Рейнольдс
+//4437 Клайв Рикман
+//4438 Катерина Акино
+//4439 Мина Коттон
+//4440 Лиза Симпсон
+//4441 Мелинда Хилтон
+//4442 Триша Мастерс
+//-----------------------------------------
+
+// Guilders of Hyperion
+4480 Bart Miller 
+4481 Chris Cross
+4482 Bread Butter 
+4483 Sharp Hunter 
+4484 Phil Oakenfield
+4485 Rave Slotter 
+4486 Irwin Netrals 
+4487 Bram Stiller 
+4488 Henry Strong 
+4489 Abraham Stair 
+4490 Roger Smith 
+4491 Art Kendalf 
+4492 Reise Corpse
+4493 Connor Guard
+
+4500 Romul Canibus
+4501 Allan Mamnock
+4502 Jerome Legare 
+4503 Godfrid Seymack
+4504 Reynold Reagan
+4505 Jabrail Damatakar
+4506 Kelvin Big
+4507 Rex Scout
+
+// Haron
+4020 Justin Leran
+4021 Ian Kadarski
+4022 Maria Fersting
+4023 Clara Rodrigues 
+4024 Nick Hudson
+4025 Mark Clayton
+4026 Dereck Areno
+4027 Josephine Lannet
+4028 Christina Stadel
+4029 Craig Dolton
+4204 Max Amon
+4205 Dylan Charanson
+4409 Crieg Darrelwood
+4410 Emil Cartone
+4411 George Sarmaran
+4412 Bennet McFransen
+4030 Jacque Peltier
+4031 John Horman
+4032 Erik Rott
+4033 Gloria Asteran 
+4034 Elma Carensen
+4035 Nancy Emerald
+4036 Jacqueline Demerte
+4037 Olivia Teren
+4038 Deborah McLane 
+4039 David Katarski
+4040 Lee Young
+4041 Neal Tarant
+4185 Benaradin Marakantar
+4186 Abdul Alibandan
+// Castles of Haron
+4319 Maximilian Fenite
+4320 Arthur Guard
+4321 Mark Rush
+4322 Gerhard Shaderman
+4323 Nard Garas
+4324 Bennet Dean
+4325 Rease Derbie
+4326 Austin Valec
+4327 Jeff Kirk
+4328 Klaus Fennel
+// Phoebe
+4042 Paul McLeod
+4043 Mac Holhanonger 
+4044 Sarah Obolenski
+4045 Maya Ioious 
+4046 Ben Mamuba 
+4047 Emil Kloze 
+4048 Abraham Magnus
+4048 Lei Purchard 
+4049 Camilla Gardensen 
+4050 Silia Maiton 
+4051 Robert Borbes 
+4052 James Poisson
+4053 Della Worovski 
+4054 Nelly Materson
+4206 Edmund Enveld
+// Phoebe officers 
+4413 Saul Kenzer 
+4414 Ram Pengo
+4415 Olaf Justawson
+4416 Jacques Lavezie
+// Phoebe castles 
+4329 Orkus Mantoblas
+4330 Newbus Mantoblas
+4331 Hai Mantoblas
+
+// Rodos
+4049 Jean Poulier
+4055 Yogard Rod
+4056 Neil Pupinsky
+4057 Clarissa Samsonson
+4058 Vanessa Lamanenkene
+4059 Samuel Uikayuk
+4060 Darth Vedernis
+4061 Irida Keylock
+4062 Jessica Fitneleine
+4063 Elemir Bacherus
+
+4207 Ungart Bact
+
+// Организаторы турнира
+4390 Кларк Хамметт
+4391 Ларс Зульрих
+4392 Джеймс Хэтбилд
+4393 Клифф Бимтон
+
+// officers of Rodos
+4417 Lukias Amonos
+4418 Pelepos Radokis
+4419 Mikus Galaktos
+// castles of Rodos
+4332 Gleb Ukupsky
+4333 Martin Heep
+4334 Eugene Bebey
+4335 Gabriel Lem
+4336 Seimur Yodanus
+
+// Guilders of Rodos
+4460 Gart Siller
+4461 Glenn Bloss
+4462 Craig Nutter
+4463 Tun Kutcher
+4464 Bill Ouznomord
+4465 Phil Plucker
+4466 Joshua Helter
+4467 Dam Krukker
+4468 Shawn Smart
+4469 Bab Hmaris
+4470 Benjamin Gubien
+4471 Kunst Magirer
+4472 Chuck Lloyd
+4473 David Common
+
+// event questman :)
+
+4599 Breonar
+
+
+// Торговцы жетонами
+4066 Адам Парски
+4067 Дейв Лампардо
+
+// names & surnames
+MALE
+Coridon
+Abraham
+Achilles
+Adelbert
+Balthazar
+Coleman
+Amon 
+Alan
+Alarick
+Alban
+Albin
+Alden
+Aldis
+Auldrich
+Elphie
+Alfred
+Alger
+Allan
+Alistair
+Almerick
+Almon
+Alvar
+Alwin
+Angus
+Ansel
+Anthony
+Archibald
+Armin
+Arthur
+Ashley
+Atwood
+Augustus
+Austin
+Axl
+Amer
+Banchroft
+Bernard
+Barnet
+Barret
+Bart
+Bartley
+Baxter
+Benedict
+Bernard
+Berthold
+Berthram
+Bill
+Bonar
+Boyd
+Brandon
+Bret
+Brian
+Brice
+Brute
+Cadel
+Cadogan
+Ceasar
+Calderon
+Caleb
+Celvin
+Cameron
+Caradoch
+Carlisle
+Carmichael
+Casper
+Castor
+Cavan
+Cedric
+Cesar
+Charles
+Chester
+Chris
+Chrismas
+Christopher
+Clarence
+Clark
+Claude
+Clemm
+Clemence
+Clement
+Clint
+Clive
+Clovis
+Clyde
+Colin
+Connor
+Cormach
+Count
+Craig
+Crawford
+Chrispin
+Curtis
+Calver
+Cyprian
+Cyrill
+Cyrus
+Dagobert
+Dolton
+Daemon
+Daniel
+Darold
+Darrel
+David
+Dekker
+Densil
+Dereck
+Dermot
+Dexter
+Dillon
+Diluin
+Dobbin
+Dowd
+Donald
+Donat
+Donovan
+Doran
+Dougal
+Douglas
+Dwayne
+Duke
+Duncan
+Dylan
+Edmond
+Edmund
+Edwin
+Egbert
+Eldwin
+Elgar
+Eliot
+Elmor
+Elwin
+Emil
+Emlin
+Emris
+Esmond
+Eugene
+Evander
+Fergus
+Ferdinand
+Finley
+Flint
+Floyd
+Forest
+Frank
+Frederick
+Fulcher
+Galahad
+Gerard
+Garet
+Garth
+Gavin
+Geoffrey
+George
+Gerint
+Gerald
+Gervas
+Gilbert
+Giles
+Gilmour
+Gilroy
+Godfrie
+Godwin
+Grant
+Gregory
+Griffin
+Gustav
+Heimish
+Hamlin
+Hammond
+Hank
+Harlan
+Harvey
+Jam
+Havlock
+Heiden
+Hastings
+Homer
+Hope
+Hewbert
+Hambert
+Hampfrie
+Idris
+Ivor
+Ingram
+Isador
+Jacob
+James
+Jayfet
+Jared
+Jason
+Utred
+Vier
+Vergill
+Walter
+Wilford
+William
+Zak
+Ned
+Noble
+Nigel
+Norman
+Norris
+Ogden
+Orson
+Orwal
+Oswald
+Owen
+Patrick
+Paul
+Pelem
+Pilgrim
+Peter
+Philim
+Philipp
+Phibus
+Pearse
+Quentin
+Rand
+Rasmus
+Raymond
+Richard
+Robert
+Roger
+Romeo
+Rawrie
+Russell
+Sinclaire
+Siward
+Seymour
+Shawn
+Silwan
+Simon
+Stan
+Steven
+Tolbot
+Tankred
+Taylor
+Terence
+Theodore
+Thiron
+Thimothy
+Todd
+Travis
+Trent
+Troy
+Trout
+Jermin
+Joe
+Jobe
+Jodie
+Joseph
+Josh
+Justin
+Cane
+Celvin
+Kendrick
+Kenneth
+Kent
+Craig
+Lochlan
+Lambert
+Lawrence
+Ledger
+Leroy
+Lloyd
+Louis
+Lucas
+Luther
+Mac
+Mal
+Malcolm
+Mark
+Merion
+Martin
+Marwin
+Mathew
+Matt
+Max
+Meynard
+Mick
+Miles
+Mitchell
+Morgan
+Mort
+Michael
+Murdock
+Nathan
+Nate
+Niel
+Herman
+France
+Rudolf
+Klaus
+Mattheus 
+Gottlob
+
+FEMALE
+Adalene
+Belinda
+Romina
+Sandy
+Margareth
+Ginger
+Donna
+Carla
+Emilie
+Akilla
+Adalene
+Adeline
+Agatha
+Agness
+Alithea
+Alexia
+Alicia
+Alma
+Almida
+Amabelle
+Amalia
+Amanda
+Annabelle
+Andrina
+Anita
+Athina
+Barbara
+Bettie
+Beatrice
+Bertha
+Berril
+Brenda
+Briggite
+Cylia
+Camilla
+Carlin
+Carol
+Cassandra
+Caris
+Charlotte
+Cherril
+Claire
+Claribelle
+Clarinda
+Cobina
+Colette
+Cornelia
+Daisy
+Darla
+Deborah
+Dessima
+Didra
+Dlilah
+Dolores
+Denise
+Dittany
+Doris
+Dorothy
+Ester
+Edith
+Eleanore
+Elfine
+Elfrid
+Elma
+Erasma
+Ermina
+Esther
+Euphane
+Evlin
+Fabia
+Fiona
+Flora
+Frida
+Galathea
+Garnet
+Gladis
+Gloria
+Isolda
+Golda
+Jade
+Grace
+Grissel
+Heder
+Janet
+Janine
+Hidie
+Helen
+Hillary
+Ilina
+Ilma
+Ingrid
+Isabelle
+Melrose
+Mearl
+Mirabelle
+Monica
+Nancy
+Nesta
+Norin
+Olivia
+Una
+Pamela
+Paula
+Poline
+Pearl
+Persis
+Phillis
+Reigal
+Rebecca
+Rhode
+Robina
+Rosabelle
+Rosanna
+Roxana
+Sabina
+Salva
+Samantha
+Scarlet
+Selina
+Jewel
+Jill
+Joanna
+Jolin
+Judith
+Kara
+Kate
+Kathlin
+Katie
+Kelly
+Kim
+Kristine
+Leina
+Lorin
+Lia
+Lila
+Lilly
+Laida
+Lillian
+Linda
+Lorna
+Lorane
+Luisa
+Lucia
+Mable
+May
+Maggie
+Marge
+Marta
+Matilda
+Megan
+Vesta
+Vida
+Witney
+Sharlin
+Sheila
+Sibyl
+Sindy
+Sophia
+Steffanie
+Stella
+Susan
+Talaya
+Thelma
+Tracy
+Welma
+
+SURNAME
+Roy
+McPerson
+Mortimer
+Helwig
+Baley
+Elliot
+Frempton
+Granwill
+Vernon
+Carlton
+Stansfield
+Branigen
+Clayton
+Olston
+Appleton
+Barkley
+Barlowe
+Badford
+Benton
+Barkley
+Blane
+Brent
+Brewer
+Brok
+Brooks
+Colvert
+Carter
+Charletone
+Clayton
+Clifford
+Clifton
+Coleman
+Convey
+Corbett
+Dallas
+Dale
+Davis
+Delmar
+Denton
+Desmont
+Dadley
+Edson
+Egerton
+Eldon
+Ellsewert
+Elwood
+Emerson
+Emmeth
+Farley
+Farman
+Fletcher
+Foster
+Freeman
+Rush
+Rayan
+Sandford
+Saxon
+Sheldon
+Sheppard
+Sheridan
+Sherman
+Sherwood
+Spenser
+Stafford
+Stanley
+Samper
+Torp
+Terman
+Walford
+Apton
+Vernon
+Wayde
+Gale
+Gardiner
+Garfield
+Garlend
+Gifford
+Glenn
+Gordon
+Shawer
+Grady
+Graham
+Green
+Grenwill
+Glower
+Headley
+Holden
+Harcort
+Hardey
+Harlowe
+Harmon
+Harris
+Hartley
+Haley
+Hitcote
+Heywood
+Hollend
+Hudson
+Hayman
+Hunter
+Jefferson
+Jedson
+Kendall
+Kenton
+Kimberly
+Kerbie
+Lane
+Leyton
+Monroe
+Morton
+Moonroe
+Nelson
+Neville
+Niles
+Oakley
+Palmer
+Parker
+Penrose
+Peytone
+Porter
+Prentis
+Radford
+Rolston
+Riley
+Royce
+Lennox
+Leslie
+Lester
+Linwood
+Logan
+Lowell
+Lyle
+Layman
+Lindon
+Maddison
+Mansel
+Marlowe
+Mason
+Melvin
+Milbern
+Milford
+Milton
+Johen
+Heller
+Shneck
+Heinz
+Wairich
+Shoric
+Brenner
+Coywer
+Veitz
+Schaube
+Steizen
+Bachman
+Viez
+Hansen
+Verner
+
+MNS1
+Ad
+Ach
+Ab
+Abr
+Adr
+Ag
+B
+Br
+Bl
+Bod
+Berr
+Bor
+Bach
+Bin
+Bed
+Blud
+Byd
+Byk
+V
+Vr
+Vl
+Vad
+Vach
+Wook
+Vez
+Vich
+Vz
+G
+Gr
+Gl
+Gn
+Gad
+Guj
+Geb
+Gip
+Dous
+Ded
+Dyr
+Ien
+Iech
+J
+Zhr
+Zhl
+Jock
+Jas
+Z
+Zr
+Zd
+Zed
+Zuch
+Id
+Ir
+K
+Cl
+Cr
+Cod
+Keb
+L
+Lech
+Lutz
+Lyad
+M
+Mr
+Much
+Ml
+Mesh
+N
+Ned
+Noob
+Nez
+Ob
+Och
+Ord
+P
+Pr
+Pl
+Pud
+Pav
+Plev
+Pren
+R
+Rud
+Rej
+Raz
+S
+Sk
+St
+Sl
+Sad
+Soj
+T
+Tr
+Took
+Tab
+Tal
+Tech
+Terr
+Uch
+Uj
+Ur
+Urd
+Urb
+Ud
+Ub
+F
+Fr
+Fl
+Fud
+Fyr
+Ch
+Cham
+Chr
+Chl
+Hud
+Hed
+Khrin
+Khris
+Hreb
+Khlyad
+Zep
+Zan
+Zyr
+Zug
+Zen
+Zar
+Ch
+Ched
+Chm
+Chos
+Choh
+Sh
+Shr
+Shl
+Shah
+Shub
+Sheck
+Shum
+Shib
+Ech
+Ed
+Yuz
+Yub
+Yug
+Yakh
+Yad
+Yag
+Yab
+
+MNS2
+a
+ara
+aba
+asa
+aga
+age
+ale
+aze
+adu
+adi
+aka
+alo
+ado
+ako
+adre
+ante
+anto
+abro
+e
+eda
+ene
+ele
+eka
+eso
+epo
+i
+ile
+iba
+idro
+ilo
+ime
+ivo
+ibe
+o
+oba
+obe
+obo
+orcha
+orde
+osa
+one
+orka
+ove
+ode
+oda
+u
+uka
+ubra
+uni
+udo
+uho
+usko
+uzo
+uzle
+uvo
+uva
+uda
+udo
+
+MNS3
+b
+bei
+bosh
+bush
+v
+v
+v
+vr
+var
+ver
+van
+val
+vesh
+g
+gr
+gad
+gem
+gesh
+gum
+d
+dr
+dob
+dor
+dach
+l
+lak
+log
+lesh
+lep
+les
+los
+lag
+lab
+luk
+lut
+lis
+lip
+lid
+link
+lank
+lung
+lei
+lay
+m
+mac
+mal
+mas
+mark
+malc
+mesh
+mes
+mel
+mouk
+mush
+munk
+monk
+mork
+molk
+moy
+may
+n
+nal
+nas
+navk
+naik
+nei
+neb
+p
+por
+pek
+pei
+pes
+r
+rg
+s
+t
+ter
+tor
+tab
+tush
+ch
+chr
+char
+chl
+sh

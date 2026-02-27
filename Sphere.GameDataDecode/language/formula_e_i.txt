@@ -1,0 +1,9 @@
+01 Formula
+02 formula
+03 formula
+
+100 Formula della gilda degli stregoni
+
+10000 Questa formula (se applicata da uno stregone di uno stadio non inferiore a %z1) infonde ad uno dei seguenti oggetti proprietà magiche: %l1 La reazione richiede %a1.
+10001 Questa formula (se applicata da uno stregone di uno stadio non inferiore a %z1) infonde ad uno dei seguenti oggetti proprietà magiche: %l1 La reazione richiede %a1 e %a2.
+10002 Questa formula (se applicata da uno stregone di uno stadio non inferiore a %z1) infonde ad uno dei seguenti oggetti proprietà magiche: %l1 La reazione richiede %a1, %a2 e %a3.

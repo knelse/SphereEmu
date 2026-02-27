@@ -1,0 +1,9 @@
+01 Formula
+02 formula
+03 formula
+
+100 Formula della gilda degli armaioli
+
+10000 Utilizzando questa formula guadagni %r1. Questo richiede %a1, e lo stadio nella gilda degli armaioli deve essere almeno %z1.
+10001 Utilizzando questa formula guadagni %r1. Questo richiede %a1 e %a2, e lo stadio nella gilda degli armaioli deve essere almeno %z1.
+10002 Utilizzando questa formula guadagni %r1. Questo richiede %a1, %a2 e %a3, e lo stadio nella gilda degli armaioli deve essere almeno %z1.

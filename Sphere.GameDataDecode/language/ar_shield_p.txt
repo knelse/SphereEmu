@@ -1,0 +1,130 @@
+01 Escudo de madeira
+03 Escudo de madeira
+
+200 de valor
+201 de durabilidade
+202 de absorção
+203 de reflexão
+204 de proteção
+205 de invencibilidade
+206 de saúde
+207 de vida
+208 de meditação
+209 de prana
+210 de poder
+211 de habilidade
+212 de grandeza
+213 de concentração
+214 de terra
+215 de água
+216 de ar
+217 de fogo
+218 de elementos
+219 de valor
+220 de força
+221 de habilidade
+222 de grandeza 
+223 de concentração 
+224 de integridade
+225 de elementos
+226 de elementos
+
+#313
+01 escudo de madeira
+03 escudo de madeira
+#314-316
+01 escudo grande
+03 escudo grande
+#317-319
+01 escudo de madeira com anel de ferro
+03 escudo de madeira com anel de ferro 
+#320-322
+01 escudo grande com anel de ferro
+03 escudo grande com anel de ferro
+#323-324
+01 escudo de ferro
+03 escudo de ferro
+#3061-3064
+01 escudo de madeira
+03 escudo de madeira
+#3065-3079
+01 escudo grande
+03 escudo grande
+#3080-3094
+01 escudo de madeira com anel de ferro 
+03 escudo de madeira com anel de ferro 
+#3095-3109
+01 escudo grande com anel de ferro
+03 escudo grande com anel de ferro
+#3110-3120
+01 escudo de ferro
+03 escudo de ferro
+#4462-4470
+01 escudo de ferro
+03 escudo de ferro
+#5871-5876
+01 Escudo de Caça
+03 escudo de Caça
+#6386-6388
+01 Áspide
+03 Áspide 
+#6389
+01 Broquel de Ferro
+03 broquel
+#6390
+01 Broquel de Aço
+03 broquel
+#6391
+01 Grão broquel
+03 broquel
+#6470
+01 Escudo de madeira do Longevidade
+03 escudo da Longevidade
+#6471
+01 Escudo grande da Longevidade
+03 escudo da Longevidade
+#6472
+01 Escudo híbrido da Longevidade
+03 escudo da Longevidade
+#6473
+01 Grande escudo híbrido da Longevidade
+03 escudo da Longevidade
+#6474
+01 Escudo de ferro da Longevidade
+03 escudo da Longevidade
+#6475
+01 Escudo antigo da Longevidade
+03 escudo da Longevidade
+#6559
+01 Escudo de madeira do Ferreiro
+03 escudo do Ferreiro
+#6560
+01 Escudo grande do Ferreiro
+03 escudo do Ferreiro
+#6561-6562
+01 Escudo híbrido do Ferreiro
+03 escudo do Ferreiro
+#6563
+01 Escudo de ferro do Ferreiro
+03 escudo do Ferreiro
+#6564
+01 Escudo antigo do Ferreiro
+03 escudo do Ferreiro
+#6660
+01 Escudo de madeira encantado
+03 escudo encantando
+#6661
+01 Grande escudo encantado
+03 escudo encantando
+#6662-6663
+01 Escudo híbrido encantado
+03 escudo encantando
+#6664
+01 Escudo de ferro encantado
+03 escudo encantando
+#6665
+01 Escudo antigo encantado
+03 escudo encantando
+#6756
+01 Escudo de ossos
+03 escudo de ossos

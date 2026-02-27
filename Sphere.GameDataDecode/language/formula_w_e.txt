@@ -1,0 +1,9 @@
+01 Formula
+02 formula
+03 formula
+
+100 Formula of armorers guild 
+
+10000 Using this formula you can get %r1. This requires %a1, and the stage in the armorers guild must be at least %z1.
+10001 Using this formula you can get %r1. This requires %a1 and %a2, and the stage in the armorers guild must be at least %z1.
+10002 Using this formula you can get %r1. This requires %a1, %a2 and %a3, and the stage in the armorers guild must be at least %z1.

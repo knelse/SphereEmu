@@ -1,0 +1,134 @@
+01 Belt
+03 Belt
+
+100 Protects from enemy weapons in battle.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of health
+204 of meditation
+205 of accuracy
+206 of ether
+207 of value
+
+#349
+01 girdle
+03 girdle
+#350
+01 leather belt
+03 leather belt
+#351-352
+01 riveted leather belt
+03 riveted leather belt
+#353-354
+01 chainmail belt
+03 chainmail belt
+#355-357
+01 iron belt
+03 iron belt
+#358-360
+01 ancient iron belt
+03 ancient iron belt
+#3171
+01 girdle
+03 girdle
+#3172
+01 leather belt
+03 leather belt
+#3173-3174
+01 riveted leather belt
+03 riveted leather belt
+#3175-3176
+01 chainmail belt
+03 chainmail belt
+#3177-3179
+01 iron belt
+03 iron belt
+#3180-3182
+01 ancient iron belt
+03 ancient iron belt
+#4489-4497
+01 ancient iron belt
+03 ancient iron belt
+#5665
+01 Belt of courage
+03 belt of courage
+#5666
+01 Leather belt of courage
+03 belt of courage
+#5667
+01 Riveted belt of courage
+03 belt of courage
+#5668
+01 Chainmail belt of courage
+03 belt of courage
+#5669
+01 Iron belt of courage
+03 belt of courage
+#5670
+01 Ancient belt of courage
+03 belt of courage
+#5777
+01 Belt of Tribunal
+03 belt of Tribunal
+#5778
+01 Leather belt of Tribunal
+03 belt of Tribunal
+#5779
+01 Riveted belt of Tribunal
+03 belt of Tribunal
+#5780
+01 Chainmail belt of Tribunal
+03 belt of Tribunal
+#5781
+01 Iron belt of Tribunal
+03 belt of Tribunal
+#5782
+01 Ancient belt of Tribunal
+03 belt of Tribunal
+#5962
+01 Belt
+03 belt
+#6077
+01 Belt of Titan
+03 belt of Titan
+#6078
+01 Leather belt of Titan
+03 belt of Titan
+#6079
+01 Riveted belt of Titan
+03 belt of Titan
+#6080
+01 Chainmail belt of Titan
+03 belt of Titan
+#6081
+01 Iron belt of Titan
+03 belt of Titan
+#6082
+01 Ancient belt of Titan
+03 belt of Titan
+#6476
+01 Belt of longevity
+03 belt of longevity
+#6477
+01 Leather belt of longevity
+03 belt of longevity
+#6478
+01 Riveted belt of longevity
+03 belt of longevity
+#6479
+01 Chainmail belt of longevity
+03 belt of longevity
+#6480
+01 Iron belt of longevity
+03 belt of longevity
+#6481
+01 Ancient belt of longevity
+03 belt of longevity
+#6657
+01 Belt of lightness
+03 belt of lightness
+#6758
+01 Swamp belt
+03 swamp belt

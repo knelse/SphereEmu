@@ -1,0 +1,11 @@
+01 Great alchemic pot
+03 Great alchemic pot
+10 To use put the pot on the ground.
+11 Reaction impossible:
+12 prana<%d
+13 earth<%d
+14 air<%d
+15 water<%d
+16 fire<%d
+
+100 The great alchemic pot allows to weld two times more powders than the usual one. The history of an alchemic pot dates back to 1008 when Amilus - the court mage of King Valentine - made the first sample. Before the invention of the pot, the magi used huge alchemic furnaces that occupied whole houses. The pot on the other hand allowed to make the majority of necessary alchemic transformations so to say "in the field". Only those complex and expensive reactions still required the use of alchemic furnaces. For many centuries the art of furnace-making was gradually lost and the number of operable furnaces was reducing due to wars and cataclisms.  The Sphere of today does not know any working furnaces. Should somebody find one, he or she will be able to accomplish some very rare and valuable transformations.

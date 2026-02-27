@@ -1,0 +1,130 @@
+01 Wooden shield
+03 Wooden shield
+
+200 of valour
+201 of durability
+202 of absorption
+203 of deflection
+204 of protection
+205 of invincibility
+206 of health
+207 of life
+208 of meditation
+209 of prana
+210 of power
+211 of dexterity
+212 of greatness
+213 of concentration
+214 of earth
+215 of water
+216 of air
+217 of fire
+218 of elements
+219 of value
+220 of strength
+221 of dexterity
+222 of greatness
+223 of concentration
+224 of integrity
+225 of elements
+226 of elements
+
+#313
+01 wooden shield
+03 wooden shield
+#314-316
+01 great shield
+03 great shield
+#317-319
+01 iron-bound wooden shield
+03 iron-bound wooden shield
+#320-322
+01 iron-bound great shield
+03 iron-bound great shield
+#323-324
+01 iron shield
+03 iron shield
+#3061-3064
+01 wooden shield
+03 wooden shield
+#3065-3079
+01 great shield
+03 great shield
+#3080-3094
+01 iron-bound wooden shield
+03 iron-bound wooden shield
+#3095-3109
+01 iron-bound great shield
+03 iron-bound great shield
+#3110-3120
+01 iron shield
+03 iron shield
+#4462-4470
+01 iron shield
+03 iron shield
+#5871-5876
+01 Shield of hunter
+03 shield of hunter
+#6386-6388
+01 Aspis
+03 aspis
+#6389
+01 Iron Aspis
+03 aspis
+#6390
+01 Steel Aspis
+03 aspis
+#6391
+01 Great Aspis
+03 aspis
+#6470
+01 Wooden shield of longevity
+03 shield of longevity
+#6471
+01 Big shield of longevity
+03 shield of longevity
+#6472
+01 Iron-bound wooden shield of longevity
+03 shield of longevity
+#6473
+01 Iron-bound big shield of longevity
+03 shield of longevity
+#6474
+01 Iron shield of longevity
+03 shield of longevity
+#6475
+01 Ancient shield of longevity
+03 shield of longevity
+#6559
+01 Wooden blacksmithing shield
+03 blacksmithing shield
+#6560
+01 Big blacksmithing shield
+03 blacksmithing shield
+#6561-6562
+01 Iron-bound blacksmithing shield
+03 blacksmithing shield
+#6563
+01 Iron blacksmithing shield
+03 blacksmithing shield
+#6564
+01 Ancient blacksmithing shield
+03 blacksmithing shield
+#6660
+01 Wooden enchanted shield
+03 enchanted shield
+#6661
+01 Big enchanted shield
+03 enchanted shield
+#6662-6663
+01 Iron-bound enchanted shield
+03 enchanted shield
+#6664
+01 Iron enchanted shield
+03 enchanted shield
+#6665
+01 Ancient enchanted shield
+03 enchanted shield
+#6756
+01 Bone shield
+03 bone shield

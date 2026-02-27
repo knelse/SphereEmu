@@ -1,0 +1,9 @@
+01 Fórmula
+02 fórmula
+03 fórmula
+
+100 Fórmula de reparos da organização dos armeiros 
+
+10000 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador da organização dos armeiros deve ser de pelo menos %z1. Reparo requer %a1.            
+10001 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador da organização dos armeiros deve ser de pelo menos %z1. Reparo requer %a1 e %a2.     
+10002 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador da organização dos armeiros deve ser de pelo menos %z1. Reparo requer %a1, %a2 e %a3.

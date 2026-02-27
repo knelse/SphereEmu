@@ -1,0 +1,346 @@
+01 Spada
+03 Spada
+100 Acciaio freddo. Il vantaggio di brandire una spada risiede nella velocità di colpire, sebbene non sia un colpo molto forte.
+
+200 dello sfinimento
+201 dell'ardore
+202 del danno
+203 della crudeltà
+204 della furia
+205 della velocità
+206 del disordine
+207 del chaos
+208 dell'etere
+209 della stanchezza
+210 della malattia
+211 dell'instabilità
+212 dell'estensione
+213 della lontananza
+214 del decadimento
+215 della devatazione
+216 della debolezza
+217 del tocco
+218 della proibizione
+219 della stima
+
+#1
+01 Spada curva
+03 spada curva
+#2
+01 Sciabola
+03 sciabola
+#3
+01 Sciabola lunga
+03 sciabola lunga
+#4
+01 Scimitarra
+03 scimitarra
+#5
+01 Yatagan
+03 yatagan
+#6
+01 Katana
+03 katana
+#7
+01 Scimitarra
+03 scimitarra
+#8
+01 Sciabola d'elite
+03 sciabola d'elite
+#9
+01 Sciabola lunga d'elite
+03 sciabola lunga d'elite
+#10
+01 Yatagan d'elite
+03 yatagan d'elite
+#11
+01 Katana d'elite
+03 katana d'elite
+#12
+01 Sciabola runica
+03 sciabola runica
+#13
+01 Sciabola lunga runica
+03 sciabola lunga runica
+#14
+01 Yatagan runico
+03 yatagan runico
+#15
+01 Katana runica
+03 katana runica
+#16
+01 Sesquialteral sword
+03 sesquialteral sword
+#17
+01 Spada a due mani
+03 spada a due mani
+#18
+01 Claymore
+03 claymore
+#19
+01 Spadone
+03 spadone
+#20
+01 Flamberga
+03 flamberga
+#21
+01 Spada grande
+03 spada grande
+#22
+01 Spada grande
+03 spada grande
+#23
+01 Spada a due mani d'elite
+03 spada a due mani d'elite
+#24
+01 Claymore d'elite
+03 claymore d'elite
+#25
+01 Flamberga d'elite
+03 flamberga d'elite
+#26
+01 Spada grande d'elite
+03 spada grande d'elite
+#27
+01 Spada a due mani runica
+03 spada a due mani runica
+#28
+01 Claymore runica
+03 claymore runica
+#29
+01 Flamberga runica
+03 flamberga runica
+#30
+01 Spada grande runica
+03 spada grande runica
+#31
+01 Spada corta
+03 spada corta
+#32
+01 Spada lunga
+03 spada lunga
+#33
+01 Gladio
+03 gladio
+#34
+01 Spada da fanteria 
+03 spada da fanteria 
+#35
+01 Spada lunga
+03 spada lunga
+#36
+01 Spada di cristallo
+03 spada di cristallo
+#37
+01 Spada dorata
+03 spada dorata
+#38
+01 Spada corta d'elite
+03 spada corta d'elite
+#39
+01 Gladio d'elite
+03 gladio d'elite
+#40
+01 Spada lunga d'elite
+03 spada lunga d'elite
+#41
+01 Spada di cristallo d'elite
+03 spada di cristallo d'elite
+#42
+01 Spada corta runica
+03 spada corta runica
+#43
+01 Gladio runico
+03 gladio runico
+#44
+01 Spada lunga runica
+03 spada lunga runica
+#45
+01 Spada di cristallo runica
+03 spada di cristallo runica
+#130
+01 Spada del Drago
+03 spada del Drago
+#3251-3252
+01 Spada curva
+03 spada curva
+#3253-3254
+01 Sciabola
+03 sciabola
+#3255-3257
+01 Sciabola lunga
+03 sciabola lunga
+#3258-3259
+01 Scimitarra
+03 scimitarra
+#3260-3262
+01 Yatagan
+03 yatagan
+#3263-3264
+01 Katana
+03 katana
+#3265-3269
+01 Scimitarra
+03 scimitarra
+#3270-3274
+01 Sciabola d'elite
+03 sciabola d'elite
+#3275-3279
+01 Sciabola lunga d'elite
+03 sciabola lunga d'elite
+#3280-3284
+01 Yatagan d'elite
+03 yatagan d'elite
+#3285-3289
+01 Katana d'elite
+03 katana d'elite
+#3290-3294
+01 Sciabola runica
+03 sciabola runica
+#3295-3299
+01 Sciabola lunga runica
+03 sciabola lunga runica
+#3300-3304
+01 Yatagan runico
+03 yatagan runico
+#3305-3310
+01 Katana runica
+03 katana runica
+#3311-3312
+01 Sesquialteral sword
+03 sesquialteral sword
+#3313-3314
+01 Spada a due mani
+03 spada a due mani
+#3315-3317
+01 Claymore
+03 claymore
+#3318-3319
+01 Spadone
+03 spadone
+#3320-3322
+01 Flamberga
+03 flamberga
+#3323-3324
+01 Spada grande
+03 spada grande
+#3325-3329
+01 Spada grande
+03 spada grande
+#3330-3334
+01 Spada a due mani d'elite
+03 spada a due mani d'elite
+#3335-3339
+01 Claymore d'elite
+03 claymore d'elite
+#3340-3344
+01 Flamberga d'elite
+03 flamberga d'elite
+#3345-3349
+01 Spada grande d'elite
+03 spada grande d'elite
+#3350-3354
+01 Spada a due mani runica
+03 spada a due mani runica
+#3355-3359
+01 Claymore runica
+03 claymore runica
+#3360-3364
+01 Flamberga runica
+03 flamberga runica
+#3365-3370
+01 Spada grande runica
+03 spada grande runica
+#3371-3372
+01 Spada corta
+03 spada corta
+#3373-3374
+01 Spada lunga
+03 spada lunga
+#3375-3377
+01 Gladio
+03 gladio
+#3378-3379
+01 Spada da fanteria 
+03 spada da fanteria 
+#3380-3382
+01 Spada lunga
+03 spada lunga
+#3383-3384
+01 Spada di cristallo
+03 spada di cristallo
+#3385-3389
+01 Spada dorata
+03 spada dorata
+#3390-3394
+01 Spada corta d'elite
+03 spada corta d'elite
+#3395-3399
+01 Gladio d'elite
+03 gladio d'elite
+#3400-3404
+01 Spada lunga d'elite
+03 spada lunga d'elite
+#3405-3409
+01 Spada di cristallo d'elite
+03 spada di cristallo d'elite
+#3410-3414
+01 Spada corta runica
+03 spada corta runica
+#3415-3419
+01 Gladio runico
+03 gladio runico
+#3420-3424
+01 Spada lunga runica
+03 spada lunga runica
+#3425-3430
+01 Spada di cristallo runica
+03 spada di cristallo runica
+#3431-3433
+01 Katana leggendaria
+03 katana leggendaria
+#3434-3436
+01 Katana fantasma
+03 katana fantasma
+#3437-3439
+01 Katana del drago
+03 katana del drago
+#3440-3442
+01 Spada grande leggendaria
+03 spada grande leggendaria
+#3443-3445
+01 Spada grande fantasma
+03 spada grande fantasma
+#3446-3448
+01 Spada grande del drago
+03 spada grande del drago
+#3449-3451
+01 Spada di cristallo leggendaria
+03 spada di cristallo leggendaria
+#3452-3454
+01 Spada di cristallo fantasma
+03 spada di cristallo fantasma
+#3455-3457
+01 Spada di cristallo del drago
+03 spada di cristallo del drago
+#5565-5570
+01 Daga dell'assassinio
+03 daga dell'assassinio
+#5683
+01 Spada lunga della giustizia
+03 spada della giustizia
+#5684-5686
+01 Spada della giustizia d'elite
+03 spada della giustizia
+#5687
+01 Spada grande della giustizia
+03 spada della giustizia
+#5688
+01 Spada grande della giustizia
+03 spada della giustizia
+#6071-6076
+01 Spada dell'odio
+03 spada dell'odio
+#6451
+01 Spada runica
+03 spada runica

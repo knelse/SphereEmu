@@ -1,0 +1,69 @@
+01 anel
+03 anel
+
+100 Peça preciosa. Pode elevar o poder de magia do jogador. Se os anéis pudessem falar, eles teriam contado muitas histórias interessantes sobre seus donos anteriores. Historias conhecidas de pessoas que estavam preparadas para pagar um elevado preço pelo poder que o anel pode oferecer.
+
+200 de durabilidade
+201 de absorção
+202 de proteção
+203 de saúde
+204 de vida
+205 de meditação
+206 de prana
+207 de éter
+208 de precisão
+209 de força
+210 de habilidade
+211 de precisão
+212 de resistência
+213 de terra
+214 de água
+215 de ar
+216 de fogo
+217 de valor
+
+#425-448
+01 Anel
+03 anel
+#4047-4166
+01 Anel
+03 anel
+#5954
+01 Anel de mágico
+03 anel de mágico
+#5955
+01 Anel de Mágico superior
+03 anel de Mágico superior
+#5956
+01 Anel de Grande mágico superior
+03 anel de Grande mágico superior 
+#5977
+01 Alem de Mágico
+03 anel de Mágico
+#5978-5981
+01 Anel de Arquimago
+03 anel de arquimago
+#5982
+01 Anel de Grão Arquimago
+03 anel de Grão Arquimago
+#6249-6254
+01 Anel de pulverização
+03 anel de pulverização 
+#6555
+01 Anel de Aço
+03 anel de aço
+#6556
+01 Anel de habilidade
+03 anel de habilidade
+#6654
+01 Anel de homem hábil
+03 anel de homem hábil 
+#6655
+01 Anel de aura
+03 anel de aura
+#6656
+01 Anel de quatro cores
+03 Anel de quatro cores
+#6754
+01 Anel de cadáver
+03 anel de cadáver

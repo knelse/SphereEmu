@@ -1,0 +1,7 @@
+01 Fórmula
+03 fórmula
+
+100 Fórmula da organização de magos
+10000 Esta fórmula (se aplicada por um mago num estágio superior a %z1) dá propriedades mágicas a um dos seguintes objetos: %l1 Reação requer %a1.
+10001 Esta fórmula (se aplicada por um mago num estágio superior a %z1) dá propriedades mágicas a um dos seguintes objetos: %l1 Reação requer %a1 e %a2.
+10002 Esta fórmula (se aplicada por um mago num estágio superior a %z1) dá propriedades mágicas a um dos seguintes objetos: %l1 Reação requer %a1, %a2 e %a3.

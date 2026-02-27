@@ -1,0 +1,96 @@
+01 Glass amulet
+03 glass amulet
+
+100 Gives extra advantage in repelling magical attacks. You are sure to lose a battle without a good amulet. There was a magician though who bragged he would come out against the most powerful monster without being protected by a magical amulet. History does not remember the name of the sorcerer.
+
+200 of durability
+201 of absorption
+202 of protection
+203 of safety
+204 of health
+205 of meditation
+206 of accuracy
+207 of ether
+208 of radiance
+209 of value
+210 of damage
+
+#401-412
+01 Glass amulet
+03 glass amulet
+#4001-4023
+01 Glass amulet
+03 glass amulet
+#4167-4175
+01 Glass amulet
+03 glass amulet
+#4185-4187
+01 Amulet of Celebration
+03 Amulet of celebration
+100 Amulet of Celebration
+#4190
+01 Glass amulet of joy
+03 glass amulet of joy
+#4191
+01 Glass amulet of happiness
+03 glass amulet of happiness
+#4192
+01 Glass amulet of virtue
+03 glass amulet of virtue
+#4193
+01 Crystal amulet of consolation
+03 crystal amulet of consolation
+#4194
+01 Crystal amulet of exultation
+03 crystal amulet of exultation
+#4199
+01 Amulet life
+03 Amulet life
+#4242
+01 Хризантема
+03 хризантему
+#4243-4244
+01 Роза
+03 розу
+#4245-4246
+01 Ирис
+03 ирис
+#4247-4248
+01 Тюльпан
+03 тюльпан
+#4249-4250
+01 Гербера
+03 герберу
+#4251-4252
+01 Орхидея
+03 орхидею
+#4302
+01 Большой новогодний амулет
+03 Большой новогодний амулет
+#4304
+01 Малый новогодний амулет
+03 Малый новогодний амулет
+#4306
+01 Недолговечный амулет ликования
+03 недолговечный амулет ликования
+#5671-5676
+01 Blessing amulet
+03 blessing amulet
+#5877-5882
+01 Beast amulet
+03 beast amulet
+#5957
+01 Amulet of Magician
+03 Amulet of Magician
+#5958
+01 Amulet of Archimagician
+03 Amulet of Archimagician
+#5959
+01 Amulet of Grand Archimagician
+03 Amulet of Grand Archimagician
+#6753
+01 Roger
+03 Roger
+#6755
+01 Bone amulet
+03 bone amulet
