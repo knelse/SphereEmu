@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SphereHelpers.Extensions;
 using SphServer.Client;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
@@ -100,7 +101,6 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             stream.CutStream(0, 0);
             // Client.TryFindClientByIdAndSendData(clientId, packet);
             packetList.AddRange(packet);
-            continue;
             // }
             //
             // if (i != ItemsOnSale.Count - 1)
@@ -133,7 +133,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             ? itemDbEntry.GameObjectType.GetPacketObjectType()
             : itemDbEntry.ObjectType;
         var packetParts = PacketPart.LoadDefinedPartsFromFile(actualObjectType);
-        PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0, 0);
+        PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0);
         var localId = SphereClient.GetLocalObjectId(clientId, itemDbEntry.Id);
         PacketPart.UpdateEntityId(packetParts, localId);
         PacketPart.UpdateValue(packetParts, "object_type", (int) actualObjectType, 10);

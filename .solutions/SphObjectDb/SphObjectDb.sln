@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphObjectDb", "SphObjectDb.csproj", "{2FE6E5E5-E57D-4728-9360-97E3FE432CBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphGameObject", "..\SphGameObject\SphGameObject.csproj", "{96861134-8409-4FEC-B56B-74332E9C0FA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{8080843F-D480-4E01-B346-2293A24FE608}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FE6E5E5-E57D-4728-9360-97E3FE432CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE6E5E5-E57D-4728-9360-97E3FE432CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FE6E5E5-E57D-4728-9360-97E3FE432CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FE6E5E5-E57D-4728-9360-97E3FE432CBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96861134-8409-4FEC-B56B-74332E9C0FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96861134-8409-4FEC-B56B-74332E9C0FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96861134-8409-4FEC-B56B-74332E9C0FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96861134-8409-4FEC-B56B-74332E9C0FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8080843F-D480-4E01-B346-2293A24FE608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8080843F-D480-4E01-B346-2293A24FE608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8080843F-D480-4E01-B346-2293A24FE608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8080843F-D480-4E01-B346-2293A24FE608}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,55 @@
+﻿<Window x:Class="SpherePacketVisualEditor.ExportSubpacketDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Export subpacket" Height="200" Width="450" WindowStartupLocation="CenterOwner">
+    <Grid Margin="8" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">Name: </Label>
+        <TextBox Name="SubpacketName" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" MinWidth="250"
+                 VerticalAlignment="Center" />
+
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">Start offset: </Label>
+        <TextBox Name="StartOffsetText" Grid.Row="1" Grid.Column="1" Width="50" VerticalAlignment="Center"
+                 HorizontalAlignment="Left" TextAlignment="Center">
+            0
+        </TextBox>
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">Start bit: </Label>
+        <TextBox Name="StartBitText" Grid.Row="2" Grid.Column="1" Width="50" VerticalAlignment="Center"
+                 TextAlignment="Center">
+            0
+        </TextBox>
+        <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">End offset: </Label>
+        <TextBox Name="EndOffsetText" Grid.Row="1" Grid.Column="3" Width="50" VerticalAlignment="Center"
+                 HorizontalAlignment="Left" TextAlignment="Center">
+            0
+        </TextBox>
+        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">End bit: </Label>
+        <TextBox Name="EndBitText" Grid.Row="2" Grid.Column="3" Width="50" VerticalAlignment="Center"
+                 TextAlignment="Center">
+            0
+        </TextBox>
+        <WrapPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" HorizontalAlignment="Center" Margin="0,10,0,0"
+                   VerticalAlignment="Center">
+            <Button IsDefault="True" MinWidth="60"
+                    Margin="0,0,10,0" Click="ButtonBase_OnClick">
+                _Export
+            </Button>
+            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>
