@@ -582,6 +582,15 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Insert(0, result);
                 }
             }
+            else if (result.GetType() == typeof (CharacterPacket))
+            {
+                var character = result as CharacterPacket;
+
+                if (character.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, result);
+                }
+            }
         }
 
         CurrentEntityStateForClient.UpdateLayout();

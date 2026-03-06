@@ -101,6 +101,8 @@ public static class PacketPartNames
     public const string TargetX = "target_x";
     public const string TargetY = "target_y";
     public const string TargetZ = "target_z";
+    public const string CharacterName = "character_name";
+    public const string ClanName = "clan_name";
 }
 
 internal class SubpacketBytesWithOffset
@@ -423,9 +425,39 @@ internal static class PacketAnalyzer
                 var actionType = Enum.IsDefined(typeof (EntityActionType), (int) actionTypeVal)
                     ? (EntityActionType) actionTypeVal
                     : EntityActionType.UNDEF;
-                if (actionType == EntityActionType.INTERACT)
+                if (actionType is EntityActionType.INTERACT or EntityActionType.FULL_SPAWN)
                 {
                     shouldHidePacket = false;
+                }
+
+                if (objectType == ObjectType.UpdateState && actionType != EntityActionType.FULL_SPAWN)
+                {
+                    // for now, we can't really parse these, so we try to find divider (0x7E) and move on
+                    var dividerFound = false;
+                    while (fullStream.ValidPosition)
+                    {
+                        var dividerTest = fullStream.ReadByte();
+                        if (!fullStream.ValidPosition)
+                        {
+                            break;
+                        }
+
+                        if (dividerTest == 0x7E)
+                        {
+                            dividerFound = true;
+                            break;
+                        }
+
+                        fullStream.SeekBack(7);
+                    }
+
+                    if (dividerFound)
+                    {
+                        // analyze next packet as if nothing happened
+                        continue;
+                    }
+
+                    break;
                 }
 
                 var interactionTypeVal = fullStream.ReadUInt16();
@@ -751,6 +783,12 @@ internal static class PacketAnalyzer
                     $"{worldObject.Id:X4}\t{worldObject.ObjectType}\t{worldObject.ActionType}\t{worldObject.X}\t{worldObject.Y}\t{worldObject.Z}\t{worldObject.Angle}\n";
                 File.AppendAllText($@"{outputPath}\\{filename}.txt", output);
             }
+        }
+
+        else if (result.ObjectType is ObjectType.UpdateState)
+        {
+            // assume it's new character for now. This is likely very wrong
+            result = new CharacterPacket(subpacket);
         }
 
         return result;

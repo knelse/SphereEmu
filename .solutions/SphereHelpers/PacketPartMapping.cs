@@ -31,7 +31,7 @@ public enum OptionalPacketFields : byte
 
 public static class PacketPartMapping
 {
-    public static HashSet<ObjectType> ItemObjectTypes =
+    public static readonly HashSet<ObjectType> ItemObjectTypes =
     [
         ObjectType.Token,
         ObjectType.Mutator,
@@ -125,7 +125,7 @@ public static class PacketPartMapping
         ObjectType.MantraBlack
     ];
 
-    public static HashSet<ObjectType> EntityObjectTypes =
+    public static readonly HashSet<ObjectType> EntityObjectTypes =
     [
         ObjectType.Token,
         ObjectType.Mutator,
@@ -241,10 +241,11 @@ public static class PacketPartMapping
         ObjectType.SpecialAbilitySteal,
         ObjectType.ArmorHelmetPremium,
         ObjectType.MantraWhite,
-        ObjectType.MantraBlack
+        ObjectType.MantraBlack,
+        ObjectType.UpdateState
     ];
 
-    public static HashSet<ObjectType> ItemBagObjectTypes =
+    public static readonly HashSet<ObjectType> ItemBagObjectTypes =
     [
         ObjectType.BackpackLarge,
         ObjectType.BackpackSmall,
@@ -256,12 +257,12 @@ public static class PacketPartMapping
         ObjectType.Sack
     ];
 
-    public static HashSet<ObjectType> ItemRecipeBagObjectTypes =
+    public static readonly HashSet<ObjectType> ItemRecipeBagObjectTypes =
     [
         ObjectType.RecipeBook
     ];
 
-    public static HashSet<ObjectType> EquippableItemTypes =
+    public static readonly HashSet<ObjectType> EquippableItemTypes =
     [
         ObjectType.WeaponSword,
         ObjectType.WeaponStartingSword,
@@ -294,7 +295,7 @@ public static class PacketPartMapping
         ObjectType.QuestWeaponCrossbow
     ];
 
-    public static Dictionary<ObjectType, string> WorldObjectsToTrack = new ()
+    public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new ()
     {
         [ObjectType.Teleport] = "teleports",
         [ObjectType.TeleportWild] = "teleport_wild",
@@ -473,6 +474,10 @@ public static class PacketPartMapping
                         break;
                     case ObjectType.NewPlayerDungeonStartPoint:
                         packetName = "new_player_dungeon_start";
+                        break;
+                    case ObjectType.UpdateState:
+                        packetName = "entity_character";
+                        comment = $"NEW PLAYER -- [{entId:X4}]";
                         break;
                     default:
                         if (ItemRecipeBagObjectTypes.Contains(objectType))
