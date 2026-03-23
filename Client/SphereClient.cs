@@ -7,6 +7,7 @@ using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
@@ -21,6 +22,7 @@ public partial class SphereClient : WorldObject
     private ClientEvents clientEvents = null!;
 
     private CharacterBody3D? clientModel;
+    private Area3D? broadcastArea3D;
     public CharacterDbEntry? CurrentCharacter;
     private ClientState currentState = ClientState.I_AM_BREAD;
     private bool isExiting;
@@ -37,7 +39,15 @@ public partial class SphereClient : WorldObject
             return;
         }
 
-        clientModel ??= GetNode<CharacterBody3D>("ClientModel");
+        clientModel ??= NodeChildTools.FindFirstChildOfType<CharacterBody3D>(this, "ClientModel");
+        if (broadcastArea3D is null)
+        {
+            var area = NodeChildTools.FindFirstChildOfType<Area3D> (this);
+            if (area is not null && NodeChildTools.FindFirstChildOfType<CollisionShape3D> (area) is not null)
+            {
+                broadcastArea3D = area;
+            }
+        }
 
         await clientConnection.Process (delta);
         await clientEvents.HandleEventsAsync ();
@@ -175,6 +185,8 @@ public partial class SphereClient : WorldObject
     {
         clientConnection.MaybeScheduleNetworkPacketSend(packet);
     }
+
+    internal Area3D? BroadcastArea3D => broadcastArea3D;
 
     public ushort GetLocalObjectId (int id)
     {

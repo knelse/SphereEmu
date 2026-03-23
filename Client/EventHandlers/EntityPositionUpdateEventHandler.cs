@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using SphServer.Shared.ClientEvents;
+using SphServer.Shared.Networking;
 
 namespace SphServer.Client.EventHandlers;
 
@@ -13,10 +14,15 @@ public sealed class EntityPositionUpdateEventHandler : IClientEventHandler
         this.sphereClient = sphereClient;
     }
 
-    public Task HandleAsync (EntityPositionUpdateEvent clientEvent)
+    public async Task HandleAsync (EntityPositionUpdateEvent clientEvent)
     {
-        ArgumentNullException.ThrowIfNull (clientEvent);
-        return Task.CompletedTask;
+        var packet = CommonPackets.BuildMoveObjectPacket (
+            clientEvent.X,
+            clientEvent.Y,
+            clientEvent.Z,
+            clientEvent.Angle,
+            clientEvent.EntityId);
+        sphereClient.MaybeQueueNetworkPacketSend (packet);
     }
 
     Task IClientEventHandler.HandleAsync (ClientQueuedEvent clientEvent) =>

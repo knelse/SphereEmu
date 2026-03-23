@@ -37,7 +37,7 @@ public class ItemContainerDbEntry
         int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
-        var bag = LootBagScene.Instantiate<Godot.Nodes.LootBagNode>();
+        var bag = LootBagScene.Instantiate<SphServer.Godot.Nodes.LootBagNode>();
         ActiveNodes.Add(bag.GetInstanceId(), bag);
         var levelOverride = SphRng.Rng.Next(0, 61);
         bag.ItemContainerDbEntry = new ItemContainerDbEntry
