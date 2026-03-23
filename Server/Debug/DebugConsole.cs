@@ -8,13 +8,15 @@ using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
+using SphServer.System;
 
 namespace SphServer.Server.Debug;
 
-public class DebugConsole
+public static class DebugConsole
 {
     public static void SendSpherePacket (string input, Action<byte[]> sendPacketAction, bool generateNewId = true,
-        Action<List<PacketPart>>? transformPacketPartValueAction = null, bool isPacketPart = true)
+        Action<List<PacketPart>>? transformPacketPartValueAction = null, bool isPacketPart = true,
+        bool coordsForEntityMove = false)
     {
         if (!ServerConfig.AppConfig.DebugMode)
         {
@@ -46,10 +48,8 @@ public class DebugConsole
         var onClient = inputParams.Length == 3;
         if (onClient)
         {
-            ChangeAllCoordsToFirstClient(packetParts);
+            ChangeAllCoordsToFirstClient(packetParts, coordsForEntityMove);
         }
-
-        transformPacketPartValueAction?.Invoke(packetParts);
 
         if (generateNewId)
         {
@@ -61,6 +61,8 @@ public class DebugConsole
             }
         }
 
+        transformPacketPartValueAction?.Invoke(packetParts);
+
         var stream = SphBitStream.GetWriteBitStream();
         foreach (var part in packetParts)
         {
@@ -68,15 +70,53 @@ public class DebugConsole
         }
 
         var streamBytes = stream.GetStreamData();
-        var packetBytes = Packet.ToByteArray(streamBytes, 3);
+        var packetBytes = isPacketPart ? Packet.ToByteArray(streamBytes, 3) : streamBytes;
         Console.WriteLine($"Sending {packetName} as {Convert.ToHexString(packetBytes)}");
         sendPacketAction(packetBytes);
     }
 
-    private static void ChangeAllCoordsToFirstClient (List<PacketPart> list)
+    public static void SendRandomPlayerPacket (Action<byte[]> sendPacketAction)
+    {
+        SendSpherePacket("/packet entity_character onme", sendPacketAction, true, RandomizePlayerPacket);
+    }
+
+    public static void MoveEntity (Action<byte[]> sendPacketAction)
+    {
+        SendSpherePacket("/packet server_move_entity", sendPacketAction, false, UpdateMoveEntityPacket, false, true);
+    }
+
+    private static void UpdateMoveEntityPacket (List<PacketPart> packetParts)
     {
         var client = ActiveClients.FirstOrDefault();
-        PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
-            client.CurrentCharacter.Z);
+
+        PacketPart.UpdateValue(packetParts, "entity_id", 4502, 16);
+        PacketPart.UpdateValue(packetParts, "x_plus_32768", (int) (client.CurrentCharacter.X + 32768), 16);
+        PacketPart.UpdateValue(packetParts, "y_plus_1200", (int) (-client.CurrentCharacter.Y + 1200), 13);
+        PacketPart.UpdateValue(packetParts, "z_plus_32768", (int) (client.CurrentCharacter.Z + 32768), 16);
+        PacketPart.UpdateValue(packetParts, "angle", client.Angle, 8);
+        // PacketPart.UpdateValue(packetParts, "x_plus_32768", 420 + 32768, 16);
+        // PacketPart.UpdateValue(packetParts, "y_plus_1200", 150 + 1200, 13);
+        // PacketPart.UpdateValue(packetParts, "z_plus_32768", -1288 + 32768, 16);
+    }
+
+    private static void RandomizePlayerPacket (List<PacketPart> packetParts)
+    {
+        var randomNameVal = SphRng.Rng.Next(1000);
+        var randomClanNameVal = SphRng.Rng.Next(100);
+        var randomName = $"test_{randomNameVal}";
+        var randomClanName = $"Noobs_{randomClanNameVal}";
+
+        // PacketPart.UpdateValue(packetParts, "character_name", randomName, true, 8);
+        // PacketPart.UpdateValue(packetParts, "clan_name", randomClanName, true, 4);
+    }
+
+    private static void ChangeAllCoordsToFirstClient (List<PacketPart> list, bool coordsForEntityMove)
+    {
+        var client = ActiveClients.FirstOrDefault();
+        if (!coordsForEntityMove)
+        {
+            PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
+                client.CurrentCharacter.Z);
+        }
     }
 }

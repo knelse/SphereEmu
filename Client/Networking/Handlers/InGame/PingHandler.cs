@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Helpers;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Packets;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
@@ -12,6 +13,8 @@ namespace SphServer.Client.Networking.Handlers.InGame;
 public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
+    private const double MovementBroadcastDelta = 0.1;
+
     private ushort counter;
     private string? pingPreviousClientPingString;
     private bool pingShouldXorTopBit;
@@ -62,8 +65,13 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
                 var coords = CoordsHelper.GetCoordsFromPingBytes(clientConnection.ReceiveBuffer);
 
                 var currentCharacter = clientConnection.GetSelectedCharacter();
-                if (Math.Abs(coords.x - currentCharacter!.X) < 100000)
+                if (currentCharacter is not null && Math.Abs(coords.x - currentCharacter.X) < 100000)
                 {
+                    if (MovementDeltaExceedsThreshold(coords, currentCharacter))
+                    {
+                        clientConnection.EnqueueClientEvent(new CurrentClientPositionChangedEvent());
+                    }
+
                     currentCharacter.X = coords.x;
                     currentCharacter.Y = coords.y;
                     currentCharacter.Z = coords.z;
@@ -105,5 +113,13 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
         {
             counter = 0xE001;
         }
+    }
+
+    private static bool MovementDeltaExceedsThreshold (WorldCoords coords, CharacterDbEntry character)
+    {
+        return Math.Abs(coords.x - character.X) > MovementBroadcastDelta
+               || Math.Abs(coords.y - character.Y) > MovementBroadcastDelta
+               || Math.Abs(coords.z - character.Z) > MovementBroadcastDelta
+               || Math.Abs(coords.turn - character.Angle) > MovementBroadcastDelta;
     }
 }

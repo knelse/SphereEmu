@@ -190,8 +190,10 @@ public class PacketCapture
     {
         var offset = 0;
         var result = new List<byte[]>();
-        while (offset < content.Length)
+        var tries = 0;
+        while (offset < content.Length && tries < 1000)
         {
+            tries++;
             if (content.HasEqualElementsAs(PacketAnalyzer.packet_04_00_4F_01, offset))
             {
                 result.Add(PacketAnalyzer.packet_04_00_4F_01);

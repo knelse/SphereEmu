@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BitStreams;
@@ -290,5 +290,10 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     {
         // TODO: might need an actual queue. For now, just send
         streamPeerTcp.PutData(packet);
+    }
+
+    public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
+    {
+        sphereClient.EnqueueClientEvent (clientEvent);
     }
 }

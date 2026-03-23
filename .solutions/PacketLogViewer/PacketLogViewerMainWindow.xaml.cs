@@ -220,7 +220,7 @@ public partial class PacketLogViewerMainWindow
             var objectType = Enum.IsDefined(typeof (ObjectType), objectTypeVal)
                 ? (ObjectType) objectTypeVal
                 : ObjectType.Unknown;
-            if (objectType is ObjectType.UpdateState)
+            if (objectType is ObjectType.Other)
             {
                 continue;
             }

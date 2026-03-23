@@ -430,7 +430,7 @@ internal static class PacketAnalyzer
                     shouldHidePacket = false;
                 }
 
-                if (objectType == ObjectType.UpdateState && actionType != EntityActionType.FULL_SPAWN)
+                if (objectType == ObjectType.Other && actionType != EntityActionType.FULL_SPAWN)
                 {
                     // for now, we can't really parse these, so we try to find divider (0x7E) and move on
                     var dividerFound = false;
@@ -785,7 +785,7 @@ internal static class PacketAnalyzer
             }
         }
 
-        else if (result.ObjectType is ObjectType.UpdateState)
+        else if (result.ObjectType is ObjectType.Other)
         {
             // assume it's new character for now. This is likely very wrong
             result = new CharacterPacket(subpacket);

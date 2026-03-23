@@ -19,14 +19,14 @@ public class PacketPart
 
     public const string UndefinedFieldValue = "__undef";
     public const string LengthFromPreviousFieldValue = "__fromPrevious";
+    public const string PacketDefinitionExtension = ".spd";
+    public const string ExportedPartExtension = ".spdp";
     public readonly string? EnumName;
+    public readonly string Name;
     public readonly PacketPartType PacketPartType;
     public int BitLength;
     public int BitPositionStart;
-    public readonly string Name;
     public List<Bit> Value;
-    public const string PacketDefinitionExtension = ".spd";
-    public const string ExportedPartExtension = ".spdp";
 
     public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
@@ -102,7 +102,7 @@ public class PacketPart
 
             // r g b a are fields 5 6 7 8
 
-            var value = fieldValues[9].Select(x => (Bit) (x - '0')).Reverse().ToList();
+            var value = length > 0 ? fieldValues[9].Select(x => (Bit) (x - '0')).Reverse().ToList() : [];
             var part = new PacketPart(partName, packetPartType, start, length, enumName, value);
             parts.Add(part);
         }
@@ -143,7 +143,8 @@ public class PacketPart
         }
     }
 
-    public static void UpdateValue (List<PacketPart> list, string name, string val)
+    public static void UpdateValue (List<PacketPart> list, string name, string val, bool alsoUpdateLengthField = false,
+        int nameLengthLength = 0)
     {
         var part = list.FirstOrDefault(x => x.Name == name);
         var valBytes = SphEncoding.Win1251.GetBytes(val);
@@ -152,6 +153,11 @@ public class PacketPart
         if (part is not null)
         {
             part.Value = bits.ToList();
+        }
+
+        if (alsoUpdateLengthField)
+        {
+            UpdateValue(list, name + "_length", val.Length, nameLengthLength);
         }
     }
 

@@ -5,6 +5,7 @@ using Godot;
 using SphServer.Helpers;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
+using SphServer.Server.Debug;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Sphere.Game.WorldObject;
@@ -21,6 +22,8 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
 {
     private static readonly PackedScene FireworkScene =
         (PackedScene) ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
+
+    public static ushort lastPlayerSpawned = 0;
 
     private string previousMessageContent = string.Empty;
 
@@ -109,8 +112,8 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
 
             if (message == previousMessageContent)
             {
-                SphLogger.Info($"Skipping client message (same content): {message}. Client ID: {localId}");
-                return;
+                // SphLogger.Info($"Skipping client message (same content): {message}. Client ID: {localId}");
+                // return;
             }
 
             previousMessageContent = message;
@@ -216,6 +219,16 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 SphLogger.Info($"Spawning firework at: {origin.X:F1} | {origin.Y:F1} | {origin.Z:F1}");
                 SphereServer.ServerNode.CallDeferred(Node.MethodName.AddChild, firework);
                 firework.Transform = new Transform3D(Basis.Identity, origin);
+            }
+
+            if (message.StartsWith("/randplayer"))
+            {
+                DebugConsole.SendRandomPlayerPacket(clientConnection.MaybeScheduleNetworkPacketSend);
+            }
+
+            if (message.StartsWith("/moveplayer"))
+            {
+                DebugConsole.MoveEntity(clientConnection.MaybeScheduleNetworkPacketSend);
             }
         }
         catch (Exception ex)

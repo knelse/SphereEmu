@@ -242,7 +242,7 @@ public static class PacketPartMapping
         ObjectType.ArmorHelmetPremium,
         ObjectType.MantraWhite,
         ObjectType.MantraBlack,
-        ObjectType.UpdateState
+        ObjectType.Other
     ];
 
     public static readonly HashSet<ObjectType> ItemBagObjectTypes =
@@ -475,7 +475,7 @@ public static class PacketPartMapping
                     case ObjectType.NewPlayerDungeonStartPoint:
                         packetName = "new_player_dungeon_start";
                         break;
-                    case ObjectType.UpdateState:
+                    case ObjectType.Other:
                         packetName = "entity_character";
                         comment = $"NEW PLAYER -- [{entId:X4}]";
                         break;
@@ -564,7 +564,7 @@ public static class ObjectTypeToPacketNameMap
     public static Dictionary<ObjectType, string> Mapping = new ()
     {
         [ObjectType.Despawn] = "despawn",
-        [ObjectType.UpdateState] = "",
+        [ObjectType.Other] = "",
         [ObjectType.Player] = "",
         [ObjectType.Token] = "item_token",
         [ObjectType.Mutator] = "",

@@ -18,6 +18,7 @@ public partial class SphereClient : WorldObject
 {
     public readonly ClientStateManager ClientStateManager = new (false);
     private ClientConnection clientConnection;
+    private ClientEvents clientEvents = null!;
 
     private CharacterBody3D? clientModel;
     public CharacterDbEntry? CurrentCharacter;
@@ -30,7 +31,7 @@ public partial class SphereClient : WorldObject
 
     public override async void _PhysicsProcess (double delta)
     {
-        if (streamPeerTcp.GetStatus() != StreamPeerTcp.Status.Connected)
+        if (streamPeerTcp.GetStatus() != StreamPeerSocket.Status.Connected)
         {
             RemoveClient();
             return;
@@ -38,7 +39,8 @@ public partial class SphereClient : WorldObject
 
         clientModel ??= GetNode<CharacterBody3D>("ClientModel");
 
-        await clientConnection.Process(delta);
+        await clientConnection.Process (delta);
+        await clientEvents.HandleEventsAsync ();
     }
 
     public override void _Ready ()
@@ -72,11 +74,17 @@ public partial class SphereClient : WorldObject
 
     public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
     {
-        clientConnection = new ClientConnection(streamPeer, id, this);
+        clientEvents = new ClientEvents (this);
+        clientConnection = new ClientConnection (streamPeer, id, this);
         localId = id;
         streamPeerTcp = streamPeer;
 
         return this;
+    }
+
+    public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
+    {
+        clientEvents.Enqueue (clientEvent);
     }
 
     public void SetPlayerDbEntry (PlayerDbEntry? entry)
@@ -273,14 +281,14 @@ public partial class SphereClient : WorldObject
     protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
     {
         var nameBytes = SphEncoding.Win1251.GetBytes(CurrentCharacter!.Name);
-        PacketPart.UpdateValue(packetParts, "name_length", nameBytes.Length, 8);
-        PacketPart.UpdateValue(packetParts, "name", CurrentCharacter!.Name);
+        PacketPart.UpdateValue(packetParts, "character_name_length", nameBytes.Length, 8);
+        PacketPart.UpdateValue(packetParts, "character_name", CurrentCharacter!.Name);
 
-        var clanName = "НОВЫЙ ГОД";
+        var clanName = "test";
         var clanNameBytes = SphEncoding.Win1251.GetBytes(clanName);
 
-        PacketPart.UpdateValue(packetParts, "clan_name_length", clanNameBytes.Length, 4);
-        PacketPart.UpdateValue(packetParts, "clan_name", clanName);
+        // PacketPart.UpdateValue(packetParts, "clan_name_length", clanNameBytes.Length, 4);
+        // PacketPart.UpdateValue(packetParts, "clan_name", clanName);
 
         return packetParts;
     }

@@ -40,14 +40,14 @@ public class MoveObjectForClientHandler (ushort localId, ClientConnection client
             t0 -= Math.Sign(t0) * 2 * Mathf.Pi;
         }
 
-        var turn = (int) (t0 * 256 / 2 / Mathf.Pi);
+        var angle = (int) (t0 * 256 / 2 / Mathf.Pi);
 
-        var turn_1 = (byte) (((turn & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
-        var turn_2 = (byte) ((turn & 0b11111100) >> 2);
+        var angle_1 = (byte) (((angle & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
+        var angle_2 = (byte) ((angle & 0b11111100) >> 2);
         var movePacket = new byte[]
         {
             0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1, id_2, id_3, 0x6A, 0x10, xdec_1,
-            ydec_1, ydec_2, zdec_1, turn_1, turn_2
+            ydec_1, ydec_2, zdec_1, angle_1, angle_2
         };
 
         clientConnection.MaybeScheduleNetworkPacketSend(movePacket);

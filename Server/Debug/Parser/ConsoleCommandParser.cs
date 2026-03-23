@@ -25,8 +25,8 @@ public enum ConsoleCommandParseResult
 public class ConsoleCommandParser
 {
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
-    private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
     private readonly CharacterDbEntry currentCharacterDbEntry;
+    private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
     private readonly SphereClient? sphereClient;
 
     private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
@@ -260,7 +260,7 @@ public class ConsoleCommandParser
         }
         else
         {
-            DebugConsole.SendSpherePacket($"/packet mob_assassin onme",
+            DebugConsole.SendSpherePacket("/packet mob_assassin onme",
                 bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes), true,
                 list =>
                 {
@@ -301,8 +301,7 @@ public class ConsoleCommandParser
                     .ToArray();
                 sphereClient?.MaybeQueueNetworkPacketSend(
                     new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(new WorldCoords(
-                        coords[0], coords[1], coords[2],
-                        0)));
+                        coords[0], coords[1], coords[2])));
             }
             catch (Exception ex)
             {

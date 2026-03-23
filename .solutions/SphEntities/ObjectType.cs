@@ -1,7 +1,7 @@
 public enum ObjectType : ushort
 {
     Despawn = 0,
-    UpdateState = 2,
+    Other = 2,
     Player = 4,
     Token = 8,
     Mutator = 30,
