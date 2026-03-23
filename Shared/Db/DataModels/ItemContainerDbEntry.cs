@@ -30,7 +30,7 @@ public class ItemContainerDbEntry
     private static readonly PackedScene LootBagScene =
         (PackedScene) ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
 
-    public Dictionary<int, int> Contents { get; set; } = new ();
+    public Dictionary<int, int> Contents { get; set; } = [];
     public ulong? ParentNodeId { get; set; }
 
     public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
