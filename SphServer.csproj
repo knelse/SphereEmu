@@ -17,7 +17,7 @@
         <PackageReference Include="xunit" Version="2.9.3"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="AlchemyResourceSpawnData.txt">
+        <Content Include="Sphere.Game\SpawnData\AlchemyResourceSpawnData.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="appsettings.json">
@@ -35,7 +35,7 @@
         <Content Include="Godot\Scenes\npc_interactable.tscn"/>
         <Content Include="Godot\Scenes\teleport_with_target.tscn"/>
         <Content Include="Godot\Scenes\world_object.tscn"/>
-        <Content Include="MonsterSpawnData.txt">
+        <Content Include="Sphere.Game\SpawnData\MonsterSpawnData.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>

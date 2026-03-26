@@ -30,9 +30,10 @@
 211: monster_flyer
 212: npc_guide
 213: npc_trade
+216: npc_guilder
 225: npc_banker
 236: bead
-239: npc_guilder
+239: npc_tournament
 400: backpack_large
 401: backpack_small
 405: sack

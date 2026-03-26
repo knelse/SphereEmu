@@ -702,7 +702,7 @@ internal static class PacketAnalyzer
     {
         var result = new PacketAnalyzeData(subpacket);
         var outputPath = PacketLogViewerMainWindow.AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
-        if (result.ObjectType is ObjectType.Monster or ObjectType.MonsterFlyer or ObjectType.MobSpawner)
+        if (result.ObjectType is ObjectType.Monster or ObjectType.MonsterFlyer)
         {
             var mob = new MobPacket(subpacket);
             result = mob;
@@ -721,7 +721,8 @@ internal static class PacketAnalyzer
         }
 
         else if (result.ObjectType is ObjectType.NpcTrade or ObjectType.NpcQuestTitle or ObjectType.NpcQuestDegree
-                 or ObjectType.NpcQuestKarma or ObjectType.NpcGuilder or ObjectType.NpcBanker)
+                 or ObjectType.NpcQuestKarma or ObjectType.NpcGuilder or ObjectType.NpcBanker
+                 or ObjectType.NpcTournament)
         {
             var npcTradePacket = new NpcTradePacket(subpacket);
             result = npcTradePacket;

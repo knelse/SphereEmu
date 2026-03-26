@@ -16,7 +16,7 @@ public static class WorldObjectSpawner
 
     public static void InstantiateObjects ()
     {
-        var mobData = File.ReadAllLines(@"MonsterSpawnData.txt");
+        var mobData = File.ReadAllLines(@"Sphere.Game\SpawnData\MonsterSpawnData.txt");
         foreach (var line in mobData)
         {
             try
@@ -48,7 +48,7 @@ public static class WorldObjectSpawner
             }
         }
 
-        var alchemyResourceData = File.ReadAllLines(@"AlchemyResourceSpawnData.txt");
+        var alchemyResourceData = File.ReadAllLines(@"Sphere.Game\SpawnData\AlchemyResourceSpawnData.txt");
         foreach (var line in alchemyResourceData)
         {
             try

@@ -154,6 +154,7 @@ public static class PacketPartMapping
         ObjectType.NpcQuestTitle,
         ObjectType.NpcGuilder,
         ObjectType.NpcGuide,
+        ObjectType.NpcTournament,
         ObjectType.NpcTradeRandomName,
         ObjectType.SackMobLoot,
         ObjectType.ChestInDungeon,
@@ -304,7 +305,8 @@ public static class PacketPartMapping
         [ObjectType.AlchemyPlant] = "alchemy_plants",
         [ObjectType.AlchemyMetal] = "alchemy_metals",
         [ObjectType.DungeonEntrance] = "dungeon_entrance",
-        [ObjectType.Workshop] = "workshop"
+        [ObjectType.Workshop] = "workshop",
+        [ObjectType.MobSpawner] = "mob_spawner"
     };
 
     public static Tuple<string, string, bool> GetPacketPartName (ObjectType objectType, EntityActionType actionType,
@@ -380,6 +382,9 @@ public static class PacketPartMapping
                         break;
                     case ObjectType.NpcGuide:
                         packetName = "npc_guide";
+                        break;
+                    case ObjectType.NpcTournament:
+                        packetName = "npc_tournament";
                         break;
                     case ObjectType.NpcTradeRandomName:
                         packetName = "npc_trade_random_name";
@@ -592,8 +597,9 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.MonsterFlyer] = "",
         [ObjectType.NpcTrade] = "npc_trade",
         [ObjectType.NpcBanker] = "npc_banker",
-        [ObjectType.Bead] = "",
         [ObjectType.NpcGuilder] = "npc_guilder",
+        [ObjectType.Bead] = "",
+        [ObjectType.NpcTournament] = "npc_tournament",
         [ObjectType.BackpackLarge] = "item_backpack",
         [ObjectType.BackpackSmall] = "item_backpack",
         [ObjectType.Sack] = "item_sack",
