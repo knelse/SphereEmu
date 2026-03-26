@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3qmcmy7d60wi"]
+[gd_scene format=3 uid="uid://b3qmcmy7d60wi"]
 
 [ext_resource type="Script" uid="uid://coqs20obppclh" path="res://Nodes/NpcNode.cs" id="1_e2ffg"]
 
