@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Text;
 
@@ -114,7 +115,9 @@ internal static class Program
                 var row = NpcSpawnRow.Parse (parts);
                 var displayName = ResolveDisplayName (rnmsLines, row.NameId);
                 var displayNameLatin = displayName;// RussianTransliteration.ToLatin (displayName);
-                var prefixedName = $"NPC_{row.Id.ToString (CultureInfo.InvariantCulture)}_" + displayNameLatin;
+                displayNameLatin = StripLeadingNpcPrefixes (displayNameLatin);
+                var prefixedName = CollapseDuplicateNpcPrefix (
+                    $"NPC_{row.Id.ToString (CultureInfo.InvariantCulture)}_" + displayNameLatin);
                 var nodeName = MakeUniqueNodeName (SanitizeNodeName (prefixedName), usedNames);
                 var godotY = NegateYForGodot (row.Y);
 
@@ -128,13 +131,7 @@ internal static class Program
                 sb.Append (" instance=ExtResource(\"");
                 sb.Append (NpcExtResource);
                 sb.AppendLine ("\")]");
-                sb.Append ("transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, ");
-                sb.Append (FormatFloat (row.X));
-                sb.Append (", ");
-                sb.Append (FormatFloat (godotY));
-                sb.Append (", ");
-                sb.Append (FormatFloat (row.Z));
-                sb.AppendLine (")");
+                AppendTransform3DWithYRotation (sb, row.X, godotY, row.Z, row.Angle);
                 sb.Append ("NameID = ");
                 sb.Append (row.NameId);
                 sb.AppendLine ();
@@ -143,7 +140,7 @@ internal static class Program
                 sb.Append ("IconName = ");
                 sb.AppendLine (FormatTscnStringValue (row.IconName));
                 sb.Append ("NpcType = ");
-                sb.Append (row.NpcType);
+                sb.Append ((int) row.NpcType);
                 sb.AppendLine ();
                 sb.AppendLine ("VendorItemTierMax = 15");
                 sb.AppendLine ("VendorLocation = 0");
@@ -404,10 +401,11 @@ internal static class Program
                 continue;
             }
 
-            return string.IsNullOrEmpty (rest) ? $"NPC_{nameId}" : rest;
+            // Do not prefix "NPC_" here — prefixedName adds NPC_{spawnId}_ later; NPC_ here caused NPC_NPC_… names.
+            return string.IsNullOrEmpty (rest) ? nameId.ToString (CultureInfo.InvariantCulture) : rest;
         }
 
-        return $"NPC_{nameId}";
+        return nameId.ToString (CultureInfo.InvariantCulture);
     }
 
     private static string SanitizeNodeName (string displayName)
@@ -459,8 +457,62 @@ internal static class Program
 
     private static string EscapeTscnString (string s) => s.Replace ("\\", "\\\\").Replace ("\"", "\\\"");
 
+    /// <summary>
+    /// Avoids <c>NPC_NPC_...</c> when rnms text already starts with one or more <c>NPC_</c> prefixes.
+    /// </summary>
+    private static string StripLeadingNpcPrefixes (string s)
+    {
+        s = s.TrimStart ();
+        while (s.Length >= 4 && s.StartsWith ("NPC_", StringComparison.OrdinalIgnoreCase))
+        {
+            s = s[4..].TrimStart ();
+        }
+
+        return s;
+    }
+
+    /// <summary>
+    /// Safety net when rnms text still yields something like <c>NPC_4034_…</c> after <see cref="StripLeadingNpcPrefixes"/>.
+    /// </summary>
+    private static string CollapseDuplicateNpcPrefix (string s)
+    {
+        while (s.Length >= 8 && s.StartsWith ("NPC_NPC_", StringComparison.OrdinalIgnoreCase))
+        {
+            s = "NPC_" + s[8..];
+        }
+
+        return s;
+    }
+
     private static string FormatFloat (float f) =>
         f.ToString ("G", CultureInfo.InvariantCulture);
+
+    /// <summary>
+    /// Game yaw: 0 = true north; values increase counter-clockwise. For Godot <c>Basis.YRotation(t0)</c>,
+    /// use <c>t0 = -angle * π / 64</c> (e.g. angle 64 → <c>-π</c> radians around +Y).
+    /// </summary>
+    private static void AppendTransform3DWithYRotation (StringBuilder sb, float ox, float oy, float oz, int angleEncoded)
+    {
+        var t0 = -angleEncoded * Math.PI / 64.0;
+        var c = (float) Math.Cos (t0);
+        var s = (float) Math.Sin (t0);
+        // Matches Godot Basis.YRotation(t0): X=(c,0,-s), Y=(0,1,0), Z=(s,0,c)
+        sb.Append ("transform = Transform3D(");
+        sb.Append (FormatFloat (c));
+        sb.Append (", 0, ");
+        sb.Append (FormatFloat (-s));
+        sb.Append (", 0, 1, 0, ");
+        sb.Append (FormatFloat (s));
+        sb.Append (", 0, ");
+        sb.Append (FormatFloat (c));
+        sb.Append (", ");
+        sb.Append (FormatFloat (ox));
+        sb.Append (", ");
+        sb.Append (FormatFloat (oy));
+        sb.Append (", ");
+        sb.Append (FormatFloat (oz));
+        sb.AppendLine (")");
+    }
 
     private static void PrintUsage ()
     {
@@ -477,6 +529,7 @@ internal static class Program
               ModelNameLength, ModelName, IconNameLength, IconName, NpcType
 
             Y from the file is negated for the Godot transform (game ↔ engine convention).
+            Angle is yaw (0 = north, increasing CCW); scene Y rotation uses t0 = -angle * π / 64 radians (angle 64 → -π).
 
             Defaults (absolute paths; override with options above):
               --input            {DefaultInputTsvPath}
@@ -498,7 +551,7 @@ internal static class Program
         public required int NameId { get; init; }
         public required string ModelName { get; init; }
         public required string IconName { get; init; }
-        public required int NpcType { get; init; }
+        public required NpcType NpcType { get; init; }
 
         public static NpcSpawnRow Parse (string[] p)
         {
@@ -513,7 +566,7 @@ internal static class Program
             var modelName = p[9];
             var iconLen = int.Parse (p[10], CultureInfo.InvariantCulture);
             var iconName = p[11];
-            var npcType = int.Parse (p[12], CultureInfo.InvariantCulture);
+            var npcTypeRaw = int.Parse (p[12], CultureInfo.InvariantCulture);
 
             if (modelName.Length != modelLen && modelLen >= 0)
             {
@@ -549,6 +602,38 @@ internal static class Program
             {
                 iconName = "npc_banker";
             }
+
+            switch (objectType)
+            {
+                case ObjectType.NpcQuestTitle:
+                    modelName = Random.Shared.Next (3) switch
+                    {
+                        0 => "npc06",
+                        1 => "npc07",
+                        _ => "npc08"
+                    };
+                    break;
+                case ObjectType.NpcBanker:
+                    modelName = "npc29d";
+                    break;
+                case ObjectType.NpcQuestKarma:
+                    modelName = "npc58";
+                    break;
+                case ObjectType.NpcQuestDegree:
+                    modelName = "npc59";
+                    break;
+            }
+
+            var npcType = objectType switch
+            {
+                ObjectType.NpcBanker => NpcType.Banker,
+                ObjectType.NpcTournament => NpcType.Tournament,
+                ObjectType.NpcGuilder => NpcType.Guilder,
+                ObjectType.NpcQuestDegree => NpcType.QuestDegree,
+                ObjectType.NpcQuestTitle => NpcType.QuestTitle,
+                ObjectType.NpcQuestKarma => NpcType.QuestKarma,
+                _ => (NpcType) npcTypeRaw
+            };
 
             return new NpcSpawnRow
             {

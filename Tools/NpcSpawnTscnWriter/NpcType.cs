@@ -1,8 +1,6 @@
-namespace SphServer.Shared.GameData.Enums;
+namespace SphServer.Tools.NpcSpawnTscnWriter;
 
-/// <summary>
-/// Each member must have a unique underlying value so <c>switch</c> on <see cref="NpcType"/> is legal and runtime can tell members apart.
-/// </summary>
+/// <summary>Keep in sync with <c>Shared/GameData/Enums/NpcType.cs</c> (unique underlying values).</summary>
 public enum NpcType
 {
     TradeMagic = 9,

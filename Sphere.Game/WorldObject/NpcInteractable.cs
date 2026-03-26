@@ -14,10 +14,38 @@ using SphServer.Sphere.Game.NpcTrade.ItemsOnSale;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
+[Tool]
 public partial class NpcInteractable : WorldObject
 {
+    private const string PlaceholderMeshNodeName = "MeshInstance3D";
+    /// <summary>Short name + unique scene id so the tree shows e.g. <c>…#Glb</c> instead of a long duplicate name.</summary>
+    private const string GlbModelChildName = "Glb";
+    private const string GlbModelMetaKey = "_npc_interactable_glb";
+    private const string PlaceholderCheckerDdsPath = "res://Godot/Textures/npc_placeholder_checker.dds";
+
     [Export] public int NameID { get; set; } = 4016;
-    [Export] public string ModelName { get; set; } = string.Empty;
+
+    private string _modelName = string.Empty;
+
+    [Export]
+    public string ModelName
+    {
+        get => _modelName;
+        set
+        {
+            if (_modelName == value)
+            {
+                return;
+            }
+
+            _modelName = value;
+            if (IsInsideTree())
+            {
+                CallDeferred (nameof (RefreshModelVisual));
+            }
+        }
+    }
+
     public string ModelNameSph => ModelName + "\0";
     [Export] public string IconName { get; set; } = string.Empty;
     public string IconNameSph => IconName + "\0";
@@ -33,7 +61,13 @@ public partial class NpcInteractable : WorldObject
 
     public override void _Ready ()
     {
-        base._Ready();
+        RefreshModelVisual ();
+        if (Engine.IsEditorHint ())
+        {
+            return;
+        }
+
+        base._Ready ();
         ObjectType = NpcType switch
         {
             NpcType.Banker => ObjectType.NpcBanker,
@@ -54,7 +88,153 @@ public partial class NpcInteractable : WorldObject
             GenerateItemsForSale();
         }
 
-        serializer = new NpcInteractableSerializer(this);
+        serializer = new NpcInteractableSerializer (this);
+    }
+
+    /// <summary>
+    /// Loads <see cref="ModelName"/> from <c>res://Godot/Models/{name}.glb</c>, or a 1×1 placeholder cube with a tileable pink checker (DDS).
+    /// Runs in the editor (<see cref="Tool"/>) when exports change.
+    /// </summary>
+    private void RefreshModelVisual ()
+    {
+        var trimmed = ModelName?.Trim () ?? string.Empty;
+        RemoveGlbModelChild ();
+
+        if (string.IsNullOrEmpty (trimmed))
+        {
+            ShowPlaceholderCube ();
+            return;
+        }
+
+        RemovePlaceholderMeshChild ();
+        var glbPath = $"res://Godot/Models/{trimmed}.glb";
+        if (!ResourceLoader.Exists (glbPath))
+        {
+            GD.PushWarning ($"NpcInteractable: GLB not found: {glbPath}");
+            ShowPlaceholderCube ();
+            return;
+        }
+
+        var packed = ResourceLoader.Load<PackedScene> (glbPath);
+        if (packed is null)
+        {
+            GD.PushWarning ($"NpcInteractable: failed to load scene: {glbPath}");
+            ShowPlaceholderCube ();
+            return;
+        }
+
+        var root = packed.Instantiate<Node3D> ();
+        root.Name = GlbModelChildName;
+        root.UniqueNameInOwner = true;
+        root.SetMeta (GlbModelMetaKey, true);
+        AddChild (root);
+        SetOwnerForEditedScene (root);
+    }
+
+    /// <summary>
+    /// Removes prior GLB roots (meta-tagged or name <see cref="GlbModelChildName"/>), including Godot-renamed duplicates.
+    /// </summary>
+    private void RemoveGlbModelChild ()
+    {
+        var toRemove = new List<Node> ();
+        foreach (Node child in GetChildren ())
+        {
+            if (child.HasMeta (GlbModelMetaKey))
+            {
+                toRemove.Add (child);
+                continue;
+            }
+
+            var nm = child.Name.ToString ();
+            if (nm == GlbModelChildName || nm.StartsWith ("NpcGlbModel", StringComparison.Ordinal))
+            {
+                toRemove.Add (child);
+            }
+        }
+
+        foreach (var n in toRemove)
+        {
+            n.Free ();
+        }
+    }
+
+    private void RemovePlaceholderMeshChild ()
+    {
+        var n = GetNodeOrNull (PlaceholderMeshNodeName);
+        n?.Free ();
+    }
+
+    private void ShowPlaceholderCube ()
+    {
+        RemoveGlbModelChild ();
+
+        MeshInstance3D meshInst;
+        if (GetNodeOrNull (PlaceholderMeshNodeName) is MeshInstance3D existing)
+        {
+            meshInst = existing;
+        }
+        else
+        {
+            meshInst = new MeshInstance3D ();
+            meshInst.Name = PlaceholderMeshNodeName;
+            AddChild (meshInst);
+            SetOwnerForEditedScene (meshInst);
+        }
+
+        var box = new BoxMesh { Size = Vector3.One };
+        meshInst.Mesh = box;
+        var mat = new StandardMaterial3D ();
+        mat.AlbedoTexture = LoadPlaceholderCheckerTexture ();
+        meshInst.MaterialOverride = mat;
+    }
+
+    private static Texture2D LoadPlaceholderCheckerTexture ()
+    {
+        if (ResourceLoader.Exists (PlaceholderCheckerDdsPath))
+        {
+            var tex = ResourceLoader.Load<Texture2D> (PlaceholderCheckerDdsPath);
+            if (tex is not null)
+            {
+                return tex;
+            }
+        }
+
+        return CreateFallbackPinkCheckerTexture ();
+    }
+
+    /// <summary>Procedural tileable fallback if the DDS resource is missing.</summary>
+    private static Texture2D CreateFallbackPinkCheckerTexture ()
+    {
+        const int w = 64;
+        const int h = 64;
+        const int tile = 8;
+        var img = Image.CreateEmpty (w, h, false, Image.Format.Rgba8);
+        var light = new Color (1f, 0.6f, 0.8f);
+        var dark = new Color (1f, 0.25f, 0.55f);
+        for (var y = 0; y < h; y++)
+        {
+            for (var x = 0; x < w; x++)
+            {
+                var c = (((x / tile) + (y / tile)) & 1) == 0 ? light : dark;
+                img.SetPixel (x, y, c);
+            }
+        }
+
+        return ImageTexture.CreateFromImage (img);
+    }
+
+    /// <summary>
+    /// Owns editor-created visuals under this instance root only. Do not use <see cref="SceneTree.EditedSceneRoot"/>;
+    /// assigning the main scene root as owner can persist those nodes as direct children of the main node in the .tscn.
+    /// </summary>
+    private void SetOwnerForEditedScene (Node node)
+    {
+        if (!Engine.IsEditorHint ())
+        {
+            return;
+        }
+
+        node.Owner = this;
     }
 
     protected override List<PacketPart> GetPacketParts ()
