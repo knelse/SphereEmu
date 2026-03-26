@@ -133,7 +133,7 @@ internal static class Program
                 sb.AppendLine ("\")]");
                 AppendTransform3DWithYRotation (sb, row.X, godotY, row.Z, row.Angle);
                 sb.Append ("NameID = ");
-                sb.Append (row.NameId);
+                sb.Append (4000 + row.NameId);
                 sb.AppendLine ();
                 sb.Append ("ModelName = ");
                 sb.AppendLine (FormatTscnStringValue (row.ModelName));
@@ -527,6 +527,7 @@ internal static class Program
             TSV columns (tab-separated, one NPC per line):
               ID (hex; optional 0x), ObjectType (enum name, e.g. NpcTrade), SpawnType (ignored), X, Y, Z, Angle, NameId,
               ModelNameLength, ModelName, IconNameLength, IconName, NpcType
+            NameId is the offset used with _rnms (key = 4000 + NameId); exported NameID on the node is 4000 + NameId.
 
             Y from the file is negated for the Godot transform (game ↔ engine convention).
             Angle is yaw (0 = north, increasing CCW); scene Y rotation uses t0 = -angle * π / 64 radians (angle 64 → -π).
