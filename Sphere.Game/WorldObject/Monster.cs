@@ -5,8 +5,42 @@ using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
+[Tool]
 public partial class Monster : WorldObject
 {
+	private static bool TryGetMonsterModelNameGroundFromDb (MonsterType monsterType, out string modelName)
+	{
+		modelName = string.Empty;
+		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue (monsterType, out var monsterDbId))
+		{
+			return false;
+		}
+
+		if (!SphObjectDb.GameObjectDataDb.TryGetValue (monsterDbId, out var entry))
+		{
+			return false;
+		}
+
+		var ground = entry.ModelNameGround?.Trim () ?? string.Empty;
+		if (string.IsNullOrEmpty (ground))
+		{
+			return false;
+		}
+
+		modelName = ground;
+		return true;
+	}
+
+	protected override string ResolveModelNameFromObjectTypeFallback ()
+	{
+		if (TryGetMonsterModelNameGroundFromDb (MonsterType, out var ground))
+		{
+			return ground;
+		}
+
+		return base.ResolveModelNameFromObjectTypeFallback ();
+	}
+
 	[Export] public MonsterType MonsterType { get; set; }
 	[Export] public bool HasName { get; set; }
 	[Export] public int NameID_1 { get; set; }

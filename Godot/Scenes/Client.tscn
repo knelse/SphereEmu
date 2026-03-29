@@ -1,22 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgnwpy1raisjd"]
+[gd_scene format=3 uid="uid://dgnwpy1raisjd"]
 
 [ext_resource type="Script" uid="uid://cg6buhiqkg43s" path="res://Client/SphereClient.cs" id="1_dsyj5"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_jc1om"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 
-[sub_resource type="CapsuleMesh" id="2"]
-
-[node name="Client" type="Node3D"]
+[node name="Client" type="Node3D" unique_id=1652023596]
 script = ExtResource("1_dsyj5")
 ObjectType = 4
 
-[node name="ClientModel" type="CharacterBody3D" parent="."]
+[node name="ClientModel" type="CharacterBody3D" parent="." unique_id=73164170]
 process_mode = 4
 collision_layer = 2147483648
 collision_mask = 2147483648
 
-[node name="ClientShape" type="CollisionShape3D" parent="ClientModel"]
+[node name="ClientShape" type="CollisionShape3D" parent="ClientModel" unique_id=1387932300]
 shape = SubResource("1")
 
-[node name="ClientMesh" type="MeshInstance3D" parent="ClientModel"]
-mesh = SubResource("2")
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_jc1om")]

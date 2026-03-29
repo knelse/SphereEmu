@@ -7,6 +7,7 @@ using SphServer.Packets;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
+[Tool]
 public partial class Door : WorldObject
 {
     [Export] public int DoorID { get; set; }

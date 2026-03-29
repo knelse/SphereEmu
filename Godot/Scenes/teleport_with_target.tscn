@@ -1,23 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4c83wln6qro8"]
+[gd_scene format=3 uid="uid://b4c83wln6qro8"]
 
-[ext_resource type="Script" uid="uid://du865gt6mf4ue" path="res://Shared/__ToSortOut/WorldObjects/TeleportWithTarget.cs" id="1_rs7kr"]
+[ext_resource type="Script" uid="uid://du865gt6mf4ue" path="res://Sphere.Game/WorldObject/TeleportWithTarget.cs" id="1_rs7kr"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_5xnku"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_le5qm"]
-
-[node name="TeleportWithTarget" type="Node3D"]
+[node name="TeleportWithTarget" type="Node3D" unique_id=1943050220]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_rs7kr")
-SubtypeID = null
-Angle = null
-ID = null
 ObjectType = 62
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1002313489]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=810182423]
 shape = SubResource("CapsuleShape3D_imxti")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_le5qm")
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_5xnku")]

@@ -1,26 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvst2imwssdnc"]
+[gd_scene format=3 uid="uid://cvst2imwssdnc"]
 
-[ext_resource type="Script" uid="uid://c0c7g8fg8o0ux" path="res://Nodes/LootBagNode.cs" id="2"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a4eco"]
-albedo_color = Color(0.247059, 0.682353, 0.423529, 1)
-
-[sub_resource type="BoxMesh" id="1"]
-material = SubResource("StandardMaterial3D_a4eco")
-size = Vector3(0.5, 0.5, 0.5)
+[ext_resource type="Script" uid="uid://c0c7g8fg8o0ux" path="res://Godot/Nodes/LootBagNode.cs" id="2"]
 
 [sub_resource type="BoxShape3D" id="3"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="LootBag" type="RigidBody3D"]
+[node name="LootBag" type="RigidBody3D" unique_id=756254708]
 gravity_scale = 0.0
 freeze = true
 script = ExtResource("2")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("1")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1422702330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("3")

@@ -1,6 +1,6 @@
 using SphServer.Shared.GameData.Enums;
 
-namespace SphServer.Sphere.Game.IngameToEmulatorTypeConverters;
+namespace SphServer.Sphere.Game.Converters;
 
 public static class NpcTypeToNpcTradeTypeSph
 {

@@ -1,13 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://id00aeux6mxl"]
+[gd_scene format=3 uid="uid://id00aeux6mxl"]
 
 [ext_resource type="Script" uid="uid://c2t3mvyqs5fp3" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_r6eqx"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_r7qnr"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_tb2jr"]
-
-[node name="Firework" type="Node3D"]
+[node name="Firework" type="Node3D" unique_id=1233930950]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_r6eqx")
 ObjectType = 712
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_tb2jr")
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_r7qnr")]
