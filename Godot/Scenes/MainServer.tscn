@@ -100,7 +100,7 @@ ObjectType = 216
 ModelName = "npc68a"
 
 [node name="NPC_4551_Брэд_Баттер" parent="NPC" unique_id=743422386 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.24298051, 0, 0.9700309, 0, 1, 0, -0.9700309, 0, 0.24298051, 260.45596, -158.2396, -2354.7231)
+transform = Transform3D(0.24298048, 0, 0.9700308, 0, 1, 0, -0.9700308, 0, 0.24298048, 260.45596, -158.2396, -2354.7231)
 NameID = 4482
 IconName = "npc_guilder"
 NpcType = 16
@@ -122,7 +122,7 @@ ObjectType = 216
 ModelName = "npc06"
 
 [node name="NPC_4554_Фил_Оакенфилд" parent="NPC" unique_id=1174514499 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.3826835, 0, 0.92387915, 0, 1, 0, -0.92387915, 0, 0.3826835, 1665.0187, -159.77592, -2690.4297)
+transform = Transform3D(0.38268346, 0, 0.9238791, 0, 1, 0, -0.9238791, 0, 0.38268346, 1665.0187, -159.77592, -2690.4297)
 NameID = 4484
 IconName = "npc_guilder"
 NpcType = 16
@@ -264,7 +264,7 @@ ObjectType = 216
 ModelName = "npc29a"
 
 [node name="NPC_4579_Чак_Лойд" parent="NPC" unique_id=145454061 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.3826829, 0, -0.9238794, 0, 1, 0, 0.9238794, 0, -0.3826829, -3755.3398, 340.01865, 205.03024)
+transform = Transform3D(-0.38268286, 0, -0.9238793, 0, 1, 0, 0.9238793, 0, -0.38268286, -3755.3398, 340.01865, 205.03024)
 NameID = 4472
 IconName = "npc_guilder"
 NpcType = 16
@@ -490,7 +490,7 @@ ObjectType = 209
 ModelName = "npc59"
 
 [node name="NPC_4979_Джабраил_Даматакар" parent="NPC" unique_id=728466610 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509026, 0, -0.98078495, 0, 1, 0, 0.98078495, 0, -0.19509026, 3092.8135, -159.85, -1700.121)
+transform = Transform3D(-0.19509025, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, -0.19509025, 3092.8135, -159.85, -1700.121)
 NameID = 4505
 IconName = "npc_quest_dgree"
 NpcType = 14
@@ -578,7 +578,7 @@ ObjectType = 208
 ModelName = "npc58"
 
 [node name="NPC_4989_Карамил_Белендо" parent="NPC" unique_id=1511122451 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.99879515, 0, -0.049067497, 0, 1, 0, 0.049067497, 0, 0.99879515, 194.12448, -159.83362, -634.8464)
+transform = Transform3D(0.99879503, 0, -0.049067494, 0, 1, 0, 0.049067494, 0, 0.99879503, 194.12448, -159.83362, -634.8464)
 NameID = 4112
 IconName = "npc_quest_karma"
 NpcType = 15
@@ -633,7 +633,7 @@ ObjectType = 205
 ModelName = "npc08"
 
 [node name="NPC_5004_Пелепос_Радокис" parent="NPC" unique_id=940080452 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.29028466, 0, -0.95694005, 0, 1, 0, 0.95694005, 0, -0.29028466, -3371.5984, 339.39636, -1006.175)
+transform = Transform3D(-0.29028463, 0, -0.95693994, 0, 1, 0, 0.95693994, 0, -0.29028463, -3371.5984, 339.39636, -1006.175)
 NameID = 4418
 IconName = "npc_quest_dgree"
 NpcType = 14
@@ -666,7 +666,7 @@ ObjectType = 239
 ModelName = "npc55"
 
 [node name="NPC_5111_Джеймс_Хэтбилд" parent="NPC" unique_id=139136346 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.95694005, 0, -0.29028466, 0, 1, 0, 0.29028466, 0, 0.95694005, 2639.222, -157.60866, 1239.1997)
+transform = Transform3D(0.95693994, 0, -0.29028463, 0, 1, 0, 0.29028463, 0, 0.95693994, 2639.222, -157.60866, 1239.1997)
 NameID = 4392
 IconName = "npc_guilder"
 NpcType = 19
@@ -833,7 +833,7 @@ ID = 5151
 ModelName = "npc08"
 
 [node name="NPC_5153_Анита_Томпсон" parent="NPC" unique_id=1031562859 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.970031, 0, -0.24298002, 0, 1, 0, 0.24298002, 0, -0.970031, 421.54904, -153.04205, -1315.5256)
+transform = Transform3D(-0.9700309, 0, -0.24297999, 0, 1, 0, 0.24297999, 0, -0.9700309, 421.54904, -153.04205, -1315.5256)
 NameID = 4005
 IconName = "npc_trade_jewel"
 NpcType = 8
@@ -1161,7 +1161,7 @@ ID = 5189
 ModelName = "npc08"
 
 [node name="NPC_5190_Джордан_Базиро" parent="NPC" unique_id=1813902220 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509026, 0, -0.98078495, 0, 1, 0, 0.98078495, 0, -0.19509026, 381.9093, -159.8448, -1493.4507)
+transform = Transform3D(-0.19509025, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, -0.19509025, 381.9093, -159.8448, -1493.4507)
 NameID = 4122
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -1171,7 +1171,7 @@ ID = 5190
 ModelName = "npc08"
 
 [node name="NPC_5191_Кевин_Дольтер" parent="NPC" unique_id=2110858996 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.09801691, 0, 0.9951845, 0, 1, 0, -0.9951845, 0, -0.09801691, 2400.3232, -159.8988, -2268.9343)
+transform = Transform3D(-0.098016895, 0, 0.99518436, 0, 1, 0, -0.99518436, 0, -0.098016895, 2400.3232, -159.8988, -2268.9343)
 NameID = 4123
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -1290,7 +1290,7 @@ ID = 5202
 ModelName = "npc29a"
 
 [node name="NPC_5203_Грифин_Той" parent="NPC" unique_id=1065777480 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.980785, 0, -0.19509004, 0, 1, 0, 0.19509004, 0, 0.980785, 501.47156, -159.88086, -192.81662)
+transform = Transform3D(0.9807849, 0, -0.19509003, 0, 1, 0, 0.19509003, 0, 0.9807849, 501.47156, -159.88086, -192.81662)
 NameID = 4159
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -1380,7 +1380,7 @@ ID = 5211
 ModelName = "npc29b"
 
 [node name="NPC_5212_Бенедикт_Кельвин" parent="NPC" unique_id=1705920141 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.980785, 0, -0.19509004, 0, 1, 0, 0.19509004, 0, 0.980785, 262.39374, -159.00163, 950.9672)
+transform = Transform3D(0.9807849, 0, -0.19509003, 0, 1, 0, 0.19509003, 0, 0.9807849, 262.39374, -159.00163, 950.9672)
 NameID = 4132
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -1429,7 +1429,7 @@ ID = 5216
 ModelName = "npc14"
 
 [node name="NPC_5217_Сара_Иден" parent="NPC" unique_id=1222057202 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509026, 0, -0.98078495, 0, 1, 0, 0.98078495, 0, -0.19509026, 1675.4761, -159.22691, -479.6663)
+transform = Transform3D(-0.19509025, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, -0.19509025, 1675.4761, -159.22691, -479.6663)
 NameID = 4137
 NpcType = 9
 VendorItemTierMax = 15
@@ -1580,7 +1580,7 @@ ID = 5233
 ModelName = "npc14"
 
 [node name="NPC_5234_Креола_Аурунус" parent="NPC" unique_id=755623908 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.99879515, 0, 0.049067624, 0, 1, 0, -0.049067624, 0, 0.99879515, 1033.6421, -159.85481, -295.1358)
+transform = Transform3D(0.99879503, 0, 0.04906762, 0, 1, 0, -0.04906762, 0, 0.99879503, 1033.6421, -159.85481, -295.1358)
 NameID = 4145
 NpcType = 9
 VendorItemTierMax = 15
@@ -1617,7 +1617,7 @@ ID = 5237
 ModelName = "npc14b"
 
 [node name="NPC_5238_Изольда_Рубальски" parent="NPC" unique_id=1566204544 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9238792, 0, 0.3826833, 0, 1, 0, -0.3826833, 0, -0.9238792, 1037.5996, -159.8263, -296.91187)
+transform = Transform3D(-0.92387915, 0, 0.38268328, 0, 1, 0, -0.38268328, 0, -0.92387915, 1037.5996, -159.8263, -296.91187)
 NameID = 4177
 IconName = "npc_trade_alchm"
 NpcType = 6
@@ -2056,7 +2056,7 @@ ID = 5412
 ModelName = "npc08"
 
 [node name="NPC_5413_Джон_Хорман" parent="NPC" unique_id=770265682 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509026, 0, -0.98078495, 0, 1, 0, 0.98078495, 0, -0.19509026, 1530.4929, -409.812, 3390.9473)
+transform = Transform3D(-0.19509025, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, -0.19509025, 1530.4929, -409.812, 3390.9473)
 NameID = 4031
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -2333,7 +2333,7 @@ ID = 5441
 ModelName = "npc08"
 
 [node name="NPC_5442_Оркус_Мантоблас" parent="NPC" unique_id=824530065 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.47139674, 0, 0.88192093, 0, 1, 0, -0.88192093, 0, 0.47139674, -2589.504, 96.421036, -318.1851)
+transform = Transform3D(0.4713967, 0, 0.88192093, 0, 1, 0, -0.88192093, 0, 0.4713967, -2589.504, 96.421036, -318.1851)
 NameID = 4329
 IconName = "npc_trade_travl"
 NpcType = 10
@@ -2371,7 +2371,7 @@ ID = 5445
 ModelName = "npc08"
 
 [node name="NPC_5446_Мак_Холханонгер" parent="NPC" unique_id=572661839 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.04906746, 0, -0.99879515, 0, 1, 0, 0.99879515, 0, 0.04906746, -1972.2217, 108.239, 483.49744)
+transform = Transform3D(0.049067456, 0, -0.99879503, 0, 1, 0, 0.99879503, 0, 0.049067456, -1972.2217, 108.239, 483.49744)
 NameID = 4043
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -2381,7 +2381,7 @@ ID = 5446
 ModelName = "npc29c"
 
 [node name="NPC_5447_Сара_Оболенски" parent="NPC" unique_id=1590135921 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.3826835, 0, 0.92387915, 0, 1, 0, -0.92387915, 0, 0.3826835, -1959.8899, 118.68285, 524.84796)
+transform = Transform3D(0.38268346, 0, 0.9238791, 0, 1, 0, -0.9238791, 0, 0.38268346, -1959.8899, 118.68285, 524.84796)
 NameID = 4044
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -2430,7 +2430,7 @@ ID = 5451
 ModelName = "npc29a"
 
 [node name="NPC_5452_Абрахам_Магнус" parent="NPC" unique_id=1059982220 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.9700309, 0, 0.24298045, 0, 1, 0, -0.24298045, 0, 0.9700309, -2292.2256, 90.26304, 489.85934)
+transform = Transform3D(0.9700308, 0, 0.24298042, 0, 1, 0, -0.24298042, 0, 0.9700308, -2292.2256, 90.26304, 489.85934)
 NameID = 4048
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -2440,7 +2440,7 @@ ID = 5452
 ModelName = "npc29c"
 
 [node name="NPC_5453_Роберт_Борбес" parent="NPC" unique_id=103863726 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509026, 0, -0.98078495, 0, 1, 0, 0.98078495, 0, -0.19509026, -1897.7283, 89.67637, -916.44763)
+transform = Transform3D(-0.19509025, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, -0.19509025, -1897.7283, 89.67637, -916.44763)
 NameID = 4051
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -2450,7 +2450,7 @@ ID = 5453
 ModelName = "npc29b"
 
 [node name="NPC_5454_Джеймс_Пойсон" parent="NPC" unique_id=1703224871 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.33689004, 0, 0.94154364, 0, 1, 0, -0.94154364, 0, -0.33689004, -1908.5674, 90.83886, -913.75934)
+transform = Transform3D(-0.33688998, 0, 0.9415435, 0, 1, 0, -0.9415435, 0, -0.33688998, -1908.5674, 90.83886, -913.75934)
 NameID = 4052
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -2583,32 +2583,32 @@ ObjectType = 805
 [node name="Doors" type="Node3D" parent="." unique_id=1714189669]
 
 [node name="Sunpool_Suites_External_1" parent="Doors" unique_id=1130056331 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.04906765, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.04906765, 414.212, -149.001, -1272.16)
+transform = Transform3D(0.049067643, 0, -0.99879533, 0, 1, 0, 0.99879533, 0, 0.049067643, 414.212, -149.001, -1272.16)
 DoorID = 5011
 Angle = 31
 
 [node name="Sunpool_Suites_External_2" parent="Doors" unique_id=1599292437 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.04906765, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.04906765, 411.438, -148.984, -1274.88)
+transform = Transform3D(0.049067643, 0, -0.99879533, 0, 1, 0, 0.99879533, 0, 0.049067643, 411.438, -148.984, -1274.88)
 DoorID = 5012
 Angle = 31
 
 [node name="Sunpool_Suites_External_3" parent="Doors" unique_id=158955258 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.04906765, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.04906765, 408.611, -148.994, -1277.64)
+transform = Transform3D(0.049067643, 0, -0.99879533, 0, 1, 0, 0.99879533, 0, 0.049067643, 408.611, -148.994, -1277.64)
 DoorID = 5013
 Angle = 31
 
 [node name="Sunpool_Suites_External_4" parent="Doors" unique_id=1824683360 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.04906765, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.04906765, 405.812, -148.83, -1280.38)
+transform = Transform3D(0.049067643, 0, -0.99879533, 0, 1, 0, 0.99879533, 0, 0.049067643, 405.812, -148.83, -1280.38)
 DoorID = 5014
 Angle = 31
 
 [node name="Sunpool_Suites_Internal_1" parent="Doors" unique_id=567481383 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028472, 0, -0.9569403, 0, 1, 0, 0.9569403, 0, -0.29028472, -3091.18, -1095.43, -3898.94)
+transform = Transform3D(-0.2902847, 0, -0.9569402, 0, 1, 0, 0.9569402, 0, -0.2902847, -3091.18, -1095.43, -3898.94)
 DoorID = 5009
 Angle = 38
 
 [node name="Sunpool_Suites_Internal_2" parent="Doors" unique_id=395889481 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028472, 0, -0.9569403, 0, 1, 0, 0.9569403, 0, -0.29028472, -3093.74, -1095.43, -3902.54)
+transform = Transform3D(-0.2902847, 0, -0.9569402, 0, 1, 0, 0.9569402, 0, -0.2902847, -3093.74, -1095.43, -3902.54)
 DoorID = 5010
 Angle = 38
 
@@ -2622,7 +2622,7 @@ TargetZ = -3901.05
 Angle = 30
 
 [node name="Sunpool_Tavern_To_2" parent="Doors" unique_id=1776975170 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.04906765, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.04906765, 411.522, -152.216, -1274.96)
+transform = Transform3D(0.049067643, 0, -0.99879533, 0, 1, 0, 0.99879533, 0, 0.049067643, 411.522, -152.216, -1274.96)
 DoorID = 32767
 HasTarget = true
 TargetX = -3099.7
@@ -2631,7 +2631,7 @@ TargetZ = -3899.65
 Angle = 31
 
 [node name="Sunpool_Tavern_From_1" parent="Doors" unique_id=1106533143 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028472, 0, -0.9569403, 0, 1, 0, 0.9569403, 0, -0.29028472, -3091.89, -1098.51, -3902.16)
+transform = Transform3D(-0.2902847, 0, -0.9569402, 0, 1, 0, 0.9569402, 0, -0.2902847, -3091.89, -1098.51, -3902.16)
 DoorID = 32767
 HasTarget = true
 TargetX = 414.931
@@ -2641,7 +2641,7 @@ Angle = 38
 ObjectType = 61
 
 [node name="Sunpool_Tavern_From_2" parent="Doors" unique_id=1181547429 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.29028457, 0, 0.95694035, 0, 1, 0, -0.95694035, 0, 0.29028457, -3100.44, -1098.72, -3900.6)
+transform = Transform3D(0.29028454, 0, 0.95694023, 0, 1, 0, -0.95694023, 0, 0.29028454, -3100.44, -1098.72, -3900.6)
 DoorID = 32767
 HasTarget = true
 TargetX = 410.67

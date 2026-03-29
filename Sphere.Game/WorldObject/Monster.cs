@@ -41,7 +41,26 @@ public partial class Monster : WorldObject
 		return base.ResolveModelNameFromObjectTypeFallback ();
 	}
 
-	[Export] public MonsterType MonsterType { get; set; }
+	private MonsterType _monsterType;
+
+	[Export]
+	public MonsterType MonsterType
+	{
+		get => _monsterType;
+		set
+		{
+			if (_monsterType == value)
+			{
+				return;
+			}
+
+			_monsterType = value;
+			if (IsInsideTree ())
+			{
+				CallDeferred (nameof (RefreshModelVisualDeferred));
+			}
+		}
+	}
 	[Export] public bool HasName { get; set; }
 	[Export] public int NameID_1 { get; set; }
 	[Export] public int NameID_2 { get; set; }
