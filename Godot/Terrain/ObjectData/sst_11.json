@@ -1,0 +1,106 @@
+[
+    {
+        "object_name": "s_home09",
+        "coordinates": {
+            "x": 2875.5437,
+            "y": 159.8674,
+            "z": 902.4528
+        },
+        "rotation_euler": {
+            "yaw": -0.483,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "wedro2",
+        "coordinates": {
+            "x": 2874.2678,
+            "y": 159.9332,
+            "z": 900.1611
+        },
+        "rotation_euler": {
+            "yaw": -1.6458,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "skam1",
+        "coordinates": {
+            "x": 2872.2041,
+            "y": 159.8697,
+            "z": 900.8185
+        },
+        "rotation_euler": {
+            "yaw": -0.4911,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_kozly1",
+        "coordinates": {
+            "x": 2868.4412,
+            "y": 159.9384,
+            "z": 897.6465
+        },
+        "rotation_euler": {
+            "yaw": 0.212,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_wood1",
+        "coordinates": {
+            "x": 2877.5801,
+            "y": 159.9675,
+            "z": 904.912
+        },
+        "rotation_euler": {
+            "yaw": -2.0139,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "plank1",
+        "coordinates": {
+            "x": 2868.0684,
+            "y": 159.9247,
+            "z": 902.4796
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": -7.8474,
+            "roll": -3.1416
+        }
+    },
+    {
+        "object_name": "plank1",
+        "coordinates": {
+            "x": 2867.4849,
+            "y": 159.9058,
+            "z": 901.5564
+        },
+        "rotation_euler": {
+            "yaw": 1.5486,
+            "pitch": -7.1664,
+            "roll": -4.7691
+        }
+    },
+    {
+        "object_name": "plank2",
+        "coordinates": {
+            "x": 2867.1658,
+            "y": 159.7907,
+            "z": 901.9243
+        },
+        "rotation_euler": {
+            "yaw": -1.3536,
+            "pitch": -5.0533,
+            "roll": -4.9977
+        }
+    }
+]

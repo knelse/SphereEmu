@@ -1,0 +1,1315 @@
+[
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -306.7292,
+            "y": 1699.8749,
+            "z": -3282.1062
+        },
+        "rotation_euler": {
+            "yaw": -3.4043,
+            "pitch": -6.3115,
+            "roll": -6.1792
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -270.7507,
+            "y": 1698.9729,
+            "z": -3297.8379
+        },
+        "rotation_euler": {
+            "yaw": -3.6756,
+            "pitch": -6.3888,
+            "roll": -6.1078
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -269.8105,
+            "y": 1698.9934,
+            "z": -3313.3179
+        },
+        "rotation_euler": {
+            "yaw": -4.6441,
+            "pitch": -6.547,
+            "roll": -6.2656
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -268.3853,
+            "y": 1699.7999,
+            "z": -3269.2898
+        },
+        "rotation_euler": {
+            "yaw": -4.3255,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -331.136,
+            "y": 1699.0533,
+            "z": -3286.4146
+        },
+        "rotation_euler": {
+            "yaw": -2.1605,
+            "pitch": -6.1752,
+            "roll": -6.1985
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -357.5728,
+            "y": 1699.6604,
+            "z": -3299.5737
+        },
+        "rotation_euler": {
+            "yaw": -2.6456,
+            "pitch": -6.227,
+            "roll": -6.1626
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -361.5278,
+            "y": 1700.0826,
+            "z": -3353.0054
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": -6.2833,
+            "roll": -5.8927
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -338.2107,
+            "y": 1699.8298,
+            "z": -3328.3269
+        },
+        "rotation_euler": {
+            "yaw": 1.3443,
+            "pitch": -6.5701,
+            "roll": -6.3503
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -304.8574,
+            "y": 1700.194,
+            "z": -3359.834
+        },
+        "rotation_euler": {
+            "yaw": 1.5603,
+            "pitch": -6.6993,
+            "roll": -6.2576
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -300.7544,
+            "y": 1699.6979,
+            "z": -3323.8831
+        },
+        "rotation_euler": {
+            "yaw": -2.6925,
+            "pitch": -6.1314,
+            "roll": -6.025
+        }
+    },
+    {
+        "object_name": "bochka3",
+        "coordinates": {
+            "x": -304.1965,
+            "y": 1702.4127,
+            "z": -3281.7935
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka3",
+        "coordinates": {
+            "x": -296.9968,
+            "y": 1702.4152,
+            "z": -3281.3655
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_sit1",
+        "coordinates": {
+            "x": -297.0566,
+            "y": 1702.3253,
+            "z": -3282.2087
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -304.6519,
+            "y": 1700.0822,
+            "z": -3282.0181
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_kozly1",
+        "coordinates": {
+            "x": -272.2834,
+            "y": 1702.7233,
+            "z": -3281.2327
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_ochag1",
+        "coordinates": {
+            "x": -266.6685,
+            "y": 1702.6461,
+            "z": -3289.3301
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_bon2",
+        "coordinates": {
+            "x": -268.7502,
+            "y": 1702.6129,
+            "z": -3298.5938
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -270.0669,
+            "y": 1702.6603,
+            "z": -3300.8647
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_grob1",
+        "coordinates": {
+            "x": -281.8386,
+            "y": 1702.5931,
+            "z": -3301.8342
+        },
+        "rotation_euler": {
+            "yaw": -4.1417,
+            "pitch": -5.7381,
+            "roll": -5.5184
+        }
+    },
+    {
+        "object_name": "wedro2",
+        "coordinates": {
+            "x": -290.1565,
+            "y": 1702.2472,
+            "z": -3295.9812
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_part6",
+        "coordinates": {
+            "x": -281.9241,
+            "y": 1702.6135,
+            "z": -3313.2859
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_part5",
+        "coordinates": {
+            "x": -289.3743,
+            "y": 1702.4441,
+            "z": -3332.3557
+        },
+        "rotation_euler": {
+            "yaw": -4.0985,
+            "pitch": -5.3399,
+            "roll": -5.4289
+        }
+    },
+    {
+        "object_name": "d_sk_part4",
+        "coordinates": {
+            "x": -289.0823,
+            "y": 1702.6433,
+            "z": -3331.5261
+        },
+        "rotation_euler": {
+            "yaw": -3.4002,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "d_sk_lay1",
+        "coordinates": {
+            "x": -286.2644,
+            "y": 1702.1,
+            "z": -3334.9587
+        },
+        "rotation_euler": {
+            "yaw": -4.7,
+            "pitch": -5.3358,
+            "roll": -4.7278
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -267.5178,
+            "y": 1702.663,
+            "z": -3327.231
+        },
+        "rotation_euler": {
+            "yaw": -0.5617,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -267.8674,
+            "y": 1702.6343,
+            "z": -3328.8469
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_ochag1",
+        "coordinates": {
+            "x": -267.6062,
+            "y": 1702.6055,
+            "z": -3327.9827
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -269.8704,
+            "y": 1699.9954,
+            "z": -3312.8298
+        },
+        "rotation_euler": {
+            "yaw": -4.6125,
+            "pitch": -7.8207,
+            "roll": -4.6128
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -269.8582,
+            "y": 1700.0656,
+            "z": -3313.6953
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.8004,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -254.0183,
+            "y": 1702.427,
+            "z": -3318.917
+        },
+        "rotation_euler": {
+            "yaw": -1.8972,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -254.0254,
+            "y": 1702.1261,
+            "z": -3318.8796
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_grob3",
+        "coordinates": {
+            "x": -250.8215,
+            "y": 1702.6451,
+            "z": -3316.905
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_lay3",
+        "coordinates": {
+            "x": -250.8174,
+            "y": 1702.61,
+            "z": -3316.7285
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.2462,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -250.0293,
+            "y": 1702.6609,
+            "z": -3296.5166
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -250.0269,
+            "y": 1701.677,
+            "z": -3296.5232
+        },
+        "rotation_euler": {
+            "yaw": -0.6636,
+            "pitch": -6.4336,
+            "roll": -6.3998
+        }
+    },
+    {
+        "object_name": "d_sk_skl2",
+        "coordinates": {
+            "x": -250.0193,
+            "y": 1702.8527,
+            "z": -3296.5295
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -259.1436,
+            "y": 1702.3683,
+            "z": -3302.8291
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -259.167,
+            "y": 1701.4382,
+            "z": -3302.8477
+        },
+        "rotation_euler": {
+            "yaw": -4.1666,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -259.1411,
+            "y": 1701.6194,
+            "z": -3302.8306
+        },
+        "rotation_euler": {
+            "yaw": 1.1006,
+            "pitch": -6.643,
+            "roll": -5.8872
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -259.1597,
+            "y": 1701.856,
+            "z": -3302.8477
+        },
+        "rotation_euler": {
+            "yaw": -3.1786,
+            "pitch": -5.5734,
+            "roll": -6.2595
+        }
+    },
+    {
+        "object_name": "basket3",
+        "coordinates": {
+            "x": -249.8105,
+            "y": 1702.2532,
+            "z": -3282.7742
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_sit6",
+        "coordinates": {
+            "x": -257.4792,
+            "y": 1702.5333,
+            "z": -3272.9475
+        },
+        "rotation_euler": {
+            "yaw": -3.8838,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "basket3",
+        "coordinates": {
+            "x": -254.0288,
+            "y": 1702.3577,
+            "z": -3263.4712
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_bon1",
+        "coordinates": {
+            "x": -254.113,
+            "y": 1701.7484,
+            "z": -3263.6323
+        },
+        "rotation_euler": {
+            "yaw": -0.614,
+            "pitch": -5.2796,
+            "roll": -6.0583
+        }
+    },
+    {
+        "object_name": "d_sk_part3",
+        "coordinates": {
+            "x": -268.3665,
+            "y": 1702.6299,
+            "z": -3269.0425
+        },
+        "rotation_euler": {
+            "yaw": -0.718,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "basket2",
+        "coordinates": {
+            "x": -302.2927,
+            "y": 1702.6923,
+            "z": -3266.3372
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_tachka3",
+        "coordinates": {
+            "x": -298.9412,
+            "y": 1702.6184,
+            "z": -3273.5305
+        },
+        "rotation_euler": {
+            "yaw": 0.4278,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_part1",
+        "coordinates": {
+            "x": -315.2024,
+            "y": 1702.718,
+            "z": -3271.8916
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -315.6011,
+            "y": 1702.6237,
+            "z": -3267.3457
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_grob1",
+        "coordinates": {
+            "x": -331.2681,
+            "y": 1701.7297,
+            "z": -3286.519
+        },
+        "rotation_euler": {
+            "yaw": -4.4999,
+            "pitch": -5.4025,
+            "roll": -4.9853
+        }
+    },
+    {
+        "object_name": "m_vagon2",
+        "coordinates": {
+            "x": -333.5928,
+            "y": 1702.2725,
+            "z": -3299.8604
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -331.605,
+            "y": 1702.6713,
+            "z": -3309.7759
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_skl3",
+        "coordinates": {
+            "x": -331.5994,
+            "y": 1701.5782,
+            "z": -3309.7527
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_kozly1",
+        "coordinates": {
+            "x": -326.5513,
+            "y": 1702.2723,
+            "z": -3296.1628
+        },
+        "rotation_euler": {
+            "yaw": -1.8154,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_part2",
+        "coordinates": {
+            "x": -348.707,
+            "y": 1702.5592,
+            "z": -3279.5789
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": -6.6013,
+            "roll": -3.1418
+        }
+    },
+    {
+        "object_name": "basket1",
+        "coordinates": {
+            "x": -341.8945,
+            "y": 1702.5012,
+            "z": -3289.2859
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -341.8669,
+            "y": 1701.4935,
+            "z": -3289.2954
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.3392,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "m_vagon3",
+        "coordinates": {
+            "x": -360.4658,
+            "y": 1702.5225,
+            "z": -3281.22
+        },
+        "rotation_euler": {
+            "yaw": -0.279,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -359.5742,
+            "y": 1702.4316,
+            "z": -3281.5061
+        },
+        "rotation_euler": {
+            "yaw": 1.0083,
+            "pitch": -6.1129,
+            "roll": -6.5466
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -362.8584,
+            "y": 1702.6643,
+            "z": -3284.7803
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -363.3667,
+            "y": 1702.3597,
+            "z": -3284.1841
+        },
+        "rotation_euler": {
+            "yaw": 0.2901,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_part2",
+        "coordinates": {
+            "x": -357.6101,
+            "y": 1700.3096,
+            "z": -3299.6111
+        },
+        "rotation_euler": {
+            "yaw": -1.564,
+            "pitch": -5.8881,
+            "roll": -4.7299
+        }
+    },
+    {
+        "object_name": "m_topor1",
+        "coordinates": {
+            "x": -357.6917,
+            "y": 1702.5371,
+            "z": -3332.9485
+        },
+        "rotation_euler": {
+            "yaw": -2.9915,
+            "pitch": -7.6042,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "d_sk_sit5",
+        "coordinates": {
+            "x": -364.4905,
+            "y": 1702.5463,
+            "z": -3349.2737
+        },
+        "rotation_euler": {
+            "yaw": -3.6533,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "m_tachka2",
+        "coordinates": {
+            "x": -356.116,
+            "y": 1702.7446,
+            "z": -3343.2693
+        },
+        "rotation_euler": {
+            "yaw": -3.5751,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "d_sk_part3",
+        "coordinates": {
+            "x": -361.7715,
+            "y": 1700.7834,
+            "z": -3352.9707
+        },
+        "rotation_euler": {
+            "yaw": -4.6885,
+            "pitch": -6.4202,
+            "roll": -4.5412
+        }
+    },
+    {
+        "object_name": "d_sk_lay3",
+        "coordinates": {
+            "x": -364.4692,
+            "y": 1702.6543,
+            "z": -3361.7949
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_part1",
+        "coordinates": {
+            "x": -347.7905,
+            "y": 1702.5452,
+            "z": -3345.9539
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": -6.3372,
+            "roll": -3.1417
+        }
+    },
+    {
+        "object_name": "wedro2",
+        "coordinates": {
+            "x": -342.0967,
+            "y": 1702.8044,
+            "z": -3345.0522
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "basket3",
+        "coordinates": {
+            "x": -339.9302,
+            "y": 1702.6464,
+            "z": -3327.7527
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -339.9243,
+            "y": 1702.1453,
+            "z": -3327.7805
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka2",
+        "coordinates": {
+            "x": -348.6042,
+            "y": 1702.1227,
+            "z": -3331.166
+        },
+        "rotation_euler": {
+            "yaw": 1.5481,
+            "pitch": -6.7634,
+            "roll": -4.5738
+        }
+    },
+    {
+        "object_name": "m_topor1",
+        "coordinates": {
+            "x": -347.3552,
+            "y": 1701.3936,
+            "z": -3332.1794
+        },
+        "rotation_euler": {
+            "yaw": -1.8637,
+            "pitch": -4.9426,
+            "roll": -2.8265
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -325.5957,
+            "y": 1702.2854,
+            "z": -3329.4182
+        },
+        "rotation_euler": {
+            "yaw": -3.1195,
+            "pitch": -6.6814,
+            "roll": -6.2749
+        }
+    },
+    {
+        "object_name": "d_sk_part5",
+        "coordinates": {
+            "x": -325.8191,
+            "y": 1702.5389,
+            "z": -3329.1086
+        },
+        "rotation_euler": {
+            "yaw": 0.0723,
+            "pitch": -6.2563,
+            "roll": -3.1364
+        }
+    },
+    {
+        "object_name": "d_sk_skl2",
+        "coordinates": {
+            "x": -327.9497,
+            "y": 1702.4722,
+            "z": -3323.9312
+        },
+        "rotation_euler": {
+            "yaw": -4.0404,
+            "pitch": -6.8698,
+            "roll": -6.3249
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -326.79,
+            "y": 1702.3579,
+            "z": -3358.7256
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -328.0286,
+            "y": 1702.4211,
+            "z": -3356.9131
+        },
+        "rotation_euler": {
+            "yaw": -0.4278,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_ochag2",
+        "coordinates": {
+            "x": -331.8733,
+            "y": 1702.3348,
+            "z": -3366.0151
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_lay2",
+        "coordinates": {
+            "x": -304.0693,
+            "y": 1702.5453,
+            "z": -3360.6418
+        },
+        "rotation_euler": {
+            "yaw": -4.2933,
+            "pitch": -6.2369,
+            "roll": -3.0386
+        }
+    },
+    {
+        "object_name": "m_topor1",
+        "coordinates": {
+            "x": -304.1765,
+            "y": 1702.1902,
+            "z": -3360.5525
+        },
+        "rotation_euler": {
+            "yaw": 0.1402,
+            "pitch": -6.6779,
+            "roll": -4.2389
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -293.5173,
+            "y": 1702.4413,
+            "z": -3360.9646
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_grob2",
+        "coordinates": {
+            "x": -295.8928,
+            "y": 1702.6537,
+            "z": -3342.8608
+        },
+        "rotation_euler": {
+            "yaw": -2.1777,
+            "pitch": -5.9912,
+            "roll": -6.6745
+        }
+    },
+    {
+        "object_name": "d_sk_bon2",
+        "coordinates": {
+            "x": -301.3755,
+            "y": 1702.578,
+            "z": -3342.8228
+        },
+        "rotation_euler": {
+            "yaw": 1.5319,
+            "pitch": -6.2332,
+            "roll": -6.8399
+        }
+    },
+    {
+        "object_name": "d_sk_sit7",
+        "coordinates": {
+            "x": -320.3638,
+            "y": 1702.7756,
+            "z": -3345.6836
+        },
+        "rotation_euler": {
+            "yaw": -0.2,
+            "pitch": -6.0963,
+            "roll": -6.3193
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -312.1428,
+            "y": 1702.6564,
+            "z": -3346.2983
+        },
+        "rotation_euler": {
+            "yaw": -2.9644,
+            "pitch": -6.5012,
+            "roll": -7.4725
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -316.9883,
+            "y": 1702.7634,
+            "z": -3325.0918
+        },
+        "rotation_euler": {
+            "yaw": 0.4615,
+            "pitch": -7.7851,
+            "roll": -5.9683
+        }
+    },
+    {
+        "object_name": "basket2",
+        "coordinates": {
+            "x": -316.53,
+            "y": 1702.4727,
+            "z": -3325.4639
+        },
+        "rotation_euler": {
+            "yaw": -1.6599,
+            "pitch": -6.3277,
+            "roll": -5.8241
+        }
+    },
+    {
+        "object_name": "m_kozly1",
+        "coordinates": {
+            "x": -318.4517,
+            "y": 1702.755,
+            "z": -3329.0369
+        },
+        "rotation_euler": {
+            "yaw": -0.744,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -301.4246,
+            "y": 1702.6267,
+            "z": -3322.6182
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -301.4441,
+            "y": 1702.5878,
+            "z": -3322.5869
+        },
+        "rotation_euler": {
+            "yaw": 1.3168,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_tachka2",
+        "coordinates": {
+            "x": -296.3665,
+            "y": 1702.6616,
+            "z": -3314.5332
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.3353,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -296.322,
+            "y": 1701.6429,
+            "z": -3314.5906
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "d_sk_sit3",
+        "coordinates": {
+            "x": -296.8354,
+            "y": 1702.6763,
+            "z": -3309.9656
+        },
+        "rotation_euler": {
+            "yaw": 1.4073,
+            "pitch": -6.2635,
+            "roll": -6.4046
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -316.8552,
+            "y": 1702.6332,
+            "z": -3300.1262
+        },
+        "rotation_euler": {
+            "yaw": -3.0877,
+            "pitch": -7.7131,
+            "roll": -3.0884
+        }
+    },
+    {
+        "object_name": "m_topor1",
+        "coordinates": {
+            "x": -312.1206,
+            "y": 1702.5452,
+            "z": -3300.2153
+        },
+        "rotation_euler": {
+            "yaw": -2.8417,
+            "pitch": -7.8158,
+            "roll": -2.842
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -318.4646,
+            "y": 1702.0247,
+            "z": -3284.9985
+        },
+        "rotation_euler": {
+            "yaw": -1.8397,
+            "pitch": -7.1025,
+            "roll": -1.6206
+        }
+    },
+    {
+        "object_name": "d_sk_bon3",
+        "coordinates": {
+            "x": -318.1589,
+            "y": 1701.9017,
+            "z": -3285.2563
+        },
+        "rotation_euler": {
+            "yaw": 0.8401,
+            "pitch": -6.4249,
+            "roll": -6.1483
+        }
+    },
+    {
+        "object_name": "d_sk_skl1",
+        "coordinates": {
+            "x": -318.0181,
+            "y": 1702.4415,
+            "z": -3285.3921
+        },
+        "rotation_euler": {
+            "yaw": -2.7247,
+            "pitch": -7.2285,
+            "roll": -4.3474
+        }
+    },
+    {
+        "object_name": "d_sk_sit1",
+        "coordinates": {
+            "x": -316.2246,
+            "y": 1701.6688,
+            "z": -3280.6875
+        },
+        "rotation_euler": {
+            "yaw": -3.1417,
+            "pitch": -7.1923,
+            "roll": -3.1453
+        }
+    },
+    {
+        "object_name": "m_lopata1",
+        "coordinates": {
+            "x": -316.2532,
+            "y": 1702.5481,
+            "z": -3280.8733
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    }
+]

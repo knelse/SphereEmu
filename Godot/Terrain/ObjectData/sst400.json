@@ -1,0 +1,15 @@
+[
+    {
+        "object_name": "rd_inh",
+        "coordinates": {
+            "x": -1099.7129,
+            "y": 1100.181,
+            "z": -3901.4612
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    }
+]

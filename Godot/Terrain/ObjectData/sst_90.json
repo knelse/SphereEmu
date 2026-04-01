@@ -1,0 +1,54 @@
+[
+    {
+        "object_name": "tn_banksign",
+        "coordinates": {
+            "x": 394.4629,
+            "y": 148.9317,
+            "z": -1300.3022
+        },
+        "rotation_euler": {
+            "yaw": 0.8104,
+            "pitch": -6.2866,
+            "roll": -6.2866
+        }
+    },
+    {
+        "object_name": "tn_banksign",
+        "coordinates": {
+            "x": 2610.6545,
+            "y": 153.8241,
+            "z": 1316.4355
+        },
+        "rotation_euler": {
+            "yaw": -0.0418,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "tn_banksign",
+        "coordinates": {
+            "x": 1876.571,
+            "y": 151.1988,
+            "z": -408.6624
+        },
+        "rotation_euler": {
+            "yaw": -3.6757,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "tn_banksign",
+        "coordinates": {
+            "x": 2312.3999,
+            "y": 151.6548,
+            "z": -2380.8857
+        },
+        "rotation_euler": {
+            "yaw": -1.2768,
+            "pitch": -6.2844,
+            "roll": -6.2844
+        }
+    }
+]

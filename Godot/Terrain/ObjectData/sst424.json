@@ -1,0 +1,2667 @@
+[
+    {
+        "object_name": "cc08",
+        "coordinates": {
+            "x": -2596.3779,
+            "y": -342.1005,
+            "z": -2099.4141
+        },
+        "rotation_euler": {
+            "yaw": 0.9443,
+            "pitch": -6.2918,
+            "roll": -6.2896
+        }
+    },
+    {
+        "object_name": "cc02",
+        "coordinates": {
+            "x": -2597.4619,
+            "y": -349.0001,
+            "z": -2095.4771
+        },
+        "rotation_euler": {
+            "yaw": 0.9186,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc94",
+        "coordinates": {
+            "x": -2590.5479,
+            "y": -346.2596,
+            "z": -2082.7681
+        },
+        "rotation_euler": {
+            "yaw": 0.4423,
+            "pitch": -6.2843,
+            "roll": -6.2843
+        }
+    },
+    {
+        "object_name": "cc94",
+        "coordinates": {
+            "x": -2583.2883,
+            "y": -346.2336,
+            "z": -2087.8872
+        },
+        "rotation_euler": {
+            "yaw": -0.1197,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc10",
+        "coordinates": {
+            "x": -2594.1284,
+            "y": -346.2053,
+            "z": -2118.2959
+        },
+        "rotation_euler": {
+            "yaw": 0.0403,
+            "pitch": -6.285,
+            "roll": -6.285
+        }
+    },
+    {
+        "object_name": "cc00",
+        "coordinates": {
+            "x": -2592.1694,
+            "y": -354.3554,
+            "z": -2094.1106
+        },
+        "rotation_euler": {
+            "yaw": -3.8151,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc00",
+        "coordinates": {
+            "x": -2595.3455,
+            "y": -354.3358,
+            "z": -2097.02
+        },
+        "rotation_euler": {
+            "yaw": -0.7062,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "cc70",
+        "coordinates": {
+            "x": -2600.2341,
+            "y": -351.9787,
+            "z": -2099.2759
+        },
+        "rotation_euler": {
+            "yaw": -2.2025,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc70",
+        "coordinates": {
+            "x": -2592.6589,
+            "y": -352.1089,
+            "z": -2098.9729
+        },
+        "rotation_euler": {
+            "yaw": 0.9449,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc81",
+        "coordinates": {
+            "x": -2597.0151,
+            "y": -361.7968,
+            "z": -2118.3557
+        },
+        "rotation_euler": {
+            "yaw": -1.518,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2603.717,
+            "y": -357.0967,
+            "z": -2073.7178
+        },
+        "rotation_euler": {
+            "yaw": -0.5283,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2614.1338,
+            "y": -357.0967,
+            "z": -2080.0769
+        },
+        "rotation_euler": {
+            "yaw": -0.5283,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2589.3105,
+            "y": -356.4429,
+            "z": -2079.9331
+        },
+        "rotation_euler": {
+            "yaw": -1.4509,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2580.7083,
+            "y": -356.4429,
+            "z": -2086.1562
+        },
+        "rotation_euler": {
+            "yaw": -1.9569,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2616.0112,
+            "y": -356.4429,
+            "z": -2112.2534
+        },
+        "rotation_euler": {
+            "yaw": -1.1423,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2617.4463,
+            "y": -356.4429,
+            "z": -2092.5771
+        },
+        "rotation_euler": {
+            "yaw": -1.9013,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2603.1648,
+            "y": -353.279,
+            "z": -2103.8926
+        },
+        "rotation_euler": {
+            "yaw": -2.2173,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc81",
+        "coordinates": {
+            "x": -2603.2529,
+            "y": -361.6165,
+            "z": -2103.0208
+        },
+        "rotation_euler": {
+            "yaw": -2.1951,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc99",
+        "coordinates": {
+            "x": -2585.2063,
+            "y": -346.2274,
+            "z": -2083.6436
+        },
+        "rotation_euler": {
+            "yaw": -2.206,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc25",
+        "coordinates": {
+            "x": -2594.2529,
+            "y": -346.1816,
+            "z": -2081.3315
+        },
+        "rotation_euler": {
+            "yaw": -1.3356,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc25",
+        "coordinates": {
+            "x": -2612.853,
+            "y": -346.1054,
+            "z": -2090.5361
+        },
+        "rotation_euler": {
+            "yaw": -0.9861,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2609.3064,
+            "y": -345.7455,
+            "z": -2121.2771
+        },
+        "rotation_euler": {
+            "yaw": 0.9187,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc55",
+        "coordinates": {
+            "x": -2614.3157,
+            "y": -346.0458,
+            "z": -2101.677
+        },
+        "rotation_euler": {
+            "yaw": 0.2081,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc25",
+        "coordinates": {
+            "x": -2612.6519,
+            "y": -346.0928,
+            "z": -2116.1504
+        },
+        "rotation_euler": {
+            "yaw": 0.5914,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2582.7988,
+            "y": -347.7274,
+            "z": -2104.3809
+        },
+        "rotation_euler": {
+            "yaw": -1.6443,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2584.6648,
+            "y": -355.1694,
+            "z": -2118.6943
+        },
+        "rotation_euler": {
+            "yaw": -3.5716,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2607.2249,
+            "y": -355.1564,
+            "z": -2121.7202
+        },
+        "rotation_euler": {
+            "yaw": 1.3131,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2609.0525,
+            "y": -355.3022,
+            "z": -2085.6245
+        },
+        "rotation_euler": {
+            "yaw": -2.6004,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2600.9861,
+            "y": -355.3823,
+            "z": -2080.751
+        },
+        "rotation_euler": {
+            "yaw": -2.5744,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2606.4707,
+            "y": -348.1833,
+            "z": -2089.5361
+        },
+        "rotation_euler": {
+            "yaw": 0.5393,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2598.3386,
+            "y": -348.2601,
+            "z": -2084.6094
+        },
+        "rotation_euler": {
+            "yaw": 0.5654,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2609.6938,
+            "y": -355.2622,
+            "z": -2088.8369
+        },
+        "rotation_euler": {
+            "yaw": -0.8148,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2605.9473,
+            "y": -355.8236,
+            "z": -2086.2771
+        },
+        "rotation_euler": {
+            "yaw": -4.1629,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2601.4453,
+            "y": -355.8363,
+            "z": -2083.8342
+        },
+        "rotation_euler": {
+            "yaw": -0.986,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2612.906,
+            "y": -345.7416,
+            "z": -2082.2876
+        },
+        "rotation_euler": {
+            "yaw": 0.5467,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2618.0669,
+            "y": -345.6244,
+            "z": -2093.0769
+        },
+        "rotation_euler": {
+            "yaw": -0.3126,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2617.6377,
+            "y": -345.6112,
+            "z": -2102.1528
+        },
+        "rotation_euler": {
+            "yaw": 0.1338,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2616.4717,
+            "y": -345.1425,
+            "z": -2112.3047
+        },
+        "rotation_euler": {
+            "yaw": 0.4424,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2609.9692,
+            "y": -345.6112,
+            "z": -2123.5781
+        },
+        "rotation_euler": {
+            "yaw": 1.3128,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2597.1501,
+            "y": -345.6112,
+            "z": -2122.6624
+        },
+        "rotation_euler": {
+            "yaw": -4.6877,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2584.7246,
+            "y": -345.6112,
+            "z": -2123.1199
+        },
+        "rotation_euler": {
+            "yaw": -4.4013,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2580.6987,
+            "y": -345.6112,
+            "z": -2110.8149
+        },
+        "rotation_euler": {
+            "yaw": -3.4751,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2579.252,
+            "y": -345.6112,
+            "z": -2094.397
+        },
+        "rotation_euler": {
+            "yaw": -3.0697,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2584.6714,
+            "y": -345.6112,
+            "z": -2082.8728
+        },
+        "rotation_euler": {
+            "yaw": -2.1993,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2602.2915,
+            "y": -345.6112,
+            "z": -2075.0576
+        },
+        "rotation_euler": {
+            "yaw": -2.5863,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc23",
+        "coordinates": {
+            "x": -2597.8193,
+            "y": -346.0115,
+            "z": -2121.0244
+        },
+        "rotation_euler": {
+            "yaw": -4.6874,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2585.6721,
+            "y": -345.975,
+            "z": -2120.7498
+        },
+        "rotation_euler": {
+            "yaw": -0.0819,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc96",
+        "coordinates": {
+            "x": -2615.2312,
+            "y": -346.1316,
+            "z": -2094.3132
+        },
+        "rotation_euler": {
+            "yaw": -3.4525,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "cc12",
+        "coordinates": {
+            "x": -2591.811,
+            "y": -345.6807,
+            "z": -2115.5249
+        },
+        "rotation_euler": {
+            "yaw": -3.1328,
+            "pitch": -6.2848,
+            "roll": -6.2848
+        }
+    },
+    {
+        "object_name": "cc06",
+        "coordinates": {
+            "x": -2590.8657,
+            "y": -348.9277,
+            "z": -2117.6633
+        },
+        "rotation_euler": {
+            "yaw": -3.1082,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc71",
+        "coordinates": {
+            "x": -2589.7458,
+            "y": -349.5526,
+            "z": -2117.7354
+        },
+        "rotation_euler": {
+            "yaw": -4.6259,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc14",
+        "coordinates": {
+            "x": -2594.7434,
+            "y": -346.0375,
+            "z": -2104.0684
+        },
+        "rotation_euler": {
+            "yaw": 0.9557,
+            "pitch": -6.2841,
+            "roll": -6.2841
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2593.8389,
+            "y": -360.4563,
+            "z": -2120.7046
+        },
+        "rotation_euler": {
+            "yaw": 0.0297,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc72",
+        "coordinates": {
+            "x": -2594.0371,
+            "y": -356.4313,
+            "z": -2116.0991
+        },
+        "rotation_euler": {
+            "yaw": -3.0841,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc71",
+        "coordinates": {
+            "x": -2599.5471,
+            "y": -356.9849,
+            "z": -2106.0771
+        },
+        "rotation_euler": {
+            "yaw": 0.8741,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "stairs1",
+        "coordinates": {
+            "x": -2596.418,
+            "y": -346.7443,
+            "z": -2106.043
+        },
+        "rotation_euler": {
+            "yaw": -0.6416,
+            "pitch": -6.0251,
+            "roll": -6.0991
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2592.3633,
+            "y": -351.6412,
+            "z": -2090.6853
+        },
+        "rotation_euler": {
+            "yaw": -3.8356,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2602.728,
+            "y": -356.9142,
+            "z": -2103.4495
+        },
+        "rotation_euler": {
+            "yaw": -2.1912,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2594.6357,
+            "y": -358.9129,
+            "z": -2092.9817
+        },
+        "rotation_euler": {
+            "yaw": -2.2693,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc82",
+        "coordinates": {
+            "x": -2591.6577,
+            "y": -364.8524,
+            "z": -2098.1606
+        },
+        "rotation_euler": {
+            "yaw": 0.8667,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2593.0864,
+            "y": -362.246,
+            "z": -2092.1226
+        },
+        "rotation_euler": {
+            "yaw": -2.7418,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc03",
+        "coordinates": {
+            "x": -2592.2437,
+            "y": -346.2685,
+            "z": -2093.3923
+        },
+        "rotation_euler": {
+            "yaw": -0.625,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2590.4639,
+            "y": -362.2263,
+            "z": -2094.3896
+        },
+        "rotation_euler": {
+            "yaw": 1.4841,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2591.9404,
+            "y": -359.9086,
+            "z": -2097.0198
+        },
+        "rotation_euler": {
+            "yaw": 0.8406,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc72",
+        "coordinates": {
+            "x": -2596.5134,
+            "y": -351.6252,
+            "z": -2094.9241
+        },
+        "rotation_euler": {
+            "yaw": -2.2061,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc72",
+        "coordinates": {
+            "x": -2592.5718,
+            "y": -351.6252,
+            "z": -2097.7537
+        },
+        "rotation_euler": {
+            "yaw": 0.9411,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2595.7917,
+            "y": -352.5395,
+            "z": -2092.939
+        },
+        "rotation_euler": {
+            "yaw": -2.1912,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2589.6528,
+            "y": -351.6918,
+            "z": -2092.5791
+        },
+        "rotation_euler": {
+            "yaw": -3.7797,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2602.5815,
+            "y": -344.7937,
+            "z": -2106.5293
+        },
+        "rotation_euler": {
+            "yaw": 0.889,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2599.2898,
+            "y": -344.7937,
+            "z": -2106.3777
+        },
+        "rotation_euler": {
+            "yaw": -3.7973,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2594.394,
+            "y": -344.7937,
+            "z": -2116.051
+        },
+        "rotation_euler": {
+            "yaw": -1.5617,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2596.0039,
+            "y": -344.7937,
+            "z": -2118.2871
+        },
+        "rotation_euler": {
+            "yaw": 0.0379,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2590.3379,
+            "y": -344.0341,
+            "z": -2096.6167
+        },
+        "rotation_euler": {
+            "yaw": -3.7815,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2596.0596,
+            "y": -343.6695,
+            "z": -2092.6401
+        },
+        "rotation_euler": {
+            "yaw": -0.6252,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2611.3511,
+            "y": -346.5657,
+            "z": -2113.6282
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2611.1743,
+            "y": -346.605,
+            "z": -2112.7273
+        },
+        "rotation_euler": {
+            "yaw": 1.1123,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "cc30",
+        "coordinates": {
+            "x": -2593.2021,
+            "y": -346.3069,
+            "z": -2095.0801
+        },
+        "rotation_euler": {
+            "yaw": -2.2024,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "basket2",
+        "coordinates": {
+            "x": -2609.0981,
+            "y": -348.9407,
+            "z": -2116.3757
+        },
+        "rotation_euler": {
+            "yaw": -0.0128,
+            "pitch": -6.2406,
+            "roll": -6.153
+        }
+    },
+    {
+        "object_name": "cc91",
+        "coordinates": {
+            "x": -2600.1917,
+            "y": -364.553,
+            "z": -2103.106
+        },
+        "rotation_euler": {
+            "yaw": -0.6957,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc11",
+        "coordinates": {
+            "x": -2597.8245,
+            "y": -362.128,
+            "z": -2100.5408
+        },
+        "rotation_euler": {
+            "yaw": 0.9151,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc10",
+        "coordinates": {
+            "x": -2601.1211,
+            "y": -347.1811,
+            "z": -2105.0063
+        },
+        "rotation_euler": {
+            "yaw": 0.9151,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc72",
+        "coordinates": {
+            "x": -2589.449,
+            "y": -352.1157,
+            "z": -2094.644
+        },
+        "rotation_euler": {
+            "yaw": 0.9485,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc12",
+        "coordinates": {
+            "x": -2603.0405,
+            "y": -346.3224,
+            "z": -2103.1233
+        },
+        "rotation_euler": {
+            "yaw": -2.2052,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2599.0718,
+            "y": -361.3376,
+            "z": -2106.2527
+        },
+        "rotation_euler": {
+            "yaw": 0.915,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2599.4343,
+            "y": -353.7106,
+            "z": -2106.0112
+        },
+        "rotation_euler": {
+            "yaw": 0.9448,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc67",
+        "coordinates": {
+            "x": -2595.4727,
+            "y": -351.4915,
+            "z": -2103.168
+        },
+        "rotation_euler": {
+            "yaw": 0.9299,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2598.5371,
+            "y": -349.0766,
+            "z": -2094.4214
+        },
+        "rotation_euler": {
+            "yaw": -2.2321,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2600.7588,
+            "y": -349.0505,
+            "z": -2099.7393
+        },
+        "rotation_euler": {
+            "yaw": -2.2321,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2596.5154,
+            "y": -362.408,
+            "z": -2101.4341
+        },
+        "rotation_euler": {
+            "yaw": 0.9076,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc80",
+        "coordinates": {
+            "x": -2591.1096,
+            "y": -359.9612,
+            "z": -2092.2971
+        },
+        "rotation_euler": {
+            "yaw": -3.7927,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc81",
+        "coordinates": {
+            "x": -2596.4712,
+            "y": -362.4072,
+            "z": -2093.6021
+        },
+        "rotation_euler": {
+            "yaw": -2.2358,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2613.6089,
+            "y": -346.6942,
+            "z": -2102.8716
+        },
+        "rotation_euler": {
+            "yaw": -0.4655,
+            "pitch": -6.2983,
+            "roll": -6.3117
+        }
+    },
+    {
+        "object_name": "cc73",
+        "coordinates": {
+            "x": -2594.4377,
+            "y": -352.8513,
+            "z": -2091.0591
+        },
+        "rotation_euler": {
+            "yaw": -2.2238,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "seno1",
+        "coordinates": {
+            "x": -2609.5042,
+            "y": -346.5769,
+            "z": -2115.269
+        },
+        "rotation_euler": {
+            "yaw": -0.9714,
+            "pitch": -6.2767,
+            "roll": -6.2579
+        }
+    },
+    {
+        "object_name": "cc71",
+        "coordinates": {
+            "x": -2598.9917,
+            "y": -362.3792,
+            "z": -2099.4128
+        },
+        "rotation_euler": {
+            "yaw": -2.2545,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc85",
+        "coordinates": {
+            "x": -2593.7776,
+            "y": -367.4888,
+            "z": -2095.6743
+        },
+        "rotation_euler": {
+            "yaw": -0.1116,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2599.6377,
+            "y": -350.4562,
+            "z": -2119.772
+        },
+        "rotation_euler": {
+            "yaw": -0.0615,
+            "pitch": -6.431,
+            "roll": -6.2603
+        }
+    },
+    {
+        "object_name": "cc83",
+        "coordinates": {
+            "x": -2603.1738,
+            "y": -357.6669,
+            "z": -2107.4709
+        },
+        "rotation_euler": {
+            "yaw": -0.6473,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2588.2029,
+            "y": -347.0985,
+            "z": -2119.2017
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1047,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc90",
+        "coordinates": {
+            "x": -2612.6267,
+            "y": -346.8047,
+            "z": -2095.343
+        },
+        "rotation_euler": {
+            "yaw": -0.3014,
+            "pitch": -6.2781,
+            "roll": -6.343
+        }
+    },
+    {
+        "object_name": "cc90",
+        "coordinates": {
+            "x": -2612.8535,
+            "y": -346.5182,
+            "z": -2099.8164
+        },
+        "rotation_euler": {
+            "yaw": 0.1858,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc15",
+        "coordinates": {
+            "x": -2602.9714,
+            "y": -346.5722,
+            "z": -2087.3831
+        },
+        "rotation_euler": {
+            "yaw": -1.0453,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc15",
+        "coordinates": {
+            "x": -2601.4487,
+            "y": -346.5983,
+            "z": -2086.3899
+        },
+        "rotation_euler": {
+            "yaw": -1.0453,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc33",
+        "coordinates": {
+            "x": -2582.4209,
+            "y": -353.6721,
+            "z": -2103.1301
+        },
+        "rotation_euler": {
+            "yaw": -1.704,
+            "pitch": -6.3063,
+            "roll": -6.3036
+        }
+    },
+    {
+        "object_name": "cc60",
+        "coordinates": {
+            "x": -2585.259,
+            "y": -355.1122,
+            "z": -2083.7542
+        },
+        "rotation_euler": {
+            "yaw": -2.2138,
+            "pitch": -6.2841,
+            "roll": -6.2841
+        }
+    },
+    {
+        "object_name": "cc61",
+        "coordinates": {
+            "x": -2583.5742,
+            "y": -355.5809,
+            "z": -2084.771
+        },
+        "rotation_euler": {
+            "yaw": -2.2138,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc32",
+        "coordinates": {
+            "x": -2607.7485,
+            "y": -353.5273,
+            "z": -2118.7485
+        },
+        "rotation_euler": {
+            "yaw": -4.1329,
+            "pitch": -6.3055,
+            "roll": -6.2694
+        }
+    },
+    {
+        "object_name": "cc32",
+        "coordinates": {
+            "x": -2587.3682,
+            "y": -353.4807,
+            "z": -2118.7253
+        },
+        "rotation_euler": {
+            "yaw": -2.887,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc100",
+        "coordinates": {
+            "x": -2587.5498,
+            "y": -354.9744,
+            "z": -2081.189
+        },
+        "rotation_euler": {
+            "yaw": -2.2098,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "kolodec2",
+        "coordinates": {
+            "x": -2612.3733,
+            "y": -346.967,
+            "z": -2095.5989
+        },
+        "rotation_euler": {
+            "yaw": -1.8565,
+            "pitch": -6.2838,
+            "roll": -6.3284
+        }
+    },
+    {
+        "object_name": "cc100",
+        "coordinates": {
+            "x": -2582.2239,
+            "y": -354.9744,
+            "z": -2085.064
+        },
+        "rotation_euler": {
+            "yaw": -2.2098,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc24",
+        "coordinates": {
+            "x": -2580.27,
+            "y": -346.1597,
+            "z": -2095.1711
+        },
+        "rotation_euler": {
+            "yaw": -3.0729,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2580.1631,
+            "y": -345.7451,
+            "z": -2104.5229
+        },
+        "rotation_euler": {
+            "yaw": -4.3937,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc50",
+        "coordinates": {
+            "x": -2609.4893,
+            "y": -345.8123,
+            "z": -2075.8174
+        },
+        "rotation_euler": {
+            "yaw": -2.5776,
+            "pitch": -6.056,
+            "roll": -6.4311
+        }
+    },
+    {
+        "object_name": "cc51",
+        "coordinates": {
+            "x": -2608.936,
+            "y": -346.0153,
+            "z": -2076.6558
+        },
+        "rotation_euler": {
+            "yaw": -2.5748,
+            "pitch": -6.125,
+            "roll": -6.387
+        }
+    },
+    {
+        "object_name": "cc52",
+        "coordinates": {
+            "x": -2608.1079,
+            "y": -351.7137,
+            "z": -2077.6489
+        },
+        "rotation_euler": {
+            "yaw": -2.5931,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc24",
+        "coordinates": {
+            "x": -2616.301,
+            "y": -346.1391,
+            "z": -2102.8623
+        },
+        "rotation_euler": {
+            "yaw": 0.1375,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc94",
+        "coordinates": {
+            "x": -2612.981,
+            "y": -346.2219,
+            "z": -2111.1558
+        },
+        "rotation_euler": {
+            "yaw": -3.4895,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc55",
+        "coordinates": {
+            "x": -2582.365,
+            "y": -346.0922,
+            "z": -2093.9155
+        },
+        "rotation_euler": {
+            "yaw": -0.0028,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2599.6846,
+            "y": -346.5275,
+            "z": -2082.3467
+        },
+        "rotation_euler": {
+            "yaw": -2.1843,
+            "pitch": -6.2851,
+            "roll": -6.2851
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2607.9673,
+            "y": -346.5275,
+            "z": -2087.3403
+        },
+        "rotation_euler": {
+            "yaw": -1.4214,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc21",
+        "coordinates": {
+            "x": -2603.4783,
+            "y": -346.587,
+            "z": -2084.8875
+        },
+        "rotation_euler": {
+            "yaw": -1.031,
+            "pitch": -6.2849,
+            "roll": -6.2849
+        }
+    },
+    {
+        "object_name": "cc53",
+        "coordinates": {
+            "x": -2604.9905,
+            "y": -347.2612,
+            "z": -2082.6509
+        },
+        "rotation_euler": {
+            "yaw": 0.5356,
+            "pitch": -6.1687,
+            "roll": -6.3522
+        }
+    },
+    {
+        "object_name": "cc16",
+        "coordinates": {
+            "x": -2607.5015,
+            "y": -345.9342,
+            "z": -2078.8853
+        },
+        "rotation_euler": {
+            "yaw": 0.5544,
+            "pitch": -6.2499,
+            "roll": -6.3137
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2584.7864,
+            "y": -355.042,
+            "z": -2122.7581
+        },
+        "rotation_euler": {
+            "yaw": 0.305,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2609.8484,
+            "y": -355.042,
+            "z": -2123.2871
+        },
+        "rotation_euler": {
+            "yaw": -0.2568,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2578.1138,
+            "y": -355.042,
+            "z": -2104.6282
+        },
+        "rotation_euler": {
+            "yaw": 1.4953,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "mhouse10",
+        "coordinates": {
+            "x": -2602.0059,
+            "y": -346.6776,
+            "z": -2118.0632
+        },
+        "rotation_euler": {
+            "yaw": -3.1064,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "basket1",
+        "coordinates": {
+            "x": -2597.644,
+            "y": -346.7483,
+            "z": -2117.6167
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "basket1",
+        "coordinates": {
+            "x": -2584.1033,
+            "y": -346.9305,
+            "z": -2090.1699
+        },
+        "rotation_euler": {
+            "yaw": 0.5729,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -2589.2119,
+            "y": -347.2646,
+            "z": -2118.7974
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1717,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "basket2",
+        "coordinates": {
+            "x": -2584.1069,
+            "y": -346.9174,
+            "z": -2091.2056
+        },
+        "rotation_euler": {
+            "yaw": -0.1042,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2597.0535,
+            "y": -346.6712,
+            "z": -2118.5171
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2596.3713,
+            "y": -346.6713,
+            "z": -2116.957
+        },
+        "rotation_euler": {
+            "yaw": -1.2909,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2586.9614,
+            "y": -346.7755,
+            "z": -2117.0845
+        },
+        "rotation_euler": {
+            "yaw": -1.2837,
+            "pitch": -6.24,
+            "roll": -6.4248
+        }
+    },
+    {
+        "object_name": "cc22",
+        "coordinates": {
+            "x": -2583.1914,
+            "y": -345.4866,
+            "z": -2113.0579
+        },
+        "rotation_euler": {
+            "yaw": -3.4839,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2597.582,
+            "y": -346.6452,
+            "z": -2119.449
+        },
+        "rotation_euler": {
+            "yaw": -2.697,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": -2598.8091,
+            "y": -346.7234,
+            "z": -2115.3613
+        },
+        "rotation_euler": {
+            "yaw": -3.3406,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "cc06",
+        "coordinates": {
+            "x": -2585.1089,
+            "y": -347.6445,
+            "z": -2109.2314
+        },
+        "rotation_euler": {
+            "yaw": -1.9233,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc71",
+        "coordinates": {
+            "x": -2585.1184,
+            "y": -347.0038,
+            "z": -2108.0762
+        },
+        "rotation_euler": {
+            "yaw": -3.4616,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc75",
+        "coordinates": {
+            "x": -2586.7124,
+            "y": -348.8098,
+            "z": -2108.572
+        },
+        "rotation_euler": {
+            "yaw": -1.9307,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc53",
+        "coordinates": {
+            "x": -2590.1475,
+            "y": -346.8359,
+            "z": -2118.4092
+        },
+        "rotation_euler": {
+            "yaw": -3.4931,
+            "pitch": -6.0413,
+            "roll": -6.3218
+        }
+    },
+    {
+        "object_name": "cc77",
+        "coordinates": {
+            "x": -2591.1936,
+            "y": -364.618,
+            "z": -2092.3774
+        },
+        "rotation_euler": {
+            "yaw": -3.776,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc16",
+        "coordinates": {
+            "x": -2612.5366,
+            "y": -344.3588,
+            "z": -2070.8313
+        },
+        "rotation_euler": {
+            "yaw": 0.5467,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc86",
+        "coordinates": {
+            "x": -2614.9031,
+            "y": -344.0463,
+            "z": -2076.228
+        },
+        "rotation_euler": {
+            "yaw": 0.5467,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc93",
+        "coordinates": {
+            "x": -2634.0776,
+            "y": -344.8848,
+            "z": -2104.1265
+        },
+        "rotation_euler": {
+            "yaw": -1.1988,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cc98",
+        "coordinates": {
+            "x": -2575.6992,
+            "y": -344.4434,
+            "z": -2087.9082
+        },
+        "rotation_euler": {
+            "yaw": 4.7124,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc93",
+        "coordinates": {
+            "x": -2565.5642,
+            "y": -344.3653,
+            "z": -2088.876
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc23",
+        "coordinates": {
+            "x": -2565.3464,
+            "y": -344.4434,
+            "z": -2103.1902
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc96",
+        "coordinates": {
+            "x": -2566.8574,
+            "y": -344.3568,
+            "z": -2114.7222
+        },
+        "rotation_euler": {
+            "yaw": -0.5767,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc86",
+        "coordinates": {
+            "x": -2606.7925,
+            "y": -344.0463,
+            "z": -2070.667
+        },
+        "rotation_euler": {
+            "yaw": 0.5467,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc86",
+        "coordinates": {
+            "x": -2573.4954,
+            "y": -344.2266,
+            "z": -2088.2429
+        },
+        "rotation_euler": {
+            "yaw": -1.5516,
+            "pitch": -6.2844,
+            "roll": -6.2844
+        }
+    },
+    {
+        "object_name": "cc23",
+        "coordinates": {
+            "x": -2573.9485,
+            "y": -344.1504,
+            "z": -2126.7168
+        },
+        "rotation_euler": {
+            "yaw": -3.7612,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc28",
+        "coordinates": {
+            "x": -2574.574,
+            "y": -342.0411,
+            "z": -2086.4734
+        },
+        "rotation_euler": {
+            "yaw": -1.5662,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc28",
+        "coordinates": {
+            "x": -2624.729,
+            "y": -342.0662,
+            "z": -2098.0103
+        },
+        "rotation_euler": {
+            "yaw": -1.1682,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc23",
+        "coordinates": {
+            "x": -2628.689,
+            "y": -344.1504,
+            "z": -2116.521
+        },
+        "rotation_euler": {
+            "yaw": 0.4349,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc23",
+        "coordinates": {
+            "x": -2594.7905,
+            "y": -344.6252,
+            "z": -2137.6045
+        },
+        "rotation_euler": {
+            "yaw": 1.5471,
+            "pitch": -6.2849,
+            "roll": -6.2849
+        }
+    },
+    {
+        "object_name": "cc24",
+        "coordinates": {
+            "x": -2616.71,
+            "y": -344.0002,
+            "z": -2134.6785
+        },
+        "rotation_euler": {
+            "yaw": 1.0823,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc50",
+        "coordinates": {
+            "x": -2580.0605,
+            "y": -346.0775,
+            "z": -2116.0835
+        },
+        "rotation_euler": {
+            "yaw": 1.2526,
+            "pitch": -6.3502,
+            "roll": -6.0865
+        }
+    },
+    {
+        "object_name": "cc86",
+        "coordinates": {
+            "x": -2575.5322,
+            "y": -345.093,
+            "z": -2117.5723
+        },
+        "rotation_euler": {
+            "yaw": 1.2429,
+            "pitch": -6.3057,
+            "roll": -6.2207
+        }
+    },
+    {
+        "object_name": "cc55",
+        "coordinates": {
+            "x": -2566.6846,
+            "y": -344.2971,
+            "z": -2096.2041
+        },
+        "rotation_euler": {
+            "yaw": -0.0521,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc57",
+        "coordinates": {
+            "x": -2574.1206,
+            "y": -353.2323,
+            "z": -2086.342
+        },
+        "rotation_euler": {
+            "yaw": -1.57,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2580.9468,
+            "y": -344.8192,
+            "z": -2138.4092
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc41",
+        "coordinates": {
+            "x": -2581.0408,
+            "y": -361.2288,
+            "z": -2138.3606
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc37",
+        "coordinates": {
+            "x": -2608.4561,
+            "y": -344.759,
+            "z": -2137.9165
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc40",
+        "coordinates": {
+            "x": -2623.9919,
+            "y": -344.9245,
+            "z": -2129.886
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc41",
+        "coordinates": {
+            "x": -2623.958,
+            "y": -361.2293,
+            "z": -2129.8098
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc58",
+        "coordinates": {
+            "x": -2608.9709,
+            "y": -353.2988,
+            "z": -2140.1899
+        },
+        "rotation_euler": {
+            "yaw": 1.5549,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc46",
+        "coordinates": {
+            "x": -2608.4487,
+            "y": -356.798,
+            "z": -2137.7896
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc47",
+        "coordinates": {
+            "x": -2608.1699,
+            "y": -365.0294,
+            "z": -2137.78
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cc58",
+        "coordinates": {
+            "x": -2607.3281,
+            "y": -353.2861,
+            "z": -2140.1914
+        },
+        "rotation_euler": {
+            "yaw": 1.5621,
+            "pitch": -6.285,
+            "roll": -6.285
+        }
+    },
+    {
+        "object_name": "cc15",
+        "coordinates": {
+            "x": -2607.2026,
+            "y": -355.9785,
+            "z": -2138.179
+        },
+        "rotation_euler": {
+            "yaw": -1.555,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2613.314,
+            "y": -344.8795,
+            "z": -2137.9487
+        },
+        "rotation_euler": {
+            "yaw": 1.1117,
+            "pitch": -6.2848,
+            "roll": -6.2848
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2620.5737,
+            "y": -344.8986,
+            "z": -2134.0703
+        },
+        "rotation_euler": {
+            "yaw": 1.1081,
+            "pitch": -6.2845,
+            "roll": -6.2845
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2600.4629,
+            "y": -344.7965,
+            "z": -2139.4785
+        },
+        "rotation_euler": {
+            "yaw": 1.5696,
+            "pitch": -6.2844,
+            "roll": -6.2844
+        }
+    },
+    {
+        "object_name": "cc87",
+        "coordinates": {
+            "x": -2581.5789,
+            "y": -351.4405,
+            "z": -2135.9707
+        },
+        "rotation_euler": {
+            "yaw": -3.4341,
+            "pitch": -6.2845,
+            "roll": -6.2845
+        }
+    },
+    {
+        "object_name": "cc86",
+        "coordinates": {
+            "x": -2625.8267,
+            "y": -344.6705,
+            "z": -2100.2329
+        },
+        "rotation_euler": {
+            "yaw": -1.1905,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc55",
+        "coordinates": {
+            "x": -2630.1411,
+            "y": -344.0393,
+            "z": -2110.0181
+        },
+        "rotation_euler": {
+            "yaw": 0.4982,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2589.5913,
+            "y": -344.7845,
+            "z": -2139.6724
+        },
+        "rotation_euler": {
+            "yaw": 1.5585,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc57",
+        "coordinates": {
+            "x": -2626.8496,
+            "y": -353.6559,
+            "z": -2098.8062
+        },
+        "rotation_euler": {
+            "yaw": -1.1906,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc98",
+        "coordinates": {
+            "x": -2625.292,
+            "y": -344.9416,
+            "z": -2099.8496
+        },
+        "rotation_euler": {
+            "yaw": -1.1833,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "cc59",
+        "coordinates": {
+            "x": -2630.6377,
+            "y": -354.1259,
+            "z": -2099.8457
+        },
+        "rotation_euler": {
+            "yaw": -1.1832,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc101",
+        "coordinates": {
+            "x": -2621.3032,
+            "y": -353.5266,
+            "z": -2097.3279
+        },
+        "rotation_euler": {
+            "yaw": -1.1905,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc88",
+        "coordinates": {
+            "x": -2608.1831,
+            "y": -351.236,
+            "z": -2135.187
+        },
+        "rotation_euler": {
+            "yaw": -3.2478,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "cc65",
+        "coordinates": {
+            "x": -2608.4121,
+            "y": -353.347,
+            "z": -2135.812
+        },
+        "rotation_euler": {
+            "yaw": -3.1512,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2608.217,
+            "y": -346.3227,
+            "z": -2135.4844
+        },
+        "rotation_euler": {
+            "yaw": -3.1364,
+            "pitch": -6.2841,
+            "roll": -6.2841
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2581.7246,
+            "y": -353.2565,
+            "z": -2136.3794
+        },
+        "rotation_euler": {
+            "yaw": -2.7493,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc33",
+        "coordinates": {
+            "x": -2621.3711,
+            "y": -351.5807,
+            "z": -2128.7046
+        },
+        "rotation_euler": {
+            "yaw": -4.0401,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc64",
+        "coordinates": {
+            "x": -2621.8257,
+            "y": -353.0679,
+            "z": -2128.9321
+        },
+        "rotation_euler": {
+            "yaw": -4.3264,
+            "pitch": -6.2849,
+            "roll": -6.2849
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2575.3271,
+            "y": -344.8592,
+            "z": -2132.085
+        },
+        "rotation_euler": {
+            "yaw": -3.7613,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2568.0693,
+            "y": -344.4965,
+            "z": -2121.8662
+        },
+        "rotation_euler": {
+            "yaw": -3.7502,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "cc31",
+        "coordinates": {
+            "x": -2571.5195,
+            "y": -344.4053,
+            "z": -2127.1448
+        },
+        "rotation_euler": {
+            "yaw": -3.75,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2563.3972,
+            "y": -344.7332,
+            "z": -2108.9937
+        },
+        "rotation_euler": {
+            "yaw": -3.1437,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2563.4102,
+            "y": -344.7816,
+            "z": -2095.9766
+        },
+        "rotation_euler": {
+            "yaw": -3.1361,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2632.9385,
+            "y": -345.1477,
+            "z": -2111.8423
+        },
+        "rotation_euler": {
+            "yaw": 0.4312,
+            "pitch": -6.284,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "cc61",
+        "coordinates": {
+            "x": -2570.9856,
+            "y": -353.9216,
+            "z": -2087.0674
+        },
+        "rotation_euler": {
+            "yaw": -1.6035,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc61",
+        "coordinates": {
+            "x": -2568.8806,
+            "y": -354.0107,
+            "z": -2087.1633
+        },
+        "rotation_euler": {
+            "yaw": -1.533,
+            "pitch": -6.2844,
+            "roll": -6.2844
+        }
+    },
+    {
+        "object_name": "cc26",
+        "coordinates": {
+            "x": -2628.0083,
+            "y": -344.8702,
+            "z": -2122.6021
+        },
+        "rotation_euler": {
+            "yaw": 0.4386,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "cc101",
+        "coordinates": {
+            "x": -2577.4614,
+            "y": -353.1404,
+            "z": -2087.157
+        },
+        "rotation_euler": {
+            "yaw": -1.5513,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2578.8147,
+            "y": -353.686,
+            "z": -2139.2322
+        },
+        "rotation_euler": {
+            "yaw": 1.1866,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2581.8091,
+            "y": -353.6925,
+            "z": -2140.22
+        },
+        "rotation_euler": {
+            "yaw": -0.4206,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2625.812,
+            "y": -353.8284,
+            "z": -2128.9436
+        },
+        "rotation_euler": {
+            "yaw": -1.9644,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2625.803,
+            "y": -353.8636,
+            "z": -2130.646
+        },
+        "rotation_euler": {
+            "yaw": -1.1756,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2580.0181,
+            "y": -353.6946,
+            "z": -2140.2776
+        },
+        "rotation_euler": {
+            "yaw": 0.4016,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "cc63",
+        "coordinates": {
+            "x": -2624.5708,
+            "y": -353.8179,
+            "z": -2131.8208
+        },
+        "rotation_euler": {
+            "yaw": -0.3908,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    }
+]

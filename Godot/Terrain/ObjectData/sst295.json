@@ -1,0 +1,54 @@
+[
+    {
+        "object_name": "hrz11",
+        "coordinates": {
+            "x": -303.6657,
+            "y": 387.1243,
+            "z": 1290.4152
+        },
+        "rotation_euler": {
+            "yaw": -0.2717,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "hrz81",
+        "coordinates": {
+            "x": -297.8448,
+            "y": 385.1316,
+            "z": 1288.7688
+        },
+        "rotation_euler": {
+            "yaw": 1.2498,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "hrz81",
+        "coordinates": {
+            "x": -309.384,
+            "y": 385.1982,
+            "z": 1292.0416
+        },
+        "rotation_euler": {
+            "yaw": -1.8973,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "hrz37",
+        "coordinates": {
+            "x": -303.8975,
+            "y": 388.7407,
+            "z": 1290.3892
+        },
+        "rotation_euler": {
+            "yaw": -0.3014,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    }
+]

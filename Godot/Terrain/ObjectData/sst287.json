@@ -1,0 +1,444 @@
+[
+    {
+        "object_name": "m_ochag1",
+        "coordinates": {
+            "x": -3709.8782,
+            "y": 1702.1951,
+            "z": -3282.1018
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.514,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "ws1",
+        "coordinates": {
+            "x": -3711.0229,
+            "y": 1701.7999,
+            "z": -3282.0002
+        },
+        "rotation_euler": {
+            "yaw": -3.0573,
+            "pitch": -7.6755,
+            "roll": -3.0587
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -3779.9724,
+            "y": 1702.0448,
+            "z": -3221.5515
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -3779.0176,
+            "y": 1701.7068,
+            "z": -3221.5222
+        },
+        "rotation_euler": {
+            "yaw": -0.006,
+            "pitch": -6.2745,
+            "roll": -5.711
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -3763.3376,
+            "y": 1702.0916,
+            "z": -3259.78
+        },
+        "rotation_euler": {
+            "yaw": -1.9344,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -3763.2148,
+            "y": 1702.0916,
+            "z": -3258.7722
+        },
+        "rotation_euler": {
+            "yaw": -3.6568,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "box1",
+        "coordinates": {
+            "x": -3763.5212,
+            "y": 1701.5187,
+            "z": -3259.2402
+        },
+        "rotation_euler": {
+            "yaw": 1.3876,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "scull01",
+        "coordinates": {
+            "x": -3793.8281,
+            "y": 1702.6986,
+            "z": -3256.3452
+        },
+        "rotation_euler": {
+            "yaw": -3.9098,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "scull01",
+        "coordinates": {
+            "x": -3795.2432,
+            "y": 1702.6462,
+            "z": -3258.3638
+        },
+        "rotation_euler": {
+            "yaw": 0.9048,
+            "pitch": -7.3447,
+            "roll": -6.8845
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3716.7363,
+            "y": 1699.9841,
+            "z": -3295.229
+        },
+        "rotation_euler": {
+            "yaw": -3.6714,
+            "pitch": -6.4679,
+            "roll": -5.7196
+        }
+    },
+    {
+        "object_name": "st_cristal1",
+        "coordinates": {
+            "x": -3747.043,
+            "y": 1702.7295,
+            "z": -3304.7507
+        },
+        "rotation_euler": {
+            "yaw": -1.3777,
+            "pitch": -6.0162,
+            "roll": -5.3498
+        }
+    },
+    {
+        "object_name": "st_cristal1",
+        "coordinates": {
+            "x": -3747.043,
+            "y": 1702.7295,
+            "z": -3304.7507
+        },
+        "rotation_euler": {
+            "yaw": -1.3777,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "st_cristal1",
+        "coordinates": {
+            "x": -3747.043,
+            "y": 1702.7295,
+            "z": -3304.7507
+        },
+        "rotation_euler": {
+            "yaw": -1.3262,
+            "pitch": -5.4625,
+            "roll": -5.9202
+        }
+    },
+    {
+        "object_name": "st_cristal2",
+        "coordinates": {
+            "x": -3750.1941,
+            "y": 1702.6061,
+            "z": -3303.4109
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "st_cristal2",
+        "coordinates": {
+            "x": -3750.1941,
+            "y": 1702.6061,
+            "z": -3303.4109
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.2833,
+            "roll": -6.9343
+        }
+    },
+    {
+        "object_name": "st_cristal2",
+        "coordinates": {
+            "x": -3750.1941,
+            "y": 1702.6061,
+            "z": -3303.4109
+        },
+        "rotation_euler": {
+            "yaw": -0.8243,
+            "pitch": -5.4816,
+            "roll": -5.623
+        }
+    },
+    {
+        "object_name": "st_cristal2",
+        "coordinates": {
+            "x": -3750.1941,
+            "y": 1702.6061,
+            "z": -3303.4109
+        },
+        "rotation_euler": {
+            "yaw": -0.6957,
+            "pitch": -6.7684,
+            "roll": -5.7741
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3735.2942,
+            "y": 1699.1422,
+            "z": -3241.0671
+        },
+        "rotation_euler": {
+            "yaw": -3.0804,
+            "pitch": -6.284,
+            "roll": -6.2095
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3741.5967,
+            "y": 1697.3024,
+            "z": -3240.3428
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.2834,
+            "roll": -6.3839
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3780.2649,
+            "y": 1700.0544,
+            "z": -3318.0771
+        },
+        "rotation_euler": {
+            "yaw": -2.1715,
+            "pitch": -5.7426,
+            "roll": -5.9088
+        }
+    },
+    {
+        "object_name": "scull01",
+        "coordinates": {
+            "x": -3748.8792,
+            "y": 1702.5417,
+            "z": -3315.8311
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3791.511,
+            "y": 1698.9338,
+            "z": -3240.6985
+        },
+        "rotation_euler": {
+            "yaw": -2.9998,
+            "pitch": -6.2725,
+            "roll": -5.9049
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3730.8601,
+            "y": 1698.8533,
+            "z": -3317.7346
+        },
+        "rotation_euler": {
+            "yaw": 0.9978,
+            "pitch": -6.4559,
+            "roll": -6.5468
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3760.0984,
+            "y": 1696.7543,
+            "z": -3256.4016
+        },
+        "rotation_euler": {
+            "yaw": -3.0508,
+            "pitch": -6.2795,
+            "roll": -6.2358
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3716.3552,
+            "y": 1698.8995,
+            "z": -3240.3057
+        },
+        "rotation_euler": {
+            "yaw": 1.3899,
+            "pitch": -6.9386,
+            "roll": -6.276
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3792.2039,
+            "y": 1699.6234,
+            "z": -3272.479
+        },
+        "rotation_euler": {
+            "yaw": -3.1866,
+            "pitch": -6.2962,
+            "roll": -6.0125
+        }
+    },
+    {
+        "object_name": "scull01",
+        "coordinates": {
+            "x": -3711.6711,
+            "y": 1702.6088,
+            "z": -3316.063
+        },
+        "rotation_euler": {
+            "yaw": -4.5475,
+            "pitch": -6.8397,
+            "roll": -7.3863
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3765.1467,
+            "y": 1700.6945,
+            "z": -3270.5698
+        },
+        "rotation_euler": {
+            "yaw": -3.3072,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3768.0017,
+            "y": 1698.8651,
+            "z": -3223.6594
+        },
+        "rotation_euler": {
+            "yaw": 0.725,
+            "pitch": -6.6064,
+            "roll": -6.5338
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3767.7493,
+            "y": 1699.043,
+            "z": -3226.6809
+        },
+        "rotation_euler": {
+            "yaw": -0.4156,
+            "pitch": -6.1374,
+            "roll": -6.6024
+        }
+    },
+    {
+        "object_name": "ct_chest3",
+        "coordinates": {
+            "x": -3756.616,
+            "y": 1702.6508,
+            "z": -3230.2625
+        },
+        "rotation_euler": {
+            "yaw": -3.1027,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "scull01",
+        "coordinates": {
+            "x": -3761.2317,
+            "y": 1702.583,
+            "z": -3318.1934
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "fackel",
+        "coordinates": {
+            "x": -3732.2131,
+            "y": 1699.1826,
+            "z": -3226.0608
+        },
+        "rotation_euler": {
+            "yaw": -1.8755,
+            "pitch": -5.8986,
+            "roll": -6.1661
+        }
+    },
+    {
+        "object_name": "wp_axe1",
+        "coordinates": {
+            "x": -3703.3232,
+            "y": 1700.2473,
+            "z": -3298.8604
+        },
+        "rotation_euler": {
+            "yaw": -2.5999,
+            "pitch": -5.1126,
+            "roll": -3.2922
+        }
+    }
+]

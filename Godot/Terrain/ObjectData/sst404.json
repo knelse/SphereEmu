@@ -1,0 +1,106 @@
+[
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2870.2188,
+            "y": -339.5219,
+            "z": -2122.3167
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2884.1912,
+            "y": -339.9125,
+            "z": -2139.6321
+        },
+        "rotation_euler": {
+            "yaw": -1.7447,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2878.6121,
+            "y": -339.9125,
+            "z": -2150.9719
+        },
+        "rotation_euler": {
+            "yaw": -2.9203,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2866.05,
+            "y": -339.9125,
+            "z": -2152.7244
+        },
+        "rotation_euler": {
+            "yaw": -4.1963,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2856.1636,
+            "y": -339.2875,
+            "z": -2146.3503
+        },
+        "rotation_euler": {
+            "yaw": 0.8704,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2854.8525,
+            "y": -338.8449,
+            "z": -2133.8938
+        },
+        "rotation_euler": {
+            "yaw": -0.8854,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2860.2737,
+            "y": -338.975,
+            "z": -2125.4436
+        },
+        "rotation_euler": {
+            "yaw": -4.0996,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "rock10",
+        "coordinates": {
+            "x": -2880.2119,
+            "y": -339.4697,
+            "z": -2128.373
+        },
+        "rotation_euler": {
+            "yaw": 0.9114,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    }
+]

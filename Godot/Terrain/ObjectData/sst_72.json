@@ -1,0 +1,2914 @@
+[
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3829.3015,
+            "y": 150.5821,
+            "z": -3364.1819
+        },
+        "rotation_euler": {
+            "yaw": 0.0035,
+            "pitch": -5.4653,
+            "roll": -1.5744
+        }
+    },
+    {
+        "object_name": "tn4_tower01",
+        "coordinates": {
+            "x": 3750.2205,
+            "y": 158.8086,
+            "z": -3479.7383
+        },
+        "rotation_euler": {
+            "yaw": -1.3281,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3831.9387,
+            "y": 150.5311,
+            "z": -3368.3206
+        },
+        "rotation_euler": {
+            "yaw": 0.5652,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3830.8198,
+            "y": 150.5139,
+            "z": -3369.1294
+        },
+        "rotation_euler": {
+            "yaw": 0.6843,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3829.7393,
+            "y": 150.5185,
+            "z": -3370.021
+        },
+        "rotation_euler": {
+            "yaw": 0.6471,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3828.5361,
+            "y": 150.5076,
+            "z": -3370.6963
+        },
+        "rotation_euler": {
+            "yaw": 0.383,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3827.4995,
+            "y": 150.509,
+            "z": -3370.3948
+        },
+        "rotation_euler": {
+            "yaw": -0.971,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3826.6597,
+            "y": 150.4521,
+            "z": -3369.3093
+        },
+        "rotation_euler": {
+            "yaw": -0.8594,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3825.7463,
+            "y": 150.4812,
+            "z": -3368.26
+        },
+        "rotation_euler": {
+            "yaw": -0.8706,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3824.8618,
+            "y": 150.4538,
+            "z": -3367.1785
+        },
+        "rotation_euler": {
+            "yaw": -0.8594,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3824.5132,
+            "y": 150.5332,
+            "z": -3365.9568
+        },
+        "rotation_euler": {
+            "yaw": -1.741,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3825.0835,
+            "y": 150.6321,
+            "z": -3364.905
+        },
+        "rotation_euler": {
+            "yaw": 0.7253,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3826.1074,
+            "y": 150.6189,
+            "z": -3363.9338
+        },
+        "rotation_euler": {
+            "yaw": 0.7364,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3827.1777,
+            "y": 150.5797,
+            "z": -3363.0286
+        },
+        "rotation_euler": {
+            "yaw": 0.7215,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3832.0078,
+            "y": 150.6725,
+            "z": -3367.344
+        },
+        "rotation_euler": {
+            "yaw": -3.1943,
+            "pitch": -5.4356,
+            "roll": -7.8336
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3830.5874,
+            "y": 150.6466,
+            "z": -3365.7686
+        },
+        "rotation_euler": {
+            "yaw": 0.0292,
+            "pitch": -7.1503,
+            "roll": -4.6877
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.8167,
+            "y": 149.0082,
+            "z": -3380.4343
+        },
+        "rotation_euler": {
+            "yaw": -0.0179,
+            "pitch": -6.8454,
+            "roll": -1.5836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.1418,
+            "y": 149.034,
+            "z": -3381.5032
+        },
+        "rotation_euler": {
+            "yaw": -0.0514,
+            "pitch": -6.8516,
+            "roll": -1.5891
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.3975,
+            "y": 149.0107,
+            "z": -3374.0466
+        },
+        "rotation_euler": {
+            "yaw": 0.0038,
+            "pitch": -6.872,
+            "roll": -7.8406
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7212,
+            "y": 149.015,
+            "z": -3375.2158
+        },
+        "rotation_euler": {
+            "yaw": 0.0184,
+            "pitch": -6.8837,
+            "roll": -1.5908
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3835.0535,
+            "y": 149.0486,
+            "z": -3376.3352
+        },
+        "rotation_euler": {
+            "yaw": -0.0008,
+            "pitch": -6.8681,
+            "roll": -1.5934
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.9509,
+            "y": 149.0512,
+            "z": -3377.6304
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -5.257,
+            "roll": -1.5962
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.061,
+            "y": 149.0166,
+            "z": -3379.2893
+        },
+        "rotation_euler": {
+            "yaw": 0.0597,
+            "pitch": -5.2865,
+            "roll": -1.6252
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.1699,
+            "y": 148.9701,
+            "z": -3381.0229
+        },
+        "rotation_euler": {
+            "yaw": 0.0789,
+            "pitch": -5.2627,
+            "roll": -1.6257
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.3188,
+            "y": 149.1783,
+            "z": -3381.6492
+        },
+        "rotation_euler": {
+            "yaw": -0.2123,
+            "pitch": -6.3435,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.167,
+            "y": 148.9752,
+            "z": -3393.9072
+        },
+        "rotation_euler": {
+            "yaw": -0.0003,
+            "pitch": -6.3916,
+            "roll": -1.6002
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.1287,
+            "y": 149.0427,
+            "z": -3394.1548
+        },
+        "rotation_euler": {
+            "yaw": -0.0136,
+            "pitch": -6.4174,
+            "roll": -1.5941
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.0603,
+            "y": 149.0706,
+            "z": -3394.426
+        },
+        "rotation_euler": {
+            "yaw": -0.0003,
+            "pitch": -6.395,
+            "roll": -7.8462
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.7051,
+            "y": 149.0605,
+            "z": -3387.1035
+        },
+        "rotation_euler": {
+            "yaw": -0.0061,
+            "pitch": -6.425,
+            "roll": -1.5746
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.6489,
+            "y": 149.074,
+            "z": -3387.3804
+        },
+        "rotation_euler": {
+            "yaw": -0.0136,
+            "pitch": -6.4135,
+            "roll": -7.851
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.4075,
+            "y": 149.054,
+            "z": -3387.5083
+        },
+        "rotation_euler": {
+            "yaw": -0.0068,
+            "pitch": -6.4174,
+            "roll": -7.8502
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.9368,
+            "y": 149.0956,
+            "z": -3388.5083
+        },
+        "rotation_euler": {
+            "yaw": 0.0025,
+            "pitch": -4.8726,
+            "roll": -1.5823
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.249,
+            "y": 149.1124,
+            "z": -3390.5066
+        },
+        "rotation_euler": {
+            "yaw": -0.105,
+            "pitch": -4.8564,
+            "roll": -7.7814
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.5454,
+            "y": 149.1026,
+            "z": -3392.5012
+        },
+        "rotation_euler": {
+            "yaw": -0.0005,
+            "pitch": -4.8477,
+            "roll": -1.5957
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.6226,
+            "y": 149.1035,
+            "z": -3393.6309
+        },
+        "rotation_euler": {
+            "yaw": -0.1661,
+            "pitch": -4.8068,
+            "roll": -7.6866
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.7026,
+            "y": 149.3752,
+            "z": -3407.2898
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.1694,
+            "y": 149.2938,
+            "z": -3407.2766
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.8254,
+            "y": 149.2888,
+            "z": -3407.2815
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.5637,
+            "y": 149.294,
+            "z": -3406.9668
+        },
+        "rotation_euler": {
+            "yaw": -0.506,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.1108,
+            "y": 149.3765,
+            "z": -3420.4919
+        },
+        "rotation_euler": {
+            "yaw": -0.0819,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.738,
+            "y": 149.3891,
+            "z": -3420.3806
+        },
+        "rotation_euler": {
+            "yaw": -0.0893,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.384,
+            "y": 149.3737,
+            "z": -3420.1892
+        },
+        "rotation_euler": {
+            "yaw": -0.1303,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3844.3069,
+            "y": 149.4096,
+            "z": -3413.6169
+        },
+        "rotation_euler": {
+            "yaw": -0.1191,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.9761,
+            "y": 149.3812,
+            "z": -3413.469
+        },
+        "rotation_euler": {
+            "yaw": -0.1303,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.5881,
+            "y": 149.3661,
+            "z": -3413.3008
+        },
+        "rotation_euler": {
+            "yaw": -0.1488,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.1689,
+            "y": 149.3615,
+            "z": -3413.1367
+        },
+        "rotation_euler": {
+            "yaw": -0.0856,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.3167,
+            "y": 149.4065,
+            "z": -3414.0249
+        },
+        "rotation_euler": {
+            "yaw": -3.3413,
+            "pitch": -4.8299,
+            "roll": -4.5065
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.1304,
+            "y": 149.366,
+            "z": -3416.0625
+        },
+        "rotation_euler": {
+            "yaw": -3.18,
+            "pitch": -4.8049,
+            "roll": -4.6886
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.8281,
+            "y": 149.3586,
+            "z": -3418.0859
+        },
+        "rotation_euler": {
+            "yaw": -3.1412,
+            "pitch": -4.9642,
+            "roll": -4.7382
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.6953,
+            "y": 149.4265,
+            "z": -3419.574
+        },
+        "rotation_euler": {
+            "yaw": -1.3283,
+            "pitch": -6.2914,
+            "roll": -6.284
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.7937,
+            "y": 149.5948,
+            "z": -3432.1658
+        },
+        "rotation_euler": {
+            "yaw": -0.0002,
+            "pitch": -6.2833,
+            "roll": -7.8309
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7505,
+            "y": 149.6451,
+            "z": -3432.0872
+        },
+        "rotation_euler": {
+            "yaw": 0.0168,
+            "pitch": -6.2251,
+            "roll": -7.8518
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3835.1113,
+            "y": 149.6512,
+            "z": -3431.6169
+        },
+        "rotation_euler": {
+            "yaw": -0.0182,
+            "pitch": -5.6849,
+            "roll": -7.8508
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.7195,
+            "y": 149.8476,
+            "z": -3445.3425
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.3462,
+            "y": 149.7167,
+            "z": -3445.3401
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.958,
+            "y": 149.8817,
+            "z": -3445.312
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.5435,
+            "y": 149.7108,
+            "z": -3445.3196
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.5322,
+            "y": 149.8252,
+            "z": -3438.3406
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.1213,
+            "y": 149.8518,
+            "z": -3438.3367
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.6904,
+            "y": 149.8794,
+            "z": -3438.3281
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.3879,
+            "y": 149.7669,
+            "z": -3438.4976
+        },
+        "rotation_euler": {
+            "yaw": 0.1525,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.1951,
+            "y": 148.9432,
+            "z": -3459.4353
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.0267,
+            "roll": -7.8421
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.2363,
+            "y": 148.9347,
+            "z": -3458.9146
+        },
+        "rotation_euler": {
+            "yaw": 0.0093,
+            "pitch": -6.0347,
+            "roll": -7.8511
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.47,
+            "y": 148.8827,
+            "z": -3458.0847
+        },
+        "rotation_euler": {
+            "yaw": 0.0183,
+            "pitch": -5.6426,
+            "roll": -7.8125
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.269,
+            "y": 149.0397,
+            "z": -3452.7832
+        },
+        "rotation_euler": {
+            "yaw": 0.0198,
+            "pitch": -6.047,
+            "roll": -1.6137
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.8049,
+            "y": 149.3039,
+            "z": -3472.6294
+        },
+        "rotation_euler": {
+            "yaw": -0.0003,
+            "pitch": -6.1313,
+            "roll": -7.8128
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7742,
+            "y": 149.2541,
+            "z": -3472.3621
+        },
+        "rotation_euler": {
+            "yaw": -0.0002,
+            "pitch": -6.1424,
+            "roll": -7.8313
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.9055,
+            "y": 149.2201,
+            "z": -3471.7244
+        },
+        "rotation_euler": {
+            "yaw": 0.0068,
+            "pitch": -5.7638,
+            "roll": -7.8387
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3844.6294,
+            "y": 149.6228,
+            "z": -3485.9021
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.2524,
+            "y": 149.6374,
+            "z": -3485.8867
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.8779,
+            "y": 149.567,
+            "z": -3485.9119
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.4788,
+            "y": 149.6299,
+            "z": -3485.8911
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.0554,
+            "y": 149.755,
+            "z": -3485.8958
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.668,
+            "y": 149.7867,
+            "z": -3485.9067
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.3428,
+            "y": 149.7042,
+            "z": -3479.1887
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.0627,
+            "y": 149.6845,
+            "z": -3479.2603
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.6262,
+            "y": 149.8232,
+            "z": -3479.2629
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.2305,
+            "y": 149.7791,
+            "z": -3479.2954
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.5547,
+            "y": 149.2984,
+            "z": -3466.0681
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1273,
+            "roll": -1.5814
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.9336,
+            "y": 149.8226,
+            "z": -3479.8645
+        },
+        "rotation_euler": {
+            "yaw": -1.648,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.8035,
+            "y": 149.8554,
+            "z": -3481.2554
+        },
+        "rotation_euler": {
+            "yaw": -1.7114,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.6445,
+            "y": 149.7759,
+            "z": -3482.6377
+        },
+        "rotation_euler": {
+            "yaw": -1.6443,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.5293,
+            "y": 149.7857,
+            "z": -3484.0471
+        },
+        "rotation_euler": {
+            "yaw": -1.6852,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.5193,
+            "y": 149.8513,
+            "z": -3485.45
+        },
+        "rotation_euler": {
+            "yaw": -1.4769,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.5247,
+            "y": 149.9599,
+            "z": -3498.949
+        },
+        "rotation_euler": {
+            "yaw": -0.0595,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.2024,
+            "y": 149.9474,
+            "z": -3498.8315
+        },
+        "rotation_euler": {
+            "yaw": -0.1005,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.8523,
+            "y": 149.8954,
+            "z": -3498.699
+        },
+        "rotation_euler": {
+            "yaw": -0.1339,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.0269,
+            "y": 149.9273,
+            "z": -3498.1582
+        },
+        "rotation_euler": {
+            "yaw": -0.9562,
+            "pitch": -6.2725,
+            "roll": -6.2823
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.7173,
+            "y": 150.2792,
+            "z": -3511.2407
+        },
+        "rotation_euler": {
+            "yaw": -0.0968,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.3296,
+            "y": 150.1841,
+            "z": -3511.207
+        },
+        "rotation_euler": {
+            "yaw": -0.0409,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.9192,
+            "y": 150.1238,
+            "z": -3511.1135
+        },
+        "rotation_euler": {
+            "yaw": -0.0744,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.5901,
+            "y": 150.0967,
+            "z": -3510.6868
+        },
+        "rotation_euler": {
+            "yaw": -0.5172,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.8079,
+            "y": 150.2031,
+            "z": -3504.8064
+        },
+        "rotation_euler": {
+            "yaw": -0.0633,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3841.4236,
+            "y": 150.1686,
+            "z": -3504.7808
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.0374,
+            "y": 149.9859,
+            "z": -3504.8218
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.6265,
+            "y": 150.297,
+            "z": -3504.8647
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3845.1555,
+            "y": 150.0127,
+            "z": -3492.3167
+        },
+        "rotation_euler": {
+            "yaw": -0.1079,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.1716,
+            "y": 150.0985,
+            "z": -3505.5039
+        },
+        "rotation_euler": {
+            "yaw": -1.7224,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.0166,
+            "y": 150.2959,
+            "z": -3506.9216
+        },
+        "rotation_euler": {
+            "yaw": -1.648,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.9226,
+            "y": 150.13,
+            "z": -3508.3269
+        },
+        "rotation_euler": {
+            "yaw": -1.6108,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.0217,
+            "y": 150.054,
+            "z": -3509.6731
+        },
+        "rotation_euler": {
+            "yaw": -1.3766,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.3176,
+            "y": 150.423,
+            "z": -3518.7957
+        },
+        "rotation_euler": {
+            "yaw": -0.1377,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.9666,
+            "y": 150.3622,
+            "z": -3518.6714
+        },
+        "rotation_euler": {
+            "yaw": -0.093,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.5393,
+            "y": 150.3649,
+            "z": -3518.5
+        },
+        "rotation_euler": {
+            "yaw": -0.1377,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3844.4692,
+            "y": 152.1924,
+            "z": -3523.9055
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.533,
+            "y": 150.5743,
+            "z": -3525.2188
+        },
+        "rotation_euler": {
+            "yaw": -0.1786,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.219,
+            "y": 150.4197,
+            "z": -3524.9712
+        },
+        "rotation_euler": {
+            "yaw": -0.1786,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.865,
+            "y": 150.251,
+            "z": -3524.6741
+        },
+        "rotation_euler": {
+            "yaw": -0.2307,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.5779,
+            "y": 150.2619,
+            "z": -3524.0244
+        },
+        "rotation_euler": {
+            "yaw": -1.7337,
+            "pitch": -6.2838,
+            "roll": -6.2838
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.8262,
+            "y": 149.9298,
+            "z": -3522.6697
+        },
+        "rotation_euler": {
+            "yaw": -1.7447,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.0642,
+            "y": 149.9499,
+            "z": -3521.2778
+        },
+        "rotation_euler": {
+            "yaw": -1.741,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.2693,
+            "y": 149.9412,
+            "z": -3519.8525
+        },
+        "rotation_euler": {
+            "yaw": -1.6778,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.739,
+            "y": 150.2226,
+            "z": -3518.9243
+        },
+        "rotation_euler": {
+            "yaw": -2.273,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3829.2258,
+            "y": 151.2092,
+            "z": -3534.988
+        },
+        "rotation_euler": {
+            "yaw": -0.7367,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3828.2268,
+            "y": 151.1517,
+            "z": -3534.05
+        },
+        "rotation_euler": {
+            "yaw": -0.6994,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3827.22,
+            "y": 151.2207,
+            "z": -3533.1292
+        },
+        "rotation_euler": {
+            "yaw": -0.7887,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3826.1907,
+            "y": 151.069,
+            "z": -3532.1589
+        },
+        "rotation_euler": {
+            "yaw": -0.7552,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3833.7429,
+            "y": 151.0525,
+            "z": -3530.1191
+        },
+        "rotation_euler": {
+            "yaw": -0.7329,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3832.6753,
+            "y": 151.0525,
+            "z": -3529.1846
+        },
+        "rotation_euler": {
+            "yaw": -0.6994,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3831.5725,
+            "y": 150.972,
+            "z": -3528.2891
+        },
+        "rotation_euler": {
+            "yaw": -0.7255,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3830.4617,
+            "y": 150.8286,
+            "z": -3527.4304
+        },
+        "rotation_euler": {
+            "yaw": -0.7106,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3828.7263,
+            "y": 151.0543,
+            "z": -3528.5752
+        },
+        "rotation_euler": {
+            "yaw": 0.8556,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3827.7573,
+            "y": 151.0941,
+            "z": -3529.6426
+        },
+        "rotation_euler": {
+            "yaw": 0.8332,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3826.866,
+            "y": 151.0616,
+            "z": -3530.7625
+        },
+        "rotation_euler": {
+            "yaw": 0.9076,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3826.4036,
+            "y": 151.0241,
+            "z": -3531.4802
+        },
+        "rotation_euler": {
+            "yaw": 0.8741,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.8984,
+            "y": 149.5733,
+            "z": -3519.6077
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.9771,
+            "y": 149.6352,
+            "z": -3520.571
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.7561,
+            "y": 149.5603,
+            "z": -3521.3125
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.8481,
+            "y": 149.3806,
+            "z": -3511.2583
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.856,
+            "y": 149.3282,
+            "z": -3510.3098
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3838.6606,
+            "y": 147.9659,
+            "z": -3508.8828
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.4634,
+            "y": 149.5821,
+            "z": -3523.292
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.636,
+            "y": 149.5917,
+            "z": -3522.2563
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.7842,
+            "y": 149.9116,
+            "z": -3492.1345
+        },
+        "rotation_euler": {
+            "yaw": -0.16,
+            "pitch": -6.2832,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.1401,
+            "y": 149.5729,
+            "z": -3492.8201
+        },
+        "rotation_euler": {
+            "yaw": -3.3713,
+            "pitch": -4.8143,
+            "roll": -4.479
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.9172,
+            "y": 149.5933,
+            "z": -3494.8696
+        },
+        "rotation_euler": {
+            "yaw": -3.1266,
+            "pitch": -4.8139,
+            "roll": -4.7224
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.7146,
+            "y": 149.6098,
+            "z": -3496.9199
+        },
+        "rotation_euler": {
+            "yaw": -2.6935,
+            "pitch": -4.7818,
+            "roll": -5.1702
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.3831,
+            "y": 149.8852,
+            "z": -3491.9885
+        },
+        "rotation_euler": {
+            "yaw": -0.1079,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.9834,
+            "y": 149.8817,
+            "z": -3491.8396
+        },
+        "rotation_euler": {
+            "yaw": -0.0893,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.2866,
+            "y": 149.3579,
+            "z": -3465.5554
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1496,
+            "roll": -1.5999
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3835.7561,
+            "y": 149.428,
+            "z": -3465.3362
+        },
+        "rotation_euler": {
+            "yaw": -0.0019,
+            "pitch": -6.147,
+            "roll": -1.5943
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.2737,
+            "y": 149.096,
+            "z": -3452.3181
+        },
+        "rotation_euler": {
+            "yaw": 0.0318,
+            "pitch": -6.0529,
+            "roll": -1.5967
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.7078,
+            "y": 149.2692,
+            "z": -3466.2268
+        },
+        "rotation_euler": {
+            "yaw": -3.2745,
+            "pitch": -4.8491,
+            "roll": -4.5771
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.4702,
+            "y": 149.2589,
+            "z": -3468.2444
+        },
+        "rotation_euler": {
+            "yaw": -3.1405,
+            "pitch": -4.8566,
+            "roll": -4.7427
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.1926,
+            "y": 149.2413,
+            "z": -3470.1987
+        },
+        "rotation_euler": {
+            "yaw": -3.3145,
+            "pitch": -4.8689,
+            "roll": -4.5532
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.3208,
+            "y": 149.125,
+            "z": -3451.8069
+        },
+        "rotation_euler": {
+            "yaw": -0.0082,
+            "pitch": -6.0197,
+            "roll": -1.5918
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.8035,
+            "y": 149.0582,
+            "z": -3452.647
+        },
+        "rotation_euler": {
+            "yaw": -3.2845,
+            "pitch": -4.9281,
+            "roll": -4.5934
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.2676,
+            "y": 149.0597,
+            "z": -3454.582
+        },
+        "rotation_euler": {
+            "yaw": -0.0742,
+            "pitch": -7.6146,
+            "roll": -1.6472
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.863,
+            "y": 149.0164,
+            "z": -3456.5439
+        },
+        "rotation_euler": {
+            "yaw": -3.0403,
+            "pitch": -4.8902,
+            "roll": -4.7946
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.5386,
+            "y": 149.7217,
+            "z": -3425.4116
+        },
+        "rotation_euler": {
+            "yaw": -0.0002,
+            "pitch": -6.2092,
+            "roll": -1.5777
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3837.4861,
+            "y": 149.7417,
+            "z": -3425.2527
+        },
+        "rotation_euler": {
+            "yaw": 0.0034,
+            "pitch": -6.2094,
+            "roll": -7.8466
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.8669,
+            "y": 149.7149,
+            "z": -3444.6431
+        },
+        "rotation_euler": {
+            "yaw": -1.5588,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.8225,
+            "y": 149.599,
+            "z": -3443.2498
+        },
+        "rotation_euler": {
+            "yaw": -1.5699,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7795,
+            "y": 149.7013,
+            "z": -3441.8652
+        },
+        "rotation_euler": {
+            "yaw": -1.5699,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7122,
+            "y": 149.7057,
+            "z": -3440.4561
+        },
+        "rotation_euler": {
+            "yaw": -1.5476,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3836.7146,
+            "y": 149.8911,
+            "z": -3439.0276
+        },
+        "rotation_euler": {
+            "yaw": -1.5997,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3835.479,
+            "y": 149.6492,
+            "z": -3425.1189
+        },
+        "rotation_euler": {
+            "yaw": -0.0037,
+            "pitch": -6.2057,
+            "roll": -7.8386
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.4858,
+            "y": 149.5971,
+            "z": -3426.0425
+        },
+        "rotation_euler": {
+            "yaw": -3.5639,
+            "pitch": -4.7666,
+            "roll": -4.2886
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.3884,
+            "y": 149.5823,
+            "z": -3428.0837
+        },
+        "rotation_euler": {
+            "yaw": -0.2525,
+            "pitch": -4.7795,
+            "roll": -4.4879
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3834.2966,
+            "y": 149.5914,
+            "z": -3430.1731
+        },
+        "rotation_euler": {
+            "yaw": -3.1366,
+            "pitch": -4.7412,
+            "roll": -4.7466
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3843.6978,
+            "y": 149.4099,
+            "z": -3400.1404
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3842.2844,
+            "y": 149.499,
+            "z": -3400.1309
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3840.8494,
+            "y": 149.434,
+            "z": -3400.1414
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.4863,
+            "y": 149.3777,
+            "z": -3400.2195
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.9819,
+            "y": 149.3576,
+            "z": -3400.7805
+        },
+        "rotation_euler": {
+            "yaw": -1.5626,
+            "pitch": -6.2841,
+            "roll": -6.2841
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.969,
+            "y": 149.3609,
+            "z": -3402.2051
+        },
+        "rotation_euler": {
+            "yaw": -1.5625,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3838.9998,
+            "y": 149.34,
+            "z": -3403.6279
+        },
+        "rotation_euler": {
+            "yaw": -1.5402,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.0161,
+            "y": 149.3263,
+            "z": -3405.0442
+        },
+        "rotation_euler": {
+            "yaw": -1.555,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "edoor_i",
+        "coordinates": {
+            "x": 3839.0286,
+            "y": 149.3205,
+            "z": -3406.4846
+        },
+        "rotation_euler": {
+            "yaw": -1.5662,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "wp_arrow1",
+        "coordinates": {
+            "x": 3750.4036,
+            "y": 150.4671,
+            "z": -3479.9712
+        },
+        "rotation_euler": {
+            "yaw": 1.1952,
+            "pitch": -6.0921,
+            "roll": -5.2546
+        }
+    },
+    {
+        "object_name": "tn4_tower01",
+        "coordinates": {
+            "x": 3747.2876,
+            "y": 159.467,
+            "z": -3421.4541
+        },
+        "rotation_euler": {
+            "yaw": -4.4199,
+            "pitch": -6.2846,
+            "roll": -6.2846
+        }
+    },
+    {
+        "object_name": "wp_arrow1",
+        "coordinates": {
+            "x": 3749.5063,
+            "y": 150.2662,
+            "z": -3479.7361
+        },
+        "rotation_euler": {
+            "yaw": 1.4326,
+            "pitch": -5.8308,
+            "roll": -6.2234
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3718.9202,
+            "y": 160.4806,
+            "z": -3510.2778
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3696.8831,
+            "y": 159.9443,
+            "z": -3495.3252
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3744.2441,
+            "y": 160.0117,
+            "z": -3503.157
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3768.8689,
+            "y": 159.9385,
+            "z": -3511.1172
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3781.3882,
+            "y": 159.6661,
+            "z": -3480.5684
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3806.2615,
+            "y": 160.1815,
+            "z": -3504.5703
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3802.8779,
+            "y": 160.1493,
+            "z": -3468.884
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3811.7935,
+            "y": 160.4594,
+            "z": -3446.6226
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3793.4263,
+            "y": 160.1404,
+            "z": -3444.179
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "mpyramid1",
+        "coordinates": {
+            "x": 3748.8555,
+            "y": 164.7664,
+            "z": -3451.033
+        },
+        "rotation_euler": {
+            "yaw": 0.2712,
+            "pitch": -6.2843,
+            "roll": -6.2843
+        }
+    },
+    {
+        "object_name": "s_dcr5",
+        "coordinates": {
+            "x": 3748.8118,
+            "y": 165.3079,
+            "z": -3468.1907
+        },
+        "rotation_euler": {
+            "yaw": -2.8947,
+            "pitch": -6.2841,
+            "roll": -6.2841
+        }
+    },
+    {
+        "object_name": "tree13",
+        "coordinates": {
+            "x": 3803.0762,
+            "y": 160.1405,
+            "z": -3413.033
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree12",
+        "coordinates": {
+            "x": 3711.5903,
+            "y": 160.0188,
+            "z": -3497.2734
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree12",
+        "coordinates": {
+            "x": 3765.0247,
+            "y": 160.4159,
+            "z": -3495.1165
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree12",
+        "coordinates": {
+            "x": 3791.8647,
+            "y": 159.9469,
+            "z": -3464.4785
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3719.7983,
+            "y": 160.1144,
+            "z": -3481.2915
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3727.7886,
+            "y": 160.156,
+            "z": -3507.3347
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3783.3743,
+            "y": 160.186,
+            "z": -3495.8376
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3805.2007,
+            "y": 160.1974,
+            "z": -3485.7974
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3800.8989,
+            "y": 159.989,
+            "z": -3441.085
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "tree11",
+        "coordinates": {
+            "x": 3813.3823,
+            "y": 160.4662,
+            "z": -3409.8931
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "s_dcr5",
+        "coordinates": {
+            "x": 3748.8074,
+            "y": 166.2414,
+            "z": -3435.0205
+        },
+        "rotation_euler": {
+            "yaw": 0.2786,
+            "pitch": -6.2843,
+            "roll": -6.2843
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.8655,
+            "y": 149.3508,
+            "z": -3509.2937
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.7476,
+            "y": 148.9405,
+            "z": -3492.8213
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.6907,
+            "y": 148.9599,
+            "z": -3493.8386
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.5574,
+            "y": 148.9644,
+            "z": -3494.8779
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.7539,
+            "y": 148.9128,
+            "z": -3485.0513
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.7812,
+            "y": 148.8756,
+            "z": -3485.0391
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.2703,
+            "y": 148.9488,
+            "z": -3485.4282
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.2395,
+            "y": 148.9279,
+            "z": -3485.3931
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.2561,
+            "y": 148.9223,
+            "z": -3485.4109
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.7642,
+            "y": 148.8898,
+            "z": -3483.1079
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.761,
+            "y": 148.8228,
+            "z": -3484.0369
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.7754,
+            "y": 148.7528,
+            "z": -3484.0642
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.6699,
+            "y": 148.8032,
+            "z": -3482.687
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.7783,
+            "y": 148.7978,
+            "z": -3481.9417
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3843.7776,
+            "y": 148.7962,
+            "z": -3480.9082
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3842.2295,
+            "y": 148.1518,
+            "z": -3459.2515
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3842.3445,
+            "y": 148.1414,
+            "z": -3458.3804
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3842.4263,
+            "y": 148.1775,
+            "z": -3457.6943
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3840.0664,
+            "y": 148.8658,
+            "z": -3431.6731
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3840.1499,
+            "y": 149.0347,
+            "z": -3425.8091
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3840.0757,
+            "y": 148.9251,
+            "z": -3430.6892
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3840.2441,
+            "y": 149.0322,
+            "z": -3426.7266
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.8176,
+            "y": 148.4689,
+            "z": -3418.041
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.9084,
+            "y": 148.4875,
+            "z": -3416.9924
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.1238,
+            "y": 148.4857,
+            "z": -3415.9102
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.2522,
+            "y": 148.4988,
+            "z": -3414.8403
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3845.3896,
+            "y": 148.4666,
+            "z": -3413.8889
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3839.5205,
+            "y": 148.0802,
+            "z": -3373.1331
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3839.8762,
+            "y": 148.0499,
+            "z": -3374.1431
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "edoor2_i",
+        "coordinates": {
+            "x": 3844.6934,
+            "y": 148.8567,
+            "z": -3482.7358
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    }
+]

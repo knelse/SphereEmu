@@ -1,0 +1,288 @@
+[
+    {
+        "object_name": "mhouse4",
+        "coordinates": {
+            "x": 2101.1023,
+            "y": 159.7776,
+            "z": -396.0
+        },
+        "rotation_euler": {
+            "yaw": -1.6094,
+            "pitch": -6.2843,
+            "roll": -6.2843
+        }
+    },
+    {
+        "object_name": "kolodec1",
+        "coordinates": {
+            "x": 2093.3623,
+            "y": 159.9934,
+            "z": -404.3145
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "mhouse15",
+        "coordinates": {
+            "x": 2098.4502,
+            "y": 159.9077,
+            "z": -385.4088
+        },
+        "rotation_euler": {
+            "yaw": 4.5737,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "m_nakov1",
+        "coordinates": {
+            "x": 2098.6609,
+            "y": 159.9509,
+            "z": -384.7301
+        },
+        "rotation_euler": {
+            "yaw": 4.5142,
+            "pitch": -6.2834,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "m_molot1",
+        "coordinates": {
+            "x": 2098.5898,
+            "y": 159.4147,
+            "z": -385.0848
+        },
+        "rotation_euler": {
+            "yaw": -1.3597,
+            "pitch": -6.6149,
+            "roll": -3.1047
+        }
+    },
+    {
+        "object_name": "m_kleshy1",
+        "coordinates": {
+            "x": 2098.6538,
+            "y": 158.9345,
+            "z": -384.7528
+        },
+        "rotation_euler": {
+            "yaw": 3.1414,
+            "pitch": -7.8308,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "m_kozly1",
+        "coordinates": {
+            "x": 2094.8394,
+            "y": 159.9445,
+            "z": -389.0088
+        },
+        "rotation_euler": {
+            "yaw": 3.0076,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "konovaz1",
+        "coordinates": {
+            "x": 2096.7036,
+            "y": 159.7571,
+            "z": -392.0668
+        },
+        "rotation_euler": {
+            "yaw": -1.6165,
+            "pitch": -6.2837,
+            "roll": -6.2837
+        }
+    },
+    {
+        "object_name": "plank1",
+        "coordinates": {
+            "x": 2093.4514,
+            "y": 158.3007,
+            "z": -387.1306
+        },
+        "rotation_euler": {
+            "yaw": -2.8201,
+            "pitch": -6.117,
+            "roll": -1.7456
+        }
+    },
+    {
+        "object_name": "korito1",
+        "coordinates": {
+            "x": 2096.0498,
+            "y": 159.9209,
+            "z": -391.9921
+        },
+        "rotation_euler": {
+            "yaw": -3.1864,
+            "pitch": -6.2836,
+            "roll": -6.2836
+        }
+    },
+    {
+        "object_name": "plank2",
+        "coordinates": {
+            "x": 2094.8225,
+            "y": 158.7745,
+            "z": -389.0602
+        },
+        "rotation_euler": {
+            "yaw": 2.9841,
+            "pitch": -6.8229,
+            "roll": -6.3659
+        }
+    },
+    {
+        "object_name": "plank2",
+        "coordinates": {
+            "x": 2093.0085,
+            "y": 158.564,
+            "z": -387.2659
+        },
+        "rotation_euler": {
+            "yaw": -2.857,
+            "pitch": -6.111,
+            "roll": -7.6245
+        }
+    },
+    {
+        "object_name": "m_topor1",
+        "coordinates": {
+            "x": 2093.0422,
+            "y": 158.133,
+            "z": -387.6232
+        },
+        "rotation_euler": {
+            "yaw": 1.1605,
+            "pitch": -5.5828,
+            "roll": -5.8692
+        }
+    },
+    {
+        "object_name": "m_busket1",
+        "coordinates": {
+            "x": 2083.9451,
+            "y": 160.1106,
+            "z": -371.4423
+        },
+        "rotation_euler": {
+            "yaw": 3.8707,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "m_kirka01",
+        "coordinates": {
+            "x": 2084.3843,
+            "y": 159.6395,
+            "z": -373.2726
+        },
+        "rotation_euler": {
+            "yaw": -1.196,
+            "pitch": -5.9633,
+            "roll": -2.1967
+        }
+    },
+    {
+        "object_name": "bochka2",
+        "coordinates": {
+            "x": 2101.4314,
+            "y": 159.9792,
+            "z": -402.2459
+        },
+        "rotation_euler": {
+            "yaw": -3.153,
+            "pitch": -6.2839,
+            "roll": -6.2839
+        }
+    },
+    {
+        "object_name": "skam1",
+        "coordinates": {
+            "x": 2098.7119,
+            "y": 159.8419,
+            "z": -398.3406
+        },
+        "rotation_euler": {
+            "yaw": -1.6165,
+            "pitch": -6.2835,
+            "roll": -6.2835
+        }
+    },
+    {
+        "object_name": "tn3_light03",
+        "coordinates": {
+            "x": 2096.6377,
+            "y": 159.7606,
+            "z": -393.9897
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "m_wood1",
+        "coordinates": {
+            "x": 2067.7717,
+            "y": 159.3735,
+            "z": -382.5027
+        },
+        "rotation_euler": {
+            "yaw": 0.3442,
+            "pitch": -6.3221,
+            "roll": -6.2698
+        }
+    },
+    {
+        "object_name": "bochka1",
+        "coordinates": {
+            "x": 2099.8525,
+            "y": 159.9346,
+            "z": -402.1098
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "mhouse9",
+        "coordinates": {
+            "x": 2093.4478,
+            "y": 159.8957,
+            "z": -384.6024
+        },
+        "rotation_euler": {
+            "yaw": -0.1772,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "tn3_light03",
+        "coordinates": {
+            "x": 2060.998,
+            "y": 160.1157,
+            "z": -379.5173
+        },
+        "rotation_euler": {
+            "yaw": 2.9593,
+            "pitch": -6.2833,
+            "roll": -6.2833
+        }
+    }
+]

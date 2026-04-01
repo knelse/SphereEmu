@@ -1,0 +1,41 @@
+[
+    {
+        "object_name": "zeppilin",
+        "coordinates": {
+            "x": 2595.4163,
+            "y": 101.0434,
+            "z": 1304.2383
+        },
+        "rotation_euler": {
+            "yaw": -4.4606,
+            "pitch": -6.2844,
+            "roll": -6.2844
+        }
+    },
+    {
+        "object_name": "relic",
+        "coordinates": {
+            "x": 413.0023,
+            "y": 154.2238,
+            "z": -1295.7833
+        },
+        "rotation_euler": {
+            "yaw": -2.2918,
+            "pitch": -6.2842,
+            "roll": -6.2842
+        }
+    },
+    {
+        "object_name": "ny3",
+        "coordinates": {
+            "x": 2585.134,
+            "y": 111.6367,
+            "z": 1344.0266
+        },
+        "rotation_euler": {
+            "yaw": -2.664,
+            "pitch": -6.2843,
+            "roll": -6.2843
+        }
+    }
+]

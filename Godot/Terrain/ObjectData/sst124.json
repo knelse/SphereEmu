@@ -1,0 +1,1198 @@
+[
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2548.2166,
+            "y": 158.0125,
+            "z": -1665.4077
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1421,
+            "roll": -6.4769
+        }
+    },
+    {
+        "object_name": "cem_tomb2",
+        "coordinates": {
+            "x": 2577.0598,
+            "y": 158.4739,
+            "z": -1651.5773
+        },
+        "rotation_euler": {
+            "yaw": 0.0011,
+            "pitch": -6.3133,
+            "roll": -6.28
+        }
+    },
+    {
+        "object_name": "cem_tomb2",
+        "coordinates": {
+            "x": 2582.2063,
+            "y": 159.9614,
+            "z": -1674.8806
+        },
+        "rotation_euler": {
+            "yaw": -0.008,
+            "pitch": -6.2319,
+            "roll": -6.1306
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2575.3105,
+            "y": 159.3112,
+            "z": -1674.7969
+        },
+        "rotation_euler": {
+            "yaw": -0.0007,
+            "pitch": -6.2759,
+            "roll": -6.1941
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2575.2351,
+            "y": 159.2071,
+            "z": -1675.9376
+        },
+        "rotation_euler": {
+            "yaw": -0.0057,
+            "pitch": -6.2279,
+            "roll": -6.1939
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2555.854,
+            "y": 158.4641,
+            "z": -1658.0547
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": -6.2833,
+            "roll": -6.0787
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2560.728,
+            "y": 159.5399,
+            "z": -1672.8904
+        },
+        "rotation_euler": {
+            "yaw": -4.6958,
+            "pitch": -6.3149,
+            "roll": -6.4869
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2551.4355,
+            "y": 157.8433,
+            "z": -1666.4773
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.5438,
+            "roll": -6.0565
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2568.7698,
+            "y": 158.3947,
+            "z": -1661.9465
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.4806,
+            "roll": -6.4248
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2560.3574,
+            "y": 159.6696,
+            "z": -1680.4921
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.4582,
+            "roll": -6.3392
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2570.1294,
+            "y": 158.9058,
+            "z": -1669.3706
+        },
+        "rotation_euler": {
+            "yaw": 0.0163,
+            "pitch": -6.45,
+            "roll": -6.1853
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2582.8716,
+            "y": 159.9083,
+            "z": -1677.5109
+        },
+        "rotation_euler": {
+            "yaw": 3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb1b",
+        "coordinates": {
+            "x": 2579.5615,
+            "y": 160.1528,
+            "z": -1658.1663
+        },
+        "rotation_euler": {
+            "yaw": -1.5708,
+            "pitch": -6.4172,
+            "roll": -6.1829
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2573.439,
+            "y": 158.1112,
+            "z": -1661.2781
+        },
+        "rotation_euler": {
+            "yaw": 1.5707,
+            "pitch": -6.3578,
+            "roll": -6.2834
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2574.5637,
+            "y": 158.1112,
+            "z": -1661.2969
+        },
+        "rotation_euler": {
+            "yaw": 1.5707,
+            "pitch": -6.3428,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2584.8403,
+            "y": 159.9937,
+            "z": -1661.0461
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.2833,
+            "roll": -6.3577
+        }
+    },
+    {
+        "object_name": "cem_tomb2",
+        "coordinates": {
+            "x": 2584.8032,
+            "y": 160.1499,
+            "z": -1662.1482
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.2833,
+            "roll": -6.3391
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2559.6797,
+            "y": 158.4101,
+            "z": -1655.547
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2559.6812,
+            "y": 158.4621,
+            "z": -1656.5364
+        },
+        "rotation_euler": {
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2569.3518,
+            "y": 158.5965,
+            "z": -1650.1316
+        },
+        "rotation_euler": {
+            "yaw": -3.1417,
+            "pitch": -6.0193,
+            "roll": -6.4211
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2569.4006,
+            "y": 158.857,
+            "z": -1649.0347
+        },
+        "rotation_euler": {
+            "yaw": -3.147,
+            "pitch": -5.9968,
+            "roll": -6.4159
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2574.9675,
+            "y": 157.9564,
+            "z": -1656.9711
+        },
+        "rotation_euler": {
+            "yaw": 1.5671,
+            "pitch": -6.2653,
+            "roll": -5.9859
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2577.2734,
+            "y": 159.7966,
+            "z": -1670.0845
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.2833,
+            "roll": -6.2201
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2565.2393,
+            "y": 158.8385,
+            "z": -1670.969
+        },
+        "rotation_euler": {
+            "yaw": 0.0114,
+            "pitch": -6.1313,
+            "roll": -6.3587
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2560.7271,
+            "y": 158.8216,
+            "z": -1662.7834
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1308,
+            "roll": -6.4358
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2555.0664,
+            "y": 160.0978,
+            "z": -1685.5591
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": -6.2089,
+            "roll": -6.3503
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2570.9163,
+            "y": 159.0066,
+            "z": -1678.1067
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": -6.2127,
+            "roll": -6.3689
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2580.7896,
+            "y": 159.6965,
+            "z": -1682.3055
+        },
+        "rotation_euler": {
+            "yaw": -3.127,
+            "pitch": -6.5248,
+            "roll": -6.2221
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2556.3804,
+            "y": 159.0004,
+            "z": -1668.2812
+        },
+        "rotation_euler": {
+            "yaw": 0.0193,
+            "pitch": -6.4122,
+            "roll": -6.1334
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2556.3892,
+            "y": 159.1046,
+            "z": -1669.3518
+        },
+        "rotation_euler": {
+            "yaw": 0.0173,
+            "pitch": -6.4967,
+            "roll": -6.1385
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2559.5774,
+            "y": 159.6409,
+            "z": -1672.7526
+        },
+        "rotation_euler": {
+            "yaw": 1.5487,
+            "pitch": -6.3749,
+            "roll": -6.4374
+        }
+    },
+    {
+        "object_name": "cem_tomb2",
+        "coordinates": {
+            "x": 2557.3843,
+            "y": 159.9273,
+            "z": -1680.8151
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": -6.3095,
+            "roll": -6.2166
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2558.6763,
+            "y": 159.9204,
+            "z": -1688.0627
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.2833,
+            "roll": -6.3168
+        }
+    },
+    {
+        "object_name": "cem_tomb1",
+        "coordinates": {
+            "x": 2558.6582,
+            "y": 159.9204,
+            "z": -1689.2242
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb4a",
+        "coordinates": {
+            "x": 2571.45,
+            "y": 159.235,
+            "z": -1681.8569
+        },
+        "rotation_euler": {
+            "yaw": 0.0048,
+            "pitch": -6.3839,
+            "roll": -6.2089
+        }
+    },
+    {
+        "object_name": "cem_tomb2b",
+        "coordinates": {
+            "x": 2571.4619,
+            "y": 159.5475,
+            "z": -1682.9768
+        },
+        "rotation_euler": {
+            "yaw": 0.0098,
+            "pitch": -6.4096,
+            "roll": -6.2158
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2580.6226,
+            "y": 160.0762,
+            "z": -1665.6445
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb3b",
+        "coordinates": {
+            "x": 2581.6694,
+            "y": 160.0762,
+            "z": -1665.6711
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2572.5771,
+            "y": 159.1309,
+            "z": -1668.303
+        },
+        "rotation_euler": {
+            "yaw": -0.0048,
+            "pitch": -6.2577,
+            "roll": -6.101
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2572.5945,
+            "y": 159.157,
+            "z": -1669.3376
+        },
+        "rotation_euler": {
+            "yaw": -0.0121,
+            "pitch": -6.2363,
+            "roll": -6.1304
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2565.0171,
+            "y": 159.0281,
+            "z": -1674.5762
+        },
+        "rotation_euler": {
+            "yaw": 1.5704,
+            "pitch": -6.2465,
+            "roll": -6.4957
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2566.0908,
+            "y": 158.7938,
+            "z": -1674.5573
+        },
+        "rotation_euler": {
+            "yaw": 1.5704,
+            "pitch": -6.2832,
+            "roll": -6.6032
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2549.8159,
+            "y": 158.2211,
+            "z": -1670.8911
+        },
+        "rotation_euler": {
+            "yaw": 1.5599,
+            "pitch": -6.3944,
+            "roll": -6.3806
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2575.2344,
+            "y": 159.3644,
+            "z": -1680.8604
+        },
+        "rotation_euler": {
+            "yaw": -4.7,
+            "pitch": -6.3491,
+            "roll": -6.0969
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2574.647,
+            "y": 159.0737,
+            "z": -1665.0618
+        },
+        "rotation_euler": {
+            "yaw": 0.0382,
+            "pitch": -6.6028,
+            "roll": -6.0437
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2581.499,
+            "y": 159.2954,
+            "z": -1651.2715
+        },
+        "rotation_euler": {
+            "yaw": -1.5728,
+            "pitch": -6.3317,
+            "roll": -6.2648
+        }
+    },
+    {
+        "object_name": "cem_tomb1c",
+        "coordinates": {
+            "x": 2567.0728,
+            "y": 158.1051,
+            "z": -1654.5454
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.0453,
+            "roll": -6.3168
+        }
+    },
+    {
+        "object_name": "cem_tomb1c",
+        "coordinates": {
+            "x": 2585.0938,
+            "y": 160.088,
+            "z": -1667.0236
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.2163,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "cem_tomb1c",
+        "coordinates": {
+            "x": 2565.6777,
+            "y": 158.8088,
+            "z": -1677.4768
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1978,
+            "roll": -6.3652
+        }
+    },
+    {
+        "object_name": "cem_tomb1c",
+        "coordinates": {
+            "x": 2551.5229,
+            "y": 158.3384,
+            "z": -1661.6086
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1493,
+            "roll": -6.2832
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2565.8035,
+            "y": 158.6779,
+            "z": -1664.2639
+        },
+        "rotation_euler": {
+            "yaw": -4.7042,
+            "pitch": -6.2019,
+            "roll": -6.3841
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2563.1426,
+            "y": 158.3578,
+            "z": -1654.6913
+        },
+        "rotation_euler": {
+            "yaw": 0.0145,
+            "pitch": -6.0904,
+            "roll": -6.3591
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2577.3486,
+            "y": 159.9959,
+            "z": -1666.1021
+        },
+        "rotation_euler": {
+            "yaw": -4.7124,
+            "pitch": -6.2833,
+            "roll": -6.075
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2579.3713,
+            "y": 159.7646,
+            "z": -1680.3323
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1681,
+            "roll": -6.1792
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2556.1406,
+            "y": 158.5322,
+            "z": -1661.7949
+        },
+        "rotation_euler": {
+            "yaw": -4.6999,
+            "pitch": -6.3794,
+            "roll": -6.1527
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2557.2241,
+            "y": 158.7926,
+            "z": -1661.772
+        },
+        "rotation_euler": {
+            "yaw": -4.6934,
+            "pitch": -6.364,
+            "roll": -6.204
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2573.7925,
+            "y": 158.5794,
+            "z": -1650.5896
+        },
+        "rotation_euler": {
+            "yaw": 1.5593,
+            "pitch": -6.1912,
+            "roll": -6.1602
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2574.6274,
+            "y": 158.7356,
+            "z": -1650.585
+        },
+        "rotation_euler": {
+            "yaw": 1.5593,
+            "pitch": -6.2388,
+            "roll": -6.2791
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2562.7776,
+            "y": 158.2618,
+            "z": -1660.5562
+        },
+        "rotation_euler": {
+            "yaw": 0.0026,
+            "pitch": -6.3691,
+            "roll": -6.462
+        }
+    },
+    {
+        "object_name": "cem_tomb2",
+        "coordinates": {
+            "x": 2562.7676,
+            "y": 158.34,
+            "z": -1661.4337
+        },
+        "rotation_euler": {
+            "yaw": 0.0025,
+            "pitch": -6.403,
+            "roll": -6.4951
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2558.4102,
+            "y": 159.8,
+            "z": -1677.6138
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": -6.2461,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2558.4097,
+            "y": 159.8521,
+            "z": -1676.7491
+        },
+        "rotation_euler": {
+            "yaw": -3.1416,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2565.3037,
+            "y": 159.2701,
+            "z": -1682.0354
+        },
+        "rotation_euler": {
+            "yaw": -0.0002,
+            "pitch": -6.4398,
+            "roll": -6.3766
+        }
+    },
+    {
+        "object_name": "cem_tomb3b",
+        "coordinates": {
+            "x": 2565.2627,
+            "y": 159.5045,
+            "z": -1682.9501
+        },
+        "rotation_euler": {
+            "yaw": -0.0003,
+            "pitch": -6.4471,
+            "roll": -6.3802
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2581.8276,
+            "y": 160.0476,
+            "z": -1670.0303
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.2833,
+            "roll": -6.2349
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2581.7988,
+            "y": 160.0476,
+            "z": -1670.8892
+        },
+        "rotation_euler": {
+            "yaw": -0.0028,
+            "pitch": -6.2537,
+            "roll": -6.1903
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2571.2236,
+            "y": 157.7074,
+            "z": -1655.8782
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1866,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2571.2129,
+            "y": 157.7074,
+            "z": -1656.7119
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1829,
+            "roll": -6.2833
+        }
+    },
+    {
+        "object_name": "cem_tomb4c",
+        "coordinates": {
+            "x": 2563.9929,
+            "y": 158.7641,
+            "z": -1651.7268
+        },
+        "rotation_euler": {
+            "yaw": 1.5639,
+            "pitch": -6.1535,
+            "roll": -6.2496
+        }
+    },
+    {
+        "object_name": "cem_tomb2b",
+        "coordinates": {
+            "x": 2564.949,
+            "y": 158.7641,
+            "z": -1651.72
+        },
+        "rotation_euler": {
+            "yaw": 1.5638,
+            "pitch": -6.1604,
+            "roll": -6.316
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2565.4895,
+            "y": 158.7317,
+            "z": -1668.1935
+        },
+        "rotation_euler": {
+            "yaw": -4.7115,
+            "pitch": -6.3766,
+            "roll": -6.3059
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2566.4946,
+            "y": 158.7056,
+            "z": -1668.2097
+        },
+        "rotation_euler": {
+            "yaw": -4.6298,
+            "pitch": -6.3616,
+            "roll": -6.3703
+        }
+    },
+    {
+        "object_name": "cem_tomb4b",
+        "coordinates": {
+            "x": 2577.0659,
+            "y": 158.6707,
+            "z": -1650.5609
+        },
+        "rotation_euler": {
+            "yaw": 0.0008,
+            "pitch": -6.1682,
+            "roll": -6.291
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2582.6206,
+            "y": 159.8166,
+            "z": -1680.3363
+        },
+        "rotation_euler": {
+            "yaw": -1.5708,
+            "pitch": -6.2832,
+            "roll": -6.101
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2558.8667,
+            "y": 160.0372,
+            "z": -1684.4475
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1569,
+            "roll": -6.3429
+        }
+    },
+    {
+        "object_name": "cem_tomb3",
+        "coordinates": {
+            "x": 2568.9956,
+            "y": 159.5868,
+            "z": -1684.2871
+        },
+        "rotation_euler": {
+            "yaw": -1.546,
+            "pitch": -6.3652,
+            "roll": -5.9884
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2560.1748,
+            "y": 159.1158,
+            "z": -1668.2905
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.1457,
+            "roll": -6.4879
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2567.127,
+            "y": 157.3966,
+            "z": -1657.906
+        },
+        "rotation_euler": {
+            "yaw": -4.6955,
+            "pitch": -6.128,
+            "roll": -6.3925
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2581.0955,
+            "y": 160.0692,
+            "z": -1661.1523
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.1717,
+            "roll": -6.2052
+        }
+    },
+    {
+        "object_name": "cem_tomb3c",
+        "coordinates": {
+            "x": 2578.7686,
+            "y": 158.9081,
+            "z": -1648.5566
+        },
+        "rotation_euler": {
+            "yaw": -0.0,
+            "pitch": -6.0452,
+            "roll": -6.2052
+        }
+    },
+    {
+        "object_name": "d_sark1",
+        "coordinates": {
+            "x": 2571.5022,
+            "y": 159.0395,
+            "z": -1674.7839
+        },
+        "rotation_euler": {
+            "yaw": 1.5655,
+            "pitch": -6.2241,
+            "roll": -6.1939
+        }
+    },
+    {
+        "object_name": "d_sark4",
+        "coordinates": {
+            "x": 2573.4312,
+            "y": 159.2817,
+            "z": -1671.8914
+        },
+        "rotation_euler": {
+            "yaw": 1.5706,
+            "pitch": -6.2836,
+            "roll": -6.1683
+        }
+    },
+    {
+        "object_name": "d_sark2",
+        "coordinates": {
+            "x": 2573.6621,
+            "y": 159.0738,
+            "z": -1678.37
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.3616,
+            "roll": -6.183
+        }
+    },
+    {
+        "object_name": "d_sark1",
+        "coordinates": {
+            "x": 2577.2195,
+            "y": 159.4384,
+            "z": -1678.3751
+        },
+        "rotation_euler": {
+            "yaw": -0.0002,
+            "pitch": -6.3505,
+            "roll": -6.1869
+        }
+    },
+    {
+        "object_name": "d_sark2",
+        "coordinates": {
+            "x": 2559.6772,
+            "y": 158.7349,
+            "z": -1664.9668
+        },
+        "rotation_euler": {
+            "yaw": -1.579,
+            "pitch": -6.2944,
+            "roll": -6.4138
+        }
+    },
+    {
+        "object_name": "d_sark2",
+        "coordinates": {
+            "x": 2559.2009,
+            "y": 158.5266,
+            "z": -1659.7053
+        },
+        "rotation_euler": {
+            "yaw": -0.0135,
+            "pitch": -6.3794,
+            "roll": -6.3587
+        }
+    },
+    {
+        "object_name": "cem_tomb3b",
+        "coordinates": {
+            "x": 2579.5835,
+            "y": 159.7379,
+            "z": -1673.2041
+        },
+        "rotation_euler": {
+            "yaw": -1.5857,
+            "pitch": -6.2104,
+            "roll": -6.0819
+        }
+    },
+    {
+        "object_name": "cem_tomb3b",
+        "coordinates": {
+            "x": 2568.8579,
+            "y": 159.1238,
+            "z": -1680.8654
+        },
+        "rotation_euler": {
+            "yaw": -0.0001,
+            "pitch": -6.5922,
+            "roll": -6.2686
+        }
+    },
+    {
+        "object_name": "cem_tomb2b",
+        "coordinates": {
+            "x": 2562.0415,
+            "y": 159.5301,
+            "z": -1677.4744
+        },
+        "rotation_euler": {
+            "yaw": 1.5708,
+            "pitch": -6.2833,
+            "roll": -6.5697
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2554.0989,
+            "y": 158.5494,
+            "z": -1664.5309
+        },
+        "rotation_euler": {
+            "yaw": 0.0484,
+            "pitch": -6.4937,
+            "roll": -6.0551
+        }
+    },
+    {
+        "object_name": "cem_tomb2c",
+        "coordinates": {
+            "x": 2553.9556,
+            "y": 158.8619,
+            "z": -1673.7283
+        },
+        "rotation_euler": {
+            "yaw": 0.0202,
+            "pitch": -6.1175,
+            "roll": -6.1141
+        }
+    },
+    {
+        "object_name": "cem_tomb3b",
+        "coordinates": {
+            "x": 2568.1621,
+            "y": 158.8201,
+            "z": -1675.9543
+        },
+        "rotation_euler": {
+            "yaw": 1.5689,
+            "pitch": -6.3428,
+            "roll": -6.3131
+        }
+    }
+]
