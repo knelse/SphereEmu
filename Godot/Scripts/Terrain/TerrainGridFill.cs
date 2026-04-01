@@ -168,8 +168,7 @@ public partial class TerrainGridFill : Node3D
 		var mesh = (Mesh) sourceMesh.Duplicate ();
 		root.QueueFree ();
 
-		mesh = ApplyScaleYFlipAfterImport (mesh);
-		mesh = ApplyBasisRotationAfterImport (mesh, Basis.FromEuler (MapFill.DefaultRotation));
+		mesh = ApplyBasisRotationAfterImport (mesh, TileMeshBasisAfterImport ());
 
 		var texture = TryLoadTexture (masterName);
 		var surfaceCount = mesh.GetSurfaceCount ();
@@ -188,61 +187,22 @@ public partial class TerrainGridFill : Node3D
 	}
 
 	/// <summary>
-	/// Matches tile scene setup: scale (1, 1, -1) on the mesh after import (Z flip).
+	/// Same right-handed → left-handed mapping as <c>TerrainRotationEuler.ToEulerRadians</c> in
+	/// <see cref="TerrainObjectsFill"/>: <c>euler = (Pitch, -π + Yaw, Roll)</c> with
+	/// <see cref="EulerOrder.Yxz"/>, then <c>reflectZ * basis * reflectZ</c> for Godot (Y-up, mirror forward).
+	/// <see cref="MapFill.DefaultRotation"/> supplies pitch/yaw/roll as <c>X</c>/<c>Y</c>/<c>Z</c>.
 	/// </summary>
-	private static Mesh ApplyScaleYFlipAfterImport (Mesh mesh)
+	private static Basis TileMeshBasisAfterImport ()
 	{
-		if (mesh.GetSurfaceCount () == 0)
-		{
-			return mesh;
-		}
-
-		var outMesh = new ArrayMesh ();
-		for (var s = 0; s < mesh.GetSurfaceCount (); s++)
-		{
-			var arrays = mesh.SurfaceGetArrays (s);
-			var verts = (Vector3[])arrays[(int)Mesh.ArrayType.Vertex];
-			if (verts is not null)
-			{
-				for (var i = 0; i < verts.Length; i++)
-				{
-					verts[i] = new Vector3 (-verts[i].X, verts[i].Y, -verts[i].Z);
-				}
-
-				arrays[(int)Mesh.ArrayType.Vertex] = verts;
-			}
-
-			var normals = (Vector3[])arrays[(int)Mesh.ArrayType.Normal];
-			if (normals is not null)
-			{
-				for (var i = 0; i < normals.Length; i++)
-				{
-					normals[i] = new Vector3 (-normals[i].X, normals[i].Y, -normals[i].Z).Normalized ();
-				}
-
-				arrays[(int)Mesh.ArrayType.Normal] = normals;
-			}
-
-			var tangents = (float[])arrays[(int)Mesh.ArrayType.Tangent];
-			if (tangents is not null)
-			{
-				for (var i = 0; i < tangents.Length; i += 4)
-				{
-					tangents[i + 1] = -tangents[i + 1];
-				}
-
-				arrays[(int)Mesh.ArrayType.Tangent] = tangents;
-			}
-
-			var prim = mesh is ArrayMesh am ? am.SurfaceGetPrimitiveType (s) : Mesh.PrimitiveType.Triangles;
-			outMesh.AddSurfaceFromArrays (prim, arrays);
-		}
-
-		return outMesh;
+		var dr = MapFill.DefaultRotation;
+		var euler = new Vector3 (dr.X, dr.Y, dr.Z);
+		var basis = Basis.FromEuler (euler, EulerOrder.Yxz);
+		var reflectZ = new Basis (Vector3.Right, Vector3.Up, new Vector3 (0f, 0f, -1f));
+		return reflectZ * basis * reflectZ;
 	}
 
 	/// <summary>
-	/// Applies the same Y rotation as <see cref="MapFill.DefaultRotation"/> (–90°) so tiles match map placeholders.
+	/// Applies <paramref name="basis"/> to mesh arrays (vertices, normals, tangents).
 	/// </summary>
 	private static Mesh ApplyBasisRotationAfterImport (Mesh mesh, Basis basis)
 	{

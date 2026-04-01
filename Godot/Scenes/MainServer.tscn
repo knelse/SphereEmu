@@ -9,9 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://jecy1l185txr" path="res://Godot/Scenes/Monster.tscn" id="7_wg6ka"]
 [ext_resource type="Script" uid="uid://cuq7362rbruhh" path="res://Server/UI/ConnectedClients/ConnectedClientsPopupUI.cs" id="8_w4ogy"]
 [ext_resource type="PackedScene" uid="uid://id00aeux6mxl" path="res://Godot/Scenes/firework.tscn" id="9_36cky"]
-[ext_resource type="Script" uid="uid://dr2ttxamre3o7" path="res://Godot/Scripts/Terrain/TerrainGridFill.cs" id="10_4x1vl"]
-[ext_resource type="MeshLibrary" uid="uid://dstnfevck02au" path="res://Godot/Terrain/TerrainMeshLibrary.tres" id="11_bsvco"]
-[ext_resource type="Script" uid="uid://c7k2m9p4q8nwx1" path="res://Godot/Scripts/Terrain/TerrainObjectsFill.cs" id="12_terrain_obj"]
 
 [node name="MainServer" type="Node" unique_id=699851889]
 script = ExtResource("2")
@@ -22,3303 +19,2532 @@ script = ExtResource("2")
 transform = Transform3D(0.8577286, 0, -0.51410276, 0, 1, 0, 0.51410276, 0, 0.8577286, 401.599, -153.475, -1307.63)
 Angle = 11
 ObjectType = 63
-_angle = 11
-_objectType = 63
-_modelName = ""
 
 [node name="Sunpool_2" parent="CityTeleports" unique_id=1848263518 instance=ExtResource("4_61mkd")]
 transform = Transform3D(-0.88192123, 0, -0.47139683, 0, 1, 0, 0.47139683, 0, -0.88192123, 408.878, -153.485, -1300.12)
 Angle = 54
 ObjectType = 63
-_angle = 54
-_objectType = 63
-_modelName = ""
 
 [node name="Sunpool_Rodos" parent="CityTeleports" unique_id=563772691 instance=ExtResource("4_s22ep")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 405.302, -159.785, -1186.47)
-_angle = 0
-_objectType = 62
-_modelName = ""
 SubtypeID = 996
 
 [node name="Sunpool_Ils" parent="CityTeleports" unique_id=1561650662 instance=ExtResource("4_s22ep")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 251.422, -159.503, -1292.26)
-_angle = 0
-_objectType = 62
-_modelName = ""
 SubtypeID = 891
 
 [node name="Sunpool_Tournament" parent="CityTeleports" unique_id=1145928913 instance=ExtResource("4_61mkd")]
 transform = Transform3D(-0.42755476, 0, 0.90398943, 0, 1, 0, -0.90398943, 0, -0.42755476, 293.295, -159.888, -1391.24)
 Angle = 215
 ObjectType = 71
-_angle = 215
-_objectType = 71
-_modelName = ""
 
 [node name="Bangville_1" parent="CityTeleports" unique_id=974379942 instance=ExtResource("4_61mkd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1896.18, -156.926, -435.485)
 ObjectType = 63
-_angle = 0
-_objectType = 63
-_modelName = ""
 
 [node name="NPC" type="Node3D" parent="." unique_id=-1418424086]
 
 [node name="NPC_4034_Ральф_Лайон" parent="NPC" unique_id=1027079415 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.97003126, 0, 0.24298024, 0, 1, 0, -0.24298024, 0, -0.97003126, 2610.4182, -158.13353, 1318.6249)
-Angle = 69
-ID = 4034
-ObjectType = 225
-ModelName = "npc29d"
-_angle = 69
-_objectType = 225
-_modelName = "npc29d"
 NameID = 4271
 IconName = "npc_banker"
 NpcType = 17
 VendorItemTierMax = 15
+Angle = 69
+ID = 4034
+ObjectType = 225
+ModelName = "npc29d"
 
 [node name="NPC_4036_Брюс_Алвер" parent="NPC" unique_id=1841239615 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5956992, 0, 0.8032076, 0, 1, 0, -0.8032076, 0, -0.5956992, 2312.435, -155.42793, -2382.4023)
-Angle = 83
-ID = 4036
-ObjectType = 225
-ModelName = "npc29d"
-_angle = 83
-_objectType = 225
-_modelName = "npc29d"
 NameID = 4273
 IconName = "npc_banker"
 NpcType = 17
 VendorItemTierMax = 15
+Angle = 83
+ID = 4036
+ObjectType = 225
+ModelName = "npc29d"
 
 [node name="NPC_4177_Саймон_Олди" parent="NPC" unique_id=2095598456 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1.1924881e-08, 0, 1, 0, 1, 0, -1, 0, 1.1924881e-08, 1888.5164, -402.80066, 3306.9531)
-Angle = 96
-ID = 4177
-ObjectType = 225
-ModelName = "npc29d"
-_angle = 96
-_objectType = 225
-_modelName = "npc29d"
 NameID = 4275
 IconName = "npc_banker"
 NpcType = 17
 VendorItemTierMax = 15
+Angle = 96
+ID = 4177
+ObjectType = 225
+ModelName = "npc29d"
 
 [node name="NPC_4178_Пол_Мови" parent="NPC" unique_id=971663923 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9891766, 0, 0.14673024, 0, 1, 0, -0.14673024, 0, 0.9891766, -2020.4999, 108.7721, 477.63922)
-Angle = 125
-ID = 4178
-ObjectType = 225
-ModelName = "npc29d"
-_angle = 125
-_objectType = 225
-_modelName = "npc29d"
 NameID = 4276
 IconName = "npc_banker"
 NpcType = 17
 VendorItemTierMax = 15
+Angle = 125
+ID = 4178
+ObjectType = 225
+ModelName = "npc29d"
 
 [node name="NPC_4549_Барт_Миллер" parent="NPC" unique_id=1237029105 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.3826838, 0, 0.9238793, 0, 1, 0, -0.9238793, 0, -0.3826838, 3414.4363, -159.57216, -1642.1735)
-Angle = 216
-ID = 4549
-ObjectType = 216
-ModelName = "npc68a"
-_angle = 216
-_objectType = 216
-_modelName = "npc68a"
 NameID = 4480
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 216
+ID = 4549
+ObjectType = 216
+ModelName = "npc68a"
 
 [node name="NPC_4551_Брэд_Баттер" parent="NPC" unique_id=743422386 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.24298048, 0, 0.9700308, 0, 1, 0, -0.9700308, 0, 0.24298048, 260.45596, -158.2396, -2354.7231)
-Angle = 229
-ID = 4551
-ObjectType = 216
-ModelName = "npc08"
-_angle = 229
-_objectType = 216
-_modelName = "npc08"
 NameID = 4482
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 229
+ID = 4551
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4552_Шарп_Хантер" parent="NPC" unique_id=1918304337 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.70710677, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.70710677, 2358.044, -158.3224, -1059.7671)
-Angle = 240
-ID = 4552
-ObjectType = 216
-ModelName = "npc06"
-_angle = 240
-_objectType = 216
-_modelName = "npc06"
 NameID = 4483
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 240
+ID = 4552
+ObjectType = 216
+ModelName = "npc06"
 
 [node name="NPC_4554_Фил_Оакенфилд" parent="NPC" unique_id=1174514499 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.38268346, 0, 0.9238791, 0, 1, 0, -0.9238791, 0, 0.38268346, 1665.0187, -159.77592, -2690.4297)
-Angle = 104
-ID = 4554
-ObjectType = 216
-ModelName = "npc58"
-_angle = 104
-_objectType = 216
-_modelName = "npc58"
 NameID = 4484
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 104
+ID = 4554
+ObjectType = 216
+ModelName = "npc58"
 
 [node name="NPC_4555_Рейв_Слоттер" parent="NPC" unique_id=841802953 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.1467306, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, 0.1467306, 3633.8928, -159.50243, -419.5963)
-Angle = 227
-ID = 4555
-ObjectType = 216
-ModelName = "npc08"
-_angle = 227
-_objectType = 216
-_modelName = "npc08"
 NameID = 4485
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 227
+ID = 4555
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4556_Ирвин_Нетралс" parent="NPC" unique_id=1706654759 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.6715586, 0, -0.7409514, 0, 1, 0, 0.7409514, 0, -0.6715586, 1610.2263, -159.7336, 245.73726)
-Angle = 175
-ID = 4556
-ObjectType = 216
-ModelName = "npc59"
-_angle = 175
-_objectType = 216
-_modelName = "npc59"
 NameID = 4486
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 175
+ID = 4556
+ObjectType = 216
+ModelName = "npc59"
 
 [node name="NPC_4697_Крис_Кросс" parent="NPC" unique_id=1655438145 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730103, 0, -0.63439345, 0, 1, 0, 0.63439345, 0, 0.7730103, 116.6755, -161.03786, 115.14656)
-Angle = 142
-ID = 4697
-ObjectType = 216
-ModelName = "npc07"
-_angle = 142
-_objectType = 216
-_modelName = "npc07"
 NameID = 4481
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 142
+ID = 4697
+ObjectType = 216
+ModelName = "npc07"
 
 [node name="NPC_4557_Брэм_Стиллер" parent="NPC" unique_id=243088655 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9987954, 0, -0.049067784, 0, 1, 0, 0.049067784, 0, -0.9987954, 1250.2369, -159.84102, 1688.9323)
-Angle = 191
-ID = 4557
-ObjectType = 216
-ModelName = "npc64"
-_angle = 191
-_objectType = 216
-_modelName = "npc64"
 NameID = 4487
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 191
+ID = 4557
+ObjectType = 216
+ModelName = "npc64"
 
 [node name="NPC_4558_Генри_Стронг" parent="NPC" unique_id=1408303483 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5555703, 0, 0.8314696, 0, 1, 0, -0.8314696, 0, -0.5555703, 3503.5095, -159.80066, 2657.437)
-Angle = 212
-ID = 4558
-ObjectType = 216
-ModelName = "npc64"
-_angle = 212
-_objectType = 216
-_modelName = "npc64"
 NameID = 4488
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 212
+ID = 4558
+ObjectType = 216
+ModelName = "npc64"
 
 [node name="NPC_4559_Абрахам_Стейр" parent="NPC" unique_id=1832755751 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.80320734, 0, -0.59569925, 0, 1, 0, 0.59569925, 0, 0.80320734, 2249.266, -159.84824, -3610.8303)
-Angle = 141
-ID = 4559
-ObjectType = 216
-ModelName = "npc29a"
-_angle = 141
-_objectType = 216
-_modelName = "npc29a"
 NameID = 4489
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 141
+ID = 4559
+ObjectType = 216
+ModelName = "npc29a"
 
 [node name="NPC_4561_Роджер_Смит" parent="NPC" unique_id=1252075971 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5555702, 0, -0.83146966, 0, 1, 0, 0.83146966, 0, -0.5555702, 2591.9387, -159.84889, 835.37714)
-Angle = 44
-ID = 4561
-ObjectType = 216
-ModelName = "npc08"
-_angle = 44
-_objectType = 216
-_modelName = "npc08"
 NameID = 4490
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 44
+ID = 4561
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4562_Арт_Кендальф" parent="NPC" unique_id=1226074836 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1005.85516, -159.82675, 1098.3345)
-ID = 4562
-ObjectType = 216
-ModelName = "npc80"
-_angle = 0
-_objectType = 216
-_modelName = "npc80"
 NameID = 4491
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+ID = 4562
+ObjectType = 216
+ModelName = "npc80"
 
 [node name="NPC_4563_Райс_Корпс" parent="NPC" unique_id=1340569106 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9807853, 0, 0.19508994, 0, 1, 0, -0.19508994, 0, -0.9807853, 1717.7867, -159.393, -1688.2068)
-Angle = 196
-ID = 4563
-ObjectType = 216
-ModelName = "npc60e"
-_angle = 196
-_objectType = 216
-_modelName = "npc60e"
 NameID = 4492
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 196
+ID = 4563
+ObjectType = 216
+ModelName = "npc60e"
 
 [node name="NPC_4564_Коннор_Гард" parent="NPC" unique_id=1466791430 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.8819213, 0, 0.4713965, 0, 1, 0, -0.4713965, 0, 0.8819213, 3138.5686, -159.835, -2809.8855)
-Angle = 118
-ID = 4564
-ObjectType = 216
-ModelName = "npc68b"
-_angle = 118
-_objectType = 216
-_modelName = "npc68b"
 NameID = 4493
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 118
+ID = 4564
+ObjectType = 216
+ModelName = "npc68b"
 
 [node name="NPC_4572_Джошуа_Хелтер" parent="NPC" unique_id=1094252000 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.29028448, 0, 0.9569401, 0, 1, 0, -0.9569401, 0, -0.29028448, -3682.3445, 341.5985, -349.99075)
-Angle = 90
-ID = 4572
-ObjectType = 216
-ModelName = "npc59"
-_angle = 90
-_objectType = 216
-_modelName = "npc59"
 NameID = 4466
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 90
+ID = 4572
+ObjectType = 216
+ModelName = "npc59"
 
 [node name="NPC_4576_Бэб_Хмарис" parent="NPC" unique_id=1227745603 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9700313, 0, 0.24297996, 0, 1, 0, -0.24297996, 0, -0.9700313, -3740.2764, 341.83875, 838.5478)
-Angle = 197
-ID = 4576
-ObjectType = 216
-ModelName = "npc29a"
-_angle = 197
-_objectType = 216
-_modelName = "npc29a"
 NameID = 4469
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 197
+ID = 4576
+ObjectType = 216
+ModelName = "npc29a"
 
 [node name="NPC_4579_Чак_Лойд" parent="NPC" unique_id=145454061 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.38268286, 0, -0.9238793, 0, 1, 0, 0.9238793, 0, -0.38268286, -3755.3398, 340.01865, 205.03024)
-Angle = 168
-ID = 4579
-ObjectType = 216
-ModelName = "npc60e"
-_angle = 168
-_objectType = 216
-_modelName = "npc60e"
 NameID = 4472
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 168
+ID = 4579
+ObjectType = 216
+ModelName = "npc60e"
 
 [node name="NPC_4711_Глен_Блосс" parent="NPC" unique_id=308480212 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8314694, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.8314694, -2900.0933, 339.23062, -820.17175)
-Angle = 76
-ID = 4711
-ObjectType = 216
-ModelName = "npc07"
-_angle = 76
-_objectType = 216
-_modelName = "npc07"
 NameID = 4461
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 76
+ID = 4711
+ObjectType = 216
+ModelName = "npc07"
 
 [node name="NPC_4712_Крег_Наттер" parent="NPC" unique_id=322689756 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9807853, 0, -0.19508989, 0, 1, 0, 0.19508989, 0, -0.9807853, -3166.3767, 341.39468, -2499.7976)
-Angle = 188
-ID = 4712
-ObjectType = 216
-ModelName = "npc08"
-_angle = 188
-_objectType = 216
-_modelName = "npc08"
 NameID = 4462
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 188
+ID = 4712
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4713_Тан_Катчер" parent="NPC" unique_id=1166144920 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9951847, 0, -0.09801712, 0, 1, 0, 0.09801712, 0, 0.9951847, -2435.608, 336.08978, -1859.1884)
-Angle = 130
-ID = 4713
-ObjectType = 216
-ModelName = "npc06"
-_angle = 130
-_objectType = 216
-_modelName = "npc06"
 NameID = 4463
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 130
+ID = 4713
+ObjectType = 216
+ModelName = "npc06"
 
 [node name="NPC_4714_Билл_Оузноморд" parent="NPC" unique_id=708066300 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.1467306, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, 0.1467306, -2197.088, 340.78775, -2209.6272)
-Angle = 227
-ID = 4714
-ObjectType = 216
-ModelName = "npc58"
-_angle = 227
-_objectType = 216
-_modelName = "npc58"
 NameID = 4464
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 227
+ID = 4714
+ObjectType = 216
+ModelName = "npc58"
 
 [node name="NPC_4715_Фил_Плакер" parent="NPC" unique_id=1248726265 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2635.8022, 342.11676, -2455.0757)
-ID = 4715
-ObjectType = 216
-ModelName = "npc08"
-_angle = 0
-_objectType = 216
-_modelName = "npc08"
 NameID = 4465
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+ID = 4715
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4717_Дэм_Краккер" parent="NPC" unique_id=1831149368 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730105, 0, -0.6343933, 0, 1, 0, 0.6343933, 0, 0.7730105, -3045.5842, 349.90826, 353.8953)
-Angle = 14
-ID = 4717
-ObjectType = 216
-ModelName = "npc64"
-_angle = 14
-_objectType = 216
-_modelName = "npc64"
 NameID = 4467
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 14
+ID = 4717
+ObjectType = 216
+ModelName = "npc64"
 
 [node name="NPC_4720_Бенджамин_Губьен" parent="NPC" unique_id=855846789 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730103, 0, -0.63439345, 0, 1, 0, 0.63439345, 0, 0.7730103, -3425.0916, 339.03833, 598.90936)
-Angle = 142
-ID = 4720
-ObjectType = 216
-ModelName = "npc08"
-_angle = 142
-_objectType = 216
-_modelName = "npc08"
 NameID = 4470
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 142
+ID = 4720
+ObjectType = 216
+ModelName = "npc08"
 
 [node name="NPC_4721_Кунст_Магирер" parent="NPC" unique_id=2070044835 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5141028, 0, -0.8577286, 0, 1, 0, 0.8577286, 0, 0.5141028, -3030.3643, 340.33496, -2211.206)
-Angle = 21
-ID = 4721
-ObjectType = 216
-ModelName = "npc80"
-_angle = 21
-_objectType = 216
-_modelName = "npc80"
 NameID = 4471
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 21
+ID = 4721
+ObjectType = 216
+ModelName = "npc80"
 
 [node name="NPC_4723_Дэвид_Коммон" parent="NPC" unique_id=1561086464 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.77301055, 0, 0.63439316, 0, 1, 0, -0.63439316, 0, 0.77301055, -3328.5632, 341.0066, -1278.0227)
-Angle = 114
-ID = 4723
-ObjectType = 216
-ModelName = "npc68b"
-_angle = 114
-_objectType = 216
-_modelName = "npc68b"
 NameID = 4473
 IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMax = 15
+Angle = 114
+ID = 4723
+ObjectType = 216
+ModelName = "npc68b"
 
 [node name="NPC_4968_Эвен_Соу" parent="NPC" unique_id=2057291861 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039892, 0, -0.42755535, 0, 1, 0, 0.42755535, 0, -0.9039892, 1883.0952, -155.56778, -397.69275)
-Angle = 183
-ID = 4968
-ObjectType = 205
-ModelName = "npc08"
-_angle = 183
-_objectType = 205
-_modelName = "npc08"
 NameID = 4400
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 183
+ID = 4968
+ObjectType = 205
+ModelName = "npc08"
 
 [node name="NPC_4969_Маршан_Бусико" parent="NPC" unique_id=189070307 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2603.8325, -157.5283, 1293.5085)
-ID = 4969
-ObjectType = 205
-ModelName = "npc07"
-_angle = 0
-_objectType = 205
-_modelName = "npc07"
 NameID = 4401
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+ID = 4969
+ObjectType = 205
+ModelName = "npc07"
 
 [node name="NPC_4970_Аминик_Айон" parent="NPC" unique_id=1022148892 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2270.0708, -159.303, 575.78955)
-ID = 4970
-ObjectType = 209
-ModelName = "npc59"
-_angle = 0
-_objectType = 209
-_modelName = "npc59"
 NameID = 4403
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+ID = 4970
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4971_Хебеш_Дантар" parent="NPC" unique_id=1211790332 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1923.285, -159.60577, -478.27335)
-ID = 4971
-ObjectType = 209
-ModelName = "npc59"
-_angle = 0
-_objectType = 209
-_modelName = "npc59"
 NameID = 4404
 IconName = ""
 NpcType = 14
 VendorItemTierMax = 15
+ID = 4971
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4972_Лесли_Нольсен" parent="NPC" unique_id=239930949 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.2902847, 0, -0.95694035, 0, 1, 0, 0.95694035, 0, 0.2902847, 393.20547, -152.91183, -1290.374)
-Angle = 154
-ID = 4972
-ObjectType = 205
-ModelName = "npc07"
-_angle = 154
-_objectType = 205
-_modelName = "npc07"
 NameID = 4402
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 154
+ID = 4972
+ObjectType = 205
+ModelName = "npc07"
 
 [node name="NPC_4973_Эдгар_Гуверер" parent="NPC" unique_id=780811947 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2306.6943, -155.50726, -2393.5874)
-ID = 4973
-ObjectType = 205
-ModelName = "npc06"
-_angle = 0
-_objectType = 205
-_modelName = "npc06"
 NameID = 4405
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+ID = 4973
+ObjectType = 205
+ModelName = "npc06"
 
 [node name="NPC_4974_Ромул_Канибус" parent="NPC" unique_id=969140550 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 2795.8909, -159.82127, 1437.4478)
-Angle = 128
-ID = 4974
-ObjectType = 205
-ModelName = "npc07"
-_angle = 128
-_objectType = 205
-_modelName = "npc07"
 NameID = 4500
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 128
+ID = 4974
+ObjectType = 205
+ModelName = "npc07"
 
 [node name="NPC_4975_Аллан_Мамнок" parent="NPC" unique_id=827529202 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2285.9993, -159.90208, 1396.0286)
-Angle = 64
-ID = 4975
-ObjectType = 209
-ModelName = "npc59"
-_angle = 64
-_objectType = 209
-_modelName = "npc59"
 NameID = 4501
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 64
+ID = 4975
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4976_Джером_Лежар" parent="NPC" unique_id=905128514 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.1467304, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, 0.1467304, 3231.4973, -159.80093, 589.6371)
-Angle = 99
-ID = 4976
-ObjectType = 205
-ModelName = "npc08"
-_angle = 99
-_objectType = 205
-_modelName = "npc08"
 NameID = 4502
 IconName = ""
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 99
+ID = 4976
+ObjectType = 205
+ModelName = "npc08"
 
 [node name="NPC_4977_Годфирд_Сеймак" parent="NPC" unique_id=187362408 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.67155904, 0, -0.74095106, 0, 1, 0, 0.74095106, 0, -0.67155904, 491.7326, -159.8493, -202.9544)
-Angle = 47
-ID = 4977
-ObjectType = 209
-ModelName = "npc59"
-_angle = 47
-_objectType = 209
-_modelName = "npc59"
 NameID = 4503
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 47
+ID = 4977
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4978_Рейнольд_Рейган" parent="NPC" unique_id=1857431908 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, 2812.2468, -159.67592, -539.9316)
-Angle = 192
-ID = 4978
-ObjectType = 209
-ModelName = "npc59"
-_angle = 192
-_objectType = 209
-_modelName = "npc59"
 NameID = 4504
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
-
-[node name="NPC_4979_Джабраил_Даматакар" parent="NPC" unique_id=728466610 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509014, 0, -0.9807843, 0, 1, 0, 0.9807843, 0, -0.19509014, 3092.8135, -159.85, -1700.121)
-Angle = 36
-ID = 4979
+Angle = 192
+ID = 4978
 ObjectType = 209
 ModelName = "npc59"
-_angle = 36
-_objectType = 209
-_modelName = "npc59"
+
+[node name="NPC_4979_Джабраил_Даматакар" parent="NPC" unique_id=728466610 instance=ExtResource("5_5rg3u")]
+transform = Transform3D(-0.19509012, 0, -0.9807842, 0, 1, 0, 0.9807842, 0, -0.19509012, 3092.8135, -159.85, -1700.121)
 NameID = 4505
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 36
+ID = 4979
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4980_Кельвин_Биг" parent="NPC" unique_id=389959422 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, 799.7654, -159.88292, -2430.864)
-Angle = 192
-ID = 4980
-ObjectType = 205
-ModelName = "npc06"
-_angle = 192
-_objectType = 205
-_modelName = "npc06"
 NameID = 4506
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 192
+ID = 4980
+ObjectType = 205
+ModelName = "npc06"
 
 [node name="NPC_4981_Рекс_Скаут" parent="NPC" unique_id=1453019759 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.740951, 0, 0.6715591, 0, 1, 0, -0.6715591, 0, -0.740951, 1606.3507, -159.87892, -3293.4968)
-Angle = 207
-ID = 4981
-ObjectType = 209
-ModelName = "npc59"
-_angle = 207
-_objectType = 209
-_modelName = "npc59"
 NameID = 4507
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 207
+ID = 4981
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4982_Дамбер_Данадон" parent="NPC" unique_id=1808946039 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.42755494, 0, 0.9039894, 0, 1, 0, -0.9039894, 0, 0.42755494, 2693.8438, -159.8904, 1306.2284)
-Angle = 105
-ID = 4982
-ObjectType = 209
-ModelName = "npc59"
-_angle = 105
-_objectType = 209
-_modelName = "npc59"
 NameID = 4406
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 105
+ID = 4982
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4983_Камил_Ростон" parent="NPC" unique_id=427681024 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9891765, 0, -0.14673057, 0, 1, 0, 0.14673057, 0, -0.9891765, 2333.1484, -156.5681, -2462.077)
-Angle = 61
-ID = 4983
-ObjectType = 209
-ModelName = "npc59"
-_angle = 61
-_objectType = 209
-_modelName = "npc59"
 NameID = 4408
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 61
+ID = 4983
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4984_Юджин_Зеленски" parent="NPC" unique_id=1324568490 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.29028428, 0, 0.9569405, 0, 1, 0, -0.9569405, 0, 0.29028428, 344.14066, -160.06856, -1405.1884)
-Angle = 230
-ID = 4984
-ObjectType = 209
-ModelName = "npc59"
-_angle = 230
-_objectType = 209
-_modelName = "npc59"
 NameID = 4407
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 230
+ID = 4984
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_4986_Лабанар_Саранаман" parent="NPC" unique_id=1244787066 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039893, 0, -0.42755505, 0, 1, 0, 0.42755505, 0, -0.9039893, 2260.1743, -159.80359, 580.3991)
-Angle = 55
-ID = 4986
-ObjectType = 208
-ModelName = "npc58"
-_angle = 55
-_objectType = 208
-_modelName = "npc58"
 NameID = 4109
 IconName = ""
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 55
+ID = 4986
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_4988_Ивален_Ханаред" parent="NPC" unique_id=1776470941 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.2902849, 0, -0.9569403, 0, 1, 0, 0.9569403, 0, -0.2902849, 2927.6812, -158.85347, -629.9288)
-Angle = 166
-ID = 4988
-ObjectType = 208
-ModelName = "npc58"
-_angle = 166
-_objectType = 208
-_modelName = "npc58"
 NameID = 4111
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
-
-[node name="NPC_4989_Карамил_Белендо" parent="NPC" unique_id=1511122451 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.9987945, 0, -0.049067464, 0, 1, 0, 0.049067464, 0, 0.9987945, 194.12448, -159.83362, -634.8464)
-Angle = 129
-ID = 4989
+Angle = 166
+ID = 4988
 ObjectType = 208
 ModelName = "npc58"
-_angle = 129
-_objectType = 208
-_modelName = "npc58"
+
+[node name="NPC_4989_Карамил_Белендо" parent="NPC" unique_id=1511122451 instance=ExtResource("5_5rg3u")]
+transform = Transform3D(0.9987944, 0, -0.04906746, 0, 1, 0, 0.04906746, 0, 0.9987944, 194.12448, -159.83362, -634.8464)
 NameID = 4112
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 129
+ID = 4989
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_4990_Тенус_Харбаланзо" parent="NPC" unique_id=220620326 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.6715586, 0, -0.7409514, 0, 1, 0, 0.7409514, 0, -0.6715586, 627.10114, -159.82895, -1811.0917)
-Angle = 175
-ID = 4990
-ObjectType = 208
-ModelName = "npc58"
-_angle = 175
-_objectType = 208
-_modelName = "npc58"
 NameID = 4113
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 175
+ID = 4990
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_4991_Манокар_Арабрахнар" parent="NPC" unique_id=474048253 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9569401, 0, 0.2902845, 0, 1, 0, -0.2902845, 0, -0.9569401, 2331.3213, -159.44356, -2121.5525)
-Angle = 198
-ID = 4991
-ObjectType = 208
-ModelName = "npc58"
-_angle = 198
-_objectType = 208
-_modelName = "npc58"
 NameID = 4114
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 198
+ID = 4991
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_4992_Сандал_Нагорадус" parent="NPC" unique_id=1039444790 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6343933, 0, -0.7730102, 0, 1, 0, 0.7730102, 0, 0.6343933, 1409.9712, -159.73322, -3329.0017)
-Angle = 146
-ID = 4992
-ObjectType = 208
-ModelName = "npc58"
-_angle = 146
-_objectType = 208
-_modelName = "npc58"
 NameID = 4115
 IconName = ""
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 146
+ID = 4992
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_5003_Лукиас_Амонос" parent="NPC" unique_id=1702935475 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9951847, 0, -0.098017395, 0, 1, 0, 0.098017395, 0, -0.9951847, -3427.3103, 335.2809, -909.4776)
-Angle = 190
-ID = 5003
-ObjectType = 205
-ModelName = "npc08"
-_angle = 190
-_objectType = 205
-_modelName = "npc08"
 NameID = 4417
 IconName = ""
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 190
+ID = 5003
+ObjectType = 205
+ModelName = "npc08"
 
 [node name="NPC_5004_Пелепос_Радокис" parent="NPC" unique_id=940080452 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.2902845, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.2902845, -3371.5984, 339.39636, -1006.175)
-Angle = 38
-ID = 5004
-ObjectType = 209
-ModelName = "npc59"
-_angle = 38
-_objectType = 209
-_modelName = "npc59"
 NameID = 4418
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 38
+ID = 5004
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_5109_Кларк_Хамметт" parent="NPC" unique_id=2066072334 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8032076, 0, -0.5956992, 0, 1, 0, 0.5956992, 0, -0.8032076, 296.15265, -159.91182, -1392.3254)
-Angle = 179
-ID = 5109
-ObjectType = 239
-ModelName = "npc55"
-_angle = 179
-_objectType = 239
-_modelName = "npc55"
 NameID = 4390
 IconName = "npc_guilder"
 NpcType = 19
 VendorItemTierMax = 15
+Angle = 179
+ID = 5109
+ObjectType = 239
+ModelName = "npc55"
 
 [node name="NPC_5110_Ларс_Зульрих" parent="NPC" unique_id=1694379340 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.2429804, 0, 0.9700312, 0, 1, 0, -0.9700312, 0, 0.2429804, 2291.3997, -159.62852, -2294.8455)
-Angle = 101
-ID = 5110
-ObjectType = 239
-ModelName = "npc55"
-_angle = 101
-_objectType = 239
-_modelName = "npc55"
 NameID = 4391
 IconName = "npc_guilder"
 NpcType = 19
 VendorItemTierMax = 15
+Angle = 101
+ID = 5110
+ObjectType = 239
+ModelName = "npc55"
 
 [node name="NPC_5111_Джеймс_Хэтбилд" parent="NPC" unique_id=139136346 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.95693964, 0, -0.2902845, 0, 1, 0, 0.2902845, 0, 0.95693964, 2639.222, -157.60866, 1239.1997)
-Angle = 134
-ID = 5111
-ObjectType = 239
-ModelName = "npc55"
-_angle = 134
-_objectType = 239
-_modelName = "npc55"
 NameID = 4392
 IconName = "npc_guilder"
 NpcType = 19
 VendorItemTierMax = 15
+Angle = 134
+ID = 5111
+ObjectType = 239
+ModelName = "npc55"
 
 [node name="NPC_5112_Клифф_Бимтон" parent="NPC" unique_id=716519528 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.97003126, 0, -0.24298018, 0, 1, 0, 0.24298018, 0, 0.97003126, 1993.3102, -159.90143, -387.48083)
-Angle = 5
-ID = 5112
-ObjectType = 239
-ModelName = "npc55"
-_angle = 5
-_objectType = 239
-_modelName = "npc55"
 NameID = 4393
 IconName = "npc_guilder"
 NpcType = 19
 VendorItemTierMax = 15
+Angle = 5
+ID = 5112
+ObjectType = 239
+ModelName = "npc55"
 
 [node name="NPC_5134_Криг_Дарелвуд" parent="NPC" unique_id=1604158659 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2693.3057, -402.82712, 2106.4126)
-ID = 5134
-ObjectType = 205
-ModelName = "npc06"
-_angle = 0
-_objectType = 205
-_modelName = "npc06"
 NameID = 4409
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+ID = 5134
+ObjectType = 205
+ModelName = "npc06"
 
 [node name="NPC_5135_Эмиль_Картоне" parent="NPC" unique_id=2007151699 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039892, 0, -0.42755535, 0, 1, 0, 0.42755535, 0, -0.9039892, 1883.0952, -402.76764, 3302.3071)
-Angle = 183
-ID = 5135
-ObjectType = 205
-ModelName = "npc07"
-_angle = 183
-_objectType = 205
-_modelName = "npc07"
 NameID = 4410
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 183
+ID = 5135
+ObjectType = 205
+ModelName = "npc07"
 
 [node name="NPC_5136_Джорд_Сармаран" parent="NPC" unique_id=1136110650 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730103, 0, -0.63439345, 0, 1, 0, 0.63439345, 0, 0.7730103, -2725.1245, -404.50873, 2057.0923)
-Angle = 142
-ID = 5136
-ObjectType = 209
-ModelName = "npc59"
-_angle = 142
-_objectType = 209
-_modelName = "npc59"
 NameID = 4411
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 142
+ID = 5136
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_5137_Беннет_Макфрансен" parent="NPC" unique_id=1881490635 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1867.2424, -402.69522, 3277.9004)
-ID = 5137
-ObjectType = 209
-ModelName = "npc59"
-_angle = 0
-_objectType = 209
-_modelName = "npc59"
 NameID = 4412
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+ID = 5137
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_5138_Бенарадин_Маракантар" parent="NPC" unique_id=764421537 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -702.9443, -403.75577, 984.1764)
-ID = 5138
-ObjectType = 208
-ModelName = "npc58"
-_angle = 0
-_objectType = 208
-_modelName = "npc58"
 NameID = 4185
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+ID = 5138
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_5139_Абдул_Алибандан" parent="NPC" unique_id=1027278205 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -198.7532, -408.4645, 2401.1982)
-ID = 5139
-ObjectType = 208
-ModelName = "npc58"
-_angle = 0
-_objectType = 208
-_modelName = "npc58"
 NameID = 4186
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+ID = 5139
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_5140_Саул_Кензер" parent="NPC" unique_id=1254908398 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.47139683, 0, -0.88192123, 0, 1, 0, 0.88192123, 0, 0.47139683, -2032.1412, 108.76794, 477.87692)
-Angle = 150
-ID = 5140
-ObjectType = 205
-ModelName = "npc07"
-_angle = 150
-_objectType = 205
-_modelName = "npc07"
 NameID = 4413
 IconName = "npc_quest_title"
 NpcType = 13
 VendorItemTierMax = 15
+Angle = 150
+ID = 5140
+ObjectType = 205
+ModelName = "npc07"
 
 [node name="NPC_5141_Рэм_Пенго" parent="NPC" unique_id=1264973669 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.3368898, 0, -0.94154394, 0, 1, 0, 0.94154394, 0, 0.3368898, -1878.5946, 91.002914, 491.33972)
-Angle = 25
-ID = 5141
-ObjectType = 209
-ModelName = "npc59"
-_angle = 25
-_objectType = 209
-_modelName = "npc59"
 NameID = 4414
 IconName = "npc_quest_dgree"
 NpcType = 14
 VendorItemTierMax = 15
+Angle = 25
+ID = 5141
+ObjectType = 209
+ModelName = "npc59"
 
 [node name="NPC_5146_Микус_Галактос" parent="NPC" unique_id=1632649675 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.1950902, 0, 0.98078525, 0, 1, 0, -0.98078525, 0, -0.1950902, -3380.3523, 342.809, -1755.156)
-Angle = 220
-ID = 5146
-ObjectType = 208
-ModelName = "npc58"
-_angle = 220
-_objectType = 208
-_modelName = "npc58"
 NameID = 4419
 IconName = "npc_quest_karma"
 NpcType = 15
 VendorItemTierMax = 15
+Angle = 220
+ID = 5146
+ObjectType = 208
+ModelName = "npc58"
 
 [node name="NPC_5147_Джордж_Банхрус" parent="NPC" unique_id=807350372 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.94154394, 0, 0.33688965, 0, 1, 0, -0.33688965, 0, 0.94154394, 1902.9355, -156.00066, -415.1873)
-Angle = 121
-ID = 5147
-ModelName = "npc08"
-_angle = 121
-_objectType = 213
-_modelName = "npc08"
 NameID = 4000
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 121
+ID = 5147
+ModelName = "npc08"
 
 [node name="NPC_5148_Самания_Ролс" parent="NPC" unique_id=1401908937 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.38268325, 0, -0.92387956, 0, 1, 0, 0.92387956, 0, 0.38268325, 2590.675, -156.77106, 1314.979)
-Angle = 152
-ID = 5148
-ModelName = "npc14b"
-_angle = 152
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4001
 IconName = "npc_trade_jewel"
 NpcType = 8
 VendorItemTierMax = 15
+Angle = 152
+ID = 5148
+ModelName = "npc14b"
 
 [node name="NPC_5149_Хьюго_Бод" parent="NPC" unique_id=1195824367 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.1467306, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, 0.1467306, 2594.701, -157.47464, 1293.3757)
-Angle = 227
-ID = 5149
-ModelName = "npc08"
-_angle = 227
-_objectType = 213
-_modelName = "npc08"
 NameID = 4002
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 227
+ID = 5149
+ModelName = "npc08"
 
 [node name="NPC_5150_Сьюзан_Голд" parent="NPC" unique_id=665158101 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5141027, 0, 0.85772866, 0, 1, 0, -0.85772866, 0, -0.5141027, 1888.3804, -156.99612, -433.2471)
-Angle = 213
-ID = 5150
-ModelName = "npc14b"
-_angle = 213
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4003
 IconName = "npc_trade_jewel"
 NpcType = 8
 VendorItemTierMax = 15
+Angle = 213
+ID = 5150
+ModelName = "npc14b"
 
 [node name="NPC_5151_Саймон_Пайк" parent="NPC" unique_id=606671779 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9987954, 0, 0.049067833, 0, 1, 0, -0.049067833, 0, -0.9987954, 390.99884, -153.36359, -1308.5077)
-Angle = 193
-ID = 5151
-ModelName = "npc08"
-_angle = 193
-_objectType = 213
-_modelName = "npc08"
 NameID = 4004
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 193
+ID = 5151
+ModelName = "npc08"
 
 [node name="NPC_5153_Анита_Томпсон" parent="NPC" unique_id=1031562859 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.97003037, 0, -0.24297985, 0, 1, 0, 0.24297985, 0, -0.97003037, 421.54904, -153.04205, -1315.5256)
-Angle = 59
-ID = 5153
-ModelName = "npc14b"
-_angle = 59
-_objectType = 213
-_modelName = "npc14b"
+transform = Transform3D(-0.9700303, 0, -0.24297982, 0, 1, 0, 0.24297982, 0, -0.9700303, 421.54904, -153.04205, -1315.5256)
 NameID = 4005
 IconName = "npc_trade_jewel"
 NpcType = 8
 VendorItemTierMax = 15
+Angle = 59
+ID = 5153
+ModelName = "npc14b"
 
 [node name="NPC_5154_Эндрю_Бамбх" parent="NPC" unique_id=1731933162 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2284.817, -155.80453, -2414.3284)
-ID = 5154
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4006
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+ID = 5154
+ModelName = "npc08"
 
 [node name="NPC_5155_Сола_Маркес" parent="NPC" unique_id=1875754101 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2323.6526, -157.29404, -2417.7415)
-ID = 5155
-ModelName = "npc14b"
-_angle = 0
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4007
 IconName = "npc_trade_jewel"
 NpcType = 8
 VendorItemTierMax = 15
+ID = 5155
+ModelName = "npc14b"
 
 [node name="NPC_5156_Квентин_Дорбун" parent="NPC" unique_id=956619740 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5555703, 0, 0.8314696, 0, 1, 0, -0.8314696, 0, -0.5555703, 2611.1172, -157.59186, 1279.7626)
-Angle = 212
-ID = 5156
-ModelName = "npc29c"
-_angle = 212
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4008
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 212
+ID = 5156
+ModelName = "npc29c"
 
 [node name="NPC_5157_Сеймур_Ботус" parent="NPC" unique_id=119095610 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2581.1965, -157.85597, 1300.844)
-ID = 5157
-ModelName = "npc29b"
-_angle = 0
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4009
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5157
+ModelName = "npc29b"
 
 [node name="NPC_5158_Сара_Боннор" parent="NPC" unique_id=1929694279 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8032076, 0, -0.5956992, 0, 1, 0, 0.5956992, 0, -0.8032076, 2599.4067, -156.81796, 1304.6029)
-Angle = 179
-ID = 5158
-ModelName = "npc14"
-_angle = 179
-_objectType = 213
-_modelName = "npc14"
 NameID = 4010
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 179
+ID = 5158
+ModelName = "npc14"
 
 [node name="NPC_5159_Альфред_Кромвель" parent="NPC" unique_id=1689478342 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673038, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, -0.14673038, 1890.6172, -155.72084, -402.5326)
-Angle = 93
-ID = 5159
-ModelName = "npc29c"
-_angle = 93
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4011
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 93
+ID = 5159
+ModelName = "npc29c"
 
 [node name="NPC_5160_Дин_Габбе" parent="NPC" unique_id=1519511252 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6343931, 0, 0.7730106, 0, 1, 0, -0.7730106, 0, 0.6343931, 1885.2067, -155.61386, -410.42502)
-Angle = 238
-ID = 5160
-ModelName = "npc29b"
-_angle = 238
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4012
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 238
+ID = 5160
+ModelName = "npc29b"
 
 [node name="NPC_5161_Дорис_Найт" parent="NPC" unique_id=1981321618 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5141027, 0, 0.85772836, 0, 1, 0, -0.85772836, 0, 0.5141027, 1899.8375, -155.9544, -412.2926)
-Angle = 107
-ID = 5161
-ModelName = "npc14"
-_angle = 107
-_objectType = 213
-_modelName = "npc14"
 NameID = 4013
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 107
+ID = 5161
+ModelName = "npc14"
 
 [node name="NPC_5162_Сэмюэл_Нектарус" parent="NPC" unique_id=732488342 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.29028448, 0, 0.9569401, 0, 1, 0, -0.9569401, 0, -0.29028448, 424.38107, -153.4665, -1287.3048)
-Angle = 90
-ID = 5162
-ModelName = "npc29c"
-_angle = 90
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4014
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 90
+ID = 5162
+ModelName = "npc29c"
 
 [node name="NPC_5163_Джордж_Башнер" parent="NPC" unique_id=849601603 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 401.70984, -153.37973, -1271.2133)
-ID = 5163
-ModelName = "npc29b"
-_angle = 0
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4015
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5163
+ModelName = "npc29b"
 
 [node name="NPC_5164_Альма_Мэддокс" parent="NPC" unique_id=1832182545 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.604, -152.9312, -1280.7285)
-ID = 5164
-ModelName = "npc14"
-_angle = 0
-_objectType = 213
-_modelName = "npc14"
 NpcType = 6
 VendorItemTierMax = 15
+ID = 5164
+ModelName = "npc14"
 
 [node name="NPC_5165_Алан_По" parent="NPC" unique_id=2075651874 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.74095124, 0, 0.67155886, 0, 1, 0, -0.67155886, 0, 0.74095124, 2290.5566, -156.70428, -2435.2573)
-Angle = 241
-ID = 5165
-ModelName = "npc29c"
-_angle = 241
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4017
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 241
+ID = 5165
+ModelName = "npc29c"
 
 [node name="NPC_5166_Клод_Одоро" parent="NPC" unique_id=385156064 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5956993, 0, -0.8032075, 0, 1, 0, 0.8032075, 0, 0.5956993, 2296.1755, -155.48933, -2374.544)
-Angle = 147
-ID = 5166
-ModelName = "npc29a"
-_angle = 147
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4018
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 147
+ID = 5166
+ModelName = "npc29a"
 
 [node name="NPC_5167_Грейс_Полянски" parent="NPC" unique_id=1986105131 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.77301055, 0, 0.6343932, 0, 1, 0, -0.6343932, 0, -0.77301055, 2308.309, -155.45453, -2407.6033)
-Angle = 78
-ID = 5167
-ModelName = "npc14"
-_angle = 78
-_objectType = 213
-_modelName = "npc14"
 NameID = 4019
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 78
+ID = 5167
+ModelName = "npc14"
 
 [node name="NPC_5168_Фредди_Мальк" parent="NPC" unique_id=299204432 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, -3709.637, -1099.9805, -3897.1338)
-Angle = 192
-ID = 5168
-ModelName = "npc29c"
-_angle = 192
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4200
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 192
+ID = 5168
+ModelName = "npc29c"
 
 [node name="NPC_5169_Скотт_Фолк" parent="NPC" unique_id=1109712468 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, -3502.3618, -1102.7123, -3907.0754)
-Angle = 192
-ID = 5169
-ModelName = "npc29c"
-_angle = 192
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4201
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 192
+ID = 5169
+ModelName = "npc29c"
 
 [node name="NPC_5170_Базиль_Нозес" parent="NPC" unique_id=877810949 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.24298026, 0, -0.97003126, 0, 1, 0, 0.97003126, 0, -0.24298026, -3096.2134, -1100.0175, -3893.6104)
-Angle = 165
-ID = 5170
-ModelName = "npc29c"
-_angle = 165
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4202
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 165
+ID = 5170
+ModelName = "npc29c"
 
 [node name="NPC_5171_Жан_Кельвин" parent="NPC" unique_id=394993029 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.97003126, 0, -0.2429801, 0, 1, 0, 0.2429801, 0, 0.97003126, -2907.0498, -1102.7329, -3897.5325)
-Angle = 133
-ID = 5171
-ModelName = "npc29c"
-_angle = 133
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4203
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 133
+ID = 5171
+ModelName = "npc29c"
 
 [node name="NPC_5174_Пью_Барнс" parent="NPC" unique_id=1587213196 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.514103, 0, 0.8577285, 0, 1, 0, -0.8577285, 0, 0.514103, 2975.0513, -159.87204, 1192.4784)
-Angle = 235
-ID = 5174
-ModelName = "npc29a"
-_angle = 235
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4250
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 235
+ID = 5174
+ModelName = "npc29a"
 
 [node name="NPC_5175_Лаки_Мангус" parent="NPC" unique_id=1032669771 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.33688956, 0, 0.9415441, 0, 1, 0, -0.9415441, 0, 0.33688956, 2076.9255, -159.72836, -209.8601)
-Angle = 231
-ID = 5175
-ModelName = "npc29a"
-_angle = 231
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4251
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 231
+ID = 5175
+ModelName = "npc29a"
 
 [node name="NPC_5176_Фредерик_Строрн" parent="NPC" unique_id=1041967936 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.1467304, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, 0.1467304, 389.76086, -159.83942, -998.3558)
-Angle = 99
-ID = 5176
-ModelName = "npc29a"
-_angle = 99
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4252
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 99
+ID = 5176
+ModelName = "npc29a"
 
 [node name="NPC_5177_Феликс_Дерегенерато" parent="NPC" unique_id=1423234782 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2274.5122, -159.85492, -2709.2397)
-ID = 5177
-ModelName = "npc29a"
-_angle = 0
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4253
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5177
+ModelName = "npc29a"
 
 [node name="NPC_5179_Джелай_Бабуно" parent="NPC" unique_id=1549351568 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 2799.8142, -159.8262, 1442.5394)
-Angle = 128
-ID = 5179
-ModelName = "npc29c"
-_angle = 128
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4100
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5179
+ModelName = "npc29c"
 
 [node name="NPC_5180_Джон_Рамино" parent="NPC" unique_id=1043525473 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2303.4146, -159.8238, 1385.2394)
-Angle = 64
-ID = 5180
-ModelName = "npc29"
-_angle = 64
-_objectType = 213
-_modelName = "npc29"
 NameID = 4101
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5180
+ModelName = "npc29"
 
 [node name="NPC_5181_Лайон_Пордел" parent="NPC" unique_id=1434499687 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 3214.6404, -159.80707, 588.7894)
-Angle = 128
-ID = 5181
-ModelName = "npc29a"
-_angle = 128
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4102
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5181
+ModelName = "npc29a"
 
 [node name="NPC_5182_Бенджамин_Симпсон" parent="NPC" unique_id=1874092833 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 515.3365, -159.84491, -197.91725)
-Angle = 64
-ID = 5182
-ModelName = "npc29b"
-_angle = 64
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4103
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5182
+ModelName = "npc29b"
 
 [node name="NPC_5183_Майкл_Бинер" parent="NPC" unique_id=1006965345 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 2827.137, -159.8225, -502.8922)
-Angle = 128
-ID = 5183
-ModelName = "npc29"
-_angle = 128
-_objectType = 213
-_modelName = "npc29"
 NameID = 4104
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5183
+ModelName = "npc29"
 
 [node name="NPC_5184_Скотт_Фугас" parent="NPC" unique_id=1309780800 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 3110.8245, -159.84293, -1700.1433)
-Angle = 64
-ID = 5184
-ModelName = "npc29a"
-_angle = 64
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4105
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5184
+ModelName = "npc29a"
 
 [node name="NPC_5185_Джеки_Файн" parent="NPC" unique_id=757832885 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 804.7386, -159.89445, -2443.8157)
-ID = 5185
-ModelName = "npc29b"
-_angle = 0
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4106
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5185
+ModelName = "npc29b"
 
 [node name="NPC_5186_Боб_Бонбораус" parent="NPC" unique_id=971569000 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 1601.0249, -159.86154, -3275.849)
-Angle = 128
-ID = 5186
-ModelName = "npc29"
-_angle = 128
-_objectType = 213
-_modelName = "npc29"
 NameID = 4107
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5186
+ModelName = "npc29"
 
 [node name="NPC_5187_Роджер_Хаггар" parent="NPC" unique_id=2042275032 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.8577287, 0, -0.5141026, 0, 1, 0, 0.5141026, 0, 0.8577287, 1158.4553, -158.06938, 1671.4727)
-Angle = 139
-ID = 5187
-ModelName = "npc29c"
-_angle = 139
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4182
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 139
+ID = 5187
+ModelName = "npc29c"
 
 [node name="NPC_5188_Дидье_Дьюсак" parent="NPC" unique_id=1682761683 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.67155904, 0, -0.74095106, 0, 1, 0, 0.74095106, 0, -0.67155904, 2489.1013, -159.87766, 1106.821)
-Angle = 47
-ID = 5188
-ModelName = "npc08"
-_angle = 47
-_objectType = 213
-_modelName = "npc08"
 NameID = 4120
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 47
+ID = 5188
+ModelName = "npc08"
 
 [node name="NPC_5189_Камилус_Торогус" parent="NPC" unique_id=1948521551 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.55557007, 0, 0.8314697, 0, 1, 0, -0.8314697, 0, 0.55557007, 2089.9373, -159.83374, -389.92108)
-Angle = 108
-ID = 5189
-ModelName = "npc08"
-_angle = 108
-_objectType = 213
-_modelName = "npc08"
 NameID = 4121
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 108
+ID = 5189
+ModelName = "npc08"
 
 [node name="NPC_5190_Джордан_Базиро" parent="NPC" unique_id=1813902220 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509014, 0, -0.9807843, 0, 1, 0, 0.9807843, 0, -0.19509014, 381.9093, -159.8448, -1493.4507)
-Angle = 36
-ID = 5190
-ModelName = "npc08"
-_angle = 36
-_objectType = 213
-_modelName = "npc08"
+transform = Transform3D(-0.19509012, 0, -0.9807842, 0, 1, 0, 0.9807842, 0, -0.19509012, 381.9093, -159.8448, -1493.4507)
 NameID = 4122
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 36
+ID = 5190
+ModelName = "npc08"
 
 [node name="NPC_5191_Кевин_Дольтер" parent="NPC" unique_id=2110858996 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.09801684, 0, 0.9951838, 0, 1, 0, -0.9951838, 0, -0.09801684, 2400.3232, -159.8988, -2268.9343)
-Angle = 94
-ID = 5191
-ModelName = "npc08"
-_angle = 94
-_objectType = 213
-_modelName = "npc08"
+transform = Transform3D(-0.098016836, 0, 0.9951837, 0, 1, 0, -0.9951837, 0, -0.098016836, 2400.3232, -159.8988, -2268.9343)
 NameID = 4123
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 94
+ID = 5191
+ModelName = "npc08"
 
 [node name="NPC_5192_Гийом_Агнуш" parent="NPC" unique_id=1018732313 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1.1924881e-08, 0, 1, 0, 1, 0, -1, 0, 1.1924881e-08, 2487.9695, -159.88591, 1112.7881)
-Angle = 96
-ID = 5192
-ModelName = "npc29a"
-_angle = 96
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4152
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 96
+ID = 5192
+ModelName = "npc29a"
 
 [node name="NPC_5193_Эдвин_Тирс" parent="NPC" unique_id=1255850622 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.6343933, 0, -0.7730105, 0, 1, 0, 0.7730105, 0, -0.6343933, 2091.5676, -159.85472, -399.54465)
-Angle = 46
-ID = 5193
-ModelName = "npc29a"
-_angle = 46
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4153
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 46
+ID = 5193
+ModelName = "npc29a"
 
 [node name="NPC_5194_Лайон_Поддел" parent="NPC" unique_id=1783406969 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.42755494, 0, 0.9039894, 0, 1, 0, -0.9039894, 0, -0.42755494, 380.04248, -159.56937, -1485.7227)
-Angle = 87
-ID = 5194
-ModelName = "npc29a"
-_angle = 87
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4154
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 87
+ID = 5194
+ModelName = "npc29a"
 
 [node name="NPC_5195_Джеймс_Кадд" parent="NPC" unique_id=995475059 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, 2399.9692, -159.88293, -2274.4739)
-Angle = 48
-ID = 5195
-ModelName = "npc29a"
-_angle = 48
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4155
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 48
+ID = 5195
+ModelName = "npc29a"
 
 [node name="NPC_5196_Рамон_Ганульо" parent="NPC" unique_id=1505536941 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9951847, 0, 0.098017246, 0, 1, 0, -0.098017246, 0, 0.9951847, 3220.4097, -159.84698, 596.9954)
-Angle = 126
-ID = 5196
-ModelName = "npc08"
-_angle = 126
-_objectType = 213
-_modelName = "npc08"
 NameID = 4124
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 126
+ID = 5196
+ModelName = "npc08"
 
 [node name="NPC_5197_Тимоти_Фолаун" parent="NPC" unique_id=1523165173 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.3826838, 0, 0.9238793, 0, 1, 0, -0.9238793, 0, -0.3826838, 2819.8948, -159.83755, -514.0241)
-Angle = 216
-ID = 5197
-ModelName = "npc08"
-_angle = 216
-_objectType = 213
-_modelName = "npc08"
 NameID = 4125
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 216
+ID = 5197
+ModelName = "npc08"
 
 [node name="NPC_5198_Рональд_Буш" parent="NPC" unique_id=328695321 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.55557007, 0, 0.8314697, 0, 1, 0, -0.8314697, 0, 0.55557007, 3103.1777, -159.91382, -1693.3921)
-Angle = 108
-ID = 5198
-ModelName = "npc08"
-_angle = 108
-_objectType = 213
-_modelName = "npc08"
 NameID = 4126
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 108
+ID = 5198
+ModelName = "npc08"
 
 [node name="NPC_5199_Сеймур_Хеффер" parent="NPC" unique_id=1011488125 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730103, 0, -0.63439345, 0, 1, 0, 0.63439345, 0, 0.7730103, 510.45862, -159.86244, -193.44647)
-Angle = 142
-ID = 5199
-ModelName = "npc08"
-_angle = 142
-_objectType = 213
-_modelName = "npc08"
 NameID = 4127
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 142
+ID = 5199
+ModelName = "npc08"
 
 [node name="NPC_5200_Донат_Хьюберт" parent="NPC" unique_id=1393606980 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3219.6392, -159.67844, 580.41736)
-ID = 5200
-ModelName = "npc29a"
-_angle = 0
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4156
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+ID = 5200
+ModelName = "npc29a"
 
 [node name="NPC_5201_Элгар_Паппер" parent="NPC" unique_id=1439273584 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.77301055, 0, 0.6343932, 0, 1, 0, -0.6343932, 0, -0.77301055, 2836.8867, -159.90424, -507.9168)
-Angle = 78
-ID = 5201
-ModelName = "npc29a"
-_angle = 78
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4157
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 78
+ID = 5201
+ModelName = "npc29a"
 
 [node name="NPC_5202_Эмиль_Фьючер" parent="NPC" unique_id=1621361038 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.47139683, 0, -0.88192123, 0, 1, 0, 0.88192123, 0, 0.47139683, 3093.017, -159.83936, -1689.9552)
-Angle = 150
-ID = 5202
-ModelName = "npc29a"
-_angle = 150
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4158
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 150
+ID = 5202
+ModelName = "npc29a"
 
 [node name="NPC_5203_Грифин_Той" parent="NPC" unique_id=1065777480 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.98078483, 0, -0.19509001, 0, 1, 0, 0.19509001, 0, 0.98078483, 501.47156, -159.88086, -192.81662)
-Angle = 132
-ID = 5203
-ModelName = "npc29a"
-_angle = 132
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4159
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 132
+ID = 5203
+ModelName = "npc29a"
 
 [node name="NPC_5204_Жан_Фале" parent="NPC" unique_id=788651198 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9039893, 0, 0.42755505, 0, 1, 0, -0.42755505, 0, 0.9039893, 892.18494, -159.84016, -2959.981)
-Angle = 247
-ID = 5204
-ModelName = "npc08"
-_angle = 247
-_objectType = 213
-_modelName = "npc08"
 NameID = 4128
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 247
+ID = 5204
+ModelName = "npc08"
 
 [node name="NPC_5205_Боб_Дугинос" parent="NPC" unique_id=541995336 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7071066, 0, 0.7071068, 0, 1, 0, -0.7071068, 0, 0.7071066, 1398.9492, -159.91264, 565.47687)
-Angle = 112
-ID = 5205
-ModelName = "npc08"
-_angle = 112
-_objectType = 213
-_modelName = "npc08"
 NameID = 4129
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 112
+ID = 5205
+ModelName = "npc08"
 
 [node name="NPC_5206_Жак_Лье" parent="NPC" unique_id=133278824 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9987954, 0, -0.04906772, 0, 1, 0, 0.04906772, 0, -0.9987954, 2694.3984, -159.91185, -1278.8513)
-Angle = 63
-ID = 5206
-ModelName = "npc08"
-_angle = 63
-_objectType = 213
-_modelName = "npc08"
 NameID = 4130
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 63
+ID = 5206
+ModelName = "npc08"
 
 [node name="NPC_5207_Марсель_Дарсо" parent="NPC" unique_id=1933016472 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.4275551, 0, 0.9039893, 0, 1, 0, -0.9039893, 0, 0.4275551, 3089.9412, -159.78882, 2090.4048)
-Angle = 233
-ID = 5207
-ModelName = "npc08"
-_angle = 233
-_objectType = 213
-_modelName = "npc08"
 NameID = 4131
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 233
+ID = 5207
+ModelName = "npc08"
 
 [node name="NPC_5208_Зак_Папперс" parent="NPC" unique_id=1958160818 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8032076, 0, 0.59569925, 0, 1, 0, -0.59569925, 0, -0.8032076, 887.06805, -159.78732, -2955.8125)
-Angle = 205
-ID = 5208
-ModelName = "npc29b"
-_angle = 205
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4160
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 205
+ID = 5208
+ModelName = "npc29b"
 
 [node name="NPC_5209_Нед_Санд" parent="NPC" unique_id=642353411 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.3368898, 0, -0.94154394, 0, 1, 0, 0.94154394, 0, 0.3368898, 1399.787, -159.89478, 556.4089)
-Angle = 25
-ID = 5209
-ModelName = "npc29b"
-_angle = 25
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4161
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 25
+ID = 5209
+ModelName = "npc29b"
 
 [node name="NPC_5210_Филип_Октавел" parent="NPC" unique_id=1515916424 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-2.900667e-07, 0, 1, 0, 1, 0, -1, 0, -2.900667e-07, 2686.618, -159.73563, -1285.3384)
-Angle = 224
-ID = 5210
-ModelName = "npc29b"
-_angle = 224
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4162
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 224
+ID = 5210
+ModelName = "npc29b"
 
 [node name="NPC_5211_Шон_Пен" parent="NPC" unique_id=1826345313 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.2902845, 0, 0.9569401, 0, 1, 0, -0.9569401, 0, 0.2902845, 3095.6738, -159.8677, 2098.9373)
-Angle = 102
-ID = 5211
-ModelName = "npc29b"
-_angle = 102
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4163
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 102
+ID = 5211
+ModelName = "npc29b"
 
 [node name="NPC_5212_Бенедикт_Кельвин" parent="NPC" unique_id=1705920141 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.98078483, 0, -0.19509001, 0, 1, 0, 0.19509001, 0, 0.98078483, 262.39374, -159.00163, 950.9672)
-Angle = 132
-ID = 5212
-ModelName = "npc08"
-_angle = 132
-_objectType = 213
-_modelName = "npc08"
 NameID = 4132
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 132
+ID = 5212
+ModelName = "npc08"
 
 [node name="NPC_5213_Парис_Лемон" parent="NPC" unique_id=1671290406 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9891765, 0, -0.14673047, 0, 1, 0, 0.14673047, 0, 0.9891765, 3760.479, -159.81232, -2141.8438)
-Angle = 3
-ID = 5213
-ModelName = "npc08"
-_angle = 3
-_objectType = 213
-_modelName = "npc08"
 NameID = 4133
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 3
+ID = 5213
+ModelName = "npc08"
 
 [node name="NPC_5214_Лукас_Арчер" parent="NPC" unique_id=1996779791 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8577286, 0, -0.51410276, 0, 1, 0, 0.51410276, 0, -0.8577286, 267.50543, -159.50531, 964.2223)
-Angle = 53
-ID = 5214
-ModelName = "npc29b"
-_angle = 53
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4164
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 53
+ID = 5214
+ModelName = "npc29b"
 
 [node name="NPC_5215_Майкл_Бор" parent="NPC" unique_id=1620262730 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9700313, 0, 0.24297996, 0, 1, 0, -0.24297996, 0, -0.9700313, 3744.2917, -158.07137, -2137.7996)
-Angle = 197
-ID = 5215
-ModelName = "npc29b"
-_angle = 197
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4165
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 197
+ID = 5215
+ModelName = "npc29b"
 
 [node name="NPC_5216_Марта_Маллей" parent="NPC" unique_id=748508174 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2585.5676, -159.93741, 1423.9875)
-Angle = 64
-ID = 5216
-ModelName = "npc14"
-_angle = 64
-_objectType = 213
-_modelName = "npc14"
 NameID = 4136
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 64
+ID = 5216
+ModelName = "npc14"
 
 [node name="NPC_5217_Сара_Иден" parent="NPC" unique_id=1222057202 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509014, 0, -0.9807843, 0, 1, 0, 0.9807843, 0, -0.19509014, 1675.4761, -159.22691, -479.6663)
-Angle = 36
-ID = 5217
-ModelName = "npc14"
-_angle = 36
-_objectType = 213
-_modelName = "npc14"
+transform = Transform3D(-0.19509012, 0, -0.9807842, 0, 1, 0, 0.9807842, 0, -0.19509012, 1675.4761, -159.22691, -479.6663)
 NameID = 4137
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 36
+ID = 5217
+ModelName = "npc14"
 
 [node name="NPC_5219_Сельма_Рагель" parent="NPC" unique_id=1292848690 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.29028484, 0, 0.9569403, 0, 1, 0, -0.9569403, 0, -0.29028484, 337.37183, -158.51605, -1453.3809)
-Angle = 218
-ID = 5219
-ModelName = "npc14"
-_angle = 218
-_objectType = 213
-_modelName = "npc14"
 NameID = 4138
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 218
+ID = 5219
+ModelName = "npc14"
 
 [node name="NPC_5220_Дейзи_МакТолен" parent="NPC" unique_id=1729044445 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039893, 0, 0.42755502, 0, 1, 0, -0.42755502, 0, -0.9039893, 2367.7988, -158.5206, -2069.1057)
-Angle = 73
-ID = 5220
-ModelName = "npc14"
-_angle = 73
-_objectType = 213
-_modelName = "npc14"
 NameID = 4139
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 73
+ID = 5220
+ModelName = "npc14"
 
 [node name="NPC_5221_Женева_Маллет" parent="NPC" unique_id=347808527 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8032075, 0, -0.59569937, 0, 1, 0, 0.59569937, 0, -0.8032075, 2585.751, -159.62773, 1418.9769)
-Angle = 51
-ID = 5221
-ModelName = "npc14b"
-_angle = 51
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4168
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 51
+ID = 5221
+ModelName = "npc14b"
 
 [node name="NPC_5222_Дебора_Ономанс" parent="NPC" unique_id=136337136 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.29028448, 0, 0.9569401, 0, 1, 0, -0.9569401, 0, -0.29028448, 1675.6973, -159.28456, -475.61536)
-Angle = 90
-ID = 5222
-ModelName = "npc14b"
-_angle = 90
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4169
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 90
+ID = 5222
+ModelName = "npc14b"
 
 [node name="NPC_5223_Полина_Фергюссон" parent="NPC" unique_id=1819917693 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.42755482, 0, -0.90398943, 0, 1, 0, 0.90398943, 0, -0.42755482, 336.35153, -158.98917, -1449.3102)
-Angle = 169
-ID = 5223
-ModelName = "npc14b"
-_angle = 169
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4170
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 169
+ID = 5223
+ModelName = "npc14b"
 
 [node name="NPC_5224_Биба_Далтон" parent="NPC" unique_id=1206861774 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6343933, 0, -0.77301043, 0, 1, 0, 0.77301043, 0, 0.6343933, 2364.9832, -158.90358, -2075.551)
-Angle = 18
-ID = 5224
-ModelName = "npc14b"
-_angle = 18
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4171
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 18
+ID = 5224
+ModelName = "npc14b"
 
 [node name="NPC_5225_Ирма_Талес" parent="NPC" unique_id=1083011641 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2565.9304, -159.94063, -382.59747)
-Angle = 64
-ID = 5225
-ModelName = "npc14"
-_angle = 64
-_objectType = 213
-_modelName = "npc14"
 NameID = 4140
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 64
+ID = 5225
+ModelName = "npc14"
 
 [node name="NPC_5226_Дженни_Барок" parent="NPC" unique_id=1227183290 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6715591, 0, 0.740951, 0, 1, 0, -0.740951, 0, 0.6715591, 1770.8458, -158.52211, 978.59106)
-Angle = 111
-ID = 5226
-ModelName = "npc14"
-_angle = 111
-_objectType = 213
-_modelName = "npc14"
 NameID = 4141
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 111
+ID = 5226
+ModelName = "npc14"
 
 [node name="NPC_5227_Роза_Кларенс" parent="NPC" unique_id=835731822 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.94154394, 0, 0.33688965, 0, 1, 0, -0.33688965, 0, 0.94154394, 882.645, -159.53502, -2378.033)
-Angle = 121
-ID = 5227
-ModelName = "npc14"
-_angle = 121
-_objectType = 213
-_modelName = "npc14"
 NameID = 4142
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 121
+ID = 5227
+ModelName = "npc14"
 
 [node name="NPC_5228_Клара_Розенс" parent="NPC" unique_id=1434880794 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039893, 0, -0.42755505, 0, 1, 0, 0.42755505, 0, -0.9039893, 2884.4365, -159.78859, -2008.9227)
-Angle = 55
-ID = 5228
-ModelName = "npc14"
-_angle = 55
-_objectType = 213
-_modelName = "npc14"
 NameID = 4143
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 55
+ID = 5228
+ModelName = "npc14"
 
 [node name="NPC_5229_Кара_Мардок" parent="NPC" unique_id=794105786 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9951847, 0, 0.098017246, 0, 1, 0, -0.098017246, 0, 0.9951847, 2562.5735, -159.94753, -378.7794)
-Angle = 126
-ID = 5229
-ModelName = "npc14b"
-_angle = 126
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4172
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 126
+ID = 5229
+ModelName = "npc14b"
 
 [node name="NPC_5230_Лора_Лайонс" parent="NPC" unique_id=1391469795 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.19509052, 0, -0.9807852, 0, 1, 0, 0.9807852, 0, 0.19509052, 1766.1996, -159.34402, 978.09296)
-Angle = 156
-ID = 5230
-ModelName = "npc14b"
-_angle = 156
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4173
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 156
+ID = 5230
+ModelName = "npc14b"
 
 [node name="NPC_5231_Эклера_Тарантон" parent="NPC" unique_id=1543079625 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.85772866, 0, 0.5141027, 0, 1, 0, -0.5141027, 0, -0.85772866, 885.5142, -159.53015, -2381.615)
-Angle = 75
-ID = 5231
-ModelName = "npc14b"
-_angle = 75
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4174
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 75
+ID = 5231
+ModelName = "npc14b"
 
 [node name="NPC_5232_Ванда_Рамонс" parent="NPC" unique_id=654298109 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2879.261, -159.614, -2011.0463)
-ID = 5232
-ModelName = "npc14b"
-_angle = 0
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4175
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+ID = 5232
+ModelName = "npc14b"
 
 [node name="NPC_5233_Лина_Паркер" parent="NPC" unique_id=1872192303 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.95694035, 0, 0.29028463, 0, 1, 0, -0.29028463, 0, -0.95694035, 3688.6775, -159.6069, 1881.4115)
-Angle = 70
-ID = 5233
-ModelName = "npc14"
-_angle = 70
-_objectType = 213
-_modelName = "npc14"
 NameID = 4144
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 70
+ID = 5233
+ModelName = "npc14"
 
 [node name="NPC_5234_Креола_Аурунус" parent="NPC" unique_id=755623908 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.9987945, 0, 0.04906759, 0, 1, 0, -0.04906759, 0, 0.9987945, 1033.6421, -159.85481, -295.1358)
-Angle = 127
-ID = 5234
-ModelName = "npc14"
-_angle = 127
-_objectType = 213
-_modelName = "npc14"
+transform = Transform3D(0.9987944, 0, 0.049067587, 0, 1, 0, -0.049067587, 0, 0.9987944, 1033.6421, -159.85481, -295.1358)
 NameID = 4145
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 127
+ID = 5234
+ModelName = "npc14"
 
 [node name="NPC_5235_Катрин_Рочестер" parent="NPC" unique_id=915735559 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673045, 0, -0.9891765, 0, 1, 0, 0.9891765, 0, -0.14673045, 1201.1993, -159.88809, -3453.964)
-Angle = 35
-ID = 5235
-ModelName = "npc14"
-_angle = 35
-_objectType = 213
-_modelName = "npc14"
 NameID = 4146
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 35
+ID = 5235
+ModelName = "npc14"
 
 [node name="NPC_5236_Сатина_Магалли" parent="NPC" unique_id=1557616579 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.38268337, 0, -0.9238795, 0, 1, 0, 0.9238795, 0, -0.38268337, 3222.1743, -159.84354, -1313.6294)
-Angle = 40
-ID = 5236
-ModelName = "npc14"
-_angle = 40
-_objectType = 213
-_modelName = "npc14"
 NameID = 4147
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 40
+ID = 5236
+ModelName = "npc14"
 
 [node name="NPC_5237_Фабия_Нандор" parent="NPC" unique_id=966410756 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.97003126, 0, -0.2429801, 0, 1, 0, 0.2429801, 0, 0.97003126, 3684.684, -159.44138, 1883.3022)
-Angle = 133
-ID = 5237
-ModelName = "npc14b"
-_angle = 133
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4176
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 133
+ID = 5237
+ModelName = "npc14b"
 
 [node name="NPC_5238_Изольда_Рубальски" parent="NPC" unique_id=1566204544 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.92387915, 0, 0.38268328, 0, 1, 0, -0.38268328, 0, -0.92387915, 1037.5996, -159.8263, -296.91187)
-Angle = 72
-ID = 5238
-ModelName = "npc14b"
-_angle = 72
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4177
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 72
+ID = 5238
+ModelName = "npc14b"
 
 [node name="NPC_5239_Альбина_Аннер" parent="NPC" unique_id=629129124 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.29028428, 0, 0.9569405, 0, 1, 0, -0.9569405, 0, 0.29028428, 1197.404, -159.83519, -3455.3167)
-Angle = 230
-ID = 5239
-ModelName = "npc14b"
-_angle = 230
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4178
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 230
+ID = 5239
+ModelName = "npc14b"
 
 [node name="NPC_5240_Алиса_Дюшер" parent="NPC" unique_id=1259469587 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673038, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, -0.14673038, 3221.394, -159.9146, -1309.7594)
-Angle = 93
-ID = 5240
-ModelName = "npc14b"
-_angle = 93
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4179
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 93
+ID = 5240
+ModelName = "npc14b"
 
 [node name="NPC_5241_Вирджиния_Йорк" parent="NPC" unique_id=1812129736 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673038, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, -0.14673038, 3561.483, -159.9165, 2599.1367)
-Angle = 93
-ID = 5241
-ModelName = "npc14"
-_angle = 93
-_objectType = 213
-_modelName = "npc14"
 NameID = 4148
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 93
+ID = 5241
+ModelName = "npc14"
 
 [node name="NPC_5241_Вирджиния_Йорк_2" parent="NPC" unique_id=152407647 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673038, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, -0.14673038, 3561.483, -159.9165, 2599.1367)
-Angle = 93
-ID = 5241
-ModelName = "npc14"
-_angle = 93
-_objectType = 213
-_modelName = "npc14"
 NameID = 4148
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 93
+ID = 5241
+ModelName = "npc14"
 
 [node name="NPC_5242_Гертруда_Шлоссен" parent="NPC" unique_id=670140187 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 227.15579, -159.87598, -3309.6348)
-ID = 5242
-ModelName = "npc14"
-_angle = 0
-_objectType = 213
-_modelName = "npc14"
 NameID = 4149
 NpcType = 9
 VendorItemTierMax = 15
+ID = 5242
+ModelName = "npc14"
 
 [node name="NPC_5243_Синтия_Самонс" parent="NPC" unique_id=182425586 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.8819213, 0, -0.4713967, 0, 1, 0, 0.4713967, 0, 0.8819213, 3561.748, -159.58084, 2587.0486)
-Angle = 10
-ID = 5243
-ModelName = "npc14b"
-_angle = 10
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4180
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 10
+ID = 5243
+ModelName = "npc14b"
 
 [node name="NPC_5243_Синтия_Самонс_2" parent="NPC" unique_id=565699790 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.8819213, 0, -0.4713967, 0, 1, 0, 0.4713967, 0, 0.8819213, 3561.748, -159.58084, 2587.0486)
-Angle = 10
-ID = 5243
-ModelName = "npc14b"
-_angle = 10
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4180
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 10
+ID = 5243
+ModelName = "npc14b"
 
 [node name="NPC_5244_Терра_Лайн" parent="NPC" unique_id=660824188 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5141026, 0, -0.8577284, 0, 1, 0, 0.8577284, 0, -0.5141026, 248.61087, -159.89508, -3299.1018)
-Angle = 171
-ID = 5244
-ModelName = "npc14b"
-_angle = 171
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4181
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 171
+ID = 5244
+ModelName = "npc14b"
 
 [node name="NPC_5245_Темпора_Темпус" parent="NPC" unique_id=1600652509 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.94154406, 0, -0.33688977, 0, 1, 0, 0.33688977, 0, -0.94154406, 367.06253, -158.5605, -1338.4791)
-Angle = 57
-ID = 5245
-ModelName = "npc14a"
-_angle = 57
-_objectType = 213
-_modelName = "npc14a"
 NameID = 4150
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 57
+ID = 5245
+ModelName = "npc14a"
 
 [node name="NPC_5246_Магина_Ламандер" parent="NPC" unique_id=238368459 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9039893, 0, -0.42755508, 0, 1, 0, 0.42755508, 0, 0.9039893, 2556.8867, -159.55754, 1317.191)
-Angle = 137
-ID = 5246
-ModelName = "npc14a"
-_angle = 137
-_objectType = 213
-_modelName = "npc14a"
 NameID = 4151
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 137
+ID = 5246
+ModelName = "npc14a"
 
 [node name="NPC_5247_Амелия_Саймонс" parent="NPC" unique_id=1847719109 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.67155886, 0, -0.74095124, 0, 1, 0, 0.74095124, 0, 0.67155886, 1886.7378, -156.959, -427.45526)
-Angle = 145
-ID = 5247
-ModelName = "npc14a"
-_angle = 145
-_objectType = 213
-_modelName = "npc14a"
 NameID = 4183
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 145
+ID = 5247
+ModelName = "npc14a"
 
 [node name="NPC_5248_Рамина_Монд" parent="NPC" unique_id=1186707340 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.98078525, 0, -0.1950903, 0, 1, 0, 0.1950903, 0, -0.98078525, 2338.8713, -157.49605, -2406.7114)
-Angle = 60
-ID = 5248
-ModelName = "npc14a"
-_angle = 60
-_objectType = 213
-_modelName = "npc14a"
 NameID = 4184
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 60
+ID = 5248
+ModelName = "npc14a"
 
 [node name="NPC_5249_Эдвин_Феронье" parent="NPC" unique_id=1874633331 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, 1847.7123, -157.36977, 55.874172)
-Angle = 192
-ID = 5249
-ModelName = "npc08"
-_angle = 192
-_objectType = 213
-_modelName = "npc08"
 NameID = 4300
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 192
+ID = 5249
+ModelName = "npc08"
 
 [node name="NPC_5250_Джон_Дравор" parent="NPC" unique_id=1188231962 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2633.5103, -158.09578, -153.74776)
-Angle = 64
-ID = 5250
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4301
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5250
+ModelName = "npc08"
 
 [node name="NPC_5251_Макс_Клейтон" parent="NPC" unique_id=1265644687 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3068.4873, -157.89252, 1053.5209)
-ID = 5251
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4302
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5251
+ModelName = "npc08"
 
 [node name="NPC_5252_Перри_Брук" parent="NPC" unique_id=952386820 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1942.7095, -157.4863, 1458.1846)
-ID = 5252
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4303
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5252
+ModelName = "npc08"
 
 [node name="NPC_5253_Рик_Барсон" parent="NPC" unique_id=197701537 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1364.5879, -158.1548, 347.764)
-ID = 5253
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4304
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5253
+ModelName = "npc08"
 
 [node name="NPC_5254_Рональд_Армански" parent="NPC" unique_id=663969037 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 453.40018, -157.46007, -2132.0051)
-Angle = 128
-ID = 5254
-ModelName = "npc08"
-_angle = 128
-_objectType = 213
-_modelName = "npc08"
 NameID = 4305
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5254
+ModelName = "npc08"
 
 [node name="NPC_5255_Барри_Торсон" parent="NPC" unique_id=643118588 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 965.2959, -157.67133, -1249.931)
-Angle = 64
-ID = 5255
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4306
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5255
+ModelName = "npc08"
 
 [node name="NPC_5256_Ян_МакМилтон" parent="NPC" unique_id=1916426517 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 3439.7546, -157.50066, 2449.7747)
-Angle = 128
-ID = 5256
-ModelName = "npc08"
-_angle = 128
-_objectType = 213
-_modelName = "npc08"
 NameID = 4307
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5256
+ModelName = "npc08"
 
 [node name="NPC_5257_Дональд_Сандерс" parent="NPC" unique_id=1720011858 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2149.0415, -158.01245, -834.277)
-Angle = 64
-ID = 5257
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4308
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5257
+ModelName = "npc08"
 
 [node name="NPC_5259_Алекс_Ульман" parent="NPC" unique_id=852319676 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 3445.5037, -157.89415, -1254.6075)
-Angle = 128
-ID = 5259
-ModelName = "npc08"
-_angle = 128
-_objectType = 213
-_modelName = "npc08"
 NameID = 4309
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5259
+ModelName = "npc08"
 
 [node name="NPC_5260_Жак_Пергисон" parent="NPC" unique_id=459187219 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2063.147, -157.95389, -3457.4312)
-ID = 5260
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4310
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5260
+ModelName = "npc08"
 
 [node name="NPC_5261_Майкл_Глеймор" parent="NPC" unique_id=242626928 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3744.9807, -157.65161, 735.63324)
-ID = 5261
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4311
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5261
+ModelName = "npc08"
 
 [node name="NPC_5262_Дэниел_Кадар" parent="NPC" unique_id=1646570359 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 557.726, -158.0259, 437.97174)
-ID = 5262
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4312
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5262
+ModelName = "npc08"
 
 [node name="NPC_5263_Крейг_Денфорд" parent="NPC" unique_id=507617069 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1537.1317, -157.87784, 940.9441)
-ID = 5263
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4313
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5263
+ModelName = "npc08"
 
 [node name="NPC_5264_Эдвард_Кассор" parent="NPC" unique_id=1450774797 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2465.9067, -158.00784, -1637.2583)
-ID = 5264
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4314
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5264
+ModelName = "npc08"
 
 [node name="NPC_5265_Брик_Ланкер" parent="NPC" unique_id=1248904348 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1143.5806, -157.9221, -1730.0437)
-ID = 5265
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4315
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5265
+ModelName = "npc08"
 
 [node name="NPC_5266_Хэнк_Элиот" parent="NPC" unique_id=1189393711 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 347.95108, -157.7029, -3662.313)
-ID = 5266
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4316
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5266
+ModelName = "npc08"
 
 [node name="NPC_5267_Джеффри_Райдер" parent="NPC" unique_id=1555545665 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3345.915, -157.71631, -2362.338)
-ID = 5267
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4317
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5267
+ModelName = "npc08"
 
 [node name="NPC_5268_Пьер_Вайдере" parent="NPC" unique_id=2090239791 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1526.0167, -157.90808, -2344.229)
-ID = 5268
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4318
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5268
+ModelName = "npc08"
 
 [node name="NPC_5313_Макс_Эймон" parent="NPC" unique_id=1479605300 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, -1902.7455, -1102.5259, -3906.2258)
-Angle = 192
-ID = 5313
-ModelName = "npc29c"
-_angle = 192
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4204
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 192
+ID = 5313
+ModelName = "npc29c"
 
 [node name="NPC_5314_Дилан_Харансон" parent="NPC" unique_id=514205786 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5555703, 0, 0.8314696, 0, 1, 0, -0.8314696, 0, -0.5555703, -1702.4767, -1102.6772, -3907.391)
-Angle = 212
-ID = 5314
-ModelName = "npc29c"
-_angle = 212
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4205
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 212
+ID = 5314
+ModelName = "npc29c"
 
 [node name="NPC_5319_Габриель_Лем" parent="NPC" unique_id=2059688815 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3208.47, 345.61728, 708.6001)
-ID = 5319
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4335
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5319
+ModelName = "npc08"
 
 [node name="NPC_5322_Унгарт_Бакт" parent="NPC" unique_id=1069356286 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.8032074, 0, 0.5956995, 0, 1, 0, -0.5956995, 0, 0.8032074, -1096.1501, -1100.9227, -3892.0579)
-Angle = 115
-ID = 5322
-ModelName = "npc29c"
-_angle = 115
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4207
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 115
+ID = 5322
+ModelName = "npc29c"
 
 [node name="NPC_5323_Элемир_Бакерус" parent="NPC" unique_id=1610329272 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7730103, 0, -0.63439345, 0, 1, 0, 0.63439345, 0, 0.7730103, -3349.8706, 343.4642, -881.7604)
-Angle = 142
-ID = 5323
-ModelName = "npc29b"
-_angle = 142
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4063
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 142
+ID = 5323
+ModelName = "npc29b"
 
 [node name="NPC_5324_Адам_Парски" parent="NPC" unique_id=553409906 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.98917645, 0, 0.14673091, 0, 1, 0, -0.14673091, 0, -0.98917645, -3353.5688, 343.4661, -884.5892)
-Angle = 195
-ID = 5324
-ModelName = "npc29b"
-_angle = 195
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4066
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 195
+ID = 5324
+ModelName = "npc29b"
 
 [node name="NPC_5327_Йогард_Род" parent="NPC" unique_id=1467616073 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.98917645, 0, -0.14673087, 0, 1, 0, 0.14673087, 0, -0.98917645, -3427.186, 340.7357, -608.11084)
-Angle = 189
-ID = 5327
-ModelName = "npc29a"
-_angle = 189
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4055
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 189
+ID = 5327
+ModelName = "npc29a"
 
 [node name="NPC_5328_Нейл_Пупински" parent="NPC" unique_id=1602407719 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.98917645, 0, 0.14673091, 0, 1, 0, -0.14673091, 0, -0.98917645, -3454.454, 343.31686, -888.44116)
-Angle = 195
-ID = 5328
-ModelName = "npc29c"
-_angle = 195
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4056
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 195
+ID = 5328
+ModelName = "npc29c"
 
 [node name="NPC_5329_Кларисса_Самсонсон" parent="NPC" unique_id=167874411 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.7409512, 0, -0.67155886, 0, 1, 0, 0.67155886, 0, 0.7409512, -3427.3164, 343.4268, -949.71826)
-Angle = 143
-ID = 5329
-ModelName = "npc14b"
-_angle = 143
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4057
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 143
+ID = 5329
+ModelName = "npc14b"
 
 [node name="NPC_5330_Ванесса_Ламаненкене" parent="NPC" unique_id=1980891182 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.9039893, 0, -0.42755508, 0, 1, 0, 0.42755508, 0, 0.9039893, -3381.1453, 339.48645, -859.7418)
-Angle = 137
-ID = 5330
-ModelName = "npc14"
-_angle = 137
-_objectType = 213
-_modelName = "npc14"
 NameID = 4058
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 137
+ID = 5330
+ModelName = "npc14"
 
 [node name="NPC_5334_Джессика_Фитнеляйне" parent="NPC" unique_id=217975690 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6343933, 0, -0.7730102, 0, 1, 0, 0.7730102, 0, 0.6343933, -3681.7773, 342.25186, 1235.1888)
-Angle = 146
-ID = 5334
-ModelName = "npc14b"
-_angle = 146
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4062
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 146
+ID = 5334
+ModelName = "npc14b"
 
 [node name="NPC_5409_Джастин_Леран" parent="NPC" unique_id=982597603 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2715.183, -403.1244, 2085.6716)
-ID = 5409
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4020
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+ID = 5409
+ModelName = "npc08"
 
 [node name="NPC_5411_Марк_Клейтон" parent="NPC" unique_id=925334410 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.94154394, 0, 0.33688965, 0, 1, 0, -0.33688965, 0, 0.94154394, 1902.9355, -403.1005, 3284.8127)
-Angle = 121
-ID = 5411
-ModelName = "npc08"
-_angle = 121
-_objectType = 213
-_modelName = "npc08"
 NameID = 4025
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 121
+ID = 5411
+ModelName = "npc08"
 
 [node name="NPC_5412_Жак_Пельтье" parent="NPC" unique_id=1792468867 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2219.524, -407.39133, 1857.8362)
-ID = 5412
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4030
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+ID = 5412
+ModelName = "npc08"
 
 [node name="NPC_5413_Джон_Хорман" parent="NPC" unique_id=770265682 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509014, 0, -0.9807843, 0, 1, 0, 0.9807843, 0, -0.19509014, 1530.4929, -409.812, 3390.9473)
-Angle = 36
-ID = 5413
-ModelName = "npc08"
-_angle = 36
-_objectType = 213
-_modelName = "npc08"
+transform = Transform3D(-0.19509012, 0, -0.9807842, 0, 1, 0, 0.9807842, 0, -0.19509012, 1530.4929, -409.812, 3390.9473)
 NameID = 4031
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 36
+ID = 5413
+ModelName = "npc08"
 
 [node name="NPC_5414_Эрик_Ротт" parent="NPC" unique_id=2127166032 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8314698, 0, -0.55557, 0, 1, 0, 0.55557, 0, -0.8314698, -201.39384, -408.5316, 1805.3788)
-Angle = 180
-ID = 5414
-ModelName = "npc08"
-_angle = 180
-_objectType = 213
-_modelName = "npc08"
 NameID = 4032
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 180
+ID = 5414
+ModelName = "npc08"
 
 [node name="NPC_5415_Ян_Кадарски" parent="NPC" unique_id=894362233 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.74095124, 0, 0.67155886, 0, 1, 0, -0.67155886, 0, 0.74095124, -2709.4434, -404.12415, 2064.7427)
-Angle = 241
-ID = 5415
-ModelName = "npc29c"
-_angle = 241
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4021
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 241
+ID = 5415
+ModelName = "npc29c"
 
 [node name="NPC_5416_Дерек_Арено" parent="NPC" unique_id=619380712 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.14673038, 0, 0.9891763, 0, 1, 0, -0.9891763, 0, -0.14673038, 1890.6172, -402.9207, 3297.4673)
-Angle = 93
-ID = 5416
-ModelName = "npc29c"
-_angle = 93
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4026
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 93
+ID = 5416
+ModelName = "npc29c"
 
 [node name="NPC_5417_Девид_Катарски" parent="NPC" unique_id=1213351045 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039892, 0, -0.42755535, 0, 1, 0, 0.42755535, 0, -0.9039892, -2220.1863, -407.12143, 1864.6965)
-Angle = 183
-ID = 5417
-ModelName = "npc29c"
-_angle = 183
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4039
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 183
+ID = 5417
+ModelName = "npc29c"
 
 [node name="NPC_5418_Ли_Янг" parent="NPC" unique_id=133866967 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5141027, 0, 0.85772836, 0, 1, 0, -0.85772836, 0, 0.5141027, 1528.8721, -409.8049, 3398.709)
-Angle = 107
-ID = 5418
-ModelName = "npc29c"
-_angle = 107
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4040
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 107
+ID = 5418
+ModelName = "npc29c"
 
 [node name="NPC_5419_Нил_Тарант" parent="NPC" unique_id=656555986 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.3368898, 0, -0.94154394, 0, 1, 0, 0.94154394, 0, 0.3368898, -193.90727, -408.07336, 1807.564)
-Angle = 25
-ID = 5419
-ModelName = "npc29c"
-_angle = 25
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4041
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 25
+ID = 5419
+ModelName = "npc29c"
 
 [node name="NPC_5420_Мария_Ферстинг" parent="NPC" unique_id=205329896 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2676.3474, -404.7139, 2082.2585)
-ID = 5420
-ModelName = "npc14b"
-_angle = 0
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4022
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+ID = 5420
+ModelName = "npc14b"
 
 [node name="NPC_5421_Жозефина_Ланнет" parent="NPC" unique_id=331784117 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5141027, 0, 0.85772866, 0, 1, 0, -0.85772866, 0, -0.5141027, 1888.3804, -404.09595, 3266.753)
-Angle = 213
-ID = 5421
-ModelName = "npc14b"
-_angle = 213
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4027
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 213
+ID = 5421
+ModelName = "npc14b"
 
 [node name="NPC_5422_Глория_Астеран" parent="NPC" unique_id=1302416132 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.70710677, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.70710677, -2601.8098, -408.09976, 2673.23)
-Angle = 240
-ID = 5422
-ModelName = "npc14b"
-_angle = 240
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4033
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 240
+ID = 5422
+ModelName = "npc14b"
 
 [node name="NPC_5423_Эльма_Каренсен" parent="NPC" unique_id=1408983973 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 1586.0173, -407.949, 2726.1182)
-Angle = 128
-ID = 5423
-ModelName = "npc14b"
-_angle = 128
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4034
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+Angle = 128
+ID = 5423
+ModelName = "npc14b"
 
 [node name="NPC_5424_Ненси_Эмеральд" parent="NPC" unique_id=1172019626 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -780.25116, -405.98697, 2928.0664)
-ID = 5424
-ModelName = "npc14b"
-_angle = 0
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4035
 IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMax = 15
+ID = 5424
+ModelName = "npc14b"
 
 [node name="NPC_5425_Клара_Родригес" parent="NPC" unique_id=902673592 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.77301055, 0, 0.6343932, 0, 1, 0, -0.6343932, 0, -0.77301055, -2691.691, -402.87436, 2092.3967)
-Angle = 78
-ID = 5425
-ModelName = "npc14"
-_angle = 78
-_objectType = 213
-_modelName = "npc14"
 NameID = 4023
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 78
+ID = 5425
+ModelName = "npc14"
 
 [node name="NPC_5426_Кристина_Стадель" parent="NPC" unique_id=386951202 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5141027, 0, 0.85772836, 0, 1, 0, -0.85772836, 0, 0.5141027, 1899.8375, -403.15427, 3287.7075)
-Angle = 107
-ID = 5426
-ModelName = "npc14"
-_angle = 107
-_objectType = 213
-_modelName = "npc14"
 NameID = 4028
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 107
+ID = 5426
+ModelName = "npc14"
 
 [node name="NPC_5427_Жаклин_Демерте" parent="NPC" unique_id=1499440589 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.4275551, 0, -0.9039893, 0, 1, 0, 0.9039893, 0, 0.4275551, -2594.3945, -407.7635, 2676.6924)
-Angle = 23
-ID = 5427
-ModelName = "npc14"
-_angle = 23
-_objectType = 213
-_modelName = "npc14"
 NameID = 4036
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 23
+ID = 5427
+ModelName = "npc14"
 
 [node name="NPC_5428_Оливия_Терен" parent="NPC" unique_id=456382004 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.8032076, 0, -0.5956992, 0, 1, 0, 0.5956992, 0, -0.8032076, 1584.6165, -407.98233, 2719.7256)
-Angle = 179
-ID = 5428
-ModelName = "npc14"
-_angle = 179
-_objectType = 213
-_modelName = "npc14"
 NameID = 4037
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 179
+ID = 5428
+ModelName = "npc14"
 
 [node name="NPC_5429_Дебора_Маклейн" parent="NPC" unique_id=1078479298 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.9039893, 0, -0.42755505, 0, 1, 0, 0.42755505, 0, -0.9039893, -785.7923, -406.34973, 2929.548)
-Angle = 55
-ID = 5429
-ModelName = "npc14"
-_angle = 55
-_objectType = 213
-_modelName = "npc14"
 NameID = 4038
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 55
+ID = 5429
+ModelName = "npc14"
 
 [node name="NPC_5430_Ник_Хадсон" parent="NPC" unique_id=494445432 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5956993, 0, -0.8032075, 0, 1, 0, 0.8032075, 0, 0.5956993, -2703.8245, -402.80917, 2125.456)
-Angle = 147
-ID = 5430
-ModelName = "npc29b"
-_angle = 147
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4024
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 147
+ID = 5430
+ModelName = "npc29b"
 
 [node name="NPC_5431_Крейг_Долтон" parent="NPC" unique_id=276132431 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.6343931, 0, 0.7730106, 0, 1, 0, -0.7730106, 0, 0.6343931, 1885.2067, -402.8137, 3289.575)
-Angle = 238
-ID = 5431
-ModelName = "npc29b"
-_angle = 238
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4029
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 238
+ID = 5431
+ModelName = "npc29b"
 
 [node name="NPC_5432_Максимилиан_Фените" parent="NPC" unique_id=1603131463 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 1290.2902, -402.19308, 3711.356)
-Angle = 128
-ID = 5432
-ModelName = "npc08"
-_angle = 128
-_objectType = 213
-_modelName = "npc08"
 NameID = 4319
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 128
+ID = 5432
+ModelName = "npc08"
 
 [node name="NPC_5433_Артур_Гард" parent="NPC" unique_id=2115440812 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, -712.8683, -402.7651, 3490.944)
-Angle = 192
-ID = 5433
-ModelName = "npc08"
-_angle = 192
-_objectType = 213
-_modelName = "npc08"
 NameID = 4320
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 192
+ID = 5433
+ModelName = "npc08"
 
 [node name="NPC_5434_Марк_Раш" parent="NPC" unique_id=455390794 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2715.9067, -366.21436, 3312.7417)
-ID = 5434
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4321
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5434
+ModelName = "npc08"
 
 [node name="NPC_5435_Герхард_Шадерман" parent="NPC" unique_id=2061096330 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -2507.2173, -402.44455, 3087.9404)
-Angle = 64
-ID = 5435
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4322
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5435
+ModelName = "npc08"
 
 [node name="NPC_5436_Нард_Гарас" parent="NPC" unique_id=1038530993 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -692.274, -402.87576, 2687.9717)
-ID = 5436
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4323
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5436
+ModelName = "npc08"
 
 [node name="NPC_5437_Беннет_Дин" parent="NPC" unique_id=647063554 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 481.44183, -402.77478, 2705.6165)
-Angle = 64
-ID = 5437
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4324
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5437
+ModelName = "npc08"
 
 [node name="NPC_5438_Рис_Дерби" parent="NPC" unique_id=628208318 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1292.7095, -402.23615, 2308.1846)
-ID = 5438
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4325
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5438
+ModelName = "npc08"
 
 [node name="NPC_5439_Остин_Валек" parent="NPC" unique_id=759024871 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3107.4553, -366.04623, 2118.465)
-ID = 5439
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4326
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5439
+ModelName = "npc08"
 
 [node name="NPC_5440_Джеф_Кирк" parent="NPC" unique_id=1100904605 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1481.5127, -402.62775, 1903.5209)
-ID = 5440
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4327
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5440
+ModelName = "npc08"
 
 [node name="NPC_5441_Клаус_Феннель" parent="NPC" unique_id=1998574794 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -305.0193, -402.40146, 1285.6333)
-ID = 5441
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4328
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5441
+ModelName = "npc08"
 
 [node name="NPC_5442_Оркус_Мантоблас" parent="NPC" unique_id=824530065 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.4713967, 0, 0.88192093, 0, 1, 0, -0.88192093, 0, 0.4713967, -2589.504, 96.421036, -318.1851)
-Angle = 234
-ID = 5442
-ModelName = "npc08"
-_angle = 234
-_objectType = 213
-_modelName = "npc08"
 NameID = 4329
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 234
+ID = 5442
+ModelName = "npc08"
 
 [node name="NPC_5443_Ньюбус_Мантоблас" parent="NPC" unique_id=261823187 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1392.2739, 96.524185, 687.9717)
-ID = 5443
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4330
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5443
+ModelName = "npc08"
 
 [node name="NPC_5444_Хай_Мантоблас" parent="NPC" unique_id=1984972285 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -608.47003, 97.09847, -291.39993)
-ID = 5444
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4331
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5444
+ModelName = "npc08"
 
 [node name="NPC_5445_Пол_Маклауд" parent="NPC" unique_id=603912841 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.098016754, 0, 0.9951848, 0, 1, 0, -0.9951848, 0, -0.098016754, -1997.2186, 106.89213, 484.41504)
-Angle = 222
-ID = 5445
-ModelName = "npc08"
-_angle = 222
-_objectType = 213
-_modelName = "npc08"
 NameID = 4042
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 222
+ID = 5445
+ModelName = "npc08"
 
 [node name="NPC_5446_Мак_Холханонгер" parent="NPC" unique_id=572661839 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.049067426, 0, -0.9987945, 0, 1, 0, 0.9987945, 0, 0.049067426, -1972.2217, 108.239, 483.49744)
-Angle = 159
-ID = 5446
-ModelName = "npc29c"
-_angle = 159
-_objectType = 213
-_modelName = "npc29c"
+transform = Transform3D(0.049067423, 0, -0.9987944, 0, 1, 0, 0.9987944, 0, 0.049067423, -1972.2217, 108.239, 483.49744)
 NameID = 4043
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 159
+ID = 5446
+ModelName = "npc29c"
 
 [node name="NPC_5447_Сара_Оболенски" parent="NPC" unique_id=1590135921 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.38268346, 0, 0.9238791, 0, 1, 0, -0.9238791, 0, 0.38268346, -1959.8899, 118.68285, 524.84796)
-Angle = 104
-ID = 5447
-ModelName = "npc14b"
-_angle = 104
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4044
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 104
+ID = 5447
+ModelName = "npc14b"
 
 [node name="NPC_5448_Майя_Йойоус" parent="NPC" unique_id=1345859908 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.5141025, 0, -0.8577287, 0, 1, 0, 0.8577287, 0, 0.5141025, -1966.7108, 118.75594, 524.8615)
-Angle = 149
-ID = 5448
-ModelName = "npc14a"
-_angle = 149
-_objectType = 213
-_modelName = "npc14a"
 NameID = 4045
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 149
+ID = 5448
+ModelName = "npc14a"
 
 [node name="NPC_5449_Бен_Мамуба" parent="NPC" unique_id=1371544760 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.5956993, 0, 0.8032073, 0, 1, 0, -0.8032073, 0, -0.5956993, -1965.199, 107.06505, 456.65872)
-Angle = 211
-ID = 5449
-ModelName = "npc29b"
-_angle = 211
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4046
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 211
+ID = 5449
+ModelName = "npc29b"
 
 [node name="NPC_5450_Эдмунд_Энвельд" parent="NPC" unique_id=805348580 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.740951, 0, -0.6715591, 0, 1, 0, 0.6715591, 0, -0.740951, -1502.5166, -1102.709, -3904.6777)
-Angle = 177
-ID = 5450
-ModelName = "npc29c"
-_angle = 177
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4206
 IconName = "npc_tavernkeepr"
 NpcType = 5
 VendorItemTierMax = 15
+Angle = 177
+ID = 5450
+ModelName = "npc29c"
 
 [node name="NPC_5451_Эмиль_Клозе" parent="NPC" unique_id=1591763736 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.29028463, 0, -0.95694035, 0, 1, 0, 0.95694035, 0, 0.29028463, -2287.7063, 90.18433, 490.7006)
-Angle = 26
-ID = 5451
-ModelName = "npc29a"
-_angle = 26
-_objectType = 213
-_modelName = "npc29a"
 NameID = 4047
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 26
+ID = 5451
+ModelName = "npc29a"
 
 [node name="NPC_5452_Абрахам_Магнус" parent="NPC" unique_id=1059982220 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.97003025, 0, 0.24298029, 0, 1, 0, -0.24298029, 0, 0.97003025, -2292.2256, 90.26304, 489.85934)
-Angle = 251
-ID = 5452
-ModelName = "npc29c"
-_angle = 251
-_objectType = 213
-_modelName = "npc29c"
+transform = Transform3D(0.9700302, 0, 0.24298026, 0, 1, 0, -0.24298026, 0, 0.9700302, -2292.2256, 90.26304, 489.85934)
 NameID = 4048
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 251
+ID = 5452
+ModelName = "npc29c"
 
 [node name="NPC_5453_Роберт_Борбес" parent="NPC" unique_id=103863726 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.19509014, 0, -0.9807843, 0, 1, 0, 0.9807843, 0, -0.19509014, -1897.7283, 89.67637, -916.44763)
-Angle = 36
-ID = 5453
-ModelName = "npc29b"
-_angle = 36
-_objectType = 213
-_modelName = "npc29b"
+transform = Transform3D(-0.19509012, 0, -0.9807842, 0, 1, 0, 0.9807842, 0, -0.19509012, -1897.7283, 89.67637, -916.44763)
 NameID = 4051
 IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMax = 15
+Angle = 36
+ID = 5453
+ModelName = "npc29b"
 
 [node name="NPC_5454_Джеймс_Пойсон" parent="NPC" unique_id=1703224871 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.33688995, 0, 0.94154346, 0, 1, 0, -0.94154346, 0, -0.33688995, -1908.5674, 90.83886, -913.75934)
-Angle = 217
-ID = 5454
-ModelName = "npc29c"
-_angle = 217
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4052
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 217
+ID = 5454
+ModelName = "npc29c"
 
 [node name="NPC_5455_Делла_Воровски" parent="NPC" unique_id=1773567930 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.6715593, 0, 0.7409508, 0, 1, 0, -0.7409508, 0, -0.6715593, -323.4192, 89.58982, -801.7246)
-Angle = 209
-ID = 5455
-ModelName = "npc14b"
-_angle = 209
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4053
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 209
+ID = 5455
+ModelName = "npc14b"
 
 [node name="NPC_5456_Нелли_Матерсон" parent="NPC" unique_id=2068233449 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.95694035, 0, -0.29028466, 0, 1, 0, 0.29028466, 0, 0.95694035, -319.8937, 89.41648, -803.849)
-Angle = 6
-ID = 5456
-ModelName = "npc14b"
-_angle = 6
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4054
 NpcType = 9
 VendorItemTierMax = 15
+Angle = 6
+ID = 5456
+ModelName = "npc14b"
 
 [node name="NPC_5457_Глеб_Укупски" parent="NPC" unique_id=505983494 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3392.274, 345.37842, -112.02826)
-ID = 5457
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4332
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5457
+ModelName = "npc08"
 
 [node name="NPC_5458_Мартин_Хип" parent="NPC" unique_id=1877266562 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -2384.704, 345.52884, -1299.931)
-Angle = 64
-ID = 5458
-ModelName = "npc08"
-_angle = 64
-_objectType = 213
-_modelName = "npc08"
 NameID = 4333
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 64
+ID = 5458
+ModelName = "npc08"
 
 [node name="NPC_5459_Юджин_Бебей" parent="NPC" unique_id=1579860668 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-1, 0, 2.3849761e-08, 0, 1, 0, -2.3849761e-08, 0, -1, -3602.2876, 345.63037, -2094.1257)
-Angle = 192
-ID = 5459
-ModelName = "npc08"
-_angle = 192
-_objectType = 213
-_modelName = "npc08"
 NameID = 4334
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 192
+ID = 5459
+ModelName = "npc08"
 
 [node name="NPC_5461_Сеймур_Йоданус" parent="NPC" unique_id=2141190209 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2592.274, 346.42422, -2112.0283)
-ID = 5461
-ModelName = "npc08"
-_angle = 0
-_objectType = 213
-_modelName = "npc08"
 NameID = 4336
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+ID = 5461
+ModelName = "npc08"
 
 [node name="NPC_5466_Дейв_Лампардо" parent="NPC" unique_id=302924662 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.24298024, 0, -0.97003126, 0, 1, 0, 0.97003126, 0, 0.24298024, -1967.6174, 109.53333, 455.53372)
-Angle = 27
-ID = 5466
-ModelName = "npc29b"
-_angle = 27
-_objectType = 213
-_modelName = "npc29b"
 NameID = 4067
 IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMax = 15
+Angle = 27
+ID = 5466
+ModelName = "npc29b"
 
 [node name="NPC_5472_Дарт_Ведернис" parent="NPC" unique_id=1526657231 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(-0.098017104, 0, -0.9951847, 0, 1, 0, 0.9951847, 0, -0.098017104, -1817.2305, 340.03455, -1498.9967)
-Angle = 34
-ID = 5472
-ModelName = "npc29c"
-_angle = 34
-_objectType = 213
-_modelName = "npc29c"
 NameID = 4060
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 34
+ID = 5472
+ModelName = "npc29c"
 
 [node name="NPC_5473_Ирида_Кейлок" parent="NPC" unique_id=1393695027 instance=ExtResource("5_5rg3u")]
 transform = Transform3D(0.2429804, 0, 0.9700312, 0, 1, 0, -0.9700312, 0, 0.2429804, -1691.2529, 340.9076, -1332.8484)
-Angle = 101
-ID = 5473
-ModelName = "npc14b"
-_angle = 101
-_objectType = 213
-_modelName = "npc14b"
 NameID = 4061
 IconName = "npc_trade_armor"
 NpcType = 7
 VendorItemTierMax = 15
+Angle = 101
+ID = 5473
+ModelName = "npc14b"
 
 [node name="DungeonEntrances" type="Node3D" parent="." unique_id=1811908983]
 
@@ -3326,33 +2552,21 @@ VendorItemTierMax = 15
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 422.273, -151.589, -1320.4)
 Angle = 32
 ObjectType = 65
-_angle = 32
-_objectType = 65
-_modelName = ""
 
 [node name="Sunpool_2" parent="DungeonEntrances" unique_id=1520688958 instance=ExtResource("4_61mkd")]
 transform = Transform3D(0.098017134, 0, -0.9951847, 0, 1, 0, 0.9951847, 0, 0.098017134, 431.388, -156.291, -1260.22)
 Angle = 30
 ObjectType = 65
-_angle = 30
-_objectType = 65
-_modelName = ""
 
 [node name="Sunpool_3" parent="DungeonEntrances" unique_id=861720872 instance=ExtResource("4_61mkd")]
 transform = Transform3D(-0.098017104, 0, -0.9951847, 0, 1, 0, 0.9951847, 0, -0.098017104, 386.095, -151.853, -1285.59)
 Angle = 34
 ObjectType = 65
-_angle = 34
-_objectType = 65
-_modelName = ""
 
 [node name="Sunpool_4" parent="DungeonEntrances" unique_id=508165234 instance=ExtResource("4_61mkd")]
 transform = Transform3D(-0.14673023, 0, 0.9891766, 0, 1, 0, -0.9891766, 0, -0.14673023, 365.087, -157.664, -1332.73)
 Angle = 221
 ObjectType = 65
-_angle = 221
-_objectType = 65
-_modelName = ""
 
 [node name="Workshops" type="Node3D" parent="." unique_id=722607339]
 
@@ -3360,146 +2574,101 @@ _modelName = ""
 transform = Transform3D(0.1467306, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, 0.1467306, 440.04, -157.92, -1249.98)
 Angle = 227
 ObjectType = 805
-_angle = 227
-_objectType = 805
-_modelName = ""
 
 [node name="Sunpool_2" parent="Workshops" unique_id=1419230282 instance=ExtResource("4_61mkd")]
 transform = Transform3D(-0.77301043, 0, 0.63439333, 0, 1, 0, -0.63439333, 0, -0.77301043, 348.8, -158.69, -1333.41)
 Angle = 206
 ObjectType = 805
-_angle = 206
-_objectType = 805
-_modelName = ""
 
 [node name="Doors" type="Node3D" parent="." unique_id=1714189669]
 
 [node name="Sunpool_Suites_External_1" parent="Doors" unique_id=1130056331 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.049067616, 0, -0.9987948, 0, 1, 0, 0.9987948, 0, 0.049067616, 414.212, -149.001, -1272.16)
-Angle = 31
-_angle = 31
-_objectType = 60
-_modelName = ""
+transform = Transform3D(0.049067613, 0, -0.9987947, 0, 1, 0, 0.9987947, 0, 0.049067613, 414.212, -149.001, -1272.16)
 DoorID = 5011
+Angle = 31
 
 [node name="Sunpool_Suites_External_2" parent="Doors" unique_id=1599292437 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.049067616, 0, -0.9987948, 0, 1, 0, 0.9987948, 0, 0.049067616, 411.438, -148.984, -1274.88)
-Angle = 31
-_angle = 31
-_objectType = 60
-_modelName = ""
+transform = Transform3D(0.049067613, 0, -0.9987947, 0, 1, 0, 0.9987947, 0, 0.049067613, 411.438, -148.984, -1274.88)
 DoorID = 5012
+Angle = 31
 
 [node name="Sunpool_Suites_External_3" parent="Doors" unique_id=158955258 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.049067616, 0, -0.9987948, 0, 1, 0, 0.9987948, 0, 0.049067616, 408.611, -148.994, -1277.64)
-Angle = 31
-_angle = 31
-_objectType = 60
-_modelName = ""
+transform = Transform3D(0.049067613, 0, -0.9987947, 0, 1, 0, 0.9987947, 0, 0.049067613, 408.611, -148.994, -1277.64)
 DoorID = 5013
+Angle = 31
 
 [node name="Sunpool_Suites_External_4" parent="Doors" unique_id=1824683360 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.049067616, 0, -0.9987948, 0, 1, 0, 0.9987948, 0, 0.049067616, 405.812, -148.83, -1280.38)
-Angle = 31
-_angle = 31
-_objectType = 60
-_modelName = ""
+transform = Transform3D(0.049067613, 0, -0.9987947, 0, 1, 0, 0.9987947, 0, 0.049067613, 405.812, -148.83, -1280.38)
 DoorID = 5014
+Angle = 31
 
 [node name="Sunpool_Suites_Internal_1" parent="Doors" unique_id=567481383 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028454, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.29028454, -3091.18, -1095.43, -3898.94)
-Angle = 38
-_angle = 38
-_objectType = 60
-_modelName = ""
+transform = Transform3D(-0.2902845, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.2902845, -3091.18, -1095.43, -3898.94)
 DoorID = 5009
+Angle = 38
 
 [node name="Sunpool_Suites_Internal_2" parent="Doors" unique_id=395889481 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028454, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.29028454, -3093.74, -1095.43, -3902.54)
-Angle = 38
-_angle = 38
-_objectType = 60
-_modelName = ""
+transform = Transform3D(-0.2902845, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.2902845, -3093.74, -1095.43, -3902.54)
 DoorID = 5010
+Angle = 38
 
 [node name="Sunpool_Tavern_To_1" parent="Doors" unique_id=582852345 instance=ExtResource("5_h4gwc")]
 transform = Transform3D(0.098017134, 0, -0.9951847, 0, 1, 0, 0.9951847, 0, 0.098017134, 413.649, -151.938, -1279.93)
-Angle = 30
-_angle = 30
-_objectType = 60
-_modelName = ""
 DoorID = 32767
 HasTarget = true
 TargetX = -3093.51
 TargetY = 1099.98
 TargetZ = -3901.05
+Angle = 30
 
 [node name="Sunpool_Tavern_To_2" parent="Doors" unique_id=1776975170 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.049067616, 0, -0.9987948, 0, 1, 0, 0.9987948, 0, 0.049067616, 411.522, -152.216, -1274.96)
-Angle = 31
-_angle = 31
-_objectType = 60
-_modelName = ""
+transform = Transform3D(0.049067613, 0, -0.9987947, 0, 1, 0, 0.9987947, 0, 0.049067613, 411.522, -152.216, -1274.96)
 DoorID = 32767
 HasTarget = true
 TargetX = -3099.7
 TargetY = 1099.95
 TargetZ = -3899.65
+Angle = 31
 
 [node name="Sunpool_Tavern_From_1" parent="Doors" unique_id=1106533143 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.29028454, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.29028454, -3091.89, -1098.51, -3902.16)
-Angle = 38
-ObjectType = 61
-_angle = 38
-_objectType = 61
-_modelName = ""
+transform = Transform3D(-0.2902845, 0, -0.95693964, 0, 1, 0, 0.95693964, 0, -0.2902845, -3091.89, -1098.51, -3902.16)
 DoorID = 32767
 HasTarget = true
 TargetX = 414.931
 TargetY = 153.352
 TargetZ = -1281.1
+Angle = 38
+ObjectType = 61
 
 [node name="Sunpool_Tavern_From_2" parent="Doors" unique_id=1181547429 instance=ExtResource("5_h4gwc")]
 transform = Transform3D(0.2902845, 0, 0.9569401, 0, 1, 0, -0.9569401, 0, 0.2902845, -3100.44, -1098.72, -3900.6)
-Angle = 102
-ObjectType = 61
-_angle = 102
-_objectType = 61
-_modelName = ""
 DoorID = 32767
 HasTarget = true
 TargetX = 410.67
 TargetY = 153.38
 TargetZ = -1274.05
+Angle = 102
+ObjectType = 61
 
 [node name="Cats" type="Node3D" parent="." unique_id=523462454]
 
 [node name="Sunpool_1" parent="Cats" unique_id=1848040136 instance=ExtResource("7_wg6ka")]
 transform = Transform3D(-0.98078537, 0, 0.19508995, 0, 1, 0, -0.19508995, 0, -0.98078537, 425.92, -153.43, -1301.68)
+MonsterType = 87
 Angle = 196
 ObjectType = 210
-_angle = 196
-_objectType = 210
-MonsterType = 87
-_monsterType = 87
 
 [node name="Sunpool_2" parent="Cats" unique_id=1496237306 instance=ExtResource("7_wg6ka")]
 transform = Transform3D(0.6343931, 0, 0.7730106, 0, 1, 0, -0.7730106, 0, 0.6343931, 397.82, -152.96, -1289.73)
+MonsterType = 87
 Angle = 238
 ObjectType = 210
-_angle = 238
-_objectType = 210
-MonsterType = 87
-_monsterType = 87
 
 [node name="Sunpool_3" parent="Cats" unique_id=524056783 instance=ExtResource("7_wg6ka")]
 transform = Transform3D(-0.7730105, 0, -0.6343933, 0, 1, 0, 0.6343933, 0, -0.7730105, 406.7, -153.43, -1309.13)
+MonsterType = 87
 Angle = 50
 ObjectType = 210
-_angle = 50
-_objectType = 210
-MonsterType = 87
-_monsterType = 87
 
 [node name="Monsters" type="Node3D" parent="." unique_id=1548389723]
 
@@ -3520,24 +2689,3 @@ submenu_popup_delay = 0.1
 script = ExtResource("8_w4ogy")
 
 [node name="Firework" parent="." unique_id=181638805 instance=ExtResource("9_36cky")]
-_angle = 0
-_objectType = 712
-_modelName = ""
-
-[node name="TerrainGrid" type="Node3D" parent="." unique_id=1690822216]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2291.025, -1, -5709)
-script = ExtResource("10_4x1vl")
-
-[node name="Terrain" type="GridMap" parent="TerrainGrid" unique_id=1505057908]
-mesh_library = ExtResource("11_bsvco")
-cell_size = Vector3(100, 100, 100)
-cell_center_x = false
-cell_center_y = false
-cell_center_z = false
-bake_navigation = true
-data = {
-"cells": PackedInt32Array(53, 1, 217, 52, 1, 216, 51, 1, 197, 50, 1, 196, 49, 1, 197, 48, 1, 196, 47, 1, 197, 46, 1, 196, 45, 1, 197, 44, 1, 196, 43, 1, 197, 42, 1, 196, 41, 1, 197, 40, 1, 196, 39, 1, 197, 38, 1, 196, 37, 1, 197, 36, 1, 196, 35, 1, 197, 34, 1, 196, 33, 1, 197, 32, 1, 196, 31, 1, 197, 30, 1, 196, 29, 1, 213, 28, 1, 212, 21, 1, 217, 20, 1, 216, 19, 1, 197, 18, 1, 196, 17, 1, 213, 16, 1, 212, 65, 2, 109, 64, 2, 108, 63, 2, 89, 62, 2, 88, 61, 2, 89, 60, 2, 88, 59, 2, 105, 58, 2, 104, 53, 2, 219, 52, 2, 218, 51, 2, 199, 50, 2, 198, 49, 2, 199, 48, 2, 198, 47, 2, 199, 46, 2, 198, 45, 2, 199, 44, 2, 198, 43, 2, 199, 42, 2, 198, 41, 2, 199, 40, 2, 198, 39, 2, 199, 38, 2, 198, 37, 2, 199, 36, 2, 198, 35, 2, 199, 34, 2, 198, 33, 2, 199, 32, 2, 198, 31, 2, 199, 30, 2, 198, 29, 2, 215, 28, 2, 214, 21, 2, 219, 20, 2, 218, 19, 2, 199, 18, 2, 198, 17, 2, 215, 16, 2, 214, 65, 3, 111, 64, 3, 110, 63, 3, 91, 62, 3, 90, 61, 3, 91, 60, 3, 90, 59, 3, 107, 58, 3, 106, 53, 3, 201, 52, 3, 200, 51, 3, 250, 50, 3, 249, 49, 3, 606, 48, 3, 605, 47, 3, 604, 46, 3, 603, 45, 3, 796, 44, 3, 795, 43, 3, 788, 42, 3, 787, 41, 3, 792, 40, 3, 791, 39, 3, 788, 38, 3, 787, 37, 3, 808, 36, 3, 807, 35, 3, 488, 34, 3, 487, 33, 3, 496, 32, 3, 495, 31, 3, 250, 30, 3, 249, 29, 3, 221, 28, 3, 220, 27, 3, 197, 26, 3, 196, 25, 3, 197, 24, 3, 196, 23, 3, 197, 22, 3, 196, 21, 3, 225, 20, 3, 224, 19, 3, 75, 18, 3, 74, 17, 3, 193, 16, 3, 192, 67, 4, 109, 66, 4, 108, 65, 4, 117, 64, 4, 116, 63, 4, 242, 62, 4, 241, 61, 4, 238, 60, 4, 237, 59, 4, 113, 58, 4, 112, 57, 4, 105, 56, 4, 104, 53, 4, 203, 52, 4, 202, 51, 4, 252, 50, 4, 251, 49, 4, 610, 48, 4, 609, 47, 4, 608, 46, 4, 607, 45, 4, 798, 44, 4, 797, 43, 4, 790, 42, 4, 789, 41, 4, 794, 40, 4, 793, 39, 4, 790, 38, 4, 789, 37, 4, 810, 36, 4, 809, 35, 4, 490, 34, 4, 489, 33, 4, 498, 32, 4, 497, 31, 4, 252, 30, 4, 251, 29, 4, 223, 28, 4, 222, 27, 4, 199, 26, 4, 198, 25, 4, 199, 24, 4, 198, 23, 4, 199, 22, 4, 198, 21, 4, 227, 20, 4, 226, 19, 4, 77, 18, 4, 76, 17, 4, 195, 16, 4, 194, 67, 5, 111, 66, 5, 110, 65, 5, 119, 64, 5, 118, 63, 5, 244, 62, 5, 243, 61, 5, 240, 60, 5, 239, 59, 5, 115, 58, 5, 114, 57, 5, 107, 56, 5, 106, 53, 5, 205, 52, 5, 204, 51, 5, 229, 50, 5, 228, 49, 5, 614, 48, 5, 613, 47, 5, 612, 46, 5, 611, 45, 5, 784, 44, 5, 783, 43, 5, 488, 42, 5, 487, 41, 5, 496, 40, 5, 495, 39, 5, 75, 38, 5, 74, 37, 5, 800, 36, 5, 799, 35, 5, 792, 34, 5, 791, 33, 5, 788, 32, 5, 787, 31, 5, 839, 30, 5, 838, 29, 5, 792, 28, 5, 791, 27, 5, 788, 26, 5, 787, 25, 5, 792, 24, 5, 791, 23, 5, 808, 22, 5, 807, 21, 5, 606, 20, 5, 605, 19, 5, 604, 18, 5, 603, 17, 5, 221, 16, 5, 220, 15, 5, 197, 14, 5, 196, 13, 5, 213, 12, 5, 212, 69, 6, 109, 68, 6, 108, 67, 6, 117, 66, 6, 116, 65, 6, 242, 64, 6, 241, 63, 6, 580, 62, 6, 579, 61, 6, 544, 60, 6, 543, 59, 6, 576, 58, 6, 575, 57, 6, 113, 56, 6, 112, 55, 6, 105, 54, 6, 104, 53, 6, 207, 52, 6, 206, 51, 6, 231, 50, 6, 230, 49, 6, 618, 48, 6, 617, 47, 6, 616, 46, 6, 615, 45, 6, 786, 44, 6, 785, 43, 6, 490, 42, 6, 489, 41, 6, 498, 40, 6, 497, 39, 6, 77, 38, 6, 76, 37, 6, 802, 36, 6, 801, 35, 6, 794, 34, 6, 793, 33, 6, 790, 32, 6, 789, 31, 6, 841, 30, 6, 840, 29, 6, 794, 28, 6, 793, 27, 6, 790, 26, 6, 789, 25, 6, 794, 24, 6, 793, 23, 6, 810, 22, 6, 809, 21, 6, 610, 20, 6, 609, 19, 6, 608, 18, 6, 607, 17, 6, 223, 16, 6, 222, 15, 6, 199, 14, 6, 198, 13, 6, 215, 12, 6, 214, 69, 7, 111, 68, 7, 110, 67, 7, 119, 66, 7, 118, 65, 7, 244, 64, 7, 243, 63, 7, 582, 62, 7, 581, 61, 7, 546, 60, 7, 545, 59, 7, 578, 58, 7, 577, 57, 7, 115, 56, 7, 114, 55, 7, 107, 54, 7, 106, 51, 7, 201, 50, 7, 200, 49, 7, 250, 48, 7, 249, 47, 7, 71, 46, 7, 70, 45, 7, 804, 44, 7, 803, 43, 7, 233, 42, 7, 232, 41, 7, 189, 40, 7, 188, 39, 7, 189, 38, 7, 188, 37, 7, 189, 36, 7, 188, 35, 7, 189, 34, 7, 188, 33, 7, 229, 32, 7, 228, 31, 7, 359, 30, 7, 358, 29, 7, 351, 28, 7, 350, 27, 7, 351, 26, 7, 350, 25, 7, 371, 24, 7, 370, 23, 7, 784, 22, 7, 783, 21, 7, 614, 20, 7, 613, 19, 7, 612, 18, 7, 611, 17, 7, 480, 16, 7, 479, 15, 7, 250, 14, 7, 249, 13, 7, 193, 12, 7, 192, 71, 8, 109, 70, 8, 108, 69, 8, 117, 68, 8, 116, 67, 8, 238, 66, 8, 237, 65, 8, 440, 64, 8, 439, 63, 8, 548, 62, 8, 547, 61, 8, 51, 60, 8, 50, 59, 8, 556, 58, 8, 555, 57, 8, 576, 56, 8, 575, 55, 8, 113, 54, 8, 112, 53, 8, 105, 52, 8, 104, 51, 8, 203, 50, 8, 202, 49, 8, 252, 48, 8, 251, 47, 8, 73, 46, 8, 72, 45, 8, 806, 44, 8, 805, 43, 8, 235, 42, 8, 234, 41, 8, 191, 40, 8, 190, 39, 8, 191, 38, 8, 190, 37, 8, 191, 36, 8, 190, 35, 8, 191, 34, 8, 190, 33, 8, 231, 32, 8, 230, 31, 8, 361, 30, 8, 360, 29, 8, 353, 28, 8, 352, 27, 8, 353, 26, 8, 352, 25, 8, 373, 24, 8, 372, 23, 8, 786, 22, 8, 785, 21, 8, 618, 20, 8, 617, 19, 8, 616, 18, 8, 615, 17, 8, 482, 16, 8, 481, 15, 8, 252, 14, 8, 251, 13, 8, 195, 12, 8, 194, 71, 9, 111, 70, 9, 110, 69, 9, 119, 68, 9, 118, 67, 9, 240, 66, 9, 239, 65, 9, 442, 64, 9, 441, 63, 9, 550, 62, 9, 549, 61, 9, 53, 60, 9, 52, 59, 9, 558, 58, 9, 557, 57, 9, 578, 56, 9, 577, 55, 9, 115, 54, 9, 114, 53, 9, 107, 52, 9, 106, 51, 9, 205, 50, 9, 204, 49, 9, 189, 48, 9, 188, 47, 9, 189, 46, 9, 188, 45, 9, 189, 44, 9, 188, 43, 9, 209, 42, 9, 208, 41, 9, 169, 40, 9, 168, 39, 9, 149, 38, 9, 148, 37, 9, 149, 36, 9, 148, 35, 9, 165, 34, 9, 164, 33, 9, 201, 32, 9, 200, 31, 9, 363, 30, 9, 362, 29, 9, 355, 28, 9, 354, 27, 9, 375, 26, 9, 374, 25, 9, 367, 24, 9, 366, 23, 9, 800, 22, 9, 799, 21, 9, 788, 20, 9, 787, 19, 9, 808, 18, 9, 807, 17, 9, 484, 16, 9, 483, 15, 9, 480, 14, 9, 479, 13, 9, 193, 12, 9, 192, 71, 10, 93, 70, 10, 92, 69, 10, 412, 68, 10, 411, 67, 10, 408, 66, 10, 407, 65, 10, 416, 64, 10, 415, 63, 10, 568, 62, 10, 567, 61, 10, 552, 60, 10, 551, 59, 10, 552, 58, 10, 551, 57, 10, 572, 56, 10, 571, 55, 10, 238, 54, 10, 237, 53, 10, 85, 52, 10, 84, 51, 10, 207, 50, 10, 206, 49, 10, 191, 48, 10, 190, 47, 10, 191, 46, 10, 190, 45, 10, 191, 44, 10, 190, 43, 10, 211, 42, 10, 210, 41, 10, 171, 40, 10, 170, 39, 10, 151, 38, 10, 150, 37, 10, 151, 36, 10, 150, 35, 10, 167, 34, 10, 166, 33, 10, 203, 32, 10, 202, 31, 10, 365, 30, 10, 364, 29, 10, 357, 28, 10, 356, 27, 10, 377, 26, 10, 376, 25, 10, 369, 24, 10, 368, 23, 10, 802, 22, 10, 801, 21, 10, 790, 20, 10, 789, 19, 10, 810, 18, 10, 809, 17, 10, 486, 16, 10, 485, 15, 10, 482, 14, 10, 481, 13, 10, 195, 12, 10, 194, 71, 11, 95, 70, 11, 94, 69, 11, 414, 68, 11, 413, 67, 11, 410, 66, 11, 409, 65, 11, 418, 64, 11, 417, 63, 11, 570, 62, 11, 569, 61, 11, 554, 60, 11, 553, 59, 11, 554, 58, 11, 553, 57, 11, 574, 56, 11, 573, 55, 11, 240, 54, 11, 239, 53, 11, 87, 52, 11, 86, 51, 11, 169, 50, 11, 168, 49, 11, 149, 48, 11, 148, 47, 11, 149, 46, 11, 148, 45, 11, 149, 44, 11, 148, 43, 11, 149, 42, 11, 148, 41, 11, 177, 40, 11, 176, 39, 11, 246, 38, 11, 245, 37, 11, 246, 36, 11, 245, 35, 11, 145, 34, 11, 144, 33, 11, 205, 32, 11, 204, 31, 11, 189, 30, 11, 188, 29, 11, 229, 28, 11, 228, 27, 11, 688, 26, 11, 687, 25, 11, 684, 24, 11, 683, 23, 11, 250, 22, 11, 249, 21, 11, 250, 20, 11, 249, 19, 11, 784, 18, 11, 783, 17, 11, 250, 16, 11, 249, 15, 11, 484, 14, 11, 483, 13, 11, 193, 12, 11, 192, 73, 12, 109, 72, 12, 108, 71, 12, 117, 70, 12, 116, 69, 12, 436, 68, 12, 435, 67, 12, 728, 66, 12, 727, 65, 12, 740, 64, 12, 739, 63, 12, 740, 62, 12, 739, 61, 12, 843, 60, 12, 842, 59, 12, 724, 58, 12, 723, 57, 12, 242, 56, 12, 241, 55, 12, 440, 54, 12, 439, 53, 12, 85, 52, 12, 84, 51, 12, 171, 50, 12, 170, 49, 12, 151, 48, 12, 150, 47, 12, 151, 46, 12, 150, 45, 12, 151, 44, 12, 150, 43, 12, 151, 42, 12, 150, 41, 12, 179, 40, 12, 178, 39, 12, 248, 38, 12, 247, 37, 12, 248, 36, 12, 247, 35, 12, 147, 34, 12, 146, 33, 12, 207, 32, 12, 206, 31, 12, 191, 30, 12, 190, 29, 12, 231, 28, 12, 230, 27, 12, 690, 26, 12, 689, 25, 12, 686, 24, 12, 685, 23, 12, 252, 22, 12, 251, 21, 12, 252, 20, 12, 251, 19, 12, 786, 18, 12, 785, 17, 12, 252, 16, 12, 251, 15, 12, 486, 14, 12, 485, 13, 12, 195, 12, 12, 194, 73, 13, 111, 72, 13, 110, 71, 13, 119, 70, 13, 118, 69, 13, 438, 68, 13, 437, 67, 13, 730, 66, 13, 729, 65, 13, 742, 64, 13, 741, 63, 13, 742, 62, 13, 741, 61, 13, 845, 60, 13, 844, 59, 13, 726, 58, 13, 725, 57, 13, 244, 56, 13, 243, 55, 13, 442, 54, 13, 441, 53, 13, 87, 52, 13, 86, 51, 13, 153, 50, 13, 152, 49, 13, 246, 48, 13, 245, 47, 13, 448, 46, 13, 447, 45, 13, 246, 44, 13, 245, 43, 13, 246, 42, 13, 245, 41, 13, 246, 40, 13, 245, 39, 13, 246, 38, 13, 245, 37, 13, 55, 36, 13, 54, 35, 13, 173, 34, 13, 172, 33, 13, 149, 32, 13, 148, 31, 13, 165, 30, 13, 164, 29, 13, 201, 28, 13, 200, 27, 13, 250, 26, 13, 249, 25, 13, 688, 24, 13, 687, 23, 13, 684, 22, 13, 683, 21, 13, 250, 20, 13, 249, 19, 13, 67, 18, 13, 66, 17, 13, 250, 16, 13, 249, 15, 13, 233, 14, 13, 232, 13, 13, 209, 12, 13, 208, 75, 14, 109, 74, 14, 108, 73, 14, 117, 72, 14, 116, 71, 14, 42, 70, 14, 41, 69, 14, 728, 68, 14, 727, 67, 14, 736, 66, 14, 735, 65, 14, 242, 64, 14, 241, 63, 14, 412, 62, 14, 411, 61, 14, 432, 60, 14, 431, 59, 14, 712, 58, 14, 711, 57, 14, 444, 56, 14, 443, 55, 14, 416, 54, 14, 415, 53, 14, 85, 52, 14, 84, 51, 14, 155, 50, 14, 154, 49, 14, 248, 48, 14, 247, 47, 14, 450, 46, 14, 449, 45, 14, 248, 44, 14, 247, 43, 14, 248, 42, 14, 247, 41, 14, 248, 40, 14, 247, 39, 14, 248, 38, 14, 247, 37, 14, 57, 36, 14, 56, 35, 14, 175, 34, 14, 174, 33, 14, 151, 32, 14, 150, 31, 14, 167, 30, 14, 166, 29, 14, 203, 28, 14, 202, 27, 14, 252, 26, 14, 251, 25, 14, 690, 24, 14, 689, 23, 14, 686, 22, 14, 685, 21, 14, 252, 20, 14, 251, 19, 14, 69, 18, 14, 68, 17, 14, 252, 16, 14, 251, 15, 14, 235, 14, 14, 234, 13, 14, 211, 12, 14, 210, 75, 15, 111, 74, 15, 110, 73, 15, 119, 72, 15, 118, 71, 15, 44, 70, 15, 43, 69, 15, 730, 68, 15, 729, 67, 15, 738, 66, 15, 737, 65, 15, 244, 64, 15, 243, 63, 15, 414, 62, 15, 413, 61, 15, 434, 60, 15, 433, 59, 15, 714, 58, 15, 713, 57, 15, 446, 56, 15, 445, 55, 15, 418, 54, 15, 417, 53, 15, 87, 52, 15, 86, 51, 15, 153, 50, 15, 152, 49, 15, 246, 48, 15, 245, 47, 15, 452, 46, 15, 451, 45, 15, 760, 44, 15, 759, 43, 15, 752, 42, 15, 751, 41, 15, 756, 40, 15, 755, 39, 15, 752, 38, 15, 751, 37, 15, 772, 36, 15, 771, 35, 15, 246, 34, 15, 245, 33, 15, 246, 32, 15, 245, 31, 15, 145, 30, 15, 144, 29, 15, 201, 28, 15, 200, 27, 15, 75, 26, 15, 74, 25, 15, 250, 24, 15, 249, 23, 15, 688, 22, 15, 687, 21, 15, 692, 20, 15, 691, 19, 15, 250, 18, 15, 249, 17, 15, 233, 16, 15, 232, 15, 15, 209, 14, 15, 208, 75, 16, 93, 74, 16, 92, 73, 16, 238, 72, 16, 237, 71, 16, 242, 70, 16, 241, 69, 16, 708, 68, 16, 707, 67, 16, 37, 66, 16, 36, 65, 16, 17, 64, 16, 16, 63, 16, 436, 62, 16, 435, 61, 16, 238, 60, 16, 237, 59, 16, 708, 58, 16, 707, 57, 16, 242, 56, 16, 241, 55, 16, 125, 54, 16, 124, 53, 16, 101, 52, 16, 100, 51, 16, 155, 50, 16, 154, 49, 16, 248, 48, 16, 247, 47, 16, 454, 46, 16, 453, 45, 16, 762, 44, 16, 761, 43, 16, 754, 42, 16, 753, 41, 16, 758, 40, 16, 757, 39, 16, 754, 38, 16, 753, 37, 16, 774, 36, 16, 773, 35, 16, 248, 34, 16, 247, 33, 16, 248, 32, 16, 247, 31, 16, 147, 30, 16, 146, 29, 16, 203, 28, 16, 202, 27, 16, 77, 26, 16, 76, 25, 16, 252, 24, 16, 251, 23, 16, 690, 22, 16, 689, 21, 16, 694, 20, 16, 693, 19, 16, 252, 18, 16, 251, 17, 16, 235, 16, 16, 234, 15, 16, 211, 14, 16, 210, 75, 17, 95, 74, 17, 94, 73, 17, 240, 72, 17, 239, 71, 17, 244, 70, 17, 243, 69, 17, 710, 68, 17, 709, 67, 17, 39, 66, 17, 38, 65, 17, 19, 64, 17, 18, 63, 17, 438, 62, 17, 437, 61, 17, 240, 60, 17, 239, 59, 17, 710, 58, 17, 709, 57, 17, 244, 56, 17, 243, 55, 17, 127, 54, 17, 126, 53, 17, 103, 52, 17, 102, 51, 17, 153, 50, 17, 152, 49, 17, 323, 48, 17, 322, 47, 17, 335, 46, 17, 334, 45, 17, 744, 44, 17, 743, 43, 17, 456, 42, 17, 455, 41, 17, 460, 40, 17, 459, 39, 17, 460, 38, 17, 459, 37, 17, 464, 36, 17, 463, 35, 17, 590, 34, 17, 589, 33, 17, 588, 32, 17, 587, 31, 17, 145, 30, 17, 144, 29, 17, 205, 28, 17, 204, 27, 17, 229, 26, 17, 228, 25, 17, 488, 24, 17, 487, 23, 17, 492, 22, 17, 491, 21, 17, 496, 20, 17, 495, 19, 17, 250, 18, 17, 249, 17, 17, 193, 16, 17, 192, 77, 18, 109, 76, 18, 108, 75, 18, 117, 74, 18, 116, 73, 18, 21, 72, 18, 20, 71, 18, 29, 70, 18, 28, 69, 18, 712, 68, 18, 711, 67, 18, 242, 66, 18, 241, 65, 18, 9, 64, 18, 8, 63, 18, 17, 62, 18, 16, 61, 18, 242, 60, 18, 241, 59, 18, 732, 58, 18, 731, 57, 18, 724, 56, 18, 723, 55, 18, 85, 54, 18, 84, 51, 18, 155, 50, 18, 154, 49, 18, 325, 48, 18, 324, 47, 18, 337, 46, 18, 336, 45, 18, 746, 44, 18, 745, 43, 18, 458, 42, 18, 457, 41, 18, 462, 40, 18, 461, 39, 18, 462, 38, 18, 461, 37, 18, 466, 36, 18, 465, 35, 18, 594, 34, 18, 593, 33, 18, 592, 32, 18, 591, 31, 18, 147, 30, 18, 146, 29, 18, 207, 28, 18, 206, 27, 18, 231, 26, 18, 230, 25, 18, 490, 24, 18, 489, 23, 18, 494, 22, 18, 493, 21, 18, 498, 20, 18, 497, 19, 18, 252, 18, 18, 251, 17, 18, 195, 16, 18, 194, 77, 19, 111, 76, 19, 110, 75, 19, 119, 74, 19, 118, 73, 19, 23, 72, 19, 22, 71, 19, 31, 70, 19, 30, 69, 19, 714, 68, 19, 713, 67, 19, 244, 66, 19, 243, 65, 19, 11, 64, 19, 10, 63, 19, 19, 62, 19, 18, 61, 19, 244, 60, 19, 243, 59, 19, 734, 58, 19, 733, 57, 19, 726, 56, 19, 725, 55, 19, 87, 54, 19, 86, 53, 19, 169, 52, 19, 168, 51, 19, 177, 50, 19, 176, 49, 19, 327, 48, 19, 326, 47, 19, 331, 46, 19, 330, 45, 19, 835, 44, 19, 834, 43, 19, 752, 42, 19, 751, 41, 19, 776, 40, 19, 775, 39, 19, 246, 38, 19, 245, 37, 19, 246, 36, 19, 245, 35, 19, 598, 34, 19, 597, 33, 19, 596, 32, 19, 595, 31, 19, 173, 30, 19, 172, 29, 19, 165, 28, 19, 164, 27, 19, 201, 26, 19, 200, 25, 19, 359, 24, 19, 358, 23, 19, 371, 22, 19, 370, 21, 19, 250, 20, 19, 249, 19, 19, 233, 18, 19, 232, 17, 19, 209, 16, 19, 208, 77, 20, 93, 76, 20, 92, 75, 20, 238, 74, 20, 237, 73, 20, 25, 72, 20, 24, 71, 20, 728, 70, 20, 727, 69, 20, 736, 68, 20, 735, 67, 20, 238, 66, 20, 237, 65, 20, 242, 64, 20, 241, 63, 20, 9, 62, 20, 8, 61, 20, 29, 60, 20, 28, 59, 20, 238, 58, 20, 237, 57, 20, 720, 56, 20, 719, 55, 20, 85, 54, 20, 84, 53, 20, 171, 52, 20, 170, 51, 20, 179, 50, 20, 178, 49, 20, 329, 48, 20, 328, 47, 20, 333, 46, 20, 332, 45, 20, 837, 44, 20, 836, 43, 20, 754, 42, 20, 753, 41, 20, 778, 40, 20, 777, 39, 20, 248, 38, 20, 247, 37, 20, 248, 36, 20, 247, 35, 20, 602, 34, 20, 601, 33, 20, 600, 32, 20, 599, 31, 20, 175, 30, 20, 174, 29, 20, 167, 28, 20, 166, 27, 20, 203, 26, 20, 202, 25, 20, 361, 24, 20, 360, 23, 20, 373, 22, 20, 372, 21, 20, 252, 20, 20, 251, 19, 20, 235, 18, 20, 234, 17, 20, 211, 16, 20, 210, 77, 21, 95, 76, 21, 94, 75, 21, 240, 74, 21, 239, 73, 21, 27, 72, 21, 26, 71, 21, 730, 70, 21, 729, 69, 21, 738, 68, 21, 737, 67, 21, 240, 66, 21, 239, 65, 21, 244, 64, 21, 243, 63, 21, 11, 62, 21, 10, 61, 21, 31, 60, 21, 30, 59, 21, 240, 58, 21, 239, 57, 21, 722, 56, 21, 721, 55, 21, 87, 54, 21, 86, 53, 21, 153, 52, 21, 152, 51, 21, 456, 50, 21, 455, 49, 21, 460, 48, 21, 459, 47, 21, 464, 46, 21, 463, 45, 21, 744, 44, 21, 743, 43, 21, 246, 42, 21, 245, 41, 21, 744, 40, 21, 743, 39, 21, 246, 38, 21, 245, 37, 21, 323, 36, 21, 322, 35, 21, 315, 34, 21, 314, 33, 21, 315, 32, 21, 314, 31, 21, 335, 30, 21, 334, 29, 21, 145, 28, 21, 144, 27, 21, 201, 26, 21, 200, 25, 21, 363, 24, 21, 362, 23, 21, 367, 22, 21, 366, 21, 21, 233, 20, 21, 232, 19, 21, 209, 18, 21, 208, 79, 22, 109, 78, 22, 108, 77, 22, 117, 76, 22, 116, 75, 22, 242, 74, 22, 241, 73, 22, 728, 72, 22, 727, 71, 22, 736, 70, 22, 735, 69, 22, 412, 68, 22, 411, 67, 22, 408, 66, 22, 407, 65, 22, 408, 64, 22, 407, 63, 22, 432, 62, 22, 431, 61, 22, 652, 60, 22, 651, 59, 22, 644, 58, 22, 643, 57, 22, 712, 56, 22, 711, 55, 22, 85, 54, 22, 84, 53, 22, 155, 52, 22, 154, 51, 22, 458, 50, 22, 457, 49, 22, 462, 48, 22, 461, 47, 22, 466, 46, 22, 465, 45, 22, 746, 44, 22, 745, 43, 22, 248, 42, 22, 247, 41, 22, 746, 40, 22, 745, 39, 22, 248, 38, 22, 247, 37, 22, 325, 36, 22, 324, 35, 22, 317, 34, 22, 316, 33, 22, 317, 32, 22, 316, 31, 22, 337, 30, 22, 336, 29, 22, 147, 28, 22, 146, 27, 22, 203, 26, 22, 202, 25, 22, 365, 24, 22, 364, 23, 22, 369, 22, 22, 368, 21, 22, 235, 20, 22, 234, 19, 22, 211, 18, 22, 210, 79, 23, 111, 78, 23, 110, 77, 23, 119, 76, 23, 118, 75, 23, 244, 74, 23, 243, 73, 23, 730, 72, 23, 729, 71, 23, 738, 70, 23, 737, 69, 23, 414, 68, 23, 413, 67, 23, 410, 66, 23, 409, 65, 23, 410, 64, 23, 409, 63, 23, 434, 62, 23, 433, 61, 23, 654, 60, 23, 653, 59, 23, 646, 58, 23, 645, 57, 23, 714, 56, 23, 713, 55, 23, 87, 54, 23, 86, 53, 23, 157, 52, 23, 156, 51, 23, 181, 50, 23, 180, 49, 23, 246, 48, 23, 245, 47, 23, 246, 46, 23, 245, 45, 23, 748, 44, 23, 747, 43, 23, 448, 42, 23, 447, 41, 23, 748, 40, 23, 747, 39, 23, 323, 38, 23, 322, 37, 23, 339, 36, 23, 338, 35, 23, 343, 34, 23, 342, 33, 23, 319, 32, 23, 318, 31, 23, 331, 30, 23, 330, 29, 23, 145, 28, 23, 144, 27, 23, 205, 26, 23, 204, 25, 23, 189, 24, 23, 188, 23, 23, 189, 22, 23, 188, 21, 23, 209, 20, 23, 208, 79, 24, 93, 78, 24, 92, 77, 24, 444, 76, 24, 443, 75, 24, 432, 74, 24, 431, 73, 24, 716, 72, 24, 715, 71, 24, 444, 70, 24, 443, 69, 24, 416, 68, 24, 415, 67, 24, 291, 66, 24, 290, 65, 24, 287, 64, 24, 286, 63, 24, 242, 62, 24, 241, 61, 24, 640, 60, 24, 639, 59, 24, 47, 58, 24, 46, 57, 24, 716, 56, 24, 715, 55, 24, 85, 54, 24, 84, 53, 24, 159, 52, 24, 158, 51, 24, 183, 50, 24, 182, 49, 24, 248, 48, 24, 247, 47, 24, 248, 46, 24, 247, 45, 24, 750, 44, 24, 749, 43, 24, 450, 42, 24, 449, 41, 24, 750, 40, 24, 749, 39, 24, 325, 38, 24, 324, 37, 24, 341, 36, 24, 340, 35, 24, 345, 34, 24, 344, 33, 24, 321, 32, 24, 320, 31, 24, 333, 30, 24, 332, 29, 24, 147, 28, 24, 146, 27, 24, 207, 26, 24, 206, 25, 24, 191, 24, 24, 190, 23, 24, 191, 22, 24, 190, 21, 24, 211, 20, 24, 210, 79, 25, 95, 78, 25, 94, 77, 25, 446, 76, 25, 445, 75, 25, 434, 74, 25, 433, 73, 25, 718, 72, 25, 717, 71, 25, 446, 70, 25, 445, 69, 25, 418, 68, 25, 417, 67, 25, 293, 66, 25, 292, 65, 25, 289, 64, 25, 288, 63, 25, 244, 62, 25, 243, 61, 25, 642, 60, 25, 641, 59, 25, 49, 58, 25, 48, 57, 25, 718, 56, 25, 717, 55, 25, 87, 54, 25, 86, 51, 25, 157, 50, 25, 156, 49, 25, 181, 48, 25, 180, 47, 25, 63, 46, 25, 62, 45, 25, 772, 44, 25, 771, 43, 25, 452, 42, 25, 451, 41, 25, 744, 40, 25, 743, 39, 25, 327, 38, 25, 326, 37, 25, 347, 36, 25, 346, 35, 25, 331, 34, 25, 330, 33, 25, 185, 32, 25, 184, 31, 25, 141, 30, 25, 140, 29, 25, 161, 28, 25, 160, 27, 25, 217, 26, 25, 216, 25, 25, 197, 24, 25, 196, 23, 25, 197, 22, 25, 196, 21, 25, 213, 20, 25, 212, 79, 26, 93, 78, 26, 92, 77, 26, 238, 76, 26, 237, 75, 26, 728, 74, 26, 727, 73, 26, 736, 72, 26, 735, 71, 26, 291, 70, 26, 290, 69, 26, 259, 68, 26, 258, 67, 26, 283, 66, 26, 282, 65, 26, 307, 64, 26, 306, 63, 26, 636, 62, 26, 635, 61, 26, 660, 60, 26, 659, 59, 26, 238, 58, 26, 237, 57, 26, 708, 56, 26, 707, 55, 26, 113, 54, 26, 112, 53, 26, 105, 52, 26, 104, 51, 26, 159, 50, 26, 158, 49, 26, 183, 48, 26, 182, 47, 26, 65, 46, 26, 64, 45, 26, 774, 44, 26, 773, 43, 26, 454, 42, 26, 453, 41, 26, 746, 40, 26, 745, 39, 26, 329, 38, 26, 328, 37, 26, 349, 36, 26, 348, 35, 26, 333, 34, 26, 332, 33, 26, 187, 32, 26, 186, 31, 26, 143, 30, 26, 142, 29, 26, 163, 28, 26, 162, 27, 26, 219, 26, 26, 218, 25, 26, 199, 24, 26, 198, 23, 26, 199, 22, 26, 198, 21, 26, 215, 20, 26, 214, 79, 27, 95, 78, 27, 94, 77, 27, 240, 76, 27, 239, 75, 27, 730, 74, 27, 729, 73, 27, 738, 72, 27, 737, 71, 27, 293, 70, 27, 292, 69, 27, 261, 68, 27, 260, 67, 27, 285, 66, 27, 284, 65, 27, 309, 64, 27, 308, 63, 27, 638, 62, 27, 637, 61, 27, 662, 60, 27, 661, 59, 27, 240, 58, 27, 239, 57, 27, 710, 56, 27, 709, 55, 27, 115, 54, 27, 114, 53, 27, 107, 52, 27, 106, 49, 27, 157, 48, 27, 156, 47, 27, 181, 46, 27, 180, 45, 27, 246, 44, 27, 245, 43, 27, 246, 42, 27, 245, 41, 27, 764, 40, 27, 763, 39, 27, 780, 38, 27, 779, 37, 27, 668, 36, 27, 667, 35, 27, 246, 34, 27, 245, 33, 27, 145, 32, 27, 144, 27, 27, 201, 26, 27, 200, 25, 27, 622, 24, 27, 621, 23, 27, 620, 22, 27, 619, 21, 27, 193, 20, 27, 192, 79, 28, 93, 78, 28, 92, 77, 28, 242, 76, 28, 241, 75, 28, 720, 74, 28, 719, 73, 28, 242, 72, 28, 241, 71, 28, 263, 70, 28, 262, 69, 28, 303, 68, 28, 302, 67, 28, 279, 66, 28, 278, 65, 28, 299, 64, 28, 298, 63, 28, 242, 62, 28, 241, 61, 28, 238, 60, 28, 237, 59, 28, 242, 58, 28, 241, 57, 28, 732, 56, 28, 731, 55, 28, 724, 54, 28, 723, 53, 28, 113, 52, 28, 112, 51, 28, 105, 50, 28, 104, 49, 28, 159, 48, 28, 158, 47, 28, 183, 46, 28, 182, 45, 28, 248, 44, 28, 247, 43, 28, 248, 42, 28, 247, 41, 28, 766, 40, 28, 765, 39, 28, 782, 38, 28, 781, 37, 28, 670, 36, 28, 669, 35, 28, 248, 34, 28, 247, 33, 28, 147, 32, 28, 146, 27, 28, 203, 26, 28, 202, 25, 28, 626, 24, 28, 625, 23, 28, 624, 22, 28, 623, 21, 28, 195, 20, 28, 194, 79, 29, 95, 78, 29, 94, 77, 29, 244, 76, 29, 243, 75, 29, 722, 74, 29, 721, 73, 29, 244, 72, 29, 243, 71, 29, 265, 70, 29, 264, 69, 29, 305, 68, 29, 304, 67, 29, 281, 66, 29, 280, 65, 29, 301, 64, 29, 300, 63, 29, 244, 62, 29, 243, 61, 29, 240, 60, 29, 239, 59, 29, 244, 58, 29, 243, 57, 29, 734, 56, 29, 733, 55, 29, 726, 54, 29, 725, 53, 29, 115, 52, 29, 114, 51, 29, 107, 50, 29, 106, 47, 29, 153, 46, 29, 152, 45, 29, 590, 44, 29, 589, 43, 29, 588, 42, 29, 587, 41, 29, 246, 40, 29, 245, 39, 29, 748, 38, 29, 747, 37, 29, 676, 36, 29, 675, 35, 29, 672, 34, 29, 671, 33, 29, 145, 32, 29, 144, 27, 29, 201, 26, 29, 200, 25, 29, 630, 24, 29, 629, 23, 29, 628, 22, 29, 627, 21, 29, 193, 20, 29, 192, 79, 30, 93, 78, 30, 92, 77, 30, 33, 76, 30, 32, 75, 30, 732, 74, 30, 731, 73, 30, 724, 72, 30, 723, 71, 30, 295, 70, 30, 294, 69, 30, 267, 68, 30, 266, 67, 30, 299, 66, 30, 298, 65, 30, 580, 64, 30, 579, 63, 30, 544, 62, 30, 543, 61, 30, 544, 60, 30, 543, 59, 30, 576, 58, 30, 575, 57, 30, 238, 56, 30, 237, 55, 30, 720, 54, 30, 719, 53, 30, 242, 52, 30, 241, 51, 30, 113, 50, 30, 112, 49, 30, 105, 48, 30, 104, 47, 30, 155, 46, 30, 154, 45, 30, 594, 44, 30, 593, 43, 30, 592, 42, 30, 591, 41, 30, 248, 40, 30, 247, 39, 30, 750, 38, 30, 749, 37, 30, 678, 36, 30, 677, 35, 30, 674, 34, 30, 673, 33, 30, 147, 32, 30, 146, 27, 30, 203, 26, 30, 202, 25, 30, 634, 24, 30, 633, 23, 30, 632, 22, 30, 631, 21, 30, 195, 20, 30, 194, 79, 31, 95, 78, 31, 94, 77, 31, 35, 76, 31, 34, 75, 31, 734, 74, 31, 733, 73, 31, 726, 72, 31, 725, 71, 31, 297, 70, 31, 296, 69, 31, 269, 68, 31, 268, 67, 31, 301, 66, 31, 300, 65, 31, 582, 64, 31, 581, 63, 31, 546, 62, 31, 545, 61, 31, 546, 60, 31, 545, 59, 31, 578, 58, 31, 577, 57, 31, 240, 56, 31, 239, 55, 31, 722, 54, 31, 721, 53, 31, 244, 52, 31, 243, 51, 31, 115, 50, 31, 114, 49, 31, 107, 48, 31, 106, 47, 31, 153, 46, 31, 152, 45, 31, 598, 44, 31, 597, 43, 31, 596, 42, 31, 595, 41, 31, 246, 40, 31, 245, 39, 31, 768, 38, 31, 767, 37, 31, 776, 36, 31, 775, 35, 31, 668, 34, 31, 667, 33, 31, 173, 32, 31, 172, 31, 31, 165, 30, 31, 164, 27, 31, 205, 26, 31, 204, 25, 31, 189, 24, 31, 188, 23, 31, 189, 22, 31, 188, 21, 31, 209, 20, 31, 208, 79, 32, 93, 78, 32, 92, 77, 32, 1, 76, 32, 0, 75, 32, 47, 74, 32, 46, 73, 32, 708, 72, 32, 707, 71, 32, 242, 70, 32, 241, 69, 32, 238, 68, 32, 237, 67, 32, 42, 66, 32, 41, 65, 32, 548, 64, 32, 547, 63, 32, 584, 62, 32, 583, 61, 32, 564, 60, 32, 563, 59, 32, 572, 58, 32, 571, 57, 32, 242, 56, 32, 241, 55, 32, 716, 54, 32, 715, 53, 32, 238, 52, 32, 237, 51, 32, 440, 50, 32, 439, 49, 32, 85, 48, 32, 84, 47, 32, 155, 46, 32, 154, 45, 32, 602, 44, 32, 601, 43, 32, 600, 42, 32, 599, 41, 32, 248, 40, 32, 247, 39, 32, 770, 38, 32, 769, 37, 32, 778, 36, 32, 777, 35, 32, 670, 34, 32, 669, 33, 32, 175, 32, 32, 174, 31, 32, 167, 30, 32, 166, 27, 32, 207, 26, 32, 206, 25, 32, 191, 24, 32, 190, 23, 32, 191, 22, 32, 190, 21, 32, 211, 20, 32, 210, 79, 33, 95, 78, 33, 94, 77, 33, 3, 76, 33, 2, 75, 33, 49, 74, 33, 48, 73, 33, 710, 72, 33, 709, 71, 33, 244, 70, 33, 243, 69, 33, 240, 68, 33, 239, 67, 33, 44, 66, 33, 43, 65, 33, 550, 64, 33, 549, 63, 33, 586, 62, 33, 585, 61, 33, 566, 60, 33, 565, 59, 33, 574, 58, 33, 573, 57, 33, 244, 56, 33, 243, 55, 33, 718, 54, 33, 717, 53, 33, 240, 52, 33, 239, 51, 33, 442, 50, 33, 441, 49, 33, 87, 48, 33, 86, 47, 33, 157, 46, 33, 156, 45, 33, 141, 44, 33, 140, 43, 33, 181, 42, 33, 180, 41, 33, 476, 40, 33, 475, 39, 33, 468, 38, 33, 467, 37, 33, 59, 36, 33, 58, 35, 33, 668, 34, 33, 667, 33, 33, 246, 32, 33, 245, 31, 33, 145, 30, 33, 144, 79, 34, 93, 78, 34, 92, 77, 34, 25, 76, 34, 24, 75, 34, 728, 74, 34, 727, 73, 34, 736, 72, 34, 735, 71, 34, 291, 70, 34, 290, 69, 34, 259, 68, 34, 258, 67, 34, 287, 66, 34, 286, 65, 34, 568, 64, 34, 567, 63, 34, 552, 62, 34, 551, 61, 34, 572, 60, 34, 571, 59, 34, 412, 58, 34, 411, 57, 34, 432, 56, 34, 431, 55, 34, 712, 54, 34, 711, 53, 34, 444, 52, 34, 443, 51, 34, 428, 50, 34, 427, 49, 34, 85, 48, 34, 84, 47, 34, 159, 46, 34, 158, 45, 34, 143, 44, 34, 142, 43, 34, 183, 42, 34, 182, 41, 34, 478, 40, 34, 477, 39, 34, 470, 38, 34, 469, 37, 34, 61, 36, 34, 60, 35, 34, 670, 34, 34, 669, 33, 34, 248, 32, 34, 247, 31, 34, 147, 30, 34, 146, 79, 35, 95, 78, 35, 94, 77, 35, 27, 76, 35, 26, 75, 35, 730, 74, 35, 729, 73, 35, 738, 72, 35, 737, 71, 35, 293, 70, 35, 292, 69, 35, 261, 68, 35, 260, 67, 35, 289, 66, 35, 288, 65, 35, 570, 64, 35, 569, 63, 35, 554, 62, 35, 553, 61, 35, 574, 60, 35, 573, 59, 35, 414, 58, 35, 413, 57, 35, 434, 56, 35, 433, 55, 35, 714, 54, 35, 713, 53, 35, 446, 52, 35, 445, 51, 35, 430, 50, 35, 429, 49, 35, 87, 48, 35, 86, 43, 35, 153, 42, 35, 152, 41, 35, 456, 40, 35, 455, 39, 35, 472, 38, 35, 471, 37, 35, 464, 36, 35, 463, 35, 35, 676, 34, 35, 675, 33, 35, 680, 32, 35, 679, 31, 35, 145, 30, 35, 144, 79, 36, 93, 78, 36, 92, 77, 36, 238, 76, 36, 237, 75, 36, 716, 74, 36, 715, 73, 36, 291, 72, 36, 290, 71, 36, 283, 70, 36, 282, 69, 36, 303, 68, 36, 302, 67, 36, 271, 66, 36, 270, 65, 36, 238, 64, 36, 237, 63, 36, 242, 62, 36, 241, 61, 36, 444, 60, 36, 443, 59, 36, 416, 58, 36, 415, 57, 36, 238, 56, 36, 237, 55, 36, 708, 54, 36, 707, 53, 36, 42, 52, 36, 41, 51, 36, 436, 50, 36, 435, 49, 36, 85, 48, 36, 84, 43, 36, 155, 42, 36, 154, 41, 36, 458, 40, 36, 457, 39, 36, 474, 38, 36, 473, 37, 36, 466, 36, 36, 465, 35, 36, 678, 34, 36, 677, 33, 36, 682, 32, 36, 681, 31, 36, 147, 30, 36, 146, 79, 37, 95, 78, 37, 94, 77, 37, 240, 76, 37, 239, 75, 37, 718, 74, 37, 717, 73, 37, 293, 72, 37, 292, 71, 37, 285, 70, 37, 284, 69, 37, 305, 68, 37, 304, 67, 37, 273, 66, 37, 272, 65, 37, 240, 64, 37, 239, 63, 37, 244, 62, 37, 243, 61, 37, 446, 60, 37, 445, 59, 37, 418, 58, 37, 417, 57, 37, 240, 56, 37, 239, 55, 37, 710, 54, 37, 709, 53, 37, 44, 52, 37, 43, 51, 37, 438, 50, 37, 437, 49, 37, 87, 48, 37, 86, 43, 37, 157, 42, 37, 156, 41, 37, 141, 40, 37, 140, 39, 37, 141, 38, 37, 140, 37, 37, 141, 36, 37, 140, 35, 37, 141, 34, 37, 140, 33, 37, 141, 32, 37, 140, 31, 37, 161, 30, 37, 160, 79, 38, 97, 78, 38, 96, 77, 38, 121, 76, 38, 120, 75, 38, 712, 74, 38, 711, 73, 38, 295, 72, 38, 294, 71, 38, 275, 70, 38, 274, 69, 38, 303, 68, 38, 302, 67, 38, 307, 66, 38, 306, 65, 38, 636, 64, 38, 635, 63, 38, 636, 62, 38, 635, 61, 38, 644, 60, 38, 643, 59, 38, 242, 58, 38, 241, 57, 38, 728, 56, 38, 727, 55, 38, 736, 54, 38, 735, 53, 38, 125, 52, 38, 124, 51, 38, 81, 50, 38, 80, 49, 38, 101, 48, 38, 100, 43, 38, 159, 42, 38, 158, 41, 38, 143, 40, 38, 142, 39, 38, 143, 38, 38, 142, 37, 38, 143, 36, 38, 142, 35, 38, 143, 34, 38, 142, 33, 38, 143, 32, 38, 142, 31, 38, 163, 30, 38, 162, 79, 39, 99, 78, 39, 98, 77, 39, 123, 76, 39, 122, 75, 39, 714, 74, 39, 713, 73, 39, 297, 72, 39, 296, 71, 39, 277, 70, 39, 276, 69, 39, 305, 68, 39, 304, 67, 39, 309, 66, 39, 308, 65, 39, 638, 64, 39, 637, 63, 39, 638, 62, 39, 637, 61, 39, 646, 60, 39, 645, 59, 39, 244, 58, 39, 243, 57, 39, 730, 56, 39, 729, 55, 39, 738, 54, 39, 737, 53, 39, 127, 52, 39, 126, 51, 39, 83, 50, 39, 82, 49, 39, 103, 48, 39, 102, 45, 39, 137, 44, 39, 131, 43, 39, 131, 42, 39, 131, 41, 39, 131, 40, 39, 131, 39, 39, 131, 38, 39, 131, 37, 39, 131, 36, 39, 131, 35, 39, 131, 34, 39, 131, 33, 39, 136, 26, 39, 137, 25, 39, 131, 24, 39, 131, 23, 39, 131, 22, 39, 131, 21, 39, 136, 79, 40, 390, 78, 40, 390, 77, 40, 93, 76, 40, 92, 75, 40, 720, 74, 40, 719, 73, 40, 33, 72, 40, 32, 71, 40, 295, 70, 40, 294, 69, 40, 311, 68, 40, 310, 67, 40, 299, 66, 40, 298, 65, 40, 242, 64, 40, 241, 63, 40, 238, 62, 40, 237, 61, 40, 21, 60, 40, 20, 59, 40, 29, 58, 40, 28, 57, 40, 720, 56, 40, 719, 55, 40, 125, 54, 40, 124, 53, 40, 101, 52, 40, 100, 49, 40, 137, 48, 40, 131, 47, 40, 131, 46, 40, 131, 45, 40, 135, 44, 40, 518, 43, 40, 517, 42, 40, 516, 41, 40, 515, 40, 40, 514, 39, 40, 236, 38, 40, 236, 37, 40, 236, 36, 40, 236, 35, 40, 236, 34, 40, 236, 33, 40, 134, 32, 40, 131, 31, 40, 131, 30, 40, 131, 29, 40, 131, 28, 40, 131, 27, 40, 131, 26, 40, 135, 25, 40, 236, 24, 40, 236, 23, 40, 236, 22, 40, 236, 21, 40, 134, 20, 40, 131, 19, 40, 131, 18, 40, 131, 17, 40, 131, 16, 40, 131, 15, 40, 131, 14, 40, 131, 13, 40, 131, 12, 40, 131, 11, 40, 136, 6, 40, 137, 5, 40, 131, 4, 40, 131, 3, 40, 131, 2, 40, 131, 1, 40, 136, 79, 41, 390, 78, 41, 390, 77, 41, 95, 76, 41, 94, 75, 41, 722, 74, 41, 721, 73, 41, 35, 72, 41, 34, 71, 41, 297, 70, 41, 296, 69, 41, 313, 68, 41, 312, 67, 41, 301, 66, 41, 300, 65, 41, 244, 64, 41, 243, 63, 41, 240, 62, 41, 239, 61, 41, 23, 60, 41, 22, 59, 41, 31, 58, 41, 30, 57, 41, 722, 56, 41, 721, 55, 41, 127, 54, 41, 126, 53, 41, 103, 52, 41, 102, 50, 41, 137, 49, 41, 135, 48, 41, 236, 47, 41, 236, 46, 41, 236, 45, 41, 236, 44, 41, 523, 43, 41, 522, 42, 41, 521, 41, 41, 520, 40, 41, 519, 39, 41, 236, 38, 41, 236, 37, 41, 236, 36, 41, 236, 35, 41, 826, 34, 41, 812, 33, 41, 828, 32, 41, 236, 31, 41, 236, 30, 41, 236, 29, 41, 508, 28, 41, 236, 27, 41, 236, 26, 41, 236, 25, 41, 79, 24, 41, 236, 23, 41, 236, 22, 41, 236, 21, 41, 236, 20, 41, 236, 19, 41, 236, 18, 41, 236, 17, 41, 236, 16, 41, 236, 15, 41, 236, 14, 41, 236, 13, 41, 236, 12, 41, 508, 11, 41, 134, 10, 41, 131, 9, 41, 131, 8, 41, 131, 7, 41, 131, 6, 41, 135, 5, 41, 236, 4, 41, 508, 3, 41, 236, 2, 41, 236, 1, 41, 134, 0, 41, 136, 79, 42, 390, 78, 42, 390, 77, 42, 93, 76, 42, 92, 75, 42, 708, 74, 42, 707, 73, 42, 9, 72, 42, 8, 71, 42, 17, 70, 42, 16, 69, 42, 640, 68, 42, 639, 67, 42, 238, 66, 42, 237, 65, 42, 21, 64, 42, 20, 63, 42, 5, 62, 42, 4, 61, 42, 13, 60, 42, 12, 59, 42, 728, 58, 42, 727, 57, 42, 736, 56, 42, 735, 55, 42, 85, 54, 42, 84, 51, 42, 137, 50, 42, 135, 49, 42, 236, 48, 42, 236, 47, 42, 236, 46, 42, 236, 45, 42, 236, 44, 42, 528, 43, 42, 527, 42, 42, 526, 41, 42, 525, 40, 42, 524, 39, 42, 236, 38, 42, 236, 37, 42, 236, 36, 42, 826, 35, 42, 831, 34, 42, 236, 33, 42, 832, 32, 42, 815, 31, 42, 811, 30, 42, 829, 29, 42, 502, 28, 42, 504, 27, 42, 236, 26, 42, 236, 25, 42, 236, 24, 42, 236, 23, 42, 236, 22, 42, 236, 21, 42, 236, 20, 42, 392, 19, 42, 236, 18, 42, 236, 17, 42, 236, 16, 42, 236, 15, 42, 236, 14, 42, 236, 13, 42, 236, 12, 42, 502, 11, 42, 504, 10, 42, 236, 9, 42, 236, 8, 42, 236, 7, 42, 236, 6, 42, 236, 5, 42, 236, 4, 42, 500, 3, 42, 236, 2, 42, 236, 1, 42, 236, 0, 42, 130, 79, 43, 390, 78, 43, 390, 77, 43, 95, 76, 43, 94, 75, 43, 710, 74, 43, 709, 73, 43, 11, 72, 43, 10, 71, 43, 19, 70, 43, 18, 69, 43, 642, 68, 43, 641, 67, 43, 240, 66, 43, 239, 65, 43, 23, 64, 43, 22, 63, 43, 7, 62, 43, 6, 61, 43, 15, 60, 43, 14, 59, 43, 730, 58, 43, 729, 57, 43, 738, 56, 43, 737, 55, 43, 87, 54, 43, 86, 51, 43, 128, 50, 43, 501, 49, 43, 499, 48, 43, 504, 47, 43, 236, 46, 43, 236, 45, 43, 236, 44, 43, 533, 43, 43, 532, 42, 43, 531, 41, 43, 530, 40, 43, 529, 39, 43, 236, 38, 43, 501, 37, 43, 499, 36, 43, 511, 35, 43, 507, 34, 43, 383, 33, 43, 379, 32, 43, 379, 31, 43, 382, 30, 43, 832, 29, 43, 828, 28, 43, 500, 27, 43, 859, 26, 43, 858, 25, 43, 815, 24, 43, 813, 23, 43, 829, 22, 43, 540, 21, 43, 539, 20, 43, 236, 19, 43, 236, 18, 43, 236, 17, 43, 236, 16, 43, 236, 15, 43, 236, 14, 43, 394, 13, 43, 236, 12, 43, 505, 11, 43, 509, 10, 43, 504, 9, 43, 236, 8, 43, 501, 7, 43, 507, 6, 43, 236, 5, 43, 236, 4, 43, 500, 3, 43, 40, 2, 43, 236, 1, 43, 236, 0, 43, 130, 79, 44, 390, 78, 44, 390, 77, 44, 93, 76, 44, 92, 75, 44, 732, 74, 44, 731, 73, 44, 724, 72, 44, 723, 71, 44, 25, 70, 44, 24, 69, 44, 640, 68, 44, 639, 67, 44, 47, 66, 44, 46, 65, 44, 1, 64, 44, 0, 63, 44, 728, 62, 44, 727, 61, 44, 740, 60, 44, 739, 59, 44, 736, 58, 44, 735, 57, 44, 242, 56, 44, 241, 55, 44, 85, 54, 44, 84, 52, 44, 137, 51, 44, 135, 50, 44, 500, 49, 44, 236, 48, 44, 512, 47, 44, 236, 46, 44, 391, 45, 44, 236, 44, 44, 538, 43, 44, 537, 42, 44, 536, 41, 44, 535, 40, 44, 534, 39, 44, 501, 38, 44, 503, 37, 44, 827, 36, 44, 830, 35, 44, 383, 34, 44, 389, 33, 44, 390, 32, 44, 390, 31, 44, 388, 30, 44, 382, 29, 44, 833, 28, 44, 510, 27, 44, 861, 26, 44, 860, 25, 44, 236, 24, 44, 236, 23, 44, 816, 22, 44, 542, 21, 44, 541, 20, 44, 257, 19, 44, 236, 18, 44, 40, 17, 44, 236, 16, 44, 236, 15, 44, 236, 14, 44, 236, 13, 44, 236, 12, 44, 236, 11, 44, 500, 10, 44, 500, 9, 44, 236, 8, 44, 506, 7, 44, 236, 6, 44, 393, 5, 44, 236, 4, 44, 500, 3, 44, 540, 2, 44, 539, 1, 44, 236, 0, 44, 130, 79, 45, 390, 78, 45, 390, 77, 45, 95, 76, 45, 94, 75, 45, 734, 74, 45, 733, 73, 45, 726, 72, 45, 725, 71, 45, 27, 70, 45, 26, 69, 45, 642, 68, 45, 641, 67, 45, 49, 66, 45, 48, 65, 45, 3, 64, 45, 2, 63, 45, 730, 62, 45, 729, 61, 45, 742, 60, 45, 741, 59, 45, 738, 58, 45, 737, 57, 45, 244, 56, 45, 243, 55, 45, 87, 54, 45, 86, 52, 45, 128, 51, 45, 501, 50, 45, 503, 49, 45, 501, 48, 45, 503, 47, 45, 236, 46, 45, 236, 45, 45, 236, 44, 45, 40, 43, 45, 501, 42, 45, 507, 41, 45, 236, 40, 45, 505, 39, 45, 503, 38, 45, 236, 37, 45, 820, 36, 45, 383, 35, 45, 389, 34, 45, 390, 33, 45, 390, 32, 45, 390, 31, 45, 390, 30, 45, 388, 29, 45, 382, 28, 45, 502, 27, 45, 504, 26, 45, 236, 25, 45, 236, 24, 45, 236, 23, 45, 832, 22, 45, 829, 21, 45, 257, 20, 45, 257, 19, 45, 826, 18, 45, 814, 17, 45, 828, 16, 45, 236, 15, 45, 236, 14, 45, 236, 13, 45, 236, 12, 45, 508, 11, 45, 500, 10, 45, 500, 9, 45, 236, 8, 45, 236, 7, 45, 236, 6, 45, 236, 5, 45, 236, 4, 45, 512, 3, 45, 542, 2, 45, 541, 1, 45, 236, 0, 45, 130, 79, 46, 390, 78, 46, 390, 77, 46, 93, 76, 46, 92, 75, 46, 238, 74, 46, 237, 73, 46, 732, 72, 46, 731, 71, 46, 724, 70, 46, 723, 69, 46, 656, 68, 46, 655, 67, 46, 664, 66, 46, 663, 65, 46, 25, 64, 46, 24, 63, 46, 708, 62, 46, 707, 61, 46, 125, 60, 46, 124, 59, 46, 81, 58, 46, 80, 57, 46, 81, 56, 46, 80, 55, 46, 101, 54, 46, 100, 52, 46, 128, 51, 46, 502, 50, 46, 499, 49, 46, 503, 48, 46, 236, 47, 46, 236, 46, 46, 501, 45, 46, 499, 44, 46, 499, 43, 46, 503, 42, 46, 236, 41, 46, 236, 40, 46, 236, 39, 46, 826, 38, 46, 815, 37, 46, 823, 36, 46, 380, 35, 46, 390, 34, 46, 390, 33, 46, 387, 32, 46, 386, 31, 46, 390, 30, 46, 390, 29, 46, 388, 28, 46, 382, 27, 46, 500, 26, 46, 236, 25, 46, 236, 24, 46, 236, 23, 46, 236, 22, 46, 833, 21, 46, 813, 20, 46, 812, 19, 46, 831, 18, 46, 236, 17, 46, 832, 16, 46, 829, 15, 46, 236, 14, 46, 236, 13, 46, 505, 12, 46, 509, 11, 46, 509, 10, 46, 509, 9, 46, 507, 8, 46, 501, 7, 46, 499, 6, 46, 504, 5, 46, 236, 4, 46, 500, 3, 46, 236, 2, 46, 236, 1, 46, 236, 0, 46, 130, 79, 47, 390, 78, 47, 390, 77, 47, 95, 76, 47, 94, 75, 47, 240, 74, 47, 239, 73, 47, 734, 72, 47, 733, 71, 47, 726, 70, 47, 725, 69, 47, 658, 68, 47, 657, 67, 47, 666, 66, 47, 665, 65, 47, 27, 64, 47, 26, 63, 47, 710, 62, 47, 709, 61, 47, 127, 60, 47, 126, 59, 47, 83, 58, 47, 82, 57, 47, 83, 56, 47, 82, 55, 47, 103, 54, 47, 102, 52, 47, 128, 51, 47, 236, 50, 47, 236, 49, 47, 236, 48, 47, 236, 47, 47, 501, 46, 47, 503, 45, 47, 236, 44, 47, 236, 43, 47, 236, 42, 47, 236, 41, 47, 236, 40, 47, 827, 39, 47, 830, 38, 47, 236, 37, 47, 818, 36, 47, 380, 35, 47, 390, 34, 47, 387, 33, 47, 385, 32, 47, 380, 31, 47, 390, 30, 47, 390, 29, 47, 387, 28, 47, 385, 27, 47, 500, 26, 47, 540, 25, 47, 539, 24, 47, 236, 23, 47, 236, 22, 47, 236, 21, 47, 236, 20, 47, 236, 19, 47, 236, 18, 47, 236, 17, 47, 391, 16, 47, 820, 15, 47, 236, 14, 47, 236, 13, 47, 236, 12, 47, 500, 11, 47, 506, 10, 47, 506, 9, 47, 236, 8, 47, 500, 7, 47, 236, 6, 47, 500, 5, 47, 236, 4, 47, 500, 3, 47, 236, 2, 47, 236, 1, 47, 133, 0, 47, 139, 79, 48, 390, 78, 48, 390, 77, 48, 93, 76, 48, 92, 75, 48, 242, 74, 48, 241, 73, 48, 238, 72, 48, 237, 71, 48, 712, 70, 48, 711, 69, 48, 238, 68, 48, 237, 67, 48, 640, 66, 48, 639, 65, 48, 238, 64, 48, 237, 63, 48, 712, 62, 48, 711, 61, 48, 85, 60, 48, 84, 52, 48, 128, 51, 48, 236, 50, 48, 236, 49, 48, 236, 48, 48, 501, 47, 48, 503, 46, 48, 236, 45, 48, 236, 44, 48, 540, 43, 48, 539, 42, 48, 826, 41, 48, 812, 40, 48, 831, 39, 48, 236, 38, 48, 236, 37, 48, 817, 36, 48, 384, 35, 48, 386, 34, 48, 388, 33, 48, 379, 32, 48, 389, 31, 48, 390, 30, 48, 390, 29, 48, 378, 28, 48, 505, 27, 48, 503, 26, 48, 542, 25, 48, 541, 24, 48, 236, 23, 48, 236, 22, 48, 236, 21, 48, 236, 20, 48, 236, 19, 48, 236, 18, 48, 236, 17, 48, 236, 16, 48, 833, 15, 48, 812, 14, 48, 814, 13, 48, 813, 12, 48, 510, 11, 48, 829, 10, 48, 236, 9, 48, 236, 8, 48, 502, 7, 48, 513, 6, 48, 503, 5, 48, 236, 4, 48, 502, 3, 48, 504, 2, 48, 236, 1, 48, 130, 79, 49, 390, 78, 49, 390, 77, 49, 95, 76, 49, 94, 75, 49, 244, 74, 49, 243, 73, 49, 240, 72, 49, 239, 71, 49, 714, 70, 49, 713, 69, 49, 240, 68, 49, 239, 67, 49, 642, 66, 49, 641, 65, 49, 240, 64, 49, 239, 63, 49, 714, 62, 49, 713, 61, 49, 87, 60, 49, 86, 58, 49, 137, 57, 49, 131, 56, 49, 131, 55, 49, 131, 54, 49, 136, 53, 49, 137, 52, 49, 135, 51, 49, 236, 50, 49, 236, 49, 49, 236, 48, 49, 500, 47, 49, 236, 46, 49, 236, 45, 49, 392, 44, 49, 542, 43, 49, 541, 42, 49, 820, 41, 49, 236, 40, 49, 236, 39, 49, 236, 38, 49, 236, 37, 49, 833, 36, 49, 828, 35, 49, 380, 34, 49, 390, 33, 49, 390, 32, 49, 390, 31, 49, 390, 30, 49, 387, 29, 49, 385, 28, 49, 236, 27, 49, 40, 26, 49, 501, 25, 49, 499, 24, 49, 499, 23, 49, 499, 22, 49, 504, 21, 49, 236, 20, 49, 236, 19, 49, 236, 18, 49, 236, 17, 49, 236, 16, 49, 236, 15, 49, 236, 14, 49, 236, 13, 49, 236, 12, 49, 500, 11, 49, 833, 10, 49, 814, 9, 49, 813, 8, 49, 829, 7, 49, 236, 6, 49, 236, 5, 49, 236, 4, 49, 236, 3, 49, 502, 2, 49, 507, 1, 49, 130, 79, 50, 109, 78, 50, 108, 77, 50, 117, 76, 50, 116, 75, 50, 238, 74, 50, 237, 73, 50, 728, 72, 50, 727, 71, 50, 736, 70, 50, 735, 69, 50, 242, 68, 50, 241, 67, 50, 648, 66, 50, 647, 65, 50, 728, 64, 50, 727, 63, 50, 736, 62, 50, 735, 61, 50, 85, 60, 50, 84, 58, 50, 128, 57, 50, 501, 56, 50, 499, 55, 50, 507, 54, 50, 130, 53, 50, 128, 52, 50, 236, 51, 50, 236, 50, 50, 236, 49, 50, 501, 48, 50, 503, 47, 50, 236, 46, 50, 236, 45, 50, 827, 44, 50, 813, 43, 50, 813, 42, 50, 830, 41, 50, 236, 40, 50, 236, 39, 50, 236, 38, 50, 236, 37, 50, 236, 36, 50, 816, 35, 50, 384, 34, 50, 386, 33, 50, 390, 32, 50, 390, 31, 50, 390, 30, 50, 388, 29, 50, 379, 28, 50, 379, 27, 50, 382, 26, 50, 506, 25, 50, 383, 24, 50, 379, 23, 50, 382, 22, 50, 502, 21, 50, 499, 20, 50, 507, 19, 50, 540, 18, 50, 539, 17, 50, 236, 16, 50, 236, 15, 50, 236, 14, 50, 501, 13, 50, 499, 12, 50, 503, 11, 50, 383, 10, 50, 379, 9, 50, 382, 8, 50, 832, 7, 50, 828, 6, 50, 236, 5, 50, 236, 4, 50, 236, 3, 50, 236, 2, 50, 236, 1, 50, 130, 79, 51, 111, 78, 51, 110, 77, 51, 119, 76, 51, 118, 75, 51, 240, 74, 51, 239, 73, 51, 730, 72, 51, 729, 71, 51, 738, 70, 51, 737, 69, 51, 244, 68, 51, 243, 67, 51, 650, 66, 51, 649, 65, 51, 730, 64, 51, 729, 63, 51, 738, 62, 51, 737, 61, 51, 87, 60, 51, 86, 58, 51, 128, 57, 51, 500, 56, 51, 45, 55, 51, 257, 54, 51, 130, 53, 51, 128, 52, 51, 236, 51, 51, 236, 50, 51, 236, 49, 51, 500, 48, 51, 236, 47, 51, 236, 46, 51, 236, 45, 51, 818, 44, 51, 236, 43, 51, 236, 42, 51, 236, 41, 51, 236, 40, 51, 236, 39, 51, 236, 38, 51, 236, 37, 51, 236, 36, 51, 832, 35, 51, 829, 34, 51, 380, 33, 51, 390, 32, 51, 390, 31, 51, 390, 30, 51, 390, 29, 51, 390, 28, 51, 390, 27, 51, 388, 26, 51, 379, 25, 51, 389, 24, 51, 390, 23, 51, 378, 22, 51, 45, 21, 51, 236, 20, 51, 236, 19, 51, 542, 18, 51, 541, 17, 51, 236, 16, 51, 236, 15, 51, 236, 14, 51, 500, 13, 51, 236, 12, 51, 383, 11, 51, 389, 10, 51, 390, 9, 51, 388, 8, 51, 382, 7, 51, 833, 6, 51, 829, 5, 51, 236, 4, 51, 236, 3, 51, 236, 2, 51, 236, 1, 51, 130, 79, 52, 93, 78, 52, 92, 77, 52, 42, 76, 52, 41, 75, 52, 242, 74, 52, 241, 73, 52, 716, 72, 52, 715, 71, 52, 238, 70, 52, 237, 69, 52, 440, 68, 52, 439, 67, 52, 238, 66, 52, 237, 65, 52, 708, 64, 52, 707, 63, 52, 42, 62, 52, 41, 61, 52, 85, 60, 52, 84, 58, 52, 128, 57, 52, 500, 56, 52, 257, 55, 52, 257, 54, 52, 130, 53, 52, 128, 52, 52, 236, 51, 52, 236, 50, 52, 501, 49, 52, 503, 48, 52, 236, 47, 52, 236, 46, 52, 236, 45, 52, 816, 44, 52, 236, 43, 52, 236, 42, 52, 236, 41, 52, 236, 40, 52, 236, 39, 52, 236, 38, 52, 236, 37, 52, 236, 36, 52, 236, 35, 52, 818, 34, 52, 380, 33, 52, 390, 32, 52, 390, 31, 52, 390, 30, 52, 390, 29, 52, 387, 28, 52, 381, 27, 52, 381, 26, 52, 381, 25, 52, 386, 24, 52, 390, 23, 52, 388, 22, 52, 382, 21, 52, 236, 20, 52, 501, 19, 52, 499, 18, 52, 507, 17, 52, 236, 16, 52, 236, 15, 52, 501, 14, 52, 503, 13, 52, 383, 12, 52, 389, 11, 52, 390, 10, 52, 390, 9, 52, 390, 8, 52, 388, 7, 52, 382, 6, 52, 817, 5, 52, 236, 4, 52, 508, 3, 52, 236, 2, 52, 236, 1, 52, 134, 0, 52, 136, 79, 53, 95, 78, 53, 94, 77, 53, 44, 76, 53, 43, 75, 53, 244, 74, 53, 243, 73, 53, 718, 72, 53, 717, 71, 53, 240, 70, 53, 239, 69, 53, 442, 68, 53, 441, 67, 53, 240, 66, 53, 239, 65, 53, 710, 64, 53, 709, 63, 53, 44, 62, 53, 43, 61, 53, 87, 60, 53, 86, 58, 53, 128, 57, 53, 502, 56, 53, 504, 55, 53, 393, 54, 53, 130, 53, 53, 128, 52, 53, 236, 51, 53, 501, 50, 53, 503, 49, 53, 236, 48, 53, 236, 47, 53, 236, 46, 53, 826, 45, 53, 830, 44, 53, 236, 43, 53, 45, 42, 53, 236, 41, 53, 236, 40, 53, 236, 39, 53, 236, 38, 53, 236, 37, 53, 236, 36, 53, 393, 35, 53, 819, 34, 53, 384, 33, 53, 386, 32, 53, 390, 31, 53, 390, 30, 53, 390, 29, 53, 388, 28, 53, 379, 27, 53, 382, 26, 53, 394, 25, 53, 384, 24, 53, 386, 23, 53, 390, 22, 53, 378, 21, 53, 236, 20, 53, 506, 19, 53, 236, 18, 53, 236, 17, 53, 236, 16, 53, 236, 15, 53, 500, 14, 53, 383, 13, 53, 389, 12, 53, 390, 11, 53, 390, 10, 53, 390, 9, 53, 390, 8, 53, 390, 7, 53, 378, 6, 53, 819, 5, 53, 236, 4, 53, 500, 3, 53, 236, 2, 53, 236, 1, 53, 236, 0, 53, 130, 79, 54, 93, 78, 54, 92, 77, 54, 238, 76, 54, 237, 75, 54, 728, 74, 54, 727, 73, 54, 736, 72, 54, 735, 71, 54, 412, 70, 54, 411, 69, 54, 416, 68, 54, 415, 67, 54, 728, 66, 54, 727, 65, 54, 736, 64, 54, 735, 63, 54, 33, 62, 54, 32, 61, 54, 85, 60, 54, 84, 58, 54, 138, 57, 54, 132, 56, 54, 506, 55, 54, 133, 54, 54, 139, 53, 54, 128, 52, 54, 236, 51, 54, 500, 50, 54, 236, 49, 54, 236, 48, 54, 236, 47, 54, 236, 46, 54, 820, 45, 54, 236, 44, 54, 236, 43, 54, 236, 42, 54, 236, 41, 54, 392, 40, 54, 236, 39, 54, 236, 38, 54, 236, 37, 54, 866, 36, 54, 827, 35, 54, 830, 34, 54, 236, 33, 54, 380, 32, 54, 390, 31, 54, 390, 30, 54, 390, 29, 54, 390, 28, 54, 390, 27, 54, 388, 26, 54, 379, 25, 54, 379, 24, 54, 389, 23, 54, 390, 22, 54, 378, 21, 54, 236, 20, 54, 236, 19, 54, 393, 18, 54, 236, 17, 54, 501, 16, 54, 499, 15, 54, 503, 14, 54, 380, 13, 54, 390, 12, 54, 387, 11, 54, 381, 10, 54, 381, 9, 54, 386, 8, 54, 387, 7, 54, 385, 6, 54, 818, 5, 54, 236, 4, 54, 500, 3, 54, 236, 2, 54, 236, 1, 54, 236, 0, 54, 130, 79, 55, 95, 78, 55, 94, 77, 55, 240, 76, 55, 239, 75, 55, 730, 74, 55, 729, 73, 55, 738, 72, 55, 737, 71, 55, 414, 70, 55, 413, 69, 55, 418, 68, 55, 417, 67, 55, 730, 66, 55, 729, 65, 55, 738, 64, 55, 737, 63, 55, 35, 62, 55, 34, 61, 55, 87, 60, 55, 86, 57, 55, 138, 56, 55, 129, 55, 55, 139, 54, 55, 137, 53, 55, 135, 52, 55, 236, 51, 55, 500, 50, 55, 236, 49, 55, 45, 48, 55, 236, 47, 55, 236, 46, 55, 818, 45, 55, 236, 44, 55, 236, 43, 55, 236, 42, 55, 236, 41, 55, 236, 40, 55, 236, 39, 55, 236, 38, 55, 400, 37, 55, 399, 36, 55, 820, 35, 55, 236, 34, 55, 236, 33, 55, 384, 32, 55, 704, 31, 55, 381, 30, 55, 386, 29, 55, 390, 28, 55, 387, 27, 55, 386, 26, 55, 390, 25, 55, 390, 24, 55, 387, 23, 55, 381, 22, 55, 385, 21, 55, 236, 20, 55, 236, 19, 55, 501, 18, 55, 499, 17, 55, 503, 16, 55, 45, 15, 55, 383, 14, 55, 389, 13, 55, 387, 12, 55, 385, 11, 55, 392, 10, 55, 383, 9, 55, 389, 8, 55, 378, 7, 55, 236, 6, 55, 816, 5, 55, 236, 4, 55, 502, 3, 55, 504, 2, 55, 236, 1, 55, 236, 0, 55, 130, 79, 56, 93, 78, 56, 92, 77, 56, 33, 76, 56, 32, 75, 56, 720, 74, 56, 719, 73, 56, 238, 72, 56, 237, 71, 56, 436, 70, 56, 435, 69, 56, 728, 68, 56, 727, 67, 56, 736, 66, 56, 735, 65, 56, 21, 64, 56, 20, 63, 56, 13, 62, 56, 12, 61, 56, 113, 60, 56, 112, 59, 56, 105, 58, 56, 104, 54, 56, 128, 53, 56, 236, 52, 56, 501, 51, 56, 503, 50, 56, 236, 49, 56, 826, 48, 56, 813, 47, 56, 814, 46, 56, 831, 45, 56, 236, 44, 56, 236, 43, 56, 236, 42, 56, 236, 41, 56, 236, 40, 56, 236, 39, 56, 236, 38, 56, 402, 37, 56, 401, 36, 56, 825, 35, 56, 815, 34, 56, 812, 33, 56, 811, 32, 56, 705, 31, 56, 828, 30, 56, 384, 29, 56, 381, 28, 56, 385, 27, 56, 384, 26, 56, 381, 25, 56, 381, 24, 56, 385, 23, 56, 236, 22, 56, 236, 21, 56, 501, 20, 56, 499, 19, 56, 503, 18, 56, 236, 17, 56, 236, 16, 56, 383, 15, 56, 389, 14, 56, 387, 13, 56, 385, 12, 56, 540, 11, 56, 539, 10, 56, 380, 9, 56, 387, 8, 56, 385, 7, 56, 827, 6, 56, 831, 5, 56, 236, 4, 56, 236, 3, 56, 502, 2, 56, 504, 1, 56, 236, 0, 56, 130, 79, 57, 95, 78, 57, 94, 77, 57, 35, 76, 57, 34, 75, 57, 722, 74, 57, 721, 73, 57, 240, 72, 57, 239, 71, 57, 438, 70, 57, 437, 69, 57, 730, 68, 57, 729, 67, 57, 738, 66, 57, 737, 65, 57, 23, 64, 57, 22, 63, 57, 15, 62, 57, 14, 61, 57, 115, 60, 57, 114, 59, 57, 107, 58, 57, 106, 54, 57, 128, 53, 57, 236, 52, 57, 500, 51, 57, 236, 50, 57, 236, 49, 57, 820, 48, 57, 236, 47, 57, 236, 46, 57, 236, 45, 57, 394, 44, 57, 236, 43, 57, 236, 42, 57, 236, 41, 57, 236, 40, 57, 236, 39, 57, 236, 38, 57, 236, 37, 57, 826, 36, 57, 831, 35, 57, 236, 34, 57, 236, 33, 57, 697, 32, 57, 699, 31, 57, 832, 30, 57, 829, 29, 57, 236, 28, 57, 236, 27, 57, 236, 26, 57, 236, 25, 57, 236, 24, 57, 236, 23, 57, 236, 22, 57, 236, 21, 57, 500, 20, 57, 236, 19, 57, 236, 18, 57, 236, 17, 57, 383, 16, 57, 389, 15, 57, 387, 14, 57, 385, 13, 57, 867, 12, 57, 542, 11, 57, 541, 10, 57, 380, 9, 57, 378, 8, 57, 236, 7, 57, 820, 6, 57, 394, 5, 57, 236, 4, 57, 236, 3, 57, 236, 2, 57, 506, 1, 57, 236, 0, 57, 130, 79, 58, 93, 78, 58, 92, 77, 58, 1, 76, 58, 0, 75, 58, 732, 74, 58, 731, 73, 58, 851, 72, 58, 850, 71, 58, 740, 70, 58, 739, 69, 58, 736, 68, 58, 735, 67, 58, 21, 66, 58, 20, 65, 58, 13, 64, 58, 12, 63, 58, 238, 62, 58, 237, 61, 58, 125, 60, 58, 124, 59, 58, 101, 58, 58, 100, 55, 58, 137, 54, 58, 135, 53, 58, 501, 52, 58, 503, 51, 58, 392, 50, 58, 236, 49, 58, 820, 48, 58, 236, 47, 58, 236, 46, 58, 236, 45, 58, 236, 44, 58, 236, 43, 58, 236, 42, 58, 236, 41, 58, 236, 40, 58, 40, 39, 58, 236, 38, 58, 236, 37, 58, 816, 36, 58, 847, 35, 58, 846, 34, 58, 236, 33, 58, 695, 32, 58, 236, 31, 58, 236, 30, 58, 833, 29, 58, 811, 28, 58, 814, 27, 58, 813, 26, 58, 828, 25, 58, 236, 24, 58, 236, 23, 58, 236, 22, 58, 501, 21, 58, 503, 20, 58, 383, 19, 58, 379, 18, 58, 379, 17, 58, 389, 16, 58, 387, 15, 58, 385, 14, 58, 383, 13, 58, 379, 12, 58, 379, 11, 58, 379, 10, 58, 389, 9, 58, 388, 8, 58, 382, 7, 58, 818, 6, 58, 236, 5, 58, 236, 4, 58, 236, 3, 58, 236, 2, 58, 236, 1, 58, 236, 0, 58, 130, 79, 59, 95, 78, 59, 94, 77, 59, 3, 76, 59, 2, 75, 59, 734, 74, 59, 733, 73, 59, 853, 72, 59, 852, 71, 59, 742, 70, 59, 741, 69, 59, 738, 68, 59, 737, 67, 59, 23, 66, 59, 22, 65, 59, 15, 64, 59, 14, 63, 59, 240, 62, 59, 239, 61, 59, 127, 60, 59, 126, 59, 59, 103, 58, 59, 102, 56, 59, 137, 55, 59, 135, 54, 59, 40, 53, 59, 500, 52, 59, 236, 51, 59, 827, 50, 59, 814, 49, 59, 830, 48, 59, 236, 47, 59, 236, 46, 59, 236, 45, 59, 236, 44, 59, 236, 43, 59, 236, 42, 59, 236, 41, 59, 391, 40, 59, 236, 39, 59, 236, 38, 59, 236, 37, 59, 819, 36, 59, 849, 35, 59, 848, 34, 59, 236, 33, 59, 695, 32, 59, 236, 31, 59, 236, 30, 59, 236, 29, 59, 236, 28, 59, 236, 27, 59, 236, 26, 59, 832, 25, 59, 829, 24, 59, 236, 23, 59, 236, 22, 59, 500, 21, 59, 236, 20, 59, 380, 19, 59, 390, 18, 59, 390, 17, 59, 390, 16, 59, 388, 15, 59, 379, 14, 59, 389, 13, 59, 387, 12, 59, 386, 11, 59, 390, 10, 59, 390, 9, 59, 390, 8, 59, 378, 7, 59, 817, 6, 59, 501, 5, 59, 499, 4, 59, 504, 3, 59, 236, 2, 59, 236, 1, 59, 133, 0, 59, 139, 79, 60, 93, 78, 60, 92, 77, 60, 9, 76, 60, 8, 75, 60, 17, 74, 60, 16, 73, 60, 242, 72, 60, 241, 71, 60, 440, 70, 60, 439, 69, 60, 238, 68, 60, 237, 67, 60, 9, 66, 60, 8, 65, 60, 29, 64, 60, 28, 63, 60, 125, 62, 60, 124, 61, 60, 101, 60, 60, 100, 57, 60, 137, 56, 60, 135, 55, 60, 236, 54, 60, 236, 53, 60, 506, 52, 60, 236, 51, 60, 818, 50, 60, 236, 49, 60, 236, 48, 60, 236, 47, 60, 508, 46, 60, 236, 45, 60, 236, 44, 60, 236, 43, 60, 236, 42, 60, 826, 41, 60, 812, 40, 60, 811, 39, 60, 813, 38, 60, 814, 37, 60, 821, 36, 60, 811, 35, 60, 830, 34, 60, 236, 33, 60, 698, 32, 60, 700, 31, 60, 236, 30, 60, 236, 29, 60, 236, 28, 60, 236, 27, 60, 236, 26, 60, 236, 25, 60, 833, 24, 60, 829, 23, 60, 236, 22, 60, 500, 21, 60, 236, 20, 60, 380, 19, 60, 390, 18, 60, 390, 17, 60, 390, 16, 60, 387, 15, 60, 381, 14, 60, 381, 13, 60, 385, 12, 60, 380, 11, 60, 390, 10, 60, 387, 9, 60, 381, 8, 60, 385, 7, 60, 819, 6, 60, 512, 5, 60, 40, 4, 60, 500, 3, 60, 236, 2, 60, 236, 1, 60, 130, 79, 61, 95, 78, 61, 94, 77, 61, 11, 76, 61, 10, 75, 61, 19, 74, 61, 18, 73, 61, 244, 72, 61, 243, 71, 61, 442, 70, 61, 441, 69, 61, 240, 68, 61, 239, 67, 61, 11, 66, 61, 10, 65, 61, 31, 64, 61, 30, 63, 61, 127, 62, 61, 126, 61, 61, 103, 60, 61, 102, 58, 61, 137, 57, 61, 135, 56, 61, 236, 55, 61, 236, 54, 61, 236, 53, 61, 236, 52, 61, 236, 51, 61, 816, 50, 61, 236, 49, 61, 393, 48, 61, 236, 47, 61, 502, 46, 61, 504, 45, 61, 254, 44, 61, 253, 43, 61, 814, 42, 61, 830, 41, 61, 236, 40, 61, 391, 39, 61, 236, 38, 61, 236, 37, 61, 832, 36, 61, 829, 35, 61, 236, 34, 61, 236, 33, 61, 236, 32, 61, 695, 31, 61, 45, 30, 61, 236, 29, 61, 236, 28, 61, 236, 27, 61, 236, 26, 61, 236, 25, 61, 236, 24, 61, 816, 23, 61, 501, 22, 61, 503, 21, 61, 236, 20, 61, 384, 19, 61, 704, 18, 61, 381, 17, 61, 381, 16, 61, 385, 15, 61, 236, 14, 61, 508, 13, 61, 236, 12, 61, 384, 11, 61, 381, 10, 61, 385, 9, 61, 826, 8, 61, 813, 7, 61, 831, 6, 61, 502, 5, 61, 499, 4, 61, 503, 3, 61, 236, 2, 61, 236, 1, 61, 130, 79, 62, 93, 78, 62, 92, 77, 62, 238, 76, 62, 237, 75, 62, 25, 74, 62, 24, 73, 62, 444, 72, 62, 443, 71, 62, 424, 70, 62, 423, 69, 62, 408, 68, 62, 407, 67, 62, 420, 66, 62, 419, 65, 62, 125, 64, 62, 124, 63, 62, 101, 62, 62, 100, 59, 62, 137, 58, 62, 135, 57, 62, 236, 56, 62, 827, 55, 62, 811, 54, 62, 812, 53, 62, 814, 52, 62, 822, 51, 62, 830, 50, 62, 236, 49, 62, 236, 48, 62, 236, 47, 62, 826, 46, 62, 510, 45, 62, 256, 44, 62, 255, 43, 62, 236, 42, 62, 236, 41, 62, 236, 40, 62, 236, 39, 62, 236, 38, 62, 236, 37, 62, 236, 36, 62, 820, 35, 62, 236, 34, 62, 79, 33, 62, 236, 32, 62, 698, 31, 62, 700, 30, 62, 236, 29, 62, 236, 28, 62, 236, 27, 62, 236, 26, 62, 236, 25, 62, 236, 24, 62, 832, 23, 62, 510, 22, 62, 828, 21, 62, 697, 20, 62, 696, 19, 62, 699, 18, 62, 236, 17, 62, 826, 16, 62, 863, 15, 62, 862, 14, 62, 500, 13, 62, 827, 12, 62, 814, 11, 62, 812, 10, 62, 815, 9, 62, 830, 8, 62, 508, 7, 62, 236, 6, 62, 236, 5, 62, 236, 4, 62, 236, 3, 62, 236, 2, 62, 236, 1, 62, 130, 79, 63, 95, 78, 63, 94, 77, 63, 240, 76, 63, 239, 75, 63, 27, 74, 63, 26, 73, 63, 446, 72, 63, 445, 71, 63, 426, 70, 63, 425, 69, 63, 410, 68, 63, 409, 67, 63, 422, 66, 63, 421, 65, 63, 127, 64, 63, 126, 63, 63, 103, 62, 63, 102, 60, 63, 137, 59, 63, 135, 58, 63, 236, 57, 63, 827, 56, 63, 830, 55, 63, 236, 54, 63, 236, 53, 63, 866, 52, 63, 816, 51, 63, 236, 50, 63, 236, 49, 63, 826, 48, 63, 814, 47, 63, 830, 46, 63, 500, 45, 63, 236, 44, 63, 236, 43, 63, 236, 42, 63, 236, 41, 63, 236, 40, 63, 236, 39, 63, 236, 38, 63, 236, 37, 63, 236, 36, 63, 816, 35, 63, 236, 34, 63, 236, 33, 63, 236, 32, 63, 236, 31, 63, 695, 30, 63, 236, 29, 63, 236, 28, 63, 236, 27, 63, 236, 26, 63, 236, 25, 63, 236, 24, 63, 501, 23, 63, 503, 22, 63, 832, 21, 63, 705, 20, 63, 814, 19, 63, 811, 18, 63, 822, 17, 63, 830, 16, 63, 865, 15, 63, 864, 14, 63, 510, 13, 63, 830, 12, 63, 236, 11, 63, 236, 10, 63, 236, 9, 63, 236, 8, 63, 502, 7, 63, 499, 6, 63, 504, 5, 63, 236, 4, 63, 236, 3, 63, 236, 2, 63, 236, 1, 63, 130, 79, 64, 93, 78, 64, 92, 77, 64, 580, 76, 64, 579, 75, 64, 544, 74, 64, 543, 73, 64, 544, 72, 64, 543, 71, 64, 576, 70, 64, 575, 69, 64, 242, 68, 64, 241, 67, 64, 436, 66, 64, 435, 65, 64, 85, 64, 64, 84, 61, 64, 137, 60, 64, 135, 59, 64, 236, 58, 64, 826, 57, 64, 830, 56, 64, 236, 55, 64, 236, 54, 64, 236, 53, 64, 236, 52, 64, 825, 51, 64, 813, 50, 64, 812, 49, 64, 831, 48, 64, 236, 47, 64, 236, 46, 64, 500, 45, 64, 236, 44, 64, 236, 43, 64, 236, 42, 64, 236, 41, 64, 236, 40, 64, 236, 39, 64, 236, 38, 64, 236, 37, 64, 236, 36, 64, 817, 35, 64, 236, 34, 64, 236, 33, 64, 236, 32, 64, 236, 31, 64, 698, 30, 64, 696, 29, 64, 700, 28, 64, 236, 27, 64, 236, 26, 64, 236, 25, 64, 236, 24, 64, 500, 23, 64, 45, 22, 64, 697, 21, 64, 699, 20, 64, 236, 19, 64, 236, 18, 64, 819, 17, 64, 236, 16, 64, 236, 15, 64, 505, 14, 64, 509, 13, 64, 499, 12, 64, 504, 11, 64, 236, 10, 64, 236, 9, 64, 236, 8, 64, 236, 7, 64, 236, 6, 64, 506, 5, 64, 236, 4, 64, 508, 3, 64, 236, 2, 64, 236, 1, 64, 130, 79, 65, 95, 78, 65, 94, 77, 65, 582, 76, 65, 581, 75, 65, 546, 74, 65, 545, 73, 65, 546, 72, 65, 545, 71, 65, 578, 70, 65, 577, 69, 65, 244, 68, 65, 243, 67, 65, 438, 66, 65, 437, 65, 65, 87, 64, 65, 86, 62, 65, 137, 61, 65, 135, 60, 65, 236, 59, 65, 236, 58, 65, 818, 57, 65, 236, 56, 65, 396, 55, 65, 395, 54, 65, 236, 53, 65, 855, 52, 65, 854, 51, 65, 236, 50, 65, 867, 49, 65, 236, 48, 65, 236, 47, 65, 236, 46, 65, 502, 45, 65, 504, 44, 65, 236, 43, 65, 392, 42, 65, 236, 41, 65, 236, 40, 65, 236, 39, 65, 236, 38, 65, 236, 37, 65, 236, 36, 65, 832, 35, 65, 828, 34, 65, 236, 33, 65, 236, 32, 65, 236, 31, 65, 236, 30, 65, 236, 29, 65, 702, 28, 65, 236, 27, 65, 236, 26, 65, 236, 25, 65, 501, 24, 65, 503, 23, 65, 236, 22, 65, 695, 21, 65, 236, 20, 65, 404, 19, 65, 403, 18, 65, 816, 17, 65, 236, 16, 65, 236, 15, 65, 236, 14, 65, 500, 13, 65, 236, 12, 65, 502, 11, 65, 499, 10, 65, 499, 9, 65, 504, 8, 65, 236, 7, 65, 236, 6, 65, 236, 5, 65, 236, 4, 65, 502, 3, 65, 499, 2, 65, 507, 1, 65, 130, 79, 66, 93, 78, 66, 92, 77, 66, 568, 76, 66, 567, 75, 66, 560, 74, 66, 559, 73, 66, 51, 72, 66, 50, 71, 66, 556, 70, 66, 555, 69, 66, 576, 68, 66, 575, 67, 66, 238, 66, 66, 237, 65, 66, 85, 64, 66, 84, 63, 66, 137, 62, 66, 135, 61, 66, 236, 60, 66, 236, 59, 66, 827, 58, 66, 830, 57, 66, 236, 56, 66, 398, 55, 66, 397, 54, 66, 236, 53, 66, 857, 52, 66, 856, 51, 66, 236, 50, 66, 236, 49, 66, 236, 48, 66, 236, 47, 66, 236, 46, 66, 236, 45, 66, 502, 44, 66, 499, 43, 66, 499, 42, 66, 504, 41, 66, 236, 40, 66, 236, 39, 66, 236, 38, 66, 45, 37, 66, 236, 36, 66, 236, 35, 66, 833, 34, 66, 829, 33, 66, 236, 32, 66, 236, 31, 66, 236, 30, 66, 236, 29, 66, 394, 28, 66, 236, 27, 66, 236, 26, 66, 501, 25, 66, 503, 24, 66, 236, 23, 66, 697, 22, 66, 699, 21, 66, 236, 20, 66, 406, 19, 66, 405, 18, 66, 820, 17, 66, 236, 16, 66, 78, 15, 66, 236, 14, 66, 500, 13, 66, 236, 12, 66, 236, 11, 66, 236, 10, 66, 236, 9, 66, 502, 8, 66, 499, 7, 66, 504, 6, 66, 236, 5, 66, 236, 4, 66, 236, 3, 66, 236, 2, 66, 133, 1, 66, 139, 79, 67, 95, 78, 67, 94, 77, 67, 570, 76, 67, 569, 75, 67, 562, 74, 67, 561, 73, 67, 53, 72, 67, 52, 71, 67, 558, 70, 67, 557, 69, 67, 578, 68, 67, 577, 67, 67, 240, 66, 67, 239, 65, 67, 87, 64, 67, 86, 63, 67, 128, 62, 67, 236, 61, 67, 236, 60, 67, 236, 59, 67, 816, 58, 67, 236, 57, 67, 236, 56, 67, 236, 55, 67, 236, 54, 67, 868, 53, 67, 236, 52, 67, 820, 51, 67, 236, 50, 67, 394, 49, 67, 78, 48, 67, 236, 47, 67, 236, 46, 67, 236, 45, 67, 236, 44, 67, 236, 43, 67, 505, 42, 67, 503, 41, 67, 236, 40, 67, 236, 39, 67, 236, 38, 67, 236, 37, 67, 236, 36, 67, 236, 35, 67, 236, 34, 67, 832, 33, 67, 828, 32, 67, 236, 31, 67, 236, 30, 67, 236, 29, 67, 236, 28, 67, 501, 27, 67, 499, 26, 67, 503, 25, 67, 697, 24, 67, 696, 23, 67, 699, 22, 67, 236, 21, 67, 236, 20, 67, 236, 19, 67, 826, 18, 67, 830, 17, 67, 236, 16, 67, 236, 15, 67, 501, 14, 67, 503, 13, 67, 236, 12, 67, 236, 11, 67, 393, 10, 67, 236, 9, 67, 236, 8, 67, 236, 7, 67, 502, 6, 67, 504, 5, 67, 257, 4, 67, 257, 3, 67, 133, 2, 67, 139, 79, 68, 97, 78, 68, 96, 77, 68, 121, 76, 68, 120, 75, 68, 568, 74, 68, 567, 73, 68, 552, 72, 68, 551, 71, 68, 552, 70, 68, 551, 69, 68, 572, 68, 68, 571, 67, 68, 125, 66, 68, 124, 65, 68, 101, 64, 68, 100, 63, 68, 128, 62, 68, 236, 61, 68, 236, 60, 68, 826, 59, 68, 830, 58, 68, 236, 57, 68, 236, 56, 68, 701, 55, 68, 236, 54, 68, 236, 53, 68, 236, 52, 68, 816, 51, 68, 236, 50, 68, 236, 49, 68, 236, 48, 68, 236, 47, 68, 236, 46, 68, 236, 45, 68, 393, 44, 68, 236, 43, 68, 236, 42, 68, 236, 41, 68, 236, 40, 68, 236, 39, 68, 236, 38, 68, 236, 37, 68, 236, 36, 68, 236, 35, 68, 236, 34, 68, 236, 33, 68, 819, 32, 68, 236, 31, 68, 236, 30, 68, 236, 29, 68, 501, 28, 68, 503, 27, 68, 236, 26, 68, 697, 25, 68, 699, 24, 68, 236, 23, 68, 236, 22, 68, 236, 21, 68, 236, 20, 68, 827, 19, 68, 830, 18, 68, 236, 17, 68, 236, 16, 68, 236, 15, 68, 500, 14, 68, 236, 13, 68, 236, 12, 68, 508, 11, 68, 236, 10, 68, 505, 9, 68, 507, 8, 68, 236, 7, 68, 257, 6, 68, 512, 5, 68, 257, 4, 68, 133, 3, 68, 139, 79, 69, 99, 78, 69, 98, 77, 69, 123, 76, 69, 122, 75, 69, 570, 74, 69, 569, 73, 69, 554, 72, 69, 553, 71, 69, 554, 70, 69, 553, 69, 69, 574, 68, 69, 573, 67, 69, 127, 66, 69, 126, 65, 69, 103, 64, 69, 102, 63, 69, 128, 62, 69, 236, 61, 69, 826, 60, 69, 830, 59, 69, 236, 58, 69, 236, 57, 69, 236, 56, 69, 695, 55, 69, 236, 54, 69, 236, 53, 69, 236, 52, 69, 832, 51, 69, 822, 50, 69, 813, 49, 69, 812, 48, 69, 811, 47, 69, 815, 46, 69, 814, 45, 69, 829, 44, 69, 236, 43, 69, 236, 42, 69, 236, 41, 69, 391, 40, 69, 236, 39, 69, 236, 38, 69, 236, 37, 69, 236, 36, 69, 236, 35, 69, 236, 34, 69, 826, 33, 69, 824, 32, 69, 815, 31, 69, 813, 30, 69, 829, 29, 69, 500, 28, 69, 236, 27, 69, 236, 26, 69, 702, 25, 69, 236, 24, 69, 826, 23, 69, 812, 22, 69, 828, 21, 69, 826, 20, 69, 831, 19, 69, 236, 18, 69, 236, 17, 69, 236, 16, 69, 501, 15, 69, 503, 14, 69, 236, 13, 69, 236, 12, 69, 500, 11, 69, 236, 10, 69, 236, 9, 69, 236, 8, 69, 236, 7, 69, 501, 6, 69, 503, 5, 69, 133, 4, 69, 139, 77, 70, 97, 76, 70, 96, 75, 70, 81, 74, 70, 80, 73, 70, 81, 72, 70, 80, 71, 70, 81, 70, 70, 80, 69, 70, 81, 68, 70, 80, 67, 70, 101, 66, 70, 100, 63, 70, 128, 62, 70, 236, 61, 70, 818, 60, 70, 392, 59, 70, 236, 58, 70, 236, 57, 70, 697, 56, 70, 699, 55, 70, 236, 54, 70, 236, 53, 70, 236, 52, 70, 236, 51, 70, 818, 50, 70, 45, 49, 70, 236, 48, 70, 236, 47, 70, 236, 46, 70, 236, 45, 70, 819, 44, 70, 236, 43, 70, 236, 42, 70, 236, 41, 70, 236, 40, 70, 236, 39, 70, 827, 38, 70, 815, 37, 70, 812, 36, 70, 814, 35, 70, 813, 34, 70, 830, 33, 70, 236, 32, 70, 236, 31, 70, 236, 30, 70, 832, 29, 70, 510, 28, 70, 828, 27, 70, 236, 26, 70, 236, 25, 70, 236, 24, 70, 819, 23, 70, 236, 22, 70, 833, 21, 70, 830, 20, 70, 236, 19, 70, 236, 18, 70, 501, 17, 70, 499, 16, 70, 503, 15, 70, 236, 14, 70, 236, 13, 70, 501, 12, 70, 503, 11, 70, 236, 10, 70, 236, 9, 70, 236, 8, 70, 501, 7, 70, 503, 6, 70, 133, 5, 70, 139, 77, 71, 99, 76, 71, 98, 75, 71, 83, 74, 71, 82, 73, 71, 83, 72, 71, 82, 71, 71, 83, 70, 71, 82, 69, 71, 83, 68, 71, 82, 67, 71, 103, 66, 71, 102, 64, 71, 137, 63, 71, 135, 62, 71, 826, 61, 71, 830, 60, 71, 236, 59, 71, 236, 58, 71, 236, 57, 71, 695, 56, 71, 236, 55, 71, 236, 54, 71, 236, 53, 71, 236, 52, 71, 236, 51, 71, 817, 50, 71, 236, 49, 71, 236, 48, 71, 236, 47, 71, 236, 46, 71, 236, 45, 71, 832, 44, 71, 829, 43, 71, 236, 42, 71, 236, 41, 71, 827, 40, 71, 813, 39, 71, 831, 38, 71, 236, 37, 71, 383, 36, 71, 379, 35, 71, 379, 34, 71, 382, 33, 71, 236, 32, 71, 236, 31, 71, 236, 30, 71, 236, 29, 71, 500, 28, 71, 833, 27, 71, 812, 26, 71, 814, 25, 71, 813, 24, 71, 830, 23, 71, 236, 22, 71, 236, 21, 71, 391, 20, 71, 236, 19, 71, 501, 18, 71, 503, 17, 71, 236, 16, 71, 540, 15, 71, 539, 14, 71, 236, 13, 71, 506, 12, 71, 236, 11, 71, 236, 10, 71, 501, 9, 71, 499, 8, 71, 503, 7, 71, 133, 6, 71, 139, 79, 72, 137, 78, 72, 131, 77, 72, 131, 76, 72, 131, 75, 72, 131, 74, 72, 136, 68, 72, 137, 67, 72, 131, 66, 72, 131, 65, 72, 131, 64, 72, 135, 63, 72, 236, 62, 72, 819, 61, 72, 508, 60, 72, 236, 59, 72, 236, 58, 72, 866, 57, 72, 698, 56, 72, 700, 55, 72, 236, 54, 72, 236, 53, 72, 236, 52, 72, 236, 51, 72, 832, 50, 72, 814, 49, 72, 813, 48, 72, 829, 47, 72, 866, 46, 72, 236, 45, 72, 236, 44, 72, 825, 43, 72, 811, 42, 72, 811, 41, 72, 830, 40, 72, 236, 39, 72, 383, 38, 72, 379, 37, 72, 389, 36, 72, 390, 35, 72, 390, 34, 72, 388, 33, 72, 379, 32, 72, 379, 31, 72, 382, 30, 72, 236, 29, 72, 502, 28, 72, 504, 27, 72, 236, 26, 72, 236, 25, 72, 236, 24, 72, 236, 23, 72, 236, 22, 72, 236, 21, 72, 236, 20, 72, 501, 19, 72, 503, 18, 72, 236, 17, 72, 236, 16, 72, 542, 15, 72, 541, 14, 72, 236, 13, 72, 236, 12, 72, 236, 11, 72, 501, 10, 72, 503, 9, 72, 133, 8, 72, 129, 7, 72, 139, 79, 73, 128, 78, 73, 866, 77, 73, 508, 76, 73, 868, 75, 73, 257, 74, 73, 130, 72, 73, 137, 71, 73, 131, 70, 73, 131, 69, 73, 131, 68, 73, 135, 67, 73, 236, 66, 73, 236, 65, 73, 501, 64, 73, 499, 63, 73, 504, 62, 73, 820, 61, 73, 502, 60, 73, 504, 59, 73, 236, 58, 73, 236, 57, 73, 236, 56, 73, 695, 55, 73, 236, 54, 73, 236, 53, 73, 236, 52, 73, 236, 51, 73, 236, 50, 73, 236, 49, 73, 236, 48, 73, 825, 47, 73, 812, 46, 73, 814, 45, 73, 813, 44, 73, 830, 43, 73, 236, 42, 73, 236, 41, 73, 236, 40, 73, 236, 39, 73, 380, 38, 73, 390, 37, 73, 390, 36, 73, 387, 35, 73, 386, 34, 73, 390, 33, 73, 390, 32, 73, 390, 31, 73, 388, 30, 73, 379, 29, 73, 382, 28, 73, 500, 27, 73, 257, 26, 73, 257, 25, 73, 236, 24, 73, 236, 23, 73, 236, 22, 73, 236, 21, 73, 236, 20, 73, 500, 19, 73, 236, 18, 73, 236, 17, 73, 508, 16, 73, 40, 15, 73, 505, 14, 73, 507, 13, 73, 236, 12, 73, 501, 11, 73, 503, 10, 73, 133, 9, 73, 139, 79, 74, 128, 78, 74, 867, 77, 74, 502, 76, 74, 499, 75, 74, 504, 74, 74, 130, 72, 74, 138, 71, 74, 132, 70, 74, 236, 69, 74, 236, 68, 74, 236, 67, 74, 236, 66, 74, 236, 65, 74, 500, 64, 74, 40, 63, 74, 512, 62, 74, 833, 61, 74, 828, 60, 74, 502, 59, 74, 499, 58, 74, 504, 57, 74, 236, 56, 74, 698, 55, 74, 696, 54, 74, 696, 53, 74, 700, 52, 74, 236, 51, 74, 236, 50, 74, 697, 49, 74, 696, 48, 74, 706, 47, 74, 696, 46, 74, 700, 45, 74, 236, 44, 74, 236, 43, 74, 236, 42, 74, 236, 41, 74, 236, 40, 74, 236, 39, 74, 380, 38, 74, 390, 37, 74, 390, 36, 74, 388, 35, 74, 389, 34, 74, 387, 33, 74, 386, 32, 74, 390, 31, 74, 390, 30, 74, 390, 29, 74, 378, 28, 74, 500, 27, 74, 45, 26, 74, 257, 25, 74, 236, 24, 74, 236, 23, 74, 236, 22, 74, 236, 21, 74, 236, 20, 74, 502, 19, 74, 504, 18, 74, 236, 17, 74, 502, 16, 74, 507, 15, 74, 236, 14, 74, 236, 13, 74, 501, 12, 74, 503, 11, 74, 133, 10, 74, 139, 79, 75, 128, 78, 75, 257, 77, 75, 867, 76, 75, 257, 75, 75, 500, 74, 75, 130, 71, 75, 138, 70, 75, 129, 69, 75, 129, 68, 75, 132, 67, 75, 236, 66, 75, 236, 65, 75, 502, 64, 75, 499, 63, 75, 503, 62, 75, 236, 61, 75, 833, 60, 75, 814, 59, 75, 829, 58, 75, 502, 57, 75, 504, 56, 75, 236, 55, 75, 236, 54, 75, 236, 53, 75, 698, 52, 75, 696, 51, 75, 696, 50, 75, 699, 49, 75, 826, 48, 75, 830, 47, 75, 236, 46, 75, 698, 45, 75, 696, 44, 75, 696, 43, 75, 696, 42, 75, 700, 41, 75, 236, 40, 75, 697, 39, 75, 703, 38, 75, 390, 37, 75, 390, 36, 75, 387, 35, 75, 381, 34, 75, 385, 33, 75, 384, 32, 75, 386, 31, 75, 390, 30, 75, 387, 29, 75, 385, 28, 75, 502, 27, 75, 504, 26, 75, 236, 25, 75, 236, 24, 75, 236, 23, 75, 236, 22, 75, 236, 21, 75, 236, 20, 75, 236, 19, 75, 500, 18, 75, 236, 17, 75, 236, 16, 75, 236, 15, 75, 236, 14, 75, 501, 13, 75, 503, 12, 75, 133, 11, 75, 139, 7, 75, 137, 6, 75, 131, 5, 75, 131, 4, 75, 131, 3, 75, 136, 79, 76, 128, 78, 76, 505, 77, 76, 511, 76, 76, 499, 75, 76, 503, 74, 76, 134, 73, 76, 131, 72, 76, 136, 68, 76, 138, 67, 76, 129, 66, 76, 129, 65, 76, 132, 64, 76, 236, 63, 76, 236, 62, 76, 505, 61, 76, 499, 60, 76, 507, 59, 76, 832, 58, 76, 828, 57, 76, 502, 56, 76, 499, 55, 76, 499, 54, 76, 499, 53, 76, 499, 52, 76, 499, 51, 76, 504, 50, 76, 236, 49, 76, 817, 48, 76, 501, 47, 76, 499, 46, 76, 499, 45, 76, 504, 44, 76, 236, 43, 76, 236, 42, 76, 698, 41, 76, 696, 40, 76, 699, 39, 76, 384, 38, 76, 381, 37, 76, 381, 36, 76, 385, 35, 76, 236, 34, 76, 236, 33, 76, 236, 32, 76, 384, 31, 76, 381, 30, 76, 385, 29, 76, 236, 28, 76, 236, 27, 76, 500, 26, 76, 236, 25, 76, 236, 24, 76, 392, 23, 76, 236, 22, 76, 236, 21, 76, 236, 20, 76, 505, 19, 76, 509, 18, 76, 499, 17, 76, 499, 16, 76, 499, 15, 76, 499, 14, 76, 503, 13, 76, 133, 12, 76, 139, 7, 76, 128, 6, 76, 501, 5, 76, 511, 4, 76, 504, 3, 76, 130, 79, 77, 128, 78, 77, 866, 77, 77, 832, 76, 77, 813, 75, 77, 828, 74, 77, 867, 73, 77, 868, 72, 77, 130, 65, 77, 138, 64, 77, 129, 63, 77, 129, 62, 77, 129, 61, 77, 129, 60, 77, 132, 59, 77, 236, 58, 77, 833, 57, 77, 812, 56, 77, 813, 55, 77, 814, 54, 77, 815, 53, 77, 811, 52, 77, 829, 51, 77, 502, 50, 77, 499, 49, 77, 511, 48, 77, 503, 47, 77, 40, 46, 77, 236, 45, 77, 502, 44, 77, 499, 43, 77, 499, 42, 77, 507, 41, 77, 236, 40, 77, 236, 39, 77, 236, 38, 77, 236, 37, 77, 236, 36, 77, 236, 35, 77, 236, 34, 77, 236, 33, 77, 394, 32, 77, 236, 31, 77, 236, 30, 77, 236, 29, 77, 236, 28, 77, 236, 27, 77, 506, 26, 77, 236, 25, 77, 236, 24, 77, 236, 23, 77, 236, 22, 77, 236, 21, 77, 236, 20, 77, 236, 19, 77, 506, 18, 77, 236, 17, 77, 133, 16, 77, 129, 15, 77, 129, 14, 77, 129, 13, 77, 139, 7, 77, 128, 6, 77, 500, 5, 77, 393, 4, 77, 500, 3, 77, 130, 79, 78, 128, 78, 78, 257, 77, 78, 868, 76, 78, 866, 75, 78, 833, 74, 78, 814, 73, 78, 815, 72, 78, 130, 60, 78, 138, 59, 78, 129, 58, 78, 129, 57, 78, 129, 56, 78, 132, 55, 78, 236, 54, 78, 236, 53, 78, 236, 52, 78, 833, 51, 78, 815, 50, 78, 811, 49, 78, 830, 48, 78, 236, 47, 78, 133, 46, 78, 129, 45, 78, 129, 44, 78, 129, 43, 78, 129, 42, 78, 129, 41, 78, 129, 40, 78, 129, 39, 78, 129, 38, 78, 132, 37, 78, 236, 36, 78, 236, 35, 78, 236, 34, 78, 236, 33, 78, 236, 32, 78, 236, 31, 78, 236, 30, 78, 236, 29, 78, 236, 28, 78, 133, 27, 78, 129, 26, 78, 129, 25, 78, 129, 24, 78, 129, 23, 78, 129, 22, 78, 129, 21, 78, 129, 20, 78, 129, 19, 78, 129, 18, 78, 129, 17, 78, 139, 7, 78, 128, 6, 78, 502, 5, 78, 511, 4, 78, 503, 3, 78, 130, 79, 79, 138, 78, 79, 129, 77, 79, 129, 76, 79, 129, 75, 79, 129, 74, 79, 129, 73, 79, 129, 72, 79, 139, 56, 79, 138, 55, 79, 129, 54, 79, 129, 53, 79, 129, 52, 79, 129, 51, 79, 129, 50, 79, 129, 49, 79, 129, 48, 79, 129, 47, 79, 139, 38, 79, 138, 37, 79, 129, 36, 79, 129, 35, 79, 129, 34, 79, 129, 33, 79, 129, 32, 79, 129, 31, 79, 129, 30, 79, 129, 29, 79, 129, 28, 79, 139, 7, 79, 138, 6, 79, 129, 5, 79, 129, 4, 79, 129, 3, 79, 139)
-}
-
-[node name="TerrainObjects" type="Node3D" parent="." unique_id=1690822217]
-script = ExtResource("12_terrain_obj")

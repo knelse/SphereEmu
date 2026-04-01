@@ -15,10 +15,5 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-    <ItemGroup>
-        <Reference Include="Newtonsoft.Json">
-            <HintPath>..\..\.references\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-    </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BitStreams;
-using Newtonsoft.Json;
 using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Shared.Db.DataModels;
@@ -131,7 +131,7 @@ public static class NetworkedStatsUpdater
         }
 
         client.MaybeQueueNetworkPacketSend(Packet.ToByteArray(stream.GetStreamData(), 3));
-        var updatedStats = JsonConvert.SerializeObject(characterFieldMap);
+        var updatedStats = string.Join (", ", characterFieldMap.Select (kv => $"{kv.Key}={kv.Value}"));
         SphLogger.Info($"Stat update for client ID: {characterDbEntry.ClientIndex}. New stat values: {updatedStats}");
     }
 }

@@ -1,11 +1,16 @@
-﻿using System.Text;
-using Newtonsoft.Json;
+using System.Text;
+using System.Text.Json;
 using static GameObjectType;
 using LocalizationEntryArray = System.Collections.Generic.Dictionary<Locale, string[]>;
 using LocalizationEntryString = System.Collections.Generic.Dictionary<Locale, string>;
 
 public static class SphObjectDb
 {
+    private static readonly JsonSerializerOptions JsonOptions = new ()
+    {
+        WriteIndented = true,
+    };
+
     private static readonly char[] TabCharacter = { '\t' };
     public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = new ();
     public static readonly Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>> SuffixDataDb = new ();
@@ -38,7 +43,8 @@ public static class SphObjectDb
     {
         using var configFile = File.OpenRead("sphdbsettings.json");
         using var configReader = new StreamReader(configFile);
-        AppSettings = JsonConvert.DeserializeObject<Dictionary<string, string>>(configReader.ReadToEnd());
+        AppSettings = JsonSerializer.Deserialize<Dictionary<string, string>>(configReader.ReadToEnd(), JsonOptions)
+                      ?? throw new InvalidOperationException ("sphdbsettings.json: expected object root");
 
         var gameDataJsonFolder = AppSettings["GeneratedJsonOutputFolder"];
         var gameDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectDataFileName"]);
@@ -64,22 +70,22 @@ public static class SphObjectDb
 
             using var gameDataFile = File.OpenWrite(gameDataJsonPath);
             using var gameDataWriter = new StreamWriter(gameDataFile);
-            var gameDataJson = JsonConvert.SerializeObject(GameObjectDataDb, Formatting.Indented);
+            var gameDataJson = JsonSerializer.Serialize(GameObjectDataDb, JsonOptions);
             gameDataWriter.Write(gameDataJson);
 
             using var localeContentFile = File.OpenWrite(localizationContentJsonPath);
             using var localeContentWriter = new StreamWriter(localeContentFile);
-            var localeContentJson = JsonConvert.SerializeObject(LocalisationContent, Formatting.Indented);
+            var localeContentJson = JsonSerializer.Serialize(LocalisationContent, JsonOptions);
             localeContentWriter.Write(localeContentJson);
 
             using var objectLocaleFile = File.OpenWrite(objectLocalizationJsonPath);
             using var objectLocaleWriter = new StreamWriter(objectLocaleFile);
-            var objectLocaleJson = JsonConvert.SerializeObject(ObjectNameToLocalizationMap, Formatting.Indented);
+            var objectLocaleJson = JsonSerializer.Serialize(ObjectNameToLocalizationMap, JsonOptions);
             objectLocaleWriter.Write(objectLocaleJson);
 
             using var suffixFile = File.OpenWrite(suffixDataJsonPath);
             using var suffixWriter = new StreamWriter(suffixFile);
-            var suffixJson = JsonConvert.SerializeObject(SuffixDataDb, Formatting.Indented);
+            var suffixJson = JsonSerializer.Serialize(SuffixDataDb, JsonOptions);
             suffixWriter.Write(suffixJson);
         }
 
@@ -89,26 +95,29 @@ public static class SphObjectDb
             using var gameDataFile = File.OpenRead(gameDataJsonPath);
             using var gameDataReader = new StreamReader(gameDataFile);
             GameObjectDataDb =
-                JsonConvert.DeserializeObject<Dictionary<int, SphGameObject>>(gameDataReader.ReadToEnd()) ??
-                throw new InvalidOperationException();
+                JsonSerializer.Deserialize<Dictionary<int, SphGameObject>>(gameDataReader.ReadToEnd(), JsonOptions)
+                ?? throw new InvalidOperationException();
 
             using var localeContentFile = File.OpenRead(localizationContentJsonPath);
             using var localeContentReader = new StreamReader(localeContentFile);
             LocalisationContent =
-                JsonConvert.DeserializeObject<Dictionary<string, LocalizationEntryArray>>(
-                    localeContentReader.ReadToEnd()) ?? throw new InvalidOperationException();
+                JsonSerializer.Deserialize<Dictionary<string, LocalizationEntryArray>>(
+                    localeContentReader.ReadToEnd(), JsonOptions)
+                ?? throw new InvalidOperationException();
 
             using var objectLocaleFile = File.OpenRead(objectLocalizationJsonPath);
             using var objectLocaleReader = new StreamReader(objectLocaleFile);
             ObjectNameToLocalizationMap =
-                JsonConvert.DeserializeObject<Dictionary<string, Dictionary<int, LocalizationEntryString>>>(
-                    objectLocaleReader.ReadToEnd()) ?? throw new InvalidOperationException();
+                JsonSerializer.Deserialize<Dictionary<string, Dictionary<int, LocalizationEntryString>>>(
+                    objectLocaleReader.ReadToEnd(), JsonOptions)
+                ?? throw new InvalidOperationException();
 
             using var suffixFile = File.OpenRead(suffixDataJsonPath);
             using var suffixReader = new StreamReader(suffixFile);
             SuffixDataDb =
-                JsonConvert.DeserializeObject<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
-                    suffixReader.ReadToEnd()) ?? throw new InvalidOperationException();
+                JsonSerializer.Deserialize<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
+                    suffixReader.ReadToEnd(), JsonOptions)
+                ?? throw new InvalidOperationException();
         }
     }
 

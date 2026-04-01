@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using Newtonsoft.Json;
 
 namespace SphServer.Godot.Scripts.Terrain;
 
 /// <summary>
-/// Editor tool: loads object placements from <c>Godot/Terrain/ObjectData/*.json</c>, instantiates GLB scenes from
-/// <see cref="ModelsDirectory"/>, and clears/rebuilds three category nodes on each run.
+/// Editor tool: loads object placements from <c>Godot/Terrain/ObjectData/*.json</c>, pulls meshes from GLB scenes under
+/// <see cref="ModelsDirectory"/>, and draws instances via <see cref="MultiMeshInstance3D"/> (one multimesh per mesh per category).
 /// </summary>
 [Tool]
 public partial class TerrainObjectsFill : Node3D
@@ -43,10 +42,9 @@ public partial class TerrainObjectsFill : Node3D
 		ClearChildren (rocks);
 		ClearChildren (other);
 
-		var sceneCache = new Dictionary<string, PackedScene?> ();
-		var plantIndex = 0;
-		var rockIndex = 0;
-		var otherIndex = 0;
+		// (category root, Mesh) -> instance transforms (world * mesh-local)
+		var batches = new Dictionary<(Node3D Category, Mesh Mesh), List<Transform3D>> (new MeshBatchKeyComparer ());
+		var meshPartsCache = new Dictionary<string, List<MeshPart>?> ();
 
 		var da = DirAccess.Open (dir);
 		if (da is null)
@@ -80,7 +78,7 @@ public partial class TerrainObjectsFill : Node3D
 			List<TerrainObjectRecord>? records;
 			try
 			{
-				records = JsonConvert.DeserializeObject<List<TerrainObjectRecord>> (jsonText);
+				records = ParseTerrainRecords (jsonText);
 			}
 			catch (Exception ex)
 			{
@@ -88,7 +86,7 @@ public partial class TerrainObjectsFill : Node3D
 				continue;
 			}
 
-			if (records is null)
+			if (records is null || records.Count == 0)
 			{
 				continue;
 			}
@@ -100,46 +98,188 @@ public partial class TerrainObjectsFill : Node3D
 					continue;
 				}
 
-				var scene = GetOrLoadScene (rec.ObjectName, sceneCache);
-				if (scene is null)
+				if (!meshPartsCache.TryGetValue (rec.ObjectName, out var parts))
 				{
-					GD.PushWarning ($"TerrainObjectsFill: no model for '{rec.ObjectName}' (tried .glb / .gltf under {ModelsDirectory})");
+					var scene = GetOrLoadScene (rec.ObjectName);
+					parts = scene is null ? null : ExtractMeshParts (scene);
+					meshPartsCache[rec.ObjectName] = parts;
+					if (parts is null || parts.Count == 0)
+					{
+						if (scene is not null)
+						{
+							GD.PushWarning ($"TerrainObjectsFill: no drawable mesh for '{rec.ObjectName}' (missing mesh or skinned-only)");
+						}
+						else
+						{
+							GD.PushWarning ($"TerrainObjectsFill: no model for '{rec.ObjectName}' (tried .glb / .gltf under {ModelsDirectory})");
+						}
+
+						continue;
+					}
+				}
+				else if (parts is null || parts.Count == 0)
+				{
 					continue;
 				}
 
-				var instance = scene.Instantiate<Node3D> ();
 				var pos = rec.Coordinates?.ToVector3 () ?? Vector3.Zero;
 				var rot = rec.RotationEuler?.ToEulerRadians () ?? Vector3.Zero;
-				instance.Position = pos;
-				instance.Rotation = rot;
+				var world = BuildPlacementTransform (pos, rot);
 
 				var lower = rec.ObjectName.ToLowerInvariant ();
 				Node3D parent;
-				string baseName;
-				if (lower.Contains ("tree") || lower.Contains ("bush"))
+				if (lower.Contains ("tree") || lower.Contains ("bush") || lower.Contains ("grass"))
 				{
 					parent = plants;
-					baseName = $"{rec.ObjectName}_{plantIndex++}";
 				}
 				else if (lower.Contains ("rock") || lower.Contains ("stone"))
 				{
 					parent = rocks;
-					baseName = $"{rec.ObjectName}_{rockIndex++}";
 				}
 				else
 				{
 					parent = other;
-					baseName = $"{rec.ObjectName}_{otherIndex++}";
 				}
 
-				instance.Name = baseName;
-				parent.AddChild (instance);
-				SetOwnerIfEditor (instance);
+				foreach (var part in parts)
+				{
+					var key = (parent, part.Mesh);
+					if (!batches.TryGetValue (key, out var list))
+					{
+						list = new List<Transform3D> ();
+						batches[key] = list;
+					}
+
+					list.Add (world * part.LocalToRoot);
+				}
 			}
 		}
 
 		da.ListDirEnd ();
 		da.Dispose ();
+
+		var mmIndex = 0;
+		foreach (var kv in batches)
+		{
+			var (category, mesh) = kv.Key;
+			var transforms = kv.Value;
+			if (transforms.Count == 0)
+			{
+				continue;
+			}
+
+			var mm = new MultiMesh
+			{
+				TransformFormat = MultiMesh.TransformFormatEnum.Transform3D,
+				Mesh = mesh,
+				InstanceCount = transforms.Count,
+			};
+
+			for (var i = 0; i < transforms.Count; i++)
+			{
+				mm.SetInstanceTransform (i, transforms[i]);
+			}
+
+			var mmi = new MultiMeshInstance3D
+			{
+				Name = $"TerrainMM_{mmIndex++}",
+				Multimesh = mm,
+			};
+			category.AddChild (mmi);
+			SetOwnerIfEditor (mmi);
+		}
+	}
+
+	private static Transform3D BuildPlacementTransform (Vector3 position, Vector3 rotationEuler)
+	{
+		var basis = Basis.FromEuler (rotationEuler, EulerOrder.Yxz);
+		return new Transform3D (basis, position);
+	}
+
+	private sealed class MeshPart
+	{
+		public Mesh Mesh { get; }
+		public Transform3D LocalToRoot { get; }
+
+		public MeshPart (Mesh mesh, Transform3D localToRoot)
+		{
+			Mesh = mesh;
+			LocalToRoot = localToRoot;
+		}
+	}
+
+	/// <summary>Reference-equality for <see cref="Mesh"/> so batches merge identical resources.</summary>
+	private sealed class MeshBatchKeyComparer : IEqualityComparer<(Node3D Category, Mesh Mesh)>
+	{
+		public bool Equals ((Node3D Category, Mesh Mesh) x, (Node3D Category, Mesh Mesh) y) =>
+			ReferenceEquals (x.Category, y.Category) && ReferenceEquals (x.Mesh, y.Mesh);
+
+		public int GetHashCode ((Node3D Category, Mesh Mesh) obj) =>
+			HashCode.Combine (obj.Category.GetInstanceId (), obj.Mesh.GetInstanceId ());
+	}
+
+	private static List<MeshPart>? ExtractMeshParts (PackedScene scene)
+	{
+		var root = scene.Instantiate<Node3D> ();
+		try
+		{
+			var list = new List<MeshPart> ();
+			CollectMeshes (root, root, list);
+			return list.Count == 0 ? null : list;
+		}
+		finally
+		{
+			root.QueueFree ();
+		}
+	}
+
+	private static void CollectMeshes (Node node, Node3D root, List<MeshPart> list)
+	{
+		if (node is MeshInstance3D mi && mi.Mesh is { } mesh)
+		{
+			if (HasSkeletonAncestor (mi))
+			{
+				return;
+			}
+
+			var localToRoot = ComputeTransformRelativeToRoot (mi, root);
+			list.Add (new MeshPart (mesh, localToRoot));
+		}
+
+		foreach (var child in node.GetChildren ())
+		{
+			CollectMeshes (child, root, list);
+		}
+	}
+
+	private static bool HasSkeletonAncestor (Node node)
+	{
+		var p = node.GetParent ();
+		while (p is not null)
+		{
+			if (p is Skeleton3D)
+			{
+				return true;
+			}
+
+			p = p.GetParent ();
+		}
+
+		return false;
+	}
+
+	/// <summary>Transform from <paramref name="root"/> space to <paramref name="node"/> space (node is typically a <see cref="MeshInstance3D"/>).</summary>
+	private static Transform3D ComputeTransformRelativeToRoot (Node3D node, Node3D root)
+	{
+		var t = Transform3D.Identity;
+		var cur = node;
+		while (!ReferenceEquals (cur, root) && cur is not null)
+		{
+			t = cur.Transform * t;
+			cur = cur.GetParent () as Node3D;
+		}
+
+		return t;
 	}
 
 	private Node3D GetOrCreateCategory (string nodeName)
@@ -163,27 +303,19 @@ public partial class TerrainObjectsFill : Node3D
 		}
 	}
 
-	private PackedScene? GetOrLoadScene (string objectName, Dictionary<string, PackedScene?> cache)
+	private PackedScene? GetOrLoadScene (string objectName)
 	{
-		if (cache.TryGetValue (objectName, out var cached))
-		{
-			return cached;
-		}
-
 		var baseDir = ModelsDirectory.TrimEnd ('/') + "/";
-		PackedScene? scene = null;
 		foreach (var ext in new[] { "glb", "gltf" })
 		{
 			var path = $"{baseDir}{objectName}.{ext}";
 			if (ResourceLoader.Exists (path))
 			{
-				scene = ResourceLoader.Load<PackedScene> (path);
-				break;
+				return ResourceLoader.Load<PackedScene> (path);
 			}
 		}
 
-		cache[objectName] = scene;
-		return scene;
+		return null;
 	}
 
 	private void SetOwnerIfEditor (Node node)
@@ -197,45 +329,112 @@ public partial class TerrainObjectsFill : Node3D
 		node.Owner = root ?? this;
 	}
 
+	/// <summary>
+	/// Uses Godot's <see cref="Json"/> parser (not Newtonsoft.Json) so collectible assemblies can unload in the editor.
+	/// See https://github.com/godotengine/godot/issues/78513
+	/// </summary>
+	private static List<TerrainObjectRecord>? ParseTerrainRecords (string jsonText)
+	{
+		var json = new Json ();
+		if (json.Parse (jsonText) != Error.Ok)
+		{
+			return null;
+		}
+
+		var root = json.Data;
+		if (root.VariantType != Variant.Type.Array)
+		{
+			return null;
+		}
+
+		var arr = root.AsGodotArray ();
+		var list = new List<TerrainObjectRecord> ();
+		foreach (var item in arr)
+		{
+			if (item.VariantType != Variant.Type.Dictionary)
+			{
+				continue;
+			}
+
+			var d = item.AsGodotDictionary ();
+			if (!d.TryGetValue ("object_name", out var nameVar))
+			{
+				continue;
+			}
+
+			var objectName = nameVar.AsString ();
+			if (string.IsNullOrWhiteSpace (objectName))
+			{
+				continue;
+			}
+
+			var rec = new TerrainObjectRecord { ObjectName = objectName };
+
+			if (d.TryGetValue ("coordinates", out var coordVar) && coordVar.VariantType == Variant.Type.Dictionary)
+			{
+				var cd = coordVar.AsGodotDictionary ();
+				rec.Coordinates = new TerrainCoordinates {
+					X = -DictGetDouble (cd, "x"),
+					Y = -DictGetDouble (cd, "y"),
+					Z = -DictGetDouble (cd, "z"),
+				};
+			}
+
+			if (d.TryGetValue ("rotation_euler", out var rotVar) && rotVar.VariantType == Variant.Type.Dictionary)
+			{
+				var rd = rotVar.AsGodotDictionary ();
+				rec.RotationEuler = new TerrainRotationEuler {
+					Yaw = DictGetDouble (rd, "yaw"),
+					Pitch = DictGetDouble (rd, "pitch"),
+					Roll = DictGetDouble (rd, "roll"),
+				};
+			}
+
+			list.Add (rec);
+		}
+
+		return list;
+	}
+
+	private static double DictGetDouble (global::Godot.Collections.Dictionary d, StringName key) =>
+		d.TryGetValue (key, out var v) ? v.AsDouble () : 0.0;
+
 	private sealed class TerrainObjectRecord
 	{
-		[JsonProperty ("object_name")]
 		public string ObjectName { get; set; } = string.Empty;
-
-		[JsonProperty ("coordinates")]
 		public TerrainCoordinates? Coordinates { get; set; }
-
-		[JsonProperty ("rotation_euler")]
 		public TerrainRotationEuler? RotationEuler { get; set; }
 	}
 
 	private sealed class TerrainCoordinates
 	{
-		[JsonProperty ("x")]
 		public double X { get; set; }
-
-		[JsonProperty ("y")]
 		public double Y { get; set; }
-
-		[JsonProperty ("z")]
 		public double Z { get; set; }
 
 		public Vector3 ToVector3 () => new ((float) X, (float) Y, (float) Z);
 	}
 
-	/// <summary>JSON uses yaw (Y), pitch (X), roll (Z) in radians — matches <see cref="Node3D.Rotation"/>.</summary>
+	/// <summary>
+	/// JSON uses yaw (Y), pitch (X), roll (Z) — same component order as <see cref="BuildPlacementTransform"/> / <see cref="EulerOrder.Yxz"/>.
+	/// <see cref="ToEulerRadians"/> converts from right-handed to left-handed by conjugating the basis with Z reflection (Y-up, mirror forward).
+	/// </summary>
 	private sealed class TerrainRotationEuler
 	{
-		[JsonProperty ("yaw")]
 		public double Yaw { get; set; }
-
-		[JsonProperty ("pitch")]
 		public double Pitch { get; set; }
-
-		[JsonProperty ("roll")]
 		public double Roll { get; set; }
 
-		public Vector3 ToEulerRadians () =>
-			new ((float) Pitch, (float) Yaw, (float) Roll);
+		/// <summary>
+		/// Maps a rotation from right-handed to left-handed convention (Y-up): R' = S R S with S = diag(1,1,-1), then returns YXZ Euler in radians for Godot.
+		/// </summary>
+		public Vector3 ToEulerRadians ()
+		{
+			return new Vector3 (-(float) Pitch, -(float) Yaw, -(float) Roll);
+			/*var basis = Basis.FromEuler (euler, EulerOrder.Yxz);
+			var reflectZ = new Basis (Vector3.Right, Vector3.Up, new Vector3 (0f, 0f, -1f));
+			var leftHanded = reflectZ * basis * reflectZ;
+			return leftHanded.GetEuler (EulerOrder.Yxz);*/
+		}
 	}
 }

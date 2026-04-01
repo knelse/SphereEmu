@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
 using SphServer.Shared.Logger;
 
 namespace SphServer.Server.Config;
@@ -29,6 +29,8 @@ public class AppConfig
 
 public static class ServerConfig
 {
+    private static readonly JsonSerializerOptions JsonWriteOptions = new () { WriteIndented = true };
+
     public static AppConfig AppConfig { get; set; }
 
     static ServerConfig ()
@@ -54,7 +56,7 @@ public static class ServerConfig
         using var configReader = new StreamReader(configFile);
         var configJson = configReader.ReadToEnd();
 
-        var configDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(configJson) ?? new ();
+        var configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configJson) ?? new ();
 
         var defaultSettings = GetDefaultAppConfigDict();
         var configChanged = false;
@@ -97,7 +99,7 @@ public static class ServerConfig
     private static void CreateDefaultAppConfig (string configPath)
     {
         var defaultConfig = GetDefaultAppConfigDict();
-        var json = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
+        var json = JsonSerializer.Serialize(defaultConfig, JsonWriteOptions);
         File.WriteAllText(configPath, json);
         SphLogger.Info($"Created default configuration file: {configPath}");
     }
@@ -125,7 +127,7 @@ public static class ServerConfig
 
     private static void SaveAppConfig (string configPath, Dictionary<string, string> config)
     {
-        var json = JsonConvert.SerializeObject(config, Formatting.Indented);
+        var json = JsonSerializer.Serialize(config, JsonWriteOptions);
         File.WriteAllText(configPath, json);
         SphLogger.Info("Updated configuration file with missing default values");
     }
