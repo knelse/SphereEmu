@@ -6,6 +6,7 @@ using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Sphere.Game.WorldObject.Spawner;
 
+/// <summary>Spawn data uses origin-style world space (X right, Y down, Z forward); Godot is Y up, forward = -Z.</summary>
 public static class WorldObjectSpawner
 {
     private static readonly PackedScene MonsterScene =
@@ -40,7 +41,7 @@ public static class WorldObjectSpawner
                 monsterNode.Angle = angle;
                 monsterNode.Name = Enum.GetName(typeof (MonsterType), monsterNode.MonsterType);
                 SphereServer.ServerNode.CallDeferred("add_child", monsterNode);
-                monsterNode.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
+                monsterNode.Transform = new Transform3D(Basis.Identity, OriginPositionToGodot(x, y, z));
             }
             catch (Exception ex)
             {
@@ -65,7 +66,7 @@ public static class WorldObjectSpawner
                 node.Angle = angle;
                 node.GameObjectID = gameId;
                 SphereServer.ServerNode.CallDeferred("add_child", node);
-                node.Transform = new Transform3D(Basis.Identity, new Vector3(x, -y, z));
+                node.Transform = new Transform3D(Basis.Identity, OriginPositionToGodot(x, y, z));
                 node.ObjectType = Enum.TryParse(type, out ObjectType objectType)
                     ? objectType
                     : ObjectType.AlchemyMetal;
@@ -76,4 +77,6 @@ public static class WorldObjectSpawner
             }
         }
     }
+
+    private static Vector3 OriginPositionToGodot (float x, float y, float z) => new (x, -y, -z);
 }

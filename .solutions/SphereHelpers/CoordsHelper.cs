@@ -397,7 +397,7 @@ public static class CoordsHelper
 
         if (shouldReverse)
         {
-            a = ((IEnumerable<byte>) a).Reverse().ToArray();
+            a = a.Reverse().ToArray();
         }
 
         var stream = new BitStream(a);
@@ -434,7 +434,7 @@ public static class CoordsHelper
     public static WorldCoords GetCoordsFromPingBytes (byte[] rcvBuffer)
     {
         var x = DecodeClientCoordinate(rcvBuffer.AsSpan(21, 5).ToArray());
-        var y = -DecodeClientCoordinate(rcvBuffer.AsSpan(25, 5).ToArray());
+        var y = DecodeClientCoordinate(rcvBuffer.AsSpan(25, 5).ToArray());
         var z = DecodeClientCoordinate(rcvBuffer.AsSpan(29, 5).ToArray());
         var turn = DecodeClientCoordinate(rcvBuffer.AsSpan(33, 5).ToArray());
 

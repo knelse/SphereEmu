@@ -119,7 +119,7 @@ internal static class Program
                 var prefixedName = CollapseDuplicateNpcPrefix (
                     $"NPC_{row.Id.ToString (CultureInfo.InvariantCulture)}_" + displayNameLatin);
                 var nodeName = MakeUniqueNodeName (SanitizeNodeName (prefixedName), usedNames);
-                var godotY = NegateYForGodot (row.Y);
+                var (gx, gy, gz) = OriginPositionToGodot (row.X, row.Y, row.Z);
 
                 sb.AppendLine ();
                 sb.Append ("[node name=\"");
@@ -131,7 +131,7 @@ internal static class Program
                 sb.Append (" instance=ExtResource(\"");
                 sb.Append (NpcExtResource);
                 sb.AppendLine ("\")]");
-                AppendTransform3DWithYRotation (sb, row.X, godotY, row.Z, row.Angle);
+                AppendTransform3DWithYRotation (sb, gx, gy, gz, row.Angle);
                 sb.Append ("NameID = ");
                 sb.Append (4000 + row.NameId);
                 sb.AppendLine ();
@@ -197,8 +197,8 @@ internal static class Program
         }
     }
 
-    /// <summary>Game Y is negated for Godot (e.g. 159 → -159).</summary>
-    private static float NegateYForGodot (float y) => -y;
+    /// <summary>Origin world (X right, Y down, Z forward) → Godot (Y up, forward = -Z). Same as <c>TerrainObjectsFill</c> translation.</summary>
+    private static (float X, float Y, float Z) OriginPositionToGodot (float x, float y, float z) => (x, -y, -z);
 
     /// <summary>Empty <see cref="Node3D"/> under MainServer (<c>parent="."</c>) used as parent for spawned NPCs.</summary>
     private static bool HasNpcRootNode (string sceneText, string nodeName)
@@ -529,7 +529,7 @@ internal static class Program
               ModelNameLength, ModelName, IconNameLength, IconName, NpcType
             NameId is the offset used with _rnms (key = 4000 + NameId); exported NameID on the node is 4000 + NameId.
 
-            Y from the file is negated for the Godot transform (game ↔ engine convention).
+            X, Y, Z from the file are origin coordinates; Godot position is (X, -Y, -Z) (Y up, Z negated for forward).
             Angle is yaw (0 = north, increasing CCW); scene Y rotation uses t0 = -angle * π / 64 radians (angle 64 → -π).
 
             Defaults (absolute paths; override with options above):

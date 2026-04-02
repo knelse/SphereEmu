@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using SphServer.Shared.Logger;
 
@@ -22,7 +19,7 @@ public class AppConfig
     public int CurrentCharacterInventoryId { get; init; } = 0xA001;
     public float Spawn_X { get; init; } = 80.0f;
     public float Spawn_Y { get; init; } = 150.0f;
-    public float Spawn_Z { get; init; } = 200.0f;
+    public float Spawn_Z { get; init; } = -200.0f;
     public float Spawn_Angle { get; init; } = 0.75f;
     public int Spawn_Money { get; init; } = 99999999;
 }
@@ -31,12 +28,12 @@ public static class ServerConfig
 {
     private static readonly JsonSerializerOptions JsonWriteOptions = new () { WriteIndented = true };
 
-    public static AppConfig AppConfig { get; set; }
-
     static ServerConfig ()
     {
         AppConfig = Get();
     }
+
+    public static AppConfig AppConfig { get; set; }
 
     public static AppConfig Get ()
     {

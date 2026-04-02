@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.State;
@@ -22,7 +20,6 @@ public partial class SphereClient : WorldObject
     private ClientEvents clientEvents = null!;
 
     private CharacterBody3D? clientModel;
-    private Area3D? broadcastArea3D;
     public CharacterDbEntry? CurrentCharacter;
     private ClientState currentState = ClientState.I_AM_BREAD;
     private bool isExiting;
@@ -30,6 +27,8 @@ public partial class SphereClient : WorldObject
     private PlayerDbEntry? playerDbEntry;
     private int selectedCharacterIndex;
     private StreamPeerTcp streamPeerTcp = null!;
+
+    internal Area3D? BroadcastArea3D { get; private set; }
 
     public override async void _PhysicsProcess (double delta)
     {
@@ -40,17 +39,17 @@ public partial class SphereClient : WorldObject
         }
 
         clientModel ??= NodeChildTools.FindFirstChildOfType<CharacterBody3D>(this, "ClientModel");
-        if (broadcastArea3D is null)
+        if (BroadcastArea3D is null)
         {
-            var area = NodeChildTools.FindFirstChildOfType<Area3D> (this);
-            if (area is not null && NodeChildTools.FindFirstChildOfType<CollisionShape3D> (area) is not null)
+            var area = NodeChildTools.FindFirstChildOfType<Area3D>(this);
+            if (area is not null && NodeChildTools.FindFirstChildOfType<CollisionShape3D>(area) is not null)
             {
-                broadcastArea3D = area;
+                BroadcastArea3D = area;
             }
         }
 
-        await clientConnection.Process (delta);
-        await clientEvents.HandleEventsAsync ();
+        await clientConnection.Process(delta);
+        await clientEvents.HandleEventsAsync();
     }
 
     public override void _Ready ()
@@ -84,8 +83,8 @@ public partial class SphereClient : WorldObject
 
     public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
     {
-        clientEvents = new ClientEvents (this);
-        clientConnection = new ClientConnection (streamPeer, id, this);
+        clientEvents = new ClientEvents(this);
+        clientConnection = new ClientConnection(streamPeer, id, this);
         localId = id;
         streamPeerTcp = streamPeer;
 
@@ -94,7 +93,7 @@ public partial class SphereClient : WorldObject
 
     public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
     {
-        clientEvents.Enqueue (clientEvent);
+        clientEvents.Enqueue(clientEvent);
     }
 
     public void SetPlayerDbEntry (PlayerDbEntry? entry)
@@ -185,8 +184,6 @@ public partial class SphereClient : WorldObject
     {
         clientConnection.MaybeScheduleNetworkPacketSend(packet);
     }
-
-    internal Area3D? BroadcastArea3D => broadcastArea3D;
 
     public ushort GetLocalObjectId (int id)
     {
@@ -279,7 +276,7 @@ public partial class SphereClient : WorldObject
 
         CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
         CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
-        CurrentCharacter.Z = ServerConfig.AppConfig.Spawn_Z;
+        CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
         CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
         CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
     }

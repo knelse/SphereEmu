@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Godot;
 
 namespace SphServer.Godot.Scripts.Terrain;
@@ -7,10 +5,17 @@ namespace SphServer.Godot.Scripts.Terrain;
 /// <summary>
 /// Editor tool: loads object placements from <c>Godot/Terrain/ObjectData/*.json</c>, pulls meshes from GLB scenes under
 /// <see cref="ModelsDirectory"/>, and draws instances via <see cref="MultiMeshInstance3D"/> (one multimesh per mesh per category).
+/// JSON positions and rotations use source world space: X right, Y down, Z forward (right-handed). Godot: X right, Y up, forward = -Z;
+/// <see cref="SourceWorldToGodotWorldBasis"/> maps positions (x, y, z) ↦ (x, -y, -z). Rotations use R' = T R T (T² = I) so identity source rotation stays identity in Godot; R = T R_src alone would flip GLB meshes 180° about X.
 /// </summary>
 [Tool]
 public partial class TerrainObjectsFill : Node3D
 {
+	/// <summary>
+	/// Columns = source X, Y, Z axes expressed in Godot: right, down, forward (Godot forward = -Z), so (x,y,z)_src ↦ (x,-y,-z).
+	/// </summary>
+	private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
+
 	public const string PlantsNodeName = "TerrainPlants";
 	public const string RocksNodeName = "TerrainRocks";
 	public const string OtherNodeName = "TerrainOther";
@@ -374,9 +379,9 @@ public partial class TerrainObjectsFill : Node3D
 			{
 				var cd = coordVar.AsGodotDictionary ();
 				rec.Coordinates = new TerrainCoordinates {
-					X = -DictGetDouble (cd, "x"),
-					Y = -DictGetDouble (cd, "y"),
-					Z = -DictGetDouble (cd, "z"),
+					X = DictGetDouble (cd, "x"),
+					Y = DictGetDouble (cd, "y"),
+					Z = DictGetDouble (cd, "z"),
 				};
 			}
 
@@ -412,12 +417,13 @@ public partial class TerrainObjectsFill : Node3D
 		public double Y { get; set; }
 		public double Z { get; set; }
 
-		public Vector3 ToVector3 () => new ((float) X, (float) Y, (float) Z);
+		public Vector3 ToVector3 () =>
+			SourceWorldToGodotWorldBasis * new Vector3 ((float) X, (float) Y, (float) Z);
 	}
 
 	/// <summary>
 	/// JSON uses yaw (Y), pitch (X), roll (Z) — same component order as <see cref="BuildPlacementTransform"/> / <see cref="EulerOrder.Yxz"/>.
-	/// <see cref="ToEulerRadians"/> converts from right-handed to left-handed by conjugating the basis with Z reflection (Y-up, mirror forward).
+	/// Euler is in <b>source</b> space (Y down, Z forward). Yaw is negated when building <see cref="Basis.FromEuler"/> so “yaw about down” matches Godot Y-up; then R_godot = T R_src T (conjugate — not T R_src, which leaves a 180° X flip on identity and inverts GLBs).
 	/// </summary>
 	private sealed class TerrainRotationEuler
 	{
@@ -426,15 +432,15 @@ public partial class TerrainObjectsFill : Node3D
 		public double Roll { get; set; }
 
 		/// <summary>
-		/// Maps a rotation from right-handed to left-handed convention (Y-up): R' = S R S with S = diag(1,1,-1), then returns YXZ Euler in radians for Godot.
+		/// R_src from YXZ Euler with negated yaw; same physical orientation in Godot world as R' = T R_src T⁻¹ with T = <see cref="SourceWorldToGodotWorldBasis"/>.
 		/// </summary>
 		public Vector3 ToEulerRadians ()
 		{
-			return new Vector3 (-(float) Pitch, -(float) Yaw, -(float) Roll);
-			/*var basis = Basis.FromEuler (euler, EulerOrder.Yxz);
-			var reflectZ = new Basis (Vector3.Right, Vector3.Up, new Vector3 (0f, 0f, -1f));
-			var leftHanded = reflectZ * basis * reflectZ;
-			return leftHanded.GetEuler (EulerOrder.Yxz);*/
+			var eulerForGodotBasis = new Vector3 ((float) Pitch, -(float) Yaw, (float) Roll);
+			var basisSource = Basis.FromEuler (eulerForGodotBasis, EulerOrder.Yxz);
+			var t = SourceWorldToGodotWorldBasis;
+			var basisGodot = t * basisSource * t;
+			return basisGodot.GetEuler (EulerOrder.Yxz);
 		}
 	}
 }

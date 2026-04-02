@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SphereHelpers.Extensions;
+﻿using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
@@ -92,7 +88,7 @@ public static class DebugConsole
         PacketPart.UpdateValue(packetParts, "entity_id", 4502, 16);
         PacketPart.UpdateValue(packetParts, "x_plus_32768", (int) (client.CurrentCharacter.X + 32768), 16);
         PacketPart.UpdateValue(packetParts, "y_plus_1200", (int) (-client.CurrentCharacter.Y + 1200), 13);
-        PacketPart.UpdateValue(packetParts, "z_plus_32768", (int) (client.CurrentCharacter.Z + 32768), 16);
+        PacketPart.UpdateValue(packetParts, "z_plus_32768", (int) (-client.CurrentCharacter.Z + 32768), 16);
         PacketPart.UpdateValue(packetParts, "angle", client.Angle, 8);
         // PacketPart.UpdateValue(packetParts, "x_plus_32768", 420 + 32768, 16);
         // PacketPart.UpdateValue(packetParts, "y_plus_1200", 150 + 1200, 13);
@@ -115,8 +111,8 @@ public static class DebugConsole
         var client = ActiveClients.FirstOrDefault();
         if (!coordsForEntityMove)
         {
-            PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, client.CurrentCharacter.Y,
-                client.CurrentCharacter.Z);
+            PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, -client.CurrentCharacter.Y,
+                -client.CurrentCharacter.Z);
         }
     }
 }

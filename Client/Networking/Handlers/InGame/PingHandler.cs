@@ -1,9 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Godot;
 using SphServer.Helpers;
-using SphServer.Shared.Db.DataModels;
 using SphServer.Packets;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.System;
@@ -15,17 +13,6 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
 {
     private const double MovementBroadcastDelta = 0.1;
 
-    private ushort counter;
-    private string? pingPreviousClientPingString;
-    private bool pingShouldXorTopBit;
-
-    public async Task Keepalive (double delta)
-    {
-        FifteenSecondPing.Tick(delta);
-        SixSecondPing.Tick(delta);
-        ThreeSecondPing.Tick(delta);
-    }
-
     private readonly SphereTimer FifteenSecondPing = new (15, true,
         () => streamPeerTcp.PutData(CommonPackets.FifteenSecondPing(localId)));
 
@@ -34,6 +21,10 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
 
     private readonly SphereTimer ThreeSecondPing =
         new (3, true, () => streamPeerTcp.PutData(CommonPackets.TransmissionEndPacket));
+
+    private ushort counter;
+    private string? pingPreviousClientPingString;
+    private bool pingShouldXorTopBit;
 
     public async Task Handle (double delta)
     {
@@ -73,8 +64,8 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
                     }
 
                     currentCharacter.X = coords.x;
-                    currentCharacter.Y = coords.y;
-                    currentCharacter.Z = coords.z;
+                    currentCharacter.Y = -coords.y;
+                    currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
                 }
 
@@ -115,11 +106,19 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
         }
     }
 
+    public async Task Keepalive (double delta)
+    {
+        FifteenSecondPing.Tick(delta);
+        SixSecondPing.Tick(delta);
+        ThreeSecondPing.Tick(delta);
+    }
+
     private static bool MovementDeltaExceedsThreshold (WorldCoords coords, CharacterDbEntry character)
     {
+        // Y and Z coords are negated for Godot
         return Math.Abs(coords.x - character.X) > MovementBroadcastDelta
-               || Math.Abs(coords.y - character.Y) > MovementBroadcastDelta
-               || Math.Abs(coords.z - character.Z) > MovementBroadcastDelta
+               || Math.Abs(coords.y + character.Y) > MovementBroadcastDelta
+               || Math.Abs(coords.z + character.Z) > MovementBroadcastDelta
                || Math.Abs(coords.turn - character.Angle) > MovementBroadcastDelta;
     }
 }

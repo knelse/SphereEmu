@@ -11,26 +11,41 @@ using SphServer.Sphere.Game.Converters;
 namespace SphServer.Sphere.Game.WorldObject;
 
 /// <summary>
-/// Marked as a Godot tool script so the editor runs export setters (angle, model, type) and <c>_Ready</c> for visuals;
-/// server registration and visibility area are skipped in the editor.
+///     Marked as a Godot tool script so the editor runs export setters (angle, model, type) and <c>_Ready</c> for visuals;
+///     server registration and visibility area are skipped in the editor.
 /// </summary>
 [Tool]
 public partial class WorldObject : Node3D
 {
 	private const string PlaceholderMeshNodeName = "MeshInstance3D";
+
 	/// <summary>Short name + unique scene id so the tree shows e.g. <c>…#Glb</c> instead of a long duplicate name.</summary>
 	private const string GlbModelChildName = "Glb";
+
 	private const string GlbModelMetaKey = "_world_object_glb";
 	private const string GlbModelMetaKeyLegacy = "_npc_interactable_glb";
 	private const string PlaceholderCheckerDdsPath = "res://Godot/Textures/npc_placeholder_checker.dds";
-	/// <summary>Used when <see cref="ModelName"/> is empty and <see cref="ObjectType"/> has no mapped GLB.</summary>
+
+	/// <summary>Used when <see cref="ModelName" /> is empty and <see cref="ObjectType" /> has no mapped GLB.</summary>
 	private const string DefaultModelNameForVisual = "pump1";
+
+	/// <summary>
+	///     Columns = source X, Y, Z axes in Godot (same as <see cref="SphServer.Godot.Scripts.Terrain.TerrainObjectsFill" />):
+	///     <c>(x,y,z)_src ↦ (x,-y,-z)</c>. Used with <c>R' = T R T</c> for yaw from <see cref="Angle" />.
+	/// </summary>
+	private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
 
 	private int _angle;
 
+	private string _modelName = string.Empty;
+
+	private ObjectType _objectType = ObjectType.Unknown;
+
 	/// <summary>
-	/// Game yaw: 0 = north; values increase counter-clockwise. Godot Y rotation uses
-	/// <c>t0 = -Angle * π / 64</c> radians (same as <c>NpcSpawnTscnWriter.AppendTransform3DWithYRotation</c> / <see cref="Basis.YRotation"/>).
+	///     Game yaw: 0 = north; values increase counter-clockwise. Source yaw is <c>Angle * π / 64</c> radians; Godot
+	///     <see cref="Rotation" /> uses the same <c>R' = T R_src T</c> / YXZ path as terrain JSON
+	///     (<see cref="SphServer.Godot.Scripts.Terrain.TerrainObjectsFill" />; <c>NpcSpawnTscnWriter</c> position flip is
+	///     separate).
 	/// </summary>
 	[Export]
 	public int Angle
@@ -44,13 +59,11 @@ public partial class WorldObject : Node3D
 			}
 
 			_angle = value;
-			ApplyAngleToRotation ();
+			ApplyAngleToRotation();
 		}
 	}
 
 	[Export] public ushort ID { get; set; }
-
-	private ObjectType _objectType = ObjectType.Unknown;
 
 	[Export]
 	public ObjectType ObjectType
@@ -64,14 +77,12 @@ public partial class WorldObject : Node3D
 			}
 
 			_objectType = value;
-			if (IsInsideTree ())
+			if (IsInsideTree())
 			{
-				CallDeferred (nameof (RefreshModelVisualDeferred));
+				CallDeferred(nameof (RefreshModelVisualDeferred));
 			}
 		}
 	}
-
-	private string _modelName = string.Empty;
 
 	[Export]
 	public string ModelName
@@ -87,31 +98,31 @@ public partial class WorldObject : Node3D
 			_modelName = value;
 			if (IsInsideTree())
 			{
-				CallDeferred (nameof (RefreshModelVisualDeferred));
+				CallDeferred(nameof (RefreshModelVisualDeferred));
 			}
 		}
 	}
 
 	/// <summary>
-	/// When true, <see cref="Node._Ready"/> loads or refreshes the GLB / placeholder mesh before the rest of setup,
-	/// and returns early in the editor (no collision / networking init).
+	///     When true, <see cref="Node._Ready" /> loads or refreshes the GLB / placeholder mesh before the rest of setup,
+	///     and returns early in the editor (no collision / networking init).
 	/// </summary>
 	protected virtual bool RefreshModelVisualOnReady => false;
 
 	public override void _Ready ()
 	{
-		ApplyAngleToRotation ();
+		ApplyAngleToRotation();
 
 		if (RefreshModelVisualOnReady)
 		{
-			RefreshModelVisual ();
-			if (Engine.IsEditorHint ())
+			RefreshModelVisual();
+			if (Engine.IsEditorHint())
 			{
 				return;
 			}
 		}
 
-		if (!Engine.IsEditorHint ())
+		if (!Engine.IsEditorHint())
 		{
 			if (ID == 0)
 			{
@@ -168,17 +179,17 @@ public partial class WorldObject : Node3D
 		// scene's defaults; refreshing on the next frame avoids resolving Unknown/empty map and a stuck placeholder.
 		if (!RefreshModelVisualOnReady)
 		{
-			CallDeferred (nameof (RefreshModelVisualDeferred));
+			CallDeferred(nameof (RefreshModelVisualDeferred));
 		}
 	}
 
 	/// <summary>
-	/// Sets <see cref="Rotation"/> Y from <see cref="Angle"/> using <c>t0 = -Angle * π / 64</c>.
+	///     Sets <see cref="Rotation" /> Y from <see cref="Angle" /> using <c>t0 = -Angle * π / 64</c>.
 	/// </summary>
 	private void ApplyAngleToRotation ()
 	{
-		var t0 = (float)(-_angle * Math.PI / 64.0);
-		Rotation = new Vector3 (0f, t0, 0f);
+		var t0 = (float) (_angle * Math.PI / 128.0);
+		Rotation = new Vector3(0f, t0, 0f);
 	}
 
 	protected virtual void ShowForClient (SphereClient client)
@@ -197,8 +208,8 @@ public partial class WorldObject : Node3D
 	public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID (SphereClient client)
 	{
 		var packetParts = GetPacketParts();
-		PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, GlobalTransform.Origin.Y,
-			GlobalTransform.Origin.Z, Angle);
+		PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, -GlobalTransform.Origin.Y,
+			-GlobalTransform.Origin.Z, Angle);
 		var localId = client.GetLocalObjectId(ID);
 		PacketPart.UpdateEntityId(packetParts, localId);
 		return packetParts;
@@ -222,82 +233,85 @@ public partial class WorldObject : Node3D
 	}
 
 	/// <summary>
-	/// Godot string-based <see cref="CallDeferred(string, Variant[])"/> only binds exported/public methods;
-	/// this forwards to <see cref="RefreshModelVisual"/> when <see cref="ObjectType"/> / <see cref="ModelName"/> change.
+	///     Godot string-based <see cref="CallDeferred(string, Variant[])" /> only binds exported/public methods;
+	///     this forwards to <see cref="RefreshModelVisual" /> when <see cref="ObjectType" /> / <see cref="ModelName" />
+	///     change.
 	/// </summary>
 	public void RefreshModelVisualDeferred ()
 	{
-		RefreshModelVisual ();
+		RefreshModelVisual();
 	}
 
 	/// <summary>
-	/// Loads a GLB from <c>res://Godot/Models/{name}.glb</c> using <see cref="ModelName"/> if set, otherwise
-	/// <see cref="ObjectTypeToModelNameMap"/> for <see cref="ObjectType"/>, otherwise <see cref="DefaultModelNameForVisual"/>;
-	/// if the asset is missing, shows the checkered placeholder cube.
+	///     Loads a GLB from <c>res://Godot/Models/{name}.glb</c> using <see cref="ModelName" /> if set, otherwise
+	///     <see cref="ObjectTypeToModelNameMap" /> for <see cref="ObjectType" />, otherwise
+	///     <see cref="DefaultModelNameForVisual" />;
+	///     if the asset is missing, shows the checkered placeholder cube.
 	/// </summary>
 	protected void RefreshModelVisual ()
 	{
-		var trimmed = GetEffectiveModelNameForVisual ();
-		RemoveGlbModelChild ();
+		var trimmed = GetEffectiveModelNameForVisual();
+		RemoveGlbModelChild();
 
-		if (string.IsNullOrEmpty (trimmed))
+		if (string.IsNullOrEmpty(trimmed))
 		{
-			ShowPlaceholderCube ();
+			ShowPlaceholderCube();
 			return;
 		}
 
-		RemovePlaceholderMeshChild ();
+		RemovePlaceholderMeshChild();
 		var glbPath = $"res://Godot/Models/{trimmed}.glb";
-		if (!ResourceLoader.Exists (glbPath))
+		if (!ResourceLoader.Exists(glbPath))
 		{
-			GD.PushWarning ($"WorldObject: GLB not found: {glbPath}");
-			ShowPlaceholderCube ();
+			GD.PushWarning($"WorldObject: GLB not found: {glbPath}");
+			ShowPlaceholderCube();
 			return;
 		}
 
-		var packed = ResourceLoader.Load<PackedScene> (glbPath);
+		var packed = ResourceLoader.Load<PackedScene>(glbPath);
 		if (packed is null)
 		{
-			GD.PushWarning ($"WorldObject: failed to load scene: {glbPath}");
-			ShowPlaceholderCube ();
+			GD.PushWarning($"WorldObject: failed to load scene: {glbPath}");
+			ShowPlaceholderCube();
 			return;
 		}
 
-		var root = InstantiateGlbRoot (packed);
+		var root = InstantiateGlbRoot(packed);
 		if (root is null)
 		{
-			GD.PushWarning ($"WorldObject: GLB root is not a Node3D: {glbPath}");
-			ShowPlaceholderCube ();
+			GD.PushWarning($"WorldObject: GLB root is not a Node3D: {glbPath}");
+			ShowPlaceholderCube();
 			return;
 		}
 
 		root.Name = GlbModelChildName;
 		root.UniqueNameInOwner = true;
-		root.SetMeta (GlbModelMetaKey, true);
-		AddChild (root);
-		SetOwnerForEditedScene (root);
+		root.SetMeta(GlbModelMetaKey, true);
+		AddChild(root);
+		SetOwnerForEditedScene(root);
 	}
 
 	/// <summary>
-	/// Non-empty <see cref="ModelName"/> (trimmed) wins; otherwise <see cref="ResolveModelNameFromObjectTypeFallback"/>.
+	///     Non-empty <see cref="ModelName" /> (trimmed) wins; otherwise <see cref="ResolveModelNameFromObjectTypeFallback" />.
 	/// </summary>
 	private string GetEffectiveModelNameForVisual ()
 	{
-		var explicitName = ModelName?.Trim () ?? string.Empty;
-		if (!string.IsNullOrEmpty (explicitName))
+		var explicitName = ModelName?.Trim() ?? string.Empty;
+		if (!string.IsNullOrEmpty(explicitName))
 		{
 			return explicitName;
 		}
 
-		return ResolveModelNameFromObjectTypeFallback ();
+		return ResolveModelNameFromObjectTypeFallback();
 	}
 
 	/// <summary>
-	/// Map entry for <see cref="ObjectType"/>; if the map has no model for that type, <see cref="DefaultModelNameForVisual"/>.
+	///     Map entry for <see cref="ObjectType" />; if the map has no model for that type,
+	///     <see cref="DefaultModelNameForVisual" />.
 	/// </summary>
 	protected virtual string ResolveModelNameFromObjectTypeFallback ()
 	{
-		if (TryGetMappedModelName (ObjectType, out var mappedName))
+		if (TryGetMappedModelName(ObjectType, out var mappedName))
 		{
 			return mappedName;
 		}
@@ -306,16 +320,16 @@ public partial class WorldObject : Node3D
 	}
 
 	/// <summary>
-	/// Resolves the map by enum; also matches by underlying <see cref="ushort"/> so packed-scene instance values
-	/// still line up if Godot's enum binding is off by member name.
+	///     Resolves the map by enum; also matches by underlying <see cref="ushort" /> so packed-scene instance values
+	///     still line up if Godot's enum binding is off by member name.
 	/// </summary>
 	private static bool TryGetMappedModelName (ObjectType objectType, out string modelName)
 	{
 		modelName = string.Empty;
-		if (ObjectTypeToModelNameMap.Map.TryGetValue (objectType, out var mapped))
+		if (ObjectTypeToModelNameMap.Map.TryGetValue(objectType, out var mapped))
 		{
-			var m = mapped?.Trim () ?? string.Empty;
-			if (!string.IsNullOrEmpty (m))
+			var m = mapped?.Trim() ?? string.Empty;
+			if (!string.IsNullOrEmpty(m))
 			{
 				modelName = m;
 				return true;
@@ -330,8 +344,8 @@ public partial class WorldObject : Node3D
 				continue;
 			}
 
-			var m = kv.Value?.Trim () ?? string.Empty;
-			if (!string.IsNullOrEmpty (m))
+			var m = kv.Value?.Trim() ?? string.Empty;
+			if (!string.IsNullOrEmpty(m))
 			{
 				modelName = m;
 				return true;
@@ -343,10 +357,10 @@ public partial class WorldObject : Node3D
 		return false;
 	}
 
-	/// <summary>GLB scenes usually root at <see cref="Node3D"/>; otherwise wrap in a <see cref="Node3D"/>.</summary>
+	/// <summary>GLB scenes usually root at <see cref="Node3D" />; otherwise wrap in a <see cref="Node3D" />.</summary>
 	private static Node3D? InstantiateGlbRoot (PackedScene packed)
 	{
-		var inst = packed.Instantiate ();
+		var inst = packed.Instantiate();
 		if (inst is Node3D n3)
 		{
 			return n3;
@@ -354,47 +368,47 @@ public partial class WorldObject : Node3D
 
 		if (inst is Node n)
 		{
-			var wrap = new Node3D ();
-			wrap.AddChild (n);
+			var wrap = new Node3D();
+			wrap.AddChild(n);
 			return wrap;
 		}
 
-		inst?.Free ();
+		inst?.Free();
 		return null;
 	}
 
 	/// <summary>
-	/// Removes prior GLB roots (meta-tagged or name <c>Glb</c>), including Godot-renamed duplicates (<c>Glb2</c>, …).
+	///     Removes prior GLB roots (meta-tagged or name <c>Glb</c>), including Godot-renamed duplicates (<c>Glb2</c>, …).
 	/// </summary>
 	private void RemoveGlbModelChild ()
 	{
-		var toRemove = new List<Node> ();
-		foreach (Node child in GetChildren ())
+		var toRemove = new List<Node>();
+		foreach (var child in GetChildren())
 		{
-			if (child.HasMeta (GlbModelMetaKey) || child.HasMeta (GlbModelMetaKeyLegacy))
+			if (child.HasMeta(GlbModelMetaKey) || child.HasMeta(GlbModelMetaKeyLegacy))
 			{
-				toRemove.Add (child);
+				toRemove.Add(child);
 				continue;
 			}
 
-			var nm = child.Name.ToString ();
+			var nm = child.Name.ToString();
 			if (nm == GlbModelChildName
-				|| IsGlbRenamedDuplicateName (nm)
-				|| nm.StartsWith ("NpcGlbModel", StringComparison.Ordinal))
+				|| IsGlbRenamedDuplicateName(nm)
+				|| nm.StartsWith("NpcGlbModel", StringComparison.Ordinal))
 			{
-				toRemove.Add (child);
+				toRemove.Add(child);
 			}
 		}
 
 		foreach (var n in toRemove)
 		{
-			n.Free ();
+			n.Free();
 		}
 	}
 
 	private static bool IsGlbRenamedDuplicateName (string nodeName)
 	{
-		if (!nodeName.StartsWith (GlbModelChildName, StringComparison.Ordinal))
+		if (!nodeName.StartsWith(GlbModelChildName, StringComparison.Ordinal))
 		{
 			return false;
 		}
@@ -406,7 +420,7 @@ public partial class WorldObject : Node3D
 
 		for (var i = GlbModelChildName.Length; i < nodeName.Length; i++)
 		{
-			if (!char.IsDigit (nodeName[i]))
+			if (!char.IsDigit(nodeName[i]))
 			{
 				return false;
 			}
@@ -417,46 +431,46 @@ public partial class WorldObject : Node3D
 
 	private void RemovePlaceholderMeshChild ()
 	{
-		var n = GetNodeOrNull (PlaceholderMeshNodeName);
-		n?.Free ();
+		var n = GetNodeOrNull(PlaceholderMeshNodeName);
+		n?.Free();
 	}
 
 	private void ShowPlaceholderCube ()
 	{
-		RemoveGlbModelChild ();
+		RemoveGlbModelChild();
 
 		MeshInstance3D meshInst;
-		if (GetNodeOrNull (PlaceholderMeshNodeName) is MeshInstance3D existing)
+		if (GetNodeOrNull(PlaceholderMeshNodeName) is MeshInstance3D existing)
 		{
 			meshInst = existing;
 		}
 		else
 		{
-			meshInst = new MeshInstance3D ();
+			meshInst = new MeshInstance3D();
 			meshInst.Name = PlaceholderMeshNodeName;
-			AddChild (meshInst);
-			SetOwnerForEditedScene (meshInst);
+			AddChild(meshInst);
+			SetOwnerForEditedScene(meshInst);
 		}
 
 		var box = new BoxMesh { Size = Vector3.One };
 		meshInst.Mesh = box;
-		var mat = new StandardMaterial3D ();
-		mat.AlbedoTexture = LoadPlaceholderCheckerTexture ();
+		var mat = new StandardMaterial3D();
+		mat.AlbedoTexture = LoadPlaceholderCheckerTexture();
 		meshInst.MaterialOverride = mat;
 	}
 
 	private static Texture2D LoadPlaceholderCheckerTexture ()
 	{
-		if (ResourceLoader.Exists (PlaceholderCheckerDdsPath))
+		if (ResourceLoader.Exists(PlaceholderCheckerDdsPath))
 		{
-			var tex = ResourceLoader.Load<Texture2D> (PlaceholderCheckerDdsPath);
+			var tex = ResourceLoader.Load<Texture2D>(PlaceholderCheckerDdsPath);
 			if (tex is not null)
 			{
 				return tex;
 			}
 		}
 
-		return CreateFallbackPinkCheckerTexture ();
+		return CreateFallbackPinkCheckerTexture();
 	}
 
 	/// <summary>Procedural tileable fallback if the DDS resource is missing.</summary>
@@ -465,28 +479,28 @@ public partial class WorldObject : Node3D
 		const int w = 64;
 		const int h = 64;
 		const int tile = 8;
-		var img = Image.CreateEmpty (w, h, false, Image.Format.Rgba8);
-		var light = new Color (1f, 0.6f, 0.8f);
-		var dark = new Color (1f, 0.25f, 0.55f);
+		var img = Image.CreateEmpty(w, h, false, Image.Format.Rgba8);
+		var light = new Color(1f, 0.6f, 0.8f);
+		var dark = new Color(1f, 0.25f, 0.55f);
 		for (var y = 0; y < h; y++)
 		{
 			for (var x = 0; x < w; x++)
 			{
-				var c = (((x / tile) + (y / tile)) & 1) == 0 ? light : dark;
-				img.SetPixel (x, y, c);
+				var c = ((x / tile + y / tile) & 1) == 0 ? light : dark;
+				img.SetPixel(x, y, c);
 			}
 		}
 
-		return ImageTexture.CreateFromImage (img);
+		return ImageTexture.CreateFromImage(img);
 	}
 
 	/// <summary>
-	/// Owns editor-created visuals under this instance root only. Do not use <see cref="SceneTree.EditedSceneRoot"/>;
-	/// assigning the main scene root as owner can persist those nodes as direct children of the main node in the .tscn.
+	///     Owns editor-created visuals under this instance root only. Do not use <see cref="SceneTree.EditedSceneRoot" />;
+	///     assigning the main scene root as owner can persist those nodes as direct children of the main node in the .tscn.
 	/// </summary>
 	private void SetOwnerForEditedScene (Node node)
 	{
-		if (!Engine.IsEditorHint ())
+		if (!Engine.IsEditorHint())
 		{
 			return;
 		}

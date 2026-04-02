@@ -110,12 +110,11 @@ public class PacketPart
         return parts;
     }
 
-    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0,
-        bool flipYAxis = true)
+    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
     {
         var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
         var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
-        var yValueBytes = CoordsHelper.EncodeServerCoordinate(flipYAxis ? -Y : Y);
+        var yValueBytes = CoordsHelper.EncodeServerCoordinate(Y);
         var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
         var zValueBytes = CoordsHelper.EncodeServerCoordinate(Z);
         var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();

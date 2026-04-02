@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SphServer.Helpers;
+﻿using SphServer.Helpers;
 using SphServer.Shared.Db.DataModels;
 using SphServer.System;
 
@@ -175,7 +173,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         var nameEncoded = SphEncoding.Win1251!.GetBytes(characterDbEntry.Name);
         var x = CoordsHelper.EncodeServerCoordinate(characterDbEntry.X);
         var y = CoordsHelper.EncodeServerCoordinate(-characterDbEntry.Y);
-        var z = CoordsHelper.EncodeServerCoordinate(characterDbEntry.Z);
+        var z = CoordsHelper.EncodeServerCoordinate(-characterDbEntry.Z);
         var t = CoordsHelper.EncodeServerCoordinate(characterDbEntry.Angle);
         var nameLen = nameEncoded.Length + 1;
         var data = new List<byte>

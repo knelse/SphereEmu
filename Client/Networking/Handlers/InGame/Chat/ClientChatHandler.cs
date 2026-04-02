@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Godot;
+﻿using Godot;
 using SphServer.Helpers;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
@@ -183,7 +180,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 }
 
                 var teleportCoords =
-                    new WorldCoords(double.Parse(coords[1]), -double.Parse(coords[2]), double.Parse(coords[3]));
+                    new WorldCoords(double.Parse(coords[1]), double.Parse(coords[2]), double.Parse(coords[3]));
 
                 clientConnection.MaybeScheduleNetworkPacketSend(
                     new CharacterDbEntrySerializer(clientConnection.GetSelectedCharacter()!).GetTeleportByteArray(

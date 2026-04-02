@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using SphServer.Shared.ClientEvents;
 
 namespace SphServer.Client.EventHandlers;
@@ -49,7 +47,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
             for (var i = 0; i < 4; i++)
             {
                 recipient.EnqueueClientEvent(
-                    new EntityPositionUpdateEvent(entityId, character.X, -character.Y, character.Z, character.Angle));
+                    new EntityPositionUpdateEvent(entityId, character.X, -character.Y, -character.Z, character.Angle));
             }
         }
 
