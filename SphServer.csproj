@@ -29,6 +29,7 @@
         <Content Include="Godot\Scenes\item_world_object.tscn"/>
         <Content Include="Godot\Scenes\LootBag.tscn"/>
         <Content Include="Godot\Scenes\MainServer.tscn"/>
+        <Content Include="Godot\Scenes\monster_spawner.tscn"/>
         <Content Include="Godot\Scenes\Monster.tscn"/>
         <Content Include="Godot\Scenes\NewPlayerDungeon.tscn"/>
         <Content Include="Godot\Scenes\Npc.tscn"/>
