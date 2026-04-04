@@ -6,7 +6,7 @@ using SphServer.Helpers;
 
 namespace PacketLogViewer.Models.PacketAnalyzeData;
 
-public class DoorPacket : WorldObject
+public class DoorEntrancePacket : WorldObject
 {
     public int SubtypeID { get; set; }
     public string OverrideType { get; set; }
@@ -22,7 +22,7 @@ public class DoorPacket : WorldObject
     public override string DisplayValue =>
         $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}){OverrideType}{SubtypeStr} at [{X:F2}, {Y:F2}, {Z:F2}]{TeleportTarget}";
 
-    public DoorPacket (List<PacketPart> parts) : base(parts)
+    public DoorEntrancePacket (List<PacketPart> parts) : base(parts)
     {
         if (ActionType is not (EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN))
         {

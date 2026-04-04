@@ -12,9 +12,11 @@
 65: dungeon_entrance
 66: token_multiuse
 68: trade_license
+69: castle_teleport
 70: mob_spawner
 71: tournament_teleport
 72: tutorial_message
+80: castle_tablet
 90: scroll_legend
 91: scroll_recipe
 95: mission

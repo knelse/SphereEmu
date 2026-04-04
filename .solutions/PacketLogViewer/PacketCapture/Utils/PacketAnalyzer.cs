@@ -103,6 +103,10 @@ public static class PacketPartNames
     public const string TargetZ = "target_z";
     public const string CharacterName = "character_name";
     public const string ClanName = "clan_name";
+    public const string ExitX = "exit_x";
+    public const string ExitY = "exit_y";
+    public const string ExitZ = "exit_z";
+    public const string ExitAngle = "exit_angle";
 }
 
 internal class SubpacketBytesWithOffset
@@ -111,7 +115,7 @@ internal class SubpacketBytesWithOffset
     public readonly int ByteOffsetFromFullContentStart;
     public readonly byte[]? Header;
 
-    public SubpacketBytesWithOffset (byte[] content, int byteOffsetFromFullContentStart, byte[]? header = null)
+    public SubpacketBytesWithOffset(byte[] content, int byteOffsetFromFullContentStart, byte[]? header = null)
     {
         Content = content;
         ByteOffsetFromFullContentStart = byteOffsetFromFullContentStart;
@@ -130,7 +134,7 @@ internal static class PacketAnalyzer
     public static readonly ILiteCollection<NpcTradePacket> NpcTradeCollection =
         PacketLogViewerMainWindow.PacketDatabase.GetCollection<NpcTradePacket>("NpcTradeData");
 
-    public static readonly List<Func<byte[], bool>> ServerPacketHideRules = new ()
+    public static readonly List<Func<byte[], bool>> ServerPacketHideRules = new()
     {
         c => c.HasEqualElementsAs(packet_04_00_4F_01),
         c => c[0] == 0x08 && (c.Length < 8 || (c[6] == 0xF4 && c[7] == 0x01)),
@@ -144,14 +148,14 @@ internal static class PacketAnalyzer
         c => c[0] == 0x76 && (c.Length < 12 || (c[9] == 0x08 && c[10] == 0x40 && c[11] == 0x63)) // file check
     };
 
-    public static readonly List<Func<byte[], bool>> ClientPacketHideRules = new ()
+    public static readonly List<Func<byte[], bool>> ClientPacketHideRules = new()
     {
         c => true,
         c => c[0] == 0x26 || c[0] == 0x08 || c[0] == 0x0C || c[0] == 0x12,
         c => c[0] == 0x69 && c[13] == 0x08 && c[14] == 0x40 && c[15] == 0x63
     };
 
-    internal static bool ShouldBeHiddenByDefault (StoredPacket storedPacket)
+    internal static bool ShouldBeHiddenByDefault(StoredPacket storedPacket)
     {
         return storedPacket.Source switch
         {
@@ -161,29 +165,29 @@ internal static class PacketAnalyzer
         };
     }
 
-    private static bool ShouldBeHiddenByDefaultServer (StoredPacket storedPacket)
+    private static bool ShouldBeHiddenByDefaultServer(StoredPacket storedPacket)
     {
         var content = storedPacket.ContentBytes;
 
         return ServerPacketHideRules.Any(ruleFunc => ruleFunc(content));
     }
 
-    private static bool ShouldBeHiddenByDefaultClient (StoredPacket storedPacket)
+    private static bool ShouldBeHiddenByDefaultClient(StoredPacket storedPacket)
     {
         var content = storedPacket.ContentBytes;
 
         return ClientPacketHideRules.Any(ruleFunc => ruleFunc(content));
     }
 
-    public static bool IsClientPingPacket (StoredPacket storedPacket)
+    public static bool IsClientPingPacket(StoredPacket storedPacket)
     {
         return storedPacket.Source == PacketSource.CLIENT && storedPacket.ContentBytes[0] == 0x26;
     }
 
-    internal static List<byte[]> SplitIntoItemSlots (BitStream stream, int separator, int separatorBitCount)
+    internal static List<byte[]> SplitIntoItemSlots(BitStream stream, int separator, int separatorBitCount)
     {
         var results = new List<byte[]>();
-        var previousOffset = (long) 0;
+        var previousOffset = (long)0;
         var previousBit = 0;
         stream.Seek(0, 0);
 
@@ -226,7 +230,7 @@ internal static class PacketAnalyzer
         return results;
     }
 
-    internal static string GetTextOutputForPacket (byte[] contents)
+    internal static string GetTextOutputForPacket(byte[] contents)
     {
         if (contents.Length < 5)
         {
@@ -245,7 +249,7 @@ internal static class PacketAnalyzer
         var entityId = stream.ReadUInt16();
         stream.ReadByte(2);
         var entityType = stream.ReadUInt16(10);
-        var entityTypeName = Enum.GetName(typeof (ObjectType), entityType) ?? "(undef)";
+        var entityTypeName = Enum.GetName(typeof(ObjectType), entityType) ?? "(undef)";
         var tradeEntities = new HashSet<int>
         {
             (int) ObjectType.NpcTrade
@@ -327,7 +331,7 @@ internal static class PacketAnalyzer
         return $"ID: {entityId:X4} ({entityType}, {entityTypeName})\n{output}";
     }
 
-    public static StoredPacket UpdatePacketPartsForContent (this StoredPacket storedPacket)
+    public static StoredPacket UpdatePacketPartsForContent(this StoredPacket storedPacket)
     {
         if (storedPacket.Source == PacketSource.CLIENT)
         {
@@ -356,7 +360,7 @@ internal static class PacketAnalyzer
         while (fullStream.ValidPosition)
         {
             subPacketIndex++;
-            var initialBitOffset = (int) fullStream.BitOffsetFromStart;
+            var initialBitOffset = (int)fullStream.BitOffsetFromStart;
             var test1 = fullStream.ReadBytes(4, true);
             var breakAfterCurrentTry = false;
             if (test1.HasEqualElementsAs(packet_04_00_4F_01))
@@ -400,8 +404,8 @@ internal static class PacketAnalyzer
                 break;
             }
 
-            var objectType = Enum.IsDefined(typeof (ObjectType), objectTypeVal)
-                ? (ObjectType) objectTypeVal
+            var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
+                ? (ObjectType)objectTypeVal
                 : ObjectType.Unknown;
             if (objectType != ObjectType.Unknown)
             {
@@ -422,8 +426,8 @@ internal static class PacketAnalyzer
             {
                 fullStream.ReadBit();
                 var actionTypeVal = fullStream.ReadByte();
-                var actionType = Enum.IsDefined(typeof (EntityActionType), (int) actionTypeVal)
-                    ? (EntityActionType) actionTypeVal
+                var actionType = Enum.IsDefined(typeof(EntityActionType), (int)actionTypeVal)
+                    ? (EntityActionType)actionTypeVal
                     : EntityActionType.UNDEF;
                 if (actionType is EntityActionType.INTERACT or EntityActionType.FULL_SPAWN)
                 {
@@ -461,8 +465,8 @@ internal static class PacketAnalyzer
                 }
 
                 var interactionTypeVal = fullStream.ReadUInt16();
-                var interactionType = Enum.IsDefined(typeof (EntityInteractionType), (int) interactionTypeVal)
-                    ? (EntityInteractionType) interactionTypeVal
+                var interactionType = Enum.IsDefined(typeof(EntityInteractionType), (int)interactionTypeVal)
+                    ? (EntityInteractionType)interactionTypeVal
                     : EntityInteractionType.UNDEF;
                 fullStream.ReadBits(112);
                 if (!fullStream.ValidPosition)
@@ -612,7 +616,7 @@ internal static class PacketAnalyzer
         return storedPacket;
     }
 
-    private static List<OptionalPacketFields> GetOptionalFields (BitStream stream)
+    private static List<OptionalPacketFields> GetOptionalFields(BitStream stream)
     {
         var currentPosition = stream.BitOffsetFromStart;
         var result = new List<OptionalPacketFields>();
@@ -636,14 +640,14 @@ internal static class PacketAnalyzer
                 break;
             }
 
-            var fieldLength = nextField == (byte) OptionalPacketFields.MADE_BY ? 2 : stream.ReadByte();
+            var fieldLength = nextField == (byte)OptionalPacketFields.MADE_BY ? 2 : stream.ReadByte();
             if (!stream.ValidPosition)
             {
                 break;
             }
 
-            var fieldName = Enum.IsDefined(typeof (OptionalPacketFields), nextField)
-                ? (OptionalPacketFields) nextField
+            var fieldName = Enum.IsDefined(typeof(OptionalPacketFields), nextField)
+                ? (OptionalPacketFields)nextField
                 : OptionalPacketFields.UNKNOWN;
 
             if (fieldName is not OptionalPacketFields.UNKNOWN)
@@ -657,7 +661,7 @@ internal static class PacketAnalyzer
         return result;
     }
 
-    private static Tuple<bool, List<PacketPart>> GetNewEntityPacketParts (BitStream stream, ObjectType objectType,
+    private static Tuple<bool, List<PacketPart>> GetNewEntityPacketParts(BitStream stream, ObjectType objectType,
         ushort entId, EntityActionType actionType, EntityInteractionType interactionType, int subpacketIndex,
         bool hasGameId, List<OptionalPacketFields> optionalFields)
     {
@@ -671,7 +675,7 @@ internal static class PacketAnalyzer
                     subpacketIndex, comment));
     }
 
-    private static StoredPacket AddPacketPartAnalyzeData (this StoredPacket storedPacket)
+    private static StoredPacket AddPacketPartAnalyzeData(this StoredPacket storedPacket)
     {
         storedPacket.AnalyzeResult.Clear();
         var partsBySubpacket = new Dictionary<int, List<PacketPart>>();
@@ -698,7 +702,7 @@ internal static class PacketAnalyzer
         return storedPacket;
     }
 
-    private static PacketAnalyzeData GetAnalyzeDataForSubpacket (List<PacketPart> subpacket)
+    private static PacketAnalyzeData GetAnalyzeDataForSubpacket(List<PacketPart> subpacket)
     {
         var result = new PacketAnalyzeData(subpacket);
         var outputPath = PacketLogViewerMainWindow.AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
@@ -749,15 +753,27 @@ internal static class PacketAnalyzer
             }
         }
 
-        else if (result.ObjectType is ObjectType.DoorEntrance or ObjectType.DoorExit)
+        else if (result.ObjectType is ObjectType.DoorEntrance)
         {
-            var door = new DoorPacket(subpacket);
+            var door = new DoorEntrancePacket(subpacket);
             result = door;
             if (door.ActionType == EntityActionType.FULL_SPAWN)
             {
                 var output =
                     $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.SubtypeID}\t{door.TargetX}\t{door.TargetY}\t{door.TargetZ}\n";
                 File.AppendAllText($@"{outputPath}\\doors.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.DoorExit)
+        {
+            var door = new DoorExitPacket(subpacket);
+            result = door;
+            if (door.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.ExitX}\t{door.ExitY}\t{door.ExitZ}\t{door.ExitAngle}\n";
+                File.AppendAllText($@"{outputPath}\\door_exits.txt", output);
             }
         }
 
@@ -795,7 +811,7 @@ internal static class PacketAnalyzer
         return result;
     }
 
-    private static List<PacketPart> FindPartsByName (BitStream stream, string name, bool isSubpacket)
+    private static List<PacketPart> FindPartsByName(BitStream stream, string name, bool isSubpacket)
     {
         var isMob = name is "monster_full" or "entity_monster";
         var isItem = name.StartsWith("item");
@@ -819,7 +835,7 @@ internal static class PacketAnalyzer
         return definition.LoadFromFile(stream, 0, isMob, isItem);
     }
 
-    private static List<PacketPart> FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset (BitStream stream,
+    private static List<PacketPart> FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(BitStream stream,
         string name, int subpacketIndex, string? comment = null, bool isSubpacket = true)
     {
         var parts = FindPartsByName(stream, name, isSubpacket);
