@@ -615,6 +615,38 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Insert(0, teleportWithTarget);
                 }
             }
+            else if (result.GetType() == typeof(CastleTablet))
+            {
+                var castleTablet = result as CastleTablet;
+                if (castleTablet.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, castleTablet);
+                }
+            }
+            else if (result.GetType() == typeof(CastleGates))
+            {
+                var castleGates = result as CastleGates;
+                if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, castleGates);
+                }
+            }
+            else if (result.GetType() == typeof(CastleChest))
+            {
+                var castleChest = result as CastleChest;
+                if (castleChest.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, castleChest);
+                }
+            }
+            else if (result.GetType() == typeof(WorldObject))
+            {
+                var worldObject = result as WorldObject;
+                if (worldObject.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, worldObject);
+                }
+            }
         }
 
         CurrentEntityStateForClient.UpdateLayout();

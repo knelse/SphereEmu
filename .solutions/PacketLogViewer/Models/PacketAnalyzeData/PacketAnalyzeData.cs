@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BitStreams;
 using LiteDB;
-using SphereHelpers.Extensions;
 using SpherePacketVisualEditor;
 using SphServer.Helpers;
 
@@ -18,11 +17,11 @@ public class PacketAnalyzeData
     public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public EntityInteractionType InteractionType { get; set; } = EntityInteractionType.UNDEF;
 
-    public PacketAnalyzeData ()
+    public PacketAnalyzeData()
     {
     }
 
-    public PacketAnalyzeData (List<PacketPart> parts)
+    public PacketAnalyzeData(List<PacketPart> parts)
     {
         Parts = parts;
         Id = GetIntValue(PacketPartNames.ID);
@@ -31,24 +30,24 @@ public class PacketAnalyzeData
             x.Name == PacketPartNames.EntityType || x.Name == PacketPartNames.ObjectType);
         if (objectTypePart is not null)
         {
-            var objTypeVal = (ushort) (objectTypePart.ActualLongValue ?? ushort.MaxValue);
-            ObjectType = Enum.IsDefined(typeof (ObjectType), objTypeVal) ? (ObjectType) objTypeVal : ObjectType.Unknown;
+            var objTypeVal = (ushort)(objectTypePart.ActualLongValue ?? ushort.MaxValue);
+            ObjectType = Enum.IsDefined(typeof(ObjectType), objTypeVal) ? (ObjectType)objTypeVal : ObjectType.Unknown;
         }
     }
 
-    public int GetIntValue (string name)
+    public int GetIntValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
-        return part is not null ? (int) (part.ActualLongValue ?? 0) : 0;
+        return part is not null ? (int)(part.ActualLongValue ?? 0) : 0;
     }
 
-    public bool GetBitValue (string name)
+    public bool GetBitValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
         return part is not null && part.Value[0].AsBool();
     }
 
-    public double GetClientCoordValue (string name)
+    public double GetClientCoordValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
         if (part is not null)
@@ -61,7 +60,7 @@ public class PacketAnalyzeData
         return 0;
     }
 
-    public string GetStringValue (string name)
+    public string GetStringValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
         return part is not null

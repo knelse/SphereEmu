@@ -146,7 +146,11 @@ public static class PacketPartMapping
         ObjectType.MobSpawner,
         ObjectType.TournamentTeleport,
         ObjectType.CastleTeleport,
-        ObjectType.CaslteTablet,
+        ObjectType.CastleTablet,
+        ObjectType.CastleGates,
+        ObjectType.CastleChest,
+        ObjectType.CastleElixirPillar,
+        ObjectType.CastleEntrance,
         ObjectType.Monster,
         ObjectType.MonsterFlyer,
         ObjectType.NpcBanker,
@@ -302,7 +306,11 @@ public static class PacketPartMapping
     {
         [ObjectType.Teleport] = "teleports",
         [ObjectType.CastleTeleport] = "castle_teleports",
-        [ObjectType.CaslteTablet] = "castle_tablets",
+        [ObjectType.CastleTablet] = "castle_tablets",
+        [ObjectType.CastleGates] = "castle_gates",
+        [ObjectType.CastleChest] = "castle_chests",
+        [ObjectType.CastleElixirPillar] = "castle_elixir_pillars",
+        [ObjectType.CastleEntrance] = "castle_entrances",
         [ObjectType.TeleportWithTarget] = "teleports_with_target",
         [ObjectType.TeleportWild] = "teleport_wild",
         [ObjectType.TournamentTeleport] = "teleport_tournament",
@@ -404,13 +412,26 @@ public static class PacketPartMapping
                             packetName = "tutorial_message";
                             break;
                         case ObjectType.Teleport:
+                        case ObjectType.TeleportWild:
                             packetName = "teleport";
                             break;
                         case ObjectType.CastleTeleport:
                             packetName = "castle_teleport";
                             break;
-                        case ObjectType.CaslteTablet:
+                        case ObjectType.CastleTablet:
                             packetName = "castle_tablet";
+                            break;
+                        case ObjectType.CastleGates:
+                            packetName = "castle_gates";
+                            break;
+                        case ObjectType.CastleChest:
+                            packetName = "castle_chest";
+                            break;
+                        case ObjectType.CastleElixirPillar:
+                            packetName = "castle_elixir_pillar";
+                            break;
+                        case ObjectType.CastleEntrance:
+                            packetName = "castle_entrance";
                             break;
                         case ObjectType.Key:
                         case ObjectType.KeyBarn:
@@ -593,7 +614,11 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.DungeonEntrance] = "dungeon_entrance",
         [ObjectType.Teleport] = "teleport",
         [ObjectType.CastleTeleport] = "castle_teleport",
-        [ObjectType.CaslteTablet] = "castle_tablet",
+        [ObjectType.CastleTablet] = "castle_tablet",
+        [ObjectType.CastleGates] = "castle_gates",
+        [ObjectType.CastleChest] = "castle_chest",
+        [ObjectType.CastleElixirPillar] = "castle_elixir_pillar",
+        [ObjectType.CastleEntrance] = "castle_entrance",
         [ObjectType.TeleportWithTarget] = "teleport_with_target",
         [ObjectType.TokenMultiuse] = "item_token_multiuse",
         [ObjectType.TradeLicense] = "item_license_trade",

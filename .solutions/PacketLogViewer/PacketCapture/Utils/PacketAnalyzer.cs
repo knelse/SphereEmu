@@ -103,6 +103,7 @@ public static class PacketPartNames
     public const string TargetZ = "target_z";
     public const string CharacterName = "character_name";
     public const string ClanName = "clan_name";
+    public const string ClanNameLength = "clan_name_length";
     public const string ExitX = "exit_x";
     public const string ExitY = "exit_y";
     public const string ExitZ = "exit_z";
