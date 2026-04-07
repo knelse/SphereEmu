@@ -1,5 +1,6 @@
 ﻿using Godot;
 using SphServer.Helpers;
+using SphServer.Packets;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Debug;
@@ -187,7 +188,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                         teleportCoords));
             }
 
-            if (message.StartsWith("/buff"))
+            else if (message.StartsWith("/buff"))
             {
                 var jumpx4 =
                     "3F002C0100A01A29C678800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49E9FD93408ACF007F70391E0004F6F00";
@@ -207,7 +208,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 clientConnection.MaybeScheduleNetworkPacketSend(Convert.FromHexString(test));
             }
 
-            if (message.StartsWith("/fire"))
+            else if (message.StartsWith("/fire"))
             {
                 var firework = FireworkScene.Instantiate<WorldObject>();
                 firework.Angle = 0;
@@ -218,14 +219,31 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 firework.Transform = new Transform3D(Basis.Identity, origin);
             }
 
-            if (message.StartsWith("/randplayer"))
+            else if (message.StartsWith("/randplayer"))
             {
                 DebugConsole.SendRandomPlayerPacket(clientConnection.MaybeScheduleNetworkPacketSend);
             }
 
-            if (message.StartsWith("/moveplayer"))
+            else if (message.StartsWith("/moveplayer"))
             {
                 DebugConsole.MoveEntity(clientConnection.MaybeScheduleNetworkPacketSend);
+            }
+
+            else if (message.StartsWith("tablet"))
+            {
+                // skip (char) 1 to make client think it has no owner
+                DebugConsole.SendSpherePacket("/packet castle_tablet onme",
+                    clientConnection.MaybeScheduleNetworkPacketSend, true,
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); });
+            }
+
+            else if (message.StartsWith("gates"))
+            {
+                // skip (char) 1 to make client think it has no owner
+                DebugConsole.SendSpherePacket("/packet castle_gates_t onme",
+                    clientConnection.MaybeScheduleNetworkPacketSend, true,
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); }
+                );
             }
         }
         catch (Exception ex)
