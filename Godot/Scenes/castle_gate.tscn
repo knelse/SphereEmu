@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://o4gude0i3tkc"]
+
+[ext_resource type="Script" uid="uid://bcqblo81t7fww" path="res://Sphere.Game/WorldObject/CastleGate.cs" id="1_eu7gc"]
+[ext_resource type="PackedScene" uid="uid://dwwbqbodecpoc" path="res://Godot/Models/cc103.glb" id="2_dckk8"]
+
+[node name="CastleGate" type="Node3D" unique_id=1627497759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_eu7gc")
+
+[node name="OtherHalf" parent="." unique_id=1623885751 instance=ExtResource("2_dckk8")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.7519531, 0, 0.059570313)
+
+[node name="Glb" parent="." unique_id=533458383 instance=ExtResource("2_dckk8")]
+unique_name_in_owner = true
+metadata/_world_object_glb = true

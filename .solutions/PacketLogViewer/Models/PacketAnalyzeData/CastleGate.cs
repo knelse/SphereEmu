@@ -6,7 +6,7 @@ using SphServer.Helpers;
 
 namespace PacketLogViewer.Models.PacketAnalyzeData;
 
-public class CastleGates : PacketAnalyzeData
+public class CastleGate : PacketAnalyzeData
 {
     public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public double X { get; set; }
@@ -15,11 +15,12 @@ public class CastleGates : PacketAnalyzeData
     public int Angle { get; set; }
     public int ClanNameLength { get; set; }
     public string ClanName { get; set; } = string.Empty;
+    public Castles Castle { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
+        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) {Castle} [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
 
-    public CastleGates(List<PacketPart> parts) : base(parts)
+    public CastleGate(List<PacketPart> parts) : base(parts)
     {
         var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
@@ -41,5 +42,7 @@ public class CastleGates : PacketAnalyzeData
         Angle = GetIntValue(PacketPartNames.Angle);
         ClanNameLength = GetIntValue(PacketPartNames.ClanNameLength);
         ClanName = GetStringValue(PacketPartNames.ClanName);
+        // for gates, stored value is +8 from the actual castle id
+        Castle = (Castles)(GetIntValue(PacketPartNames.CastleId) - 8);
     }
 }

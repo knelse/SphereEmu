@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://crkf5x6uwyr1x"]
+
+[ext_resource type="Script" uid="uid://b6m5ksn73gqh3" path="res://Sphere.Game/WorldObject/CastleElixirPillar.cs" id="1_dsr32"]
+[ext_resource type="PackedScene" uid="uid://bkao7b4lgsjt" path="res://Godot/Models/cs_knot.glb" id="2_dsr32"]
+
+[node name="CastleElixirPillar" type="Node3D" unique_id=1627497759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_dsr32")
+
+[node name="Glb" type="Node3D" parent="." unique_id=794965817 instance=ExtResource("2_dsr32")]
+unique_name_in_owner = true
+metadata/_world_object_glb = true

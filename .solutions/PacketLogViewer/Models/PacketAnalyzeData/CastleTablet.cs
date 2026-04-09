@@ -15,9 +15,10 @@ public class CastleTablet : PacketAnalyzeData
     public int Angle { get; set; }
     public int ClanNameLength { get; set; }
     public string ClanName { get; set; } = string.Empty;
+    public Castles Castle { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
+        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) {Castle} [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
 
     public CastleTablet(List<PacketPart> parts) : base(parts)
     {
@@ -41,5 +42,6 @@ public class CastleTablet : PacketAnalyzeData
         Angle = GetIntValue(PacketPartNames.Angle);
         ClanNameLength = GetIntValue(PacketPartNames.ClanNameLength);
         ClanName = GetStringValue(PacketPartNames.ClanName);
+        Castle = (Castles)GetIntValue(PacketPartNames.CastleId);
     }
 }

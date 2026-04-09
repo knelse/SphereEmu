@@ -20,7 +20,7 @@ public enum ObjectType : ushort
     TournamentTeleport = 71,
     TutorialMessage = 72,
     CastleTablet = 80,
-    CastleGates = 81,
+    CastleGate = 81,
     CastleChest = 82,
     CastleElixirPillar = 83,
     ScrollLegend = 90,

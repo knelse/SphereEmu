@@ -485,7 +485,7 @@ public partial class PacketLogViewerMainWindow
             var packetContents = string.Empty;
             var knownAnalyzedParts = selected.AnalyzeResult
                 .Where(x => x is ItemPacket or MobPacket or NpcTradePacket or WorldObject or DoorEntrancePacket
-                    or TeleportWithTargetPacket or DoorExitPacket)
+                    or TeleportWithTargetPacket or DoorExitPacket or CastleTablet or CastleGate or CastleChest)
                 .ToList();
             if (knownAnalyzedParts.Any())
             {
@@ -623,9 +623,9 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Insert(0, castleTablet);
                 }
             }
-            else if (result.GetType() == typeof(CastleGates))
+            else if (result.GetType() == typeof(CastleGate))
             {
-                var castleGates = result as CastleGates;
+                var castleGates = result as CastleGate;
                 if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
                 {
                     CurrentClientState.Insert(0, castleGates);

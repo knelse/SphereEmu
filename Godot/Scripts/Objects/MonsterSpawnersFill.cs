@@ -82,8 +82,8 @@ public partial class MonsterSpawnersFill : Node3D
 			}
 
 			if (!TryParseDouble (parts[3], out var x)
-			    || !TryParseDouble (parts[4], out var y)
-			    || !TryParseDouble (parts[5], out var z))
+				|| !TryParseDouble (parts[4], out var y)
+				|| !TryParseDouble (parts[5], out var z))
 			{
 				GD.PushWarning ($"MonsterSpawnersFill: line {lineNumber}: bad X/Y/Z, skipping");
 				continue;

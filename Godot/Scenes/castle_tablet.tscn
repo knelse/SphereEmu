@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dtf6a6bgra1rg"]
+
+[ext_resource type="Script" uid="uid://btqg80h8yddra" path="res://Sphere.Game/WorldObject/CastleTablet.cs" id="1_n4g31"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_xx26p"]
+
+[node name="CastleTablet" type="Node3D" unique_id=1627497759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_n4g31")
+
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_xx26p")]

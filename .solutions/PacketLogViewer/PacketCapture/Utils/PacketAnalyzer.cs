@@ -108,6 +108,7 @@ public static class PacketPartNames
     public const string ExitY = "exit_y";
     public const string ExitZ = "exit_z";
     public const string ExitAngle = "exit_angle";
+    public const string CastleId = "castle_id";
 }
 
 internal class SubpacketBytesWithOffset
@@ -787,6 +788,30 @@ internal static class PacketAnalyzer
                 var output =
                     $"{tp.Id:X4}\t{result.ObjectType}\t{tp.ActionType}\t{tp.X}\t{tp.Y}\t{tp.Z}\t{tp.Angle}\t{tp.SubtypeID}\n";
                 File.AppendAllText($@"{outputPath}\\target_tps.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.CastleTablet)
+        {
+            var castleTablet = new CastleTablet(subpacket);
+            result = castleTablet;
+            if (castleTablet.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{castleTablet.Id:X4}\t{result.ObjectType}\t{castleTablet.ActionType}\t{castleTablet.X}\t{castleTablet.Y}\t{castleTablet.Z}\t{castleTablet.Angle}\t{(int)castleTablet.Castle}\t{castleTablet.ClanNameLength}\t{castleTablet.ClanName}\n";
+                File.AppendAllText($@"{outputPath}\\castle_tablets.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.CastleGate)
+        {
+            var castleGates = new CastleGate(subpacket);
+            result = castleGates;
+            if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{castleGates.Id:X4}\t{result.ObjectType}\t{castleGates.ActionType}\t{castleGates.X}\t{castleGates.Y}\t{castleGates.Z}\t{castleGates.Angle}\t{(int)castleGates.Castle}\t{castleGates.ClanNameLength}\t{castleGates.ClanName}\n";
+                File.AppendAllText($@"{outputPath}\\castle_gates.txt", output);
             }
         }
 

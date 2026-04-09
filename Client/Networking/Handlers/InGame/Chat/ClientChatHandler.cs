@@ -5,7 +5,9 @@ using SphServer.Server;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Debug;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
 using static SphServer.Helpers.Continents;
@@ -239,6 +241,8 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
 
             else if (message.StartsWith("gates"))
             {
+                clientConnection.MaybeScheduleNetworkPacketSend(
+                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket("/packet castle_gates_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,

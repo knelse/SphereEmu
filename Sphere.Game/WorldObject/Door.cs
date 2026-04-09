@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using BitStreams;
 using Godot;
-using SphServer.Helpers;
 using SphServer.Packets;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -26,22 +22,7 @@ public partial class Door : WorldObject
         PacketPart.UpdateValue(packetParts, "door_id", DoorID, 7);
         if (HasTarget)
         {
-            var xValueBytes = CoordsHelper.EncodeServerCoordinate(TargetX);
-            var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
-            var yValueBytes = CoordsHelper.EncodeServerCoordinate(TargetY);
-            var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
-            var zValueBytes = CoordsHelper.EncodeServerCoordinate(TargetZ);
-            var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();
-            foreach (var part in packetParts)
-            {
-                part.Value = part.Name switch
-                {
-                    "target_x" => xValue,
-                    "target_y" => yValue,
-                    "target_z" => zValue,
-                    _ => part.Value
-                };
-            }
+            PacketPart.UpdateTargetCoordinates(packetParts, TargetX, TargetY, TargetZ);
         }
 
         return packetParts;

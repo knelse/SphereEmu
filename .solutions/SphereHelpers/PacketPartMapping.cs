@@ -147,7 +147,7 @@ public static class PacketPartMapping
         ObjectType.TournamentTeleport,
         ObjectType.CastleTeleport,
         ObjectType.CastleTablet,
-        ObjectType.CastleGates,
+        ObjectType.CastleGate,
         ObjectType.CastleChest,
         ObjectType.CastleElixirPillar,
         ObjectType.CastleEntrance,
@@ -307,7 +307,7 @@ public static class PacketPartMapping
         [ObjectType.Teleport] = "teleports",
         [ObjectType.CastleTeleport] = "castle_teleports",
         [ObjectType.CastleTablet] = "castle_tablets",
-        [ObjectType.CastleGates] = "castle_gates",
+        [ObjectType.CastleGate] = "castle_gates",
         [ObjectType.CastleChest] = "castle_chests",
         [ObjectType.CastleElixirPillar] = "castle_elixir_pillars",
         [ObjectType.CastleEntrance] = "castle_entrances",
@@ -421,7 +421,7 @@ public static class PacketPartMapping
                         case ObjectType.CastleTablet:
                             packetName = "castle_tablet";
                             break;
-                        case ObjectType.CastleGates:
+                        case ObjectType.CastleGate:
                             packetName = "castle_gates";
                             break;
                         case ObjectType.CastleChest:
@@ -615,7 +615,7 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.Teleport] = "teleport",
         [ObjectType.CastleTeleport] = "castle_teleport",
         [ObjectType.CastleTablet] = "castle_tablet",
-        [ObjectType.CastleGates] = "castle_gates",
+        [ObjectType.CastleGate] = "castle_gates",
         [ObjectType.CastleChest] = "castle_chest",
         [ObjectType.CastleElixirPillar] = "castle_elixir_pillar",
         [ObjectType.CastleEntrance] = "castle_entrance",

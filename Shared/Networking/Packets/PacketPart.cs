@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using BitStreams;
 using SphereHelpers.Extensions;
 using SphServer.Helpers;
@@ -127,6 +123,28 @@ public class PacketPart
                 "y" => yValue,
                 "z" => zValue,
                 "angle" => angleValue,
+                _ => part.Value
+            };
+        }
+    }
+
+    public static void UpdateTargetCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
+    {
+        var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
+        var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
+        var yValueBytes = CoordsHelper.EncodeServerCoordinate(Y);
+        var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
+        var zValueBytes = CoordsHelper.EncodeServerCoordinate(Z);
+        var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();
+        var angleValue = BitStreamExtensions.IntToBits(angle, 8).ToList();
+        foreach (var part in list)
+        {
+            part.Value = part.Name switch
+            {
+                "target_x" => xValue,
+                "target_y" => yValue,
+                "target_z" => zValue,
+                "target_angle" => angleValue,
                 _ => part.Value
             };
         }

@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b6unkupur026v"]
+
+[ext_resource type="Script" uid="uid://begidsfrjsu3j" path="res://Sphere.Game/WorldObject/CastleChest.cs" id="1_m263a"]
+[ext_resource type="PackedScene" uid="uid://desbcekrt1pmw" path="res://Godot/Models/cs_chest.glb" id="2_m263a"]
+
+[node name="CastleChest" type="Node3D" unique_id=1627497759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_m263a")
+
+[node name="Glb" type="Node3D" parent="." unique_id=488143632 instance=ExtResource("2_m263a")]
+unique_name_in_owner = true
+metadata/_world_object_glb = true

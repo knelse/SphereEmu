@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
-
-namespace SphServer.Shared.WorldState;
+﻿namespace SphServer.Shared.WorldState;
 
 public static class WorldObjectIndex
 {
     private static uint worldObjectIndex = 0x1000;
+
+    public static uint GetCurrentIndex => worldObjectIndex;
 
     public static ushort New ()
     {
