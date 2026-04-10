@@ -135,6 +135,7 @@ public static class PacketPartMapping
         ObjectType.DoorEntrance,
         ObjectType.DoorExit,
         ObjectType.Teleport,
+        ObjectType.TeleportBroken,
         ObjectType.TeleportWithTarget,
         ObjectType.DungeonEntrance,
         ObjectType.TutorialMessage,
@@ -313,6 +314,7 @@ public static class PacketPartMapping
         [ObjectType.CastleEntrance] = "castle_entrances",
         [ObjectType.TeleportWithTarget] = "teleports_with_target",
         [ObjectType.TeleportWild] = "teleport_wild",
+        [ObjectType.TeleportBroken] = "teleport_broken",
         [ObjectType.TournamentTeleport] = "teleport_tournament",
         [ObjectType.AlchemyMineral] = "alchemy_minerals",
         [ObjectType.AlchemyPlant] = "alchemy_plants",
@@ -413,6 +415,7 @@ public static class PacketPartMapping
                             break;
                         case ObjectType.Teleport:
                         case ObjectType.TeleportWild:
+                        case ObjectType.TeleportBroken:
                             packetName = "teleport";
                             break;
                         case ObjectType.CastleTeleport:
@@ -613,6 +616,8 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.DoorExit] = "door_entrance",
         [ObjectType.DungeonEntrance] = "dungeon_entrance",
         [ObjectType.Teleport] = "teleport",
+        [ObjectType.TeleportBroken] = "teleport_broken",
+        [ObjectType.TeleportWild] = "teleport_wild",
         [ObjectType.CastleTeleport] = "castle_teleport",
         [ObjectType.CastleTablet] = "castle_tablet",
         [ObjectType.CastleGate] = "castle_gates",

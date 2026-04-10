@@ -11,6 +11,7 @@ public enum ObjectType : ushort
     DoorExit = 61,
     TeleportWithTarget = 62,
     Teleport = 63,
+    TeleportBroken = 64,
     DungeonEntrance = 65,
     TeleportWild = 67,
     TokenMultiuse = 66,

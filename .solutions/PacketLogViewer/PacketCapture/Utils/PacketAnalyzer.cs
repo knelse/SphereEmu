@@ -558,7 +558,7 @@ internal static class PacketAnalyzer
 
             if (typeWithDelimiter)
             {
-                if (objectType is ObjectType.Teleport)
+                if (objectType is ObjectType.Teleport or ObjectType.TeleportBroken or ObjectType.TeleportWild)
                 {
                     fullStream.ReadBit();
                 }
@@ -578,6 +578,15 @@ internal static class PacketAnalyzer
                         subPacketIndex, PacketPart.UndefinedFieldValue);
                     allParts.AddRange(delimiter);
                     continue;
+                }
+                else if (objectType is ObjectType.DoorEntrance)
+                {
+                    var delimTestShort = fullStream.ReadByte(7);
+                    if (delimTestShort != 0x7E && delimTestShort != 0x7F && delimTestShort != 0x3F && delimTestShort != 0x3E)
+                    {
+                        fullStream.SeekBack(7);
+                        continue;
+                    }
                 }
             }
 
