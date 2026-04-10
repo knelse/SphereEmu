@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://h2m8q5v0c1p7n"]
+
+[ext_resource type="Script" uid="uid://k9p1v4m0x7c2q" path="res://Sphere.Game/WorldObject/TeleportWild.cs" id="1_tpw"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_glb"]
+
+[node name="TeleportWild" type="Node3D" unique_id=1477176971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_tpw")
+
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_glb")]
+

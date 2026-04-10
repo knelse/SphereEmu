@@ -2,7 +2,7 @@ namespace SphServer.Sphere.Game.Converters;
 
 public static class ObjectTypeToModelNameMap
 {
-    public static readonly Dictionary<ObjectType, string> Map = new ()
+    public static readonly Dictionary<ObjectType, string> Map = new()
     {
         { ObjectType.Despawn, string.Empty },
         { ObjectType.Other, string.Empty },
@@ -17,6 +17,7 @@ public static class ObjectTypeToModelNameMap
         { ObjectType.Teleport, "portal1" },
         { ObjectType.DungeonEntrance, "EDOOR" },
         { ObjectType.TeleportWild, "portal3" },
+        { ObjectType.TeleportBroken, "portal2" },
         { ObjectType.TokenMultiuse, "token" },
         { ObjectType.TradeLicense, "st_paper" },
         { ObjectType.MobSpawner, "trap" },

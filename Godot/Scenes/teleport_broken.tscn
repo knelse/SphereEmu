@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://e5615sr7s3e4"]
+
+[ext_resource type="Script" uid="uid://bkgdn4n8cmfb0" path="res://Sphere.Game/WorldObject/TeleportBroken.cs" id="1_tpb"]
+[ext_resource type="PackedScene" uid="uid://6mex4mslyb6y" path="res://Godot/Models/portal2.glb" id="2_4wljj"]
+
+[node name="TeleportBroken" type="Node3D" unique_id=1477176971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_tpb")
+ObjectType = 64
+
+[node name="Glb" parent="." unique_id=1971624968 instance=ExtResource("2_4wljj")]
