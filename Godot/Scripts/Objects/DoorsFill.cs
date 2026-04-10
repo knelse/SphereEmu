@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using Godot;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -11,6 +8,8 @@ namespace SphServer.Godot.Scripts.Objects;
 /// Editor tool: reads tab/space-separated door rows:
 /// ID, DoorType, (skip), X, Y, Z, Angle, DoorIdOr32767, target_x, target_y, target_z.
 /// Only keeps DoorEntrance rows; if DoorIdOr32767 == 32767 then HasTarget=true and target coords are applied (unless weird).
+/// Also supports DoorExit rows from a separate file:
+/// ID, DoorType, (skip), X, Y, Z, Angle, target_x, target_y, target_z (no DoorId field).
 /// Source space matches terrain: <c>(x,y,z)_src ↦ (x,-y,-z)</c>.
 /// Rows with duplicate source coordinates (same X, Y, Z columns) are skipped after the first occurrence.
 /// </summary>
@@ -19,9 +18,13 @@ public partial class DoorsFill : Node3D
 {
 	private const int DoorHasTargetSentinel = 32767;
 	private const string DoorEntranceTypeValue = "DoorEntrance";
+	private const string DoorExitTypeValue = "DoorExit";
 
 	[Export]
 	public string DoorsDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\doors.txt";
+
+	[Export]
+	public string DoorExitsDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\door_exits.txt";
 
 	[Export]
 	public string DoorScenePath { get; set; } = "res://Godot/Scenes/door.tscn";
@@ -52,37 +55,35 @@ public partial class DoorsFill : Node3D
 			return;
 		}
 
-		if (!global::Godot.FileAccess.FileExists(DoorsDataFilePath))
+		if (!TryReadTextFile(DoorsDataFilePath, out var doorsText))
 		{
-			GD.PushError($"DoorsFill: file not found: {DoorsDataFilePath}");
-			return;
-		}
-
-		string text;
-		try
-		{
-			text = File.ReadAllText(DoorsDataFilePath);
-		}
-		catch (Exception ex)
-		{
-			GD.PushWarning($"DoorsFill: File.ReadAllText failed ({ex.Message}), falling back to Godot FileAccess");
-			text = global::Godot.FileAccess.GetFileAsString(DoorsDataFilePath);
-		}
-
-		if (string.IsNullOrWhiteSpace(text))
-		{
-			GD.PushWarning($"DoorsFill: empty file: {DoorsDataFilePath}");
 			return;
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
-		var duplicateRowsSkipped = 0;
-		var rowsConsidered = 0;
-		var rowsParsed = 0;
-		var rowsSkippedNotEntrance = 0;
-		var rowsSkippedWeirdTarget = 0;
-		var spawned = 0;
-		var parseErrors = 0;
+		var entranceStats = ParseAndSpawnDoorEntrances(doorsText, scene, seenSourcePositions);
+
+		var exitStats = default(ParseStats);
+		if (global::Godot.FileAccess.FileExists(DoorExitsDataFilePath))
+		{
+			if (TryReadTextFile(DoorExitsDataFilePath, out var exitsText, mustExist: false))
+			{
+				exitStats = ParseAndSpawnDoorExits(exitsText, scene, seenSourcePositions);
+			}
+		}
+		else
+		{
+			GD.PushWarning($"DoorsFill: door exits file not found (skipping): {DoorExitsDataFilePath}");
+		}
+
+		GD.Print(
+			$"DoorsFill: entrances considered={entranceStats.RowsConsidered}, parsed={entranceStats.RowsParsed}, spawned={entranceStats.Spawned}, dupSkipped={entranceStats.DuplicateRowsSkipped}, notTypeSkipped={entranceStats.RowsSkippedNotMatchingType}, weirdTargetSkipped={entranceStats.RowsSkippedWeirdTarget}, parseErrors={entranceStats.ParseErrors}; " +
+			$"exits considered={exitStats.RowsConsidered}, parsed={exitStats.RowsParsed}, spawned={exitStats.Spawned}, dupSkipped={exitStats.DuplicateRowsSkipped}, notTypeSkipped={exitStats.RowsSkippedNotMatchingType}, weirdTargetSkipped={exitStats.RowsSkippedWeirdTarget}, parseErrors={exitStats.ParseErrors}");
+	}
+
+	private ParseStats ParseAndSpawnDoorEntrances(string text, PackedScene scene, HashSet<(long Qx, long Qy, long Qz)> seenSourcePositions)
+	{
+		var stats = new ParseStats();
 
 		// Parse from the bottom so later file rows "win" when deduping by position.
 		var lines = text.Split('\n');
@@ -95,27 +96,27 @@ public partial class DoorsFill : Node3D
 				continue;
 			}
 
-			rowsConsidered++;
+			stats.RowsConsidered++;
 
 			var parts = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
 			if (parts.Length < 11)
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: expected ≥11 columns, skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: expected ≥11 columns, skipping");
 				continue;
 			}
 
 			if (!TryParseId(parts[0].Trim(), out var id) || id < 100)
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: bad ID '{parts[0]}', skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: bad ID '{parts[0]}', skipping");
 				continue;
 			}
 
 			var doorType = parts[1].Trim();
 			if (!doorType.Equals(DoorEntranceTypeValue, StringComparison.OrdinalIgnoreCase))
 			{
-				rowsSkippedNotEntrance++;
+				stats.RowsSkippedNotMatchingType++;
 				continue;
 			}
 
@@ -123,30 +124,30 @@ public partial class DoorsFill : Node3D
 				|| !TryParseDouble(parts[4], out var y)
 				|| !TryParseDouble(parts[5], out var z))
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: bad X/Y/Z, skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: bad X/Y/Z, skipping");
 				continue;
 			}
 
 			if (!TryParseAngle(parts[6], out var angleEncoded))
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: bad Angle, skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: bad Angle, skipping");
 				continue;
 			}
 
 			if (!TryParseInt(parts[7], out var doorIdOrSentinel))
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: bad DoorId '{parts[7]}', skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: bad DoorId '{parts[7]}', skipping");
 				continue;
 			}
 
 			var hasTarget = doorIdOrSentinel == DoorHasTargetSentinel;
 			if (!hasTarget && (doorIdOrSentinel < 5000 || doorIdOrSentinel > 5500))
 			{
-				parseErrors++;
-				GD.PushWarning($"DoorsFill: line {lineNumber}: door id '{doorIdOrSentinel}' out of range (expected 5000..5500), skipping");
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: door id '{doorIdOrSentinel}' out of range (expected 5000..5500), skipping");
 				continue;
 			}
 
@@ -155,7 +156,7 @@ public partial class DoorsFill : Node3D
 			{
 				if (LooksLikeWeirdTargetToken(parts[8]) || LooksLikeWeirdTargetToken(parts[9]) || LooksLikeWeirdTargetToken(parts[10]))
 				{
-					rowsSkippedWeirdTarget++;
+					stats.RowsSkippedWeirdTarget++;
 					continue;
 				}
 
@@ -163,29 +164,29 @@ public partial class DoorsFill : Node3D
 					|| !TryParseDouble(parts[9], out targetY)
 					|| !TryParseDouble(parts[10], out targetZ))
 				{
-					parseErrors++;
-					GD.PushWarning($"DoorsFill: line {lineNumber}: bad target X/Y/Z, skipping");
+					stats.ParseErrors++;
+					GD.PushWarning($"DoorsFill: doors.txt line {lineNumber}: bad target X/Y/Z, skipping");
 					continue;
 				}
 
 				if (IsWeirdTargetValue(targetX) || IsWeirdTargetValue(targetY) || IsWeirdTargetValue(targetZ) || ((int)targetX == 0 && (int)targetY == 0 && (int)targetZ == 0))
 				{
-					rowsSkippedWeirdTarget++;
+					stats.RowsSkippedWeirdTarget++;
 					continue;
 				}
 			}
 
-			rowsParsed++;
+			stats.RowsParsed++;
 
 			var posKey = QuantizeSourcePosition(x, y, z);
 			if (!seenSourcePositions.Add(posKey))
 			{
-				duplicateRowsSkipped++;
+				stats.DuplicateRowsSkipped++;
 				continue;
 			}
 
 			var instance = scene.Instantiate<Door>();
-			instance.Name = hasTarget ? $"Door_{id:X4}_Target" : $"Door_{id:X4}_{doorIdOrSentinel}";
+			instance.Name = hasTarget ? $"DoorEntrance_{id:X4}_Target" : $"DoorEntrance_{id:X4}_{doorIdOrSentinel}";
 			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
 
 			instance.ModelName = DoorModelName;
@@ -206,11 +207,163 @@ public partial class DoorsFill : Node3D
 
 			AddChild(instance);
 			SetOwnerIfEditor(instance);
-			spawned++;
+			stats.Spawned++;
 		}
 
-		GD.Print(
-			$"DoorsFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, notEntranceSkipped={rowsSkippedNotEntrance}, weirdTargetSkipped={rowsSkippedWeirdTarget}, parseErrors={parseErrors}");
+		return stats;
+	}
+
+	private ParseStats ParseAndSpawnDoorExits(string text, PackedScene scene, HashSet<(long Qx, long Qy, long Qz)> seenSourcePositions)
+	{
+		var stats = new ParseStats();
+
+		// Parse from the bottom so later file rows "win" when deduping by position.
+		var lines = text.Split('\n');
+		for (var i = lines.Length - 1; i >= 0; i--)
+		{
+			var lineNumber = i + 1;
+			var line = lines[i].TrimEnd('\r');
+			if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith('#'))
+			{
+				continue;
+			}
+
+			stats.RowsConsidered++;
+
+			var parts = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length < 10)
+			{
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: expected ≥10 columns, skipping");
+				continue;
+			}
+
+			if (!TryParseId(parts[0].Trim(), out var id) || id < 100)
+			{
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: bad ID '{parts[0]}', skipping");
+				continue;
+			}
+
+			var doorType = parts[1].Trim();
+			if (!doorType.Equals(DoorExitTypeValue, StringComparison.OrdinalIgnoreCase))
+			{
+				stats.RowsSkippedNotMatchingType++;
+				continue;
+			}
+
+			if (!TryParseDouble(parts[3], out var x)
+				|| !TryParseDouble(parts[4], out var y)
+				|| !TryParseDouble(parts[5], out var z))
+			{
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: bad X/Y/Z, skipping");
+				continue;
+			}
+
+			if (!TryParseAngle(parts[6], out var angleEncoded))
+			{
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: bad Angle, skipping");
+				continue;
+			}
+
+			if (LooksLikeWeirdTargetToken(parts[7]) || LooksLikeWeirdTargetToken(parts[8]) || LooksLikeWeirdTargetToken(parts[9]))
+			{
+				stats.RowsSkippedWeirdTarget++;
+				continue;
+			}
+
+			if (!TryParseDouble(parts[7], out var targetX)
+				|| !TryParseDouble(parts[8], out var targetY)
+				|| !TryParseDouble(parts[9], out var targetZ))
+			{
+				stats.ParseErrors++;
+				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: bad target X/Y/Z, skipping");
+				continue;
+			}
+
+			if (IsWeirdTargetValue(targetX) || IsWeirdTargetValue(targetY) || IsWeirdTargetValue(targetZ) || ((int)targetX == 0 && (int)targetY == 0 && (int)targetZ == 0))
+			{
+				stats.RowsSkippedWeirdTarget++;
+				continue;
+			}
+
+			stats.RowsParsed++;
+
+			var posKey = QuantizeSourcePosition(x, y, z);
+			if (!seenSourcePositions.Add(posKey))
+			{
+				stats.DuplicateRowsSkipped++;
+				continue;
+			}
+
+			var instance = scene.Instantiate<Door>();
+			instance.Name = $"DoorExit_{id:X4}_Target";
+			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
+
+			instance.ModelName = DoorModelName;
+			instance.Angle = angleEncoded;
+			if (id is >= 0 and <= ushort.MaxValue)
+			{
+				instance.ID = (ushort)id;
+			}
+
+			instance.DoorID = DoorHasTargetSentinel;
+			instance.HasTarget = true;
+			instance.TargetX = targetX;
+			instance.TargetY = targetY;
+			instance.TargetZ = targetZ;
+
+			AddChild(instance);
+			SetOwnerIfEditor(instance);
+			stats.Spawned++;
+		}
+
+		return stats;
+	}
+
+	private static bool TryReadTextFile(string path, out string text, bool mustExist = true)
+	{
+		text = string.Empty;
+		if (!global::Godot.FileAccess.FileExists(path))
+		{
+			if (mustExist)
+			{
+				GD.PushError($"DoorsFill: file not found: {path}");
+			}
+
+			return false;
+		}
+
+		try
+		{
+			text = File.ReadAllText(path);
+		}
+		catch (Exception ex)
+		{
+			GD.PushWarning($"DoorsFill: File.ReadAllText failed ({ex.Message}), falling back to Godot FileAccess");
+			text = global::Godot.FileAccess.GetFileAsString(path);
+		}
+
+		if (string.IsNullOrWhiteSpace(text))
+		{
+			GD.PushWarning($"DoorsFill: empty file: {path}");
+			return false;
+		}
+
+		return true;
+	}
+
+	private struct ParseStats
+	{
+		public int RowsConsidered;
+		public int RowsParsed;
+		public int Spawned;
+		public int DuplicateRowsSkipped;
+		public int RowsSkippedNotMatchingType;
+		public int RowsSkippedWeirdTarget;
+		public int ParseErrors;
 	}
 
 	private static bool LooksLikeWeirdTargetToken(string s)
