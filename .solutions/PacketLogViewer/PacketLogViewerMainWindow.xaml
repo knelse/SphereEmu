@@ -425,10 +425,14 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button Grid.Column="0" Click="ClearClientState_OnClick" Width="100" Height="30"
-                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
-                    Clear All
-                </Button>
+                <StackPanel Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+                    <Button Click="ClearClientState_OnClick" Width="100" Height="30">
+                        Clear All
+                    </Button>
+                    <Button Click="FilterClientState_OnClick" Width="100" Height="30" Margin="0 6 0 0">
+                        Filter
+                    </Button>
+                </StackPanel>
                 <TextBox Name="ContentPreview" Grid.Column="1" Margin="4 8 4 0"
                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True"
                          Style="{StaticResource LogRecordContentPreviewTextStyle}" Background="LightGray" />

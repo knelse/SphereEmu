@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using BitStreams;
 using LiteDB;
+using PacketLogViewer.Dialogs;
 using PacketLogViewer.Models;
 using PacketLogViewer.Models.PacketAnalyzeData;
 using SphereHelpers.Extensions;
@@ -53,6 +54,7 @@ public partial class PacketLogViewerMainWindow
     public readonly DispatcherTimer SphereTimeUpdateTimer;
     public static readonly ObservableCollection<Subpacket> Subpackets = new();
     public static readonly ObservableCollection<PacketAnalyzeData> CurrentClientState = new();
+    private HashSet<ObjectType>? ClientStateObjectTypeFilter;
 
     private TextPointer? EndTextPointer;
     private int? LastCaretOffset;
@@ -97,6 +99,7 @@ public partial class PacketLogViewerMainWindow
 
             LogListFullPackets.SelectionChanged += LogListOnSelectionChanged;
             CurrentEntityStateForClient.ItemsSource = CurrentClientState;
+            InitializeClientStateFilter();
 
             LogListFullPackets.KeyDown += (_, args) =>
             {
@@ -188,6 +191,35 @@ public partial class PacketLogViewerMainWindow
         {
             MessageBox.Show($"Exception: {ex.Message}");
         }
+    }
+
+    private void InitializeClientStateFilter()
+    {
+        ClientStateObjectTypeFilter = Enum.GetValues<ObjectType>()
+            .Where(x => x != ObjectType.Unknown)
+            .ToHashSet();
+
+        ClientStateObjectTypeFilter.Remove(ObjectType.MobSpawner);
+        ClientStateObjectTypeFilter.Remove(ObjectType.Monster);
+        ClientStateObjectTypeFilter.Remove(ObjectType.MonsterFlyer);
+
+        var view = CollectionViewSource.GetDefaultView(CurrentEntityStateForClient.ItemsSource);
+        view.Filter = o =>
+        {
+            if (o is not PacketAnalyzeData pad)
+            {
+                return true;
+            }
+
+            return ClientStateObjectTypeFilter is null ||
+                   ClientStateObjectTypeFilter.Count == 0 ||
+                   ClientStateObjectTypeFilter.Contains(pad.ObjectType);
+        };
+    }
+
+    private void RefreshClientStateFilter()
+    {
+        CollectionViewSource.GetDefaultView(CurrentEntityStateForClient.ItemsSource).Refresh();
     }
 
     public byte[]? CurrentContentBytes { get; set; }
@@ -1946,5 +1978,19 @@ public partial class PacketLogViewerMainWindow
     private void ClearClientState_OnClick(object sender, RoutedEventArgs e)
     {
         CurrentClientState.Clear();
+    }
+
+    private void FilterClientState_OnClick(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ClientStateObjectTypeFilterDialog(ClientStateObjectTypeFilter)
+        {
+            Owner = this
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            ClientStateObjectTypeFilter = dialog.SelectedObjectTypes.ToHashSet();
+            RefreshClientStateFilter();
+        }
     }
 }
