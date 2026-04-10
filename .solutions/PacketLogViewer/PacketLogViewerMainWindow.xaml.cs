@@ -134,6 +134,8 @@ public partial class PacketLogViewerMainWindow
 
             PacketVisualizerControl.KeyDown += PacketVisualizerControlAddPacketPart;
             PacketVisualizerControl.KeyDown += PacketVisualizerControlHandlePartSelection;
+            PacketVisualizerControl.AddHandler(Keyboard.PreviewKeyDownEvent,
+                new KeyEventHandler(PacketVisualizerControlShiftSelectionOnArrowKeys), true);
             SelectionBrush = new SolidColorBrush
             {
                 Color = ((SolidColorBrush)PacketVisualizerControl.SelectionBrush).Color,
@@ -933,6 +935,76 @@ public partial class PacketLogViewerMainWindow
             EndTextPointer = caretPosition;
         }
 
+        CreateFlowDocumentWithHighlights();
+    }
+
+    private void PacketVisualizerControlShiftSelectionOnArrowKeys(object sender, KeyEventArgs e)
+    {
+        var isShiftDown = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
+        if (!isShiftDown)
+        {
+            return;
+        }
+
+        if (e.Key != Key.Left && e.Key != Key.Right && e.Key != Key.Up && e.Key != Key.Down)
+        {
+            return;
+        }
+
+        if (StartTextPointer is null || EndTextPointer is null)
+        {
+            return;
+        }
+
+        var deltaBits = e.Key switch
+        {
+            Key.Left => -1,
+            Key.Right => 1,
+            Key.Up => -8,
+            Key.Down => 8,
+            _ => 0
+        };
+        if (deltaBits == 0)
+        {
+            return;
+        }
+
+        var maxOffset = PacketContentBits?.Length ?? (CurrentContentBytes?.Length ?? 0) * 8;
+        if (maxOffset <= 0)
+        {
+            return;
+        }
+
+        var startOffset = StartTextPointer.GetCharOffset();
+        var endOffset = EndTextPointer.GetCharOffset();
+
+        var newStart = startOffset + deltaBits;
+        var newEnd = endOffset + deltaBits;
+
+        // Keep selection size; clamp shift at boundaries.
+        var min = Math.Min(newStart, newEnd);
+        if (min < 0)
+        {
+            newStart -= min;
+            newEnd -= min;
+        }
+
+        var max = Math.Max(newStart, newEnd);
+        if (max > maxOffset)
+        {
+            var overshoot = max - maxOffset;
+            newStart -= overshoot;
+            newEnd -= overshoot;
+        }
+
+        newStart = Math.Clamp(newStart, 0, maxOffset);
+        newEnd = Math.Clamp(newEnd, 0, maxOffset);
+
+        var docStart = PacketVisualizerControl.Document.ContentStart;
+        StartTextPointer = MoveByCharOffset(docStart, newStart);
+        EndTextPointer = MoveByCharOffset(docStart, newEnd);
+
+        e.Handled = true;
         CreateFlowDocumentWithHighlights();
     }
 
