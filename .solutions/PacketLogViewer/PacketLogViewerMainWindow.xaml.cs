@@ -52,9 +52,15 @@ public partial class PacketLogViewerMainWindow
 
     public static readonly ObservableCollection<PacketPart> PacketParts = new();
     public readonly DispatcherTimer SphereTimeUpdateTimer;
+    private readonly DispatcherTimer _entityRadarRefreshTimer;
     public static readonly ObservableCollection<Subpacket> Subpackets = new();
     public static readonly ObservableCollection<PacketAnalyzeData> CurrentClientState = new();
     private HashSet<ObjectType>? ClientStateObjectTypeFilter;
+
+    private double _radarClientX;
+    private double _radarClientZ;
+    private double _radarClientTurn;
+    private bool _radarHasClientPosition;
 
     private TextPointer? EndTextPointer;
     private int? LastCaretOffset;
@@ -159,6 +165,8 @@ public partial class PacketLogViewerMainWindow
 
                 PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollChanged +=
                     (sender, _) => { SynchronizeScrollValues(sender); };
+
+                RefreshEntityRadar();
             };
 
             KeyUp += (_, e) =>
@@ -186,6 +194,14 @@ public partial class PacketLogViewerMainWindow
             };
             SphereTimeUpdateTimer.Tick += (_, _) => UpdateGameTime();
             SphereTimeUpdateTimer.Start();
+
+            _entityRadarRefreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
+            _entityRadarRefreshTimer.Tick += (_, _) => RefreshEntityRadar();
+            _entityRadarRefreshTimer.Start();
+            Closed += (_, _) => _entityRadarRefreshTimer.Stop();
 
             ScrollIntoViewIfSelectionExists();
         }
@@ -222,6 +238,14 @@ public partial class PacketLogViewerMainWindow
     private void RefreshClientStateFilter()
     {
         CollectionViewSource.GetDefaultView(CurrentEntityStateForClient.ItemsSource).Refresh();
+        RefreshEntityRadar();
+    }
+
+    private void RefreshEntityRadar()
+    {
+        var view = CollectionViewSource.GetDefaultView(CurrentClientState);
+        var items = view.Cast<PacketAnalyzeData>().ToList();
+        EntityRadar.SetEntities(items, _radarClientX, _radarClientZ, _radarClientTurn, _radarHasClientPosition);
     }
 
     public byte[]? CurrentContentBytes { get; set; }
@@ -455,6 +479,12 @@ public partial class PacketLogViewerMainWindow
                      ((storedPacket.ContentBytes[18] & 0b11111) << 11);
             ClientId.Text = $"{id:X4}";
             PacketCapture.SetClientId((short)id);
+
+            _radarClientX = coords.x;
+            _radarClientZ = coords.z;
+            _radarClientTurn = coords.turn;
+            _radarHasClientPosition = true;
+            RefreshEntityRadar();
         }
         catch (Exception ex)
         {
@@ -611,7 +641,7 @@ public partial class PacketLogViewerMainWindow
                     }
                 }
 
-                if (npc.ActionType == EntityActionType.FULL_SPAWN)
+                else if (npc.ActionType == EntityActionType.FULL_SPAWN)
                 {
                     CurrentClientState.Insert(0, result);
                 }
@@ -620,10 +650,35 @@ public partial class PacketLogViewerMainWindow
             {
                 var character = result as CharacterPacket;
 
-                if (character.ActionType == EntityActionType.FULL_SPAWN)
+                if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is CharacterPacket previousState)
+                {
+                    var previousIndex = CurrentClientState.IndexOf(previousState);
+                    if (character.ActionType == EntityActionType.SET_POSITION)
+                    {
+                        previousState.X = character.X;
+                        previousState.Y = character.Y;
+                        previousState.Z = character.Z;
+                        previousState.Angle = character.Angle;
+                    }
+                    else if (character.ActionType == EntityActionType.FULL_SPAWN)
+                    {
+                        CurrentClientState.Remove(previousState);
+                        CurrentClientState.Insert(previousIndex, result);
+                    }
+                    else if (character is
+                    {
+                        ActionType: EntityActionType.INTERACT, InteractionType: EntityInteractionType.DEATH
+                    })
+                    {
+                        CurrentClientState.Remove(previousState);
+                    }
+                }
+
+                else if (character.ActionType == EntityActionType.FULL_SPAWN)
                 {
                     CurrentClientState.Insert(0, result);
                 }
+
             }
             else if (result.GetType() == typeof(DoorEntrancePacket))
             {

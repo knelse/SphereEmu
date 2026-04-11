@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PacketLogViewer"
         mc:Ignorable="d"
         Title="PacketLogViewer"
         Top="75"
@@ -62,7 +63,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" MinWidth="400" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="750" MinWidth="200" />
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -184,6 +187,9 @@
                 </TextBox>
             </Grid>
         </StackPanel>
+        <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" Width="5" HorizontalAlignment="Stretch"
+                      ResizeBehavior="PreviousAndNext" Background="White" Margin="0 4" />
+        <local:EntityRadarControl x:Name="EntityRadar" Grid.Row="0" Grid.RowSpan="3" Grid.Column="3" />
         <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
