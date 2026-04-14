@@ -51,120 +51,240 @@ public static class SphObjectDb
 
     static SphObjectDb()
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        Win1251Encoding = Encoding.GetEncoding(1251);
-
-        var configPath = FindConfigPath("appsettings.json");
-        using var configFile = File.OpenRead(configPath);
-        using var configReader = new StreamReader(configFile);
-        AppSettings = JsonSerializer.Deserialize<Dictionary<string, string>>(configReader.ReadToEnd(), JsonReadOptions)
-                      ?? throw new InvalidOperationException($"{configPath}: expected object root");
-
-        // Allow minimal config: derive paths from RepositoryPath when explicit keys are absent.
-        if (AppSettings.TryGetValue("RepositoryPath", out var repoPath) && !string.IsNullOrWhiteSpace(repoPath))
+        try
         {
-            if (!AppSettings.ContainsKey("DecodedGameDataPath"))
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Win1251Encoding = Encoding.GetEncoding(1251);
+
+            var configPath = FindConfigPath("appsettings.json");
+            var configDir = GetConfigDirectory(configPath);
+
+            Dictionary<string, string> configDict;
+            if (File.Exists(configPath))
             {
-                AppSettings["DecodedGameDataPath"] = Path.Combine(repoPath, "Sphere.GameDataDecode");
+                using var configFile = File.OpenRead(configPath);
+                using var configReader = new StreamReader(configFile);
+                configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configReader.ReadToEnd(), JsonReadOptions)
+                             ?? throw new InvalidOperationException($"{configPath}: expected object root");
+            }
+            else
+            {
+                // Standalone / tool usage: allow running without a repo-root appsettings.json.
+                // We derive paths relative to the closest parent folder that has required data folders.
+                configDict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             }
 
-            if (!AppSettings.ContainsKey("PacketDefinitionPath"))
+            var effectiveBaseDir = File.Exists(configPath)
+                ? configDir
+                : FindClosestDataRoot(Environment.CurrentDirectory)
+                  ?? FindClosestDataRoot(AppContext.BaseDirectory)
+                  ?? configDir;
+
+            AppSettings = EnsureDefaultsAndNormalizePaths(configDict, effectiveBaseDir);
+
+            // Allow minimal config: derive paths from RepositoryPath when explicit keys are absent.
+            if (AppSettings.TryGetValue("RepositoryPath", out var repoPath) && !string.IsNullOrWhiteSpace(repoPath))
             {
-                AppSettings["PacketDefinitionPath"] = Path.Combine(repoPath, "Sphere.PacketDefinitions");
+                if (!AppSettings.ContainsKey("DecodedGameDataPath"))
+                {
+                    AppSettings["DecodedGameDataPath"] = Path.Combine(repoPath, "Sphere.GameDataDecode");
+                }
+
+                if (!AppSettings.ContainsKey("PacketDefinitionPath"))
+                {
+                    AppSettings["PacketDefinitionPath"] = Path.Combine(repoPath, "Sphere.PacketDefinitions");
+                }
+            }
+
+            var gameDataJsonFolder = AppSettings["GeneratedJsonOutputFolder"];
+            var gameDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectDataFileName"]);
+            var localizationContentJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["LocalizationContentFileName"]);
+            var suffixDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["SuffixDataFileName"]);
+            var objectLocalizationJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectLocalizationFileName"]);
+            if (!Directory.Exists(gameDataJsonFolder)
+                || !File.Exists(localizationContentJsonPath)
+                || !File.Exists(objectLocalizationJsonPath)
+                || !File.Exists(suffixDataJsonPath)
+                || File.GetLastWriteTimeUtc(gameDataJsonPath) < DateTime.UtcNow.AddHours(-72)
+                || File.GetLastWriteTimeUtc(localizationContentJsonPath) < DateTime.UtcNow.AddHours(-72)
+                || File.GetLastWriteTimeUtc(suffixDataJsonPath) < DateTime.UtcNow.AddHours(-72)
+                || File.GetLastWriteTimeUtc(objectLocalizationJsonPath) < DateTime.UtcNow.AddHours(-72))
+            {
+                // regenerate json every 3 days to be safe
+                Directory.CreateDirectory(gameDataJsonFolder);
+                Console.WriteLine("Loading game data and generating json");
+                LoadGameObjects();
+                LoadLocalisationData();
+                GenerateGameObjectLocale();
+                LoadGameObjectLocalization();
+
+                using var gameDataFile = File.OpenWrite(gameDataJsonPath);
+                using var gameDataWriter = new StreamWriter(gameDataFile, Win1251Encoding);
+                var gameDataJson = JsonSerializer.Serialize(GameObjectDataDb, JsonOptions);
+                gameDataWriter.Write(gameDataJson);
+
+                using var localeContentFile = File.OpenWrite(localizationContentJsonPath);
+                using var localeContentWriter = new StreamWriter(localeContentFile, Win1251Encoding);
+                var localeContentJson = JsonSerializer.Serialize(LocalisationContent, JsonOptions);
+                localeContentWriter.Write(localeContentJson);
+
+                using var objectLocaleFile = File.OpenWrite(objectLocalizationJsonPath);
+                using var objectLocaleWriter = new StreamWriter(objectLocaleFile, Win1251Encoding);
+                var objectLocaleJson = JsonSerializer.Serialize(ObjectNameToLocalizationMap, JsonOptions);
+                objectLocaleWriter.Write(objectLocaleJson);
+
+                using var suffixFile = File.OpenWrite(suffixDataJsonPath);
+                using var suffixWriter = new StreamWriter(suffixFile, Win1251Encoding);
+                var suffixJson = JsonSerializer.Serialize(SuffixDataDb, JsonOptions);
+                suffixWriter.Write(suffixJson);
+            }
+
+            else
+            {
+                Console.WriteLine("Loading game data from preexisting json");
+                using var gameDataFile = File.OpenRead(gameDataJsonPath);
+                using var gameDataReader = new StreamReader(gameDataFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
+                GameObjectDataDb =
+                    JsonSerializer.Deserialize<Dictionary<int, SphGameObject>>(gameDataReader.ReadToEnd(), JsonOptions)
+                    ?? throw new InvalidOperationException();
+
+                using var localeContentFile = File.OpenRead(localizationContentJsonPath);
+                using var localeContentReader = new StreamReader(localeContentFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
+                LocalisationContent =
+                    JsonSerializer.Deserialize<Dictionary<string, LocalizationEntryArray>>(
+                        localeContentReader.ReadToEnd(), JsonOptions)
+                    ?? throw new InvalidOperationException();
+
+                using var objectLocaleFile = File.OpenRead(objectLocalizationJsonPath);
+                using var objectLocaleReader = new StreamReader(objectLocaleFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
+                ObjectNameToLocalizationMap =
+                    JsonSerializer.Deserialize<Dictionary<string, Dictionary<int, LocalizationEntryString>>>(
+                        objectLocaleReader.ReadToEnd(), JsonOptions)
+                    ?? throw new InvalidOperationException();
+
+                using var suffixFile = File.OpenRead(suffixDataJsonPath);
+                using var suffixReader = new StreamReader(suffixFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
+                SuffixDataDb =
+                    JsonSerializer.Deserialize<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
+                        suffixReader.ReadToEnd(), JsonOptions)
+                    ?? throw new InvalidOperationException();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading game data: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            Console.WriteLine($"InnerException: {ex.InnerException?.Message}");
+            Console.WriteLine($"InnerException StackTrace: {ex.InnerException?.StackTrace}");
+            throw;
+        }
+    }
+
+    private static string GetConfigDirectory(string configPath)
+    {
+        // If configPath is relative (or missing), anchor relative settings to the executable folder.
+        if (Path.IsPathRooted(configPath))
+        {
+            return Path.GetDirectoryName(configPath) ?? AppContext.BaseDirectory;
+        }
+
+        return AppContext.BaseDirectory;
+    }
+
+    private static Dictionary<string, string> EnsureDefaultsAndNormalizePaths(
+        Dictionary<string, string> settings,
+        string baseDir)
+    {
+        var s = new Dictionary<string, string>(settings, StringComparer.OrdinalIgnoreCase);
+
+        // Defaults that make sense for standalone tools.
+        s.TryAdd("GeneratedJsonOutputFolder", ".generated");
+        s.TryAdd("DecodedParamsFolderName", "params");
+        s.TryAdd("DecodedLocaleFolderName", "language");
+        s.TryAdd("ObjectDataFileName", "objectData.json");
+        s.TryAdd("SuffixDataFileName", "suffixData.json");
+        s.TryAdd("LocalizationContentFileName", "localizationContent.json");
+        s.TryAdd("ObjectLocalizationFileName", "objectLocalization.json");
+
+        // If no repo path is provided, assume game data/definitions are next to the executable.
+        s.TryAdd("DecodedGameDataPath", "Sphere.GameDataDecode");
+        s.TryAdd("PacketDefinitionPath", "Sphere.PacketDefinitions");
+
+        // Normalize any relative paths to be relative to baseDir.
+        foreach (var key in new[] { "GeneratedJsonOutputFolder", "DecodedGameDataPath", "PacketDefinitionPath" })
+        {
+            if (!s.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+            {
+                continue;
+            }
+
+            if (!Path.IsPathRooted(value))
+            {
+                s[key] = Path.GetFullPath(Path.Combine(baseDir, value));
             }
         }
 
-        var gameDataJsonFolder = AppSettings["GeneratedJsonOutputFolder"];
-        var gameDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectDataFileName"]);
-        var localizationContentJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["LocalizationContentFileName"]);
-        var suffixDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["SuffixDataFileName"]);
-        var objectLocalizationJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectLocalizationFileName"]);
-        if (!File.Exists(gameDataJsonFolder)
-            || !File.Exists(localizationContentJsonPath)
-            || !File.Exists(objectLocalizationJsonPath)
-            || !File.Exists(suffixDataJsonPath)
-            || File.GetLastWriteTimeUtc(gameDataJsonPath) < DateTime.UtcNow.AddHours(-72)
-            || File.GetLastWriteTimeUtc(localizationContentJsonPath) < DateTime.UtcNow.AddHours(-72)
-            || File.GetLastWriteTimeUtc(suffixDataJsonPath) < DateTime.UtcNow.AddHours(-72)
-            || File.GetLastWriteTimeUtc(objectLocalizationJsonPath) < DateTime.UtcNow.AddHours(-72))
+        return s;
+    }
+
+    private static string? FindClosestDataRoot(string? startDir)
+    {
+        if (string.IsNullOrWhiteSpace(startDir))
         {
-            // regenerate json every 3 days to be safe
-            Directory.CreateDirectory(gameDataJsonFolder);
-            Console.WriteLine("Loading game data and generating json");
-            LoadGameObjects();
-            LoadLocalisationData();
-            GenerateGameObjectLocale();
-            LoadGameObjectLocalization();
-
-            using var gameDataFile = File.OpenWrite(gameDataJsonPath);
-            using var gameDataWriter = new StreamWriter(gameDataFile, Win1251Encoding);
-            var gameDataJson = JsonSerializer.Serialize(GameObjectDataDb, JsonOptions);
-            gameDataWriter.Write(gameDataJson);
-
-            using var localeContentFile = File.OpenWrite(localizationContentJsonPath);
-            using var localeContentWriter = new StreamWriter(localeContentFile, Win1251Encoding);
-            var localeContentJson = JsonSerializer.Serialize(LocalisationContent, JsonOptions);
-            localeContentWriter.Write(localeContentJson);
-
-            using var objectLocaleFile = File.OpenWrite(objectLocalizationJsonPath);
-            using var objectLocaleWriter = new StreamWriter(objectLocaleFile, Win1251Encoding);
-            var objectLocaleJson = JsonSerializer.Serialize(ObjectNameToLocalizationMap, JsonOptions);
-            objectLocaleWriter.Write(objectLocaleJson);
-
-            using var suffixFile = File.OpenWrite(suffixDataJsonPath);
-            using var suffixWriter = new StreamWriter(suffixFile, Win1251Encoding);
-            var suffixJson = JsonSerializer.Serialize(SuffixDataDb, JsonOptions);
-            suffixWriter.Write(suffixJson);
+            return null;
         }
 
-        else
+        try
         {
-            Console.WriteLine("Loading game data from preexisting json");
-            using var gameDataFile = File.OpenRead(gameDataJsonPath);
-            using var gameDataReader = new StreamReader(gameDataFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
-            GameObjectDataDb =
-                JsonSerializer.Deserialize<Dictionary<int, SphGameObject>>(gameDataReader.ReadToEnd(), JsonOptions)
-                ?? throw new InvalidOperationException();
-
-            using var localeContentFile = File.OpenRead(localizationContentJsonPath);
-            using var localeContentReader = new StreamReader(localeContentFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
-            LocalisationContent =
-                JsonSerializer.Deserialize<Dictionary<string, LocalizationEntryArray>>(
-                    localeContentReader.ReadToEnd(), JsonOptions)
-                ?? throw new InvalidOperationException();
-
-            using var objectLocaleFile = File.OpenRead(objectLocalizationJsonPath);
-            using var objectLocaleReader = new StreamReader(objectLocaleFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
-            ObjectNameToLocalizationMap =
-                JsonSerializer.Deserialize<Dictionary<string, Dictionary<int, LocalizationEntryString>>>(
-                    objectLocaleReader.ReadToEnd(), JsonOptions)
-                ?? throw new InvalidOperationException();
-
-            using var suffixFile = File.OpenRead(suffixDataJsonPath);
-            using var suffixReader = new StreamReader(suffixFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
-            SuffixDataDb =
-                JsonSerializer.Deserialize<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
-                    suffixReader.ReadToEnd(), JsonOptions)
-                ?? throw new InvalidOperationException();
+            startDir = Path.GetFullPath(startDir);
         }
+        catch
+        {
+            // ignore; best-effort normalization
+        }
+
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var dir = new DirectoryInfo(startDir);
+        while (dir is not null && visited.Add(dir.FullName))
+        {
+            // Prefer an explicit config if present.
+            if (File.Exists(Path.Combine(dir.FullName, "appsettings.json")))
+            {
+                return dir.FullName;
+            }
+
+            // Otherwise, locate the standalone data layout.
+            if (Directory.Exists(Path.Combine(dir.FullName, "Sphere.GameDataDecode"))
+                || Directory.Exists(Path.Combine(dir.FullName, "Sphere.PacketDefinitions")))
+            {
+                return dir.FullName;
+            }
+
+            dir = dir.Parent;
+        }
+
+        return null;
     }
 
     private static string FindConfigPath(string fileName)
     {
         // When running this project directly, the working directory is often `.solutions/SphObjectDb/bin/...`.
         // We want a single source of truth for config, so we search upwards for the repo-root `appsettings.json`.
-        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
         foreach (var startDir in new[]
                  {
-                     AppContext.BaseDirectory,
                      Environment.CurrentDirectory,
+                     AppContext.BaseDirectory,
                  })
         {
             if (string.IsNullOrWhiteSpace(startDir))
             {
                 continue;
             }
+
+            // Track visited per start root. Sharing this between roots can cause a later
+            // root (e.g. the repo working directory) to be skipped if the earlier root
+            // walked over common parents (e.g. Godot temp bin).
+            var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             var dir = new DirectoryInfo(startDir);
             while (dir is not null && visited.Add(dir.FullName))

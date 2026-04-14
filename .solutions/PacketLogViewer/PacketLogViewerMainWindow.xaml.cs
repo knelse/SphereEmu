@@ -278,7 +278,31 @@ public partial class PacketLogViewerMainWindow
             ReloadAppConfig();
         }
 
-        InstallNewPacketCapture(mac);
+        try
+        {
+            InstallNewPacketCapture(mac);
+        }
+        catch (ArgumentException ex)
+        {
+            // appconfig may contain a stale/nonexistent MAC; route into adapter selection instead of crashing startup
+            MessageBox.Show(this,
+                $"Configured network adapter was not found.\n\n{ex.Message}\n\nPlease select a valid adapter to continue.",
+                "Select network adapter",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+
+            var dialog = new SelectCaptureAdapterDialog(mac) { Owner = this };
+            var result = dialog.ShowDialog();
+            if (result != true || string.IsNullOrWhiteSpace(dialog.SelectedMacAddress))
+            {
+                throw new InvalidOperationException("No capture adapter selected. Please select an adapter to continue.");
+            }
+
+            mac = dialog.SelectedMacAddress;
+            SaveMacAddressToAppConfig(mac);
+            ReloadAppConfig();
+            InstallNewPacketCapture(mac);
+        }
     }
 
     private void InstallNewPacketCapture(string macAddress)

@@ -7,3 +7,4 @@ bin
 .import
 .mono
 logs
+sph.db
