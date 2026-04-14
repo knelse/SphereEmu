@@ -19,14 +19,16 @@ public enum PacketSource
     SERVER
 }
 
-public class PacketCapture
+public class PacketCapture : IDisposable
 {
     private const int sphereLiveServerPort = 25860;
     private readonly ILiveDevice captureDevice;
-    private readonly List<byte> packetDataQueue = new ();
-    private readonly List<CapturedPacketRawData> rawCapturedPackets = new ();
+    private readonly List<byte> packetDataQueue = new();
+    private readonly List<CapturedPacketRawData> rawCapturedPackets = new();
+    private readonly CancellationTokenSource _cts = new();
+    private readonly Task _processingLoopTask;
 
-    private readonly HashSet<IPAddress> sphereLiveServers = new ()
+    private readonly HashSet<IPAddress> sphereLiveServers = new()
     {
         IPAddress.Parse("77.223.107.68"),
         IPAddress.Parse("77.223.107.69")
@@ -36,7 +38,7 @@ public class PacketCapture
 
     public Action<List<StoredPacket>, bool> OnPacketProcessed;
 
-    public PacketCapture (string macAddress)
+    public PacketCapture(string macAddress)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         captureDevice = CaptureDeviceList.Instance.FirstOrDefault(x => x.MacAddress?.ToString() == macAddress);
@@ -57,15 +59,15 @@ public class PacketCapture
         ConsoleExtensions.WriteLineColored(
             $"Ready for packets. Load time: {(timeAfterLoad - time).TotalMilliseconds} msec", ConsoleColor.Yellow);
 
-        Task.Run(PacketQueueProcessingLoop);
+        _processingLoopTask = Task.Run(PacketQueueProcessingLoop, _cts.Token);
     }
 
-    public void SetClientId (short clientId)
+    public void SetClientId(short clientId)
     {
         ClientId = clientId;
     }
 
-    private void CaptureDeviceOnPacketArrival (object _, SharpPcap.PacketCapture capture)
+    private void CaptureDeviceOnPacketArrival(object _, SharpPcap.PacketCapture capture)
     {
         try
         {
@@ -113,7 +115,7 @@ public class PacketCapture
         }
     }
 
-    private void SchedulePacketProcessing (byte[] data, PacketSource source, DateTime arrivalTime,
+    private void SchedulePacketProcessing(byte[] data, PacketSource source, DateTime arrivalTime,
         bool shouldDecode = true)
     {
         byte[] decodedData;
@@ -135,11 +137,11 @@ public class PacketCapture
         });
     }
 
-    private void PacketQueueProcessingLoop ()
+    private void PacketQueueProcessingLoop()
     {
         captureDevice.Open();
         captureDevice.StartCapture();
-        while (true)
+        while (!_cts.IsCancellationRequested)
         {
             try
             {
@@ -153,15 +155,24 @@ public class PacketCapture
             Thread.Sleep(500);
         }
 
+        try
+        {
+            captureDevice.StopCapture();
+        }
+        catch
+        {
+            // best-effort stop
+        }
+
         captureDevice.Close();
     }
 
-    private void ProcessPacketQueue ()
+    private void ProcessPacketQueue()
     {
         var packetsToProcess = new Dictionary<PacketSource, List<CapturedPacketRawData>>
         {
-            [PacketSource.CLIENT] = new (),
-            [PacketSource.SERVER] = new ()
+            [PacketSource.CLIENT] = new(),
+            [PacketSource.SERVER] = new()
         };
         var timeLimit = DateTime.UtcNow.AddSeconds(-1);
 
@@ -186,7 +197,7 @@ public class PacketCapture
         packetsToProcess[PacketSource.CLIENT].ForEach(ProcessPacketRawData);
     }
 
-    public static List<byte[]> SplitContentIntoPackets (byte[] content)
+    public static List<byte[]> SplitContentIntoPackets(byte[] content)
     {
         var offset = 0;
         var result = new List<byte[]>();
@@ -232,12 +243,12 @@ public class PacketCapture
         return result;
     }
 
-    internal void ProcessPacketRawData (CapturedPacketRawData packetRawData)
+    internal void ProcessPacketRawData(CapturedPacketRawData packetRawData)
     {
         ProcessPacketRawDataForce(packetRawData);
     }
 
-    internal void ProcessPacketRawDataForce (CapturedPacketRawData packetRawData, bool forceProcess = false)
+    internal void ProcessPacketRawDataForce(CapturedPacketRawData packetRawData, bool forceProcess = false)
     {
         var subpackets = SplitContentIntoPackets(packetRawData.DecodedBuffer);
         var storedPackets = new List<StoredPacket>();
@@ -256,5 +267,29 @@ public class PacketCapture
         }
 
         OnPacketProcessed(storedPackets, forceProcess);
+    }
+
+    public void Stop()
+    {
+        if (_cts.IsCancellationRequested)
+        {
+            return;
+        }
+
+        _cts.Cancel();
+        try
+        {
+            _processingLoopTask.Wait(TimeSpan.FromSeconds(2));
+        }
+        catch
+        {
+            // best-effort shutdown
+        }
+    }
+
+    public void Dispose()
+    {
+        Stop();
+        _cts.Dispose();
     }
 }

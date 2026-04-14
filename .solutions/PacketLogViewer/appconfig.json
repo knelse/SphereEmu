@@ -1,6 +1,6 @@
 ﻿{
   "Settings": {
-    "PacketDefinitionPath": "D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.PacketDefinitions",
+    "ClonedRepoPath": "D:\\SphereDev\\SphereSource\\SphereEmu",
     "MacAddress": "345A6048EBF0",
     "OutputFolder": "d:\\SphereDev\\_sphereDumps"
   },

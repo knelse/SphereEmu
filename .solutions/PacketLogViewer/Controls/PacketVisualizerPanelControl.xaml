@@ -1,0 +1,105 @@
+<UserControl x:Class="PacketLogViewer.Controls.PacketVisualizerPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:PacketLogViewer.Controls"
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="550" />
+            <ColumnDefinition Width="4" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="4" />
+            <ColumnDefinition Width="250" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="4" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" BorderBrush="Black" BorderThickness="0.5"
+                Padding="4">
+            <ScrollViewer x:Name="PacketReadableDisplayTextScrollViewer" x:FieldModifier="public"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TextBlock x:Name="PacketReadableDisplayText" x:FieldModifier="public" FontFamily="Hack"
+                           FontSize="16" LineHeight="16"
+                           LineStackingStrategy="BlockLineHeight" TextAlignment="Left"
+                           TextWrapping="NoWrap" />
+            </ScrollViewer>
+        </Border>
+
+        <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" ResizeBehavior="PreviousAndNext"
+                      ResizeDirection="Rows" Height="4" Padding="0" HorizontalAlignment="Stretch" />
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" x:Name="PacketVisualizerLineNumbersAndValuesScrollViewer"
+                      x:FieldModifier="public"
+                      VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+            <TextBlock x:Name="PacketVisualizerLineNumbersAndValues" x:FieldModifier="public"
+                       FontFamily="Hack" FontSize="12"
+                       LineHeight="16"
+                       Foreground="DimGray" Background="Ivory"
+                       LineStackingStrategy="BlockLineHeight" TextAlignment="Right" Width="100" Padding="0 0"
+                       TextWrapping="NoWrap"
+                       Margin="0 4" />
+        </ScrollViewer>
+
+        <RichTextBox Grid.Row="2" Grid.Column="1" x:Name="PacketVisualizerControl" x:FieldModifier="public"
+                     Margin="0 4" Padding="0" Width="100" VerticalScrollBarVisibility="Auto"
+                     IsReadOnly="True" IsReadOnlyCaretVisible="True" />
+
+        <ScrollViewer Grid.Row="2" Grid.Column="2" x:Name="PacketVisualizerDefinedPacketValuesScrollViewer"
+                      x:FieldModifier="public"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0 4"
+                      Padding="4 0">
+            <TextBlock x:Name="PacketVisualizerDefinedPacketValues" x:FieldModifier="public"
+                       FontFamily="Hack" FontSize="12"
+                       LineHeight="16"
+                       Background="Cornsilk" LineStackingStrategy="BlockLineHeight" TextAlignment="Left"
+                       TextWrapping="NoWrap" />
+        </ScrollViewer>
+
+        <GridSplitter Grid.Row="2" Grid.Column="3" ResizeBehavior="PreviousAndNext" Width="4" Margin="0 4" />
+
+        <Grid Grid.Row="2" Grid.Column="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="400" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="0.5" BorderBrush="Black" Padding="0" Margin="0 4">
+                <ScrollViewer>
+                    <TextBlock x:Name="PacketSelectedValueDisplay" x:FieldModifier="public"
+                               FontFamily="Hack" FontSize="13"
+                               TextWrapping="Wrap"
+                               Padding="4">
+                        Select bits to show value preview
+                        Key mappings for binary view:
+                        s - begin selection
+                        e - end selection
+                        Esc - clear selection
+                    </TextBlock>
+                </ScrollViewer>
+            </Border>
+
+            <RichTextBox Grid.Row="1" x:Name="DefinedPacketPartsControl" x:FieldModifier="public"
+                         FontFamily="Hack" FontSize="13"
+                         HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                         IsReadOnly="True" Padding="4">
+                <FlowDocument x:Name="DefinedPartsText" x:FieldModifier="public" FontFamily="Hack"
+                              FontSize="14" LineHeight="16"
+                              LineStackingStrategy="BlockLineHeight" IsOptimalParagraphEnabled="False" />
+            </RichTextBox>
+        </Grid>
+
+        <GridSplitter Grid.Row="0" Grid.Column="5" Grid.RowSpan="3" ResizeBehavior="PreviousAndNext" Width="4"
+                      Margin="0 4" />
+
+        <controls:DefinitionsPanelControl x:Name="DefinitionsPanel" x:FieldModifier="public" Grid.Row="0"
+                                          Grid.Column="6" Grid.RowSpan="3" />
+    </Grid>
+</UserControl>
+

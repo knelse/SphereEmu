@@ -1,0 +1,23 @@
+<UserControl x:Class="PacketLogViewer.Controls.PacketLogListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ListView x:Name="LogListFullPackets"
+              x:FieldModifier="public"
+              ItemContainerStyle="{StaticResource LogRowHighlightStyle}"
+              SelectionMode="Single">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding SourceStr}" />
+                <GridViewColumn Width="Auto" Header="#" DisplayMemberBinding="{Binding NumberInSequence}" />
+                <GridViewColumn Header="Timestamp" Width="Auto"
+                                DisplayMemberBinding="{Binding TimestampLocal, StringFormat='{}{0:dd.MM HH:mm:ss}'}" />
+                <GridViewColumn Header="Content" Width="Auto"
+                                DisplayMemberBinding="{Binding ContentString}" />
+            </GridView>
+        </ListView.View>
+    </ListView>
+</UserControl>
+
