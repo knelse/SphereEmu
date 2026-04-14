@@ -39,13 +39,13 @@ public class PacketPart
     public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
     {
         var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
-        var partsPath = ServerConfig.AppConfig.PacketPartPath;
+        var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
     public static List<PacketPart> LoadDefinedWithOverride (string name)
     {
-        var partsPath = ServerConfig.AppConfig.PacketPartPath;
+        var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
@@ -65,7 +65,7 @@ public class PacketPart
             NpcType.Banker => "npc_banker",
             _ => "npc_trade"
         };
-        var partsPath = ServerConfig.AppConfig.PacketPartPath;
+        var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 

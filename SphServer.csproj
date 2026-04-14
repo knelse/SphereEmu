@@ -41,9 +41,6 @@
         </Content>
         <Content Include="Shared\Networking\Packets\Packet.cs.uid"/>
         <Content Include="Shared\Networking\Packets\PacketPart.cs.uid"/>
-        <Content Include="sphdbsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <Content Include="Sphere.Game\WorldObject\AlchemyResource.cs.uid"/>
         <Content Include="Sphere.Game\WorldObject\Door.cs.uid"/>
         <Content Include="Sphere.Game\WorldObject\Spawner\WorldObjectSpawner.cs.uid"/>

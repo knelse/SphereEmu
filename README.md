@@ -20,7 +20,7 @@ If that happens to you, dgVoodoo2 might help:
 1. Get and install prerequisities
    1. .NET 8.0 SDK
 2. Download and build from source. 
-3. Update appsettings.json and sphdbsettings.json for your setup.
+3. Update appsettings.json for your setup.
 4. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
 5. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
 6. Next time, use those credentials or create a new user if you like

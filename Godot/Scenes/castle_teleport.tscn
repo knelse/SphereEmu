@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://x1c8m3p0v7q2k"]
 
-[ext_resource type="Script" uid="uid://n1p7m2c9v0x4q" path="res://Sphere.Game/WorldObject/CastleTeleport.cs" id="1_ct"]
+[ext_resource type="Script" uid="uid://ckmnswbumpyye" path="res://Sphere.Game/WorldObject/CastleTeleport.cs" id="1_ct"]
 [ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_glb"]
 
 [node name="CastleTeleport" type="Node3D" unique_id=1477176971]

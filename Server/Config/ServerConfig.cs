@@ -5,8 +5,14 @@ namespace SphServer.Server.Config;
 
 public class AppConfig
 {
-    public string PacketPartPath { get; init; } = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions";
-    public string PacketDefinitionPath { get; init; } = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions";
+    public string RepositoryPath { get; init; } =
+        @"D:\\SphereDev\\SphereSource\\SphereEmu";
+
+    public string PacketDefinitionPath { get; init; } =
+        @"D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.PacketDefinitions";
+
+    public string DecodedGameDataPath { get; init; } =
+        @"D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.GameDataDecode";
 
     public string LiteDbConnectionString { get; init; } =
         @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;";
@@ -26,74 +32,140 @@ public class AppConfig
 
 public static class ServerConfig
 {
-    private static readonly JsonSerializerOptions JsonWriteOptions = new () { WriteIndented = true };
+    private static readonly object AppConfigLock = new();
+    private static AppConfig? _appConfig;
 
-    static ServerConfig ()
+    private static readonly JsonSerializerOptions JsonReadOptions = new()
     {
-        AppConfig = Get();
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        AllowTrailingCommas = true,
+    };
+
+    private static readonly JsonSerializerOptions JsonWriteOptions = new() { WriteIndented = true };
+
+    public static AppConfig AppConfig
+    {
+        get
+        {
+            if (_appConfig is not null)
+            {
+                return _appConfig;
+            }
+
+            lock (AppConfigLock)
+            {
+                return _appConfig ??= Get();
+            }
+        }
+        private set => _appConfig = value ?? new AppConfig();
     }
 
-    public static AppConfig AppConfig { get; set; }
+    // Note: no static ctor here on purpose. Godot can load types in unusual orders / threads;
+    // lazy initialization avoids intermittent nulls and makes first-access deterministic.
 
-    public static AppConfig Get ()
+    public static AppConfig Get()
     {
-        const string configPath = "appsettings.json";
-
-        if (!File.Exists(configPath))
+        try
         {
-            SphLogger.Info($"Configuration file not found, creating default: {configPath}");
-            CreateDefaultAppConfig(configPath);
+            var configPath = FindConfigPath("appsettings.json");
+
+            if (!File.Exists(configPath))
+            {
+                SphLogger.Info($"Configuration file not found, creating default: {configPath}");
+                CreateDefaultAppConfig(configPath);
+            }
+            else
+            {
+                SphLogger.Info($"Loading configuration from: {configPath}");
+            }
+
+            using var configFile = File.OpenRead(configPath);
+            using var configReader = new StreamReader(configFile);
+            var configJson = configReader.ReadToEnd();
+
+            var configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configJson, JsonReadOptions) ?? new();
+
+            var defaultSettings = GetDefaultAppConfigDict();
+            var configChanged = false;
+
+            foreach (var defaultSetting in defaultSettings.Where(defaultSetting =>
+                         !configDict.ContainsKey(defaultSetting.Key)))
+            {
+                configDict[defaultSetting.Key] = defaultSetting.Value;
+                configChanged = true;
+            }
+
+            if (configChanged)
+            {
+                SaveAppConfig(configPath, configDict);
+            }
+
+            var repositoryPath = configDict.GetValueOrDefault("RepositoryPath",
+                @"D:\\SphereDev\\SphereSource\\SphereEmu");
+
+            return new AppConfig
+            {
+                RepositoryPath = repositoryPath,
+                PacketDefinitionPath = configDict.GetValueOrDefault("PacketDefinitionPath",
+                    Path.Combine(repositoryPath, "Sphere.PacketDefinitions")),
+                DecodedGameDataPath = configDict.GetValueOrDefault("DecodedGameDataPath",
+                    Path.Combine(repositoryPath, "Sphere.GameDataDecode")),
+                LiteDbConnectionString = configDict.GetValueOrDefault("LiteDbConnectionString",
+                    @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;"),
+                Port = ushort.Parse(configDict.GetValueOrDefault("Port", "25860")),
+                LogPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log"),
+                DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
+                ObjectVisibilityDistance = float.Parse(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0")),
+                ReceiveBufferSize = int.Parse(configDict.GetValueOrDefault("ReceiveBufferSize", "1024")),
+                CurrentCharacterInventoryId =
+                    int.Parse(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
+                Spawn_X = float.Parse(configDict.GetValueOrDefault("Spawn_X", "80.0")),
+                Spawn_Y = float.Parse(configDict.GetValueOrDefault("Spawn_Y", "150.0")),
+                Spawn_Z = float.Parse(configDict.GetValueOrDefault("Spawn_Z", "200.0")),
+                Spawn_Angle = float.Parse(configDict.GetValueOrDefault("Spawn_Angle", "0.75")),
+                Spawn_Money = int.Parse(configDict.GetValueOrDefault("Spawn_Money", "99999999"))
+            };
         }
-        else
+        catch (Exception ex)
         {
-            SphLogger.Info($"Loading configuration from: {configPath}");
+            SphLogger.Info($"Failed to load appsettings.json, using defaults. Error: {ex}");
+            return new AppConfig();
         }
-
-        using var configFile = File.OpenRead(configPath);
-        using var configReader = new StreamReader(configFile);
-        var configJson = configReader.ReadToEnd();
-
-        var configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configJson) ?? new ();
-
-        var defaultSettings = GetDefaultAppConfigDict();
-        var configChanged = false;
-
-        foreach (var defaultSetting in defaultSettings.Where(defaultSetting =>
-                     !configDict.ContainsKey(defaultSetting.Key)))
-        {
-            configDict[defaultSetting.Key] = defaultSetting.Value;
-            configChanged = true;
-        }
-
-        if (configChanged)
-        {
-            SaveAppConfig(configPath, configDict);
-        }
-
-        return new AppConfig
-        {
-            PacketPartPath = configDict.GetValueOrDefault("PacketPartPath",
-                @"D:\SphereDev\SphereSource\source\sphPacketDefinitions"),
-            PacketDefinitionPath = configDict.GetValueOrDefault("PacketDefinitionPath",
-                @"D:\SphereDev\SphereSource\source\sphPacketDefinitions"),
-            LiteDbConnectionString = configDict.GetValueOrDefault("LiteDbConnectionString",
-                @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;"),
-            Port = ushort.Parse(configDict.GetValueOrDefault("Port", "25860")),
-            LogPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log"),
-            DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
-            ObjectVisibilityDistance = float.Parse(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0")),
-            ReceiveBufferSize = int.Parse(configDict.GetValueOrDefault("ReceiveBufferSize", "1024")),
-            CurrentCharacterInventoryId =
-                int.Parse(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
-            Spawn_X = float.Parse(configDict.GetValueOrDefault("Spawn_X", "80.0")),
-            Spawn_Y = float.Parse(configDict.GetValueOrDefault("Spawn_Y", "150.0")),
-            Spawn_Z = float.Parse(configDict.GetValueOrDefault("Spawn_Z", "200.0")),
-            Spawn_Angle = float.Parse(configDict.GetValueOrDefault("Spawn_Angle", "0.75")),
-            Spawn_Money = int.Parse(configDict.GetValueOrDefault("Spawn_Money", "99999999"))
-        };
     }
 
-    private static void CreateDefaultAppConfig (string configPath)
+    private static string FindConfigPath(string fileName)
+    {
+        // Godot's working directory may vary (editor/run/export), so search upwards from common roots.
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var startDir in new[]
+                 {
+                     AppContext.BaseDirectory,
+                     Environment.CurrentDirectory,
+                 })
+        {
+            if (string.IsNullOrWhiteSpace(startDir))
+            {
+                continue;
+            }
+
+            var dir = new DirectoryInfo(startDir);
+            while (dir is not null && visited.Add(dir.FullName))
+            {
+                var candidate = Path.Combine(dir.FullName, fileName);
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                dir = dir.Parent;
+            }
+        }
+
+        return fileName;
+    }
+
+    private static void CreateDefaultAppConfig(string configPath)
     {
         var defaultConfig = GetDefaultAppConfigDict();
         var json = JsonSerializer.Serialize(defaultConfig, JsonWriteOptions);
@@ -101,13 +173,12 @@ public static class ServerConfig
         SphLogger.Info($"Created default configuration file: {configPath}");
     }
 
-    private static Dictionary<string, string> GetDefaultAppConfigDict ()
+    private static Dictionary<string, string> GetDefaultAppConfigDict()
     {
-        return new ()
+        return new()
         {
-            ["PacketPartPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
-            ["PacketDefinitionPath"] = @"D:\SphereDev\SphereSource\source\sphPacketDefinitions",
-            ["LiteDbConnectionString"] = @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;",
+            ["RepositoryPath"] = @"D:\\SphereDev\\SphereSource\\SphereEmu",
+            ["LiteDbConnectionString"] = @"Filename=sph.db;Connection=shared;",
             ["Port"] = "25860",
             ["LogPath"] = @"logs\server.log",
             ["DebugMode"] = "true",
@@ -122,7 +193,7 @@ public static class ServerConfig
         };
     }
 
-    private static void SaveAppConfig (string configPath, Dictionary<string, string> config)
+    private static void SaveAppConfig(string configPath, Dictionary<string, string> config)
     {
         var json = JsonSerializer.Serialize(config, JsonWriteOptions);
         File.WriteAllText(configPath, json);

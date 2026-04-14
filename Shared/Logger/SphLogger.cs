@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading;
-
 namespace SphServer.Shared.Logger;
 
 public enum LogLevel
@@ -16,7 +11,7 @@ public enum LogLevel
 public static class SphLogger
 {
     private static readonly Lock lockObject = new ();
-    private static string logFilePath = string.Empty;
+    private static string logFilePath = "logs/server.log";
     private static bool logToConsole = true;
     private static bool logToFile = true;
     private static LogLevel minimumConsoleLogLevel = LogLevel.Info;

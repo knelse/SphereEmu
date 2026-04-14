@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://p1c0v7m3k9q2x"]
 
-[ext_resource type="Script" uid="uid://m2x6q0p9v1c7k" path="res://Sphere.Game/WorldObject/TeleportTournament.cs" id="1_tpt"]
+[ext_resource type="Script" uid="uid://cb4718r1rstnk" path="res://Sphere.Game/WorldObject/TeleportTournament.cs" id="1_tpt"]
 [ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_glb"]
 
 [node name="TeleportTournament" type="Node3D" unique_id=1477176971]

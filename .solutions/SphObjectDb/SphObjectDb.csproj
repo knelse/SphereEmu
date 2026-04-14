@@ -10,10 +10,4 @@
     <ItemGroup>
         <ProjectReference Include="..\SphGameObject\SphGameObject.csproj"/>
     </ItemGroup>
-    <ItemGroup>
-        <Content Include="sphdbsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
 </Project>

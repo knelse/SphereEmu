@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using static GameObjectType;
 using LocalizationEntryArray = System.Collections.Generic.Dictionary<Locale, string[]>;
@@ -6,26 +7,35 @@ using LocalizationEntryString = System.Collections.Generic.Dictionary<Locale, st
 
 public static class SphObjectDb
 {
-    private static readonly JsonSerializerOptions JsonOptions = new ()
+    private static readonly JsonSerializerOptions JsonReadOptions = new()
     {
-        WriteIndented = true,
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        AllowTrailingCommas = true,
     };
 
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        WriteIndented = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    };
+
+    private static readonly Encoding Win1251Encoding;
+
     private static readonly char[] TabCharacter = { '\t' };
-    public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = new ();
-    public static readonly Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>> SuffixDataDb = new ();
+    public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = new();
+    public static readonly Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>> SuffixDataDb = new();
     private const string langSuffixEnglish = "_e";
     private const string langSuffixItalian = "_i";
     private const string langSuffixPortuguese = "_p";
 
-    public static readonly Dictionary<string, LocalizationEntryArray> LocalisationContent = new ();
+    public static readonly Dictionary<string, LocalizationEntryArray> LocalisationContent = new();
 
     private static readonly Dictionary<string, string> AppSettings;
 
     public static readonly Dictionary<string, Dictionary<int, LocalizationEntryString>> ObjectNameToLocalizationMap =
-        new ();
+        new();
 
-    private static readonly Dictionary<string, GameObjectType> prefFiles = new ()
+    private static readonly Dictionary<string, GameObjectType> prefFiles = new()
     {
         ["ar_armoru"] = Pref_Castle,
         ["ar_armor"] = Pref_Chestplate,
@@ -39,12 +49,30 @@ public static class SphObjectDb
         ["ar_belt"] = Pref_BeltBootsGlovesHelmetPants
     };
 
-    static SphObjectDb ()
+    static SphObjectDb()
     {
-        using var configFile = File.OpenRead("sphdbsettings.json");
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        Win1251Encoding = Encoding.GetEncoding(1251);
+
+        var configPath = FindConfigPath("appsettings.json");
+        using var configFile = File.OpenRead(configPath);
         using var configReader = new StreamReader(configFile);
-        AppSettings = JsonSerializer.Deserialize<Dictionary<string, string>>(configReader.ReadToEnd(), JsonOptions)
-                      ?? throw new InvalidOperationException ("sphdbsettings.json: expected object root");
+        AppSettings = JsonSerializer.Deserialize<Dictionary<string, string>>(configReader.ReadToEnd(), JsonReadOptions)
+                      ?? throw new InvalidOperationException($"{configPath}: expected object root");
+
+        // Allow minimal config: derive paths from RepositoryPath when explicit keys are absent.
+        if (AppSettings.TryGetValue("RepositoryPath", out var repoPath) && !string.IsNullOrWhiteSpace(repoPath))
+        {
+            if (!AppSettings.ContainsKey("DecodedGameDataPath"))
+            {
+                AppSettings["DecodedGameDataPath"] = Path.Combine(repoPath, "Sphere.GameDataDecode");
+            }
+
+            if (!AppSettings.ContainsKey("PacketDefinitionPath"))
+            {
+                AppSettings["PacketDefinitionPath"] = Path.Combine(repoPath, "Sphere.PacketDefinitions");
+            }
+        }
 
         var gameDataJsonFolder = AppSettings["GeneratedJsonOutputFolder"];
         var gameDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectDataFileName"]);
@@ -69,22 +97,22 @@ public static class SphObjectDb
             LoadGameObjectLocalization();
 
             using var gameDataFile = File.OpenWrite(gameDataJsonPath);
-            using var gameDataWriter = new StreamWriter(gameDataFile);
+            using var gameDataWriter = new StreamWriter(gameDataFile, Win1251Encoding);
             var gameDataJson = JsonSerializer.Serialize(GameObjectDataDb, JsonOptions);
             gameDataWriter.Write(gameDataJson);
 
             using var localeContentFile = File.OpenWrite(localizationContentJsonPath);
-            using var localeContentWriter = new StreamWriter(localeContentFile);
+            using var localeContentWriter = new StreamWriter(localeContentFile, Win1251Encoding);
             var localeContentJson = JsonSerializer.Serialize(LocalisationContent, JsonOptions);
             localeContentWriter.Write(localeContentJson);
 
             using var objectLocaleFile = File.OpenWrite(objectLocalizationJsonPath);
-            using var objectLocaleWriter = new StreamWriter(objectLocaleFile);
+            using var objectLocaleWriter = new StreamWriter(objectLocaleFile, Win1251Encoding);
             var objectLocaleJson = JsonSerializer.Serialize(ObjectNameToLocalizationMap, JsonOptions);
             objectLocaleWriter.Write(objectLocaleJson);
 
             using var suffixFile = File.OpenWrite(suffixDataJsonPath);
-            using var suffixWriter = new StreamWriter(suffixFile);
+            using var suffixWriter = new StreamWriter(suffixFile, Win1251Encoding);
             var suffixJson = JsonSerializer.Serialize(SuffixDataDb, JsonOptions);
             suffixWriter.Write(suffixJson);
         }
@@ -93,27 +121,27 @@ public static class SphObjectDb
         {
             Console.WriteLine("Loading game data from preexisting json");
             using var gameDataFile = File.OpenRead(gameDataJsonPath);
-            using var gameDataReader = new StreamReader(gameDataFile);
+            using var gameDataReader = new StreamReader(gameDataFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
             GameObjectDataDb =
                 JsonSerializer.Deserialize<Dictionary<int, SphGameObject>>(gameDataReader.ReadToEnd(), JsonOptions)
                 ?? throw new InvalidOperationException();
 
             using var localeContentFile = File.OpenRead(localizationContentJsonPath);
-            using var localeContentReader = new StreamReader(localeContentFile);
+            using var localeContentReader = new StreamReader(localeContentFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
             LocalisationContent =
                 JsonSerializer.Deserialize<Dictionary<string, LocalizationEntryArray>>(
                     localeContentReader.ReadToEnd(), JsonOptions)
                 ?? throw new InvalidOperationException();
 
             using var objectLocaleFile = File.OpenRead(objectLocalizationJsonPath);
-            using var objectLocaleReader = new StreamReader(objectLocaleFile);
+            using var objectLocaleReader = new StreamReader(objectLocaleFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
             ObjectNameToLocalizationMap =
                 JsonSerializer.Deserialize<Dictionary<string, Dictionary<int, LocalizationEntryString>>>(
                     objectLocaleReader.ReadToEnd(), JsonOptions)
                 ?? throw new InvalidOperationException();
 
             using var suffixFile = File.OpenRead(suffixDataJsonPath);
-            using var suffixReader = new StreamReader(suffixFile);
+            using var suffixReader = new StreamReader(suffixFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
             SuffixDataDb =
                 JsonSerializer.Deserialize<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
                     suffixReader.ReadToEnd(), JsonOptions)
@@ -121,7 +149,41 @@ public static class SphObjectDb
         }
     }
 
-    private static void LoadGameObjects ()
+    private static string FindConfigPath(string fileName)
+    {
+        // When running this project directly, the working directory is often `.solutions/SphObjectDb/bin/...`.
+        // We want a single source of truth for config, so we search upwards for the repo-root `appsettings.json`.
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var startDir in new[]
+                 {
+                     AppContext.BaseDirectory,
+                     Environment.CurrentDirectory,
+                 })
+        {
+            if (string.IsNullOrWhiteSpace(startDir))
+            {
+                continue;
+            }
+
+            var dir = new DirectoryInfo(startDir);
+            while (dir is not null && visited.Add(dir.FullName))
+            {
+                var candidate = Path.Combine(dir.FullName, fileName);
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                dir = dir.Parent;
+            }
+        }
+
+        // Last resort: rely on current directory (will throw with a clear message if missing).
+        return fileName;
+    }
+
+    private static void LoadGameObjects()
     {
         var gameDataPath = Path.Combine(AppSettings["DecodedGameDataPath"], AppSettings["DecodedParamsFolderName"]);
         var objectFiles = Directory.EnumerateFiles(gameDataPath, "group*").ToList();
@@ -252,12 +314,11 @@ public static class SphObjectDb
         }
     }
 
-    private static void LoadLocalisationData ()
+    private static void LoadLocalisationData()
     {
         var localeDataPath = Path.Combine(AppSettings["DecodedGameDataPath"], AppSettings["DecodedLocaleFolderName"]);
         var langFiles = Directory.EnumerateFiles(localeDataPath);
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        var Win1251 = Encoding.GetEncoding(1251);
+        var win1251 = Win1251Encoding;
 
         foreach (var localeFile in langFiles)
         {
@@ -290,18 +351,18 @@ public static class SphObjectDb
             {
                 var dict = new Dictionary<Locale, string[]>
                 {
-                    [locale] = File.ReadAllLines(localeFile, Win1251)
+                    [locale] = File.ReadAllLines(localeFile, win1251)
                 };
                 LocalisationContent[name] = dict;
             }
             else
             {
-                LocalisationContent[name][locale] = File.ReadAllLines(localeFile, Win1251);
+                LocalisationContent[name][locale] = File.ReadAllLines(localeFile, win1251);
             }
         }
     }
 
-    private static void GenerateGameObjectLocale ()
+    private static void GenerateGameObjectLocale()
     {
         foreach (var (name, localeEntry) in LocalisationContent)
         {
@@ -432,7 +493,7 @@ public static class SphObjectDb
         }
     }
 
-    private static void LoadGameObjectLocalization ()
+    private static void LoadGameObjectLocalization()
     {
         foreach (var (gameId, gameObject) in GameObjectDataDb)
         {

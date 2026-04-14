@@ -1,4 +1,3 @@
-using System;
 using LiteDB;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
@@ -20,10 +19,12 @@ public static class DbConnection
     public static ILiteCollection<NpcInteractable> NpcInteractables { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjects { get; private set; } = null!;
 
-    public static void Initialize (AppConfig config)
+    public static void Initialize(AppConfig config)
     {
         SphLogger.Info("Initializing database connection...");
-        Db = new LiteDatabase(config.LiteDbConnectionString);
+        var connectionString = NormalizeLiteDbConnectionString(config.LiteDbConnectionString);
+        EnsureLiteDbFileExists(connectionString);
+        Db = new LiteDatabase(connectionString);
 
         SphLogger.Info("Setting up database collections...");
         Clans = Db.GetCollection<ClanDbEntry>("Clans");
@@ -63,7 +64,91 @@ public static class DbConnection
         // }
     }
 
-    private static void InitializeData ()
+    private static string NormalizeLiteDbConnectionString(string? connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new ArgumentException("LiteDbConnectionString is empty. Set it in appsettings.json.");
+        }
+
+        // If the user already provided a proper connection string, keep it.
+        if (connectionString.Contains("filename=", StringComparison.OrdinalIgnoreCase))
+        {
+            return connectionString;
+        }
+
+        // Common shorthand currently used in this repo: "sph.db;Connection=shared;"
+        // Treat the first segment as filename if it isn't a key=value pair.
+        var parts = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length == 0)
+        {
+            throw new ArgumentException("LiteDbConnectionString is invalid/empty after parsing.");
+        }
+
+        var first = parts[0];
+        if (first.Contains('=') || string.IsNullOrWhiteSpace(first))
+        {
+            // Not a simple filename; let LiteDB handle (and throw) so the message is meaningful.
+            return connectionString;
+        }
+
+        var rest = parts.Skip(1);
+        var normalized = "Filename=" + first + ";" + string.Join(';', rest) + ";";
+        SphLogger.Info($"Normalized LiteDB connection string to include Filename=... ({first})");
+        return normalized;
+    }
+
+    private static void EnsureLiteDbFileExists(string connectionString)
+    {
+        // LiteDB will create the file on open, but it will fail if the directory doesn't exist.
+        // We also proactively create the file so the failure mode is clearer (permissions, invalid path, etc.).
+        var filePath = TryGetLiteDbFilename(connectionString);
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return;
+        }
+
+        var fullPath = Path.GetFullPath(filePath);
+        var dir = Path.GetDirectoryName(fullPath);
+        if (!string.IsNullOrWhiteSpace(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        if (!File.Exists(fullPath))
+        {
+            using var _ = File.Open(fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
+        }
+    }
+
+    private static string? TryGetLiteDbFilename(string connectionString)
+    {
+        // Expected forms:
+        // - "Filename=d:\\path\\file.db;Connection=shared;"
+        // - "FileName=\"d:\\path\\file.db\";..."
+        // - "filename=relative.db"
+        foreach (var part in connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var trimmed = part.Trim();
+            const string key = "filename=";
+            if (!trimmed.StartsWith(key, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var value = trimmed[key.Length..].Trim();
+            if (value.Length >= 2 && value[0] == '"' && value[^1] == '"')
+            {
+                value = value[1..^1];
+            }
+
+            return value;
+        }
+
+        return null;
+    }
+
+    private static void InitializeData()
     {
         Items.DeleteAll();
         Monsters.DeleteAll();
@@ -93,7 +178,7 @@ public static class DbConnection
         }
     }
 
-    private static void CreateIndexes ()
+    private static void CreateIndexes()
     {
         Items.EnsureIndex(x => x.GameObjectDbId);
         Items.EnsureIndex(x => x.GameId);
