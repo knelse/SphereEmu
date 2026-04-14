@@ -20,6 +20,7 @@ public partial class NpcInteractable : WorldObject
     [Export] public int NameID { get; set; } = 4016;
 
     protected override bool RefreshModelVisualOnReady => true;
+    protected override bool AutoGroundGlbVisual => true;
 
     public string ModelNameSph => ModelName + "\0";
     [Export] public string IconName { get; set; } = string.Empty;
@@ -34,10 +35,10 @@ public partial class NpcInteractable : WorldObject
 
     private NpcInteractableSerializer? serializer;
 
-    public override void _Ready ()
+    public override void _Ready()
     {
-        base._Ready ();
-        if (Engine.IsEditorHint ())
+        base._Ready();
+        if (Engine.IsEditorHint())
         {
             return;
         }
@@ -52,7 +53,7 @@ public partial class NpcInteractable : WorldObject
             NpcType.Tournament => ObjectType.NpcGuilder,
             _ => ObjectType.NpcTrade
         };
-        
+
         if (VendorItemTierMax == 0 || VendorItemTierMin == 0)
         {
             SphLogger.Warning($"Vendor [{ID}] ({NpcType}) has no item tiers set");
@@ -62,15 +63,15 @@ public partial class NpcInteractable : WorldObject
             GenerateItemsForSale();
         }
 
-        serializer = new NpcInteractableSerializer (this);
+        serializer = new NpcInteractableSerializer(this);
     }
 
-    protected override List<PacketPart> GetPacketParts ()
+    protected override List<PacketPart> GetPacketParts()
     {
         return PacketPart.LoadDefinedPartsFromFile(NpcType);
     }
 
-    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
     {
         PacketPart.UpdateValue(packetParts, "name_id", NameID - 4000, 11);
         var modelName = ModelNameSph;
@@ -88,19 +89,19 @@ public partial class NpcInteractable : WorldObject
         return packetParts;
     }
 
-    protected override byte[] PostprocessPacketBytes (byte[] packet)
+    protected override byte[] PostprocessPacketBytes(byte[] packet)
     {
         packet[^1] = 0;
         return packet;
     }
 
-    public void ClientInteraction (ushort clientID,
+    public void ClientInteraction(ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
         ClientInteract(clientID, interactionType);
     }
 
-    protected override void ClientInteract (ushort clientID,
+    protected override void ClientInteract(ushort clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
         SphLogger.Info($"FROM NPC: Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
@@ -115,7 +116,7 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    private void GenerateItemsForSale ()
+    private void GenerateItemsForSale()
     {
         List<ItemDbEntry> itemsOnSale;
 
@@ -161,18 +162,18 @@ public partial class NpcInteractable : WorldObject
         }
     }
 
-    public int GetMaxItemsOnSale ()
+    public int GetMaxItemsOnSale()
     {
         return Math.Min(ItemsOnSale.Count, 74);
     }
 
-    private void ShowItemList (ushort clientId)
+    private void ShowItemList(ushort clientId)
     {
         var output = serializer!.ShowItemList(clientId);
         FindClientAndScheduleSend(output, clientId);
     }
 
-    private void FindClientAndScheduleSend (byte[] packet, ushort clientId)
+    private void FindClientAndScheduleSend(byte[] packet, ushort clientId)
     {
         var client = ActiveClients.Get(clientId);
         if (client is null)
@@ -184,7 +185,7 @@ public partial class NpcInteractable : WorldObject
         client.MaybeQueueNetworkPacketSend(packet);
     }
 
-    private void ShowItemContents (ushort clientId)
+    private void ShowItemContents(ushort clientId)
     {
         var output = serializer!.ShowItemContents(clientId);
         FindClientAndScheduleSend(output, clientId);

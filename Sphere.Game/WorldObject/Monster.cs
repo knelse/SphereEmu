@@ -8,21 +8,23 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class Monster : WorldObject
 {
-	private static bool TryGetMonsterModelNameGroundFromDb (MonsterType monsterType, out string modelName)
+	protected override bool AutoGroundGlbVisual => true;
+
+	private static bool TryGetMonsterModelNameGroundFromDb(MonsterType monsterType, out string modelName)
 	{
 		modelName = string.Empty;
-		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue (monsterType, out var monsterDbId))
+		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue(monsterType, out var monsterDbId))
 		{
 			return false;
 		}
 
-		if (!SphObjectDb.GameObjectDataDb.TryGetValue (monsterDbId, out var entry))
+		if (!SphObjectDb.GameObjectDataDb.TryGetValue(monsterDbId, out var entry))
 		{
 			return false;
 		}
 
-		var ground = entry.ModelNameGround?.Trim () ?? string.Empty;
-		if (string.IsNullOrEmpty (ground))
+		var ground = entry.ModelNameGround?.Trim() ?? string.Empty;
+		if (string.IsNullOrEmpty(ground))
 		{
 			return false;
 		}
@@ -31,14 +33,14 @@ public partial class Monster : WorldObject
 		return true;
 	}
 
-	protected override string ResolveModelNameFromObjectTypeFallback ()
+	protected override string ResolveModelNameFromObjectTypeFallback()
 	{
-		if (TryGetMonsterModelNameGroundFromDb (MonsterType, out var ground))
+		if (TryGetMonsterModelNameGroundFromDb(MonsterType, out var ground))
 		{
 			return ground;
 		}
 
-		return base.ResolveModelNameFromObjectTypeFallback ();
+		return base.ResolveModelNameFromObjectTypeFallback();
 	}
 
 	private MonsterType _monsterType;
@@ -55,9 +57,9 @@ public partial class Monster : WorldObject
 			}
 
 			_monsterType = value;
-			if (IsInsideTree ())
+			if (IsInsideTree())
 			{
-				CallDeferred (nameof (RefreshModelVisualDeferred));
+				CallDeferred(nameof(RefreshModelVisualDeferred));
 			}
 		}
 	}
@@ -67,7 +69,7 @@ public partial class Monster : WorldObject
 	[Export] public int NameID_3 { get; set; }
 	public required SphMonsterInstance? MonsterInstance { get; set; }
 
-	protected override List<PacketPart> GetPacketParts ()
+	protected override List<PacketPart> GetPacketParts()
 	{
 		// TODO some cats are placed by hand and got no MonsterInstance
 		// TODO named and higher levels
@@ -76,7 +78,7 @@ public partial class Monster : WorldObject
 			: PacketPart.LoadDefinedWithOverride("monster_full");
 	}
 
-	protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
 	{
 		var hpSize = (MonsterInstance?.MaxHp ?? 50) >= 128 ? 16 : 8;
 		PacketPart.UpdateValue(packetParts, "current_hp", MonsterInstance?.CurrentHp ?? 50, hpSize);
@@ -92,7 +94,7 @@ public partial class Monster : WorldObject
 		if (objectType is GameObjectType.Monster_Flying or GameObjectType.Monster_Event_Flying
 			or GameObjectType.Special_Necromancer_Flyer)
 		{
-			PacketPart.UpdateValue(packetParts, "entity_type", (int) ObjectType.MonsterFlyer, 10);
+			PacketPart.UpdateValue(packetParts, "entity_type", (int)ObjectType.MonsterFlyer, 10);
 		}
 
 		var mobTypeId = MonsterTypeMapping.MonsterNameToMonsterTypeMapping[MonsterType];

@@ -33,7 +33,7 @@ public partial class WorldObject : Node3D
 	///     Columns = source X, Y, Z axes in Godot (same as <see cref="SphServer.Godot.Scripts.Terrain.TerrainObjectsFill" />):
 	///     <c>(x,y,z)_src ↦ (x,-y,-z)</c>. Used with <c>R' = T R T</c> for yaw from <see cref="Angle" />.
 	/// </summary>
-	private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
+	private static readonly Basis SourceWorldToGodotWorldBasis = new(Vector3.Right, Vector3.Down, Vector3.Forward);
 
 	private int _angle;
 
@@ -79,7 +79,7 @@ public partial class WorldObject : Node3D
 			_objectType = value;
 			if (IsInsideTree())
 			{
-				CallDeferred(nameof (RefreshModelVisualDeferred));
+				CallDeferred(nameof(RefreshModelVisualDeferred));
 			}
 		}
 	}
@@ -98,7 +98,7 @@ public partial class WorldObject : Node3D
 			_modelName = value;
 			if (IsInsideTree())
 			{
-				CallDeferred(nameof (RefreshModelVisualDeferred));
+				CallDeferred(nameof(RefreshModelVisualDeferred));
 			}
 		}
 	}
@@ -109,7 +109,13 @@ public partial class WorldObject : Node3D
 	/// </summary>
 	protected virtual bool RefreshModelVisualOnReady => false;
 
-	public override void _Ready ()
+	/// <summary>
+	///     If true, after loading a GLB we shift the visual child so its combined mesh bounds sit on Y=0 (feet on ground).
+	///     This compensates for assets whose origin/pivot is centered instead of at the bottom.
+	/// </summary>
+	protected virtual bool AutoGroundGlbVisual => false;
+
+	public override void _Ready()
 	{
 		ApplyAngleToRotation();
 
@@ -179,20 +185,20 @@ public partial class WorldObject : Node3D
 		// scene's defaults; refreshing on the next frame avoids resolving Unknown/empty map and a stuck placeholder.
 		if (!RefreshModelVisualOnReady)
 		{
-			CallDeferred(nameof (RefreshModelVisualDeferred));
+			CallDeferred(nameof(RefreshModelVisualDeferred));
 		}
 	}
 
 	/// <summary>
 	///     Sets <see cref="Rotation" /> Y from <see cref="Angle" /> using <c>t0 = -Angle * π / 64</c>.
 	/// </summary>
-	private void ApplyAngleToRotation ()
+	private void ApplyAngleToRotation()
 	{
-		var t0 = (float) (_angle * Math.PI / 128.0);
+		var t0 = (float)(_angle * Math.PI / 128.0);
 		Rotation = new Vector3(0f, t0, 0f);
 	}
 
-	protected virtual void ShowForClient (SphereClient client)
+	protected virtual void ShowForClient(SphereClient client)
 	{
 		var packetParts = GetPacketPartsAndUpdateCoordsAndID(client);
 		packetParts = ModifyPacketParts(packetParts);
@@ -200,12 +206,12 @@ public partial class WorldObject : Node3D
 		client.MaybeQueueNetworkPacketSend(packet);
 	}
 
-	protected virtual List<PacketPart> GetPacketParts ()
+	protected virtual List<PacketPart> GetPacketParts()
 	{
 		return PacketPart.LoadDefinedPartsFromFile(ObjectType);
 	}
 
-	public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID (SphereClient client)
+	public List<PacketPart> GetPacketPartsAndUpdateCoordsAndID(SphereClient client)
 	{
 		var packetParts = GetPacketParts();
 		PacketPart.UpdateCoordinates(packetParts, GlobalTransform.Origin.X, -GlobalTransform.Origin.Y,
@@ -215,18 +221,18 @@ public partial class WorldObject : Node3D
 		return packetParts;
 	}
 
-	protected virtual List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+	protected virtual List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
 	{
-		PacketPart.UpdateValue(packetParts, "object_type", (int) ObjectType, 10);
+		PacketPart.UpdateValue(packetParts, "object_type", (int)ObjectType, 10);
 		return packetParts;
 	}
 
-	protected virtual byte[] PostprocessPacketBytes (byte[] packet)
+	protected virtual byte[] PostprocessPacketBytes(byte[] packet)
 	{
 		return packet;
 	}
 
-	protected virtual void ClientInteract (ushort clientID,
+	protected virtual void ClientInteract(ushort clientID,
 		ClientInteractionType interactionType = ClientInteractionType.Unknown)
 	{
 		SphLogger.Info($"Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
@@ -237,7 +243,7 @@ public partial class WorldObject : Node3D
 	///     this forwards to <see cref="RefreshModelVisual" /> when <see cref="ObjectType" /> / <see cref="ModelName" />
 	///     change.
 	/// </summary>
-	public void RefreshModelVisualDeferred ()
+	public void RefreshModelVisualDeferred()
 	{
 		RefreshModelVisual();
 	}
@@ -248,7 +254,7 @@ public partial class WorldObject : Node3D
 	///     <see cref="DefaultModelNameForVisual" />;
 	///     if the asset is missing, shows the checkered placeholder cube.
 	/// </summary>
-	protected void RefreshModelVisual ()
+	protected void RefreshModelVisual()
 	{
 		var trimmed = GetEffectiveModelNameForVisual();
 		RemoveGlbModelChild();
@@ -289,12 +295,105 @@ public partial class WorldObject : Node3D
 		root.SetMeta(GlbModelMetaKey, true);
 		AddChild(root);
 		SetOwnerForEditedScene(root);
+
+		if (AutoGroundGlbVisual)
+		{
+			TryAutoGroundGlbVisual(root);
+		}
+	}
+
+	private void TryAutoGroundGlbVisual(Node3D glbRoot)
+	{
+		// We want the *visual* to sit on the ground while keeping this WorldObject's transform (network coords) intact.
+		// So we adjust only the GLB child local position.
+		var aabbFound = false;
+		var combined = new Aabb();
+
+		foreach (var child in glbRoot.FindChildren("*", "MeshInstance3D", recursive: true, owned: false))
+		{
+			if (child is not MeshInstance3D mi)
+			{
+				continue;
+			}
+
+			var mesh = mi.Mesh;
+			if (mesh is null)
+			{
+				continue;
+			}
+
+			var localAabb = mi.GetAabb();
+			if (localAabb.Size == Vector3.Zero)
+			{
+				continue;
+			}
+
+			// Transform AABB corners from mesh-local → glbRoot-local and merge.
+			var toGlb = glbRoot.GlobalTransform.AffineInverse() * mi.GlobalTransform;
+			var transformed = TransformAabb(toGlb, localAabb);
+
+			if (!aabbFound)
+			{
+				combined = transformed;
+				aabbFound = true;
+			}
+			else
+			{
+				combined = combined.Merge(transformed);
+			}
+		}
+
+		if (!aabbFound)
+		{
+			return;
+		}
+
+		var minY = combined.Position.Y;
+		// If the mesh already has its bottom at Y=0, minY will be ~0 and this is a no-op.
+		// If the pivot is centered, minY will be negative and we shift up by -minY.
+		if (Mathf.Abs(minY) < 0.0001f)
+		{
+			return;
+		}
+
+		glbRoot.Position += new Vector3(0f, -minY, 0f);
+	}
+
+	private static Aabb TransformAabb(Transform3D xform, Aabb aabb)
+	{
+		var p = aabb.Position;
+		var s = aabb.Size;
+
+		var corners = new[]
+		{
+			new Vector3(p.X,       p.Y,       p.Z),
+			new Vector3(p.X + s.X, p.Y,       p.Z),
+			new Vector3(p.X,       p.Y + s.Y, p.Z),
+			new Vector3(p.X,       p.Y,       p.Z + s.Z),
+			new Vector3(p.X + s.X, p.Y + s.Y, p.Z),
+			new Vector3(p.X + s.X, p.Y,       p.Z + s.Z),
+			new Vector3(p.X,       p.Y + s.Y, p.Z + s.Z),
+			new Vector3(p.X + s.X, p.Y + s.Y, p.Z + s.Z),
+		};
+
+		var first = xform * corners[0];
+		var min = first;
+		var max = first;
+
+		for (var i = 1; i < corners.Length; i++)
+		{
+			var v = xform * corners[i];
+			min = new Vector3(Mathf.Min(min.X, v.X), Mathf.Min(min.Y, v.Y), Mathf.Min(min.Z, v.Z));
+			max = new Vector3(Mathf.Max(max.X, v.X), Mathf.Max(max.Y, v.Y), Mathf.Max(max.Z, v.Z));
+		}
+
+		return new Aabb(min, max - min);
 	}
 
 	/// <summary>
 	///     Non-empty <see cref="ModelName" /> (trimmed) wins; otherwise <see cref="ResolveModelNameFromObjectTypeFallback" />.
 	/// </summary>
-	private string GetEffectiveModelNameForVisual ()
+	private string GetEffectiveModelNameForVisual()
 	{
 		var explicitName = ModelName?.Trim() ?? string.Empty;
 		if (!string.IsNullOrEmpty(explicitName))
@@ -309,7 +408,7 @@ public partial class WorldObject : Node3D
 	///     Map entry for <see cref="ObjectType" />; if the map has no model for that type,
 	///     <see cref="DefaultModelNameForVisual" />.
 	/// </summary>
-	protected virtual string ResolveModelNameFromObjectTypeFallback ()
+	protected virtual string ResolveModelNameFromObjectTypeFallback()
 	{
 		if (TryGetMappedModelName(ObjectType, out var mappedName))
 		{
@@ -323,7 +422,7 @@ public partial class WorldObject : Node3D
 	///     Resolves the map by enum; also matches by underlying <see cref="ushort" /> so packed-scene instance values
 	///     still line up if Godot's enum binding is off by member name.
 	/// </summary>
-	private static bool TryGetMappedModelName (ObjectType objectType, out string modelName)
+	private static bool TryGetMappedModelName(ObjectType objectType, out string modelName)
 	{
 		modelName = string.Empty;
 		if (ObjectTypeToModelNameMap.Map.TryGetValue(objectType, out var mapped))
@@ -336,10 +435,10 @@ public partial class WorldObject : Node3D
 			}
 		}
 
-		var raw = (ushort) objectType;
+		var raw = (ushort)objectType;
 		foreach (var kv in ObjectTypeToModelNameMap.Map)
 		{
-			if ((ushort) kv.Key != raw)
+			if ((ushort)kv.Key != raw)
 			{
 				continue;
 			}
@@ -358,7 +457,7 @@ public partial class WorldObject : Node3D
 	}
 
 	/// <summary>GLB scenes usually root at <see cref="Node3D" />; otherwise wrap in a <see cref="Node3D" />.</summary>
-	private static Node3D? InstantiateGlbRoot (PackedScene packed)
+	private static Node3D? InstantiateGlbRoot(PackedScene packed)
 	{
 		var inst = packed.Instantiate();
 		if (inst is Node3D n3)
@@ -380,7 +479,7 @@ public partial class WorldObject : Node3D
 	/// <summary>
 	///     Removes prior GLB roots (meta-tagged or name <c>Glb</c>), including Godot-renamed duplicates (<c>Glb2</c>, …).
 	/// </summary>
-	private void RemoveGlbModelChild ()
+	private void RemoveGlbModelChild()
 	{
 		var toRemove = new List<Node>();
 		foreach (var child in GetChildren())
@@ -406,7 +505,7 @@ public partial class WorldObject : Node3D
 		}
 	}
 
-	private static bool IsGlbRenamedDuplicateName (string nodeName)
+	private static bool IsGlbRenamedDuplicateName(string nodeName)
 	{
 		if (!nodeName.StartsWith(GlbModelChildName, StringComparison.Ordinal))
 		{
@@ -429,13 +528,13 @@ public partial class WorldObject : Node3D
 		return true;
 	}
 
-	private void RemovePlaceholderMeshChild ()
+	private void RemovePlaceholderMeshChild()
 	{
 		var n = GetNodeOrNull(PlaceholderMeshNodeName);
 		n?.Free();
 	}
 
-	private void ShowPlaceholderCube ()
+	private void ShowPlaceholderCube()
 	{
 		RemoveGlbModelChild();
 
@@ -459,7 +558,7 @@ public partial class WorldObject : Node3D
 		meshInst.MaterialOverride = mat;
 	}
 
-	private static Texture2D LoadPlaceholderCheckerTexture ()
+	private static Texture2D LoadPlaceholderCheckerTexture()
 	{
 		if (ResourceLoader.Exists(PlaceholderCheckerDdsPath))
 		{
@@ -474,7 +573,7 @@ public partial class WorldObject : Node3D
 	}
 
 	/// <summary>Procedural tileable fallback if the DDS resource is missing.</summary>
-	private static Texture2D CreateFallbackPinkCheckerTexture ()
+	private static Texture2D CreateFallbackPinkCheckerTexture()
 	{
 		const int w = 64;
 		const int h = 64;
@@ -498,7 +597,7 @@ public partial class WorldObject : Node3D
 	///     Owns editor-created visuals under this instance root only. Do not use <see cref="SceneTree.EditedSceneRoot" />;
 	///     assigning the main scene root as owner can persist those nodes as direct children of the main node in the .tscn.
 	/// </summary>
-	private void SetOwnerForEditedScene (Node node)
+	private void SetOwnerForEditedScene(Node node)
 	{
 		if (!Engine.IsEditorHint())
 		{
