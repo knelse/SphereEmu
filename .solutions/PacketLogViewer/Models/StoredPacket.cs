@@ -12,6 +12,8 @@ public class StoredPacket
     public PacketSource Source { get; set; }
     public DateTime Timestamp { get; set; }
     public bool HiddenByDefault { get; set; }
+    public bool HiddenByDefaultClient { get; set; }
+    public bool HiddenByDefaultServer { get; set; }
     public bool Favorite { get; set; }
     public PacketTypes? PacketType { get; set; }
     public ushort TargetId { get; set; }

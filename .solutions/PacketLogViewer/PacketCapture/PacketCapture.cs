@@ -262,7 +262,9 @@ public class PacketCapture : IDisposable
                 Timestamp = packetRawData.ArrivalTime,
                 NumberInSequence = index
             };
-            storedPacket.HiddenByDefault = PacketAnalyzer.ShouldBeHiddenByDefault(storedPacket);
+            storedPacket.HiddenByDefaultClient = PacketAnalyzer.ShouldBeHiddenByDefaultClient(storedPacket);
+            storedPacket.HiddenByDefaultServer = PacketAnalyzer.ShouldBeHiddenByDefaultServer(storedPacket);
+            storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
             storedPackets.Add(storedPacket);
         }
 

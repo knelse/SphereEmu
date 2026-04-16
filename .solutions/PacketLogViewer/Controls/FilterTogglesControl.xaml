@@ -4,56 +4,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
+    <!-- WrapPanel keeps the top toggles visible on smaller window sizes by allowing wrapping -->
+    <WrapPanel VerticalAlignment="Center" Margin="2 2 2 2">
         <CheckBox x:Name="ShowBookmarkedOnly"
                   x:FieldModifier="public"
-                  Grid.Column="0"
-                  Margin="2 4 4 2"
+                  Margin="0 2 12 2"
                   Background="White"
                   VerticalAlignment="Center"
-                  IsChecked="False"
-                  HorizontalAlignment="Left">
+                  IsChecked="False">
             Bookmarked Only
         </CheckBox>
 
-        <CheckBox x:Name="HideJunk"
+        <CheckBox x:Name="HideClientPackets"
                   x:FieldModifier="public"
-                  Grid.Column="1"
-                  Margin="2 4 4 2"
+                  Margin="0 2 12 2"
                   Background="White"
                   VerticalAlignment="Center"
-                  IsChecked="True"
-                  HorizontalAlignment="Left">
-            Hide junk
+                  IsChecked="True">
+            Hide client
         </CheckBox>
 
-        <CheckBox x:Name="EnableListener"
+        <CheckBox x:Name="HideServerJunk"
                   x:FieldModifier="public"
-                  Grid.Column="2"
-                  Margin="2 4 4 2"
+                  Margin="0 2 12 2"
                   Background="White"
                   VerticalAlignment="Center"
-                  IsChecked="True"
-                  HorizontalAlignment="Left">
-            Enable Listener
+                  IsChecked="True">
+            Hide junk
         </CheckBox>
 
         <CheckBox x:Name="ShowNewInUi"
                   x:FieldModifier="public"
-                  Grid.Column="3"
-                  Margin="2 4 4 2"
+                  Margin="0 2 12 2"
                   Background="White"
                   VerticalAlignment="Center"
-                  IsChecked="True"
-                  HorizontalAlignment="Left">
-            Show new in UI
+                  IsChecked="True">
+            Update UI
         </CheckBox>
-    </Grid>
+
+        <CheckBox x:Name="EnableListener"
+                  x:FieldModifier="public"
+                  Margin="0 2 12 2"
+                  Background="White"
+                  VerticalAlignment="Center"
+                  IsChecked="True">
+            Listener
+        </CheckBox>
+    </WrapPanel>
 </UserControl>

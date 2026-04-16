@@ -6,96 +6,114 @@
              mc:Ignorable="d">
     <StackPanel x:Name="GameState" Background="LightGray">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="0">ClientID</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="ClientId" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="1">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="ClientIdBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="1" Grid.Column="1">
-                456
-            </TextBox>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="2">Time</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="GameTime" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="3">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="GameTimeBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="3" Grid.Column="1">
-                456
-            </TextBox>
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="0">ClientID</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="ClientId" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="1">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="ClientIdBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="1" Grid.Column="1">
+                    456
+                </TextBox>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="4">X</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsX" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="5">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsXBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="5" Grid.Column="1">
-                456
-            </TextBox>
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="2">Time</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="GameTime" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="3">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="GameTimeBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="3" Grid.Column="1">
+                    456
+                </TextBox>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="6">Y</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsY" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="7">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsYBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="7" Grid.Column="1">
-                456
-            </TextBox>
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="4">X</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsX" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="5">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsXBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="5" Grid.Column="1">
+                    456
+                </TextBox>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="8">Z</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsZ" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="9">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsZBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="9" Grid.Column="1">
-                456
-            </TextBox>
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="6">Y</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsY" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="7">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsYBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="7" Grid.Column="1">
+                    456
+                </TextBox>
 
-            <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="10">T</Label>
-            <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsT" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="11">
-                123
-            </TextBox>
-            <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsTBits" x:FieldModifier="public"
-                     Background="Transparent"
-                     BorderBrush="Transparent" IsReadOnly="True" Grid.Row="11" Grid.Column="1">
-                456
-            </TextBox>
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="8">Z</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsZ" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="9">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsZBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="9" Grid.Column="1">
+                    456
+                </TextBox>
+
+                <Label FontWeight="Bold" Margin="-2" FontSize="12" Grid.Row="10">T</Label>
+                <TextBox FontSize="12" Margin="4 -2 4 -2" x:Name="CoordsT" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="11">
+                    123
+                </TextBox>
+                <TextBox FontSize="10" Margin="4 -2 4 -2" x:Name="CoordsTBits" x:FieldModifier="public"
+                         Background="Transparent"
+                         BorderBrush="Transparent" IsReadOnly="True" Grid.Row="11" Grid.Column="1">
+                    456
+                </TextBox>
+            </Grid>
+
+            <Button x:Name="TrackXpButton"
+                    x:FieldModifier="public"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="8 6 8 0"
+                    Padding="10 4"
+                    MinWidth="90">
+                Track XP
+            </Button>
         </Grid>
     </StackPanel>
 </UserControl>

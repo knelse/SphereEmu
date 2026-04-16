@@ -9,6 +9,7 @@
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="70" />
             <ColumnDefinition Width="210" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="500" />
         </Grid.ColumnDefinitions>
 
@@ -52,7 +53,16 @@
                  FontSize="16"
                  HorizontalAlignment="Left" />
 
-        <Grid Grid.Column="3" Margin="100 4 4 2">
+        <Button x:Name="SearchAllVisibleButton"
+                x:FieldModifier="public"
+                Grid.Column="3"
+                Margin="0 4 4 2"
+                Padding="10 2"
+                VerticalAlignment="Center">
+            [In all]
+        </Button>
+
+        <Grid Grid.Column="4" Margin="100 4 4 2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />

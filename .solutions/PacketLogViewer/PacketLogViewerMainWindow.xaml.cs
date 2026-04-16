@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -85,6 +87,7 @@ public partial class PacketLogViewerMainWindow
     {
         InitializeComponent();
         RegisterBsonMapperForBrush();
+        ApplyStartWindowDimensionsFromConfig();
 
         var scrollViewerProperty =
             typeof(RichTextBox).GetProperty("ScrollViewer", BindingFlags.NonPublic | BindingFlags.Instance)!;
@@ -108,6 +111,23 @@ public partial class PacketLogViewerMainWindow
             // so dialogs can safely set Owner = this.
             InitializeAfterWindowShown();
         };
+    }
+
+    private void ApplyStartWindowDimensionsFromConfig()
+    {
+        var settings = AppConfig.GetSection("Settings");
+        var startWidth = settings.GetValue<double?>("StartWidth");
+        var startHeight = settings.GetValue<double?>("StartHeight");
+
+        if (startWidth is > 0)
+        {
+            Width = startWidth.Value;
+        }
+
+        if (startHeight is > 0)
+        {
+            Height = startHeight.Value;
+        }
     }
 
     private void InitializeAfterWindowShown()
@@ -163,12 +183,27 @@ public partial class PacketLogViewerMainWindow
                     return (o as StoredPacket)?.Favorite ?? false;
                 }
 
-                if (!HideUninteresting)
+                var p = o as StoredPacket;
+                if (p is null)
                 {
                     return true;
                 }
 
-                return !((o as StoredPacket)?.HiddenByDefault ?? false);
+                if (HideClientPackets && p.Source == PacketSource.CLIENT)
+                {
+                    return false;
+                }
+
+                if (HideServerJunk)
+                {
+                    var serverJunk = p.HiddenByDefaultServer || (p.Source == PacketSource.SERVER && p.HiddenByDefault);
+                    if (serverJunk)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
             });
             fullPacketView.Filter = filterFunc;
 
@@ -206,8 +241,10 @@ public partial class PacketLogViewerMainWindow
             // Wire UI events (moved into UserControls)
             MainView.FilterToggles.ShowBookmarkedOnly.Checked += ShowFavoritesOnlyToggleButton_OnChecked;
             MainView.FilterToggles.ShowBookmarkedOnly.Unchecked += ShowFavoritesOnlyToggleButton_OnUnchecked;
-            MainView.FilterToggles.HideJunk.Checked += HideUninteresting_OnChecked;
-            MainView.FilterToggles.HideJunk.Unchecked += HideUninteresting_OnUnchecked;
+            MainView.FilterToggles.HideClientPackets.Checked += HideClientPackets_OnChecked;
+            MainView.FilterToggles.HideClientPackets.Unchecked += HideClientPackets_OnUnchecked;
+            MainView.FilterToggles.HideServerJunk.Checked += HideServerJunk_OnChecked;
+            MainView.FilterToggles.HideServerJunk.Unchecked += HideServerJunk_OnUnchecked;
             MainView.FilterToggles.EnableListener.Checked += ListenerEnabled_OnChecked;
             MainView.FilterToggles.EnableListener.Unchecked += ListenerEnabled_OnUnchecked;
             MainView.FilterToggles.ShowNewInUi.Checked += ShowInUI_OnChecked;
@@ -217,6 +254,7 @@ public partial class PacketLogViewerMainWindow
             MainView.PacketActionsBar.IsFavorite.Unchecked += FavoriteToggleButton_OnUnchecked;
             MainView.PacketActionsBar.SearchInPacketTextBox.TextChanged += SearchInPacketTextBox_OnTextChanged;
             MainView.PacketActionsBar.SearchInPacketTextBox.KeyUp += SearchInPacketTextBox_OnKeyUp;
+            MainView.PacketActionsBar.SearchAllVisibleButton.Click += SearchAllVisibleButton_OnClick;
             MainView.PacketActionsBar.AddPacketButton.Click += AddPacketButton_OnClick;
             MainView.PacketActionsBar.SettingsButton.Click += SettingsButton_OnClick;
 
@@ -236,6 +274,7 @@ public partial class PacketLogViewerMainWindow
             MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionChanged += PacketVisualizerControl_OnSelectionChanged;
             MainView.ClientStatePanel.ClearClientStateButton.Click += ClearClientState_OnClick;
             MainView.ClientStatePanel.FilterClientStateButton.Click += FilterClientState_OnClick;
+            MainView.GameState.TrackXpButton.Click += TrackXpButton_OnClick;
 
             SphereTimeUpdateTimer = new DispatcherTimer
             {
@@ -386,8 +425,12 @@ public partial class PacketLogViewerMainWindow
     public ObservableCollection<StoredPacket> LogRecords { get; } = new();
     public bool ShowFavoritesOnly { get; set; }
     public bool ListenerEnabled { get; set; } = true;
-    public bool HideUninteresting { get; set; } = true;
+    public bool HideClientPackets { get; set; } = true;
+    public bool HideServerJunk { get; set; } = true;
     public bool ShowNewInUI { get; set; } = true;
+
+    private TrackXpSnapshot? _trackXpSnapshot;
+    private bool _trackXpEnabled;
 
     private void OnPacketProcessed(List<StoredPacket> storedPackets, bool forceProcess)
     {
@@ -507,6 +550,11 @@ public partial class PacketLogViewerMainWindow
             var storedPacket = storedPackets[i];
 
             storedPacket.UpdatePacketPartsForContent();
+
+            if (_trackXpEnabled && storedPacket.Source == PacketSource.SERVER)
+            {
+                TryTrackDegreeXpFromServerPacket(storedPacket);
+            }
 
             // if (i >= 1)
             // {
@@ -960,20 +1008,37 @@ public partial class PacketLogViewerMainWindow
         ScrollIntoViewIfSelectionExists();
     }
 
-    private void HideUninteresting_OnChecked(object sender, RoutedEventArgs e)
+    private void HideClientPackets_OnChecked(object sender, RoutedEventArgs e)
     {
-        if (HideUninteresting)
+        if (HideClientPackets)
         {
             return;
         }
 
-        HideUninteresting = true;
+        HideClientPackets = true;
         ScrollIntoViewIfSelectionExists();
     }
 
-    private void HideUninteresting_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideClientPackets_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        HideUninteresting = false;
+        HideClientPackets = false;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideServerJunk_OnChecked(object sender, RoutedEventArgs e)
+    {
+        if (HideServerJunk)
+        {
+            return;
+        }
+
+        HideServerJunk = true;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideServerJunk_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        HideServerJunk = false;
         ScrollIntoViewIfSelectionExists();
     }
 
@@ -2183,6 +2248,214 @@ public partial class PacketLogViewerMainWindow
         SearchText();
     }
 
+    private async void SearchAllVisibleButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var query = MainView.PacketActionsBar.SearchInPacketTextBox.Text;
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return;
+        }
+
+        var list = MainView.PacketLogList.LogListFullPackets;
+        var visible = list.Items.Cast<object>().OfType<StoredPacket>().ToList();
+        if (visible.Count == 0)
+        {
+            return;
+        }
+
+        bool SearchInCurrentPacket(bool resetToStart)
+        {
+            if (resetToStart)
+            {
+                StartTextPointer = null;
+                EndTextPointer = null;
+            }
+
+            SearchText();
+            return StartTextPointer is not null && EndTextPointer is not null;
+        }
+
+        // 1) Continue search within the currently selected (visible) packet first
+        if (SearchInCurrentPacket(resetToStart: false))
+        {
+            return;
+        }
+
+        var selected = list.SelectedItem as StoredPacket;
+        var startIndex = 0;
+        if (selected is not null)
+        {
+            var currentIndex = visible.IndexOf(selected);
+            startIndex = currentIndex >= 0 ? currentIndex + 1 : 0;
+        }
+
+        // 2) If not found, search all other visible packets concurrently,
+        //    then jump to the earliest match in list order (wrapping once).
+        var searchOrder = new List<(int OrderIndex, int VisibleIndex, StoredPacket Packet)>(visible.Count);
+        var order = 0;
+        for (var i = startIndex; i < visible.Count; i++)
+        {
+            searchOrder.Add((order++, i, visible[i]));
+        }
+        for (var i = 0; i < Math.Min(startIndex, visible.Count); i++)
+        {
+            searchOrder.Add((order++, i, visible[i]));
+        }
+
+        var btn = sender as Button;
+        if (btn is not null)
+        {
+            btn.IsEnabled = false;
+        }
+
+        try
+        {
+            var bestOrderIndex = await Task.Run(() =>
+            {
+                var best = int.MaxValue;
+
+                Parallel.ForEach(searchOrder, item =>
+                {
+                    // Skip work if we already found an earlier match
+                    if (Volatile.Read(ref best) <= item.OrderIndex)
+                    {
+                        return;
+                    }
+
+                    if (!PacketHasContentMatch(item.Packet.ContentBytes, query))
+                    {
+                        return;
+                    }
+
+                    var current = Volatile.Read(ref best);
+                    while (item.OrderIndex < current)
+                    {
+                        var prev = Interlocked.CompareExchange(ref best, item.OrderIndex, current);
+                        if (prev == current)
+                        {
+                            break;
+                        }
+
+                        current = prev;
+                    }
+                });
+
+                return best == int.MaxValue ? (int?)null : best;
+            });
+
+            if (bestOrderIndex is null)
+            {
+                return;
+            }
+
+            var target = searchOrder.First(x => x.OrderIndex == bestOrderIndex.Value).Packet;
+            list.SelectedItem = target; // triggers LogListOnSelectionChanged -> UpdateContentPreview -> updates bitstream
+            list.ScrollIntoView(target);
+
+            // run the real highlighter search inside the newly selected packet
+            if (SearchInCurrentPacket(resetToStart: true))
+            {
+                list.Focus();
+            }
+        }
+        finally
+        {
+            if (btn is not null)
+            {
+                btn.IsEnabled = true;
+            }
+        }
+    }
+
+    private bool PacketHasContentMatch(byte[] contentBytes, string query)
+    {
+        if (contentBytes.Length == 0)
+        {
+            return false;
+        }
+
+        if (query.StartsWith("0"))
+        {
+            // integers, 0x 0d 0b (same validation as SearchText())
+            if (query.Length < 3)
+            {
+                return false;
+            }
+
+            var intBase = query[1] == 'x' ? 16 : query[1] == 'd' ? 10 : query[1] == 'b' ? 2 : 0;
+            if (intBase == 0 || query[2..].Any(x => !char.IsAsciiHexDigit(x)))
+            {
+                return false;
+            }
+
+            try
+            {
+                var value = Convert.ToInt64(query[2..], intBase);
+                var bitsToRead = GetMinimumBitsToEncodeValue(value);
+                var bs = new BitStream(contentBytes);
+                bs.Seek(0, 0);
+                while (bs.ValidPosition)
+                {
+                    var test = bs.ReadInt64(bitsToRead);
+                    if (!bs.ValidPosition)
+                    {
+                        break;
+                    }
+
+                    bs.SeekBack(bitsToRead);
+                    if (test == value)
+                    {
+                        return true;
+                    }
+
+                    bs.ReadBit();
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        // assuming win1251 string
+        var bytesToFind = Win1251.GetBytes(query);
+        var bitLength = bytesToFind.Length * 8;
+        if (bitLength <= 0)
+        {
+            return false;
+        }
+
+        try
+        {
+            var bs = new BitStream(contentBytes);
+            bs.Seek(0, 0);
+            while (bs.ValidPosition)
+            {
+                var test = bs.ReadBytes(bitLength);
+                if (!bs.ValidPosition)
+                {
+                    break;
+                }
+
+                bs.SeekBack(bitLength);
+                if (test.HasEqualElementsAs(bytesToFind))
+                {
+                    return true;
+                }
+
+                bs.ReadBit();
+            }
+        }
+        catch
+        {
+            return false;
+        }
+
+        return false;
+    }
+
     public static void RegisterBsonMapperForBrush()
     {
         BsonMapper.Global.RegisterType<SolidColorBrush>(
@@ -2277,4 +2550,227 @@ public partial class PacketLogViewerMainWindow
             RefreshClientStateFilter();
         }
     }
+
+    private void TrackXpButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var dialog = new TrackXpDialog(_trackXpSnapshot) { Owner = this };
+        if (dialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        _trackXpSnapshot = new TrackXpSnapshot(
+            dialog.TitleLevel,
+            dialog.TitleRebirth,
+            dialog.TitleXp,
+            dialog.DegreeLevel,
+            dialog.DegreeRebirth,
+            dialog.DegreeXp,
+            dialog.DegreeXpUseNextPacketAsBase,
+            dialog.TitleXpUseNextPacketAsBase,
+            dialog.PillActive,
+            dialog.ServerBonus,
+            dialog.MissionArea
+        );
+        _trackXpEnabled = true;
+    }
+
+    private void TryTrackDegreeXpFromServerPacket(StoredPacket storedPacket)
+    {
+        if (_trackXpSnapshot is null)
+        {
+            return;
+        }
+
+        var clientId = PacketCapture?.ClientId ?? (short)0;
+        if (clientId == 0)
+        {
+            return;
+        }
+
+        var (successDegree, successTitle, newDegreeXp, newTitleXp)
+            = XpExtractor.TryExtractAllXpFromPacket(storedPacket.ContentBytes, clientId);
+
+        if (!successDegree && !successTitle)
+        {
+            return;
+        }
+
+        if (successTitle && _trackXpSnapshot.TitleXpUseNextPacketAsBase)
+        {
+            _trackXpSnapshot = _trackXpSnapshot with
+            {
+                TitleXp = newTitleXp,
+                TitleXpUseNextPacketAsBase = false
+            };
+        }
+
+        if (successDegree && _trackXpSnapshot.DegreeXpUseNextPacketAsBase)
+        {
+            _trackXpSnapshot = _trackXpSnapshot with
+            {
+                DegreeXp = newDegreeXp,
+                DegreeXpUseNextPacketAsBase = false
+            };
+        }
+
+        if ((successTitle && _trackXpSnapshot.TitleXpUseNextPacketAsBase)
+            || (successDegree && _trackXpSnapshot.DegreeXpUseNextPacketAsBase))
+        {
+            return;
+        }
+
+        var oldDegreeXp = _trackXpSnapshot.DegreeXp;
+        var oldTitleXp = _trackXpSnapshot.TitleXp;
+        long earnedDegreeXp = -1;
+        long earnedTitleXp = -1;
+        var nextDegreeLevel = _trackXpSnapshot.DegreeLevel;
+        var nextTitleLevel = _trackXpSnapshot.TitleLevel;
+        var nextDegreeRebirth = _trackXpSnapshot.DegreeRebirth;
+        var nextTitleRebirth = _trackXpSnapshot.TitleRebirth;
+
+        if (successDegree && newDegreeXp >= oldDegreeXp)
+        {
+            earnedDegreeXp = (long)(newDegreeXp - oldDegreeXp);
+        }
+        else if (successDegree)
+        {
+            var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
+            var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
+            var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
+            earnedDegreeXp = (long)((ulong)xpToLevelUp - (ulong)oldDegreeXp + (ulong)newDegreeXp);
+
+            nextDegreeLevel += 1;
+            if (nextDegreeLevel > 60)
+            {
+                nextDegreeLevel = 1;
+                nextDegreeRebirth = Math.Min(nextDegreeRebirth + 1, 3);
+            }
+        }
+        else if (successTitle && newTitleXp >= oldTitleXp)
+        {
+            earnedTitleXp = (long)(newTitleXp - oldTitleXp);
+        }
+        else if (successTitle)
+        {
+            var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
+            var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
+            var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
+            earnedTitleXp = (long)((ulong)xpToLevelUp - (ulong)oldTitleXp + (ulong)newTitleXp);
+
+            nextTitleLevel += 1;
+            if (nextTitleLevel > 60)
+            {
+                nextTitleLevel = 1;
+                nextTitleRebirth = Math.Min(nextTitleRebirth + 1, 3);
+            }
+        }
+
+        if (earnedDegreeXp <= 0 && earnedTitleXp <= 0)
+        {
+            return;
+        }
+
+        int? mobType = null;
+        int? mobLevel = null;
+        if (XpExtractor.TryFindMobKilledByClient(storedPacket.PacketParts, clientId, out var killedMobEntityId))
+        {
+            if (CurrentClientState.FirstOrDefault(x => x.Id == killedMobEntityId) is MobPacket mob)
+            {
+                mobType = mob.Type;
+                mobLevel = mob.Level;
+            }
+        }
+
+        if (earnedDegreeXp > 0)
+        {
+            WriteDegreeXpLogLine(_trackXpSnapshot, (uint)earnedDegreeXp, mobType, mobLevel);
+        }
+
+        if (earnedTitleXp > 0)
+        {
+            WriteTitleXpLogLine(_trackXpSnapshot, (uint)earnedTitleXp, mobType, mobLevel);
+        }
+
+        _trackXpSnapshot = _trackXpSnapshot with
+        {
+            DegreeXp = newDegreeXp,
+            TitleXp = newTitleXp,
+            DegreeLevel = nextDegreeLevel,
+            DegreeRebirth = nextDegreeRebirth,
+            TitleLevel = nextTitleLevel,
+            TitleRebirth = nextTitleRebirth
+        };
+    }
+
+    private static ulong GetXpToLevelUp(int titleMinusOne, int degreeMinusOne)
+    {
+        if (titleMinusOne % 60 == 59 && degreeMinusOne % 60 == 59)
+        {
+            return 1;
+        }
+
+        var minLevel = Math.Min(titleMinusOne, degreeMinusOne);
+        var maxLevel = Math.Max(titleMinusOne, degreeMinusOne);
+        return (ulong)(CharacterDataHelper.XpPerLevelBase[maxLevel] + CharacterDataHelper.XpPerLevelDelta[maxLevel] * minLevel);
+    }
+
+    private static void WriteDegreeXpLogLine(TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
+    {
+        var outputPath = AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
+        if (string.IsNullOrWhiteSpace(outputPath))
+        {
+            outputPath = AppContext.BaseDirectory;
+        }
+
+        var filePath = Path.Combine(outputPath, "degree_xp.txt");
+        var pill = snapshot.PillActive ? 1 : 0;
+        var line = string.Join('\t', new object[]
+        {
+            snapshot.TitleLevel,
+            snapshot.TitleRebirth,
+            snapshot.DegreeLevel,
+            snapshot.DegreeRebirth,
+            pill,
+            snapshot.ServerBonus,
+            snapshot.MissionArea,
+            earnedXp
+        });
+
+        if (mobType.HasValue && mobLevel.HasValue)
+        {
+            line += "\t" + mobType.Value + "\t" + mobLevel.Value;
+        }
+        File.AppendAllText(filePath, line + Environment.NewLine);
+    }
+
+    private static void WriteTitleXpLogLine(TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
+    {
+        var outputPath = AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
+        if (string.IsNullOrWhiteSpace(outputPath))
+        {
+            outputPath = AppContext.BaseDirectory;
+        }
+
+        var filePath = Path.Combine(outputPath, "title_xp.txt");
+        var pill = snapshot.PillActive ? 1 : 0;
+        var line = string.Join('\t', new object[]
+        {
+            snapshot.TitleLevel,
+            snapshot.TitleRebirth,
+            snapshot.DegreeLevel,
+            snapshot.DegreeRebirth,
+            pill,
+            snapshot.ServerBonus,
+            snapshot.MissionArea,
+            earnedXp
+        });
+
+        if (mobType.HasValue && mobLevel.HasValue)
+        {
+            line += "\t" + mobType.Value + "\t" + mobLevel.Value;
+        }
+        File.AppendAllText(filePath, line + Environment.NewLine);
+    }
+
 }

@@ -129,7 +129,6 @@ internal static class PacketAnalyzer
 {
     public static readonly byte[] packet_04_00_4F_01 = { 0x04, 0x00, 0xF4, 0x01 };
     public static readonly byte[] ok_mark = { 0x2c, 0x01, 0x00 };
-
     public static readonly ILiteCollection<MobPacket> MobCollection =
         PacketLogViewerMainWindow.PacketDatabase.GetCollection<MobPacket>("MobData");
 
@@ -167,14 +166,14 @@ internal static class PacketAnalyzer
         };
     }
 
-    private static bool ShouldBeHiddenByDefaultServer(StoredPacket storedPacket)
+    internal static bool ShouldBeHiddenByDefaultServer(StoredPacket storedPacket)
     {
         var content = storedPacket.ContentBytes;
 
         return ServerPacketHideRules.Any(ruleFunc => ruleFunc(content));
     }
 
-    private static bool ShouldBeHiddenByDefaultClient(StoredPacket storedPacket)
+    internal static bool ShouldBeHiddenByDefaultClient(StoredPacket storedPacket)
     {
         var content = storedPacket.ContentBytes;
 
