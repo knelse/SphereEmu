@@ -43,7 +43,7 @@ public static class SphObjectDbHelper
         suffixObj.PAtkNegative *= tierScale;
         suffixObj.MAtkUpNegative *= tierScale;
         suffixObj.MAtkNegativeOrHeal *= tierScale;
-        suffixObj.VendorCost *= tierScale;
+        //suffixObj.VendorCost *= tierScale;
 
         return suffixObj;
     }
