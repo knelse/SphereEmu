@@ -24,6 +24,8 @@ public partial class WorldObject : Node3D
 
 	private const string GlbModelMetaKey = "_world_object_glb";
 	private const string GlbModelMetaKeyLegacy = "_npc_interactable_glb";
+	private const string GlbModelMetaKeyModelPath = "_world_object_glb_path";
+	private const string GlbModelMetaKeyGrounded = "_world_object_glb_grounded";
 	private const string PlaceholderCheckerDdsPath = "res://Godot/Textures/npc_placeholder_checker.dds";
 
 	/// <summary>Used when <see cref="ModelName" /> is empty and <see cref="ObjectType" /> has no mapped GLB.</summary>
@@ -195,6 +197,12 @@ public partial class WorldObject : Node3D
 	private void ApplyAngleToRotation()
 	{
 		var t0 = (float)(_angle * Math.PI / 128.0);
+		// Avoid forcing a transform change on load if the scene already has the correct rotation.
+		if (Mathf.Abs(Rotation.Y - t0) < 0.0001f && Mathf.Abs(Rotation.X) < 0.0001f && Mathf.Abs(Rotation.Z) < 0.0001f)
+		{
+			return;
+		}
+
 		Rotation = new Vector3(0f, t0, 0f);
 	}
 
@@ -257,16 +265,29 @@ public partial class WorldObject : Node3D
 	protected void RefreshModelVisual()
 	{
 		var trimmed = GetEffectiveModelNameForVisual();
-		RemoveGlbModelChild();
-
 		if (string.IsNullOrEmpty(trimmed))
 		{
+			RemoveGlbModelChild();
 			ShowPlaceholderCube();
 			return;
 		}
 
-		RemovePlaceholderMeshChild();
 		var glbPath = $"res://Godot/Models/{trimmed}.glb";
+		// If a GLB is already instanced under this node and matches the desired model, keep it.
+		// This avoids removing/re-instancing visuals on every scene load (which gets expensive with many objects).
+		if (TryGetExistingGlbVisual(glbPath, out var existingGlb))
+		{
+			RemovePlaceholderMeshChild();
+			if (AutoGroundGlbVisual)
+			{
+				TryAutoGroundGlbVisualOnce(existingGlb);
+			}
+
+			return;
+		}
+
+		RemoveGlbModelChild();
+		RemovePlaceholderMeshChild();
 		if (!ResourceLoader.Exists(glbPath))
 		{
 			GD.PushWarning($"WorldObject: GLB not found: {glbPath}");
@@ -293,13 +314,64 @@ public partial class WorldObject : Node3D
 		root.Name = GlbModelChildName;
 		root.UniqueNameInOwner = true;
 		root.SetMeta(GlbModelMetaKey, true);
+		root.SetMeta(GlbModelMetaKeyModelPath, glbPath);
 		AddChild(root);
 		SetOwnerForEditedScene(root);
 
 		if (AutoGroundGlbVisual)
 		{
-			TryAutoGroundGlbVisual(root);
+			TryAutoGroundGlbVisualOnce(root);
 		}
+	}
+
+	private bool TryGetExistingGlbVisual(string desiredGlbPath, out Node3D glbRoot)
+	{
+		glbRoot = null!;
+
+		// Prefer meta-tagged nodes (created by this script), but also accept pre-authored "Glb" from .tscn files.
+		foreach (var child in GetChildren())
+		{
+			if (child is not Node3D n3)
+			{
+				continue;
+			}
+
+			if (!child.HasMeta(GlbModelMetaKey) && child.Name != GlbModelChildName)
+			{
+				continue;
+			}
+
+			var metaPath = child.GetMeta(GlbModelMetaKeyModelPath, Variant.CreateFrom(string.Empty)).AsString();
+			if (!string.IsNullOrEmpty(metaPath) && string.Equals(metaPath, desiredGlbPath, StringComparison.Ordinal))
+			{
+				glbRoot = n3;
+				return true;
+			}
+
+			// For scene-authored instances, SceneFilePath should point to the packed scene.
+			var scenePath = n3.SceneFilePath ?? string.Empty;
+			if (!string.IsNullOrEmpty(scenePath) && string.Equals(scenePath, desiredGlbPath, StringComparison.Ordinal))
+			{
+				glbRoot = n3;
+				// Tag it so future refreshes can be O(1) without relying on SceneFilePath.
+				n3.SetMeta(GlbModelMetaKey, true);
+				n3.SetMeta(GlbModelMetaKeyModelPath, desiredGlbPath);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private void TryAutoGroundGlbVisualOnce(Node3D glbRoot)
+	{
+		if (glbRoot.HasMeta(GlbModelMetaKeyGrounded))
+		{
+			return;
+		}
+
+		TryAutoGroundGlbVisual(glbRoot);
+		glbRoot.SetMeta(GlbModelMetaKeyGrounded, true);
 	}
 
 	private void TryAutoGroundGlbVisual(Node3D glbRoot)
@@ -490,10 +562,11 @@ public partial class WorldObject : Node3D
 				continue;
 			}
 
+			// Don't aggressively remove a pre-authored "Glb" child: if it exists in the .tscn and matches the
+			// desired model, we want to keep it (handled by TryGetExistingGlbVisual). If it's wrong, RefreshModelVisual
+			// will call this after TryGetExistingGlbVisual fails, and at that point we do want it gone.
 			var nm = child.Name.ToString();
-			if (nm == GlbModelChildName
-				|| IsGlbRenamedDuplicateName(nm)
-				|| nm.StartsWith("NpcGlbModel", StringComparison.Ordinal))
+			if (nm == GlbModelChildName || IsGlbRenamedDuplicateName(nm) || nm.StartsWith("NpcGlbModel", StringComparison.Ordinal))
 			{
 				toRemove.Add(child);
 			}

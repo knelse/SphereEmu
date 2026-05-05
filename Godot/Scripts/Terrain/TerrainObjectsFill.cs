@@ -27,6 +27,19 @@ public partial class TerrainObjectsFill : Node3D
 	[Export]
 	public string ModelsDirectory { get; set; } = "res://Godot/Models/";
 
+	/// <summary>
+	/// When enabled (editor rebuild), generated MultiMeshes are saved as external binary resources instead of
+	/// being embedded as huge sub-resources in the .tscn. This dramatically reduces scene load/parse time.
+	/// </summary>
+	[Export]
+	public bool SaveMultiMeshesAsExternalResources { get; set; } = true;
+
+	/// <summary>
+	/// Directory where MultiMesh .res files are written when <see cref="SaveMultiMeshesAsExternalResources"/> is enabled.
+	/// </summary>
+	[Export]
+	public string MultiMeshResourcesDirectory { get; set; } = "res://Godot/Terrain/GeneratedMultiMeshes/";
+
 	[ExportToolButton("Rebuild terrain objects")]
 	public Callable RebuildTerrainObjectsButton => Callable.From(RebuildTerrainObjects);
 
@@ -117,6 +130,12 @@ public partial class TerrainObjectsFill : Node3D
 				continue;
 			}
 
+			var indexKey = (category.GetInstanceId(), objectName);
+			if (!nextIndexByCategoryAndObjectName.TryGetValue(indexKey, out var objectIndex))
+			{
+				objectIndex = 0;
+			}
+
 			// Godot requires InstanceCount == 0 when changing TransformFormat / UseCustomData.
 			// Avoid object initializers here because property set order can vary and trigger editor errors on load.
 			var mm = new MultiMesh();
@@ -137,17 +156,38 @@ public partial class TerrainObjectsFill : Node3D
 				mm.SetInstanceCustomData(i, new Color(r, g, b, 0f));
 			}
 
-			var indexKey = (category.GetInstanceId(), objectName);
-			if (!nextIndexByCategoryAndObjectName.TryGetValue(indexKey, out var objectIndex))
-			{
-				objectIndex = 0;
-			}
+			MultiMesh mmToAssign = mm;
 
 			var safeObjectName = SanitizeGodotNodeName(objectName);
+			if (Engine.IsEditorHint() && SaveMultiMeshesAsExternalResources)
+			{
+				var baseDir = MultiMeshResourcesDirectory.TrimEnd('/') + "/";
+				var catDirName = SanitizeGodotNodeName(category.Name.ToString());
+				var outDir = $"{baseDir}{catDirName}/";
+				var abs = ProjectSettings.GlobalizePath(outDir);
+				DirAccess.MakeDirRecursiveAbsolute(abs);
+
+				var outPath = $"{outDir}{safeObjectName}_MM_{objectIndex}.res";
+				var err = ResourceSaver.Save(mm, outPath);
+				if (err != Error.Ok)
+				{
+					GD.PushWarning($"TerrainObjectsFill: failed to save multimesh ({err}): {outPath}");
+				}
+				else
+				{
+					// Load back to ensure the scene references an external resource instead of embedding the buffer.
+					var loaded = ResourceLoader.Load<MultiMesh>(outPath);
+					if (loaded is not null)
+					{
+						mmToAssign = loaded;
+					}
+				}
+			}
+
 			var mmi = new MultiMeshInstance3D
 			{
 				Name = $"{safeObjectName}_MM_{objectIndex}",
-				Multimesh = mm,
+				Multimesh = mmToAssign,
 			};
 			nextIndexByCategoryAndObjectName[indexKey] = objectIndex + 1;
 			category.AddChild(mmi);

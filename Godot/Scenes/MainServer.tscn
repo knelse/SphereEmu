@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://jecy1l185txr" path="res://Godot/Scenes/Monster.tscn" id="7_wg6ka"]
 [ext_resource type="Script" uid="uid://cuq7362rbruhh" path="res://Server/UI/ConnectedClients/ConnectedClientsPopupUI.cs" id="8_w4ogy"]
 [ext_resource type="PackedScene" uid="uid://id00aeux6mxl" path="res://Godot/Scenes/firework.tscn" id="9_36cky"]
-[ext_resource type="PackedScene" uid="uid://djfolbol74uys" path="res://Godot/Scenes/terrain_scene.tscn" id="10_4x1vl"]
 [ext_resource type="PackedScene" uid="uid://d1bpjdkoga6or" path="res://Godot/Scenes/dungeon_entrance.tscn" id="10_pt6yw"]
 [ext_resource type="Script" uid="uid://dy0pj5pr1a" path="res://Godot/Scripts/Objects/MonsterSpawnersFill.cs" id="11_mspwn"]
 [ext_resource type="PackedScene" uid="uid://byemmdrth0vex" path="res://Godot/Scenes/monster_spawner.tscn" id="12_tf661"]
@@ -34,6 +33,7 @@
 [ext_resource type="PackedScene" uid="uid://dtf6a6bgra1rg" path="res://Godot/Scenes/castle_tablet.tscn" id="17_6fo3i"]
 [ext_resource type="PackedScene" uid="uid://e5615sr7s3e4" path="res://Godot/Scenes/teleport_broken.tscn" id="19_uvs8x"]
 [ext_resource type="PackedScene" uid="uid://tv03q7ii0iiy" path="res://Godot/Scenes/castle_teleport.tscn" id="33_xmlqq"]
+[ext_resource type="PackedScene" uid="uid://d08bod7i4ssw7" path="res://Godot/Scenes/terrain_scene.scn" id="34_xmlqq"]
 
 [node name="MainServer" type="Node" unique_id=699851889]
 script = ExtResource("2")
@@ -41,7 +41,7 @@ script = ExtResource("2")
 [node name="Cats" type="Node3D" parent="." unique_id=523462454]
 
 [node name="Sunpool_1" parent="Cats" unique_id=1848040136 instance=ExtResource("7_wg6ka")]
-transform = Transform3D(0.09801672, 0, -0.9951823, 0, 1, 0, 0.9951823, 0, 0.09801672, 425.92, -153.43, 1301.68)
+transform = Transform3D(0.098016694, 0, -0.9951821, 0, 1, 0, 0.9951821, 0, 0.098016694, 425.92, -153.43, 1301.68)
 MonsterType = 87
 Angle = 196
 ObjectType = 210
@@ -77,9 +77,6 @@ submenu_popup_delay = 0.1
 script = ExtResource("8_w4ogy")
 
 [node name="Firework" parent="." unique_id=181638805 instance=ExtResource("9_36cky")]
-
-[node name="TerrainScene" parent="." unique_id=819193901 instance=ExtResource("10_4x1vl")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1708.8, 1, 1709)
 
 [node name="MonsterSpawners" type="Node3D" parent="." unique_id=1827364501]
 script = ExtResource("11_mspwn")
@@ -12119,7 +12116,7 @@ ID = 1246
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_04DD_Target" parent="Doors" unique_id=1598645524 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99729013, 0, -0.073564574, 0, 1, 0, 0.073564574, 0, 0.99729013, 370.65607, -150.02463, 3650.0566)
+transform = Transform3D(0.99728996, 0, -0.07356456, 0, 1, 0, 0.07356456, 0, 0.99728996, 370.65607, -150.02463, 3650.0566)
 DoorID = 32767
 HasTarget = true
 TargetX = 370.97552
@@ -15511,7 +15508,7 @@ ID = 2357
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0934_Target" parent="Doors" unique_id=1561348885 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879515, 0, -0.049067624, 0, 1, 0, 0.049067624, 0, 0.99879515, -3579.1753, 353.75314, 2094.146)
+transform = Transform3D(0.998795, 0, -0.049067616, 0, 1, 0, 0.049067616, 0, 0.998795, -3579.1753, 353.75314, 2094.146)
 DoorID = 32767
 HasTarget = true
 TargetX = -3577.9155
@@ -15544,7 +15541,7 @@ ID = 2354
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0931_Target" parent="Doors" unique_id=1934328617 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757018, 0, -0.21910116, 0, 1, 0, 0.21910116, 0, 0.9757018, -3594.4595, 355.47232, 2075.294)
+transform = Transform3D(0.97570163, 0, -0.21910112, 0, 1, 0, 0.21910112, 0, 0.97570163, -3594.4595, 355.47232, 2075.294)
 DoorID = 32767
 HasTarget = true
 TargetX = -3593.2163
@@ -16112,7 +16109,7 @@ ID = 48665
 ModelName = "EDOOR"
 
 [node name="DoorExit_CA37_Target" parent="Doors" unique_id=701300848 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -1499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -1499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -16178,7 +16175,7 @@ ID = 48890
 ModelName = "EDOOR"
 
 [node name="DoorExit_BEB3_Target" parent="Doors" unique_id=336912011 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -2499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -2499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -2538.6067
@@ -16255,7 +16252,7 @@ ID = 45409
 ModelName = "EDOOR"
 
 [node name="DoorExit_9BFD_Target" parent="Doors" unique_id=1406417969 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -3099.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -3099.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -3138.6067
@@ -16299,7 +16296,7 @@ ID = 16410
 ModelName = "EDOOR"
 
 [node name="DoorExit_4015_Target" parent="Doors" unique_id=147070392 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 1900.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 1900.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -16354,7 +16351,7 @@ ID = 24540
 ModelName = "EDOOR"
 
 [node name="DoorExit_5FDB_Target" parent="Doors" unique_id=1246593902 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 1900.1985, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 1900.1985, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -16420,7 +16417,7 @@ ID = 37554
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11E_Target" parent="Doors" unique_id=164825847 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 500.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 500.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -16486,7 +16483,7 @@ ID = 11255
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F07_Target" parent="Doors" unique_id=1858362644 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 2100.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 2100.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -16541,7 +16538,7 @@ ID = 31158
 ModelName = "EDOOR"
 
 [node name="DoorExit_701C_Target" parent="Doors" unique_id=2133065717 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 500.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 500.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -16661,7 +16658,7 @@ ID = 44464
 ModelName = "EDOOR"
 
 [node name="DoorExit_ADAF_Target" parent="Doors" unique_id=393101593 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -3899.8015, -4472.141, -1519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -3899.8015, -4472.141, -1519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3938.6067
@@ -16738,7 +16735,7 @@ ID = 20066
 ModelName = "EDOOR"
 
 [node name="DoorExit_4E61_Target" parent="Doors" unique_id=291035530 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 1100.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 1100.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1061.3933
@@ -16804,7 +16801,7 @@ ID = 12621
 ModelName = "EDOOR"
 
 [node name="DoorExit_3627_Target" parent="Doors" unique_id=1218994509 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 500.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 500.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -16870,7 +16867,7 @@ ID = 3998
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F9D_Target" parent="Doors" unique_id=1368589280 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 900.1985, -4472.141, -3319.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 900.1985, -4472.141, -3319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 861.3933
@@ -16947,7 +16944,7 @@ ID = 28280
 ModelName = "EDOOR"
 
 [node name="DoorExit_6F25_Target" parent="Doors" unique_id=926991354 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 3100.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 3100.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3061.3933
@@ -17002,7 +16999,7 @@ ID = 17116
 ModelName = "EDOOR"
 
 [node name="DoorExit_459B_Target" parent="Doors" unique_id=788355022 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 3500.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 3500.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3461.3933
@@ -17079,7 +17076,7 @@ ID = 44475
 ModelName = "EDOOR"
 
 [node name="DoorExit_AD62_Target" parent="Doors" unique_id=882522343 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -738.6067
@@ -17156,7 +17153,7 @@ ID = 43390
 ModelName = "EDOOR"
 
 [node name="DoorExit_A7D5_Target" parent="Doors" unique_id=342069994 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -899.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -899.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -938.6067
@@ -17211,7 +17208,7 @@ ID = 27785
 ModelName = "EDOOR"
 
 [node name="DoorExit_6C8C_Target" parent="Doors" unique_id=186841232 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 2500.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 2500.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2461.3933
@@ -17298,7 +17295,7 @@ ID = 25865
 ModelName = "EDOOR"
 
 [node name="DoorExit_6507_Target" parent="Doors" unique_id=545174680 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 2100.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 2100.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -17364,7 +17361,7 @@ ID = 16777
 ModelName = "EDOOR"
 
 [node name="DoorExit_62DF_Target" parent="Doors" unique_id=2111442480 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -2299.8015, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -2299.8015, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -2338.6067
@@ -17430,7 +17427,7 @@ ID = 3749
 ModelName = "EDOOR"
 
 [node name="DoorExit_0EA1_Target" parent="Doors" unique_id=477819019 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -99.80151, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -99.80151, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -138.60669
@@ -17485,7 +17482,7 @@ ID = 55471
 ModelName = "EDOOR"
 
 [node name="DoorExit_F2BA_Target" parent="Doors" unique_id=1317204861 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -3699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -3699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3738.6067
@@ -17551,7 +17548,7 @@ ID = 57632
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11A_Target" parent="Doors" unique_id=1001175921 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 261.3933
@@ -17595,7 +17592,7 @@ ID = 57568
 ModelName = "EDOOR"
 
 [node name="DoorExit_E0DE_Target" parent="Doors" unique_id=1789299917 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -1899.8015, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -1899.8015, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1938.6067
@@ -17672,7 +17669,7 @@ ID = 40754
 ModelName = "EDOOR"
 
 [node name="DoorExit_9ED7_Target" parent="Doors" unique_id=964067046 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, 3300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, 3300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3261.3933
@@ -17759,7 +17756,7 @@ ID = 59833
 ModelName = "EDOOR"
 
 [node name="DoorExit_E9C6_Target" parent="Doors" unique_id=1915558068 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -1099.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -1099.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1138.6067
@@ -17846,7 +17843,7 @@ ID = 46339
 ModelName = "EDOOR"
 
 [node name="DoorExit_B502_Target" parent="Doors" unique_id=180959838 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.0980169, 0, -0.9951844, 0, 1, 0, 0.9951844, 0, -0.0980169, -1499.8015, -4472.141, -2119.2285)
+transform = Transform3D(-0.09801689, 0, -0.99518424, 0, 1, 0, 0.99518424, 0, -0.09801689, -1499.8015, -4472.141, -2119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -18002,7 +17999,7 @@ ObjectType = 216
 ModelName = "npc80"
 
 [node name="NPC_4563_Райс_Корпс" parent="NPCs" unique_id=562645104 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.09801692, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, 0.09801692, 1717.7867, -159.393, 1688.2068)
+transform = Transform3D(0.0980169, 0, -0.9951842, 0, 1, 0, 0.9951842, 0, 0.0980169, 1717.7867, -159.393, 1688.2068)
 NameID = 4492
 IconName = "npc_guilder"
 NpcType = 16
@@ -18068,7 +18065,7 @@ ObjectType = 216
 ModelName = "npc07"
 
 [node name="NPC_4712_Крег_Наттер" parent="NPCs" unique_id=1058704467 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -3166.3767, 341.39468, 2499.7976)
+transform = Transform3D(-0.09801688, 0, -0.9951842, 0, 1, 0, 0.9951842, 0, -0.09801688, -3166.3767, 341.39468, 2499.7976)
 NameID = 4462
 IconName = "npc_guilder"
 NpcType = 16
@@ -18079,7 +18076,7 @@ ObjectType = 216
 ModelName = "npc08"
 
 [node name="NPC_4713_Тан_Катчер" parent="NPCs" unique_id=1452083190 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9987951, 0, -0.049067643, 0, 1, 0, 0.049067643, 0, -0.9987951, -2435.608, 336.08978, 1859.1884)
+transform = Transform3D(-0.9987949, 0, -0.049067635, 0, 1, 0, 0.049067635, 0, -0.9987949, -2435.608, 336.08978, 1859.1884)
 NameID = 4463
 IconName = "npc_guilder"
 NpcType = 16
@@ -18706,7 +18703,7 @@ ID = 5202
 ModelName = "npc29a"
 
 [node name="NPC_5203_Грифин_Той" parent="NPCs" unique_id=89177219 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.99518436, 0, -0.09801699, 0, 1, 0, 0.09801699, 0, -0.99518436, 501.47156, -159.88086, 192.81662)
+transform = Transform3D(-0.9951842, 0, -0.09801698, 0, 1, 0, 0.09801698, 0, -0.9951842, 501.47156, -159.88086, 192.81662)
 NameID = 4159
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -18716,7 +18713,7 @@ ID = 5203
 ModelName = "npc29a"
 
 [node name="NPC_5204_Жан_Фале" parent="NPCs" unique_id=424843783 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.97570175, 0, -0.21910115, 0, 1, 0, 0.21910115, 0, 0.97570175, 892.18494, -159.84016, 2959.981)
+transform = Transform3D(0.9757016, 0, -0.2191011, 0, 1, 0, 0.2191011, 0, 0.9757016, 892.18494, -159.84016, 2959.981)
 NameID = 4128
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -18796,7 +18793,7 @@ ID = 5211
 ModelName = "npc29b"
 
 [node name="NPC_5212_Бенедикт_Кельвин" parent="NPCs" unique_id=1735250254 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.99518436, 0, -0.09801699, 0, 1, 0, 0.09801699, 0, -0.99518436, 262.39374, -159.00163, -950.9672)
+transform = Transform3D(-0.9951842, 0, -0.09801698, 0, 1, 0, 0.09801698, 0, -0.9951842, 262.39374, -159.00163, -950.9672)
 NameID = 4132
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -19129,7 +19126,7 @@ ID = 5245
 ModelName = "npc14a"
 
 [node name="NPC_5246_Магина_Ламандер" parent="NPCs" unique_id=1235852134 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.97570175, 0, -0.21910116, 0, 1, 0, 0.21910116, 0, -0.97570175, 2556.8867, -159.55754, -1317.191)
+transform = Transform3D(-0.9757016, 0, -0.21910112, 0, 1, 0, 0.21910112, 0, -0.9757016, 2556.8867, -159.55754, -1317.191)
 NameID = 4151
 IconName = "npc_trade_alchm"
 NpcType = 6
@@ -19426,7 +19423,7 @@ ID = 5329
 ModelName = "npc14b"
 
 [node name="NPC_5330_Ванесса_Ламаненкене" parent="NPCs" unique_id=1100328795 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.97570175, 0, -0.21910116, 0, 1, 0, 0.21910116, 0, -0.97570175, -3381.1453, 339.48645, 859.7418)
+transform = Transform3D(-0.9757016, 0, -0.21910112, 0, 1, 0, 0.21910112, 0, -0.9757016, -3381.1453, 339.48645, 859.7418)
 NameID = 4058
 NpcType = 9
 VendorItemTierMax = 15
@@ -21518,3 +21515,6 @@ ObjectType = 69
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1875.0359, -1102.1729, -1113.9858)
 ID = 5211
 ObjectType = 69
+
+[node name="TerrainScene" parent="." unique_id=819193901 instance=ExtResource("34_xmlqq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1708.8, 1, 1709)
