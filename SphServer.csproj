@@ -3,6 +3,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latestmajor</LangVersion>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </PropertyGroup>
@@ -63,5 +64,12 @@
         <ProjectReference Include=".solutions\ObjectPacketTools\ObjectPacketTools.csproj"/>
         <ProjectReference Include=".solutions\SphereHelpers\SphereHelpers.csproj"/>
         <ProjectReference Include=".solutions\SphObjectDb\SphObjectDb.csproj"/>
+    </ItemGroup>
+
+    <!-- Tools are separate console projects; exclude their sources + generated obj/bin from the main Godot project. -->
+    <ItemGroup>
+        <Compile Remove="Tools\**\*.cs"/>
+        <Compile Remove="Tools\**\obj\**\*.cs"/>
+        <Compile Remove="Tools\**\bin\**\*.cs"/>
     </ItemGroup>
 </Project>
