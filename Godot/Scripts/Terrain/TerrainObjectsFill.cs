@@ -45,13 +45,25 @@ public partial class TerrainObjectsFill : Node3D
 		var other = GetOrCreateCategory(OtherNodeName);
 		var terrainObjects = GetOrCreateCategory(ExtraInstancedGroupsRootName);
 
+		// Ensure these roots are owned by the edited scene root, otherwise editor-created children can show up
+		// with auto-generated "@Class@id" labels even when Name is assigned.
+		if (Engine.IsEditorHint())
+		{
+			var sceneOwner = GetTree()?.EditedSceneRoot ?? Owner ?? this;
+			plants.Owner = sceneOwner;
+			rocks.Owner = sceneOwner;
+			other.Owner = sceneOwner;
+			terrainObjects.Owner = sceneOwner;
+		}
+
 		ClearChildren(plants);
 		ClearChildren(rocks);
 		ClearChildren(other);
 		ClearChildren(terrainObjects);
 
-		// (category root, Mesh) -> instance transforms (world * mesh-local)
-		var batches = new Dictionary<(Node3D Category, Mesh Mesh), List<Transform3D>>(new MeshBatchKeyComparer());
+		// (category root, source object name, Mesh) -> instance placements (world * mesh-local)
+		// We keep ObjectName so MultiMesh nodes can be named after their source object.
+		var batches = new Dictionary<(Node3D Category, string ObjectName, Mesh Mesh), List<InstancePlacement>>(new MeshBatchKeyComparer());
 		var meshPartsCache = new Dictionary<string, List<MeshPart>?>();
 
 		var da = DirAccess.Open(dir);
@@ -95,36 +107,83 @@ public partial class TerrainObjectsFill : Node3D
 		da.ListDirEnd();
 		da.Dispose();
 
-		var mmIndex = 0;
+		var nextIndexByCategoryAndObjectName = new Dictionary<(ulong CategoryId, string ObjectName), int>();
 		foreach (var kv in batches)
 		{
-			var (category, mesh) = kv.Key;
-			var transforms = kv.Value;
-			if (transforms.Count == 0)
+			var (category, objectName, mesh) = kv.Key;
+			var placements = kv.Value;
+			if (placements.Count == 0)
 			{
 				continue;
 			}
 
-			var mm = new MultiMesh
-			{
-				TransformFormat = MultiMesh.TransformFormatEnum.Transform3D,
-				Mesh = mesh,
-				InstanceCount = transforms.Count,
-			};
+			// Godot requires InstanceCount == 0 when changing TransformFormat / UseCustomData.
+			// Avoid object initializers here because property set order can vary and trigger editor errors on load.
+			var mm = new MultiMesh();
+			mm.Mesh = mesh;
+			mm.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
+			mm.UseCustomData = true;
+			mm.InstanceCount = placements.Count;
 
-			for (var i = 0; i < transforms.Count; i++)
+			for (var i = 0; i < placements.Count; i++)
 			{
-				mm.SetInstanceTransform(i, transforms[i]);
+				var p = placements[i];
+				mm.SetInstanceTransform(i, p.Transform);
+				// Encode source record index (up to 24-bit) into RGB (0..1) so editor tools can map an instance back to JSON record.
+				var idx = p.SourceRecordIndex;
+				var r = (idx & 0xFF) / 255f;
+				var g = ((idx >> 8) & 0xFF) / 255f;
+				var b = ((idx >> 16) & 0xFF) / 255f;
+				mm.SetInstanceCustomData(i, new Color(r, g, b, 0f));
 			}
 
+			var indexKey = (category.GetInstanceId(), objectName);
+			if (!nextIndexByCategoryAndObjectName.TryGetValue(indexKey, out var objectIndex))
+			{
+				objectIndex = 0;
+			}
+
+			var safeObjectName = SanitizeGodotNodeName(objectName);
 			var mmi = new MultiMeshInstance3D
 			{
-				Name = $"TerrainMM_{mmIndex++}",
+				Name = $"{safeObjectName}_MM_{objectIndex}",
 				Multimesh = mm,
 			};
+			nextIndexByCategoryAndObjectName[indexKey] = objectIndex + 1;
 			category.AddChild(mmi);
 			SetOwnerIfEditor(mmi);
+
+			// Some editor contexts may still auto-name on add; re-assign after parenting to be safe.
+			mmi.Name = $"{safeObjectName}_MM_{objectIndex}";
 		}
+	}
+
+	private static string SanitizeGodotNodeName(string name)
+	{
+		if (string.IsNullOrWhiteSpace(name))
+		{
+			return "Object";
+		}
+
+		// Godot node names are strings but certain characters can lead to confusing paths or invalid NodePaths.
+		// Keep common filename-ish characters; replace everything else with '_'.
+		var chars = name.Trim().ToCharArray();
+		for (var i = 0; i < chars.Length; i++)
+		{
+			var c = chars[i];
+			var ok =
+				(c >= 'a' && c <= 'z')
+				|| (c >= 'A' && c <= 'Z')
+				|| (c >= '0' && c <= '9')
+				|| c is '_' or '-' or '.';
+			if (!ok)
+			{
+				chars[i] = '_';
+			}
+		}
+
+		var sanitized = new string(chars);
+		return sanitized.Length == 0 ? "Object" : sanitized;
 	}
 
 	private void ProcessJsonForBatches(
@@ -132,7 +191,7 @@ public partial class TerrainObjectsFill : Node3D
 		Node3D plants,
 		Node3D rocks,
 		Node3D other,
-		Dictionary<(Node3D Category, Mesh Mesh), List<Transform3D>> batches,
+		Dictionary<(Node3D Category, string ObjectName, Mesh Mesh), List<InstancePlacement>> batches,
 		Dictionary<string, List<MeshPart>?> meshPartsCache)
 	{
 		var jsonText = global::Godot.FileAccess.GetFileAsString(path);
@@ -158,8 +217,9 @@ public partial class TerrainObjectsFill : Node3D
 			return;
 		}
 
-		foreach (var rec in records)
+		for (var recIndex = 0; recIndex < records.Count; recIndex++)
 		{
+			var rec = records[recIndex];
 			if (string.IsNullOrWhiteSpace(rec.ObjectName))
 			{
 				continue;
@@ -210,16 +270,28 @@ public partial class TerrainObjectsFill : Node3D
 
 			foreach (var part in parts)
 			{
-				var key = (parent, part.Mesh);
+				var key = (parent, rec.ObjectName, part.Mesh);
 				if (!batches.TryGetValue(key, out var list))
 				{
-					list = new List<Transform3D>();
+					list = new List<InstancePlacement>();
 					batches[key] = list;
 				}
 
-				list.Add(world * part.LocalToRoot);
+				list.Add(new InstancePlacement(world * part.LocalToRoot, recIndex));
 			}
 		}
+	}
+
+	private readonly struct InstancePlacement
+	{
+		public InstancePlacement(Transform3D transform, int sourceRecordIndex)
+		{
+			Transform = transform;
+			SourceRecordIndex = sourceRecordIndex;
+		}
+
+		public Transform3D Transform { get; }
+		public int SourceRecordIndex { get; }
 	}
 
 	private void ProcessJsonFolderAsDirectInstances(string folderPath, string folderName, Node3D terrainObjectsRoot)
@@ -320,13 +392,15 @@ public partial class TerrainObjectsFill : Node3D
 	}
 
 	/// <summary>Reference-equality for <see cref="Mesh"/> so batches merge identical resources.</summary>
-	private sealed class MeshBatchKeyComparer : IEqualityComparer<(Node3D Category, Mesh Mesh)>
+	private sealed class MeshBatchKeyComparer : IEqualityComparer<(Node3D Category, string ObjectName, Mesh Mesh)>
 	{
-		public bool Equals((Node3D Category, Mesh Mesh) x, (Node3D Category, Mesh Mesh) y) =>
-			ReferenceEquals(x.Category, y.Category) && ReferenceEquals(x.Mesh, y.Mesh);
+		public bool Equals((Node3D Category, string ObjectName, Mesh Mesh) x, (Node3D Category, string ObjectName, Mesh Mesh) y) =>
+			ReferenceEquals(x.Category, y.Category)
+			&& string.Equals(x.ObjectName, y.ObjectName, StringComparison.Ordinal)
+			&& ReferenceEquals(x.Mesh, y.Mesh);
 
-		public int GetHashCode((Node3D Category, Mesh Mesh) obj) =>
-			HashCode.Combine(obj.Category.GetInstanceId(), obj.Mesh.GetInstanceId());
+		public int GetHashCode((Node3D Category, string ObjectName, Mesh Mesh) obj) =>
+			HashCode.Combine(obj.Category.GetInstanceId(), obj.ObjectName, obj.Mesh.GetInstanceId());
 	}
 
 	private static List<MeshPart>? ExtractMeshParts(PackedScene scene)
@@ -462,8 +536,10 @@ public partial class TerrainObjectsFill : Node3D
 			return;
 		}
 
-		var root = GetTree()?.EditedSceneRoot;
-		node.Owner = root ?? this;
+		// Nodes only show up properly in the Scene dock / get saved if their Owner is the edited scene root.
+		// `EditedSceneRoot` can be null in some editor tool execution contexts, so fall back to this node's owner chain.
+		var root = GetTree()?.EditedSceneRoot ?? Owner ?? this;
+		node.Owner = root;
 	}
 
 	/// <summary>

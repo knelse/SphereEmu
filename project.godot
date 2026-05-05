@@ -30,6 +30,10 @@ window/size/initial_position=Vector2i(1600, 300)
 
 project/assembly_name="SphServer"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/MultiMeshPicker/plugin.cfg")
+
 [filesystem]
 
 import/fbx/enabled=false
