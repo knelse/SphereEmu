@@ -12,16 +12,15 @@ namespace SphServer.Server;
 // ReSharper disable once ClassNeverInstantiated.Global
 public partial class SphereServer : Node
 {
-	private static int playerCount;
 	private static TcpServer tcpServer = null!;
 
 	private static readonly PackedScene ClientScene =
-		(PackedScene) ResourceLoader.Load("res://Godot/Scenes/Client.tscn");
+		(PackedScene)ResourceLoader.Load("res://Godot/Scenes/Client.tscn");
 
 	public static SphereServer ServerNode = null!;
 	private ConnectionHandler connectionHandler = null!;
 
-	public override void _Ready ()
+	public override void _Ready()
 	{
 		SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
 		SphLogger.Info("Starting SphServer...");
@@ -36,7 +35,7 @@ public partial class SphereServer : Node
 		SphLogger.Info("Server up, waiting for connections...");
 	}
 
-	public override void _Process (double delta)
+	public override void _Process(double delta)
 	{
 		if (!tcpServer.IsConnectionAvailable())
 		{
@@ -48,12 +47,12 @@ public partial class SphereServer : Node
 		connectionHandler.Handle(streamPeer);
 	}
 
-	private static void InitializeCollections ()
+	private static void InitializeCollections()
 	{
 		DbConnection.Initialize(ServerConfig.AppConfig);
 	}
 
-	private static void SetupTcpServer ()
+	private static void SetupTcpServer()
 	{
 		var port = ServerConfig.AppConfig.Port;
 

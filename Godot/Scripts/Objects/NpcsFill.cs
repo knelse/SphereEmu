@@ -62,10 +62,10 @@ public partial class NpcsFill : Node3D
 		{
 			stats.RowsConsidered++;
 
-			if (parts.Length < 13)
+			if (parts.Length < 8)
 			{
 				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: expected ≥13 columns, got {parts.Length}. Skipping.");
+				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: expected ≥8 columns, got {parts.Length}. Skipping.");
 				continue;
 			}
 
@@ -106,20 +106,20 @@ public partial class NpcsFill : Node3D
 				continue;
 			}
 
-			if (!int.TryParse(parts[12].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var npcTypeRaw))
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad NpcType '{parts[12]}'. Skipping.");
-				continue;
-			}
-
 			var displayName = ResolveDisplayName(rnmsLines, nameId);
 			var nodeNameBase = $"NPC_{id.ToString(CultureInfo.InvariantCulture)}_{StripLeadingNpcPrefixes(displayName)}";
 			nodeNameBase = CollapseDuplicateNpcPrefix(nodeNameBase);
 			var nodeName = MakeUniqueNodeName(SanitizeNodeName(nodeNameBase), usedNames);
 
-			var modelName = (parts[9] ?? string.Empty).Trim();
-			var iconName = (parts[11] ?? string.Empty).Trim();
+			var modelName = parts.Length > 9 ? (parts[9] ?? string.Empty).Trim() : string.Empty;
+			var iconName = parts.Length > 11 ? (parts[11] ?? string.Empty).Trim() : string.Empty;
+			var npcTypeRaw = 0;
+			if (parts.Length > 12
+				&& !int.TryParse(parts[12].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out npcTypeRaw))
+			{
+				npcTypeRaw = 0;
+			}
+
 			var npcType = (NpcType)npcTypeRaw;
 
 			ApplyNpcTypeFixups(objectType, ref modelName, ref iconName, ref npcType);
