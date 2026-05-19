@@ -238,7 +238,7 @@ public partial class DoorsFill : Node3D
 				continue;
 			}
 
-			if (!TryParseId(parts[0].Trim(), out var id) || id < 100)
+			if (!TryParseId(parts[0].Trim(), out var id))
 			{
 				stats.ParseErrors++;
 				GD.PushWarning($"DoorsFill: door_exits.txt line {lineNumber}: bad ID '{parts[0]}', skipping");

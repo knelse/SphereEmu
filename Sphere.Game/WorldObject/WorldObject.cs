@@ -490,42 +490,17 @@ public partial class WorldObject : Node3D
 		return DefaultModelNameForVisual;
 	}
 
-	/// <summary>
-	///     Resolves the map by enum; also matches by underlying <see cref="ushort" /> so packed-scene instance values
-	///     still line up if Godot's enum binding is off by member name.
-	/// </summary>
 	private static bool TryGetMappedModelName(ObjectType objectType, out string modelName)
 	{
 		modelName = string.Empty;
-		if (ObjectTypeToModelNameMap.Map.TryGetValue(objectType, out var mapped))
+		var mapped = ObjectTypeToModelNameMap.Get(objectType).Trim();
+		if (string.IsNullOrEmpty(mapped))
 		{
-			var m = mapped?.Trim() ?? string.Empty;
-			if (!string.IsNullOrEmpty(m))
-			{
-				modelName = m;
-				return true;
-			}
-		}
-
-		var raw = (ushort)objectType;
-		foreach (var kv in ObjectTypeToModelNameMap.Map)
-		{
-			if ((ushort)kv.Key != raw)
-			{
-				continue;
-			}
-
-			var m = kv.Value?.Trim() ?? string.Empty;
-			if (!string.IsNullOrEmpty(m))
-			{
-				modelName = m;
-				return true;
-			}
-
 			return false;
 		}
 
-		return false;
+		modelName = mapped;
+		return true;
 	}
 
 	/// <summary>GLB scenes usually root at <see cref="Node3D" />; otherwise wrap in a <see cref="Node3D" />.</summary>
