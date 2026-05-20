@@ -180,6 +180,15 @@ internal static class PacketAnalyzer
         return ClientPacketHideRules.Any(ruleFunc => ruleFunc(content));
     }
 
+    internal static void RefreshHiddenByDefaultFlags(StoredPacket storedPacket)
+    {
+        storedPacket.HiddenByDefaultClient = storedPacket.Source == PacketSource.CLIENT
+            && ShouldBeHiddenByDefaultClient(storedPacket);
+        storedPacket.HiddenByDefaultServer = storedPacket.Source == PacketSource.SERVER
+            && ShouldBeHiddenByDefaultServer(storedPacket);
+        storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
+    }
+
     public static bool IsClientPingPacket(StoredPacket storedPacket)
     {
         return storedPacket.Source == PacketSource.CLIENT && storedPacket.ContentBytes[0] == 0x26;
@@ -608,7 +617,16 @@ internal static class PacketAnalyzer
 
         if (shouldHidePacket)
         {
-            storedPacket.HiddenByDefault = true;
+            if (storedPacket.Source == PacketSource.SERVER)
+            {
+                storedPacket.HiddenByDefaultServer = true;
+            }
+            else if (storedPacket.Source == PacketSource.CLIENT)
+            {
+                storedPacket.HiddenByDefaultClient = true;
+            }
+
+            storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
         }
 
         AddPacketPartAnalyzeData(storedPacket);

@@ -73,6 +73,16 @@ public partial class TrackXpDialog : Window
             _degreeXpEdited = true;
         };
 
+        TitleXpTextBox.TextChanged += (_, _) =>
+        {
+            if (_isInitializing)
+            {
+                return;
+            }
+
+            _titleXpEdited = true;
+        };
+
         _isInitializing = false;
     }
 

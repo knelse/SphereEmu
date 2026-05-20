@@ -36,6 +36,15 @@ public class PacketCapture : IDisposable
 
     internal short ClientId;
 
+    /// <summary>
+    /// Observed local ephemeral TCP port for the session whose remote side uses TCP port 25860.
+    /// Server→client packets arrive at this port on the PC running the game client.
+    /// </summary>
+    private int _observedLocalClientTcpPort;
+
+    /// <summary>0 until at least one matching TCP segment is captured.</summary>
+    internal int ObservedLocalClientTcpPort => Volatile.Read(ref _observedLocalClientTcpPort);
+
     public Action<List<StoredPacket>, bool> OnPacketProcessed;
 
     public PacketCapture(string macAddress)
@@ -79,16 +88,26 @@ public class PacketCapture : IDisposable
                 return;
             }
 
-            if (!sphereLiveServers.Contains(ipPacket.DestinationAddress) &&
-                !sphereLiveServers.Contains(ipPacket.SourceAddress))
+            if (!IsSphereCaptureScopeIp(ipPacket))
             {
                 return;
             }
 
             var tcpPacket = packet.Extract<TcpPacket>();
+            if (tcpPacket is null)
+            {
+                return;
+            }
 
-            if (tcpPacket?.PayloadData is null
-                || (tcpPacket.DestinationPort != sphereLiveServerPort && tcpPacket.SourcePort != sphereLiveServerPort))
+            if (tcpPacket.DestinationPort != sphereLiveServerPort && tcpPacket.SourcePort != sphereLiveServerPort)
+            {
+                return;
+            }
+
+            ObserveLocalClientTcpPort(tcpPacket);
+
+            var payload = tcpPacket.PayloadData;
+            if (payload is null || payload.Length == 0)
             {
                 return;
             }
@@ -98,12 +117,12 @@ public class PacketCapture : IDisposable
             if (!tcpPacket.Push)
             {
                 // ack
-                packetDataQueue.AddRange(tcpPacket.PayloadData);
+                packetDataQueue.AddRange(payload);
             }
             else
             {
                 // psh + ack
-                packetDataQueue.AddRange(tcpPacket.PayloadData);
+                packetDataQueue.AddRange(payload);
                 var combinedPacket = packetDataQueue.ToArray();
                 packetDataQueue.Clear();
                 SchedulePacketProcessing(combinedPacket, source, rawCapture.Timeval.Date);
@@ -113,6 +132,34 @@ public class PacketCapture : IDisposable
         {
             ConsoleExtensions.WriteException(ex);
         }
+    }
+
+    private bool IsSphereCaptureScopeIp(IPPacket ipPacket)
+    {
+        if (sphereLiveServers.Contains(ipPacket.DestinationAddress) ||
+            sphereLiveServers.Contains(ipPacket.SourceAddress))
+        {
+            return true;
+        }
+
+        return IPAddress.IsLoopback(ipPacket.SourceAddress) ||
+               IPAddress.IsLoopback(ipPacket.DestinationAddress);
+    }
+
+    /// <summary>
+    /// Local side of the client↔server (25860) TCP connection — the port packets from the server are addressed to.
+    /// </summary>
+    private void ObserveLocalClientTcpPort(TcpPacket tcpPacket)
+    {
+        var localPort = tcpPacket.DestinationPort == sphereLiveServerPort
+            ? tcpPacket.SourcePort
+            : tcpPacket.DestinationPort;
+        if (localPort == sphereLiveServerPort)
+        {
+            return;
+        }
+
+        Interlocked.Exchange(ref _observedLocalClientTcpPort, (int)localPort);
     }
 
     private void SchedulePacketProcessing(byte[] data, PacketSource source, DateTime arrivalTime,
@@ -262,9 +309,7 @@ public class PacketCapture : IDisposable
                 Timestamp = packetRawData.ArrivalTime,
                 NumberInSequence = index
             };
-            storedPacket.HiddenByDefaultClient = PacketAnalyzer.ShouldBeHiddenByDefaultClient(storedPacket);
-            storedPacket.HiddenByDefaultServer = PacketAnalyzer.ShouldBeHiddenByDefaultServer(storedPacket);
-            storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
+            PacketAnalyzer.RefreshHiddenByDefaultFlags(storedPacket);
             storedPackets.Add(storedPacket);
         }
 

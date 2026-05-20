@@ -4,7 +4,12 @@
     "MacAddress": "345A6048EBF0",
     "OutputFolder": "d:\\SphereDev\\_sphereDumps",
     "StartWidth": 3024,
-    "StartHeight": 1440
+    "StartHeight": 1440,
+    "MitmProxyEnabled": false,
+    "MitmProxyListenAddress": "127.0.0.1",
+    "MitmProxyListenPort": 25861,
+    "MitmProxyUpstreamHost": "77.223.107.68",
+    "MitmProxyUpstreamPort": 25860
   },
   "ConnectionStrings": {
     "LiteDbPacketCollection": "Filename=d:\\SphereDev\\_sphereStuff\\sph_packets.db;Connection=shared;"

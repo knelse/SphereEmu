@@ -6,16 +6,24 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="70" />
             <ColumnDefinition Width="210" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="500" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="900" />
         </Grid.ColumnDefinitions>
+
+        <Button x:Name="SettingsButton"
+                x:FieldModifier="public"
+                Grid.Column="0"
+                Padding="10 2">
+            Settings
+        </Button>
 
         <CheckBox x:Name="IsFavorite"
                   x:FieldModifier="public"
-                  Grid.Column="0"
+                  Grid.Column="1"
                   Margin="2 4 4 2"
                   Background="White"
                   Padding="2"
@@ -28,7 +36,7 @@
             Bookmark
         </CheckBox>
 
-        <Label Grid.Column="1"
+        <Label Grid.Column="2"
                VerticalAlignment="Center"
                FontFamily="Hack"
                FontSize="16"
@@ -42,7 +50,7 @@
 
         <TextBox x:Name="SearchInPacketTextBox"
                  x:FieldModifier="public"
-                 Grid.Column="2"
+                 Grid.Column="3"
                  Width="200"
                  Padding="2"
                  Margin="0 4 4 2"
@@ -55,15 +63,16 @@
 
         <Button x:Name="SearchAllVisibleButton"
                 x:FieldModifier="public"
-                Grid.Column="3"
+                Grid.Column="4"
                 Margin="0 4 4 2"
                 Padding="10 2"
                 VerticalAlignment="Center">
             [In all]
         </Button>
 
-        <Grid Grid.Column="4" Margin="100 4 4 2">
+        <Grid Grid.Column="5" Margin="100 4 4 2">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -72,16 +81,73 @@
             <Button x:Name="AddPacketButton"
                     x:FieldModifier="public"
                     Grid.Column="0"
+                    Margin="0 0 8 0"
                     Padding="10 2">
                 Add packet
             </Button>
 
-            <Button x:Name="SettingsButton"
-                    x:FieldModifier="public"
-                    Grid.Column="2"
-                    Padding="10 2">
-                Settings
-            </Button>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <Label VerticalAlignment="Center"
+                       FontFamily="Hack"
+                       FontSize="14"
+                       Padding="2"
+                       Content="X:" />
+                <TextBox x:Name="TeleportXTextBox"
+                         x:FieldModifier="public"
+                         Width="72"
+                         Margin="0 0 8 0"
+                         VerticalAlignment="Center"
+                         FontFamily="Hack"
+                         FontSize="14"
+                         Text="0" />
+                <Label VerticalAlignment="Center"
+                       FontFamily="Hack"
+                       FontSize="14"
+                       Padding="2"
+                       Content="Y:" />
+                <TextBox x:Name="TeleportYTextBox"
+                         x:FieldModifier="public"
+                         Width="72"
+                         Margin="0 0 8 0"
+                         VerticalAlignment="Center"
+                         FontFamily="Hack"
+                         FontSize="14"
+                         Text="150" />
+                <Label VerticalAlignment="Center"
+                       FontFamily="Hack"
+                       FontSize="14"
+                       Padding="2"
+                       Content="Z:" />
+                <TextBox x:Name="TeleportZTextBox"
+                         x:FieldModifier="public"
+                         Width="72"
+                         Margin="0 0 8 0"
+                         VerticalAlignment="Center"
+                         FontFamily="Hack"
+                         FontSize="14"
+                         Text="0" />
+                <Label VerticalAlignment="Center"
+                       FontFamily="Hack"
+                       FontSize="14"
+                       Padding="2"
+                       Content="T:" />
+                <TextBox x:Name="TeleportTTextBox"
+                         x:FieldModifier="public"
+                         Width="72"
+                         Margin="0 0 8 0"
+                         VerticalAlignment="Center"
+                         FontFamily="Hack"
+                         FontSize="14"
+                         Text="0" />
+                <Button x:Name="TeleportGoButton"
+                        x:FieldModifier="public"
+                        Padding="12 2"
+                        VerticalAlignment="Center">
+                    GO
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

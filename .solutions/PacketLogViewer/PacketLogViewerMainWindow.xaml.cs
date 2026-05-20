@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -52,6 +55,8 @@ public partial class PacketLogViewerMainWindow
     private readonly List<string> DefinedEnumNames = new();
 
     public PacketCapture? PacketCapture;
+
+    private SphereMitmProxy? _mitmProxy;
     public static readonly ObservableCollection<PacketDefinition> PacketDefinitions = new();
 
     public static readonly ObservableCollection<PacketPart> PacketParts = new();
@@ -194,13 +199,9 @@ public partial class PacketLogViewerMainWindow
                     return false;
                 }
 
-                if (HideServerJunk)
+                if (HideServerJunk && p.Source == PacketSource.SERVER && p.HiddenByDefaultServer)
                 {
-                    var serverJunk = p.HiddenByDefaultServer || (p.Source == PacketSource.SERVER && p.HiddenByDefault);
-                    if (serverJunk)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
                 return true;
@@ -256,6 +257,7 @@ public partial class PacketLogViewerMainWindow
             MainView.PacketActionsBar.SearchInPacketTextBox.KeyUp += SearchInPacketTextBox_OnKeyUp;
             MainView.PacketActionsBar.SearchAllVisibleButton.Click += SearchAllVisibleButton_OnClick;
             MainView.PacketActionsBar.AddPacketButton.Click += AddPacketButton_OnClick;
+            MainView.PacketActionsBar.TeleportGoButton.Click += TeleportGoButton_OnClick;
             MainView.PacketActionsBar.SettingsButton.Click += SettingsButton_OnClick;
 
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectionChanged += DefinedPacketsListBox_OnSelectionChanged;
@@ -290,13 +292,50 @@ public partial class PacketLogViewerMainWindow
             _entityRadarRefreshTimer.Tick += (_, _) => RefreshEntityRadar();
             _entityRadarRefreshTimer.Start();
             Closed += (_, _) => _entityRadarRefreshTimer?.Stop();
+            Closed += (_, _) =>
+            {
+                _mitmProxy?.Dispose();
+                _mitmProxy = null;
+            };
             Closed += (_, _) => PacketCapture?.Dispose();
+
+            TryStartMitmProxy();
 
             ScrollIntoViewIfSelectionExists();
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Exception: {ex.Message}");
+        }
+    }
+
+    private void TryStartMitmProxy()
+    {
+        var settings = AppConfig.GetSection("Settings");
+        if (!settings.GetValue("MitmProxyEnabled", false))
+        {
+            return;
+        }
+
+        try
+        {
+            var listenAddr = settings.GetValue<string>("MitmProxyListenAddress") ?? "127.0.0.1";
+            var listenPort = settings.GetValue<int?>("MitmProxyListenPort") ?? 25861;
+            var upstreamHost = settings.GetValue<string>("MitmProxyUpstreamHost") ?? "77.223.107.68";
+            var upstreamPort = settings.GetValue<int?>("MitmProxyUpstreamPort") ?? 25860;
+
+            _mitmProxy = new SphereMitmProxy(listenAddr, listenPort, upstreamHost, upstreamPort);
+            _mitmProxy.Start();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this,
+                $"MITM proxy could not start: {ex.Message}\n\nDisable MitmProxyEnabled or fix MitmProxyListenAddress / MitmProxyListenPort in appconfig.json.",
+                "MITM proxy",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            _mitmProxy?.Dispose();
+            _mitmProxy = null;
         }
     }
 
@@ -390,7 +429,6 @@ public partial class PacketLogViewerMainWindow
             .Where(x => x != ObjectType.Unknown)
             .ToHashSet();
 
-        ClientStateObjectTypeFilter.Remove(ObjectType.MobSpawner);
         ClientStateObjectTypeFilter.Remove(ObjectType.Monster);
         ClientStateObjectTypeFilter.Remove(ObjectType.MonsterFlyer);
 
@@ -705,6 +743,10 @@ public partial class PacketLogViewerMainWindow
             {
                 packet = packet.UpdatePacketPartsForContent();
                 UpdateStoredPacket(packet);
+            }
+            else
+            {
+                PacketAnalyzer.RefreshHiddenByDefaultFlags(packet);
             }
 
             LogRecords.Add(packet);
@@ -2502,6 +2544,152 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
+    private void TeleportGoButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (!TryResolveTeleportClientIndex(out var clientIndex))
+        {
+            MessageBox.Show(this,
+                "No client ID available. Capture traffic until the Client ID field is filled, or ensure it shows a non-zero hex value.",
+                "Teleport",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        static bool TryParseCoord(string? s, out double v)
+        {
+            v = 0;
+            return !string.IsNullOrWhiteSpace(s) &&
+                   double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
+        }
+
+        var bar = MainView.PacketActionsBar;
+        if (!TryParseCoord(bar.TeleportXTextBox.Text, out var cx) ||
+            !TryParseCoord(bar.TeleportYTextBox.Text, out var cy) ||
+            !TryParseCoord(bar.TeleportZTextBox.Text, out var cz) ||
+            !TryParseCoord(bar.TeleportTTextBox.Text, out var ct))
+        {
+            MessageBox.Show(this, "Enter valid floating-point values for X, Y, Z, and T (use \".\" as decimal separator).",
+                "Teleport",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        var settings = AppConfig.GetSection("Settings");
+        var coords = new WorldCoords(cx, cy, cz, ct);
+        var packet = TeleportPacketBuilder.BuildTeleportPacket(clientIndex, coords);
+
+        if (settings.GetValue("MitmProxyEnabled", false))
+        {
+            if (_mitmProxy is null)
+            {
+                MessageBox.Show(this,
+                    "MitmProxyEnabled is true but the proxy did not start. Check appconfig.json listen settings and restart PacketLogViewer.",
+                    "Teleport",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_mitmProxy.TryInjectTowardClient(packet))
+            {
+                return;
+            }
+
+            MessageBox.Show(this,
+                $"No active connection through the MITM proxy. Configure the game client to connect to {_mitmProxy.ListenEndPoint} (see MitmProxyListenAddress / MitmProxyListenPort), then log in.",
+                "Teleport",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        var configuredListenPort = settings.GetValue<int?>("ClientInjectionPort");
+        var observedGamePort = PacketCapture?.ObservedLocalClientTcpPort ?? 0;
+
+        var injectionPort = configuredListenPort is > 0
+            ? configuredListenPort.Value
+            : observedGamePort;
+        if (injectionPort == 0)
+        {
+            MessageBox.Show(this,
+                "Set Settings.ClientInjectionPort in appconfig.json to the TCP port your injector listens on, " +
+                "or capture traffic so the game client local port is observed (used only if ClientInjectionPort is unset). " +
+                "Or enable MitmProxyEnabled and route the client through the built-in proxy.",
+                "Teleport",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        if (!TrySendInjectionPacketToLoopback(injectionPort, packet, out var lastEx))
+        {
+            var src = configuredListenPort is > 0
+                ? "appconfig ClientInjectionPort (injector listen port)"
+                : "captured game client local port";
+
+            var refusedHint = lastEx is SocketException { SocketErrorCode: SocketError.ConnectionRefused }
+                ? "\n\nNothing accepted an inbound TCP connection on that port. " +
+                  "The port shown for the game in Task Manager is usually an outbound connection to the server, " +
+                  "not a listen socket—another process cannot connect to it. " +
+                  "Configure your injector to listen on a dedicated port, set ClientInjectionPort to that value, " +
+                  "and keep using capture only if your tool really expects that behavior.\n\n" +
+                  "This attempt tried both 127.0.0.1 and ::1."
+                : string.Empty;
+
+            MessageBox.Show(this,
+                $"Could not send teleport packet to loopback:{injectionPort} ({src}).\n{lastEx?.Message ?? "Unknown error"}{refusedHint}",
+                "Teleport",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+    }
+
+    private static bool TrySendInjectionPacketToLoopback(int port, byte[] packet, out Exception? lastEx)
+    {
+        lastEx = null;
+        foreach (var address in new[] { IPAddress.Loopback, IPAddress.IPv6Loopback })
+        {
+            try
+            {
+                using var tcp = new TcpClient();
+                tcp.NoDelay = true;
+                tcp.Connect(address, port);
+                var stream = tcp.GetStream();
+                stream.Write(packet, 0, packet.Length);
+                stream.Flush();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                lastEx = ex;
+            }
+        }
+
+        return false;
+    }
+
+    private bool TryResolveTeleportClientIndex(out ushort clientIndex)
+    {
+        clientIndex = 0;
+        var fromCapture = PacketCapture?.ClientId ?? 0;
+        if (fromCapture != 0)
+        {
+            clientIndex = unchecked((ushort)fromCapture);
+            return true;
+        }
+
+        var text = MainView.GameState.ClientId?.Text?.Trim();
+        if (string.IsNullOrEmpty(text))
+        {
+            return false;
+        }
+
+        return ushort.TryParse(text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out clientIndex) &&
+               clientIndex != 0;
+    }
+
     private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
     {
         var currentMac = AppConfig.GetSection("Settings").GetValue<string>("MacAddress");
@@ -2582,7 +2770,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var clientId = PacketCapture?.ClientId ?? (short)0;
+        var clientId = PacketCapture?.ClientId ?? 0;
         if (clientId == 0)
         {
             return;
@@ -2631,14 +2819,14 @@ public partial class PacketLogViewerMainWindow
 
         if (successDegree && newDegreeXp >= oldDegreeXp)
         {
-            earnedDegreeXp = (long)(newDegreeXp - oldDegreeXp);
+            earnedDegreeXp = newDegreeXp - oldDegreeXp;
         }
         else if (successDegree)
         {
             var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
             var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
             var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
-            earnedDegreeXp = (long)((ulong)xpToLevelUp - (ulong)oldDegreeXp + (ulong)newDegreeXp);
+            earnedDegreeXp = (long)(xpToLevelUp - (ulong)oldDegreeXp + (ulong)newDegreeXp);
 
             nextDegreeLevel += 1;
             if (nextDegreeLevel > 60)
@@ -2649,14 +2837,14 @@ public partial class PacketLogViewerMainWindow
         }
         else if (successTitle && newTitleXp >= oldTitleXp)
         {
-            earnedTitleXp = (long)(newTitleXp - oldTitleXp);
+            earnedTitleXp = newTitleXp - oldTitleXp;
         }
         else if (successTitle)
         {
             var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
             var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
             var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
-            earnedTitleXp = (long)((ulong)xpToLevelUp - (ulong)oldTitleXp + (ulong)newTitleXp);
+            earnedTitleXp = (long)(xpToLevelUp - (ulong)oldTitleXp + (ulong)newTitleXp);
 
             nextTitleLevel += 1;
             if (nextTitleLevel > 60)
