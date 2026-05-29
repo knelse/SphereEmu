@@ -32,7 +32,7 @@ public static class ObjectTypeToModelNameMap
 		ObjectType.ScrollRecipe => "st_paper",
 		ObjectType.Mission => "st_paper",
 		ObjectType.Dungeon => string.Empty,
-		ObjectType.CastleEntrance => string.Empty,
+		ObjectType.CastleEntrance => "EDOOR",
 		ObjectType.TokenIsland => "token",
 		ObjectType.TokenIslandGuest => "token",
 		ObjectType.TokenTutorialTorweal => "token",

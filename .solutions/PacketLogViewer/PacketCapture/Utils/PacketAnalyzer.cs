@@ -824,7 +824,7 @@ internal static class PacketAnalyzer
             if (castleTablet.ActionType == EntityActionType.FULL_SPAWN)
             {
                 var output =
-                    $"{castleTablet.Id:X4}\t{result.ObjectType}\t{castleTablet.ActionType}\t{castleTablet.X}\t{castleTablet.Y}\t{castleTablet.Z}\t{castleTablet.Angle}\t{(int)castleTablet.Castle}\t{castleTablet.ClanNameLength}\t{castleTablet.ClanName}\n";
+                    $"{castleTablet.Id:X4}\t{result.ObjectType}\t{castleTablet.ActionType}\t{castleTablet.X}\t{castleTablet.Y}\t{castleTablet.Z}\t{castleTablet.Angle}\t{(int)castleTablet.Castle}\n";
                 File.AppendAllText($@"{outputPath}\\castle_tablets.txt", output);
             }
         }
@@ -836,8 +836,20 @@ internal static class PacketAnalyzer
             if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
             {
                 var output =
-                    $"{castleGates.Id:X4}\t{result.ObjectType}\t{castleGates.ActionType}\t{castleGates.X}\t{castleGates.Y}\t{castleGates.Z}\t{castleGates.Angle}\t{(int)castleGates.Castle}\t{castleGates.ClanNameLength}\t{castleGates.ClanName}\n";
+                    $"{castleGates.Id:X4}\t{result.ObjectType}\t{castleGates.ActionType}\t{castleGates.X}\t{castleGates.Y}\t{castleGates.Z}\t{castleGates.Angle}\t{(int)castleGates.Castle}\n";
                 File.AppendAllText($@"{outputPath}\\castle_gates.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.CastleEntrance)
+        {
+            var castleEntrance = new CastleEntrance(subpacket);
+            result = castleEntrance;
+            if (castleEntrance.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{castleEntrance.Id:X4}\t{result.ObjectType}\t{castleEntrance.ActionType}\t{castleEntrance.X}\t{castleEntrance.Y}\t{castleEntrance.Z}\t{castleEntrance.Angle}\t{(int)castleEntrance.Castle}\n";
+                File.AppendAllText($@"{outputPath}\\castle_entrances.txt", output);
             }
         }
 

@@ -249,6 +249,15 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                     parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); }
                 );
             }
+
+            else if (message.StartsWith("cdoor"))
+            {
+                clientConnection.MaybeScheduleNetworkPacketSend(
+                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                DebugConsole.SendSpherePacket("/packet castle_entrance_aris",
+                    clientConnection.MaybeScheduleNetworkPacketSend
+                );
+            }
         }
         catch (Exception ex)
         {
