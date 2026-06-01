@@ -18,11 +18,13 @@ If that happens to you, dgVoodoo2 might help:
 ## Running the server
 
 1. Get and install prerequisities
-   1. .NET 8.0 SDK
-2. Download and build from source. 
+   1. .NET 9.0 SDK
+   2. Godot (4.6.1 Mono or higher)
+2. Download the repo
 3. Update appsettings.json for your setup.
-4. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
-5. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
-6. Next time, use those credentials or create a new user if you like
+4. Open project in Godot, build and run
+5. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
+6. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
+7. Next time, use those credentials or create a new user if you like
 
 Multiplayer is technically supported at this moment, but everything would act strangely
