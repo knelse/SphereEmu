@@ -1,10 +1,10 @@
-[gd_scene format=3 uid="uid://d1bpjdkoga6or"]
+[gd_scene format=3 uid="uid://dw11m0ivqf2h8"]
 
-[ext_resource type="Script" uid="uid://5bvmnv7jq2sn" path="res://Sphere.Game/WorldObject/DungeonEntrance.cs" id="1_6xjig"]
-[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_p5vy1"]
+[ext_resource type="Script" uid="uid://5bvmnv7jq2sn" path="res://Sphere.Game/WorldObject/DungeonEntrance.cs" id="1_mj11a"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_45o71"]
 
 [node name="DungeonEntrance" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
-script = ExtResource("1_6xjig")
+script = ExtResource("1_mj11a")
 
-[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_p5vy1")]
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_45o71")]

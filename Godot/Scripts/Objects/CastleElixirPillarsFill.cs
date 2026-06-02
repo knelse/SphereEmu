@@ -143,9 +143,13 @@ public partial class CastleElixirPillarsFill : Node3D
 				continue;
 			}
 
+			var localPos = new Vector3((float)x, -(float)y, -(float)z);
+			CastleTabletLookup.TryGetNearestCastle(this, ToGlobal(localPos), out var castle);
+
 			var instance = scene.Instantiate<CastleElixirPillar>();
-			instance.Name = $"CastleElixirPillar_{id:X4}";
-			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
+			instance.Name = $"CastleElixirPillar_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Position = localPos;
+			instance.Castle = castle;
 
 			instance.ModelName = PillarModelName;
 			instance.Angle = angleEncoded;

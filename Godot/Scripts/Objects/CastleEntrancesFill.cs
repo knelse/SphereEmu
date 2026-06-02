@@ -9,47 +9,47 @@ using SphServer.Sphere.Game.WorldObject;
 namespace SphServer.Godot.Scripts.Objects;
 
 /// <summary>
-/// Editor tool: reads tab-separated castle gates rows (ID, skip, skip, X, Y, Z, Angle, CastleID),
-/// clears existing children, and instances the scene from <see cref="CastleGateScenePath"/> per row.
+/// Editor tool: reads tab-separated castle entrances rows (ID, skip, skip, X, Y, Z, Angle, CastleID),
+/// clears existing children, and instances the scene from <see cref="CastleEntranceScenePath"/> per row.
 /// Source space matches terrain: <c>(x,y,z)_src ↦ (x,-y,-z)</c>; yaw matches WorldObject (<c>t0 = Angle * π / 128</c> radians on Y).
 /// Rows with duplicate source coordinates (same X, Y, Z columns) are skipped after the first occurrence.
 /// </summary>
 [Tool]
-public partial class CastleGatesFill : Node3D
+public partial class CastleEntrancesFill : Node3D
 {
 	[Export]
-	public string CastleGatesDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\castle_gates.txt";
+	public string CastleEntrancesDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\castle_entrances.txt";
 
 	[Export]
-	public string CastleGateScenePath { get; set; } = "res://Godot/Scenes/castle_gate.tscn";
+	public string CastleEntranceScenePath { get; set; } = "res://Godot/Scenes/castle_entrance.tscn";
 
-	[ExportToolButton("Rebuild castle gates")]
-	public Callable RebuildCastleGatesButton => Callable.From(RebuildCastleGates);
+	[ExportToolButton("Rebuild castle entrances")]
+	public Callable RebuildCastleEntrancesButton => Callable.From(RebuildCastleEntrances);
 
-	/// <summary>Clears child instances and repopulates from <see cref="CastleGatesDataFilePath"/>.</summary>
-	public void RebuildCastleGates()
+	/// <summary>Clears child instances and repopulates from <see cref="CastleEntrancesDataFilePath"/>.</summary>
+	public void RebuildCastleEntrances()
 	{
 		foreach (var child in GetChildren())
 		{
 			child.Free();
 		}
 
-		if (!ResourceLoader.Exists(CastleGateScenePath))
+		if (!ResourceLoader.Exists(CastleEntranceScenePath))
 		{
-			GD.PushError($"CastleGateFill: scene not found: {CastleGateScenePath}");
+			GD.PushError($"CastleEntranceFill: scene not found: {CastleEntranceScenePath}");
 			return;
 		}
 
-		var scene = ResourceLoader.Load<PackedScene>(CastleGateScenePath);
+		var scene = ResourceLoader.Load<PackedScene>(CastleEntranceScenePath);
 		if (scene is null)
 		{
-			GD.PushError($"CastleGateFill: could not load: {CastleGateScenePath}");
+			GD.PushError($"CastleEntranceFill: could not load: {CastleEntranceScenePath}");
 			return;
 		}
 
-		if (!global::Godot.FileAccess.FileExists(CastleGatesDataFilePath))
+		if (!global::Godot.FileAccess.FileExists(CastleEntrancesDataFilePath))
 		{
-			GD.PushError($"CastleGatesFill: file not found: {CastleGatesDataFilePath}");
+			GD.PushError($"CastleEntrancesFill: file not found: {CastleEntrancesDataFilePath}");
 			return;
 		}
 
@@ -58,17 +58,17 @@ public partial class CastleGatesFill : Node3D
 		{
 			// Godot's FileAccess.GetFileAsString() can behave unexpectedly with some encodings/dumps.
 			// Use .NET's reader first (works for absolute Windows paths), then fall back to Godot.
-			text = File.ReadAllText(CastleGatesDataFilePath);
+			text = File.ReadAllText(CastleEntrancesDataFilePath);
 		}
 		catch (Exception ex)
 		{
-			GD.PushWarning($"CastleGatesFill: File.ReadAllText failed ({ex.Message}), falling back to Godot FileAccess");
-			text = global::Godot.FileAccess.GetFileAsString(CastleGatesDataFilePath);
+			GD.PushWarning($"CastleEntrancesFill: File.ReadAllText failed ({ex.Message}), falling back to Godot FileAccess");
+			text = global::Godot.FileAccess.GetFileAsString(CastleEntrancesDataFilePath);
 		}
 
 		if (string.IsNullOrWhiteSpace(text))
 		{
-			GD.PushWarning($"CastleGatesFill: empty file: {CastleGatesDataFilePath}");
+			GD.PushWarning($"CastleEntrancesFill: empty file: {CastleEntrancesDataFilePath}");
 			return;
 		}
 
@@ -103,14 +103,14 @@ public partial class CastleGatesFill : Node3D
 			if (parts.Length < 8)
 			{
 				parseErrors++;
-				GD.PushWarning($"CastleGatesFill: line {lineNumber}: expected ≥8 columns, skipping");
+				GD.PushWarning($"CastleEntrancesFill: line {lineNumber}: expected ≥8 columns, skipping");
 				continue;
 			}
 
 			if (!TryParseId(parts[0].Trim(), out var id))
 			{
 				parseErrors++;
-				GD.PushWarning($"CastleGatesFill: line {lineNumber}: bad ID '{parts[0]}', skipping");
+				GD.PushWarning($"CastleEntrancesFill: line {lineNumber}: bad ID '{parts[0]}', skipping");
 				continue;
 			}
 
@@ -119,21 +119,21 @@ public partial class CastleGatesFill : Node3D
 				|| !TryParseDouble(parts[5], out var z))
 			{
 				parseErrors++;
-				GD.PushWarning($"CastleGatesFill: line {lineNumber}: bad X/Y/Z, skipping");
+				GD.PushWarning($"CastleEntrancesFill: line {lineNumber}: bad X/Y/Z, skipping");
 				continue;
 			}
 
 			if (!TryParseAngle(parts[6], out var angleEncoded))
 			{
 				parseErrors++;
-				GD.PushWarning($"CastleGatesFill: line {lineNumber}: bad Angle, skipping");
+				GD.PushWarning($"CastleEntrancesFill: line {lineNumber}: bad Angle, skipping");
 				continue;
 			}
 
 			if (!TryParseCastleId(parts[7], out var castle))
 			{
 				parseErrors++;
-				GD.PushWarning($"CastleGatesFill: line {lineNumber}: bad CastleID '{parts[7]}', skipping");
+				GD.PushWarning($"CastleEntrancesFill: line {lineNumber}: bad CastleID '{parts[7]}', skipping");
 				continue;
 			}
 
@@ -146,8 +146,8 @@ public partial class CastleGatesFill : Node3D
 				continue;
 			}
 
-			var instance = scene.Instantiate<CastleGate>();
-			instance.Name = $"CastleGate_{(int)castle:00}_{castle} _{id:X4}";
+			var instance = scene.Instantiate<CastleEntrance>();
+			instance.Name = $"CastleEntrance_{(int)castle:00}_{castle} _{id:X4}";
 			var pos = BuildPlacementPosition((float)x, (float)y, (float)z);
 
 			instance.Position = pos;
@@ -160,12 +160,12 @@ public partial class CastleGatesFill : Node3D
 		}
 
 		GD.Print(
-			$"CastleGatesFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, parseErrors={parseErrors}");
+			$"CastleEntrancesFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, parseErrors={parseErrors}");
 
 		if (duplicateRowsSkipped > 0)
 		{
 			GD.PushWarning(
-				$"CastleGatesFill: skipped {duplicateRowsSkipped} duplicate row(s) with the same source X, Y, Z");
+				$"CastleEntrancesFill: skipped {duplicateRowsSkipped} duplicate row(s) with the same source X, Y, Z");
 		}
 	}
 

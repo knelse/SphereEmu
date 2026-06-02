@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SphereHelpers.Extensions;
 using SphServer.Client;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -112,7 +109,7 @@ public class ConsoleCommandParser
         currentCharacterDbEntry.MDef = ushort.Parse(stats[13]);
         currentCharacterDbEntry.TitleMinusOne = ushort.Parse(stats[14]);
         currentCharacterDbEntry.DegreeMinusOne = ushort.Parse(stats[15]);
-        currentCharacterDbEntry.Karma = (KarmaTier) ushort.Parse(stats[16]);
+        currentCharacterDbEntry.Karma = (KarmaTypes) ushort.Parse(stats[16]);
         currentCharacterDbEntry.KarmaCount = ushort.Parse(stats[17]);
         currentCharacterDbEntry.TitleXP = uint.Parse(stats[18]);
         currentCharacterDbEntry.DegreeXP = uint.Parse(stats[19]);

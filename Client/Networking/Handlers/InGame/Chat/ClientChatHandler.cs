@@ -138,31 +138,31 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                     WorldCoords tpCoords;
                     if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Shipstone)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Шипстоун)];
                     }
                     else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Bangville)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Бангвиль)];
                     }
                     else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Torweal)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Торвил)];
                     }
                     else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Sunpool)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Санпул)];
                     }
                     else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][CityCenter][nameof (Umrad)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Умрад)];
                     }
                     else if (coords[1].Equals("ChoiceIsland", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][Other]["ChoiceIsland"];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][Other]["ChoiceIsland"];
                     }
                     else if (coords[1].Equals("Arena", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Hyperion][Other]["Arena"];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][Other]["Arena"];
                     }
                     else
                     {

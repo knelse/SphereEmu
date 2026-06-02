@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Godot;
+using SphServer.Helpers;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects;
@@ -16,6 +17,8 @@ namespace SphServer.Godot.Scripts.Objects;
 [Tool]
 public partial class CastleChestsFill : Node3D
 {
+	private const int BlackTowerChestId = 0x0C1D;
+
 	[Export]
 	public string CastleChestsDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\castle_chests.txt";
 
@@ -137,9 +140,21 @@ public partial class CastleChestsFill : Node3D
 				continue;
 			}
 
+			var localPos = new Vector3((float)x, -(float)y, -(float)z);
+			Castles castle;
+			if (IsBlackTowerChest(id, localPos))
+			{
+				castle = Castles.Черная_Башня;
+			}
+			else
+			{
+				CastleTabletLookup.TryGetNearestCastle(this, ToGlobal(localPos), out castle);
+			}
+
 			var instance = scene.Instantiate<CastleChest>();
-			instance.Name = $"CastleChest_{id:X4}";
-			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
+			instance.Name = $"CastleChest_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Position = localPos;
+			instance.Castle = castle;
 
 			instance.ModelName = ChestModelName;
 			instance.Angle = angleEncoded;
@@ -156,6 +171,15 @@ public partial class CastleChestsFill : Node3D
 		GD.Print(
 			$"CastleChestsFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, parseErrors={parseErrors}");
 	}
+
+	/// <summary>
+	/// Chest 0x0C1D at scene (~2100, -1700, 3112) belongs to Черная Башня, not the nearest Hyperion tablet.
+	/// </summary>
+	private static bool IsBlackTowerChest(int id, Vector3 localPos) =>
+		id == BlackTowerChestId
+		&& (int)localPos.X == 2100
+		&& (int)localPos.Y == -1700
+		&& (int)localPos.Z == 3112;
 
 	private static (long Qx, long Qy, long Qz) QuantizeSourcePosition(double x, double y, double z)
 	{

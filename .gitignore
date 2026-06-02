@@ -8,3 +8,4 @@ bin
 .mono
 logs
 sph.db
+sph-log.db

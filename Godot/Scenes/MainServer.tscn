@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://jecy1l185txr" path="res://Godot/Scenes/Monster.tscn" id="7_wg6ka"]
 [ext_resource type="Script" uid="uid://cuq7362rbruhh" path="res://Server/UI/ConnectedClients/ConnectedClientsPopupUI.cs" id="8_w4ogy"]
 [ext_resource type="PackedScene" uid="uid://id00aeux6mxl" path="res://Godot/Scenes/firework.tscn" id="9_36cky"]
-[ext_resource type="PackedScene" uid="uid://d1bpjdkoga6or" path="res://Godot/Scenes/dungeon_entrance.tscn" id="10_pt6yw"]
+[ext_resource type="PackedScene" uid="uid://d1bpjdkoga6or" path="res://Godot/Scenes/castle_entrance.tscn" id="10_pt6yw"]
 [ext_resource type="Script" uid="uid://dy0pj5pr1a" path="res://Godot/Scripts/Objects/MonsterSpawnersFill.cs" id="11_mspwn"]
 [ext_resource type="PackedScene" uid="uid://byemmdrth0vex" path="res://Godot/Scenes/monster_spawner.tscn" id="12_tf661"]
 [ext_resource type="Script" uid="uid://dkxh8kc158k6y" path="res://Godot/Scripts/Objects/CastleTeleportsFill.cs" id="13_ctfill"]
@@ -32,8 +32,15 @@
 [ext_resource type="PackedScene" uid="uid://o4gude0i3tkc" path="res://Godot/Scenes/castle_gate.tscn" id="16_y2u3u"]
 [ext_resource type="PackedScene" uid="uid://dtf6a6bgra1rg" path="res://Godot/Scenes/castle_tablet.tscn" id="17_6fo3i"]
 [ext_resource type="PackedScene" uid="uid://e5615sr7s3e4" path="res://Godot/Scenes/teleport_broken.tscn" id="19_uvs8x"]
+[ext_resource type="Script" uid="uid://begidsfrjsu3j" path="res://Sphere.Game/WorldObject/CastleChest.cs" id="26_uvs8x"]
+[ext_resource type="Script" uid="uid://b6m5ksn73gqh3" path="res://Sphere.Game/WorldObject/CastleElixirPillar.cs" id="29_uvs8x"]
+[ext_resource type="Script" uid="uid://btqg80h8yddra" path="res://Sphere.Game/WorldObject/CastleTablet.cs" id="32_6ft11"]
 [ext_resource type="PackedScene" uid="uid://tv03q7ii0iiy" path="res://Godot/Scenes/castle_teleport.tscn" id="33_xmlqq"]
+[ext_resource type="Script" uid="uid://4x65gyufdrlp" path="res://Godot/Scripts/Objects/CastleEntrancesFill.cs" id="34_juwvs"]
 [ext_resource type="PackedScene" uid="uid://d08bod7i4ssw7" path="res://Godot/Scenes/terrain_scene.scn" id="34_xmlqq"]
+[ext_resource type="Script" uid="uid://bcqblo81t7fww" path="res://Sphere.Game/WorldObject/CastleGate.cs" id="35_k80t8"]
+[ext_resource type="Script" uid="uid://ckmnswbumpyye" path="res://Sphere.Game/WorldObject/CastleTeleport.cs" id="38_7dxrl"]
+[ext_resource type="Script" uid="uid://c7hhmlwdgqdaa" path="res://Sphere.Game/WorldObject/CastleEntrance.cs" id="40_2jhn2"]
 
 [node name="MainServer" type="Node" unique_id=699851889]
 script = ExtResource("2")
@@ -41,7 +48,7 @@ script = ExtResource("2")
 [node name="Cats" type="Node3D" parent="." unique_id=523462454]
 
 [node name="Sunpool_1" parent="Cats" unique_id=1848040136 instance=ExtResource("7_wg6ka")]
-transform = Transform3D(0.098016605, 0, -0.99518114, 0, 1, 0, 0.99518114, 0, 0.098016605, 425.92, -153.43, 1301.68)
+transform = Transform3D(0.098016575, 0, -0.99518085, 0, 1, 0, 0.99518085, 0, 0.098016575, 425.92, -153.43, 1301.68)
 MonsterType = 87
 Angle = 196
 ObjectType = 210
@@ -15140,7 +15147,7 @@ ID = 2329
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0910_Target" parent="Doors" unique_id=635767885 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.97570175, 0, -0.21910115, 0, 1, 0, 0.21910115, 0, 0.97570175, -2413.7039, 361.13235, 1316.9642)
+transform = Transform3D(0.97570145, 0, -0.21910107, 0, 1, 0, 0.21910107, 0, 0.97570145, -2413.7039, 361.13235, 1316.9642)
 DoorID = 32767
 HasTarget = true
 TargetX = -2412.3872
@@ -16348,7 +16355,7 @@ ID = 1246
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_04DD_Target" parent="Doors" unique_id=1821562242 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9972901, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.9972901, 370.65607, -150.02463, 3650.0566)
+transform = Transform3D(0.9972898, 0, -0.07356455, 0, 1, 0, 0.07356455, 0, 0.9972898, 370.65607, -150.02463, 3650.0566)
 DoorID = 32767
 HasTarget = true
 TargetX = 370.97552
@@ -19287,7 +19294,7 @@ ID = 2357
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0934_Target" parent="Doors" unique_id=1642256404 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9987951, 0, -0.04906762, 0, 1, 0, 0.04906762, 0, 0.9987951, -3579.1753, 353.75314, 2094.146)
+transform = Transform3D(0.9987948, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.9987948, -3579.1753, 353.75314, 2094.146)
 DoorID = 32767
 HasTarget = true
 TargetX = -3577.9155
@@ -19320,7 +19327,7 @@ ID = 2354
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0931_Target" parent="Doors" unique_id=852016677 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.97570175, 0, -0.21910115, 0, 1, 0, 0.21910115, 0, 0.97570175, -3594.4595, 355.47232, 2075.294)
+transform = Transform3D(0.97570145, 0, -0.21910107, 0, 1, 0, 0.21910107, 0, 0.97570145, -3594.4595, 355.47232, 2075.294)
 DoorID = 32767
 HasTarget = true
 TargetX = -3593.2163
@@ -19822,7 +19829,7 @@ ID = 14685
 ModelName = "EDOOR"
 
 [node name="DoorExit_395C_Target" parent="Doors" unique_id=450656223 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 700.1985, -4472.141, -1319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 700.1985, -4472.141, -1319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 661.3933
@@ -19987,7 +19994,7 @@ ID = 48665
 ModelName = "EDOOR"
 
 [node name="DoorExit_CA37_Target" parent="Doors" unique_id=1069884140 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -1499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -1499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -20053,7 +20060,7 @@ ID = 48890
 ModelName = "EDOOR"
 
 [node name="DoorExit_BEB3_Target" parent="Doors" unique_id=377863508 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -2499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -2499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -2538.6067
@@ -20130,7 +20137,7 @@ ID = 45409
 ModelName = "EDOOR"
 
 [node name="DoorExit_9BFD_Target" parent="Doors" unique_id=577271886 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -3099.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -3099.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -3138.6067
@@ -20215,7 +20222,7 @@ ID = 16410
 ModelName = "EDOOR"
 
 [node name="DoorExit_4015_Target" parent="Doors" unique_id=1609226647 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 1900.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 1900.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -20270,7 +20277,7 @@ ID = 24540
 ModelName = "EDOOR"
 
 [node name="DoorExit_5FDB_Target" parent="Doors" unique_id=1969187146 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 1900.1985, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 1900.1985, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -20336,7 +20343,7 @@ ID = 37554
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11E_Target" parent="Doors" unique_id=438652159 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 500.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 500.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -20402,7 +20409,7 @@ ID = 11255
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F07_Target" parent="Doors" unique_id=413418766 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 2100.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 2100.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -20457,7 +20464,7 @@ ID = 31158
 ModelName = "EDOOR"
 
 [node name="DoorExit_701C_Target" parent="Doors" unique_id=1516562396 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 500.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 500.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -20577,7 +20584,7 @@ ID = 44464
 ModelName = "EDOOR"
 
 [node name="DoorExit_ADAF_Target" parent="Doors" unique_id=1456294474 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -3899.8015, -4472.141, -1519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -3899.8015, -4472.141, -1519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3938.6067
@@ -20654,7 +20661,7 @@ ID = 20066
 ModelName = "EDOOR"
 
 [node name="DoorExit_4E61_Target" parent="Doors" unique_id=1634617262 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 1100.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 1100.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1061.3933
@@ -20720,7 +20727,7 @@ ID = 12621
 ModelName = "EDOOR"
 
 [node name="DoorExit_3627_Target" parent="Doors" unique_id=806071941 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 500.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 500.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -20786,7 +20793,7 @@ ID = 3998
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F9D_Target" parent="Doors" unique_id=1185981376 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 900.1985, -4472.141, -3319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 900.1985, -4472.141, -3319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 861.3933
@@ -20863,7 +20870,7 @@ ID = 28280
 ModelName = "EDOOR"
 
 [node name="DoorExit_6F25_Target" parent="Doors" unique_id=416418835 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 3100.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 3100.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3061.3933
@@ -20918,7 +20925,7 @@ ID = 17116
 ModelName = "EDOOR"
 
 [node name="DoorExit_459B_Target" parent="Doors" unique_id=586773645 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 3500.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 3500.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3461.3933
@@ -20995,7 +21002,7 @@ ID = 44475
 ModelName = "EDOOR"
 
 [node name="DoorExit_AD62_Target" parent="Doors" unique_id=704572443 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -738.6067
@@ -21072,7 +21079,7 @@ ID = 43390
 ModelName = "EDOOR"
 
 [node name="DoorExit_A7D5_Target" parent="Doors" unique_id=1348281683 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -899.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -899.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -938.6067
@@ -21127,7 +21134,7 @@ ID = 27785
 ModelName = "EDOOR"
 
 [node name="DoorExit_6C8C_Target" parent="Doors" unique_id=385877995 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 2500.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 2500.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2461.3933
@@ -21214,7 +21221,7 @@ ID = 25865
 ModelName = "EDOOR"
 
 [node name="DoorExit_6507_Target" parent="Doors" unique_id=960311831 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 2100.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 2100.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -21280,7 +21287,7 @@ ID = 16777
 ModelName = "EDOOR"
 
 [node name="DoorExit_62DF_Target" parent="Doors" unique_id=759183184 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -2299.8015, -4472.141, -3519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -2299.8015, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -2338.6067
@@ -21346,7 +21353,7 @@ ID = 3749
 ModelName = "EDOOR"
 
 [node name="DoorExit_0EA1_Target" parent="Doors" unique_id=195032791 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -99.80151, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -99.80151, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -138.60669
@@ -21401,7 +21408,7 @@ ID = 55471
 ModelName = "EDOOR"
 
 [node name="DoorExit_F2BA_Target" parent="Doors" unique_id=1285964064 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -3699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -3699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3738.6067
@@ -21467,7 +21474,7 @@ ID = 57632
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11A_Target" parent="Doors" unique_id=816486204 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 261.3933
@@ -21511,7 +21518,7 @@ ID = 57568
 ModelName = "EDOOR"
 
 [node name="DoorExit_E0DE_Target" parent="Doors" unique_id=900495715 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -1899.8015, -4472.141, -2919.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -1899.8015, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1938.6067
@@ -21588,7 +21595,7 @@ ID = 40754
 ModelName = "EDOOR"
 
 [node name="DoorExit_9ED7_Target" parent="Doors" unique_id=1673216053 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, 3300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, 3300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3261.3933
@@ -21675,7 +21682,7 @@ ID = 59833
 ModelName = "EDOOR"
 
 [node name="DoorExit_E9C6_Target" parent="Doors" unique_id=725481798 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -1099.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -1099.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1138.6067
@@ -21762,7 +21769,7 @@ ID = 46339
 ModelName = "EDOOR"
 
 [node name="DoorExit_B502_Target" parent="Doors" unique_id=1622746575 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -1499.8015, -4472.141, -2119.2285)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -1499.8015, -4472.141, -2119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -22006,7 +22013,7 @@ ObjectType = 216
 ModelName = "npc80"
 
 [node name="NPC_4563_Райс_Корпс" parent="NPCs" unique_id=1732010041 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.098016895, 0, -0.9951841, 0, 1, 0, 0.9951841, 0, 0.098016895, 1717.7867, -159.393, 1688.2068)
+transform = Transform3D(0.098016866, 0, -0.9951838, 0, 1, 0, 0.9951838, 0, 0.098016866, 1717.7867, -159.393, 1688.2068)
 NameID = 4492
 IconName = "npc_guilder"
 NpcType = 16
@@ -22072,7 +22079,7 @@ ObjectType = 216
 ModelName = "npc07"
 
 [node name="NPC_4712_Крег_Наттер" parent="NPCs" unique_id=875496837 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.09801687, 0, -0.9951841, 0, 1, 0, 0.9951841, 0, -0.09801687, -3166.3767, 341.39468, 2499.7976)
+transform = Transform3D(-0.09801684, 0, -0.9951838, 0, 1, 0, 0.9951838, 0, -0.09801684, -3166.3767, 341.39468, 2499.7976)
 NameID = 4462
 IconName = "npc_guilder"
 NpcType = 16
@@ -22083,7 +22090,7 @@ ObjectType = 216
 ModelName = "npc08"
 
 [node name="NPC_4713_Тан_Катчер" parent="NPCs" unique_id=816589046 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.99879485, 0, -0.04906763, 0, 1, 0, 0.04906763, 0, -0.99879485, -2435.608, 336.08978, 1859.1884)
+transform = Transform3D(-0.99879456, 0, -0.049067616, 0, 1, 0, 0.049067616, 0, -0.99879456, -2435.608, 336.08978, 1859.1884)
 NameID = 4463
 IconName = "npc_guilder"
 NpcType = 16
@@ -23042,7 +23049,7 @@ ID = 5202
 ModelName = "npc29a"
 
 [node name="NPC_5203_Грифин_Той" parent="NPCs" unique_id=776985968 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9951841, 0, -0.09801697, 0, 1, 0, 0.09801697, 0, -0.9951841, 501.47156, -159.88086, 192.81662)
+transform = Transform3D(-0.9951838, 0, -0.09801694, 0, 1, 0, 0.09801694, 0, -0.9951838, 501.47156, -159.88086, 192.81662)
 NameID = 4159
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -23052,7 +23059,7 @@ ID = 5203
 ModelName = "npc29a"
 
 [node name="NPC_5204_Жан_Фале" parent="NPCs" unique_id=1349691918 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.9757015, 0, -0.21910109, 0, 1, 0, 0.21910109, 0, 0.9757015, 892.18494, -159.84016, 2959.981)
+transform = Transform3D(0.9757012, 0, -0.21910103, 0, 1, 0, 0.21910103, 0, 0.9757012, 892.18494, -159.84016, 2959.981)
 NameID = 4128
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -23132,7 +23139,7 @@ ID = 5211
 ModelName = "npc29b"
 
 [node name="NPC_5212_Бенедикт_Кельвин" parent="NPCs" unique_id=1279271477 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9951841, 0, -0.09801697, 0, 1, 0, 0.09801697, 0, -0.9951841, 262.39374, -159.00163, -950.9672)
+transform = Transform3D(-0.9951838, 0, -0.09801694, 0, 1, 0, 0.09801694, 0, -0.9951838, 262.39374, -159.00163, -950.9672)
 NameID = 4132
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -23446,7 +23453,7 @@ ID = 5245
 ModelName = "npc14a"
 
 [node name="NPC_5246_Магина_Ламандер" parent="NPCs" unique_id=870661465 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9757015, 0, -0.2191011, 0, 1, 0, 0.2191011, 0, -0.9757015, 2556.8867, -159.55754, -1317.191)
+transform = Transform3D(-0.9757012, 0, -0.21910104, 0, 1, 0, 0.21910104, 0, -0.9757012, 2556.8867, -159.55754, -1317.191)
 NameID = 4151
 IconName = "npc_trade_alchm"
 NpcType = 6
@@ -23743,7 +23750,7 @@ ID = 5329
 ModelName = "npc14b"
 
 [node name="NPC_5330_Ванесса_Ламаненкене" parent="NPCs" unique_id=602047078 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9757015, 0, -0.2191011, 0, 1, 0, 0.2191011, 0, -0.9757015, -3381.1453, 339.48645, 859.7418)
+transform = Transform3D(-0.9757012, 0, -0.21910104, 0, 1, 0, 0.21910104, 0, -0.9757012, -3381.1453, 339.48645, 859.7418)
 NameID = 4058
 NpcType = 9
 VendorItemTierMax = 15
@@ -24469,977 +24476,835 @@ transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 794.
 Angle = 192
 ID = 4573
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E7_[581]_[408]_[2997]" parent="DungeonEntrances" unique_id=496508066 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9495283, 0, -0.31368154, 0, 1, 0, 0.31368154, 0, 0.9495283, 581.70074, -408.66998, -2997.7314)
 Angle = 243
 ID = 4583
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CC_[1279]_[406]_[2964]" parent="DungeonEntrances" unique_id=1406279592 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, 1279.7072, -406.26047, -2964.9934)
 Angle = 255
 ID = 4556
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11EB_[1568]_[404]_[3747]" parent="DungeonEntrances" unique_id=1033484174 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1568.9945, -404.83878, -3747.995)
 Angle = 64
 ID = 4587
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E9_[2127]_[406]_[3762]" parent="DungeonEntrances" unique_id=1896918379 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.3368899, 0, -0.94154406, 0, 1, 0, 0.94154406, 0, 0.3368899, 2127.431, -406.85776, -3762.5137)
 Angle = 206
 ID = 4585
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D2_[2435]_[397]_[3100]" parent="DungeonEntrances" unique_id=723271855 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2435.0159, -397.99466, -3100.221)
 Angle = 64
 ID = 4562
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C4_[2048]_[406]_[3172]" parent="DungeonEntrances" unique_id=1615166488 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.47139677, 0, 0.88192123, 0, 1, 0, -0.88192123, 0, 0.47139677, 2048.9456, -406.9783, -3172.2534)
 Angle = 44
 ID = 4548
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D1_[2760]_[405]_[3579]" parent="DungeonEntrances" unique_id=915712993 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2760.6018, -405.60764, -3579.6367)
 Angle = 64
 ID = 4561
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C7_[2793]_[405]_[2815]" parent="DungeonEntrances" unique_id=5663097 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, 2793.698, -405.99695, -2815.6636)
 Angle = 255
 ID = 4551
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E0_[1942]_[408]_[2323]" parent="DungeonEntrances" unique_id=116253384 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 1942.9514, -408.45447, -2323.6948)
 Angle = 192
 ID = 4576
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11ED_[1063]_[408]_[2210]" parent="DungeonEntrances" unique_id=1960366543 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.40524107, 0, -0.9142098, 0, 1, 0, 0.9142098, 0, 0.40524107, 1063.5376, -408.64087, -2210.7239)
 Angle = 209
 ID = 4589
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11DF_[468]_[409]_[1682]" parent="DungeonEntrances" unique_id=840877467 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 468.82123, -409.49002, -1682.684)
 Angle = 192
 ID = 4575
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11EF_[-16]_[407]_[1579]" parent="DungeonEntrances" unique_id=507437120 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.8175848, 0, 0.57580817, 0, 1, 0, -0.57580817, 0, -0.8175848, -15.905613, -407.66788, -1579.6215)
 Angle = 103
 ID = 4591
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E8_[417]_[408]_[2311]" parent="DungeonEntrances" unique_id=2038525750 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.7572089, 0, -0.6531728, 0, 1, 0, 0.6531728, 0, 0.7572089, 417.8825, -408.14926, -2311.2405)
 Angle = 227
 ID = 4584
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E3_[-280]_[409]_[3700]" parent="DungeonEntrances" unique_id=1785268060 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -279.77917, -409.77783, -3700.7454)
 Angle = 64
 ID = 4579
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E6_[-667]_[406]_[3012]" parent="DungeonEntrances" unique_id=102777561 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -666.5536, -406.30057, -3012.7524)
 ID = 4582
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D3_[-515]_[400]_[2561]" parent="DungeonEntrances" unique_id=2075065477 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9329928, 0, -0.35989496, 0, 1, 0, 0.35989496, 0, 0.9329928, -514.6419, -400.77747, -2561.8813)
 Angle = 241
 ID = 4563
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C5_[-585]_[406]_[1798]" parent="DungeonEntrances" unique_id=956675948 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.024541255, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, 0.024541255, -584.28973, -406.20938, -1798.3612)
 Angle = 63
 ID = 4549
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D4_[-980]_[403]_[2273]" parent="DungeonEntrances" unique_id=1325194242 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.2902845, 0, -0.9569401, 0, 1, 0, 0.9569401, 0, 0.2902845, -979.6518, -403.9292, -2273.4517)
 Angle = 204
 ID = 4564
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D8_[-1463]_[400]_[2843]" parent="DungeonEntrances" unique_id=749503647 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.8448536, 0, 0.53499764, 0, 1, 0, -0.53499764, 0, 0.8448536, -1462.4878, -400.31577, -2843.6199)
 Angle = 23
 ID = 4568
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C6_[-1581]_[405]_[3059]" parent="DungeonEntrances" unique_id=440654617 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1580.464, -405.77798, -3059.146)
 Angle = 64
 ID = 4550
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11DC_[-1271]_[408]_[3386]" parent="DungeonEntrances" unique_id=1710364699 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1270.7041, -408.01898, -3386.6245)
 ID = 4572
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C8_[-1505]_[403]_[3788]" parent="DungeonEntrances" unique_id=1058184565 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1504.7542, -403.25266, -3788.2468)
 ID = 4552
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E2_[-2231]_[404]_[2969]" parent="DungeonEntrances" unique_id=1037096171 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2230.3142, -404.55206, -2969.416)
 ID = 4578
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D5_[-2241]_[407]_[2373]" parent="DungeonEntrances" unique_id=1273181817 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.8819213, 0, -0.4713965, 0, 1, 0, 0.4713965, 0, 0.8819213, -2240.6753, -407.92596, -2373.5557)
 Angle = 236
 ID = 4565
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11DB_[-1791]_[407]_[1791]" parent="DungeonEntrances" unique_id=1368773439 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1790.3359, -407.42923, -1791.7991)
 ID = 4571
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11E1_[-1688]_[408]_[1605]" parent="DungeonEntrances" unique_id=2032472902 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.96377605, 0, 0.26671275, 0, 1, 0, -0.26671275, 0, 0.96377605, -1687.4535, -408.5705, -1605.6475)
 Angle = 11
 ID = 4577
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CB_[-2422]_[404]_[1499]" parent="DungeonEntrances" unique_id=902106337 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.024541255, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, 0.024541255, -2421.405, -404.6294, -1499.5188)
 Angle = 63
 ID = 4555
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CF_[-3366]_[398]_[1898]" parent="DungeonEntrances" unique_id=560169930 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3365.1057, -398.1052, -1898.8771)
 Angle = 64
 ID = 4559
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D6_[-3224]_[399]_[2349]" parent="DungeonEntrances" unique_id=1426681370 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.94154406, 0, 0.33688983, 0, 1, 0, -0.33688983, 0, 0.94154406, -3223.3105, -399.48898, -2349.7388)
 Angle = 14
 ID = 4566
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CE_[-2975]_[404]_[2898]" parent="DungeonEntrances" unique_id=507660106 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.1467305, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, 0.1467305, -2974.4583, -404.42343, -2898.6638)
 Angle = 58
 ID = 4558
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119E_[365]_[157]_[-1333]" parent="DungeonEntrances" unique_id=610697976 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.6531728, 0, -0.75720865, 0, 1, 0, 0.75720865, 0, 0.6531728, 365.08685, -157.66412, 1332.73)
 Angle = 221
 ID = 4510
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11A1_[386]_[151]_[-1286]" parent="DungeonEntrances" unique_id=1778956022 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.671559, 0, 0.7409511, 0, 1, 0, -0.7409511, 0, 0.671559, 386.09506, -151.85301, 1285.593)
 Angle = 34
 ID = 4513
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119F_[422]_[151]_[-1321]" parent="DungeonEntrances" unique_id=380832958 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 422.27322, -151.58928, 1320.3986)
 Angle = 32
 ID = 4511
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11A0_[431]_[156]_[-1261]" parent="DungeonEntrances" unique_id=1980831534 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.7409511, 0, 0.671559, 0, 1, 0, -0.671559, 0, 0.7409511, 431.3876, -156.29085, 1260.2198)
 Angle = 30
 ID = 4512
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1205_[-2898]_[-347]_[-1278]" parent="DungeonEntrances" unique_id=2104489231 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -2897.5664, 346.50806, 1277.66)
 Angle = 1
 ID = 4613
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1207_[-2498]_[-342]_[-1269]" parent="DungeonEntrances" unique_id=1340084769 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.098017104, 0, 0.9951847, 0, 1, 0, -0.9951847, 0, -0.098017104, -2497.2378, 341.84488, 1268.294)
 Angle = 68
 ID = 4615
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1216_[-2227]_[-340]_[-1941]" parent="DungeonEntrances" unique_id=414649884 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -2226.1245, 339.15482, 1940.0199)
 Angle = 255
 ID = 4630
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1206_[-2384]_[-340]_[-1898]" parent="DungeonEntrances" unique_id=397774533 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.049067825, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.049067825, -2383.096, 339.47272, 1897.6404)
 Angle = 194
 ID = 4614
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120E_[-2857]_[-346]_[-1956]" parent="DungeonEntrances" unique_id=544013169 instance=ExtResource("10_pt6yw")]
-transform = Transform3D(0.9972901, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.9972901, -2856.778, 345.0148, 1955.2438)
+transform = Transform3D(0.9972898, 0, -0.07356455, 0, 1, 0, 0.07356455, 0, 0.9972898, -2856.778, 345.0148, 1955.2438)
 Angle = 253
 ID = 4622
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120B_[-2952]_[-339]_[-2371]" parent="DungeonEntrances" unique_id=458173484 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, -2951.8464, 338.933, 2370.1716)
 Angle = 12
 ID = 4619
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120C_[-3762]_[-342]_[-951]" parent="DungeonEntrances" unique_id=451527647 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -3761.2917, 341.67957, 950.45325)
 Angle = 32
 ID = 4620
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1214_[-3553]_[-333]_[912]" parent="DungeonEntrances" unique_id=799884771 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -3552.6643, 332.5358, -912.34656)
 Angle = 32
 ID = 4628
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1201_[-3091]_[-343]_[373]" parent="DungeonEntrances" unique_id=1663593971 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3090.6309, 342.71747, -373.6159)
 ID = 4609
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1202_[-3326]_[-343]_[151]" parent="DungeonEntrances" unique_id=1947207080 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0.122410536, -3325.2004, 342.14566, -151.7524)
 Angle = 187
 ID = 4610
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1212_[-3300]_[-342]_[-337]" parent="DungeonEntrances" unique_id=1028402947 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3299.4478, 341.06473, 336.9289)
 ID = 4626
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11FA_[-2221]_[-89]_[-335]" parent="DungeonEntrances" unique_id=1269336900 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2220.0095, 88.492516, 334.78168)
 ID = 4602
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11FD_[-503]_[-94]_[-105]" parent="DungeonEntrances" unique_id=1467770293 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9951847, 0, 0.09801714, 0, 1, 0, -0.09801714, 0, 0.9951847, -502.07413, 93.64066, 104.92651)
 Angle = 4
 ID = 4605
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F8_[-327]_[-92]_[-774]" parent="DungeonEntrances" unique_id=521337602 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0.122410536, -326.00296, 91.10511, 773.09375)
 Angle = 187
 ID = 4600
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F9_[-1246]_[-93]_[-407]" parent="DungeonEntrances" unique_id=221711567 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1245.6259, 92.51561, 406.51086)
 ID = 4601
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11FF_[-1704]_[-92]_[-939]" parent="DungeonEntrances" unique_id=1147878245 instance=ExtResource("10_pt6yw")]
-transform = Transform3D(-0.098016895, 0, -0.99518436, 0, 1, 0, 0.99518436, 0, -0.098016895, -1703.7657, 91.74878, 938.2366)
+transform = Transform3D(-0.098016866, 0, -0.99518406, 0, 1, 0, 0.99518406, 0, -0.098016866, -1703.7657, 91.74878, 938.2366)
 Angle = 188
 ID = 4607
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F6_[-1975]_[-91]_[3]" parent="DungeonEntrances" unique_id=362576985 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.70710665, 0, -0.7071069, 0, 1, 0, 0.7071069, 0, 0.70710665, -1974.591, 90.19603, -3.8031948)
 Angle = 224
 ID = 4598
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D2_[-2761]_[-95]_[521]" parent="DungeonEntrances" unique_id=397688891 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, -2760.5862, 94.83221, -521.80066)
 Angle = 191
 ID = 4562
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D1_[-2869]_[-95]_[-267]" parent="DungeonEntrances" unique_id=1162627640 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0.122410536, -2868.795, 94.074165, 266.17468)
 Angle = 187
 ID = 4561
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CA_[-1875]_[-94]_[882]" parent="DungeonEntrances" unique_id=524698442 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.2429804, 0, -0.9700312, 0, 1, 0, 0.9700312, 0, 0.2429804, -1874.6768, 93.51571, -882.3854)
 Angle = 202
 ID = 4554
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C8_[-1617]_[-89]_[912]" parent="DungeonEntrances" unique_id=138465435 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9329928, 0, -0.35989496, 0, 1, 0, 0.35989496, 0, 0.9329928, -1616.7552, 88.1138, -912.5428)
 Angle = 241
 ID = 4552
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C7_[-1181]_[-93]_[224]" parent="DungeonEntrances" unique_id=1140733424 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.65317285, 0, 0.7572088, 0, 1, 0, -0.7572088, 0, 0.65317285, -1180.3987, 92.23546, -224.01003)
 Angle = 35
 ID = 4551
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CC_[-1318]_[-91]_[281]" parent="DungeonEntrances" unique_id=864566372 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.049067825, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, 0.049067825, -1317.53, 90.91772, -281.04788)
 Angle = 194
 ID = 4556
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D4_[-840]_[-94]_[642]" parent="DungeonEntrances" unique_id=2130353306 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.7409511, 0, -0.671559, 0, 1, 0, 0.671559, 0, 0.7409511, -839.4483, 93.27037, -642.9805)
 Angle = 226
 ID = 4564
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1168_[2261]_[155]_[-2420]" parent="DungeonEntrances" unique_id=842524273 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.26671258, 0, -0.9637761, 0, 1, 0, 0.9637761, 0, 0.26671258, 2261.143, -155.93378, 2419.3884)
 Angle = 203
 ID = 4456
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1169_[2273]_[156]_[-2376]" parent="DungeonEntrances" unique_id=610874524 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.94952816, 0, 0.31368175, 0, 1, 0, -0.31368175, 0, 0.94952816, 2273.112, -156.27571, 2375.2693)
 Angle = 13
 ID = 4457
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1191_[2958]_[155]_[-2337]" parent="DungeonEntrances" unique_id=1602951393 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.870087, 0, 0.49289817, 0, 1, 0, -0.49289817, 0, 0.870087, 2958.0232, -155.82657, 2336.6472)
 Angle = 21
 ID = 4497
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_118E_[3033]_[158]_[-3176]" parent="DungeonEntrances" unique_id=1741871022 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3033.393, -158.308, 3175.7937)
 Angle = 64
 ID = 4494
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_118F_[3371]_[159]_[-2792]" parent="DungeonEntrances" unique_id=333696058 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.21910122, 0, 0.9757021, 0, 1, 0, -0.9757021, 0, 0.21910122, 3371.831, -159.10992, 2791.5618)
 Angle = 55
 ID = 4495
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1182_[3541]_[155]_[-2033]" parent="DungeonEntrances" unique_id=500266005 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9142097, 0, -0.40524137, 0, 1, 0, 0.40524137, 0, 0.9142097, 3541.6616, -155.66628, 2032.247)
 Angle = 239
 ID = 4482
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1163_[3364]_[159]_[-1242]" parent="DungeonEntrances" unique_id=419322869 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.5758082, 0, 0.8175848, 0, 1, 0, -0.8175848, 0, 0.5758082, 3364.338, -159.01302, 1241.7028)
 Angle = 39
 ID = 4451
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1185_[3769]_[156]_[444]" parent="DungeonEntrances" unique_id=60405296 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.19509035, 0, 0.98078525, 0, 1, 0, -0.98078525, 0, 0.19509035, 3769.1633, -156.13774, -444.7479)
 Angle = 56
 ID = 4485
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1150_[2593]_[155]_[1316]" parent="DungeonEntrances" unique_id=1931343493 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.81758475, 0, -0.5758083, 0, 1, 0, 0.5758083, 0, 0.81758475, 2593.1477, -155.57307, -1316.3971)
 Angle = 231
 ID = 4432
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1189_[3666]_[155]_[1543]" parent="DungeonEntrances" unique_id=2010223266 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.04906765, 0, 0.99879545, 0, 1, 0, -0.99879545, 0, 0.04906765, 3666.9866, -155.71356, -1543.6702)
 Angle = 62
 ID = 4489
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1159_[2801]_[158]_[1455]" parent="DungeonEntrances" unique_id=84231584 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2801.6604, -158.80469, -1455.3983)
 Angle = 64
 ID = 4441
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_115B_[1596]_[157]_[693]" parent="DungeonEntrances" unique_id=365359682 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.6895405, 0, 0.7242471, 0, 1, 0, -0.7242471, 0, -0.6895405, 1596.7341, -157.76956, -693.94604)
 Angle = 95
 ID = 4443
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1198_[1505]_[156]_[1134]" parent="DungeonEntrances" unique_id=1309762466 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, 1505.3489, -156.23378, -1134.4507)
 Angle = 255
 ID = 4504
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1188_[2008]_[157]_[1335]" parent="DungeonEntrances" unique_id=1571939247 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.99729043, 0, 0.07356457, 0, 1, 0, -0.07356457, 0, 0.99729043, 2008.8088, -157.16145, -1335.4789)
 Angle = 3
 ID = 4488
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_114F_[2679]_[158]_[1226]" parent="DungeonEntrances" unique_id=902587173 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, 0.57580805, 2679.4917, -158.36787, -1226.4469)
 Angle = 217
 ID = 4431
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1162_[774]_[158]_[-1448]" parent="DungeonEntrances" unique_id=1933645363 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.21910122, 0, 0.9757021, 0, 1, 0, -0.9757021, 0, 0.21910122, 774.3421, -158.20221, 1447.0183)
 Angle = 55
 ID = 4450
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_116C_[2805]_[157]_[-853]" parent="DungeonEntrances" unique_id=1836399053 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9891766, 0, -0.14673024, 0, 1, 0, 0.14673024, 0, 0.9891766, 2805.4219, -157.8772, 852.28467)
 Angle = 250
 ID = 4460
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_116D_[2349]_[157]_[-610]" parent="DungeonEntrances" unique_id=756828210 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, 2349.7927, -157.92174, 609.58386)
 Angle = 12
 ID = 4461
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1154_[2365]_[157]_[-445]" parent="DungeonEntrances" unique_id=684128001 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2365.3064, -157.69487, 444.86176)
 Angle = 64
 ID = 4436
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_114E_[1881]_[153]_[-382]" parent="DungeonEntrances" unique_id=1548041109 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9951847, 0, 0.09801714, 0, 1, 0, -0.09801714, 0, 0.9951847, 1881.6459, -153.91472, 381.7328)
 Angle = 4
 ID = 4430
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1178_[2486]_[157]_[154]" parent="DungeonEntrances" unique_id=1185437083 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.89322424, 0, -0.4496115, 0, 1, 0, 0.4496115, 0, 0.89322424, 2486.6687, -157.87395, -154.50188)
 Angle = 237
 ID = 4472
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1170_[1607]_[157]_[-54]" parent="DungeonEntrances" unique_id=1860488242 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9891766, 0, -0.14673024, 0, 1, 0, 0.14673024, 0, 0.9891766, 1607.4133, -157.87422, 53.965088)
 Angle = 250
 ID = 4464
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1165_[251]_[140]_[293]" parent="DungeonEntrances" unique_id=1085439731 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9238795, 0, 0.38268346, 0, 1, 0, -0.38268346, 0, 0.9238795, 251.62695, -140.7391, -293.185)
 Angle = 16
 ID = 4453
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1197_[456]_[155]_[-36]" parent="DungeonEntrances" unique_id=566027491 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.8175848, 0, 0.5758082, 0, 1, 0, -0.5758082, 0, 0.8175848, 456.50006, -155.55537, 35.702946)
 Angle = 25
 ID = 4503
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1192_[1528]_[156]_[-2147]" parent="DungeonEntrances" unique_id=1542690215 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.04906765, 0, 0.99879545, 0, 1, 0, -0.99879545, 0, 0.04906765, 1528.7983, -156.07329, 2146.6265)
 Angle = 62
 ID = 4498
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_117F_[453]_[155]_[-2830]" parent="DungeonEntrances" unique_id=1953021040 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.98078525, 0, 0.19509032, 0, 1, 0, -0.19509032, 0, 0.98078525, 453.72998, -155.97481, 2829.2449)
 Angle = 8
 ID = 4479
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1190_[943]_[156]_[-2770]" parent="DungeonEntrances" unique_id=308418037 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.99879545, 0, 0.049067676, 0, 1, 0, -0.049067676, 0, 0.99879545, 943.59314, -156.2361, 2769.0056)
 Angle = 2
 ID = 4496
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_117E_[1536]_[155]_[-3643]" parent="DungeonEntrances" unique_id=72969595 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.63439333, 0, -0.77301043, 0, 1, 0, 0.77301043, 0, 0.63439333, 1536.5698, -155.80087, 3642.5952)
 Angle = 220
 ID = 4478
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_115E_[2769]_[158]_[-3440]" parent="DungeonEntrances" unique_id=653937267 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2769.1812, -158.94748, 3439.0112)
 ID = 4446
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1181_[2569]_[156]_[-2857]" parent="DungeonEntrances" unique_id=1358071588 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.19509035, 0, 0.98078525, 0, 1, 0, -0.98078525, 0, 0.19509035, 2569.3892, -156.275, 2856.336)
 Angle = 56
 ID = 4481
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1241_[-1825]_[-344]_[-2028]" parent="DungeonEntrances" unique_id=770068520 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.5956993, 0, 0.8032075, 0, 1, 0, -0.8032075, 0, 0.5956993, -1824.2462, 343.93085, 2027.8342)
 Angle = 38
 ID = 4673
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_123C_[-2718]_[-342]_[-2530]" parent="DungeonEntrances" unique_id=1617507560 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.049067803, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, -0.049067803, -2717.754, 341.62473, 2529.1042)
 Angle = 190
 ID = 4668
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1236_[-3630]_[-341]_[-463]" parent="DungeonEntrances" unique_id=76429104 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.2902845, 0, -0.9569401, 0, 1, 0, 0.9569401, 0, 0.2902845, -3629.647, 340.25958, 462.2005)
 Angle = 204
 ID = 4662
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1246_[-3611]_[-363]_[-629]" parent="DungeonEntrances" unique_id=1817127493 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9329928, 0, 0.35989505, 0, 1, 0, -0.35989505, 0, 0.9329928, -3610.2888, 362.44565, 628.96936)
 Angle = 15
 ID = 4678
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F3_[936]_[155]_[-1741]" parent="DungeonEntrances" unique_id=1716972983 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.70710665, 0, -0.7071069, 0, 1, 0, 0.7071069, 0, 0.70710665, 936.929, -155.66158, 1740.9794)
 Angle = 224
 ID = 4595
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119D_[2561]_[169]_[-1955]" parent="DungeonEntrances" unique_id=849329270 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.5141027, 0, -0.85772836, 0, 1, 0, 0.85772836, 0, 0.5141027, 2561.3984, -169.57683, 1954.216)
 Angle = 214
 ID = 4509
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11A0_[2321]_[158]_[1379]" parent="DungeonEntrances" unique_id=1163987632 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2321.3599, -158.34633, -1379.3162)
 ID = 4512
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1186_[528]_[167]_[-3715]" parent="DungeonEntrances" unique_id=233703327 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, 528.25275, -167.2831, 3714.8064)
 Angle = 207
 ID = 4486
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1207_[-2070]_[-342]_[-1592]" parent="DungeonEntrances" unique_id=935374846 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.61523145, 0, -0.7883463, 0, 1, 0, 0.7883463, 0, 0.61523145, -2069.8088, 341.96088, 1591.674)
 Angle = 219
 ID = 4615
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120C_[-2689]_[-353]_[-1642]" parent="DungeonEntrances" unique_id=676685866 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, -2688.0662, 352.33997, 1641.8529)
 Angle = 191
 ID = 4620
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119C_[193]_[157]_[-1672]" parent="DungeonEntrances" unique_id=1419330376 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 193.11961, -157.8377, 1671.9269)
 ID = 4508
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C1_[663]_[155]_[1142]" parent="DungeonEntrances" unique_id=895723174 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.44961125, 0, -0.89322436, 0, 1, 0, 0.89322436, 0, 0.44961125, 663.8729, -155.8035, -1142.6008)
 Angle = 211
 ID = 4545
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11B4_[2862]_[158]_[653]" parent="DungeonEntrances" unique_id=1273627078 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.6715591, 0, -0.740951, 0, 1, 0, 0.740951, 0, 0.6715591, 2862.41, -158.60419, -653.79663)
 Angle = 222
 ID = 4532
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1201_[-2018]_[-132]_[534]" parent="DungeonEntrances" unique_id=43380197 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2017.797, 131.52678, -534.7887)
 ID = 4609
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1202_[-1992]_[-120]_[507]" parent="DungeonEntrances" unique_id=572412936 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.04906765, 0, 0.99879545, 0, 1, 0, -0.99879545, 0, 0.04906765, -1991.2943, 119.700775, -507.60416)
 Angle = 62
 ID = 4610
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11B5_[1966]_[158]_[683]" parent="DungeonEntrances" unique_id=339609097 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.21910122, 0, 0.9757021, 0, 1, 0, -0.9757021, 0, 0.21910122, 1966.9607, -158.08109, -683.35455)
 Angle = 55
 ID = 4533
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C6_[358]_[155]_[-3138]" parent="DungeonEntrances" unique_id=339487014 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.6343933, 0, 0.77301043, 0, 1, 0, -0.77301043, 0, 0.6343933, 358.953, -155.58704, 3137.281)
 Angle = 36
 ID = 4550
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C4_[3637]_[155]_[2235]" parent="DungeonEntrances" unique_id=1480702048 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.4928982, 0, 0.87008697, 0, 1, 0, -0.87008697, 0, 0.4928982, 3637.6597, -155.20268, -2235.1248)
 Angle = 43
 ID = 4548
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_114C_[3762]_[155]_[1141]" parent="DungeonEntrances" unique_id=2047597912 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 3762.4634, -155.92194, -1141.436)
 Angle = 213
 ID = 4428
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1115_[881]_[152]_[423]" parent="DungeonEntrances" unique_id=541315978 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, 881.03674, -152.84554, -423.05515)
 Angle = 28
 ID = 4373
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_114D_[3468]_[155]_[1943]" parent="DungeonEntrances" unique_id=64240554 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.17096186, 0, 0.98527765, 0, 1, 0, -0.98527765, 0, 0.17096186, 3468.971, -155.92831, -1943.7076)
 Angle = 57
 ID = 4429
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1120_[338]_[157]_[-2315]" parent="DungeonEntrances" unique_id=1409515686 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.6343933, 0, 0.77301043, 0, 1, 0, -0.77301043, 0, 0.6343933, 338.22272, -157.80226, 2314.2156)
 Angle = 36
 ID = 4384
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_02A8_[1986]_[158]_[-1061]" parent="DungeonEntrances" unique_id=136049485 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.53499764, 0, 0.8448536, 0, 1, 0, -0.8448536, 0, 0.53499764, 1986.0197, -158.83022, 1060.2292)
 Angle = 41
 ID = 680
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1210_[-1811]_[-345]_[-1467]" parent="DungeonEntrances" unique_id=441485836 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1810.9003, 344.77344, 1466.3088)
 ID = 4624
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120E_[61]_[405]_[3253]" parent="DungeonEntrances" unique_id=1724960046 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, 61.635918, -405.1392, -3253.1921)
 Angle = 12
 ID = 4622
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F6_[-1669]_[406]_[2222]" parent="DungeonEntrances" unique_id=812468383 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.65317285, 0, 0.7572088, 0, 1, 0, -0.7572088, 0, 0.65317285, -1668.9597, -406.85196, -2222.592)
 Angle = 35
 ID = 4598
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11F0_[-941]_[408]_[1402]" parent="DungeonEntrances" unique_id=964908615 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -940.45264, -408.9474, -1402.3647)
 Angle = 128
 ID = 4592
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11EE_[1566]_[409]_[2601]" parent="DungeonEntrances" unique_id=688357889 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1566.3085, -409.10907, -2601.3506)
 Angle = 64
 ID = 4590
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11EA_[2131]_[406]_[2756]" parent="DungeonEntrances" unique_id=2059343919 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.59569925, 0, -0.8032076, 0, 1, 0, 0.8032076, 0, 0.59569925, 2131.515, -406.52408, -2756.3594)
 Angle = 218
 ID = 4586
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11DA_[-180]_[409]_[2591]" parent="DungeonEntrances" unique_id=1687352200 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -179.90169, -409.0694, -2591.0525)
 ID = 4570
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D9_[-218]_[405]_[2035]" parent="DungeonEntrances" unique_id=1161749557 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.122410625, 0, 0.99247956, 0, 1, 0, -0.99247956, 0, 0.122410625, -217.32755, -405.45087, -2035.1589)
 Angle = 59
 ID = 4569
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11D6_[3564]_[155]_[-1157]" parent="DungeonEntrances" unique_id=998124828 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.40524107, 0, -0.9142098, 0, 1, 0, 0.9142098, 0, 0.40524107, 3564.0854, -155.68843, 1156.9263)
 Angle = 209
 ID = 4566
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CE_[2820]_[158]_[1744]" parent="DungeonEntrances" unique_id=737374628 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.31368175, 0, 0.94952816, 0, 1, 0, -0.94952816, 0, 0.31368175, 2820.8474, -158.38426, -1744.467)
 Angle = 51
 ID = 4558
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CE_[1136]_[158]_[-47]" parent="DungeonEntrances" unique_id=118809109 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.7242471, 0, 0.68954057, 0, 1, 0, -0.68954057, 0, 0.7242471, 1136.3274, -158.30838, 46.144737)
 Angle = 31
 ID = 4558
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CD_[3856]_[156]_[-556]" parent="DungeonEntrances" unique_id=784527795 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.98527765, 0, 0.17096189, 0, 1, 0, -0.17096189, 0, 0.98527765, 3856.9285, -156.32834, 555.26245)
 Angle = 7
 ID = 4557
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11CD_[-629]_[406]_[1016]" parent="DungeonEntrances" unique_id=135073074 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -628.39667, -406.11716, -1016.7023)
 ID = 4557
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C5_[429]_[167]_[-1811]" parent="DungeonEntrances" unique_id=320060230 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.47139677, 0, 0.88192123, 0, 1, 0, -0.88192123, 0, 0.47139677, 429.33414, -167.2301, 1810.2369)
 Angle = 44
 ID = 4549
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11C3_[-2828]_[405]_[2066]" parent="DungeonEntrances" unique_id=1497642172 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2827.2012, -405.55692, -2066.7456)
 Angle = 64
 ID = 4547
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11B9_[2162]_[161]_[501]" parent="DungeonEntrances" unique_id=72578882 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.7409511, 0, -0.671559, 0, 1, 0, 0.671559, 0, -0.7409511, 2162.518, -161.74226, -501.03244)
 Angle = 158
 ID = 4537
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11B7_[1570]_[171]_[-245]" parent="DungeonEntrances" unique_id=732156385 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.8819213, 0, -0.4713965, 0, 1, 0, 0.4713965, 0, 0.8819213, 1570.9202, -171.07861, 244.46887)
 Angle = 236
 ID = 4535
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11AD_[2246]_[157]_[-1200]" parent="DungeonEntrances" unique_id=511309437 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(-0.04906762, 0, 0.99879545, 0, 1, 0, -0.99879545, 0, -0.04906762, 2246.945, -157.82932, 1199.7877)
 Angle = 66
 ID = 4525
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119D_[1170]_[160]_[-2032]" parent="DungeonEntrances" unique_id=1185256498 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.40524107, 0, -0.9142098, 0, 1, 0, 0.9142098, 0, 0.40524107, 1170.2261, -160.16086, 2031.1537)
 Angle = 209
 ID = 4509
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_119C_[3133]_[157]_[-2456]" parent="DungeonEntrances" unique_id=1011668722 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.04906765, 0, 0.99879545, 0, 1, 0, -0.99879545, 0, 0.04906765, 3133.251, -157.92097, 2455.529)
 Angle = 62
 ID = 4508
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_117C_[-3666]_[-343]_[582]" parent="DungeonEntrances" unique_id=570806650 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -3665.827, 342.29172, -582.0899)
 Angle = 255
 ID = 4476
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1169_[-3725]_[-342]_[713]" parent="DungeonEntrances" unique_id=643923345 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, -3724.4336, 341.81628, -713.3233)
 Angle = 12
 ID = 4457
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_111F_[155]_[155]_[-1035]" parent="DungeonEntrances" unique_id=2079308404 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.4928982, 0, 0.87008697, 0, 1, 0, -0.87008697, 0, 0.4928982, 155.77078, -155.79234, 1034.9601)
 Angle = 43
 ID = 4383
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1116_[862]_[155]_[-3560]" parent="DungeonEntrances" unique_id=806442817 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.5141027, 0, -0.85772836, 0, 1, 0, 0.85772836, 0, 0.5141027, 862.42163, -155.69147, 3559.5894)
 Angle = 214
 ID = 4374
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1110_[1042]_[155]_[836]" parent="DungeonEntrances" unique_id=481419380 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.8448536, 0, 0.53499764, 0, 1, 0, -0.53499764, 0, 0.8448536, 1042.8389, -155.77615, -836.66797)
 Angle = 23
 ID = 4368
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_110E_[2673]_[159]_[-1411]" parent="DungeonEntrances" unique_id=1676431577 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.098017134, 0, 0.9951847, 0, 1, 0, -0.9951847, 0, 0.098017134, 2673.294, -159.28241, 1410.2926)
 Angle = 60
 ID = 4366
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_110B_[1857]_[155]_[-1736]" parent="DungeonEntrances" unique_id=2070467563 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.68954057, 0, 0.72424704, 0, 1, 0, -0.72424704, 0, 0.68954057, 1857.6292, -155.63817, 1735.6924)
 Angle = 33
 ID = 4363
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_1104_[1271]_[158]_[-2524]" parent="DungeonEntrances" unique_id=1790638174 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.4275551, 0, 0.9039893, 0, 1, 0, -0.9039893, 0, 0.4275551, 1271.5126, -158.12965, 2523.9304)
 Angle = 46
 ID = 4356
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_10EA_[3306]_[157]_[-1641]" parent="DungeonEntrances" unique_id=382846492 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(0.07356478, 0, -0.99729043, 0, 1, 0, 0.99729043, 0, 0.07356478, 3306.3203, -157.80034, 1640.4329)
 Angle = 195
 ID = 4330
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="DungeonEntrance_10D6_[2222]_[157]_[1627]" parent="DungeonEntrances" unique_id=572979854 instance=ExtResource("10_pt6yw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2222.3, -157.77582, -1627.4558)
 ID = 4310
 ObjectType = 65
-ModelName = "EDOOR"
 
 [node name="Workshops" type="Node3D" parent="." unique_id=722607339]
 script = ExtResource("13_wkfill")
@@ -25664,171 +25529,345 @@ ID = 5194
 [node name="CastleChests" type="Node3D" parent="Castles" unique_id=198839067]
 script = ExtResource("13_hmakr")
 
-[node name="CastleChest_0C13" parent="Castles/CastleChests" unique_id=1627497759 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_15_Сабулат _0C13" type="Node3D" parent="Castles/CastleChests" unique_id=1627497759 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1868.2544, -1102.2173, -1117.3594)
+script = ExtResource("26_uvs8x")
+Castle = 15
 ID = 3091
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C26" parent="Castles/CastleChests" unique_id=2123142274 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_34_Ранден _0C26" type="Node3D" parent="Castles/CastleChests" unique_id=1887701821 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1924.6919, -1105.3218, -1102.4393)
+script = ExtResource("26_uvs8x")
+Castle = 34
 Angle = 64
 ID = 3110
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C20" parent="Castles/CastleChests" unique_id=771311275 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_28_Йонг _0C20" type="Node3D" parent="Castles/CastleChests" unique_id=1240731403 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 726.5051, -1102.1283, -1069.0072)
+script = ExtResource("26_uvs8x")
+Castle = 28
 Angle = 64
 ID = 3104
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C1A" parent="Castles/CastleChests" unique_id=86684278 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_22_Лендер _0C1A" type="Node3D" parent="Castles/CastleChests" unique_id=1835062039 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, -0.57580805, -469.04126, -1099.7261, -1061.8164)
+script = ExtResource("26_uvs8x")
+Castle = 22
 Angle = 167
 ID = 3098
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C3B" parent="Castles/CastleChests" unique_id=683133748 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_27_Алдарнон _0C3B" type="Node3D" parent="Castles/CastleChests" unique_id=1057618659 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 518.405, -1094.7621, -1086.2563)
+script = ExtResource("26_uvs8x")
+Castle = 27
 Angle = 192
 ID = 3131
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C0D" parent="Castles/CastleChests" unique_id=1658946135 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_14_Дэванагари _0C0D" type="Node3D" parent="Castles/CastleChests" unique_id=1768949132 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2073.4949, -1102.1283, -1069.0072)
+script = ExtResource("26_uvs8x")
+Castle = 14
 Angle = 64
 ID = 3085
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BE1" parent="Castles/CastleChests" unique_id=1211566932 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_03_Латор _0BE1" type="Node3D" parent="Castles/CastleChests" unique_id=960475255 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, -2266.7178, -1086.6674, 3869.9194)
+script = ExtResource("26_uvs8x")
+Castle = 3
 Angle = 213
 ID = 3041
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BE6" parent="Castles/CastleChests" unique_id=1406394768 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_08_Пельтье _0BE6" type="Node3D" parent="Castles/CastleChests" unique_id=1278280656 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, -0.57580805, -3269.0413, -1099.7261, -1061.8164)
+script = ExtResource("26_uvs8x")
+Castle = 8
 Angle = 167
 ID = 3046
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BE9" parent="Castles/CastleChests" unique_id=1676478710 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_11_Терноваль _0BE9" type="Node3D" parent="Castles/CastleChests" unique_id=1646966380 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, 0.85772866, -2744.2397, -1101.636, -1081.5956)
+script = ExtResource("26_uvs8x")
+Castle = 11
 Angle = 234
 ID = 3049
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BE2" parent="Castles/CastleChests" unique_id=1773305091 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_04_Эйкум_Кас _0BE2" type="Node3D" parent="Castles/CastleChests" unique_id=1644612442 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2128.0432, -1099.0138, 3876.1704)
+script = ExtResource("26_uvs8x")
+Castle = 4
 Angle = 128
 ID = 3042
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BE5" parent="Castles/CastleChests" unique_id=1231336 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_07_Туанод _0BE5" type="Node3D" parent="Castles/CastleChests" unique_id=303888819 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3475.308, -1105.3218, -1102.4393)
+script = ExtResource("26_uvs8x")
+Castle = 7
 Angle = 64
 ID = 3045
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C25" parent="Castles/CastleChests" unique_id=1254605623 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_17_Айонат _0C25" type="Node3D" parent="Castles/CastleChests" unique_id=1300566647 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1511.8113, -1094.6958, -1072.8949)
+script = ExtResource("26_uvs8x")
+Castle = 17
 Angle = 128
 ID = 3109
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C29" parent="Castles/CastleChests" unique_id=1767941697 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_21_Сет _0C29" type="Node3D" parent="Castles/CastleChests" unique_id=1082036573 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -675.3081, -1105.3218, -1102.4393)
+script = ExtResource("26_uvs8x")
+Castle = 21
 Angle = 64
 ID = 3113
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C21" parent="Castles/CastleChests" unique_id=690602961 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_13_Каблак _0C21" type="Node3D" parent="Castles/CastleChests" unique_id=1307476040 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -2281.595, -1094.7621, -1086.2563)
+script = ExtResource("26_uvs8x")
+Castle = 13
 Angle = 192
 ID = 3105
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C19" parent="Castles/CastleChests" unique_id=163690294 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_05_Гедеон _0C19" type="Node3D" parent="Castles/CastleChests" unique_id=199272260 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -3892.1782, -1106.7651, -1082.0938)
+script = ExtResource("26_uvs8x")
+Castle = 5
 Angle = 128
 ID = 3097
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C24" parent="Castles/CastleChests" unique_id=1318444905 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_16_Деффенсат _0C24" type="Node3D" parent="Castles/CastleChests" unique_id=20981958 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1691.1239, -1105.7291, -1123.8292)
+script = ExtResource("26_uvs8x")
+Castle = 16
 ID = 3108
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BF8" parent="Castles/CastleChests" unique_id=2008562059 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_09_Каре_Рояль _0BF8" type="Node3D" parent="Castles/CastleChests" unique_id=1154878440 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3109.7969, -1096.6644, -1127.2413)
+script = ExtResource("26_uvs8x")
+Castle = 9
 Angle = 64
 ID = 3064
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C03" parent="Castles/CastleChests" unique_id=1514683003 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_20_Кабрад _0C03" type="Node3D" parent="Castles/CastleChests" unique_id=900339589 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-0.51410276, 0, 0.8577286, 0, 1, 0, -0.8577286, 0, -0.51410276, -874.5254, -1092.1755, -1140.2931)
+script = ExtResource("26_uvs8x")
+Castle = 20
 Angle = 86
 ID = 3075
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BF1" parent="Castles/CastleChests" unique_id=135683940 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_02_Арис _0BF1" type="Node3D" parent="Castles/CastleChests" unique_id=1448909139 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2499.257, -1094.8151, 3856.8503)
+script = ExtResource("26_uvs8x")
+Castle = 2
 ID = 3057
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BF0" parent="Castles/CastleChests" unique_id=763715130 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_01_Фьеф _0BF0" type="Node3D" parent="Castles/CastleChests" unique_id=790271517 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2693.9255, -1097.2755, 3919.0105)
+script = ExtResource("26_uvs8x")
+Castle = 1
 ID = 3056
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0BF9" parent="Castles/CastleChests" unique_id=1746221152 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_10_Блессендор _0BF9" type="Node3D" parent="Castles/CastleChests" unique_id=1977276374 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2884.0117, -1094.0465, -1076.8778)
+script = ExtResource("26_uvs8x")
+Castle = 10
 ID = 3065
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C31" parent="Castles/CastleChests" unique_id=1992972568 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_25_Оркобьен _0C31" type="Node3D" parent="Castles/CastleChests" unique_id=881056528 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, 0.85772866, 55.760254, -1101.636, -1081.5956)
+script = ExtResource("26_uvs8x")
+Castle = 25
 Angle = 234
 ID = 3121
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="@Node3D@40715" parent="Castles/CastleChests" unique_id=711611884 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_12_Аммалаэль _0C24" type="Node3D" parent="Castles/CastleChests" unique_id=1860886092 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2524.1758, -1105.4873, -1052.9459)
+script = ExtResource("26_uvs8x")
+Castle = 12
 Angle = 64
 ID = 3108
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C16" parent="Castles/CastleChests" unique_id=800848011 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_31_Кандур _0C16" type="Node3D" parent="Castles/CastleChests" unique_id=864350385 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1324.6919, -1105.3218, -1102.4393)
+script = ExtResource("26_uvs8x")
+Castle = 31
 Angle = 64
 ID = 3094
 ObjectType = 82
 ModelName = "cs_chest"
 
-[node name="CastleChest_0C1D" parent="Castles/CastleChests" unique_id=1211950176 instance=ExtResource("15_w4r6w")]
+[node name="CastleChest_00_Льеж _0BFD" type="Node3D" parent="Castles/CastleChests" unique_id=361260601 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3322.104, -1105.1517, 3905.6375)
+script = ExtResource("26_uvs8x")
+Angle = 64
+ID = 3069
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_06_Шателье _0C03" type="Node3D" parent="Castles/CastleChests" unique_id=1505520375 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-0.51410276, 0, 0.8577286, 0, 1, 0, -0.8577286, 0, -0.51410276, -3674.5254, -1092.1755, -1140.2931)
+script = ExtResource("26_uvs8x")
+Castle = 6
+Angle = 86
+ID = 3075
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_18_Триумфалер _0C19" type="Node3D" parent="Castles/CastleChests" unique_id=1279611321 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1281.3029, -1097.4456, -1093.4008)
+script = ExtResource("26_uvs8x")
+Castle = 18
+Angle = 128
+ID = 3097
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_19_Багарнак _0C1A" type="Node3D" parent="Castles/CastleChests" unique_id=749770445 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1092.1782, -1106.7651, -1082.0938)
+script = ExtResource("26_uvs8x")
+Castle = 19
+Angle = 128
+ID = 3098
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_23_Келес _0C1E" type="Node3D" parent="Castles/CastleChests" unique_id=1035441546 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -309.79688, -1096.6644, -1127.2413)
+script = ExtResource("26_uvs8x")
+Castle = 23
+Angle = 64
+ID = 3102
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_24_Шепростан _0C1F" type="Node3D" parent="Castles/CastleChests" unique_id=745462614 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -84.01172, -1094.0465, -1076.8778)
+script = ExtResource("26_uvs8x")
+Castle = 24
+ID = 3103
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_26_Кануак _0C21" type="Node3D" parent="Castles/CastleChests" unique_id=912753752 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 275.82422, -1105.4873, -1052.9459)
+script = ExtResource("26_uvs8x")
+Castle = 26
+Angle = 64
+ID = 3105
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_29_Элек _0C24" type="Node3D" parent="Castles/CastleChests" unique_id=1801005165 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 907.8218, -1106.7651, -1082.0938)
+script = ExtResource("26_uvs8x")
+Castle = 29
+Angle = 128
+ID = 3108
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_30_Гавот _0C25" type="Node3D" parent="Castles/CastleChests" unique_id=805716704 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-0.51410276, 0, 0.8577286, 0, 1, 0, -0.8577286, 0, -0.51410276, 1125.4746, -1092.1755, -1140.2931)
+script = ExtResource("26_uvs8x")
+Castle = 30
+Angle = 86
+ID = 3109
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_32_Иммертель _0C27" type="Node3D" parent="Castles/CastleChests" unique_id=1875545329 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1507.8218, -1106.7651, -1082.0938)
+script = ExtResource("26_uvs8x")
+Castle = 32
+Angle = 128
+ID = 3111
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_33_Нарцисс _0C28" type="Node3D" parent="Castles/CastleChests" unique_id=291852512 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-0.51410276, 0, 0.8577286, 0, 1, 0, -0.8577286, 0, -0.51410276, 1725.4746, -1092.1755, -1140.2931)
+script = ExtResource("26_uvs8x")
+Castle = 33
+Angle = 86
+ID = 3112
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_35_Ниргун _0C2A" type="Node3D" parent="Castles/CastleChests" unique_id=1727644139 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, -0.57580805, 2130.9587, -1099.7261, -1061.8164)
+script = ExtResource("26_uvs8x")
+Castle = 35
+Angle = 167
+ID = 3114
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_36_Гелгивинн _0C2B" type="Node3D" parent="Castles/CastleChests" unique_id=905948855 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2290.2031, -1096.6644, -1127.2413)
+script = ExtResource("26_uvs8x")
+Castle = 36
+Angle = 64
+ID = 3115
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_37_Иль_Суильи_Руа _0C2C" type="Node3D" parent="Castles/CastleChests" unique_id=2036307954 instance=ExtResource("15_w4r6w")]
+transform = Transform3D(-0.049067803, 0, -0.99879545, 0, 1, 0, 0.99879545, 0, -0.049067803, 2540.6997, -1072.1724, -1131.9388)
+script = ExtResource("26_uvs8x")
+Castle = 37
+Angle = 190
+ID = 3116
+ObjectType = 82
+ModelName = "cs_chest"
+
+[node name="CastleChest_999_Черная_Башня _0C1D" type="Node3D" parent="Castles/CastleChests" unique_id=2073430707 instance=ExtResource("15_w4r6w")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2100.113, -1700.7878, 3112.0112)
+script = ExtResource("26_uvs8x")
+Castle = 999
 Angle = 192
 ID = 3101
 ObjectType = 82
@@ -25837,316 +25876,324 @@ ModelName = "cs_chest"
 [node name="CastleElixirPillars" type="Node3D" parent="Castles" unique_id=595783747]
 script = ExtResource("13_ip254")
 
-[node name="CastleElixirPillar_0C3A" parent="Castles/CastleElixirPillars" unique_id=424359574 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_15_Сабулат _0C3A" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1538718195 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1902.1565, -1100.2173, -1097.0637)
+script = ExtResource("29_uvs8x")
+Castle = 15
 ID = 3130
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C4D" parent="Castles/CastleElixirPillars" unique_id=1009107421 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_34_Ранден _0C4D" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=226756930 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1917.7625, -1097.8378, -1084.9932)
+script = ExtResource("29_uvs8x")
+Castle = 34
 ID = 3149
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C47" parent="Castles/CastleElixirPillars" unique_id=744308205 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_28_Йонг _0C47" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=46554417 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 700.0034, -1100.159, -1101.8162)
+script = ExtResource("29_uvs8x")
+Castle = 28
 ID = 3143
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C41" parent="Castles/CastleElixirPillars" unique_id=1330713480 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_22_Лендер _0C41" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1407631924 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -501.07748, -1100.2424, -1100.0018)
+script = ExtResource("29_uvs8x")
+Castle = 22
 ID = 3137
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C62" parent="Castles/CastleElixirPillars" unique_id=380015762 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_27_Алдарнон _0C62" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=532483971 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 497.32385, -1100.1997, -1104.6069)
+script = ExtResource("29_uvs8x")
+Castle = 27
 ID = 3170
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C34" parent="Castles/CastleElixirPillars" unique_id=1027964622 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_14_Дэванагари _0C34" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=750201340 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2099.9116, -1100.139, -1101.743)
+script = ExtResource("29_uvs8x")
+Castle = 14
 ID = 3124
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C08" parent="Castles/CastleElixirPillars" unique_id=1177822821 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_03_Латор _0C08" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=625733076 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2295.5405, -1100.089, 3900.9219)
+script = ExtResource("29_uvs8x")
+Castle = 3
 ID = 3080
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C0D" parent="Castles/CastleElixirPillars" unique_id=1098380880 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_08_Пельтье _0C0D" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1827458273 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3301.0483, -1100.0828, -1099.9725)
+script = ExtResource("29_uvs8x")
+Castle = 8
 ID = 3085
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C10" parent="Castles/CastleElixirPillars" unique_id=1811567133 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_11_Терноваль _0C10" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1605127847 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2698.1777, -1100.1086, -1099.9541)
+script = ExtResource("29_uvs8x")
+Castle = 11
 ID = 3088
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C09" parent="Castles/CastleElixirPillars" unique_id=1510098015 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_04_Эйкум_Кас _0C09" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=451039626 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2100.076, -1100.0532, 3901.7458)
+script = ExtResource("29_uvs8x")
+Castle = 4
 ID = 3081
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C0C" parent="Castles/CastleElixirPillars" unique_id=1845201561 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_07_Туанод _0C0C" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=316574948 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3482.2375, -1097.8378, -1084.9932)
+script = ExtResource("29_uvs8x")
+Castle = 7
 ID = 3084
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C4C" parent="Castles/CastleElixirPillars" unique_id=1704325314 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_17_Айонат _0C4C" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=547164829 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1511.7504, -1100.3464, -1110.1788)
+script = ExtResource("29_uvs8x")
+Castle = 17
 ID = 3148
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C50" parent="Castles/CastleElixirPillars" unique_id=564249527 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_21_Сет _0C50" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1695303293 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -682.0501, -1097.92, -1088.6548)
+script = ExtResource("29_uvs8x")
+Castle = 21
 ID = 3152
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C48" parent="Castles/CastleElixirPillars" unique_id=1700088195 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_13_Каблак _0C48" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=865799665 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2296.667, -1100.2039, -1099.98)
+script = ExtResource("29_uvs8x")
+Castle = 13
 ID = 3144
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C40" parent="Castles/CastleElixirPillars" unique_id=2071321481 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_05_Гедеон _0C40" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1590561975 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3917.1357, -1103.5934, -1094.5256)
+script = ExtResource("29_uvs8x")
+Castle = 5
 ID = 3136
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C4B" parent="Castles/CastleElixirPillars" unique_id=932769274 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_16_Деффенсат _0C4B" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=491911814 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1688.5402, -1103.087, -1081.001)
+script = ExtResource("29_uvs8x")
+Castle = 16
 ID = 3147
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C1F" parent="Castles/CastleElixirPillars" unique_id=1410007557 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_09_Каре_Рояль _0C1F" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1793805893 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3082.507, -1100.6338, -1094.4895)
+script = ExtResource("29_uvs8x")
+Castle = 9
 ID = 3103
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C2A" parent="Castles/CastleElixirPillars" unique_id=605375794 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_20_Кабрад _0C2A" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=161107590 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -897.3754, -1100.2516, -1097.0939)
+script = ExtResource("29_uvs8x")
+Castle = 20
 ID = 3114
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C18" parent="Castles/CastleElixirPillars" unique_id=119681349 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_02_Арис _0C18" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1587210623 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2502.768, -1100.1533, 3896.947)
+script = ExtResource("29_uvs8x")
+Castle = 2
 ID = 3096
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C17" parent="Castles/CastleElixirPillars" unique_id=679383147 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_01_Фьеф _0C17" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=515880584 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2696.9216, -1100.2145, 3897.0002)
+script = ExtResource("29_uvs8x")
+Castle = 1
 ID = 3095
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C20" parent="Castles/CastleElixirPillars" unique_id=1169303819 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_10_Блессендор _0C20" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1088949022 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2896.934, -1100.2101, -1097.1124)
+script = ExtResource("29_uvs8x")
+Castle = 10
 ID = 3104
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="CastleElixirPillar_0C58" parent="Castles/CastleElixirPillars" unique_id=798538925 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_25_Оркобьен _0C58" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1133249535 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.506134, -1100.1768, -1099.9664)
+script = ExtResource("29_uvs8x")
+Castle = 25
 ID = 3160
 ObjectType = 83
 ModelName = "cs_knot"
 
-[node name="@Node3D@28217" parent="Castles/CastleElixirPillars" unique_id=551149370 instance=ExtResource("15_ycsak")]
+[node name="CastleElixirPillar_12_Аммалаэль _0C4B" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1566273951 instance=ExtResource("15_ycsak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2504.5, -1101.3364, -1077.5643)
+script = ExtResource("29_uvs8x")
+Castle = 12
 ID = 3147
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_31_Кандур _0C3D" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1518417930 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1325.8248, -1097.7244, -1085.1128)
+script = ExtResource("29_uvs8x")
+Castle = 31
+ID = 3133
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_00_Льеж _0C24" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1649421021 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3321.8413, -1100.0015, 3885.1526)
+script = ExtResource("29_uvs8x")
+ID = 3108
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_06_Шателье _0C2A" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=644189707 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3696.8982, -1100.1199, -1097.0619)
+script = ExtResource("29_uvs8x")
+Castle = 6
+ID = 3114
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_18_Триумфалер _0C40" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=194355503 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1304.3213, -1095.845, -1121.8558)
+script = ExtResource("29_uvs8x")
+Castle = 18
+ID = 3136
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_19_Багарнак _0C41" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1870033539 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1117.1365, -1103.7202, -1097.4902)
+script = ExtResource("29_uvs8x")
+Castle = 19
+ID = 3137
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_23_Келес _0C45" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1418005334 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -279.49612, -1100.7655, -1094.0625)
+script = ExtResource("29_uvs8x")
+Castle = 23
+ID = 3141
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_24_Шепростан _0C46" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=340454198 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -97.005135, -1100.2539, -1097.0835)
+script = ExtResource("29_uvs8x")
+Castle = 24
+ID = 3142
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_26_Кануак _0C48" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=195926065 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 295.6164, -1101.3788, -1074.3422)
+script = ExtResource("29_uvs8x")
+Castle = 26
+ID = 3144
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_29_Элек _0C4B" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=68759290 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 883.27246, -1103.5852, -1094.6381)
+script = ExtResource("29_uvs8x")
+Castle = 29
+ID = 3147
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_30_Гавот _0C4C" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=27786114 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1101.8423, -1100.1183, -1096.8113)
+script = ExtResource("29_uvs8x")
+Castle = 30
+ID = 3148
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_32_Иммертель _0C4E" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=2086205184 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1482.8643, -1103.5934, -1094.5256)
+script = ExtResource("29_uvs8x")
+Castle = 32
+ID = 3150
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_33_Нарцисс _0C4F" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1301791621 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1703.1018, -1100.1199, -1097.0619)
+script = ExtResource("29_uvs8x")
+Castle = 33
+ID = 3151
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_35_Ниргун _0C51" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1892770110 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2098.9517, -1100.0828, -1099.9725)
+script = ExtResource("29_uvs8x")
+Castle = 35
+ID = 3153
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_36_Гелгивинн _0C52" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1289916902 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2317.493, -1100.6338, -1094.4895)
+script = ExtResource("29_uvs8x")
+Castle = 36
+ID = 3154
+ObjectType = 83
+ModelName = "cs_knot"
+
+[node name="CastleElixirPillar_37_Иль_Суильи_Руа _0C53" type="Node3D" parent="Castles/CastleElixirPillars" unique_id=1907867315 instance=ExtResource("15_ycsak")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2488.169, -1095.5355, -1103.3556)
+script = ExtResource("29_uvs8x")
+Castle = 37
+ID = 3155
 ObjectType = 83
 ModelName = "cs_knot"
 
 [node name="CastleTablets" type="Node3D" parent="Castles" unique_id=1269721975]
 script = ExtResource("16_6fo3i")
 
-[node name="CastleTablet_0DCC_Sabulat" parent="Castles/CastleTablets" unique_id=1145185886 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1898.9122, -1100.14, -1096.869)
-Castle = 15
-ClanName = "Зеленый Слоник"
-Angle = 192
-ID = 3532
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0FAF_Randen" parent="Castles/CastleTablets" unique_id=1862930225 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1922.5, -1097.7888, -1088.8589)
-Castle = 34
-ClanName = "Зеленый Слоник"
-ID = 4015
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0EA9_Lender" parent="Castles/CastleTablets" unique_id=534449700 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(0.024541255, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, 0.024541255, -495.79953, -1096.0817, -1100.064)
-Castle = 22
-ClanName = "Зеленый Слоник"
-Angle = 63
-ID = 3753
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0F3A_Iong" parent="Castles/CastleTablets" unique_id=1483865837 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 700.0818, -1100.0533, -1097.791)
-Castle = 28
+[node name="CastleTablet_00_Льеж _0C4A" type="Node3D" parent="Castles/CastleTablets" unique_id=1405356216 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -3318.102, -1099.9877, 3885.8865)
+script = ExtResource("32_6ft11")
 ClanName = "Зеленый Слоник"
 Angle = 128
-ID = 3898
+ID = 3146
 ObjectType = 80
 ModelName = "cs_table"
 
-[node name="CastleTablet_0F1F_Aldarnon" parent="Castles/CastleTablets" unique_id=316578803 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 498.8413, -1100.0653, -1100.0387)
-Castle = 27
-ClanName = "Зеленый Слоник"
-Angle = 64
-ID = 3871
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0DD4_Devanagari" parent="Castles/CastleTablets" unique_id=786203157 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2100.0461, -1100.0533, -1099.0779)
-Castle = 14
-ClanName = "Зеленый Слоник"
-Angle = 128
-ID = 3540
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0C53_Lator" parent="Castles/CastleTablets" unique_id=450288429 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, -2300.0598, -1096.0432, 3895.838)
-Castle = 3
-ClanName = "Зеленый Слоник"
-Angle = 127
-ID = 3155
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0CC9_Peltier" parent="Castles/CastleTablets" unique_id=655671722 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3295.8442, -1096.0817, -1100.1315)
-Castle = 8
-ClanName = "Зеленый Слоник"
-Angle = 64
-ID = 3273
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0D08_Ternoval" parent="Castles/CastleTablets" unique_id=1410911216 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2700.7463, -1100.049, -1099.8804)
-Castle = 11
-ClanName = "Зеленый Слоник"
-Angle = 64
-ID = 3336
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0C6F_EikumKas" parent="Castles/CastleTablets" unique_id=1849128534 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2099.9854, -1096.0385, 3904.564)
-Castle = 4
-ClanName = "Зеленый Слоник"
-ID = 3183
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0CAD_Tuanod" parent="Castles/CastleTablets" unique_id=1209167294 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3477.5623, -1097.7888, -1085.7358)
-Castle = 7
-ClanName = "Зеленый Слоник"
-ID = 3245
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0E27_Ayonat" parent="Castles/CastleTablets" unique_id=134799989 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1510.4355, -1100.2421, -1114.601)
-Castle = 17
-ClanName = "Зеленый Слоник"
-Angle = 192
-ID = 3623
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0E95_Set" parent="Castles/CastleTablets" unique_id=561332096 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -677.52905, -1097.7888, -1086.8225)
-Castle = 21
-ClanName = "Зеленый Слоник"
-ID = 3733
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0DBC_Kablak" parent="Castles/CastleTablets" unique_id=503382334 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2299.6282, -1100.0653, -1100.2219)
-Castle = 13
-ClanName = "Зеленый Слоник"
-Angle = 64
-ID = 3516
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0CEF_Gedeon" parent="Castles/CastleTablets" unique_id=2140305794 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, -3917.1482, -1099.5623, -1099.8041)
-Castle = 5
-ClanName = "Зеленый Слоник"
-Angle = 127
-ID = 3311
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0E12_Deffensat" parent="Castles/CastleTablets" unique_id=767940527 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -1688.5283, -1099.053, -1075.9344)
-Castle = 16
-ClanName = "Зеленый Слоник"
-Angle = 255
-ID = 3602
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0D3D_KareRoyal" parent="Castles/CastleTablets" unique_id=1085392042 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -3081.8123, -1100.5334, -1098.7273)
-Castle = 9
-ClanName = "Зеленый Слоник"
-Angle = 192
-ID = 3389
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0E6F_Kabrad" parent="Castles/CastleTablets" unique_id=206382898 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -894.45825, -1096.1295, -1096.893)
-Castle = 20
-ClanName = "Зеленый Слоник"
-Angle = 64
-ID = 3695
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0C75_Aris" parent="Castles/CastleTablets" unique_id=1225902972 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -2505.9932, -1096.1365, 3897.0103)
-Castle = 2
-ClanName = "Зеленый Слоник"
-Angle = 192
-ID = 3189
-ObjectType = 80
-ModelName = "cs_table"
-
-[node name="CastleTablet_0C58_Fief" parent="Castles/CastleTablets" unique_id=70742822 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2697.0093, -1096.1245, 3894.5017)
+[node name="CastleTablet_01_Фьеф _0C58" type="Node3D" parent="Castles/CastleTablets" unique_id=337302504 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2697, -1096.125, 3894.5)
+script = ExtResource("32_6ft11")
 Castle = 1
 ClanName = "Зеленый Слоник"
 Angle = 128
@@ -26154,302 +26201,1280 @@ ID = 3160
 ObjectType = 80
 ModelName = "cs_table"
 
-[node name="CastleTablet_0D5A_Blessendor" parent="Castles/CastleTablets" unique_id=1974535276 instance=ExtResource("17_6fo3i")]
+[node name="CastleTablet_02_Арис _0C82" type="Node3D" parent="Castles/CastleTablets" unique_id=526693667 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -2505.9932, -1096.1365, 3897.0103)
+script = ExtResource("32_6ft11")
+Castle = 2
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 3202
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_03_Латор _0C9F" type="Node3D" parent="Castles/CastleTablets" unique_id=562643355 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, -2300.0598, -1096.0432, 3895.838)
+script = ExtResource("32_6ft11")
+Castle = 3
+ClanName = "Зеленый Слоник"
+Angle = 127
+ID = 3231
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_04_Эйкум_Кас _0CBB" type="Node3D" parent="Castles/CastleTablets" unique_id=2014655501 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2099.9854, -1096.0385, 3904.564)
+script = ExtResource("32_6ft11")
+Castle = 4
+ClanName = "Зеленый Слоник"
+ID = 3259
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_05_Гедеон _0CD7" type="Node3D" parent="Castles/CastleTablets" unique_id=119051556 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, -3917.1482, -1099.5623, -1099.8041)
+script = ExtResource("32_6ft11")
+Castle = 5
+ClanName = "Зеленый Слоник"
+Angle = 127
+ID = 3287
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_06_Шателье _0CF3" type="Node3D" parent="Castles/CastleTablets" unique_id=767900709 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3694.354, -1096.1295, -1097.0005)
+script = ExtResource("32_6ft11")
+Castle = 6
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3315
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_07_Туанод _0D10" type="Node3D" parent="Castles/CastleTablets" unique_id=1889921423 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3477.5623, -1097.7888, -1085.7358)
+script = ExtResource("32_6ft11")
+Castle = 7
+ClanName = "Зеленый Слоник"
+ID = 3344
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_08_Пельтье _0D2B" type="Node3D" parent="Castles/CastleTablets" unique_id=387812875 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3295.8442, -1096.0817, -1100.1315)
+script = ExtResource("32_6ft11")
+Castle = 8
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3371
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_09_Каре_Рояль _0D48" type="Node3D" parent="Castles/CastleTablets" unique_id=1447756014 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -3081.8123, -1100.5334, -1098.7273)
+script = ExtResource("32_6ft11")
+Castle = 9
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 3400
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_10_Блессендор _0D63" type="Node3D" parent="Castles/CastleTablets" unique_id=2145201986 instance=ExtResource("17_6fo3i")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2894.1814, -1096.1327, -1097.0153)
+script = ExtResource("32_6ft11")
 Castle = 10
 ClanName = "Зеленый Слоник"
 Angle = 64
-ID = 3418
+ID = 3427
 ObjectType = 80
 ModelName = "cs_table"
 
-[node name="CastleTablet_0F09_Orkobien" parent="Castles/CastleTablets" unique_id=190241738 instance=ExtResource("17_6fo3i")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 98.08523, -1100.049, -1099.9652)
-Castle = 25
+[node name="CastleTablet_11_Терноваль _0D7F" type="Node3D" parent="Castles/CastleTablets" unique_id=1401093483 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2700.7463, -1100.049, -1099.8804)
+script = ExtResource("32_6ft11")
+Castle = 11
 ClanName = "Зеленый Слоник"
 Angle = 64
-ID = 3849
+ID = 3455
 ObjectType = 80
 ModelName = "cs_table"
 
-[node name="CastleTablet_0DBA_Ammalael" parent="Castles/CastleTablets" unique_id=906837601 instance=ExtResource("17_6fo3i")]
+[node name="CastleTablet_12_Аммалаэль _0D9A" type="Node3D" parent="Castles/CastleTablets" unique_id=287744077 instance=ExtResource("17_6fo3i")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2499.7861, -1101.2133, -1076.4774)
+script = ExtResource("32_6ft11")
 Castle = 12
 ClanName = "Зеленый Слоник"
 Angle = 128
-ID = 3514
+ID = 3482
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_13_Каблак _0DC0" type="Node3D" parent="Castles/CastleTablets" unique_id=171755763 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2299.6282, -1100.0653, -1100.2219)
+script = ExtResource("32_6ft11")
+Castle = 13
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3520
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_14_Дэванагари _0DDC" type="Node3D" parent="Castles/CastleTablets" unique_id=1205188822 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2100.0461, -1100.0533, -1099.0779)
+script = ExtResource("32_6ft11")
+Castle = 14
+ClanName = "Зеленый Слоник"
+Angle = 128
+ID = 3548
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_15_Сабулат _0DF8" type="Node3D" parent="Castles/CastleTablets" unique_id=1798514594 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1898.9122, -1100.14, -1096.869)
+script = ExtResource("32_6ft11")
+Castle = 15
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 3576
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_16_Деффенсат _0E15" type="Node3D" parent="Castles/CastleTablets" unique_id=693483441 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -1688.5283, -1099.053, -1075.9344)
+script = ExtResource("32_6ft11")
+Castle = 16
+ClanName = "Зеленый Слоник"
+Angle = 255
+ID = 3605
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_17_Айонат _0E31" type="Node3D" parent="Castles/CastleTablets" unique_id=211993909 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1510.4355, -1100.2421, -1114.601)
+script = ExtResource("32_6ft11")
+Castle = 17
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 3633
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_18_Триумфалер _0E4D" type="Node3D" parent="Castles/CastleTablets" unique_id=2143219732 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1304.32, -1095.84, -1121.86)
+script = ExtResource("32_6ft11")
+Castle = 18
+ClanName = "Зеленый Слоник"
+ID = 3661
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_19_Багарнак _0E69" type="Node3D" parent="Castles/CastleTablets" unique_id=1893269517 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, -1117.1482, -1099.5623, -1099.8041)
+script = ExtResource("32_6ft11")
+Castle = 19
+ClanName = "Зеленый Слоник"
+Angle = 127
+ID = 3689
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_20_Кабрад _0E83" type="Node3D" parent="Castles/CastleTablets" unique_id=1605774632 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -894.45825, -1096.1295, -1096.893)
+script = ExtResource("32_6ft11")
+Castle = 20
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3715
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_21_Сет _0E9F" type="Node3D" parent="Castles/CastleTablets" unique_id=280285404 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -677.52905, -1097.7888, -1086.8225)
+script = ExtResource("32_6ft11")
+Castle = 21
+ClanName = "Зеленый Слоник"
+ID = 3743
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_22_Лендер _0EBA" type="Node3D" parent="Castles/CastleTablets" unique_id=1522731971 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(0.024541255, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, 0.024541255, -495.79953, -1096.0817, -1100.064)
+script = ExtResource("32_6ft11")
+Castle = 22
+ClanName = "Зеленый Слоник"
+Angle = 63
+ID = 3770
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_23_Келес _0ED4" type="Node3D" parent="Castles/CastleTablets" unique_id=779276481 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -280.50696, -1100.5334, -1098.4512)
+script = ExtResource("32_6ft11")
+Castle = 23
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 3796
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_24_Шепростан _0EEE" type="Node3D" parent="Castles/CastleTablets" unique_id=927142738 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -94.1814, -1096.1327, -1097.0153)
+script = ExtResource("32_6ft11")
+Castle = 24
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3822
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_25_Оркобьен _0EFA" type="Node3D" parent="Castles/CastleTablets" unique_id=456198523 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 98.08523, -1100.049, -1099.9652)
+script = ExtResource("32_6ft11")
+Castle = 25
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3834
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_26_Кануак _0F14" type="Node3D" parent="Castles/CastleTablets" unique_id=537995428 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 300.26434, -1101.2133, -1074.8018)
+script = ExtResource("32_6ft11")
+Castle = 26
+ClanName = "Зеленый Слоник"
+Angle = 128
+ID = 3860
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_27_Алдарнон _0F2F" type="Node3D" parent="Castles/CastleTablets" unique_id=814797916 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 498.8413, -1100.0653, -1100.0387)
+script = ExtResource("32_6ft11")
+Castle = 27
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3887
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_28_Йонг _0F49" type="Node3D" parent="Castles/CastleTablets" unique_id=1007183277 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 700.0818, -1100.0533, -1097.791)
+script = ExtResource("32_6ft11")
+Castle = 28
+ClanName = "Зеленый Слоник"
+Angle = 128
+ID = 3913
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_29_Элек _0F63" type="Node3D" parent="Castles/CastleTablets" unique_id=2141052605 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, 882.8518, -1099.5623, -1099.8041)
+script = ExtResource("32_6ft11")
+Castle = 29
+ClanName = "Зеленый Слоник"
+Angle = 127
+ID = 3939
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_30_Гавот _0F7B" type="Node3D" parent="Castles/CastleTablets" unique_id=303766416 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1105.6077, -1096.1295, -1097.0367)
+script = ExtResource("32_6ft11")
+Castle = 30
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 3963
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_31_Кандур _0F91" type="Node3D" parent="Castles/CastleTablets" unique_id=1810208166 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1322.4895, -1097.7888, -1086.8296)
+script = ExtResource("32_6ft11")
+Castle = 31
+ClanName = "Зеленый Слоник"
+ID = 3985
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_32_Иммертель _0FB0" type="Node3D" parent="Castles/CastleTablets" unique_id=851031985 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-0.9996988, 0, 0.02454121, 0, 1, 0, -0.02454121, 0, -0.9996988, 1482.8518, -1099.5623, -1099.8041)
+script = ExtResource("32_6ft11")
+Castle = 32
+ClanName = "Зеленый Слоник"
+Angle = 127
+ID = 4016
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_33_Нарцисс _0FCB" type="Node3D" parent="Castles/CastleTablets" unique_id=1869084387 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 1710.1182, -1096.1295, -1096.94)
+script = ExtResource("32_6ft11")
+Castle = 33
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 4043
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_34_Ранден _0FE5" type="Node3D" parent="Castles/CastleTablets" unique_id=1972037440 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1922.5, -1097.7888, -1088.8589)
+script = ExtResource("32_6ft11")
+Castle = 34
+ClanName = "Зеленый Слоник"
+ID = 4069
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_35_Ниргун _0FFF" type="Node3D" parent="Castles/CastleTablets" unique_id=1230739753 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2108.7732, -1096.0817, -1099.9592)
+script = ExtResource("32_6ft11")
+Castle = 35
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 4095
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_36_Гелгивинн _100D" type="Node3D" parent="Castles/CastleTablets" unique_id=1125906921 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2320.4421, -1100.5334, -1098.5322)
+script = ExtResource("32_6ft11")
+Castle = 36
+ClanName = "Зеленый Слоник"
+Angle = 192
+ID = 4109
+ObjectType = 80
+ModelName = "cs_table"
+
+[node name="CastleTablet_37_Иль_Суильи_Руа _1026" type="Node3D" parent="Castles/CastleTablets" unique_id=1491298892 instance=ExtResource("17_6fo3i")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2504.762, -1071.1378, -1099.9119)
+script = ExtResource("32_6ft11")
+Castle = 37
+ClanName = "Зеленый Слоник"
+Angle = 64
+ID = 4134
 ObjectType = 80
 ModelName = "cs_table"
 
 [node name="CastleGates" type="Node3D" parent="Castles" unique_id=84798734]
 script = ExtResource("13_va0l1")
 
-[node name="CastleGate_1174_Lender" parent="Castles/CastleGates" unique_id=1380500096 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2469.3672, -403.72696, -3098.8208)
-Castle = 22
+[node name="CastleGate_00_Льеж _110A" type="Node3D" parent="Castles/CastleGates" unique_id=543946931 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1880.6327, -158.97696, -48.82068)
+script = ExtResource("35_k80t8")
 ClanName = "Зеленый Слоник"
 Angle = 64
 ObjectType = 81
 ModelName = "cc103"
 
-[node name="CastleGate_10F8_Randen" parent="Castles/CastleGates" unique_id=1846215652 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3569.4456, 345.58536, 2101.1829)
-Castle = 34
-ClanName = "Зеленый Слоник"
-Angle = 64
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_11D7_Iong" parent="Castles/CastleGates" unique_id=2094875113 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, -289.53125, -402.3719, -1320.3456)
-Castle = 28
-ClanName = "Зеленый Слоник"
-Angle = 104
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_11D0_Aldarnon" parent="Castles/CastleGates" unique_id=1037734901 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1521.9375, -402.66455, -1903.0172)
-Castle = 27
-ClanName = "Зеленый Слоник"
-Angle = 192
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_10F6_Devanagari" parent="Castles/CastleGates" unique_id=927201806 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(0.77301055, 0, -0.63439316, 0, 1, 0, 0.63439316, 0, 0.77301055, 2443.415, -158.12383, 1656.0953)
-Castle = 14
-ClanName = "Зеленый Слоник"
-Angle = 228
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1111_Lator" parent="Castles/CastleGates" unique_id=440100810 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1980.6284, -159.29306, -1446.4327)
-Castle = 3
-ClanName = "Зеленый Слоник"
-Angle = 64
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1139_Orkobien" parent="Castles/CastleGates" unique_id=1327107925 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2105.2893, -159.8748, 843.2221)
-Castle = 25
-ClanName = "Зеленый Слоник"
-Angle = 192
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1118_EikumKas" parent="Castles/CastleGates" unique_id=66593135 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, 1336.746, -157.89174, -370.24313)
-Castle = 4
-ClanName = "Зеленый Слоник"
-Angle = 142
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1130_Tuanod" parent="Castles/CastleGates" unique_id=1042311082 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3446.6382, -159.41682, -2416.726)
-Castle = 7
-ClanName = "Зеленый Слоник"
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_112B_Ayonat" parent="Castles/CastleGates" unique_id=2006764507 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3380.8364, -158.91908, 2347.963)
-Castle = 17
-ClanName = "Зеленый Слоник"
-Angle = 64
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1124_Deffensat" parent="Castles/CastleGates" unique_id=1611220575 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-0.8700867, 0, -0.49289817, 0, 1, 0, 0.49289817, 0, -0.8700867, 338.66852, -159.79312, 3620.247)
-Castle = 16
-ClanName = "Зеленый Слоник"
-Angle = 149
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1167_Set" parent="Castles/CastleGates" unique_id=2022789298 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(0.77301055, 0, -0.63439316, 0, 1, 0, 0.63439316, 0, 0.77301055, 2693.415, -366.28784, -3293.9048)
-Castle = 21
-ClanName = "Зеленый Слоник"
-Angle = 228
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1141_KareRoyal" parent="Castles/CastleGates" unique_id=979861061 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(0.61523145, 0, 0.7883463, 0, 1, 0, -0.7883463, 0, 0.61523145, 3491.0916, -159.8045, 1277.1448)
-Castle = 9
-ClanName = "Зеленый Слоник"
-Angle = 37
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1179_Kablak" parent="Castles/CastleGates" unique_id=1934581706 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1568.6947, -157.4205, -951.7617)
-Castle = 13
-ClanName = "Зеленый Слоник"
-Angle = 64
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1101_Gedeon" parent="Castles/CastleGates" unique_id=1018111657 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-0.9757021, 0, 0.2191013, 0, 1, 0, -0.2191013, 0, -0.9757021, 447.03473, -159.27176, 2184.3247)
-Castle = 5
-ClanName = "Зеленый Слоник"
-Angle = 119
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1156_Kabrad" parent="Castles/CastleGates" unique_id=1346129914 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -681.3053, -402.1695, -3501.7617)
-Castle = 20
-ClanName = "Зеленый Слоник"
-Angle = 64
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_1108_Orkobien" parent="Castles/CastleGates" unique_id=1725455640 instance=ExtResource("16_y2u3u")]
-transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 3028.0625, -157.91557, -1053.0172)
-Castle = 25
-ClanName = "Зеленый Слоник"
-Angle = 192
-ObjectType = 81
-ModelName = "cc103"
-
-[node name="CastleGate_10FD_Fief" parent="Castles/CastleGates" unique_id=214979741 instance=ExtResource("16_y2u3u")]
+[node name="CastleGate_01_Фьеф _10FD" type="Node3D" parent="Castles/CastleGates" unique_id=2099254764 instance=ExtResource("16_y2u3u")]
 transform = Transform3D(0.9951847, 0, -0.098017246, 0, 1, 0, 0.098017246, 0, 0.9951847, 2644.2478, -158.0286, 180.10287)
+script = ExtResource("35_k80t8")
 Castle = 1
 ClanName = "Зеленый Слоник"
 Angle = 252
 ObjectType = 81
 ModelName = "cc103"
 
-[node name="CastleGate_114A_Blessendor" parent="Castles/CastleGates" unique_id=1129715450 instance=ExtResource("16_y2u3u")]
+[node name="CastleGate_02_Арис _1108" type="Node3D" parent="Castles/CastleGates" unique_id=205327148 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 3028.0625, -157.91557, -1053.0172)
+script = ExtResource("35_k80t8")
+Castle = 2
+ClanName = "Зеленый Слоник"
+Angle = 192
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_03_Латор _1111" type="Node3D" parent="Castles/CastleGates" unique_id=1583484080 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1980.6284, -159.29306, -1446.4327)
+script = ExtResource("35_k80t8")
+Castle = 3
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_04_Эйкум_Кас _1118" type="Node3D" parent="Castles/CastleGates" unique_id=1586587517 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, 1336.746, -157.89174, -370.24313)
+script = ExtResource("35_k80t8")
+Castle = 4
+ClanName = "Зеленый Слоник"
+Angle = 142
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_05_Гедеон _1101" type="Node3D" parent="Castles/CastleGates" unique_id=9357206 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.9757021, 0, 0.2191013, 0, 1, 0, -0.2191013, 0, -0.9757021, 447.03473, -159.27176, 2184.3247)
+script = ExtResource("35_k80t8")
+Castle = 5
+ClanName = "Зеленый Слоник"
+Angle = 119
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_06_Шателье _1109" type="Node3D" parent="Castles/CastleGates" unique_id=1587116446 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.26671258, 0, -0.9637761, 0, 1, 0, 0.9637761, 0, 0.26671258, 927.7028, -159.24672, 1271.1316)
+script = ExtResource("35_k80t8")
+Castle = 6
+ClanName = "Зеленый Слоник"
+Angle = 203
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_07_Туанод _1130" type="Node3D" parent="Castles/CastleGates" unique_id=1253236871 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3446.6382, -159.41682, -2416.726)
+script = ExtResource("35_k80t8")
+Castle = 7
+ClanName = "Зеленый Слоник"
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_08_Пельтье _1139" type="Node3D" parent="Castles/CastleGates" unique_id=844406994 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2105.2893, -159.8748, 843.2221)
+script = ExtResource("35_k80t8")
+Castle = 8
+ClanName = "Зеленый Слоник"
+Angle = 192
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_09_Каре_Рояль _1141" type="Node3D" parent="Castles/CastleGates" unique_id=1578474182 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, 3491.0916, -159.8045, 1277.1448)
+script = ExtResource("35_k80t8")
+Castle = 9
+ClanName = "Зеленый Слоник"
+Angle = 37
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_10_Блессендор _114A" type="Node3D" parent="Castles/CastleGates" unique_id=1958915582 instance=ExtResource("16_y2u3u")]
 transform = Transform3D(0.26671258, 0, -0.9637761, 0, 1, 0, 0.9637761, 0, 0.26671258, 2033.6093, -157.66708, 3458.8562)
+script = ExtResource("35_k80t8")
 Castle = 10
 ClanName = "Зеленый Слоник"
 Angle = 203
 ObjectType = 81
 ModelName = "cc103"
 
-[node name="CastleGate_1164_Ammalael" parent="Castles/CastleGates" unique_id=55064974 instance=ExtResource("16_y2u3u")]
+[node name="CastleGate_11_Терноваль _1151" type="Node3D" parent="Castles/CastleGates" unique_id=930388599 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, 3760.4688, -157.62189, -770.3456)
+script = ExtResource("35_k80t8")
+Castle = 11
+ClanName = "Зеленый Слоник"
+Angle = 104
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_12_Аммалаэль _1164" type="Node3D" parent="Castles/CastleGates" unique_id=2051413970 instance=ExtResource("16_y2u3u")]
 transform = Transform3D(-0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, -0.85772866, 540.7403, -157.67262, -471.30054)
+script = ExtResource("35_k80t8")
 Castle = 12
 ClanName = "Зеленый Слоник"
 Angle = 150
 ObjectType = 81
 ModelName = "cc103"
 
+[node name="CastleGate_13_Каблак _1179" type="Node3D" parent="Castles/CastleGates" unique_id=1340732526 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1568.6947, -157.4205, -951.7617)
+script = ExtResource("35_k80t8")
+Castle = 13
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_14_Дэванагари _10F6" type="Node3D" parent="Castles/CastleGates" unique_id=1194148897 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.77301055, 0, -0.63439316, 0, 1, 0, 0.63439316, 0, 0.77301055, 2443.415, -158.12383, 1656.0953)
+script = ExtResource("35_k80t8")
+Castle = 14
+ClanName = "Зеленый Слоник"
+Angle = 228
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_15_Сабулат _10FE" type="Node3D" parent="Castles/CastleGates" unique_id=1769794795 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, 1149.9408, -157.89166, 1778.0996)
+script = ExtResource("35_k80t8")
+Castle = 15
+ClanName = "Зеленый Слоник"
+Angle = 1
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_16_Деффенсат _1124" type="Node3D" parent="Castles/CastleGates" unique_id=1510613016 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.8700869, 0, -0.4928983, 0, 1, 0, 0.4928983, 0, -0.8700869, 338.66852, -159.79312, 3620.247)
+script = ExtResource("35_k80t8")
+Castle = 16
+ClanName = "Зеленый Слоник"
+Angle = 149
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_17_Айонат _112B" type="Node3D" parent="Castles/CastleGates" unique_id=1261978972 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3380.8364, -158.91908, 2347.963)
+script = ExtResource("35_k80t8")
+Castle = 17
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_18_Триумфалер _1137" type="Node3D" parent="Castles/CastleGates" unique_id=1827597528 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1550.0098, -158.12105, 2377.6504)
+script = ExtResource("35_k80t8")
+Castle = 18
+ClanName = "Зеленый Слоник"
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_19_Багарнак _1144" type="Node3D" parent="Castles/CastleGates" unique_id=891302433 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1296.6382, -404.1668, -3666.726)
+script = ExtResource("35_k80t8")
+Castle = 19
+ClanName = "Зеленый Слоник"
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_20_Кабрад _1156" type="Node3D" parent="Castles/CastleGates" unique_id=554143236 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -681.3053, -402.1695, -3501.7617)
+script = ExtResource("35_k80t8")
+Castle = 20
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_21_Сет _1167" type="Node3D" parent="Castles/CastleGates" unique_id=1622345822 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.77301055, 0, -0.63439316, 0, 1, 0, 0.63439316, 0, 0.77301055, 2693.415, -366.28784, -3293.9048)
+script = ExtResource("35_k80t8")
+Castle = 21
+ClanName = "Зеленый Слоник"
+Angle = 228
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_22_Лендер _1174" type="Node3D" parent="Castles/CastleGates" unique_id=837103893 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2469.3672, -403.72696, -3098.8208)
+script = ExtResource("35_k80t8")
+Castle = 22
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_23_Келес _118C" type="Node3D" parent="Castles/CastleGates" unique_id=342403300 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, -0.85772866, -709.2597, -402.4226, -2721.3005)
+script = ExtResource("35_k80t8")
+Castle = 23
+ClanName = "Зеленый Слоник"
+Angle = 150
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_24_Шепростан _1193" type="Node3D" parent="Castles/CastleGates" unique_id=1992429841 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.9951847, 0, -0.098017246, 0, 1, 0, 0.098017246, 0, 0.9951847, 494.2478, -402.7776, -2669.8972)
+script = ExtResource("35_k80t8")
+Castle = 24
+ClanName = "Зеленый Слоник"
+Angle = 252
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_25_Оркобьен _119A" type="Node3D" parent="Castles/CastleGates" unique_id=750536018 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1330.6284, -404.04306, -2296.4326)
+script = ExtResource("35_k80t8")
+Castle = 25
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_26_Кануак _11C9" type="Node3D" parent="Castles/CastleGates" unique_id=1366491763 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -3100.059, -366.05566, -2071.9004)
+script = ExtResource("35_k80t8")
+Castle = 26
+ClanName = "Зеленый Слоник"
+Angle = 1
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_27_Алдарнон _11D0" type="Node3D" parent="Castles/CastleGates" unique_id=1482228328 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1521.9375, -402.66455, -1903.0172)
+script = ExtResource("35_k80t8")
+Castle = 27
+ClanName = "Зеленый Слоник"
+Angle = 192
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_28_Йонг _11D7" type="Node3D" parent="Castles/CastleGates" unique_id=743654923 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, -289.53125, -402.3719, -1320.3456)
+script = ExtResource("35_k80t8")
+Castle = 28
+ClanName = "Зеленый Слоник"
+Angle = 104
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_29_Элек _11DE" type="Node3D" parent="Castles/CastleGates" unique_id=139111651 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2569.3672, 95.57303, 301.1792)
+script = ExtResource("35_k80t8")
+Castle = 29
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_30_Гавот _11E5" type="Node3D" parent="Castles/CastleGates" unique_id=758008667 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, -0.85772866, -1409.2598, 96.87738, -721.30054)
+script = ExtResource("35_k80t8")
+Castle = 30
+ClanName = "Зеленый Слоник"
+Angle = 150
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_31_Кандур _11EC" type="Node3D" parent="Castles/CastleGates" unique_id=1043283409 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, -589.53125, 96.9281, 279.65442)
+script = ExtResource("35_k80t8")
+Castle = 31
+ClanName = "Зеленый Слоник"
+Angle = 104
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_32_Иммертель _120A" type="Node3D" parent="Castles/CastleGates" unique_id=1044405582 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, -0.85772866, -3409.2598, 346.08258, 78.69946)
+script = ExtResource("35_k80t8")
+Castle = 32
+ClanName = "Зеленый Слоник"
+Angle = 150
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_33_Нарцисс _1211" type="Node3D" parent="Castles/CastleGates" unique_id=983771006 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.26671258, 0, -0.9637761, 0, 1, 0, 0.9637761, 0, 0.26671258, -2422.307, 345.2897, 1321.1075)
+script = ExtResource("35_k80t8")
+Castle = 33
+ClanName = "Зеленый Слоник"
+Angle = 203
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_34_Ранден _10F8" type="Node3D" parent="Castles/CastleGates" unique_id=2008430054 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3569.4456, 345.58536, 2101.1829)
+script = ExtResource("35_k80t8")
+Castle = 34
+ClanName = "Зеленый Слоник"
+Angle = 64
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_35_Ниргун _10FF" type="Node3D" parent="Castles/CastleGates" unique_id=375595446 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, -3189.5313, 346.61572, -720.3456)
+script = ExtResource("35_k80t8")
+Castle = 35
+ClanName = "Зеленый Слоник"
+Angle = 104
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_36_Гелгивинн _1106" type="Node3D" parent="Castles/CastleGates" unique_id=1221412761 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(-0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, -0.85772866, -2609.2598, 346.87738, 2078.6995)
+script = ExtResource("35_k80t8")
+Castle = 36
+ClanName = "Зеленый Слоник"
+Angle = 150
+ObjectType = 81
+ModelName = "cc103"
+
+[node name="CastleGate_37_Иль_Суильи_Руа _110D" type="Node3D" parent="Castles/CastleGates" unique_id=1470710785 instance=ExtResource("16_y2u3u")]
+transform = Transform3D(0.7409511, 0, -0.671559, 0, 1, 0, 0.671559, 0, 0.7409511, -1074.7556, 371.43045, 1615.8385)
+script = ExtResource("35_k80t8")
+Castle = 37
+ClanName = "Зеленый Слоник"
+Angle = 226
+ObjectType = 81
+ModelName = "cc103"
+
 [node name="CastleTeleports" type="Node3D" parent="Castles" unique_id=1100000001]
 script = ExtResource("13_ctfill")
 
-[node name="CastleTeleport_1439_[-2277]_[1099]_[1097]" parent="Castles/CastleTeleports" unique_id=1972352791 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2276.9382, -1099.6322, -1097.768)
-ID = 5177
-ObjectType = 69
-
-[node name="CastleTeleport_1435_[-3293]_[1099]_[1075]" parent="Castles/CastleTeleports" unique_id=1933104449 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3292.0166, -1099.1001, -1075.5842)
-ID = 5173
-ObjectType = 69
-
-[node name="CastleTeleport_144A_[-2487]_[1097]_[1070]" parent="Castles/CastleTeleports" unique_id=1052118845 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2486.3198, -1097.1488, -1070.6586)
-ID = 5194
-ObjectType = 69
-
-[node name="CastleTeleport_1437_[-2899]_[1097]_[1062]" parent="Castles/CastleTeleports" unique_id=91963756 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2898.931, -1097.508, -1062.7638)
-ID = 5175
-ObjectType = 69
-
-[node name="CastleTeleport_1488_[-2469]_[1095]_[-3898]" parent="Castles/CastleTeleports" unique_id=1843308268 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2468.9067, -1095.0005, 3897.4248)
-ID = 5256
-ObjectType = 69
-
-[node name="CastleTeleport_1495_[-1691]_[1107]_[1116]" parent="Castles/CastleTeleports" unique_id=1713389987 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1690.6238, -1107.5714, -1116.3993)
-ID = 5269
-ObjectType = 69
-
-[node name="CastleTeleport_149E_[63]_[1104]_[1075]" parent="Castles/CastleTeleports" unique_id=441601535 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, 63.717945, -1104.5853, -1075.0839)
-Angle = 232
-ID = 5278
-ObjectType = 69
-
-[node name="CastleTeleport_1455_[-2725]_[1092]_[-3910]" parent="Castles/CastleTeleports" unique_id=1287213067 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(0.8032074, 0, -0.5956995, 0, 1, 0, 0.5956995, 0, 0.8032074, -2724.9019, -1092.9148, 3909.791)
-Angle = 230
-ID = 5205
-ObjectType = 69
-
-[node name="CastleTeleport_145A_[-3470]_[1102]_[1114]" parent="Castles/CastleTeleports" unique_id=1188619129 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3469.8843, -1102.7657, -1114.2009)
-ID = 5210
-ObjectType = 69
-
-[node name="CastleTeleport_1467_[-891]_[1097]_[1129]" parent="Castles/CastleTeleports" unique_id=91712680 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, -890.8711, -1097.001, -1129.1678)
+[node name="CastleTeleport_30_Гавот _1497" type="Node3D" parent="Castles/CastleTeleports" unique_id=1442113185 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, 1105.7733, -1096.9833, -1123.8927)
+script = ExtResource("38_7dxrl")
+Castle = 30
 Angle = 212
-ID = 5223
+ID = 5271
 ObjectType = 69
 
-[node name="CastleTeleport_1480_[-3900]_[1099]_[1106]" parent="Castles/CastleTeleports" unique_id=1053838561 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3899.4814, -1099.9126, -1106.2406)
-ID = 5248
-ObjectType = 69
-
-[node name="CastleTeleport_1478_[-670]_[1102]_[1114]" parent="Castles/CastleTeleports" unique_id=392645682 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -669.34064, -1102.7689, -1114.4113)
-ID = 5240
-ObjectType = 69
-
-[node name="CastleTeleport_1474_[-1499]_[1100]_[1113]" parent="Castles/CastleTeleports" unique_id=2034223221 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, -1498.7288, -1100.5409, -1113.9084)
-Angle = 232
-ID = 5236
-ObjectType = 69
-
-[node name="CastleTeleport_147A_[2529]_[1071]_[1129]" parent="Castles/CastleTeleports" unique_id=94195264 instance=ExtResource("33_xmlqq")]
+[node name="CastleTeleport_37_Иль_Суильи_Руа _14A3" type="Node3D" parent="Castles/CastleTeleports" unique_id=512072246 instance=ExtResource("33_xmlqq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2529.8591, -1071.1287, -1129.7948)
-ID = 5242
+script = ExtResource("38_7dxrl")
+Castle = 37
+ID = 5283
 ObjectType = 69
 
-[node name="CastleTeleport_149F_[-2065]_[1096]_[1069]" parent="Castles/CastleTeleports" unique_id=1491147348 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2064.988, -1096.0927, -1069.093)
+[node name="CastleTeleport_36_Гелгивинн _14A0" type="Node3D" parent="Castles/CastleTeleports" unique_id=1031705960 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2324.86, -1096.5253, -1098.5684)
+script = ExtResource("38_7dxrl")
+Castle = 36
+Angle = 192
+ID = 5280
+ObjectType = 69
+
+[node name="CastleTeleport_35_Ниргун _149F" type="Node3D" parent="Castles/CastleTeleports" unique_id=1171727598 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2107.4792, -1096.1124, -1070.75)
+script = ExtResource("38_7dxrl")
+Castle = 35
 ID = 5279
 ObjectType = 69
 
-[node name="CastleTeleport_1490_[1931]_[1102]_[1104]" parent="Castles/CastleTeleports" unique_id=12939081 instance=ExtResource("33_xmlqq")]
+[node name="CastleTeleport_34_Ранден _149E" type="Node3D" parent="Castles/CastleTeleports" unique_id=1952114633 instance=ExtResource("33_xmlqq")]
 transform = Transform3D(0.89322424, 0, -0.4496115, 0, 1, 0, 0.4496115, 0, 0.89322424, 1931.3606, -1102.2815, -1104.9193)
+script = ExtResource("38_7dxrl")
+Castle = 34
 Angle = 237
+ID = 5278
+ObjectType = 69
+
+[node name="CastleTeleport_33_Нарцисс _149D" type="Node3D" parent="Castles/CastleTeleports" unique_id=2045894194 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(-0.24298038, 0, -0.9700312, 0, 1, 0, 0.9700312, 0, -0.24298038, 1705.1587, -1097.0321, -1123.7194)
+script = ExtResource("38_7dxrl")
+Castle = 33
+Angle = 182
+ID = 5277
+ObjectType = 69
+
+[node name="CastleTeleport_32_Иммертель _149C" type="Node3D" parent="Castles/CastleTeleports" unique_id=291551516 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.870087, 0, 0.49289817, 0, 1, 0, -0.49289817, 0, 0.870087, 1499.8922, -1104.8091, -1082.7092)
+script = ExtResource("38_7dxrl")
+Castle = 32
+Angle = 21
+ID = 5276
+ObjectType = 69
+
+[node name="CastleTeleport_31_Кандур _1498" type="Node3D" parent="Castles/CastleTeleports" unique_id=187443636 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1323.2616, -1102.2736, -1105.7333)
+script = ExtResource("38_7dxrl")
+Castle = 31
+ID = 5272
+ObjectType = 69
+
+[node name="CastleTeleport_29_Элек _1496" type="Node3D" parent="Castles/CastleTeleports" unique_id=1080089003 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 905.43054, -1104.8402, -1082.6296)
+script = ExtResource("38_7dxrl")
+Castle = 29
+ID = 5270
+ObjectType = 69
+
+[node name="CastleTeleport_28_Йонг _1493" type="Node3D" parent="Castles/CastleTeleports" unique_id=506591486 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 700.0028, -1096.0144, -1108.7231)
+script = ExtResource("38_7dxrl")
+Castle = 28
+ID = 5267
+ObjectType = 69
+
+[node name="CastleTeleport_27_Алдарнон _1492" type="Node3D" parent="Castles/CastleTeleports" unique_id=1092878522 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 514.10504, -1100.5703, -1081.1842)
+script = ExtResource("38_7dxrl")
+Castle = 27
+ID = 5266
+ObjectType = 69
+
+[node name="CastleTeleport_26_Кануак _1491" type="Node3D" parent="Castles/CastleTeleports" unique_id=165489591 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 290.816, -1099.8641, -1097.9867)
+script = ExtResource("38_7dxrl")
+Castle = 26
+ID = 5265
+ObjectType = 69
+
+[node name="CastleTeleport_25_Оркобьен _1490" type="Node3D" parent="Castles/CastleTeleports" unique_id=717016406 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, 63.717945, -1104.5853, -1075.0839)
+script = ExtResource("38_7dxrl")
+Castle = 25
+Angle = 232
 ID = 5264
 ObjectType = 69
 
-[node name="CastleTeleport_1483_[514]_[1100]_[1081]" parent="Castles/CastleTeleports" unique_id=1723263311 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 514.10504, -1100.5703, -1081.1842)
-ID = 5251
+[node name="CastleTeleport_24_Шепростан _148F" type="Node3D" parent="Castles/CastleTeleports" unique_id=182784435 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.5141028, 0, -0.85772854, 0, 1, 0, 0.85772854, 0, 0.5141028, -93.582375, -1088.6248, -1120.2129)
+script = ExtResource("38_7dxrl")
+Castle = 24
+Angle = 214
+ID = 5263
 ObjectType = 69
 
-[node name="CastleTeleport_1484_[700]_[1096]_[1108]" parent="Castles/CastleTeleports" unique_id=701660679 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 700.0028, -1096.0144, -1108.7231)
+[node name="CastleTeleport_23_Келес _148E" type="Node3D" parent="Castles/CastleTeleports" unique_id=940329735 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -305.16153, -1100.6047, -1127.532)
+script = ExtResource("38_7dxrl")
+Castle = 23
+ID = 5262
+ObjectType = 69
+
+[node name="CastleTeleport_21_Сет _148C" type="Node3D" parent="Castles/CastleTeleports" unique_id=1653667320 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -669.34064, -1102.7689, -1114.4113)
+script = ExtResource("38_7dxrl")
+Castle = 21
+ID = 5260
+ObjectType = 69
+
+[node name="CastleTeleport_22_Лендер _148D" type="Node3D" parent="Castles/CastleTeleports" unique_id=176770511 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -492.5184, -1096.097, -1070.7347)
+script = ExtResource("38_7dxrl")
+Castle = 22
+ID = 5261
+ObjectType = 69
+
+[node name="CastleTeleport_20_Кабрад _148B" type="Node3D" parent="Castles/CastleTeleports" unique_id=610175499 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, -890.8711, -1097.001, -1129.1678)
+script = ExtResource("38_7dxrl")
+Castle = 20
+Angle = 212
+ID = 5259
+ObjectType = 69
+
+[node name="CastleTeleport_19_Багарнак _1489" type="Node3D" parent="Castles/CastleTeleports" unique_id=1456571495 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1097.1401, -1099.8995, -1097.0916)
+script = ExtResource("38_7dxrl")
+Castle = 19
+ID = 5257
+ObjectType = 69
+
+[node name="CastleTeleport_18_Триумфалер _1488" type="Node3D" parent="Castles/CastleTeleports" unique_id=2081156459 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1321.3296, -1090.2849, -1102.6327)
+script = ExtResource("38_7dxrl")
+Castle = 18
+ID = 5256
+ObjectType = 69
+
+[node name="CastleTeleport_17_Айонат _1487" type="Node3D" parent="Castles/CastleTeleports" unique_id=873246524 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, -1498.7288, -1100.5409, -1113.9084)
+script = ExtResource("38_7dxrl")
+Castle = 17
+Angle = 232
+ID = 5255
+ObjectType = 69
+
+[node name="CastleTeleport_16_Деффенсат _1486" type="Node3D" parent="Castles/CastleTeleports" unique_id=1329946346 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1690.6238, -1107.5714, -1116.3993)
+script = ExtResource("38_7dxrl")
+Castle = 16
+ID = 5254
+ObjectType = 69
+
+[node name="CastleTeleport_15_Сабулат _1485" type="Node3D" parent="Castles/CastleTeleports" unique_id=1617330405 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1875.0359, -1102.1729, -1113.9858)
+script = ExtResource("38_7dxrl")
+Castle = 15
+ID = 5253
+ObjectType = 69
+
+[node name="CastleTeleport_14_Дэванагари _1484" type="Node3D" parent="Castles/CastleTeleports" unique_id=473731365 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2064.988, -1096.0927, -1069.093)
+script = ExtResource("38_7dxrl")
+Castle = 14
 ID = 5252
 ObjectType = 69
 
-[node name="CastleTeleport_1482_[-493]_[1096]_[1070]" parent="Castles/CastleTeleports" unique_id=852221387 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -492.5184, -1096.097, -1070.7347)
-ID = 5250
+[node name="CastleTeleport_13_Каблак _1483" type="Node3D" parent="Castles/CastleTeleports" unique_id=2130674186 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2276.9382, -1099.6322, -1097.768)
+script = ExtResource("38_7dxrl")
+Castle = 13
+ID = 5251
 ObjectType = 69
 
-[node name="CastleTeleport_145B_[-1876]_[1102]_[1113]" parent="Castles/CastleTeleports" unique_id=1801853201 instance=ExtResource("33_xmlqq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1875.0359, -1102.1729, -1113.9858)
-ID = 5211
+[node name="CastleTeleport_12_Аммалаэль _1484" type="Node3D" parent="Castles/CastleTeleports" unique_id=1852876068 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2486.3198, -1097.1488, -1070.6586)
+script = ExtResource("38_7dxrl")
+Castle = 12
+ID = 5252
 ObjectType = 69
+
+[node name="CastleTeleport_11_Терноваль _1472" type="Node3D" parent="Castles/CastleTeleports" unique_id=1484852037 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, -2740.6563, -1098.5956, -1081.4448)
+script = ExtResource("38_7dxrl")
+Castle = 11
+Angle = 232
+ID = 5234
+ObjectType = 69
+
+[node name="CastleTeleport_10_Блессендор _1471" type="Node3D" parent="Castles/CastleTeleports" unique_id=1768462790 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2898.931, -1097.508, -1062.7638)
+script = ExtResource("38_7dxrl")
+Castle = 10
+ID = 5233
+ObjectType = 69
+
+[node name="CastleTeleport_09_Каре_Рояль _1470" type="Node3D" parent="Castles/CastleTeleports" unique_id=448084471 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3105.2463, -1100.6061, -1127.3892)
+script = ExtResource("38_7dxrl")
+Castle = 9
+ID = 5232
+ObjectType = 69
+
+[node name="CastleTeleport_08_Пельтье _146F" type="Node3D" parent="Castles/CastleTeleports" unique_id=991379166 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3292.0166, -1099.1001, -1075.5842)
+script = ExtResource("38_7dxrl")
+Castle = 8
+ID = 5231
+ObjectType = 69
+
+[node name="CastleTeleport_07_Туанод _146E" type="Node3D" parent="Castles/CastleTeleports" unique_id=397120459 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3469.8843, -1102.7657, -1114.2009)
+script = ExtResource("38_7dxrl")
+Castle = 7
+ID = 5230
+ObjectType = 69
+
+[node name="CastleTeleport_06_Шателье _146D" type="Node3D" parent="Castles/CastleTeleports" unique_id=1697964125 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.7883465, 0, -0.61523145, 0, 1, 0, 0.61523145, 0, 0.7883465, -3693.7798, -1096.9897, -1123.7385)
+script = ExtResource("38_7dxrl")
+Castle = 6
+Angle = 229
+ID = 5229
+ObjectType = 69
+
+[node name="CastleTeleport_05_Гедеон _1483" type="Node3D" parent="Castles/CastleTeleports" unique_id=1070912838 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3899.4814, -1099.9126, -1106.2406)
+script = ExtResource("38_7dxrl")
+Castle = 5
+ID = 5251
+ObjectType = 69
+
+[node name="CastleTeleport_04_Эйкум_Кас _146C" type="Node3D" parent="Castles/CastleTeleports" unique_id=654085019 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2119.3022, -1100.0566, 3901.811)
+script = ExtResource("38_7dxrl")
+Castle = 4
+ID = 5228
+ObjectType = 69
+
+[node name="CastleTeleport_03_Латор _146B" type="Node3D" parent="Castles/CastleTeleports" unique_id=129385326 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2268.0696, -1090.6301, 3872.355)
+script = ExtResource("38_7dxrl")
+Castle = 3
+ID = 5227
+ObjectType = 69
+
+[node name="CastleTeleport_02_Арис _146A" type="Node3D" parent="Castles/CastleTeleports" unique_id=1201325553 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2468.9067, -1095.0005, 3897.4248)
+script = ExtResource("38_7dxrl")
+Castle = 2
+ID = 5226
+ObjectType = 69
+
+[node name="CastleTeleport_01_Фьеф _1469" type="Node3D" parent="Castles/CastleTeleports" unique_id=1895588755 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(0.8032074, 0, -0.5956995, 0, 1, 0, 0.5956995, 0, 0.8032074, -2724.9019, -1092.9148, 3909.791)
+script = ExtResource("38_7dxrl")
+Castle = 1
+Angle = 230
+ID = 5225
+ObjectType = 69
+
+[node name="CastleTeleport_00_Льеж _1468" type="Node3D" parent="Castles/CastleTeleports" unique_id=823002327 instance=ExtResource("33_xmlqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3320.6658, -1103.2643, 3903.017)
+script = ExtResource("38_7dxrl")
+ID = 5224
+ObjectType = 69
+
+[node name="CastleEntrances" type="Node3D" parent="Castles" unique_id=700863821]
+script = ExtResource("34_juwvs")
+
+[node name="CastleEntrance_02_Арис _107B" type="Node3D" parent="Castles/CastleEntrances" unique_id=1912384671 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3053.735, -156.74692, -1053.8176)
+script = ExtResource("40_2jhn2")
+Castle = 2
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_00_Льеж _106D" type="Node3D" parent="Castles/CastleEntrances" unique_id=1765772109 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, 1845.3303, -156.40472, -37.5737)
+script = ExtResource("40_2jhn2")
+Angle = 207
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_01_Фьеф _1074" type="Node3D" parent="Castles/CastleEntrances" unique_id=291636854 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2645.0176, -156.4683, 159.43848)
+script = ExtResource("40_2jhn2")
+Castle = 1
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_03_Латор _1082" type="Node3D" parent="Castles/CastleEntrances" unique_id=1996698482 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1944.7999, -156.16803, -1448.9385)
+script = ExtResource("40_2jhn2")
+Castle = 3
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_04_Эйкум_Кас _1089" type="Node3D" parent="Castles/CastleEntrances" unique_id=1481301228 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.9329928, 0, 0.35989505, 0, 1, 0, -0.35989505, 0, 0.9329928, 1346.6414, -156.76729, -357.64926)
+script = ExtResource("40_2jhn2")
+Castle = 4
+Angle = 15
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_05_Гедеон _1090" type="Node3D" parent="Castles/CastleEntrances" unique_id=208254265 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.96377605, 0, 0.26671275, 0, 1, 0, -0.26671275, 0, 0.96377605, 445.36716, -155.8815, 2152.0737)
+script = ExtResource("40_2jhn2")
+Castle = 5
+Angle = 11
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_06_Шателье _1097" type="Node3D" parent="Castles/CastleEntrances" unique_id=819318856 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 955.331, -156.04268, 1248.5459)
+script = ExtResource("40_2jhn2")
+Castle = 6
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_07_Туанод _109E" type="Node3D" parent="Castles/CastleEntrances" unique_id=1228454261 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3454.3113, -156.03644, -2460.218)
+script = ExtResource("40_2jhn2")
+Castle = 7
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_08_Пельтье _10A5" type="Node3D" parent="Castles/CastleEntrances" unique_id=1000429420 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2136.5945, -156.65218, 854.6384)
+script = ExtResource("40_2jhn2")
+Castle = 8
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_09_Каре_Рояль _10AC" type="Node3D" parent="Castles/CastleEntrances" unique_id=340251697 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3466.6091, -156.67296, 1251.5164)
+script = ExtResource("40_2jhn2")
+Castle = 9
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_10_Блессендор _10B3" type="Node3D" parent="Castles/CastleEntrances" unique_id=355887188 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.2429804, 0, -0.9700312, 0, 1, 0, 0.9700312, 0, 0.2429804, 2048.34, -155.92268, 3453.3462)
+script = ExtResource("40_2jhn2")
+Castle = 10
+Angle = 202
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_11_Терноваль _10BA" type="Node3D" parent="Castles/CastleEntrances" unique_id=1175505446 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.9569403, 0, -0.29028484, 0, 1, 0, 0.29028484, 0, 0.9569403, 3757.8352, -156.3, -745.9155)
+script = ExtResource("40_2jhn2")
+Castle = 11
+Angle = 244
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_12_Аммалаэль _10C1" type="Node3D" parent="Castles/CastleEntrances" unique_id=628063481 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, 548.9542, -156.0014, -452.52515)
+script = ExtResource("40_2jhn2")
+Castle = 12
+Angle = 37
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_13_Каблак _10D9" type="Node3D" parent="Castles/CastleEntrances" unique_id=2120776679 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.97003126, 0, -0.24298023, 0, 1, 0, 0.24298023, 0, 0.97003126, 1537.6409, -156.5927, -959.4555)
+script = ExtResource("40_2jhn2")
+Castle = 13
+Angle = 246
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_14_Дэванагари _10E0" type="Node3D" parent="Castles/CastleEntrances" unique_id=1661152129 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, 2452.6611, -156.51413, 1632.5369)
+script = ExtResource("40_2jhn2")
+Castle = 14
+Angle = 1
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_15_Сабулат _10E7" type="Node3D" parent="Castles/CastleEntrances" unique_id=1956673813 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1148.7494, -156.50575, 1753.408)
+script = ExtResource("40_2jhn2")
+Castle = 15
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_16_Деффенсат _10EE" type="Node3D" parent="Castles/CastleEntrances" unique_id=1159534243 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.97003126, 0, 0.24298018, 0, 1, 0, -0.24298018, 0, 0.97003126, 351.24548, -155.96497, 3644.353)
+script = ExtResource("40_2jhn2")
+Castle = 16
+Angle = 10
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_17_Айонат _10F5" type="Node3D" parent="Castles/CastleEntrances" unique_id=392852501 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-0.14673045, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, -0.14673045, 3355.7896, -155.74127, 2350.2544)
+script = ExtResource("40_2jhn2")
+Castle = 17
+Angle = 70
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_18_Триумфалер _1102" type="Node3D" parent="Castles/CastleEntrances" unique_id=825179409 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, 1539.7478, -156.58453, 2355.4458)
+script = ExtResource("40_2jhn2")
+Castle = 18
+Angle = 1
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_19_Багарнак _110E" type="Node3D" parent="Castles/CastleEntrances" unique_id=1359463245 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1304.9476, -400.9948, -3710.2375)
+script = ExtResource("40_2jhn2")
+Castle = 19
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_20_Кабрад _1116" type="Node3D" parent="Castles/CastleEntrances" unique_id=1819358996 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.97003126, 0, -0.24298023, 0, 1, 0, 0.24298023, 0, 0.97003126, -712.2514, -401.54996, -3509.755)
+script = ExtResource("40_2jhn2")
+Castle = 20
+Angle = 246
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_21_Сет _111E" type="Node3D" parent="Castles/CastleEntrances" unique_id=157381327 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.90398926, 0, -0.4275552, 0, 1, 0, 0.4275552, 0, 0.90398926, 2700.5862, -364.9385, -3316.3193)
+script = ExtResource("40_2jhn2")
+Castle = 21
+Angle = 238
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_22_Лендер _1126" type="Node3D" parent="Castles/CastleEntrances" unique_id=257856376 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, -2492.5452, -401.15472, -3099.505)
+script = ExtResource("40_2jhn2")
+Castle = 22
+Angle = 207
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_23_Келес _112E" type="Node3D" parent="Castles/CastleEntrances" unique_id=439834015 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, -691.5545, -401.66287, -2695.2385)
+script = ExtResource("40_2jhn2")
+Castle = 23
+Angle = 37
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_24_Шепростан _1136" type="Node3D" parent="Castles/CastleEntrances" unique_id=1305156614 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 495.08594, -401.52972, -2689.8318)
+script = ExtResource("40_2jhn2")
+Castle = 24
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_25_Оркобьен _113F" type="Node3D" parent="Castles/CastleEntrances" unique_id=889552091 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1294.7871, -401.0222, -2298.6575)
+script = ExtResource("40_2jhn2")
+Castle = 25
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_26_Кануак _1148" type="Node3D" parent="Castles/CastleEntrances" unique_id=2028102688 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3101.2393, -364.93018, -2096.495)
+script = ExtResource("40_2jhn2")
+Castle = 26
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_27_Алдарнон _1150" type="Node3D" parent="Castles/CastleEntrances" unique_id=1799041518 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1503.8566, -401.4959, -1910.7399)
+script = ExtResource("40_2jhn2")
+Castle = 27
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_28_Йонг _1159" type="Node3D" parent="Castles/CastleEntrances" unique_id=1342099944 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.9569403, 0, -0.29028484, 0, 1, 0, 0.29028484, 0, 0.9569403, -291.9186, -401.20624, -1296.282)
+script = ExtResource("40_2jhn2")
+Castle = 28
+Angle = 244
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_29_Элек _1161" type="Node3D" parent="Castles/CastleEntrances" unique_id=862232818 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, -2597.3235, 98.379616, 300.18622)
+script = ExtResource("40_2jhn2")
+Castle = 29
+Angle = 12
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_30_Гавот _116A" type="Node3D" parent="Castles/CastleEntrances" unique_id=2138214591 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, -1393.7101, 97.637115, -695.67993)
+script = ExtResource("40_2jhn2")
+Castle = 30
+Angle = 37
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_31_Кандур _1171" type="Node3D" parent="Castles/CastleEntrances" unique_id=281259504 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.26671275, 0, 0.96377605, 0, 1, 0, -0.96377605, 0, 0.26671275, -596.1048, 100.28107, 311.97263)
+script = ExtResource("40_2jhn2")
+Castle = 31
+Angle = 53
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_32_Иммертель _117A" type="Node3D" parent="Castles/CastleEntrances" unique_id=1254343667 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, -3401.046, 346.9986, 97.47485)
+script = ExtResource("40_2jhn2")
+Castle = 32
+Angle = 37
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_33_Нарцисс _1181" type="Node3D" parent="Castles/CastleEntrances" unique_id=459595969 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2394.669, 346.95734, 1298.5459)
+script = ExtResource("40_2jhn2")
+Castle = 33
+Angle = 64
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_34_Ранден _1188" type="Node3D" parent="Castles/CastleEntrances" unique_id=1570056975 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, -3604.6697, 346.59528, 2112.4263)
+script = ExtResource("40_2jhn2")
+Castle = 34
+Angle = 207
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_35_Ниргун _1190" type="Node3D" parent="Castles/CastleEntrances" unique_id=916762994 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.26671275, 0, 0.96377605, 0, 1, 0, -0.96377605, 0, 0.26671275, -3196.1047, 350.28107, -688.02734)
+script = ExtResource("40_2jhn2")
+Castle = 35
+Angle = 53
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_36_Гелгивинн _1198" type="Node3D" parent="Castles/CastleEntrances" unique_id=2034533763 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(0.6152316, 0, 0.7883464, 0, 1, 0, -0.7883464, 0, 0.6152316, -2593.71, 347.63712, 2104.32)
+script = ExtResource("40_2jhn2")
+Castle = 36
+Angle = 37
+ObjectType = 98
+ModelName = "EDOOR"
+
+[node name="CastleEntrance_37_Иль_Суильи_Руа _11A0" type="Node3D" parent="Castles/CastleEntrances" unique_id=1728323735 instance=ExtResource("10_pt6yw")]
+transform = Transform3D(-0.40524134, 0, 0.9142097, 0, 1, 0, -0.9142097, 0, -0.40524134, -1054.0382, 375.1943, 1557.62)
+script = ExtResource("40_2jhn2")
+Castle = 37
+Angle = 81
+ObjectType = 98
+ModelName = "EDOOR"
 
 [node name="TerrainScene" parent="." unique_id=819193901 instance=ExtResource("34_xmlqq")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1708.8, 1, 1709)

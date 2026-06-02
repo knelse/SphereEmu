@@ -86,9 +86,13 @@ public partial class CastleTeleportsFill : Node3D
 				continue;
 			}
 
+			var localPos = new Vector3((float)x, -(float)y, -(float)z);
+			CastleTabletLookup.TryGetNearestCastle(this, ToGlobal(localPos), out var castle);
+
 			var instance = scene!.Instantiate<CastleTeleport>();
-			instance.Name = WorldObjectDumpFillCommon.BuildPlacementName("CastleTeleport", id, x, y, z);
-			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
+			instance.Name = $"CastleTeleport_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Position = localPos;
+			instance.Castle = castle;
 			instance.Angle = angleEncoded;
 			if (id is >= 0 and <= ushort.MaxValue)
 			{

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Godot;
 using LiteDB;
 using SphServer.Shared.Logger;
@@ -91,7 +89,7 @@ public class CharacterDbEntry
     public ushort MaxHP { get; set; } = 100;
     public ushort PDef { get; set; }
     public ushort MDef { get; set; }
-    public KarmaTier Karma { get; set; } = KarmaTier.Neutral;
+    public KarmaTypes Karma { get; set; } = KarmaTypes.Нейтральная;
     public Dictionary<BelongingSlot, int> Items { get; set; } = new ();
     public int PAtk { get; set; }
     public int MAtk { get; set; }

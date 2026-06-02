@@ -1,8 +1,8 @@
 public enum KarmaTypes : byte
 {
-    VeryBad = 0x1,
-    Bad = 0x2,
-    Neutral = 0x3,
-    Good = 0x4,
-    Benign = 0x5
+    Очень_Плохая = 0x1,
+    Плохая = 0x2,
+    Нейтральная = 0x3,
+    Хорошая = 0x4,
+    Благая = 0x5
 }

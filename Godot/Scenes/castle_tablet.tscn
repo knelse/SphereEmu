@@ -3,8 +3,18 @@
 [ext_resource type="Script" uid="uid://btqg80h8yddra" path="res://Sphere.Game/WorldObject/CastleTablet.cs" id="1_n4g31"]
 [ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_xx26p"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_lookup"]
+radius = 1.0
+
 [node name="CastleTablet" type="Node3D" unique_id=1627497759]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_n4g31")
 
 [node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_xx26p")]
+
+[node name="CastleLookupArea" type="Area3D" parent="."]
+collision_layer = 1048576
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CastleLookupArea"]
+shape = SubResource("SphereShape3D_lookup")
