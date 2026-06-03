@@ -134,18 +134,18 @@ public static class SavedCoords
             {
                 [SharedDungeon] = new()
                 {
-                    ["Остров_Выбора"] = new WorldCoords(1299, 1499, 35, 5.87),
+                    ["Остров_Выбора"] = new WorldCoords(1299, 1499.7, 35, 5.87),
                     ["Латор_Каблак"] = new WorldCoords(-300, 1500, 106, 3.1415),
                     ["Аммалаэль"] = new WorldCoords(33, 1500, 145, 4.85),
-                    ["Фьеф_Респ_Меди"] = new WorldCoords(-99, 1500, 33, 5.87),
+                    ["Фьеф_Респ_Меди"] = new WorldCoords(-99, 1499.7, 33, 5.87),
                     ["Санпул_Карма_Север"] = new WorldCoords(-2105, 1498, 100, 4.8),
-                    ["Бангвиль"] = new WorldCoords(-1500, 1499, 105, 3),
+                    ["Бангвиль"] = new WorldCoords(-1500, 1499.7, 105.85, 3.14),
                     ["Каре_Рояль_Север"] = new WorldCoords(-1293, 1499, 100, 1.57),
                     ["Каре_Рояль_Юг"] = new WorldCoords(-1061, 1499, 100, 4.68),
                     ["Хортонский_Лес"] = new WorldCoords(-1894, 1498, 100, 1.58),
-                    ["Санпул_Лес"] = new WorldCoords(233, 1500, 54, 4.7),
+                    ["Санпул_Лес"] = new WorldCoords(233, 1499.7, 54, 4.7),
                     ["Горы_Дорога_Санпул_Торвил"] = new WorldCoords(-1735, 1498, 100, 4.7),
-                    ["Торвил_Кладб"] = new WorldCoords(433, 1500, 100, 4.66),
+                    ["Торвил_Кладб"] = new WorldCoords(433, 1499.7, 100, 4.66),
                     ["Шипстоун_Север"] = new WorldCoords(-2499, 1498, 105, 3),
                     ["Блессендор"] = new WorldCoords(-706, 1499, 100, 4.71)
                 },
@@ -250,15 +250,14 @@ public static class SavedCoords
                     [nameof(Пельтье)] = new WorldCoords(-3310.1, 1096.64, 1100, 4.71),
                     [nameof(Каре_Рояль)] = new WorldCoords(-3097.78, 1095.82, 1091.78, 1.57),
                     [nameof(Блессендор)] = new WorldCoords(-2907.5, 1095.72, 1096.97, 4.71),
+                    [nameof(Терноваль)] = new WorldCoords(-2693, 1096, 1108, 3.14),
+                    [nameof(Аммалаэль)] = new WorldCoords(-2508, 1099, 1104, -2),
                     [nameof(Каблак)] = new WorldCoords(-2306, 1096, 1108.17, 3.14),
                     [nameof(Дэванагари)] = new WorldCoords(-2099, 1090.74, 1104.25, 3.14),
                     [nameof(Сабулат)] = new WorldCoords(-1892.55, 1096.10, 1084.39, 0),
                     [nameof(Деффенсат)] = new WorldCoords(-1705.3, 1100.85, 1108.72, 3.14),
                     [nameof(Айонат)] = new WorldCoords(-1485.61, 1098.36, 1092.55, 1.57),
-
                     [nameof(Триумфалер)] = new WorldCoords(-1304, 1091, 1094, 0),
-                    [nameof(Аммалаэль)] = new WorldCoords(-2508, 1099, 1104, -2),
-                    [nameof(Терноваль)] = new WorldCoords(-2693, 1096, 1108, 3.14)
                 },
                 [CastleDungeon] = new()
                 {
@@ -273,14 +272,14 @@ public static class SavedCoords
                     [nameof(Пельтье)] = new WorldCoords(700, 1700.77, -3499, 3.14),
                     [nameof(Каре_Рояль)] = new WorldCoords(3143, 1701, -3500, 4.71),
                     [nameof(Блессендор)] = new WorldCoords(1633.67, 1700.64, -3469.96, 4.71),
+                    [nameof(Терноваль)] = new WorldCoords(3300, 1700, -3495, 3.11),
+                    [nameof(Аммалаэль)] = new WorldCoords(3499, 1701, -3501, 5.87),
+                    [nameof(Каблак)] = new WorldCoords(1833.3, 1700.64, -3544.75, 4.71),
+                    // Диван
                     [nameof(Сабулат)] = new WorldCoords(2288.34, 1701, -3455, 1.57),
                     [nameof(Деффенсат)] = new WorldCoords(3698.24, 1701.64, -3500, 4.71),
                     [nameof(Айонат)] = new WorldCoords(2543.84, 1701.64, -3500, 4.71),
                     [nameof(Триумфалер)] = new WorldCoords(2700, 1701.64, -3501.81, 0),
-
-                    [nameof(Каблак)] = new WorldCoords(1833.3, 1700.64, -3544.75, 4.71),
-                    [nameof(Терноваль)] = new WorldCoords(3300, 1700, -3495, 3.11),
-                    [nameof(Аммалаэль)] = new WorldCoords(3499, 1701, -3501, 5.87)
                 },
                 [Other] = new()
                 {
@@ -347,9 +346,9 @@ public static class SavedCoords
                 },
                 [CastleTeleportPointOwner] = new()
                 {
-                    [nameof(Элек)] = new WorldCoords(-2596.07, -96.74, -314.45, 0),
-                    [nameof(Гавот)] = new WorldCoords(-1406.10, -97.11, 705.16, 0),
-                    [nameof(Кандур)] = new WorldCoords(-601.27, -96.98, -297.41, 0)
+                    [nameof(Элек)] = new WorldCoords(-2596.07, -96.8, -314.45, 0),
+                    [nameof(Гавот)] = new WorldCoords(-1406.10, -97.2, 705.16, 0),
+                    [nameof(Кандур)] = new WorldCoords(-601.27, -97, -297.41, 0)
                 },
                 [CastleTeleportPointEnemy] = new()
                 {
@@ -376,25 +375,25 @@ public static class SavedCoords
                 },
                 [CastleTeleportPointOwner] = new()
                 {
-                    [nameof(Иммертель)] = new WorldCoords(-3406.10, -345.60, -94.8, 0),
-                    [nameof(Нарцисс)] = new WorldCoords(-2403.49, -345.65, -1300.99, 0),
-                    [nameof(Ранден)] = new WorldCoords(-3596.99, -345.33, -2112.12, 0),
-                    [nameof(Ниргун)] = new WorldCoords(-3201.27, -345.59, 702.58, 0),
-                    [nameof(Гелгивинн)] = new WorldCoords(-2606.10, -347, -2094.83, 0),
-                    [nameof(Иль_Суильи_Руа)] = new WorldCoords(-1060.35, -374.01, -1569.71, 0)
+                    [nameof(Иммертель)] = new WorldCoords(-3406.10, -345.8, -94.8, 0),
+                    [nameof(Нарцисс)] = new WorldCoords(-2403.49, -345.87, -1300.99, 0),
+                    [nameof(Ранден)] = new WorldCoords(-3596.99, -345.53, -2112.12, 0),
+                    [nameof(Ниргун)] = new WorldCoords(-3201.27, -345.79, 702.58, 0),
+                    [nameof(Гелгивинн)] = new WorldCoords(-2606.10, -347.2, -2094.83, 0),
+                    [nameof(Иль_Суильи_Руа)] = new WorldCoords(-1060.35, -374.21, -1569.71, 0)
                 },
                 [CastleTeleportPointEnemy] = new()
                 {
                     // [nameof (Багарнак)] = new WorldCoords(1894, 159.9, 47, 1.51),
-                    [nameof(Иль_Суильи_Руа)] = new WorldCoords(-1212, -356, -1703, 0)
+                    [nameof(Иль_Суильи_Руа)] = new WorldCoords(-1212, -356.2, -1703, 0)
                 },
                 [CastleInnerArea] = new()
                 {
                     [nameof(Иммертель)] = new WorldCoords(1500.58, 1098.43, 1093.24, 0),
                     [nameof(Нарцисс)] = new WorldCoords(1692.65, 1095.72, 1097.21, 1.57),
                     [nameof(Ранден)] = new WorldCoords(1902.24, 1099.65, 1098.63, 1.57),
-                    [nameof(Ниргун)] = new WorldCoords(-3201.27, -345.59, 702.58, 0),
-                    [nameof(Гелгивинн)] = new WorldCoords(-3201.27, -345.59, 702.58, 0),
+                    [nameof(Ниргун)] = new WorldCoords(-3201.27, -345.79, 702.58, 0),
+                    [nameof(Гелгивинн)] = new WorldCoords(-3201.27, -345.79, 702.58, 0),
                     [nameof(Иль_Суильи_Руа)] = new WorldCoords(2533.35, 1068.27, 1095.46, -1.64)
                 },
                 [CastleDungeon] = new()
@@ -403,7 +402,7 @@ public static class SavedCoords
                     [nameof(Нарцисс)] = new WorldCoords(-299.15, 1700.71, -3305.82, 0),
                     [nameof(Ранден)] = new WorldCoords(-165.94, 1700.69, -3315.90, -1.57),
                     [nameof(Ниргун)] = new WorldCoords(19.89, 1700.24, -3284.98, -1.57),
-                    [nameof(Гелгивинн)] = new WorldCoords(-3201.27, -345.59, 702.58, 0)
+                    [nameof(Гелгивинн)] = new WorldCoords(-3201.27, -345.79, 702.58, 0)
                 }
             }
         };
