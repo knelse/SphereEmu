@@ -155,8 +155,8 @@ public static class SavedCoords
                 {
                     [nameof(Шипстоун)] = new WorldCoords(-3900, 1509, 106, 3.1),
                     [nameof(Бангвиль)] = new WorldCoords(-3753, 1509, 100, 1.6),
-                    [nameof(Торвил)] = new WorldCoords(-3055, 1499, 106, 3.1)
-                    // [nameof(Санпул)] = new ()
+                    [nameof(Торвил)] = new WorldCoords(-3055, 1499, 106, 3.1),
+                    [nameof(Санпул)] = new WorldCoords(-2900, 1499.5, 106.34, 3.14)
                 },
                 [CityCenter] = new()
                 {
@@ -264,7 +264,7 @@ public static class SavedCoords
                 [CastleDungeon] = new()
                 {
                     [nameof(Льеж)] = new WorldCoords(104.07, 1699, -3500, 1.57),
-                    // Фьеф
+                    [nameof(Фьеф)] = new WorldCoords(900.07, 1701.4, -3498.29, 3.14),
                     [nameof(Арис)] = new WorldCoords(297.57, 1700, -3500, 4.71),
                     [nameof(Латор)] = new WorldCoords(1070, 1701.45, -3437.18, 3.14),
                     [nameof(Эйкум_Кас)] = new WorldCoords(1300.12, 1700.64, -3565.27, 0),
@@ -277,7 +277,7 @@ public static class SavedCoords
                     [nameof(Терноваль)] = new WorldCoords(3300, 1700, -3495, 3.11),
                     [nameof(Аммалаэль)] = new WorldCoords(3499, 1701, -3501, 5.87),
                     [nameof(Каблак)] = new WorldCoords(1833.3, 1700.64, -3544.75, 4.71),
-                    // Диван
+                    [nameof(Дэванагари)] = new WorldCoords(2034.23, 1700.4, -3499.84, 4.71),
                     [nameof(Сабулат)] = new WorldCoords(2288.34, 1701, -3455, 1.57),
                     [nameof(Деффенсат)] = new WorldCoords(3698.24, 1701.64, -3500, 4.71),
                     [nameof(Айонат)] = new WorldCoords(2543.84, 1701.64, -3500, 4.71),
