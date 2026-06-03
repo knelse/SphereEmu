@@ -338,6 +338,10 @@ public static class SavedCoords
                     [nameof(Кануак)] = new WorldCoords(3905.77, 1700.72, -3499.04, 1.57),
                     [nameof(Алдарнон)] = new WorldCoords(-2899.08, 1700.74, -3305.44, 0),
                     [nameof(Йонг)] = new WorldCoords(-1264.34, 1710.73, -3253.98, 1.57)
+                },
+                [Other] = new()
+                {
+                    ["Черная Башня"] = new WorldCoords(21.65, 409.5, 1982.18, 0.42),
                 }
             },
             [Феб] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>
