@@ -84,6 +84,8 @@ public enum Castles
     Ниргун = 35,
     Гелгивинн = 36,
     Иль_Суильи_Руа = 37,
+
+    // Etc
     Черная_Башня = 999,
     UNKNOWN = 12345
 }
@@ -195,7 +197,7 @@ public static class SavedCoords
                 },
                 [CastleTeleportPointOwner] = new()
                 {
-                    [nameof(Льеж)] = new WorldCoords(1853, 157.79, 37.87, 0),
+                    [nameof(Льеж)] = new WorldCoords(1853, 157.6, 37.87, 0),
                     [nameof(Фьеф)] = new WorldCoords(2652, 157.9, -166, 0),
                     [nameof(Арис)] = new WorldCoords(3040.17, 158, 1048.2, 0),
                     [nameof(Латор)] = new WorldCoords(1955.33, 157.83, 1440.44, 0),
