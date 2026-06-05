@@ -649,7 +649,7 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.CastleChest] = "castle_chest",
         [ObjectType.CastleElixirPillar] = "castle_elixir_pillar",
         [ObjectType.CastleEntrance] = "castle_entrance",
-        [ObjectType.DoorEntranceWithKey] = "door_entrances_with_key",
+        [ObjectType.DoorEntranceWithKey] = "door_entrance_with_key",
         [ObjectType.TeleportInDungeon] = "teleport_in_dungeon",
         [ObjectType.TeleportWithTarget] = "teleport_with_target",
         [ObjectType.TokenMultiuse] = "item_token_multiuse",

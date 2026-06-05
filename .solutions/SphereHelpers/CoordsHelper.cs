@@ -371,6 +371,13 @@ public static class SavedCoords
                     [nameof (Элек)] = new WorldCoords(-1079.28, 1699.84, -3314.97, 1.57),
                     [nameof (Гавот)] = new WorldCoords(-899.91, 1699.64, -3218.54, -3.06),
                     [nameof (Кандур)] = new WorldCoords(-699.93, 1699.63, -3293.61, -3.02)
+                },
+                [SharedDungeon] = new ()
+                {
+                    ["Фебоданж 1"] = new WorldCoords(-3899.97, 1299.45, -1893.74, 3.14),
+                    ["Фебоданж 2"] = new WorldCoords(-3700.62, 1301.3, -1895.9, 3.14),
+                    ["Фебоданж 3"] = new WorldCoords(-3494, 1270.64, -1900, 1.57),
+                    ["Фебоданж 4"] = new WorldCoords(-3396.51, 1310.61, -1885.09, -1.57)
                 }
             },
             [Родос] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>

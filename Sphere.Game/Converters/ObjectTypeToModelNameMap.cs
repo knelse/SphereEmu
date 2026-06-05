@@ -88,7 +88,7 @@ public static class ObjectTypeToModelNameMap
 		ObjectType.FoodFish => "fd_fish",
 		ObjectType.AlchemyBrushwood => "st_brushwood",
 		ObjectType.Key => "st_key",
-		ObjectType.KeyForDungeonDoor => "st_key",
+		ObjectType.KeySingleUse => "st_key",
 		ObjectType.LightCrystal => "mn_quartz",
 		ObjectType.LightCrystalYellow => "mn_quartz",
 		ObjectType.Map => "st_paper",
