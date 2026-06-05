@@ -136,7 +136,7 @@ public static class SavedCoords
             {
                 [SharedDungeon] = new ()
                 {
-                    ["Остров_Выбора"] = new WorldCoords(1299, 1499.7, 35, 5.87),
+                    ["Остров_Выбора"] = new WorldCoords(1300.33, 1499.32, 35.94, 5.87),
                     ["Латор_Каблак"] = new WorldCoords(-300, 1500, 106, 3.1415),
                     ["Аммалаэль"] = new WorldCoords(33, 1500, 145, 4.85),
                     ["Фьеф_Респ_Меди"] = new WorldCoords(-99, 1499.7, 33, 5.87),

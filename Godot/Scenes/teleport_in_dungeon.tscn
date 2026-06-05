@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://co2qnjb8a6lhl"]
 
 [ext_resource type="Script" uid="uid://bt6fjf6pd3f3d" path="res://Sphere.Game/WorldObject/TeleportInDungeon.cs" id="1_nv45n"]
-[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_q4i6d"]
+[ext_resource type="PackedScene" uid="uid://ch8x3f6n5vhwu" path="res://Godot/Models/portal4.glb" id="2_nv45n"]
 
 [node name="TeleportInDungeon" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_nv45n")
 
-[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_q4i6d")]
+[node name="Glb" type="Node3D" parent="." unique_id=1014634720 instance=ExtResource("2_nv45n")]
+unique_name_in_owner = true
+metadata/_world_object_glb = true
+metadata/_world_object_glb_path = "res://Godot/Models/portal4.glb"

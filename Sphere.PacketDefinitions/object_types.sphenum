@@ -28,6 +28,7 @@
 98: castle_entrance
 101: door_entrance_with_key
 102: teleport_in_dungeon
+103: teleport_dungeon_fast_travel
 104: token_island
 105: token_island_guest
 127: token_tutorial_torweal
