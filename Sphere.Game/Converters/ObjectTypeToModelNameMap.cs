@@ -35,7 +35,7 @@ public static class ObjectTypeToModelNameMap
 		ObjectType.CastleEntrance => "EDOOR",
 		ObjectType.DoorEntranceWithKey => "EDOOR",
 		ObjectType.TeleportInDungeon => "portal4",
-		ObjectType.TeleportDungeonFastTravel => "portal3",
+		ObjectType.TeleportDungeonChoiceIsland => "portal3",
 		ObjectType.TokenIsland => "token",
 		ObjectType.TokenIslandGuest => "token",
 		ObjectType.TokenTutorialTorweal => "token",

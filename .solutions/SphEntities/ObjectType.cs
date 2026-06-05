@@ -31,7 +31,7 @@ public enum ObjectType : ushort
     CastleEntrance = 98,
     DoorEntranceWithKey = 101,
     TeleportInDungeon = 102,
-    TeleportDungeonFastTravel = 103,
+    TeleportDungeonChoiceIsland = 103,
     TokenIsland = 104,
     TokenIslandGuest = 105,
     TokenTutorialTorweal = 127,

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bfu1y7wr7djmk"]
+
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportDungeonChoiceIsland.cs" id="1_nm3od"]
+[ext_resource type="PackedScene" uid="uid://dkacklw1vuico" path="res://Godot/Models/portal3.glb" id="2_mbwrr"]
+
+[node name="TeleportDungeonChoiceIsland" type="Node3D" unique_id=1477176971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_nm3od")
+
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_mbwrr")]
+unique_name_in_owner = true
+metadata/_world_object_glb = true
+metadata/_world_object_glb_path = "res://Godot/Models/portal3.glb"
