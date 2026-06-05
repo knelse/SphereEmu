@@ -80,6 +80,9 @@ public static class PacketPartMapping
         ObjectType.FoodFish,
         ObjectType.AlchemyBrushwood,
         ObjectType.Key,
+        ObjectType.KeySingleUse,
+        ObjectType.LightCrystal,
+        ObjectType.LightCrystalYellow,
         ObjectType.Map,
         ObjectType.Inkpot,
         ObjectType.Firecracker,
@@ -152,6 +155,8 @@ public static class PacketPartMapping
         ObjectType.CastleChest,
         ObjectType.CastleElixirPillar,
         ObjectType.CastleEntrance,
+        ObjectType.TeleportInDungeon,
+        ObjectType.DoorEntranceWithKey,
         ObjectType.Monster,
         ObjectType.MonsterFlyer,
         ObjectType.NpcBanker,
@@ -206,8 +211,11 @@ public static class PacketPartMapping
         ObjectType.FoodFish,
         ObjectType.AlchemyBrushwood,
         ObjectType.Key,
+        ObjectType.KeySingleUse,
+        ObjectType.LightCrystal,
         ObjectType.Map,
         ObjectType.Inkpot,
+        ObjectType.LightCrystalYellow,
         ObjectType.Firecracker,
         ObjectType.Ear,
         ObjectType.EarString,
@@ -303,7 +311,7 @@ public static class PacketPartMapping
         ObjectType.QuestWeaponCrossbow
     ];
 
-    public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new()
+    public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new ()
     {
         [ObjectType.Teleport] = "teleports",
         [ObjectType.CastleTeleport] = "castle_teleports",
@@ -312,6 +320,8 @@ public static class PacketPartMapping
         [ObjectType.CastleChest] = "castle_chests",
         [ObjectType.CastleElixirPillar] = "castle_elixir_pillars",
         [ObjectType.CastleEntrance] = "castle_entrances",
+        [ObjectType.DoorEntranceWithKey] = "door_entrances_with_key",
+        [ObjectType.TeleportInDungeon] = "teleport_in_dungeon",
         [ObjectType.TeleportWithTarget] = "teleports_with_target",
         [ObjectType.TeleportWild] = "teleport_wild",
         [ObjectType.TeleportBroken] = "teleport_broken",
@@ -319,18 +329,20 @@ public static class PacketPartMapping
         [ObjectType.AlchemyMineral] = "alchemy_minerals",
         [ObjectType.AlchemyPlant] = "alchemy_plants",
         [ObjectType.AlchemyMetal] = "alchemy_metals",
+        [ObjectType.LightCrystal] = "light_crystals",
+        [ObjectType.LightCrystalYellow] = "light_crystals_yellow",
         [ObjectType.DungeonEntrance] = "dungeon_entrance",
         [ObjectType.Workshop] = "workshop",
         [ObjectType.MobSpawner] = "mob_spawner"
     };
 
-    public static Tuple<string, string, bool> GetPacketPartName(ObjectType objectType, EntityActionType actionType,
+    public static Tuple<string, string, bool> GetPacketPartName (ObjectType objectType, EntityActionType actionType,
         EntityInteractionType interactionType, ushort entId, bool hasGameId, List<OptionalPacketFields> optionalFields)
     {
         var entityNameForComment = CamelCaseToUpperWithSpaces(objectType.ToString());
         var packetName = string.Empty;
         var success = true;
-        var comment = (string?)null;
+        var comment = (string?) null;
         var genericItemPacket = false;
         var shouldHaveOptionalFields = false;
         switch (actionType)
@@ -371,212 +383,225 @@ public static class PacketPartMapping
                 break;
             // assuming full
             default:
+            {
+                switch (objectType)
                 {
-                    switch (objectType)
-                    {
-                        case ObjectType.Monster:
-                        case ObjectType.MonsterFlyer:
-                            packetName = "entity_monster";
-                            break;
-                        case ObjectType.MobSpawner:
-                            packetName = "mob_spawner";
-                            break;
-                        case ObjectType.NpcTrade:
-                            packetName = "npc_trade";
-                            break;
-                        case ObjectType.NpcBanker:
-                            packetName = "npc_banker";
-                            break;
-                        case ObjectType.NpcQuestTitle:
-                        case ObjectType.NpcQuestDegree:
-                        case ObjectType.NpcQuestKarma:
-                            packetName = "npc_quest_title";
-                            break;
-                        case ObjectType.NpcGuilder:
-                            packetName = "npc_guilder";
-                            break;
-                        case ObjectType.NpcGuide:
-                            packetName = "npc_guide";
-                            break;
-                        case ObjectType.NpcTournament:
-                            packetName = "npc_tournament";
-                            break;
-                        case ObjectType.NpcTradeRandomName:
-                            packetName = "npc_trade_random_name";
-                            break;
-                        case ObjectType.ChestInDungeon:
-                            packetName = "chest_in_dungeon";
-                            break;
-                        case ObjectType.SackMobLoot:
-                            packetName = "sack_mob_loot";
-                            break;
-                        case ObjectType.TutorialMessage:
-                            packetName = "tutorial_message";
-                            break;
-                        case ObjectType.Teleport:
-                        case ObjectType.TeleportWild:
-                        case ObjectType.TeleportBroken:
-                            packetName = "teleport";
-                            break;
-                        case ObjectType.CastleTeleport:
-                            packetName = "castle_teleport";
-                            break;
-                        case ObjectType.CastleTablet:
-                            packetName = "castle_tablet";
-                            break;
-                        case ObjectType.CastleGate:
-                            packetName = "castle_gates";
-                            break;
-                        case ObjectType.CastleChest:
-                            packetName = "castle_chest";
-                            break;
-                        case ObjectType.CastleElixirPillar:
-                            packetName = "castle_elixir_pillar";
-                            break;
-                        case ObjectType.CastleEntrance:
-                            packetName = "castle_entrance";
-                            break;
-                        case ObjectType.Key:
-                        case ObjectType.KeyBarn:
-                            packetName = "item_key";
-                            break;
-                        case ObjectType.Ring:
-                            packetName = "item_ring";
-                            shouldHaveOptionalFields = true;
-                            break;
-                        case ObjectType.AlchemyPot:
-                            packetName = "item_alchemypot";
-                            break;
-                        case ObjectType.Firecracker:
-                        case ObjectType.Firework:
-                            packetName = "item_firework";
-                            break;
-                        case ObjectType.MantraBlack:
-                        case ObjectType.MantraWhite:
-                            packetName = "item_mantra_counted";
-                            break;
-                        case ObjectType.ScrollLegend:
-                        case ObjectType.ScrollRecipe:
-                            packetName = "item_scroll";
-                            shouldHaveOptionalFields = true;
-                            break;
-                        case ObjectType.Sack:
-                            packetName = "item_sack";
-                            break;
-                        case ObjectType.EarString:
-                            packetName = "item_earstring";
-                            break;
-                        case ObjectType.Token:
-                            packetName = "item_token";
-                            break;
-                        case ObjectType.TokenTutorialTorweal:
-                            packetName = "item_token_tutorial";
-                            break;
-                        case ObjectType.TokenMultiuse:
-                            packetName = "item_token_multiuse";
-                            break;
-                        case ObjectType.MantraBookGreat:
-                            packetName = "item_mantrabook_great";
-                            break;
-                        case ObjectType.TokenIsland:
-                            packetName = "item_token_island";
-                            break;
-                        case ObjectType.TokenIslandGuest:
-                            packetName = "item_token_island_guest";
-                            break;
-                        case ObjectType.TradeLicense:
-                            packetName = "item_license_trade";
-                            break;
-                        case ObjectType.AlchemyFurnace:
-                            packetName = "entity_alchemyfurnace";
-                            break;
-                        case ObjectType.DoorEntrance:
-                            packetName = "door_entrance";
-                            break;
-                        case ObjectType.DoorExit:
-                            packetName = "door_exit";
-                            break;
-                        case ObjectType.DungeonEntrance:
-                            packetName = "dungeon_entrance";
-                            break;
-                        case ObjectType.TeleportWithTarget:
-                            packetName = "teleport_with_target";
-                            break;
-                        case ObjectType.TournamentTeleport:
-                            packetName = "tournament_teleport";
-                            break;
-                        case ObjectType.Workshop:
-                            packetName = "workshop";
-                            break;
-                        case ObjectType.Dungeon:
-                            packetName = "new_player_dungeon";
-                            break;
-                        case ObjectType.WeaponStartingSword:
-                            packetName = "weapon_starting_sword";
-                            break;
-                        case ObjectType.NewPlayerDungeonStartPoint:
-                            packetName = "new_player_dungeon_start";
-                            break;
-                        case ObjectType.Other:
-                            packetName = "entity_character";
-                            comment = $"NEW PLAYER -- [{entId:X4}]";
-                            break;
-                        default:
-                            if (ItemRecipeBagObjectTypes.Contains(objectType))
-                            {
-                                packetName = "item_recipebook";
-                            }
-                            else if (ItemBagObjectTypes.Contains(objectType))
-                            {
-                                packetName = "item_bag";
-                            }
-                            else if (ItemObjectTypes.Contains(objectType))
-                            {
-                                packetName = "item";
-                                genericItemPacket = true;
-                            }
-                            else
-                            {
-                                success = false;
-                            }
-
-                            break;
-                    }
-
-                    if (genericItemPacket)
-                    {
-                        if (hasGameId)
-                        {
-                            packetName += "_with_gameid";
-                        }
-
+                    case ObjectType.Monster:
+                    case ObjectType.MonsterFlyer:
+                        packetName = "entity_monster";
+                        break;
+                    case ObjectType.MobSpawner:
+                        packetName = "mob_spawner";
+                        break;
+                    case ObjectType.NpcTrade:
+                        packetName = "npc_trade";
+                        break;
+                    case ObjectType.NpcBanker:
+                        packetName = "npc_banker";
+                        break;
+                    case ObjectType.NpcQuestTitle:
+                    case ObjectType.NpcQuestDegree:
+                    case ObjectType.NpcQuestKarma:
+                        packetName = "npc_quest_title";
+                        break;
+                    case ObjectType.NpcGuilder:
+                        packetName = "npc_guilder";
+                        break;
+                    case ObjectType.NpcGuide:
+                        packetName = "npc_guide";
+                        break;
+                    case ObjectType.NpcTournament:
+                        packetName = "npc_tournament";
+                        break;
+                    case ObjectType.NpcTradeRandomName:
+                        packetName = "npc_trade_random_name";
+                        break;
+                    case ObjectType.ChestInDungeon:
+                        packetName = "chest_in_dungeon";
+                        break;
+                    case ObjectType.SackMobLoot:
+                        packetName = "sack_mob_loot";
+                        break;
+                    case ObjectType.TutorialMessage:
+                        packetName = "tutorial_message";
+                        break;
+                    case ObjectType.Teleport:
+                    case ObjectType.TeleportWild:
+                    case ObjectType.TeleportBroken:
+                        packetName = "teleport";
+                        break;
+                    case ObjectType.CastleTeleport:
+                        packetName = "castle_teleport";
+                        break;
+                    case ObjectType.CastleTablet:
+                        packetName = "castle_tablet";
+                        break;
+                    case ObjectType.CastleGate:
+                        packetName = "castle_gates";
+                        break;
+                    case ObjectType.CastleChest:
+                        packetName = "castle_chest";
+                        break;
+                    case ObjectType.CastleElixirPillar:
+                        packetName = "castle_elixir_pillar";
+                        break;
+                    case ObjectType.CastleEntrance:
+                        packetName = "castle_entrance";
+                        break;
+                    case ObjectType.DoorEntranceWithKey:
+                        packetName = "door_entrance_with_key";
+                        break;
+                    case ObjectType.TeleportInDungeon:
+                        packetName = "teleport_in_dungeon";
+                        break;
+                    case ObjectType.Key:
+                    case ObjectType.KeyBarn:
+                        packetName = "item_key";
+                        break;
+                    case ObjectType.KeySingleUse:
+                        packetName = "item_key_single_use";
+                        break;
+                    case ObjectType.LightCrystal:
+                    case ObjectType.LightCrystalYellow:
+                        packetName = "item_light_crystal";
+                        break;
+                    case ObjectType.Ring:
+                        packetName = "item_ring";
                         shouldHaveOptionalFields = true;
+                        break;
+                    case ObjectType.AlchemyPot:
+                        packetName = "item_alchemypot";
+                        break;
+                    case ObjectType.Firecracker:
+                    case ObjectType.Firework:
+                        packetName = "item_firework";
+                        break;
+                    case ObjectType.MantraBlack:
+                    case ObjectType.MantraWhite:
+                        packetName = "item_mantra_counted";
+                        break;
+                    case ObjectType.ScrollLegend:
+                    case ObjectType.ScrollRecipe:
+                        packetName = "item_scroll";
+                        shouldHaveOptionalFields = true;
+                        break;
+                    case ObjectType.Sack:
+                        packetName = "item_sack";
+                        break;
+                    case ObjectType.EarString:
+                        packetName = "item_earstring";
+                        break;
+                    case ObjectType.Token:
+                        packetName = "item_token";
+                        break;
+                    case ObjectType.TokenTutorialTorweal:
+                        packetName = "item_token_tutorial";
+                        break;
+                    case ObjectType.TokenMultiuse:
+                        packetName = "item_token_multiuse";
+                        break;
+                    case ObjectType.MantraBookGreat:
+                        packetName = "item_mantrabook_great";
+                        break;
+                    case ObjectType.TokenIsland:
+                        packetName = "item_token_island";
+                        break;
+                    case ObjectType.TokenIslandGuest:
+                        packetName = "item_token_island_guest";
+                        break;
+                    case ObjectType.TradeLicense:
+                        packetName = "item_license_trade";
+                        break;
+                    case ObjectType.AlchemyFurnace:
+                        packetName = "entity_alchemyfurnace";
+                        break;
+                    case ObjectType.DoorEntrance:
+                        packetName = "door_entrance";
+                        break;
+                    case ObjectType.DoorExit:
+                        packetName = "door_exit";
+                        break;
+                    case ObjectType.DungeonEntrance:
+                        packetName = "dungeon_entrance";
+                        break;
+                    case ObjectType.TeleportWithTarget:
+                        packetName = "teleport_with_target";
+                        break;
+                    case ObjectType.TournamentTeleport:
+                        packetName = "tournament_teleport";
+                        break;
+                    case ObjectType.Workshop:
+                        packetName = "workshop";
+                        break;
+                    case ObjectType.Dungeon:
+                        packetName = "new_player_dungeon";
+                        break;
+                    case ObjectType.WeaponStartingSword:
+                        packetName = "weapon_starting_sword";
+                        break;
+                    case ObjectType.NewPlayerDungeonStartPoint:
+                        packetName = "new_player_dungeon_start";
+                        break;
+                    case ObjectType.Other:
+                        packetName = "entity_character";
+                        comment = $"NEW PLAYER -- [{entId:X4}]";
+                        break;
+                    default:
+                        if (ItemRecipeBagObjectTypes.Contains(objectType))
+                        {
+                            packetName = "item_recipebook";
+                        }
+                        else if (ItemBagObjectTypes.Contains(objectType))
+                        {
+                            packetName = "item_bag";
+                        }
+                        else if (ItemObjectTypes.Contains(objectType))
+                        {
+                            packetName = "item";
+                            genericItemPacket = true;
+                        }
+                        else
+                        {
+                            success = false;
+                        }
+
+                        break;
+                }
+
+                if (genericItemPacket)
+                {
+                    if (hasGameId)
+                    {
+                        packetName += "_with_gameid";
                     }
 
-                    if (shouldHaveOptionalFields)
+                    shouldHaveOptionalFields = true;
+                }
+
+                if (shouldHaveOptionalFields)
+                {
+                    foreach (var field in optionalFields)
                     {
-                        foreach (var field in optionalFields)
+                        switch (field)
                         {
-                            switch (field)
-                            {
-                                case OptionalPacketFields.PA:
-                                    packetName += "_pa";
-                                    break;
-                                case OptionalPacketFields.COUNT:
-                                    packetName += "_counted";
-                                    break;
-                                case OptionalPacketFields.NAME:
-                                    packetName += "_named";
-                                    break;
-                                case OptionalPacketFields.MADE_BY:
-                                    packetName += "_made";
-                                    break;
-                            }
+                            case OptionalPacketFields.PA:
+                                packetName += "_pa";
+                                break;
+                            case OptionalPacketFields.COUNT:
+                                packetName += "_counted";
+                                break;
+                            case OptionalPacketFields.NAME:
+                                packetName += "_named";
+                                break;
+                            case OptionalPacketFields.MADE_BY:
+                                packetName += "_made";
+                                break;
                         }
                     }
-
-                    break;
                 }
+
+                break;
+            }
         }
 
         comment ??= $"NEW ENTITY -- {entityNameForComment} [{entId:X4}]";
@@ -584,7 +609,7 @@ public static class PacketPartMapping
         return new Tuple<string, string, bool>(packetName, comment, success);
     }
 
-    private static string CamelCaseToUpperWithSpaces(string s)
+    private static string CamelCaseToUpperWithSpaces (string s)
     {
         var sb = new StringBuilder();
         foreach (var c in s)
@@ -603,7 +628,7 @@ public static class PacketPartMapping
 
 public static class ObjectTypeToPacketNameMap
 {
-    public static Dictionary<ObjectType, string> Mapping = new()
+    public static Dictionary<ObjectType, string> Mapping = new ()
     {
         [ObjectType.Despawn] = "despawn",
         [ObjectType.Other] = "",
@@ -624,6 +649,8 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.CastleChest] = "castle_chest",
         [ObjectType.CastleElixirPillar] = "castle_elixir_pillar",
         [ObjectType.CastleEntrance] = "castle_entrance",
+        [ObjectType.DoorEntranceWithKey] = "door_entrances_with_key",
+        [ObjectType.TeleportInDungeon] = "teleport_in_dungeon",
         [ObjectType.TeleportWithTarget] = "teleport_with_target",
         [ObjectType.TokenMultiuse] = "item_token_multiuse",
         [ObjectType.TradeLicense] = "item_license_trade",
@@ -681,6 +708,9 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.FoodFish] = "item_food_counted", // item_food_counted
         [ObjectType.AlchemyBrushwood] = "",
         [ObjectType.Key] = "item_key",
+        [ObjectType.KeySingleUse] = "item_key_single_use",
+        [ObjectType.LightCrystal] = "item_light_crystal",
+        [ObjectType.LightCrystalYellow] = "item_light_crystal",
         [ObjectType.Map] = "item_map",
         [ObjectType.Inkpot] = "item_inkpot",
         [ObjectType.Firecracker] = "alchemy_resource_ground",

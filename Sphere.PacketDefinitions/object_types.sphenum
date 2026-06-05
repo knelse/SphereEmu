@@ -26,6 +26,8 @@
 95: mission
 96: dungeon
 98: castle_entrance
+101: door_entrance_with_key
+102: teleport_in_dungeon
 104: token_island
 105: token_island_guest
 127: token_tutorial_torweal
@@ -80,12 +82,15 @@
 655: food_fish
 700: alchemy_brushwood
 701: key
+702: light_crystal
 703: map
 704: inkpot
 705: firecracker
 706: ear
 708: ear_string
 709: monster_part
+710: key_single_use
+711: light_crystal_yellow
 712: firework
 715: inkpot_broken
 750: armor_chest

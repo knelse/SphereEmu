@@ -681,6 +681,7 @@ public static class ObjectPacketTools
             ObjectType.Firework => "Фейерверк",
             ObjectType.Inkpot => "Чернильница",
             ObjectType.Key => "Ключ",
+            ObjectType.KeySingleUse => "Ключ",
             ObjectType.Sack => "Мешочек",
             ObjectType.Token => "Жетон телепортации",
             ObjectType.AlchemyBrushwood => "Хворост",

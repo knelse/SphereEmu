@@ -8,32 +8,31 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class CastleEntrance : WorldObject
 {
-	[Export] public Castles Castle { get; set; }
+    public CastleEntrance ()
+    {
+        ObjectType = ObjectType.CastleEntrance;
+        ModelName = "EDOOR";
+    }
 
-	[ExportToolButton("Jump to tablet")]
-	public Callable JumpToTabletButton => Callable.From(JumpToTablet);
+    [Export] public Castles Castle { get; set; }
 
-	public CastleEntrance()
-	{
-		ObjectType = ObjectType.CastleEntrance;
-		ModelName = "EDOOR";
-	}
+    [ExportToolButton("Jump to tablet")] public Callable JumpToTabletButton => Callable.From(JumpToTablet);
 
-	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
-	{
-		PacketPart.UpdateValue(packetParts, "object_type", (int)ObjectType, 10);
-		PacketPart.UpdateValue(packetParts, "castle_id", (int)(Castle + 56), 7);
+    protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+    {
+        PacketPart.UpdateValue(packetParts, "object_type", (int) ObjectType, 10);
+        PacketPart.UpdateValue(packetParts, "castle_id", (int) (Castle + 56), 7);
 
-		return packetParts;
-	}
+        return packetParts;
+    }
 
-	private void JumpToTablet()
-	{
-		if (!Engine.IsEditorHint())
-		{
-			return;
-		}
+    private void JumpToTablet ()
+    {
+        if (!Engine.IsEditorHint())
+        {
+            return;
+        }
 
-		EditorSceneCamera.JumpToCastleTablet(this, Castle);
-	}
+        EditorSceneCamera.JumpToCastleTablet(this, Castle);
+    }
 }

@@ -6,7 +6,6 @@
         xmlns:controls="clr-namespace:PacketLogViewer.Controls"
         mc:Ignorable="d"
         Title="PacketLogViewer"
-        Top="75"
         Height="1440"
         Width="3024">
     <controls:MainViewControl x:Name="MainView" />

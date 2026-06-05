@@ -22,7 +22,7 @@ public class DoorEntrancePacket : WorldObject
     public override string DisplayValue =>
         $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}){OverrideType}{SubtypeStr} at [{X:F2}, {Y:F2}, {Z:F2}]{TeleportTarget}";
 
-    public DoorEntrancePacket (List<PacketPart> parts) : base(parts)
+    public DoorEntrancePacket(List<PacketPart> parts) : base(parts)
     {
         if (ActionType is not (EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN))
         {

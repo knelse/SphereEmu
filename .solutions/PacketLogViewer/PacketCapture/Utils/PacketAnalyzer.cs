@@ -129,6 +129,7 @@ internal static class PacketAnalyzer
 {
     public static readonly byte[] packet_04_00_4F_01 = { 0x04, 0x00, 0xF4, 0x01 };
     public static readonly byte[] ok_mark = { 0x2c, 0x01, 0x00 };
+
     public static readonly ILiteCollection<MobPacket> MobCollection =
         PacketLogViewerMainWindow.PacketDatabase.GetCollection<MobPacket>("MobData");
 
@@ -183,9 +184,9 @@ internal static class PacketAnalyzer
     internal static void RefreshHiddenByDefaultFlags(StoredPacket storedPacket)
     {
         storedPacket.HiddenByDefaultClient = storedPacket.Source == PacketSource.CLIENT
-            && ShouldBeHiddenByDefaultClient(storedPacket);
+                                             && ShouldBeHiddenByDefaultClient(storedPacket);
         storedPacket.HiddenByDefaultServer = storedPacket.Source == PacketSource.SERVER
-            && ShouldBeHiddenByDefaultServer(storedPacket);
+                                             && ShouldBeHiddenByDefaultServer(storedPacket);
         storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
     }
 
@@ -590,7 +591,8 @@ internal static class PacketAnalyzer
                 else if (objectType is ObjectType.DoorEntrance)
                 {
                     var delimTestShort = fullStream.ReadByte(7);
-                    if (delimTestShort != 0x7E && delimTestShort != 0x7F && delimTestShort != 0x3F && delimTestShort != 0x3E)
+                    if (delimTestShort != 0x7E && delimTestShort != 0x7F && delimTestShort != 0x3F &&
+                        delimTestShort != 0x3E)
                     {
                         fullStream.SeekBack(7);
                         continue;
@@ -766,21 +768,6 @@ internal static class PacketAnalyzer
             }
         }
 
-        else if (ItemObjectTypes.Contains(result.ObjectType))
-        {
-            var item = new ItemPacket(subpacket);
-            result = item;
-            if (item.ActionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
-            {
-                var gameId = item.HasGameId ? item.GameObjectId : 0;
-                var suffix = item.HasSuffix ? item.Suffix : 0;
-                var output =
-                    $"{item.Id:X4}\t{result.ObjectType}\t{item.ActionType}\t{item.X}\t{item.Y}\t{item.Z}\t{item.Angle}\t" +
-                    $"{gameId}\t{item.ContainerId}\t{suffix}\t{item.PALevel}\t{item.Count}\t{item.RemainingUses}\t{item.OwnerName}\n";
-                File.AppendAllText($@"{outputPath}\\items.txt", output);
-            }
-        }
-
         else if (result.ObjectType is ObjectType.DoorEntrance)
         {
             var door = new DoorEntrancePacket(subpacket);
@@ -802,6 +789,18 @@ internal static class PacketAnalyzer
                 var output =
                     $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.ExitX}\t{door.ExitY}\t{door.ExitZ}\t{door.ExitAngle}\n";
                 File.AppendAllText($@"{outputPath}\\door_exits.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.DoorEntranceWithKey)
+        {
+            var door = new DoorEntranceWithKey(subpacket);
+            result = door;
+            if (door.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.SubtypeID}\n";
+                File.AppendAllText($@"{outputPath}\\doors_with_key.txt", output);
             }
         }
 
@@ -853,6 +852,30 @@ internal static class PacketAnalyzer
             }
         }
 
+        else if (result.ObjectType is ObjectType.LightCrystal)
+        {
+            var lightCrystal = new WorldObject(subpacket);
+            result = lightCrystal;
+            if (lightCrystal.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{lightCrystal.Id:X4}\t{result.ObjectType}\t{lightCrystal.ActionType}\t{lightCrystal.X}\t{lightCrystal.Y}\t{lightCrystal.Z}\t{lightCrystal.Angle}\n";
+                File.AppendAllText($@"{outputPath}\\light_crystals.txt", output);
+            }
+        }
+
+        else if (result.ObjectType is ObjectType.LightCrystalYellow)
+        {
+            var lightCrystal = new WorldObject(subpacket);
+            result = lightCrystal;
+            if (lightCrystal.ActionType == EntityActionType.FULL_SPAWN)
+            {
+                var output =
+                    $"{lightCrystal.Id:X4}\t{result.ObjectType}\t{lightCrystal.ActionType}\t{lightCrystal.X}\t{lightCrystal.Y}\t{lightCrystal.Z}\t{lightCrystal.Angle}\n";
+                File.AppendAllText($@"{outputPath}\\light_crystals_yellow.txt", output);
+            }
+        }
+
         else if (WorldObjectsToTrack.TryGetValue(result.ObjectType, out var filename))
         {
             var worldObject = new WorldObject(subpacket);
@@ -863,6 +886,21 @@ internal static class PacketAnalyzer
                 var output =
                     $"{worldObject.Id:X4}\t{worldObject.ObjectType}\t{worldObject.ActionType}\t{worldObject.X}\t{worldObject.Y}\t{worldObject.Z}\t{worldObject.Angle}\n";
                 File.AppendAllText($@"{outputPath}\\{filename}.txt", output);
+            }
+        }
+
+        else if (ItemObjectTypes.Contains(result.ObjectType))
+        {
+            var item = new ItemPacket(subpacket);
+            result = item;
+            if (item.ActionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
+            {
+                var gameId = item.HasGameId ? item.GameObjectId : 0;
+                var suffix = item.HasSuffix ? item.Suffix : 0;
+                var output =
+                    $"{item.Id:X4}\t{result.ObjectType}\t{item.ActionType}\t{item.X}\t{item.Y}\t{item.Z}\t{item.Angle}\t" +
+                    $"{gameId}\t{item.ContainerId}\t{suffix}\t{item.PALevel}\t{item.Count}\t{item.RemainingUses}\t{item.OwnerName}\n";
+                File.AppendAllText($@"{outputPath}\\items.txt", output);
             }
         }
 

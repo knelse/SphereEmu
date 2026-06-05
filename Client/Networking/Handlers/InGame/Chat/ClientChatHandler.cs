@@ -16,18 +16,18 @@ using static SphServer.Helpers.Cities;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Chat;
 
-public class ClientChatHandler (ushort localId, ClientConnection clientConnection)
+public class ClientChatHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 
 {
     private static readonly PackedScene FireworkScene =
-        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
+        (PackedScene)ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
 
     public static ushort lastPlayerSpawned = 0;
 
     private string previousMessageContent = string.Empty;
 
-    public async Task Handle (double delta)
+    public async Task Handle(double delta)
     {
         try
         {
@@ -69,7 +69,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 for (var j = 0; j < messagePart.Length - 1; j++)
                 {
                     var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
-                    msgBytes.Add((byte) msgByte);
+                    msgBytes.Add((byte)msgByte);
                 }
             }
 
@@ -80,11 +80,11 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             var serverResponseBytes = new List<byte>();
 
             // client_id 084043 content
-            byte[] GetResponseArray (byte[] clientBytes)
+            byte[] GetResponseArray(byte[] clientBytes)
             {
                 var responseBytes = new byte[clientBytes.Length + 7];
-                responseBytes[0] = (byte) (responseBytes.Length % 256);
-                responseBytes[1] = (byte) (responseBytes.Length / 256);
+                responseBytes[0] = (byte)(responseBytes.Length % 256);
+                responseBytes[1] = (byte)(responseBytes.Length / 256);
                 responseBytes[2] = 0x2C;
                 responseBytes[3] = 0x01;
                 responseBytes[4] = 0x00;
@@ -108,7 +108,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             var nameClosingTagIndex = chatString.IndexOf("</l>: ", StringComparison.OrdinalIgnoreCase);
             var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
             var name = chatString[(nameStart + 4)..nameClosingTagIndex];
-            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
+            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char)0); // weird but necessary
 
             if (message == previousMessageContent)
             {
@@ -138,23 +138,23 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                     WorldCoords tpCoords;
                     if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Шипстоун)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Шипстоун)];
                     }
                     else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Бангвиль)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Бангвиль)];
                     }
                     else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Торвил)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Торвил)];
                     }
                     else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Санпул)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Санпул)];
                     }
                     else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Умрад)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Умрад)];
                     }
                     else if (coords[1].Equals("ChoiceIsland", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -236,25 +236,34 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket("/packet castle_tablet onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,
-                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); });
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char)1 + "Зеленый Слоник\0", true, 8); });
             }
 
             else if (message.StartsWith("gates"))
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket("/packet castle_gates_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,
-                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); }
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char)1 + "Зеленый Слоник\0", true, 8); }
                 );
             }
 
             else if (message.StartsWith("cdoor"))
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket("/packet castle_entrance_aris",
+                    clientConnection.MaybeScheduleNetworkPacketSend
+                );
+            }
+
+            else if (message.StartsWith("keydoor"))
+            {
+                clientConnection.MaybeScheduleNetworkPacketSend(
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
+                DebugConsole.SendSpherePacket("/packet door_entrance_with_key_t onme ",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
             }

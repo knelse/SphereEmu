@@ -370,7 +370,8 @@ public partial class EntityRadarControl
 
     private static bool IsDoorOrTeleport(ObjectType o) => o switch
     {
-        ObjectType.DoorEntrance or ObjectType.DoorExit or ObjectType.TeleportWithTarget
+        ObjectType.DoorEntrance or ObjectType.DoorEntranceWithKey or ObjectType.DoorExit
+            or ObjectType.TeleportWithTarget or ObjectType.TeleportInDungeon
             or ObjectType.Teleport or ObjectType.TeleportBroken or ObjectType.DungeonEntrance
             or ObjectType.TeleportWild or ObjectType.TokenMultiuse or ObjectType.CastleTeleport
             or ObjectType.TournamentTeleport or ObjectType.TokenIsland or ObjectType.TokenIslandGuest => true,

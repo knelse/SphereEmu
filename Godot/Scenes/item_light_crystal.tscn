@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c6xig36elcsha"]
+
+[ext_resource type="Script" uid="uid://crm60dr1uq0h6" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="1_wo8ri"]
+[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_yqkri"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
+
+[node name="ItemLightCrystal" type="Node3D" unique_id=217888854]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
+script = ExtResource("1_wo8ri")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=575214691]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=319978856]
+shape = SubResource("CapsuleShape3D_imxti")
+
+[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_yqkri")]
+metadata/_world_object_glb = true
+metadata/_world_object_glb_path = "res://Godot/Models/pump1.glb"

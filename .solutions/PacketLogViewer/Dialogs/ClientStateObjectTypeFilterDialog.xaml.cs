@@ -30,9 +30,8 @@ public partial class ClientStateObjectTypeFilterDialog : Window
                        Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).ToHashSet();
         if (initiallySelected is null)
         {
-            selected.Remove(ObjectType.MobSpawner);
-            selected.Remove(ObjectType.Monster);
-            selected.Remove(ObjectType.MonsterFlyer);
+            selected.Remove(ObjectType.LightCrystalYellow);
+            selected.Remove(ObjectType.LightCrystal);
         }
 
         foreach (var ot in Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).OrderBy(x => (ushort)x))

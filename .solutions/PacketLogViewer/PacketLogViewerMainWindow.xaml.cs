@@ -93,6 +93,7 @@ public partial class PacketLogViewerMainWindow
         InitializeComponent();
         RegisterBsonMapperForBrush();
         ApplyStartWindowDimensionsFromConfig();
+        ApplyStartWindowPosition();
 
         var scrollViewerProperty =
             typeof(RichTextBox).GetProperty("ScrollViewer", BindingFlags.NonPublic | BindingFlags.Instance)!;
@@ -133,6 +134,13 @@ public partial class PacketLogViewerMainWindow
         {
             Height = startHeight.Value;
         }
+    }
+
+    private void ApplyStartWindowPosition()
+    {
+        var workArea = SystemParameters.WorkArea;
+        Left = workArea.Left + (workArea.Width - Width) / 2;
+        Top = Math.Max(workArea.Top, workArea.Bottom - Height);
     }
 
     private void InitializeAfterWindowShown()
@@ -772,8 +780,8 @@ public partial class PacketLogViewerMainWindow
             ClearSelection();
             var packetContents = string.Empty;
             var knownAnalyzedParts = selected.AnalyzeResult
-                .Where(x => x is ItemPacket or MobPacket or NpcTradePacket or WorldObject or DoorEntrancePacket
-                    or TeleportWithTargetPacket or DoorExitPacket or CastleTablet or CastleGate or CastleChest or CastleEntrance)
+                .Where(x => x.GetType() != typeof(DespawnPacket)
+                         && x.GetType() != typeof(PacketAnalyzeData))
                 .ToList();
             if (knownAnalyzedParts.Any())
             {
@@ -915,6 +923,14 @@ public partial class PacketLogViewerMainWindow
             else if (result.GetType() == typeof(DoorExitPacket))
             {
                 var door = result as DoorExitPacket;
+                if (door.ActionType == EntityActionType.FULL_SPAWN)
+                {
+                    CurrentClientState.Insert(0, result);
+                }
+            }
+            else if (result.GetType() == typeof(DoorEntranceWithKey))
+            {
+                var door = result as DoorEntranceWithKey;
                 if (door.ActionType == EntityActionType.FULL_SPAWN)
                 {
                     CurrentClientState.Insert(0, result);

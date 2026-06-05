@@ -1,179 +1,109 @@
-using System.Collections.Generic;
-using System.Globalization;
 using Godot;
 
 namespace SphServer.Godot.Scripts.Objects;
 
 /// <summary>
-/// Editor tool: reads tab-separated spawner rows (ID, Type, Spawn type, X, Y, Z, Angle), clears existing children,
-/// and instances the scene from <see cref="MonsterSpawnerScenePath"/> per row. Source space matches terrain: <c>(x,y,z)_src ↦ (x,-y,-z)</c>;
-/// yaw matches <see cref="SphServer.Sphere.Game.WorldObject.WorldObject"/> (<c>t0 = Angle * π / 128</c> radians on Y).
+/// Editor tool: reads tab/space-separated spawner rows (ID, skip, skip, X, Y, Z, Angle),
+/// clears existing children, and instances <see cref="MonsterSpawnerScenePath"/> per row.
+/// Source space matches terrain: <c>(x,y,z)_src ↦ (x,-y,-z)</c>.
 /// Rows with duplicate source coordinates (same X, Y, Z columns) are skipped after the first occurrence.
 /// </summary>
 [Tool]
 public partial class MonsterSpawnersFill : Node3D
 {
+	private const string MobSpawnerTypeValue = "MobSpawner";
+
 	[Export]
 	public string SpawnerDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\mob_spawner.txt";
 
 	[Export]
 	public string MonsterSpawnerScenePath { get; set; } = "res://Godot/Scenes/monster_spawner.tscn";
 
-	[ExportToolButton ("Rebuild monster spawners")]
-	public Callable RebuildMonsterSpawnersButton => Callable.From (RebuildMonsterSpawners);
+	[ExportToolButton("Rebuild monster spawners")]
+	public Callable RebuildMonsterSpawnersButton => Callable.From(RebuildMonsterSpawners);
 
-	/// <summary>Clears child instances and repopulates from <see cref="SpawnerDataFilePath"/>.</summary>
-	public void RebuildMonsterSpawners ()
+	public void RebuildMonsterSpawners()
 	{
-		foreach (var child in GetChildren ())
+		foreach (var child in GetChildren())
 		{
-			child.Free ();
+			child.Free();
 		}
 
-		if (!ResourceLoader.Exists (MonsterSpawnerScenePath))
+		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(MonsterSpawnerScenePath, "MonsterSpawnersFill", out var scene))
 		{
-			GD.PushError ($"MonsterSpawnersFill: scene not found: {MonsterSpawnerScenePath}");
 			return;
 		}
 
-		var scene = ResourceLoader.Load<PackedScene> (MonsterSpawnerScenePath);
-		if (scene is null)
+		if (!WorldObjectDumpFillCommon.TryReadTextFile(SpawnerDataFilePath, "MonsterSpawnersFill", out var text))
 		{
-			GD.PushError ($"MonsterSpawnersFill: could not load: {MonsterSpawnerScenePath}");
 			return;
 		}
 
-		if (!global::Godot.FileAccess.FileExists (SpawnerDataFilePath))
-		{
-			GD.PushError ($"MonsterSpawnersFill: file not found: {SpawnerDataFilePath}");
-			return;
-		}
-
-		var text = global::Godot.FileAccess.GetFileAsString (SpawnerDataFilePath);
-		if (string.IsNullOrWhiteSpace (text))
-		{
-			GD.PushWarning ($"MonsterSpawnersFill: empty file: {SpawnerDataFilePath}");
-			return;
-		}
-
-		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)> ();
+		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
 		var duplicateRowsSkipped = 0;
-		var lineNumber = 0;
-		foreach (var rawLine in text.Split ('\n'))
+		var rowsSkippedNotMatchingType = 0;
+		var rowsSkippedWeirdCoords = 0;
+		var rowsConsidered = 0;
+		var rowsParsed = 0;
+		var spawned = 0;
+		var parseErrors = 0;
+
+		foreach (var (lineNumber, parts) in WorldObjectDumpFillCommon.EnumerateDataLinesBottomUp(text))
 		{
-			lineNumber++;
-			var line = rawLine.TrimEnd ('\r');
-			if (string.IsNullOrWhiteSpace (line) || line.TrimStart ().StartsWith ('#'))
+			rowsConsidered++;
+
+			if (!WorldObjectDumpFillCommon.MatchesTypeTokenIfPresent(parts, typeIndex: 1, expectedTypeValue: MobSpawnerTypeValue))
 			{
+				rowsSkippedNotMatchingType++;
 				continue;
 			}
 
-			var parts = line.Split ('\t');
 			if (parts.Length < 7)
 			{
-				GD.PushWarning ($"MonsterSpawnersFill: line {lineNumber}: expected ≥7 tab-separated columns, skipping");
+				parseErrors++;
+				GD.PushWarning($"MonsterSpawnersFill: line {lineNumber}: expected ≥7 columns, skipping");
 				continue;
 			}
 
-			if (!TryParseId (parts[0].Trim (), out var id))
+			if (!WorldObjectDumpFillCommon.TryParseCommonPlacementColumns(parts, out var id, out var x, out var y, out var z, out var angleEncoded) || id < 100)
 			{
-				GD.PushWarning ($"MonsterSpawnersFill: line {lineNumber}: bad ID '{parts[0]}', skipping");
+				parseErrors++;
+				GD.PushWarning($"MonsterSpawnersFill: line {lineNumber}: parse failed, skipping");
 				continue;
 			}
 
-			if (!TryParseDouble (parts[3], out var x)
-				|| !TryParseDouble (parts[4], out var y)
-				|| !TryParseDouble (parts[5], out var z))
+			if (WorldObjectDumpFillCommon.ShouldSkipWeirdCoords(parts[3], parts[4], parts[5], x, y, z))
 			{
-				GD.PushWarning ($"MonsterSpawnersFill: line {lineNumber}: bad X/Y/Z, skipping");
+				rowsSkippedWeirdCoords++;
 				continue;
 			}
 
-			if (!TryParseAngle (parts[6], out var angleEncoded))
-			{
-				GD.PushWarning ($"MonsterSpawnersFill: line {lineNumber}: bad Angle, skipping");
-				continue;
-			}
+			rowsParsed++;
 
-			var posKey = QuantizeSourcePosition (x, y, z);
-			if (!seenSourcePositions.Add (posKey))
+			var posKey = WorldObjectDumpFillCommon.QuantizeSourcePosition(x, y, z);
+			if (!seenSourcePositions.Add(posKey))
 			{
 				duplicateRowsSkipped++;
 				continue;
 			}
 
-			var instance = scene.Instantiate<Node3D> ();
-			instance.Name = $"MonsterSpawner_{id:X}";
-			instance.Transform = BuildPlacementTransform ((float) x, (float) y, (float) z, angleEncoded);
-			AddChild (instance);
-			SetOwnerIfEditor (instance);
+			var instance = scene!.Instantiate<Node3D>();
+			instance.Name = WorldObjectDumpFillCommon.BuildPlacementName("MonsterSpawner", id, x, y, z);
+			instance.Transform = BuildPlacementTransform((float)x, (float)y, (float)z, angleEncoded);
+			AddChild(instance);
+			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);
+			spawned++;
 		}
 
-		if (duplicateRowsSkipped > 0)
-		{
-			GD.PushWarning (
-				$"MonsterSpawnersFill: skipped {duplicateRowsSkipped} duplicate row(s) with the same source X, Y, Z");
-		}
+		GD.Print(
+			$"MonsterSpawnersFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, notTypeSkipped={rowsSkippedNotMatchingType}, weirdCoordSkipped={rowsSkippedWeirdCoords}, parseErrors={parseErrors}");
 	}
 
-	/// <summary>Quantizes source-space coordinates so near-identical file values dedupe as one position.</summary>
-	private static (long Qx, long Qy, long Qz) QuantizeSourcePosition (double x, double y, double z)
+	private static Transform3D BuildPlacementTransform(float x, float y, float z, int angleEncoded)
 	{
-		const double scale = 10000.0;
-		return (
-			(long) Math.Round (x * scale),
-			(long) Math.Round (y * scale),
-			(long) Math.Round (z * scale));
-	}
-
-	private static Transform3D BuildPlacementTransform (float x, float y, float z, int angleEncoded)
-	{
-		var pos = new Vector3 (x, -y, -z);
-		var t0 = (float) (angleEncoded * Math.PI / 128.0);
-		var basis = Basis.FromEuler (new Vector3 (0f, t0, 0f), EulerOrder.Yxz);
-		return new Transform3D (basis, pos);
-	}
-
-	/// <summary>ID column is hex (optional <c>0x</c>), matching <c>NpcSpawnTscnWriter</c> spawn TSVs.</summary>
-	private static bool TryParseId (string s, out int id)
-	{
-		s = s.Trim ();
-		if (s.StartsWith ("0x", StringComparison.OrdinalIgnoreCase))
-		{
-			s = s[2..];
-		}
-
-		return int.TryParse (s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out id);
-	}
-
-	private static bool TryParseDouble (string s, out double v) =>
-		double.TryParse (s.Trim (), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
-
-	private static bool TryParseAngle (string s, out int angle)
-	{
-		if (int.TryParse (s.Trim (), NumberStyles.Integer, CultureInfo.InvariantCulture, out angle))
-		{
-			return true;
-		}
-
-		if (double.TryParse (s.Trim (), NumberStyles.Float, CultureInfo.InvariantCulture, out var d))
-		{
-			angle = (int) Math.Round (d);
-			return true;
-		}
-
-		angle = 0;
-		return false;
-	}
-
-	private void SetOwnerIfEditor (Node node)
-	{
-		if (!Engine.IsEditorHint ())
-		{
-			return;
-		}
-
-		var root = GetTree ()?.EditedSceneRoot;
-		node.Owner = root ?? this;
+		var pos = new Vector3(x, -y, -z);
+		var t0 = (float)(angleEncoded * Math.PI / 128.0);
+		var basis = Basis.FromEuler(new Vector3(0f, t0, 0f), EulerOrder.Yxz);
+		return new Transform3D(basis, pos);
 	}
 }
