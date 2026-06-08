@@ -28,11 +28,6 @@ public partial class ClientStateObjectTypeFilterDialog : Window
 
         var selected = initiallySelected ??
                        Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).ToHashSet();
-        if (initiallySelected is null)
-        {
-            selected.Remove(ObjectType.LightCrystalYellow);
-            selected.Remove(ObjectType.LightCrystal);
-        }
 
         foreach (var ot in Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).OrderBy(x => (ushort)x))
         {

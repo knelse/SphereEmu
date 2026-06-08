@@ -157,7 +157,7 @@ public partial class PacketLogViewerMainWindow
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Win1251 = Encoding.GetEncoding(1251);
 
-            EnsureCaptureAdapterSelectedAndInitialize();
+            InstallNewPacketCapture();
 
             UpdateGameTime();
 
@@ -347,51 +347,7 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void EnsureCaptureAdapterSelectedAndInitialize()
-    {
-        var mac = AppConfig.GetSection("Settings").GetValue<string>("MacAddress");
-        if (string.IsNullOrWhiteSpace(mac))
-        {
-            var dialog = new SelectCaptureAdapterDialog(mac) { Owner = this };
-            var result = dialog.ShowDialog();
-            if (result != true || string.IsNullOrWhiteSpace(dialog.SelectedMacAddress))
-            {
-                throw new InvalidOperationException("No capture adapter selected. Please select an adapter to continue.");
-            }
-
-            mac = dialog.SelectedMacAddress;
-            SaveMacAddressToAppConfig(mac);
-            ReloadAppConfig();
-        }
-
-        try
-        {
-            InstallNewPacketCapture(mac);
-        }
-        catch (ArgumentException ex)
-        {
-            // appconfig may contain a stale/nonexistent MAC; route into adapter selection instead of crashing startup
-            MessageBox.Show(this,
-                $"Configured network adapter was not found.\n\n{ex.Message}\n\nPlease select a valid adapter to continue.",
-                "Select network adapter",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-
-            var dialog = new SelectCaptureAdapterDialog(mac) { Owner = this };
-            var result = dialog.ShowDialog();
-            if (result != true || string.IsNullOrWhiteSpace(dialog.SelectedMacAddress))
-            {
-                throw new InvalidOperationException("No capture adapter selected. Please select an adapter to continue.");
-            }
-
-            mac = dialog.SelectedMacAddress;
-            SaveMacAddressToAppConfig(mac);
-            ReloadAppConfig();
-            InstallNewPacketCapture(mac);
-        }
-    }
-
-    private void InstallNewPacketCapture(string macAddress)
+    private void InstallNewPacketCapture()
     {
         var old = PacketCapture;
         try
@@ -403,7 +359,7 @@ public partial class PacketLogViewerMainWindow
             // ignore dispose errors
         }
 
-        PacketCapture = new PacketCapture(macAddress)
+        PacketCapture = new PacketCapture
         {
             OnPacketProcessed = OnPacketProcessed
         };
@@ -414,31 +370,11 @@ public partial class PacketLogViewerMainWindow
         AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
     }
 
-    private static void SaveMacAddressToAppConfig(string macAddress)
-    {
-        var path = Path.Combine(AppContext.BaseDirectory, "appconfig.json");
-        if (!File.Exists(path))
-        {
-            path = "appconfig.json";
-        }
-
-        var jsonText = File.ReadAllText(path);
-        var node = JsonNode.Parse(jsonText) as JsonObject ?? new JsonObject();
-        var settings = node["Settings"] as JsonObject ?? new JsonObject();
-        settings["MacAddress"] = macAddress;
-        node["Settings"] = settings;
-
-        File.WriteAllText(path, node.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
-    }
-
     private void InitializeClientStateFilter()
     {
         ClientStateObjectTypeFilter = Enum.GetValues<ObjectType>()
             .Where(x => x != ObjectType.Unknown)
             .ToHashSet();
-
-        ClientStateObjectTypeFilter.Remove(ObjectType.Monster);
-        ClientStateObjectTypeFilter.Remove(ObjectType.MonsterFlyer);
 
         var view = CollectionViewSource.GetDefaultView(MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource);
         view.Filter = o =>
@@ -2716,22 +2652,9 @@ public partial class PacketLogViewerMainWindow
 
     private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
     {
-        var currentMac = AppConfig.GetSection("Settings").GetValue<string>("MacAddress");
-        var dialog = new SelectCaptureAdapterDialog(currentMac) { Owner = this };
-        if (dialog.ShowDialog() != true || string.IsNullOrWhiteSpace(dialog.SelectedMacAddress))
-        {
-            return;
-        }
-
-        var newMac = dialog.SelectedMacAddress;
-        if (string.Equals(newMac, currentMac, StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        SaveMacAddressToAppConfig(newMac);
-        ReloadAppConfig();
-        InstallNewPacketCapture(newMac);
+        var summary = PacketCapture?.GetCaptureStatusSummary() ??
+                      "Packet capture is not initialized.";
+        MessageBox.Show(this, summary, "Capture status", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void ShowInUI_OnChecked(object sender, RoutedEventArgs e)
