@@ -101,7 +101,8 @@ public enum PoiType
     CastleTeleportPointEnemy,
     CastleInnerArea,
     CastleDungeon,
-    Other
+    Other,
+    Event
 }
 
 public static class SavedCoords
@@ -287,6 +288,10 @@ public static class SavedCoords
                 {
                     ["Остров_Выбора"] = new WorldCoords(3307, 159, 3611, -1.27),
                     ["Арена"] = new WorldCoords(3648, 155, -3455)
+                },
+                [Event] = new ()
+                {
+                    ["Белая_комната_Воздуха"] = new WorldCoords(2300, 1499.7, 30.8, -3.14)
                 }
             },
             [Харон] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>

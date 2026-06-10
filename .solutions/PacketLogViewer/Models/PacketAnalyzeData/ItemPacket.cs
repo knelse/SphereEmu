@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PacketLogViewer.Extensions;
 using SpherePacketVisualEditor;
 using SphServer.Helpers;
 
@@ -60,7 +61,14 @@ public class ItemPacket : PacketAnalyzeData
 
             if (HasGameId)
             {
-                GameObject = SphObjectDb.GameObjectDataDb[GameObjectId];
+                try
+                {
+                    GameObject = SphObjectDb.GameObjectDataDb[GameObjectId];
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    ConsoleExtensions.WriteException(ex);
+                }
             }
 
             var subtypeId = GetIntValue(PacketPartNames.SubtypeId);

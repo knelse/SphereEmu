@@ -263,7 +263,14 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
                     CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
-                DebugConsole.SendSpherePacket("/packet door_entrance_with_key_t onme ",
+                DebugConsole.SendSpherePacket("/packet door_entrance_with_key_t onme",
+                    clientConnection.MaybeScheduleNetworkPacketSend
+                );
+            }
+
+            else if (message.StartsWith("key_test"))
+            {
+                DebugConsole.SendSpherePacket("/packet item_key_single_use",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
             }
