@@ -57,7 +57,7 @@ public enum ObjectType : ushort
     MantraBookLarge = 411,
     MantraBookGreat = 412,
     MapBook = 413,
-    NewPlayerDungeonStartPoint = 415,
+    ContainerChest = 415,
     ChestInDungeon = 417,
     KeyBarn = 418,
     PowderFinale = 451,

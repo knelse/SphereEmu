@@ -171,7 +171,7 @@ public static class PacketPartMapping
         ObjectType.NpcTradeRandomName,
         ObjectType.SackMobLoot,
         ObjectType.ChestInDungeon,
-        ObjectType.NewPlayerDungeonStartPoint,
+        ObjectType.ContainerChest,
         ObjectType.Chest,
         ObjectType.ScrollLegend,
         ObjectType.ScrollRecipe,
@@ -537,13 +537,13 @@ public static class PacketPartMapping
                         packetName = "workshop";
                         break;
                     case ObjectType.Dungeon:
-                        packetName = "new_player_dungeon";
+                        packetName = "dungeon";
                         break;
                     case ObjectType.WeaponStartingSword:
                         packetName = "weapon_starting_sword";
                         break;
-                    case ObjectType.NewPlayerDungeonStartPoint:
-                        packetName = "new_player_dungeon_start";
+                    case ObjectType.ContainerChest:
+                        packetName = "container_chest";
                         break;
                     case ObjectType.Other:
                         packetName = "entity_character";

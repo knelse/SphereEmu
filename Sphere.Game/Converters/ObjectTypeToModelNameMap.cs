@@ -63,7 +63,7 @@ public static class ObjectTypeToModelNameMap
             ObjectType.MantraBookLarge => "mg_book1",
             ObjectType.MantraBookGreat => "mg_book1",
             ObjectType.MapBook => "mg_book03",
-            ObjectType.NewPlayerDungeonStartPoint => string.Empty,
+            ObjectType.ContainerChest => string.Empty,
             ObjectType.ChestInDungeon => "ct_chest1",
             ObjectType.KeyBarn => "st_key",
             ObjectType.PowderFinale => "PW_01",

@@ -41,7 +41,7 @@ public static class DebugConsole
         }
 
         var packetParts = PacketPart.LoadFromFile(path);
-        var onClient = inputParams.Length == 3;
+        var onClient = inputParams is [_, _, "onme"];
         if (onClient)
         {
             ChangeAllCoordsToFirstClient(packetParts, coordsForEntityMove);
@@ -63,6 +63,11 @@ public static class DebugConsole
         foreach (var part in packetParts)
         {
             stream.WriteBits(part.Value);
+        }
+
+        while (stream.Bit > 0)
+        {
+            stream.WriteBit(0);
         }
 
         var streamBytes = stream.GetStreamData();
