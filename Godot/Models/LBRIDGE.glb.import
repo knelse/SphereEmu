@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cq0teylwe8reh"
-path="res://.godot/imported/LBRIDGE.glb-5c0b585e7c905e291dbcce406c020f92.scn"
+uid="uid://dae5lpbotse1n"
+path="res://.godot/imported/lbridge.glb-b3271cbddb99a95c896c3598725e96d4.scn"
 
 [deps]
 
-source_file="res://Godot/Models/LBRIDGE.glb"
-dest_files=["res://.godot/imported/LBRIDGE.glb-5c0b585e7c905e291dbcce406c020f92.scn"]
+source_file="res://Godot/Models/lbridge.glb"
+dest_files=["res://.godot/imported/lbridge.glb-b3271cbddb99a95c896c3598725e96d4.scn"]
 
 [params]
 

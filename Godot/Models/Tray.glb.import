@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bsw2ygb4kccqd"
-path="res://.godot/imported/Tray.glb-ed6b3fc96e77856d9da13a54a287ac6f.scn"
+uid="uid://bxj20e7mt8j2x"
+path="res://.godot/imported/tray.glb-2365629f88b6deed1784e1cb8a35c2d2.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Tray.glb"
-dest_files=["res://.godot/imported/Tray.glb-ed6b3fc96e77856d9da13a54a287ac6f.scn"]
+source_file="res://Godot/Models/tray.glb"
+dest_files=["res://.godot/imported/tray.glb-2365629f88b6deed1784e1cb8a35c2d2.scn"]
 
 [params]
 

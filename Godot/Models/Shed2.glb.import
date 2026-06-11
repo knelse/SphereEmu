@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cd645t2axx33y"
-path="res://.godot/imported/Shed2.glb-e634e77f18cc22c125c01790d3a419b1.scn"
+uid="uid://d3ovi3mofhsf2"
+path="res://.godot/imported/shed2.glb-42b4450ee0dd18ff425748018a2e1589.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Shed2.glb"
-dest_files=["res://.godot/imported/Shed2.glb-e634e77f18cc22c125c01790d3a419b1.scn"]
+source_file="res://Godot/Models/shed2.glb"
+dest_files=["res://.godot/imported/shed2.glb-42b4450ee0dd18ff425748018a2e1589.scn"]
 
 [params]
 

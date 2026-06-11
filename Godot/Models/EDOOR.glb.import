@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ba56ymnwrgt74"
-path="res://.godot/imported/EDOOR.glb-88bc3ee33066d4fcbb910f950866aeb4.scn"
+uid="uid://lsjwbrnxavbp"
+path="res://.godot/imported/edoor.glb-e7658765931e15bbc0894d0ef1ab0b1b.scn"
 
 [deps]
 
-source_file="res://Godot/Models/EDOOR.glb"
-dest_files=["res://.godot/imported/EDOOR.glb-88bc3ee33066d4fcbb910f950866aeb4.scn"]
+source_file="res://Godot/Models/edoor.glb"
+dest_files=["res://.godot/imported/edoor.glb-e7658765931e15bbc0894d0ef1ab0b1b.scn"]
 
 [params]
 

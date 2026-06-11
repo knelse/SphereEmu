@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d1ah4jtiyi1oo"
-path="res://.godot/imported/Meria.glb-e7a681264b3f1cb4b075676b9babb714.scn"
+uid="uid://d037h31xvtty8"
+path="res://.godot/imported/meria.glb-848de4894d9d9226800fac4fc56e94b2.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Meria.glb"
-dest_files=["res://.godot/imported/Meria.glb-e7a681264b3f1cb4b075676b9babb714.scn"]
+source_file="res://Godot/Models/meria.glb"
+dest_files=["res://.godot/imported/meria.glb-848de4894d9d9226800fac4fc56e94b2.scn"]
 
 [params]
 

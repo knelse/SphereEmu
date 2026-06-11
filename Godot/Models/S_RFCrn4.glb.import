@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b1awn50s5k7jo"
-path="res://.godot/imported/S_RFCrn4.glb-2d3e588191de1f73f0874dfcef7456d2.scn"
+uid="uid://rpy4mty3swdh"
+path="res://.godot/imported/s_rfcrn4.glb-2974244f6d8364cd6b2abf08ac1e735a.scn"
 
 [deps]
 
-source_file="res://Godot/Models/S_RFCrn4.glb"
-dest_files=["res://.godot/imported/S_RFCrn4.glb-2d3e588191de1f73f0874dfcef7456d2.scn"]
+source_file="res://Godot/Models/s_rfcrn4.glb"
+dest_files=["res://.godot/imported/s_rfcrn4.glb-2974244f6d8364cd6b2abf08ac1e735a.scn"]
 
 [params]
 

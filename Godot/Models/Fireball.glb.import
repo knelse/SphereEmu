@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b1g8fopsws7y8"
-path="res://.godot/imported/Fireball.glb-6721c25948e883e596aa01a48b6ef6a7.scn"
+uid="uid://dm0x64lflc633"
+path="res://.godot/imported/fireball.glb-4c5ef2abb0bedd1a33d7653ec5f3db8c.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Fireball.glb"
-dest_files=["res://.godot/imported/Fireball.glb-6721c25948e883e596aa01a48b6ef6a7.scn"]
+source_file="res://Godot/Models/fireball.glb"
+dest_files=["res://.godot/imported/fireball.glb-4c5ef2abb0bedd1a33d7653ec5f3db8c.scn"]
 
 [params]
 

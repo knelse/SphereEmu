@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dlfmeoyt7gj6e"
-path="res://.godot/imported/Vine2.glb-e9e3bc3a61f763a337b10327ef2a009f.scn"
+uid="uid://bwwbi4ppsye03"
+path="res://.godot/imported/vine2.glb-42bd8490085b1d7b5b8f8d65fcbb2dc3.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Vine2.glb"
-dest_files=["res://.godot/imported/Vine2.glb-e9e3bc3a61f763a337b10327ef2a009f.scn"]
+source_file="res://Godot/Models/vine2.glb"
+dest_files=["res://.godot/imported/vine2.glb-42bd8490085b1d7b5b8f8d65fcbb2dc3.scn"]
 
 [params]
 

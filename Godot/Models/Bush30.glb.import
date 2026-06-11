@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c63o88rgksgky"
-path="res://.godot/imported/Bush30.glb-050293d74ddb1c0d871bdee0d56c388f.scn"
+uid="uid://bo27bd12xfhkd"
+path="res://.godot/imported/bush30.glb-f82b511edaee2c72098319eee43c9689.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Bush30.glb"
-dest_files=["res://.godot/imported/Bush30.glb-050293d74ddb1c0d871bdee0d56c388f.scn"]
+source_file="res://Godot/Models/bush30.glb"
+dest_files=["res://.godot/imported/bush30.glb-f82b511edaee2c72098319eee43c9689.scn"]
 
 [params]
 

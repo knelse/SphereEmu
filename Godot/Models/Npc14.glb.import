@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bltru125pxftl"
-path="res://.godot/imported/Npc14.glb-212562a33a1a6d486298eb870d1070e5.scn"
+uid="uid://bupofocehu288"
+path="res://.godot/imported/npc14.glb-6228aa57d99503fb9328f9b4aa39f6c5.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Npc14.glb"
-dest_files=["res://.godot/imported/Npc14.glb-212562a33a1a6d486298eb870d1070e5.scn"]
+source_file="res://Godot/Models/npc14.glb"
+dest_files=["res://.godot/imported/npc14.glb-6228aa57d99503fb9328f9b4aa39f6c5.scn"]
 
 [params]
 

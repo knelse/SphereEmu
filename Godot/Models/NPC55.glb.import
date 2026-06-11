@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://lg0gxs73npu4"
-path="res://.godot/imported/NPC55.glb-0b9ecb93585487a6d4f30c92cace65bf.scn"
+uid="uid://1vtrxncn6q2b"
+path="res://.godot/imported/npc55.glb-47e5d9a71b36a3684d70d1103f11b942.scn"
 
 [deps]
 
-source_file="res://Godot/Models/NPC55.glb"
-dest_files=["res://.godot/imported/NPC55.glb-0b9ecb93585487a6d4f30c92cace65bf.scn"]
+source_file="res://Godot/Models/npc55.glb"
+dest_files=["res://.godot/imported/npc55.glb-47e5d9a71b36a3684d70d1103f11b942.scn"]
 
 [params]
 

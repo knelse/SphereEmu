@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dy4jxrvaeryuy"
-path="res://.godot/imported/Fireblow.glb-5ec916a7b302f9b13661f35740cff666.scn"
+uid="uid://cbmuu2sve0q2h"
+path="res://.godot/imported/fireblow.glb-31abb084d519352dd51e16102f2f8789.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Fireblow.glb"
-dest_files=["res://.godot/imported/Fireblow.glb-5ec916a7b302f9b13661f35740cff666.scn"]
+source_file="res://Godot/Models/fireblow.glb"
+dest_files=["res://.godot/imported/fireblow.glb-31abb084d519352dd51e16102f2f8789.scn"]
 
 [params]
 

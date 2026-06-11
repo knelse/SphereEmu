@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dmheimjanhrvv"
-path="res://.godot/imported/Tree13.glb-b72dbdf04304a4441c59c17d7caefbd3.scn"
+uid="uid://7pmwql2c8vu8"
+path="res://.godot/imported/tree13.glb-5110725f89895ff56f5e181e2510909d.scn"
 
 [deps]
 
-source_file="res://Godot/Models/Tree13.glb"
-dest_files=["res://.godot/imported/Tree13.glb-b72dbdf04304a4441c59c17d7caefbd3.scn"]
+source_file="res://Godot/Models/tree13.glb"
+dest_files=["res://.godot/imported/tree13.glb-5110725f89895ff56f5e181e2510909d.scn"]
 
 [params]
 

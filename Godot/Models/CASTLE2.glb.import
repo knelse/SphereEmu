@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://brv7xnub86xry"
-path="res://.godot/imported/CASTLE2.glb-fad29cd0fc386a94f8a000da9356787a.scn"
+uid="uid://cds638doeaasg"
+path="res://.godot/imported/castle2.glb-88eb34cfbe991ab1c811f964e9756cf0.scn"
 
 [deps]
 
-source_file="res://Godot/Models/CASTLE2.glb"
-dest_files=["res://.godot/imported/CASTLE2.glb-fad29cd0fc386a94f8a000da9356787a.scn"]
+source_file="res://Godot/Models/castle2.glb"
+dest_files=["res://.godot/imported/castle2.glb-88eb34cfbe991ab1c811f964e9756cf0.scn"]
 
 [params]
 

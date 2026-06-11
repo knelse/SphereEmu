@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dmu4a8ipq0s0p"
-path="res://.godot/imported/S_Ruin05.glb-90781e9da1e809e0eca409768764a5b5.scn"
+uid="uid://oeunw77btjlw"
+path="res://.godot/imported/s_ruin05.glb-30f48db68184f87fd5790011bfe360bc.scn"
 
 [deps]
 
-source_file="res://Godot/Models/S_Ruin05.glb"
-dest_files=["res://.godot/imported/S_Ruin05.glb-90781e9da1e809e0eca409768764a5b5.scn"]
+source_file="res://Godot/Models/s_ruin05.glb"
+dest_files=["res://.godot/imported/s_ruin05.glb-30f48db68184f87fd5790011bfe360bc.scn"]
 
 [params]
 

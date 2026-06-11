@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://nygia6ph7vor"
-path="res://.godot/imported/MS_SIGN7.glb-d872d752a16d8068a841e81d1de28bf5.scn"
+uid="uid://bfkhwiruyrlgb"
+path="res://.godot/imported/ms_sign7.glb-0fdb4d3e4fb320b4bee79026de5b34d6.scn"
 
 [deps]
 
-source_file="res://Godot/Models/MS_SIGN7.glb"
-dest_files=["res://.godot/imported/MS_SIGN7.glb-d872d752a16d8068a841e81d1de28bf5.scn"]
+source_file="res://Godot/Models/ms_sign7.glb"
+dest_files=["res://.godot/imported/ms_sign7.glb-0fdb4d3e4fb320b4bee79026de5b34d6.scn"]
 
 [params]
 
