@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cxplsjm15bap0"]
+
+[ext_resource type="PackedScene" uid="uid://bp1cx55f3p0eo" path="res://Godot/Models/Extras/green_arrow_down.glb" id="1_68q2k"]
+[ext_resource type="Texture2D" uid="uid://kiqe8eqaqbod" path="res://Godot/Models/portal1_S_PR01.png" id="2_xkjd2"]
+
+[node name="TeleportPoint" type="MeshInstance3D" unique_id=1588595156]
+skeleton = NodePath("../..")
+
+[node name="Model" parent="." unique_id=1334080176 instance=ExtResource("1_68q2k")]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1724290831]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0)
+modulate = Color(1, 0.47843137, 1, 0.2901961)
+texture = ExtResource("2_xkjd2")
