@@ -53,7 +53,7 @@ script = ExtResource("2")
 [node name="Cats" type="Node3D" parent="." unique_id=523462454]
 
 [node name="Sunpool_1" parent="Cats" unique_id=1848040136 instance=ExtResource("7_wg6ka")]
-transform = Transform3D(0.098016456, 0, -0.9951796, 0, 1, 0, 0.9951796, 0, 0.098016456, 425.92, -153.43, 1301.68)
+transform = Transform3D(0.09801645, 0, -0.99517953, 0, 1, 0, 0.99517953, 0, 0.09801645, 425.92, -153.43, 1301.68)
 MonsterType = 87
 Angle = 196
 ObjectType = 210
@@ -17187,7 +17187,7 @@ ObjectType = 216
 ModelName = "npc80"
 
 [node name="NPC_4563_Райс_Корпс" parent="NPCs" unique_id=1732010041 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(0.09801675, 0, -0.9951826, 0, 1, 0, 0.9951826, 0, 0.09801675, 1717.7867, -159.393, 1688.2068)
+transform = Transform3D(0.09801674, 0, -0.9951825, 0, 1, 0, 0.9951825, 0, 0.09801674, 1717.7867, -159.393, 1688.2068)
 NameID = 4492
 IconName = "npc_guilder"
 NpcType = 16
@@ -17253,7 +17253,7 @@ ObjectType = 216
 ModelName = "npc07"
 
 [node name="NPC_4712_Крег_Наттер" parent="NPCs" unique_id=875496837 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.098016724, 0, -0.9951826, 0, 1, 0, 0.9951826, 0, -0.098016724, -3166.3767, 341.39468, 2499.7976)
+transform = Transform3D(-0.09801672, 0, -0.9951825, 0, 1, 0, 0.9951825, 0, -0.09801672, -3166.3767, 341.39468, 2499.7976)
 NameID = 4462
 IconName = "npc_guilder"
 NpcType = 16
@@ -17264,7 +17264,7 @@ ObjectType = 216
 ModelName = "npc08"
 
 [node name="NPC_4713_Тан_Катчер" parent="NPCs" unique_id=816589046 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9987933, 0, -0.049067557, 0, 1, 0, 0.049067557, 0, -0.9987933, -2435.608, 336.08978, 1859.1884)
+transform = Transform3D(-0.99879324, 0, -0.049067553, 0, 1, 0, 0.049067553, 0, -0.99879324, -2435.608, 336.08978, 1859.1884)
 NameID = 4463
 IconName = "npc_guilder"
 NpcType = 16
@@ -18223,7 +18223,7 @@ ID = 5202
 ModelName = "npc29a"
 
 [node name="NPC_5203_Грифин_Той" parent="NPCs" unique_id=776985968 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9951826, 0, -0.09801682, 0, 1, 0, 0.09801682, 0, -0.9951826, 501.47156, -159.88086, 192.81662)
+transform = Transform3D(-0.9951825, 0, -0.09801681, 0, 1, 0, 0.09801681, 0, -0.9951825, 501.47156, -159.88086, 192.81662)
 NameID = 4159
 IconName = "npc_trade_armor"
 NpcType = 7
@@ -18313,7 +18313,7 @@ ID = 5211
 ModelName = "npc29b"
 
 [node name="NPC_5212_Бенедикт_Кельвин" parent="NPCs" unique_id=1279271477 instance=ExtResource("5_5rg3u")]
-transform = Transform3D(-0.9951826, 0, -0.09801682, 0, 1, 0, 0.09801682, 0, -0.9951826, 262.39374, -159.00163, -950.9672)
+transform = Transform3D(-0.9951825, 0, -0.09801681, 0, 1, 0, 0.09801681, 0, -0.9951825, 262.39374, -159.00163, -950.9672)
 NameID = 4132
 IconName = "npc_trade_wpon"
 NpcType = 11
@@ -19527,7 +19527,7 @@ ID = 2100
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0833_Target" parent="Doors" unique_id=97786079 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, -2579.1753, 105.30313, 294.146)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, -2579.1753, 105.30313, 294.146)
 DoorID = 32767
 HasTarget = true
 TargetX = -2577.9155
@@ -19560,7 +19560,7 @@ ID = 2097
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0830_Target" parent="Doors" unique_id=243407482 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, -2594.4595, 107.02231, 275.29395)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, -2594.4595, 107.02231, 275.29395)
 DoorID = 32767
 HasTarget = true
 TargetX = -2593.2163
@@ -21028,7 +21028,7 @@ ID = 2357
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0934_Target" parent="Doors" unique_id=191835521 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, -3579.1753, 353.75314, 2094.146)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, -3579.1753, 353.75314, 2094.146)
 DoorID = 32767
 HasTarget = true
 TargetX = -3577.9155
@@ -21061,7 +21061,7 @@ ID = 2354
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0931_Target" parent="Doors" unique_id=914229980 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, -3594.4595, 355.47232, 2075.294)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, -3594.4595, 355.47232, 2075.294)
 DoorID = 32767
 HasTarget = true
 TargetX = -3593.2163
@@ -21401,7 +21401,7 @@ ID = 2321
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0910_Target" parent="Doors" unique_id=1511509583 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, -2413.7039, 361.13235, 1316.9642)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, -2413.7039, 361.13235, 1316.9642)
 DoorID = 32767
 HasTarget = true
 TargetX = -2412.3872
@@ -23576,7 +23576,7 @@ ID = 1941
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0794_Target" parent="Doors" unique_id=252496770 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, -2479.1753, -393.99686, -3105.854)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, -2479.1753, -393.99686, -3105.854)
 DoorID = 32767
 HasTarget = true
 TargetX = -2477.9155
@@ -23609,7 +23609,7 @@ ID = 1938
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0791_Target" parent="Doors" unique_id=850778397 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, -2494.4595, -392.27768, -3124.706)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, -2494.4595, -392.27768, -3124.706)
 DoorID = 32767
 HasTarget = true
 TargetX = -2493.2163
@@ -24209,7 +24209,7 @@ ID = 1288
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0507_Target" parent="Doors" unique_id=991301378 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, 1518.684, -150.04996, 2327.694)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, 1518.684, -150.04996, 2327.694)
 DoorID = 32767
 HasTarget = true
 TargetX = 1519.9774
@@ -24220,7 +24220,7 @@ ID = 1287
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0506_Target" parent="Doors" unique_id=130189082 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, 1547.5074, -147.98601, 2324.458)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, 1547.5074, -147.98601, 2324.458)
 DoorID = 32767
 HasTarget = true
 TargetX = 1543.381
@@ -24595,7 +24595,7 @@ ID = 1027
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_04DD_Target" parent="Doors" unique_id=1006372811 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9972897, 0, -0.073564544, 0, 1, 0, 0.073564544, 0, 0.9972897, 370.65607, -150.02463, 3650.0566)
+transform = Transform3D(0.99728966, 0, -0.07356454, 0, 1, 0, 0.07356454, 0, 0.99728966, 370.65607, -150.02463, 3650.0566)
 DoorID = 32767
 HasTarget = true
 TargetX = 370.97552
@@ -27148,7 +27148,7 @@ ID = 1057
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0420_Target" parent="Doors" unique_id=482970132 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, 936.2962, -141.86765, 1266.9642)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, 936.2962, -141.86765, 1266.9642)
 DoorID = 32767
 HasTarget = true
 TargetX = 937.61273
@@ -28070,7 +28070,7 @@ ID = 1361
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_0550_Target" parent="Doors" unique_id=1715969412 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, 1870.8248, -149.24686, -55.853954)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, 1870.8248, -149.24686, -55.853954)
 DoorID = 32767
 HasTarget = true
 TargetX = 1872.0845
@@ -28103,7 +28103,7 @@ ID = 1358
 ModelName = "EDOOR"
 
 [node name="DoorEntrance_054D_Target" parent="Doors" unique_id=1814611742 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, 1855.5406, -147.52768, -74.70614)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, 1855.5406, -147.52768, -74.70614)
 DoorID = 32767
 HasTarget = true
 TargetX = 1856.7837
@@ -28888,7 +28888,7 @@ ID = 1455
 ModelName = "EDOOR"
 
 [node name="DoorExit_05B1_Target" parent="Doors" unique_id=336928721 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, 2488.8572, -1102.1892, -1095.0121)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, 2488.8572, -1102.1892, -1095.0121)
 DoorID = 32767
 HasTarget = true
 TargetX = -1035.0199
@@ -29051,7 +29051,7 @@ ID = 1493
 ModelName = "EDOOR"
 
 [node name="DoorExit_05B2_Target" parent="Doors" unique_id=1857259701 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(0.99879473, 0, -0.049067605, 0, 1, 0, 0.049067605, 0, 0.99879473, -1035.3396, 386.3991, 1610.2845)
+transform = Transform3D(0.9987947, 0, -0.0490676, 0, 1, 0, 0.0490676, 0, 0.9987947, -1035.3396, 386.3991, 1610.2845)
 DoorID = 32767
 HasTarget = true
 TargetX = 2488.6162
@@ -29660,7 +29660,7 @@ ID = 14685
 ModelName = "EDOOR"
 
 [node name="DoorExit_395C_Target" parent="Doors" unique_id=521746753 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 700.1985, -4472.141, -1319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 700.1985, -4472.141, -1319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 661.3933
@@ -29770,7 +29770,7 @@ ID = 48665
 ModelName = "EDOOR"
 
 [node name="DoorExit_CA37_Target" parent="Doors" unique_id=88273840 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -1499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -1499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -29836,7 +29836,7 @@ ID = 48890
 ModelName = "EDOOR"
 
 [node name="DoorExit_BEB3_Target" parent="Doors" unique_id=893423045 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -2499.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -2499.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -2538.6067
@@ -29913,7 +29913,7 @@ ID = 45409
 ModelName = "EDOOR"
 
 [node name="DoorExit_9BFD_Target" parent="Doors" unique_id=241193775 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -3099.8015, -4672.141, 3680.7712)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -3099.8015, -4672.141, 3680.7712)
 DoorID = 32767
 HasTarget = true
 TargetX = -3138.6067
@@ -29998,7 +29998,7 @@ ID = 16410
 ModelName = "EDOOR"
 
 [node name="DoorExit_4015_Target" parent="Doors" unique_id=1614746857 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 1900.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 1900.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -30053,7 +30053,7 @@ ID = 24540
 ModelName = "EDOOR"
 
 [node name="DoorExit_5FDB_Target" parent="Doors" unique_id=1758000776 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 1900.1985, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 1900.1985, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1861.3933
@@ -30119,7 +30119,7 @@ ID = 37554
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11E_Target" parent="Doors" unique_id=1460594356 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 500.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 500.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -30185,7 +30185,7 @@ ID = 11255
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F07_Target" parent="Doors" unique_id=1950273954 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 2100.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 2100.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -30240,7 +30240,7 @@ ID = 31158
 ModelName = "EDOOR"
 
 [node name="DoorExit_701C_Target" parent="Doors" unique_id=273252480 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 500.1985, -4472.141, -2719.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 500.1985, -4472.141, -2719.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -30360,7 +30360,7 @@ ID = 44464
 ModelName = "EDOOR"
 
 [node name="DoorExit_ADAF_Target" parent="Doors" unique_id=2051875292 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -3899.8015, -4472.141, -1519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -3899.8015, -4472.141, -1519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3938.6067
@@ -30437,7 +30437,7 @@ ID = 20066
 ModelName = "EDOOR"
 
 [node name="DoorExit_4E61_Target" parent="Doors" unique_id=514675625 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 1100.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 1100.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 1061.3933
@@ -30503,7 +30503,7 @@ ID = 12621
 ModelName = "EDOOR"
 
 [node name="DoorExit_3627_Target" parent="Doors" unique_id=114976520 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 500.1985, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 500.1985, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 461.3933
@@ -30569,7 +30569,7 @@ ID = 3998
 ModelName = "EDOOR"
 
 [node name="DoorExit_0F9D_Target" parent="Doors" unique_id=1856280242 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 900.1985, -4472.141, -3319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 900.1985, -4472.141, -3319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 861.3933
@@ -30646,7 +30646,7 @@ ID = 28280
 ModelName = "EDOOR"
 
 [node name="DoorExit_6F25_Target" parent="Doors" unique_id=202989812 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 3100.1985, -4472.141, -3119.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 3100.1985, -4472.141, -3119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3061.3933
@@ -30701,7 +30701,7 @@ ID = 17116
 ModelName = "EDOOR"
 
 [node name="DoorExit_459B_Target" parent="Doors" unique_id=1796826233 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 3500.1985, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 3500.1985, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3461.3933
@@ -30767,7 +30767,7 @@ ID = 44475
 ModelName = "EDOOR"
 
 [node name="DoorExit_AD62_Target" parent="Doors" unique_id=258738898 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -738.6067
@@ -30844,7 +30844,7 @@ ID = 43390
 ModelName = "EDOOR"
 
 [node name="DoorExit_A7D5_Target" parent="Doors" unique_id=1175941029 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -899.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -899.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -938.6067
@@ -30899,7 +30899,7 @@ ID = 27785
 ModelName = "EDOOR"
 
 [node name="DoorExit_6C8C_Target" parent="Doors" unique_id=711791664 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 2500.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 2500.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2461.3933
@@ -30986,7 +30986,7 @@ ID = 25865
 ModelName = "EDOOR"
 
 [node name="DoorExit_6507_Target" parent="Doors" unique_id=471568823 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 2100.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 2100.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 2061.3933
@@ -31052,7 +31052,7 @@ ID = 16777
 ModelName = "EDOOR"
 
 [node name="DoorExit_62DF_Target" parent="Doors" unique_id=320541029 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -2299.8015, -4472.141, -3519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -2299.8015, -4472.141, -3519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -2338.6067
@@ -31118,7 +31118,7 @@ ID = 3749
 ModelName = "EDOOR"
 
 [node name="DoorExit_0EA1_Target" parent="Doors" unique_id=431663172 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -99.80151, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -99.80151, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -138.60669
@@ -31173,7 +31173,7 @@ ID = 55471
 ModelName = "EDOOR"
 
 [node name="DoorExit_F2BA_Target" parent="Doors" unique_id=53500801 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -3699.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -3699.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -3738.6067
@@ -31239,7 +31239,7 @@ ID = 57632
 ModelName = "EDOOR"
 
 [node name="DoorExit_E11A_Target" parent="Doors" unique_id=1740372988 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 261.3933
@@ -31283,7 +31283,7 @@ ID = 57568
 ModelName = "EDOOR"
 
 [node name="DoorExit_E0DE_Target" parent="Doors" unique_id=980905335 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -1899.8015, -4472.141, -2919.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -1899.8015, -4472.141, -2919.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1938.6067
@@ -31360,7 +31360,7 @@ ID = 40754
 ModelName = "EDOOR"
 
 [node name="DoorExit_9ED7_Target" parent="Doors" unique_id=67827100 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, 3300.1985, -4472.141, -2319.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, 3300.1985, -4472.141, -2319.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = 3261.3933
@@ -31447,7 +31447,7 @@ ID = 59833
 ModelName = "EDOOR"
 
 [node name="DoorExit_E9C6_Target" parent="Doors" unique_id=1357084138 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -1099.8015, -4472.141, -2519.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -1099.8015, -4472.141, -2519.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1138.6067
@@ -31502,7 +31502,7 @@ ID = 46339
 ModelName = "EDOOR"
 
 [node name="DoorExit_B502_Target" parent="Doors" unique_id=423220294 instance=ExtResource("5_h4gwc")]
-transform = Transform3D(-0.098016866, 0, -0.995184, 0, 1, 0, 0.995184, 0, -0.098016866, -1499.8015, -4472.141, -2119.2285)
+transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -1499.8015, -4472.141, -2119.2285)
 DoorID = 32767
 HasTarget = true
 TargetX = -1538.6067
@@ -31845,7 +31845,7 @@ ObjectType = 65
 ModelName = "EDOOR"
 
 [node name="DungeonEntrance_120E_[-2857]_[-346]_[-1956]" parent="DungeonEntrances" unique_id=2045209237 instance=ExtResource("26_k80t8")]
-transform = Transform3D(0.99728966, 0, -0.07356454, 0, 1, 0, 0.07356454, 0, 0.99728966, -2856.778, 345.0148, 1955.2438)
+transform = Transform3D(0.9972896, 0, -0.07356454, 0, 1, 0, 0.07356454, 0, 0.9972896, -2856.778, 345.0148, 1955.2438)
 Angle = 253
 ID = 4622
 ObjectType = 65
@@ -31918,7 +31918,7 @@ ObjectType = 65
 ModelName = "EDOOR"
 
 [node name="DungeonEntrance_11FF_[-1704]_[-92]_[-939]" parent="DungeonEntrances" unique_id=289228139 instance=ExtResource("26_k80t8")]
-transform = Transform3D(-0.09801686, 0, -0.99518394, 0, 1, 0, 0.99518394, 0, -0.09801686, -1703.7657, 91.74878, 938.2366)
+transform = Transform3D(-0.09801685, 0, -0.9951839, 0, 1, 0, 0.9951839, 0, -0.09801685, -1703.7657, 91.74878, 938.2366)
 Angle = 188
 ID = 4607
 ObjectType = 65
@@ -32661,7 +32661,7 @@ ObjectType = 702
 ModelName = "mn_quartz"
 
 [node name="LightCrystal_5F7B_[1299]_[1500]_[162]" parent="ItemsOnGround/LightСrystals" unique_id=1226326704 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.9987951, 0, -0.04906762, 0, 1, 0, 0.04906762, 0, 0.9987951, 1299.927, -1500.7621, -162.7721)
+transform = Transform3D(0.99879503, 0, -0.04906762, 0, 1, 0, 0.04906762, 0, 0.99879503, 1299.927, -1500.7621, -162.7721)
 Angle = 254
 ID = 24443
 ObjectType = 702
@@ -32777,7 +32777,7 @@ ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_A46D_[-3443]_[1300]_[-1870]" parent="ItemsOnGround/LightСrystals" unique_id=1129502983 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.9972901, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.9972901, -3442.1472, -1300.5448, 1869.2705)
+transform = Transform3D(0.99729, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.99729, -3442.1472, -1300.5448, 1869.2705)
 Angle = 253
 ID = 42093
 ObjectType = 711
@@ -33119,7 +33119,7 @@ ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_D80F_[-3545]_[1300]_[-1958]" parent="ItemsOnGround/LightСrystals" unique_id=1106804959 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.9972901, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.9972901, -3544.3755, -1300.6156, 1957.8888)
+transform = Transform3D(0.99729, 0, -0.07356457, 0, 1, 0, 0.07356457, 0, 0.99729, -3544.3755, -1300.6156, 1957.8888)
 Angle = 253
 ID = 55311
 ObjectType = 711
@@ -33408,7 +33408,7 @@ ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_D9E7_[-3592]_[1300]_[-1887]" parent="ItemsOnGround/LightСrystals" unique_id=600500562 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.97570175, 0, -0.21910115, 0, 1, 0, 0.21910115, 0, 0.97570175, -3591.3008, -1300.7098, 1886.3204)
+transform = Transform3D(0.9757017, 0, -0.21910113, 0, 1, 0, 0.21910113, 0, 0.9757017, -3591.3008, -1300.7098, 1886.3204)
 Angle = 247
 ID = 55783
 ObjectType = 711
@@ -33460,7 +33460,7 @@ ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_D685_[-3673]_[1312]_[-1901]" parent="ItemsOnGround/LightСrystals" unique_id=1147342291 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.97570175, 0, -0.21910115, 0, 1, 0, 0.21910115, 0, 0.97570175, -3672.9956, -1312.2905, 1900.3035)
+transform = Transform3D(0.9757017, 0, -0.21910113, 0, 1, 0, 0.21910113, 0, 0.9757017, -3672.9956, -1312.2905, 1900.3035)
 Angle = 247
 ID = 54917
 ObjectType = 711
@@ -33640,7 +33640,7 @@ ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="@Node3D@23663" parent="ItemsOnGround/LightСrystals" unique_id=1904957849 instance=ExtResource("42_8lhms")]
-transform = Transform3D(0.19509034, 0, -0.9807849, 0, 1, 0, 0.9807849, 0, 0.19509034, -3453.8872, -1290.962, 1961.7933)
+transform = Transform3D(0.19509034, 0, -0.98078483, 0, 1, 0, 0.98078483, 0, 0.19509034, -3453.8872, -1290.962, 1961.7933)
 Angle = 200
 ID = 38811
 ObjectType = 711
@@ -34038,7 +34038,7 @@ ID = 5253
 ObjectType = 102
 
 [node name="TeleportInDungeon_1484_[-3675]_[1302]_[-1918]" parent="Teleports/TeleportsInDungeon" unique_id=1595726751 instance=ExtResource("37_vs4be")]
-transform = Transform3D(0.9757014, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.9757014, -3674.711, -1302.2839, 1917.2136)
+transform = Transform3D(0.97570133, 0, -0.21910106, 0, 1, 0, 0.21910106, 0, 0.97570133, -3674.711, -1302.2839, 1917.2136)
 Angle = 247
 ID = 5252
 ObjectType = 102
@@ -34085,1621 +34085,2120 @@ ObjectType = 103
 [node name="TeleportPoints" type="Node3D" parent="." unique_id=749616301]
 script = ExtResource("48_tpfill")
 
-[node name="Hyperion" type="Node3D" parent="TeleportPoints" unique_id=312374824]
+[node name="Hyperion" type="Node3D" parent="TeleportPoints" unique_id=1022374914]
 
-[node name="SharedDungeon" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1026088488]
+[node name="SharedDungeon" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1637996421]
 
 [node name="TP_Остров_Выбора" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1588595156 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1300.33, -1499.32, -35.94)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Остров_Выбора"
-CoordsPreview = "X: 1300.33 Y: 1499.32 Z: 35.94 Turn: 5.87"
+X = 1300.33
+Y = 1499.32
+Z = 35.94
+Angle = 5.87
 
-[node name="TP_Латор_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1478047050 instance=ExtResource("45_8lhms")]
+[node name="TP_Латор_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=178669219 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -300, -1500, -106)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Латор_Каблак"
-CoordsPreview = "X: -300 Y: 1500 Z: 106 Turn: 3.1415"
+X = -300.0
+Y = 1500.0
+Z = 106.0
+Angle = 3.1415
 
-[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=287995613 instance=ExtResource("45_8lhms")]
+[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=26167535 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, -1500, -145)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Аммалаэль"
-CoordsPreview = "X: 33 Y: 1500 Z: 145 Turn: 4.85"
+X = 33.0
+Y = 1500.0
+Z = 145.0
+Angle = 4.85
 
-[node name="TP_Фьеф_Респ_Меди" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1526265456 instance=ExtResource("45_8lhms")]
+[node name="TP_Фьеф_Респ_Меди" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1927496763 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99, -1499.7, -33)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Фьеф_Респ_Меди"
-CoordsPreview = "X: -99 Y: 1499.7 Z: 33 Turn: 5.87"
+X = -99.0
+Y = 1499.7
+Z = 33.0
+Angle = 5.87
 
-[node name="TP_Санпул_Карма_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1854823864 instance=ExtResource("45_8lhms")]
+[node name="TP_Санпул_Карма_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=610922365 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2105, -1498, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Санпул_Карма_Север"
-CoordsPreview = "X: -2105 Y: 1498 Z: 100 Turn: 4.8"
+X = -2105.0
+Y = 1498.0
+Z = 100.0
+Angle = 4.8
 
-[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1358294863 instance=ExtResource("45_8lhms")]
+[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1349445352 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1500, -1499.7, -105.85)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Бангвиль"
-CoordsPreview = "X: -1500 Y: 1499.7 Z: 105.85 Turn: 3.14"
+X = -1500.0
+Y = 1499.7
+Z = 105.85
+Angle = 3.14
 
-[node name="TP_Каре_Рояль_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1961900511 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1175733934 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1293, -1499, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Каре_Рояль_Север"
-CoordsPreview = "X: -1293 Y: 1499 Z: 100 Turn: 1.57"
+X = -1293.0
+Y = 1499.0
+Z = 100.0
+Angle = 1.57
 
-[node name="TP_Каре_Рояль_Юг" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1709372711 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль_Юг" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=66135596 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1061, -1499, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Каре_Рояль_Юг"
-CoordsPreview = "X: -1061 Y: 1499 Z: 100 Turn: 4.68"
+X = -1061.0
+Y = 1499.0
+Z = 100.0
+Angle = 4.68
 
-[node name="TP_Хортонский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=862730522 instance=ExtResource("45_8lhms")]
+[node name="TP_Хортонский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=84237825 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1894, -1498, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Хортонский_Лес"
-CoordsPreview = "X: -1894 Y: 1498 Z: 100 Turn: 1.58"
+X = -1894.0
+Y = 1498.0
+Z = 100.0
+Angle = 1.58
 
-[node name="TP_Санпул_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=164212599 instance=ExtResource("45_8lhms")]
+[node name="TP_Санпул_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1559992964 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 233, -1499.7, -54)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Санпул_Лес"
-CoordsPreview = "X: 233 Y: 1499.7 Z: 54 Turn: 4.7"
+X = 233.0
+Y = 1499.7
+Z = 54.0
+Angle = 4.7
 
-[node name="TP_Горы_Дорога_Санпул_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1821644934 instance=ExtResource("45_8lhms")]
+[node name="TP_Горы_Дорога_Санпул_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1142315405 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1735, -1498, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Горы_Дорога_Санпул_Торвил"
-CoordsPreview = "X: -1735 Y: 1498 Z: 100 Turn: 4.7"
+X = -1735.0
+Y = 1498.0
+Z = 100.0
+Angle = 4.7
 
-[node name="TP_Торвил_Кладб" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=736646051 instance=ExtResource("45_8lhms")]
+[node name="TP_Торвил_Кладб" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1573447914 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 433, -1499.7, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Торвил_Кладб"
-CoordsPreview = "X: 433 Y: 1499.7 Z: 100 Turn: 4.66"
+X = 433.0
+Y = 1499.7
+Z = 100.0
+Angle = 4.66
 
-[node name="TP_Шипстоун_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=1157583824 instance=ExtResource("45_8lhms")]
+[node name="TP_Шипстоун_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=2082613753 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2499, -1498, -105)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Шипстоун_Север"
-CoordsPreview = "X: -2499 Y: 1498 Z: 105 Turn: 3"
+X = -2499.0
+Y = 1498.0
+Z = 105.0
+Angle = 3.0
 
-[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=425835088 instance=ExtResource("45_8lhms")]
+[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/SharedDungeon" unique_id=2067830621 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -706, -1499, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PointName = "Блессендор"
-CoordsPreview = "X: -706 Y: 1499 Z: 100 Turn: 4.71"
+X = -706.0
+Y = 1499.0
+Z = 100.0
+Angle = 4.71
 
-[node name="Cemetery" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=582848352]
+[node name="Cemetery" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=853466353]
 
-[node name="TP_Шипстоун" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1033436466 instance=ExtResource("45_8lhms")]
+[node name="TP_Шипстоун" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1287398865 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3900, -1509, -106)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 1
 PointName = "Шипстоун"
-CoordsPreview = "X: -3900 Y: 1509 Z: 106 Turn: 3.1"
+X = -3900.0
+Y = 1509.0
+Z = 106.0
+Angle = 3.1
 
-[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1797751768 instance=ExtResource("45_8lhms")]
+[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1717877893 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3753, -1509, -100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 1
 PointName = "Бангвиль"
-CoordsPreview = "X: -3753 Y: 1509 Z: 100 Turn: 1.6"
+X = -3753.0
+Y = 1509.0
+Z = 100.0
+Angle = 1.6
 
-[node name="TP_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1023030950 instance=ExtResource("45_8lhms")]
+[node name="TP_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1743820936 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3055, -1499, -106)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 1
 PointName = "Торвил"
-CoordsPreview = "X: -3055 Y: 1499 Z: 106 Turn: 3.1"
+X = -3055.0
+Y = 1499.0
+Z = 106.0
+Angle = 3.1
 
-[node name="TP_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=1150877996 instance=ExtResource("45_8lhms")]
+[node name="TP_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Cemetery" unique_id=458159943 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2900, -1499.5, -106.34)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 1
 PointName = "Санпул"
-CoordsPreview = "X: -2900 Y: 1499.5 Z: 106.34 Turn: 3.14"
+X = -2900.0
+Y = 1499.5
+Z = 106.34
+Angle = 3.14
 
-[node name="CityCenter" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=396853283]
+[node name="CityCenter" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=598407732]
 
-[node name="TP_Шипстоун" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=1815396775 instance=ExtResource("45_8lhms")]
+[node name="TP_Шипстоун" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=1944046526 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2614, -157.8, -1293)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 2
 PointName = "Шипстоун"
-CoordsPreview = "X: 2614 Y: 157.8 Z: 1293 Turn: 0"
+X = 2614.0
+Y = 157.8
+Z = 1293.0
 
-[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=1519651229 instance=ExtResource("45_8lhms")]
+[node name="TP_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=628360842 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1882, -155.6, 407)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 2
 PointName = "Бангвиль"
-CoordsPreview = "X: 1882 Y: 155.6 Z: -407 Turn: 0"
+X = 1882.0
+Y = 155.6
+Z = -407.0
 
-[node name="TP_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=1836251808 instance=ExtResource("45_8lhms")]
+[node name="TP_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=2137413337 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2292, -155.3, 2386)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 2
 PointName = "Торвил"
-CoordsPreview = "X: 2292 Y: 155.3 Z: -2386 Turn: 0"
+X = 2292.0
+Y = 155.3
+Z = -2386.0
 
-[node name="TP_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=745217731 instance=ExtResource("45_8lhms")]
+[node name="TP_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CityCenter" unique_id=1255751654 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 422, -153.3, 1284)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 2
 PointName = "Санпул"
-CoordsPreview = "X: 422 Y: 153.3 Z: -1284 Turn: 0"
+X = 422.0
+Y = 153.3
+Z = -1284.0
 
-[node name="TeleportPoint" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=941134038]
+[node name="TeleportPoint" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=140374538]
 
-[node name="TP_Северная_Дорога" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1499588319 instance=ExtResource("45_8lhms")]
+[node name="TP_Северная_Дорога" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2021637477 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3031, -159, -2095)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Северная_Дорога"
-CoordsPreview = "X: 3031 Y: 159 Z: 2095 Turn: -2.5"
+X = 3031.0
+Y = 159.0
+Z = 2095.0
+Angle = -2.5
 
-[node name="TP_Северо_Западный_Край" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=248613357 instance=ExtResource("45_8lhms")]
+[node name="TP_Северо_Западный_Край" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1879125308 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 502, -159, -1132)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Северо_Западный_Край"
-CoordsPreview = "X: 502 Y: 159 Z: 1132 Turn: 4.6"
+X = 502.0
+Y = 159.0
+Z = 1132.0
+Angle = 4.6
 
-[node name="TP_Дорога_Шипстоун_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=991368990 instance=ExtResource("45_8lhms")]
+[node name="TP_Дорога_Шипстоун_Санпул" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1983762994 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1902, -159, -1161)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Дорога_Шипстоун_Санпул"
-CoordsPreview = "X: 1902 Y: 159 Z: 1161 Turn: 4.6"
+X = 1902.0
+Y = 159.0
+Z = 1161.0
+Angle = 4.6
 
-[node name="TP_Дорога_Шипстоун_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=425974882 instance=ExtResource("45_8lhms")]
+[node name="TP_Дорога_Шипстоун_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1024776837 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2107, -159, -936)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Дорога_Шипстоун_Бангвиль"
-CoordsPreview = "X: 2107 Y: 159 Z: 936 Turn: -7.3"
+X = 2107.0
+Y = 159.0
+Z = 936.0
+Angle = -7.3
 
-[node name="TP_Северо_Запад" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2063234163 instance=ExtResource("45_8lhms")]
+[node name="TP_Северо_Запад" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1672711776 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3785, -159, -918)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Северо_Запад"
-CoordsPreview = "X: 3785 Y: 159 Z: 918 Turn: -5.8"
+X = 3785.0
+Y = 159.0
+Z = 918.0
+Angle = -5.8
 
-[node name="TP_Умрадский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=669624013 instance=ExtResource("45_8lhms")]
+[node name="TP_Умрадский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1263840940 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2256, -159, -614)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Умрадский_Лес"
-CoordsPreview = "X: 2256 Y: 159 Z: 614 Turn: 3.14"
+X = 2256.0
+Y = 159.0
+Z = 614.0
+Angle = 3.14
 
-[node name="TP_Серебряный_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1570030734 instance=ExtResource("45_8lhms")]
+[node name="TP_Серебряный_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1880515438 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 945, -159, -505)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Серебряный_Лес"
-CoordsPreview = "X: 945 Y: 159 Z: 505 Turn: 3.36"
+X = 945.0
+Y = 159.0
+Z = 505.0
+Angle = 3.36
 
-[node name="TP_Дорога_Шипстоун_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2140743333 instance=ExtResource("45_8lhms")]
+[node name="TP_Дорога_Шипстоун_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=297978984 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2904, -159, -550)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Дорога_Шипстоун_Торвил"
-CoordsPreview = "X: 2904 Y: 159 Z: 550 Turn: 11"
+X = 2904.0
+Y = 159.0
+Z = 550.0
+Angle = 11.0
 
-[node name="TP_Горы_Шипстоун_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1844288799 instance=ExtResource("45_8lhms")]
+[node name="TP_Горы_Шипстоун_Бангвиль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1366195405 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2592, -159, -365)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Горы_Шипстоун_Бангвиль"
-CoordsPreview = "X: 2592 Y: 159 Z: 365 Turn: -1.5"
+X = 2592.0
+Y = 159.0
+Z = 365.0
+Angle = -1.5
 
-[node name="TP_Озеро_Темер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2116450263 instance=ExtResource("45_8lhms")]
+[node name="TP_Озеро_Темер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1302187687 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3726, -159, 57)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Озеро_Темер"
-CoordsPreview = "X: 3726 Y: 159 Z: -57 Turn: -1.2"
+X = 3726.0
+Y = 159.0
+Z = -57.0
+Angle = -1.2
 
-[node name="TP_Остров_Гебер_Озеро_Темер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1414704768 instance=ExtResource("45_8lhms")]
+[node name="TP_Остров_Гебер_Озеро_Темер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=779744021 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3371, -161, 374)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Остров_Гебер_Озеро_Темер"
-CoordsPreview = "X: 3371 Y: 161 Z: -374 Turn: -5.87"
+X = 3371.0
+Y = 161.0
+Z = -374.0
+Angle = -5.87
 
-[node name="TP_Дорога_Санпул_Шипстоун_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1524327602 instance=ExtResource("45_8lhms")]
+[node name="TP_Дорога_Санпул_Шипстоун_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=594296855 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 316, -159, 285)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Дорога_Санпул_Шипстоун_Озеро_Вортекс"
-CoordsPreview = "X: 316 Y: 159 Z: -285 Turn: 3.14"
+X = 316.0
+Y = 159.0
+Z = -285.0
+Angle = 3.14
 
-[node name="TP_Дорога_Санпул_Бангвиль_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=739892865 instance=ExtResource("45_8lhms")]
+[node name="TP_Дорога_Санпул_Бангвиль_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1890928261 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1303, -159, 355)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Дорога_Санпул_Бангвиль_Озеро_Вортекс"
-CoordsPreview = "X: 1303 Y: 159 Z: -355 Turn: -0.16"
+X = 1303.0
+Y = 159.0
+Z = -355.0
+Angle = -0.16
 
-[node name="TP_Остров_Форос_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1340917247 instance=ExtResource("45_8lhms")]
+[node name="TP_Остров_Форос_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=443769453 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 751, -160, 653)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Остров_Форос_Озеро_Вортекс"
-CoordsPreview = "X: 751 Y: 160 Z: -653 Turn: 5.87"
+X = 751.0
+Y = 160.0
+Z = -653.0
+Angle = 5.87
 
-[node name="TP_Остров_Дейрос_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=191135520 instance=ExtResource("45_8lhms")]
+[node name="TP_Остров_Дейрос_Озеро_Вортекс" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2017854431 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1368, -160, 1525)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Остров_Дейрос_Озеро_Вортекс"
-CoordsPreview = "X: 1368 Y: 160 Z: -1525 Turn: 5.87"
+X = 1368.0
+Y = 160.0
+Z = -1525.0
+Angle = 5.87
 
-[node name="TP_Устье_Реки_Нерей" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=2059795469 instance=ExtResource("45_8lhms")]
+[node name="TP_Устье_Реки_Нерей" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=714582652 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1606, -159, 693)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Устье_Реки_Нерей"
-CoordsPreview = "X: 1606 Y: 159 Z: -693 Turn: 1.57"
+X = 1606.0
+Y = 159.0
+Z = -693.0
+Angle = 1.57
 
-[node name="TP_Восточный_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=623733248 instance=ExtResource("45_8lhms")]
+[node name="TP_Восточный_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=602585492 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3652, -164, 1533)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Восточный_Лес"
-CoordsPreview = "X: 3652 Y: 164 Z: -1533 Turn: 5.87"
+X = 3652.0
+Y = 164.0
+Z = -1533.0
+Angle = 5.87
 
-[node name="TP_Устье_Реки_Диомы" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=860592547 instance=ExtResource("45_8lhms")]
+[node name="TP_Устье_Реки_Диомы" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1994122261 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2227, -159, 1684)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Устье_Реки_Диомы"
-CoordsPreview = "X: 2227 Y: 159 Z: -1684 Turn: 3.14"
+X = 2227.0
+Y = 159.0
+Z = -1684.0
+Angle = 3.14
 
-[node name="TP_Хортонский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1042901039 instance=ExtResource("45_8lhms")]
+[node name="TP_Хортонский_Лес" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=161904627 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 300, -159, 1945)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Хортонский_Лес"
-CoordsPreview = "X: 300 Y: 159 Z: -1945 Turn: 0"
+X = 300.0
+Y = 159.0
+Z = -1945.0
 
-[node name="TP_Горы_Дорога_Санпул_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1454866754 instance=ExtResource("45_8lhms")]
+[node name="TP_Горы_Дорога_Санпул_Торвил" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1159094151 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 828, -157.4, 2729)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Горы_Дорога_Санпул_Торвил"
-CoordsPreview = "X: 828 Y: 157.4 Z: -2729 Turn: 1.57"
+X = 828.0
+Y = 157.4
+Z = -2729.0
+Angle = 1.57
 
-[node name="TP_Остров_Патрос_Озеро_Атласное" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=192874335 instance=ExtResource("45_8lhms")]
+[node name="TP_Остров_Патрос_Озеро_Атласное" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1304490253 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1556, -162, 2826)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Остров_Патрос_Озеро_Атласное"
-CoordsPreview = "X: 1556 Y: 162 Z: -2826 Turn: 7.5"
+X = 1556.0
+Y = 162.0
+Z = -2826.0
+Angle = 7.5
 
-[node name="TP_Юго_Восточный_Горный_Карман" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=274302051 instance=ExtResource("45_8lhms")]
+[node name="TP_Юго_Восточный_Горный_Карман" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1654323585 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2711, -159.7, 2860)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Юго_Восточный_Горный_Карман"
-CoordsPreview = "X: 2711 Y: 159.7 Z: -2860 Turn: 0.38"
+X = 2711.0
+Y = 159.7
+Z = -2860.0
+Angle = 0.38
 
-[node name="TP_Койтонский_Лес_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1815507825 instance=ExtResource("45_8lhms")]
+[node name="TP_Койтонский_Лес_Север" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=545305245 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 446, -159.7, 3308)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Койтонский_Лес_Север"
-CoordsPreview = "X: 446 Y: 159.7 Z: -3308 Turn: 0"
+X = 446.0
+Y = 159.7
+Z = -3308.0
 
-[node name="TP_Юго_Западный_Край" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=682380860 instance=ExtResource("45_8lhms")]
+[node name="TP_Юго_Западный_Край" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=71470290 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 147, -158, 3737)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Юго_Западный_Край"
-CoordsPreview = "X: 147 Y: 158 Z: -3737 Turn: 0"
+X = 147.0
+Y = 158.0
+Z = -3737.0
 
-[node name="TP_Мост_Тантал" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=953026237 instance=ExtResource("45_8lhms")]
+[node name="TP_Мост_Тантал" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=657795025 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1197, -159.9, -1315)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Мост_Тантал"
-CoordsPreview = "X: 1197 Y: 159.9 Z: 1315 Turn: 0"
+X = 1197.0
+Y = 159.9
+Z = 1315.0
 
-[node name="TP_Обол" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=340418350 instance=ExtResource("45_8lhms")]
+[node name="TP_Обол" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=1867191262 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1144.42, -157.94, -1632.75)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Обол"
-CoordsPreview = "X: 1144.42 Y: 157.94 Z: 1632.75 Turn: 0"
+X = 1144.42
+Y = 157.94
+Z = 1632.75
 
-[node name="TP_Обратно_С_Харона" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=526162732 instance=ExtResource("45_8lhms")]
+[node name="TP_Обратно_С_Харона" type="MeshInstance3D" parent="TeleportPoints/Hyperion/TeleportPoint" unique_id=969047621 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1141.93, -157.94, -1630.65)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 4
 PointName = "Обратно_С_Харона"
-CoordsPreview = "X: 1141.93 Y: 157.94 Z: 1630.65 Turn: -1.53"
+X = 1141.93
+Y = 157.94
+Z = 1630.65
+Angle = -1.53
 
-[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=227961790]
+[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1275466954]
 
-[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=420607654 instance=ExtResource("45_8lhms")]
+[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=195025003 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1853, -157.6, -37.87)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Льеж"
-CoordsPreview = "X: 1853 Y: 157.6 Z: 37.87 Turn: 0"
+X = 1853.0
+Y = 157.6
+Z = 37.87
 
-[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=789280290 instance=ExtResource("45_8lhms")]
+[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=4047594 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2652, -157.9, 166)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Фьеф"
-CoordsPreview = "X: 2652 Y: 157.9 Z: -166 Turn: 0"
+X = 2652.0
+Y = 157.9
+Z = -166.0
 
-[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=342150803 instance=ExtResource("45_8lhms")]
+[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=644481955 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3040.17, -158, -1048.2)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Арис"
-CoordsPreview = "X: 3040.17 Y: 158 Z: 1048.2 Turn: 0"
+X = 3040.17
+Y = 158.0
+Z = 1048.2
 
-[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=2037318214 instance=ExtResource("45_8lhms")]
+[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1259526444 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1955.33, -157.83, -1440.44)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Латор"
-CoordsPreview = "X: 1955.33 Y: 157.83 Z: 1440.44 Turn: 0"
+X = 1955.33
+Y = 157.83
+Z = 1440.44
 
-[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1502830459 instance=ExtResource("45_8lhms")]
+[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1111033037 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1339.54, -158, -358.9)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Эйкум_Кас"
-CoordsPreview = "X: 1339.54 Y: 158 Z: 358.9 Turn: 0"
+X = 1339.54
+Y = 158.0
+Z = 358.9
 
-[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1309591805 instance=ExtResource("45_8lhms")]
+[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=168570767 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 456.12, -157.88, 2157.8)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Гедеон"
-CoordsPreview = "X: 456.12 Y: 157.88 Z: -2157.8 Turn: 0"
+X = 456.12
+Y = 157.88
+Z = -2157.8
 
-[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1365388402 instance=ExtResource("45_8lhms")]
+[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1445647737 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 946.4, -157.42, 1251)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Шателье"
-CoordsPreview = "X: 946.4 Y: 157.42 Z: -1251 Turn: 0"
+X = 946.4
+Y = 157.42
+Z = -1251.0
 
-[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=953086771 instance=ExtResource("45_8lhms")]
+[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=921151613 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3457.45, -157.43, -2453.48)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Туанод"
-CoordsPreview = "X: 3457.45 Y: 157.43 Z: 2453.48 Turn: 0"
+X = 3457.45
+Y = 157.43
+Z = 2453.48
 
-[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1637159352 instance=ExtResource("45_8lhms")]
+[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=450149430 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2130.39, -158.12, 857.56)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Пельтье"
-CoordsPreview = "X: 2130.39 Y: 158.12 Z: -857.56 Turn: 0"
+X = 2130.39
+Y = 158.12
+Z = -857.56
 
-[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1185198336 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1207145899 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3473.75, -158, 1250.21)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Каре_Рояль"
-CoordsPreview = "X: 3473.75 Y: 158 Z: -1250.21 Turn: 0"
+X = 3473.75
+Y = 158.0
+Z = -1250.21
 
-[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1020716336 instance=ExtResource("45_8lhms")]
+[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=2049852797 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2044.53, -157.47, 3443.86)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Блессендор"
-CoordsPreview = "X: 2044.53 Y: 157.47 Z: -3443.86 Turn: 0"
+X = 2044.53
+Y = 157.47
+Z = -3443.86
 
-[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1396077184 instance=ExtResource("45_8lhms")]
+[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1835029626 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3748.72, -157.56, -752.58)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Терноваль"
-CoordsPreview = "X: 3748.72 Y: 157.56 Z: 752.58 Turn: 0"
+X = 3748.72
+Y = 157.56
+Z = 752.58
 
-[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=778637951 instance=ExtResource("45_8lhms")]
+[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1448192324 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 543.89, -157.43, -455.16)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Аммалаэль"
-CoordsPreview = "X: 543.89 Y: 157.43 Z: 455.16 Turn: 0"
+X = 543.89
+Y = 157.43
+Z = 455.16
 
-[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=184019829 instance=ExtResource("45_8lhms")]
+[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1667169159 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2451.88, -157.95, 1648.78)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Дэванагари"
-CoordsPreview = "X: 2451.88 Y: 157.95 Z: -1648.78 Turn: 0"
+X = 2451.88
+Y = 157.95
+Z = -1648.78
 
-[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=494002951 instance=ExtResource("45_8lhms")]
+[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1565495802 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 354.8, -157.36, 3637.7)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Деффенсат"
-CoordsPreview = "X: 354.8 Y: 157.36 Z: -3637.7 Turn: 0"
+X = 354.8
+Y = 157.36
+Z = -3637.7
 
-[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1754717668 instance=ExtResource("45_8lhms")]
+[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=2091400196 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3361.56, -157.38, 2342.95)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Айонат"
-CoordsPreview = "X: 3361.56 Y: 157.38 Z: -2342.95 Turn: 0"
+X = 3361.56
+Y = 157.38
+Z = -2342.95
 
-[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=1400470852 instance=ExtResource("45_8lhms")]
+[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointOwner" unique_id=2070959741 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1557.58, -158, 2358.67)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 5
 PointName = "Триумфалер"
-CoordsPreview = "X: 1557.58 Y: 158 Z: -2358.67 Turn: 0"
+X = 1557.58
+Y = 158.0
+Z = -2358.67
 
-[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1222149900]
+[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1197174823]
 
-[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=957019724 instance=ExtResource("45_8lhms")]
+[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1415582012 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1894, -159.9, -47)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Льеж"
-CoordsPreview = "X: 1894 Y: 159.9 Z: 47 Turn: 1.51"
+X = 1894.0
+Y = 159.9
+Z = 47.0
+Angle = 1.51
 
-[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=224581485 instance=ExtResource("45_8lhms")]
+[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1235591832 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2641, -159.9, 192)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Фьеф"
-CoordsPreview = "X: 2641 Y: 159.9 Z: -192 Turn: 0.1"
+X = 2641.0
+Y = 159.9
+Z = -192.0
+Angle = 0.1
 
-[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=982671447 instance=ExtResource("45_8lhms")]
+[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=2061917725 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3016, -158.5, -1054)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Арис"
-CoordsPreview = "X: 3016 Y: 158.5 Z: 1054 Turn: -1.51"
+X = 3016.0
+Y = 158.5
+Z = 1054.0
+Angle = -1.51
 
-[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1091055461 instance=ExtResource("45_8lhms")]
+[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1875916102 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1994, -159.9, -1445)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Латор"
-CoordsPreview = "X: 1994 Y: 159.9 Z: 1445 Turn: -4.7"
+X = 1994.0
+Y = 159.9
+Z = 1445.0
+Angle = -4.7
 
-[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1872812820 instance=ExtResource("45_8lhms")]
+[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=733400151 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1333, -158.7, -382)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Эйкум_Кас"
-CoordsPreview = "X: 1333 Y: 158.7 Z: 382 Turn: -2.76"
+X = 1333.0
+Y = 158.7
+Z = 382.0
+Angle = -2.76
 
-[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=711199158 instance=ExtResource("45_8lhms")]
+[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1667681425 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 446, -159.9, 2193)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Гедеон"
-CoordsPreview = "X: 446 Y: 159.9 Z: -2193 Turn: 0.2"
+X = 446.0
+Y = 159.9
+Z = -2193.0
+Angle = 0.2
 
-[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=332878425 instance=ExtResource("45_8lhms")]
+[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=321070198 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 914, -159.6, 1273)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Шателье"
-CoordsPreview = "X: 914 Y: 159.6 Z: -1273 Turn: -1.28"
+X = 914.0
+Y = 159.6
+Z = -1273.0
+Angle = -1.28
 
-[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1192512430 instance=ExtResource("45_8lhms")]
+[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=295066688 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3445, -159.9, -2405)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Туанод"
-CoordsPreview = "X: 3445 Y: 159.9 Z: 2405 Turn: 0"
+X = 3445.0
+Y = 159.9
+Z = 2405.0
 
-[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=622470725 instance=ExtResource("45_8lhms")]
+[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=2068826017 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2094, -159.9, 841)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Пельтье"
-CoordsPreview = "X: 2094 Y: 159.9 Z: -841 Turn: -1.57"
+X = 2094.0
+Y = 159.9
+Z = -841.0
+Angle = -1.57
 
-[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=587441927 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=819802218 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3500, -159.9, 1285)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Каре_Рояль"
-CoordsPreview = "X: 3500 Y: 159.9 Z: -1285 Turn: 0"
+X = 3500.0
+Y = 159.9
+Z = -1285.0
 
-[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1477954692 instance=ExtResource("45_8lhms")]
+[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1007265276 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2014, -159, 3463)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Блессендор"
-CoordsPreview = "X: 2014 Y: 159 Z: -3463 Turn: -1.27"
+X = 2014.0
+Y = 159.0
+Z = -3463.0
+Angle = -1.27
 
-[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1847101553 instance=ExtResource("45_8lhms")]
+[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=2127501762 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3775, -159.9, -791)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Терноваль"
-CoordsPreview = "X: 3775 Y: 159.9 Z: 791 Turn: -3.71"
+X = 3775.0
+Y = 159.9
+Z = 791.0
+Angle = -3.71
 
-[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1475916994 instance=ExtResource("45_8lhms")]
+[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1684040313 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 533, -159, -485)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Аммалаэль"
-CoordsPreview = "X: 533 Y: 159 Z: 485 Turn: -2.6"
+X = 533.0
+Y = 159.0
+Z = 485.0
+Angle = -2.6
 
-[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1039945761 instance=ExtResource("45_8lhms")]
+[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1436759738 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1588, -159.6, -950)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Каблак"
-CoordsPreview = "X: 1588 Y: 159.6 Z: 950 Turn: -4.66"
+X = 1588.0
+Y = 159.6
+Z = 950.0
+Angle = -4.66
 
-[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=102038073 instance=ExtResource("45_8lhms")]
+[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1187380314 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2420, -159, 1683)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Дэванагари"
-CoordsPreview = "X: 2420 Y: 159 Z: -1683 Turn: 0"
+X = 2420.0
+Y = 159.0
+Z = -1683.0
 
-[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=236572145 instance=ExtResource("45_8lhms")]
+[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=2043958185 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1148.88, -159.82, 1792.69)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Сабулат"
-CoordsPreview = "X: 1148.88 Y: 159.82 Z: -1792.69 Turn: 0"
+X = 1148.88
+Y = 159.82
+Z = -1792.69
 
-[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1198946762 instance=ExtResource("45_8lhms")]
+[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=551335515 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 334, -159, 3609)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Деффенсат"
-CoordsPreview = "X: 334 Y: 159 Z: -3609 Turn: -2.6"
+X = 334.0
+Y = 159.0
+Z = -3609.0
+Angle = -2.6
 
-[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=720005444 instance=ExtResource("45_8lhms")]
+[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=458655687 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3395, -159.9, 2349)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Айонат"
-CoordsPreview = "X: 3395 Y: 159.9 Z: -2349 Turn: 1.54"
+X = 3395.0
+Y = 159.9
+Z = -2349.0
+Angle = 1.54
 
-[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1290484365 instance=ExtResource("45_8lhms")]
+[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleTeleportPointEnemy" unique_id=1527056114 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1548, -159.6, 2388)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 6
 PointName = "Триумфалер"
-CoordsPreview = "X: 1548 Y: 159.6 Z: -2388 Turn: 0"
+X = 1548.0
+Y = 159.6
+Z = -2388.0
 
-[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=293985023]
+[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=520570213]
 
-[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1133987087 instance=ExtResource("45_8lhms")]
+[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=482976727 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3302.64, -1099.65, 3898.71)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Льеж"
-CoordsPreview = "X: -3302.64 Y: 1099.65 Z: -3898.71 Turn: 4.71"
+X = -3302.64
+Y = 1099.65
+Z = -3898.71
+Angle = 4.71
 
-[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1028894251 instance=ExtResource("45_8lhms")]
+[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=203941743 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2697, -1095, 3907.45)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Фьеф"
-CoordsPreview = "X: -2697 Y: 1095 Z: -3907.45 Turn: 0"
+X = -2697.0
+Y = 1095.0
+Z = -3907.45
 
-[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=196531702 instance=ExtResource("45_8lhms")]
+[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=659656405 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2489.678, -1099.12, 3897)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Арис"
-CoordsPreview = "X: -2489.678 Y: 1099.12 Z: -3897 Turn: 1.57"
+X = -2489.678
+Y = 1099.12
+Z = -3897.0
+Angle = 1.57
 
-[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1075363953 instance=ExtResource("45_8lhms")]
+[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1821786552 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2300, -1096.6, 3910.1)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Латор"
-CoordsPreview = "X: -2300 Y: 1096.6 Z: -3910.1 Turn: 0"
+X = -2300.0
+Y = 1096.6
+Z = -3910.1
 
-[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=2011809795 instance=ExtResource("45_8lhms")]
+[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=154337 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2100, -1096.63, 3889.87)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Эйкум_Кас"
-CoordsPreview = "X: -2100 Y: 1096.63 Z: -3889.87 Turn: 3.14"
+X = -2100.0
+Y = 1096.63
+Z = -3889.87
+Angle = 3.14
 
-[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1672532268 instance=ExtResource("45_8lhms")]
+[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=901574367 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3899.59, -1098.42, -1092.85)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Гедеон"
-CoordsPreview = "X: -3899.59 Y: 1098.42 Z: 1092.85 Turn: 0"
+X = -3899.59
+Y = 1098.42
+Z = 1092.85
 
-[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1925111146 instance=ExtResource("45_8lhms")]
+[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=472016672 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3707, -1095, -1097)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Шателье"
-CoordsPreview = "X: -3707 Y: 1095 Z: 1097 Turn: 4.71"
+X = -3707.0
+Y = 1095.0
+Z = 1097.0
+Angle = 4.71
 
-[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=454410631 instance=ExtResource("45_8lhms")]
+[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=397724319 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3497, -1099, -1098)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Туанод"
-CoordsPreview = "X: -3497 Y: 1099 Z: 1098 Turn: 1.57"
+X = -3497.0
+Y = 1099.0
+Z = 1098.0
+Angle = 1.57
 
-[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=604913232 instance=ExtResource("45_8lhms")]
+[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1935705742 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3310.1, -1096.64, -1100)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Пельтье"
-CoordsPreview = "X: -3310.1 Y: 1096.64 Z: 1100 Turn: 4.71"
+X = -3310.1
+Y = 1096.64
+Z = 1100.0
+Angle = 4.71
 
-[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1428573895 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1720113038 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3097.78, -1095.82, -1091.78)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Каре_Рояль"
-CoordsPreview = "X: -3097.78 Y: 1095.82 Z: 1091.78 Turn: 1.57"
+X = -3097.78
+Y = 1095.82
+Z = 1091.78
+Angle = 1.57
 
-[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1938091574 instance=ExtResource("45_8lhms")]
+[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=611581622 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2907.5, -1095.72, -1096.97)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Блессендор"
-CoordsPreview = "X: -2907.5 Y: 1095.72 Z: 1096.97 Turn: 4.71"
+X = -2907.5
+Y = 1095.72
+Z = 1096.97
+Angle = 4.71
 
-[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1205362337 instance=ExtResource("45_8lhms")]
+[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=167548604 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2693, -1096, -1108)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Терноваль"
-CoordsPreview = "X: -2693 Y: 1096 Z: 1108 Turn: 3.14"
+X = -2693.0
+Y = 1096.0
+Z = 1108.0
+Angle = 3.14
 
-[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1705931226 instance=ExtResource("45_8lhms")]
+[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=117506399 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2508, -1099, -1104)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Аммалаэль"
-CoordsPreview = "X: -2508 Y: 1099 Z: 1104 Turn: -2"
+X = -2508.0
+Y = 1099.0
+Z = 1104.0
+Angle = -2.0
 
-[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1615186691 instance=ExtResource("45_8lhms")]
+[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1204380705 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2306, -1096, -1108.17)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Каблак"
-CoordsPreview = "X: -2306 Y: 1096 Z: 1108.17 Turn: 3.14"
+X = -2306.0
+Y = 1096.0
+Z = 1108.17
+Angle = 3.14
 
-[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=472262965 instance=ExtResource("45_8lhms")]
+[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=729818247 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2099, -1090.74, -1104.25)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Дэванагари"
-CoordsPreview = "X: -2099 Y: 1090.74 Z: 1104.25 Turn: 3.14"
+X = -2099.0
+Y = 1090.74
+Z = 1104.25
+Angle = 3.14
 
-[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=49479802 instance=ExtResource("45_8lhms")]
+[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1352651632 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1892.55, -1096.1, -1084.39)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Сабулат"
-CoordsPreview = "X: -1892.55 Y: 1096.1 Z: 1084.39 Turn: 0"
+X = -1892.55
+Y = 1096.1
+Z = 1084.39
 
-[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1862691848 instance=ExtResource("45_8lhms")]
+[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1489296641 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1705.3, -1100.85, -1108.72)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Деффенсат"
-CoordsPreview = "X: -1705.3 Y: 1100.85 Z: 1108.72 Turn: 3.14"
+X = -1705.3
+Y = 1100.85
+Z = 1108.72
+Angle = 3.14
 
-[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1662798426 instance=ExtResource("45_8lhms")]
+[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=362313983 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1485.61, -1098.36, -1092.55)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Айонат"
-CoordsPreview = "X: -1485.61 Y: 1098.36 Z: 1092.55 Turn: 1.57"
+X = -1485.61
+Y = 1098.36
+Z = 1092.55
+Angle = 1.57
 
-[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=2131085050 instance=ExtResource("45_8lhms")]
+[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleInnerArea" unique_id=1310107190 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1304, -1091, -1094)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 7
 PointName = "Триумфалер"
-CoordsPreview = "X: -1304 Y: 1091 Z: 1094 Turn: 0"
+X = -1304.0
+Y = 1091.0
+Z = 1094.0
 
-[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=1109365264]
+[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=538562105]
 
-[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1624075698 instance=ExtResource("45_8lhms")]
+[node name="TP_Льеж" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1787459872 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104.07, -1699, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Льеж"
-CoordsPreview = "X: 104.07 Y: 1699 Z: -3500 Turn: 1.57"
+X = 104.07
+Y = 1699.0
+Z = -3500.0
+Angle = 1.57
 
-[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1611310409 instance=ExtResource("45_8lhms")]
+[node name="TP_Фьеф" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1726730968 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900.07, -1701.4, 3498.29)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Фьеф"
-CoordsPreview = "X: 900.07 Y: 1701.4 Z: -3498.29 Turn: 3.14"
+X = 900.07
+Y = 1701.4
+Z = -3498.29
+Angle = 3.14
 
-[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=59075695 instance=ExtResource("45_8lhms")]
+[node name="TP_Арис" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=885444825 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 297.57, -1700, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Арис"
-CoordsPreview = "X: 297.57 Y: 1700 Z: -3500 Turn: 4.71"
+X = 297.57
+Y = 1700.0
+Z = -3500.0
+Angle = 4.71
 
-[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=885743546 instance=ExtResource("45_8lhms")]
+[node name="TP_Латор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=386543051 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1070, -1701.45, 3437.18)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Латор"
-CoordsPreview = "X: 1070 Y: 1701.45 Z: -3437.18 Turn: 3.14"
+X = 1070.0
+Y = 1701.45
+Z = -3437.18
+Angle = 3.14
 
-[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1002318878 instance=ExtResource("45_8lhms")]
+[node name="TP_Эйкум_Кас" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1694258251 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1300.12, -1700.64, 3565.27)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Эйкум_Кас"
-CoordsPreview = "X: 1300.12 Y: 1700.64 Z: -3565.27 Turn: 0"
+X = 1300.12
+Y = 1700.64
+Z = -3565.27
 
-[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=999124563 instance=ExtResource("45_8lhms")]
+[node name="TP_Гедеон" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=2005610590 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1434.91, -1700.64, 3454.77)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Гедеон"
-CoordsPreview = "X: 1434.91 Y: 1700.64 Z: -3454.77 Turn: 4.71"
+X = 1434.91
+Y = 1700.64
+Z = -3454.77
+Angle = 4.71
 
-[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=865817002 instance=ExtResource("45_8lhms")]
+[node name="TP_Шателье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1077981468 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 500, -1700.34, 3497.64)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Шателье"
-CoordsPreview = "X: 500 Y: 1700.34 Z: -3497.64 Turn: 3.14"
+X = 500.0
+Y = 1700.34
+Z = -3497.64
+Angle = 3.14
 
-[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=902941865 instance=ExtResource("45_8lhms")]
+[node name="TP_Туанод" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=551629412 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2901.14, -1701.64, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Туанод"
-CoordsPreview = "X: 2901.14 Y: 1701.64 Z: -3500 Turn: 1.57"
+X = 2901.14
+Y = 1701.64
+Z = -3500.0
+Angle = 1.57
 
-[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1358568186 instance=ExtResource("45_8lhms")]
+[node name="TP_Пельтье" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1174452775 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 700, -1700.77, 3499)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Пельтье"
-CoordsPreview = "X: 700 Y: 1700.77 Z: -3499 Turn: 3.14"
+X = 700.0
+Y = 1700.77
+Z = -3499.0
+Angle = 3.14
 
-[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=876347508 instance=ExtResource("45_8lhms")]
+[node name="TP_Каре_Рояль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1895273119 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3143, -1701, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Каре_Рояль"
-CoordsPreview = "X: 3143 Y: 1701 Z: -3500 Turn: 4.71"
+X = 3143.0
+Y = 1701.0
+Z = -3500.0
+Angle = 4.71
 
-[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1709293649 instance=ExtResource("45_8lhms")]
+[node name="TP_Блессендор" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=717066562 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1633.67, -1700.64, 3469.96)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Блессендор"
-CoordsPreview = "X: 1633.67 Y: 1700.64 Z: -3469.96 Turn: 4.71"
+X = 1633.67
+Y = 1700.64
+Z = -3469.96
+Angle = 4.71
 
-[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=891583571 instance=ExtResource("45_8lhms")]
+[node name="TP_Терноваль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=182453913 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3300, -1700, 3495)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Терноваль"
-CoordsPreview = "X: 3300 Y: 1700 Z: -3495 Turn: 3.11"
+X = 3300.0
+Y = 1700.0
+Z = -3495.0
+Angle = 3.11
 
-[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=972042430 instance=ExtResource("45_8lhms")]
+[node name="TP_Аммалаэль" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=994180450 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3499, -1701, 3501)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Аммалаэль"
-CoordsPreview = "X: 3499 Y: 1701 Z: -3501 Turn: 5.87"
+X = 3499.0
+Y = 1701.0
+Z = -3501.0
+Angle = 5.87
 
-[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1241412398 instance=ExtResource("45_8lhms")]
+[node name="TP_Каблак" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=786043686 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1833.3, -1700.64, 3544.75)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Каблак"
-CoordsPreview = "X: 1833.3 Y: 1700.64 Z: -3544.75 Turn: 4.71"
+X = 1833.3
+Y = 1700.64
+Z = -3544.75
+Angle = 4.71
 
-[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1766608979 instance=ExtResource("45_8lhms")]
+[node name="TP_Дэванагари" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1848458569 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2034.23, -1700.4, 3499.84)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Дэванагари"
-CoordsPreview = "X: 2034.23 Y: 1700.4 Z: -3499.84 Turn: 4.71"
+X = 2034.23
+Y = 1700.4
+Z = -3499.84
+Angle = 4.71
 
-[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1005101370 instance=ExtResource("45_8lhms")]
+[node name="TP_Сабулат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=867227814 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2288.34, -1701, 3455)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Сабулат"
-CoordsPreview = "X: 2288.34 Y: 1701 Z: -3455 Turn: 1.57"
+X = 2288.34
+Y = 1701.0
+Z = -3455.0
+Angle = 1.57
 
-[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=691680683 instance=ExtResource("45_8lhms")]
+[node name="TP_Деффенсат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=493483587 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3698.24, -1701.64, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Деффенсат"
-CoordsPreview = "X: 3698.24 Y: 1701.64 Z: -3500 Turn: 4.71"
+X = 3698.24
+Y = 1701.64
+Z = -3500.0
+Angle = 4.71
 
-[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=879944971 instance=ExtResource("45_8lhms")]
+[node name="TP_Айонат" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1819430264 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2543.84, -1701.64, 3500)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Айонат"
-CoordsPreview = "X: 2543.84 Y: 1701.64 Z: -3500 Turn: 4.71"
+X = 2543.84
+Y = 1701.64
+Z = -3500.0
+Angle = 4.71
 
-[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=896380210 instance=ExtResource("45_8lhms")]
+[node name="TP_Триумфалер" type="MeshInstance3D" parent="TeleportPoints/Hyperion/CastleDungeon" unique_id=1558342896 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2700, -1701.64, 3501.81)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 8
 PointName = "Триумфалер"
-CoordsPreview = "X: 2700 Y: 1701.64 Z: -3501.81 Turn: 0"
+X = 2700.0
+Y = 1701.64
+Z = -3501.81
 
-[node name="Other" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=966634435]
+[node name="Other" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=858267224]
 
-[node name="TP_Остров_Выбора" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Other" unique_id=201758540 instance=ExtResource("45_8lhms")]
+[node name="TP_Остров_Выбора" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Other" unique_id=46694268 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3307, -159, -3611)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 9
 PointName = "Остров_Выбора"
-CoordsPreview = "X: 3307 Y: 159 Z: 3611 Turn: -1.27"
+X = 3307.0
+Y = 159.0
+Z = 3611.0
+Angle = -1.27
 
-[node name="TP_Арена" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Other" unique_id=2134582628 instance=ExtResource("45_8lhms")]
+[node name="TP_Арена" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Other" unique_id=25499557 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3648, -155, 3455)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 9
 PointName = "Арена"
-CoordsPreview = "X: 3648 Y: 155 Z: -3455 Turn: 0"
+X = 3648.0
+Y = 155.0
+Z = -3455.0
 
-[node name="Event" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=2061207472]
+[node name="Event" type="Node3D" parent="TeleportPoints/Hyperion" unique_id=2134697298]
 
-[node name="TP_Белая_комната_Воздуха" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Event" unique_id=1441055008 instance=ExtResource("45_8lhms")]
+[node name="TP_Белая_комната_Воздуха" type="MeshInstance3D" parent="TeleportPoints/Hyperion/Event" unique_id=1838479834 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2300, -1499.7, -30.8)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 PoiType = 10
 PointName = "Белая_комната_Воздуха"
-CoordsPreview = "X: 2300 Y: 1499.7 Z: 30.8 Turn: -3.14"
+X = 2300.0
+Y = 1499.7
+Z = 30.8
+Angle = -3.14
 
-[node name="Haron" type="Node3D" parent="TeleportPoints" unique_id=1977958214]
+[node name="Haron" type="Node3D" parent="TeleportPoints" unique_id=232061312]
 
-[node name="CityCenter" type="Node3D" parent="TeleportPoints/Haron" unique_id=858310918]
+[node name="CityCenter" type="Node3D" parent="TeleportPoints/Haron" unique_id=1734054070]
 
-[node name="TP_Номрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CityCenter" unique_id=931622597 instance=ExtResource("45_8lhms")]
+[node name="TP_Номрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CityCenter" unique_id=432747012 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2723.59, -404.75, -2110.18)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 2
 PointName = "Номрад"
-CoordsPreview = "X: -2723.59 Y: 404.75 Z: 2110.18 Turn: -1.31"
+X = -2723.59
+Y = 404.75
+Z = 2110.18
+Angle = -1.31
 
-[node name="TP_Гифес" type="MeshInstance3D" parent="TeleportPoints/Haron/CityCenter" unique_id=11554218 instance=ExtResource("45_8lhms")]
+[node name="TP_Гифес" type="MeshInstance3D" parent="TeleportPoints/Haron/CityCenter" unique_id=99735939 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1872.19, -402.77, -3293.8)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 2
 PointName = "Гифес"
-CoordsPreview = "X: 1872.19 Y: 402.77 Z: 3293.8 Turn: -1.73"
+X = 1872.19
+Y = 402.77
+Z = 3293.8
+Angle = -1.73
 
-[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Haron" unique_id=174747076]
+[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Haron" unique_id=650001057]
 
-[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1847565268 instance=ExtResource("45_8lhms")]
+[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1631247021 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1312.57, -402.11, -3708.51)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Багарнак"
-CoordsPreview = "X: 1312.57 Y: 402.11 Z: 3708.51 Turn: 0"
+X = 1312.57
+Y = 402.11
+Z = 3708.51
 
-[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1290874949 instance=ExtResource("45_8lhms")]
+[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1324523421 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -707.8, -402.82, -3513.24)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Кабрад"
-CoordsPreview = "X: -707.8 Y: 402.82 Z: 3513.24 Turn: 0"
+X = -707.8
+Y = 402.82
+Z = 3513.24
 
-[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1856827301 instance=ExtResource("45_8lhms")]
+[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=194918370 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2701.46, -366.13, -3302.87)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Сет"
-CoordsPreview = "X: 2701.46 Y: 366.13 Z: 3302.87 Turn: 0"
+X = 2701.46
+Y = 366.13
+Z = 3302.87
 
-[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=217129949 instance=ExtResource("45_8lhms")]
+[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=395986331 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2496.2, -402.54, -3086.18)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Лендер"
-CoordsPreview = "X: -2496.2 Y: 402.54 Z: 3086.18 Turn: 0"
+X = -2496.2
+Y = 402.54
+Z = 3086.18
 
-[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1473020289 instance=ExtResource("45_8lhms")]
+[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=349457287 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -706.1, -402.18, -2705.16)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Келес"
-CoordsPreview = "X: -706.1 Y: 402.18 Z: 2705.16 Turn: 0"
+X = -706.1
+Y = 402.18
+Z = 2705.16
 
-[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=167943953 instance=ExtResource("45_8lhms")]
+[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=794717255 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 502.73, -402.78, -2683.3)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Шепростан"
-CoordsPreview = "X: 502.73 Y: 402.78 Z: 2683.3 Turn: 0"
+X = 502.73
+Y = 402.78
+Z = 2683.3
 
-[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=141967440 instance=ExtResource("45_8lhms")]
+[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=804788995 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1305.33, -402.57, -2290.44)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Оркобьен"
-CoordsPreview = "X: 1305.33 Y: 402.57 Z: 2290.44 Turn: 0"
+X = 1305.33
+Y = 402.57
+Z = 2290.44
 
-[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=113494844 instance=ExtResource("45_8lhms")]
+[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=512747764 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3111.06, -366.11, -2093.8)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Кануак"
-CoordsPreview = "X: -3111.06 Y: 366.11 Z: 2093.8 Turn: 0"
+X = -3111.06
+Y = 366.11
+Z = 2093.8
 
-[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=500553986 instance=ExtResource("45_8lhms")]
+[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=379350718 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1509.54, -402.6, -1904.65)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Алдарнон"
-CoordsPreview = "X: -1509.54 Y: 402.6 Z: 1904.65 Turn: 0"
+X = -1509.54
+Y = 402.6
+Z = 1904.65
 
-[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=1783565314 instance=ExtResource("45_8lhms")]
+[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleTeleportPointOwner" unique_id=325588 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -301.27, -402.3, -1302.58)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 5
 PointName = "Йонг"
-CoordsPreview = "X: -301.27 Y: 402.3 Z: 1302.58 Turn: 0"
+X = -301.27
+Y = 402.3
+Z = 1302.58
 
-[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Haron" unique_id=765712219]
+[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Haron" unique_id=159519592]
 
-[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Haron" unique_id=1350009617]
+[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Haron" unique_id=994013054]
 
-[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1469294158 instance=ExtResource("45_8lhms")]
+[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=2059349135 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1099.59, -1098.43, -1092.85)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Багарнак"
-CoordsPreview = "X: -1099.59 Y: 1098.43 Z: 1092.85 Turn: 0"
+X = -1099.59
+Y = 1098.43
+Z = 1092.85
 
-[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=121378832 instance=ExtResource("45_8lhms")]
+[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1867690032 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -883.91, -1094, -1125.14)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Кабрад"
-CoordsPreview = "X: -883.91 Y: 1094 Z: 1125.14 Turn: -4"
+X = -883.91
+Y = 1094.0
+Z = 1125.14
+Angle = -4.0
 
-[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=2111532404 instance=ExtResource("45_8lhms")]
+[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=280657682 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -697.19, -1099.58, -1098.49)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Сет"
-CoordsPreview = "X: -697.19 Y: 1099.58 Z: 1098.49 Turn: 1.57"
+X = -697.19
+Y = 1099.58
+Z = 1098.49
+Angle = 1.57
 
-[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=801335238 instance=ExtResource("45_8lhms")]
+[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=790193295 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -510.1, -1096.64, -1099.94)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Лендер"
-CoordsPreview = "X: -510.1 Y: 1096.64 Z: 1099.94 Turn: 1.57"
+X = -510.1
+Y = 1096.64
+Z = 1099.94
+Angle = 1.57
 
-[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1075822404 instance=ExtResource("45_8lhms")]
+[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=2033134072 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -297.78, -1095.82, -1091.78)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Келес"
-CoordsPreview = "X: -297.78 Y: 1095.82 Z: 1091.78 Turn: 1.57"
+X = -297.78
+Y = 1095.82
+Z = 1091.78
+Angle = 1.57
 
-[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1829478141 instance=ExtResource("45_8lhms")]
+[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1554072049 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -107.5, -1095.72, -1096.97)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Шепростан"
-CoordsPreview = "X: -107.5 Y: 1095.72 Z: 1096.97 Turn: 1.57"
+X = -107.5
+Y = 1095.72
+Z = 1096.97
+Angle = 1.57
 
-[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=2034352556 instance=ExtResource("45_8lhms")]
+[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=2048385322 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106.29, -1096, -1108.16)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Оркобьен"
-CoordsPreview = "X: 106.29 Y: 1096 Z: 1108.16 Turn: 0"
+X = 106.29
+Y = 1096.0
+Z = 1108.16
 
-[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1811522637 instance=ExtResource("45_8lhms")]
+[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1463242175 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 291.63, -1099.01, -1104.42)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Кануак"
-CoordsPreview = "X: 291.63 Y: 1099.01 Z: 1104.42 Turn: -2.26"
+X = 291.63
+Y = 1099.01
+Z = 1104.42
+Angle = -2.26
 
-[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1287149647 instance=ExtResource("45_8lhms")]
+[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=1860798962 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 493.98, -1096.03, -1108.17)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Алдарнон"
-CoordsPreview = "X: 493.98 Y: 1096.03 Z: 1108.17 Turn: 0"
+X = 493.98
+Y = 1096.03
+Z = 1108.17
 
-[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=669634797 instance=ExtResource("45_8lhms")]
+[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleInnerArea" unique_id=532777100 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 700.98, -1090.74, -1104.25)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 7
 PointName = "Йонг"
-CoordsPreview = "X: 700.98 Y: 1090.74 Z: 1104.25 Turn: 0"
+X = 700.98
+Y = 1090.74
+Z = 1104.25
 
-[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Haron" unique_id=774149768]
+[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Haron" unique_id=1210257981]
 
-[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=815300619 instance=ExtResource("45_8lhms")]
+[node name="TP_Багарнак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=594864210 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3694.2, -1700.71, 3299)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Багарнак"
-CoordsPreview = "X: -3694.2 Y: 1700.71 Z: -3299 Turn: 1.57"
+X = -3694.2
+Y = 1700.71
+Z = -3299.0
+Angle = 1.57
 
-[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=297304774 instance=ExtResource("45_8lhms")]
+[node name="TP_Кабрад" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1504442702 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1834.14, -1699.84, 3254.85)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Кабрад"
-CoordsPreview = "X: -1834.14 Y: 1699.84 Z: -3254.85 Turn: 1.57"
+X = -1834.14
+Y = 1699.84
+Z = -3254.85
+Angle = 1.57
 
-[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=650084642 instance=ExtResource("45_8lhms")]
+[node name="TP_Сет" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1673781859 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3894.46, -1700.65, 3299.18)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Сет"
-CoordsPreview = "X: -3894.46 Y: 1700.65 Z: -3299.18 Turn: 1.57"
+X = -3894.46
+Y = 1700.65
+Z = -3299.18
+Angle = 1.57
 
-[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1095614924 instance=ExtResource("45_8lhms")]
+[node name="TP_Лендер" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1067320073 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3294.54, -1700.62, 3299)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Лендер"
-CoordsPreview = "X: -3294.54 Y: 1700.62 Z: -3299 Turn: 1.57"
+X = -3294.54
+Y = 1700.62
+Z = -3299.0
+Angle = 1.57
 
-[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=533921476 instance=ExtResource("45_8lhms")]
+[node name="TP_Келес" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=523362455 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1765.72, -1700.72, 3315.87)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Келес"
-CoordsPreview = "X: -1765.72 Y: 1700.72 Z: -3315.87 Turn: 1.57"
+X = -1765.72
+Y = 1700.72
+Z = -3315.87
+Angle = 1.57
 
-[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1418300439 instance=ExtResource("45_8lhms")]
+[node name="TP_Шепростан" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1273932422 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1580.09, -1700.24, 3284.97)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Шепростан"
-CoordsPreview = "X: -1580.09 Y: 1700.24 Z: -3284.97 Turn: 1.57"
+X = -1580.09
+Y = 1700.24
+Z = -3284.97
+Angle = 1.57
 
-[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=238339008 instance=ExtResource("45_8lhms")]
+[node name="TP_Оркобьен" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=70069055 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3095.44, -1770.27, 3300.79)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Оркобьен"
-CoordsPreview = "X: -3095.44 Y: 1770.27 Z: -3300.79 Turn: 1.57"
+X = -3095.44
+Y = 1770.27
+Z = -3300.79
+Angle = 1.57
 
-[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1400155903 instance=ExtResource("45_8lhms")]
+[node name="TP_Кануак" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=492781610 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3905.77, -1700.72, 3499.04)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Кануак"
-CoordsPreview = "X: 3905.77 Y: 1700.72 Z: -3499.04 Turn: 1.57"
+X = 3905.77
+Y = 1700.72
+Z = -3499.04
+Angle = 1.57
 
-[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=593475409 instance=ExtResource("45_8lhms")]
+[node name="TP_Алдарнон" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1578757539 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2899.08, -1700.74, 3305.44)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Алдарнон"
-CoordsPreview = "X: -2899.08 Y: 1700.74 Z: -3305.44 Turn: 0"
+X = -2899.08
+Y = 1700.74
+Z = -3305.44
 
-[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=373960128 instance=ExtResource("45_8lhms")]
+[node name="TP_Йонг" type="MeshInstance3D" parent="TeleportPoints/Haron/CastleDungeon" unique_id=1359927920 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1264.34, -1710.73, 3253.98)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 8
 PointName = "Йонг"
-CoordsPreview = "X: -1264.34 Y: 1710.73 Z: -3253.98 Turn: 1.57"
+X = -1264.34
+Y = 1710.73
+Z = -3253.98
+Angle = 1.57
 
-[node name="Other" type="Node3D" parent="TeleportPoints/Haron" unique_id=402655152]
+[node name="Other" type="Node3D" parent="TeleportPoints/Haron" unique_id=1284884415]
 
-[node name="TP_Черная_Башня" type="MeshInstance3D" parent="TeleportPoints/Haron/Other" unique_id=255825588 instance=ExtResource("45_8lhms")]
+[node name="TP_Черная_Башня" type="MeshInstance3D" parent="TeleportPoints/Haron/Other" unique_id=1852203656 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.65, -409.5, -1982.18)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 1
 PoiType = 9
 PointName = "Черная_Башня"
-CoordsPreview = "X: 21.65 Y: 409.5 Z: 1982.18 Turn: 0.42"
+X = 21.65
+Y = 409.5
+Z = 1982.18
+Angle = 0.42
 
-[node name="Feb" type="Node3D" parent="TeleportPoints" unique_id=1396888945]
+[node name="Feb" type="Node3D" parent="TeleportPoints" unique_id=2032090895]
 
-[node name="CityCenter" type="Node3D" parent="TeleportPoints/Feb" unique_id=320485461]
+[node name="CityCenter" type="Node3D" parent="TeleportPoints/Feb" unique_id=432163412]
 
-[node name="TP_Умрад" type="MeshInstance3D" parent="TeleportPoints/Feb/CityCenter" unique_id=1110388643 instance=ExtResource("45_8lhms")]
+[node name="TP_Умрад" type="MeshInstance3D" parent="TeleportPoints/Feb/CityCenter" unique_id=657007793 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1993, 104.5, -457)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 2
 PointName = "Умрад"
-CoordsPreview = "X: -1993 Y: -104.5 Z: 457 Turn: 0"
+X = -1993.0
+Y = -104.5
+Z = 457.0
 
-[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Feb" unique_id=364065876]
+[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Feb" unique_id=1666761160]
 
-[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=1563566237 instance=ExtResource("45_8lhms")]
+[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=893107320 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2596.07, 96.8, 314.45)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 5
 PointName = "Элек"
-CoordsPreview = "X: -2596.07 Y: -96.8 Z: -314.45 Turn: 0"
+X = -2596.07
+Y = -96.8
+Z = -314.45
 
-[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=1590730243 instance=ExtResource("45_8lhms")]
+[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=1701465047 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1406.1, 97.2, -705.16)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 5
 PointName = "Гавот"
-CoordsPreview = "X: -1406.1 Y: -97.2 Z: 705.16 Turn: 0"
+X = -1406.1
+Y = -97.2
+Z = 705.16
 
-[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=1515265900 instance=ExtResource("45_8lhms")]
+[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleTeleportPointOwner" unique_id=547691538 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -601.27, 97, 297.41)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 5
 PointName = "Кандур"
-CoordsPreview = "X: -601.27 Y: -97 Z: -297.41 Turn: 0"
+X = -601.27
+Y = -97.0
+Z = -297.41
 
-[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Feb" unique_id=1861282195]
+[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Feb" unique_id=186132883]
 
-[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Feb" unique_id=150014384]
+[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Feb" unique_id=1980951842]
 
-[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=81395804 instance=ExtResource("45_8lhms")]
+[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=709563505 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900.4, -1098.43, -1092.85)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 7
 PointName = "Элек"
-CoordsPreview = "X: 900.4 Y: 1098.43 Z: 1092.85 Turn: 0"
+X = 900.4
+Y = 1098.43
+Z = 1092.85
 
-[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=209298581 instance=ExtResource("45_8lhms")]
+[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=1014269373 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1116.08, -1094.02, -1125.14)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 7
 PointName = "Гавот"
-CoordsPreview = "X: 1116.08 Y: 1094.02 Z: 1125.14 Turn: -3.99"
+X = 1116.08
+Y = 1094.02
+Z = 1125.14
+Angle = -3.99
 
-[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=526717476 instance=ExtResource("45_8lhms")]
+[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleInnerArea" unique_id=166467513 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1302.8, -1099.58, -1098.49)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 7
 PointName = "Кандур"
-CoordsPreview = "X: 1302.8 Y: 1099.58 Z: 1098.49 Turn: 1.57"
+X = 1302.8
+Y = 1099.58
+Z = 1098.49
+Angle = 1.57
 
-[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Feb" unique_id=1051521261]
+[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Feb" unique_id=579210918]
 
-[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=707587764 instance=ExtResource("45_8lhms")]
+[node name="TP_Элек" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=263856984 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1079.28, -1699.84, 3314.97)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 8
 PointName = "Элек"
-CoordsPreview = "X: -1079.28 Y: 1699.84 Z: -3314.97 Turn: 1.57"
+X = -1079.28
+Y = 1699.84
+Z = -3314.97
+Angle = 1.57
 
-[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=1811529586 instance=ExtResource("45_8lhms")]
+[node name="TP_Гавот" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=1133761521 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -899.91, -1699.64, 3218.54)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 8
 PointName = "Гавот"
-CoordsPreview = "X: -899.91 Y: 1699.64 Z: -3218.54 Turn: -3.06"
+X = -899.91
+Y = 1699.64
+Z = -3218.54
+Angle = -3.06
 
-[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=783729185 instance=ExtResource("45_8lhms")]
+[node name="TP_Кандур" type="MeshInstance3D" parent="TeleportPoints/Feb/CastleDungeon" unique_id=504939882 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -699.93, -1699.63, 3293.61)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PoiType = 8
 PointName = "Кандур"
-CoordsPreview = "X: -699.93 Y: 1699.63 Z: -3293.61 Turn: -3.02"
+X = -699.93
+Y = 1699.63
+Z = -3293.61
+Angle = -3.02
 
-[node name="SharedDungeon" type="Node3D" parent="TeleportPoints/Feb" unique_id=792329108]
+[node name="SharedDungeon" type="Node3D" parent="TeleportPoints/Feb" unique_id=1496738150]
 
-[node name="TP_Фебоданж_1" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=837573656 instance=ExtResource("45_8lhms")]
+[node name="TP_Фебоданж_1" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=371627992 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3899.97, -1299.45, 1893.74)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PointName = "Фебоданж_1"
-CoordsPreview = "X: -3899.97 Y: 1299.45 Z: -1893.74 Turn: 3.14"
+X = -3899.97
+Y = 1299.45
+Z = -1893.74
+Angle = 3.14
 
-[node name="TP_Фебоданж_2" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=1641770125 instance=ExtResource("45_8lhms")]
+[node name="TP_Фебоданж_2" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=1971437825 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3700.62, -1301.3, 1895.9)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PointName = "Фебоданж_2"
-CoordsPreview = "X: -3700.62 Y: 1301.3 Z: -1895.9 Turn: 3.14"
+X = -3700.62
+Y = 1301.3
+Z = -1895.9
+Angle = 3.14
 
-[node name="TP_Фебоданж_3" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=137385784 instance=ExtResource("45_8lhms")]
+[node name="TP_Фебоданж_3" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=1000748076 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3494, -1270.64, 1900)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PointName = "Фебоданж_3"
-CoordsPreview = "X: -3494 Y: 1270.64 Z: -1900 Turn: 1.57"
+X = -3494.0
+Y = 1270.64
+Z = -1900.0
+Angle = 1.57
 
-[node name="TP_Фебоданж_4" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=653793610 instance=ExtResource("45_8lhms")]
+[node name="TP_Фебоданж_4" type="MeshInstance3D" parent="TeleportPoints/Feb/SharedDungeon" unique_id=1676602331 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3396.51, -1310.61, 1885.09)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 2
 PointName = "Фебоданж_4"
-CoordsPreview = "X: -3396.51 Y: 1310.61 Z: -1885.09 Turn: -1.57"
+X = -3396.51
+Y = 1310.61
+Z = -1885.09
+Angle = -1.57
 
-[node name="Rodos" type="Node3D" parent="TeleportPoints" unique_id=835573997]
+[node name="Rodos" type="Node3D" parent="TeleportPoints" unique_id=579292906]
 
-[node name="CityCenter" type="Node3D" parent="TeleportPoints/Rodos" unique_id=486073122]
+[node name="CityCenter" type="Node3D" parent="TeleportPoints/Rodos" unique_id=1759721172]
 
-[node name="TP_Анхельм" type="MeshInstance3D" parent="TeleportPoints/Rodos/CityCenter" unique_id=1819374638 instance=ExtResource("45_8lhms")]
+[node name="TP_Анхельм" type="MeshInstance3D" parent="TeleportPoints/Rodos/CityCenter" unique_id=39987038 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3397, 340, 813)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 2
 PointName = "Анхельм"
-CoordsPreview = "X: -3397 Y: -340 Z: -813 Turn: -3"
+X = -3397.0
+Y = -340.0
+Z = -813.0
+Angle = -3.0
 
-[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Rodos" unique_id=702189941]
+[node name="CastleTeleportPointOwner" type="Node3D" parent="TeleportPoints/Rodos" unique_id=239246103]
 
-[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=665277193 instance=ExtResource("45_8lhms")]
+[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=2028592394 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3406.1, 345.8, 94.8)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Иммертель"
-CoordsPreview = "X: -3406.1 Y: -345.8 Z: -94.8 Turn: 0"
+X = -3406.1
+Y = -345.8
+Z = -94.8
 
-[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1258938452 instance=ExtResource("45_8lhms")]
+[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=953898562 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2403.49, 345.87, 1300.99)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Нарцисс"
-CoordsPreview = "X: -2403.49 Y: -345.87 Z: -1300.99 Turn: 0"
+X = -2403.49
+Y = -345.87
+Z = -1300.99
 
-[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1372632222 instance=ExtResource("45_8lhms")]
+[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1487053075 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3596.99, 345.53, 2112.12)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Ранден"
-CoordsPreview = "X: -3596.99 Y: -345.53 Z: -2112.12 Turn: 0"
+X = -3596.99
+Y = -345.53
+Z = -2112.12
 
-[node name="TP_Ниргун" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1671979863 instance=ExtResource("45_8lhms")]
+[node name="TP_Ниргун" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=939778858 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3201.27, 345.79, -702.58)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Ниргун"
-CoordsPreview = "X: -3201.27 Y: -345.79 Z: 702.58 Turn: 0"
+X = -3201.27
+Y = -345.79
+Z = 702.58
 
-[node name="TP_Гелгивинн" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=669535421 instance=ExtResource("45_8lhms")]
+[node name="TP_Гелгивинн" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1769294770 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2606.1, 347.2, 2094.83)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Гелгивинн"
-CoordsPreview = "X: -2606.1 Y: -347.2 Z: -2094.83 Turn: 0"
+X = -2606.1
+Y = -347.2
+Z = -2094.83
 
-[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=180116979 instance=ExtResource("45_8lhms")]
+[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointOwner" unique_id=1874351054 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1060.35, 374.21, 1569.71)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 5
 PointName = "Иль_Суильи_Руа"
-CoordsPreview = "X: -1060.35 Y: -374.21 Z: -1569.71 Turn: 0"
+X = -1060.35
+Y = -374.21
+Z = -1569.71
 
-[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Rodos" unique_id=1637745850]
+[node name="CastleTeleportPointEnemy" type="Node3D" parent="TeleportPoints/Rodos" unique_id=1216487599]
 
-[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointEnemy" unique_id=585484723 instance=ExtResource("45_8lhms")]
+[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleTeleportPointEnemy" unique_id=1827864856 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1212, 356.2, 1703)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 6
 PointName = "Иль_Суильи_Руа"
-CoordsPreview = "X: -1212 Y: -356.2 Z: -1703 Turn: 0"
+X = -1212.0
+Y = -356.2
+Z = -1703.0
 
-[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Rodos" unique_id=676468399]
+[node name="CastleInnerArea" type="Node3D" parent="TeleportPoints/Rodos" unique_id=2095081391]
 
-[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=737922986 instance=ExtResource("45_8lhms")]
+[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=576239147 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1500.58, -1098.43, -1093.24)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 7
 PointName = "Иммертель"
-CoordsPreview = "X: 1500.58 Y: 1098.43 Z: 1093.24 Turn: 0"
+X = 1500.58
+Y = 1098.43
+Z = 1093.24
 
-[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=503896567 instance=ExtResource("45_8lhms")]
+[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=201804435 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1692.65, -1095.72, -1097.21)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 7
 PointName = "Нарцисс"
-CoordsPreview = "X: 1692.65 Y: 1095.72 Z: 1097.21 Turn: 1.57"
+X = 1692.65
+Y = 1095.72
+Z = 1097.21
+Angle = 1.57
 
-[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=194737386 instance=ExtResource("45_8lhms")]
+[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=1630392279 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1902.24, -1099.65, -1098.63)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 7
 PointName = "Ранден"
-CoordsPreview = "X: 1902.24 Y: 1099.65 Z: 1098.63 Turn: 1.57"
+X = 1902.24
+Y = 1099.65
+Z = 1098.63
+Angle = 1.57
 
-[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=1872392404 instance=ExtResource("45_8lhms")]
+[node name="TP_Иль_Суильи_Руа" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleInnerArea" unique_id=35104278 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2533.35, -1068.27, -1095.46)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 7
 PointName = "Иль_Суильи_Руа"
-CoordsPreview = "X: 2533.35 Y: 1068.27 Z: 1095.46 Turn: -1.64"
+X = 2533.35
+Y = 1068.27
+Z = 1095.46
+Angle = -1.64
 
-[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Rodos" unique_id=36302197]
+[node name="CastleDungeon" type="Node3D" parent="TeleportPoints/Rodos" unique_id=38853348]
 
-[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1271654405 instance=ExtResource("45_8lhms")]
+[node name="TP_Иммертель" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1994907389 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -434.05, -1699.84, 3255.02)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 8
 PointName = "Иммертель"
-CoordsPreview = "X: -434.05 Y: 1699.84 Z: -3255.02 Turn: 1.57"
+X = -434.05
+Y = 1699.84
+Z = -3255.02
+Angle = 1.57
 
-[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1959672192 instance=ExtResource("45_8lhms")]
+[node name="TP_Нарцисс" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1970925471 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -299.15, -1700.71, 3305.82)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 8
 PointName = "Нарцисс"
-CoordsPreview = "X: -299.15 Y: 1700.71 Z: -3305.82 Turn: 0"
+X = -299.15
+Y = 1700.71
+Z = -3305.82
 
-[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=536016095 instance=ExtResource("45_8lhms")]
+[node name="TP_Ранден" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1599198401 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -165.94, -1700.69, 3315.9)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 8
 PointName = "Ранден"
-CoordsPreview = "X: -165.94 Y: 1700.69 Z: -3315.9 Turn: -1.57"
+X = -165.94
+Y = 1700.69
+Z = -3315.9
+Angle = -1.57
 
-[node name="TP_Ниргун" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=1834860683 instance=ExtResource("45_8lhms")]
+[node name="TP_Ниргун" type="MeshInstance3D" parent="TeleportPoints/Rodos/CastleDungeon" unique_id=2020434069 instance=ExtResource("45_8lhms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.89, -1700.24, 3284.98)
 skeleton = NodePath("../..")
 script = ExtResource("46_y77nf")
 Continent = 3
 PoiType = 8
 PointName = "Ниргун"
-CoordsPreview = "X: 19.89 Y: 1700.24 Z: -3284.98 Turn: -1.57"
+X = 19.89
+Y = 1700.24
+Z = -3284.98
+Angle = -1.57
