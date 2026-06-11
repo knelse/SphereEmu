@@ -346,7 +346,7 @@ public static class SavedCoords
                 },
                 [Other] = new ()
                 {
-                    ["Черная Башня"] = new WorldCoords(21.65, 409.5, 1982.18, 0.42)
+                    ["Черная_Башня"] = new WorldCoords(21.65, 409.5, 1982.18, 0.42)
                 }
             },
             [Феб] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>
@@ -379,10 +379,10 @@ public static class SavedCoords
                 },
                 [SharedDungeon] = new ()
                 {
-                    ["Фебоданж 1"] = new WorldCoords(-3899.97, 1299.45, -1893.74, 3.14),
-                    ["Фебоданж 2"] = new WorldCoords(-3700.62, 1301.3, -1895.9, 3.14),
-                    ["Фебоданж 3"] = new WorldCoords(-3494, 1270.64, -1900, 1.57),
-                    ["Фебоданж 4"] = new WorldCoords(-3396.51, 1310.61, -1885.09, -1.57)
+                    ["Фебоданж_1"] = new WorldCoords(-3899.97, 1299.45, -1893.74, 3.14),
+                    ["Фебоданж_2"] = new WorldCoords(-3700.62, 1301.3, -1895.9, 3.14),
+                    ["Фебоданж_3"] = new WorldCoords(-3494, 1270.64, -1900, 1.57),
+                    ["Фебоданж_4"] = new WorldCoords(-3396.51, 1310.61, -1885.09, -1.57)
                 }
             },
             [Родос] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>
