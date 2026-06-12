@@ -1,5 +1,8 @@
 using System.Globalization;
+using System.Collections.Generic;
 using Godot;
+using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects;
 
@@ -203,6 +206,147 @@ public static class WorldObjectDumpFillCommon
 			(long)Math.Round(x * scale),
 			(long)Math.Round(y * scale),
 			(long)Math.Round(z * scale));
+	}
+
+	public static bool IsPreservedPlacement(Node node) =>
+		node is WorldObject { DoNotRebuild: true } or TeleportPointHelper { DoNotRebuild: true };
+
+	/// <summary>
+	///     Removes generated placements under <paramref name="root" />, keeping nodes marked
+	///     <see cref="WorldObject.DoNotRebuild" /> / <see cref="TeleportPointHelper.DoNotRebuild" />.
+	///     Empty grouping nodes left behind after recursive cleanup are removed as well.
+	/// </summary>
+	public static int ClearRebuildableChildren(Node root)
+	{
+		var removed = 0;
+		for (var i = root.GetChildCount() - 1; i >= 0; i--)
+		{
+			var child = root.GetChild(i);
+			if (!GodotObject.IsInstanceValid(child))
+			{
+				continue;
+			}
+
+			if (IsPreservedPlacement(child))
+			{
+				continue;
+			}
+
+			if (child is WorldObject or TeleportPointHelper)
+			{
+				RemovePlacementNode(child);
+				removed++;
+				continue;
+			}
+
+			if (HasPreservedDescendant(child))
+			{
+				removed += ClearRebuildableChildren(child);
+				if (GodotObject.IsInstanceValid(child) && child.GetChildCount() == 0)
+				{
+					RemovePlacementNode(child);
+					removed++;
+				}
+
+				continue;
+			}
+
+			RemovePlacementNode(child);
+			removed++;
+		}
+
+		return removed;
+	}
+
+	private static bool HasPreservedDescendant(Node node)
+	{
+		if (IsPreservedPlacement(node))
+		{
+			return true;
+		}
+
+		foreach (var child in node.GetChildren())
+		{
+			if (HasPreservedDescendant(child))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static void RemovePlacementNode(Node node)
+	{
+		if (!GodotObject.IsInstanceValid(node))
+		{
+			return;
+		}
+
+		node.Free();
+	}
+
+	/// <summary>
+	///     Source-space dedup key from a placement's Godot position relative to the Fill root.
+	/// </summary>
+	public static (long Qx, long Qy, long Qz) SourcePositionKeyFromPlacementNode(Node3D placement, Node3D fillRoot)
+	{
+		var local = fillRoot.ToLocal(placement.GlobalTransform.Origin);
+		return QuantizeSourcePosition(local.X, -local.Y, -local.Z);
+	}
+
+	/// <summary>
+	///     Registers source coordinates of preserved placements so rebuild does not spawn duplicates at the same spot.
+	/// </summary>
+	public static int SeedSeenSourcePositions(Node3D fillRoot, HashSet<(long Qx, long Qy, long Qz)> seenSourcePositions)
+	{
+		var seeded = 0;
+		SeedSeenSourcePositionsRecursive(fillRoot, fillRoot, seenSourcePositions, ref seeded);
+		return seeded;
+	}
+
+	private static void SeedSeenSourcePositionsRecursive(
+		Node node,
+		Node3D fillRoot,
+		HashSet<(long Qx, long Qy, long Qz)> seenSourcePositions,
+		ref int seeded)
+	{
+		if (IsPreservedPlacement(node) && node is Node3D placement)
+		{
+			if (seenSourcePositions.Add(SourcePositionKeyFromPlacementNode(placement, fillRoot)))
+			{
+				seeded++;
+			}
+
+			return;
+		}
+
+		foreach (var child in node.GetChildren())
+		{
+			SeedSeenSourcePositionsRecursive(child, fillRoot, seenSourcePositions, ref seeded);
+		}
+	}
+
+	/// <summary>
+	///     Registers node names of preserved <see cref="WorldObject" /> placements (e.g. NPC rebuild name dedup).
+	/// </summary>
+	public static int SeedUsedNodeNamesFromPreservedPlacements(Node fillRoot, HashSet<string> usedNames)
+	{
+		var seeded = 0;
+		foreach (var node in fillRoot.FindChildren("*", recursive: true))
+		{
+			if (node is not WorldObject { DoNotRebuild: true } wo)
+			{
+				continue;
+			}
+
+			if (usedNames.Add(wo.Name.ToString()))
+			{
+				seeded++;
+			}
+		}
+
+		return seeded;
 	}
 
 	/// <summary>ID column is hex (optional <c>0x</c>).</summary>

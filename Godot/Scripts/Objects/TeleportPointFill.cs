@@ -19,10 +19,7 @@ public partial class TeleportPointFill : Node3D
 
 	public void RebuildTeleportPoints()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(TeleportPointScenePath, "TeleportPointFill", out var scene))
 		{
@@ -30,8 +27,10 @@ public partial class TeleportPointFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var continentNodes = new Dictionary<Continents, Node3D>();
 		var poiTypeNodes = new Dictionary<(Continents Continent, PoiType PoiType), Node3D>();
+		SeedExistingHierarchy(continentNodes, poiTypeNodes);
 		var entriesConsidered = 0;
 		var spawned = 0;
 		var duplicateSkipped = 0;
@@ -70,6 +69,62 @@ public partial class TeleportPointFill : Node3D
 
 		GD.Print(
 			$"TeleportPointFill: considered={entriesConsidered}, spawned={spawned}, dupSkipped={duplicateSkipped}");
+	}
+
+	private void SeedExistingHierarchy(
+		Dictionary<Continents, Node3D> continentNodes,
+		Dictionary<(Continents Continent, PoiType PoiType), Node3D> poiTypeNodes)
+	{
+		foreach (var child in GetChildren())
+		{
+			if (child is not Node3D continentNode)
+			{
+				continue;
+			}
+
+			if (!TryParseContinentNodeName(continentNode.Name, out var continent))
+			{
+				continue;
+			}
+
+			continentNodes[continent] = continentNode;
+
+			foreach (var poiChild in continentNode.GetChildren())
+			{
+				if (poiChild is not Node3D poiNode)
+				{
+					continue;
+				}
+
+				if (!Enum.TryParse(poiNode.Name.ToString(), out PoiType poiType))
+				{
+					continue;
+				}
+
+				poiTypeNodes[(continent, poiType)] = poiNode;
+			}
+		}
+	}
+
+	private static bool TryParseContinentNodeName(StringName name, out Continents continent)
+	{
+		switch (name.ToString())
+		{
+			case "Hyperion":
+				continent = Continents.Гиперион;
+				return true;
+			case "Haron":
+				continent = Continents.Харон;
+				return true;
+			case "Feb":
+				continent = Continents.Феб;
+				return true;
+			case "Rodos":
+				continent = Continents.Родос;
+				return true;
+			default:
+				return Enum.TryParse(name.ToString(), out continent);
+		}
 	}
 
 	private Node3D GetOrCreatePoiTypeParent(

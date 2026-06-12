@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://byemmdrth0vex"]
 
+[ext_resource type="Script" uid="uid://bryaftasu8lox" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="1_mspwn"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45s3u"]
 transparency = 1
 albedo_color = Color(1, 0, 0, 0.72156864)
@@ -9,6 +11,7 @@ material = SubResource("StandardMaterial3D_45s3u")
 size = Vector3(2, 20, 2)
 
 [node name="MonsterSpawner" type="Node3D" unique_id=2119273892]
+script = ExtResource("1_mspwn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=390369887]
 cast_shadow = 0

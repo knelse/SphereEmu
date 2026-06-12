@@ -11,6 +11,8 @@ public partial class Monster : WorldObject
 {
 	protected override bool AutoGroundGlbVisual => true;
 
+	protected override bool RefreshModelVisualOnReady => true;
+
 	private static bool TryGetMonsterModelNameGroundFromDb(MonsterType monsterType, out string modelName)
 	{
 		modelName = string.Empty;
@@ -124,6 +126,12 @@ public partial class Monster : WorldObject
 		if (TryGetMonsterModelNameGroundFromDb(MonsterType, out var ground))
 		{
 			return ground;
+		}
+
+		var dataGround = DataModelNameGround?.Trim() ?? string.Empty;
+		if (!string.IsNullOrEmpty(dataGround))
+		{
+			return dataGround;
 		}
 
 		return base.ResolveModelNameFromObjectTypeFallback();
@@ -451,6 +459,11 @@ public partial class Monster : WorldObject
 
 	public override void _Ready()
 	{
+		if (Engine.IsEditorHint())
+		{
+			SetNotifyTransform(true);
+		}
+
 		if (MonsterInstance is null)
 		{
 			RefreshMonsterInstanceFromType();
@@ -461,6 +474,63 @@ public partial class Monster : WorldObject
 		}
 
 		base._Ready();
+	}
+
+	public override void _ExitTree()
+	{
+		if (Engine.IsEditorHint() && MonsterMultiMeshVisuals.IsBulkEditorUpdate)
+		{
+			MonsterMultiMeshVisuals.ForgetMonster(this);
+		}
+		else
+		{
+			MonsterMultiMeshVisuals.Unregister(this);
+		}
+
+		base._ExitTree();
+	}
+
+	public override void _Notification(int what)
+	{
+		base._Notification(what);
+		if (what == NotificationTransformChanged && !MonsterMultiMeshVisuals.IsBulkEditorUpdate)
+		{
+			MonsterMultiMeshVisuals.UpdateTransformIfRegistered(this);
+		}
+	}
+
+	internal string GetVisualModelName() => GetEffectiveModelNameForVisual();
+
+	protected override void RefreshModelVisual()
+	{
+		ClearLocalModelVisuals();
+		if (Engine.IsEditorHint())
+		{
+			if (!MonsterMultiMeshVisuals.IsBulkEditorUpdate)
+			{
+				var tree = GetTree();
+				if (tree is not null)
+				{
+					MonsterMultiMeshVisuals.RequestEditorRebuild(tree);
+				}
+			}
+
+			return;
+		}
+
+		MonsterMultiMeshVisuals.RegisterOrUpdate(this);
+	}
+
+	public void RegisterMultiMeshVisualDeferred()
+	{
+		var tree = GetTree();
+		if (tree is not null && Engine.IsEditorHint())
+		{
+			MonsterMultiMeshVisuals.RequestEditorRebuild(tree);
+			return;
+		}
+
+		MonsterMultiMeshVisuals.RegisterOrUpdate(this);
 	}
 
 	[Export] public int NameID_1 { get; set; }

@@ -15,6 +15,12 @@ public partial class TeleportPointHelper : MeshInstance3D
 	[Export(PropertyHint.None, "Name")]
 	public string PointName { get; set; } = "";
 
+	/// <summary>
+	///     When set in the editor, <see cref="TeleportPointFill"/> keeps this gizmo and treats its coordinates as occupied.
+	/// </summary>
+	[Export(PropertyHint.None, "Do Not Rebuild")]
+	public bool DoNotRebuild { get; set; }
+
 	public WorldCoords? Coords { get; private set; }
 
 	[Export]

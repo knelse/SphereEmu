@@ -28,10 +28,7 @@ public partial class LightCrystalsFill : Node3D
 
 	public void RebuildLightCrystals()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(LightCrystalScenePath, "LightCrystalsFill", out var scene))
 		{
@@ -39,6 +36,7 @@ public partial class LightCrystalsFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var stats = new Stats();
 
 		RebuildFromFile(

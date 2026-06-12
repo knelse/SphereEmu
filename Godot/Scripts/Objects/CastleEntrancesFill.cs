@@ -29,10 +29,7 @@ public partial class CastleEntrancesFill : Node3D
 	/// <summary>Clears child instances and repopulates from <see cref="CastleEntrancesDataFilePath"/>.</summary>
 	public void RebuildCastleEntrances()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!ResourceLoader.Exists(CastleEntranceScenePath))
 		{
@@ -73,6 +70,7 @@ public partial class CastleEntrancesFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var duplicateRowsSkipped = 0;
 		var rowsConsidered = 0;
 		var rowsParsed = 0;

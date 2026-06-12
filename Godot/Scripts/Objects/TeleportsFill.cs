@@ -39,10 +39,7 @@ public partial class TeleportsFill : Node3D
 
 	public void RebuildTeleports()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(TeleportScenePath, "TeleportsFill", out var teleportScene)
 			|| !WorldObjectDumpFillCommon.TryLoadPackedScene(TargetTeleportScenePath, "TeleportsFill", out var targetTeleportScene)
@@ -52,6 +49,7 @@ public partial class TeleportsFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var stats = new Stats();
 
 		RebuildSimple(TeleportsDataFilePath, teleportScene!, ObjectType.Teleport, expectedTypeValue: TeleportTypeValue, objectTypeNameForNaming: "Teleport", seenSourcePositions, ref stats);

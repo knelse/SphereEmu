@@ -2,7 +2,7 @@ namespace SphServer.Sphere.Game.Converters;
 
 public static class ObjectTypeToModelNameMap
 {
-    public static string Get (ObjectType objectType)
+    public static string Get(ObjectType objectType)
     {
         return objectType switch
         {
@@ -13,12 +13,12 @@ public static class ObjectTypeToModelNameMap
             ObjectType.Mutator => string.Empty,
             ObjectType.SeedCastle => "Seed01",
             ObjectType.XpPillDegree => "Fireball",
-            ObjectType.DoorEntrance => "EDOOR",
-            ObjectType.DoorExit => "EDOOR",
+            ObjectType.DoorEntrance => "edoor",
+            ObjectType.DoorExit => "edoor",
             ObjectType.TeleportWithTarget => "portal1",
             ObjectType.Teleport => "portal1",
             ObjectType.TeleportBroken => "portal2",
-            ObjectType.DungeonEntrance => "EDOOR",
+            ObjectType.DungeonEntrance => "edoor",
             ObjectType.TokenMultiuse => "token",
             ObjectType.TeleportWild => "portal3",
             ObjectType.TradeLicense => "st_paper",
@@ -34,8 +34,8 @@ public static class ObjectTypeToModelNameMap
             ObjectType.ScrollRecipe => "st_paper",
             ObjectType.Mission => "st_paper",
             ObjectType.Dungeon => string.Empty,
-            ObjectType.CastleEntrance => "EDOOR",
-            ObjectType.DoorEntranceWithKey => "EDOOR",
+            ObjectType.CastleEntrance => "edoor",
+            ObjectType.DoorEntranceWithKey => "edoor",
             ObjectType.TeleportInDungeon => "portal4",
             ObjectType.TeleportDungeonChoiceIsland => "portal3",
             ObjectType.TokenIsland => "token",
@@ -115,9 +115,9 @@ public static class ObjectTypeToModelNameMap
             ObjectType.ArmorRobe => "st_bronya",
             ObjectType.RingGolem => "jw_ring",
             ObjectType.AlchemyPot => "mg_magicpot",
-            ObjectType.AlchemyFurnace => "EDOOR",
+            ObjectType.AlchemyFurnace => "edoor",
             ObjectType.Blueprint => "st_paper",
-            ObjectType.Workshop => "EDOOR",
+            ObjectType.Workshop => "edoor",
             ObjectType.QuestArmorChest => "st_bronya",
             ObjectType.QuestArmorChest2 => "st_bronya",
             ObjectType.QuestArmorBoots => "st_boot2",

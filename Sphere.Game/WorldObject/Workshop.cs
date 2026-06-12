@@ -8,6 +8,6 @@ public partial class Workshop : WorldObject
 	public Workshop()
 	{
 		ObjectType = ObjectType.Workshop;
-		ModelName = "EDOOR";
+		ModelName = "edoor";
 	}
 }

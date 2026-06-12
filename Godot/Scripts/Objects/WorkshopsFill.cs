@@ -23,10 +23,7 @@ public partial class WorkshopsFill : Node3D
 
 	public void RebuildWorkshops()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(WorkshopScenePath, "WorkshopsFill", out var scene))
 		{
@@ -39,6 +36,7 @@ public partial class WorkshopsFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var duplicateRowsSkipped = 0;
 		var rowsSkippedNotMatchingType = 0;
 		var rowsSkippedWeirdCoords = 0;

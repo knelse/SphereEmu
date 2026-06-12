@@ -8,6 +8,6 @@ public partial class DungeonEntrance : WorldObject
 	public DungeonEntrance()
 	{
 		ObjectType = ObjectType.DungeonEntrance;
-		ModelName = "EDOOR";
+		ModelName = "edoor";
 	}
 }

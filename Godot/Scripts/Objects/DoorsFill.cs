@@ -30,17 +30,14 @@ public partial class DoorsFill : Node3D
 	public string DoorScenePath { get; set; } = "res://Godot/Scenes/door.tscn";
 
 	[Export]
-	public string DoorModelName { get; set; } = "EDOOR";
+	public string DoorModelName { get; set; } = "edoor";
 
 	[ExportToolButton("Rebuild doors")]
 	public Callable RebuildDoorsButton => Callable.From(RebuildDoors);
 
 	public void RebuildDoors()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!ResourceLoader.Exists(DoorScenePath))
 		{
@@ -61,6 +58,7 @@ public partial class DoorsFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var entranceStats = ParseAndSpawnDoorEntrances(doorsText, scene, seenSourcePositions);
 
 		var exitStats = default(ParseStats);

@@ -1,19 +1,33 @@
 [gd_scene format=3 uid="uid://jecy1l185txr"]
 
 [ext_resource type="Script" uid="uid://c50t8tdfgk4jf" path="res://Sphere.Game/WorldObject/Monster.cs" id="1_8qwjm"]
-[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_dns7e"]
 
 [sub_resource type="CapsuleShape3D" id="68"]
 radius = 0.3
 
 [node name="Monster" type="CharacterBody3D" unique_id=1719472681]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_8qwjm")
-_angle = 0
-_objectType = 65535
-_modelName = ""
+CurrentHp = 80
+MaxHp = 80
+BasePAtk = -8
+BasePDef = 1
+InstanceKarmaType = 1
+DataGameId = 1000
+DataObjectType = 54
+DataObjectKind = 15
+DataSphereType = "monster"
+DataModelNameGround = "npc40"
+DataModelNameInventory = "npc40"
+DataKarmaType = 1
+DataMaxLevel = 2
+DataHpPerLevel = 80
+DataPDefPerLevel = 1
+DataPAtkPerLevel = -8
+DataMutatorName = "0"
+DataRange = 3
+DataAttackDelay = 6.0
 
 [node name="ModelCollision" type="CollisionShape3D" parent="." unique_id=1838886289]
 shape = SubResource("68")
 
-[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_dns7e")]
+[node name="MonsterMultiMeshVisuals" type="Node3D" parent="." unique_id=242413538]

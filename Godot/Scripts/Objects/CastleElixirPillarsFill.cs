@@ -31,10 +31,7 @@ public partial class CastleElixirPillarsFill : Node3D
 
 	public void RebuildCastleElixirPillars()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!ResourceLoader.Exists(WorldObjectScenePath))
 		{
@@ -76,6 +73,7 @@ public partial class CastleElixirPillarsFill : Node3D
 		}
 
 		var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+		WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
 		var duplicateRowsSkipped = 0;
 		var rowsConsidered = 0;
 		var rowsParsed = 0;

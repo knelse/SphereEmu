@@ -28,10 +28,7 @@ public partial class NpcsFill : Node3D
 
 	public void RebuildNpcs()
 	{
-		foreach (var child in GetChildren())
-		{
-			child.Free();
-		}
+		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
 		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(NpcInteractableScenePath, "NpcsFill", out var npcScene) || npcScene is null)
 		{
@@ -56,6 +53,7 @@ public partial class NpcsFill : Node3D
 		}
 
 		var usedNames = new HashSet<string>(StringComparer.Ordinal);
+		WorldObjectDumpFillCommon.SeedUsedNodeNamesFromPreservedPlacements(this, usedNames);
 		var stats = new Stats();
 
 		foreach (var (lineNumber, parts) in WorldObjectDumpFillCommon.EnumerateDataLines(inputText))

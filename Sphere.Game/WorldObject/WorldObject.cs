@@ -67,6 +67,13 @@ public partial class WorldObject : Node3D
 
 	[Export] public ushort ID { get; set; }
 
+	/// <summary>
+	///     When set in the editor, rebuild Fill tools keep this placement and treat its source coordinates as occupied
+	///     so dump rows at the same position are not spawned again.
+	/// </summary>
+	[Export(PropertyHint.None, "Do Not Rebuild")]
+	public bool DoNotRebuild { get; set; }
+
 	[Export]
 	public ObjectType ObjectType
 	{
@@ -262,7 +269,7 @@ public partial class WorldObject : Node3D
 	///     <see cref="DefaultModelNameForVisual" />;
 	///     if the asset is missing, shows the checkered placeholder cube.
 	/// </summary>
-	protected void RefreshModelVisual()
+	protected virtual void RefreshModelVisual()
 	{
 		var trimmed = GetEffectiveModelNameForVisual();
 		if (string.IsNullOrEmpty(trimmed))
@@ -465,7 +472,7 @@ public partial class WorldObject : Node3D
 	/// <summary>
 	///     Non-empty <see cref="ModelName" /> (trimmed) wins; otherwise <see cref="ResolveModelNameFromObjectTypeFallback" />.
 	/// </summary>
-	private string GetEffectiveModelNameForVisual()
+	protected string GetEffectiveModelNameForVisual()
 	{
 		var explicitName = ModelName?.Trim() ?? string.Empty;
 		if (!string.IsNullOrEmpty(explicitName))
@@ -526,6 +533,12 @@ public partial class WorldObject : Node3D
 	/// <summary>
 	///     Removes prior GLB roots (meta-tagged or name <c>Glb</c>), including Godot-renamed duplicates (<c>Glb2</c>, …).
 	/// </summary>
+	protected void ClearLocalModelVisuals()
+	{
+		RemoveGlbModelChild();
+		RemovePlaceholderMeshChild();
+	}
+
 	private void RemoveGlbModelChild()
 	{
 		var toRemove = new List<Node>();

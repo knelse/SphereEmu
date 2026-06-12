@@ -23,12 +23,9 @@ public partial class TeleportDungeonChoiceIslandFill : Node3D
     [ExportToolButton("Rebuild choice dungeon teleports")]
     public Callable RebuildTeleportDungeonChoiceIslandButton => Callable.From(RebuildTeleportDungeonChoiceIsland);
 
-    public void RebuildTeleportDungeonChoiceIsland ()
+    public void RebuildTeleportDungeonChoiceIsland()
     {
-        foreach (var child in GetChildren())
-        {
-            child.Free();
-        }
+        WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
         if (!WorldObjectDumpFillCommon.TryLoadPackedScene(TeleportDungeonChoiceIslandScenePath,
                 "TeleportDungeonChoiceIslandFill", out var scene))
@@ -43,6 +40,7 @@ public partial class TeleportDungeonChoiceIslandFill : Node3D
         }
 
         var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
+        WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
         var duplicateRowsSkipped = 0;
         var rowsSkippedNotMatchingType = 0;
         var rowsSkippedWeirdCoords = 0;
@@ -93,11 +91,11 @@ public partial class TeleportDungeonChoiceIslandFill : Node3D
 
             var instance = scene!.Instantiate<TeleportDungeonChoiceIsland>();
             instance.Name = WorldObjectDumpFillCommon.BuildPlacementName("TeleportDungeonChoiceIsland", id, x, y, z);
-            instance.Position = new Vector3((float) x, -(float) y, -(float) z);
+            instance.Position = new Vector3((float)x, -(float)y, -(float)z);
             instance.Angle = angleEncoded;
             if (id is >= 0 and <= ushort.MaxValue)
             {
-                instance.ID = (ushort) id;
+                instance.ID = (ushort)id;
             }
 
             instance.ObjectType = ObjectType.TeleportDungeonChoiceIsland;
