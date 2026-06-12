@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://dtf6a6bgra1rg" path="res://Godot/Scenes/castle_tablet.tscn" id="17_6fo3i"]
 [ext_resource type="PackedScene" uid="uid://e5615sr7s3e4" path="res://Godot/Scenes/teleport_broken.tscn" id="19_uvs8x"]
 [ext_resource type="PackedScene" uid="uid://bd0jhc3oqqoia" path="res://Godot/Scenes/door_with_key.tscn" id="25_7dxrl"]
+[ext_resource type="Script" uid="uid://88f1n8i31gxe" path="res://Sphere.Game/WorldObject/DoorWithKey.cs" id="25_8lhms"]
 [ext_resource type="PackedScene" uid="uid://dw11m0ivqf2h8" path="res://Godot/Scenes/dungeon_entrance.tscn" id="26_k80t8"]
 [ext_resource type="PackedScene" uid="uid://tv03q7ii0iiy" path="res://Godot/Scenes/castle_teleport.tscn" id="33_xmlqq"]
 [ext_resource type="Script" uid="uid://4x65gyufdrlp" path="res://Godot/Scripts/Objects/CastleEntrancesFill.cs" id="34_juwvs"]
@@ -31609,68 +31610,86 @@ ModelName = "EDOOR"
 [node name="DoorsWithKey" type="Node3D" parent="." unique_id=1568010309]
 script = ExtResource("13_dwkfill")
 
-[node name="DoorWithKey_02DC_[-1619]_[-77]_[-406]" parent="DoorsWithKey" unique_id=1497182661 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02DD_[-915]_[-108]_[397]" type="Node3D" parent="DoorsWithKey" unique_id=1795506097 instance=ExtResource("25_7dxrl")]
+transform = Transform3D(0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, 0.3136817, -914.8921, 107.642235, -397.46927)
+script = ExtResource("25_8lhms")
+SubtypeID = 13211
+Angle = 205
+ID = 733
+ObjectType = 101
+
+[node name="DoorWithKey_02DC_[-1619]_[-77]_[-406]" type="Node3D" parent="DoorsWithKey" unique_id=489146169 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1618.13, 76.21, 405.48)
+script = ExtResource("25_8lhms")
 SubtypeID = 13210
 ID = 732
 ObjectType = 101
 
-[node name="DoorWithKey_02DB_[-2750]_[349]_[2908]" parent="DoorsWithKey" unique_id=474070287 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02DB_[-2750]_[349]_[2908]" type="Node3D" parent="DoorsWithKey" unique_id=378120368 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2749.76, -349.67, -2908.35)
+script = ExtResource("25_8lhms")
 SubtypeID = 13207
 Angle = 64
 ID = 731
 ObjectType = 101
 
-[node name="DoorWithKey_02D9_[1477]_[190]_[1776]" parent="DoorsWithKey" unique_id=1351106605 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02D9_[1477]_[190]_[1776]" type="Node3D" parent="DoorsWithKey" unique_id=142300972 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, 0.57580805, 1477.01, -190.73752, -1776.2523)
+script = ExtResource("25_8lhms")
 SubtypeID = 13208
 Angle = 217
 ID = 729
 ObjectType = 101
 
-[node name="DoorWithKey_02D8_[237]_[30]_[413]" parent="DoorsWithKey" unique_id=629012598 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02D8_[237]_[30]_[413]" type="Node3D" parent="DoorsWithKey" unique_id=1782511570 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(-0.024541223, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, -0.024541223, 237.39725, -30.788969, -413.77307)
+script = ExtResource("25_8lhms")
 SubtypeID = 13209
 Angle = 65
 ID = 728
 ObjectType = 101
 
-[node name="DoorWithKey_08E2_[-3679]_[1299]_[-1841]" parent="DoorsWithKey" unique_id=432903366 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_08E2_[-3679]_[1299]_[-1841]" type="Node3D" parent="DoorsWithKey" unique_id=1626071966 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(0.8175848, 0, 0.5758082, 0, 1, 0, -0.5758082, 0, 0.8175848, -3678.6934, -1299.6909, 1840.004)
+script = ExtResource("25_8lhms")
 SubtypeID = 13201
 Angle = 25
 ID = 2274
 ObjectType = 101
 
-[node name="DoorWithKey_08E0_[-3916]_[1298]_[-1877]" parent="DoorsWithKey" unique_id=91162082 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_08E0_[-3916]_[1298]_[-1877]" type="Node3D" parent="DoorsWithKey" unique_id=1635858674 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3915.0068, -1298.4277, 1876.9492)
+script = ExtResource("25_8lhms")
 SubtypeID = 13200
 ID = 2272
 ObjectType = 101
 
-[node name="DoorWithKey_02DF_[2024]_[128]_[-999]" parent="DoorsWithKey" unique_id=1764353810 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02DF_[2024]_[128]_[-999]" type="Node3D" parent="DoorsWithKey" unique_id=1224921769 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(0.024541255, 0, 0.9996988, 0, 1, 0, -0.9996988, 0, 0.024541255, 2024.3722, -128.59491, 998.0157)
+script = ExtResource("25_8lhms")
 SubtypeID = 13213
 Angle = 63
 ID = 735
 ObjectType = 101
 
-[node name="DoorWithKey_02DA_[1260]_[172]_[-2950]" parent="DoorsWithKey" unique_id=187928927 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_02DA_[1260]_[172]_[-2950]" type="Node3D" parent="DoorsWithKey" unique_id=1346158868 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(-0.870087, 0, 0.49289814, 0, 1, 0, -0.49289814, 0, -0.870087, 1260.9055, -172.71637, 2949.6516)
+script = ExtResource("25_8lhms")
 SubtypeID = 13206
 Angle = 107
 ID = 730
 ObjectType = 101
 
-[node name="DoorWithKey_08E7_[-975]_[1698]_[-3279]" parent="DoorsWithKey" unique_id=151610958 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_08E7_[-975]_[1698]_[-3279]" type="Node3D" parent="DoorsWithKey" unique_id=2028302270 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -974.962, -1698.4332, 3278.176)
+script = ExtResource("25_8lhms")
 SubtypeID = 13203
 ID = 2279
 ObjectType = 101
 
-[node name="DoorWithKey_08E4_[-3408]_[1299]_[-1963]" parent="DoorsWithKey" unique_id=707085336 instance=ExtResource("25_7dxrl")]
+[node name="DoorWithKey_08E4_[-3408]_[1299]_[-1963]" type="Node3D" parent="DoorsWithKey" unique_id=1721930339 instance=ExtResource("25_7dxrl")]
 transform = Transform3D(0.4928982, 0, 0.87008697, 0, 1, 0, -0.87008697, 0, 0.4928982, -3407.292, -1299.0719, 1962.07)
+script = ExtResource("25_8lhms")
 SubtypeID = 13202
 Angle = 43
 ID = 2276
