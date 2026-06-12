@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://byemmdrth0vex"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45s3u"]
-albedo_color = Color(1, 0, 0, 1)
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.72156864)
 
 [sub_resource type="BoxMesh" id="BoxMesh_keyxi"]
 material = SubResource("StandardMaterial3D_45s3u")
