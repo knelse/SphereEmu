@@ -200,6 +200,7 @@ public partial class TerrainObjectsFill : Node3D
 
 	private static string SanitizeGodotNodeName(string name)
 	{
+		name = name.ToLower();
 		if (string.IsNullOrWhiteSpace(name))
 		{
 			return "Object";
@@ -615,11 +616,11 @@ public partial class TerrainObjectsFill : Node3D
 			string objectName;
 			if (d.TryGetValue("object_name", out var nameVar))
 			{
-				objectName = nameVar.AsString();
+				objectName = nameVar.AsString().ToLower();
 			}
 			else if (d.TryGetValue("name", out var mbdNameVar))
 			{
-				objectName = mbdNameVar.AsString();
+				objectName = mbdNameVar.AsString().ToLower();
 			}
 			else
 			{

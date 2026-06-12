@@ -291,7 +291,8 @@ public static class SavedCoords
                 },
                 [Event] = new ()
                 {
-                    ["Белая_комната_Воздуха"] = new WorldCoords(2300, 1499.7, 30.8, -3.14)
+                    ["Белая_комната_Воздуха"] = new WorldCoords(2300, 1499.7, 30.8, -3.14),
+                    ["Белая_комната_Воды"] = new WorldCoords(3100, 1500.4, 29.8, 3.14)
                 }
             },
             [Харон] = new Dictionary<PoiType, Dictionary<string, WorldCoords>>
