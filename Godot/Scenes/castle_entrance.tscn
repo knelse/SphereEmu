@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://d1bpjdkoga6or"]
 
 [ext_resource type="Script" uid="uid://c7hhmlwdgqdaa" path="res://Sphere.Game/WorldObject/CastleEntrance.cs" id="1_6xjig"]
-[ext_resource type="PackedScene" uid="uid://ba56ymnwrgt74" path="res://Godot/Models/EDOOR.glb" id="2_p5vy1"]
+[ext_resource type="PackedScene" uid="uid://lsjwbrnxavbp" path="res://Godot/Models/edoor.glb" id="2_p5vy1"]
 
 [node name="CastleEntrance" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_6xjig")
 ObjectType = 98
-ModelName = "EDOOR"
+ModelName = "edoor"
 
 [node name="Glb" type="Node3D" parent="." unique_id=133626886 instance=ExtResource("2_p5vy1")]
 unique_name_in_owner = true
 metadata/_world_object_glb = true
-metadata/_world_object_glb_path = "res://Godot/Models/EDOOR.glb"
+metadata/_world_object_glb_path = "res://Godot/Models/edoor.glb"

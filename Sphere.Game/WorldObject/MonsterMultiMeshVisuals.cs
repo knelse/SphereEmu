@@ -29,6 +29,9 @@ public static class MonsterMultiMeshVisuals
 	private static int _editorRebuildPostBulkFramesRemaining;
 	private static int _editorRebuildZeroMonsterRetries;
 
+	private static bool _editorRebuildStepHandlerActive;
+	private static bool _editorDelayedFrameHandlerActive;
+
 	private const int EditorRebuildChunkSize = 500;
 	private const int EditorRebuildPostBulkWaitFrames = 3;
 	private const int EditorRebuildZeroMonsterMaxRetries = 10;
@@ -123,7 +126,7 @@ public static class MonsterMultiMeshVisuals
 		}
 
 		_editorRebuildTree = tree;
-		if (_editorRebuildRequested)
+		if (_editorRebuildRequested || _editorDelayedFrameHandlerActive || _editorRebuildStepHandlerActive)
 		{
 			return;
 		}
@@ -132,29 +135,74 @@ public static class MonsterMultiMeshVisuals
 		tree.ProcessFrame += OnEditorProcessFrame;
 	}
 
+	private static void DisconnectEditorProcessFrame(SceneTree? tree)
+	{
+		if (tree is null || !_editorRebuildRequested)
+		{
+			return;
+		}
+
+		tree.ProcessFrame -= OnEditorProcessFrame;
+		_editorRebuildRequested = false;
+	}
+
+	private static void ConnectEditorDelayedFrame(SceneTree tree)
+	{
+		if (_editorDelayedFrameHandlerActive)
+		{
+			return;
+		}
+
+		tree.ProcessFrame += OnEditorProcessFrameDelayed;
+		_editorDelayedFrameHandlerActive = true;
+	}
+
+	private static void DisconnectEditorDelayedFrame(SceneTree? tree)
+	{
+		if (tree is null || !_editorDelayedFrameHandlerActive)
+		{
+			return;
+		}
+
+		tree.ProcessFrame -= OnEditorProcessFrameDelayed;
+		_editorDelayedFrameHandlerActive = false;
+	}
+
+	private static void ConnectEditorRebuildStep(SceneTree tree)
+	{
+		if (_editorRebuildStepHandlerActive)
+		{
+			return;
+		}
+
+		tree.ProcessFrame += OnEditorRebuildStep;
+		_editorRebuildStepHandlerActive = true;
+	}
+
+	private static void DisconnectEditorRebuildStep(SceneTree? tree)
+	{
+		if (tree is null || !_editorRebuildStepHandlerActive)
+		{
+			return;
+		}
+
+		tree.ProcessFrame -= OnEditorRebuildStep;
+		_editorRebuildStepHandlerActive = false;
+	}
+
 	private static void CancelPendingEditorRebuild()
 	{
-		if (_editorRebuildTree is not null)
-		{
-			if (_editorRebuildRequested)
-			{
-				_editorRebuildTree.ProcessFrame -= OnEditorProcessFrame;
-			}
-
-			_editorRebuildTree.ProcessFrame -= OnEditorProcessFrameDelayed;
-		}
-
-		_editorRebuildRequested = false;
+		var tree = _editorRebuildTree ?? _activeRebuildTree;
+		DisconnectEditorProcessFrame(_editorRebuildTree);
+		DisconnectEditorDelayedFrame(tree);
+		DisconnectEditorRebuildStep(_activeRebuildTree);
 		_editorRebuildTree = null;
-
-		if (_activeRebuildTree is not null)
-		{
-			_activeRebuildTree.ProcessFrame -= OnEditorRebuildStep;
-			_activeRebuildTree = null;
-		}
-
-		EditorRebuildSteps.Clear();
+		_activeRebuildTree = null;
 		_editorRebuildStepPending = false;
+		_editorRebuildAfterBulk = false;
+		_editorRebuildPostBulkFramesRemaining = 0;
+		_editorRebuildZeroMonsterRetries = 0;
+		EditorRebuildSteps.Clear();
 	}
 
 	public static void RegisterOrUpdate(Monster monster)
@@ -196,21 +244,18 @@ public static class MonsterMultiMeshVisuals
 			return;
 		}
 
-		_editorRebuildTree.ProcessFrame -= OnEditorProcessFrame;
-		_editorRebuildRequested = false;
-
 		var tree = _editorRebuildTree;
-		_editorRebuildTree = null;
-
-		// Wait extra frames after bulk spawner work so deferred _Ready / spawn calls finish first.
-		tree.ProcessFrame += OnEditorProcessFrameDelayed;
+		DisconnectEditorProcessFrame(tree);
 		_editorRebuildTree = tree;
+
+		ConnectEditorDelayedFrame(tree);
 	}
 
 	private static void OnEditorProcessFrameDelayed()
 	{
 		if (_editorRebuildTree is null)
 		{
+			DisconnectEditorDelayedFrame(Engine.GetMainLoop() as SceneTree);
 			return;
 		}
 
@@ -220,8 +265,8 @@ public static class MonsterMultiMeshVisuals
 			return;
 		}
 
-		_editorRebuildTree.ProcessFrame -= OnEditorProcessFrameDelayed;
 		var tree = _editorRebuildTree;
+		DisconnectEditorDelayedFrame(tree);
 		_editorRebuildTree = null;
 		ScheduleRebuildAllInEditedScene(tree);
 	}
@@ -240,7 +285,7 @@ public static class MonsterMultiMeshVisuals
 		{
 			_editorRebuildZeroMonsterRetries++;
 			_editorRebuildTree = tree;
-			tree.ProcessFrame += OnEditorProcessFrameDelayed;
+			ConnectEditorDelayedFrame(tree);
 			return;
 		}
 
@@ -321,15 +366,31 @@ public static class MonsterMultiMeshVisuals
 			{
 				var chunkStart = start;
 				var chunkCount = Math.Min(EditorRebuildChunkSize, monsters.Count - start);
-				EditorRebuildSteps.Enqueue(() => batch.SetMonsterChunk(monsters, chunkStart, chunkCount));
+				EditorRebuildSteps.Enqueue(() =>
+				{
+					if (!batch.IsValid)
+					{
+						return;
+					}
+
+					batch.SetMonsterChunk(monsters, chunkStart, chunkCount);
+				});
 			}
 
 			EditorRebuildSteps.Enqueue(() =>
 			{
+				if (!batch.IsValid)
+				{
+					return;
+				}
+
 				batch.FinishSetMonsters(monsters);
 				foreach (var monster in monsters)
 				{
-					RegisteredMonsterTypes[monster] = monsterType;
+					if (GodotObject.IsInstanceValid(monster) && monster.IsInsideTree())
+					{
+						RegisteredMonsterTypes[monster] = monsterType;
+					}
 				}
 			});
 		}
@@ -339,13 +400,13 @@ public static class MonsterMultiMeshVisuals
 
 	private static void ScheduleNextEditorRebuildStep()
 	{
-		if (_editorRebuildStepPending || _activeRebuildTree is null)
+		if (_editorRebuildStepPending || _activeRebuildTree is null || EditorRebuildSteps.Count == 0)
 		{
 			return;
 		}
 
 		_editorRebuildStepPending = true;
-		_activeRebuildTree.ProcessFrame += OnEditorRebuildStep;
+		ConnectEditorRebuildStep(_activeRebuildTree);
 	}
 
 	private static void OnEditorRebuildStep()
@@ -358,7 +419,7 @@ public static class MonsterMultiMeshVisuals
 
 		if (EditorRebuildSteps.Count == 0)
 		{
-			_activeRebuildTree.ProcessFrame -= OnEditorRebuildStep;
+			DisconnectEditorRebuildStep(_activeRebuildTree);
 			_activeRebuildTree = null;
 			return;
 		}
@@ -371,18 +432,14 @@ public static class MonsterMultiMeshVisuals
 		{
 			GD.PushError($"MonsterMultiMeshVisuals: editor rebuild step failed: {ex.Message}");
 			EditorRebuildSteps.Clear();
-			_activeRebuildTree.ProcessFrame -= OnEditorRebuildStep;
+			DisconnectEditorRebuildStep(_activeRebuildTree);
 			_activeRebuildTree = null;
 			return;
 		}
 
-		if (EditorRebuildSteps.Count > 0)
+		if (EditorRebuildSteps.Count == 0)
 		{
-			ScheduleNextEditorRebuildStep();
-		}
-		else
-		{
-			_activeRebuildTree.ProcessFrame -= OnEditorRebuildStep;
+			DisconnectEditorRebuildStep(_activeRebuildTree);
 			_activeRebuildTree = null;
 		}
 	}
@@ -681,8 +738,8 @@ public static class MonsterMultiMeshVisuals
 				continue;
 			}
 
-			var toGlb = glbRoot.GlobalTransform.AffineInverse() * meshInstance.GlobalTransform;
-			var transformed = TransformAabb(toGlb, localAabb);
+			var toGlbRoot = ComputeTransformRelativeToRoot(meshInstance, glbRoot);
+			var transformed = TransformAabb(toGlbRoot, localAabb);
 			combined = aabbFound ? combined.Merge(transformed) : transformed;
 			aabbFound = true;
 		}
@@ -836,10 +893,20 @@ public static class MonsterMultiMeshVisuals
 
 		public void SetMonsterChunk(IReadOnlyList<Monster> monsters, int startIndex, int count)
 		{
+			if (!IsValid)
+			{
+				return;
+			}
+
 			for (var i = 0; i < count; i++)
 			{
 				var index = startIndex + i;
 				var monster = monsters[index];
+				if (!GodotObject.IsInstanceValid(monster) || !monster.IsInsideTree())
+				{
+					continue;
+				}
+
 				if (index == _monsters.Count)
 				{
 					_monsters.Add(monster);
@@ -860,17 +927,36 @@ public static class MonsterMultiMeshVisuals
 
 		public void FinishSetMonsters(IReadOnlyList<Monster> monsters)
 		{
+			if (!IsValid)
+			{
+				return;
+			}
+
 			_monsters.Clear();
 			_monsterToIndex.Clear();
+			var writeIndex = 0;
 			for (var i = 0; i < monsters.Count; i++)
 			{
 				var monster = monsters[i];
+				if (!GodotObject.IsInstanceValid(monster) || !monster.IsInsideTree())
+				{
+					continue;
+				}
+
 				_monsters.Add(monster);
-				_monsterToIndex[monster] = i;
+				_monsterToIndex[monster] = writeIndex;
+
+				foreach (var slot in _meshSlots)
+				{
+					slot.MultiMesh.SetInstanceTransform(writeIndex, BuildInstanceTransform(monster, slot.MeshLocalToMonster));
+				}
+
+				writeIndex++;
 			}
 
 			foreach (var slot in _meshSlots)
 			{
+				slot.MultiMesh.InstanceCount = _monsters.Count;
 				slot.Instance.Multimesh = slot.MultiMesh;
 			}
 		}
@@ -940,6 +1026,12 @@ public static class MonsterMultiMeshVisuals
 
 		private Transform3D BuildInstanceTransform(Monster monster, Transform3D meshLocalToMonster)
 		{
+			if (!GodotObject.IsInstanceValid(monster) || !monster.IsInsideTree()
+				|| !GodotObject.IsInstanceValid(_typeRoot) || !_typeRoot.IsInsideTree())
+			{
+				return Transform3D.Identity;
+			}
+
 			var monsterGlobal = monster.GlobalTransform;
 			if (monsterGlobal.Basis.Determinant() == 0f)
 			{
@@ -951,9 +1043,14 @@ public static class MonsterMultiMeshVisuals
 
 		private static Transform3D ComputeGlobalTransformFromParents(Node3D node)
 		{
+			if (!GodotObject.IsInstanceValid(node))
+			{
+				return Transform3D.Identity;
+			}
+
 			var transform = node.Transform;
 			var parent = node.GetParent() as Node3D;
-			while (parent is not null)
+			while (parent is not null && GodotObject.IsInstanceValid(parent))
 			{
 				transform = parent.Transform * transform;
 				parent = parent.GetParent() as Node3D;

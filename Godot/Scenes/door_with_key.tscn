@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bd0jhc3oqqoia"]
 
 [ext_resource type="Script" uid="uid://88f1n8i31gxe" path="res://Sphere.Game/WorldObject/DoorWithKey.cs" id="1_qgmmf"]
-[ext_resource type="PackedScene" uid="uid://ba56ymnwrgt74" path="res://Godot/Models/EDOOR.glb" id="2_vc8fi"]
+[ext_resource type="PackedScene" uid="uid://lsjwbrnxavbp" path="res://Godot/Models/edoor.glb" id="2_vc8fi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
 
@@ -17,4 +17,4 @@ shape = SubResource("CapsuleShape3D_imxti")
 [node name="Glb" type="Node3D" parent="." unique_id=133626886 instance=ExtResource("2_vc8fi")]
 unique_name_in_owner = true
 metadata/_world_object_glb = true
-metadata/_world_object_glb_path = "res://Godot/Models/EDOOR.glb"
+metadata/_world_object_glb_path = "res://Godot/Models/edoor.glb"
