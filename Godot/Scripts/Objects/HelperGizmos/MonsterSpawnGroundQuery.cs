@@ -45,7 +45,8 @@ public static class MonsterSpawnGroundQuery
                 worldProbeOrigin,
                 minSeparationMeters,
                 occupiedWorldPositions,
-                out spawnWorldPosition))
+                out spawnWorldPosition)
+            && !IsAtlasBlocked(spawnWorldPosition.X, spawnWorldPosition.Z))
         {
             return true;
         }
@@ -53,6 +54,11 @@ public static class MonsterSpawnGroundQuery
         spawnWorldPosition = default;
 
         if (!TryFindTopSurface(contextNode, worldProbeOrigin, out var standingSurface))
+        {
+            return false;
+        }
+
+        if (IsAtlasBlocked(standingSurface.Position.X, standingSurface.Position.Z))
         {
             return false;
         }
@@ -83,6 +89,11 @@ public static class MonsterSpawnGroundQuery
 
         spawnWorldPosition = standingSurface.Position;
         return true;
+    }
+
+    private static bool IsAtlasBlocked(float worldX, float worldZ)
+    {
+        return WalkSurfaceCache.IsBlocked(worldX, worldZ);
     }
 
     public static bool TryFindTopSurface(Node3D contextNode, Vector3 worldProbeOrigin, out SurfaceHit surfaceHit)

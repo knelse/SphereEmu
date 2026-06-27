@@ -531,6 +531,16 @@ public partial class Monster : WorldObject
 		MonsterMultiMeshVisuals.RegisterOrUpdate(this);
 	}
 
+	public float GetSpawnOriginYOffset()
+	{
+		return GlbVisualGrounding.GetSpawnOriginYOffset(GetVisualModelName());
+	}
+
+	public float GetEditorVisualExtraYOffset()
+	{
+		return GlbVisualGrounding.GetEditorVisualExtraYOffset(GetVisualModelName());
+	}
+
 	[Export] public int NameID_1 { get; set; }
 	[Export] public int NameID_2 { get; set; }
 	[Export] public int NameID_3 { get; set; }

@@ -963,7 +963,18 @@ public static class MonsterMultiMeshVisuals
 				monsterGlobal = ComputeGlobalTransformFromParents(monster);
 			}
 
-			return _typeRoot.GlobalTransform.AffineInverse() * monsterGlobal * meshLocalToMonster;
+			return _typeRoot.GlobalTransform.AffineInverse() * monsterGlobal * ApplyVisualYOffset(monster, meshLocalToMonster);
+		}
+
+		private Transform3D ApplyVisualYOffset(Monster monster, Transform3D meshLocalToMonster)
+		{
+			var yOffset = Engine.IsEditorHint() ? monster.GetEditorVisualExtraYOffset() : 0f;
+			if (Mathf.Abs(yOffset) < 0.0001f)
+			{
+				return meshLocalToMonster;
+			}
+
+			return new Transform3D(Basis.Identity, new Vector3(0f, yOffset, 0f)) * meshLocalToMonster;
 		}
 
 		private static Transform3D ComputeGlobalTransformFromParents(Node3D node)

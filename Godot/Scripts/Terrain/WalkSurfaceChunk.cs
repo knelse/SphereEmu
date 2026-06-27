@@ -102,6 +102,38 @@ public sealed class WalkSurfaceChunk
 
 
 
+    public bool IsBlockedForPlacement(float worldX, float worldZ)
+    {
+        if (Width <= 0 || Height <= 0)
+        {
+            return true;
+        }
+
+        if (IsBlockedNearest(worldX, worldZ))
+        {
+            return true;
+        }
+
+        var fx = (worldX - OriginX) / SampleSpacing;
+        var fz = (worldZ - OriginZ) / SampleSpacing;
+        if (fx < 0f || fz < 0f || fx > Width - 1 || fz > Height - 1)
+        {
+            return true;
+        }
+
+        var x0 = (int)Math.Floor(fx);
+        var z0 = (int)Math.Floor(fz);
+        var x1 = Math.Min(x0 + 1, Width - 1);
+        var z1 = Math.Min(z0 + 1, Height - 1);
+
+        return IsBlockedSample(x0, z0)
+            || IsBlockedSample(x1, z0)
+            || IsBlockedSample(x0, z1)
+            || IsBlockedSample(x1, z1);
+    }
+
+
+
     public bool TrySampleBilinear(float worldX, float worldZ, out float worldY)
 
     {
@@ -120,7 +152,7 @@ public sealed class WalkSurfaceChunk
 
 
 
-        if (IsBlockedNearest(worldX, worldZ))
+        if (IsBlockedForPlacement(worldX, worldZ))
 
         {
 

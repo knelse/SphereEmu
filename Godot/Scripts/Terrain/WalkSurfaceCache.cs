@@ -49,6 +49,17 @@ public static class WalkSurfaceCache
         return chunk.TrySampleBilinear(worldX, worldZ, out worldY) && !float.IsNaN(worldY);
     }
 
+    public static bool IsBlocked(float worldX, float worldZ)
+    {
+        if (!HasAnyChunkFiles())
+        {
+            return false;
+        }
+
+        var chunk = GetOrLoadChunk(FloorChunkIndex(worldX), FloorChunkIndex(worldZ));
+        return chunk is not null && chunk.IsBlockedForPlacement(worldX, worldZ);
+    }
+
     private static WalkSurfaceChunk? GetOrLoadChunk(int chunkX, int chunkZ)
     {
         lock (LoadLock)
