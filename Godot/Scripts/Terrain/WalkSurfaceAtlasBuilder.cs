@@ -6,13 +6,13 @@ using Godot;
 namespace SphServer.Godot.Scripts.Terrain;
 
 /// <summary>
-///     Editor-only builder: samples outdoor GridMap tile tops and terrain object footprints into chunked atlases.
+///     Editor-only builder: samples outdoor GridMap tile tops and terrain object walk heights into chunked atlases.
 /// </summary>
 public static class WalkSurfaceAtlasBuilder
 {
     public const string DefaultOutputDirectory = "res://Godot/Terrain/WalkData";
     public const float ChunkSizeMeters = 512f;
-    public const float SampleSpacingMeters = 2f;
+    public const float SampleSpacingMeters = 0.25f;
     private const int FlushCellInterval = 16;
 
     private static readonly object BuilderMapLock = new();
@@ -144,7 +144,7 @@ public static class WalkSurfaceAtlasBuilder
         GD.Print(
             $"WalkSurfaceAtlasBuilder: sampled terrain heights in {stopwatch.ElapsedMilliseconds} ms ({samplesWritten} new samples).");
 
-        var objectStampCount = StampTerrainObjectFootprints(builders, objectFootprints);
+        var objectStampCount = StampTerrainObjectWalkData(builders, objectFootprints);
         var savedChunks = SaveBuilders(builders, outputDirectoryResourcePath, samplesWritten, objectStampCount);
         WalkSurfaceBuildProgress.Delete(outputDirectoryResourcePath);
         GD.Print($"WalkSurfaceAtlasBuilder: finished in {stopwatch.ElapsedMilliseconds} ms.");
@@ -152,7 +152,7 @@ public static class WalkSurfaceAtlasBuilder
     }
 
     /// <summary>
-    ///     Re-applies terrain object blocked footprints onto existing saved chunks (after object rebuild).
+    ///     Re-applies terrain object blocked footprints and height samples onto existing saved chunks.
     /// </summary>
     public static int ApplyObjectFootprintsToSavedChunks(
         string outputDirectoryResourcePath = DefaultOutputDirectory,
@@ -188,11 +188,23 @@ public static class WalkSurfaceAtlasBuilder
 
         if (builders.Count == 0)
         {
-            GD.PushWarning("WalkSurfaceAtlasBuilder: no existing walk chunks to stamp object footprints onto.");
+            GD.PushWarning("WalkSurfaceAtlasBuilder: no existing walk chunks to stamp object walk data onto.");
             return 0;
         }
 
-        var objectStampCount = StampTerrainObjectFootprints(builders, settings);
+        foreach (var builder in builders.Values)
+        {
+            if (Mathf.Abs(builder.GetSampleSpacingForValidation() - SampleSpacingMeters) > 0.001f)
+            {
+                GD.PushError(
+                    $"WalkSurfaceAtlasBuilder: existing chunk ({builder.ChunkX},{builder.ChunkZ}) uses "
+                    + $"{builder.GetSampleSpacingForValidation():0.##}m spacing; expected {SampleSpacingMeters:0.##}m. "
+                    + "Run a full walk-surface rebake with --force.");
+                return 0;
+            }
+        }
+
+        var objectStampCount = StampTerrainObjectWalkData(builders, settings);
         return SaveBuilders(builders, outputDirectoryResourcePath, heightSamplesWritten: 0, objectStampCount);
     }
 
@@ -337,25 +349,36 @@ public static class WalkSurfaceAtlasBuilder
         return builders;
     }
 
-    private static int StampTerrainObjectFootprints(
+    private static int StampTerrainObjectWalkData(
         Dictionary<(int ChunkX, int ChunkZ), WalkSurfaceChunkBuilder> builders,
         ObjectFootprintSettings? objectFootprints)
     {
         var settings = objectFootprints ?? new ObjectFootprintSettings();
         if (!settings.Enabled)
         {
-            GD.Print("WalkSurfaceAtlasBuilder: terrain object footprints disabled.");
+            GD.Print("WalkSurfaceAtlasBuilder: terrain object walk data disabled.");
             return 0;
         }
 
         var placements = TerrainObjectPlacementSource.LoadAll(settings.ObjectDataDirectory);
-        GD.Print($"WalkSurfaceAtlasBuilder: stamping {placements.Count} terrain object placement(s)...");
+        GD.Print($"WalkSurfaceAtlasBuilder: stamping {placements.Count} terrain object footprint(s)...");
         foreach (var builder in builders.Values)
         {
             builder.ClearBlocked();
         }
 
-        return WalkSurfaceObjectFootprintStamper.StampPlacements(builders, placements, settings.ModelsDirectory);
+        var footprintCount = WalkSurfaceObjectFootprintStamper.StampPlacements(builders, placements, settings.ModelsDirectory);
+        GD.Print(
+            $"WalkSurfaceAtlasBuilder: stamping object height templates at {SampleSpacingMeters:0.##}m spacing "
+            + $"(plants/rocks blocked only, {placements.Count} total placement(s))...");
+        var heightCount = WalkSurfaceObjectHeightBaker.BakePlacements(
+            builders,
+            placements,
+            settings.ModelsDirectory,
+            SampleSpacingMeters);
+        GD.Print(
+            $"WalkSurfaceAtlasBuilder: object footprints={footprintCount}, object height samples={heightCount}.");
+        return footprintCount + heightCount;
     }
 
     private static int SaveBuilders(

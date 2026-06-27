@@ -20,6 +20,13 @@ internal static class TerrainMeshRaycastCache
         }
     }
 
+    public static void PrewarmMesh(Mesh mesh)
+    {
+        _ = GetOrCreateCached(mesh);
+    }
+
+    public const float DefaultMinWalkableNormalY = 0.55f;
+
     public static bool TryRaycastMesh(
         Mesh mesh,
         Transform3D globalTransform,
@@ -31,17 +38,35 @@ internal static class TerrainMeshRaycastCache
         hitWorld = default;
         fraction = float.MaxValue;
 
-        CachedMeshTriangles cached;
+        var cached = GetOrCreateCached(mesh);
+        return cached.TryRaycast(globalTransform, fromWorld, toWorld, out hitWorld, out fraction);
+    }
+
+    public static bool TryRaycastMeshTopWalkableSurface(
+        Mesh mesh,
+        Transform3D globalTransform,
+        Vector3 fromWorld,
+        Vector3 toWorld,
+        float minNormalY,
+        out Vector3 hitWorld)
+    {
+        hitWorld = default;
+        var cached = GetOrCreateCached(mesh);
+        return cached.TryRaycastTopWalkableSurface(globalTransform, fromWorld, toWorld, minNormalY, out hitWorld);
+    }
+
+    private static CachedMeshTriangles GetOrCreateCached(Mesh mesh)
+    {
         lock (CacheLock)
         {
-            if (!Cache.TryGetValue(mesh.GetInstanceId(), out cached!))
+            if (!Cache.TryGetValue(mesh.GetInstanceId(), out var cached))
             {
                 cached = CachedMeshTriangles.FromMesh(mesh);
                 Cache[mesh.GetInstanceId()] = cached;
             }
-        }
 
-        return cached.TryRaycast(globalTransform, fromWorld, toWorld, out hitWorld, out fraction);
+            return cached;
+        }
     }
 
     private sealed class CachedMeshTriangles
@@ -148,6 +173,70 @@ internal static class TerrainMeshRaycastCache
             }
 
             fraction = bestT / rayLength;
+            hitWorld = globalTransform * (fromLocal + dirLocal * bestT);
+            return true;
+        }
+
+        public bool TryRaycastTopWalkableSurface(
+            Transform3D globalTransform,
+            Vector3 fromWorld,
+            Vector3 toWorld,
+            float minNormalY,
+            out Vector3 hitWorld)
+        {
+            hitWorld = default;
+
+            var inv = globalTransform.AffineInverse();
+            var fromLocal = inv * fromWorld;
+            var toLocal = inv * toWorld;
+            var dirLocal = toLocal - fromLocal;
+            var rayLength = dirLocal.Length();
+            if (rayLength < 0.0001f)
+            {
+                return false;
+            }
+
+            dirLocal /= rayLength;
+            var found = false;
+            var bestT = float.MaxValue;
+
+            for (var i = 0; i < _v0.Length; i++)
+            {
+                if (!TerrainWalkMeshRaycast.TryRayTriangle(
+                        fromLocal,
+                        dirLocal,
+                        rayLength,
+                        _v0[i],
+                        _v1[i],
+                        _v2[i],
+                        out var t)
+                    || t >= bestT)
+                {
+                    continue;
+                }
+
+                var localNormal = (_v1[i] - _v0[i]).Cross(_v2[i] - _v0[i]);
+                if (localNormal.LengthSquared() < 1e-12f)
+                {
+                    continue;
+                }
+
+                localNormal = localNormal.Normalized();
+                var worldNormal = (globalTransform.Basis * localNormal).Normalized();
+                if (worldNormal.Y < minNormalY)
+                {
+                    continue;
+                }
+
+                bestT = t;
+                found = true;
+            }
+
+            if (!found)
+            {
+                return false;
+            }
+
             hitWorld = globalTransform * (fromLocal + dirLocal * bestT);
             return true;
         }

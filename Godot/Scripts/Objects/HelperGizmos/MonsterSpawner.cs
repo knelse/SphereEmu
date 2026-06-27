@@ -85,16 +85,19 @@ public partial class MonsterSpawner : Node3D
 
 	public override void _Ready()
 	{
-		StripPersistedMonsters();
 		_spawningEnabled = false;
 
-		if (!Engine.IsEditorHint())
+		if (Engine.IsEditorHint())
 		{
-			MonsterSpawnerActivationManager.Register(this);
-			if (SpawningEnabled)
-			{
-				ActivateFromProximity();
-			}
+			AdoptPersistedMonstersInEditor();
+			return;
+		}
+
+		StripPersistedMonsters();
+		MonsterSpawnerActivationManager.Register(this);
+		if (SpawningEnabled)
+		{
+			ActivateFromProximity();
 		}
 	}
 
@@ -131,7 +134,7 @@ public partial class MonsterSpawner : Node3D
 	}
 
 	/// <summary>
-	///     Clears any monsters saved under this spawner. Used after Fill rebuild and on _Ready.
+	///     Clears any monsters saved under this spawner. Used after Fill rebuild.
 	/// </summary>
 	public void EnsureEditorPreviewMonsters()
 	{
@@ -162,12 +165,43 @@ public partial class MonsterSpawner : Node3D
 	{
 		lock (_spawnPlacementLock)
 		{
-			_spawningEnabled = true;
+			if (!Engine.IsEditorHint())
+			{
+				_spawningEnabled = true;
+			}
+
 			ClearPendingRespawnTimersForThisSpawner();
 			DeleteAllSpawnedMonsters();
 			SpawnPlacementInvalid = false;
 			SpawnInitialMonstersCore();
 		}
+	}
+
+	private void AdoptPersistedMonstersInEditor()
+	{
+		RegularMonsters.Clear();
+		NamedMonsters.Clear();
+
+		foreach (var child in GetChildren())
+		{
+			if (child is not Monster monster)
+			{
+				continue;
+			}
+
+			SetMonsterOwnerForPersistence(monster);
+
+			if (monster.IsNamed)
+			{
+				NamedMonsters.Add(monster);
+			}
+			else
+			{
+				RegularMonsters.Add(monster);
+			}
+		}
+
+		RebuildMonsterIdLists();
 	}
 
 	private void StripPersistedMonsters()
@@ -460,13 +494,19 @@ public partial class MonsterSpawner : Node3D
 		monster.Name = BuildMonsterNodeName(monsterType, level, isNamed, monsterId);
 
 		AddChild(monster);
-		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset();
-		monster.GlobalPosition = spawnWorldPosition;
-		monster.RegisterMultiMeshVisualDeferred();
-		WorldObjectDumpFillCommon.SetOwnerIfEditor(this, monster);
+		ApplySpawnTransform(monster, spawnWorldPosition);
+		SetMonsterOwnerForPersistence(monster);
 		RegularMonsters.Add(monster);
 		_regularMonsterIds.Add(monsterId);
 		return true;
+	}
+
+	private static void ApplySpawnTransform(Monster monster, Vector3 spawnWorldPosition)
+	{
+		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset();
+		monster.GlobalPosition = spawnWorldPosition;
+		monster.Angle = WorldObject.CreateRandomSpawnAngle();
+		monster.RegisterMultiMeshVisualDeferred();
 	}
 
 	private bool TrySpawnNamedMonster(int monsterId)
@@ -544,5 +584,21 @@ public partial class MonsterSpawner : Node3D
 	{
 		var prefix = isNamed ? "MonsterNamed" : "Monster";
 		return $"{prefix}_{type}_{level}_{id}";
+	}
+
+	private void SetMonsterOwnerForPersistence(Monster monster)
+	{
+		WorldObjectDumpFillCommon.SetOwnerIfEditor(this, monster);
+
+		if (!Engine.IsEditorHint() || monster.Owner != this)
+		{
+			return;
+		}
+
+		var sceneRoot = GetTree()?.EditedSceneRoot;
+		if (sceneRoot is not null && sceneRoot != this)
+		{
+			monster.Owner = sceneRoot;
+		}
 	}
 }

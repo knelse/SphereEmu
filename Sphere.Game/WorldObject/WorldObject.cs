@@ -199,11 +199,11 @@ public partial class WorldObject : Node3D
 	}
 
 	/// <summary>
-	///     Sets <see cref="Rotation" /> Y from <see cref="Angle" /> using <c>t0 = -Angle * π / 64</c>.
+	///     Sets <see cref="Rotation" /> Y from <see cref="Angle" /> using <c>t0 = Angle * π / 128</c>.
 	/// </summary>
 	private void ApplyAngleToRotation()
 	{
-		var t0 = (float)(_angle * Math.PI / 128.0);
+		var t0 = DecodeAngleToYawRadians(_angle);
 		// Avoid forcing a transform change on load if the scene already has the correct rotation.
 		if (Mathf.Abs(Rotation.Y - t0) < 0.0001f && Mathf.Abs(Rotation.X) < 0.0001f && Mathf.Abs(Rotation.Z) < 0.0001f)
 		{
@@ -212,6 +212,16 @@ public partial class WorldObject : Node3D
 
 		Rotation = new Vector3(0f, t0, 0f);
 	}
+
+	/// <summary>Game yaw in radians from encoded <see cref="Angle" />.</summary>
+	public static float DecodeAngleToYawRadians(int angle) => (float)(angle * Math.PI / 128.0);
+
+	/// <summary>Encodes Godot Y yaw radians into game <see cref="Angle" /> units.</summary>
+	public static int EncodeYawRadiansToAngle(float yawRadians) =>
+		(int)Mathf.Round(yawRadians * 128f / Mathf.Pi);
+
+	/// <summary>Uniform random facing for spawned world objects (256 discrete yaw steps).</summary>
+	public static int CreateRandomSpawnAngle() => GD.RandRange(0, 255);
 
 	protected virtual void ShowForClient(SphereClient client)
 	{

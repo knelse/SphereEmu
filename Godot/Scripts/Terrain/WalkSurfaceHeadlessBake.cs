@@ -31,9 +31,23 @@ public partial class WalkSurfaceHeadlessBake : Node
     {
         try
         {
+            if (options.ConvertChunksOnly)
+            {
+                GD.Print("WalkSurfaceHeadlessBake: converting walk-surface chunks to format v3...");
+                var conversion = WalkSurfaceChunkConverter.ConvertDirectory(
+                    gridFill.WalkSurfaceDataDirectory,
+                    skipAlreadyV3: !options.Force);
+                if (conversion.Converted == 0 && conversion.Failed == 0)
+                {
+                    GD.Print("WalkSurfaceHeadlessBake: all chunks already format v3 (use --force to recompress).");
+                }
+
+                return conversion.Succeeded ? ExitSuccess : ExitFailure;
+            }
+
             if (options.ObjectsOnly)
             {
-                GD.Print("WalkSurfaceHeadlessBake: re-stamping terrain object footprints only.");
+                GD.Print("WalkSurfaceHeadlessBake: re-stamping terrain object footprints and heights only.");
                 return gridFill.RestampWalkSurfaceObjectFootprints() > 0 ? ExitSuccess : ExitFailure;
             }
 
@@ -43,7 +57,7 @@ public partial class WalkSurfaceHeadlessBake : Node
                 return ExitFailure;
             }
 
-            GD.Print("WalkSurfaceHeadlessBake: baking walk surface (terrain heights + object footprints)...");
+            GD.Print("WalkSurfaceHeadlessBake: baking walk surface (terrain heights + object walk data)...");
             GD.Print($"  object JSON: {gridFill.WalkSurfaceObjectDataDirectory}");
             GD.Print($"  models:      {gridFill.WalkSurfaceModelsDirectory}");
             var savedChunks = gridFill.BakeWalkSurfaceAtlas(
@@ -83,6 +97,9 @@ public partial class WalkSurfaceHeadlessBake : Node
                 case "--objects-only":
                     options.ObjectsOnly = true;
                     break;
+                case "--convert-chunks":
+                    options.ConvertChunksOnly = true;
+                    break;
             }
         }
 
@@ -100,11 +117,16 @@ public partial class WalkSurfaceHeadlessBake : Node
 
             Options:
               --force           Clear partial progress and rebake all terrain heights from scratch
-              --objects-only    Re-stamp terrain object blocked footprints onto existing chunks
+              --objects-only    Re-stamp terrain object blocked footprints and heights onto existing chunks
+              --convert-chunks  Convert existing chunk_*.bin files to compressed format v3 (no rebake)
               --help            Show this help
 
-            Default run rebuilds the terrain GridMap from map.txt, bakes height samples, then stamps
-            blocked footprints from Godot/Terrain/ObjectDataJson/ (plants, rocks, other, extra folders).
+            Default run rebuilds the terrain GridMap from map.txt, bakes height samples at 0.25m spacing, then stamps
+            blocked footprints for all terrain objects (plants, rocks, buildings) and height templates for buildings/town geometry.
+            Use --convert-chunks to shrink legacy v1/v2 chunk files on disk without recomputing heights.
+            Add --force with --convert-chunks to recompress files that are already v3.
+            Use --force after changing sample spacing, chunk compression format, or when replacing old 2m walk chunks.
+            Chunks are saved as format v3 (quantized heights, bit-packed blocked flags, Deflate).
             """);
     }
 
@@ -123,5 +145,6 @@ public partial class WalkSurfaceHeadlessBake : Node
         public bool ShowHelp { get; set; }
         public bool Force { get; set; }
         public bool ObjectsOnly { get; set; }
+        public bool ConvertChunksOnly { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 
 namespace SphServer.Godot.Scripts.Terrain;
@@ -25,30 +28,31 @@ internal sealed class TerrainTileHeightTemplate
     public static TerrainTileHeightTemplate? Build(Mesh mesh, Basis cellBasis, float halfTile, float sampleStep)
     {
         var gridCount = Mathf.CeilToInt((halfTile * 2f) / sampleStep) + 1;
-        var cellLocalY = new float[gridCount * gridCount];
+        var sampleCount = gridCount * gridCount;
+        var cellLocalY = new float[sampleCount];
         Array.Fill(cellLocalY, WalkSurfaceChunk.NoGround);
 
         var cellTransform = new Transform3D(cellBasis, Vector3.Zero);
+        var invCellTransform = cellTransform.AffineInverse();
         var hits = 0;
 
-        for (var iz = 0; iz < gridCount; iz++)
+        Parallel.For(0, sampleCount, index =>
         {
+            var iz = index / gridCount;
+            var ix = index % gridCount;
             var lz = -halfTile + iz * sampleStep;
-            for (var ix = 0; ix < gridCount; ix++)
+            var lx = -halfTile + ix * sampleStep;
+            var fromWorld = cellTransform * new Vector3(lx, TerrainWalkMeshRaycast.RayTopY, lz);
+            var toWorld = cellTransform * new Vector3(lx, TerrainWalkMeshRaycast.RayBottomY, lz);
+            if (!TerrainMeshRaycastCache.TryRaycastMesh(mesh, cellTransform, fromWorld, toWorld, out var hitWorld, out _))
             {
-                var lx = -halfTile + ix * sampleStep;
-                var fromWorld = cellTransform * new Vector3(lx, TerrainWalkMeshRaycast.RayTopY, lz);
-                var toWorld = cellTransform * new Vector3(lx, TerrainWalkMeshRaycast.RayBottomY, lz);
-                if (!TerrainMeshRaycastCache.TryRaycastMesh(mesh, cellTransform, fromWorld, toWorld, out var hitWorld, out _))
-                {
-                    continue;
-                }
-
-                var hitLocal = cellTransform.AffineInverse() * hitWorld;
-                cellLocalY[iz * gridCount + ix] = hitLocal.Y;
-                hits++;
+                return;
             }
-        }
+
+            var hitLocal = invCellTransform * hitWorld;
+            cellLocalY[index] = hitLocal.Y;
+            Interlocked.Increment(ref hits);
+        });
 
         return hits == 0 ? null : new TerrainTileHeightTemplate(halfTile, sampleStep, gridCount, cellLocalY);
     }
@@ -143,29 +147,64 @@ internal static class TerrainTileHeightTemplateCache
             itemToBasis[itemId] = terrain.GetCellItemBasis(cell);
         }
 
-        var results = new Dictionary<int, TerrainTileHeightTemplate?>();
         var meshLibrary = terrain.MeshLibrary!;
-        var total = itemToBasis.Count;
-        var built = 0;
-
+        var buildJobs = new List<TileTemplateBuildJob>(itemToBasis.Count);
         foreach (var (itemId, basis) in itemToBasis)
         {
-            built++;
             var mesh = meshLibrary.GetItemMesh(itemId);
             if (mesh is null)
             {
-                results[itemId] = null;
-                GD.Print($"WalkSurfaceAtlasBuilder: tile template {built}/{total} (item {itemId}) skipped — no mesh.");
                 continue;
             }
 
-            results[itemId] = GetOrBuild(mesh, itemId, basis, halfTile, sampleStep);
-            if (built == 1 || built % 5 == 0 || built == total)
+            TerrainMeshRaycastCache.PrewarmMesh(mesh);
+            buildJobs.Add(new TileTemplateBuildJob(itemId, mesh, basis));
+        }
+
+        var results = new ConcurrentDictionary<int, TerrainTileHeightTemplate?>();
+        var built = 0;
+        var progressLogLock = new object();
+
+        Parallel.ForEach(buildJobs, job =>
+        {
+            var template = TerrainTileHeightTemplate.Build(job.Mesh, job.Basis, halfTile, sampleStep);
+            results[job.ItemId] = template;
+
+            var done = Interlocked.Increment(ref built);
+            if (done == 1 || done % 5 == 0 || done == buildJobs.Count)
             {
-                GD.Print($"WalkSurfaceAtlasBuilder: tile template {built}/{total} (item {itemId}).");
+                lock (progressLogLock)
+                {
+                    GD.Print($"WalkSurfaceAtlasBuilder: tile template {done}/{buildJobs.Count} (item {job.ItemId}).");
+                }
+            }
+        });
+
+        foreach (var (itemId, _) in itemToBasis)
+        {
+            if (meshLibrary.GetItemMesh(itemId) is null)
+            {
+                results.TryAdd(itemId, null);
+                GD.Print($"WalkSurfaceAtlasBuilder: tile template skipped — item {itemId} has no mesh.");
             }
         }
 
-        return results;
+        lock (CacheLock)
+        {
+            foreach (var (itemId, template) in results)
+            {
+                Templates[itemId] = template;
+            }
+        }
+
+        var merged = new Dictionary<int, TerrainTileHeightTemplate?>(itemToBasis.Count);
+        foreach (var itemId in itemToBasis.Keys)
+        {
+            merged[itemId] = results.GetValueOrDefault(itemId);
+        }
+
+        return merged;
     }
+
+    private readonly record struct TileTemplateBuildJob(int ItemId, Mesh Mesh, Basis Basis);
 }

@@ -27,17 +27,65 @@ public static class WalkSurfaceModelBoundsCache
             _ => DefaultOtherRadiusMeters,
         };
 
-        if (!TryGetModelBounds(placement.ObjectName, modelsDirectory, out var bounds))
+        if (!TryResolveFootprintHalfExtents(placement, modelsDirectory, out var halfExtentX, out var halfExtentZ))
         {
             return categoryDefault;
         }
 
-        var localRadius = Mathf.Max(bounds.LocalExtentX, bounds.LocalExtentZ);
+        var circumscribed = Mathf.Sqrt(halfExtentX * halfExtentX + halfExtentZ * halfExtentZ);
+        return Mathf.Max(categoryDefault, circumscribed);
+    }
+
+    public static bool TryResolveFootprintHalfExtents(
+        TerrainObjectPlacement placement,
+        string modelsDirectory,
+        out float halfExtentX,
+        out float halfExtentZ)
+    {
+        halfExtentX = halfExtentZ = 0f;
+        if (!TryGetUnscaledFootprintHalfExtents(
+                placement.ObjectName,
+                modelsDirectory,
+                placement.Category,
+                out var unscaledHalfExtentX,
+                out var unscaledHalfExtentZ))
+        {
+            return false;
+        }
+
         var basis = placement.WorldTransform.Basis;
         var scaleX = basis.Column0.Length();
         var scaleZ = basis.Column2.Length();
-        var scaledRadius = localRadius * Mathf.Max(scaleX, scaleZ);
-        return Mathf.Max(categoryDefault, scaledRadius + RadiusMarginMeters);
+        halfExtentX = unscaledHalfExtentX * scaleX;
+        halfExtentZ = unscaledHalfExtentZ * scaleZ;
+        return true;
+    }
+
+    public static bool TryGetUnscaledFootprintHalfExtents(
+        string objectName,
+        string modelsDirectory,
+        TerrainObjectWalkCategory category,
+        out float halfExtentX,
+        out float halfExtentZ)
+    {
+        halfExtentX = halfExtentZ = 0f;
+        var categoryDefault = category switch
+        {
+            TerrainObjectWalkCategory.Plant => DefaultPlantRadiusMeters,
+            TerrainObjectWalkCategory.Rock => DefaultRockRadiusMeters,
+            TerrainObjectWalkCategory.ExtraInstanced => DefaultExtraInstancedRadiusMeters,
+            _ => DefaultOtherRadiusMeters,
+        };
+
+        if (!TryGetModelBounds(objectName, modelsDirectory, out var bounds))
+        {
+            halfExtentX = halfExtentZ = categoryDefault;
+            return true;
+        }
+
+        halfExtentX = Mathf.Max(categoryDefault, bounds.LocalExtentX + RadiusMarginMeters);
+        halfExtentZ = Mathf.Max(categoryDefault, bounds.LocalExtentZ + RadiusMarginMeters);
+        return true;
     }
 
     private static bool TryGetModelBounds(string objectName, string modelsDirectory, out ModelBounds bounds)

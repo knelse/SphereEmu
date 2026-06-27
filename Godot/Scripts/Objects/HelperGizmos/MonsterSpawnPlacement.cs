@@ -12,7 +12,7 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 public sealed class MonsterSpawnPlacement
 {
     public const float DefaultSpawnRadiusMeters = 10f;
-    public const float SearchRadiusAfterFailureMeters = 1f;
+    public const float SearchRadiusAfterFailureMeters = 2f;
     public const float SectorWidthDegrees = 15f;
     public const int SectorCount = 24;
     public const float MinMobSeparationMeters = 0.7f;

@@ -24,9 +24,7 @@ public sealed class WalkSurfaceChunk
 
     public const float NoGround = float.NaN;
 
-    private const uint Magic = 0x4B485357; // 'WSHK'
-
-    private const ushort FormatVersion = 2;
+    private const ushort LegacyFormatVersion = 2;
 
 
 
@@ -109,27 +107,7 @@ public sealed class WalkSurfaceChunk
             return true;
         }
 
-        if (IsBlockedNearest(worldX, worldZ))
-        {
-            return true;
-        }
-
-        var fx = (worldX - OriginX) / SampleSpacing;
-        var fz = (worldZ - OriginZ) / SampleSpacing;
-        if (fx < 0f || fz < 0f || fx > Width - 1 || fz > Height - 1)
-        {
-            return true;
-        }
-
-        var x0 = (int)Math.Floor(fx);
-        var z0 = (int)Math.Floor(fz);
-        var x1 = Math.Min(x0 + 1, Width - 1);
-        var z1 = Math.Min(z0 + 1, Height - 1);
-
-        return IsBlockedSample(x0, z0)
-            || IsBlockedSample(x1, z0)
-            || IsBlockedSample(x0, z1)
-            || IsBlockedSample(x1, z1);
+        return IsBlockedNearest(worldX, worldZ);
     }
 
 
@@ -152,7 +130,7 @@ public sealed class WalkSurfaceChunk
 
 
 
-        if (IsBlockedForPlacement(worldX, worldZ))
+        if (IsBlockedNearest(worldX, worldZ))
 
         {
 
@@ -196,7 +174,7 @@ public sealed class WalkSurfaceChunk
 
         {
 
-            return false;
+            return TrySampleNearest(worldX, worldZ, out worldY);
 
         }
 
@@ -216,21 +194,7 @@ public sealed class WalkSurfaceChunk
 
         {
 
-            var nearest = _heights[z0 * Width + x0];
-
-            if (float.IsNaN(nearest))
-
-            {
-
-                return false;
-
-            }
-
-
-
-            worldY = nearest;
-
-            return true;
+            return TrySampleNearest(worldX, worldZ, out worldY);
 
         }
 
@@ -291,6 +255,58 @@ public sealed class WalkSurfaceChunk
     {
 
         return ProjectSettings.GlobalizePath(BuildResourcePath(chunkX, chunkZ, directoryResourcePath));
+
+    }
+
+
+
+    public static bool TryPeekFormatVersion(string absolutePath, out ushort version)
+
+    {
+
+        version = 0;
+
+        if (!File.Exists(absolutePath))
+
+        {
+
+            return false;
+
+        }
+
+
+
+        try
+
+        {
+
+            using var stream = File.OpenRead(absolutePath);
+
+            using var reader = new BinaryReader(stream);
+
+            if (reader.ReadUInt32() != WalkSurfaceChunkFile.Magic)
+
+            {
+
+                return false;
+
+            }
+
+
+
+            version = reader.ReadUInt16();
+
+            return true;
+
+        }
+
+        catch
+
+        {
+
+            return false;
+
+        }
 
     }
 
@@ -365,43 +381,8 @@ public sealed class WalkSurfaceChunk
 
 
     private void WriteToStream(Stream stream)
-
     {
-
-        using var writer = new BinaryWriter(stream);
-
-        writer.Write(Magic);
-
-        writer.Write(FormatVersion);
-
-        writer.Write(SampleSpacing);
-
-        writer.Write(OriginX);
-
-        writer.Write(OriginZ);
-
-        writer.Write((ushort)Width);
-
-        writer.Write((ushort)Height);
-
-        for (var i = 0; i < _heights.Length; i++)
-
-        {
-
-            writer.Write(_heights[i]);
-
-        }
-
-
-
-        for (var i = 0; i < _blocked.Length; i++)
-
-        {
-
-            writer.Write(_blocked[i]);
-
-        }
-
+        WalkSurfaceChunkCodec.WriteV3(stream, SampleSpacing, OriginX, OriginZ, Width, Height, _heights, _blocked);
     }
 
 
@@ -430,72 +411,54 @@ public sealed class WalkSurfaceChunk
 
             using var reader = new BinaryReader(stream);
 
-            if (reader.ReadUInt32() != Magic)
-
+            if (reader.ReadUInt32() != WalkSurfaceChunkFile.Magic)
             {
-
                 return false;
-
             }
-
-
 
             var version = reader.ReadUInt16();
-
-            if (version is not 1 and not 2)
-
-            {
-
-                return false;
-
-            }
-
-
-
             var sampleSpacing = reader.ReadSingle();
-
             var originX = reader.ReadSingle();
-
             var originZ = reader.ReadSingle();
-
             var width = reader.ReadUInt16();
-
             var height = reader.ReadUInt16();
-
             var count = width * height;
 
-            var heights = new float[count];
+            float[] heights;
+            byte[] blocked;
 
-            for (var i = 0; i < count; i++)
-
+            if (version == WalkSurfaceChunkCodec.FormatVersion)
             {
-
-                heights[i] = reader.ReadSingle();
-
-            }
-
-
-
-            var blocked = new byte[count];
-
-            if (version >= 2 && reader.BaseStream.Position < reader.BaseStream.Length)
-
-            {
-
-                for (var i = 0; i < count; i++)
-
+                if (!WalkSurfaceChunkCodec.TryReadV3(reader, sampleSpacing, originX, originZ, width, height, out heights, out blocked)
+                    || heights is null
+                    || blocked is null)
                 {
-
-                    blocked[i] = reader.ReadByte();
-
+                    return false;
+                }
+            }
+            else if (version is 1 or LegacyFormatVersion)
+            {
+                heights = new float[count];
+                for (var i = 0; i < count; i++)
+                {
+                    heights[i] = reader.ReadSingle();
                 }
 
+                blocked = new byte[count];
+                if (version >= LegacyFormatVersion && reader.BaseStream.Position < reader.BaseStream.Length)
+                {
+                    for (var i = 0; i < count; i++)
+                    {
+                        blocked[i] = reader.ReadByte();
+                    }
+                }
+            }
+            else
+            {
+                return false;
             }
 
-
-
             chunk = new WalkSurfaceChunk(originX, originZ, sampleSpacing, width, height, heights, blocked);
-
             return true;
 
         }
@@ -533,6 +496,46 @@ public sealed class WalkSurfaceChunk
 
 
         return IsBlockedSample(x, z);
+
+    }
+
+
+
+    private bool TrySampleNearest(float worldX, float worldZ, out float worldY)
+
+    {
+
+        worldY = NoGround;
+
+        var x = Mathf.RoundToInt((worldX - OriginX) / SampleSpacing);
+
+        var z = Mathf.RoundToInt((worldZ - OriginZ) / SampleSpacing);
+
+        if (x < 0 || x >= Width || z < 0 || z >= Height)
+
+        {
+
+            return false;
+
+        }
+
+
+
+        var nearest = _heights[z * Width + x];
+
+        if (float.IsNaN(nearest))
+
+        {
+
+            return false;
+
+        }
+
+
+
+        worldY = nearest;
+
+        return true;
 
     }
 

@@ -23,6 +23,8 @@ public sealed class WalkSurfaceChunkBuilder
 
     public bool IsDirty => _dirty;
 
+    internal float GetSampleSpacingForValidation() => _sampleSpacing;
+
     public WalkSurfaceChunkBuilder(int chunkX, int chunkZ, float chunkSizeMeters, float sampleSpacing)
     {
         ChunkX = chunkX;
@@ -72,6 +74,27 @@ public sealed class WalkSurfaceChunkBuilder
         }
     }
 
+    public bool IsBlockedAtWorld(float worldX, float worldZ)
+    {
+        if (!TryGetSampleIndex(worldX, worldZ, out var index))
+        {
+            return false;
+        }
+
+        return _blocked[index] != 0;
+    }
+
+    public bool TrySetWalkableWorldSample(float worldX, float worldZ, float worldY)
+    {
+        if (IsBlockedAtWorld(worldX, worldZ))
+        {
+            return false;
+        }
+
+        SetWorldSample(worldX, worldZ, worldY);
+        return true;
+    }
+
     public bool StampBlockedDisk(float worldX, float worldZ, float radiusMeters)
     {
         if (radiusMeters <= 0f)
@@ -99,6 +122,56 @@ public sealed class WalkSurfaceChunkBuilder
                 var dx = sampleWorldX - worldX;
                 var dz = sampleWorldZ - worldZ;
                 if (dx * dx + dz * dz > radiusSq)
+                {
+                    continue;
+                }
+
+                _blocked[z * _width + x] = 1;
+                _dirty = true;
+                stamped = true;
+            }
+        }
+
+        return stamped;
+    }
+
+    public bool StampBlockedOrientedRect(
+        float worldX,
+        float worldZ,
+        float halfExtentXMeters,
+        float halfExtentZMeters,
+        float yawRadians)
+    {
+        if (halfExtentXMeters <= 0f || halfExtentZMeters <= 0f)
+        {
+            return false;
+        }
+
+        var cos = Mathf.Cos(yawRadians);
+        var sin = Mathf.Sin(yawRadians);
+        var boundHalfX = Mathf.Abs(cos * halfExtentXMeters) + Mathf.Abs(sin * halfExtentZMeters);
+        var boundHalfZ = Mathf.Abs(sin * halfExtentXMeters) + Mathf.Abs(cos * halfExtentZMeters);
+        var minWorldX = worldX - boundHalfX;
+        var maxWorldX = worldX + boundHalfX;
+        var minWorldZ = worldZ - boundHalfZ;
+        var maxWorldZ = worldZ + boundHalfZ;
+        var minX = Mathf.Max(0, (int)Mathf.Floor((minWorldX - _originX) / _sampleSpacing));
+        var maxX = Mathf.Min(_width - 1, (int)Mathf.Ceil((maxWorldX - _originX) / _sampleSpacing));
+        var minZ = Mathf.Max(0, (int)Mathf.Floor((minWorldZ - _originZ) / _sampleSpacing));
+        var maxZ = Mathf.Min(_height - 1, (int)Mathf.Ceil((maxWorldZ - _originZ) / _sampleSpacing));
+        var stamped = false;
+
+        for (var z = minZ; z <= maxZ; z++)
+        {
+            for (var x = minX; x <= maxX; x++)
+            {
+                var sampleWorldX = _originX + x * _sampleSpacing;
+                var sampleWorldZ = _originZ + z * _sampleSpacing;
+                var dx = sampleWorldX - worldX;
+                var dz = sampleWorldZ - worldZ;
+                var localX = dx * cos + dz * sin;
+                var localZ = -dx * sin + dz * cos;
+                if (Mathf.Abs(localX) > halfExtentXMeters || Mathf.Abs(localZ) > halfExtentZMeters)
                 {
                     continue;
                 }

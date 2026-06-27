@@ -12,6 +12,9 @@ public static class MonsterSpawnGroundQuery
 {
     public const float MaxStandingSurfaceToTerrainGapMeters = 0.5f;
     private const float TerrainHitEpsilonMeters = 0.05f;
+    private const float MinWalkableSurfaceNormalY = 0.55f;
+    private const float NearbySearchStepMeters = 2f;
+    private const float NearbySearchMaxRadiusMeters = 6f;
 
     private static GridMap? _cachedTerrainGridMap;
 
@@ -40,60 +43,22 @@ public static class MonsterSpawnGroundQuery
         IReadOnlyList<Vector3> occupiedWorldPositions,
         out Vector3 spawnWorldPosition)
     {
-        if (WalkSurfaceCache.HasAnyChunkFiles()
-            && WalkSurfaceQuery.TryFindValidSpawnSurface(
+        if (TryFindValidSpawnSurfaceAt(
+                contextNode,
                 worldProbeOrigin,
                 minSeparationMeters,
                 occupiedWorldPositions,
-                out spawnWorldPosition)
-            && !IsAtlasBlocked(spawnWorldPosition.X, spawnWorldPosition.Z))
+                out spawnWorldPosition))
         {
             return true;
         }
 
-        spawnWorldPosition = default;
-
-        if (!TryFindTopSurface(contextNode, worldProbeOrigin, out var standingSurface))
-        {
-            return false;
-        }
-
-        if (IsAtlasBlocked(standingSurface.Position.X, standingSurface.Position.Z))
-        {
-            return false;
-        }
-
-        if (HasOverlap(standingSurface.Position, minSeparationMeters, occupiedWorldPositions))
-        {
-            return false;
-        }
-
-        if (standingSurface.IsTerrain)
-        {
-            spawnWorldPosition = standingSurface.Position;
-            return true;
-        }
-
-        if (!TryFindTerrainBelow(
-                contextNode,
-                standingSurface.Position + Vector3.Down * TerrainHitEpsilonMeters,
-                out var terrainBelow))
-        {
-            return false;
-        }
-
-        if (standingSurface.Position.Y - terrainBelow.Y > MaxStandingSurfaceToTerrainGapMeters)
-        {
-            return false;
-        }
-
-        spawnWorldPosition = standingSurface.Position;
-        return true;
-    }
-
-    private static bool IsAtlasBlocked(float worldX, float worldZ)
-    {
-        return WalkSurfaceCache.IsBlocked(worldX, worldZ);
+        return TrySearchNearbySpawnSurfaces(
+            contextNode,
+            worldProbeOrigin,
+            minSeparationMeters,
+            occupiedWorldPositions,
+            out spawnWorldPosition);
     }
 
     public static bool TryFindTopSurface(Node3D contextNode, Vector3 worldProbeOrigin, out SurfaceHit surfaceHit)
@@ -126,6 +91,7 @@ public static class MonsterSpawnGroundQuery
         }
 
         if (TryRaycastPhysics(contextNode, rayStart, rayEnd, out var physicsHit, out var physicsFraction)
+            && physicsHit.Normal.Y >= MinWalkableSurfaceNormalY
             && !IsMonsterCollider(physicsHit.Collider)
             && physicsFraction < bestFraction)
         {
@@ -142,6 +108,123 @@ public static class MonsterSpawnGroundQuery
 
         surfaceHit = new SurfaceHit(bestPosition, bestIsTerrain);
         return true;
+    }
+
+    private static bool TryFindValidSpawnSurfaceAt(
+        Node3D contextNode,
+        Vector3 worldProbeOrigin,
+        float minSeparationMeters,
+        IReadOnlyList<Vector3> occupiedWorldPositions,
+        out Vector3 spawnWorldPosition)
+    {
+        spawnWorldPosition = default;
+
+        if (WalkSurfaceCache.HasAnyChunkFiles()
+            && WalkSurfaceQuery.TryFindValidSpawnSurface(
+                worldProbeOrigin,
+                minSeparationMeters,
+                occupiedWorldPositions,
+                out spawnWorldPosition))
+        {
+            return true;
+        }
+
+        if (!TryFindTopSurface(contextNode, worldProbeOrigin, out var standingSurface))
+        {
+            return false;
+        }
+
+        if (HasOverlap(standingSurface.Position, minSeparationMeters, occupiedWorldPositions))
+        {
+            return false;
+        }
+
+        if (!IsSpawnPositionAllowed(standingSurface.Position))
+        {
+            return false;
+        }
+
+        if (standingSurface.IsTerrain)
+        {
+            spawnWorldPosition = standingSurface.Position;
+            return true;
+        }
+
+        if (ShouldEnforceTerrainGap(standingSurface.Position)
+            && !IsWithinTerrainGap(contextNode, standingSurface.Position))
+        {
+            return false;
+        }
+
+        spawnWorldPosition = standingSurface.Position;
+        return true;
+    }
+
+    /// <summary>
+    ///     Rejects positions stamped as terrain-object footprints in the walk atlas.
+    ///     Only the nearest atlas sample is checked so nearby object footprints do not
+    ///     block open ground the way the old four-corner test did.
+    /// </summary>
+    private static bool IsSpawnPositionAllowed(Vector3 spawnWorldPosition)
+    {
+        if (!WalkSurfaceCache.HasAnyChunkFiles())
+        {
+            return true;
+        }
+
+        return !WalkSurfaceCache.IsBlocked(spawnWorldPosition.X, spawnWorldPosition.Z);
+    }
+
+    private static bool TrySearchNearbySpawnSurfaces(
+        Node3D contextNode,
+        Vector3 worldProbeOrigin,
+        float minSeparationMeters,
+        IReadOnlyList<Vector3> occupiedWorldPositions,
+        out Vector3 spawnWorldPosition)
+    {
+        spawnWorldPosition = default;
+        var maxRings = Mathf.CeilToInt(NearbySearchMaxRadiusMeters / NearbySearchStepMeters);
+
+        for (var ring = 1; ring <= maxRings; ring++)
+        {
+            var ringRadius = ring * NearbySearchStepMeters;
+            var sampleCount = Math.Max(8, ring * 8);
+            for (var sample = 0; sample < sampleCount; sample++)
+            {
+                var angle = (float)(sample * Math.Tau / sampleCount);
+                var offset = new Vector3(Mathf.Cos(angle) * ringRadius, 0f, Mathf.Sin(angle) * ringRadius);
+                var probe = worldProbeOrigin + offset;
+                if (TryFindValidSpawnSurfaceAt(
+                        contextNode,
+                        probe,
+                        minSeparationMeters,
+                        occupiedWorldPositions,
+                        out spawnWorldPosition))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool ShouldEnforceTerrainGap(Vector3 standingWorldPosition)
+    {
+        return WalkSurfaceCache.TrySampleGround(standingWorldPosition.X, standingWorldPosition.Z, out _);
+    }
+
+    private static bool IsWithinTerrainGap(Node3D contextNode, Vector3 standingWorldPosition)
+    {
+        if (!TryFindTerrainBelow(
+                contextNode,
+                standingWorldPosition + Vector3.Down * TerrainHitEpsilonMeters,
+                out var terrainBelow))
+        {
+            return false;
+        }
+
+        return standingWorldPosition.Y - terrainBelow.Y <= MaxStandingSurfaceToTerrainGapMeters;
     }
 
     private static bool TryFindTerrainBelow(Node3D contextNode, Vector3 rayStart, out Vector3 terrainPosition)
@@ -185,20 +268,28 @@ public static class MonsterSpawnGroundQuery
             return false;
         }
 
-        hit = new PhysicsHit((Vector3)rayResult["position"], rayResult.TryGetValue("collider", out var collider) ? collider.AsGodotObject() : null);
+        var normal = rayResult.TryGetValue("normal", out var normalVariant)
+            ? (Vector3)normalVariant
+            : Vector3.Up;
+        hit = new PhysicsHit(
+            (Vector3)rayResult["position"],
+            normal,
+            rayResult.TryGetValue("collider", out var collider) ? collider.AsGodotObject() : null);
         fraction = fromWorld.DistanceTo(hit.Position) / fromWorld.DistanceTo(toWorld);
         return true;
     }
 
     private readonly struct PhysicsHit
     {
-        public PhysicsHit(Vector3 position, GodotObject? collider)
+        public PhysicsHit(Vector3 position, Vector3 normal, GodotObject? collider)
         {
             Position = position;
+            Normal = normal;
             Collider = collider;
         }
 
         public Vector3 Position { get; }
+        public Vector3 Normal { get; }
         public GodotObject? Collider { get; }
     }
 
