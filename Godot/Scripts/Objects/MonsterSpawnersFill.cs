@@ -24,6 +24,42 @@ public partial class MonsterSpawnersFill : Node3D
 	[ExportToolButton("Rebuild monster spawners")]
 	public Callable RebuildMonsterSpawnersButton => Callable.From(RebuildMonsterSpawners);
 
+	[ExportToolButton("Delete and respawn enabled spawners")]
+	public Callable DeleteAndRespawnEnabledSpawnersButton => Callable.From(DeleteAndRespawnEnabledSpawners);
+
+	public void DeleteAndRespawnEnabledSpawners()
+	{
+		var tree = GetTree();
+		if (tree is not null)
+		{
+			MonsterMultiMeshVisuals.BeginBulkEditorUpdate(tree);
+		}
+
+		try
+		{
+			var count = 0;
+			foreach (var child in GetChildren())
+			{
+				if (child is not MonsterSpawner spawner || !GodotObject.IsInstanceValid(spawner) || !spawner.SpawningEnabled)
+				{
+					continue;
+				}
+
+				spawner.DeleteAndRespawnAllMobs();
+				count++;
+			}
+
+			GD.Print($"MonsterSpawnersFill: delete and respawn on {count} enabled spawner(s).");
+		}
+		finally
+		{
+			if (tree is not null)
+			{
+				MonsterMultiMeshVisuals.EndBulkEditorUpdate(tree);
+			}
+		}
+	}
+
 	public void RebuildMonsterSpawners()
 	{
 		var tree = GetTree();

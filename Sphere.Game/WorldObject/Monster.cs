@@ -459,10 +459,8 @@ public partial class Monster : WorldObject
 
 	public override void _Ready()
 	{
-		if (Engine.IsEditorHint())
-		{
-			SetNotifyTransform(true);
-		}
+		// Server MultiMesh visuals must refresh when spawn placement sets GlobalPosition after AddChild.
+		SetNotifyTransform(true);
 
 		if (MonsterInstance is null)
 		{

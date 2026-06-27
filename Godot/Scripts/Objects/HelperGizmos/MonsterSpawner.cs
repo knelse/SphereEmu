@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
@@ -21,12 +22,20 @@ public partial class MonsterSpawner : Node3D
 
     private readonly List<int> _regularMonsterIds = [];
     private readonly List<int> _namedMonsterIds = [];
+    private readonly MonsterSpawnPlacement _spawnPlacement = new();
+    private readonly object _spawnPlacementLock = new();
 
     [Export]
     public int TargetNamedMonsterCount = 0;
 
     [Export]
     public int TargetRegularMonsterCount = 3;
+
+    [Export]
+    public float SpawnRadiusMeters = MonsterSpawnPlacement.DefaultSpawnRadiusMeters;
+
+    [Export]
+    public bool SpawnPlacementInvalid { get; private set; }
 
     [Export]
     public int RegularMonsterMinLevel = 1;
@@ -55,6 +64,17 @@ public partial class MonsterSpawner : Node3D
     [Export]
     public Array<Node3D> NamedMonsters { get; set; } = [];
 
+    [ExportToolButton("Delete and respawn all mobs")]
+    public Callable DeleteAndRespawnAllMobsButton => Callable.From(DeleteAndRespawnAllMobs);
+
+    /// <summary>
+    ///     When set in the scene, this spawner activates and spawns on server load (debug / town presets).
+    /// </summary>
+    [Export]
+    public bool SpawningEnabled { get; set; }
+
+    private bool _spawningEnabled;
+
     private struct RespawnTimer
     {
         public double RemainingSeconds;
@@ -65,33 +85,62 @@ public partial class MonsterSpawner : Node3D
 
     public override void _Ready()
     {
-        if (Engine.IsEditorHint())
-        {
-            EnsureEditorPreviewMonsters();
-            return;
-        }
+        StripPersistedMonsters();
+        _spawningEnabled = false;
 
-        RebuildMonsterIdLists();
-        SpawnInitialMonsters();
+        if (!Engine.IsEditorHint())
+        {
+            MonsterSpawnerActivationManager.Register(this);
+            if (SpawningEnabled)
+            {
+                ActivateFromProximity();
+            }
+        }
     }
 
-    /// <summary>
-    ///     Ensures preview monsters exist under this spawner in the editor (used after Fill rebuild and on _Ready).
-    /// </summary>
-    public void EnsureEditorPreviewMonsters()
+    public override void _ExitTree()
     {
         if (!Engine.IsEditorHint())
         {
+            MonsterSpawnerActivationManager.Unregister(this);
+        }
+    }
+
+    internal bool IsActivated => _spawningEnabled;
+
+    /// <summary>
+    ///     Enables spawning and fills missing mobs. Safe to call repeatedly; no-op once activated.
+    /// </summary>
+    internal void ActivateFromProximity()
+    {
+        if (Engine.IsEditorHint())
+        {
             return;
         }
 
-        RebuildMonsterIdLists();
-        SpawnInitialMonsters();
+        lock (_spawnPlacementLock)
+        {
+            if (_spawningEnabled)
+            {
+                return;
+            }
+
+            _spawningEnabled = true;
+            SpawnInitialMonstersCore();
+        }
+    }
+
+    /// <summary>
+    ///     Clears any monsters saved under this spawner. Used after Fill rebuild and on _Ready.
+    /// </summary>
+    public void EnsureEditorPreviewMonsters()
+    {
+        StripPersistedMonsters();
     }
 
     public override void _Process(double delta)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint() || !_spawningEnabled)
         {
             return;
         }
@@ -109,19 +158,144 @@ public partial class MonsterSpawner : Node3D
         ProcessGlobalRespawnTimers(delta);
     }
 
-    private void SpawnInitialMonsters()
+    public void DeleteAndRespawnAllMobs()
     {
+        lock (_spawnPlacementLock)
+        {
+            _spawningEnabled = true;
+            ClearPendingRespawnTimersForThisSpawner();
+            DeleteAllSpawnedMonsters();
+            SpawnPlacementInvalid = false;
+            SpawnInitialMonstersCore();
+        }
+    }
+
+    private void StripPersistedMonsters()
+    {
+        foreach (var child in GetChildren())
+        {
+            if (child is not Monster && !child.Name.ToString().StartsWith("Monster_", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            if (Engine.IsEditorHint())
+            {
+                child.Free();
+            }
+            else
+            {
+                child.QueueFree();
+            }
+        }
+
+        RegularMonsters.Clear();
+        NamedMonsters.Clear();
+        _regularMonsterIds.Clear();
+        _namedMonsterIds.Clear();
+    }
+
+    private void SpawnInitialMonstersCore()
+    {
+        SpawnPlacementInvalid = false;
+        _spawnPlacement.Reset(CollectOccupiedWorldPositions());
+
         var aliveRegular = CountAlive(RegularMonsters);
         for (var i = aliveRegular; i < TargetRegularMonsterCount; i++)
         {
-            SpawnRegularMonster(TakeMonsterId());
+            if (!TrySpawnRegularMonster(TakeMonsterId()))
+            {
+                MarkSpawnPlacementInvalid();
+                return;
+            }
         }
 
         var aliveNamed = CountAlive(NamedMonsters);
         for (var i = aliveNamed; i < TargetNamedMonsterCount; i++)
         {
-            SpawnNamedMonster(TakeMonsterId());
+            if (!TrySpawnNamedMonster(TakeMonsterId()))
+            {
+                MarkSpawnPlacementInvalid();
+                return;
+            }
         }
+    }
+
+    private void MarkSpawnPlacementInvalid()
+    {
+        SpawnPlacementInvalid = true;
+        NotifyPropertyListChanged();
+        GD.PushWarning($"MonsterSpawner '{Name}': no valid spawn positions remain within {SpawnRadiusMeters:0.##}m.");
+    }
+
+    private IEnumerable<Vector3> CollectOccupiedWorldPositions()
+    {
+        foreach (var node in RegularMonsters)
+        {
+            if (IsInstanceValid(node))
+            {
+                yield return node.GlobalPosition;
+            }
+        }
+
+        foreach (var node in NamedMonsters)
+        {
+            if (IsInstanceValid(node))
+            {
+                yield return node.GlobalPosition;
+            }
+        }
+    }
+
+    private bool TryFindSpawnWorldPosition(out Vector3 spawnWorldPosition)
+    {
+        return _spawnPlacement.TryFindSpawnPosition(this, SpawnRadiusMeters, out spawnWorldPosition);
+    }
+
+    private void ClearPendingRespawnTimersForThisSpawner()
+    {
+        lock (TimerLock)
+        {
+            GlobalRespawnTimers.RemoveAll(timer => timer.Spawner == this);
+        }
+    }
+
+    private void DeleteAllSpawnedMonsters()
+    {
+        foreach (var node in RegularMonsters)
+        {
+            if (IsInstanceValid(node))
+            {
+                if (Engine.IsEditorHint())
+                {
+                    node.Free();
+                }
+                else
+                {
+                    node.QueueFree();
+                }
+            }
+        }
+
+        foreach (var node in NamedMonsters)
+        {
+            if (IsInstanceValid(node))
+            {
+                if (Engine.IsEditorHint())
+                {
+                    node.Free();
+                }
+                else
+                {
+                    node.QueueFree();
+                }
+            }
+        }
+
+        RegularMonsters.Clear();
+        NamedMonsters.Clear();
+        _regularMonsterIds.Clear();
+        _namedMonsterIds.Clear();
     }
 
     private static int CountAlive(Array<Node3D> spawnedMonsters)
@@ -212,28 +386,68 @@ public partial class MonsterSpawner : Node3D
 
             if (timer.IsNamed)
             {
-                timer.Spawner.CallDeferred(nameof(SpawnNamedMonster), timer.MonsterId);
+                timer.Spawner.CallDeferred(nameof(TrySpawnNamedMonsterDeferred), timer.MonsterId);
             }
             else
             {
-                timer.Spawner.CallDeferred(nameof(SpawnRegularMonster), timer.MonsterId);
+                timer.Spawner.CallDeferred(nameof(TrySpawnRegularMonsterDeferred), timer.MonsterId);
             }
         });
     }
 
-    private void SpawnRegularMonster(int monsterId)
+    private void TrySpawnRegularMonsterDeferred(int monsterId)
+    {
+        lock (_spawnPlacementLock)
+        {
+            if (!_spawningEnabled || SpawnPlacementInvalid)
+            {
+                return;
+            }
+
+            _spawnPlacement.ResetOccupied(CollectOccupiedWorldPositions());
+            if (!TrySpawnRegularMonster(monsterId))
+            {
+                MarkSpawnPlacementInvalid();
+            }
+        }
+    }
+
+    private void TrySpawnNamedMonsterDeferred(int monsterId)
+    {
+        lock (_spawnPlacementLock)
+        {
+            if (!_spawningEnabled || SpawnPlacementInvalid)
+            {
+                return;
+            }
+
+            _spawnPlacement.ResetOccupied(CollectOccupiedWorldPositions());
+            if (!TrySpawnNamedMonster(monsterId))
+            {
+                MarkSpawnPlacementInvalid();
+            }
+        }
+    }
+
+    private bool TrySpawnRegularMonster(int monsterId)
     {
         var scene = GD.Load<PackedScene>(MonsterScenePath);
         if (scene is null)
         {
             GD.PushError($"MonsterSpawner: failed to load scene '{MonsterScenePath}'.");
-            return;
+            return false;
         }
 
         if (scene.Instantiate() is not Monster monster)
         {
             GD.PushError($"MonsterSpawner: '{MonsterScenePath}' is not a Monster scene.");
-            return;
+            return false;
+        }
+
+        if (!TryFindSpawnWorldPosition(out var spawnWorldPosition))
+        {
+            monster.Free();
+            return false;
         }
 
         const MonsterType monsterType = MonsterType.Палочник;
@@ -246,14 +460,17 @@ public partial class MonsterSpawner : Node3D
         monster.Name = BuildMonsterNodeName(monsterType, level, isNamed, monsterId);
 
         AddChild(monster);
-        monster.Transform = Transform3D.Identity;
+        monster.GlobalPosition = spawnWorldPosition;
+        monster.RegisterMultiMeshVisualDeferred();
         WorldObjectDumpFillCommon.SetOwnerIfEditor(this, monster);
         RegularMonsters.Add(monster);
         _regularMonsterIds.Add(monsterId);
+        return true;
     }
 
-    private void SpawnNamedMonster(int monsterId)
+    private bool TrySpawnNamedMonster(int monsterId)
     {
+        return false;
     }
 
     private static int TakeMonsterId()

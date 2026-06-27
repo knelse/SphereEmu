@@ -1,3 +1,4 @@
+using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Shared.ClientEvents;
 
 namespace SphServer.Client.EventHandlers;
@@ -6,17 +7,17 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
 {
     private readonly SphereClient sphereClient;
 
-    public CurrentClientPositionChangedEventHandler (SphereClient sphereClient)
+    public CurrentClientPositionChangedEventHandler(SphereClient sphereClient)
     {
         this.sphereClient = sphereClient;
     }
 
-    Task IClientEventHandler.HandleAsync (ClientQueuedEvent clientEvent)
+    Task IClientEventHandler.HandleAsync(ClientQueuedEvent clientEvent)
     {
-        return HandleAsync((CurrentClientPositionChangedEvent) clientEvent);
+        return HandleAsync((CurrentClientPositionChangedEvent)clientEvent);
     }
 
-    public Task HandleAsync (CurrentClientPositionChangedEvent clientEvent)
+    public Task HandleAsync(CurrentClientPositionChangedEvent clientEvent)
     {
         ArgumentNullException.ThrowIfNull(clientEvent);
 
@@ -50,6 +51,8 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
                     new EntityPositionUpdateEvent(entityId, character.X, -character.Y, -character.Z, character.Angle));
             }
         }
+
+        MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
 
         return Task.CompletedTask;
     }

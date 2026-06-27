@@ -722,40 +722,7 @@ public static class MonsterMultiMeshVisuals
 
 	private static void ApplyGroundOffset(Node3D glbRoot)
 	{
-		var aabbFound = false;
-		var combined = new Aabb();
-
-		foreach (var child in glbRoot.FindChildren("*", "MeshInstance3D", recursive: true, owned: false))
-		{
-			if (child is not MeshInstance3D meshInstance || meshInstance.Mesh is not { } mesh)
-			{
-				continue;
-			}
-
-			var localAabb = meshInstance.GetAabb();
-			if (localAabb.Size == Vector3.Zero)
-			{
-				continue;
-			}
-
-			var toGlbRoot = ComputeTransformRelativeToRoot(meshInstance, glbRoot);
-			var transformed = TransformAabb(toGlbRoot, localAabb);
-			combined = aabbFound ? combined.Merge(transformed) : transformed;
-			aabbFound = true;
-		}
-
-		if (!aabbFound)
-		{
-			return;
-		}
-
-		var minY = combined.Position.Y;
-		if (Mathf.Abs(minY) < 0.0001f)
-		{
-			return;
-		}
-
-		glbRoot.Position += new Vector3(0f, -minY, 0f);
+		GlbVisualGrounding.ApplyGroundOffset(glbRoot);
 	}
 
 	private static void CollectMeshes(Node node, Node3D root, List<GroundedMeshPart> parts)
@@ -763,55 +730,13 @@ public static class MonsterMultiMeshVisuals
 		if (node is MeshInstance3D meshInstance && meshInstance.Mesh is { } mesh)
 		{
 			// Skinned GLBs (typical monsters) have no animation in MultiMesh; bind/rest pose is enough for placement.
-			parts.Add(new GroundedMeshPart(mesh, ComputeTransformRelativeToRoot(meshInstance, root)));
+			parts.Add(new GroundedMeshPart(mesh, GlbVisualGrounding.ComputeTransformRelativeToRoot(meshInstance, root)));
 		}
 
 		foreach (var child in node.GetChildren())
 		{
 			CollectMeshes(child, root, parts);
 		}
-	}
-
-	private static Transform3D ComputeTransformRelativeToRoot(Node3D node, Node3D root)
-	{
-		var transform = Transform3D.Identity;
-		var current = node;
-		while (!ReferenceEquals(current, root) && current is not null)
-		{
-			transform = current.Transform * transform;
-			current = current.GetParent() as Node3D;
-		}
-
-		return transform;
-	}
-
-	private static Aabb TransformAabb(Transform3D transform, Aabb aabb)
-	{
-		var position = aabb.Position;
-		var size = aabb.Size;
-		var corners = new[]
-		{
-			new Vector3(position.X, position.Y, position.Z),
-			new Vector3(position.X + size.X, position.Y, position.Z),
-			new Vector3(position.X, position.Y + size.Y, position.Z),
-			new Vector3(position.X, position.Y, position.Z + size.Z),
-			new Vector3(position.X + size.X, position.Y + size.Y, position.Z),
-			new Vector3(position.X + size.X, position.Y, position.Z + size.Z),
-			new Vector3(position.X, position.Y + size.Y, position.Z + size.Z),
-			new Vector3(position.X + size.X, position.Y + size.Y, position.Z + size.Z),
-		};
-
-		var first = transform * corners[0];
-		var min = first;
-		var max = first;
-		for (var i = 1; i < corners.Length; i++)
-		{
-			var corner = transform * corners[i];
-			min = new Vector3(Mathf.Min(min.X, corner.X), Mathf.Min(min.Y, corner.Y), Mathf.Min(min.Z, corner.Z));
-			max = new Vector3(Mathf.Max(max.X, corner.X), Mathf.Max(max.Y, corner.Y), Mathf.Max(max.Z, corner.Z));
-		}
-
-		return new Aabb(min, max - min);
 	}
 
 	private sealed class GroundedMeshPart(Mesh mesh, Transform3D meshLocalToMonster)

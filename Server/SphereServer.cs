@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using Godot;
 using SphereHelpers.Extensions;
+using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Server.Config;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
@@ -28,6 +29,7 @@ public partial class SphereServer : Node
 		InitializeCollections();
 		SetupTcpServer();
 		ServerNode = this;
+		AddChild(new MonsterSpawnerActivationManagerNode());
 		WorldObjectSpawner.InstantiateObjects();
 
 		connectionHandler = new ConnectionHandler(ClientScene, this);
