@@ -25,7 +25,7 @@ public partial class TerrainObjectsFill : Node3D
     ///     Columns = source X, Y, Z axes expressed in Godot: right, down, forward (Godot forward = -Z), so (x,y,z)_src ↦
     ///     (x,-y,-z).
     /// </summary>
-    private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
+    private static readonly Basis SourceWorldToGodotWorldBasis = new(Vector3.Right, Vector3.Down, Vector3.Forward);
 
     [Export] public string ObjectDataDirectory { get; set; } = "res://Godot/Terrain/ObjectDataJson/";
 
@@ -44,11 +44,17 @@ public partial class TerrainObjectsFill : Node3D
     [Export]
     public string MultiMeshResourcesDirectory { get; set; } = "res://Godot/Terrain/GeneratedMultiMeshes/";
 
+    [Export]
+    public string WalkSurfaceDataDirectory { get; set; } = WalkSurfaceAtlasBuilder.DefaultOutputDirectory;
+
+    [Export]
+    public bool UpdateWalkSurfaceObjectFootprintsOnRebuild { get; set; } = true;
+
     [ExportToolButton("Rebuild terrain objects")]
     public Callable RebuildTerrainObjectsButton => Callable.From(RebuildTerrainObjects);
 
     /// <summary>Clears category children and repopulates from all JSON files in <see cref="ObjectDataDirectory" />.</summary>
-    public void RebuildTerrainObjects ()
+    public void RebuildTerrainObjects()
     {
         var dir = ObjectDataDirectory.TrimEnd('/') + "/";
         if (!DirAccess.DirExistsAbsolute(ProjectSettings.GlobalizePath(dir)))
@@ -203,9 +209,22 @@ public partial class TerrainObjectsFill : Node3D
             // Some editor contexts may still auto-name on add; re-assign after parenting to be safe.
             mmi.Name = $"{safeObjectName}_MM_{objectIndex}";
         }
+
+        if (UpdateWalkSurfaceObjectFootprintsOnRebuild)
+        {
+            WalkSurfaceAtlasBuilder.ApplyObjectFootprintsToSavedChunks(
+                WalkSurfaceDataDirectory,
+                new WalkSurfaceAtlasBuilder.ObjectFootprintSettings
+                {
+                    ObjectDataDirectory = ObjectDataDirectory,
+                    ModelsDirectory = ModelsDirectory,
+                    Enabled = true,
+                });
+            WalkSurfaceCache.Invalidate();
+        }
     }
 
-    private static string SanitizeGodotNodeName (string name)
+    private static string SanitizeGodotNodeName(string name)
     {
         name = name.ToLower();
         if (string.IsNullOrWhiteSpace(name))
@@ -234,7 +253,7 @@ public partial class TerrainObjectsFill : Node3D
         return sanitized.Length == 0 ? "Object" : sanitized;
     }
 
-    private void ProcessJsonForBatches (
+    private void ProcessJsonForBatches(
         string path,
         Node3D plants,
         Node3D rocks,
@@ -333,7 +352,7 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
-    private void ProcessJsonFolderAsDirectInstances (string folderPath, string folderName, Node3D terrainObjectsRoot)
+    private void ProcessJsonFolderAsDirectInstances(string folderPath, string folderName, Node3D terrainObjectsRoot)
     {
         var da = DirAccess.Open(folderPath);
         if (da is null)
@@ -412,13 +431,13 @@ public partial class TerrainObjectsFill : Node3D
         da.Dispose();
     }
 
-    private static Transform3D BuildPlacementTransform (Vector3 position, Vector3 rotationEuler)
+    private static Transform3D BuildPlacementTransform(Vector3 position, Vector3 rotationEuler)
     {
         var basis = Basis.FromEuler(rotationEuler);
         return new Transform3D(basis, position);
     }
 
-    private static List<MeshPart>? ExtractMeshParts (PackedScene scene)
+    private static List<MeshPart>? ExtractMeshParts(PackedScene scene)
     {
         var root = scene.Instantiate<Node3D>();
         try
@@ -433,7 +452,7 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
-    private static void CollectMeshes (Node node, Node3D root, List<MeshPart> list)
+    private static void CollectMeshes(Node node, Node3D root, List<MeshPart> list)
     {
         if (node is MeshInstance3D mi && mi.Mesh is { } mesh)
         {
@@ -452,7 +471,7 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
-    private static bool HasSkeletonAncestor (Node node)
+    private static bool HasSkeletonAncestor(Node node)
     {
         var p = node.GetParent();
         while (p is not null)
@@ -472,7 +491,7 @@ public partial class TerrainObjectsFill : Node3D
     ///     Transform from <paramref name="root" /> space to <paramref name="node" /> space (node is typically a
     ///     <see cref="MeshInstance3D" />).
     /// </summary>
-    private static Transform3D ComputeTransformRelativeToRoot (Node3D node, Node3D root)
+    private static Transform3D ComputeTransformRelativeToRoot(Node3D node, Node3D root)
     {
         var t = Transform3D.Identity;
         var cur = node;
@@ -485,7 +504,7 @@ public partial class TerrainObjectsFill : Node3D
         return t;
     }
 
-    private Node3D GetOrCreateCategory (string nodeName)
+    private Node3D GetOrCreateCategory(string nodeName)
     {
         if (GetNodeOrNull(nodeName) is Node3D existing)
         {
@@ -498,7 +517,7 @@ public partial class TerrainObjectsFill : Node3D
         return n;
     }
 
-    private Node3D GetOrCreateChildNode (string nodeName)
+    private Node3D GetOrCreateChildNode(string nodeName)
     {
         if (GetNodeOrNull(nodeName) is Node3D existing)
         {
@@ -511,7 +530,7 @@ public partial class TerrainObjectsFill : Node3D
         return n;
     }
 
-    private Node3D GetOrCreateChildNodeUnder (Node3D parent, string nodeName)
+    private Node3D GetOrCreateChildNodeUnder(Node3D parent, string nodeName)
     {
         if (parent.GetNodeOrNull(nodeName) is Node3D existing)
         {
@@ -524,7 +543,7 @@ public partial class TerrainObjectsFill : Node3D
         return n;
     }
 
-    private static void ClearChildren (Node3D node)
+    private static void ClearChildren(Node3D node)
     {
         foreach (var child in node.GetChildren())
         {
@@ -532,7 +551,7 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
-    private PackedScene? GetOrLoadScene (string objectName)
+    private PackedScene? GetOrLoadScene(string objectName)
     {
         var baseDir = ModelsDirectory.TrimEnd('/') + "/";
         foreach (var ext in new[] { "glb", "gltf" })
@@ -547,7 +566,7 @@ public partial class TerrainObjectsFill : Node3D
         return null;
     }
 
-    private void SetOwnerIfEditor (Node node)
+    private void SetOwnerIfEditor(Node node)
     {
         if (!Engine.IsEditorHint())
         {
@@ -564,7 +583,7 @@ public partial class TerrainObjectsFill : Node3D
     ///     Uses Godot's <see cref="Json" /> parser (not Newtonsoft.Json) so collectible assemblies can unload in the editor.
     ///     See https://github.com/godotengine/godot/issues/78513
     /// </summary>
-    private static List<TerrainObjectRecord>? ParseTerrainRecords (string jsonText)
+    private static List<TerrainObjectRecord>? ParseTerrainRecords(string jsonText)
     {
         var json = new Json();
         if (json.Parse(jsonText) != Error.Ok)
@@ -657,14 +676,14 @@ public partial class TerrainObjectsFill : Node3D
         return list;
     }
 
-    private static double DictGetDouble (Dictionary d, StringName key)
+    private static double DictGetDouble(Dictionary d, StringName key)
     {
         return d.TryGetValue(key, out var v) ? v.AsDouble() : 0.0;
     }
 
     private readonly struct InstancePlacement
     {
-        public InstancePlacement (Transform3D transform, int sourceRecordIndex)
+        public InstancePlacement(Transform3D transform, int sourceRecordIndex)
         {
             Transform = transform;
             SourceRecordIndex = sourceRecordIndex;
@@ -676,7 +695,7 @@ public partial class TerrainObjectsFill : Node3D
 
     private sealed class MeshPart
     {
-        public MeshPart (Mesh mesh, Transform3D localToRoot)
+        public MeshPart(Mesh mesh, Transform3D localToRoot)
         {
             Mesh = mesh;
             LocalToRoot = localToRoot;
@@ -689,7 +708,7 @@ public partial class TerrainObjectsFill : Node3D
     /// <summary>Reference-equality for <see cref="Mesh" /> so batches merge identical resources.</summary>
     private sealed class MeshBatchKeyComparer : IEqualityComparer<(Node3D Category, string ObjectName, Mesh Mesh)>
     {
-        public bool Equals ((Node3D Category, string ObjectName, Mesh Mesh) x,
+        public bool Equals((Node3D Category, string ObjectName, Mesh Mesh) x,
             (Node3D Category, string ObjectName, Mesh Mesh) y)
         {
             return ReferenceEquals(x.Category, y.Category)
@@ -697,7 +716,7 @@ public partial class TerrainObjectsFill : Node3D
                    && ReferenceEquals(x.Mesh, y.Mesh);
         }
 
-        public int GetHashCode ((Node3D Category, string ObjectName, Mesh Mesh) obj)
+        public int GetHashCode((Node3D Category, string ObjectName, Mesh Mesh) obj)
         {
             return HashCode.Combine(obj.Category.GetInstanceId(), obj.ObjectName, obj.Mesh.GetInstanceId());
         }
@@ -716,9 +735,9 @@ public partial class TerrainObjectsFill : Node3D
         public double Y { get; set; }
         public double Z { get; set; }
 
-        public Vector3 ToVector3 ()
+        public Vector3 ToVector3()
         {
-            return SourceWorldToGodotWorldBasis * new Vector3((float) X, (float) Y, (float) Z);
+            return SourceWorldToGodotWorldBasis * new Vector3((float)X, (float)Y, (float)Z);
         }
     }
 
@@ -739,9 +758,9 @@ public partial class TerrainObjectsFill : Node3D
         ///     R_src from YXZ Euler with negated yaw; same physical orientation in Godot world as R' = T R_src T⁻¹ with T =
         ///     <see cref="SourceWorldToGodotWorldBasis" />.
         /// </summary>
-        public Vector3 ToEulerRadians ()
+        public Vector3 ToEulerRadians()
         {
-            var eulerForGodotBasis = new Vector3((float) Pitch, -(float) Yaw, (float) Roll);
+            var eulerForGodotBasis = new Vector3((float)Pitch, -(float)Yaw, (float)Roll);
             var basisSource = Basis.FromEuler(eulerForGodotBasis);
             var t = SourceWorldToGodotWorldBasis;
             var basisGodot = t * basisSource * t;
