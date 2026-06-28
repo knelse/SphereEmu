@@ -21,7 +21,13 @@ public sealed class MonsterSpawnPlacement
     private const uint AllSectorsMask = (1u << SectorCount) - 1u;
 
     private readonly List<Vector3> _occupiedWorldPositions = [];
+    private readonly Random _random;
     private uint _blockedSectorMask;
+
+    public MonsterSpawnPlacement(Random? random = null)
+    {
+        _random = random ?? Random.Shared;
+    }
 
     public void Reset(IEnumerable<Vector3>? existingOccupiedWorldPositions = null)
     {
@@ -48,14 +54,25 @@ public sealed class MonsterSpawnPlacement
         float spawnRadiusMeters,
         out Vector3 spawnWorldPosition)
     {
+        return TryFindSpawnPosition(
+            spawner.GlobalPosition,
+            spawnRadiusMeters,
+            new NodeMonsterSpawnGroundQuery(spawner),
+            out spawnWorldPosition);
+    }
+
+    public bool TryFindSpawnPosition(
+        Vector3 spawnerOrigin,
+        float spawnRadiusMeters,
+        IMonsterSpawnGroundQuery groundQuery,
+        out Vector3 spawnWorldPosition)
+    {
         spawnWorldPosition = default;
 
         if (IsFullyBlacklisted())
         {
             return false;
         }
-
-        var spawnerOrigin = spawner.GlobalPosition;
 
         for (var attempt = 0; attempt < MaxRandomAttempts; attempt++)
         {
@@ -64,16 +81,16 @@ public sealed class MonsterSpawnPlacement
                 return false;
             }
 
-            var radius = (float)GD.RandRange(0.1, spawnRadiusMeters);
+            var radius = (float)RandRange(0.1, spawnRadiusMeters);
             var candidate = BuildWorldProbeOrigin(spawnerOrigin, angleDegrees, radius);
 
-            if (TryResolveCandidate(spawner, candidate, out spawnWorldPosition))
+            if (TryResolveCandidate(groundQuery, candidate, out spawnWorldPosition))
             {
                 _occupiedWorldPositions.Add(spawnWorldPosition);
                 return true;
             }
 
-            if (TrySearchNearCandidate(spawner, candidate, out spawnWorldPosition))
+            if (TrySearchNearCandidate(groundQuery, candidate, out spawnWorldPosition))
             {
                 _occupiedWorldPositions.Add(spawnWorldPosition);
                 return true;
@@ -89,18 +106,21 @@ public sealed class MonsterSpawnPlacement
         return false;
     }
 
-    private bool TrySearchNearCandidate(MonsterSpawner spawner, Vector3 candidate, out Vector3 spawnWorldPosition)
+    private bool TrySearchNearCandidate(
+        IMonsterSpawnGroundQuery groundQuery,
+        Vector3 candidate,
+        out Vector3 spawnWorldPosition)
     {
         spawnWorldPosition = default;
 
         for (var sample = 0; sample < SearchSamplesPerCandidate; sample++)
         {
-            var angle = (float)GD.RandRange(0d, Math.Tau);
-            var radius = (float)GD.RandRange(0d, SearchRadiusAfterFailureMeters);
-            var offset = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+            var angle = RandRange(0d, Math.Tau);
+            var radius = RandRange(0d, SearchRadiusAfterFailureMeters);
+            var offset = new Vector3(Mathf.Cos((float)angle) * (float)radius, 0f, Mathf.Sin((float)angle) * (float)radius);
             var probe = candidate + offset;
 
-            if (TryResolveCandidate(spawner, probe, out spawnWorldPosition))
+            if (TryResolveCandidate(groundQuery, probe, out spawnWorldPosition))
             {
                 return true;
             }
@@ -109,10 +129,12 @@ public sealed class MonsterSpawnPlacement
         return false;
     }
 
-    private bool TryResolveCandidate(MonsterSpawner spawner, Vector3 probeOrigin, out Vector3 spawnWorldPosition)
+    private bool TryResolveCandidate(
+        IMonsterSpawnGroundQuery groundQuery,
+        Vector3 probeOrigin,
+        out Vector3 spawnWorldPosition)
     {
-        return MonsterSpawnGroundQuery.TryFindValidSpawnSurface(
-            spawner,
+        return groundQuery.TryFindValidSpawnSurface(
             probeOrigin,
             MinMobSeparationMeters,
             _occupiedWorldPositions,
@@ -135,11 +157,16 @@ public sealed class MonsterSpawnPlacement
         }
 
         var availableCount = PopCount(availableMask);
-        var pick = GD.RandRange(0, availableCount - 1);
-        var sector = NthSetBit(availableMask, (int)pick);
+        var pick = _random.Next(availableCount);
+        var sector = NthSetBit(availableMask, pick);
         var sectorStart = sector * SectorWidthDegrees;
-        angleDegrees = (float)GD.RandRange(sectorStart, sectorStart + SectorWidthDegrees);
+        angleDegrees = (float)RandRange(sectorStart, sectorStart + SectorWidthDegrees);
         return true;
+    }
+
+    private double RandRange(double min, double max)
+    {
+        return min + _random.NextDouble() * (max - min);
     }
 
     private bool IsFullyBlacklisted()

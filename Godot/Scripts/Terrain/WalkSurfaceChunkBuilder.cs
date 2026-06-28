@@ -4,7 +4,7 @@ using Godot;
 namespace SphServer.Godot.Scripts.Terrain;
 
 /// <summary>
-///     Mutable height + blocked samples for one walk atlas chunk during editor bakes.
+///     Mutable height + blocked + outdoor spawn samples for one walk atlas chunk during editor bakes.
 /// </summary>
 public sealed class WalkSurfaceChunkBuilder
 {
@@ -14,9 +14,12 @@ public sealed class WalkSurfaceChunkBuilder
     private readonly int _width;
     private readonly int _height;
     private readonly float[] _heights;
+    private readonly float[] _terrainHeights;
     private readonly byte[] _blocked;
+    private readonly byte[] _spawnAllowed;
     private readonly object _writeLock = new();
     private bool _dirty;
+    private bool _hasOutdoorSpawnChannel;
 
     public int ChunkX { get; }
     public int ChunkZ { get; }
@@ -35,10 +38,13 @@ public sealed class WalkSurfaceChunkBuilder
         _width = Mathf.CeilToInt(chunkSizeMeters / sampleSpacing) + 1;
         _height = Mathf.CeilToInt(chunkSizeMeters / sampleSpacing) + 1;
         _heights = new float[_width * _height];
+        _terrainHeights = new float[_width * _height];
         _blocked = new byte[_width * _height];
+        _spawnAllowed = new byte[_width * _height];
         for (var i = 0; i < _heights.Length; i++)
         {
             _heights[i] = WalkSurfaceChunk.NoGround;
+            _terrainHeights[i] = WalkSurfaceChunk.NoGround;
         }
     }
 
@@ -47,8 +53,25 @@ public sealed class WalkSurfaceChunkBuilder
         var chunkX = (int)Mathf.Floor(chunk.OriginX / WalkSurfaceAtlasBuilder.ChunkSizeMeters);
         var chunkZ = (int)Mathf.Floor(chunk.OriginZ / WalkSurfaceAtlasBuilder.ChunkSizeMeters);
         var builder = new WalkSurfaceChunkBuilder(chunkX, chunkZ, WalkSurfaceAtlasBuilder.ChunkSizeMeters, chunk.SampleSpacing);
-        chunk.CopyHeightsAndBlockedTo(builder._heights, builder._blocked);
+        chunk.CopyToBuilder(builder._heights, builder._terrainHeights, builder._blocked, builder._spawnAllowed, out var hasOutdoorSpawnChannel);
+        builder._hasOutdoorSpawnChannel = hasOutdoorSpawnChannel;
         return builder;
+    }
+
+    public void SnapshotTerrainHeights()
+    {
+        Array.Copy(_heights, _terrainHeights, _heights.Length);
+        _dirty = true;
+    }
+
+    public void EnsureTerrainBaseline()
+    {
+        if (HasAnyTerrainBaseline())
+        {
+            return;
+        }
+
+        SnapshotTerrainHeights();
     }
 
     public void ClearBlocked()
@@ -93,6 +116,77 @@ public sealed class WalkSurfaceChunkBuilder
 
         SetWorldSample(worldX, worldZ, worldY);
         return true;
+    }
+
+    public void DilateBlocked(int radiusCells)
+    {
+        if (radiusCells <= 0)
+        {
+            return;
+        }
+
+        var dilated = new byte[_blocked.Length];
+        for (var z = 0; z < _height; z++)
+        {
+            for (var x = 0; x < _width; x++)
+            {
+                var index = z * _width + x;
+                if (_blocked[index] == 0)
+                {
+                    continue;
+                }
+
+                for (var dz = -radiusCells; dz <= radiusCells; dz++)
+                {
+                    for (var dx = -radiusCells; dx <= radiusCells; dx++)
+                    {
+                        var nx = x + dx;
+                        var nz = z + dz;
+                        if (nx < 0 || nx >= _width || nz < 0 || nz >= _height)
+                        {
+                            continue;
+                        }
+
+                        dilated[nz * _width + nx] = 1;
+                    }
+                }
+            }
+        }
+
+        Array.Copy(dilated, _blocked, _blocked.Length);
+        _dirty = true;
+    }
+
+    public void FinalizeOutdoorSpawnAllowed(float maxOutdoorHeightDeltaMeters)
+    {
+        _hasOutdoorSpawnChannel = false;
+        for (var i = 0; i < _heights.Length; i++)
+        {
+            if (_blocked[i] != 0)
+            {
+                _spawnAllowed[i] = 0;
+                continue;
+            }
+
+            var terrainHeight = _terrainHeights[i];
+            var walkHeight = _heights[i];
+            if (float.IsNaN(terrainHeight) || float.IsNaN(walkHeight))
+            {
+                _spawnAllowed[i] = 0;
+                continue;
+            }
+
+            if (Mathf.Abs(walkHeight - terrainHeight) > maxOutdoorHeightDeltaMeters)
+            {
+                _spawnAllowed[i] = 0;
+                continue;
+            }
+
+            _spawnAllowed[i] = 1;
+            _hasOutdoorSpawnChannel = true;
+        }
+
+        _dirty = true;
     }
 
     public bool StampBlockedDisk(float worldX, float worldZ, float radiusMeters)
@@ -185,9 +279,36 @@ public sealed class WalkSurfaceChunkBuilder
         return stamped;
     }
 
+    public bool TryStampBlockedWorld(float worldX, float worldZ)
+    {
+        if (!TryGetSampleIndex(worldX, worldZ, out var index))
+        {
+            return false;
+        }
+
+        if (_blocked[index] != 0)
+        {
+            return false;
+        }
+
+        _blocked[index] = 1;
+        _dirty = true;
+        return true;
+    }
+
     public WalkSurfaceChunk Build()
     {
-        return new WalkSurfaceChunk(_originX, _originZ, _sampleSpacing, _width, _height, _heights, _blocked);
+        return new WalkSurfaceChunk(
+            _originX,
+            _originZ,
+            _sampleSpacing,
+            _width,
+            _height,
+            _heights,
+            _blocked,
+            _terrainHeights,
+            _spawnAllowed,
+            _hasOutdoorSpawnChannel);
     }
 
     public void SaveTo(string absolutePath)
@@ -202,6 +323,61 @@ public sealed class WalkSurfaceChunkBuilder
     public void ClearDirty()
     {
         _dirty = false;
+    }
+
+    internal void CollectOutdoorSpawnCandidates(
+        float centerWorldX,
+        float centerWorldZ,
+        float radiusMeters,
+        List<(float X, float Z, float Y)> candidates)
+    {
+        if (!_hasOutdoorSpawnChannel)
+        {
+            return;
+        }
+
+        var radiusSq = radiusMeters * radiusMeters;
+        for (var z = 0; z < _height; z++)
+        {
+            for (var x = 0; x < _width; x++)
+            {
+                var index = z * _width + x;
+                if (_spawnAllowed[index] == 0)
+                {
+                    continue;
+                }
+
+                var worldX = _originX + x * _sampleSpacing;
+                var worldZ = _originZ + z * _sampleSpacing;
+                var dx = worldX - centerWorldX;
+                var dz = worldZ - centerWorldZ;
+                if (dx * dx + dz * dz > radiusSq)
+                {
+                    continue;
+                }
+
+                var terrainHeight = _terrainHeights[index];
+                if (float.IsNaN(terrainHeight))
+                {
+                    continue;
+                }
+
+                candidates.Add((worldX, worldZ, terrainHeight));
+            }
+        }
+    }
+
+    private bool HasAnyTerrainBaseline()
+    {
+        foreach (var height in _terrainHeights)
+        {
+            if (!float.IsNaN(height))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private bool TryGetSampleIndex(float worldX, float worldZ, out int index)

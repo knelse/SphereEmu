@@ -1,0 +1,4 @@
+# Machine-local Godot path for Tools/*.ps1 scripts.
+# Copy this file to godot.local.ps1 and edit the path (godot.local.ps1 is gitignored).
+
+$env:GODOT_PATH = "D:\Games\Godot\Godot_v4.6.1-stable_mono_win64.exe"

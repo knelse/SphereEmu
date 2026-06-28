@@ -13,8 +13,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+. (Join-Path $PSScriptRoot "GodotPath.ps1")
 $Root = Split-Path -Parent $PSScriptRoot
-$Godot = if ($env:GODOT_PATH) { $env:GODOT_PATH } else { "godot" }
+$Godot = Resolve-GodotExecutable
 $Scene = "res://Godot/Scenes/walk_surface_bake.tscn"
 
 $userArgs = @()

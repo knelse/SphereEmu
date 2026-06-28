@@ -18,7 +18,7 @@ public static class WalkSurfaceChunkConverter
 
     public static ConversionResult ConvertDirectory(
         string directoryResourcePath = WalkSurfaceAtlasBuilder.DefaultOutputDirectory,
-        bool skipAlreadyV3 = true)
+        bool skipAlreadyCurrent = true)
     {
         var result = new ConversionResult();
         var absoluteDirectory = ProjectSettings.GlobalizePath(directoryResourcePath);
@@ -41,9 +41,9 @@ public static class WalkSurfaceChunkConverter
 
         foreach (var file in files)
         {
-            if (skipAlreadyV3
+            if (skipAlreadyCurrent
                 && WalkSurfaceChunk.TryPeekFormatVersion(file, out var version)
-                && version == WalkSurfaceChunkCodec.FormatVersion)
+                && version == WalkSurfaceChunkCodec.FormatVersionV4)
             {
                 result.Skipped++;
                 continue;
@@ -56,7 +56,9 @@ public static class WalkSurfaceChunkConverter
                 continue;
             }
 
-            chunk.SaveAtomic(file);
+            var builder = WalkSurfaceChunkBuilder.FromChunk(chunk);
+            WalkSurfaceSpawnChannelBuilder.Finalize(builder);
+            builder.SaveTo(file);
             result.Converted++;
 
             if (result.Converted == 1 || result.Converted % 10 == 0)
@@ -67,7 +69,7 @@ public static class WalkSurfaceChunkConverter
 
         WalkSurfaceCache.Invalidate();
         GD.Print(
-            $"WalkSurfaceChunkConverter: done — converted={result.Converted}, skipped (already v3)={result.Skipped}, failed={result.Failed}.");
+            $"WalkSurfaceChunkConverter: done — converted={result.Converted}, skipped (already v4)={result.Skipped}, failed={result.Failed}.");
         return result;
     }
 }

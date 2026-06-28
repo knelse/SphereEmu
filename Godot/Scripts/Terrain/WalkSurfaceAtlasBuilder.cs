@@ -144,6 +144,11 @@ public static class WalkSurfaceAtlasBuilder
         GD.Print(
             $"WalkSurfaceAtlasBuilder: sampled terrain heights in {stopwatch.ElapsedMilliseconds} ms ({samplesWritten} new samples).");
 
+        foreach (var builder in builders.Values)
+        {
+            builder.SnapshotTerrainHeights();
+        }
+
         var objectStampCount = StampTerrainObjectWalkData(builders, objectFootprints);
         var savedChunks = SaveBuilders(builders, outputDirectoryResourcePath, samplesWritten, objectStampCount);
         WalkSurfaceBuildProgress.Delete(outputDirectoryResourcePath);
@@ -364,10 +369,16 @@ public static class WalkSurfaceAtlasBuilder
         GD.Print($"WalkSurfaceAtlasBuilder: stamping {placements.Count} terrain object footprint(s)...");
         foreach (var builder in builders.Values)
         {
+            builder.EnsureTerrainBaseline();
             builder.ClearBlocked();
         }
 
         var footprintCount = WalkSurfaceObjectFootprintStamper.StampPlacements(builders, placements, settings.ModelsDirectory);
+        var blockedRasterCount = WalkSurfaceObjectBlockedRasterStamper.StampPlacements(
+            builders,
+            placements,
+            settings.ModelsDirectory,
+            SampleSpacingMeters);
         GD.Print(
             $"WalkSurfaceAtlasBuilder: stamping object height templates at {SampleSpacingMeters:0.##}m spacing "
             + $"(plants/rocks blocked only, {placements.Count} total placement(s))...");
@@ -377,8 +388,9 @@ public static class WalkSurfaceAtlasBuilder
             settings.ModelsDirectory,
             SampleSpacingMeters);
         GD.Print(
-            $"WalkSurfaceAtlasBuilder: object footprints={footprintCount}, object height samples={heightCount}.");
-        return footprintCount + heightCount;
+            $"WalkSurfaceAtlasBuilder: object footprints={footprintCount}, blocked raster cells={blockedRasterCount}, object height samples={heightCount}.");
+        WalkSurfaceSpawnChannelBuilder.FinalizeAll(builders.Values);
+        return footprintCount + blockedRasterCount + heightCount;
     }
 
     private static int SaveBuilders(
@@ -397,6 +409,7 @@ public static class WalkSurfaceAtlasBuilder
 
         GD.Print(
             $"WalkSurfaceAtlasBuilder: wrote {savedChunks} chunk(s), {heightSamplesWritten} height sample(s), {objectStampCount} object footprint(s) to '{outputDirectoryResourcePath}'.");
+        WalkSurfaceCache.Invalidate();
         return savedChunks;
     }
 

@@ -12,23 +12,63 @@ namespace SphServer.Godot.Scripts.Terrain;
 internal static class WalkSurfaceChunkCodec
 {
     public const ushort FormatVersion = 3;
+    public const ushort FormatVersionV4 = 4;
     private const ushort HeightNoGround = ushort.MaxValue;
     private const float MinQuantStepMeters = 0.001f;
 
     public static void WriteV3(Stream stream, float sampleSpacing, float originX, float originZ, int width, int height, float[] heights, byte[] blocked)
     {
-        EncodeHeights(heights, out var heightBase, out var quantStep, out var encodedHeights);
-        var packedBlocked = PackBlocked(blocked);
+        WritePayload(stream, FormatVersion, sampleSpacing, originX, originZ, width, height, heights, null, blocked, null);
+    }
 
-        using var payloadStream = new MemoryStream(encodedHeights.Length * 2 + packedBlocked.Length);
+    public static void WriteV4(
+        Stream stream,
+        float sampleSpacing,
+        float originX,
+        float originZ,
+        int width,
+        int height,
+        float[] heights,
+        float[] terrainHeights,
+        byte[] blocked,
+        byte[] spawnAllowed)
+    {
+        WritePayload(stream, FormatVersionV4, sampleSpacing, originX, originZ, width, height, heights, terrainHeights, blocked, spawnAllowed);
+    }
+
+    private static void WritePayload(
+        Stream stream,
+        ushort formatVersion,
+        float sampleSpacing,
+        float originX,
+        float originZ,
+        int width,
+        int height,
+        float[] heights,
+        float[]? terrainHeights,
+        byte[] blocked,
+        byte[]? spawnAllowed)
+    {
+        EncodeHeights(heights, out var heightBase, out var quantStep, out var encodedHeights);
+        EncodeHeights(terrainHeights ?? heights, out var terrainBase, out var terrainQuantStep, out var encodedTerrainHeights);
+        var packedBlocked = PackBits(blocked);
+        var packedSpawnAllowed = PackBits(spawnAllowed ?? blocked);
+
+        using var payloadStream = new MemoryStream(encodedHeights.Length * 4 + packedBlocked.Length + packedSpawnAllowed.Length);
         WriteUInt16Array(payloadStream, encodedHeights);
+        WriteUInt16Array(payloadStream, encodedTerrainHeights);
         payloadStream.Write(packedBlocked, 0, packedBlocked.Length);
+        if (formatVersion >= FormatVersionV4)
+        {
+            payloadStream.Write(packedSpawnAllowed, 0, packedSpawnAllowed.Length);
+        }
+
         var payload = payloadStream.ToArray();
         var compressedPayload = Compress(payload);
 
         using var writer = new BinaryWriter(stream, global::System.Text.Encoding.UTF8, leaveOpen: true);
         writer.Write(WalkSurfaceChunkFile.Magic);
-        writer.Write(FormatVersion);
+        writer.Write(formatVersion);
         writer.Write(sampleSpacing);
         writer.Write(originX);
         writer.Write(originZ);
@@ -36,6 +76,12 @@ internal static class WalkSurfaceChunkCodec
         writer.Write((ushort)height);
         writer.Write(heightBase);
         writer.Write(quantStep);
+        if (formatVersion >= FormatVersionV4)
+        {
+            writer.Write(terrainBase);
+            writer.Write(terrainQuantStep);
+        }
+
         writer.Write(compressedPayload.Length);
         writer.Write(compressedPayload);
     }
@@ -92,7 +138,73 @@ internal static class WalkSurfaceChunkCodec
 
         var encodedHeights = ReadUInt16Array(payload, 0, count);
         heights = DecodeHeights(encodedHeights, heightBase, quantStep);
-        blocked = UnpackBlocked(payload, heightsBytes, count);
+        blocked = UnpackBits(payload, heightsBytes, count);
+        return true;
+    }
+
+    public static bool TryReadV4(
+        BinaryReader reader,
+        float sampleSpacing,
+        float originX,
+        float originZ,
+        int width,
+        int height,
+        out float[]? heights,
+        out float[]? terrainHeights,
+        out byte[]? blocked,
+        out byte[]? spawnAllowed)
+    {
+        heights = null;
+        terrainHeights = null;
+        blocked = null;
+        spawnAllowed = null;
+
+        var count = width * height;
+        if (count <= 0)
+        {
+            return false;
+        }
+
+        var heightBase = reader.ReadSingle();
+        var quantStep = reader.ReadSingle();
+        var terrainBase = reader.ReadSingle();
+        var terrainQuantStep = reader.ReadSingle();
+        var compressedLength = reader.ReadInt32();
+        if (compressedLength <= 0 || compressedLength > 256 * 1024 * 1024)
+        {
+            return false;
+        }
+
+        var compressedPayload = reader.ReadBytes(compressedLength);
+        if (compressedPayload.Length != compressedLength)
+        {
+            return false;
+        }
+
+        byte[] payload;
+        try
+        {
+            payload = Decompress(compressedPayload);
+        }
+        catch
+        {
+            return false;
+        }
+
+        var blockedBytes = (count + 7) / 8;
+        var heightsBytes = count * sizeof(ushort);
+        var terrainBytes = count * sizeof(ushort);
+        if (payload.Length < heightsBytes + terrainBytes + blockedBytes + blockedBytes)
+        {
+            return false;
+        }
+
+        var encodedHeights = ReadUInt16Array(payload, 0, count);
+        var encodedTerrainHeights = ReadUInt16Array(payload, heightsBytes, count);
+        heights = DecodeHeights(encodedHeights, heightBase, quantStep);
+        terrainHeights = DecodeHeights(encodedTerrainHeights, terrainBase, terrainQuantStep);
+        blocked = UnpackBits(payload, heightsBytes + terrainBytes, count);
+        spawnAllowed = UnpackBits(payload, heightsBytes + terrainBytes + blockedBytes, count);
         return true;
     }
 
@@ -158,12 +270,12 @@ internal static class WalkSurfaceChunkCodec
         return heights;
     }
 
-    private static byte[] PackBlocked(byte[] blocked)
+    private static byte[] PackBits(byte[] bits)
     {
-        var packed = new byte[(blocked.Length + 7) / 8];
-        for (var i = 0; i < blocked.Length; i++)
+        var packed = new byte[(bits.Length + 7) / 8];
+        for (var i = 0; i < bits.Length; i++)
         {
-            if (blocked[i] == 0)
+            if (bits[i] == 0)
             {
                 continue;
             }
@@ -174,16 +286,16 @@ internal static class WalkSurfaceChunkCodec
         return packed;
     }
 
-    private static byte[] UnpackBlocked(byte[] payload, int offset, int count)
+    private static byte[] UnpackBits(byte[] payload, int offset, int count)
     {
-        var blocked = new byte[count];
+        var bits = new byte[count];
         for (var i = 0; i < count; i++)
         {
             var packedIndex = offset + (i >> 3);
-            blocked[i] = (payload[packedIndex] & (1 << (i & 7))) != 0 ? (byte)1 : (byte)0;
+            bits[i] = (payload[packedIndex] & (1 << (i & 7))) != 0 ? (byte)1 : (byte)0;
         }
 
-        return blocked;
+        return bits;
     }
 
     private static void WriteUInt16Array(Stream stream, ushort[] values)

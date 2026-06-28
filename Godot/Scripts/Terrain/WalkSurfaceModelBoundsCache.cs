@@ -12,6 +12,7 @@ public static class WalkSurfaceModelBoundsCache
     public const float DefaultOtherRadiusMeters = 2f;
     public const float DefaultExtraInstancedRadiusMeters = 2f;
     private const float RadiusMarginMeters = 0.25f;
+    public const float BuildingRasterMarginMeters = 0.5f;
 
     private static readonly Dictionary<string, ModelBounds?> Cache = new(StringComparer.OrdinalIgnoreCase);
 
@@ -85,6 +86,23 @@ public static class WalkSurfaceModelBoundsCache
 
         halfExtentX = Mathf.Max(categoryDefault, bounds.LocalExtentX + RadiusMarginMeters);
         halfExtentZ = Mathf.Max(categoryDefault, bounds.LocalExtentZ + RadiusMarginMeters);
+        return true;
+    }
+
+    public static bool TryGetBuildingRasterHalfExtents(
+        string objectName,
+        string modelsDirectory,
+        TerrainObjectWalkCategory category,
+        out float halfExtentX,
+        out float halfExtentZ)
+    {
+        if (!TryGetUnscaledFootprintHalfExtents(objectName, modelsDirectory, category, out halfExtentX, out halfExtentZ))
+        {
+            return false;
+        }
+
+        halfExtentX += BuildingRasterMarginMeters;
+        halfExtentZ += BuildingRasterMarginMeters;
         return true;
     }
 

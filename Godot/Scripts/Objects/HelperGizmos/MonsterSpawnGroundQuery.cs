@@ -129,6 +129,13 @@ public static class MonsterSpawnGroundQuery
             return true;
         }
 
+        if (WalkSurfaceCache.HasAnyChunkFiles()
+            && WalkSurfaceCache.HasChunkCoverageAt(worldProbeOrigin.X, worldProbeOrigin.Z)
+            && WalkSurfaceCache.HasOutdoorSpawnChannel)
+        {
+            return false;
+        }
+
         if (!TryFindTopSurface(contextNode, worldProbeOrigin, out var standingSurface))
         {
             return false;
@@ -140,6 +147,11 @@ public static class MonsterSpawnGroundQuery
         }
 
         if (!IsSpawnPositionAllowed(standingSurface.Position))
+        {
+            return false;
+        }
+
+        if (!IsSpawnFootprintAcceptableAt(standingSurface.Position))
         {
             return false;
         }
@@ -173,6 +185,16 @@ public static class MonsterSpawnGroundQuery
         }
 
         return !WalkSurfaceCache.IsBlocked(spawnWorldPosition.X, spawnWorldPosition.Z);
+    }
+
+    private static bool IsSpawnFootprintAcceptableAt(Vector3 spawnWorldPosition)
+    {
+        if (!WalkSurfaceCache.HasAnyChunkFiles())
+        {
+            return true;
+        }
+
+        return WalkSurfaceCache.IsSpawnFootprintAcceptable(spawnWorldPosition.X, spawnWorldPosition.Z);
     }
 
     private static bool TrySearchNearbySpawnSurfaces(

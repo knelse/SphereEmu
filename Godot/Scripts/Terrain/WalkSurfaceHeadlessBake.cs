@@ -33,13 +33,13 @@ public partial class WalkSurfaceHeadlessBake : Node
         {
             if (options.ConvertChunksOnly)
             {
-                GD.Print("WalkSurfaceHeadlessBake: converting walk-surface chunks to format v3...");
+                GD.Print("WalkSurfaceHeadlessBake: converting walk-surface chunks to format v4 (outdoor spawn channel)...");
                 var conversion = WalkSurfaceChunkConverter.ConvertDirectory(
                     gridFill.WalkSurfaceDataDirectory,
-                    skipAlreadyV3: !options.Force);
+                    skipAlreadyCurrent: !options.Force);
                 if (conversion.Converted == 0 && conversion.Failed == 0)
                 {
-                    GD.Print("WalkSurfaceHeadlessBake: all chunks already format v3 (use --force to recompress).");
+                    GD.Print("WalkSurfaceHeadlessBake: all chunks already format v4 (use --force to rebuild spawn channel).");
                 }
 
                 return conversion.Succeeded ? ExitSuccess : ExitFailure;
@@ -48,7 +48,15 @@ public partial class WalkSurfaceHeadlessBake : Node
             if (options.ObjectsOnly)
             {
                 GD.Print("WalkSurfaceHeadlessBake: re-stamping terrain object footprints and heights only.");
-                return gridFill.RestampWalkSurfaceObjectFootprints() > 0 ? ExitSuccess : ExitFailure;
+                var restampedChunks = gridFill.RestampWalkSurfaceObjectFootprints();
+                if (restampedChunks <= 0)
+                {
+                    GD.PushError("WalkSurfaceHeadlessBake: object re-stamp produced no walk-surface chunks.");
+                    return ExitFailure;
+                }
+
+                GD.Print($"WalkSurfaceHeadlessBake: done ({restampedChunks} chunk(s) written).");
+                return ExitSuccess;
             }
 
             GD.Print("WalkSurfaceHeadlessBake: rebuilding terrain grid from map...");
