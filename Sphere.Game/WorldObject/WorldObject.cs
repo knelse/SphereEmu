@@ -169,6 +169,41 @@ public partial class WorldObject : Node3D
 		CallDeferred(nameof(FlushVisibilityOverlapsDeferred));
 	}
 
+	/// <summary>
+	///     Shows this entity to <paramref name="client" /> when within visibility range.
+	///     Used as a reliable fallback when physics overlap is not yet available on newly created areas.
+	/// </summary>
+	internal void EnsureVisibleToClient(SphereClient client)
+	{
+		if (Engine.IsEditorHint() || !GodotObject.IsInstanceValid(client) || client.CurrentCharacter is null)
+		{
+			return;
+		}
+
+		if (_visibleClients.Contains(client))
+		{
+			return;
+		}
+
+		if (!ClientWorldPosition.TryGetGodotWorldPosition(client, out var clientPosition))
+		{
+			return;
+		}
+
+		var visibilityRadius = ServerConfig.AppConfig.ObjectVisibilityDistance;
+		if (GlobalPosition.DistanceSquaredTo(clientPosition) > visibilityRadius * visibilityRadius)
+		{
+			return;
+		}
+
+		if (!_visibleClients.Add(client))
+		{
+			return;
+		}
+
+		ShowForClient(client);
+	}
+
 	private void OnVisibilityBodyEntered(Node3D body)
 	{
 		var clientNode = body.GetParent();

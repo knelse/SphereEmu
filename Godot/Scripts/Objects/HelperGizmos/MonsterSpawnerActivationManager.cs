@@ -6,6 +6,7 @@ using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
+using SphServer.Sphere.Game.WorldObject;
 using static SphServer.Helpers.PoiType;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
@@ -93,7 +94,7 @@ public static class MonsterSpawnerActivationManager
             return;
         }
 
-        var clientPosition = GetClientWorldPosition(client);
+        var clientPosition = ClientWorldPosition.GetGodotWorldPosition(client);
         var activationRadiusSq = ActivationDistanceMeters * ActivationDistanceMeters;
         var centerCell = WorldToCell(clientPosition);
 
@@ -129,12 +130,6 @@ public static class MonsterSpawnerActivationManager
                 }
             }
         }
-    }
-
-    private static Vector3 GetClientWorldPosition(SphereClient client)
-    {
-        var character = client.CurrentCharacter!;
-        return new Vector3((float)character.X, (float)-character.Y, (float)-character.Z);
     }
 
     private static (int CellX, int CellZ) WorldToCell(Vector3 worldPosition)

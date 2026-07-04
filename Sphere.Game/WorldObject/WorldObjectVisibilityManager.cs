@@ -87,7 +87,7 @@ public static class WorldObjectVisibilityManager
 			return;
 		}
 
-		var clientPosition = GetClientWorldPosition(client);
+		var clientPosition = ClientWorldPosition.GetGodotWorldPosition(client);
 		var visibilityRadiusSq = VisibilityDistanceMeters * VisibilityDistanceMeters;
 		var centerCell = WorldToCell(clientPosition);
 
@@ -109,7 +109,7 @@ public static class WorldObjectVisibilityManager
 
 				foreach (var worldObject in worldObjects)
 				{
-					if (!GodotObject.IsInstanceValid(worldObject) || worldObject.HasVisibilityArea)
+					if (!GodotObject.IsInstanceValid(worldObject))
 					{
 						continue;
 					}
@@ -120,15 +120,10 @@ public static class WorldObjectVisibilityManager
 					}
 
 					worldObject.EnsureVisibilityArea();
+					worldObject.EnsureVisibleToClient(client);
 				}
 			}
 		}
-	}
-
-	private static Vector3 GetClientWorldPosition(SphereClient client)
-	{
-		var character = client.CurrentCharacter!;
-		return new Vector3((float)character.X, (float)-character.Y, (float)-character.Z);
 	}
 
 	private static (int CellX, int CellZ) WorldToCell(Vector3 worldPosition)
