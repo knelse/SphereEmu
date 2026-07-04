@@ -1,5 +1,6 @@
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Shared.ClientEvents;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.EventHandlers;
 
@@ -53,6 +54,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
         }
 
         MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
+        WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
 
         return Task.CompletedTask;
     }

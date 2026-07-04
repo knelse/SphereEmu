@@ -6,8 +6,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class TeleportWild : WorldObject
 {
-    public TeleportWild()
-    {
-        ObjectType = ObjectType.TeleportWild;
-    }
+	public TeleportWild()
+	{
+		ObjectType = ObjectType.TeleportWild;
+	}
 }

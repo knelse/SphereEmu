@@ -21,6 +21,9 @@ public partial class WorldObject : Node3D
 
 	private readonly HashSet<SphereClient> _visibleClients = [];
 	private const string PlaceholderMeshNodeName = "MeshInstance3D";
+	private const string VisibilityAreaNodeName = "ClientVisibilityArea";
+
+	private Area3D? _visibilityArea;
 
 	/// <summary>Short name + unique scene id so the tree shows e.g. <c>…#Glb</c> instead of a long duplicate name.</summary>
 	private const string GlbModelChildName = "Glb";
@@ -89,10 +92,7 @@ public partial class WorldObject : Node3D
 			}
 
 			_objectType = value;
-			if (IsInsideTree())
-			{
-				CallDeferred(nameof(RefreshModelVisualDeferred));
-			}
+			ScheduleModelVisualRefreshIfNeeded();
 		}
 	}
 
@@ -108,10 +108,7 @@ public partial class WorldObject : Node3D
 			}
 
 			_modelName = value;
-			if (IsInsideTree())
-			{
-				CallDeferred(nameof(RefreshModelVisualDeferred));
-			}
+			ScheduleModelVisualRefreshIfNeeded();
 		}
 	}
 
@@ -122,10 +119,105 @@ public partial class WorldObject : Node3D
 	protected virtual bool RefreshModelVisualOnReady => false;
 
 	/// <summary>
+	///     When true, editor <see cref="Node._Ready" /> does not refresh models (e.g. monsters use MultiMesh instead).
+	/// </summary>
+	protected virtual bool SkipModelVisualRefreshOnEditorReady => false;
+
+	/// <summary>
 	///     If true, after loading a GLB we shift the visual child so its combined mesh bounds sit on Y=0 (feet on ground).
 	///     This compensates for assets whose origin/pivot is centered instead of at the bottom.
 	/// </summary>
 	protected virtual bool AutoGroundGlbVisual => false;
+
+	internal bool HasVisibilityArea => _visibilityArea is not null;
+
+	public override void _ExitTree()
+	{
+		if (!Engine.IsEditorHint())
+		{
+			WorldObjectVisibilityManager.Unregister(this);
+		}
+
+		base._ExitTree();
+	}
+
+	/// <summary>
+	///     Creates the client visibility <see cref="Area3D" /> on first proximity activation.
+	/// </summary>
+	internal void EnsureVisibilityArea()
+	{
+		if (Engine.IsEditorHint() || _visibilityArea is not null)
+		{
+			return;
+		}
+
+		var area3D = new Area3D { Name = VisibilityAreaNodeName };
+		area3D.CollisionLayer = 1;
+		area3D.CollisionMask = 2;
+
+		var collisionShape3d = new CollisionShape3D();
+		collisionShape3d.Shape = new SphereShape3D
+		{
+			Radius = ServerConfig.AppConfig.ObjectVisibilityDistance
+		};
+
+		area3D.AddChild(collisionShape3d);
+		area3D.BodyEntered += OnVisibilityBodyEntered;
+		area3D.BodyExited += OnVisibilityBodyExited;
+		AddChild(area3D);
+		_visibilityArea = area3D;
+		CallDeferred(nameof(FlushVisibilityOverlapsDeferred));
+	}
+
+	private void OnVisibilityBodyEntered(Node3D body)
+	{
+		var clientNode = body.GetParent();
+		if (clientNode is not SphereClient client)
+		{
+			SphLogger.Info($"WorldObject {Name}: collision enter by {body.Name} which is not a SphereClient");
+			return;
+		}
+
+		if (!_visibleClients.Add(client))
+		{
+			return;
+		}
+
+		ShowForClient(client);
+	}
+
+	private void OnVisibilityBodyExited(Node3D body)
+	{
+		var clientNode = body.GetParent();
+		if (clientNode is not SphereClient client)
+		{
+			SphLogger.Info($"WorldObject {Name}: collision exit by {body.Name} which is not a SphereClient");
+			return;
+		}
+
+		if (!_visibleClients.Remove(client))
+		{
+			return;
+		}
+
+		client.MaybeQueueNetworkPacketSend(CommonPackets.DespawnEntity(client.GetLocalObjectId(ID)));
+	}
+
+	private void FlushVisibilityOverlapsDeferred()
+	{
+		if (_visibilityArea is null)
+		{
+			return;
+		}
+
+		foreach (var body in _visibilityArea.GetOverlappingBodies())
+		{
+			if (body is Node3D node3D)
+			{
+				OnVisibilityBodyEntered(node3D);
+			}
+		}
+	}
 
 	public override void _Ready()
 	{
@@ -133,7 +225,15 @@ public partial class WorldObject : Node3D
 
 		if (RefreshModelVisualOnReady)
 		{
-			RefreshModelVisual();
+			if (!Engine.IsEditorHint())
+			{
+				RefreshModelVisual();
+			}
+			else if (!SkipModelVisualRefreshOnEditorReady && ShouldRefreshModelVisual())
+			{
+				RefreshModelVisual();
+			}
+
 			if (Engine.IsEditorHint())
 			{
 				return;
@@ -151,53 +251,11 @@ public partial class WorldObject : Node3D
 
 			ActiveNodes.Add(GetInstanceId(), this);
 			ActiveWorldObjects.Add(ID, this);
-
-			var area3D = new Area3D();
-			area3D.CollisionLayer = 1;
-			area3D.CollisionMask = 2;
-
-			var collisionShape3d = new CollisionShape3D();
-			collisionShape3d.Shape = new SphereShape3D
-			{
-				Radius = ServerConfig.AppConfig.ObjectVisibilityDistance
-			};
-
-			area3D.AddChild(collisionShape3d);
-			area3D.BodyEntered += body =>
-			{
-				// layer mask should only allow clients here, so we assume it's a client
-
-				var clientNode = body.GetParent();
-				if (clientNode is not SphereClient client)
-				{
-					SphLogger.Info($"WorldObject {Name}: collision enter by {body.Name} which is not a SphereClient");
-					return;
-				}
-
-				_visibleClients.Add(client);
-				ShowForClient(client);
-			};
-
-			area3D.BodyExited += body =>
-			{
-				// layer mask should only allow clients here, so we assume it's a client
-
-				var clientNode = body.GetParent();
-				if (clientNode is not SphereClient client)
-				{
-					SphLogger.Info($"WorldObject {Name}: collision exit by {body.Name} which is not a SphereClient");
-					return;
-				}
-
-				_visibleClients.Remove(client);
-				client.MaybeQueueNetworkPacketSend(CommonPackets.DespawnEntity(client.GetLocalObjectId(ID)));
-			};
-			AddChild(area3D);
+			WorldObjectVisibilityManager.Register(this);
 		}
 
-		// Instance overrides (e.g. ObjectType = Workshop on MainServer placements) are applied after the base
-		// scene's defaults; refreshing on the next frame avoids resolving Unknown/empty map and a stuck placeholder.
-		if (!RefreshModelVisualOnReady)
+		// Runtime only: instance overrides are applied after the base scene defaults; defer one frame so exports settle.
+		if (!RefreshModelVisualOnReady && !Engine.IsEditorHint())
 		{
 			CallDeferred(nameof(RefreshModelVisualDeferred));
 		}
@@ -313,7 +371,72 @@ public partial class WorldObject : Node3D
 	/// </summary>
 	public void RefreshModelVisualDeferred()
 	{
+		if (Engine.IsEditorHint() && !ShouldRefreshModelVisual())
+		{
+			return;
+		}
+
 		RefreshModelVisual();
+	}
+
+	protected void ScheduleModelVisualRefreshIfNeeded()
+	{
+		if (!IsInsideTree())
+		{
+			return;
+		}
+
+		if (!Engine.IsEditorHint() || ShouldRefreshModelVisual())
+		{
+			CallDeferred(nameof(RefreshModelVisualDeferred));
+		}
+	}
+
+	/// <summary>
+	///     Editor: skip refresh when an existing child GLB / placeholder already matches exports.
+	///     Runtime: always allow refresh when invoked.
+	/// </summary>
+	protected bool ShouldRefreshModelVisual()
+	{
+		if (!Engine.IsEditorHint())
+		{
+			return true;
+		}
+
+		var trimmed = GetEffectiveModelNameForVisual();
+		if (string.IsNullOrEmpty(trimmed))
+		{
+			return GetNodeOrNull(PlaceholderMeshNodeName) is null && HasAnyGlbVisualChild();
+		}
+
+		return !TryGetExistingGlbVisual(BuildModelGlbPath(trimmed), out _);
+	}
+
+	private static string BuildModelGlbPath(string modelName) => $"res://Godot/Models/{modelName}.glb";
+
+	private bool HasAnyGlbVisualChild()
+	{
+		foreach (var child in GetChildren())
+		{
+			if (child is not Node3D)
+			{
+				continue;
+			}
+
+			if (child.HasMeta(GlbModelMetaKey) || child.HasMeta(GlbModelMetaKeyLegacy))
+			{
+				return true;
+			}
+
+			var name = child.Name.ToString();
+			if (name == GlbModelChildName || IsGlbRenamedDuplicateName(name)
+				|| name.StartsWith("NpcGlbModel", StringComparison.Ordinal))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -332,7 +455,7 @@ public partial class WorldObject : Node3D
 			return;
 		}
 
-		var glbPath = $"res://Godot/Models/{trimmed}.glb";
+		var glbPath = BuildModelGlbPath(trimmed);
 		// If a GLB is already instanced under this node and matches the desired model, keep it.
 		// This avoids removing/re-instancing visuals on every scene load (which gets expensive with many objects).
 		if (TryGetExistingGlbVisual(glbPath, out var existingGlb))
@@ -402,7 +525,8 @@ public partial class WorldObject : Node3D
 			}
 
 			var metaPath = child.GetMeta(GlbModelMetaKeyModelPath, Variant.CreateFrom(string.Empty)).AsString();
-			if (!string.IsNullOrEmpty(metaPath) && string.Equals(metaPath, desiredGlbPath, StringComparison.Ordinal))
+			if (!string.IsNullOrEmpty(metaPath)
+				&& string.Equals(metaPath, desiredGlbPath, StringComparison.OrdinalIgnoreCase))
 			{
 				glbRoot = n3;
 				return true;
@@ -410,7 +534,8 @@ public partial class WorldObject : Node3D
 
 			// For scene-authored instances, SceneFilePath should point to the packed scene.
 			var scenePath = n3.SceneFilePath ?? string.Empty;
-			if (!string.IsNullOrEmpty(scenePath) && string.Equals(scenePath, desiredGlbPath, StringComparison.Ordinal))
+			if (!string.IsNullOrEmpty(scenePath)
+				&& string.Equals(scenePath, desiredGlbPath, StringComparison.OrdinalIgnoreCase))
 			{
 				glbRoot = n3;
 				// Tag it so future refreshes can be O(1) without relying on SceneFilePath.

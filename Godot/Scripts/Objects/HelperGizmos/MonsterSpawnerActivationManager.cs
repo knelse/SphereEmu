@@ -5,6 +5,7 @@ using SphServer.Client;
 using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 using static SphServer.Helpers.PoiType;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
@@ -146,7 +147,8 @@ public static class MonsterSpawnerActivationManager
 }
 
 /// <summary>
-///     Server tick fallback: clients that have not moved recently still activate nearby spawners.
+///     Server tick fallback: clients that have not moved recently still activate nearby spawners
+///     and world-object visibility areas.
 /// </summary>
 public partial class MonsterSpawnerActivationManagerNode : Node
 {
@@ -163,5 +165,6 @@ public partial class MonsterSpawnerActivationManagerNode : Node
 
         _elapsedSeconds = 0;
         MonsterSpawnerActivationManager.CheckAllClients();
+        WorldObjectVisibilityManager.CheckAllClients();
     }
 }

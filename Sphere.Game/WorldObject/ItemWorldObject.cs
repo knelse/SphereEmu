@@ -6,5 +6,5 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class ItemWorldObject : WorldObject
 {
-    public ItemDbEntry ItemDbEntry { get; set; }
+	public ItemDbEntry ItemDbEntry { get; set; }
 }

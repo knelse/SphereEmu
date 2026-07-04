@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Godot;
 
 namespace SphServer.Godot.Scripts.Terrain.WalkSurface;
@@ -88,6 +89,31 @@ public sealed class WalkSurfaceChunk
     public bool IsOutdoorSpawnAllowed(float worldX, float worldZ)
     {
         return IsWalkableAt(worldX, worldZ);
+    }
+
+    public void CountFieldStats(out int walkableCells, out int blockedCells, out int terrainCells)
+    {
+        walkableCells = 0;
+        blockedCells = 0;
+        terrainCells = 0;
+        var count = Width * Height;
+        for (var i = 0; i < count; i++)
+        {
+            if (_blocked[i] != 0)
+            {
+                blockedCells++;
+            }
+
+            if (!float.IsNaN(_terrainHeights[i]))
+            {
+                terrainCells++;
+            }
+
+            if (HasWalkableField && _spawnAllowed[i] != 0)
+            {
+                walkableCells++;
+            }
+        }
     }
 
     public bool TrySampleWalkableGround(float worldX, float worldZ, out float worldY)
@@ -342,17 +368,84 @@ public sealed class WalkSurfaceChunk
         }
 
         var tempPath = absolutePath + ".tmp";
+        if (File.Exists(tempPath))
+        {
+            try
+            {
+                File.Delete(tempPath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+            catch (IOException)
+            {
+            }
+        }
+
         using (var stream = File.Open(tempPath, FileMode.Create, global::System.IO.FileAccess.Write, FileShare.None))
         {
             WriteToStream(stream);
         }
 
-        if (File.Exists(absolutePath))
+        try
         {
-            File.Delete(absolutePath);
+            if (File.Exists(absolutePath))
+            {
+                File.Replace(tempPath, absolutePath, null);
+            }
+            else
+            {
+                File.Move(tempPath, absolutePath);
+            }
+        }
+        catch (PlatformNotSupportedException)
+        {
+            if (File.Exists(absolutePath))
+            {
+                File.Delete(absolutePath);
+            }
+
+            File.Move(tempPath, absolutePath);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            RetryReplace(tempPath, absolutePath);
+        }
+        catch (IOException)
+        {
+            RetryReplace(tempPath, absolutePath);
+        }
+    }
+
+    private static void RetryReplace(string tempPath, string absolutePath)
+    {
+        const int maxAttempts = 5;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                if (File.Exists(absolutePath))
+                {
+                    File.Replace(tempPath, absolutePath, null);
+                }
+                else
+                {
+                    File.Move(tempPath, absolutePath);
+                }
+
+                return;
+            }
+            catch (UnauthorizedAccessException) when (attempt < maxAttempts)
+            {
+                Thread.Sleep(attempt * 100);
+            }
+            catch (IOException) when (attempt < maxAttempts)
+            {
+                Thread.Sleep(attempt * 100);
+            }
         }
 
-        File.Move(tempPath, absolutePath);
+        throw new IOException($"WalkSurfaceChunk: failed to replace '{absolutePath}' after {maxAttempts} attempts.");
     }
 
     private void WriteToStream(Stream stream)

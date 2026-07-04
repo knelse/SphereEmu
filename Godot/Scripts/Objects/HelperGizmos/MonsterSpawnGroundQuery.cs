@@ -66,6 +66,12 @@ public static class MonsterSpawnGroundQuery
     {
         surfaceHit = default;
 
+        if (TrySampleSceneGroundY(contextNode, worldProbeOrigin.X, worldProbeOrigin.Z, out var sceneY))
+        {
+            surfaceHit = new SurfaceHit(new Vector3(worldProbeOrigin.X, sceneY, worldProbeOrigin.Z), isTerrain: false);
+            return true;
+        }
+
         if (WalkSurfaceCache.HasAnyChunkFiles()
             && WalkSurfaceQuery.TrySampleGround(worldProbeOrigin, out var atlasGround))
         {
@@ -108,6 +114,183 @@ public static class MonsterSpawnGroundQuery
         }
 
         surfaceHit = new SurfaceHit(bestPosition, bestIsTerrain);
+        return true;
+    }
+
+    /// <summary>
+    ///     Resolves Godot world Y for mob feet at (worldX, worldZ). Independent of spawner placement height.
+    /// </summary>
+    public static bool TryResolveSpawnGroundY(Node3D contextNode, float worldX, float worldZ, out float worldY)
+    {
+        if (TrySampleSceneGroundY(contextNode, worldX, worldZ, out worldY))
+        {
+            return true;
+        }
+
+        var terrain = ResolveTerrainGridMap(contextNode);
+        if (terrain is not null
+            && TerrainWalkMeshRaycast.TrySampleTerrainTopY(terrain, worldX, worldZ, out worldY))
+        {
+            return true;
+        }
+
+        if (TryConvertAtlasGroundY(contextNode, worldX, worldZ, out worldY))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    ///     Resolves outdoor ground height from scene physics for baked-slot placement.
+    /// </summary>
+    public static bool TrySampleSceneGroundY(Node3D contextNode, float worldX, float worldZ, out float worldY)
+    {
+        worldY = default;
+        var rayStart = new Vector3(worldX, TerrainWalkMeshRaycast.RayTopY, worldZ);
+        var rayEnd = new Vector3(worldX, TerrainWalkMeshRaycast.RayBottomY, worldZ);
+
+        if (!TryRaycastPhysics(contextNode, rayStart, rayEnd, out var physicsHit, out _)
+            || physicsHit.Normal.Y < MinWalkableSurfaceNormalY
+            || IsMonsterCollider(physicsHit.Collider))
+        {
+            return false;
+        }
+
+        worldY = physicsHit.Position.Y;
+        return true;
+    }
+
+    /// <summary>
+    ///     Atlas terrain Y uses tile mesh space that does not match Godot world space.
+    ///     Returns atlasY - terrainMeshY at the same horizontal sample (never spawner node Y).
+    /// </summary>
+    public static float ComputeAtlasVerticalOffset(
+        MonsterSpawner spawner,
+        IReadOnlyList<(float X, float Z, float Y)>? atlasCandidates = null)
+    {
+        WalkSurfaceCache.PreloadChunksForRadius(
+            spawner.GlobalPosition.X,
+            spawner.GlobalPosition.Z,
+            spawner.SpawnRadiusMeters + 1f);
+
+        if (TryComputeAtlasVerticalDelta(spawner, spawner.GlobalPosition.X, spawner.GlobalPosition.Z, out var delta))
+        {
+            return delta;
+        }
+
+        if (atlasCandidates is { Count: > 0 })
+        {
+            var origin = spawner.GlobalPosition;
+            var nearest = atlasCandidates[0];
+            var nearestDistSq = float.MaxValue;
+            foreach (var candidate in atlasCandidates)
+            {
+                var dx = candidate.X - origin.X;
+                var dz = candidate.Z - origin.Z;
+                var distSq = dx * dx + dz * dz;
+                if (distSq >= nearestDistSq)
+                {
+                    continue;
+                }
+
+                nearestDistSq = distSq;
+                nearest = candidate;
+            }
+
+            if (TryComputeAtlasVerticalDelta(spawner, nearest.X, nearest.Z, out delta))
+            {
+                return delta;
+            }
+        }
+
+        return 0f;
+    }
+
+    private static bool TryConvertAtlasGroundY(Node3D contextNode, float worldX, float worldZ, out float worldY)
+    {
+        worldY = default;
+        if (!WalkSurfaceCache.TrySampleWalkableGround(worldX, worldZ, out var atlasY)
+            && !WalkSurfaceCache.TrySampleGround(worldX, worldZ, out atlasY))
+        {
+            return false;
+        }
+
+        if (float.IsNaN(atlasY))
+        {
+            return false;
+        }
+
+        if (TryComputeAtlasVerticalDelta(contextNode, worldX, worldZ, out var delta))
+        {
+            worldY = atlasY - delta;
+            return true;
+        }
+
+        worldY = atlasY;
+        return true;
+    }
+
+    private static bool TryComputeAtlasVerticalDelta(
+        Node3D contextNode,
+        float worldX,
+        float worldZ,
+        out float delta)
+    {
+        if (TryComputeAtlasVerticalDeltaAt(contextNode, worldX, worldZ, out delta))
+        {
+            return true;
+        }
+
+        const float stepMeters = 2f;
+        const float maxRadiusMeters = 8f;
+        var maxRings = Mathf.CeilToInt(maxRadiusMeters / stepMeters);
+        for (var ring = 1; ring <= maxRings; ring++)
+        {
+            var ringRadius = ring * stepMeters;
+            var sampleCount = Math.Max(8, ring * 8);
+            for (var sample = 0; sample < sampleCount; sample++)
+            {
+                var angle = (float)(sample * Math.Tau / sampleCount);
+                var probeX = worldX + Mathf.Cos(angle) * ringRadius;
+                var probeZ = worldZ + Mathf.Sin(angle) * ringRadius;
+                if (TryComputeAtlasVerticalDeltaAt(contextNode, probeX, probeZ, out delta))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryComputeAtlasVerticalDeltaAt(
+        Node3D contextNode,
+        float worldX,
+        float worldZ,
+        out float delta)
+    {
+        delta = 0f;
+        if (!WalkSurfaceCache.TrySampleWalkableGround(worldX, worldZ, out var atlasY)
+            && !WalkSurfaceCache.TrySampleGround(worldX, worldZ, out atlasY))
+        {
+            return false;
+        }
+
+        if (float.IsNaN(atlasY))
+        {
+            return false;
+        }
+
+        var terrain = ResolveTerrainGridMap(contextNode);
+        if (terrain is null
+            || !TerrainWalkMeshRaycast.TrySampleTerrainTopY(terrain, worldX, worldZ, out var terrainY))
+        {
+            return false;
+        }
+
+        delta = atlasY - terrainY;
         return true;
     }
 

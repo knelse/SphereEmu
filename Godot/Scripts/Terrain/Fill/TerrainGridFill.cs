@@ -32,6 +32,13 @@ public partial class TerrainGridFill : Node3D
 	[Export]
 	public float TileSizeWorld { get; set; } = 100f;
 
+	/// <summary>
+	///     World-space origin of the terrain GridMap. The 80×80 map at 100 m tiles spans 8000×8000 m and is
+	///     centered on the game world, so the default places cell (0,0) near (-4000, -4000).
+	/// </summary>
+	[Export]
+	public Vector3 TerrainWorldOrigin { get; set; } = new(-4000f, 0f, -4000f);
+
 	[Export]
 	public int CellOrientation { get; set; }
 
@@ -116,6 +123,7 @@ public partial class TerrainGridFill : Node3D
 
 		var cellSize = new Vector3(TileSizeWorld, TileSizeWorld, TileSizeWorld);
 		terrain.CellSize = cellSize;
+		terrain.Position = TerrainWorldOrigin;
 		terrain.Clear();
 
 		for (var i = 0; i < cells.Count; i++)

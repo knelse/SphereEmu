@@ -1,11 +1,12 @@
-[gd_scene format=3 uid="uid://p1c0v7m3k9q2x"]
+[gd_scene format=3 uid="uid://kpjjyx3cg81v"]
 
 [ext_resource type="Script" uid="uid://cb4718r1rstnk" path="res://Sphere.Game/WorldObject/TeleportTournament.cs" id="1_tpt"]
-[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_glb"]
+[ext_resource type="PackedScene" uid="uid://cktw8qd20tbms" path="res://Godot/Models/portal1.glb" id="2_ovwru"]
 
 [node name="TeleportTournament" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_tpt")
+ObjectType = 71
 
-[node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_glb")]
-
+[node name="Glb" parent="." unique_id=1279009133 instance=ExtResource("2_ovwru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

@@ -59,37 +59,6 @@ public static class OutdoorSpawnSlotValidator
             return false;
         }
 
-        if (!HasOverheadClearance(spawner, candidate))
-        {
-            reason = FailReason.LowOverheadClearance;
-            return false;
-        }
-
         return true;
-    }
-
-    private static bool HasOverheadClearance(MonsterSpawner spawner, Vector3 groundPoint)
-    {
-        var world = spawner.GetWorld3D();
-        if (world is null)
-        {
-            return true;
-        }
-
-        var from = groundPoint + Vector3.Up * 0.05f;
-        var to = from + Vector3.Up * OutdoorFieldConfig.OverheadRayHeightMeters;
-        var query = PhysicsRayQueryParameters3D.Create(from, to);
-        query.CollideWithAreas = false;
-        query.CollideWithBodies = true;
-        query.CollisionMask = uint.MaxValue & ~(1u << 1);
-
-        var hit = world.DirectSpaceState.IntersectRay(query);
-        if (hit.Count == 0)
-        {
-            return true;
-        }
-
-        var hitPosition = (Vector3)hit["position"];
-        return hitPosition.Y - groundPoint.Y >= OutdoorFieldConfig.OverheadMinClearanceMeters;
     }
 }

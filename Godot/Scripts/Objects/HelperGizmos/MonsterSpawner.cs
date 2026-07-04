@@ -99,8 +99,12 @@ public partial class MonsterSpawner : Node3D
 	private bool _spawningEnabled;
 	private readonly Queue<PendingDeathRespawn> _pendingDeathRespawns = new();
 	private int _nextBindSlotIndex;
-
 	public Vector3 LeashCenterWorld => GlobalPosition;
+
+	internal int DesiredBakedSlotPoolCount =>
+		Math.Max(
+			TargetRegularMonsterCount + TargetNamedMonsterCount,
+			OutdoorFieldConfig.MinBakedSpawnSlotsPerSpawner);
 
 	private struct PendingDeathRespawn
 	{
@@ -254,10 +258,20 @@ public partial class MonsterSpawner : Node3D
 			_pendingDeathRespawns.Clear();
 			DeleteAllSpawnedMonsters();
 			SpawnPlacementInvalid = false;
+
+			if (BakedSpawnSlots.Count < DesiredBakedSlotPoolCount)
+			{
+				MonsterSpawnSlotBaker.BakeForSpawner(this);
+			}
+
 			if (!TryApplyInstantBulkRespawn())
 			{
 				MarkSpawnPlacementInvalid();
+				return;
 			}
+
+			_spawningEnabled = true;
+			SpawnPlacementInvalid = false;
 		}
 	}
 
@@ -821,8 +835,9 @@ public partial class MonsterSpawner : Node3D
 		monster.Name = BuildMonsterNodeName(monsterType, level, isNamed, monsterId);
 
 		AddChild(monster);
-		ApplySpawnTransform(monster, spawnWorldPosition);
-		monster.BindHome(new MonsterHomeBinding(slotIndex, spawnWorldPosition));
+		var resolvedPosition = ResolveBakedSlotPosition(spawnWorldPosition);
+		ApplySpawnTransform(monster, resolvedPosition);
+		monster.BindHome(new MonsterHomeBinding(slotIndex, resolvedPosition));
 		SetMonsterOwnerForPersistence(monster);
 		RegularMonsters.Add(monster);
 		_regularMonsterIds.Add(monsterId);
@@ -835,6 +850,16 @@ public partial class MonsterSpawner : Node3D
 		monster.GlobalPosition = spawnWorldPosition;
 		monster.Angle = WorldObject.CreateRandomSpawnAngle();
 		monster.RegisterMultiMeshVisualDeferred();
+	}
+
+	private Vector3 ResolveBakedSlotPosition(Vector3 bakedSlot)
+	{
+		if (MonsterSpawnGroundQuery.TryResolveSpawnGroundY(this, bakedSlot.X, bakedSlot.Z, out var groundY))
+		{
+			return new Vector3(bakedSlot.X, groundY, bakedSlot.Z);
+		}
+
+		return bakedSlot;
 	}
 
 	private bool TrySpawnNamedMonster(int monsterId)

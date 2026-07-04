@@ -7,6 +7,4 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_7olma")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=457266572]
-
 [node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_rksa4")]

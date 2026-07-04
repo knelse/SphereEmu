@@ -433,14 +433,31 @@ public static class WalkSurfaceAtlasBuilder
             return;
         }
 
-        foreach (var file in Directory.GetFiles(absoluteDirectory, "chunk_*.bin"))
+        var skipped = 0;
+        foreach (var pattern in new[] { "chunk_*.bin", "chunk_*.bin.tmp" })
         {
-            File.Delete(file);
+            foreach (var file in Directory.GetFiles(absoluteDirectory, pattern))
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    skipped++;
+                }
+                catch (IOException)
+                {
+                    skipped++;
+                }
+            }
         }
 
-        foreach (var file in Directory.GetFiles(absoluteDirectory, "chunk_*.bin.tmp"))
+        if (skipped > 0)
         {
-            File.Delete(file);
+            GD.PushWarning(
+                $"WalkSurfaceAtlasBuilder: skipped deleting {skipped} locked chunk file(s); "
+                + "close Godot/editor using WalkData, then rebake with --force to avoid stale chunks.");
         }
     }
 }

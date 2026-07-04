@@ -3,18 +3,9 @@
 [ext_resource type="Script" uid="uid://88f1n8i31gxe" path="res://Sphere.Game/WorldObject/DoorWithKey.cs" id="1_qgmmf"]
 [ext_resource type="PackedScene" uid="uid://lsjwbrnxavbp" path="res://Godot/Models/edoor.glb" id="2_vc8fi"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imxti"]
-
 [node name="DoorWithKey" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)
 script = ExtResource("1_qgmmf")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=825999938]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2017738351]
-shape = SubResource("CapsuleShape3D_imxti")
-
-[node name="Glb" type="Node3D" parent="." unique_id=133626886 instance=ExtResource("2_vc8fi")]
-unique_name_in_owner = true
-metadata/_world_object_glb = true
-metadata/_world_object_glb_path = "res://Godot/Models/edoor.glb"
+[node name="Glb" parent="." unique_id=185992158 instance=ExtResource("2_vc8fi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

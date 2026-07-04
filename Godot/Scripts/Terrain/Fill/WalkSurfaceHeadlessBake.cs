@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
@@ -32,6 +33,16 @@ public partial class WalkSurfaceHeadlessBake : Node
     {
         try
         {
+            if (options.ProbeSpawn)
+            {
+                return WalkSurfaceSpawnProbe.Probe(
+                    options.ProbeX,
+                    options.ProbeY,
+                    options.ProbeZ,
+                    options.ProbeRadius,
+                    options.ProbeTargetCount);
+            }
+
             if (options.NavOnly)
             {
                 GD.Print("WalkSurfaceHeadlessBake: building outdoor nav chunks from existing walk data.");
@@ -105,8 +116,10 @@ public partial class WalkSurfaceHeadlessBake : Node
     private static HeadlessBakeOptions ParseOptions()
     {
         var options = new HeadlessBakeOptions();
-        foreach (var arg in OS.GetCmdlineUserArgs())
+        var userArgs = OS.GetCmdlineUserArgs();
+        for (var i = 0; i < userArgs.Length; i++)
         {
+            var arg = userArgs[i];
             switch (arg)
             {
                 case "--help":
@@ -125,6 +138,28 @@ public partial class WalkSurfaceHeadlessBake : Node
                     break;
                 case "--convert-chunks":
                     options.ConvertChunksOnly = true;
+                    break;
+                case "--probe-spawn":
+                    options.ProbeSpawn = true;
+                    if (i + 3 < userArgs.Length
+                        && float.TryParse(userArgs[i + 1], out var x)
+                        && float.TryParse(userArgs[i + 2], out var y)
+                        && float.TryParse(userArgs[i + 3], out var z))
+                    {
+                        options.ProbeX = x;
+                        options.ProbeY = y;
+                        options.ProbeZ = z;
+                        i += 3;
+                    }
+
+                    break;
+                case "--probe-radius" when i + 1 < userArgs.Length && float.TryParse(userArgs[i + 1], out var radius):
+                    options.ProbeRadius = radius;
+                    i++;
+                    break;
+                case "--probe-target" when i + 1 < userArgs.Length && int.TryParse(userArgs[i + 1], out var target):
+                    options.ProbeTargetCount = target;
+                    i++;
                     break;
             }
         }
@@ -170,5 +205,11 @@ public partial class WalkSurfaceHeadlessBake : Node
         public bool ObjectsOnly { get; set; }
         public bool NavOnly { get; set; }
         public bool ConvertChunksOnly { get; set; }
+        public bool ProbeSpawn { get; set; }
+        public float ProbeX { get; set; }
+        public float ProbeY { get; set; }
+        public float ProbeZ { get; set; }
+        public float ProbeRadius { get; set; } = OutdoorFieldConfig.DefaultSpawnRadiusMeters;
+        public int ProbeTargetCount { get; set; } = 3;
     }
 }

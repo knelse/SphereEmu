@@ -8,11 +8,12 @@ public static class OutdoorFieldConfig
     public const float SampleSpacingMeters = 0.25f;
     public const float MobBodyRadiusMeters = 0.4f;
     public const float MinSlotSeparationMeters = 0.7f;
+    public const int MinBakedSpawnSlotsPerSpawner = 10;
     public const float OpennessRadiusMeters = 2f;
     public const float OpennessThreshold = 0.65f;
     public const float OverheadRayHeightMeters = 4f;
     public const float OverheadMinClearanceMeters = 2.5f;
-    public const float DefaultSpawnRadiusMeters = 20f;
+    public const float DefaultSpawnRadiusMeters = 6f;
     public const float DefaultLeashRadiusMeters = 100f;
     public const int BlockedDilationRadiusCells = 1;
     public const int AStarMaxExpandedNodes = 10_000;

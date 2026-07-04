@@ -13,6 +13,8 @@ public partial class Monster : WorldObject
 
 	protected override bool RefreshModelVisualOnReady => true;
 
+	protected override bool SkipModelVisualRefreshOnEditorReady => true;
+
 	private static bool TryGetMonsterModelNameGroundFromDb(MonsterType monsterType, out string modelName)
 	{
 		modelName = string.Empty;
@@ -152,10 +154,7 @@ public partial class Monster : WorldObject
 
 			_monsterType = value;
 			RefreshMonsterInstanceFromType();
-			if (IsInsideTree())
-			{
-				CallDeferred(nameof(RefreshModelVisualDeferred));
-			}
+			ScheduleModelVisualRefreshIfNeeded();
 		}
 	}
 
@@ -472,6 +471,15 @@ public partial class Monster : WorldObject
 		}
 
 		base._Ready();
+
+		if (Engine.IsEditorHint())
+		{
+			var tree = GetTree();
+			if (tree is not null)
+			{
+				MonsterMultiMeshVisuals.RequestEditorRebuild(tree);
+			}
+		}
 	}
 
 	public override void _ExitTree()

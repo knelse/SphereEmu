@@ -6,8 +6,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class TeleportBroken : WorldObject
 {
-    public TeleportBroken()
-    {
-        ObjectType = ObjectType.TeleportBroken;
-    }
+	public TeleportBroken()
+	{
+		ObjectType = ObjectType.TeleportBroken;
+	}
 }
