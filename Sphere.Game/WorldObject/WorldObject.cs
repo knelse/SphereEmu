@@ -32,7 +32,7 @@ public partial class WorldObject : Node3D
 	private const string DefaultModelNameForVisual = "pump1";
 
 	/// <summary>
-	///     Columns = source X, Y, Z axes in Godot (same as <see cref="SphServer.Godot.Scripts.Terrain.TerrainObjectsFill" />):
+	///     Columns = source X, Y, Z axes in Godot (same as <see cref="SphServer.Godot.Scripts.Terrain.Fill.TerrainObjectsFill" />):
 	///     <c>(x,y,z)_src ↦ (x,-y,-z)</c>. Used with <c>R' = T R T</c> for yaw from <see cref="Angle" />.
 	/// </summary>
 	private static readonly Basis SourceWorldToGodotWorldBasis = new(Vector3.Right, Vector3.Down, Vector3.Forward);
@@ -46,7 +46,7 @@ public partial class WorldObject : Node3D
 	/// <summary>
 	///     Game yaw: 0 = north; values increase counter-clockwise. Source yaw is <c>Angle * π / 64</c> radians; Godot
 	///     <see cref="Rotation" /> uses the same <c>R' = T R_src T</c> / YXZ path as terrain JSON
-	///     (<see cref="SphServer.Godot.Scripts.Terrain.TerrainObjectsFill" />; <c>NpcSpawnTscnWriter</c> position flip is
+	///     (<see cref="SphServer.Godot.Scripts.Terrain.Fill.TerrainObjectsFill" />; <c>NpcSpawnTscnWriter</c> position flip is
 	///     separate).
 	/// </summary>
 	[Export]

@@ -1,14 +1,16 @@
-# Rebakes outdoor walk-surface atlases headlessly (terrain tile heights + object footprints).
+# Rebakes outdoor walk-surface atlases headlessly (terrain tile heights + object footprints + nav).
 # Requires Godot 4.x on PATH, or set $env:GODOT_PATH to the editor executable.
 #
 # Examples:
 #   .\Tools\rebake_walk_surface.ps1
 #   .\Tools\rebake_walk_surface.ps1 -Force
 #   .\Tools\rebake_walk_surface.ps1 -ObjectsOnly
+#   .\Tools\rebake_walk_surface.ps1 -NavOnly
 
 param(
     [switch]$Force,
     [switch]$ObjectsOnly,
+    [switch]$NavOnly,
     [switch]$Help
 )
 
@@ -22,6 +24,7 @@ $userArgs = @()
 if ($Help) { $userArgs += "--help" }
 if ($Force) { $userArgs += "--force" }
 if ($ObjectsOnly) { $userArgs += "--objects-only" }
+if ($NavOnly) { $userArgs += "--nav-only" }
 
 Write-Host "Walk surface headless bake"
 Write-Host "  project: $Root"

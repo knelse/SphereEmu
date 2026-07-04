@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwalksurfacebake01"]
 
-[ext_resource type="Script" path="res://Godot/Scripts/Terrain/WalkSurfaceHeadlessBake.cs" id="1"]
-[ext_resource type="Script" path="res://Godot/Scripts/Terrain/TerrainGridFill.cs" id="2"]
+[ext_resource type="Script" path="res://Godot/Scripts/Terrain/Fill/WalkSurfaceHeadlessBake.cs" id="1"]
+[ext_resource type="Script" path="res://Godot/Scripts/Terrain/Fill/TerrainGridFill.cs" id="2"]
 
 [node name="WalkSurfaceHeadlessBake" type="Node"]
 script = ExtResource("1")

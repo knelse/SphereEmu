@@ -1,5 +1,5 @@
 using Godot;
-using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 

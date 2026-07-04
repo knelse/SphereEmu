@@ -1,5 +1,6 @@
 using Godot;
-using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.Terrain.Fill;
+using SphServer.Godot.Scripts.Terrain.WalkSurface;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;

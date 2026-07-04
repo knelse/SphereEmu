@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Godot;
-using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Godot.Scripts.Terrain.OutdoorNav;
+using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
-namespace SphServer.Godot.Scripts.Terrain;
+namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
 ///     Pre-bakes validated outdoor spawn slots for monster spawners from the walk atlas spawn channel.
@@ -34,6 +35,14 @@ public static class MonsterSpawnSlotBaker
             return 0;
         }
 
+        if (OutdoorNavCache.HasAnyNavFiles())
+        {
+            OutdoorNavCache.PreloadForRadius(
+                spawner.LeashCenterWorld.X,
+                spawner.LeashCenterWorld.Z,
+                spawner.LeashRadiusMeters);
+        }
+
         var origin = spawner.GlobalPosition;
         if (!WalkSurfaceOutdoorSpawnQuery.TryPickSpawnSlots(
                 origin,
@@ -47,8 +56,15 @@ public static class MonsterSpawnSlotBaker
                 $"MonsterSpawnSlotBaker: found {slots.Count}/{targetCount} slot(s) for spawner '{spawner.Name}'.");
         }
 
-        spawner.SetBakedSpawnSlots(slots);
-        return slots.Count;
+        var validated = FilterSlots(spawner, slots);
+        if (validated.Count < slots.Count)
+        {
+            GD.PushWarning(
+                $"MonsterSpawnSlotBaker: kept {validated.Count}/{slots.Count} slot(s) after leash/nav validation for '{spawner.Name}'.");
+        }
+
+        spawner.SetBakedSpawnSlots(validated);
+        return validated.Count;
     }
 
     public static int BakeAllUnder(Node parent)
@@ -68,5 +84,28 @@ public static class MonsterSpawnSlotBaker
 
         GD.Print($"MonsterSpawnSlotBaker: baked {slotCount} slot(s) across {baked} spawner(s).");
         return slotCount;
+    }
+
+    private static List<Vector3> FilterSlots(MonsterSpawner spawner, List<Vector3> candidates)
+    {
+        var origin = spawner.GlobalPosition;
+        var validated = new List<Vector3>(candidates.Count);
+        foreach (var slot in candidates)
+        {
+            if (!OutdoorPathQuery.IsInsideLeash(slot, origin, spawner.LeashRadiusMeters))
+            {
+                continue;
+            }
+
+            if (OutdoorNavCache.HasAnyNavFiles()
+                && !OutdoorNavReachability.IsReachable(origin, slot, spawner.LeashRadiusMeters))
+            {
+                continue;
+            }
+
+            validated.Add(slot);
+        }
+
+        return validated;
     }
 }
