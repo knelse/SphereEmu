@@ -1,16 +1,18 @@
 using System.IO;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Terrain.OutdoorNav;
 
 /// <summary>
-///     Builds coarse outdoor nav chunks from v4 walk-surface chunks.
+///     Builds outdoor nav chunks from v4 walk-surface chunks at the same 0.25 m resolution.
 /// </summary>
 public static class OutdoorNavAtlasBuilder
 {
     public const string DefaultOutputDirectory = "res://Godot/Terrain/NavData";
-    public const float SampleSpacingMeters = 1f;
+
+    public static float SampleSpacingMeters => WalkSurfaceAtlasBuilder.SampleSpacingMeters;
 
     public static int BuildFromWalkDirectory(
         string walkDirectoryResourcePath = WalkSurfaceAtlasBuilder.DefaultOutputDirectory,
@@ -32,9 +34,9 @@ public static class OutdoorNavAtlasBuilder
                 continue;
             }
 
-            if (!walkChunk.HasOutdoorSpawnChannel)
+            if (!walkChunk.HasWalkableField)
             {
-                GD.PushWarning($"OutdoorNavAtlasBuilder: skipping '{file}' — no outdoor spawn channel (rebake walk v4 first).");
+                GD.PushWarning($"OutdoorNavAtlasBuilder: skipping '{file}' — no walkable field (rebake walk v4 first).");
                 continue;
             }
 
@@ -47,30 +49,29 @@ public static class OutdoorNavAtlasBuilder
         }
 
         OutdoorNavCache.Invalidate();
-        GD.Print($"OutdoorNavAtlasBuilder: wrote {saved} nav chunk(s) to '{navDirectoryResourcePath}'.");
+        GD.Print($"OutdoorNavAtlasBuilder: wrote {saved} nav chunk(s) at {SampleSpacingMeters:0.##}m to '{navDirectoryResourcePath}'.");
         return saved;
     }
 
     public static OutdoorNavChunk BuildFromWalkChunk(WalkSurfaceChunk walkChunk)
     {
-        var spacing = SampleSpacingMeters;
-        var width = Mathf.CeilToInt(WalkSurfaceAtlasBuilder.ChunkSizeMeters / spacing) + 1;
-        var height = width;
-        var walkable = new byte[width * height];
-        var terrainY = new float[width * height];
+        var count = walkChunk.Width * walkChunk.Height;
+        var walkable = new byte[count];
+        var terrainY = new float[count];
         for (var i = 0; i < terrainY.Length; i++)
         {
             terrainY[i] = OutdoorNavChunk.NoGround;
         }
 
-        for (var z = 0; z < height; z++)
+        for (var z = 0; z < walkChunk.Height; z++)
         {
-            for (var x = 0; x < width; x++)
+            for (var x = 0; x < walkChunk.Width; x++)
             {
-                var worldX = walkChunk.OriginX + x * spacing;
-                var worldZ = walkChunk.OriginZ + z * spacing;
-                var index = z * width + x;
-                if (!IsOutdoorWalkableAt(walkChunk, worldX, worldZ, out var y))
+                var worldX = walkChunk.OriginX + x * walkChunk.SampleSpacing;
+                var worldZ = walkChunk.OriginZ + z * walkChunk.SampleSpacing;
+                var index = z * walkChunk.Width + x;
+                if (!walkChunk.IsWalkableAt(worldX, worldZ)
+                    || !walkChunk.TrySampleWalkableGround(worldX, worldZ, out var y))
                 {
                     continue;
                 }
@@ -80,18 +81,14 @@ public static class OutdoorNavAtlasBuilder
             }
         }
 
-        return new OutdoorNavChunk(walkChunk.OriginX, walkChunk.OriginZ, spacing, width, height, walkable, terrainY);
-    }
-
-    private static bool IsOutdoorWalkableAt(WalkSurfaceChunk walkChunk, float worldX, float worldZ, out float terrainY)
-    {
-        terrainY = OutdoorNavChunk.NoGround;
-        if (!walkChunk.IsOutdoorSpawnAllowed(worldX, worldZ))
-        {
-            return false;
-        }
-
-        return walkChunk.TrySampleOutdoorSpawn(worldX, worldZ, out terrainY);
+        return new OutdoorNavChunk(
+            walkChunk.OriginX,
+            walkChunk.OriginZ,
+            walkChunk.SampleSpacing,
+            walkChunk.Width,
+            walkChunk.Height,
+            walkable,
+            terrainY);
     }
 
     private static void EnsureOutputDirectory(string outputDirectoryResourcePath)

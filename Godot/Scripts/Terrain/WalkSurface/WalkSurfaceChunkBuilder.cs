@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
 
 namespace SphServer.Godot.Scripts.Terrain.WalkSurface;
 
@@ -157,36 +158,60 @@ public sealed class WalkSurfaceChunkBuilder
         _dirty = true;
     }
 
-    public void FinalizeOutdoorSpawnAllowed(float maxOutdoorHeightDeltaMeters)
+    public void FinalizeWalkable()
     {
         _hasOutdoorSpawnChannel = false;
-        for (var i = 0; i < _heights.Length; i++)
+        for (var z = 0; z < _height; z++)
         {
-            if (_blocked[i] != 0)
+            for (var x = 0; x < _width; x++)
             {
-                _spawnAllowed[i] = 0;
-                continue;
-            }
+                var index = z * _width + x;
+                if (!IsWalkableSample(x, z))
+                {
+                    _spawnAllowed[index] = 0;
+                    continue;
+                }
 
-            var terrainHeight = _terrainHeights[i];
-            var walkHeight = _heights[i];
-            if (float.IsNaN(terrainHeight) || float.IsNaN(walkHeight))
-            {
-                _spawnAllowed[i] = 0;
-                continue;
+                _spawnAllowed[index] = 1;
+                _hasOutdoorSpawnChannel = true;
             }
-
-            if (Mathf.Abs(walkHeight - terrainHeight) > maxOutdoorHeightDeltaMeters)
-            {
-                _spawnAllowed[i] = 0;
-                continue;
-            }
-
-            _spawnAllowed[i] = 1;
-            _hasOutdoorSpawnChannel = true;
         }
 
         _dirty = true;
+    }
+
+    private bool IsWalkableSample(int x, int z)
+    {
+        var index = z * _width + x;
+        if (_blocked[index] != 0)
+        {
+            return false;
+        }
+
+        if (float.IsNaN(_terrainHeights[index]))
+        {
+            return false;
+        }
+
+        var worldX = _originX + x * _sampleSpacing;
+        var worldZ = _originZ + z * _sampleSpacing;
+        var radius = OutdoorFieldConfig.MobBodyRadiusMeters;
+        foreach (var (offsetX, offsetZ) in WalkSurfaceMobBodyDisk.Offsets)
+        {
+            var probeX = worldX + offsetX * radius;
+            var probeZ = worldZ + offsetZ * radius;
+            if (!TryGetSampleIndex(probeX, probeZ, out var probeIndex))
+            {
+                return false;
+            }
+
+            if (_blocked[probeIndex] != 0 || float.IsNaN(_terrainHeights[probeIndex]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public bool StampBlockedDisk(float worldX, float worldZ, float radiusMeters)

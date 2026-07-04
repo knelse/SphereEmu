@@ -41,7 +41,7 @@ public sealed class WalkSurfaceChunk
         _blocked = blocked ?? new byte[count];
         _terrainHeights = terrainHeights ?? (float[])heights.Clone();
         _spawnAllowed = spawnAllowed ?? new byte[count];
-        HasOutdoorSpawnChannel = hasOutdoorSpawnChannel;
+        HasWalkableField = hasOutdoorSpawnChannel;
     }
 
     public float OriginX { get; }
@@ -49,7 +49,12 @@ public sealed class WalkSurfaceChunk
     public float SampleSpacing { get; }
     public int Width { get; }
     public int Height { get; }
-    public bool HasOutdoorSpawnChannel { get; }
+
+    /// <summary>True when this chunk stores a pre-baked walkable field (v4 on disk).</summary>
+    public bool HasWalkableField { get; }
+
+    /// <summary>Deprecated alias for <see cref="HasWalkableField" />.</summary>
+    public bool HasOutdoorSpawnChannel => HasWalkableField;
 
     public float MaxWorldX => OriginX + (Width - 1) * SampleSpacing;
     public float MaxWorldZ => OriginZ + (Height - 1) * SampleSpacing;
@@ -70,9 +75,9 @@ public sealed class WalkSurfaceChunk
         return IsBlockedNearest(worldX, worldZ);
     }
 
-    public bool IsOutdoorSpawnAllowed(float worldX, float worldZ)
+    public bool IsWalkableAt(float worldX, float worldZ)
     {
-        if (!HasOutdoorSpawnChannel || !TryGetNearestSampleIndex(worldX, worldZ, out var index))
+        if (!HasWalkableField || !TryGetNearestSampleIndex(worldX, worldZ, out var index))
         {
             return false;
         }
@@ -80,10 +85,15 @@ public sealed class WalkSurfaceChunk
         return _spawnAllowed[index] != 0;
     }
 
-    public bool TrySampleOutdoorSpawn(float worldX, float worldZ, out float worldY)
+    public bool IsOutdoorSpawnAllowed(float worldX, float worldZ)
+    {
+        return IsWalkableAt(worldX, worldZ);
+    }
+
+    public bool TrySampleWalkableGround(float worldX, float worldZ, out float worldY)
     {
         worldY = NoGround;
-        if (!HasOutdoorSpawnChannel || !TryGetNearestSampleIndex(worldX, worldZ, out var index))
+        if (!HasWalkableField || !TryGetNearestSampleIndex(worldX, worldZ, out var index))
         {
             return false;
         }
@@ -101,6 +111,11 @@ public sealed class WalkSurfaceChunk
 
         worldY = terrainHeight;
         return true;
+    }
+
+    public bool TrySampleOutdoorSpawn(float worldX, float worldZ, out float worldY)
+    {
+        return TrySampleWalkableGround(worldX, worldZ, out worldY);
     }
 
     public bool TrySampleBilinear(float worldX, float worldZ, out float worldY)
@@ -214,7 +229,7 @@ public sealed class WalkSurfaceChunk
         Array.Copy(_terrainHeights, terrainHeights, _terrainHeights.Length);
         Array.Copy(_blocked, blocked, _blocked.Length);
         Array.Copy(_spawnAllowed, spawnAllowed, _spawnAllowed.Length);
-        hasOutdoorSpawnChannel = HasOutdoorSpawnChannel;
+        hasOutdoorSpawnChannel = HasWalkableField;
     }
 
     internal void CopyHeightsAndBlockedTo(float[] heights, byte[] blocked)
@@ -223,13 +238,13 @@ public sealed class WalkSurfaceChunk
         Array.Copy(_blocked, blocked, _blocked.Length);
     }
 
-    internal void CollectOutdoorSpawnCandidates(
+    internal void CollectWalkableCandidates(
         float centerWorldX,
         float centerWorldZ,
         float radiusMeters,
         List<(float X, float Z, float Y)> candidates)
     {
-        if (!HasOutdoorSpawnChannel)
+        if (!HasWalkableField)
         {
             return;
         }
@@ -263,6 +278,15 @@ public sealed class WalkSurfaceChunk
                 candidates.Add((worldX, worldZ, terrainHeight));
             }
         }
+    }
+
+    internal void CollectOutdoorSpawnCandidates(
+        float centerWorldX,
+        float centerWorldZ,
+        float radiusMeters,
+        List<(float X, float Z, float Y)> candidates)
+    {
+        CollectWalkableCandidates(centerWorldX, centerWorldZ, radiusMeters, candidates);
     }
 
     public static WalkSurfaceChunk CreateEmpty(float originX, float originZ, float sampleSpacing, int width, int height)
@@ -333,7 +357,7 @@ public sealed class WalkSurfaceChunk
 
     private void WriteToStream(Stream stream)
     {
-        if (HasOutdoorSpawnChannel)
+        if (HasWalkableField)
         {
             WalkSurfaceChunkCodec.WriteV4(
                 stream,

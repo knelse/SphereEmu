@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
 
 namespace SphServer.Godot.Scripts.Terrain.WalkSurface;
 
@@ -10,32 +11,26 @@ namespace SphServer.Godot.Scripts.Terrain.WalkSurface;
 /// </summary>
 public static class WalkSurfaceCache
 {
-    public const float MobSpawnBodyRadiusMeters = 0.55f;
-
-    private static readonly (float X, float Z)[] MobBodyDiskOffsets =
-    [
-        (1f, 0f),
-        (-1f, 0f),
-        (0f, 1f),
-        (0f, -1f),
-        (0.70710677f, 0.70710677f),
-        (-0.70710677f, 0.70710677f),
-        (0.70710677f, -0.70710677f),
-        (-0.70710677f, -0.70710677f),
-    ];
-
     private static readonly ConcurrentDictionary<(int ChunkX, int ChunkZ), WalkSurfaceChunk?> Loaded = new();
 
     public static string DirectoryResourcePath { get; set; } = WalkSurfaceAtlasBuilder.DefaultOutputDirectory;
 
     public static float ChunkSizeMeters => WalkSurfaceAtlasBuilder.ChunkSizeMeters;
 
-    public static bool HasOutdoorSpawnChannel { get; private set; }
+    public static float SampleSpacingMeters => WalkSurfaceAtlasBuilder.SampleSpacingMeters;
+
+    public static float MobSpawnBodyRadiusMeters => OutdoorFieldConfig.MobBodyRadiusMeters;
+
+    /// <summary>True when loaded chunks contain a pre-baked walkable field (format v4).</summary>
+    public static bool HasWalkableField { get; private set; }
+
+    /// <summary>Deprecated alias for <see cref="HasWalkableField" />.</summary>
+    public static bool HasOutdoorSpawnChannel => HasWalkableField;
 
     public static void Invalidate()
     {
         Loaded.Clear();
-        HasOutdoorSpawnChannel = false;
+        HasWalkableField = false;
     }
 
     public static bool IsChunkFilePresent(int chunkX, int chunkZ)
@@ -91,16 +86,32 @@ public static class WalkSurfaceCache
         return chunk.TrySampleBilinear(worldX, worldZ, out worldY) && !float.IsNaN(worldY);
     }
 
-    public static bool TrySampleOutdoorSpawn(float worldX, float worldZ, out float worldY)
+    public static bool IsWalkableAt(float worldX, float worldZ)
     {
-        worldY = WalkSurfaceChunk.NoGround;
-        if (!HasOutdoorSpawnChannel)
+        if (!HasWalkableField)
         {
-            return false;
+            return !IsBlocked(worldX, worldZ) && TrySampleGround(worldX, worldZ, out _);
         }
 
         var chunk = GetOrLoadChunk(FloorChunkIndex(worldX), FloorChunkIndex(worldZ));
-        return chunk is not null && chunk.TrySampleOutdoorSpawn(worldX, worldZ, out worldY) && !float.IsNaN(worldY);
+        return chunk is not null && chunk.IsWalkableAt(worldX, worldZ);
+    }
+
+    public static bool TrySampleWalkableGround(float worldX, float worldZ, out float worldY)
+    {
+        worldY = WalkSurfaceChunk.NoGround;
+        if (!HasWalkableField)
+        {
+            return TrySampleSpawnGround(worldX, worldZ, out worldY);
+        }
+
+        var chunk = GetOrLoadChunk(FloorChunkIndex(worldX), FloorChunkIndex(worldZ));
+        return chunk is not null && chunk.TrySampleWalkableGround(worldX, worldZ, out worldY) && !float.IsNaN(worldY);
+    }
+
+    public static bool TrySampleOutdoorSpawn(float worldX, float worldZ, out float worldY)
+    {
+        return TrySampleWalkableGround(worldX, worldZ, out worldY);
     }
 
     public static bool IsSpawnFootprintAcceptable(float worldX, float worldZ)
@@ -110,20 +121,15 @@ public static class WalkSurfaceCache
             return true;
         }
 
-        if (HasOutdoorSpawnChannel)
-        {
-            return IsOutdoorSpawnFootprintAcceptable(worldX, worldZ);
-        }
-
-        if (IsBlocked(worldX, worldZ))
+        if (!IsWalkableAt(worldX, worldZ))
         {
             return false;
         }
 
         var radius = MobSpawnBodyRadiusMeters;
-        foreach (var (offsetX, offsetZ) in MobBodyDiskOffsets)
+        foreach (var (offsetX, offsetZ) in WalkSurfaceMobBodyDisk.Offsets)
         {
-            if (IsBlocked(worldX + offsetX * radius, worldZ + offsetZ * radius))
+            if (!IsWalkableAt(worldX + offsetX * radius, worldZ + offsetZ * radius))
             {
                 return false;
             }
@@ -134,26 +140,12 @@ public static class WalkSurfaceCache
 
     public static bool IsOutdoorSpawnFootprintAcceptable(float worldX, float worldZ)
     {
-        if (!IsOutdoorSpawnAllowed(worldX, worldZ))
-        {
-            return false;
-        }
-
-        var radius = MobSpawnBodyRadiusMeters;
-        foreach (var (offsetX, offsetZ) in MobBodyDiskOffsets)
-        {
-            if (!IsOutdoorSpawnAllowed(worldX + offsetX * radius, worldZ + offsetZ * radius))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return IsSpawnFootprintAcceptable(worldX, worldZ);
     }
 
     public static bool TrySampleSpawnGround(float worldX, float worldZ, out float worldY)
     {
-        if (HasOutdoorSpawnChannel && TrySampleOutdoorSpawn(worldX, worldZ, out worldY))
+        if (HasWalkableField && TrySampleWalkableGround(worldX, worldZ, out worldY))
         {
             return true;
         }
@@ -181,22 +173,16 @@ public static class WalkSurfaceCache
 
     public static bool IsOutdoorSpawnAllowed(float worldX, float worldZ)
     {
-        if (!HasOutdoorSpawnChannel)
-        {
-            return false;
-        }
-
-        var chunk = GetOrLoadChunk(FloorChunkIndex(worldX), FloorChunkIndex(worldZ));
-        return chunk is not null && chunk.IsOutdoorSpawnAllowed(worldX, worldZ);
+        return IsWalkableAt(worldX, worldZ);
     }
 
-    public static void CollectOutdoorSpawnCandidates(
+    public static void CollectWalkableCandidates(
         float centerWorldX,
         float centerWorldZ,
         float radiusMeters,
         List<(float X, float Z, float Y)> candidates)
     {
-        if (!HasOutdoorSpawnChannel)
+        if (!HasWalkableField)
         {
             return;
         }
@@ -210,9 +196,53 @@ public static class WalkSurfaceCache
             for (var chunkX = minChunkX; chunkX <= maxChunkX; chunkX++)
             {
                 var chunk = GetOrLoadChunk(chunkX, chunkZ);
-                chunk?.CollectOutdoorSpawnCandidates(centerWorldX, centerWorldZ, radiusMeters, candidates);
+                chunk?.CollectWalkableCandidates(centerWorldX, centerWorldZ, radiusMeters, candidates);
             }
         }
+    }
+
+    public static void CollectOutdoorSpawnCandidates(
+        float centerWorldX,
+        float centerWorldZ,
+        float radiusMeters,
+        List<(float X, float Z, float Y)> candidates)
+    {
+        CollectWalkableCandidates(centerWorldX, centerWorldZ, radiusMeters, candidates);
+    }
+
+    public static float MeasureLocalOpenness(float worldX, float worldZ, float radiusMeters)
+    {
+        if (!HasAnyChunkFiles())
+        {
+            return 1f;
+        }
+
+        var spacing = SampleSpacingMeters;
+        var ringSteps = Mathf.Max(1, Mathf.CeilToInt(radiusMeters / spacing));
+        var total = 0;
+        var walkable = 0;
+        for (var z = -ringSteps; z <= ringSteps; z++)
+        {
+            for (var x = -ringSteps; x <= ringSteps; x++)
+            {
+                var probeX = worldX + x * spacing;
+                var probeZ = worldZ + z * spacing;
+                var dx = probeX - worldX;
+                var dz = probeZ - worldZ;
+                if (dx * dx + dz * dz > radiusMeters * radiusMeters)
+                {
+                    continue;
+                }
+
+                total++;
+                if (IsWalkableAt(probeX, probeZ))
+                {
+                    walkable++;
+                }
+            }
+        }
+
+        return total == 0 ? 0f : (float)walkable / total;
     }
 
     private static WalkSurfaceChunk? GetOrLoadChunk(int chunkX, int chunkZ)
@@ -230,9 +260,9 @@ public static class WalkSurfaceCache
             return null;
         }
 
-        if (chunk!.HasOutdoorSpawnChannel)
+        if (chunk!.HasWalkableField)
         {
-            HasOutdoorSpawnChannel = true;
+            HasWalkableField = true;
         }
 
         Loaded[key] = chunk;

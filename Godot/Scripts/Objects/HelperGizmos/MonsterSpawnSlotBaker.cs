@@ -1,37 +1,41 @@
 using System.Collections.Generic;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Pre-bakes validated outdoor spawn slots for monster spawners from the walk atlas spawn channel.
+///     Pre-bakes validated outdoor spawn slots from the unified walkable field.
 /// </summary>
 public static class MonsterSpawnSlotBaker
 {
+    private const string ErrorNamePrefix = "ERROR - ";
+
     public static int BakeForSpawner(MonsterSpawner spawner)
     {
         var targetCount = spawner.TargetRegularMonsterCount + spawner.TargetNamedMonsterCount;
         if (targetCount <= 0)
         {
+            spawner.ClearSpawnError();
             spawner.SetBakedSpawnSlots([]);
             return 0;
         }
 
         if (!WalkSurfaceCache.HasAnyChunkFiles())
         {
-            GD.PushWarning($"MonsterSpawnSlotBaker: no walk atlas for spawner '{spawner.Name}'.");
-            spawner.SetBakedSpawnSlots([]);
+            MarkBakeFailure(spawner, targetCount, 0, "no walk atlas");
             return 0;
         }
 
-        if (!WalkSurfaceCache.HasOutdoorSpawnChannel)
+        if (!WalkSurfaceCache.HasWalkableField)
         {
-            GD.PushWarning(
-                $"MonsterSpawnSlotBaker: walk chunks have no outdoor spawn channel (format v4). "
-                + "Rebake walk surface with --objects-only or full bake first.");
-            spawner.SetBakedSpawnSlots([]);
+            MarkBakeFailure(
+                spawner,
+                targetCount,
+                0,
+                "walk chunks have no walkable field — rebake walk surface with --objects-only or full bake first");
             return 0;
         }
 
@@ -43,24 +47,58 @@ public static class MonsterSpawnSlotBaker
                 spawner.LeashRadiusMeters);
         }
 
+        WalkSurfaceCache.PreloadChunksForRadius(
+            spawner.GlobalPosition.X,
+            spawner.GlobalPosition.Z,
+            spawner.SpawnRadiusMeters + 1f);
+
         var origin = spawner.GlobalPosition;
-        if (!WalkSurfaceOutdoorSpawnQuery.TryPickSpawnSlots(
+        if (!WalkSurfaceWalkableQuery.TryPickSpawnSlots(
                 origin,
                 spawner.SpawnRadiusMeters,
-                targetCount,
-                MonsterSpawnPlacement.MinMobSeparationMeters,
+                targetCount * 4,
+                OutdoorFieldConfig.MinSlotSeparationMeters,
                 existingOccupied: null,
-                out var slots))
+                out var rawCandidates))
         {
-            GD.PushWarning(
-                $"MonsterSpawnSlotBaker: found {slots.Count}/{targetCount} slot(s) for spawner '{spawner.Name}'.");
+            rawCandidates = [];
         }
 
-        var validated = FilterSlots(spawner, slots);
-        if (validated.Count < slots.Count)
+        Shuffle(rawCandidates);
+        var validated = new List<Vector3>(targetCount);
+        var picked = new List<Vector3>();
+        OutdoorSpawnSlotValidator.FailReason? lastFailure = null;
+        foreach (var (x, z, y) in rawCandidates)
         {
-            GD.PushWarning(
-                $"MonsterSpawnSlotBaker: kept {validated.Count}/{slots.Count} slot(s) after leash/nav validation for '{spawner.Name}'.");
+            if (validated.Count >= targetCount)
+            {
+                break;
+            }
+
+            var candidate = new Vector3(x, y, z);
+            if (!IsSeparated(candidate, picked, OutdoorFieldConfig.MinSlotSeparationMeters))
+            {
+                continue;
+            }
+
+            if (!OutdoorSpawnSlotValidator.TryValidateCandidate(spawner, candidate, origin, out var reason))
+            {
+                lastFailure = reason;
+                continue;
+            }
+
+            validated.Add(candidate);
+            picked.Add(candidate);
+        }
+
+        if (validated.Count < targetCount)
+        {
+            var detail = lastFailure?.ToString() ?? "insufficient walkable candidates";
+            MarkBakeFailure(spawner, targetCount, validated.Count, detail);
+        }
+        else
+        {
+            spawner.ClearSpawnError();
         }
 
         spawner.SetBakedSpawnSlots(validated);
@@ -71,6 +109,7 @@ public static class MonsterSpawnSlotBaker
     {
         var baked = 0;
         var slotCount = 0;
+        var errors = 0;
         foreach (var child in parent.GetChildren())
         {
             if (child is not MonsterSpawner spawner || !GodotObject.IsInstanceValid(spawner))
@@ -79,33 +118,49 @@ public static class MonsterSpawnSlotBaker
             }
 
             slotCount += BakeForSpawner(spawner);
+            if (spawner.HasSpawnError)
+            {
+                errors++;
+            }
+
             baked++;
         }
 
-        GD.Print($"MonsterSpawnSlotBaker: baked {slotCount} slot(s) across {baked} spawner(s).");
+        GD.Print($"MonsterSpawnSlotBaker: baked {slotCount} slot(s) across {baked} spawner(s), {errors} ERROR.");
         return slotCount;
     }
 
-    private static List<Vector3> FilterSlots(MonsterSpawner spawner, List<Vector3> candidates)
+    private static void MarkBakeFailure(MonsterSpawner spawner, int targetCount, int foundCount, string detail)
     {
-        var origin = spawner.GlobalPosition;
-        var validated = new List<Vector3>(candidates.Count);
-        foreach (var slot in candidates)
+        GD.PushWarning(
+            $"MonsterSpawnSlotBaker: spawner '{spawner.Name}' at {spawner.GlobalPosition}: "
+            + $"found {foundCount}/{targetCount} slot(s) ({detail}).");
+        spawner.MarkSpawnError();
+        spawner.SetBakedSpawnSlots([]);
+    }
+
+    private static bool IsSeparated(Vector3 candidate, IReadOnlyList<Vector3> picked, float minSeparationMeters)
+    {
+        var minSeparationSq = minSeparationMeters * minSeparationMeters;
+        foreach (var position in picked)
         {
-            if (!OutdoorPathQuery.IsInsideLeash(slot, origin, spawner.LeashRadiusMeters))
+            var dx = candidate.X - position.X;
+            var dz = candidate.Z - position.Z;
+            if (dx * dx + dz * dz < minSeparationSq)
             {
-                continue;
+                return false;
             }
-
-            if (OutdoorNavCache.HasAnyNavFiles()
-                && !OutdoorNavReachability.IsReachable(origin, slot, spawner.LeashRadiusMeters))
-            {
-                continue;
-            }
-
-            validated.Add(slot);
         }
 
-        return validated;
+        return true;
+    }
+
+    private static void Shuffle(List<(float X, float Z, float Y)> candidates)
+    {
+        for (var i = candidates.Count - 1; i > 0; i--)
+        {
+            var j = Random.Shared.Next(i + 1);
+            (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
+        }
     }
 }

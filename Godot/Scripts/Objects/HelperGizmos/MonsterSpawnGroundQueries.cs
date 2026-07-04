@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
@@ -13,7 +14,7 @@ public interface IMonsterSpawnGroundQuery
 }
 
 /// <summary>
-///     Walk atlas outdoor spawn channel — safe to run from background threads during bulk spawns.
+///     Walk atlas walkable field — safe to run from background threads during bulk bakes.
 /// </summary>
 public sealed class AtlasMonsterSpawnGroundQuery : IMonsterSpawnGroundQuery
 {
@@ -23,7 +24,7 @@ public sealed class AtlasMonsterSpawnGroundQuery : IMonsterSpawnGroundQuery
         IReadOnlyList<Vector3> occupiedWorldPositions,
         out Vector3 spawnWorldPosition)
     {
-        if (WalkSurfaceOutdoorSpawnQuery.TryFindValidOutdoorSpawnSurface(
+        if (WalkSurfaceWalkableQuery.TryFindValidWalkSurface(
                 worldProbeOrigin,
                 minSeparationMeters,
                 occupiedWorldPositions,

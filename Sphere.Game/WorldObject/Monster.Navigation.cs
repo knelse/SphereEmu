@@ -13,6 +13,7 @@ public partial class Monster
     private const float AttackStopDistanceMeters = 0.25f;
     private const float PathRepathIntervalSeconds = 0.45f;
     private const float ChaseGoalMoveThresholdMeters = 1.5f;
+    private const double PositionBroadcastDelta = 0.1;
 
     private MonsterHomeBinding? _homeBinding;
     private MonsterLeashPhase _leashPhase;
@@ -21,6 +22,9 @@ public partial class Monster
     private float _navRepathCooldown;
     private readonly List<Vector3> _navWaypoints = [];
     private int _navWaypointIndex;
+    private Vector3 _lastBroadcastPosition;
+    private double _lastBroadcastAngleRadians;
+    private bool _hasBroadcastPosition;
 
     public bool HasHomeBinding => _homeBinding.HasValue;
 
@@ -115,7 +119,7 @@ public partial class Monster
         return true;
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (!Engine.IsEditorHint())
         {
@@ -123,9 +127,37 @@ public partial class Monster
             EnforceOutdoorLeash();
             UpdateOutdoorChaseAi(deltaSeconds);
             AdvanceNavPath(deltaSeconds);
+            SyncPositionToVisibleClients();
         }
 
-        base._Process(delta);
+        base._PhysicsProcess(delta);
+    }
+
+    private void SyncPositionToVisibleClients()
+    {
+        var position = GlobalPosition;
+        var angleRadians = DecodeAngleToYawRadians(Angle);
+        var gameX = position.X;
+        var gameY = -position.Y;
+        var gameZ = -position.Z;
+
+        if (_hasBroadcastPosition
+            && position.DistanceSquaredTo(_lastBroadcastPosition) <= PositionBroadcastDelta * PositionBroadcastDelta
+            && Math.Abs(angleRadians - _lastBroadcastAngleRadians) <= PositionBroadcastDelta)
+        {
+            return;
+        }
+
+        _hasBroadcastPosition = true;
+        _lastBroadcastPosition = position;
+        _lastBroadcastAngleRadians = angleRadians;
+        BroadcastEntityPositionToVisibleClients(gameX, gameY, gameZ, angleRadians);
+    }
+
+    private void ForcePositionSyncToVisibleClients()
+    {
+        _hasBroadcastPosition = false;
+        SyncPositionToVisibleClients();
     }
 
     private void UpdateOutdoorChaseAi(float deltaSeconds)
@@ -312,6 +344,7 @@ public partial class Monster
         RegisterMultiMeshVisualDeferred();
         _leashPhase = MonsterLeashPhase.Inside;
         _navMode = MonsterNavMode.Idle;
+        ForcePositionSyncToVisibleClients();
     }
 
     private void AdvanceNavPath(float delta)

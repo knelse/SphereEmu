@@ -57,7 +57,7 @@ public static class WalkSurfaceChunkConverter
             }
 
             var builder = WalkSurfaceChunkBuilder.FromChunk(chunk);
-            WalkSurfaceSpawnChannelBuilder.Finalize(builder);
+            WalkSurfaceWalkableBuilder.Finalize(builder);
             builder.SaveTo(file);
             result.Converted++;
 

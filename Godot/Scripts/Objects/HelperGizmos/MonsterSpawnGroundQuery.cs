@@ -132,7 +132,7 @@ public static class MonsterSpawnGroundQuery
 
         if (WalkSurfaceCache.HasAnyChunkFiles()
             && WalkSurfaceCache.HasChunkCoverageAt(worldProbeOrigin.X, worldProbeOrigin.Z)
-            && WalkSurfaceCache.HasOutdoorSpawnChannel)
+            && WalkSurfaceCache.HasWalkableField)
         {
             return false;
         }

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
 using SphServer.Godot.Scripts.Objects.Fill;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 using SphServer.Shared.GameData.Enums;
@@ -16,6 +15,7 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 public partial class MonsterSpawner : Node3D
 {
 	private const int FirstMonsterId = 10000;
+	private const string ErrorNamePrefix = "ERROR - ";
 
 	private static readonly List<RespawnTimer> GlobalRespawnTimers = [];
 	private static readonly object TimerLock = new();
@@ -25,7 +25,6 @@ public partial class MonsterSpawner : Node3D
 
 	private readonly List<int> _regularMonsterIds = [];
 	private readonly List<int> _namedMonsterIds = [];
-	private readonly MonsterSpawnPlacement _spawnPlacement = new();
 	private readonly object _spawnPlacementLock = new();
 
 	[Export]
@@ -35,10 +34,10 @@ public partial class MonsterSpawner : Node3D
 	public int TargetRegularMonsterCount = 3;
 
 	[Export]
-	public float SpawnRadiusMeters = MonsterSpawnPlacement.DefaultSpawnRadiusMeters;
+	public float SpawnRadiusMeters = OutdoorFieldConfig.DefaultSpawnRadiusMeters;
 
 	[Export]
-	public float LeashRadiusMeters = 50f;
+	public float LeashRadiusMeters = OutdoorFieldConfig.DefaultLeashRadiusMeters;
 
 	[Export]
 	public float AggroRadiusMeters = 12f;
@@ -50,7 +49,13 @@ public partial class MonsterSpawner : Node3D
 	public bool SpawnPlacementInvalid { get; private set; }
 
 	[Export]
-	public bool SpawnPlanInProgress { get; private set; }
+	public bool HasSpawnError { get; private set; }
+
+	[Export]
+	public string OriginalDisplayName { get; private set; } = string.Empty;
+
+	[Export]
+	public Array<Vector3> BakedSpawnSlots { get; private set; } = [];
 
 	[Export]
 	public int RegularMonsterMinLevel = 1;
@@ -82,9 +87,6 @@ public partial class MonsterSpawner : Node3D
 	[ExportToolButton("Delete and respawn all mobs")]
 	public Callable DeleteAndRespawnAllMobsButton => Callable.From(DeleteAndRespawnAllMobs);
 
-	[Export]
-	public Array<Vector3> BakedSpawnSlots { get; private set; } = [];
-
 	[ExportToolButton("Bake spawn slots")]
 	public Callable BakeSpawnSlotsButton => Callable.From(BakeSpawnSlots);
 
@@ -95,24 +97,10 @@ public partial class MonsterSpawner : Node3D
 	public bool SpawningEnabled { get; set; }
 
 	private bool _spawningEnabled;
-	private int _spawnGeneration;
-	private MonsterSpawnPlan? _completedSpawnPlan;
-	private int _planReadyGeneration;
-	private bool _completedSpawnPlanFailed;
-	private bool _enableSpawningOnNextApply;
-	private SpawnPlanKind _pendingPlanKind;
-	private int _deathRespawnMonsterId;
-	private bool _deathRespawnIsNamed;
 	private readonly Queue<PendingDeathRespawn> _pendingDeathRespawns = new();
 	private int _nextBindSlotIndex;
 
 	public Vector3 LeashCenterWorld => GlobalPosition;
-
-	private enum SpawnPlanKind
-	{
-		Bulk,
-		DeathRespawn,
-	}
 
 	private struct PendingDeathRespawn
 	{
@@ -168,12 +156,11 @@ public partial class MonsterSpawner : Node3D
 
 		lock (_spawnPlacementLock)
 		{
-			if (_spawningEnabled || SpawnPlanInProgress)
+			if (_spawningEnabled || HasSpawnError)
 			{
 				return;
 			}
 
-			_pendingPlanKind = SpawnPlanKind.Bulk;
 			BeginBulkSpawnPlan(enableSpawningOnApply: true);
 		}
 	}
@@ -181,6 +168,36 @@ public partial class MonsterSpawner : Node3D
 	public void BakeSpawnSlots()
 	{
 		MonsterSpawnSlotBaker.BakeForSpawner(this);
+	}
+
+	internal void MarkSpawnError()
+	{
+		if (string.IsNullOrEmpty(OriginalDisplayName))
+		{
+			OriginalDisplayName = Name;
+		}
+
+		if (!Name.ToString().StartsWith(ErrorNamePrefix, StringComparison.Ordinal))
+		{
+			Name = ErrorNamePrefix + OriginalDisplayName;
+		}
+
+		HasSpawnError = true;
+		SpawnPlacementInvalid = true;
+		NotifyPropertyListChanged();
+	}
+
+	internal void ClearSpawnError()
+	{
+		HasSpawnError = false;
+		SpawnPlacementInvalid = false;
+		if (!string.IsNullOrEmpty(OriginalDisplayName)
+			&& Name.ToString().StartsWith(ErrorNamePrefix, StringComparison.Ordinal))
+		{
+			Name = OriginalDisplayName;
+		}
+
+		NotifyPropertyListChanged();
 	}
 
 	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots)
@@ -204,8 +221,6 @@ public partial class MonsterSpawner : Node3D
 
 	public override void _Process(double delta)
 	{
-		TryApplyCompletedSpawnPlan();
-
 		if (Engine.IsEditorHint())
 		{
 			return;
@@ -233,35 +248,21 @@ public partial class MonsterSpawner : Node3D
 
 	public void DeleteAndRespawnAllMobs()
 	{
-		if (SpawnPlanInProgress)
-		{
-			GD.PushWarning($"MonsterSpawner '{Name}': spawn plan already in progress.");
-			return;
-		}
-
-		Interlocked.Increment(ref _spawnGeneration);
-		_planReadyGeneration = 0;
-		_completedSpawnPlan = null;
-		_completedSpawnPlanFailed = false;
-
 		lock (_spawnPlacementLock)
 		{
 			ClearPendingRespawnTimersForThisSpawner();
 			_pendingDeathRespawns.Clear();
 			DeleteAllSpawnedMonsters();
 			SpawnPlacementInvalid = false;
-			_pendingPlanKind = SpawnPlanKind.Bulk;
-			BeginBulkSpawnPlan(enableSpawningOnApply: !Engine.IsEditorHint());
+			if (!TryApplyInstantBulkRespawn())
+			{
+				MarkSpawnPlacementInvalid();
+			}
 		}
 	}
 
 	internal void DeleteAllSpawnedMonstersForBatch()
 	{
-		Interlocked.Increment(ref _spawnGeneration);
-		_planReadyGeneration = 0;
-		_completedSpawnPlan = null;
-		_completedSpawnPlanFailed = false;
-
 		lock (_spawnPlacementLock)
 		{
 			ClearPendingRespawnTimersForThisSpawner();
@@ -353,11 +354,8 @@ public partial class MonsterSpawner : Node3D
 
 	private void BeginBulkSpawnPlan(bool enableSpawningOnApply)
 	{
-		_pendingPlanKind = SpawnPlanKind.Bulk;
-		_enableSpawningOnNextApply = enableSpawningOnApply;
-
 		var occupied = CaptureOccupiedWorldPositions();
-		if (TryBuildPlanFromBakedSlots(TargetRegularMonsterCount, TargetNamedMonsterCount, occupied, out var instantPlan))
+		if (TryBuildPlanFromBakedSlots(TargetRegularMonsterCount, TargetNamedMonsterCount, occupied, out var plan))
 		{
 			if (enableSpawningOnApply)
 			{
@@ -365,20 +363,11 @@ public partial class MonsterSpawner : Node3D
 			}
 
 			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(instantPlan);
+			ApplySpawnPlan(plan);
 			return;
 		}
 
-		SpawnPlanInProgress = true;
-		NotifyPropertyListChanged();
-
-		var generation = Volatile.Read(ref _spawnGeneration);
-		var origin = GlobalPosition;
-		var radius = SpawnRadiusMeters;
-		var targetRegular = TargetRegularMonsterCount;
-		var targetNamed = TargetNamedMonsterCount;
-
-		_ = Task.Run(() => PlanSpawnAsync(this, generation, origin, radius, targetRegular, targetNamed, occupied));
+		MarkSpawnPlacementInvalid();
 	}
 
 	private void BeginDeathRespawnPlan(int monsterId, bool isNamed)
@@ -388,21 +377,7 @@ public partial class MonsterSpawner : Node3D
 			return;
 		}
 
-		_pendingPlanKind = SpawnPlanKind.DeathRespawn;
-		_deathRespawnMonsterId = monsterId;
-		_deathRespawnIsNamed = isNamed;
-		SpawnPlanInProgress = true;
-		_enableSpawningOnNextApply = false;
-		NotifyPropertyListChanged();
-
-		var generation = Volatile.Read(ref _spawnGeneration);
-		var origin = GlobalPosition;
-		var radius = SpawnRadiusMeters;
-		var targetRegular = isNamed ? 0 : 1;
-		var targetNamed = isNamed ? 1 : 0;
-		var occupied = CaptureOccupiedWorldPositions();
-
-		_ = Task.Run(() => PlanSpawnAsync(this, generation, origin, radius, targetRegular, targetNamed, occupied));
+		MarkSpawnPlacementInvalid();
 	}
 
 	private bool TryBuildPlanFromBakedSlots(
@@ -512,13 +487,13 @@ public partial class MonsterSpawner : Node3D
 
 	private static bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
-		if (WalkSurfaceCache.HasOutdoorSpawnChannel
-			&& !WalkSurfaceCache.IsOutdoorSpawnFootprintAcceptable(candidate.X, candidate.Z))
+		if (WalkSurfaceCache.HasWalkableField
+			&& !WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
 		{
 			return false;
 		}
 
-		var minSeparationSq = MonsterSpawnPlacement.MinMobSeparationMeters * MonsterSpawnPlacement.MinMobSeparationMeters;
+		var minSeparationSq = OutdoorFieldConfig.MinSlotSeparationMeters * OutdoorFieldConfig.MinSlotSeparationMeters;
 		foreach (var position in occupied)
 		{
 			var dx = candidate.X - position.X;
@@ -539,100 +514,6 @@ public partial class MonsterSpawner : Node3D
 			var j = Random.Shared.Next(i + 1);
 			(candidates[i], candidates[j]) = (candidates[j], candidates[i]);
 		}
-	}
-
-	private static void PlanSpawnAsync(
-		MonsterSpawner spawner,
-		int generation,
-		Vector3 origin,
-		float radius,
-		int targetRegular,
-		int targetNamed,
-		Vector3[] occupied)
-	{
-		try
-		{
-			WalkSurfaceCache.PreloadChunksForRadius(origin.X, origin.Z, radius + 1f);
-			var plan = MonsterSpawnPlanner.Plan(
-				origin,
-				radius,
-				targetRegular,
-				targetNamed,
-				occupied,
-				new AtlasMonsterSpawnGroundQuery(),
-				Random.Shared);
-
-			spawner._completedSpawnPlan = plan;
-			spawner._completedSpawnPlanFailed = false;
-			Volatile.Write(ref spawner._planReadyGeneration, generation);
-		}
-		catch (Exception ex)
-		{
-			GD.PushError($"MonsterSpawner: background spawn planning failed: {ex.Message}");
-			spawner._completedSpawnPlan = null;
-			spawner._completedSpawnPlanFailed = true;
-			Volatile.Write(ref spawner._planReadyGeneration, generation);
-		}
-	}
-
-	private void TryApplyCompletedSpawnPlan()
-	{
-		lock (_spawnPlacementLock)
-		{
-			TryApplyCompletedSpawnPlanCore();
-		}
-	}
-
-	private bool TryApplyCompletedSpawnPlanCore()
-	{
-		var readyGeneration = Volatile.Read(ref _planReadyGeneration);
-		if (readyGeneration == 0 || readyGeneration != Volatile.Read(ref _spawnGeneration))
-		{
-			return false;
-		}
-
-		Volatile.Write(ref _planReadyGeneration, 0);
-
-		if (_completedSpawnPlanFailed)
-		{
-			_completedSpawnPlanFailed = false;
-			MarkSpawnPlacementInvalid();
-			FinishSpawnPlanInProgress();
-			return true;
-		}
-
-		var plan = _completedSpawnPlan;
-		_completedSpawnPlan = null;
-		if (plan is null)
-		{
-			FinishSpawnPlanInProgress();
-			return false;
-		}
-
-		if (_enableSpawningOnNextApply)
-		{
-			_spawningEnabled = true;
-		}
-
-		if (_pendingPlanKind == SpawnPlanKind.DeathRespawn)
-		{
-			ApplyDeathRespawnPlan(plan, _deathRespawnMonsterId, _deathRespawnIsNamed);
-		}
-		else
-		{
-			ApplySpawnPlan(plan);
-		}
-
-		FinishSpawnPlanInProgress();
-		return true;
-	}
-
-	private void FinishSpawnPlanInProgress()
-	{
-		SpawnPlanInProgress = false;
-		_enableSpawningOnNextApply = false;
-		NotifyPropertyListChanged();
-		TryStartNextDeathRespawnPlanCore();
 	}
 
 	private void EnqueueDeathRespawn(int monsterId, bool isNamed)
@@ -664,12 +545,7 @@ public partial class MonsterSpawner : Node3D
 
 	private void TryStartNextDeathRespawnPlanCore()
 	{
-		if (SpawnPlanInProgress || !_spawningEnabled || SpawnPlacementInvalid)
-		{
-			return;
-		}
-
-		if (Volatile.Read(ref _planReadyGeneration) != 0)
+		if (!_spawningEnabled || SpawnPlacementInvalid || HasSpawnError)
 		{
 			return;
 		}
@@ -683,48 +559,10 @@ public partial class MonsterSpawner : Node3D
 		BeginDeathRespawnPlan(next.MonsterId, next.IsNamed);
 	}
 
-	private void ApplyDeathRespawnPlan(MonsterSpawnPlan plan, int monsterId, bool isNamed)
-	{
-		SpawnPlacementInvalid = false;
-		_spawnPlacement.ResetOccupied(CollectOccupiedWorldPositions());
-
-		if (isNamed)
-		{
-			if (plan.NamedPositions.Count > 0 && TrySpawnNamedMonsterAt(monsterId, plan.NamedPositions[0]))
-			{
-				return;
-			}
-
-			if (!TrySpawnNamedMonster(monsterId))
-			{
-				MarkSpawnPlacementInvalid();
-			}
-
-			return;
-		}
-
-		if (plan.RegularPositions.Count > 0 && SpawnRegularMonsterAt(monsterId, plan.RegularPositions[0], ResolveSlotIndex(plan.RegularPositions[0])))
-		{
-			return;
-		}
-
-		if (WalkSurfaceCache.HasOutdoorSpawnChannel && WalkSurfaceCache.HasChunkCoverageAt(GlobalPosition.X, GlobalPosition.Z))
-		{
-			MarkSpawnPlacementInvalid();
-			return;
-		}
-
-		if (!TrySpawnRegularMonster(monsterId))
-		{
-			MarkSpawnPlacementInvalid();
-		}
-	}
-
 	private void ApplySpawnPlan(MonsterSpawnPlan plan)
 	{
 		SpawnPlacementInvalid = false;
 		ResetBindSlotCounter();
-		_spawnPlacement.Reset(CollectOccupiedWorldPositions());
 
 		foreach (var position in plan.RegularPositions)
 		{
@@ -735,29 +573,9 @@ public partial class MonsterSpawner : Node3D
 			}
 		}
 
-		for (var i = CountAlive(RegularMonsters); i < TargetRegularMonsterCount; i++)
-		{
-			if (WalkSurfaceCache.HasOutdoorSpawnChannel && WalkSurfaceCache.HasChunkCoverageAt(GlobalPosition.X, GlobalPosition.Z))
-			{
-				MarkSpawnPlacementInvalid();
-				return;
-			}
-
-			if (!TrySpawnRegularMonster(TakeMonsterId()))
-			{
-				MarkSpawnPlacementInvalid();
-				return;
-			}
-		}
-
 		foreach (var position in plan.NamedPositions)
 		{
 			TrySpawnNamedMonsterAt(TakeMonsterId(), position);
-		}
-
-		for (var i = CountAlive(NamedMonsters); i < TargetNamedMonsterCount; i++)
-		{
-			TrySpawnNamedMonster(TakeMonsterId());
 		}
 	}
 
@@ -765,7 +583,9 @@ public partial class MonsterSpawner : Node3D
 	{
 		SpawnPlacementInvalid = true;
 		NotifyPropertyListChanged();
-		GD.PushWarning($"MonsterSpawner '{Name}': no valid spawn positions remain within {SpawnRadiusMeters:0.##}m.");
+		GD.PushWarning(
+			$"MonsterSpawner '{Name}': insufficient baked spawn slots (have {BakedSpawnSlots.Count}, "
+			+ $"need {TargetRegularMonsterCount + TargetNamedMonsterCount}). Run Bake spawn slots.");
 	}
 
 	private Vector3[] CaptureOccupiedWorldPositions()
@@ -796,11 +616,6 @@ public partial class MonsterSpawner : Node3D
 				yield return node.GlobalPosition;
 			}
 		}
-	}
-
-	private bool TryFindSpawnWorldPosition(out Vector3 spawnWorldPosition)
-	{
-		return _spawnPlacement.TryFindSpawnPosition(this, SpawnRadiusMeters, out spawnWorldPosition);
 	}
 
 	private void ClearPendingRespawnTimersForThisSpawner()
@@ -934,16 +749,6 @@ public partial class MonsterSpawner : Node3D
 
 			timer.Spawner.EnqueueDeathRespawn(timer.MonsterId, timer.IsNamed);
 		}
-	}
-
-	private bool TrySpawnRegularMonster(int monsterId)
-	{
-		if (!TryFindSpawnWorldPosition(out var spawnWorldPosition))
-		{
-			return false;
-		}
-
-		return SpawnRegularMonsterAt(monsterId, spawnWorldPosition, ResolveSlotIndex(spawnWorldPosition));
 	}
 
 	public NavPathResult RequestOutdoorPath(Monster monster, Vector3 goalWorld)

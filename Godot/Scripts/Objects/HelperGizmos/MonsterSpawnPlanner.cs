@@ -18,7 +18,7 @@ public static class MonsterSpawnPlanner
     {
         var totalCount = targetRegularCount + targetNamedCount;
         if (totalCount > 0
-            && WalkSurfaceOutdoorSpawnQuery.TryPickSpawnSlots(
+            && WalkSurfaceWalkableQuery.TryPickSpawnSlots(
                 spawnerOrigin,
                 spawnRadiusMeters,
                 totalCount,
@@ -59,7 +59,7 @@ public static class MonsterSpawnPlanner
     }
 
     private static bool TrySplitGridSlots(
-        List<Vector3> gridSlots,
+        List<(float X, float Z, float Y)> gridSlots,
         int targetRegularCount,
         int targetNamedCount,
         out List<Vector3> regularPositions,
@@ -70,12 +70,14 @@ public static class MonsterSpawnPlanner
         var index = 0;
         for (var i = 0; i < targetRegularCount && index < gridSlots.Count; i++, index++)
         {
-            regularPositions.Add(gridSlots[index]);
+            var slot = gridSlots[index];
+            regularPositions.Add(new Vector3(slot.X, slot.Y, slot.Z));
         }
 
         for (var i = 0; i < targetNamedCount && index < gridSlots.Count; i++, index++)
         {
-            namedPositions.Add(gridSlots[index]);
+            var slot = gridSlots[index];
+            namedPositions.Add(new Vector3(slot.X, slot.Y, slot.Z));
         }
 
         return regularPositions.Count == targetRegularCount && namedPositions.Count == targetNamedCount;

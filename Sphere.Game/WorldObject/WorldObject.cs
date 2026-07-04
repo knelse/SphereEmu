@@ -17,6 +17,9 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class WorldObject : Node3D
 {
+	private const int DefaultPositionBroadcastRepeatCount = 4;
+
+	private readonly HashSet<SphereClient> _visibleClients = [];
 	private const string PlaceholderMeshNodeName = "MeshInstance3D";
 
 	/// <summary>Short name + unique scene id so the tree shows e.g. <c>…#Glb</c> instead of a long duplicate name.</summary>
@@ -171,6 +174,7 @@ public partial class WorldObject : Node3D
 					return;
 				}
 
+				_visibleClients.Add(client);
 				ShowForClient(client);
 			};
 
@@ -185,7 +189,8 @@ public partial class WorldObject : Node3D
 					return;
 				}
 
-				client.MaybeQueueNetworkPacketSend(CommonPackets.DespawnEntity(ID));
+				_visibleClients.Remove(client);
+				client.MaybeQueueNetworkPacketSend(CommonPackets.DespawnEntity(client.GetLocalObjectId(ID)));
 			};
 			AddChild(area3D);
 		}
@@ -229,6 +234,44 @@ public partial class WorldObject : Node3D
 		packetParts = ModifyPacketParts(packetParts);
 		var packet = PostprocessPacketBytes(PacketPart.GetBytesToWrite(packetParts));
 		client.MaybeQueueNetworkPacketSend(packet);
+	}
+
+	/// <summary>
+	///     Sends move packets to clients that currently have this entity spawned.
+	///     Matches the player broadcast path via <see cref="EntityPositionUpdateEvent" />.
+	/// </summary>
+	protected void BroadcastEntityPositionToVisibleClients(
+		double gameX,
+		double gameY,
+		double gameZ,
+		double angleRadians,
+		int sendCount = DefaultPositionBroadcastRepeatCount)
+	{
+		if (_visibleClients.Count == 0)
+		{
+			return;
+		}
+
+		var staleClients = new List<SphereClient>();
+		foreach (var client in _visibleClients)
+		{
+			if (!GodotObject.IsInstanceValid(client))
+			{
+				staleClients.Add(client);
+				continue;
+			}
+
+			var entityId = client.GetLocalObjectId(ID);
+			for (var i = 0; i < sendCount; i++)
+			{
+				client.EnqueueClientEvent(new EntityPositionUpdateEvent(entityId, gameX, gameY, gameZ, angleRadians));
+			}
+		}
+
+		foreach (var client in staleClients)
+		{
+			_visibleClients.Remove(client);
+		}
 	}
 
 	protected virtual List<PacketPart> GetPacketParts()

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Terrain.OutdoorNav;
 
@@ -12,6 +14,7 @@ public enum NavPathFailReason
     GoalUnwalkable,
     GoalOutsideLeash,
     NoPath,
+    SearchBudgetExceeded,
 }
 
 public readonly struct NavPathRequest
@@ -49,10 +52,23 @@ public static class OutdoorPathQuery
         (1, 1), (1, -1), (-1, 1), (-1, -1),
     ];
 
+    private static int _requestsThisTick;
+    private static ulong _lastBudgetFrame;
+
     public static NavPathResult FindPath(NavPathRequest request)
     {
+        if (!TryBeginPathRequest())
+        {
+            return Fail(NavPathFailReason.SearchBudgetExceeded);
+        }
+
         if (!OutdoorNavCache.HasAnyNavFiles())
         {
+            if (WalkSurfaceCache.HasWalkableField)
+            {
+                return DirectPathFallback(request);
+            }
+
             return Fail(NavPathFailReason.NavDataMissing);
         }
 
@@ -67,38 +83,44 @@ public static class OutdoorPathQuery
             return Fail(NavPathFailReason.GoalOutsideLeash);
         }
 
-        if (!TrySnapToWalkable(request.StartWorld, request.LeashCenterWorld, request.LeashRadiusMeters, out var startCell))
+        if (!TrySnapToWalkable(request.StartWorld, request.LeashCenterWorld, request.LeashRadiusMeters, spacing, out var startCell))
         {
             return Fail(NavPathFailReason.StartUnwalkable);
         }
 
-        if (!TrySnapToWalkable(request.GoalWorld, request.LeashCenterWorld, request.LeashRadiusMeters, out var goalCell))
+        if (!TrySnapToWalkable(request.GoalWorld, request.LeashCenterWorld, request.LeashRadiusMeters, spacing, out var goalCell))
         {
             return Fail(NavPathFailReason.GoalUnwalkable);
         }
 
         if (startCell == goalCell)
         {
-            return Success(SingleWaypoint(goalCell));
+            return Success(SingleWaypoint(goalCell, spacing));
         }
 
         var open = new PriorityQueue<(int Gx, int Gz), float>();
         var cameFrom = new Dictionary<(int Gx, int Gz), (int Gx, int Gz)>();
         var gScore = new Dictionary<(int Gx, int Gz), float> { [startCell] = 0f };
-        open.Enqueue(startCell, Heuristic(startCell, goalCell));
+        open.Enqueue(startCell, Heuristic(startCell, goalCell, spacing));
+        var expanded = 0;
 
         while (open.Count > 0)
         {
+            if (++expanded > OutdoorFieldConfig.AStarMaxExpandedNodes)
+            {
+                return DirectPathFallback(request);
+            }
+
             var current = open.Dequeue();
             if (current == goalCell)
             {
-                return Success(ReconstructPath(cameFrom, current, startCell));
+                return Success(ReconstructPath(cameFrom, current, startCell, spacing));
             }
 
             foreach (var (dx, dz) in NeighborOffsets)
             {
                 var neighbor = (current.Gx + dx, current.Gz + dz);
-                var neighborWorld = CellToWorld(neighbor);
+                var neighborWorld = CellToWorld(neighbor, spacing);
                 if (!IsInsideLeash(neighborWorld, request.LeashCenterWorld, request.LeashRadiusMeters))
                 {
                     continue;
@@ -118,7 +140,7 @@ public static class OutdoorPathQuery
 
                 cameFrom[neighbor] = current;
                 gScore[neighbor] = tentative;
-                open.Enqueue(neighbor, tentative + Heuristic(neighbor, goalCell));
+                open.Enqueue(neighbor, tentative + Heuristic(neighbor, goalCell, spacing));
             }
         }
 
@@ -150,21 +172,50 @@ public static class OutdoorPathQuery
         return dx * dx + dz * dz <= leashRadiusMeters * leashRadiusMeters + 0.01f;
     }
 
+    private static bool TryBeginPathRequest()
+    {
+        var frame = Engine.GetProcessFrames();
+        if (frame != _lastBudgetFrame)
+        {
+            _lastBudgetFrame = frame;
+            _requestsThisTick = 0;
+        }
+
+        if (_requestsThisTick >= OutdoorFieldConfig.PathRequestsPerTick)
+        {
+            return false;
+        }
+
+        _requestsThisTick++;
+        return true;
+    }
+
+    private static NavPathResult DirectPathFallback(NavPathRequest request)
+    {
+        var goal = ClampGoalToLeash(request.GoalWorld, request.LeashCenterWorld, request.LeashRadiusMeters);
+        if (WalkSurfaceCache.TrySampleWalkableGround(goal.X, goal.Z, out var goalY))
+        {
+            goal.Y = goalY;
+        }
+
+        return Success([goal]);
+    }
+
     private static bool TrySnapToWalkable(
         Vector3 worldPosition,
         Vector3 leashCenterWorld,
         float leashRadiusMeters,
+        float spacing,
         out (int Gx, int Gz) cell)
     {
-        cell = WorldToCell(worldPosition);
-        var world = CellToWorld(cell);
+        cell = WorldToCell(worldPosition, spacing);
+        var world = CellToWorld(cell, spacing);
         if (OutdoorNavCache.IsWalkable(world.X, world.Z)
             && IsInsideLeash(world, leashCenterWorld, leashRadiusMeters))
         {
             return true;
         }
 
-        var spacing = OutdoorNavCache.SampleSpacingMeters;
         for (var ring = 1; ring <= 4; ring++)
         {
             var radius = ring * spacing;
@@ -186,7 +237,7 @@ public static class OutdoorPathQuery
                     continue;
                 }
 
-                cell = WorldToCell(probe);
+                cell = WorldToCell(probe, spacing);
                 return true;
             }
         }
@@ -197,7 +248,8 @@ public static class OutdoorPathQuery
     private static List<Vector3> ReconstructPath(
         Dictionary<(int Gx, int Gz), (int Gx, int Gz)> cameFrom,
         (int Gx, int Gz) current,
-        (int Gx, int Gz) startCell)
+        (int Gx, int Gz) startCell,
+        float spacing)
     {
         var cells = new List<(int Gx, int Gz)> { current };
         while (current != startCell)
@@ -210,8 +262,12 @@ public static class OutdoorPathQuery
         var waypoints = new List<Vector3>(cells.Count);
         foreach (var cell in cells)
         {
-            var world = CellToWorld(cell);
+            var world = CellToWorld(cell, spacing);
             if (OutdoorNavCache.TrySampleTerrainY(world.X, world.Z, out var y))
+            {
+                waypoints.Add(new Vector3(world.X, y, world.Z));
+            }
+            else if (WalkSurfaceCache.TrySampleWalkableGround(world.X, world.Z, out y))
             {
                 waypoints.Add(new Vector3(world.X, y, world.Z));
             }
@@ -224,10 +280,14 @@ public static class OutdoorPathQuery
         return waypoints;
     }
 
-    private static List<Vector3> SingleWaypoint((int Gx, int Gz) cell)
+    private static List<Vector3> SingleWaypoint((int Gx, int Gz) cell, float spacing)
     {
-        var world = CellToWorld(cell);
+        var world = CellToWorld(cell, spacing);
         if (OutdoorNavCache.TrySampleTerrainY(world.X, world.Z, out var y))
+        {
+            world.Y = y;
+        }
+        else if (WalkSurfaceCache.TrySampleWalkableGround(world.X, world.Z, out y))
         {
             world.Y = y;
         }
@@ -235,20 +295,20 @@ public static class OutdoorPathQuery
         return [world];
     }
 
-    private static (int Gx, int Gz) WorldToCell(Vector3 world)
+    private static (int Gx, int Gz) WorldToCell(Vector3 world, float spacing)
     {
-        return ((int)Mathf.Round(world.X), (int)Mathf.Round(world.Z));
+        return ((int)Mathf.Round(world.X / spacing), (int)Mathf.Round(world.Z / spacing));
     }
 
-    private static Vector3 CellToWorld((int Gx, int Gz) cell)
+    private static Vector3 CellToWorld((int Gx, int Gz) cell, float spacing)
     {
-        return new Vector3(cell.Gx, 0f, cell.Gz);
+        return new Vector3(cell.Gx * spacing, 0f, cell.Gz * spacing);
     }
 
-    private static float Heuristic((int Gx, int Gz) from, (int Gx, int Gz) to)
+    private static float Heuristic((int Gx, int Gz) from, (int Gx, int Gz) to, float spacing)
     {
-        var dx = from.Gx - to.Gx;
-        var dz = from.Gz - to.Gz;
+        var dx = (from.Gx - to.Gx) * spacing;
+        var dz = (from.Gz - to.Gz) * spacing;
         return Mathf.Sqrt(dx * dx + dz * dz);
     }
 

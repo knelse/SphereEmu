@@ -390,7 +390,7 @@ public static class WalkSurfaceAtlasBuilder
             SampleSpacingMeters);
         GD.Print(
             $"WalkSurfaceAtlasBuilder: object footprints={footprintCount}, blocked raster cells={blockedRasterCount}, object height samples={heightCount}.");
-        WalkSurfaceSpawnChannelBuilder.FinalizeAll(builders.Values);
+        WalkSurfaceWalkableBuilder.FinalizeAll(builders.Values);
         return footprintCount + blockedRasterCount + heightCount;
     }
 
