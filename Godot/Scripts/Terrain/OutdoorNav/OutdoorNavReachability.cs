@@ -20,7 +20,8 @@ public static class OutdoorNavReachability
         Vector3 spawnerOrigin,
         Vector3 targetWorld,
         float leashRadiusMeters,
-        float anchorSearchRadiusMeters)
+        float anchorSearchRadiusMeters,
+        bool useLooseWalkConnectivity = false)
     {
         if (!OutdoorPathQuery.IsInsideLeash(targetWorld, spawnerOrigin, leashRadiusMeters))
         {
@@ -33,7 +34,7 @@ public static class OutdoorNavReachability
             return false;
         }
 
-        return IsReachableFromAnchor(anchor, targetWorld, spawnerOrigin, anchorSearchRadiusMeters, useLooseWalkConnectivity: false);
+        return IsReachableFromAnchor(anchor, targetWorld, spawnerOrigin, anchorSearchRadiusMeters, useLooseWalkConnectivity);
     }
 
     public static bool IsReachableFromAnchor(

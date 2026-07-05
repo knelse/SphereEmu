@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
@@ -12,8 +13,6 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 /// </summary>
 public static class MonsterSpawnSlotBaker
 {
-    private const int MaxLooseAttemptsMultiplier = 12;
-
     public static int BakeForSpawner(MonsterSpawner spawner)
     {
         var mobCount = spawner.TargetRegularMonsterCount + spawner.TargetNamedMonsterCount;
@@ -24,7 +23,7 @@ public static class MonsterSpawnSlotBaker
             return 0;
         }
 
-        var job = CreateBakeParams(spawner);
+        var job = CreateBakeParams(spawner, captureTerrainMesh: true);
         PreloadCachesForJob(job);
         var result = BakeCore(job);
         return ApplyBakeResult(spawner, job, result);
@@ -48,7 +47,7 @@ public static class MonsterSpawnSlotBaker
                 continue;
             }
 
-            work.Add((spawner, CreateBakeParams(spawner)));
+            work.Add((spawner, CreateBakeParams(spawner, captureTerrainMesh: true)));
         }
 
         if (work.Count == 0)
@@ -110,15 +109,20 @@ public static class MonsterSpawnSlotBaker
             };
         }
 
-        var bakeContext = SpawnSlotBakeContext.Create(job.Origin, job.SpawnRadiusMeters);
+        var bakeContext = SpawnSlotBakeContext.Create(job.Origin, job.SpawnRadiusMeters, job.TerrainHeights);
         var validated = new List<Vector3>(job.PoolCount);
         OutdoorSpawnSlotValidator.FailReason? lastFailure = null;
         var picked = new List<Vector3>();
 
-        TryAddAtlasCandidates(job, bakeContext, validated, picked, ref lastFailure);
-        if (validated.Count < job.MobCount)
+        TryFillPoolWithSpread(job, bakeContext, validated, picked, OutdoorSpawnSlotValidator.ValidationMode.LooseTerrain, ref lastFailure);
+        if (validated.Count < job.PoolCount)
         {
-            TryAddLooseTerrainCandidates(job, bakeContext, validated, picked, ref lastFailure);
+            TryFillPoolWithSpread(job, bakeContext, validated, picked, OutdoorSpawnSlotValidator.ValidationMode.AtlasFootprint, ref lastFailure);
+        }
+
+        if (validated.Count < job.PoolCount && job.TerrainHeights is not null)
+        {
+            TryFillPoolWithSpread(job, bakeContext, validated, picked, OutdoorSpawnSlotValidator.ValidationMode.TerrainMesh, ref lastFailure);
         }
 
         if (validated.Count < job.MobCount)
@@ -179,16 +183,21 @@ public static class MonsterSpawnSlotBaker
         }
     }
 
-    private static SpawnerBakeParams CreateBakeParams(MonsterSpawner spawner)
+    private static SpawnerBakeParams CreateBakeParams(MonsterSpawner spawner, bool captureTerrainMesh = false)
     {
         var mobCount = spawner.TargetRegularMonsterCount + spawner.TargetNamedMonsterCount;
+        var origin = spawner.GlobalPosition;
+        var spawnRadius = spawner.SpawnRadiusMeters;
         return new SpawnerBakeParams
         {
-            Origin = spawner.GlobalPosition,
-            SpawnRadiusMeters = spawner.SpawnRadiusMeters,
+            Origin = origin,
+            SpawnRadiusMeters = spawnRadius,
             LeashRadiusMeters = spawner.LeashRadiusMeters,
             MobCount = mobCount,
-            PoolCount = OutdoorFieldConfig.ComputeBakedSlotPoolCount(mobCount, spawner.SpawnRadiusMeters),
+            PoolCount = OutdoorFieldConfig.ComputeBakedSlotPoolCount(mobCount, spawnRadius),
+            TerrainHeights = captureTerrainMesh
+                ? TerrainMeshHeightSnapshot.TryCapture(spawner, origin.X, origin.Z, spawnRadius)
+                : null,
         };
     }
 
@@ -202,108 +211,171 @@ public static class MonsterSpawnSlotBaker
         }
     }
 
-    private static void TryAddAtlasCandidates(
+    private static void TryFillPoolWithSpread(
         SpawnerBakeParams job,
         SpawnSlotBakeContext bakeContext,
         List<Vector3> validated,
         List<Vector3> picked,
+        OutdoorSpawnSlotValidator.ValidationMode mode,
         ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
     {
-        if (!WalkSurfaceWalkableQuery.TryPickSpawnSlots(
-                job.Origin,
-                job.SpawnRadiusMeters,
-                job.PoolCount * 4,
-                OutdoorFieldConfig.MinSlotSeparationMeters,
-                existingOccupied: null,
-                out var rawCandidates))
+        var samples = BuildSpreadSamplePool(job, bakeContext);
+        while (validated.Count < job.PoolCount && samples.Count > 0)
         {
-            rawCandidates = [];
-        }
-
-        Shuffle(rawCandidates);
-        foreach (var (x, z, _) in rawCandidates)
-        {
-            if (validated.Count >= job.PoolCount)
-            {
-                break;
-            }
-
-            TryAddCandidate(job, x, z, validated, picked, bakeContext, OutdoorSpawnSlotValidator.ValidationMode.AtlasFootprint, ref lastFailure);
+            var bestIndex = FindFarthestSampleIndex(job.Origin, samples, picked);
+            var (x, z) = samples[bestIndex];
+            samples.RemoveAt(bestIndex);
+            TryAddCandidate(job, x, z, validated, picked, bakeContext, mode, ref lastFailure);
         }
     }
 
-    private static void TryAddLooseTerrainCandidates(
+    private static List<(float X, float Z)> BuildSpreadSamplePool(
         SpawnerBakeParams job,
-        SpawnSlotBakeContext bakeContext,
-        List<Vector3> validated,
-        List<Vector3> picked,
-        ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
-    {
-        var samples = CollectLooseSamplesNearSpawner(job.Origin, job.SpawnRadiusMeters, bakeContext);
-
-        var maxAttempts = Mathf.Min(
-            samples.Count,
-            Mathf.Max(job.MobCount, job.PoolCount) * MaxLooseAttemptsMultiplier);
-        for (var attempt = 0; attempt < maxAttempts && validated.Count < job.PoolCount; attempt++)
-        {
-            var (x, z) = samples[attempt];
-            TryAddCandidate(job, x, z, validated, picked, bakeContext, OutdoorSpawnSlotValidator.ValidationMode.LooseTerrain, ref lastFailure);
-        }
-    }
-
-    private static List<(float X, float Z)> CollectLooseSamplesNearSpawner(
-        Vector3 origin,
-        float spawnRadius,
         SpawnSlotBakeContext bakeContext)
     {
         var samples = new List<(float X, float Z)>();
         var seen = new HashSet<(int, int)>();
-        AddLooseSamples(origin.X, origin.Z, spawnRadius, origin, spawnRadius, samples, seen);
+        var radiusSq = job.SpawnRadiusMeters * job.SpawnRadiusMeters;
+
+        AddLooseGridSamples(job.Origin.X, job.Origin.Z, job.SpawnRadiusMeters, job.Origin, radiusSq, samples, seen);
+
+        var atlasCandidates = new List<(float X, float Z, float Y)>();
+        WalkSurfaceCache.CollectWalkableCandidates(
+            job.Origin.X,
+            job.Origin.Z,
+            job.SpawnRadiusMeters,
+            atlasCandidates);
+        foreach (var (x, z, _) in atlasCandidates)
+        {
+            AddSample(x, z, job.Origin, radiusSq, samples, seen);
+        }
+
         if (bakeContext.HasWalkAnchor)
         {
-            AddLooseSamples(
+            var anchorCandidates = new List<(float X, float Z, float Y)>();
+            WalkSurfaceCache.CollectWalkableCandidates(
                 bakeContext.WalkAnchor.X,
                 bakeContext.WalkAnchor.Z,
-                spawnRadius,
-                origin,
-                spawnRadius,
+                job.SpawnRadiusMeters,
+                anchorCandidates);
+            foreach (var (x, z, _) in anchorCandidates)
+            {
+                AddSample(x, z, job.Origin, radiusSq, samples, seen);
+            }
+
+            AddLooseGridSamples(
+                bakeContext.WalkAnchor.X,
+                bakeContext.WalkAnchor.Z,
+                job.SpawnRadiusMeters,
+                job.Origin,
+                radiusSq,
                 samples,
                 seen);
         }
 
-        Shuffle(samples);
+        if (job.TerrainHeights is not null)
+        {
+            var meshSamples = new List<(float X, float Z, float Y)>();
+            job.TerrainHeights.CollectSamplesInRadius(
+                job.Origin.X,
+                job.Origin.Z,
+                job.SpawnRadiusMeters,
+                meshSamples);
+            foreach (var (x, z, _) in meshSamples)
+            {
+                AddSample(x, z, job.Origin, radiusSq, samples, seen);
+            }
+        }
+
         return samples;
     }
 
-    private static void AddLooseSamples(
+    private static void AddLooseGridSamples(
         float centerX,
         float centerZ,
         float collectRadius,
         Vector3 spawnerOrigin,
-        float spawnRadius,
-        List<(float X, float Z)> destination,
+        float spawnRadiusSq,
+        List<(float X, float Z)> samples,
         HashSet<(int, int)> seen)
     {
         var scratch = new List<(float X, float Z)>();
-        WalkSurfaceCache.CollectLooseWalkSamplesInRadius(centerX, centerZ, collectRadius, scratch);
-        var radiusSq = spawnRadius * spawnRadius;
+        WalkSurfaceCache.CollectLooseWalkSamplesInRadius(
+            centerX,
+            centerZ,
+            collectRadius,
+            scratch,
+            sampleSpacingMeters: OutdoorFieldConfig.MinSlotSeparationMeters,
+            requireLooseWalk: false);
         foreach (var (x, z) in scratch)
         {
-            var dx = x - spawnerOrigin.X;
-            var dz = z - spawnerOrigin.Z;
-            if (dx * dx + dz * dz > radiusSq)
-            {
-                continue;
-            }
-
-            var key = ((int)Mathf.Round(x * 4f), (int)Mathf.Round(z * 4f));
-            if (!seen.Add(key))
-            {
-                continue;
-            }
-
-            destination.Add((x, z));
+            AddSample(x, z, spawnerOrigin, spawnRadiusSq, samples, seen);
         }
+    }
+
+    private static void AddSample(
+        float x,
+        float z,
+        Vector3 spawnerOrigin,
+        float spawnRadiusSq,
+        List<(float X, float Z)> samples,
+        HashSet<(int, int)> seen)
+    {
+        var dx = x - spawnerOrigin.X;
+        var dz = z - spawnerOrigin.Z;
+        if (dx * dx + dz * dz > spawnRadiusSq)
+        {
+            return;
+        }
+
+        var key = ((int)Mathf.Round(x * 4f), (int)Mathf.Round(z * 4f));
+        if (!seen.Add(key))
+        {
+            return;
+        }
+
+        samples.Add((x, z));
+    }
+
+    private static int FindFarthestSampleIndex(
+        Vector3 origin,
+        IReadOnlyList<(float X, float Z)> samples,
+        IReadOnlyList<Vector3> picked)
+    {
+        var bestIndex = 0;
+        var bestScore = float.MinValue;
+        for (var i = 0; i < samples.Count; i++)
+        {
+            var (x, z) = samples[i];
+            var score = MinDistanceScore(origin, picked, x, z);
+            if (score <= bestScore)
+            {
+                continue;
+            }
+
+            bestScore = score;
+            bestIndex = i;
+        }
+
+        return bestIndex;
+    }
+
+    private static float MinDistanceScore(Vector3 origin, IReadOnlyList<Vector3> picked, float x, float z)
+    {
+        var minDistSq = DistanceSq(origin.X, origin.Z, x, z);
+        foreach (var position in picked)
+        {
+            minDistSq = Math.Min(minDistSq, DistanceSq(position.X, position.Z, x, z));
+        }
+
+        return minDistSq;
+    }
+
+    private static float DistanceSq(float ax, float az, float bx, float bz)
+    {
+        var dx = ax - bx;
+        var dz = az - bz;
+        return dx * dx + dz * dz;
     }
 
     private static void TryAddCandidate(
@@ -316,7 +388,7 @@ public static class MonsterSpawnSlotBaker
         OutdoorSpawnSlotValidator.ValidationMode mode,
         ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
     {
-        if (!MonsterSpawnGroundQuery.TryResolveSpawnGroundYFromAtlas(x, z, out var groundY))
+        if (!TryResolveCandidateGroundY(job, x, z, mode, out var groundY))
         {
             lastFailure = OutdoorSpawnSlotValidator.FailReason.NotWalkable;
             return;
@@ -343,6 +415,36 @@ public static class MonsterSpawnSlotBaker
 
         validated.Add(candidate);
         picked.Add(candidate);
+    }
+
+    private static bool TryResolveCandidateGroundY(
+        SpawnerBakeParams job,
+        float x,
+        float z,
+        OutdoorSpawnSlotValidator.ValidationMode mode,
+        out float groundY)
+    {
+        if (mode == OutdoorSpawnSlotValidator.ValidationMode.TerrainMesh
+            && job.TerrainHeights is not null
+            && job.TerrainHeights.TrySample(x, z, out groundY))
+        {
+            return true;
+        }
+
+        if (mode == OutdoorSpawnSlotValidator.ValidationMode.LooseTerrain
+            && WalkSurfaceCache.TrySampleGround(x, z, out groundY)
+            && !float.IsNaN(groundY))
+        {
+            return true;
+        }
+
+        if (WalkSurfaceCache.TrySampleWalkableGround(x, z, out groundY)
+            && !float.IsNaN(groundY))
+        {
+            return true;
+        }
+
+        return WalkSurfaceCache.TrySampleGround(x, z, out groundY) && !float.IsNaN(groundY);
     }
 
     private static void MarkBakeFailure(
@@ -373,23 +475,5 @@ public static class MonsterSpawnSlotBaker
         }
 
         return true;
-    }
-
-    private static void Shuffle(List<(float X, float Z, float Y)> candidates)
-    {
-        for (var i = candidates.Count - 1; i > 0; i--)
-        {
-            var j = Random.Shared.Next(i + 1);
-            (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
-        }
-    }
-
-    private static void Shuffle(List<(float X, float Z)> candidates)
-    {
-        for (var i = candidates.Count - 1; i > 0; i--)
-        {
-            var j = Random.Shared.Next(i + 1);
-            (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
-        }
     }
 }

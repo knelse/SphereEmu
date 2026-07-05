@@ -12,9 +12,9 @@
         <PackageReference Include="System.IO" Version="4.3.0"/>
         <PackageReference Include="system.io.filesystem" Version="4.3.0"/>
         <PackageReference Include="System.Runtime" Version="4.3.0"/>
-        <PackageReference Update="Godot.SourceGenerators" Version="4.4.1"/>
-        <PackageReference Update="GodotSharp" Version="4.4.1"/>
-        <PackageReference Update="GodotSharpEditor" Version="4.4.1"/>
+        <PackageReference Update="Godot.SourceGenerators" Version="4.6.1"/>
+        <PackageReference Update="GodotSharp" Version="4.6.1"/>
+        <PackageReference Include="GodotSharpEditor" Version="4.6.1" Condition="'$(Configuration)' == 'Debug'"/>
         <PackageReference Include="xunit" Version="2.9.3"/>
     </ItemGroup>
     <ItemGroup>
@@ -50,9 +50,6 @@
         <Reference Include="BitStreams">
             <HintPath>.references\BitStreams.dll</HintPath>
         </Reference>
-        <Reference Include="GodotSharp">
-            <HintPath>..\..\Games\Godot\GodotSharp\Api\Release\GodotSharp.dll</HintPath>
-        </Reference>
         <Reference Include="LiteDB">
             <HintPath>.references\LiteDB.dll</HintPath>
         </Reference>
@@ -71,5 +68,12 @@
         <Compile Remove="Tools\**\*.cs"/>
         <Compile Remove="Tools\**\obj\**\*.cs"/>
         <Compile Remove="Tools\**\bin\**\*.cs"/>
+    </ItemGroup>
+
+    <!-- Editor plugin C# must not ship in the main assembly: headless runs load Debug and
+         fail to resolve EditorPlugin types without GodotSharpEditor at runtime. Re-enable
+         the gizmo later via a dedicated tools project or GDScript plugin. -->
+    <ItemGroup>
+        <Compile Remove="addons\**\*.cs"/>
     </ItemGroup>
 </Project>

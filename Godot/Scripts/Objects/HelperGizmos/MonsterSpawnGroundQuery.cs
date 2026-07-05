@@ -565,6 +565,51 @@ public static class MonsterSpawnGroundQuery
         return false;
     }
 
+    /// <summary>
+    ///     Samples the top physics standing surface at (worldX, worldZ). Returns false when no colliders exist.
+    /// </summary>
+    public static bool TrySamplePhysicsStandingY(Node3D contextNode, float worldX, float worldZ, out float worldY)
+    {
+        worldY = default;
+        var rayStart = new Vector3(worldX, TerrainWalkMeshRaycast.RayTopY, worldZ);
+        var rayEnd = new Vector3(worldX, TerrainWalkMeshRaycast.RayBottomY, worldZ);
+        if (!TryRaycastPhysics(contextNode, rayStart, rayEnd, out var physicsHit, out _)
+            || physicsHit.Normal.Y < MinWalkableSurfaceNormalY
+            || IsMonsterCollider(physicsHit.Collider))
+        {
+            return false;
+        }
+
+        worldY = physicsHit.Position.Y;
+        return true;
+    }
+
+    /// <summary>
+    ///     Rejects rooftops and props: physics top surface must sit near the outdoor GridMap height.
+    /// </summary>
+    public static bool IsStandingSurfaceAlignedWithTerrainMesh(
+        Node3D contextNode,
+        float worldX,
+        float worldZ,
+        float terrainMeshY,
+        float maxSurfaceAboveTerrainMeters = MaxStandingSurfaceToTerrainGapMeters)
+    {
+        var rayStart = new Vector3(worldX, terrainMeshY + 8f, worldZ);
+        var rayEnd = new Vector3(worldX, terrainMeshY - 2f, worldZ);
+
+        if (!TryRaycastPhysics(contextNode, rayStart, rayEnd, out var physicsHit, out _)
+            || physicsHit.Normal.Y < MinWalkableSurfaceNormalY
+            || IsMonsterCollider(physicsHit.Collider))
+        {
+            return true;
+        }
+
+        return physicsHit.Position.Y - terrainMeshY <= maxSurfaceAboveTerrainMeters;
+    }
+
+    public static GridMap? TryResolveTerrainGridMap(Node3D contextNode)
+        => ResolveTerrainGridMap(contextNode);
+
     private static GridMap? ResolveTerrainGridMap(Node3D contextNode)
     {
         if (_cachedTerrainGridMap is not null && GodotObject.IsInstanceValid(_cachedTerrainGridMap))

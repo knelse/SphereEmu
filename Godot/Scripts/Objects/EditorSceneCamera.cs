@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using SphServer.Helpers;
 using SphServer.Sphere.Game.WorldObject;
@@ -75,3 +76,21 @@ public static class EditorSceneCamera
 		return null;
 	}
 }
+#else
+using Godot;
+using SphServer.Helpers;
+
+namespace SphServer.Godot.Scripts.Objects;
+
+/// <summary>Export/headless stub — editor camera helpers are unavailable outside TOOLS builds.</summary>
+public static class EditorSceneCamera
+{
+	public static void JumpToWorldPosition(Vector3 worldPosition)
+	{
+	}
+
+	public static void JumpToCastleTablet(Node context, Castles castle)
+	{
+	}
+}
+#endif

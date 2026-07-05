@@ -15,6 +15,7 @@ public static class OutdoorFieldConfig
     public const float OverheadMinClearanceMeters = 2.5f;
     public const float DefaultSpawnRadiusMeters = 20f;
     public const float DefaultLeashRadiusMeters = 100f;
+    public const float MaxOutdoorSpawnAboveTerrainMeters = 1.25f;
     public const int BlockedDilationRadiusCells = 1;
     public const int AStarMaxExpandedNodes = 10_000;
     public const int PathRequestsPerTick = 48;

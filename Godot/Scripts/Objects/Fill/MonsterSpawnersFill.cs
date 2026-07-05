@@ -22,10 +22,22 @@ public partial class MonsterSpawnersFill : Node3D
 	public string SpawnerDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\mob_spawner.txt";
 
 	[Export]
+	public string MobDataFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\mob.txt";
+
+	[Export]
+	public string LevelInferenceReportFilePath { get; set; } = @"d:\SphereDev\_sphereDumps\spawner_levels_report.csv";
+
+	[Export]
+	public float LevelDirectMatchRadiusMeters { get; set; } = 60f;
+
+	[Export]
 	public string MonsterSpawnerScenePath { get; set; } = "res://Godot/Scenes/monster_spawner.tscn";
 
 	[ExportToolButton("Rebuild monster spawners")]
 	public Callable RebuildMonsterSpawnersButton => Callable.From(RebuildMonsterSpawners);
+
+	[ExportToolButton("Apply spawner levels from mob dump")]
+	public Callable ApplySpawnerLevelsFromMobDumpButton => Callable.From(ApplySpawnerLevelsFromMobDump);
 
 	[ExportToolButton("Delete and respawn enabled spawners")]
 	public Callable DeleteAndRespawnEnabledSpawnersButton => Callable.From(DeleteAndRespawnEnabledSpawners);
@@ -36,6 +48,26 @@ public partial class MonsterSpawnersFill : Node3D
 	public void BakeSpawnSlotsOnAllSpawners()
 	{
 		MonsterSpawnSlotBaker.BakeAllUnder(this);
+	}
+
+	public void ApplySpawnerLevelsFromMobDump()
+	{
+		if (!Engine.IsEditorHint())
+		{
+			GD.PushWarning("MonsterSpawnersFill: Apply spawner levels is editor-only.");
+			return;
+		}
+
+		var stats = MonsterSpawnerLevelInference.ApplyToSpawnersUnder(
+			this,
+			MobDataFilePath,
+			LevelDirectMatchRadiusMeters,
+			LevelInferenceReportFilePath);
+
+		GD.Print(
+			$"MonsterSpawnersFill: level inference direct={stats.Direct}, wideMob={stats.WideMob}, "
+			+ $"interpolated={stats.Interpolated}, none={stats.None}, skippedWeird={stats.SkippedWeird}, "
+			+ $"flaggedSpread={stats.FlaggedSpread}");
 	}
 
 	public void DeleteAndRespawnEnabledSpawners()

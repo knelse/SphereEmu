@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.Fill;
 
@@ -57,7 +58,7 @@ public static class WalkSurfaceSpawnProbe
 
         GD.Print($"  Loose terrain samples in radius={looseSamples.Count}, loose-walkable={looseWalkable}");
 
-        ProbeLiveTerrain(worldX, worldZ);
+        ProbeLiveTerrain(worldX, worldZ, spawnRadiusMeters, out var terrainSnapshot);
 
         var candidates = new List<(float X, float Z, float Y)>();
         WalkSurfaceCache.CollectWalkableCandidates(worldX, worldZ, spawnRadiusMeters, candidates);
@@ -81,8 +82,13 @@ public static class WalkSurfaceSpawnProbe
         return candidates.Count > 0 ? 0 : 1;
     }
 
-    private static void ProbeLiveTerrain(float worldX, float worldZ)
+    private static void ProbeLiveTerrain(
+        float worldX,
+        float worldZ,
+        float spawnRadiusMeters,
+        out TerrainMeshHeightSnapshot? terrainSnapshot)
     {
+        terrainSnapshot = null;
         try
         {
             var tree = Engine.GetMainLoop() as SceneTree;
@@ -119,6 +125,28 @@ public static class WalkSurfaceSpawnProbe
             {
                 GD.Print("  Live terrain: no mesh hit at probe");
             }
+
+            terrainSnapshot = TerrainMeshHeightSnapshot.TryCapture(fill, worldX, worldZ, spawnRadiusMeters);
+            if (terrainSnapshot is null)
+            {
+                GD.Print($"  Terrain mesh snapshot: 0 samples in {spawnRadiusMeters:0.##}m radius");
+                return;
+            }
+
+            var meshWalkable = 0;
+            var meshSamples = new List<(float X, float Z, float Y)>();
+            terrainSnapshot.CollectSamplesInRadius(worldX, worldZ, spawnRadiusMeters, meshSamples);
+            foreach (var (sampleX, sampleZ, _) in meshSamples)
+            {
+                if (OutdoorTerrainMeshWalk.IsOutdoorWalkCandidate(sampleX, sampleZ, terrainSnapshot))
+                {
+                    meshWalkable++;
+                }
+            }
+
+            GD.Print(
+                $"  Terrain mesh snapshot: {meshSamples.Count} sample(s), mesh-walkable={meshWalkable}, "
+                + $"origin mesh-walkable={OutdoorTerrainMeshWalk.IsOutdoorWalkCandidate(worldX, worldZ, terrainSnapshot)}");
         }
         catch (Exception ex)
         {

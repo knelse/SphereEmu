@@ -26,6 +26,9 @@ public partial class MonsterSpawner : Node3D
 	private readonly List<int> _regularMonsterIds = [];
 	private readonly List<int> _namedMonsterIds = [];
 	private readonly object _spawnPlacementLock = new();
+	private int _cachedRegularMinLevel = int.MinValue;
+	private int _cachedRegularMaxLevel = int.MinValue;
+	private global::System.Collections.Generic.Dictionary<int, IReadOnlyList<MonsterType>>? _regularMonsterTypesByLevel;
 
 	[Export]
 	public int TargetNamedMonsterCount = 0;
@@ -120,6 +123,38 @@ public partial class MonsterSpawner : Node3D
 		public MonsterSpawner Spawner;
 	}
 
+	internal void RefreshEditorGizmo()
+	{
+		if (Engine.IsEditorHint())
+		{
+			UpdateGizmos();
+		}
+	}
+
+	/// <summary>
+	///     Used by the editor gizmo plugin; Godot Get() does not reliably return exported arrays on C# nodes.
+	/// </summary>
+	public Array<Vector3> GetEditorBakedSpawnSlots() => BakedSpawnSlots;
+
+	public override void _Notification(int what)
+	{
+		if (Engine.IsEditorHint() && what == NotificationTransformChanged)
+		{
+			UpdateGizmos();
+		}
+	}
+
+	public override bool _Set(StringName property, Variant value)
+	{
+		if (!base._Set(property, value))
+		{
+			return false;
+		}
+
+		RefreshEditorGizmo();
+		return true;
+	}
+
 	public override void _Ready()
 	{
 		_spawningEnabled = false;
@@ -127,6 +162,7 @@ public partial class MonsterSpawner : Node3D
 		if (Engine.IsEditorHint())
 		{
 			AdoptPersistedMonstersInEditor();
+			RefreshEditorGizmo();
 			return;
 		}
 
@@ -189,6 +225,7 @@ public partial class MonsterSpawner : Node3D
 		HasSpawnError = true;
 		SpawnPlacementInvalid = true;
 		NotifyPropertyListChanged();
+		RefreshEditorGizmo();
 	}
 
 	internal void ClearSpawnError()
@@ -202,6 +239,7 @@ public partial class MonsterSpawner : Node3D
 		}
 
 		NotifyPropertyListChanged();
+		RefreshEditorGizmo();
 	}
 
 	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots)
@@ -213,6 +251,7 @@ public partial class MonsterSpawner : Node3D
 		}
 
 		NotifyPropertyListChanged();
+		RefreshEditorGizmo();
 	}
 
 	/// <summary>
@@ -816,6 +855,46 @@ public partial class MonsterSpawner : Node3D
 		_nextBindSlotIndex = 0;
 	}
 
+	private static int RollInclusiveLevel(int minLevel, int maxLevel)
+	{
+		if (minLevel > maxLevel)
+		{
+			(minLevel, maxLevel) = (maxLevel, minLevel);
+		}
+
+		return Random.Shared.Next(minLevel, maxLevel + 1);
+	}
+
+	private void EnsureRegularMonsterTypeCache()
+	{
+		if (_regularMonsterTypesByLevel is not null
+			&& _cachedRegularMinLevel == RegularMonsterMinLevel
+			&& _cachedRegularMaxLevel == RegularMonsterMaxLevel)
+		{
+			return;
+		}
+
+		_cachedRegularMinLevel = RegularMonsterMinLevel;
+		_cachedRegularMaxLevel = RegularMonsterMaxLevel;
+		_regularMonsterTypesByLevel = MonsterSpawnerMonsterTypeLookup.BuildLevelSubset(
+			RegularMonsterMinLevel,
+			RegularMonsterMaxLevel);
+	}
+
+	private MonsterType PickRegularMonsterType(int level)
+	{
+		EnsureRegularMonsterTypeCache();
+		if (_regularMonsterTypesByLevel is not null
+			&& MonsterSpawnerMonsterTypeLookup.TryPickRandomMonsterType(_regularMonsterTypesByLevel, level, out var monsterType))
+		{
+			return monsterType;
+		}
+
+		GD.PushWarning(
+			$"MonsterSpawner '{Name}': no monster type for regular level {level} (range {RegularMonsterMinLevel}-{RegularMonsterMaxLevel}); using {MonsterType.Палочник}.");
+		return MonsterType.Палочник;
+	}
+
 	private bool SpawnRegularMonsterAt(int monsterId, Vector3 spawnWorldPosition, int slotIndex)
 	{
 		var scene = GD.Load<PackedScene>(MonsterScenePath);
@@ -831,8 +910,8 @@ public partial class MonsterSpawner : Node3D
 			return false;
 		}
 
-		const MonsterType monsterType = MonsterType.Палочник;
-		const int level = 1;
+		var level = RollInclusiveLevel(RegularMonsterMinLevel, RegularMonsterMaxLevel);
+		var monsterType = PickRegularMonsterType(level);
 		const bool isNamed = false;
 
 		monster.MonsterType = monsterType;

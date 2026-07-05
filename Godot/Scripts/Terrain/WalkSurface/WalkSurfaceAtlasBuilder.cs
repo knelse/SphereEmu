@@ -145,6 +145,12 @@ public static class WalkSurfaceAtlasBuilder
         GD.Print(
             $"WalkSurfaceAtlasBuilder: sampled terrain heights in {stopwatch.ElapsedMilliseconds} ms ({samplesWritten} new samples).");
 
+        var gapsFilled = SupplementMissingTerrainSamples(terrain, usedCells, builders);
+        if (gapsFilled > 0)
+        {
+            GD.Print($"WalkSurfaceAtlasBuilder: filled {gapsFilled} missing terrain sample(s) via live raycast.");
+        }
+
         foreach (var builder in builders.Values)
         {
             builder.SnapshotTerrainHeights();
@@ -417,6 +423,54 @@ public static class WalkSurfaceAtlasBuilder
     private static int FloorDiv(float value, float divisor)
     {
         return (int)Mathf.Floor(value / divisor);
+    }
+
+    private static int SupplementMissingTerrainSamples(
+        GridMap terrain,
+        IEnumerable<Vector3I> usedCells,
+        Dictionary<(int ChunkX, int ChunkZ), WalkSurfaceChunkBuilder> builders)
+    {
+        var halfTile = terrain.CellSize.X * 0.5f;
+        var gridCount = Mathf.CeilToInt((halfTile * 2f) / SampleSpacingMeters) + 1;
+        var terrainGlobal = terrain.GlobalTransform;
+        var filled = 0;
+
+        foreach (var cell in usedCells)
+        {
+            if (terrain.GetCellItem(cell) < 0)
+            {
+                continue;
+            }
+
+            var cellTransform = terrainGlobal * new Transform3D(
+                terrain.GetCellItemBasis(cell),
+                terrain.MapToLocal(cell));
+
+            for (var iz = 0; iz < gridCount; iz++)
+            {
+                var localZ = -halfTile + iz * SampleSpacingMeters;
+                for (var ix = 0; ix < gridCount; ix++)
+                {
+                    var localX = -halfTile + ix * SampleSpacingMeters;
+                    var world = cellTransform * new Vector3(localX, 0f, localZ);
+                    var builder = GetOrCreateBuilder(builders, world.X, world.Z);
+                    if (!builder.IsTerrainSampleMissingAtWorld(world.X, world.Z))
+                    {
+                        continue;
+                    }
+
+                    if (!TerrainWalkMeshRaycast.TryRaycastSingleCellTopY(terrain, cell, world.X, world.Z, out var worldY))
+                    {
+                        continue;
+                    }
+
+                    builder.SetWorldSample(world.X, world.Z, worldY);
+                    filled++;
+                }
+            }
+        }
+
+        return filled;
     }
 
     private static void EnsureOutputDirectory(string outputDirectoryResourcePath)

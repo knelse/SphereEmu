@@ -10,8 +10,12 @@ public readonly struct SpawnSlotBakeContext
 {
     public Vector3 WalkAnchor { get; init; }
     public bool HasWalkAnchor { get; init; }
+    public TerrainMeshHeightSnapshot? TerrainHeights { get; init; }
 
-    public static SpawnSlotBakeContext Create(Vector3 origin, float spawnRadiusMeters)
+    public static SpawnSlotBakeContext Create(
+        Vector3 origin,
+        float spawnRadiusMeters,
+        TerrainMeshHeightSnapshot? terrainHeights = null)
     {
         var hasAnchor = WalkSurfaceCache.TryFindNearestWalkAnchor(
             origin.X,
@@ -22,6 +26,7 @@ public readonly struct SpawnSlotBakeContext
         {
             HasWalkAnchor = hasAnchor,
             WalkAnchor = anchor,
+            TerrainHeights = terrainHeights,
         };
     }
 

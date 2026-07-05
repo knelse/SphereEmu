@@ -287,12 +287,21 @@ public static class WorldObjectDumpFillCommon
 	}
 
 	/// <summary>
+	///     Source-space position from a placement's Godot position relative to the Fill root.
+	/// </summary>
+	public static Vector3 SourcePositionFromPlacementNode(Node3D placement, Node3D fillRoot)
+	{
+		var local = fillRoot.ToLocal(placement.GlobalTransform.Origin);
+		return new Vector3(local.X, -local.Y, -local.Z);
+	}
+
+	/// <summary>
 	///     Source-space dedup key from a placement's Godot position relative to the Fill root.
 	/// </summary>
 	public static (long Qx, long Qy, long Qz) SourcePositionKeyFromPlacementNode(Node3D placement, Node3D fillRoot)
 	{
-		var local = fillRoot.ToLocal(placement.GlobalTransform.Origin);
-		return QuantizeSourcePosition(local.X, -local.Y, -local.Z);
+		var source = SourcePositionFromPlacementNode(placement, fillRoot);
+		return QuantizeSourcePosition(source.X, source.Y, source.Z);
 	}
 
 	/// <summary>

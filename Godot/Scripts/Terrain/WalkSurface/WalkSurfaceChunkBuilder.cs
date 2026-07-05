@@ -119,6 +119,16 @@ public sealed class WalkSurfaceChunkBuilder
         return true;
     }
 
+    public bool IsTerrainSampleMissingAtWorld(float worldX, float worldZ)
+    {
+        if (!TryGetSampleIndex(worldX, worldZ, out var index))
+        {
+            return true;
+        }
+
+        return float.IsNaN(_heights[index]);
+    }
+
     public void DilateBlocked(int radiusCells)
     {
         if (radiusCells <= 0)

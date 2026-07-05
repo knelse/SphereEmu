@@ -185,6 +185,9 @@ public partial class WalkSurfaceHeadlessBake : Node
 
             Default run rebuilds the terrain GridMap from map.txt, bakes walk data at 0.25m, stamps object
             footprints/heights, outdoor spawn channel (v4), and 1m outdoor nav chunks.
+
+            For physics-based standing surfaces (plants/rocks/buildings as colliders, rooftops blocked):
+              godot --headless --path <project> res://Godot/Scenes/physics_standing_surface_bake.tscn
             """);
     }
 

@@ -1,11 +1,9 @@
 using Godot;
-using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
-
 /// <summary>
 ///     Bake-time filters for semi-enclosed outdoor spawn slots.
 /// </summary>
@@ -27,6 +25,7 @@ public static class OutdoorSpawnSlotValidator
     {
         AtlasFootprint,
         LooseTerrain,
+        TerrainMesh,
     }
 
     public static bool TryValidateCandidate(
@@ -58,13 +57,36 @@ public static class OutdoorSpawnSlotValidator
 
         if (mode == ValidationMode.AtlasFootprint)
         {
-            if (!WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
+            var openness = WalkSurfaceCache.MeasureLocalOpenness(
+                candidate.X,
+                candidate.Z,
+                OutdoorFieldConfig.ResolveOpennessRadiusMeters(spawnRadiusMeters));
+            if (openness >= OutdoorFieldConfig.OpennessThreshold)
+            {
+                if (!WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
+                {
+                    reason = FailReason.NotWalkable;
+                    return false;
+                }
+            }
+            else if (!WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
             {
                 reason = FailReason.NotWalkable;
                 return false;
             }
         }
-        else if (!WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
+        else if (mode == ValidationMode.LooseTerrain)
+        {
+            if (!WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
+            {
+                reason = FailReason.NotWalkable;
+                return false;
+            }
+        }
+        else if (!OutdoorTerrainMeshWalk.IsOutdoorWalkCandidate(
+                     candidate.X,
+                     candidate.Z,
+                     bakeContext.TerrainHeights))
         {
             reason = FailReason.NotWalkable;
             return false;
@@ -79,34 +101,6 @@ public static class OutdoorSpawnSlotValidator
         if (!OutdoorPathQuery.IsInsideLeash(candidate, spawnerOrigin, leashRadiusMeters))
         {
             reason = FailReason.OutsideLeash;
-            return false;
-        }
-
-        if (mode == ValidationMode.LooseTerrain)
-        {
-            return true;
-        }
-
-        if (bakeContext.HasWalkAnchor)
-        {
-            if (!OutdoorNavReachability.IsReachableFromAnchor(
-                    bakeContext.WalkAnchor,
-                    candidate,
-                    spawnerOrigin,
-                    spawnRadiusMeters,
-                    useLooseWalkConnectivity: false))
-            {
-                reason = FailReason.Unreachable;
-                return false;
-            }
-        }
-        else if (!OutdoorNavReachability.IsReachable(
-                     spawnerOrigin,
-                     candidate,
-                     leashRadiusMeters,
-                     spawnRadiusMeters))
-        {
-            reason = FailReason.Unreachable;
             return false;
         }
 
