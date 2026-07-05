@@ -102,9 +102,9 @@ public partial class MonsterSpawner : Node3D
 	public Vector3 LeashCenterWorld => GlobalPosition;
 
 	internal int DesiredBakedSlotPoolCount =>
-		Math.Max(
+		OutdoorFieldConfig.ComputeBakedSlotPoolCount(
 			TargetRegularMonsterCount + TargetNamedMonsterCount,
-			OutdoorFieldConfig.MinBakedSpawnSlotsPerSpawner);
+			SpawnRadiusMeters);
 
 	private struct PendingDeathRespawn
 	{
@@ -499,10 +499,16 @@ public partial class MonsterSpawner : Node3D
 		return false;
 	}
 
-	private static bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
+	private bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
+		if (!OutdoorPathQuery.IsInsideLeash(candidate, GlobalPosition, SpawnRadiusMeters))
+		{
+			return false;
+		}
+
 		if (WalkSurfaceCache.HasWalkableField
-			&& !WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
+			&& !WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z)
+			&& !WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
 		{
 			return false;
 		}

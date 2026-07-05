@@ -41,7 +41,21 @@ public static class WalkSurfaceSpawnProbe
         GD.Print($"  Origin terrainY={originY:0.##}");
         GD.Print($"  Origin blocked={WalkSurfaceCache.IsBlocked(worldX, worldZ)}");
         GD.Print($"  Origin footprint OK={WalkSurfaceCache.IsSpawnFootprintAcceptable(worldX, worldZ)}");
+        GD.Print($"  Origin loose walk OK={WalkSurfaceCache.IsLooseOutdoorWalkCandidate(worldX, worldZ)}");
         GD.Print($"  Origin openness={WalkSurfaceCache.MeasureLocalOpenness(worldX, worldZ, OutdoorFieldConfig.OpennessRadiusMeters):0.###}");
+
+        var looseSamples = new List<(float X, float Z)>();
+        WalkSurfaceCache.CollectLooseWalkSamplesInRadius(worldX, worldZ, spawnRadiusMeters, looseSamples);
+        var looseWalkable = 0;
+        foreach (var (sampleX, sampleZ) in looseSamples)
+        {
+            if (WalkSurfaceCache.IsLooseOutdoorWalkCandidate(sampleX, sampleZ))
+            {
+                looseWalkable++;
+            }
+        }
+
+        GD.Print($"  Loose terrain samples in radius={looseSamples.Count}, loose-walkable={looseWalkable}");
 
         ProbeLiveTerrain(worldX, worldZ);
 

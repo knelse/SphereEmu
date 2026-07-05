@@ -245,6 +245,112 @@ public static class WalkSurfaceCache
         return total == 0 ? 0f : (float)walkable / total;
     }
 
+    /// <summary>
+    ///     True when terrain exists at the sample and the center cell is not object-blocked.
+    ///     Ignores the strict mob-body spawn mask used in dense prop fields (graveyards, towns).
+    /// </summary>
+    public static bool IsLooseOutdoorWalkCandidate(float worldX, float worldZ)
+    {
+        if (!HasAnyChunkFiles())
+        {
+            return true;
+        }
+
+        if (IsBlocked(worldX, worldZ))
+        {
+            return false;
+        }
+
+        return TrySampleGround(worldX, worldZ, out _);
+    }
+
+    public static bool TryFindNearestWalkAnchor(
+        float worldX,
+        float worldZ,
+        float maxRadiusMeters,
+        out Vector3 anchorWorld)
+    {
+        anchorWorld = default;
+        if (IsSpawnFootprintAcceptable(worldX, worldZ)
+            && TrySampleWalkableGround(worldX, worldZ, out var y))
+        {
+            anchorWorld = new Vector3(worldX, y, worldZ);
+            return true;
+        }
+
+        if (IsLooseOutdoorWalkCandidate(worldX, worldZ)
+            && TrySampleGround(worldX, worldZ, out y))
+        {
+            anchorWorld = new Vector3(worldX, y, worldZ);
+            return true;
+        }
+
+        const float stepMeters = 0.5f;
+        var maxRings = Mathf.CeilToInt(maxRadiusMeters / stepMeters);
+        for (var ring = 1; ring <= maxRings; ring++)
+        {
+            var ringRadius = ring * stepMeters;
+            var sampleCount = Math.Max(8, ring * 8);
+            for (var sample = 0; sample < sampleCount; sample++)
+            {
+                var angle = (float)(sample * Math.Tau / sampleCount);
+                var probeX = worldX + Mathf.Cos(angle) * ringRadius;
+                var probeZ = worldZ + Mathf.Sin(angle) * ringRadius;
+                if (IsSpawnFootprintAcceptable(probeX, probeZ)
+                    && TrySampleWalkableGround(probeX, probeZ, out y))
+                {
+                    anchorWorld = new Vector3(probeX, y, probeZ);
+                    return true;
+                }
+
+                if (IsLooseOutdoorWalkCandidate(probeX, probeZ)
+                    && TrySampleGround(probeX, probeZ, out y))
+                {
+                    anchorWorld = new Vector3(probeX, y, probeZ);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static void CollectLooseWalkSamplesInRadius(
+        float centerWorldX,
+        float centerWorldZ,
+        float radiusMeters,
+        List<(float X, float Z)> samples,
+        float sampleSpacingMeters = -1f,
+        bool requireLooseWalk = true)
+    {
+        var spacing = sampleSpacingMeters > 0f
+            ? sampleSpacingMeters
+            : OutdoorFieldConfig.MinSlotSeparationMeters;
+        var extent = Mathf.CeilToInt(radiusMeters / spacing);
+        var radiusSq = radiusMeters * radiusMeters;
+        for (var z = -extent; z <= extent; z++)
+        {
+            for (var x = -extent; x <= extent; x++)
+            {
+                var worldX = centerWorldX + x * spacing;
+                var worldZ = centerWorldZ + z * spacing;
+                var dx = worldX - centerWorldX;
+                var dz = worldZ - centerWorldZ;
+                if (dx * dx + dz * dz > radiusSq)
+                {
+                    continue;
+                }
+
+                if (requireLooseWalk && !IsLooseOutdoorWalkCandidate(worldX, worldZ))
+                {
+                    continue;
+                }
+
+                samples.Add((worldX, worldZ));
+            }
+        }
+    }
+
     private static WalkSurfaceChunk? GetOrLoadChunk(int chunkX, int chunkZ)
     {
         var key = (chunkX, chunkZ);

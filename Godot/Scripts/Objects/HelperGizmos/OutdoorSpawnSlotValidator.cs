@@ -19,43 +19,94 @@ public static class OutdoorSpawnSlotValidator
         LowOpenness,
         LowOverheadClearance,
         OutsideLeash,
+        OutsideSpawnRadius,
         Unreachable,
+    }
+
+    public enum ValidationMode
+    {
+        AtlasFootprint,
+        LooseTerrain,
     }
 
     public static bool TryValidateCandidate(
         MonsterSpawner spawner,
         Vector3 candidate,
         Vector3 spawnerOrigin,
-        out FailReason reason)
+        out FailReason reason,
+        ValidationMode mode = ValidationMode.AtlasFootprint,
+        SpawnSlotBakeContext bakeContext = default)
+        => TryValidateCandidate(
+            spawnerOrigin,
+            spawner.SpawnRadiusMeters,
+            spawner.LeashRadiusMeters,
+            candidate,
+            out reason,
+            mode,
+            bakeContext);
+
+    public static bool TryValidateCandidate(
+        Vector3 spawnerOrigin,
+        float spawnRadiusMeters,
+        float leashRadiusMeters,
+        Vector3 candidate,
+        out FailReason reason,
+        ValidationMode mode = ValidationMode.AtlasFootprint,
+        SpawnSlotBakeContext bakeContext = default)
     {
         reason = FailReason.None;
 
-        if (!WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
+        if (mode == ValidationMode.AtlasFootprint)
+        {
+            if (!WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z))
+            {
+                reason = FailReason.NotWalkable;
+                return false;
+            }
+        }
+        else if (!WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
         {
             reason = FailReason.NotWalkable;
             return false;
         }
 
-        if (!OutdoorPathQuery.IsInsideLeash(candidate, spawnerOrigin, spawner.LeashRadiusMeters))
+        if (!OutdoorPathQuery.IsInsideLeash(candidate, spawnerOrigin, spawnRadiusMeters))
+        {
+            reason = FailReason.OutsideSpawnRadius;
+            return false;
+        }
+
+        if (!OutdoorPathQuery.IsInsideLeash(candidate, spawnerOrigin, leashRadiusMeters))
         {
             reason = FailReason.OutsideLeash;
             return false;
         }
 
-        if (OutdoorNavCache.HasAnyNavFiles()
-            && !OutdoorNavReachability.IsReachable(spawnerOrigin, candidate, spawner.LeashRadiusMeters))
+        if (mode == ValidationMode.LooseTerrain)
         {
-            reason = FailReason.Unreachable;
-            return false;
+            return true;
         }
 
-        var openness = WalkSurfaceCache.MeasureLocalOpenness(
-            candidate.X,
-            candidate.Z,
-            OutdoorFieldConfig.OpennessRadiusMeters);
-        if (openness < OutdoorFieldConfig.OpennessThreshold)
+        if (bakeContext.HasWalkAnchor)
         {
-            reason = FailReason.LowOpenness;
+            if (!OutdoorNavReachability.IsReachableFromAnchor(
+                    bakeContext.WalkAnchor,
+                    candidate,
+                    spawnerOrigin,
+                    spawnRadiusMeters,
+                    useLooseWalkConnectivity: false))
+            {
+                reason = FailReason.Unreachable;
+                return false;
+            }
+        }
+        else if (!OutdoorNavReachability.IsReachable(
+                     spawnerOrigin,
+                     candidate,
+                     leashRadiusMeters,
+                     spawnRadiusMeters))
+        {
+            reason = FailReason.Unreachable;
             return false;
         }
 

@@ -118,6 +118,52 @@ public static class MonsterSpawnGroundQuery
     }
 
     /// <summary>
+    ///     Bake-time ground Y: terrain mesh + atlas only (no physics raycasts).
+    /// </summary>
+    public static bool TryResolveSpawnGroundYForBake(Node3D contextNode, float worldX, float worldZ, out float worldY)
+    {
+        if (WalkSurfaceCache.TrySampleWalkableGround(worldX, worldZ, out worldY)
+            && !float.IsNaN(worldY))
+        {
+            return true;
+        }
+
+        if (WalkSurfaceCache.TrySampleGround(worldX, worldZ, out worldY)
+            && !float.IsNaN(worldY))
+        {
+            return true;
+        }
+
+        if (TryConvertAtlasGroundY(contextNode, worldX, worldZ, out worldY))
+        {
+            return true;
+        }
+
+        var terrain = ResolveTerrainGridMap(contextNode);
+        if (terrain is not null
+            && TerrainWalkMeshRaycast.TrySampleTerrainTopY(terrain, worldX, worldZ, out worldY))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    ///     Thread-safe ground Y for parallel slot bakes (walk atlas only).
+    /// </summary>
+    public static bool TryResolveSpawnGroundYFromAtlas(float worldX, float worldZ, out float worldY)
+    {
+        if (WalkSurfaceCache.TrySampleWalkableGround(worldX, worldZ, out worldY)
+            && !float.IsNaN(worldY))
+        {
+            return true;
+        }
+
+        return WalkSurfaceCache.TrySampleGround(worldX, worldZ, out worldY) && !float.IsNaN(worldY);
+    }
+
+    /// <summary>
     ///     Resolves Godot world Y for mob feet at (worldX, worldZ). Independent of spawner placement height.
     /// </summary>
     public static bool TryResolveSpawnGroundY(Node3D contextNode, float worldX, float worldZ, out float worldY)
