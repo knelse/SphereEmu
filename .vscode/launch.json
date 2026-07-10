@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Godot: Run",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "& \"${config:godot_tools.editor_path}\" --path \"${workspaceFolder}\"",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build"
+        },
+        {
+            "name": "Godot: Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": 0,
+            "postDebugTask": "godot-debug-reset"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Godot: Debug",
+            "configurations": [
+                "Godot: Attach"
+            ],
+            "preLaunchTask": "godot-debug-prep",
+            "stopAll": true
+        }
+    ]
+}
