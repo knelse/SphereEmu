@@ -11,8 +11,8 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 public static class MonsterSpawnerMonsterTypeLookup
 {
 	private static readonly object BuildLock = new();
-	private static Dictionary<int, List<MonsterType>>? _monsterTypesByLevel;
-	private static bool _buildLoggedEmptyLevels;
+	private static Dictionary<int, List<MonsterType>>? monsterTypesByLevel;
+	private static bool buildLoggedEmptyLevels;
 
 	public static Dictionary<int, IReadOnlyList<MonsterType>> BuildLevelSubset(int minLevel, int maxLevel)
 	{
@@ -26,7 +26,7 @@ public static class MonsterSpawnerMonsterTypeLookup
 		var subset = new Dictionary<int, IReadOnlyList<MonsterType>>();
 		for (var level = minLevel; level <= maxLevel; level++)
 		{
-			if (_monsterTypesByLevel!.TryGetValue(level, out var types) && types.Count > 0)
+			if (monsterTypesByLevel!.TryGetValue(level, out var types) && types.Count > 0)
 			{
 				subset[level] = types;
 			}
@@ -86,19 +86,19 @@ public static class MonsterSpawnerMonsterTypeLookup
 
 	private static void EnsureBuilt()
 	{
-		if (_monsterTypesByLevel is not null)
+		if (monsterTypesByLevel is not null)
 		{
 			return;
 		}
 
 		lock (BuildLock)
 		{
-			if (_monsterTypesByLevel is not null)
+			if (monsterTypesByLevel is not null)
 			{
 				return;
 			}
 
-			_monsterTypesByLevel = BuildMonsterTypesByLevel();
+			monsterTypesByLevel = BuildMonsterTypesByLevel();
 		}
 	}
 
@@ -156,9 +156,9 @@ public static class MonsterSpawnerMonsterTypeLookup
 			}
 		}
 
-		if (byLevel.Count == 0 && !_buildLoggedEmptyLevels)
+		if (byLevel.Count == 0 && !buildLoggedEmptyLevels)
 		{
-			_buildLoggedEmptyLevels = true;
+			buildLoggedEmptyLevels = true;
 			GD.PushWarning("MonsterSpawnerMonsterTypeLookup: no monster types indexed from SphObjectDb.");
 		}
 

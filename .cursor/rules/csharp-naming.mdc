@@ -1,0 +1,23 @@
+---
+description: C# naming — do not prefix variable names with underscore
+globs: **/*.cs
+alwaysApply: false
+---
+
+# C# Variable Naming
+
+Do not start variable names with `_`.
+
+```csharp
+// ❌ BAD
+private int _level;
+var _monsterType = MonsterType.Палочник;
+
+// ✅ GOOD
+private int level;
+var monsterType = MonsterType.Палочник;
+```
+
+This applies to locals, parameters, fields, and other variables. Use ordinary camelCase for locals/parameters and PascalCase for public members per normal C# conventions.
+
+When editing existing code, follow the naming style already used in that file unless you are explicitly renaming as part of the task.

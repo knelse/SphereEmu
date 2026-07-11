@@ -1,0 +1,17 @@
+root = true
+
+# Partial types use subfolders named after the class (Door/Networking.cs, etc.) but
+# must stay in SphServer.Sphere.Game.WorldObject — nested namespaces like
+# WorldObject.Monster would collide with the Monster type in the parent namespace.
+[*.cs]
+dotnet_style_namespace_match_folder = false
+csharp_style_namespace_match_folder = false
+resharper_check_namespace = false
+resharper_check_namespace_highlighting = none
+
+# WorldObject/WorldObject/* cannot use a nested WorldObject namespace in C#.
+[WorldObject/**.cs]
+dotnet_style_namespace_match_folder = false
+csharp_style_namespace_match_folder = false
+resharper_check_namespace = false
+resharper_check_namespace_highlighting = none
