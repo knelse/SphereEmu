@@ -1,7 +1,7 @@
-using System.Globalization;
 using System.Collections.Generic;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Helpers;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.Fill;
@@ -359,39 +359,13 @@ public static class WorldObjectDumpFillCommon
 	}
 
 	/// <summary>ID column is hex (optional <c>0x</c>).</summary>
-	public static bool TryParseId(string s, out int id)
-	{
-		s = s.Trim();
-		if (s.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-		{
-			s = s[2..];
-		}
+	public static bool TryParseId(string s, out int id) => FileFormatCulture.TryParseHexInt(s, out id);
 
-		return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out id);
-	}
+	public static bool TryParseDouble(string s, out double v) => FileFormatCulture.TryParseDouble(s, out v);
 
-	public static bool TryParseDouble(string s, out double v) =>
-		double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
+	public static bool TryParseInt(string s, out int v) => FileFormatCulture.TryParseInt(s, out v);
 
-	public static bool TryParseInt(string s, out int v) =>
-		int.TryParse(s.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out v);
-
-	public static bool TryParseAngle(string s, out int angle)
-	{
-		if (int.TryParse(s.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out angle))
-		{
-			return true;
-		}
-
-		if (double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var d))
-		{
-			angle = (int)Math.Round(d);
-			return true;
-		}
-
-		angle = 0;
-		return false;
-	}
+	public static bool TryParseAngle(string s, out int angle) => FileFormatCulture.TryParseAngle(s, out angle);
 
 	public static void SetOwnerIfEditor(Node ownerFallback, Node node)
 	{

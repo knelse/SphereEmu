@@ -320,7 +320,7 @@ public class PacketPart
             var packetPartType = Enum.TryParse(fieldValues[1], out PacketPartType partType)
                 ? partType
                 : PacketPartType.BITS;
-            var start = int.Parse(fieldValues[2]);
+            var start = FileFormatCulture.ParseInt(fieldValues[2]);
             var length = 0;
             var lengthFromPrevious = false;
             if (fieldValues[3] == LengthFromPreviousFieldValue)
@@ -329,7 +329,7 @@ public class PacketPart
             }
             else
             {
-                length = int.Parse(fieldValues[3]);
+                length = FileFormatCulture.ParseInt(fieldValues[3]);
             }
 
             var enumName = fieldValues[4];
@@ -338,10 +338,10 @@ public class PacketPart
                 enumName = null;
             }
 
-            var r = byte.Parse(fieldValues[5]);
-            var g = byte.Parse(fieldValues[6]);
-            var b = byte.Parse(fieldValues[7]);
-            var a = byte.Parse(fieldValues[8]);
+            var r = FileFormatCulture.ParseByte(fieldValues[5]);
+            var g = FileFormatCulture.ParseByte(fieldValues[6]);
+            var b = FileFormatCulture.ParseByte(fieldValues[7]);
+            var a = FileFormatCulture.ParseByte(fieldValues[8]);
 
             var part = new PacketPart(length, partName, enumName, lengthFromPrevious, packetPartType,
                 start, [], r, g, b, a);

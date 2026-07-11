@@ -1,5 +1,5 @@
-using System.Globalization;
 using System.Text.Json;
+using SphServer.Helpers;
 using SphServer.Shared.Logger;
 
 namespace SphServer.Server.Config;
@@ -33,16 +33,16 @@ public class AppConfig
 
 public static class ServerConfig
 {
-    private static readonly object AppConfigLock = new ();
+    private static readonly object AppConfigLock = new();
     private static AppConfig? _appConfig;
 
-    private static readonly JsonSerializerOptions JsonReadOptions = new ()
+    private static readonly JsonSerializerOptions JsonReadOptions = new()
     {
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true
     };
 
-    private static readonly JsonSerializerOptions JsonWriteOptions = new () { WriteIndented = true };
+    private static readonly JsonSerializerOptions JsonWriteOptions = new() { WriteIndented = true };
 
     public static AppConfig AppConfig
     {
@@ -64,7 +64,7 @@ public static class ServerConfig
     // Note: no static ctor here on purpose. Godot can load types in unusual orders / threads;
     // lazy initialization avoids intermittent nulls and makes first-access deterministic.
 
-    public static AppConfig Get ()
+    public static AppConfig Get()
     {
         try
         {
@@ -85,7 +85,7 @@ public static class ServerConfig
             var configJson = configReader.ReadToEnd();
 
             var configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configJson, JsonReadOptions) ??
-                             new ();
+                             new();
 
             var defaultSettings = GetDefaultAppConfigDict();
             var configChanged = false;
@@ -105,8 +105,6 @@ public static class ServerConfig
             var repositoryPath = configDict.GetValueOrDefault("RepositoryPath",
                 @"D:\\SphereDev\\SphereSource\\SphereEmu");
 
-            var enUsNumberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
-
             return new AppConfig
             {
                 RepositoryPath = repositoryPath,
@@ -116,20 +114,19 @@ public static class ServerConfig
                     Path.Combine(repositoryPath, "Sphere.GameDataDecode")),
                 LiteDbConnectionString = configDict.GetValueOrDefault("LiteDbConnectionString",
                     @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;"),
-                Port = ushort.Parse(configDict.GetValueOrDefault("Port", "25860")),
+                Port = FileFormatCulture.ParseUShort(configDict.GetValueOrDefault("Port", "25860")),
                 LogPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log"),
                 DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
                 ObjectVisibilityDistance =
-                    float.Parse(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0"),
-                        enUsNumberFormatInfo),
-                ReceiveBufferSize = int.Parse(configDict.GetValueOrDefault("ReceiveBufferSize", "1024")),
+                    FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0")),
+                ReceiveBufferSize = FileFormatCulture.ParseInt(configDict.GetValueOrDefault("ReceiveBufferSize", "1024")),
                 CurrentCharacterInventoryId =
-                    int.Parse(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
-                Spawn_X = float.Parse(configDict.GetValueOrDefault("Spawn_X", "80.0"), enUsNumberFormatInfo),
-                Spawn_Y = float.Parse(configDict.GetValueOrDefault("Spawn_Y", "150.0"), enUsNumberFormatInfo),
-                Spawn_Z = float.Parse(configDict.GetValueOrDefault("Spawn_Z", "200.0"), enUsNumberFormatInfo),
-                Spawn_Angle = float.Parse(configDict.GetValueOrDefault("Spawn_Angle", "0.75"), enUsNumberFormatInfo),
-                Spawn_Money = int.Parse(configDict.GetValueOrDefault("Spawn_Money", "99999999"))
+                    FileFormatCulture.ParseInt(configDict.GetValueOrDefault("CurrentCharacterInventoryId", "40961")),
+                Spawn_X = FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("Spawn_X", "80.0")),
+                Spawn_Y = FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("Spawn_Y", "150.0")),
+                Spawn_Z = FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("Spawn_Z", "200.0")),
+                Spawn_Angle = FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("Spawn_Angle", "0.75")),
+                Spawn_Money = FileFormatCulture.ParseInt(configDict.GetValueOrDefault("Spawn_Money", "99999999"))
             };
         }
         catch (Exception ex)
@@ -139,7 +136,7 @@ public static class ServerConfig
         }
     }
 
-    private static string FindConfigPath (string fileName)
+    private static string FindConfigPath(string fileName)
     {
         // Godot's working directory may vary (editor/run/export), so search upwards from common roots.
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -171,7 +168,7 @@ public static class ServerConfig
         return fileName;
     }
 
-    private static void CreateDefaultAppConfig (string configPath)
+    private static void CreateDefaultAppConfig(string configPath)
     {
         var defaultConfig = GetDefaultAppConfigDict();
         var json = JsonSerializer.Serialize(defaultConfig, JsonWriteOptions);
@@ -179,9 +176,9 @@ public static class ServerConfig
         SphLogger.Info($"Created default configuration file: {configPath}");
     }
 
-    private static Dictionary<string, string> GetDefaultAppConfigDict ()
+    private static Dictionary<string, string> GetDefaultAppConfigDict()
     {
-        return new ()
+        return new()
         {
             ["RepositoryPath"] = @"D:\\SphereDev\\SphereSource\\SphereEmu",
             ["LiteDbConnectionString"] = @"Filename=sph.db;Connection=shared;",
@@ -199,7 +196,7 @@ public static class ServerConfig
         };
     }
 
-    private static void SaveAppConfig (string configPath, Dictionary<string, string> config)
+    private static void SaveAppConfig(string configPath, Dictionary<string, string> config)
     {
         var json = JsonSerializer.Serialize(config, JsonWriteOptions);
         File.WriteAllText(configPath, json);

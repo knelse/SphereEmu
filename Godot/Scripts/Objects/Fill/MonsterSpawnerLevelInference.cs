@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Helpers;
 
 namespace SphServer.Godot.Scripts.Objects.Fill;
 
@@ -325,9 +325,9 @@ public static class MonsterSpawnerLevelInference
 				continue;
 			}
 
-			if (!int.TryParse(parts[7], NumberStyles.Integer, CultureInfo.InvariantCulture, out var maxHp)
-				|| !int.TryParse(parts[9], NumberStyles.Integer, CultureInfo.InvariantCulture, out var kind)
-				|| !int.TryParse(parts[10], NumberStyles.Integer, CultureInfo.InvariantCulture, out var level))
+			if (!FileFormatCulture.TryParseInt(parts[7], out var maxHp)
+				|| !FileFormatCulture.TryParseInt(parts[9], out var kind)
+				|| !FileFormatCulture.TryParseInt(parts[10], out var level))
 			{
 				continue;
 			}
@@ -388,9 +388,9 @@ public static class MonsterSpawnerLevelInference
 
 			var source = WorldObjectDumpFillCommon.SourcePositionFromPlacementNode(spawner, fillRoot);
 			if (WorldObjectDumpFillCommon.ShouldSkipWeirdCoords(
-					source.X.ToString(CultureInfo.InvariantCulture),
-					source.Y.ToString(CultureInfo.InvariantCulture),
-					source.Z.ToString(CultureInfo.InvariantCulture),
+					FileFormatCulture.FormatDouble(source.X),
+					FileFormatCulture.FormatDouble(source.Y),
+					FileFormatCulture.FormatDouble(source.Z),
 					source.X,
 					source.Y,
 					source.Z))
@@ -590,14 +590,14 @@ public static class MonsterSpawnerLevelInference
 			",",
 			EscapeCsv(spawner.Name),
 			assignment.Method.ToString(),
-			assignment.HasLevels ? assignment.MinLevel.ToString(CultureInfo.InvariantCulture) : string.Empty,
-			assignment.HasLevels ? assignment.MaxLevel.ToString(CultureInfo.InvariantCulture) : string.Empty,
-			assignment.SampleCount.ToString(CultureInfo.InvariantCulture),
-			assignment.ReferenceDistanceMeters.ToString("0.###", CultureInfo.InvariantCulture),
+			assignment.HasLevels ? FileFormatCulture.FormatInt(assignment.MinLevel) : string.Empty,
+			assignment.HasLevels ? FileFormatCulture.FormatInt(assignment.MaxLevel) : string.Empty,
+			FileFormatCulture.FormatInt(assignment.SampleCount),
+			FileFormatCulture.FormatDouble(assignment.ReferenceDistanceMeters, "0.###"),
 			assignment.FlaggedWideSpread ? "1" : "0",
-			source.X.ToString("0.###", CultureInfo.InvariantCulture),
-			source.Y.ToString("0.###", CultureInfo.InvariantCulture),
-			source.Z.ToString("0.###", CultureInfo.InvariantCulture));
+			FileFormatCulture.FormatDouble(source.X, "0.###"),
+			FileFormatCulture.FormatDouble(source.Y, "0.###"),
+			FileFormatCulture.FormatDouble(source.Z, "0.###"));
 	}
 
 	private static void WriteReport(string reportFilePath, IReadOnlyList<string> rows)

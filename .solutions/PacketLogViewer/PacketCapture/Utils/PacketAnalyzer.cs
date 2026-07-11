@@ -743,8 +743,18 @@ internal static class PacketAnalyzer
             if (result.ObjectType is ObjectType.Monster or ObjectType.MonsterFlyer &&
                 mob.ActionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
             {
-                var output =
-                    $"{mob.Id:X4}\t{result.ObjectType}\t{mob.ActionType}\t{mob.X}\t{mob.Y}\t{mob.Z}\t{mob.Angle}\t{mob.CurrentHP}\t{mob.MaxHP}\t{mob.Type}\t{mob.Level}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{mob.Id:X4}",
+                    result.ObjectType,
+                    mob.ActionType,
+                    mob.X,
+                    mob.Y,
+                    mob.Z,
+                    mob.Angle,
+                    mob.CurrentHP,
+                    mob.MaxHP,
+                    mob.Type,
+                    mob.Level) + "\n";
                 File.AppendAllText($@"{outputPath}\\mob.txt", output);
             }
         }
@@ -762,8 +772,20 @@ internal static class PacketAnalyzer
             result = npcTradePacket;
             if (npcTradePacket.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{npcTradePacket.Id:X4}\t{npcTradePacket.ObjectType}\t{npcTradePacket.ActionType}\t{npcTradePacket.X}\t{npcTradePacket.Y}\t{npcTradePacket.Z}\t{npcTradePacket.Angle}\t{npcTradePacket.NameId}\t{npcTradePacket.TypeNameLength}\t{npcTradePacket.TypeName}\t{npcTradePacket.IconNameLength}\t{npcTradePacket.IconName}\t{npcTradePacket.NpcTradeType}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{npcTradePacket.Id:X4}",
+                    npcTradePacket.ObjectType,
+                    npcTradePacket.ActionType,
+                    npcTradePacket.X,
+                    npcTradePacket.Y,
+                    npcTradePacket.Z,
+                    npcTradePacket.Angle,
+                    npcTradePacket.NameId,
+                    npcTradePacket.TypeNameLength,
+                    npcTradePacket.TypeName,
+                    npcTradePacket.IconNameLength,
+                    npcTradePacket.IconName,
+                    npcTradePacket.NpcTradeType) + "\n";
                 File.AppendAllText($@"{outputPath}\\npc.txt", output);
             }
         }
@@ -774,8 +796,18 @@ internal static class PacketAnalyzer
             result = door;
             if (door.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.SubtypeID}\t{door.TargetX}\t{door.TargetY}\t{door.TargetZ}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{door.Id:X4}",
+                    result.ObjectType,
+                    door.ActionType,
+                    door.X,
+                    door.Y,
+                    door.Z,
+                    door.Angle,
+                    door.SubtypeID,
+                    door.TargetX,
+                    door.TargetY,
+                    door.TargetZ) + "\n";
                 File.AppendAllText($@"{outputPath}\\doors.txt", output);
             }
         }
@@ -786,8 +818,18 @@ internal static class PacketAnalyzer
             result = door;
             if (door.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.ExitX}\t{door.ExitY}\t{door.ExitZ}\t{door.ExitAngle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{door.Id:X4}",
+                    result.ObjectType,
+                    door.ActionType,
+                    door.X,
+                    door.Y,
+                    door.Z,
+                    door.Angle,
+                    door.ExitX,
+                    door.ExitY,
+                    door.ExitZ,
+                    door.ExitAngle) + "\n";
                 File.AppendAllText($@"{outputPath}\\door_exits.txt", output);
             }
         }
@@ -798,8 +840,15 @@ internal static class PacketAnalyzer
             result = door;
             if (door.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{door.Id:X4}\t{result.ObjectType}\t{door.ActionType}\t{door.X}\t{door.Y}\t{door.Z}\t{door.Angle}\t{door.SubtypeID}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{door.Id:X4}",
+                    result.ObjectType,
+                    door.ActionType,
+                    door.X,
+                    door.Y,
+                    door.Z,
+                    door.Angle,
+                    door.SubtypeID) + "\n";
                 File.AppendAllText($@"{outputPath}\\doors_with_key.txt", output);
             }
         }
@@ -810,8 +859,15 @@ internal static class PacketAnalyzer
             result = tp;
             if (tp.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{tp.Id:X4}\t{result.ObjectType}\t{tp.ActionType}\t{tp.X}\t{tp.Y}\t{tp.Z}\t{tp.Angle}\t{tp.SubtypeID}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{tp.Id:X4}",
+                    result.ObjectType,
+                    tp.ActionType,
+                    tp.X,
+                    tp.Y,
+                    tp.Z,
+                    tp.Angle,
+                    tp.SubtypeID) + "\n";
                 File.AppendAllText($@"{outputPath}\\target_tps.txt", output);
             }
         }
@@ -822,8 +878,15 @@ internal static class PacketAnalyzer
             result = castleTablet;
             if (castleTablet.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{castleTablet.Id:X4}\t{result.ObjectType}\t{castleTablet.ActionType}\t{castleTablet.X}\t{castleTablet.Y}\t{castleTablet.Z}\t{castleTablet.Angle}\t{(int)castleTablet.Castle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{castleTablet.Id:X4}",
+                    result.ObjectType,
+                    castleTablet.ActionType,
+                    castleTablet.X,
+                    castleTablet.Y,
+                    castleTablet.Z,
+                    castleTablet.Angle,
+                    (int)castleTablet.Castle) + "\n";
                 File.AppendAllText($@"{outputPath}\\castle_tablets.txt", output);
             }
         }
@@ -834,8 +897,15 @@ internal static class PacketAnalyzer
             result = castleGates;
             if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{castleGates.Id:X4}\t{result.ObjectType}\t{castleGates.ActionType}\t{castleGates.X}\t{castleGates.Y}\t{castleGates.Z}\t{castleGates.Angle}\t{(int)castleGates.Castle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{castleGates.Id:X4}",
+                    result.ObjectType,
+                    castleGates.ActionType,
+                    castleGates.X,
+                    castleGates.Y,
+                    castleGates.Z,
+                    castleGates.Angle,
+                    (int)castleGates.Castle) + "\n";
                 File.AppendAllText($@"{outputPath}\\castle_gates.txt", output);
             }
         }
@@ -846,8 +916,15 @@ internal static class PacketAnalyzer
             result = castleEntrance;
             if (castleEntrance.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{castleEntrance.Id:X4}\t{result.ObjectType}\t{castleEntrance.ActionType}\t{castleEntrance.X}\t{castleEntrance.Y}\t{castleEntrance.Z}\t{castleEntrance.Angle}\t{(int)castleEntrance.Castle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{castleEntrance.Id:X4}",
+                    result.ObjectType,
+                    castleEntrance.ActionType,
+                    castleEntrance.X,
+                    castleEntrance.Y,
+                    castleEntrance.Z,
+                    castleEntrance.Angle,
+                    (int)castleEntrance.Castle) + "\n";
                 File.AppendAllText($@"{outputPath}\\castle_entrances.txt", output);
             }
         }
@@ -858,8 +935,14 @@ internal static class PacketAnalyzer
             result = lightCrystal;
             if (lightCrystal.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{lightCrystal.Id:X4}\t{result.ObjectType}\t{lightCrystal.ActionType}\t{lightCrystal.X}\t{lightCrystal.Y}\t{lightCrystal.Z}\t{lightCrystal.Angle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{lightCrystal.Id:X4}",
+                    result.ObjectType,
+                    lightCrystal.ActionType,
+                    lightCrystal.X,
+                    lightCrystal.Y,
+                    lightCrystal.Z,
+                    lightCrystal.Angle) + "\n";
                 File.AppendAllText($@"{outputPath}\\light_crystals.txt", output);
             }
         }
@@ -870,8 +953,14 @@ internal static class PacketAnalyzer
             result = lightCrystal;
             if (lightCrystal.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{lightCrystal.Id:X4}\t{result.ObjectType}\t{lightCrystal.ActionType}\t{lightCrystal.X}\t{lightCrystal.Y}\t{lightCrystal.Z}\t{lightCrystal.Angle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{lightCrystal.Id:X4}",
+                    result.ObjectType,
+                    lightCrystal.ActionType,
+                    lightCrystal.X,
+                    lightCrystal.Y,
+                    lightCrystal.Z,
+                    lightCrystal.Angle) + "\n";
                 File.AppendAllText($@"{outputPath}\\light_crystals_yellow.txt", output);
             }
         }
@@ -883,8 +972,14 @@ internal static class PacketAnalyzer
 
             if (worldObject.ActionType == EntityActionType.FULL_SPAWN)
             {
-                var output =
-                    $"{worldObject.Id:X4}\t{worldObject.ObjectType}\t{worldObject.ActionType}\t{worldObject.X}\t{worldObject.Y}\t{worldObject.Z}\t{worldObject.Angle}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{worldObject.Id:X4}",
+                    worldObject.ObjectType,
+                    worldObject.ActionType,
+                    worldObject.X,
+                    worldObject.Y,
+                    worldObject.Z,
+                    worldObject.Angle) + "\n";
                 File.AppendAllText($@"{outputPath}\\{filename}.txt", output);
             }
         }
@@ -897,9 +992,21 @@ internal static class PacketAnalyzer
             {
                 var gameId = item.HasGameId ? item.GameObjectId : 0;
                 var suffix = item.HasSuffix ? item.Suffix : 0;
-                var output =
-                    $"{item.Id:X4}\t{result.ObjectType}\t{item.ActionType}\t{item.X}\t{item.Y}\t{item.Z}\t{item.Angle}\t" +
-                    $"{gameId}\t{item.ContainerId}\t{suffix}\t{item.PALevel}\t{item.Count}\t{item.RemainingUses}\t{item.OwnerName}\n";
+                var output = FileFormatCulture.JoinFields('\t',
+                    $"{item.Id:X4}",
+                    result.ObjectType,
+                    item.ActionType,
+                    item.X,
+                    item.Y,
+                    item.Z,
+                    item.Angle,
+                    gameId,
+                    item.ContainerId,
+                    suffix,
+                    item.PALevel,
+                    item.Count,
+                    item.RemainingUses,
+                    item.OwnerName) + "\n";
                 File.AppendAllText($@"{outputPath}\\items.txt", output);
             }
         }

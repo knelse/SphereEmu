@@ -2,6 +2,7 @@ using BitStreams;
 using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Helpers.Enums;
+using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.GameData.Enums;
@@ -24,7 +25,7 @@ public class PacketPart
     public int BitPositionStart;
     public List<Bit> Value;
 
-    public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
+    public PacketPart(string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
     {
         Name = name;
@@ -36,20 +37,20 @@ public class PacketPart
         Value = value;
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
+    public static List<PacketPart> LoadDefinedPartsFromFile(ObjectType objectType)
     {
         var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
         var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadDefinedWithOverride (string name)
+    public static List<PacketPart> LoadDefinedWithOverride(string name)
     {
         var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile (NpcType npcType)
+    public static List<PacketPart> LoadDefinedPartsFromFile(NpcType npcType)
     {
         var name = npcType switch
         {
@@ -69,7 +70,7 @@ public class PacketPart
         return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadFromFile (string filePath)
+    public static List<PacketPart> LoadFromFile(string filePath)
     {
         var contents = File.ReadAllLines(filePath);
         var parts = new List<PacketPart>();
@@ -88,17 +89,17 @@ public class PacketPart
             var packetPartType = Enum.TryParse(fieldValues[1], out PacketPartType partType)
                 ? partType
                 : PacketPartType.BITS;
-            var start = int.Parse(fieldValues[2]);
+            var start = FileFormatCulture.ParseInt(fieldValues[2]);
             var length = 0;
             length = fieldValues[3] == LengthFromPreviousFieldValue
                 ? BitStreamExtensions.BitsToInt(parts.Last().Value)
-                : int.Parse(fieldValues[3]);
+                : FileFormatCulture.ParseInt(fieldValues[3]);
 
             var enumName = fieldValues[4];
 
             // r g b a are fields 5 6 7 8
 
-            var value = length > 0 ? fieldValues[9].Select(x => (Bit) (x - '0')).Reverse().ToList() : [];
+            var value = length > 0 ? fieldValues[9].Select(x => (Bit)(x - '0')).Reverse().ToList() : [];
             var part = new PacketPart(partName, packetPartType, start, length, enumName, value);
             parts.Add(part);
         }
@@ -106,7 +107,7 @@ public class PacketPart
         return parts;
     }
 
-    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
+    public static void UpdateCoordinates(List<PacketPart> list, double X, double Y, double Z, int angle = 0)
     {
         var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
         var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
@@ -128,7 +129,7 @@ public class PacketPart
         }
     }
 
-    public static void UpdateTargetCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
+    public static void UpdateTargetCoordinates(List<PacketPart> list, double X, double Y, double Z, int angle = 0)
     {
         var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
         var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
@@ -150,7 +151,7 @@ public class PacketPart
         }
     }
 
-    public static void UpdateValue (List<PacketPart> list, string name, int val, int length = 32)
+    public static void UpdateValue(List<PacketPart> list, string name, int val, int length = 32)
     {
         var part = list.FirstOrDefault(x => x.Name == name);
         if (part is not null)
@@ -160,7 +161,7 @@ public class PacketPart
         }
     }
 
-    public static void UpdateValue (List<PacketPart> list, string name, string val, bool alsoUpdateLengthField = false,
+    public static void UpdateValue(List<PacketPart> list, string name, string val, bool alsoUpdateLengthField = false,
         int nameLengthLength = 0)
     {
         var part = list.FirstOrDefault(x => x.Name == name);
@@ -178,7 +179,7 @@ public class PacketPart
         }
     }
 
-    public static void UpdateEntityId (List<PacketPart> list, ushort id)
+    public static void UpdateEntityId(List<PacketPart> list, ushort id)
     {
         var idpart = list.FirstOrDefault(x => x.Name == "entity_id");
         if (idpart is not null)
@@ -187,7 +188,7 @@ public class PacketPart
         }
     }
 
-    public static byte[] GetBytesToWrite (List<PacketPart> list)
+    public static byte[] GetBytesToWrite(List<PacketPart> list)
     {
         var stream = SphBitStream.GetWriteBitStream();
         foreach (var part in list)

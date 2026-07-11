@@ -1090,7 +1090,7 @@ public partial class PacketLogViewerMainWindow
                 x.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToList();
             foreach (var enumEntryLine in enumEntryLines)
             {
-                var id = int.Parse(enumEntryLine[0]);
+                var id = FileFormatCulture.ParseInt(enumEntryLine[0]);
                 var name = enumEntryLine[1];
                 DefinedEnums[enumName].Add(id, name);
             }
@@ -1892,12 +1892,21 @@ public partial class PacketLogViewerMainWindow
             }
             else
             {
-                lengthText = bits.Length.ToString();
+                lengthText = FileFormatCulture.FormatInt(bits.Length);
             }
 
+            var bitPattern = string.Join(null, bits.Reverse().Select(x => x.AsInt()));
             fileContentsSb.AppendLine(
-                $"{name}\t{Enum.GetName(partType)}\t{startPosition}\t{lengthText}\t{enumName}\t{colorR}\t{colorG}" +
-                $"\t{colorB}\t{colorA}\t{string.Join(null, bits.Reverse().Select(x => x.AsInt()))}");
+                FileFormatCulture.JoinFields('\t',
+                    name,
+                    Enum.GetName(partType),
+                    startPosition,
+                    lengthText,
+                    enumName,
+                    colorR,
+                    colorG,
+                    colorB,
+                    colorA) + "\t" + bitPattern);
 
             if (nextPacketPart is null)
             {
@@ -2860,8 +2869,7 @@ public partial class PacketLogViewerMainWindow
 
         var filePath = Path.Combine(outputPath, "degree_xp.txt");
         var pill = snapshot.PillActive ? 1 : 0;
-        var line = string.Join('\t', new object[]
-        {
+        var line = FileFormatCulture.JoinFields('\t',
             snapshot.TitleLevel,
             snapshot.TitleRebirth,
             snapshot.DegreeLevel,
@@ -2869,12 +2877,11 @@ public partial class PacketLogViewerMainWindow
             pill,
             snapshot.ServerBonus,
             snapshot.MissionArea,
-            earnedXp
-        });
+            earnedXp);
 
         if (mobType.HasValue && mobLevel.HasValue)
         {
-            line += "\t" + mobType.Value + "\t" + mobLevel.Value;
+            line += "\t" + FileFormatCulture.FormatInt(mobType.Value) + "\t" + FileFormatCulture.FormatInt(mobLevel.Value);
         }
         File.AppendAllText(filePath, line + Environment.NewLine);
     }
@@ -2889,8 +2896,7 @@ public partial class PacketLogViewerMainWindow
 
         var filePath = Path.Combine(outputPath, "title_xp.txt");
         var pill = snapshot.PillActive ? 1 : 0;
-        var line = string.Join('\t', new object[]
-        {
+        var line = FileFormatCulture.JoinFields('\t',
             snapshot.TitleLevel,
             snapshot.TitleRebirth,
             snapshot.DegreeLevel,
@@ -2898,12 +2904,11 @@ public partial class PacketLogViewerMainWindow
             pill,
             snapshot.ServerBonus,
             snapshot.MissionArea,
-            earnedXp
-        });
+            earnedXp);
 
         if (mobType.HasValue && mobLevel.HasValue)
         {
-            line += "\t" + mobType.Value + "\t" + mobLevel.Value;
+            line += "\t" + FileFormatCulture.FormatInt(mobType.Value) + "\t" + FileFormatCulture.FormatInt(mobLevel.Value);
         }
         File.AppendAllText(filePath, line + Environment.NewLine);
     }

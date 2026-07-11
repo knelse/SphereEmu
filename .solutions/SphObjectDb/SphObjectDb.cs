@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using SphServer.Helpers;
 using static GameObjectType;
 using LocalizationEntryArray = System.Collections.Generic.Dictionary<Locale, string[]>;
 using LocalizationEntryString = System.Collections.Generic.Dictionary<Locale, string>;
@@ -332,14 +333,14 @@ public static class SphObjectDb
 
                 var isPref = fileName.EndsWith("pref");
 
-                var gameId = int.Parse(entrySplit[0]);
-                var range = int.Parse(entrySplit[38]);
-                var duration = int.Parse(entrySplit[42]);
+                var gameId = FileFormatCulture.ParseInt(entrySplit[0]);
+                var range = FileFormatCulture.ParseInt(entrySplit[38]);
+                var duration = FileFormatCulture.ParseInt(entrySplit[42]);
                 var objKind = isPref ? GameObjectKind.Pref : GameObjectDataHelper.GetKindBySphereName(objKindName);
                 var tier = objKind == GameObjectKind.Monster || string.IsNullOrWhiteSpace(entrySplit[49]) ||
                            entrySplit[49].Length < 4
                     ? -1
-                    : int.Parse(entrySplit[49].Substring(2, 2)) + 1;
+                    : FileFormatCulture.ParseInt(entrySplit[49].Substring(2, 2)) + 1;
                 var gameObj = new SphGameObject
                 {
                     ObjectKind = objKind,
@@ -348,50 +349,50 @@ public static class SphObjectDb
                     GameObjectType = GameObjectDataHelper.GetTypeBySphereName(entrySplit[1]),
                     ModelNameGround = entrySplit[2],
                     ModelNameInventory = entrySplit[3],
-                    HpCost = int.Parse(entrySplit[4]),
-                    MpCost = int.Parse(entrySplit[5]),
-                    TitleMinusOne = int.Parse(entrySplit[6]),
-                    DegreeMinusOne = int.Parse(entrySplit[7]),
+                    HpCost = FileFormatCulture.ParseInt(entrySplit[4]),
+                    MpCost = FileFormatCulture.ParseInt(entrySplit[5]),
+                    TitleMinusOne = FileFormatCulture.ParseInt(entrySplit[6]),
+                    DegreeMinusOne = FileFormatCulture.ParseInt(entrySplit[7]),
                     MinKarmaLevel = minKarma,
                     MaxKarmaLevel = maxKarma,
-                    StrengthReq = int.Parse(entrySplit[10]),
-                    AgilityReq = int.Parse(entrySplit[11]),
-                    AccuracyReq = int.Parse(entrySplit[12]),
-                    EnduranceReq = int.Parse(entrySplit[13]),
-                    EarthReq = int.Parse(entrySplit[14]),
-                    AirReq = int.Parse(entrySplit[15]),
-                    WaterReq = int.Parse(entrySplit[16]),
-                    FireReq = int.Parse(entrySplit[17]),
-                    PAtkNegative = int.Parse(entrySplit[18]),
-                    MAtkNegativeOrHeal = int.Parse(entrySplit[19]),
-                    MPHeal = int.Parse(entrySplit[20]),
-                    t1 = int.Parse(entrySplit[21]),
-                    MaxHpUp = int.Parse(entrySplit[22]),
-                    MaxMpUp = int.Parse(entrySplit[23]),
-                    PAtkUpNegative = int.Parse(entrySplit[24]),
-                    PDefUp = int.Parse(entrySplit[25]),
-                    MDefUp = int.Parse(entrySplit[26]),
-                    StrengthUp = int.Parse(entrySplit[27]),
-                    AgilityUp = int.Parse(entrySplit[28]),
-                    AccuracyUp = int.Parse(entrySplit[29]),
-                    EnduranceUp = int.Parse(entrySplit[30]),
-                    EarthUp = int.Parse(entrySplit[31]),
-                    AirUp = int.Parse(entrySplit[32]),
-                    WaterUp = int.Parse(entrySplit[33]),
-                    FireUp = int.Parse(entrySplit[34]),
-                    MAtkUpNegative = int.Parse(entrySplit[35]),
-                    Weight = int.Parse(entrySplit[36]),
-                    Durability = int.Parse(entrySplit[37]),
+                    StrengthReq = FileFormatCulture.ParseInt(entrySplit[10]),
+                    AgilityReq = FileFormatCulture.ParseInt(entrySplit[11]),
+                    AccuracyReq = FileFormatCulture.ParseInt(entrySplit[12]),
+                    EnduranceReq = FileFormatCulture.ParseInt(entrySplit[13]),
+                    EarthReq = FileFormatCulture.ParseInt(entrySplit[14]),
+                    AirReq = FileFormatCulture.ParseInt(entrySplit[15]),
+                    WaterReq = FileFormatCulture.ParseInt(entrySplit[16]),
+                    FireReq = FileFormatCulture.ParseInt(entrySplit[17]),
+                    PAtkNegative = FileFormatCulture.ParseInt(entrySplit[18]),
+                    MAtkNegativeOrHeal = FileFormatCulture.ParseInt(entrySplit[19]),
+                    MPHeal = FileFormatCulture.ParseInt(entrySplit[20]),
+                    t1 = FileFormatCulture.ParseInt(entrySplit[21]),
+                    MaxHpUp = FileFormatCulture.ParseInt(entrySplit[22]),
+                    MaxMpUp = FileFormatCulture.ParseInt(entrySplit[23]),
+                    PAtkUpNegative = FileFormatCulture.ParseInt(entrySplit[24]),
+                    PDefUp = FileFormatCulture.ParseInt(entrySplit[25]),
+                    MDefUp = FileFormatCulture.ParseInt(entrySplit[26]),
+                    StrengthUp = FileFormatCulture.ParseInt(entrySplit[27]),
+                    AgilityUp = FileFormatCulture.ParseInt(entrySplit[28]),
+                    AccuracyUp = FileFormatCulture.ParseInt(entrySplit[29]),
+                    EnduranceUp = FileFormatCulture.ParseInt(entrySplit[30]),
+                    EarthUp = FileFormatCulture.ParseInt(entrySplit[31]),
+                    AirUp = FileFormatCulture.ParseInt(entrySplit[32]),
+                    WaterUp = FileFormatCulture.ParseInt(entrySplit[33]),
+                    FireUp = FileFormatCulture.ParseInt(entrySplit[34]),
+                    MAtkUpNegative = FileFormatCulture.ParseInt(entrySplit[35]),
+                    Weight = FileFormatCulture.ParseInt(entrySplit[36]),
+                    Durability = FileFormatCulture.ParseInt(entrySplit[37]),
                     _range = range,
-                    UseTime = int.Parse(entrySplit[39]),
-                    VendorCost = int.Parse(entrySplit[40]),
-                    MutatorId = int.Parse(entrySplit[41]),
+                    UseTime = FileFormatCulture.ParseInt(entrySplit[39]),
+                    VendorCost = FileFormatCulture.ParseInt(entrySplit[40]),
+                    MutatorId = FileFormatCulture.ParseInt(entrySplit[41]),
                     _duration = duration,
-                    ReuseDelayHours = int.Parse(entrySplit[43]),
-                    t2 = int.Parse(entrySplit[44]),
-                    t3 = int.Parse(entrySplit[45]),
-                    t4 = int.Parse(entrySplit[46]),
-                    t5 = int.Parse(entrySplit[47]),
+                    ReuseDelayHours = FileFormatCulture.ParseInt(entrySplit[43]),
+                    t2 = FileFormatCulture.ParseInt(entrySplit[44]),
+                    t3 = FileFormatCulture.ParseInt(entrySplit[45]),
+                    t4 = FileFormatCulture.ParseInt(entrySplit[46]),
+                    t5 = FileFormatCulture.ParseInt(entrySplit[47]),
                     TierRaw = entrySplit[48],
                     SuffixSetName = entrySplit.Length > 50 ? entrySplit[50] : string.Empty,
                     Tier = tier,
@@ -506,7 +507,7 @@ public static class SphObjectDb
                         }
 
                         var split = localeContent[i].Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        if (split.Length == 0 || !int.TryParse(split[0], out var strId) || strId < 200)
+                        if (split.Length == 0 || !FileFormatCulture.TryParseInt(split[0], out var strId) || strId < 200)
                         {
                             continue;
                         }
@@ -542,8 +543,8 @@ public static class SphObjectDb
                     {
                         // range of ints
                         var bounds = localeContent[i][1..].Split('-');
-                        var start = int.Parse(bounds[0]);
-                        var end = int.Parse(bounds[1]) + 1;
+                        var start = FileFormatCulture.ParseInt(bounds[0]);
+                        var end = FileFormatCulture.ParseInt(bounds[1]) + 1;
 
                         for (var j = start; j < end; j++)
                         {
@@ -572,7 +573,7 @@ public static class SphObjectDb
                     }
                     else
                     {
-                        var id = int.Parse(localeContent[i][1..]);
+                        var id = FileFormatCulture.ParseInt(localeContent[i][1..]);
 
                         if (!ObjectNameToLocalizationMap[name].ContainsKey(id))
                         {

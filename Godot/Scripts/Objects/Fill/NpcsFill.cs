@@ -1,6 +1,6 @@
-using System.Globalization;
 using System.Text;
 using Godot;
+using SphServer.Helpers;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -67,7 +67,7 @@ public partial class NpcsFill : Node3D
 				continue;
 			}
 
-			if (!TryParseHexInt32(parts[0], out var id) || id <= 0)
+			if (!FileFormatCulture.TryParseHexInt(parts[0], out var id) || id <= 0)
 			{
 				stats.ParseErrors++;
 				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad ID '{parts[0]}'. Skipping.");
@@ -97,7 +97,7 @@ public partial class NpcsFill : Node3D
 				continue;
 			}
 
-			if (!int.TryParse(parts[7].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var nameId))
+			if (!FileFormatCulture.TryParseInt(parts[7], out var nameId))
 			{
 				stats.ParseErrors++;
 				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad NameId '{parts[7]}'. Skipping.");
@@ -105,7 +105,7 @@ public partial class NpcsFill : Node3D
 			}
 
 			var displayName = ResolveDisplayName(rnmsLines, nameId);
-			var nodeNameBase = $"NPC_{id.ToString(CultureInfo.InvariantCulture)}_{StripLeadingNpcPrefixes(displayName)}";
+			var nodeNameBase = $"NPC_{FileFormatCulture.FormatInt(id)}_{StripLeadingNpcPrefixes(displayName)}";
 			nodeNameBase = CollapseDuplicateNpcPrefix(nodeNameBase);
 			var nodeName = MakeUniqueNodeName(SanitizeNodeName(nodeNameBase), usedNames);
 
@@ -113,7 +113,7 @@ public partial class NpcsFill : Node3D
 			var iconName = parts.Length > 11 ? (parts[11] ?? string.Empty).Trim() : string.Empty;
 			var npcTypeRaw = 0;
 			if (parts.Length > 12
-				&& !int.TryParse(parts[12].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out npcTypeRaw))
+				&& !FileFormatCulture.TryParseInt(parts[12], out npcTypeRaw))
 			{
 				npcTypeRaw = 0;
 			}
@@ -200,20 +200,12 @@ public partial class NpcsFill : Node3D
 		};
 	}
 
-	private static bool TryParseHexInt32(string s, out int value)
-	{
-		s = (s ?? string.Empty).Trim();
-		if (s.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-		{
-			s = s[2..];
-		}
-
-		return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value);
-	}
+	private static bool TryParseHexInt32(string s, out int value) =>
+		FileFormatCulture.TryParseHexInt(s ?? string.Empty, out value);
 
 	private static string ResolveDisplayName(string[] rnmsLines, int nameId)
 	{
-		var key = (4000 + nameId).ToString(CultureInfo.InvariantCulture);
+		var key = FileFormatCulture.FormatInt(4000 + nameId);
 		foreach (var line in rnmsLines)
 		{
 			var trimmed = line.TrimStart();
@@ -241,10 +233,10 @@ public partial class NpcsFill : Node3D
 				continue;
 			}
 
-			return string.IsNullOrEmpty(rest) ? nameId.ToString(CultureInfo.InvariantCulture) : rest;
+			return string.IsNullOrEmpty(rest) ? FileFormatCulture.FormatInt(nameId) : rest;
 		}
 
-		return nameId.ToString(CultureInfo.InvariantCulture);
+		return FileFormatCulture.FormatInt(nameId);
 	}
 
 	private static string SanitizeNodeName(string displayName)
