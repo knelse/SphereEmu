@@ -18,6 +18,18 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build-godot-debug",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/SphServer.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "godot-run",
             "type": "process",
             "command": "${config:godot_tools.editor_path}",
@@ -48,7 +60,25 @@
             "problemMatcher": []
         },
         {
-            "label": "godot-debug-prep",
+            "label": "godot-debug-cleanup",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/.vscode/reset-godot-debug.ps1"
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "close": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "godot-debug-launch",
             "type": "shell",
             "command": "powershell",
             "args": [
@@ -62,14 +92,21 @@
                 "-ProjectRoot",
                 "${workspaceFolder}"
             ],
-            "dependsOn": [
-                "build"
-            ],
             "presentation": {
                 "reveal": "silent",
                 "panel": "shared",
                 "close": true
             },
+            "problemMatcher": []
+        },
+        {
+            "label": "godot-debug-prep",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "godot-debug-cleanup",
+                "build-godot-debug",
+                "godot-debug-launch"
+            ],
             "problemMatcher": []
         },
         {

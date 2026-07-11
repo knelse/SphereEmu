@@ -812,12 +812,48 @@ public partial class MonsterSpawner : Node3D
 
 	public NavPathResult RequestOutdoorPath(Monster monster, Vector3 goalWorld)
 	{
+		var startWorld = monster.GlobalPosition;
+		var resolvedGoal = OutdoorPathQuery.ClampGoalToLeash(goalWorld, LeashCenterWorld, LeashRadiusMeters);
+		var atlasVerticalDelta = monster.GetAtlasVerticalDelta();
+		if (Mathf.IsZeroApprox(atlasVerticalDelta))
+		{
+			atlasVerticalDelta = ResolveAtlasVerticalDelta(GlobalPosition);
+		}
+
+		if (OutdoorPathQuery.TrySampleOutdoorGroundY(
+				startWorld.X, startWorld.Z, out var startGroundY, atlasVerticalDelta))
+		{
+			startWorld.Y = startGroundY;
+		}
+
+		if (OutdoorPathQuery.TrySampleOutdoorGroundY(
+				resolvedGoal.X, resolvedGoal.Z, out var goalGroundY, atlasVerticalDelta))
+		{
+			resolvedGoal.Y = goalGroundY;
+		}
+
 		var request = new NavPathRequest(
-			monster.GlobalPosition,
-			OutdoorPathQuery.ClampGoalToLeash(goalWorld, LeashCenterWorld, LeashRadiusMeters),
+			startWorld,
+			resolvedGoal,
 			LeashCenterWorld,
 			LeashRadiusMeters);
 		return OutdoorPathQuery.FindPath(request);
+	}
+
+	private float ResolveAtlasVerticalDelta(Vector3 referenceGodotGround)
+	{
+		var delta = MonsterSpawnGroundQuery.ComputeAtlasVerticalOffset(this);
+		if (!Mathf.IsZeroApprox(delta))
+		{
+			return delta;
+		}
+
+		if (WalkSurfaceCache.TrySampleWalkableGround(referenceGodotGround.X, referenceGodotGround.Z, out var atlasY))
+		{
+			return atlasY - referenceGodotGround.Y;
+		}
+
+		return 0f;
 	}
 
 	public bool TryNavigateMonster(Monster monster, Vector3 goalWorld, out NavPathFailReason reason)
@@ -921,8 +957,18 @@ public partial class MonsterSpawner : Node3D
 
 		AddChild(monster);
 		var resolvedPosition = ResolveBakedSlotPosition(spawnWorldPosition);
+		var atlasVerticalDelta = ResolveAtlasVerticalDelta(resolvedPosition);
+		monster.BindHome(
+			new MonsterHomeBinding(
+				slotIndex,
+				resolvedPosition,
+				GlobalPosition,
+				LeashRadiusMeters,
+				GetPath(),
+				GetInstanceId(),
+				atlasVerticalDelta),
+			this);
 		ApplySpawnTransform(monster, resolvedPosition);
-		monster.BindHome(new MonsterHomeBinding(slotIndex, resolvedPosition));
 		SetMonsterOwnerForPersistence(monster);
 		RegularMonsters.Add(monster);
 		_regularMonsterIds.Add(monsterId);

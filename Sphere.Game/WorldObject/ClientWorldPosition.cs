@@ -33,12 +33,5 @@ public static class ClientWorldPosition
 	}
 
 	private static Vector3 ResolveGodotWorldPosition(SphereClient client, CharacterDbEntry character)
-	{
-		if (client.IsInsideTree())
-		{
-			return client.GlobalPosition;
-		}
-
-		return character.Origin;
-	}
+		=> character.Origin;
 }

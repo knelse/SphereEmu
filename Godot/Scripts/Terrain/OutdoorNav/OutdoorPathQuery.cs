@@ -172,6 +172,36 @@ public static class OutdoorPathQuery
         return dx * dx + dz * dz <= leashRadiusMeters * leashRadiusMeters + 0.01f;
     }
 
+    /// <summary>
+    ///     Cheap atlas-only ground sample for runtime nav. Avoids physics raycasts.
+    ///     When <paramref name="atlasVerticalDelta" /> is non-zero, converts atlas Y to Godot world Y.
+    /// </summary>
+    public static bool TrySampleOutdoorGroundY(
+        float worldX,
+        float worldZ,
+        out float worldY,
+        float atlasVerticalDelta = 0f)
+    {
+        worldY = default;
+        if (!TrySampleRawAtlasGroundY(worldX, worldZ, out var atlasY))
+        {
+            return false;
+        }
+
+        worldY = !Mathf.IsZeroApprox(atlasVerticalDelta) ? atlasY - atlasVerticalDelta : atlasY;
+        return true;
+    }
+
+    private static bool TrySampleRawAtlasGroundY(float worldX, float worldZ, out float atlasY)
+    {
+        if (WalkSurfaceCache.TrySampleWalkableGround(worldX, worldZ, out atlasY))
+        {
+            return true;
+        }
+
+        return OutdoorNavCache.TrySampleTerrainY(worldX, worldZ, out atlasY);
+    }
+
     private static bool TryBeginPathRequest()
     {
         var frame = Engine.GetProcessFrames();
