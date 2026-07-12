@@ -22,6 +22,9 @@ public partial class TerrainObjectsFill : Node3D
     public const string OtherNodeName = "TerrainOther";
     public const string ExtraInstancedGroupsRootName = "ExtraInstancedGroups";
 
+    /// <summary>Tile node for object placements that do not fall on any terrain grid cell.</summary>
+    public const string OutsideTerrainTileNodeName = "OutsideTerrain";
+
     /// <summary>
     ///     Columns = source X, Y, Z axes expressed in Godot: right, down, forward (Godot forward = -Z), so (x,y,z)_src ↦
     ///     (x,-y,-z).
@@ -31,6 +34,29 @@ public partial class TerrainObjectsFill : Node3D
     [Export] public string ObjectDataDirectory { get; set; } = "res://Godot/Terrain/ObjectDataJson/";
 
     [Export] public string ModelsDirectory { get; set; } = "res://Godot/Models/";
+
+    /// <summary>
+    ///     When enabled, every placement whose model scene contains collision shapes (models imported with the
+    ///     '-col' suffix) has its triangle geometry accumulated (in world space, per terrain tile group) into
+    ///     <see cref="LastBuiltObjectColliderFacesByTile" /> for <see cref="TerrainNavigationBaker" /> to feed
+    ///     directly into Godot's navigation-mesh baker. Nothing is added to the scene itself: an earlier version
+    ///     persisted one <see cref="StaticBody3D" />/<see cref="CollisionShape3D" /> per object (and later per tile)
+    ///     so the editor could physically collide with objects, but that was only ever needed to produce source
+    ///     geometry for nav-mesh baking - keeping tens of millions of collider triangles live in the scene made
+    ///     <see cref="PhysicsServer3D" /> build BVH trees for them on every scene load, which hung/crashed the
+    ///     editor. Baking once (headless) and keeping only the resulting small <see cref="NavigationMesh" />
+    ///     resources avoids that entirely.
+    /// </summary>
+    [Export]
+    public bool BuildObjectColliders { get; set; } = true;
+
+    /// <summary>Same map source as <see cref="TerrainGridFill.MapBinPath" />; used to name per-tile collider groups.</summary>
+    [Export]
+    public string MapBinPath { get; set; } = "res://Godot/Terrain/map.txt";
+
+    [Export] public float TileSizeWorld { get; set; } = 100f;
+
+    [Export] public Vector3 TerrainWorldOrigin { get; set; } = new(-4000f, 0f, -4000f);
 
     /// <summary>
     ///     When enabled (editor rebuild), generated MultiMeshes are saved as external binary resources instead of
@@ -53,6 +79,19 @@ public partial class TerrainObjectsFill : Node3D
 
     [ExportToolButton("Rebuild terrain objects")]
     public Callable RebuildTerrainObjectsButton => Callable.From(RebuildTerrainObjects);
+
+    /// <summary>
+    ///     World-space object-collider triangle faces (3 consecutive entries per triangle) accumulated by the most
+    ///     recent <see cref="RebuildTerrainObjects" /> call, keyed by the same <c>{TileName}_{TileIndex}</c> group
+    ///     used for the object hierarchy. <see cref="TerrainNavigationBaker" /> reads this right after calling
+    ///     <see cref="RebuildTerrainObjects" /> to bake per-tile navigation meshes; nothing here is persisted to
+    ///     the scene.
+    /// </summary>
+    public global::System.Collections.Generic.Dictionary<string, List<Vector3>> LastBuiltObjectColliderFacesByTile
+    {
+        get;
+        private set;
+    } = new();
 
     /// <summary>Clears category children and repopulates from all JSON files in <see cref="ObjectDataDirectory" />.</summary>
     public void RebuildTerrainObjects()
@@ -85,12 +124,29 @@ public partial class TerrainObjectsFill : Node3D
         ClearChildren(other);
         ClearChildren(terrainObjects);
 
+        // Object colliders are never added to the scene (see BuildObjectColliders doc) - just accumulated in
+        // memory, keyed by the same {TileName}_{TileIndex} grouping the object hierarchy uses, for
+        // TerrainNavigationBaker to consume right after this call.
+        ColliderBuildState? colliderState = null;
+        if (BuildObjectColliders)
+        {
+            var tileIndex = TerrainTileGridIndex.TryBuild(MapBinPath, TileSizeWorld, TerrainWorldOrigin);
+            if (tileIndex is null)
+            {
+                GD.PushWarning(
+                    $"TerrainObjectsFill: map not found ({MapBinPath}); grouping object colliders under "
+                    + $"'{OutsideTerrainTileNodeName}' instead of per-tile.");
+            }
+
+            colliderState = new ColliderBuildState { TileIndex = tileIndex };
+        }
+
         // (category root, source object name, Mesh) -> instance placements (world * mesh-local)
         // We keep ObjectName so MultiMesh nodes can be named after their source object.
         var batches =
             new global::System.Collections.Generic.Dictionary<(Node3D Category, string ObjectName, Mesh Mesh),
                 List<InstancePlacement>>(new MeshBatchKeyComparer());
-        var meshPartsCache = new global::System.Collections.Generic.Dictionary<string, List<MeshPart>?>();
+        var objectPartsCache = new global::System.Collections.Generic.Dictionary<string, ObjectSceneParts?>();
 
         var da = DirAccess.Open(dir);
         if (da is null)
@@ -117,7 +173,7 @@ public partial class TerrainObjectsFill : Node3D
             if (!da.CurrentIsDir() && name.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
             {
                 var path = dir + name;
-                ProcessJsonForBatches(path, plants, rocks, other, batches, meshPartsCache);
+                ProcessJsonForBatches(path, plants, rocks, other, batches, objectPartsCache, colliderState);
                 continue;
             }
 
@@ -132,6 +188,9 @@ public partial class TerrainObjectsFill : Node3D
 
         da.ListDirEnd();
         da.Dispose();
+
+        LastBuiltObjectColliderFacesByTile = colliderState?.TileFaces
+            ?? new global::System.Collections.Generic.Dictionary<string, List<Vector3>>();
 
         var nextIndexByCategoryAndObjectName =
             new global::System.Collections.Generic.Dictionary<(ulong CategoryId, string ObjectName), int>();
@@ -173,7 +232,17 @@ public partial class TerrainObjectsFill : Node3D
             var mmToAssign = mm;
 
             var safeObjectName = SanitizeGodotNodeName(objectName);
-            if (Engine.IsEditorHint() && SaveMultiMeshesAsExternalResources)
+            // Not gated on Engine.IsEditorHint(): saving a resource to disk is plain file I/O, not an
+            // editor-only concept. Gating this on the editor hint meant headless (`-s script.gd`) runs of
+            // this [Tool] silently skipped it, leaving every MultiMesh in-memory only; packing/saving the
+            // scene afterwards then embedded ~1000 MultiMesh sub-resources instead of referencing external
+            // .res files. Godot's binary serializer applies an embedded MultiMesh's saved properties in
+            // registration order (instance_count before transform_format/use_custom_data), and
+            // MultiMesh::set_transform_format()/set_use_custom_data() both reject changes once
+            // instance_count != 0 - so every reloaded embedded MultiMesh silently kept its default 2D
+            // transform format while instance_count was set for 3D+custom-data data, corrupting the
+            // instance buffer and crashing the engine (out-of-bounds access) as soon as anything touched it.
+            if (SaveMultiMeshesAsExternalResources)
             {
                 var baseDir = MultiMeshResourcesDirectory.TrimEnd('/') + "/";
                 var catDirName = SanitizeGodotNodeName(category.Name.ToString());
@@ -225,6 +294,30 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
+    // TEMP DIAGNOSTIC - remove after use.
+    public void DebugPrintColliderFaceStats()
+    {
+        var totalFaces = 0L;
+        var maxKey = string.Empty;
+        var maxCount = 0;
+        foreach (var (key, faces) in LastBuiltObjectColliderFacesByTile)
+        {
+            totalFaces += faces.Count;
+            if (faces.Count > maxCount)
+            {
+                maxCount = faces.Count;
+                maxKey = key;
+            }
+        }
+
+        GD.Print($"[DEBUG] tile groups with faces: {LastBuiltObjectColliderFacesByTile.Count}, total face-verts: {totalFaces}");
+        GD.Print($"[DEBUG] largest group: {maxKey} with {maxCount} face-verts ({maxCount / 3} tris)");
+        if (LastBuiltObjectColliderFacesByTile.TryGetValue(OutsideTerrainTileNodeName, out var outside))
+        {
+            GD.Print($"[DEBUG] OutsideTerrain group: {outside.Count} face-verts ({outside.Count / 3} tris)");
+        }
+    }
+
     private static string SanitizeGodotNodeName(string name)
     {
         name = name.ToLower();
@@ -261,7 +354,8 @@ public partial class TerrainObjectsFill : Node3D
         Node3D other,
         global::System.Collections.Generic.Dictionary<(Node3D Category, string ObjectName, Mesh Mesh),
             List<InstancePlacement>> batches,
-        global::System.Collections.Generic.Dictionary<string, List<MeshPart>?> meshPartsCache)
+        global::System.Collections.Generic.Dictionary<string, ObjectSceneParts?> objectPartsCache,
+        ColliderBuildState? colliderState)
     {
         var jsonText = FileAccess.GetFileAsString(path);
         if (string.IsNullOrEmpty(jsonText))
@@ -294,12 +388,12 @@ public partial class TerrainObjectsFill : Node3D
                 continue;
             }
 
-            if (!meshPartsCache.TryGetValue(rec.ObjectName, out var parts))
+            if (!objectPartsCache.TryGetValue(rec.ObjectName, out var parts))
             {
                 var scene = GetOrLoadScene(rec.ObjectName);
-                parts = scene is null ? null : ExtractMeshParts(scene);
-                meshPartsCache[rec.ObjectName] = parts;
-                if (parts is null || parts.Count == 0)
+                parts = scene is null ? null : ExtractSceneParts(scene);
+                objectPartsCache[rec.ObjectName] = parts;
+                if (parts is null)
                 {
                     if (scene is not null)
                     {
@@ -315,7 +409,7 @@ public partial class TerrainObjectsFill : Node3D
                     continue;
                 }
             }
-            else if (parts is null || parts.Count == 0)
+            else if (parts is null)
             {
                 continue;
             }
@@ -339,7 +433,7 @@ public partial class TerrainObjectsFill : Node3D
                 parent = other;
             }
 
-            foreach (var part in parts)
+            foreach (var part in parts.MeshParts)
             {
                 var key = (parent, rec.ObjectName, part.Mesh);
                 if (!batches.TryGetValue(key, out var list))
@@ -349,6 +443,13 @@ public partial class TerrainObjectsFill : Node3D
                 }
 
                 list.Add(new InstancePlacement(world * part.LocalToRoot, recIndex));
+            }
+
+            // Models filtered out of collider generation (grass, decorative-only props) simply have no
+            // ColliderParts here; the multimesh visual above is unaffected either way.
+            if (colliderState is not null && parts.ColliderParts.Count > 0)
+            {
+                AddObjectCollider(colliderState, parts.ColliderParts, world);
             }
         }
     }
@@ -438,14 +539,23 @@ public partial class TerrainObjectsFill : Node3D
         return new Transform3D(basis, position);
     }
 
-    private static List<MeshPart>? ExtractMeshParts(PackedScene scene)
+    /// <summary>
+    ///     Instantiates <paramref name="scene" /> once and collects both drawable mesh parts and, when the source
+    ///     model was processed with the collider generator's '-col' import suffix, the StaticBody3D/CollisionShape3D
+    ///     pairs Godot's importer attached next to each mesh. Returns <c>null</c> only when no mesh was found;
+    ///     an empty <see cref="ObjectSceneParts.ColliderParts" /> list is expected for models without colliders.
+    /// </summary>
+    private static ObjectSceneParts? ExtractSceneParts(PackedScene scene)
     {
         var root = scene.Instantiate<Node3D>();
         try
         {
-            var list = new List<MeshPart>();
-            CollectMeshes(root, root, list);
-            return list.Count == 0 ? null : list;
+            var meshParts = new List<MeshPart>();
+            var colliderParts = new List<ColliderPart>();
+            CollectParts(root, root, meshParts, colliderParts);
+            return meshParts.Count == 0
+                ? null
+                : new ObjectSceneParts { MeshParts = meshParts, ColliderParts = colliderParts };
         }
         finally
         {
@@ -453,7 +563,7 @@ public partial class TerrainObjectsFill : Node3D
         }
     }
 
-    private static void CollectMeshes(Node node, Node3D root, List<MeshPart> list)
+    private static void CollectParts(Node node, Node3D root, List<MeshPart> meshList, List<ColliderPart> colliderList)
     {
         if (node is MeshInstance3D mi && mi.Mesh is { } mesh)
         {
@@ -462,13 +572,22 @@ public partial class TerrainObjectsFill : Node3D
                 return;
             }
 
-            var localToRoot = ComputeTransformRelativeToRoot(mi, root);
-            list.Add(new MeshPart(mesh, localToRoot));
+            meshList.Add(new MeshPart(mesh, ComputeTransformRelativeToRoot(mi, root)));
+        }
+        else if (node is StaticBody3D body)
+        {
+            foreach (var child in body.GetChildren())
+            {
+                if (child is CollisionShape3D { Shape: { } shape } collisionShape)
+                {
+                    colliderList.Add(new ColliderPart(shape, ComputeTransformRelativeToRoot(collisionShape, root)));
+                }
+            }
         }
 
         foreach (var child in node.GetChildren())
         {
-            CollectMeshes(child, root, list);
+            CollectParts(child, root, meshList, colliderList);
         }
     }
 
@@ -544,10 +663,96 @@ public partial class TerrainObjectsFill : Node3D
         return n;
     }
 
+    /// <summary>
+    ///     Accumulates one object placement's collider geometry (in world space) into
+    ///     <see cref="ColliderBuildState.TileFaces" />, keyed by the tile group it falls on (the terrain grid cell,
+    ///     by master tile name + occurrence index), or <see cref="OutsideTerrainTileNodeName" /> when it falls
+    ///     outside the grid / map is unavailable. Nothing is added to the scene here - see
+    ///     <see cref="LastBuiltObjectColliderFacesByTile" />. <paramref name="worldTransform" /> is reused verbatim
+    ///     from the visual placement so the accumulated geometry lines up with the multimesh instance it belongs to.
+    /// </summary>
+    private void AddObjectCollider(
+        ColliderBuildState state,
+        List<ColliderPart> colliderParts,
+        Transform3D worldTransform)
+    {
+        var tileGroupKey = OutsideTerrainTileNodeName;
+        if (state.TileIndex is not null
+            && state.TileIndex.TryGetTile(worldTransform.Origin, out var masterName, out var occurrence))
+        {
+            tileGroupKey = TerrainTileGridIndex.BuildTileGroupKey(masterName, occurrence);
+        }
+
+        if (!state.TileFaces.TryGetValue(tileGroupKey, out var faces))
+        {
+            faces = new List<Vector3>();
+            state.TileFaces[tileGroupKey] = faces;
+        }
+
+        foreach (var part in colliderParts)
+        {
+            AppendShapeFacesWorldSpace(part.Shape, worldTransform * part.LocalToRoot, faces);
+        }
+    }
+
+    /// <summary>
+    ///     Appends <paramref name="shape" />'s triangle geometry, transformed by <paramref name="transform" />, to
+    ///     <paramref name="faceAccumulator" /> (3 consecutive entries per triangle). Reads triangle faces directly
+    ///     for <see cref="ConcavePolygonShape3D" /> (the common case for '-col'-imported meshes); any other
+    ///     <see cref="Shape3D" /> type falls back to its debug mesh representation, which every shape provides.
+    /// </summary>
+    private static void AppendShapeFacesWorldSpace(Shape3D shape, Transform3D transform, List<Vector3> faceAccumulator)
+    {
+        if (shape is ConcavePolygonShape3D concave)
+        {
+            foreach (var v in concave.GetFaces())
+            {
+                faceAccumulator.Add(transform * v);
+            }
+
+            return;
+        }
+
+        var debugMesh = shape.GetDebugMesh();
+        for (var surfaceIndex = 0; surfaceIndex < debugMesh.GetSurfaceCount(); surfaceIndex++)
+        {
+            var arrays = debugMesh.SurfaceGetArrays(surfaceIndex);
+            var vertices = arrays[(int)Mesh.ArrayType.Vertex].AsVector3Array();
+            var indexVariant = arrays[(int)Mesh.ArrayType.Index];
+            if (indexVariant.VariantType == Variant.Type.Nil)
+            {
+                foreach (var v in vertices)
+                {
+                    faceAccumulator.Add(transform * v);
+                }
+
+                continue;
+            }
+
+            foreach (var index in indexVariant.AsInt32Array())
+            {
+                faceAccumulator.Add(transform * vertices[index]);
+            }
+        }
+    }
+
+    private static string CapitalizeFirstLetter(string value)
+    {
+        return string.IsNullOrEmpty(value) ? value : char.ToUpperInvariant(value[0]) + value[1..];
+    }
+
+    /// <summary>
+    ///     Removes and queues deletion of every child of <paramref name="node" />. <see cref="Node.RemoveChild" /> is
+    ///     called synchronously (not just <see cref="Node.QueueFree" />) so a same-call lookup-or-create right after
+    ///     (e.g. <see cref="GetOrCreateChildNodeUnder" />) can't find a "zombie" node that is still a child (because
+    ///     its deferred free hasn't run yet) and graft fresh content onto it, only for that content to disappear when
+    ///     the deferred free eventually fires.
+    /// </summary>
     private static void ClearChildren(Node3D node)
     {
         foreach (var child in node.GetChildren())
         {
+            node.RemoveChild(child);
             child.QueueFree();
         }
     }
@@ -704,6 +909,132 @@ public partial class TerrainObjectsFill : Node3D
 
         public Mesh Mesh { get; }
         public Transform3D LocalToRoot { get; }
+    }
+
+    private sealed class ColliderPart
+    {
+        public ColliderPart(Shape3D shape, Transform3D localToRoot)
+        {
+            Shape = shape;
+            LocalToRoot = localToRoot;
+        }
+
+        public Shape3D Shape { get; }
+        public Transform3D LocalToRoot { get; }
+    }
+
+    /// <summary>Cached per-object-name extraction result: drawable mesh parts plus any collider parts found.</summary>
+    private sealed class ObjectSceneParts
+    {
+        public required List<MeshPart> MeshParts { get; init; }
+        public required List<ColliderPart> ColliderParts { get; init; }
+    }
+
+    /// <summary>Mutable state threaded through one <see cref="RebuildTerrainObjects" /> run for collider building.</summary>
+    private sealed class ColliderBuildState
+    {
+        public required TerrainTileGridIndex? TileIndex { get; init; }
+
+        /// <summary>
+        ///     World-space triangle faces (flat list, 3 consecutive entries per triangle) accumulated per tile
+        ///     group key. Read back via <see cref="LastBuiltObjectColliderFacesByTile" /> - nothing here is ever
+        ///     turned into scene nodes (see that property's doc for why).
+        /// </summary>
+        public global::System.Collections.Generic.Dictionary<string, List<Vector3>> TileFaces { get; } = new();
+    }
+
+    /// <summary>
+    ///     Maps a world position to the terrain grid cell it falls on, using the exact same cell layout
+    ///     <see cref="TerrainGridFill.RebuildTerrainGrid" /> uses to fill the GridMap (<see cref="MapFill" />, row-major,
+    ///     <c>gx = GridWidth - (i % GridWidth) - 1</c>). "Occurrence" numbers repeated uses of the same master tile
+    ///     (0, 1, 2, ...) in that same row-major order, so tile group names stay stable across rebuilds.
+    ///     Internal (not private) so <see cref="TerrainNavigationBaker" /> can reuse the exact same tile-group
+    ///     keys and cell enumeration when it builds ground + object source geometry per tile.
+    /// </summary>
+    internal sealed class TerrainTileGridIndex
+    {
+        private readonly global::System.Collections.Generic.Dictionary<(int Gx, int Gz), (string MasterName, int Occurrence)>
+            cellsByCoord;
+
+        private readonly float tileSize;
+        private readonly Vector3 worldOrigin;
+
+        private TerrainTileGridIndex(
+            global::System.Collections.Generic.Dictionary<(int Gx, int Gz), (string MasterName, int Occurrence)> cellsByCoord,
+            float tileSize,
+            Vector3 worldOrigin)
+        {
+            this.cellsByCoord = cellsByCoord;
+            this.tileSize = tileSize;
+            this.worldOrigin = worldOrigin;
+        }
+
+        public static TerrainTileGridIndex? TryBuild(string mapBinResourcePath, float tileSize, Vector3 worldOrigin)
+        {
+            var abs = ProjectSettings.GlobalizePath(mapBinResourcePath);
+            if (!File.Exists(abs))
+            {
+                return null;
+            }
+
+            var cells = MapFill.ReadFullGrid(abs);
+            var cellsByCoord =
+                new global::System.Collections.Generic.Dictionary<(int Gx, int Gz), (string MasterName, int Occurrence)>();
+            var nextOccurrenceByMaster = new global::System.Collections.Generic.Dictionary<string, int>();
+            for (var i = 0; i < cells.Count; i++)
+            {
+                var cell = cells[i];
+                if (cell.IsEmpty)
+                {
+                    continue;
+                }
+
+                if (!nextOccurrenceByMaster.TryGetValue(cell.MasterName, out var occurrence))
+                {
+                    occurrence = 0;
+                }
+
+                nextOccurrenceByMaster[cell.MasterName] = occurrence + 1;
+
+                var gx = MapFill.GridWidth - (i % MapFill.GridWidth) - 1;
+                var gz = i / MapFill.GridWidth;
+                cellsByCoord[(gx, gz)] = (cell.MasterName, occurrence);
+            }
+
+            return new TerrainTileGridIndex(cellsByCoord, tileSize, worldOrigin);
+        }
+
+        public bool TryGetTile(Vector3 worldPosition, out string masterName, out int occurrence)
+        {
+            var local = worldPosition - worldOrigin;
+            var gx = Mathf.FloorToInt(local.X / tileSize);
+            var gz = Mathf.FloorToInt(local.Z / tileSize);
+            if (cellsByCoord.TryGetValue((gx, gz), out var found))
+            {
+                masterName = found.MasterName;
+                occurrence = found.Occurrence;
+                return true;
+            }
+
+            masterName = string.Empty;
+            occurrence = 0;
+            return false;
+        }
+
+        /// <summary>All occupied cells with their grid coordinate, master tile name, and occurrence index.</summary>
+        public IEnumerable<((int Gx, int Gz) Coord, string MasterName, int Occurrence)> EnumerateCells()
+        {
+            foreach (var kv in cellsByCoord)
+            {
+                yield return (kv.Key, kv.Value.MasterName, kv.Value.Occurrence);
+            }
+        }
+
+        /// <summary>World-space tile-group key (matching <see cref="TerrainObjectsFill" />'s naming) for a cell.</summary>
+        public static string BuildTileGroupKey(string masterName, int occurrence)
+        {
+            return $"{CapitalizeFirstLetter(SanitizeGodotNodeName(masterName))}_{occurrence:D2}";
+        }
     }
 
     /// <summary>Reference-equality for <see cref="Mesh" /> so batches merge identical resources.</summary>

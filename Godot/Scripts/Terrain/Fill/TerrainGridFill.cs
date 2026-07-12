@@ -114,6 +114,19 @@ public partial class TerrainGridFill : Node3D
 			meshLib.CreateItem(nextId);
 			meshLib.SetItemMesh(nextId, mesh);
 			meshLib.SetItemName(nextId, masterName);
+
+			// Collider = the visual mesh itself (already basis-rotated), so GridMap cells collide
+			// exactly where the terrain is drawn. SetItemShapes expects [shape, transform] pairs.
+			var shape = mesh.CreateTrimeshShape();
+			if (shape is not null)
+			{
+				meshLib.SetItemShapes(nextId, [shape, Transform3D.Identity]);
+			}
+			else
+			{
+				GD.PushWarning($"TerrainGridFill: failed to build collision shape for tile: {masterName}");
+			}
+
 			nameToItemId[masterName] = nextId;
 			nextId++;
 		}
