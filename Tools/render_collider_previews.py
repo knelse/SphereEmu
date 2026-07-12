@@ -52,10 +52,15 @@ def render(path: Path, ax):
 
 
 def main():
+    argv = sys.argv[1:]
     out_dir = Path("Godot/Models/Colliders")
+    if "--dir" in argv:
+        i = argv.index("--dir")
+        out_dir = Path(argv[i + 1])
+        argv = argv[:i] + argv[i + 2 :]
     files = sorted(out_dir.glob("*_preview.glb"), key=lambda p: p.name.lower())
-    if len(sys.argv) > 1:
-        files = [f for f in files if f.stem.replace("_preview", "") in sys.argv[1:]]
+    if argv:
+        files = [f for f in files if f.stem.replace("_preview", "") in argv]
     cols = 4
     rows = (len(files) + cols - 1) // cols
     fig = plt.figure(figsize=(cols * 4, rows * 3.2))
