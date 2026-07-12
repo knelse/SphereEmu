@@ -3,6 +3,9 @@
     "godot_tools.editor_path": "D:\\Games\\Godot\\Godot_v4.6.1-stable_mono_win64.exe",
     "files.exclude": {
         "**/*.uid": true,
-        "**/*.import": true
-    }
+        "**/*.import": true,
+        "Godot/Models/*.png": true,
+        "Godot/Models/**/*.png": true
+    },
+    "git.ignoreLimitWarning": true
 }
