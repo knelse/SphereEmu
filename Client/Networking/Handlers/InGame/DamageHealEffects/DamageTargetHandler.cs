@@ -6,6 +6,7 @@ using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
+using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
 using SphServer.System;
 using static SphServer.Shared.BitStream.SphBitStream;
@@ -31,6 +32,9 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         PacketPart.UpdateValue(packet, "30000_minus_damage", 30000);
         var packetBytes = PacketPart.GetBytesToWrite(packet);
         clientConnection.MaybeScheduleNetworkPacketSend(packetBytes);
+        // Attack-wedge fix: clear the client's use-lock (g_6008) so it can attack / open doors again.
+        // Without this the client wedges permanently after one attack. See CommonPackets.ClearUseToutAck.
+        clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
         return;
 
         var paAbs = Math.Abs(character.PAtk);

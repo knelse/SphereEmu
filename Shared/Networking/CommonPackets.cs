@@ -8,6 +8,14 @@ namespace SphServer.Shared.Networking;
 
 public static class CommonPackets
 {
+    // Clears the client's use-lock (g_6008): the client sets it on every attack/use via SetUsing and
+    // blocks all further attacks/uses until it receives this frame.
+    public static byte[] ClearUseToutAck (ushort playerIndex) =>
+    [
+        0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(playerIndex), MinorByte(playerIndex),
+        0x08, 0x40, 0x63, 0x08, 0x00, 0x00
+    ];
+
     public static readonly byte[]
         // ReadyToLoadInitialData = { 0x0A, 0x00, 0xC8, 0x00, 0x14, 0x05, 0x00, 0x00, 0x1F, 0x42 };
         ReadyToLoadInitialData = [0x0A, 0x00, 0xC8, 0x00, 0x6C, 0x07, 0x00, 0x00, 0x40, 0x0E];
