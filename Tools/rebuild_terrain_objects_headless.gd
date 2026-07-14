@@ -1,7 +1,12 @@
 extends SceneTree
 
-# Headless: regenerate terrain_scene.scn's TerrainObjects subtree (multimesh visuals only) and
+# Regenerate terrain_scene.scn's TerrainObjects subtree (multimesh visuals only) and
 # bake per-tile navigation meshes to external .res files under Godot/Terrain/GeneratedNavMeshes/.
+#
+# IMPORTANT: do NOT pass --headless when running this script. Godot's dummy headless renderer
+# silently ignores MultiMesh.set_instance_transform(), so a headless rebuild saves .res files
+# with instance_count set but empty transform buffers (~9 KB instead of ~1 MB per mesh batch).
+# All objects then stack at the world origin and are invisible in the editor.
 #
 # The saved scene intentionally does NOT contain NavigationRegion3D nodes (or a
 # TerrainNavigationBaker node): thousands of regions made the editor hang for minutes syncing
@@ -10,7 +15,7 @@ extends SceneTree
 # Object colliders are never scene nodes - TerrainObjectsFill accumulates triangle geometry in
 # memory; TerrainNavigationBaker feeds that plus ground tile meshes into NavigationServer3D.
 #
-# Usage: godot --headless -s Tools/rebuild_terrain_objects_headless.gd --path .
+# Usage: godot -s Tools/rebuild_terrain_objects_headless.gd --path .
 
 const SCENE_PATH := "res://Godot/Scenes/terrain_scene.scn"
 const NAV_BAKER_SCRIPT := "res://Godot/Scripts/Terrain/Fill/TerrainNavigationBaker.cs"

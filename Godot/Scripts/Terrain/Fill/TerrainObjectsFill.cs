@@ -130,7 +130,11 @@ public partial class TerrainObjectsFill : Node3D
         ColliderBuildState? colliderState = null;
         if (BuildObjectColliders)
         {
-            var tileIndex = TerrainTileGridIndex.TryBuild(MapBinPath, TileSizeWorld, TerrainWorldOrigin);
+            // Prefer the live GridMap origin so object→tile assignment matches where ground meshes
+            // are baked (terrain.Position). The exported TerrainWorldOrigin default (-4000) drifts
+            // from the saved scene GridMap at (0,0,0) and sent every placement to the wrong cell.
+            var worldOrigin = ResolveTerrainWorldOrigin();
+            var tileIndex = TerrainTileGridIndex.TryBuild(MapBinPath, TileSizeWorld, worldOrigin);
             if (tileIndex is null)
             {
                 GD.PushWarning(
@@ -138,7 +142,10 @@ public partial class TerrainObjectsFill : Node3D
                     + $"'{OutsideTerrainTileNodeName}' instead of per-tile.");
             }
 
-            colliderState = new ColliderBuildState { TileIndex = tileIndex };
+            colliderState = new ColliderBuildState
+            {
+                TileIndex = tileIndex, ObjectsToGridLocal = GetObjectsToGridLocalTransform()
+            };
         }
 
         // (category root, source object name, Mesh) -> instance placements (world * mesh-local)
@@ -192,6 +199,16 @@ public partial class TerrainObjectsFill : Node3D
         LastBuiltObjectColliderFacesByTile = colliderState?.TileFaces
             ?? new global::System.Collections.Generic.Dictionary<string, List<Vector3>>();
 
+        var obstructionTris = 0L;
+        foreach (var faces in LastBuiltObjectColliderFacesByTile.Values)
+        {
+            obstructionTris += faces.Count / 3;
+        }
+
+        GD.Print(
+            $"TerrainObjectsFill: obstruction tile groups={LastBuiltObjectColliderFacesByTile.Count}, "
+            + $"tris={obstructionTris} (origin={ResolveTerrainWorldOrigin()})");
+
         var nextIndexByCategoryAndObjectName =
             new global::System.Collections.Generic.Dictionary<(ulong CategoryId, string ObjectName), int>();
         foreach (var kv in batches)
@@ -227,6 +244,23 @@ public partial class TerrainObjectsFill : Node3D
                 var g = ((idx >> 8) & 0xFF) / 255f;
                 var b = ((idx >> 16) & 0xFF) / 255f;
                 mm.SetInstanceCustomData(i, new Color(r, g, b, 0f));
+            }
+
+            // Godot's headless dummy renderer silently ignores SetInstanceTransform; saving those
+            // buffers produces tiny .res files (~9 KB) with every instance at the origin.
+            if (placements.Count > 0)
+            {
+                var expectedOrigin = placements[0].Transform.Origin;
+                var actualOrigin = mm.GetInstanceTransform(0).Origin;
+                if (expectedOrigin.DistanceTo(actualOrigin) > 0.01f)
+                {
+                    GD.PushError(
+                        "TerrainObjectsFill: MultiMesh instance transforms were not applied "
+                        + $"(expected origin {expectedOrigin}, got {actualOrigin}). "
+                        + "Do not run RebuildTerrainObjects with --headless; use the normal editor "
+                        + "or a GPU-backed Godot process.");
+                    continue;
+                }
             }
 
             var mmToAssign = mm;
@@ -316,6 +350,17 @@ public partial class TerrainObjectsFill : Node3D
         {
             GD.Print($"[DEBUG] OutsideTerrain group: {outside.Count} face-verts ({outside.Count / 3} tris)");
         }
+
+        if (LastBuiltObjectColliderFacesByTile.TryGetValue("Cliffn_rd05_00_04", out var cliffn))
+        {
+            GD.Print($"[DEBUG] Cliffn_rd05_00_04 face-verts: {cliffn.Count} ({cliffn.Count / 3} tris)");
+        }
+        else
+        {
+            GD.Print("[DEBUG] Cliffn_rd05_00_04: NO obstruction faces");
+        }
+
+        GD.Print($"[DEBUG] ResolveTerrainWorldOrigin={ResolveTerrainWorldOrigin()}");
     }
 
     private static string SanitizeGodotNodeName(string name)
@@ -447,9 +492,45 @@ public partial class TerrainObjectsFill : Node3D
 
             // Models filtered out of collider generation (grass, decorative-only props) simply have no
             // ColliderParts here; the multimesh visual above is unaffected either way.
-            if (colliderState is not null && parts.ColliderParts.Count > 0)
+            // When no imported '-col' shapes exist (common until generate_colliders.py has been run),
+            // fall back to the drawable mesh AABB so nav bake still carves object footprints.
+            // Trees always carve from a trunk-only footprint (mesh heuristic), even if full leaf
+            // colliders exist later for physics — those are not fed into nav obstruction faces.
+            if (colliderState is not null && !ShouldSkipMeshObstruction(rec.ObjectName))
             {
-                AddObjectCollider(colliderState, parts.ColliderParts, world);
+                // Obstruction geometry (and the tile it gets bucketed into) must be expressed in the
+                // "Terrain" GridMap's local frame — the same frame TerrainNavigationBaker positions
+                // ground tiles in — not in this node's (TerrainObjects) own local frame. TerrainObjects
+                // and TerrainGrid are independently offset/rotated siblings under TerrainScene, so
+                // reusing the raw visual placement transform here silently baked every obstruction
+                // hole rotated/offset away from the object that actually carved it. The visual
+                // multimesh placement below is unaffected: it inherits this node's Transform via the
+                // normal scene graph, so it must keep using the raw `world` transform.
+                var navWorld = colliderState.ObjectsToGridLocal * world;
+                if (IsTreeObject(rec.ObjectName) && parts.MeshParts.Count > 0)
+                {
+                    AddTreeTrunkObstruction(colliderState, parts.MeshParts, navWorld);
+                }
+                else if (IsUndercroftObject(rec.ObjectName) && parts.MeshParts.Count > 0)
+                {
+                    // Near-ground mesh tris only — AABB would seal arch/tower openings.
+                    // Towers get XZ inflate so thin wall planes block like the visual shell.
+                    var inflate = IsTowerObject(rec.ObjectName) ? TowerWallInflate : 0f;
+                    AddUndercroftMeshObstruction(colliderState, parts.MeshParts, navWorld, inflate);
+                    if (IsTowerObject(rec.ObjectName))
+                    {
+                        // Solid inset fill removes orphan walkable islands inside the hollow shell.
+                        AddTowerInteriorFillObstruction(colliderState, parts.MeshParts, navWorld);
+                    }
+                }
+                else if (parts.ColliderParts.Count > 0)
+                {
+                    AddObjectCollider(colliderState, parts.ColliderParts, navWorld);
+                }
+                else if (parts.MeshParts.Count > 0)
+                {
+                    AddMeshAabbObstruction(colliderState, parts.MeshParts, navWorld);
+                }
             }
         }
     }
@@ -696,6 +777,478 @@ public partial class TerrainObjectsFill : Node3D
     }
 
     /// <summary>
+    ///     Fallback when a model has no imported collision shapes: emit a world-space AABB box (12 triangles)
+    ///     from drawable mesh parts so <see cref="TerrainNavigationBaker" /> can still project obstructions.
+    /// </summary>
+    private void AddMeshAabbObstruction(
+        ColliderBuildState state,
+        List<MeshPart> meshParts,
+        Transform3D worldTransform)
+    {
+        if (!TryComputePartsWorldAabb(meshParts, worldTransform, out var aabb) || aabb.Size.Y < 0.05f)
+        {
+            return;
+        }
+
+        AppendObstructionAabb(state, worldTransform.Origin, aabb);
+    }
+
+    /// <summary>
+    ///     Nav-only trunk footprint for trees: prefer small-XZ mesh parts (trunk), ignore canopy-sized parts,
+    ///     clamp to <see cref="TreeTrunkMaxRadius"/>, fall back to a cylinder at the placement origin.
+    ///     Does not touch physics colliders.
+    /// </summary>
+    private void AddTreeTrunkObstruction(
+        ColliderBuildState state,
+        List<MeshPart> meshParts,
+        Transform3D worldTransform)
+    {
+        var aabb = ResolveTreeTrunkAabb(meshParts, worldTransform);
+        if (aabb.Size.Y < 0.05f)
+        {
+            return;
+        }
+
+        AppendObstructionAabb(state, worldTransform.Origin, aabb);
+    }
+
+    private void AppendObstructionAabb(ColliderBuildState state, Vector3 worldOrigin, Aabb aabb)
+    {
+        var tileGroupKey = OutsideTerrainTileNodeName;
+        if (state.TileIndex is not null
+            && state.TileIndex.TryGetTile(worldOrigin, out var masterName, out var occurrence))
+        {
+            tileGroupKey = TerrainTileGridIndex.BuildTileGroupKey(masterName, occurrence);
+        }
+
+        if (!state.TileFaces.TryGetValue(tileGroupKey, out var faces))
+        {
+            faces = new List<Vector3>();
+            state.TileFaces[tileGroupKey] = faces;
+        }
+
+        AppendAabbBoxFaces(aabb, faces);
+    }
+
+    private const float TreeTrunkFallbackRadius = 0.4f;
+    private const float TreeTrunkMaxRadius = 1.0f;
+
+    /// <summary>
+    ///     Tris whose lowest vertex is above placement.origin.y + this are ignored for undercroft nav carve
+    ///     (arch lintels / upper floors must not project-seal the walkable opening).
+    /// </summary>
+    private const float UndercroftCarveMaxHeight = 2.0f;
+
+    /// <summary>
+    ///     Extra XZ half-extent added around each near-ground tower wall tri when building nav faces.
+    ///     Tower meshes are thin planes; without this the projected carve is ~one cell thick.
+    /// </summary>
+    private const float TowerWallInflate = 0.45f;
+
+    /// <summary>
+    ///     Inset from the tower's outer mesh AABB for a solid interior projected carve.
+    ///     Keeps the doorway notch from wall-mesh gaps while removing hollow-center islands.
+    /// </summary>
+    private const float TowerInteriorInset = 0.9f;
+
+    private static bool IsTreeObject(string objectName) =>
+        objectName.Contains("tree", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsTowerObject(string objectName) =>
+        objectName.Contains("tower", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsUndercroftObject(string objectName)
+    {
+        var lower = objectName.ToLowerInvariant();
+        return lower.Contains("tower", StringComparison.Ordinal)
+               || lower.Contains("gate", StringComparison.Ordinal)
+               || lower.Contains("arch", StringComparison.Ordinal)
+               || lower.Contains("_arc", StringComparison.Ordinal)
+               || lower.StartsWith("cem_arc", StringComparison.Ordinal)
+               || lower.StartsWith("cem_door", StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///     Solid-fills the hollow tower interior (inset from outer mesh bounds) for nav carve only.
+    /// </summary>
+    private void AddTowerInteriorFillObstruction(
+        ColliderBuildState state,
+        List<MeshPart> meshParts,
+        Transform3D worldTransform)
+    {
+        if (!TryComputePartsWorldAabb(meshParts, worldTransform, out var outer) || outer.Size.Y < 0.05f)
+        {
+            return;
+        }
+
+        var inset = TowerInteriorInset;
+        var innerSize = new Vector3(
+            outer.Size.X - inset * 2f,
+            outer.Size.Y,
+            outer.Size.Z - inset * 2f);
+        if (innerSize.X < 0.4f || innerSize.Z < 0.4f)
+        {
+            return;
+        }
+
+        var inner = new Aabb(outer.Position + new Vector3(inset, 0f, inset), innerSize);
+        AppendObstructionAabb(state, worldTransform.Origin, inner);
+    }
+
+    /// <summary>
+    ///     Nav-only: append near-ground drawable mesh triangles so projected carve follows pillars/walls
+    ///     and leaves arch/tower openings walkable. Does not change physics colliders.
+    /// </summary>
+    private void AddUndercroftMeshObstruction(
+        ColliderBuildState state,
+        List<MeshPart> meshParts,
+        Transform3D worldTransform,
+        float xzInflate)
+    {
+        var tileGroupKey = OutsideTerrainTileNodeName;
+        if (state.TileIndex is not null
+            && state.TileIndex.TryGetTile(worldTransform.Origin, out var masterName, out var occurrence))
+        {
+            tileGroupKey = TerrainTileGridIndex.BuildTileGroupKey(masterName, occurrence);
+        }
+
+        if (!state.TileFaces.TryGetValue(tileGroupKey, out var faces))
+        {
+            faces = new List<Vector3>();
+            state.TileFaces[tileGroupKey] = faces;
+        }
+
+        var maxY = worldTransform.Origin.Y + UndercroftCarveMaxHeight;
+        foreach (var part in meshParts)
+        {
+            AppendMeshFacesNearGround(
+                part.Mesh,
+                worldTransform * part.LocalToRoot,
+                maxY,
+                xzInflate,
+                faces);
+        }
+    }
+
+    private static void AppendMeshFacesNearGround(
+        Mesh mesh,
+        Transform3D transform,
+        float maxVertexY,
+        float xzInflate,
+        List<Vector3> faceAccumulator)
+    {
+        for (var surfaceIndex = 0; surfaceIndex < mesh.GetSurfaceCount(); surfaceIndex++)
+        {
+            var arrays = mesh.SurfaceGetArrays(surfaceIndex);
+            var vertices = arrays[(int)Mesh.ArrayType.Vertex].AsVector3Array();
+            var indexVariant = arrays[(int)Mesh.ArrayType.Index];
+
+            void ConsiderTri(Vector3 a, Vector3 b, Vector3 c)
+            {
+                var wa = transform * a;
+                var wb = transform * b;
+                var wc = transform * c;
+                if (Mathf.Min(wa.Y, Mathf.Min(wb.Y, wc.Y)) > maxVertexY)
+                {
+                    return;
+                }
+
+                if (xzInflate <= 0f)
+                {
+                    faceAccumulator.Add(wa);
+                    faceAccumulator.Add(wb);
+                    faceAccumulator.Add(wc);
+                    return;
+                }
+
+                // Emit an inflated XZ box for this tri so thin wall planes carve with real thickness.
+                var mn = new Vector3(
+                    Mathf.Min(wa.X, Mathf.Min(wb.X, wc.X)) - xzInflate,
+                    Mathf.Min(wa.Y, Mathf.Min(wb.Y, wc.Y)),
+                    Mathf.Min(wa.Z, Mathf.Min(wb.Z, wc.Z)) - xzInflate);
+                var mx = new Vector3(
+                    Mathf.Max(wa.X, Mathf.Max(wb.X, wc.X)) + xzInflate,
+                    Mathf.Max(wa.Y, Mathf.Max(wb.Y, wc.Y)),
+                    Mathf.Max(wa.Z, Mathf.Max(wb.Z, wc.Z)) + xzInflate);
+                AppendAabbBoxFaces(new Aabb(mn, mx - mn), faceAccumulator);
+            }
+
+            if (indexVariant.VariantType == Variant.Type.Nil)
+            {
+                for (var i = 0; i + 2 < vertices.Length; i += 3)
+                {
+                    ConsiderTri(vertices[i], vertices[i + 1], vertices[i + 2]);
+                }
+
+                continue;
+            }
+
+            var indices = indexVariant.AsInt32Array();
+            for (var i = 0; i + 2 < indices.Length; i += 3)
+            {
+                ConsiderTri(vertices[indices[i]], vertices[indices[i + 1]], vertices[indices[i + 2]]);
+            }
+        }
+    }    /// <summary>
+         ///     Builds a trunk-sized world AABB for nav carve. Multi-part models keep only the smaller-XZ parts;
+         ///     XZ is always clamped around the placement origin so canopy never dominates the hole.
+         /// </summary>
+    private static Aabb ResolveTreeTrunkAabb(List<MeshPart> meshParts, Transform3D worldTransform)
+    {
+        var partAabbs = new List<(Aabb Aabb, float Xz)>();
+        foreach (var part in meshParts)
+        {
+            if (!TryComputePartWorldAabb(part, worldTransform, out var partAabb) || partAabb.Size.Y < 0.05f)
+            {
+                continue;
+            }
+
+            var xz = Mathf.Max(partAabb.Size.X, partAabb.Size.Z);
+            partAabbs.Add((partAabb, xz));
+        }
+
+        Aabb trunk;
+        if (partAabbs.Count == 0)
+        {
+            trunk = MakeTrunkCylinderAabb(worldTransform.Origin, TreeTrunkFallbackRadius, 2f);
+        }
+        else if (partAabbs.Count == 1)
+        {
+            trunk = partAabbs[0].Aabb;
+        }
+        else
+        {
+            var minXz = partAabbs[0].Xz;
+            var maxXz = partAabbs[0].Xz;
+            foreach (var (_, xz) in partAabbs)
+            {
+                minXz = Mathf.Min(minXz, xz);
+                maxXz = Mathf.Max(maxXz, xz);
+            }
+
+            // Keep parts that look trunk-like vs the widest canopy part.
+            var threshold = Mathf.Max(minXz * 1.75f, maxXz * 0.45f);
+            var has = false;
+            trunk = default;
+            foreach (var (aabb, xz) in partAabbs)
+            {
+                if (xz > threshold)
+                {
+                    continue;
+                }
+
+                if (!has)
+                {
+                    trunk = aabb;
+                    has = true;
+                }
+                else
+                {
+                    trunk = trunk.Merge(aabb);
+                }
+            }
+
+            if (!has)
+            {
+                // Degenerate: pick the narrowest part.
+                trunk = partAabbs[0].Aabb;
+                var best = partAabbs[0].Xz;
+                for (var i = 1; i < partAabbs.Count; i++)
+                {
+                    if (partAabbs[i].Xz < best)
+                    {
+                        best = partAabbs[i].Xz;
+                        trunk = partAabbs[i].Aabb;
+                    }
+                }
+            }
+        }
+
+        return ClampAabbXzAroundOrigin(trunk, worldTransform.Origin, TreeTrunkMaxRadius);
+    }
+
+    private static Aabb MakeTrunkCylinderAabb(Vector3 origin, float radius, float height)
+    {
+        return new Aabb(
+            new Vector3(origin.X - radius, origin.Y, origin.Z - radius),
+            new Vector3(radius * 2f, height, radius * 2f));
+    }
+
+    private static Aabb ClampAabbXzAroundOrigin(Aabb aabb, Vector3 origin, float maxRadius)
+    {
+        var halfX = Mathf.Min(aabb.Size.X * 0.5f, maxRadius);
+        var halfZ = Mathf.Min(aabb.Size.Z * 0.5f, maxRadius);
+        // Prefer object origin on XZ; keep original Y range for vertical carve padding.
+        var y0 = aabb.Position.Y;
+        var y1 = aabb.Position.Y + aabb.Size.Y;
+        if (aabb.Size.Y < 0.05f)
+        {
+            y0 = origin.Y;
+            y1 = origin.Y + 2f;
+        }
+
+        return new Aabb(
+            new Vector3(origin.X - halfX, y0, origin.Z - halfZ),
+            new Vector3(halfX * 2f, y1 - y0, halfZ * 2f));
+    }
+
+    private static bool TryComputePartsWorldAabb(
+        List<MeshPart> meshParts,
+        Transform3D worldTransform,
+        out Aabb aabb)
+    {
+        aabb = default;
+        var has = false;
+        foreach (var part in meshParts)
+        {
+            if (!TryComputePartWorldAabb(part, worldTransform, out var partAabb))
+            {
+                continue;
+            }
+
+            if (!has)
+            {
+                aabb = partAabb;
+                has = true;
+            }
+            else
+            {
+                aabb = aabb.Merge(partAabb);
+            }
+        }
+
+        return has;
+    }
+
+    private static bool TryComputePartWorldAabb(MeshPart part, Transform3D worldTransform, out Aabb aabb)
+    {
+        aabb = default;
+        var localAabb = part.Mesh.GetAabb();
+        var xform = worldTransform * part.LocalToRoot;
+        var has = false;
+        for (var i = 0; i < 8; i++)
+        {
+            var worldCorner = xform * localAabb.GetEndpoint(i);
+            if (!has)
+            {
+                aabb = new Aabb(worldCorner, Vector3.Zero);
+                has = true;
+            }
+            else
+            {
+                aabb = aabb.Expand(worldCorner);
+            }
+        }
+
+        return has;
+    }
+
+    private static void AppendAabbBoxFaces(Aabb aabb, List<Vector3> faces)
+    {
+        var mn = aabb.Position;
+        var mx = aabb.Position + aabb.Size;
+        // 6 faces × 2 tris × 3 verts. Order does not matter for projected-obstruction clustering.
+        void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+        {
+            faces.Add(a);
+            faces.Add(b);
+            faces.Add(c);
+            faces.Add(a);
+            faces.Add(c);
+            faces.Add(d);
+        }
+
+        Quad(new Vector3(mn.X, mn.Y, mn.Z), new Vector3(mx.X, mn.Y, mn.Z), new Vector3(mx.X, mx.Y, mn.Z),
+            new Vector3(mn.X, mx.Y, mn.Z));
+        Quad(new Vector3(mn.X, mn.Y, mx.Z), new Vector3(mn.X, mx.Y, mx.Z), new Vector3(mx.X, mx.Y, mx.Z),
+            new Vector3(mx.X, mn.Y, mx.Z));
+        Quad(new Vector3(mn.X, mn.Y, mn.Z), new Vector3(mn.X, mx.Y, mn.Z), new Vector3(mn.X, mx.Y, mx.Z),
+            new Vector3(mn.X, mn.Y, mx.Z));
+        Quad(new Vector3(mx.X, mn.Y, mn.Z), new Vector3(mx.X, mn.Y, mx.Z), new Vector3(mx.X, mx.Y, mx.Z),
+            new Vector3(mx.X, mx.Y, mn.Z));
+        Quad(new Vector3(mn.X, mn.Y, mn.Z), new Vector3(mn.X, mn.Y, mx.Z), new Vector3(mx.X, mn.Y, mx.Z),
+            new Vector3(mx.X, mn.Y, mn.Z));
+        Quad(new Vector3(mn.X, mx.Y, mn.Z), new Vector3(mx.X, mx.Y, mn.Z), new Vector3(mx.X, mx.Y, mx.Z),
+            new Vector3(mn.X, mx.Y, mx.Z));
+    }
+
+    /// <summary>
+    ///     Same vegetation / decorative skip list as <c>Tools/generate_colliders.py</c> — these should not block nav.
+    /// </summary>
+    private static bool ShouldSkipMeshObstruction(string objectName)
+    {
+        var lower = objectName.ToLowerInvariant();
+        return lower.Contains("bush")
+               || lower.Contains("grass")
+               || lower.StartsWith("fl_", StringComparison.Ordinal)
+               || lower.StartsWith("flower", StringComparison.Ordinal)
+               || lower.StartsWith("kamysh", StringComparison.Ordinal)
+               || lower.StartsWith("pyram", StringComparison.Ordinal)
+               || lower.StartsWith("vine", StringComparison.Ordinal)
+               || lower is "cam_cube" or "treeput"
+               || lower.StartsWith("tn2_fl", StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///     World origin for object→tile assignment, matching the exact frame
+    ///     <see cref="TerrainNavigationBaker" /> positions ground tiles in (<c>gridWorldOrigin + gx*tileSize</c>,
+    ///     where <c>gridWorldOrigin</c> is the live "Terrain" GridMap's own local <see cref="GridMap.Position" />).
+    ///     No longer falls back to the Hyperion-centered <see cref="TerrainWorldOrigin" /> default when the
+    ///     GridMap sits at (0,0,0): that used to look like a "never rebuilt" placeholder, but (0,0,0) is the
+    ///     GridMap's real, current position (verified against the committed baked nav meshes) — silently
+    ///     substituting -4000 here bucketed every object into the wrong tile relative to where ground tiles
+    ///     are actually baked.
+    /// </summary>
+    private Vector3 ResolveTerrainWorldOrigin()
+    {
+        Node? walk = this;
+        while (walk is not null)
+        {
+            if (walk.FindChild(TerrainGridFill.TerrainNodeName, recursive: true, owned: false) is GridMap terrain)
+            {
+                return terrain.Position;
+            }
+
+            walk = walk.GetParent();
+        }
+
+        var gridFill = GetNodeOrNull<TerrainGridFill>("../TerrainGrid")
+                       ?? GetParent()?.GetNodeOrNull<TerrainGridFill>("TerrainGrid");
+        var gridTerrain = gridFill?.GetNodeOrNull<GridMap>(TerrainGridFill.TerrainNodeName);
+        if (gridTerrain is not null)
+        {
+            return gridTerrain.Position;
+        }
+
+        return TerrainWorldOrigin;
+    }
+
+    /// <summary>
+    ///     Transform from this node's (TerrainObjects) own local space into the "Terrain" GridMap's local
+    ///     space — the frame <see cref="TerrainNavigationBaker" /> positions ground tiles in. TerrainObjects
+    ///     and TerrainGrid are independently offset/rotated siblings under TerrainScene (e.g. TerrainObjects
+    ///     currently sits at a -90° Y rotation plus its own translation, while TerrainGrid has an unrelated
+    ///     translation of its own), so nav obstruction geometry accumulated from object placements must go
+    ///     through this transform before being combined with ground-tile faces, or every baked obstruction
+    ///     hole ends up rotated/offset away from the object that actually produced it. The visual multimesh
+    ///     placement is unaffected — it inherits this node's Transform automatically via the scene graph.
+    /// </summary>
+    private Transform3D GetObjectsToGridLocalTransform()
+    {
+        var gridFill = GetNodeOrNull<TerrainGridFill>("../TerrainGrid")
+                       ?? GetParent()?.GetNodeOrNull<TerrainGridFill>("TerrainGrid");
+        if (gridFill is null)
+        {
+            GD.PushWarning(
+                "TerrainObjectsFill: TerrainGrid sibling not found; nav obstruction geometry will use the "
+                + "raw (un-rotated) placement transform, which is almost certainly wrong.");
+            return Transform3D.Identity;
+        }
+
+        return gridFill.Transform.AffineInverse() * Transform;
+    }
+
+    /// <summary>
     ///     Appends <paramref name="shape" />'s triangle geometry, transformed by <paramref name="transform" />, to
     ///     <paramref name="faceAccumulator" /> (3 consecutive entries per triangle). Reads triangle faces directly
     ///     for <see cref="ConcavePolygonShape3D" /> (the common case for '-col'-imported meshes); any other
@@ -934,6 +1487,9 @@ public partial class TerrainObjectsFill : Node3D
     private sealed class ColliderBuildState
     {
         public required TerrainTileGridIndex? TileIndex { get; init; }
+
+        /// <summary>See <see cref="GetObjectsToGridLocalTransform" />.</summary>
+        public required Transform3D ObjectsToGridLocal { get; init; }
 
         /// <summary>
         ///     World-space triangle faces (flat list, 3 consecutive entries per triangle) accumulated per tile
