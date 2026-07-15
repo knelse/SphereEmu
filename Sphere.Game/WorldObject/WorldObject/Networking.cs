@@ -13,7 +13,7 @@ public partial class WorldObject
 	{
 		var packetParts = GetPacketPartsAndUpdateCoordsAndID(client);
 		packetParts = ModifyPacketParts(packetParts);
-		var packet = PostprocessPacketBytes(PacketPart.GetBytesToWrite(packetParts));
+		var packet = PacketPart.GetBytesToWrite(packetParts);
 		client.MaybeQueueNetworkPacketSend(packet);
 	}
 
@@ -36,11 +36,6 @@ public partial class WorldObject
 	{
 		PacketPart.UpdateValue(packetParts, "object_type", (int)ObjectType, 10);
 		return packetParts;
-	}
-
-	protected virtual byte[] PostprocessPacketBytes(byte[] packet)
-	{
-		return packet;
 	}
 
 	protected virtual void ClientInteract(ushort clientID,

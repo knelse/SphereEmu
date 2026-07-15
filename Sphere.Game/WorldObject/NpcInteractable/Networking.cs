@@ -28,10 +28,4 @@ public partial class NpcInteractable
 		PacketPart.UpdateValue(packetParts, "npc_trade_type", tradeType, 4);
 		return packetParts;
 	}
-
-	protected override byte[] PostprocessPacketBytes(byte[] packet)
-	{
-		packet[^1] = 0;
-		return packet;
-	}
 }

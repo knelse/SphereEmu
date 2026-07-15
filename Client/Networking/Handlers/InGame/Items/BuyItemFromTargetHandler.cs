@@ -54,10 +54,7 @@ public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientCo
         // clone.ItemCount = (int) packet.Quantity;
         // clone.ParentContainerId = LocalId;
         //
-        // var characterUpdateStream = new BitStream(new MemoryStream())
-        // {
-        //     AutoIncreaseStream = true
-        // };
+        // var characterUpdateStream = SphBitStream.GetWriteBitStream();
         //
         // CurrentCharacter.Money -= totalCost;
         // CurrentCharacter.Items[clientSlotId.Value] = clone.Id;
