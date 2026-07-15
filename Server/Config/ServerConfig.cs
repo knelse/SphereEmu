@@ -6,17 +6,16 @@ namespace SphServer.Server.Config;
 
 public class AppConfig
 {
-    public string RepositoryPath { get; init; } =
-        @"D:\\SphereDev\\SphereSource\\SphereEmu";
+    // Paths are resolved in Get(): an explicitly configured path wins when it exists,
+    // otherwise they derive from the repository root the server is launched from.
+    public string RepositoryPath { get; init; } = string.Empty;
 
-    public string PacketDefinitionPath { get; init; } =
-        @"D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.PacketDefinitions";
+    public string PacketDefinitionPath { get; init; } = string.Empty;
 
-    public string DecodedGameDataPath { get; init; } =
-        @"D:\\SphereDev\\SphereSource\\SphereEmu\\Sphere.GameDataDecode";
+    public string DecodedGameDataPath { get; init; } = string.Empty;
 
     public string LiteDbConnectionString { get; init; } =
-        @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;";
+        @"Filename=sph.db;Connection=shared;";
 
     public ushort Port { get; init; } = 25860;
     public string LogPath { get; init; } = @"logs\server.log";
@@ -102,18 +101,48 @@ public static class ServerConfig
                 SaveAppConfig(configPath, configDict);
             }
 
-            var repositoryPath = configDict.GetValueOrDefault("RepositoryPath",
-                @"D:\\SphereDev\\SphereSource\\SphereEmu");
+            // RepositoryPath is optional: a configured path is honored only when it actually
+            // resolves; otherwise the repository root is derived by walking up from the config
+            // file (which may be the build-output copy under .godot/mono/temp). A hardcoded
+            // default here would make every clone boot an empty world: packet-definition loads
+            // throw into swallowed catches and the client is never told about entities.
+            var repositoryPath = configDict.GetValueOrDefault("RepositoryPath") ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(repositoryPath) ||
+                !Directory.Exists(Path.Combine(repositoryPath, "Sphere.PacketDefinitions")))
+            {
+                var repositoryRoot = FindRepositoryRoot(configPath);
+                if (repositoryRoot is not null)
+                {
+                    SphLogger.Info(string.IsNullOrWhiteSpace(repositoryPath)
+                        ? $"Using repository root: {repositoryRoot}"
+                        : $"RepositoryPath '{repositoryPath}' is not a repository; using repository root: {repositoryRoot}");
+                    repositoryPath = repositoryRoot;
+                }
+                else if (string.IsNullOrWhiteSpace(repositoryPath))
+                {
+                    // Non-null fallback so the Path.Combine calls below cannot throw; the check
+                    // right after reports the actionable error.
+                    repositoryPath = Path.GetDirectoryName(Path.GetFullPath(configPath)) ?? ".";
+                }
+            }
+
+            var packetDefinitionPath = configDict.GetValueOrDefault("PacketDefinitionPath",
+                Path.Combine(repositoryPath, "Sphere.PacketDefinitions"));
+            if (!Directory.Exists(packetDefinitionPath))
+            {
+                SphLogger.Error($"Packet definitions not found at '{packetDefinitionPath}' — entity spawn " +
+                                "frames will fail and the world will look empty. Set RepositoryPath in appsettings.json.");
+            }
 
             return new AppConfig
             {
                 RepositoryPath = repositoryPath,
-                PacketDefinitionPath = configDict.GetValueOrDefault("PacketDefinitionPath",
-                    Path.Combine(repositoryPath, "Sphere.PacketDefinitions")),
+                PacketDefinitionPath = packetDefinitionPath,
                 DecodedGameDataPath = configDict.GetValueOrDefault("DecodedGameDataPath",
                     Path.Combine(repositoryPath, "Sphere.GameDataDecode")),
                 LiteDbConnectionString = configDict.GetValueOrDefault("LiteDbConnectionString",
-                    @"Filename=d:\SphereDev\_sphereStuff\sph.db;Connection=shared;"),
+                    @"Filename=sph.db;Connection=shared;"),
                 Port = FileFormatCulture.ParseUShort(configDict.GetValueOrDefault("Port", "25860")),
                 LogPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log"),
                 DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
@@ -134,6 +163,37 @@ public static class ServerConfig
             SphLogger.Info($"Failed to load appsettings.json, using defaults. Error: {ex}");
             return new AppConfig();
         }
+    }
+
+    private static string? FindRepositoryRoot(string configPath)
+    {
+        // The config file may sit in the build output (.godot/mono/temp/bin/...), so walk up
+        // from it — and from the assembly directory as a second seed — to the first directory
+        // that contains Sphere.PacketDefinitions.
+        foreach (var startDir in new[]
+                 {
+                     Path.GetDirectoryName(Path.GetFullPath(configPath)),
+                     AppContext.BaseDirectory
+                 })
+        {
+            if (string.IsNullOrWhiteSpace(startDir))
+            {
+                continue;
+            }
+
+            var dir = new DirectoryInfo(startDir);
+            while (dir is not null && !Directory.Exists(Path.Combine(dir.FullName, "Sphere.PacketDefinitions")))
+            {
+                dir = dir.Parent;
+            }
+
+            if (dir is not null)
+            {
+                return dir.FullName;
+            }
+        }
+
+        return null;
     }
 
     private static string FindConfigPath(string fileName)
@@ -180,7 +240,8 @@ public static class ServerConfig
     {
         return new()
         {
-            ["RepositoryPath"] = @"D:\\SphereDev\\SphereSource\\SphereEmu",
+            // RepositoryPath is intentionally not a default: it is derived at load time, and
+            // writing a value here would re-poison configs that removed it (see Get()).
             ["LiteDbConnectionString"] = @"Filename=sph.db;Connection=shared;",
             ["Port"] = "25860",
             ["LogPath"] = @"logs\server.log",
