@@ -79,9 +79,9 @@ public static class ServerConfig
                 SphLogger.Info($"Loading configuration from: {configPath}");
             }
 
-            using var configFile = File.OpenRead(configPath);
-            using var configReader = new StreamReader(configFile);
-            var configJson = configReader.ReadToEnd();
+            // Read-and-release: holding the file open here made SaveAppConfig's rewrite below
+            // fail on Windows (sharing violation), and the catch then discarded the whole config.
+            var configJson = File.ReadAllText(configPath);
 
             var configDict = JsonSerializer.Deserialize<Dictionary<string, string>>(configJson, JsonReadOptions) ??
                              new();
