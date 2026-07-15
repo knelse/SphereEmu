@@ -3,7 +3,9 @@ using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
+using SphServer.Server.Config;
 using SphServer.Server.Debug;
+using SphServer.Server.Debug.Parser;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
@@ -121,6 +123,16 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, message, name, chatTypeVal, clientConnection);
 
             SphLogger.Info($"CLI: [{chatTypeVal}] {name}: {message}");
+
+            // GM command intercept (DebugMode-gated): route '/'-prefixed chat to the command
+            // parser. A recognised command is handled here (return); anything else falls through
+            // to the legacy inline commands below.
+            if (ServerConfig.AppConfig.DebugMode && message.StartsWith('/') &&
+                clientConnection.GetSelectedCharacter() is { } gmCharacter &&
+                ConsoleCommandParser.Get(gmCharacter).Parse(message) == ConsoleCommandParseResult.OK)
+            {
+                return;
+            }
 
             if (message.StartsWith("/tp"))
             {
