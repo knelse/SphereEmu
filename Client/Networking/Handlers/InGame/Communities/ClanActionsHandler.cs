@@ -29,7 +29,7 @@ public class ClanActionsHandler (ushort localId, ClientConnection clientConnecti
         //         var characterNameBytes = MainServer.Win1251.GetBytes(CurrentCharacter.Name);
         //
         //         // change clan rank
-        //         var responseStream = GetWriteBitStream();
+        //         var responseStream = SphBitStream.GetWriteBitStream();
         //         responseStream.WriteBytes(new byte[]
         //         {
         //             (byte) (characterNameBytes.Length + 27), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,

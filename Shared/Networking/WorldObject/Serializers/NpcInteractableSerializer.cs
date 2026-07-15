@@ -48,7 +48,6 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 
             // split
             var packetPiece2 = Packet.ToByteArray(stream.GetStreamData(), 3);
-            packetPiece2[^1] = 0;
             packetBytes.AddRange(packetPiece2);
             stream.CutStream(0, 0);
             if (i == npcInteractable.ItemsOnSale.Count - 1)
@@ -68,9 +67,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
         stream.WriteByte(0x0, 5);
         stream.WriteUInt16(localId);
         stream.WriteByte(0x0, 7);
-        var streamData = stream.GetStreamData();
-        streamData[^1] = 0;
-        var packet = Packet.ToByteArray(streamData, 3);
+        var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
         packetBytes.AddRange(packet);
         return packetBytes.ToArray();
     }
@@ -92,11 +89,6 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             //     // 1s would be left at the end if we don't fill
             //     stream.WriteByte(0, 8 - stream.Bit);
             // }
-            if (stream.Bit != 0)
-            {
-                stream.WriteByte(0, 8 - stream.Bit);
-            }
-
             var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
             stream.CutStream(0, 0);
             // Client.TryFindClientByIdAndSendData(clientId, packet);
