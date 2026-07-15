@@ -18,15 +18,25 @@ public partial class Monster
 
 	private int GetMonsterLevel() => MonsterInstance?.Level ?? level;
 
-	private static string GetMonsterPacketDefinitionName(int level)
-	{
-		if (level <= 1)
-		{
-			return "monster_level_1";
-		}
+	/// <summary>
+	///     Largest HP the compact level-1 template (monster_level_1) can carry. Its current_hp /
+	///     max_hp slots are read by the client as 7-bit values (max 127): an HP &gt; 127 spills its
+	///     8th bit onto the next field's lead bit, corrupting mob_type's model selector so the
+	///     client draws nothing. LIVE-CONFIRMED 2026-07-15: /mob 1110 1 160 vanishes while
+	///     /mob 1291 1 96 renders. Heavier level-1 mobs must use entity_monster's wider HP slot.
+	/// </summary>
+	private const int MonsterLevelOneHpCap = 127;
 
-		// Same field layout as monster_full_level_* / entity_monster captures.
-		return "entity_monster";
+	/// <summary>
+	///     True when the compact level-1 template is safe to use — level 1 AND both HP values fit
+	///     its 7-bit slot; otherwise the wide entity_monster template is used, even at level 1.
+	///     GetPacketParts and ModifyPacketParts must agree, so both go through here.
+	/// </summary>
+	private bool UseLevelOneTemplate()
+	{
+		var maxHp = MonsterInstance?.MaxHp ?? 50;
+		var currentHp = MonsterInstance?.CurrentHp ?? 50;
+		return GetMonsterLevel() <= 1 && maxHp <= MonsterLevelOneHpCap && currentHp <= MonsterLevelOneHpCap;
 	}
 
 	private static void UpdatePartAtBit(List<PacketPart> packetParts, int bitStart, int value, int? length = null)
@@ -68,9 +78,10 @@ public partial class Monster
 		return encoded;
 	}
 
-	private static void UpdateMonsterHpFields(List<PacketPart> packetParts, int currentHp, int maxHp, bool isLevelOne)
+	private static void UpdateMonsterHpFields(List<PacketPart> packetParts, int currentHp, int maxHp,
+		bool useLevelOneTemplate)
 	{
-		if (isLevelOne)
+		if (useLevelOneTemplate)
 		{
 			PacketPart.UpdateValue(packetParts, "hp_size_t", 8, 5);
 			PacketPart.UpdateValue(packetParts, "current_hp", currentHp, 8);
@@ -94,20 +105,23 @@ public partial class Monster
 		UpdatePartAtBit(packetParts, 194, 6, 3);
 	}
 
-	private static void UpdateMonsterLevelFields(List<PacketPart> packetParts, int level)
+	private static void UpdateMonsterLevelFields(List<PacketPart> packetParts, int level, bool useLevelOneTemplate)
 	{
-		if (level <= 1)
+		if (useLevelOneTemplate)
 		{
 			PacketPart.UpdateValue(packetParts, "level_last_3", (level - 1) & 0b111, 3);
 			return;
 		}
 
+		// A level-1 mob routed through entity_monster (because its HP exceeds the compact
+		// template's 7-bit cap) writes the 29-bit level field, not monster_level_1's
+		// level_last_3. EncodeMobLevelBits(1) == 0, i.e. a valid level-1 encoding.
 		PacketPart.UpdateValue(packetParts, "level", EncodeMobLevelBits(level), 29);
 	}
 
 	protected override List<PacketPart> GetPacketParts()
 	{
-		return PacketPart.LoadDefinedWithOverride(GetMonsterPacketDefinitionName(GetMonsterLevel()));
+		return PacketPart.LoadDefinedWithOverride(UseLevelOneTemplate() ? "monster_level_1" : "entity_monster");
 	}
 
 	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
@@ -115,9 +129,10 @@ public partial class Monster
 		var mobLevel = GetMonsterLevel();
 		var mobCurrentHp = MonsterInstance?.CurrentHp ?? 50;
 		var maxHp = MonsterInstance?.MaxHp ?? 50;
+		var useLevelOne = UseLevelOneTemplate();
 
-		UpdateMonsterHpFields(packetParts, mobCurrentHp, maxHp, mobLevel <= 1);
-		UpdateMonsterLevelFields(packetParts, mobLevel);
+		UpdateMonsterHpFields(packetParts, mobCurrentHp, maxHp, useLevelOne);
+		UpdateMonsterLevelFields(packetParts, mobLevel, useLevelOne);
 		EnsureMonsterFullTrailer(packetParts);
 
 		PacketPart.UpdateValue(packetParts, "action_type", (int)EntityActionType.FULL_SPAWN, 8);
