@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Godot.Scripts.Navigation;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
 
@@ -323,6 +324,11 @@ public partial class TerrainNavigationBaker : Node3D
 
         GD.Print($"TerrainNavigationBaker: baked {baked} navigation mesh file(s)"
             + (PersistRegionsInScene ? "." : " (files only, not attached to scene)."));
+
+        // Drop any regions TerrainNavMeshRuntime already registered from the old files on disk - they'd
+        // otherwise keep pointing at stale NavigationMesh data until the process restarts.
+        TerrainNavMeshRuntime.Invalidate();
+
         return baked;
     }
 

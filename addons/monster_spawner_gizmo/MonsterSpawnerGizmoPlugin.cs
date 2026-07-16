@@ -128,7 +128,9 @@ public partial class MonsterSpawnerGizmoPlugin : EditorNode3DGizmoPlugin
 
 	private static Vector3[] BuildSlotCross(Node3D spawner, Vector3 bakedSlot)
 	{
-		var center = spawner.ToLocal(ResolveEditorDisplayWorld(spawner, bakedSlot));
+		// Baked slots already carry an accurate Godot-world Y (snapped to the baked navmesh surface during
+		// validation - see MonsterSpawnSlotBaker/OutdoorSpawnSlotValidator), so no re-resolution needed here.
+		var center = spawner.ToLocal(bakedSlot);
 		var half = SlotCrossSize * 0.5f;
 		var top = center + new Vector3(0f, SlotVerticalHeight, 0f);
 		return
@@ -137,21 +139,5 @@ public partial class MonsterSpawnerGizmoPlugin : EditorNode3DGizmoPlugin
 			center + new Vector3(0f, 0f, -half), center + new Vector3(0f, 0f, half),
 			center, top,
 		];
-	}
-
-	/// <summary>
-	///     Baked slots store atlas Y; editor terrain uses Godot world Y. Use XZ from bake, resolve visible ground Y.
-	/// </summary>
-	private static Vector3 ResolveEditorDisplayWorld(Node3D spawner, Vector3 bakedSlot)
-	{
-		var x = bakedSlot.X;
-		var z = bakedSlot.Z;
-
-		if (MonsterSpawnGroundQuery.TryResolveSpawnGroundYForBake(spawner, x, z, out var groundY))
-		{
-			return new Vector3(x, groundY, z);
-		}
-
-		return new Vector3(x, spawner.GlobalPosition.Y, z);
 	}
 }

@@ -516,7 +516,7 @@ public partial class TerrainObjectsFill : Node3D
                     // Near-ground mesh tris only — AABB would seal arch/tower openings.
                     // Towers get XZ inflate so thin wall planes block like the visual shell.
                     var inflate = IsTowerObject(rec.ObjectName) ? TowerWallInflate : 0f;
-                    AddUndercroftMeshObstruction(colliderState, parts.MeshParts, navWorld, inflate);
+                    AddNearGroundMeshObstruction(colliderState, parts.MeshParts, navWorld, inflate);
                     if (IsTowerObject(rec.ObjectName))
                     {
                         // Solid inset fill removes orphan walkable islands inside the hollow shell.
@@ -529,7 +529,11 @@ public partial class TerrainObjectsFill : Node3D
                 }
                 else if (parts.MeshParts.Count > 0)
                 {
-                    AddMeshAabbObstruction(colliderState, parts.MeshParts, navWorld);
+                    // Near-ground mesh tris rather than a single full-object AABB: a curved/L-shaped/
+                    // diagonal building's bounding box can enclose a lot of genuinely walkable space
+                    // around it (see the Town4 "snow01b"/courtyard investigation) — tracing the real
+                    // near-ground silhouette keeps the carve hugging the actual footprint instead.
+                    AddNearGroundMeshObstruction(colliderState, parts.MeshParts, navWorld, 0f);
                 }
             }
         }
@@ -777,23 +781,6 @@ public partial class TerrainObjectsFill : Node3D
     }
 
     /// <summary>
-    ///     Fallback when a model has no imported collision shapes: emit a world-space AABB box (12 triangles)
-    ///     from drawable mesh parts so <see cref="TerrainNavigationBaker" /> can still project obstructions.
-    /// </summary>
-    private void AddMeshAabbObstruction(
-        ColliderBuildState state,
-        List<MeshPart> meshParts,
-        Transform3D worldTransform)
-    {
-        if (!TryComputePartsWorldAabb(meshParts, worldTransform, out var aabb) || aabb.Size.Y < 0.05f)
-        {
-            return;
-        }
-
-        AppendObstructionAabb(state, worldTransform.Origin, aabb);
-    }
-
-    /// <summary>
     ///     Nav-only trunk footprint for trees: prefer small-XZ mesh parts (trunk), ignore canopy-sized parts,
     ///     clamp to <see cref="TreeTrunkMaxRadius"/>, fall back to a cylinder at the placement origin.
     ///     Does not touch physics colliders.
@@ -834,10 +821,11 @@ public partial class TerrainObjectsFill : Node3D
     private const float TreeTrunkMaxRadius = 1.0f;
 
     /// <summary>
-    ///     Tris whose lowest vertex is above placement.origin.y + this are ignored for undercroft nav carve
-    ///     (arch lintels / upper floors must not project-seal the walkable opening).
+    ///     Tris whose lowest vertex is above placement.origin.y + this are ignored for the near-ground nav
+    ///     carve (arch lintels / upper floors / roof overhangs must not project-seal a walkable opening or
+    ///     inflate a building's footprint beyond its walls).
     /// </summary>
-    private const float UndercroftCarveMaxHeight = 2.0f;
+    private const float NearGroundCarveMaxHeight = 2.0f;
 
     /// <summary>
     ///     Extra XZ half-extent added around each near-ground tower wall tri when building nav faces.
@@ -896,10 +884,14 @@ public partial class TerrainObjectsFill : Node3D
     }
 
     /// <summary>
-    ///     Nav-only: append near-ground drawable mesh triangles so projected carve follows pillars/walls
-    ///     and leaves arch/tower openings walkable. Does not change physics colliders.
+    ///     Nav-only: append near-ground drawable mesh triangles (instead of a single full-object AABB) so
+    ///     the projected carve follows the object's real footprint — pillars/walls/curved or L-shaped
+    ///     buildings carve their actual silhouette, and arch/tower openings stay walkable, rather than an
+    ///     inflated bounding rectangle. Does not change physics colliders. Used both for keyword-tagged
+    ///     undercroft objects (tower/gate/arch, with <paramref name="xzInflate" /> for thin tower walls) and
+    ///     as the general fallback for any other object with no imported collision shapes.
     /// </summary>
-    private void AddUndercroftMeshObstruction(
+    private void AddNearGroundMeshObstruction(
         ColliderBuildState state,
         List<MeshPart> meshParts,
         Transform3D worldTransform,
@@ -918,7 +910,7 @@ public partial class TerrainObjectsFill : Node3D
             state.TileFaces[tileGroupKey] = faces;
         }
 
-        var maxY = worldTransform.Origin.Y + UndercroftCarveMaxHeight;
+        var maxY = worldTransform.Origin.Y + NearGroundCarveMaxHeight;
         foreach (var part in meshParts)
         {
             AppendMeshFacesNearGround(

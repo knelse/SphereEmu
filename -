@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Cc_2_hr_occ00",
+    "kind": "2x2",
+    "family": "cc_2_hr",
+    "occ": 0,
+    "tiles": [
+      "Cc_2_hr_00_00",
+      "Cc_2_hr_01_00",
+      "Cc_2_hr_10_00",
+      "Cc_2_hr_11_00"
+    ],
+    "gx": 58,
+    "gz": 24
+  },
+  {
+    "name": "Cc_2_hr_occ01",
+    "kind": "2x2",
+    "family": "cc_2_hr",
+    "occ": 1,
+    "tiles": [
+      "Cc_2_hr_00_01",
+      "Cc_2_hr_01_01",
+      "Cc_2_hr_10_01",
+      "Cc_2_hr_11_01"
+    ],
+    "gx": 74,
+    "gz": 32
+  },
+  {
+    "name": "Cc_2_hr_occ02",
+    "kind": "2x2",
+    "family": "cc_2_hr",
+    "occ": 2,
+    "tiles": [
+      "Cc_2_hr_00_02",
+      "Cc_2_hr_01_02",
+      "Cc_2_hr_10_02",
+      "Cc_2_hr_11_02"
+    ],
+    "gx": 66,
+    "gz": 44
+  }
+]

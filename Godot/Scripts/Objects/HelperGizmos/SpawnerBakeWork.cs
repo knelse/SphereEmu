@@ -10,7 +10,6 @@ public readonly struct SpawnerBakeParams
     public float LeashRadiusMeters { get; init; }
     public int MobCount { get; init; }
     public int PoolCount { get; init; }
-    public TerrainMeshHeightSnapshot? TerrainHeights { get; init; }
 }
 
 public sealed class SpawnerBakeResult

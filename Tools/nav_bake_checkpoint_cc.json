@@ -1,0 +1,737 @@
+{
+  "id": "cc-nav-2026-07-16",
+  "created": "2026-07-16",
+  "purpose": "Golden CC nav bake params + per-group tile lists for verifiable rebakes while tuning 1-by-1.",
+  "golden_out": "D:/1/2026-7-16 23-21-21 cc-region-verify",
+  "golden_regions": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions",
+  "bake_script": "Tools/bake_and_export_single_nav.gd",
+  "bulk_script": "Tools/bake_bulk_nav_glbs.ps1",
+  "plan_filter": "cc",
+  "godot_note": "Resolve via Tools/GodotPath.ps1; prefer *_win64_console.exe",
+  "explicit_env": {
+    "NAV_EXPERIMENT_ADDFACES": "2",
+    "NAV_EXPERIMENT_PRUNE_ISLANDS": "1",
+    "NAV_EXPERIMENT_AUTHORED_Y": "1",
+    "NAV_EXPERIMENT_REGION_MIN": "14",
+    "NAV_EXPERIMENT_SLOPE_DEG": "55",
+    "NAV_EXPERIMENT_BUILDING_FILL": "1",
+    "NAV_EXPERIMENT_FILL_INCLUDE": "Town_ph00"
+  },
+  "must_be_unset_or_default": {
+    "NAV_EXPERIMENT_WELD": "unset (enabled; set 0 only for debug)",
+    "NAV_EXPERIMENT_ARCH_PORTAL": "unset (enabled; !=0)",
+    "NAV_EXPERIMENT_GATE_SEAM": "unset (enabled; !=0)",
+    "NAV_EXPERIMENT_CASTLE_TERRAIN": "unset (enabled; !=0)",
+    "NAV_EXPERIMENT_SPILL": "unset (enabled; !=0)",
+    "NAV_EXPERIMENT_XTILE_REACH": "unset/off",
+    "DIAG_ALWAYS_CARVE": "unset for golden (1 only for logs)"
+  },
+  "implicit_defaults_used": {
+    "NAV_EXPERIMENT_BRIDGE_GAP": "0.5",
+    "NAV_EXPERIMENT_BRIDGE_CLIMB": "BRIDGE_MAX_CLIMB const",
+    "NAV_EXPERIMENT_REGION_MERGE": "20.0",
+    "NAV_EXPERIMENT_GROUND_CLEARANCE": "2.0",
+    "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "2.5",
+    "NAV_EXPERIMENT_CASTLE_KEEP_SQM": "80.0",
+    "NAV_EXPERIMENT_CASTLE_COURTYARD_CLEARANCE": "10.0",
+    "NAV_EXPERIMENT_CASTLE_ROOF_INSET": "12.0",
+    "NAV_EXPERIMENT_CASTLE_ROOF_INSET_FRAC": "0.22",
+    "NAV_EXPERIMENT_CASTLE_RAMPART_LO": "2.0",
+    "NAV_EXPERIMENT_CASTLE_RAMPART_HI": "14.0",
+    "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "4.0",
+    "NAV_EXPERIMENT_CASTLE_BRIDGE_CLIMB": "3.5",
+    "NAV_EXPERIMENT_CASTLE_CIRCUIT_GAP": "5.0",
+    "NAV_EXPERIMENT_CASTLE_CIRCUIT_CLIMB": "1.5",
+    "NAV_EXPERIMENT_CASTLE_DECK_BAND": "2.0",
+    "NAV_EXPERIMENT_GATE_PAIR_DIST": "3.5",
+    "NAV_EXPERIMENT_GATE_SEAM_DEPTH": "3.0",
+    "NAV_EXPERIMENT_GATE_SEAM_WIDTH_PAD": "1.75",
+    "NAV_EXPERIMENT_GATE_SEAM_HEIGHT": "3.5",
+    "ALWAYS_CARVE_dilate_m": "0.75 (non-preserve_openings)",
+    "ALWAYS_CARVE_seal_m": "2.25 (non-preserve_openings)"
+  },
+  "code_shape_dependencies": [
+    "Outdoor/bailey weld lineage veto (tile_edge_roots vs seal_courtyard_roots + UF)",
+    "Court-envelope weld veto (_weld_crosses_court_envelope)",
+    "Gate-seam carve + weld segment veto (gate_seam_aabbs)",
+    "Outer curtain-arch detection (skip portal strip/protect; no preserve_openings)",
+    "Portal-forced stitches only for non-outer arches; lineage/gate veto apply"
+  ],
+  "verify": {
+    "split_test": "rim near y_p20 must not share a mesh component with core deck faces at y >= y_p20+6",
+    "compare_golden": "Diff new GLB against golden_glb / golden_regions_glb for shape"
+  },
+  "rebake_one_group": {
+    "clear_env": "Get-Item Env:NAV_EXPERIMENT_* -EA SilentlyContinue | Remove-Item",
+    "set_explicit_env": "Apply explicit_env (+ optional groups[].env_overrides)",
+    "1x1_cmd": "godot --path . --headless -s Tools/bake_and_export_single_nav.gd -- --tile <TILE> --out <OUT>",
+    "2x2_cmd": "godot --path . --headless -s Tools/bake_and_export_single_nav.gd -- --tile T00 --tile T10 --tile T01 --tile T11 --combined --combined-name <NAME> --out <OUT>",
+    "bulk_cmd": ".\\Tools\\bake_bulk_nav_glbs.ps1 -Out <OUT> -Filter cc -Jobs 8 -ColorizeRegions"
+  },
+  "param_profile": "cc_baseline_v1",
+  "note": "All CC groups share ONE param profile (cc_baseline_v1). When tuning 1-by-1, put overrides in groups[].env_overrides and bump that group's param_profile name.",
+  "groups": [
+    {
+      "name": "Cc_1_00_00",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 0,
+      "tiles": [
+        "Cc_1_00_00"
+      ],
+      "map_gx": 3,
+      "map_gz": 43,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_01",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 1,
+      "tiles": [
+        "Cc_1_00_01"
+      ],
+      "map_gx": 18,
+      "map_gz": 44,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_01_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_02",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 2,
+      "tiles": [
+        "Cc_1_00_02"
+      ],
+      "map_gx": 44,
+      "map_gz": 45,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_02.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_02_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_03",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 3,
+      "tiles": [
+        "Cc_1_00_03"
+      ],
+      "map_gx": 27,
+      "map_gz": 49,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_03.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_03_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_04",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 4,
+      "tiles": [
+        "Cc_1_00_04"
+      ],
+      "map_gx": 40,
+      "map_gz": 58,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_04.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_04_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_05",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 5,
+      "tiles": [
+        "Cc_1_00_05"
+      ],
+      "map_gx": 54,
+      "map_gz": 59,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_05.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_05_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_06",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 6,
+      "tiles": [
+        "Cc_1_00_06"
+      ],
+      "map_gx": 5,
+      "map_gz": 60,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_06.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_06_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_07",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 7,
+      "tiles": [
+        "Cc_1_00_07"
+      ],
+      "map_gx": 16,
+      "map_gz": 73,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_07.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_07_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_08",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 8,
+      "tiles": [
+        "Cc_1_00_08"
+      ],
+      "map_gx": 64,
+      "map_gz": 74,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_08.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_08_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_00_09",
+      "kind": "1x1",
+      "family": "cc_1",
+      "occ": 9,
+      "tiles": [
+        "Cc_1_00_09"
+      ],
+      "map_gx": 47,
+      "map_gz": 77,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_09.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_09_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_hr_occ00",
+      "kind": "2x2",
+      "family": "cc_1_hr",
+      "occ": 0,
+      "tiles": [
+        "Cc_1_hr_00_00",
+        "Cc_1_hr_01_00",
+        "Cc_1_hr_10_00",
+        "Cc_1_hr_11_00"
+      ],
+      "map_gx": 70,
+      "map_gz": 14,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_hr_occ01",
+      "kind": "2x2",
+      "family": "cc_1_hr",
+      "occ": 1,
+      "tiles": [
+        "Cc_1_hr_00_01",
+        "Cc_1_hr_01_01",
+        "Cc_1_hr_10_01",
+        "Cc_1_hr_11_01"
+      ],
+      "map_gx": 66,
+      "map_gz": 32,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ01_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_hr_occ02",
+      "kind": "2x2",
+      "family": "cc_1_hr",
+      "occ": 2,
+      "tiles": [
+        "Cc_1_hr_00_02",
+        "Cc_1_hr_01_02",
+        "Cc_1_hr_10_02",
+        "Cc_1_hr_11_02"
+      ],
+      "map_gx": 52,
+      "map_gz": 36,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ02_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_hr_occ03",
+      "kind": "2x2",
+      "family": "cc_1_hr",
+      "occ": 3,
+      "tiles": [
+        "Cc_1_hr_00_03",
+        "Cc_1_hr_01_03",
+        "Cc_1_hr_10_03",
+        "Cc_1_hr_11_03"
+      ],
+      "map_gx": 76,
+      "map_gz": 52,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ03.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ03_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_1_hr_occ04",
+      "kind": "2x2",
+      "family": "cc_1_hr",
+      "occ": 4,
+      "tiles": [
+        "Cc_1_hr_00_04",
+        "Cc_1_hr_01_04",
+        "Cc_1_hr_10_04",
+        "Cc_1_hr_11_04"
+      ],
+      "map_gx": 62,
+      "map_gz": 52,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ04.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ04_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_00",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 0,
+      "tiles": [
+        "Cc_2_00_00"
+      ],
+      "map_gx": 56,
+      "map_gz": 51,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_00_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_01",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 1,
+      "tiles": [
+        "Cc_2_00_01"
+      ],
+      "map_gx": 22,
+      "map_gz": 51,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_01_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_02",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 2,
+      "tiles": [
+        "Cc_2_00_02"
+      ],
+      "map_gx": 43,
+      "map_gz": 53,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_02.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_02_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_03",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 3,
+      "tiles": [
+        "Cc_2_00_03"
+      ],
+      "map_gx": 49,
+      "map_gz": 55,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_03.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_03_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+    },
+    {
+      "name": "Cc_2_00_04",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 4,
+      "tiles": [
+        "Cc_2_00_04"
+      ],
+      "map_gx": 16,
+      "map_gz": 55,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_04.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_04_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+    },
+    {
+      "name": "Cc_2_00_05",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 5,
+      "tiles": [
+        "Cc_2_00_05"
+      ],
+      "map_gx": 31,
+      "map_gz": 61,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_05.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_05_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_06",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 6,
+      "tiles": [
+        "Cc_2_00_06"
+      ],
+      "map_gx": 23,
+      "map_gz": 64,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_06.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_06_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+    },
+    {
+      "name": "Cc_2_00_07",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 7,
+      "tiles": [
+        "Cc_2_00_07"
+      ],
+      "map_gx": 38,
+      "map_gz": 66,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_07.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_07_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_00_08",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 8,
+      "tiles": [
+        "Cc_2_00_08"
+      ],
+      "map_gx": 50,
+      "map_gz": 70,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_08.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_08_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+    },
+    {
+      "name": "Cc_2_00_09",
+      "kind": "1x1",
+      "family": "cc_2",
+      "occ": 9,
+      "tiles": [
+        "Cc_2_00_09"
+      ],
+      "map_gx": 27,
+      "map_gz": 74,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_09.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_09_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_hr_occ00",
+      "kind": "2x2",
+      "family": "cc_2_hr",
+      "occ": 0,
+      "tiles": [
+        "Cc_2_hr_00_00",
+        "Cc_2_hr_01_00",
+        "Cc_2_hr_10_00",
+        "Cc_2_hr_11_00"
+      ],
+      "map_gx": 58,
+      "map_gz": 24,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_hr_occ01",
+      "kind": "2x2",
+      "family": "cc_2_hr",
+      "occ": 1,
+      "tiles": [
+        "Cc_2_hr_00_01",
+        "Cc_2_hr_01_01",
+        "Cc_2_hr_10_01",
+        "Cc_2_hr_11_01"
+      ],
+      "map_gx": 74,
+      "map_gz": 32,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ01_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_2_hr_occ02",
+      "kind": "2x2",
+      "family": "cc_2_hr",
+      "occ": 2,
+      "tiles": [
+        "Cc_2_hr_00_02",
+        "Cc_2_hr_01_02",
+        "Cc_2_hr_10_02",
+        "Cc_2_hr_11_02"
+      ],
+      "map_gx": 66,
+      "map_gz": 44,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ02_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_3_hr_occ00",
+      "kind": "2x2",
+      "family": "cc_3_hr",
+      "occ": 0,
+      "tiles": [
+        "Cc_3_hr_00_00",
+        "Cc_3_hr_01_00",
+        "Cc_3_hr_10_00",
+        "Cc_3_hr_11_00"
+      ],
+      "map_gx": 60,
+      "map_gz": 8,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_3_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_3_hr_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_3_hr_occ01",
+      "kind": "2x2",
+      "family": "cc_3_hr",
+      "occ": 1,
+      "tiles": [
+        "Cc_3_hr_00_01",
+        "Cc_3_hr_01_01",
+        "Cc_3_hr_10_01",
+        "Cc_3_hr_11_01"
+      ],
+      "map_gx": 72,
+      "map_gz": 66,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_3_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_3_hr_occ01_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_ph00_occ00",
+      "kind": "2x2",
+      "family": "cc_ph00",
+      "occ": 0,
+      "tiles": [
+        "Cc_ph00_00_00",
+        "Cc_ph00_01_00",
+        "Cc_ph00_10_00",
+        "Cc_ph00_11_00"
+      ],
+      "map_gx": 36,
+      "map_gz": 13,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph00_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph00_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_ph01_occ00",
+      "kind": "2x2",
+      "family": "cc_ph01",
+      "occ": 0,
+      "tiles": [
+        "Cc_ph01_00_00",
+        "Cc_ph01_01_00",
+        "Cc_ph01_10_00",
+        "Cc_ph01_11_00"
+      ],
+      "map_gx": 36,
+      "map_gz": 33,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph01_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph01_occ00_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_ph02_occ00",
+      "kind": "2x2",
+      "family": "cc_ph02",
+      "occ": 0,
+      "tiles": [
+        "Cc_ph02_00_00",
+        "Cc_ph02_01_00",
+        "Cc_ph02_10_00",
+        "Cc_ph02_11_00"
+      ],
+      "map_gx": 46,
+      "map_gz": 25,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph02_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph02_occ00_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_rd01_occ00",
+      "kind": "2x2",
+      "family": "cc_rd01",
+      "occ": 0,
+      "tiles": [
+        "Cc_rd01_00_00",
+        "Cc_rd01_01_00",
+        "Cc_rd01_10_00",
+        "Cc_rd01_11_00"
+      ],
+      "map_gx": 18,
+      "map_gz": 13,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd01_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd01_occ00_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_rd02_occ00",
+      "kind": "2x2",
+      "family": "cc_rd02",
+      "occ": 0,
+      "tiles": [
+        "Cc_rd02_00_00",
+        "Cc_rd02_01_00",
+        "Cc_rd02_10_00",
+        "Cc_rd02_11_00"
+      ],
+      "map_gx": 46,
+      "map_gz": 7,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd02_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd02_occ00_regions.glb",
+      "status_rim_deck": "merged_rim_deck"
+    },
+    {
+      "name": "Cc_rd03_occ00",
+      "kind": "2x2",
+      "family": "cc_rd03",
+      "occ": 0,
+      "tiles": [
+        "Cc_rd03_00_00",
+        "Cc_rd03_01_00",
+        "Cc_rd03_10_00",
+        "Cc_rd03_11_00"
+      ],
+      "map_gx": 18,
+      "map_gz": 3,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_rd03_occ01",
+      "kind": "2x2",
+      "family": "cc_rd03",
+      "occ": 1,
+      "tiles": [
+        "Cc_rd03_00_01",
+        "Cc_rd03_01_01",
+        "Cc_rd03_10_01",
+        "Cc_rd03_11_01"
+      ],
+      "map_gx": 38,
+      "map_gz": 5,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ01_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    },
+    {
+      "name": "Cc_rd03_occ02",
+      "kind": "2x2",
+      "family": "cc_rd03",
+      "occ": 2,
+      "tiles": [
+        "Cc_rd03_00_02",
+        "Cc_rd03_01_02",
+        "Cc_rd03_10_02",
+        "Cc_rd03_11_02"
+      ],
+      "map_gx": 26,
+      "map_gz": 15,
+      "param_profile": "cc_baseline_v1",
+      "env_overrides": {},
+      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ02_regions.glb",
+      "status_rim_deck": "split_rim_deck"
+    }
+  ]
+}

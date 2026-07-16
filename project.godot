@@ -32,7 +32,7 @@ project/assembly_name="SphServer"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/MultiMeshPicker/plugin.cfg")
 
 [filesystem]
 
@@ -48,6 +48,11 @@ import/fbx/enabled=false
 [mono]
 
 project/assembly_name="SphServer"
+
+[navigation]
+
+2d/warnings/navmesh_edge_merge_errors=false
+2d/warnings/navmesh_cell_size_mismatch=false
 
 [physics]
 

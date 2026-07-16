@@ -72,6 +72,16 @@ public partial class MonsterSpawner : Node3D
 	[Export]
 	public int NamedMonsterMaxLevel = 3;
 
+	/// <summary>
+	///     When non-empty, regular-monster spawns pick their type from this list instead of the level-based
+	///     lookup (<see cref="MonsterSpawnerMonsterTypeLookup" />) - a rolled level is still used for the
+	///     monster's stats/respawn, but doesn't gate or filter which of these types can spawn (i.e. a type
+	///     normally invalid for that level will still spawn if it's in this list). Multiple entries are
+	///     picked from with the same weighting as the normal level-based pool (e.g. Курганник stays rare).
+	/// </summary>
+	[Export]
+	public Array<MonsterType> MobTypeOverrides { get; set; } = [];
+
 	[Export]
 	public int RegularMonsterRespawnDelaySeconds = 60;
 
@@ -207,7 +217,7 @@ public partial class MonsterSpawner : Node3D
 
 	public void BakeSpawnSlots()
 	{
-		MonsterSpawnSlotBaker.BakeForSpawner(this);
+		_ = MonsterSpawnSlotBaker.BakeForSpawnerAsync(this);
 	}
 
 	internal void MarkSpawnError()
@@ -538,16 +548,19 @@ public partial class MonsterSpawner : Node3D
 		return false;
 	}
 
+	/// <summary>
+	///     Re-checks a previously baked spawn slot right before actually using it to spawn a monster. Only
+	///     re-checks things that can legitimately change without a rebake (the spawner moving, another
+	///     monster already occupying/being planned for a nearby slot) - walkability itself is intentionally
+	///     *not* re-checked here: <see cref="BakedSpawnSlots" /> were already validated once against the
+	///     baked navmesh (the walkability authority - see <see cref="MonsterSpawnSlotBaker" />), and
+	///     re-checking against the walk-surface atlas here is both redundant and less reliable than that
+	///     navmesh check (the atlas can have holes/bad samples in spots that are still perfectly walkable on
+	///     the navmesh - see the AAF7 bake investigation).
+	/// </summary>
 	private bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
 		if (!OutdoorPathQuery.IsInsideLeash(candidate, GlobalPosition, SpawnRadiusMeters))
-		{
-			return false;
-		}
-
-		if (WalkSurfaceCache.HasWalkableField
-			&& !WalkSurfaceCache.IsSpawnFootprintAcceptable(candidate.X, candidate.Z)
-			&& !WalkSurfaceCache.IsLooseOutdoorWalkCandidate(candidate.X, candidate.Z))
 		{
 			return false;
 		}
@@ -919,6 +932,13 @@ public partial class MonsterSpawner : Node3D
 
 	private MonsterType PickRegularMonsterType(int level)
 	{
+		if (MobTypeOverrides.Count > 0
+			&& MonsterSpawnerMonsterTypeLookup.TryPickWeightedRandomMonsterType(
+				[.. MobTypeOverrides], out var overrideType))
+		{
+			return overrideType;
+		}
+
 		EnsureRegularMonsterTypeCache();
 		if (_regularMonsterTypesByLevel is not null
 			&& MonsterSpawnerMonsterTypeLookup.TryPickRandomMonsterType(_regularMonsterTypesByLevel, level, out var monsterType))

@@ -47,7 +47,7 @@ public partial class MonsterSpawnersFill : Node3D
 
 	public void BakeSpawnSlotsOnAllSpawners()
 	{
-		MonsterSpawnSlotBaker.BakeAllUnder(this);
+		_ = MonsterSpawnSlotBaker.BakeAllUnderAsync(this);
 	}
 
 	public void ApplySpawnerLevelsFromMobDump()

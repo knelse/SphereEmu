@@ -50,6 +50,22 @@ public static class MonsterSpawnerMonsterTypeLookup
 			return false;
 		}
 
+		return TryPickWeightedRandomMonsterType(types, out monsterType);
+	}
+
+	/// <summary>
+	///     Weighted random pick from an arbitrary type list (e.g. a spawner's manual type override), with no
+	///     level filtering at all - callers that need level-gated picks should go through
+	///     <see cref="TryPickRandomMonsterType" /> instead.
+	/// </summary>
+	public static bool TryPickWeightedRandomMonsterType(IReadOnlyList<MonsterType> types, out MonsterType monsterType)
+	{
+		monsterType = default;
+		if (types.Count == 0)
+		{
+			return false;
+		}
+
 		var totalWeight = 0;
 		foreach (var type in types)
 		{

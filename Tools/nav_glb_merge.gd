@@ -3,6 +3,7 @@ extends RefCounted
 
 static var _ground_mat: StandardMaterial3D
 static var _nav_mat: StandardMaterial3D
+static var _nav_obj_mat: StandardMaterial3D
 static var _category_materials: Dictionary = {}
 
 static func new_bucket() -> Dictionary:
@@ -21,6 +22,7 @@ static func new_tile_state() -> Dictionary:
 			"other": new_bucket(),
 		},
 		"nav": new_bucket(),
+		"nav_obj": new_bucket(),
 	}
 
 static func append_mesh(entry: Dictionary, mesh: Mesh, xform: Transform3D) -> void:
@@ -77,6 +79,41 @@ static func append_nav_xform(
 	entry["verts"] = indices_out.size()
 	return true
 
+## Like append_nav but routes each nav triangle to one of two buckets: entry_obj when is_obj.call()
+## returns true for the triangle's world-space centroid (before rebase), else entry_terrain. Used to
+## colour walkable object surfaces (blue) distinctly from bare terrain nav (green).
+static func append_nav_split(
+	entry_terrain: Dictionary,
+	entry_obj: Dictionary,
+	nav: NavigationMesh,
+	rebase: Vector3,
+	is_obj: Callable
+) -> void:
+	var verts := nav.get_vertices()
+	var poly_count := nav.get_polygon_count()
+	if verts.is_empty() or poly_count == 0:
+		return
+	for p in range(poly_count):
+		var poly: PackedInt32Array = nav.get_polygon(p)
+		if poly.size() < 3:
+			continue
+		for j in range(1, poly.size() - 1):
+			var w0: Vector3 = verts[poly[0]]
+			var w1: Vector3 = verts[poly[j]]
+			var w2: Vector3 = verts[poly[j + 1]]
+			var centroid := (w0 + w1 + w2) / 3.0
+			var entry: Dictionary = entry_obj if bool(is_obj.call(centroid)) else entry_terrain
+			var verts_out: PackedVector3Array = entry["vertices"]
+			var indices_out: PackedInt32Array = entry["indices"]
+			var base := verts_out.size()
+			verts_out.append(w0 - rebase)
+			verts_out.append(w1 - rebase)
+			verts_out.append(w2 - rebase)
+			indices_out.append(base)
+			indices_out.append(base + 1)
+			indices_out.append(base + 2)
+			entry["verts"] = indices_out.size()
+
 static func commit_bucket(entry: Dictionary) -> ArrayMesh:
 	if entry.get("verts", 0) == 0:
 		return null
@@ -107,6 +144,7 @@ static func finalize_tile_meshes(terrain_root: Node3D, nav_root: Node3D, merge: 
 			object_material(category)
 		)
 	add_mesh_instance(nav_root, "Navigation", commit_bucket(merge["nav"]), nav_material())
+	add_mesh_instance(nav_root, "Navigation_Object", commit_bucket(merge["nav_obj"]), nav_object_material())
 
 static func ground_material() -> StandardMaterial3D:
 	if _ground_mat == null:
@@ -121,6 +159,13 @@ static func nav_material() -> StandardMaterial3D:
 		_nav_mat.albedo_color = Color(0.2, 0.95, 0.35)
 		_nav_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	return _nav_mat
+
+static func nav_object_material() -> StandardMaterial3D:
+	if _nav_obj_mat == null:
+		_nav_obj_mat = StandardMaterial3D.new()
+		_nav_obj_mat.albedo_color = Color(0.2, 0.5, 0.98)
+		_nav_obj_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	return _nav_obj_mat
 
 static func object_material(category: String) -> StandardMaterial3D:
 	if _category_materials.has(category):
