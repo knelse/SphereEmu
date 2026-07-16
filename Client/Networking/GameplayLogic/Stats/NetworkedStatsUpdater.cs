@@ -5,6 +5,7 @@ using System.Linq;
 using BitStreams;
 using SphereHelpers.Extensions;
 using SphServer.Packets;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -92,11 +93,7 @@ public static class NetworkedStatsUpdater
             [MA] = characterDbEntry.MAtk
         };
 
-        var memoryStream = new MemoryStream();
-        var stream = new BitStream(memoryStream)
-        {
-            AutoIncreaseStream = true
-        };
+        var stream = SphBitStream.GetWriteBitStream();
 
         stream.WriteBytes(
             [MajorByte(characterDbEntry.ClientIndex), MinorByte(characterDbEntry.ClientIndex), 0x08, 0xC0], 4, true);

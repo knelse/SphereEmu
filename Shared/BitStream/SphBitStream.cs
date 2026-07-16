@@ -1,15 +1,10 @@
-﻿using System.IO;
-
-namespace SphServer.Shared.BitStream;
+﻿namespace SphServer.Shared.BitStream;
 
 public static class SphBitStream
 {
-    public static BitStreams.BitStream GetWriteBitStream ()
+    public static SphWriteStream GetWriteBitStream ()
     {
-        return new BitStreams.BitStream(new MemoryStream())
-        {
-            AutoIncreaseStream = true
-        };
+        return new SphWriteStream();
     }
 
     public static ushort ByteSwap (ushort u)
