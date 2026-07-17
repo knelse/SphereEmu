@@ -60,7 +60,7 @@ var _objects_basis := Basis.from_euler(Vector3(0.0, deg_to_rad(-90.0), 0.0))
 # Bake params (match TerrainNavigationBaker defaults)
 const CELL_SIZE := 0.1
 const CELL_HEIGHT := 0.1
-const AGENT_RADIUS := 0.1
+const AGENT_RADIUS := 0.25
 const AGENT_HEIGHT := 1.8
 const AGENT_MAX_CLIMB := 0.3
 # Vertical tolerance for the island-reconnect bridge (reattaching Recast tessellation seams on a
@@ -70,6 +70,8 @@ const AGENT_MAX_CLIMB := 0.3
 # sever the ramp and prune its upper reach. Overridable via NAV_EXPERIMENT_BRIDGE_CLIMB.
 const BRIDGE_MAX_CLIMB := 1.0
 const AGENT_MAX_SLOPE_DEFAULT := 70.0
+## Preview GLB only: skip object meshes whose pivot is more than this far below sampled ground.
+const PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND := 500.0
 
 ## Overridable via NAV_EXPERIMENT_SLOPE_DEG for threshold-tuning experiments; keeps the walkable-tri
 ## classification (WALKABLE_SLOPE_MAX_DEG) and Recast's own agent_max_slope filter in lockstep so we
@@ -397,7 +399,9 @@ func _on_bake_finished(job: Dictionary) -> void:
 				nav,
 				job["placements"],
 				_out_dir,
-				job["walkable_faces"]
+				job["walkable_faces"],
+				job.get("ground_grid", {}),
+				float(job.get("ground_fallback", 0.0))
 			)
 
 	if success:
@@ -544,7 +548,9 @@ func _run_combined_bake() -> void:
 			_fail += 1
 		return
 
-	if _export_combined_glb(_combined_name, tiles_data, nav, combined_walk, combined_grid):
+	if _export_combined_glb(
+		_combined_name, tiles_data, nav, combined_walk, combined_grid, ground_fallback
+	):
 		_ok += 1
 	else:
 		_fail += 1
@@ -556,7 +562,8 @@ func _export_combined_glb(
 	tiles_data: Array,
 	nav: NavigationMesh,
 	walkable_faces: PackedVector3Array,
-	ground_grid: Dictionary
+	ground_grid: Dictionary,
+	ground_fallback: float = 0.0
 ) -> bool:
 	# Frame centre = centre of the union of every tile mesh (full extents, not just centres) so the
 	# whole block is centred like a single tile export is, and so we can size the side-by-side gap to
@@ -595,6 +602,7 @@ func _export_combined_glb(
 
 	var terrain_offset := -frame_center + Vector3(-sep * 0.5, 0.0, 0.0)
 	var merge := NavGlbMerge.new_tile_state()
+	var skipped_deep := 0
 
 	for td in tiles_data:
 		var tile_mesh := _load_tile_mesh(td["master"])
@@ -609,6 +617,9 @@ func _export_combined_glb(
 			NavGlbMerge.apply_translation(ground_xform, terrain_offset)
 		)
 		for placement in (td["placements"] as Array):
+			if _preview_skip_deep_buried_object(placement, ground_grid, ground_fallback):
+				skipped_deep += 1
+				continue
 			var object_name: String = placement["object_name"]
 			var category: String = placement["category"]
 			var world_xform: Transform3D = placement["transform"]
@@ -619,6 +630,9 @@ func _export_combined_glb(
 			var cat: String = category if category in merge["object"] else "other"
 			for part in parts:
 				NavGlbMerge.append_mesh(merge["object"][cat], part["mesh"], world_xform * part["local"])
+	if skipped_deep > 0:
+		print("    preview: skipped ", skipped_deep, " object(s) >",
+			PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND, "m below ground on ", out_name)
 
 	var obj_walk_grid := _build_obj_walk_grid(walkable_faces, OBJ_COLOR_CELL)
 	var is_obj := func(centroid: Vector3) -> bool:
@@ -763,7 +777,13 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 	# filter them when ADDFACES=2 so any near-flat shelf in the tile mesh is cleaned; real castle
 	# walls come from cc*/castle* object placements (full-height carve + deck-cluster filter).
 	# Disable with NAV_EXPERIMENT_CASTLE_TERRAIN=0.
+	# When NAV_EXPERIMENT_ENTRANCE_ARCH_KITS is set, defer wall carve until after arch portals so
+	# the throat is portal_protect'd (otherwise tile-mesh walls reseal entrance strips).
 	var castle_terrain := _is_castle_terrain_tile(master) or _is_castle_terrain_tile(tile_key)
+	var deferred_castle_terrain_wall := PackedVector3Array()
+	var deferred_castle_terrain_walk := PackedVector3Array()
+	var deferred_castle_carve_h := 1.0e6
+	var deferred_castle_walk_before := 0
 	if castle_terrain and OS.get_environment("NAV_EXPERIMENT_ADDFACES") == "2" \
 			and OS.get_environment("NAV_EXPERIMENT_CASTLE_TERRAIN") != "0":
 		var split := _split_walkable_wall_faces(ground_faces)
@@ -772,18 +792,24 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 		var walk_before := int(terrain_walk.size() / 3)
 		terrain_walk = _filter_castle_kit_buried_walkable(terrain_walk)
 		source.add_faces(terrain_walk, Transform3D.IDENTITY)
-		# Full-height wall carve (not the 2m near-ground band) so mid/upper hollow cavities seal.
 		var carve_h_env := OS.get_environment("NAV_EXPERIMENT_CASTLE_CARVE_HEIGHT")
 		var carve_h := float(carve_h_env) if carve_h_env != "" else 1.0e6
-		if terrain_wall.size() > 0:
+		var defer_wall := not OS.get_environment("NAV_EXPERIMENT_ENTRANCE_ARCH_KITS").is_empty()
+		if terrain_wall.size() > 0 and not defer_wall:
 			obst_count += _add_projected_mesh_footprint_from_world_faces(
 				source, terrain_wall, carve_h, 0.0, tile_obstruction_cells, terrain_walk
 			)
+		elif terrain_wall.size() > 0 and defer_wall:
+			deferred_castle_terrain_wall = terrain_wall
+			deferred_castle_terrain_walk = terrain_walk
+			deferred_castle_carve_h = carve_h
+			deferred_castle_walk_before = walk_before
 		print(
 			"castle_terrain: ", tile_key,
 			" walk_tris ", walk_before, " -> ", int(terrain_walk.size() / 3),
 			" wall_tris ", int(terrain_wall.size() / 3),
-			" wall_cells ", obst_count
+			" wall_cells ", obst_count,
+			" defer_wall=", defer_wall
 		)
 	else:
 		source.add_faces(ground_faces, Transform3D.IDENTITY)
@@ -947,7 +973,10 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 				var d_a := side_a.distance_to(mass_c)
 				var d_b := side_b.distance_to(mass_c)
 				is_outer_arch = maxf(d_a, d_b) > d_hole + 1.25 and minf(d_a, d_b) < d_hole + 0.75
-			if is_outer_arch:
+			# Castle entrance arches (cc95) still need a ground strip through the throat even when
+			# they sit on the outer curtain — skipping them left Cc_1_00_05's east arch blocked
+			# (green outdoor stopped at the mouth; only elevated blue remained inside).
+			if is_outer_arch and not _is_castle_entrance_arch_object(pname):
 				portal_outer_skipped += 1
 				var okey := Vector2i(roundi(pxform.origin.x), roundi(pxform.origin.z))
 				outer_arch_origins[okey] = true
@@ -957,21 +986,13 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 						" hole=(%.1f..%.1f, %.1f..%.1f)" % [hole_min_x, hole_max_x, hole_min_z, hole_max_z]
 					)
 				continue
-			# Protect = rectangular throat (full width × clamped depth), not sparse cells.
-			var protect_cells := _portal_cells_from_aabb(
-				hole_min_x, hole_max_x, hole_min_z, hole_max_z, portal_cell
-			)
-			for ck in protect_cells.keys():
-				portal_protect_cells[ck] = true
-			if hole_min_x < hole_max_x:
-				portal_aabbs.append({
-					"min_x": hole_min_x, "max_x": hole_max_x,
-					"min_z": hole_min_z, "max_z": hole_max_z,
-					"through_z": through_z,
-				})
 			# One continuous ground strip through the throat (+ short through-pad).
 			var pad_env := OS.get_environment("NAV_EXPERIMENT_ARCH_PORTAL_PAD")
 			var pad_m := float(pad_env) if pad_env != "" else 2.5
+			# Entrance arches: modest through-pad only. A 4 m pad + dense protect-cell faces
+			# spilled blue ground islands under masonry (Cc_1_00_05).
+			if _is_castle_entrance_arch_object(pname) and pad_env == "":
+				pad_m = 1.5
 			var strip_min_x := hole_min_x
 			var strip_max_x := hole_max_x
 			var strip_min_z := hole_min_z
@@ -982,25 +1003,132 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 			else:
 				strip_min_x -= pad_m
 				strip_max_x += pad_m
+			# Entrance arch: walkable strip is a narrow corridor through the mouth (not the full
+			# hole width). Protect is a thin buffer around that strip only — never feed the
+			# whole protect AABB as walkable faces (that painted ground-level blue leaks).
+			# Override width with NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH (default 0.5).
+			# With AGENT_RADIUS=0.25, 0.5 m is knife-edge; use >=1.0 if the strip vanishes.
+			var is_entrance_arch := _is_castle_entrance_arch_object(pname)
+			var entrance_corridor_w := 0.5
+			var ecw_env := OS.get_environment("NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH")
+			if ecw_env != "":
+				entrance_corridor_w = float(ecw_env)
+			if is_entrance_arch:
+				if through_z:
+					var mid_x := (hole_min_x + hole_max_x) * 0.5
+					strip_min_x = mid_x - entrance_corridor_w * 0.5
+					strip_max_x = mid_x + entrance_corridor_w * 0.5
+				else:
+					var mid_z := (hole_min_z + hole_max_z) * 0.5
+					strip_min_z = mid_z - entrance_corridor_w * 0.5
+					strip_max_z = mid_z + entrance_corridor_w * 0.5
+			# Protect = throat cells. Entrance: strip + small buffer. Others: hole-only.
+			var protect_min_x := hole_min_x
+			var protect_max_x := hole_max_x
+			var protect_min_z := hole_min_z
+			var protect_max_z := hole_max_z
+			if is_entrance_arch:
+				protect_min_x = strip_min_x
+				protect_max_x = strip_max_x
+				protect_min_z = strip_min_z
+				protect_max_z = strip_max_z
+				# Thin buffer only — a wide moat + full-hole corridor wiped entire pier
+				# footprints (Cc_1_00_06: two ALWAYS_CARVE jobs carved=0).
+				var lat_pad := 0.2
+				if through_z:
+					protect_min_x -= lat_pad
+					protect_max_x += lat_pad
+				else:
+					protect_min_z -= lat_pad
+					protect_max_z += lat_pad
+			var protect_cells := _portal_cells_from_aabb(
+				protect_min_x, protect_max_x, protect_min_z, protect_max_z, portal_cell
+			)
+			if is_entrance_arch:
+				protect_cells = _dilate_occupied_cells(protect_cells, portal_cell, portal_cell * 2.0)
+			for ck in protect_cells.keys():
+				portal_protect_cells[ck] = true
 			# Prefer the lowest terrain under the portal (north bailey is ~3m below mean court).
 			var bridge_y := pground + 0.08
 			var t_min := INF
+			var mid_hx := (hole_min_x + hole_max_x) * 0.5
+			var mid_hz := (hole_min_z + hole_max_z) * 0.5
 			var samples := [
-				Vector2((hole_min_x + hole_max_x) * 0.5, (hole_min_z + hole_max_z) * 0.5),
-				Vector2((hole_min_x + hole_max_x) * 0.5, hole_min_z - pad_m * 0.5),
-				Vector2((hole_min_x + hole_max_x) * 0.5, hole_max_z + pad_m * 0.5),
-				Vector2(hole_min_x + 0.5, (hole_min_z + hole_max_z) * 0.5),
-				Vector2(hole_max_x - 0.5, (hole_min_z + hole_max_z) * 0.5),
+				Vector2(mid_hx, mid_hz),
+				Vector2(mid_hx, hole_min_z - pad_m * 0.5),
+				Vector2(mid_hx, hole_max_z + pad_m * 0.5),
+				Vector2(hole_min_x + 0.5, mid_hz),
+				Vector2(hole_max_x - 0.5, mid_hz),
 			]
+			# Entrance: also sample further into both approaches so a raised sill / keep floor
+			# under the hole does not lift the strip above bailey grade (Cc_1_00_05).
+			if is_entrance_arch:
+				var reach := maxf(pad_m + 2.0, 4.0)
+				if through_z:
+					samples.append(Vector2(mid_hx, hole_min_z - reach))
+					samples.append(Vector2(mid_hx, hole_max_z + reach))
+				else:
+					samples.append(Vector2(hole_min_x - reach, mid_hz))
+					samples.append(Vector2(hole_max_x + reach, mid_hz))
 			for sp in samples:
 				var ty := _sample_ground_height(ground_grid, GROUND_GRID_CELL, sp, pground)
 				if ty < INF:
 					t_min = minf(t_min, ty)
 			if t_min < INF:
 				bridge_y = t_min + 0.08
+			# Keep-grade arches (Cc_1_00_06 cc22): terrain samples sit ~2m below the walkable
+			# deck through the throat. Prefer kit walkable sill/deck tris in the hole, else
+			# NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT / DROP (tile-local).
+			if is_entrance_arch:
+				var pwalk: PackedVector3Array = split["walkable"]
+				var deck_sum := 0.0
+				var deck_n := 0
+				var iw := 0
+				while iw + 2 < pwalk.size():
+					var wa: Vector3 = pwalk[iw]
+					var wb: Vector3 = pwalk[iw + 1]
+					var wc: Vector3 = pwalk[iw + 2]
+					iw += 3
+					var wcx := (wa.x + wb.x + wc.x) / 3.0
+					var wcz := (wa.z + wb.z + wc.z) / 3.0
+					if wcx < hole_min_x - 1.0 or wcx > hole_max_x + 1.0 \
+							or wcz < hole_min_z - 1.0 or wcz > hole_max_z + 1.0:
+						continue
+					var wy := (wa.y + wb.y + wc.y) / 3.0
+					# Deck / sill above terrain, not rampart crowns.
+					if wy < bridge_y + 0.35 or wy > bridge_y + 4.5:
+						continue
+					deck_sum += wy
+					deck_n += 1
+				if deck_n > 0:
+					bridge_y = deck_sum / float(deck_n) + 0.08
+				var lift_env := OS.get_environment("NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT")
+				if lift_env != "":
+					bridge_y += float(lift_env)
+				var drop_env := OS.get_environment("NAV_EXPERIMENT_ENTRANCE_BRIDGE_DROP")
+				if drop_env != "":
+					bridge_y -= float(drop_env)
+			if hole_min_x < hole_max_x:
+				portal_aabbs.append({
+					"min_x": protect_min_x, "max_x": protect_max_x,
+					"min_z": protect_min_z, "max_z": protect_max_z,
+					"strip_min_x": strip_min_x, "strip_max_x": strip_max_x,
+					"strip_min_z": strip_min_z, "strip_max_z": strip_max_z,
+					"through_z": through_z,
+					"entrance": is_entrance_arch,
+					"bridge_y": bridge_y,
+				})
+			# Walkable strip = corridor AABB only (dense protect-cell carpet removed).
 			var bridge := _portal_walkable_strip_aabb(
 				strip_min_x, strip_max_x, strip_min_z, strip_max_z, bridge_y
 			)
+			if is_entrance_arch:
+				var strip_cells := _portal_cells_from_aabb(
+					strip_min_x, strip_max_x, strip_min_z, strip_max_z, portal_cell
+				)
+				bridge.append_array(
+					_portal_walkable_faces_from_cells(strip_cells, portal_cell, bridge_y)
+				)
 			if bridge.size() > 0 and not placement.get("_spill", false):
 				source.add_faces(bridge, Transform3D.IDENTITY)
 				tile_walkable_faces.append_array(bridge)
@@ -1011,6 +1139,7 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 					" throat_cells=", protect_cells.size(),
 					" through_z=", through_z,
 					" hole=(%.1f..%.1f, %.1f..%.1f)" % [hole_min_x, hole_max_x, hole_min_z, hole_max_z],
+					" bridge_y=%.2f" % bridge_y,
 					" strip_tris=", int(bridge.size() / 3)
 				)
 			portal_kits += 1
@@ -1022,6 +1151,23 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 				portal_faces_total, " strip tri(s), outer_skipped=", portal_outer_skipped,
 				" on ", tile_key
 			)
+	# Deferred castle tile-mesh wall carve (after portals) so entrance throats stay open.
+	if deferred_castle_terrain_wall.size() > 0:
+		var dwall_skipped := {"n": 0}
+		var dwall_cells := _add_projected_mesh_footprint_from_world_faces(
+			source, deferred_castle_terrain_wall, deferred_castle_carve_h, 0.0,
+			tile_obstruction_cells, deferred_castle_terrain_walk,
+			portal_protect_cells, portal_cell, dwall_skipped, portal_aabbs
+		)
+		obst_count += dwall_cells
+		print(
+			"castle_terrain deferred wall: ", tile_key,
+			" walk_tris ", deferred_castle_walk_before, " -> ",
+			int(deferred_castle_terrain_walk.size() / 3),
+			" wall_tris ", int(deferred_castle_terrain_wall.size() / 3),
+			" wall_cells ", dwall_cells,
+			" portal_skipped ", int(dwall_skipped["n"])
+		)
 	for placement in placements:
 		var object_name: String = placement["object_name"]
 		if _skip_obstruction(object_name):
@@ -1130,24 +1276,75 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 			# tris are ramp sides/underside; carving them digs a trench that deletes the toe landing
 			# and blocks the ground↔ramp weld. Other kits keep the heal3 wall carve.
 			var is_approach_ramp := _is_approach_ramp_object(object_name)
-			if wall_faces.size() > 0 and not is_approach_ramp:
+			# Large keep shells: ALWAYS_CARVE dilate/fill was sealing walkable undercrofts
+			# (Cc_1_hr_occ02). Prefer the mid-loop steep-face footprint for those; thin wall strips
+			# and arch kits stay on the end-of-pass ALWAYS_CARVE path.
+			var always_carve_here := do_always_carve
+			if always_carve_here and wall_faces.size() >= 9 \
+					and not _is_arch_gateway_terrain_object(object_name) \
+					and not _is_solid_rock_terrain_object(object_name) \
+					and not _is_curtain_arch_wall_object(object_name):
+				var footprint_cells := _count_projected_xz_cells(wall_faces, _always_carve_obst_cell_size())
+				var footprint_area := float(footprint_cells) * _always_carve_obst_cell_size() * _always_carve_obst_cell_size()
+				var max_ac_area_env := OS.get_environment("NAV_EXPERIMENT_ALWAYS_CARVE_MAX_AREA")
+				var max_ac_area := float(max_ac_area_env) if max_ac_area_env != "" else 25.0
+				if footprint_area > max_ac_area:
+					always_carve_here = false
+			if wall_faces.size() > 0 and not is_approach_ramp and not always_carve_here \
+					and OS.get_environment("NAV_EXPERIMENT_WALL_FOOTPRINT") != "0":
 				# Wall footprint always stamps real wall faces (pillars/outer walls). Portal protect
-				# applies only to ALWAYS_CARVE fill — skipping wall footprint here left green under
-				# outer ring walls when protect AABBs were oversized.
+				# is skipped for ordinary kits by default — oversized courtyard protect left green
+				# under outer ring walls. When ENTRANCE_ARCH_KITS is set, protect is a narrow
+				# corridor: honor it for every kit so neighbour walls cannot reseal the strip
+				# (Cc_1_00_06 keep arch). Curtain cc22 always honors protect (Cc_1_00_05).
+				var wall_portal_protect: Dictionary = {}
+				var wall_portal_cell := 0.0
+				var honor_portal := not portal_protect_cells.is_empty() and (
+					_is_curtain_arch_wall_object(object_name)
+					or _is_arch_gateway_terrain_object(object_name)
+					or not OS.get_environment("NAV_EXPERIMENT_ENTRANCE_ARCH_KITS").is_empty()
+				)
+				if honor_portal:
+					wall_portal_protect = portal_protect_cells
+					wall_portal_cell = portal_cell
 				var cells := _add_projected_mesh_footprint_from_world_faces(
 					source, wall_faces, carve_band_top, inflate, tile_obstruction_cells,
-					walkable_faces
+					walkable_faces, wall_portal_protect, wall_portal_cell, {},
+					portal_aabbs if honor_portal else []
 				)
 				obst_count += cells
 			# Allowlist: queue base footprint for a single end-of-pass carve (after all walkables).
 			# Arch gateways stay on ALWAYS_CARVE with preserve_openings (no dilate).
-			if do_always_carve and all_faces.size() > 0 and not is_approach_ramp:
+			if always_carve_here and all_faces.size() > 0 and not is_approach_ramp:
 				var solid_rock := _is_solid_rock_terrain_object(object_name)
+				# Curtain wall with an arch cut (cc22): solid-carve pier-wing faces outside the
+				# sibling portal's lateral column so land under masonry clears while the throat
+				# stays open (Cc_1_00_05).
+				var curtain_arch_wall := _is_curtain_arch_wall_object(object_name)
 				var base_faces: PackedVector3Array
+				var curtain_pier_solid := false
 				if solid_rock:
 					# Rocks are 6–11m across with hollow mesh bottoms; bottom-band silhouette + 5m
 					# seal leaves the interior walkable. Full mesh XZ + solid AABB fill.
 					base_faces = all_faces
+				elif curtain_arch_wall and all_faces.size() >= 9:
+					# Pier wings outside the portal lateral column (entrance cc22 or sibling of
+					# cc95). Never skip the whole footprint — oversized protect + opening_aware
+					# left carved=0 on Cc_1_00_06. Throat stays open via portal_protect erase.
+					var pier_faces := _filter_faces_outside_arch_lateral_column(
+						all_faces, portal_aabbs, 0.2
+					)
+					base_faces = _filter_faces_near_ground_y(
+						pier_faces, obj_ground_y, ALWAYS_CARVE_GROUND_BAND
+					)
+					if base_faces.size() < 9:
+						base_faces = _filter_faces_near_mesh_bottom(
+							pier_faces, ALWAYS_CARVE_BASE_BAND
+						)
+					curtain_pier_solid = base_faces.size() >= 9
+					if not curtain_pier_solid:
+						base_faces = pier_faces if pier_faces.size() >= 9 else all_faces
+						curtain_pier_solid = base_faces.size() >= 9 and portal_aabbs.size() > 0
 				else:
 					# Buildings/walls: project STEEP faces (any height) as the XZ shell.
 					# hrz08 has almost no tris below ~4m (only 8 skirt tris), so a ground/mesh-min
@@ -1164,19 +1361,26 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 						base_faces = _filter_faces_near_mesh_bottom(all_faces, ALWAYS_CARVE_BASE_BAND)
 				if base_faces.size() > 0:
 					pending_always_carve.append({
+						"name": object_name,
 						"base_faces": base_faces,
 						"ground_y": obj_ground_y,
-						# Rocks: AABB solid. Buildings/walls: opening-aware fill (closed shells,
-						# leave arch/door flood-paths clear).
+						# Rocks: AABB solid. cc22 pier wings: occupied+dilate+component AABB.
 						"solid_fill": solid_rock,
-						"opening_aware_fill": not solid_rock,
+						"solid_occupied_fill": curtain_pier_solid,
+						"opening_aware_fill": (not solid_rock) and (not curtain_pier_solid),
 						# Arch/gate kits: no wall-dilate / tight seal only — dilate+2.25m seal
 						# plugs ~3m courtyard arches (Cc_2_hr_occ00 hrz21), leaving only ramp links.
 						# Outer curtain arches must NOT preserve openings (field↔bailey seal).
-						"preserve_openings": (not solid_rock) and _is_arch_gateway_terrain_object(object_name) \
-							and not outer_arch_origins.has(Vector2i(
-								roundi(world_xform.origin.x), roundi(world_xform.origin.z)
-							)),
+						# Entrance arches (cc95) keep preserve_openings so the portal strip throat
+						# is not sealed by dilate.
+						"preserve_openings": (not solid_rock) and (not curtain_pier_solid) \
+							and _is_arch_gateway_terrain_object(object_name) \
+							and (
+								_is_castle_entrance_arch_object(object_name)
+								or not outer_arch_origins.has(Vector2i(
+									roundi(world_xform.origin.x), roundi(world_xform.origin.z)
+								))
+							),
 					})
 			# Accumulate this object's roofed cells (near-horizontal cover well above ground) and wall
 			# footprint into the tile-global grids for the enclosure carve after the loop.
@@ -1230,11 +1434,13 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 
 	# ALWAYS_CARVE flush: all walkable add_faces (incl. fabricated roofs) are known, so the stamp
 	# can skip / cap under ramps, decks, and ramparts instead of punching through them.
-	if not pending_always_carve.is_empty():
+	# Tile-local escape hatch: NAV_EXPERIMENT_ALWAYS_CARVE=0 (used while opening Cc_1_00_06).
+	if not pending_always_carve.is_empty() \
+			and OS.get_environment("NAV_EXPERIMENT_ALWAYS_CARVE") != "0":
 		var always_cells := 0
 		for job_v in pending_always_carve:
 			var job: Dictionary = job_v
-			always_cells += _carve_always_carve_base_footprint(
+			var carved_n := _carve_always_carve_base_footprint(
 				source,
 				job["base_faces"],
 				float(job["ground_y"]),
@@ -1243,11 +1449,46 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 				bool(job.get("solid_fill", false)),
 				bool(job.get("opening_aware_fill", false)),
 				bool(job.get("preserve_openings", false)),
-				portal_protect_cells
+				portal_protect_cells,
+				bool(job.get("solid_occupied_fill", false)),
+				portal_aabbs
 			)
+			always_cells += carved_n
+			if OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
+				print(
+					"    always_carve ", str(job.get("name", "?")),
+					" carved=", carved_n,
+					" preserve_openings=", bool(job.get("preserve_openings", false)),
+					" solid_occupied=", bool(job.get("solid_occupied_fill", false)),
+					" opening_aware=", bool(job.get("opening_aware_fill", false)),
+					" solid_fill=", bool(job.get("solid_fill", false))
+				)
 		obst_count += always_cells
 		if OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
 			print("    always_carve: flushed ", pending_always_carve.size(), " object(s), ", always_cells, " cell(s) on ", tile_key)
+
+	# Re-stamp entrance portal strips AFTER all carves. Early strip faces are often voxel-eaten by
+	# neighbouring wall pads; a post-carve pass keeps the keep-grade corridor (Cc_1_00_06).
+	if not portal_aabbs.is_empty() and not OS.get_environment("NAV_EXPERIMENT_ENTRANCE_ARCH_KITS").is_empty():
+		var restamp := 0
+		for pa_v in portal_aabbs:
+			var pa: Dictionary = pa_v
+			if not bool(pa.get("entrance", false)):
+				continue
+			var by := float(pa.get("bridge_y", 0.0))
+			var smin_x := float(pa.get("strip_min_x", pa["min_x"]))
+			var smax_x := float(pa.get("strip_max_x", pa["max_x"]))
+			var smin_z := float(pa.get("strip_min_z", pa["min_z"]))
+			var smax_z := float(pa.get("strip_max_z", pa["max_z"]))
+			var strip := _portal_walkable_strip_aabb(smin_x, smax_x, smin_z, smax_z, by)
+			var scells := _portal_cells_from_aabb(smin_x, smax_x, smin_z, smax_z, portal_cell)
+			strip.append_array(_portal_walkable_faces_from_cells(scells, portal_cell, by))
+			if strip.size() > 0:
+				source.add_faces(strip, Transform3D.IDENTITY)
+				tile_walkable_faces.append_array(strip)
+				restamp += int(strip.size() / 3)
+		if restamp > 0 and OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
+			print("    entrance_strip restamp tris=", restamp, " on ", tile_key)
 
 	# Drop LoS obstruction records that landed in arch portals (wall-footprint grid ≠ always-carve
 	# grid, so a neighbour stamp can still be recorded even when the always-carve cell was skipped).
@@ -1844,7 +2085,18 @@ func _finalize_export(tile_key: String, nav: NavigationMesh) -> bool:
 	if not _do_export_glb:
 		return true
 	var loaded: NavigationMesh = load(nav_path)
-	return _export_one_glb(tile_key, entry["master"], int(entry["gx"]), int(entry["gz"]), loaded, entry["placements"], _out_dir, entry.get("walkable_faces", PackedVector3Array()))
+	return _export_one_glb(
+		tile_key,
+		entry["master"],
+		int(entry["gx"]),
+		int(entry["gz"]),
+		loaded,
+		entry["placements"],
+		_out_dir,
+		entry.get("walkable_faces", PackedVector3Array()),
+		entry.get("ground_grid", {}),
+		float(entry.get("ground_fallback", 0.0))
+	)
 
 ## Castle / cc tiles only: keep intentional enclosed walk space that the strict town prune would
 ## drop (courtyards that never touch the 2x2 outer edge, rampart fragments sealed behind walls).
@@ -2626,18 +2878,33 @@ func _prune_orphan_interior_islands(nav: NavigationMesh, tile_min: Vector2, tile
 														continue
 													if _segment_hits_xz_aabbs(vc, ov_g, gate_seam_aabbs, 0.5):
 														continue
-													# When arch portals are known, only stitch through
-													# those openings — not around wall ends. Without
-													# portals, still require clear LoS so welds cannot
-													# skirt a closed main gate (Cc_1_00_02 regression).
-													if not portal_aabbs.is_empty():
-														var mx_g := (vc.x + ov_g.x) * 0.5
-														var mz_g := (vc.z + ov_g.z) * 0.5
-														if not _point_in_arch_portal_aabbs(
+													# Prefer stitching through known arch portals. Also allow
+													# clear LoS deep inside the roof-inset bailey so keep
+													# undercroft / courtyard floor fragments (pillar gaps,
+													# Recast seams) can unify — without welding around the
+													# outer curtain / closed main gate (court lip).
+													var mx_g := (vc.x + ov_g.x) * 0.5
+													var mz_g := (vc.z + ov_g.z) * 0.5
+													var through_portal := not portal_aabbs.is_empty() \
+														and _point_in_arch_portal_aabbs(
 															portal_aabbs, mx_g, mz_g, 0.75
-														):
-															continue
-													elif not _bridge_segment_clear(obstruction_cells, vc, ov_g):
+														)
+													var deep_bailey := roof_bbox_valid \
+														and mx_g >= roof_min.x and mx_g <= roof_max.x \
+														and mz_g >= roof_min.y and mz_g <= roof_max.y
+													if through_portal:
+														pass
+													elif deep_bailey:
+														# Skip LoS inside the roof-inset bailey: wall /
+														# ALWAYS_CARVE cells still mark arch throats and
+														# undercroft pillar gaps as blocked even when the
+														# floor is open (same rationale as court_floor).
+														pass
+													elif portal_aabbs.is_empty() and _bridge_segment_clear(
+														obstruction_cells, vc, ov_g
+													):
+														pass
+													else:
 														continue
 													cands_g.append({
 														"d": d_g, "vi": vi_c, "ovi": ovi_g,
@@ -2685,6 +2952,11 @@ func _prune_orphan_interior_islands(nav: NavigationMesh, tile_min: Vector2, tile
 					# Prefer kit-recorded through-axis; AABB aspect is wrong on deep recess kits.
 					var through_z := bool(pd["through_z"]) if pd.has("through_z") \
 						else ((pmax_z - pmin_z) <= (pmax_x - pmin_x))
+					# Keep-grade entrance arches (Cc_1_00_06): stitch deck lips near bridge_y,
+					# not buried terrain scraps ~2m below the throat.
+					var is_entrance_portal := bool(pd.get("entrance", false))
+					var portal_bridge_y := float(pd["bridge_y"]) if pd.has("bridge_y") else court_y
+					var elev_allow := 4.0 if is_entrance_portal else minf(ramp_lo, 1.5)
 					# Courtyard floors just outside the hole lips (±reach), not wall mid scraps.
 					# Lateral pad: throat clamp can leave a sub-metre-wide hole while floors sit
 					# under the wider gateway opening.
@@ -2696,7 +2968,10 @@ func _prune_orphan_interior_islands(nav: NavigationMesh, tile_min: Vector2, tile
 						for vi_f in polys[pi_f]:
 							var vf: Vector3 = verts[vi_f]
 							# Strict near-grade — elevated scraps at hole lips create mid-air quads.
-							if vf.y - court_y >= minf(ramp_lo, 1.5):
+							# Entrance keep arches: allow deck band up to elev_allow above court.
+							if vf.y - court_y >= elev_allow:
+								continue
+							if is_entrance_portal and absf(vf.y - portal_bridge_y) > 1.75:
 								continue
 							# Bailey-only: outer-wall arches have a field-side lip outside the
 							# courtyard bbox. Stitching those reopens outdoor↔bailey on castles
@@ -2738,6 +3013,7 @@ func _prune_orphan_interior_islands(nav: NavigationMesh, tile_min: Vector2, tile
 					var near_dy := INF
 					var near_ya := 0.0
 					var near_yb := 0.0
+					var pair_elev_max := elev_allow
 					for ea in side_a:
 						var va: Vector3 = ea["v"]
 						for eb in side_b:
@@ -2751,13 +3027,15 @@ func _prune_orphan_interior_islands(nav: NavigationMesh, tile_min: Vector2, tile
 								near_yb = vb.y
 							if dd > portal_gap or dy > 2.0:
 								continue
-							# Either lip above bailey grade ⇒ mid-air scrap, skip.
-							if va.y - court_y > 1.5 or vb.y - court_y > 1.5:
+							# Either lip above allowed band ⇒ mid-air scrap, skip.
+							if va.y - court_y > pair_elev_max or vb.y - court_y > pair_elev_max:
 								continue
 							var lateral := absf(va.x - vb.x) if through_z else absf(va.z - vb.z)
 							# Prefer near-mean court when available, but don't reject sunken floors.
 							var sunk := maxf(court_y - va.y, court_y - vb.y)
 							var score := dd + dy * 4.0 + lateral * 2.0 + maxf(0.0, sunk - 1.0) * 0.5
+							if is_entrance_portal:
+								score += absf(va.y - portal_bridge_y) + absf(vb.y - portal_bridge_y)
 							if dd < 1.5:
 								score += 10.0
 							if score < best_score:
@@ -3785,6 +4063,17 @@ func _nav_over_object(grid: Dictionary, cell: float, centroid: Vector3) -> bool:
 	var yr: Vector2 = grid[key]
 	return centroid.y >= yr.x - OBJ_COLOR_Y_TOL and centroid.y <= yr.y + OBJ_COLOR_Y_TOL
 
+## Preview GLB only: drop object meshes whose pivot is more than PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND
+## below sampled terrain. Deep authored-Y junk bloats the side-by-side preview and isn't useful.
+func _preview_skip_deep_buried_object(
+	placement: Dictionary, ground_grid: Dictionary, ground_fallback: float
+) -> bool:
+	var origin: Vector3 = (placement["transform"] as Transform3D).origin
+	var gy := _sample_ground_height(
+		ground_grid, GROUND_GRID_CELL, Vector2(origin.x, origin.z), ground_fallback
+	)
+	return origin.y < gy - PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND
+
 func _export_one_glb(
 	tile_key: String,
 	master: String,
@@ -3793,7 +4082,9 @@ func _export_one_glb(
 	nav: NavigationMesh,
 	placements: Array,
 	out_dir: String,
-	walkable_faces: PackedVector3Array = PackedVector3Array()
+	walkable_faces: PackedVector3Array = PackedVector3Array(),
+	ground_grid: Dictionary = {},
+	ground_fallback: float = 0.0
 ) -> bool:
 	var world_pos := TERRAIN_ORIGIN + Vector3(gx * TILE_SIZE, 0.0, gz * TILE_SIZE)
 	var tile_mesh := _load_tile_mesh(master)
@@ -3818,8 +4109,11 @@ func _export_one_glb(
 		NavGlbMerge.apply_translation(ground_xform, terrain_offset)
 	)
 
-	var height_samples: PackedVector3Array = nav.get_vertices()
+	var skipped_deep := 0
 	for placement in placements:
+		if _preview_skip_deep_buried_object(placement, ground_grid, ground_fallback):
+			skipped_deep += 1
+			continue
 		var object_name: String = placement["object_name"]
 		var category: String = placement["category"]
 		var world_xform: Transform3D = placement["transform"]
@@ -3834,6 +4128,9 @@ func _export_one_glb(
 				part["mesh"],
 				world_xform * part["local"]
 			)
+	if skipped_deep > 0:
+		print("    preview: skipped ", skipped_deep, " object(s) >",
+			PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND, "m below ground on ", tile_key)
 
 	var nav_root := Node3D.new()
 	nav_root.name = "NavMesh"
@@ -3954,6 +4251,13 @@ const ALWAYS_CARVE_TERRAIN_OBJECTS := {
 	"cc08": true,
 	"cc09": true,
 	"cc10": true,
+	# cc16 gatehouse: pier land carve is via gate_seam merge (not ALWAYS_CARVE).
+	# Archway curtain / gate kits (see ARCHWAY_TERRAIN_OBJECTS) — opening-aware or pier solid.
+	"cc17": true,
+	"cc19": true,
+	"cc21": true,
+	"cc22": true,
+	"cc54": true,
 	"cc23": true,
 	"cc24": true,
 	"cc25": true,
@@ -3976,7 +4280,10 @@ const ALWAYS_CARVE_TERRAIN_OBJECTS := {
 	"hrt_mageh": true,
 	"hrt_meriya": true,
 	"hrt_tower1": true,
+	"hrt_tgate1": true,
+	"hrt_wall1": true,
 	"hrt_wall2": true,
+	"hrt_wall3": true,
 	"hrt_yard1": true,
 	# Rock kits (all *rock* models except ruin_rocks1/2). Solid terrain carve.
 	"hr_rock1": true,
@@ -3996,11 +4303,13 @@ const ALWAYS_CARVE_TERRAIN_OBJECTS := {
 	"hrz09": true,
 	"hrz10": true,
 	# Gate/arch wall kits — opening-aware fill keeps arch/door flood-paths walkable.
+	"hrz14": true,
 	"hrz16": true,
 	"hrz17": true,
 	"hrz19": true,
 	"hrz21": true,
 	"hrz22": true,
+	"hrz54": true,
 	"hrz23": true,
 	"hrz24": true,
 	"hrz25": true,
@@ -4600,7 +4909,9 @@ func _add_projected_mesh_footprint_from_world_faces(
 	global_cells: Dictionary = {},
 	walkable_faces: PackedVector3Array = PackedVector3Array(),
 	portal_protect: Dictionary = {},
-	portal_cell: float = 0.0
+	portal_cell: float = 0.0,
+	portal_skip_counter: Dictionary = {},
+	portal_aabbs: Array = []
 ) -> int:
 	var cells: Dictionary = {} # Vector2i -> {min_y: float, max_y: float}
 	const MAX_CELLS_PER_TRI := 200000
@@ -4680,11 +4991,23 @@ func _add_projected_mesh_footprint_from_world_faces(
 		var mx_x: float = mn_x + obst_cell
 		var mx_z: float = mn_z + obst_cell
 		# Skip stamps that land in an arch-gateway portal (courtyard hrz21 etc.).
-		if not portal_protect.is_empty() and portal_cell > 0.0:
-			var cx := (mn_x + mx_x) * 0.5
-			var cz := (mn_z + mx_z) * 0.5
-			if portal_protect.has(Vector2i(floori(cx / portal_cell), floori(cz / portal_cell))):
-				continue
+		# Prefer world AABB (reliable) — protect-cell grid can miss when obst_cell ≠ portal_cell.
+		var cx := (mn_x + mx_x) * 0.5
+		var cz := (mn_z + mx_z) * 0.5
+		var in_portal := false
+		# Extra pad when entrance kits are active so agent-radius erosion from jamb stamps
+		# cannot pinch the keep-grade corridor (Cc_1_00_06).
+		var portal_pad := 0.15
+		if not portal_aabbs.is_empty() and _point_in_arch_portal_aabbs(portal_aabbs, cx, cz, portal_pad):
+			in_portal = true
+		elif not portal_protect.is_empty() and portal_cell > 0.0:
+			in_portal = portal_protect.has(
+				Vector2i(floori(cx / portal_cell), floori(cz / portal_cell))
+			)
+		if in_portal:
+			if portal_skip_counter.has("n"):
+				portal_skip_counter["n"] = int(portal_skip_counter["n"]) + 1
+			continue
 		var outline := PackedVector3Array([
 			Vector3(mn_x, 0.0, mn_z),
 			Vector3(mx_x, 0.0, mn_z),
@@ -4704,11 +5027,105 @@ func _add_projected_mesh_footprint_from_world_faces(
 func _is_always_carve_terrain_object(object_name: String) -> bool:
 	return ALWAYS_CARVE_TERRAIN_OBJECTS.has(object_name.to_lower())
 
+## Kits with modeled arch / gate openings — hole detect, portal strip/protect, preserve_openings.
+## Authored list (do not invent extras). cc95 kept for Cc_1_00_05 east entrance.
+const ARCHWAY_TERRAIN_OBJECTS := {
+	"cc17": true,
+	"cc19": true,
+	"cc21": true,
+	"cc22": true,
+	"cc54": true,
+	"cc95": true,
+	"hrt_tgate1": true,
+	"hrt_wall1": true,
+	"hrt_wall3": true,
+	"hrz14": true,
+	"hrz16": true,
+	"hrz17": true,
+	"hrz19": true,
+	"hrz21": true,
+	"hrz22": true,
+	"hrz54": true,
+}
+
+## Curtain / wall kits whose pier wings use solid_occupied_fill outside the portal lateral column.
+const CURTAIN_ARCH_WALL_OBJECTS := {
+	"cc17": true,
+	"cc19": true,
+	"cc21": true,
+	"cc22": true,
+	"cc54": true,
+	"hrt_wall1": true,
+	"hrt_wall3": true,
+}
+
 ## Highland / outdoor boulders that must solid-carve terrain (never walkable tops).
 ## Arch / gate wall kits — always-carve without dilate so ~3m openings stay clear.
 func _is_arch_gateway_terrain_object(object_name: String) -> bool:
 	var n := object_name.to_lower()
-	return n in ["hrz16", "hrz17", "hrz19", "hrz21", "hrz22"]
+	if ARCHWAY_TERRAIN_OBJECTS.has(n):
+		return true
+	# Extra entrance kits from NAV_EXPERIMENT_ENTRANCE_ARCH_KITS also need hole detect.
+	return _is_castle_entrance_arch_object(object_name)
+
+## Castle entrance arch kits — always get an arch_portal ground strip (even on the outer curtain).
+## Default: cc95 (Cc_1_00_05 east). Override allowlist: NAV_EXPERIMENT_ENTRANCE_ARCH_KITS=cc22,...
+## Do not default the full ARCHWAY list here — that reopens every outer mouth and regressed Cc_2_hr.
+func _is_castle_entrance_arch_object(object_name: String) -> bool:
+	var n := object_name.to_lower()
+	if n == "cc95":
+		return true
+	var extra := OS.get_environment("NAV_EXPERIMENT_ENTRANCE_ARCH_KITS")
+	if extra.is_empty():
+		return false
+	for part in extra.split(","):
+		if part.strip_edges().to_lower() == n:
+			return true
+	return false
+
+## Curtain wall pieces that contain an arch cut — pier-wing solid ALWAYS_CARVE
+## (faces outside portal lateral column; Cc_1_00_05/06).
+func _is_curtain_arch_wall_object(object_name: String) -> bool:
+	return CURTAIN_ARCH_WALL_OBJECTS.has(object_name.to_lower())
+
+## Keep tris whose XZ centroid sits outside every portal's lateral opening span so solid
+## fill carves masonry piers without a bar across the arch throat.
+func _filter_faces_outside_arch_lateral_column(
+	faces: PackedVector3Array, portal_aabbs: Array, margin: float = 0.35
+) -> PackedVector3Array:
+	if faces.is_empty() or portal_aabbs.is_empty():
+		return PackedVector3Array()
+	var out := PackedVector3Array()
+	var i := 0
+	while i + 2 < faces.size():
+		var a: Vector3 = faces[i]
+		var b: Vector3 = faces[i + 1]
+		var c: Vector3 = faces[i + 2]
+		i += 3
+		var cx := (a.x + b.x + c.x) * (1.0 / 3.0)
+		var cz := (a.z + b.z + c.z) * (1.0 / 3.0)
+		var in_column := false
+		for pa_v in portal_aabbs:
+			var pa: Dictionary = pa_v
+			var through_z := bool(pa.get("through_z", true))
+			if through_z:
+				var min_x: float = float(pa["min_x"]) - margin
+				var max_x: float = float(pa["max_x"]) + margin
+				if cx >= min_x and cx <= max_x:
+					in_column = true
+					break
+			else:
+				var min_z: float = float(pa["min_z"]) - margin
+				var max_z: float = float(pa["max_z"]) + margin
+				if cz >= min_z and cz <= max_z:
+					in_column = true
+					break
+		if in_column:
+			continue
+		out.append(a)
+		out.append(b)
+		out.append(c)
+	return out
 
 func _point_in_arch_portal_aabbs(aabbs: Array, x: float, z: float, pad: float = 0.0) -> bool:
 	for a in aabbs:
@@ -5386,6 +5803,7 @@ func _filter_faces_near_ground_y(
 ## When walkable_faces are provided (end-of-pass flush), cells under ramps/decks/ramparts are capped
 ## or skipped so the stamp cannot punch through already-registered walkable source geometry.
 ## solid_fill: fill the full XZ AABB of the silhouette (solid boulders); skips hollow seal/hole fill.
+## solid_occupied_fill: dilate the silhouette cells only (no global AABB) — pier wings beside an arch.
 ## opening_aware_fill: fill closed interiors / solid mass inside the AABB, but leave cells that
 ## flood-connect to the AABB exterior empty (archways, doors, outer courtyard corners).
 func _carve_always_carve_base_footprint(
@@ -5397,10 +5815,16 @@ func _carve_always_carve_base_footprint(
 	solid_fill: bool = false,
 	opening_aware_fill: bool = false,
 	preserve_openings: bool = false,
-	portal_protect: Dictionary = {}
+	portal_protect: Dictionary = {},
+	solid_occupied_fill: bool = false,
+	portal_aabbs: Array = []
 ) -> int:
 	var obst_cell := _always_carve_obst_cell_size()
-	var band_top: float = ground_y + NEAR_GROUND_CARVE_MAX_HEIGHT
+	# Pier-wing land carve only needs to eat terrain; a full 2m column beside the entrance
+	# portal strip made Recast drop the throat polys (Cc_1_00_05).
+	var band_top: float = ground_y + (
+		1.0 if solid_occupied_fill else NEAR_GROUND_CARVE_MAX_HEIGHT
+	)
 	var occupied: Dictionary = {} # Vector2i -> true
 	const MAX_CELLS_PER_TRI := 200000
 	var i := 0
@@ -5447,11 +5871,39 @@ func _carve_always_carve_base_footprint(
 		for cz in range(min_cz, max_cz + 1):
 			for cx in range(min_cx, max_cx + 1):
 				carve_mask[Vector2i(cx, cz)] = true
+	elif solid_occupied_fill:
+		# Pier wings (Cc_1_00_05 cc22): near-ground silhouette → dilate → per-component AABB.
+		# Erase only the tight 0.5 m entrance corridor (+ small moat) so masonry land carves
+		# cleanly without a carpet of protect-cell walkables under the wall.
+		var before_n := occupied.size()
+		var seeds := _erase_arch_lateral_column_cells(
+			occupied.duplicate(), portal_aabbs, obst_cell, 0.6
+		)
+		seeds = _dilate_occupied_cells(seeds, obst_cell, 0.3)
+		carve_mask = _solid_fill_connected_component_aabbs(seeds)
+		carve_mask = _erase_portal_aabb_cells(carve_mask, portal_aabbs, obst_cell, 0.0)
+		carve_mask = _erase_cells_adjacent_to_portal_protect(carve_mask, portal_protect, 2)
+		if OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
+			print(
+				"    pier_solid: occupied=", before_n,
+				" carved=", carve_mask.size(),
+				" portals=", portal_aabbs.size()
+			)
 	elif opening_aware_fill:
-		# Dilate+2.25m seal closes green-under-wall cavities on chunky keeps and ordinary wall
-		# strips (outer bailey walls). Arch gateway kits only: no dilate / tight seal so ~3m
-		# courtyard arches stay open (preserve_openings). Skipping dilate for ALL wall strips
-		# left green under outer walls (Cc_2_hr regression).
+		# Dilate+seal closes green-under-wall cavities on chunky keeps and ordinary wall strips.
+		# Arch gateway kits only: no dilate / tight seal so ~3m courtyard arches stay open
+		# (preserve_openings). Skipping dilate for ALL wall strips left green under outer walls
+		# (Cc_2_hr regression).
+		#
+		# Keep undercrofts: steep-face projection often paints the whole keep XZ solid (vault ribs /
+		# internal mass). Peel to an exterior shell before dilate so the walkable floor stays open
+		# (Cc_1_hr_occ02). Pillars touching open space remain (dist 0 from outside).
+		var shell_depth_env := OS.get_environment("NAV_EXPERIMENT_ALWAYS_CARVE_SHELL_DEPTH")
+		# Thickness of wall ring kept from a solid silhouette (smaller → more undercroft freed).
+		var shell_depth := float(shell_depth_env) if shell_depth_env != "" else 1.2
+		var shell_occ := occupied
+		if not preserve_openings and shell_depth > 0.0:
+			shell_occ = _keep_exterior_shell_cells(occupied, obst_cell, shell_depth)
 		var dilate_m := 0.0
 		var seal_m := 1.5
 		if preserve_openings:
@@ -5462,9 +5914,33 @@ func _carve_always_carve_base_footprint(
 			dilate_m = float(dilate_env) if dilate_env != "" else 0.75
 			var seal_env := OS.get_environment("NAV_EXPERIMENT_ALWAYS_CARVE_OPEN_SEAL")
 			seal_m = float(seal_env) if seal_env != "" else 2.25
-		var thickened := _dilate_occupied_cells(occupied, obst_cell, dilate_m)
+			# Large keep / courtyard shells: dilate closes the undercroft floor between piers
+			# and wall returns (hrz23 1910→4968 at 0.15m cells ≈ 43 m²). Thin wall strips still
+			# dilate. Threshold is area so it tracks ALWAYS_CARVE_OBST_CELL.
+			var shell_area := float(shell_occ.size()) * obst_cell * obst_cell
+			var max_dilate_area_env := OS.get_environment("NAV_EXPERIMENT_ALWAYS_CARVE_DILATE_MAX_AREA")
+			var max_dilate_area := float(max_dilate_area_env) if max_dilate_area_env != "" else 25.0
+			if shell_area > max_dilate_area:
+				dilate_m = 0.0
+				seal_m = minf(seal_m, 1.5)
+		var thickened := _dilate_occupied_cells(shell_occ, obst_cell, dilate_m)
 		var sealed := _footprint_seal_hollow_spans_max(thickened, obst_cell, seal_m)
-		carve_mask = _footprint_fill_closed_except_openings(sealed, obst_cell)
+		if preserve_openings:
+			# Arch kits: openings stay in the silhouette; flood-fill only truly sealed pockets
+			# behind piers (not the through-throat, which remains outside-connected).
+			carve_mask = _footprint_fill_closed_except_openings(sealed, obst_cell)
+		else:
+			# Do not room-fill sealed interiors — that re-solidifies undercrofts after shell peel.
+			carve_mask = _castle_footprint_fill_small_holes(sealed, obst_cell)
+		if OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
+			print(
+				"    opening_aware sizes occ=", occupied.size(),
+				" shell=", shell_occ.size(),
+				" dilate=", thickened.size(),
+				" seal=", sealed.size(),
+				" mask=", carve_mask.size(),
+				" preserve=", preserve_openings
+			)
 	else:
 		# Seal open-ended hollow walls (inner/outer face strips with a gap) then fill leftover holes.
 		carve_mask = _footprint_seal_hollow_spans(occupied, obst_cell)
@@ -5474,9 +5950,20 @@ func _carve_always_carve_base_footprint(
 	const PAD := 600.0
 	const MIN_CARVE_H := 0.35
 	var added := 0
+	var portal_aabb_skips := 0
 	for key_v in carve_mask.keys():
 		var cell_key: Vector2i = key_v
-		if portal_protect.has(cell_key):
+		var mn_x: float = cell_key.x * obst_cell
+		var mn_z: float = cell_key.y * obst_cell
+		var mx_x: float = mn_x + obst_cell
+		var mx_z: float = mn_z + obst_cell
+		var cx := (mn_x + mx_x) * 0.5
+		var cz := (mn_z + mx_z) * 0.5
+		var portal_pad := 0.15
+		if portal_protect.has(cell_key) \
+				or (not portal_aabbs.is_empty() \
+					and _point_in_arch_portal_aabbs(portal_aabbs, cx, cz, portal_pad)):
+			portal_aabb_skips += 1
 			continue
 		var carve_top := band_top
 		if walk_lo.has(cell_key):
@@ -5492,10 +5979,6 @@ func _carve_always_carve_base_footprint(
 				carve_top = wy - RAMPART_CARVE_CLEARANCE
 		if carve_top - ground_y < MIN_CARVE_H:
 			continue
-		var mn_x: float = cell_key.x * obst_cell
-		var mn_z: float = cell_key.y * obst_cell
-		var mx_x: float = mn_x + obst_cell
-		var mx_z: float = mn_z + obst_cell
 		var outline := PackedVector3Array([
 			Vector3(mn_x, 0.0, mn_z),
 			Vector3(mx_x, 0.0, mn_z),
@@ -5507,7 +5990,111 @@ func _carve_always_carve_base_footprint(
 		source.add_projected_obstruction(outline, elevation, height, true)
 		_record_obstruction_cells(global_cells, Vector2(mn_x, mn_z), Vector2(mx_x, mx_z), ground_y, carve_top)
 		added += 1
+	if portal_aabb_skips > 0 and OS.get_environment("DIAG_ALWAYS_CARVE") == "1":
+		print("    always_carve portal_skips=", portal_aabb_skips, " carved=", added)
 	return added
+
+## Drop cells whose centers sit in any portal's lateral opening span (full through-axis).
+func _erase_arch_lateral_column_cells(
+	cells: Dictionary, portal_aabbs: Array, obst_cell: float, margin: float = 0.35
+) -> Dictionary:
+	if cells.is_empty() or portal_aabbs.is_empty() or obst_cell <= 0.0:
+		return cells
+	var out: Dictionary = {}
+	for k in cells.keys():
+		var ck: Vector2i = k
+		var cx := (float(ck.x) + 0.5) * obst_cell
+		var cz := (float(ck.y) + 0.5) * obst_cell
+		var in_column := false
+		for pa_v in portal_aabbs:
+			var pa: Dictionary = pa_v
+			if bool(pa.get("through_z", true)):
+				if cx >= float(pa["min_x"]) - margin and cx <= float(pa["max_x"]) + margin:
+					in_column = true
+					break
+			else:
+				if cz >= float(pa["min_z"]) - margin and cz <= float(pa["max_z"]) + margin:
+					in_column = true
+					break
+		if not in_column:
+			out[ck] = true
+	return out
+
+## Drop cells within chebyshev distance `radius` of any portal_protect cell.
+func _erase_cells_adjacent_to_portal_protect(
+	cells: Dictionary, portal_protect: Dictionary, radius: int = 1
+) -> Dictionary:
+	if cells.is_empty() or portal_protect.is_empty() or radius <= 0:
+		return cells
+	var out: Dictionary = {}
+	for k in cells.keys():
+		var ck: Vector2i = k
+		var near := false
+		for dz in range(-radius, radius + 1):
+			for dx in range(-radius, radius + 1):
+				if portal_protect.has(Vector2i(ck.x + dx, ck.y + dz)):
+					near = true
+					break
+			if near:
+				break
+		if not near:
+			out[ck] = true
+	return out
+
+## Drop cells whose centers sit inside any portal AABB (+ margin).
+func _erase_portal_aabb_cells(
+	cells: Dictionary, portal_aabbs: Array, obst_cell: float, margin: float = 0.0
+) -> Dictionary:
+	if cells.is_empty() or portal_aabbs.is_empty() or obst_cell <= 0.0:
+		return cells
+	var out: Dictionary = {}
+	for k in cells.keys():
+		var ck: Vector2i = k
+		var cx := (float(ck.x) + 0.5) * obst_cell
+		var cz := (float(ck.y) + 0.5) * obst_cell
+		var inside := false
+		for pa_v in portal_aabbs:
+			var pa: Dictionary = pa_v
+			if cx >= float(pa["min_x"]) - margin and cx <= float(pa["max_x"]) + margin \
+					and cz >= float(pa["min_z"]) - margin and cz <= float(pa["max_z"]) + margin:
+				inside = true
+				break
+		if not inside:
+			out[ck] = true
+	return out
+
+## AABB-fill each 4-connected component of occupied cells. Used for arch-pier wings so the
+## solid mass under masonry does not bridge the empty throat between piers.
+func _solid_fill_connected_component_aabbs(occupied: Dictionary) -> Dictionary:
+	var out: Dictionary = {}
+	if occupied.is_empty():
+		return out
+	var remaining: Dictionary = occupied.duplicate()
+	var dirs := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	while not remaining.is_empty():
+		var seed_k: Vector2i = remaining.keys()[0]
+		var stack: Array = [seed_k]
+		remaining.erase(seed_k)
+		var min_cx := seed_k.x
+		var max_cx := seed_k.x
+		var min_cz := seed_k.y
+		var max_cz := seed_k.y
+		while not stack.is_empty():
+			var cur: Vector2i = stack.pop_back()
+			for d in dirs:
+				var n: Vector2i = cur + d
+				if not remaining.has(n):
+					continue
+				remaining.erase(n)
+				stack.append(n)
+				min_cx = mini(min_cx, n.x)
+				max_cx = maxi(max_cx, n.x)
+				min_cz = mini(min_cz, n.y)
+				max_cz = maxi(max_cz, n.y)
+		for cz in range(min_cz, max_cz + 1):
+			for cx in range(min_cx, max_cx + 1):
+				out[Vector2i(cx, cz)] = true
+	return out
 
 ## Expand occupied XZ cells by radius_m ( fortifies thin double-wall shell stamps ).
 func _dilate_occupied_cells(occupied: Dictionary, obst_cell: float, radius_m: float) -> Dictionary:
@@ -5526,6 +6113,126 @@ func _dilate_occupied_cells(occupied: Dictionary, obst_cell: float, radius_m: fl
 
 ## Opening-aware solid fill: carve the silhouette AABB except empty cells that flood-connect to
 ## the AABB border (archways, doors, exterior pockets). Enclosed interiors stay carved.
+## Count unique XZ obstruction cells covered by triangle footprints.
+func _count_projected_xz_cells(faces: PackedVector3Array, obst_cell: float) -> int:
+	if faces.is_empty() or obst_cell <= 0.0:
+		return 0
+	var occupied: Dictionary = {}
+	var i := 0
+	while i + 2 < faces.size():
+		var v0: Vector3 = faces[i]
+		var v1: Vector3 = faces[i + 1]
+		var v2: Vector3 = faces[i + 2]
+		i += 3
+		var a2 := Vector2(v0.x, v0.z)
+		var b2 := Vector2(v1.x, v1.z)
+		var c2 := Vector2(v2.x, v2.z)
+		var bbox_min := Vector2(minf(a2.x, minf(b2.x, c2.x)), minf(a2.y, minf(b2.y, c2.y)))
+		var bbox_max := Vector2(maxf(a2.x, maxf(b2.x, c2.x)), maxf(a2.y, maxf(b2.y, c2.y)))
+		var cell_x0 := floori(bbox_min.x / obst_cell)
+		var cell_x1 := floori(bbox_max.x / obst_cell)
+		var cell_z0 := floori(bbox_min.y / obst_cell)
+		var cell_z1 := floori(bbox_max.y / obst_cell)
+		if (cell_x1 - cell_x0 + 1) * (cell_z1 - cell_z0 + 1) > 200000:
+			continue
+		for cz in range(cell_z0, cell_z1 + 1):
+			for cx in range(cell_x0, cell_x1 + 1):
+				var cell_min := Vector2(cx * obst_cell, cz * obst_cell)
+				var cell_max := cell_min + Vector2(obst_cell, obst_cell)
+				if _triangle_aabb_overlap_2d(a2, b2, c2, cell_min, cell_max, 0.0):
+					occupied[Vector2i(cx, cz)] = true
+	return occupied.size()
+
+## Keep occupied cells within shell_depth_m of exterior-empty space (AABB-border flood).
+## Solid keep silhouettes become a wall ring; true wall rings and pillars are unchanged.
+func _keep_exterior_shell_cells(
+	occupied: Dictionary, obst_cell: float, shell_depth_m: float
+) -> Dictionary:
+	if occupied.is_empty() or obst_cell <= 0.0 or shell_depth_m <= 0.0:
+		return occupied
+	var min_cx := 999999
+	var max_cx := -999999
+	var min_cz := 999999
+	var max_cz := -999999
+	for k in occupied.keys():
+		var ck: Vector2i = k
+		min_cx = mini(min_cx, ck.x)
+		max_cx = maxi(max_cx, ck.x)
+		min_cz = mini(min_cz, ck.y)
+		max_cz = maxi(max_cz, ck.y)
+	min_cx -= 1
+	max_cx += 1
+	min_cz -= 1
+	max_cz += 1
+	var outside: Dictionary = {} # cell -> true
+	var q: Array = []
+	for cz in range(min_cz, max_cz + 1):
+		for cx in [min_cx, max_cx]:
+			var bk := Vector2i(cx, cz)
+			if not occupied.has(bk):
+				outside[bk] = true
+				q.append(bk)
+	for cx2 in range(min_cx, max_cx + 1):
+		for cz2 in [min_cz, max_cz]:
+			var bk2 := Vector2i(cx2, cz2)
+			if not occupied.has(bk2) and not outside.has(bk2):
+				outside[bk2] = true
+				q.append(bk2)
+	var qi := 0
+	while qi < q.size():
+		var cur: Vector2i = q[qi]
+		qi += 1
+		for dz in [-1, 0, 1]:
+			for dx in [-1, 0, 1]:
+				if dx == 0 and dz == 0:
+					continue
+				var n := Vector2i(cur.x + dx, cur.y + dz)
+				if n.x < min_cx or n.x > max_cx or n.y < min_cz or n.y > max_cz:
+					continue
+				if occupied.has(n) or outside.has(n):
+					continue
+				outside[n] = true
+				q.append(n)
+	var shell_cells := maxi(1, int(ceil(shell_depth_m / obst_cell)))
+	var dist: Dictionary = {} # occupied cell -> chebyshev dist from outside
+	var dq: Array = []
+	for ok in occupied.keys():
+		var oc: Vector2i = ok
+		var touches_out := false
+		for dz2 in [-1, 0, 1]:
+			for dx2 in [-1, 0, 1]:
+				if dx2 == 0 and dz2 == 0:
+					continue
+				if outside.has(Vector2i(oc.x + dx2, oc.y + dz2)):
+					touches_out = true
+					break
+			if touches_out:
+				break
+		if touches_out:
+			dist[oc] = 0
+			dq.append(oc)
+	var di := 0
+	while di < dq.size():
+		var c2: Vector2i = dq[di]
+		di += 1
+		var d0: int = int(dist[c2])
+		if d0 >= shell_cells:
+			continue
+		for dz3 in [-1, 0, 1]:
+			for dx3 in [-1, 0, 1]:
+				if dx3 == 0 and dz3 == 0:
+					continue
+				var n2 := Vector2i(c2.x + dx3, c2.y + dz3)
+				if not occupied.has(n2) or dist.has(n2):
+					continue
+				dist[n2] = d0 + 1
+				dq.append(n2)
+	var shell: Dictionary = {}
+	for sk in dist.keys():
+		if int(dist[sk]) < shell_cells:
+			shell[sk] = true
+	return shell if not shell.is_empty() else occupied
+
 func _footprint_fill_closed_except_openings(occupied: Dictionary, obst_cell: float) -> Dictionary:
 	if occupied.is_empty():
 		return {}

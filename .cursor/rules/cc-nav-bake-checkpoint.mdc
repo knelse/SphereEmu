@@ -13,8 +13,8 @@ alwaysApply: false
 When rebaking or tuning castle (`Cc_*`) nav meshes:
 
 1. Read `Tools/nav_bake_checkpoint_cc.json` (summary: `Tools/NAV_BAKE_CHECKPOINT_CC.md`).
-2. Use profile `cc_baseline_v1` unless the target group has `env_overrides` / a different `param_profile`.
-3. Clear leftover `NAV_EXPERIMENT_*` env vars, then set only `explicit_env` (+ that group's overrides).
+2. Use that group's `param_profile` (default `cc_baseline_v1`). Some tiles also need `code_shape` in the bake script (e.g. `Cc_1_00_05` → `cc_1_00_05_east_arch_v1`).
+3. Clear leftover `NAV_EXPERIMENT_*` env vars, then set only `explicit_env` (+ that group's `env_overrides`).
 4. Rebake with the group's `tiles` (1x1 single `--tile`, 2x2 `--combined --combined-name`).
-5. Compare against `golden_glb` / `golden_regions_glb` under `golden_out`.
-6. When a tuned override sticks, write it into `groups[].env_overrides` and note the new profile name.
+5. Compare against that group's `golden_glb` / `golden_regions_glb` (may point at an accepted out dir, not only `golden_out`).
+6. When a tuned override sticks, write it into `groups[].env_overrides` and/or `code_shape`, and bump `param_profile` if it diverges from baseline.

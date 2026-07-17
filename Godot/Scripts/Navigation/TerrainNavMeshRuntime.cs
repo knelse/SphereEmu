@@ -11,7 +11,8 @@ namespace SphServer.Godot.Scripts.Navigation;
 
 /// <summary>
 ///     Lazy, proximity-loading bridge from the baked per-tile <see cref="NavigationMesh" /> resources under
-///     <see cref="NavMeshResourcesDirectory" /> (produced by <see cref="TerrainNavigationBaker" />) to a live
+///     <see cref="NavMeshResourcesDirectory" /> (produced by <see cref="TerrainNavigationBaker" /> via
+///     <c>Tools/bake_and_export_single_nav.gd</c> + checkpoint overrides) to a live
 ///     <see cref="NavigationServer3D" /> map, so spawn-slot baking (and, later, monster pathfinding) can query
 ///     real navmesh walkability instead of the walk-surface raster. Mirrors <c>WalkSurfaceCache</c>'s
 ///     lazy/static-loader shape so it fits the existing codebase conventions and stays cheap: regions are only

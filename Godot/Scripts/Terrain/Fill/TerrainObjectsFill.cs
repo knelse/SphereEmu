@@ -38,14 +38,11 @@ public partial class TerrainObjectsFill : Node3D
     /// <summary>
     ///     When enabled, every placement whose model scene contains collision shapes (models imported with the
     ///     '-col' suffix) has its triangle geometry accumulated (in world space, per terrain tile group) into
-    ///     <see cref="LastBuiltObjectColliderFacesByTile" /> for <see cref="TerrainNavigationBaker" /> to feed
-    ///     directly into Godot's navigation-mesh baker. Nothing is added to the scene itself: an earlier version
-    ///     persisted one <see cref="StaticBody3D" />/<see cref="CollisionShape3D" /> per object (and later per tile)
-    ///     so the editor could physically collide with objects, but that was only ever needed to produce source
-    ///     geometry for nav-mesh baking - keeping tens of millions of collider triangles live in the scene made
-    ///     <see cref="PhysicsServer3D" /> build BVH trees for them on every scene load, which hung/crashed the
-    ///     editor. Baking once (headless) and keeping only the resulting small <see cref="NavigationMesh" />
-    ///     resources avoids that entirely.
+    ///     <see cref="LastBuiltObjectColliderFacesByTile" /> for diagnostics / legacy tooling. Production nav
+    ///     meshes are baked by <see cref="TerrainNavigationBaker" /> via
+    ///     <c>Tools/bake_and_export_single_nav.gd</c> (ObjectDataJson + checkpoint), not from these faces.
+    ///     Nothing is added to the scene itself: an earlier version persisted live physics shapes and hung the
+    ///     editor; keeping only baked <see cref="NavigationMesh" /> resources avoids that.
     /// </summary>
     [Export]
     public bool BuildObjectColliders { get; set; } = true;
@@ -83,9 +80,8 @@ public partial class TerrainObjectsFill : Node3D
     /// <summary>
     ///     World-space object-collider triangle faces (3 consecutive entries per triangle) accumulated by the most
     ///     recent <see cref="RebuildTerrainObjects" /> call, keyed by the same <c>{TileName}_{TileIndex}</c> group
-    ///     used for the object hierarchy. <see cref="TerrainNavigationBaker" /> reads this right after calling
-    ///     <see cref="RebuildTerrainObjects" /> to bake per-tile navigation meshes; nothing here is persisted to
-    ///     the scene.
+    ///     used for the object hierarchy. Not consumed by the production nav bake path; nothing here is persisted
+    ///     to the scene.
     /// </summary>
     public global::System.Collections.Generic.Dictionary<string, List<Vector3>> LastBuiltObjectColliderFacesByTile
     {
@@ -144,7 +140,8 @@ public partial class TerrainObjectsFill : Node3D
 
             colliderState = new ColliderBuildState
             {
-                TileIndex = tileIndex, ObjectsToGridLocal = GetObjectsToGridLocalTransform()
+                TileIndex = tileIndex,
+                ObjectsToGridLocal = GetObjectsToGridLocalTransform()
             };
         }
 

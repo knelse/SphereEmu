@@ -1,9 +1,9 @@
 {
-  "id": "cc-nav-2026-07-16",
-  "created": "2026-07-16",
-  "purpose": "Golden CC nav bake params + per-group tile lists for verifiable rebakes while tuning 1-by-1.",
-  "golden_out": "D:/1/2026-7-16 23-21-21 cc-region-verify",
-  "golden_regions": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions",
+  "id": "cc-nav-2026-07-17-r025",
+  "created": "2026-07-17",
+  "purpose": "Golden CC nav bake params (AGENT_RADIUS=0.25) + per-group tile lists for verifiable rebakes. Pre-doorway baseline; outer curtain arches stay sealed.",
+  "golden_out": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025",
+  "golden_regions": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions",
   "bake_script": "Tools/bake_and_export_single_nav.gd",
   "bulk_script": "Tools/bake_bulk_nav_glbs.ps1",
   "plan_filter": "cc",
@@ -55,7 +55,15 @@
     "Court-envelope weld veto (_weld_crosses_court_envelope)",
     "Gate-seam carve + weld segment veto (gate_seam_aabbs)",
     "Outer curtain-arch detection (skip portal strip/protect; no preserve_openings)",
-    "Portal-forced stitches only for non-outer arches; lineage/gate veto apply"
+    "Portal-forced stitches only for non-outer arches; lineage/gate veto apply",
+    "AGENT_RADIUS=0.25 in bake_and_export_single_nav.gd (and TerrainNavigationBaker AgentRadius if used)",
+    "colorize_nav_regions.py includes terrain+objects side-by-side with colored regions",
+    "Cc_1_00_05: cc95 entrance-arch portal (even if outer) + cc22 pier-wing ALWAYS_CARVE — see groups[Cc_1_00_05].code_shape",
+    "Cc_1_00_06: cc22 keep-grade entrance via ENTRANCE_ARCH_KITS + thin corridor + pier solid — see groups[Cc_1_00_06].code_shape",
+    "Cc_1_hr_occ02: full archway ENTRANCE_ARCH_KITS + undercroft carve/weld — see groups[Cc_1_hr_occ02].code_shape",
+    "Cc_1_00_09: undercroft (tighter ALWAYS_CARVE area caps) — see groups[Cc_1_00_09].code_shape",
+    "cc_archways_v1: full ENTRANCE_ARCH_KITS allowlist per-group — see groups with param_profile cc_archways_v1",
+    "Cc_2_00_05 / Cc_2_hr_occ00: stay cc_baseline_v1 — full ENTRANCE_ARCH_KITS fuses field↔bailey (see groups notes)"
   ],
   "verify": {
     "split_test": "rim near y_p20 must not share a mesh component with core deck faces at y >= y_p20+6",
@@ -66,10 +74,10 @@
     "set_explicit_env": "Apply explicit_env (+ optional groups[].env_overrides)",
     "1x1_cmd": "godot --path . --headless -s Tools/bake_and_export_single_nav.gd -- --tile <TILE> --out <OUT>",
     "2x2_cmd": "godot --path . --headless -s Tools/bake_and_export_single_nav.gd -- --tile T00 --tile T10 --tile T01 --tile T11 --combined --combined-name <NAME> --out <OUT>",
-    "bulk_cmd": ".\\Tools\\bake_bulk_nav_glbs.ps1 -Out <OUT> -Filter cc -Jobs 8 -ColorizeRegions"
+    "bulk_cmd": ".\\Tools\\bake_bulk_nav_glbs.ps1 -Out <OUT> -Filter cc -Jobs 8 -WriteRes -ColorizeRegions"
   },
   "param_profile": "cc_baseline_v1",
-  "note": "All CC groups share ONE param profile (cc_baseline_v1). When tuning 1-by-1, put overrides in groups[].env_overrides and bump that group's param_profile name.",
+  "note": "Most CC groups share cc_baseline_v1. Tuned tiles bump groups[].param_profile and record env_overrides and/or code_shape (e.g. Cc_1_00_05 → cc_1_00_05_east_arch_v1, Cc_1_00_06 → cc_1_00_06_keep_arch_v1, Cc_1_00_09 → cc_1_00_09_undercroft_v1, Cc_1_hr_occ02 → cc_1_hr_occ02_archways_undercroft_v1). Golden bulk: 15-22-44 cc-bulk-agent-r025. Verified restore: 18-09-05 cc-bulk-restore-r025.",
   "groups": [
     {
       "name": "Cc_1_00_00",
@@ -83,8 +91,8 @@
       "map_gz": 43,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_00_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -99,8 +107,8 @@
       "map_gz": 44,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_01_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_01_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -115,8 +123,8 @@
       "map_gz": 45,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_02.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_02_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_02.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_02_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -131,8 +139,8 @@
       "map_gz": 49,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_03.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_03_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_03.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_03_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -147,8 +155,8 @@
       "map_gz": 58,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_04.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_04_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_04.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_04_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -161,11 +169,25 @@
       ],
       "map_gx": 54,
       "map_gz": 59,
-      "param_profile": "cc_baseline_v1",
+      "param_profile": "cc_1_00_05_east_arch_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_05.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_05_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_05.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_05_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env (unchanged)",
+      "accepted_out": "D:/1/2026-7-17 16-27-36 cc105-reg4",
+      "prior_accepted_out": "D:/1/2026-7-17 15-14-37 cc105-tight-corridor",
+      "notes": "East arch: pier land under cc22 + 0.5m entrance strip via cc95 (no protect-cell walkable carpet). Accepted bake: 16-27-36 cc105-reg4 (8 regions; matches r025 golden). Env: cc_baseline_v1 (no overrides).",
+      "code_shape": [
+        "AGENT_RADIUS=0.25 (~0.5 m corridor; bake + TerrainNavigationBaker)",
+        "cc95: _is_castle_entrance_arch_object — portal strip/protect even if outer_arch",
+        "cc95 entrance: pad_m=1.5; strip = 0.5m lateral corridor centered on hole; protect = strip + 0.2m lat; walkable = strip AABB + strip cells only (NOT full protect AABB carpet)",
+        "cc95 in _is_arch_gateway_terrain_object",
+        "cc22 in ALWAYS_CARVE_TERRAIN_OBJECTS; _is_curtain_arch_wall_object",
+        "cc22: near-ground pier faces outside arch lateral column; solid_occupied_fill = dilate 0.3 + per-component AABB; erase portal AABB + 2-cell moat; carve band_top = ground_y+1.0",
+        "cc22 wall footprint honors portal_protect (jambs must not reseal throat)",
+        "cc16 gatehouse expands gate_seam (not ALWAYS_CARVE) — unchanged south gate behavior"
+      ]
     },
     {
       "name": "Cc_1_00_06",
@@ -177,11 +199,33 @@
       ],
       "map_gx": 5,
       "map_gz": 60,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_06.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_06_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_1_00_06_keep_arch_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc22",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_06.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_06_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "accepted_out": "D:/1/2026-7-17 18-20-40 cc106-reg4",
+      "accepted_glb": "D:/1/2026-7-17 18-20-40 cc106-reg4/Cc_1_00_06.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 18-20-40 cc106-reg4/regions/Cc_1_00_06_regions.glb",
+      "notes": "Keep arch (cc22 only, no cc95): open keep-grade mouth without wiping pier footprints. Accepted bake: 18-20-40 cc106-reg4. Thin 2.5m corridor + 2.5m bridge lift + 3.0m through-pad; pier solid outside lateral column.",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS=cc22 → _is_castle_entrance_arch_object(cc22) + arch_gateway hole detect",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall carve until after arch portals (portal_protect)",
+        "Entrance strip: pad from ARCH_PORTAL_PAD (3.0); lateral corridor ENTRANCE_CORRIDOR_WIDTH (2.5) centered on hole",
+        "Protect = strip + 0.2m lat + dilate portal_cell*2 (thin — wide moat wiped whole ALWAYS_CARVE footprints)",
+        "Keep-grade bridge_y: kit walkable deck in hole if present, else terrain + ENTRANCE_BRIDGE_LIFT (2.5)",
+        "cc22: pier-wing solid_occupied_fill outside portal lateral column (same path as sibling-of-cc95); do NOT skip pier carve for entrance cc22",
+        "When ENTRANCE_ARCH_KITS set: all object wall footprints honor portal_protect/AABB (narrow corridor only)",
+        "Entrance strip restamp after ALWAYS_CARVE flush",
+        "Preview GLB: skip object meshes with pivot >500m below sampled ground (PREVIEW_OBJECT_MAX_DEPTH_BELOW_GROUND)"
+      ]
     },
     {
       "name": "Cc_1_00_07",
@@ -195,8 +239,8 @@
       "map_gz": 73,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_07.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_07_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_07.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_07_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -211,8 +255,8 @@
       "map_gz": 74,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_08.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_08_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_08.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_08_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -225,11 +269,27 @@
       ],
       "map_gx": 47,
       "map_gz": 77,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_00_09.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_00_09_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_1_00_09_undercroft_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0",
+        "NAV_EXPERIMENT_ALWAYS_CARVE_MAX_AREA": "8",
+        "NAV_EXPERIMENT_ALWAYS_CARVE_DILATE_MAX_AREA": "8"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_00_09.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_00_09_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "accepted_out": "D:/1/2026-7-17 20-29-24 cc109-undercroft-v2",
+      "accepted_glb": "D:/1/2026-7-17 20-29-24 cc109-undercroft-v2/Cc_1_00_09.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-29-24 cc109-undercroft-v2/regions/Cc_1_00_09_regions.glb",
+      "notes": "Keep undercroft: same code_shape as Cc_1_hr_occ02 (large-kit ALWAYS_CARVE skip, shell peel, deep-bailey grade welds) plus tighter area caps — cc* keep shells are denser than hrz* so the 25 m² default still dilated cc08/cc37 into the undercroft. CASTLE_BRIDGE_GAP=6. Outer curtain arches (cc19/21/22) remain OUTER-skipped (archway patch is a separate profile).",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "Shares undercroft carve/weld code_shape with cc_1_hr_occ02_archways_undercroft_v1 (large-kit ALWAYS_CARVE skip, shell peel, small-hole fill, deep-bailey grade welds)",
+        "ALWAYS_CARVE_MAX_AREA=8 and ALWAYS_CARVE_DILATE_MAX_AREA=8 (tighter than hr_occ02 defaults) so dense cc08/cc37/cc03 shells use wall footprint / no dilate",
+        "CASTLE_BRIDGE_GAP=6.0",
+        "Do not promote outer curtain arches via full ENTRANCE_ARCH_KITS on this profile unless intentionally opening field↔bailey"
+      ]
     },
     {
       "name": "Cc_1_hr_occ00",
@@ -246,8 +306,8 @@
       "map_gz": 14,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_hr_occ00_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -265,8 +325,8 @@
       "map_gz": 32,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ01_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_hr_occ01_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -282,11 +342,33 @@
       ],
       "map_gx": 52,
       "map_gz": 36,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ02.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ02_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_1_hr_occ02_archways_undercroft_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_hr_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_hr_occ02_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "accepted_out": "D:/1/2026-7-17 19-25-45 cc1hr02-undercroft-final",
+      "accepted_glb": "D:/1/2026-7-17 19-25-45 cc1hr02-undercroft-final/Cc_1_hr_occ02.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 19-25-45 cc1hr02-undercroft-final/regions/Cc_1_hr_occ02_regions.glb",
+      "notes": "Archway mouths open (full kit allowlist as ENTRANCE_ARCH_KITS) + keep undercroft less sealed. ALWAYS_CARVE dilate/room-fill on large keep shells (hrz08/hrz23) was carving the walkable undercroft solid; large non-arch kits now use wall footprint only. Grade-island welds also stitch deep bailey (roof-inset) not only through portals. Floor still patchy vs ideal continuous undercroft — accepted as interim improvement over baseline/archways-only.",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS = user arch list + cc95; CURTAIN_ARCH_WALL_OBJECTS = cc17/19/21/22/54 + hrt_wall1/3",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this tile only — do NOT default that list globally (regress Cc_2_hr outer mouths/ramparts)",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect on wall stamps; entrance strip restamp",
+        "Large non-arch/non-rock/non-curtain kits (>25 m² steep footprint): skip ALWAYS_CARVE flush, mid-loop wall footprint only (NAV_EXPERIMENT_ALWAYS_CARVE_MAX_AREA)",
+        "ALWAYS_CARVE opening_aware (non-preserve): exterior-shell peel (shell_depth~1.2); no dilate if shell area >25 m²; small-hole fill only (not room flood-fill)",
+        "preserve_openings arch kits: still flood-fill closed pockets after tight seal",
+        "Grade-island floor welds: through portal OR deep roof-inset bailey (no LoS) OR clear LoS when no portals",
+        "CASTLE_BRIDGE_GAP=6.0 for this profile (baseline implicit default remains 4.0)"
+      ]
     },
     {
       "name": "Cc_1_hr_occ03",
@@ -301,11 +383,29 @@
       ],
       "map_gx": 76,
       "map_gz": 52,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ03.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ03_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_hr_occ03.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_hr_occ03_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_1_hr_occ03.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_1_hr_occ03_regions.glb"
     },
     {
       "name": "Cc_1_hr_occ04",
@@ -322,8 +422,8 @@
       "map_gz": 52,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_1_hr_occ04.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_1_hr_occ04_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_1_hr_occ04.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_1_hr_occ04_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -338,8 +438,8 @@
       "map_gz": 51,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_00_regions.glb",
       "status_rim_deck": "merged_rim_deck"
     },
     {
@@ -352,11 +452,29 @@
       ],
       "map_gx": 22,
       "map_gz": 51,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_01_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_01_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_2_00_01.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_2_00_01_regions.glb"
     },
     {
       "name": "Cc_2_00_02",
@@ -370,8 +488,8 @@
       "map_gz": 53,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_02.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_02_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_02.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_02_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -384,11 +502,29 @@
       ],
       "map_gx": 49,
       "map_gz": 55,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_03.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_03_regions.glb",
-      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_03.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_03_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_2_00_03.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_2_00_03_regions.glb"
     },
     {
       "name": "Cc_2_00_04",
@@ -402,8 +538,8 @@
       "map_gz": 55,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_04.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_04_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_04.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_04_regions.glb",
       "status_rim_deck": "needs_review_rim_empty_or_sparse"
     },
     {
@@ -418,9 +554,20 @@
       "map_gz": 61,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_05.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_05_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_05.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_05_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env (no ENTRANCE_ARCH_KITS)",
+      "notes": "Reverted from cc_archways_v1: full ENTRANCE_ARCH_KITS promoted outer curtain arches (outer_skipped=0) and fused field↔bailey into 1–2 regions. Baseline keeps OUTER skip so internal vs external stay isolated (Cc_2_00_05=5 regions, Cc_2_hr_occ00=7). Do not re-apply full archway ENTRANCE list on these groups.",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "No NAV_EXPERIMENT_ENTRANCE_ARCH_KITS — outer curtain arches stay OUTER-skipped",
+        "Internal bailey arches (non-outer) still get portal strip/protect via ARCHWAY_TERRAIN_OBJECTS",
+        "Do NOT set full archway ENTRANCE_ARCH_KITS here (regress field↔bailey / rampart isolation)"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline",
+      "accepted_glb": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline/Cc_2_00_05.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline/regions/Cc_2_00_05_regions.glb"
     },
     {
       "name": "Cc_2_00_06",
@@ -434,8 +581,8 @@
       "map_gz": 64,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_06.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_06_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_06.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_06_regions.glb",
       "status_rim_deck": "needs_review_rim_empty_or_sparse"
     },
     {
@@ -450,8 +597,8 @@
       "map_gz": 66,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_07.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_07_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_07.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_07_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -464,11 +611,29 @@
       ],
       "map_gx": 50,
       "map_gz": 70,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_08.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_08_regions.glb",
-      "status_rim_deck": "needs_review_rim_empty_or_sparse"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_08.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_08_regions.glb",
+      "status_rim_deck": "needs_review_rim_empty_or_sparse",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_2_00_08.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_2_00_08_regions.glb"
     },
     {
       "name": "Cc_2_00_09",
@@ -480,11 +645,29 @@
       ],
       "map_gx": 27,
       "map_gz": 74,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_00_09.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_00_09_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_00_09.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_00_09_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_2_00_09.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_2_00_09_regions.glb"
     },
     {
       "name": "Cc_2_hr_occ00",
@@ -501,9 +684,20 @@
       "map_gz": 24,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ00_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_hr_occ00_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env (no ENTRANCE_ARCH_KITS)",
+      "notes": "Reverted from cc_archways_v1: full ENTRANCE_ARCH_KITS promoted outer curtain arches (outer_skipped=0) and fused field↔bailey into 1–2 regions. Baseline keeps OUTER skip so internal vs external stay isolated (Cc_2_00_05=5 regions, Cc_2_hr_occ00=7). Do not re-apply full archway ENTRANCE list on these groups.",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "No NAV_EXPERIMENT_ENTRANCE_ARCH_KITS — outer curtain arches stay OUTER-skipped",
+        "Internal bailey arches (non-outer) still get portal strip/protect via ARCHWAY_TERRAIN_OBJECTS",
+        "Do NOT set full archway ENTRANCE_ARCH_KITS here (regress field↔bailey / rampart isolation)"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline",
+      "accepted_glb": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline/Cc_2_hr_occ00.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-36-35 cc2-iso-baseline/regions/Cc_2_hr_occ00_regions.glb"
     },
     {
       "name": "Cc_2_hr_occ01",
@@ -520,8 +714,8 @@
       "map_gz": 32,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ01_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_hr_occ01_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -539,8 +733,8 @@
       "map_gz": 44,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_2_hr_occ02.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_2_hr_occ02_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_2_hr_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_2_hr_occ02_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -558,8 +752,8 @@
       "map_gz": 8,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_3_hr_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_3_hr_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_3_hr_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_3_hr_occ00_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -577,8 +771,8 @@
       "map_gz": 66,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_3_hr_occ01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_3_hr_occ01_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_3_hr_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_3_hr_occ01_regions.glb",
       "status_rim_deck": "merged_rim_deck"
     },
     {
@@ -596,8 +790,8 @@
       "map_gz": 13,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph00_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph00_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_ph00_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_ph00_occ00_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -613,11 +807,29 @@
       ],
       "map_gx": 36,
       "map_gz": 33,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph01_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph01_occ00_regions.glb",
-      "status_rim_deck": "merged_rim_deck"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_ph01_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_ph01_occ00_regions.glb",
+      "status_rim_deck": "merged_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_ph01_occ00.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_ph01_occ00_regions.glb"
     },
     {
       "name": "Cc_ph02_occ00",
@@ -634,8 +846,8 @@
       "map_gz": 25,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_ph02_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_ph02_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_ph02_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_ph02_occ00_regions.glb",
       "status_rim_deck": "merged_rim_deck"
     },
     {
@@ -653,8 +865,8 @@
       "map_gz": 13,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd01_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd01_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_rd01_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_rd01_occ00_regions.glb",
       "status_rim_deck": "merged_rim_deck"
     },
     {
@@ -672,8 +884,8 @@
       "map_gz": 7,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd02_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd02_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_rd02_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_rd02_occ00_regions.glb",
       "status_rim_deck": "merged_rim_deck"
     },
     {
@@ -691,8 +903,8 @@
       "map_gz": 3,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ00.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ00_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_rd03_occ00.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_rd03_occ00_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -710,8 +922,8 @@
       "map_gz": 5,
       "param_profile": "cc_baseline_v1",
       "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ01.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ01_regions.glb",
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_rd03_occ01.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_rd03_occ01_regions.glb",
       "status_rim_deck": "split_rim_deck"
     },
     {
@@ -727,11 +939,37 @@
       ],
       "map_gx": 26,
       "map_gz": 15,
-      "param_profile": "cc_baseline_v1",
-      "env_overrides": {},
-      "golden_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/Cc_rd03_occ02.glb",
-      "golden_regions_glb": "D:/1/2026-7-16 23-21-21 cc-region-verify/regions/Cc_rd03_occ02_regions.glb",
-      "status_rim_deck": "split_rim_deck"
+      "param_profile": "cc_archways_v1",
+      "env_overrides": {
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS": "cc17,cc19,cc21,cc22,cc54,hrt_tgate1,hrt_wall1,hrt_wall3,hrz14,hrz16,hrz17,hrz19,hrz21,hrz22,hrz54",
+        "NAV_EXPERIMENT_ENTRANCE_CORRIDOR_WIDTH": "2.5",
+        "NAV_EXPERIMENT_ENTRANCE_BRIDGE_LIFT": "2.5",
+        "NAV_EXPERIMENT_ARCH_PORTAL_PAD": "3.0",
+        "NAV_EXPERIMENT_CASTLE_BRIDGE_GAP": "6.0"
+      },
+      "golden_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/Cc_rd03_occ02.glb",
+      "golden_regions_glb": "D:/1/2026-7-17 15-22-44 cc-bulk-agent-r025/regions/Cc_rd03_occ02_regions.glb",
+      "status_rim_deck": "split_rim_deck",
+      "baseline_env": "cc_baseline_v1 explicit_env + env_overrides below",
+      "notes": "Open archway mouths via ENTRANCE_ARCH_KITS allowlist (same kit list as Cc_1_hr_occ02). Accepted: D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "code_shape": [
+        "AGENT_RADIUS=0.25",
+        "ARCHWAY_TERRAIN_OBJECTS + CURTAIN_ARCH_WALL_OBJECTS (shared)",
+        "NAV_EXPERIMENT_ENTRANCE_ARCH_KITS = full archway list for this group only — do NOT default globally",
+        "When ENTRANCE_ARCH_KITS set: defer castle_terrain wall; honor portal_protect; entrance strip restamp",
+        "CASTLE_BRIDGE_GAP=6.0"
+      ],
+      "accepted_out": "D:/1/2026-7-17 20-31-24 cc-archway-batch",
+      "accepted_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/Cc_rd03_occ02.glb",
+      "accepted_regions_glb": "D:/1/2026-7-17 20-31-24 cc-archway-batch/regions/Cc_rd03_occ02_regions.glb"
     }
-  ]
+  ],
+  "verified_restore_out": "D:/1/2026-7-17 18-09-05 cc-bulk-restore-r025",
+  "verified_restore_regions": "D:/1/2026-7-17 18-09-05 cc-bulk-restore-r025/regions",
+  "prior_golden_out": "D:/1/2026-7-16 23-21-21 cc-region-verify",
+  "agent_radius_m": 0.25,
+  "agent_corridor_width_m": 0.5,
+  "bake_script_note": "Baseline: Tools/bake_and_export_single_nav.gd = git HEAD + AGENT_RADIUS=0.25. Cc_1_00_05: cc_1_00_05_east_arch_v1 (cc95/cc22). Cc_1_00_06: cc_1_00_06_keep_arch_v1 (ENTRANCE_ARCH_KITS=cc22 + env_overrides). Cc_1_00_09: cc_1_00_09_undercroft_v1 (tighter ALWAYS_CARVE area caps + bridge gap 6). Cc_1_hr_occ02: cc_1_hr_occ02_archways_undercroft_v1 (full archway ENTRANCE_ARCH_KITS + undercroft ALWAYS_CARVE/weld). Do not enable castle-wide OUTER→entrance promote / do not default full ARCHWAY list as entrance (regress Cc_2_hr_occ00 ramparts). Tuned archway groups use cc_archways_v1 (ENTRANCE_ARCH_KITS full list). Cc_2_00_05 and Cc_2_hr_occ00 stay on cc_baseline_v1 (OUTER skip); full ENTRANCE_ARCH_KITS fused internal/external.",
+  "colorize_script": "Tools/colorize_nav_regions.py",
+  "colorize_note": "regions/*.glb keep bake side-by-side: Ground+Objects_* left, colored nav regions right"
 }

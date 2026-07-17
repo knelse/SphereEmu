@@ -1,4 +1,8 @@
-"""Colorize a baked nav preview GLB: each connected nav component gets a distinct color."""
+"""Colorize a baked nav preview GLB: each connected nav component gets a distinct color.
+
+Preserves the bake's side-by-side layout: terrain + objects on the left, colored
+nav regions on the right (same offsets as the source Navigation meshes).
+"""
 
 from __future__ import annotations
 
@@ -8,6 +12,19 @@ from pathlib import Path
 
 import numpy as np
 import trimesh
+
+# Left half of bake_and_export_single_nav.gd side-by-side exports.
+TERRAIN_OBJECT_NODES = (
+    "Ground",
+    "Objects_plant",
+    "Objects_rock",
+    "Objects_other",
+    "Objects",
+    "Terrain",
+)
+
+# Right half — nav source meshes to colorize by connected component.
+NAV_NODES = ("Navigation", "Navigation_Object")
 
 
 def color_for_index(i: int) -> np.ndarray:
@@ -34,27 +51,56 @@ def color_for_index(i: int) -> np.ndarray:
     return np.array([rgb[0], rgb[1], rgb[2], 255], dtype=np.uint8)
 
 
+def _world_mesh(scene_in: trimesh.Scene, node: str):
+    try:
+        T, geom = scene_in.graph.get(node)
+    except Exception:
+        return None
+    if geom is None:
+        return None
+    m = scene_in.geometry[geom]
+    if not hasattr(m, "faces") or len(m.faces) == 0:
+        return None
+    v = np.asarray(m.vertices, dtype=np.float64)
+    f = np.asarray(m.faces, dtype=np.int64)
+    vw = (T @ np.hstack([v, np.ones((len(v), 1))]).T).T[:, :3]
+    return vw, f, m
+
+
+def _copy_visual(src_mesh: trimesh.Trimesh, dst: trimesh.Trimesh) -> None:
+    """Best-effort copy of materials/colors from the bake mesh."""
+    try:
+        if (
+            hasattr(src_mesh.visual, "material")
+            and src_mesh.visual.material is not None
+        ):
+            dst.visual.material = src_mesh.visual.material
+        if (
+            hasattr(src_mesh.visual, "face_colors")
+            and src_mesh.visual.face_colors is not None
+        ):
+            fc = np.asarray(src_mesh.visual.face_colors)
+            if len(fc) == len(dst.faces):
+                dst.visual.face_colors = fc.copy()
+        elif (
+            hasattr(src_mesh.visual, "vertex_colors")
+            and src_mesh.visual.vertex_colors is not None
+        ):
+            vc = np.asarray(src_mesh.visual.vertex_colors)
+            if len(vc) == len(dst.vertices):
+                dst.visual.vertex_colors = vc.copy()
+    except Exception:
+        pass
+
+
 def colorize(src: Path, out: Path) -> int:
     scene_in = trimesh.load(str(src), force="scene")
 
-    def world_mesh(node: str):
-        T, geom = scene_in.graph.get(node)
-        if geom is None:
-            return None
-        m = scene_in.geometry[geom]
-        v = np.asarray(m.vertices, dtype=np.float64)
-        f = np.asarray(m.faces, dtype=np.int64)
-        vw = (T @ np.hstack([v, np.ones((len(v), 1))]).T).T[:, :3]
-        return vw, f
-
     parts = []
-    for name in ("Navigation", "Navigation_Object"):
-        try:
-            got = world_mesh(name)
-        except Exception:
-            got = None
+    for name in NAV_NODES:
+        got = _world_mesh(scene_in, name)
         if got is not None:
-            parts.append(got)
+            parts.append((got[0], got[1]))
     if not parts:
         raise RuntimeError(f"No Navigation meshes in {src}")
 
@@ -115,6 +161,34 @@ def colorize(src: Path, out: Path) -> int:
 
     roots = sorted(comp_area.keys(), key=lambda r: -comp_area[r])
     scene_out = trimesh.Scene()
+
+    # Left: terrain + objects (same world frame / side-by-side offset as the bake).
+    terrain_added = 0
+    for name in TERRAIN_OBJECT_NODES:
+        got = _world_mesh(scene_in, name)
+        if got is None:
+            continue
+        vw, f, src_mesh = got
+        mesh = trimesh.Trimesh(vertices=vw, faces=f, process=False)
+        _copy_visual(src_mesh, mesh)
+        scene_out.add_geometry(mesh, node_name=name, geom_name=name)
+        terrain_added += 1
+
+    # Also pull any other non-nav geometry (future bake node names).
+    known = set(TERRAIN_OBJECT_NODES) | set(NAV_NODES)
+    for node in scene_in.graph.nodes_geometry:
+        if node in known:
+            continue
+        got = _world_mesh(scene_in, node)
+        if got is None:
+            continue
+        vw, f, src_mesh = got
+        mesh = trimesh.Trimesh(vertices=vw, faces=f, process=False)
+        _copy_visual(src_mesh, mesh)
+        label = str(node)
+        scene_out.add_geometry(mesh, node_name=label, geom_name=label)
+        terrain_added += 1
+
     for i, r in enumerate(roots):
         tris = comp_tris[r]
         used = sorted({int(vi) for ti in tris for vi in F[ti]})
@@ -138,6 +212,8 @@ def colorize(src: Path, out: Path) -> int:
 
     out.parent.mkdir(parents=True, exist_ok=True)
     scene_out.export(str(out))
+    if terrain_added == 0:
+        print(f"warning: no terrain/object meshes found in {src}; regions-only export")
     return len(roots)
 
 

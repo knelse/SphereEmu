@@ -62,7 +62,7 @@ if ($Out) {
 Write-Host "Godot: $godot"
 Write-Host "Groups: $($Groups -join ', ')"
 Write-Host "Fill allowlist: Town_ph00 only (baseline for all other towns)"
-Write-Host "Mode: $(if ($BakeOnly) { 'bake-only (.res)' } elseif ($GlbOnly) { "GLB only → $Out" } else { ".res + GLB → $Out" })"
+Write-Host "Mode: $(if ($GlbOnly) { "GLB only → $Out" } else { 'bake-only (.res → GeneratedNavMeshes)' })"
 
 $failed = 0
 foreach ($g in $Groups) {
@@ -75,16 +75,15 @@ foreach ($g in $Groups) {
     $args = @("--path", ".", "--headless", "-s", "Tools/bake_and_export_single_nav.gd", "--") + $tiles + @(
         "--combined", "--combined-name", $g
     )
-    if ($BakeOnly) {
-        $args += "--bake-only"  # implies --write-res
+    if ($BakeOnly -or -not $GlbOnly) {
+        # Production default: .res only (no GLB). -GlbOnly opts into preview export.
+        $args += "--bake-only"
     }
-    elseif (-not $GlbOnly) {
-        # Full bake: write production .res from the 2x2 mesh AND export preview GLB.
-        $args += "--write-res"
-    }
-    # -GlbOnly: preview GLB only (does not clobber GeneratedNavMeshes/*.res)
-    if ($Out -and -not $BakeOnly) {
+    if ($GlbOnly -and $Out) {
         $args += @("--out", $Out)
+    }
+    elseif ($Out -and -not $BakeOnly -and -not $GlbOnly) {
+        # Logs-only out dir unused by --bake-only; keep for caller convenience.
     }
 
     Write-Host ""
