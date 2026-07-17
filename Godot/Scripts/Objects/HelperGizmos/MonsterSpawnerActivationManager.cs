@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
-using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
-using SphServer.Sphere.Game.WorldObject;
-using static SphServer.Helpers.PoiType;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
@@ -18,8 +15,6 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 /// </summary>
 public static class MonsterSpawnerActivationManager
 {
-    private const float DebugTownActivationRadiusMeters = 100f;
-
     private static readonly object GridLock = new();
     private static readonly Dictionary<(int CellX, int CellZ), List<MonsterSpawner>> Grid = new();
 

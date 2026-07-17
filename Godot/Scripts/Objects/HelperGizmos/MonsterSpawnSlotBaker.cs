@@ -11,8 +11,9 @@ namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
 ///     Pre-bakes validated outdoor spawn slots against the baked navmesh (see
-///     <see cref="TerrainNavMeshRuntime" />). Candidate generation still samples the walk-surface atlas (cheap
-///     raster of the whole map, good for spreading candidates); the navmesh is only the walkability authority.
+///     <see cref="TerrainNavMeshRuntime" />). The navmesh is the sole walkability/height authority.
+///     Candidate XZ seeding uses a loose grid (and optionally the walk-surface atlas when present for denser
+///     spread); atlas ground height is never used for placement.
 /// </summary>
 public static class MonsterSpawnSlotBaker
 {
@@ -20,12 +21,8 @@ public static class MonsterSpawnSlotBaker
     /// <summary>
     ///     Synchronous entry point for callers that cannot await (the runtime respawn path in
     ///     <c>MonsterSpawner.DeleteAndRespawnAllMobs</c>, which holds a lock). Registers this spawner's tiles
-    ///     with <see cref="TerrainNavMeshRuntime" /> but does not wait out the physics-frame sync those tiles
-    ///     may need - by the time gameplay runs this path, the spawner has almost always already been baked
-    ///     once via <see cref="BakeForSpawnerAsync" /> (editor time), so its tiles are already loaded and
-    ///     synced. If they somehow aren't yet, this just finds fewer/no candidates and reports the existing
-    ///     "insufficient walkable candidates" failure instead of crashing (see
-    ///     <see cref="TerrainNavMeshRuntime.IsReadyForQueries" />).
+    ///     and force-flushes the nav map via <see cref="TerrainNavMeshRuntime.TrySyncImmediate" /> (no physics
+    ///     frame wait under the lock). Prefer <see cref="BakeForSpawnerAsync" /> from editor tools.
     /// </summary>
     public static int BakeForSpawner(MonsterSpawner spawner)
     {
@@ -36,6 +33,9 @@ public static class MonsterSpawnSlotBaker
         }
 
         PreloadCachesForJob(spawner, job.Value);
+        TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Value.Origin, job.Value.SpawnRadiusMeters + 1f);
+        // Cannot await physics frames under the respawn lock - force-flush instead.
+        TerrainNavMeshRuntime.TrySyncImmediate();
         var result = BakeCore(job.Value);
         return ApplyBakeResult(spawner, job.Value, result);
     }
@@ -60,8 +60,20 @@ public static class MonsterSpawnSlotBaker
         {
             await TerrainNavMeshRuntime.SyncAsync(tree);
         }
+        else
+        {
+            TerrainNavMeshRuntime.TrySyncImmediate();
+        }
 
         var result = BakeCore(job.Value);
+        // One retry: a lost race with nav map sync used to look like a permanently invalid spawner.
+        if (!result.Success && tree is not null && LooksLikeTransientNavSyncFailure(result))
+        {
+            TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Value.Origin, job.Value.SpawnRadiusMeters + 1f);
+            await TerrainNavMeshRuntime.SyncAsync(tree, force: true);
+            result = BakeCore(job.Value);
+        }
+
         return ApplyBakeResult(spawner, job.Value, result);
     }
 
@@ -93,12 +105,11 @@ public static class MonsterSpawnSlotBaker
             return 0;
         }
 
-        if (!WalkSurfaceCache.HasAnyChunkFiles() || !TerrainNavMeshRuntime.HasAnyTileFiles())
+        if (!TerrainNavMeshRuntime.HasAnyTileFiles())
         {
-            var missing = !WalkSurfaceCache.HasAnyChunkFiles() ? "no walk atlas" : "no navigation mesh tiles baked";
             foreach (var (spawner, job) in work)
             {
-                ApplyBakeResult(spawner, job, new SpawnerBakeResult { FailureDetail = missing });
+                ApplyBakeResult(spawner, job, new SpawnerBakeResult { FailureDetail = "no navigation mesh tiles baked" });
             }
 
             GD.Print($"MonsterSpawnSlotBaker: baked 0 slot(s) across {work.Count} spawner(s), {work.Count} ERROR.");
@@ -118,10 +129,44 @@ public static class MonsterSpawnSlotBaker
         {
             await TerrainNavMeshRuntime.SyncAsync(tree);
         }
+        else
+        {
+            TerrainNavMeshRuntime.TrySyncImmediate();
+        }
 
         // Pass 2: validate/spread/pick against the now-synced navmesh map.
         var results = new SpawnerBakeResult[work.Count];
         Parallel.For(0, work.Count, index => results[index] = BakeCore(work[index].Job));
+
+        // Retry only the spawners that look like a transient nav-sync miss (same spawner often succeeds
+        // on a second bake once the map has finished synchronizing).
+        if (tree is not null)
+        {
+            var retryIndexes = new List<int>();
+            for (var i = 0; i < results.Length; i++)
+            {
+                if (!results[i].Success && LooksLikeTransientNavSyncFailure(results[i]))
+                {
+                    retryIndexes.Add(i);
+                }
+            }
+
+            if (retryIndexes.Count > 0)
+            {
+                foreach (var index in retryIndexes)
+                {
+                    var (spawner, job) = work[index];
+                    TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Origin, job.SpawnRadiusMeters + 1f);
+                }
+
+                await TerrainNavMeshRuntime.SyncAsync(tree, force: true);
+                Parallel.For(0, retryIndexes.Count, r =>
+                {
+                    var index = retryIndexes[r];
+                    results[index] = BakeCore(work[index].Job);
+                });
+            }
+        }
 
         var slotCount = 0;
         var errors = 0;
@@ -138,25 +183,31 @@ public static class MonsterSpawnSlotBaker
         return slotCount;
     }
 
+    private static bool LooksLikeTransientNavSyncFailure(SpawnerBakeResult result)
+    {
+        var detail = result.FailureDetail ?? string.Empty;
+        // Total wipeout NotWalkable is the sync-race signature; partial fills are real geometry limits.
+        return detail.Contains("navigation map not synced", StringComparison.Ordinal)
+               || (result.FoundCount == 0
+                   && detail.Contains(
+                       nameof(OutdoorSpawnSlotValidator.FailReason.NotWalkable),
+                       StringComparison.Ordinal));
+    }
+
     internal static SpawnerBakeResult BakeCore(SpawnerBakeParams job)
     {
-        if (!WalkSurfaceCache.HasAnyChunkFiles())
+        if (!TerrainNavMeshRuntime.HasAnyTileFiles())
         {
-            return new SpawnerBakeResult { FailureDetail = "no walk atlas" };
+            return new SpawnerBakeResult { FailureDetail = "no navigation mesh tiles baked" };
         }
 
-        if (!WalkSurfaceCache.HasWalkableField)
+        if (!TerrainNavMeshRuntime.IsReadyForQueries)
         {
             return new SpawnerBakeResult
             {
                 FailureDetail =
-                    "no walkable cells near spawner — rebake walk surface (--objects-only or --convert-chunks --force)",
+                    "navigation map not synced yet (transient — retry bake; not an invalid spawner)",
             };
-        }
-
-        if (!TerrainNavMeshRuntime.HasAnyTileFiles())
-        {
-            return new SpawnerBakeResult { FailureDetail = "no navigation mesh tiles baked" };
         }
 
         var bakeContext = SpawnSlotBakeContext.Create(job.Origin, job.SpawnRadiusMeters);
@@ -235,7 +286,11 @@ public static class MonsterSpawnSlotBaker
     private static void PreloadCachesForJob(MonsterSpawner spawner, SpawnerBakeParams job)
     {
         var preloadRadius = job.SpawnRadiusMeters + 1f;
-        WalkSurfaceCache.PreloadChunksForRadius(job.Origin.X, job.Origin.Z, preloadRadius);
+        if (WalkSurfaceCache.HasAnyChunkFiles())
+        {
+            WalkSurfaceCache.PreloadChunksForRadius(job.Origin.X, job.Origin.Z, preloadRadius);
+        }
+
         if (OutdoorNavCache.HasAnyNavFiles())
         {
             OutdoorNavCache.PreloadForRadius(job.Origin.X, job.Origin.Z, preloadRadius);
@@ -269,28 +324,34 @@ public static class MonsterSpawnSlotBaker
 
         AddLooseGridSamples(job.Origin.X, job.Origin.Z, job.SpawnRadiusMeters, job.Origin, radiusSq, samples, seen);
 
-        var atlasCandidates = new List<(float X, float Z, float Y)>();
-        WalkSurfaceCache.CollectWalkableCandidates(
-            job.Origin.X,
-            job.Origin.Z,
-            job.SpawnRadiusMeters,
-            atlasCandidates);
-        foreach (var (x, z, _) in atlasCandidates)
+        if (WalkSurfaceCache.HasAnyChunkFiles())
         {
-            AddSample(x, z, job.Origin, radiusSq, samples, seen);
+            var atlasCandidates = new List<(float X, float Z, float Y)>();
+            WalkSurfaceCache.CollectWalkableCandidates(
+                job.Origin.X,
+                job.Origin.Z,
+                job.SpawnRadiusMeters,
+                atlasCandidates);
+            foreach (var (x, z, _) in atlasCandidates)
+            {
+                AddSample(x, z, job.Origin, radiusSq, samples, seen);
+            }
         }
 
         if (bakeContext.HasWalkAnchor)
         {
-            var anchorCandidates = new List<(float X, float Z, float Y)>();
-            WalkSurfaceCache.CollectWalkableCandidates(
-                bakeContext.WalkAnchor.X,
-                bakeContext.WalkAnchor.Z,
-                job.SpawnRadiusMeters,
-                anchorCandidates);
-            foreach (var (x, z, _) in anchorCandidates)
+            if (WalkSurfaceCache.HasAnyChunkFiles())
             {
-                AddSample(x, z, job.Origin, radiusSq, samples, seen);
+                var anchorCandidates = new List<(float X, float Z, float Y)>();
+                WalkSurfaceCache.CollectWalkableCandidates(
+                    bakeContext.WalkAnchor.X,
+                    bakeContext.WalkAnchor.Z,
+                    job.SpawnRadiusMeters,
+                    anchorCandidates);
+                foreach (var (x, z, _) in anchorCandidates)
+                {
+                    AddSample(x, z, job.Origin, radiusSq, samples, seen);
+                }
             }
 
             AddLooseGridSamples(
@@ -402,13 +463,9 @@ public static class MonsterSpawnSlotBaker
         List<Vector3> picked,
         ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
     {
-        // The atlas ground-Y lookup is only a placeholder here: OutdoorSpawnSlotValidator ignores
-        // candidate.Y entirely (it probes the navmesh at spawnerOrigin.Y and returns the navmesh's own
-        // snapped Y on success), so a missing/holey atlas sample must never block a candidate from
-        // reaching the navmesh check - the navmesh, not the atlas, is the walkability authority here.
-        // Falling back to the spawner's own Y keeps the placeholder harmless either way.
-        var groundY = TryResolveCandidateGroundY(x, z, out var atlasGroundY) ? atlasGroundY : job.Origin.Y;
-        var candidate = new Vector3(x, groundY, z);
+        // Placeholder Y only: OutdoorSpawnSlotValidator ignores candidate.Y and probes the navmesh at
+        // spawnerOrigin.Y, returning the navmesh-snapped Y on success.
+        var candidate = new Vector3(x, job.Origin.Y, z);
         if (!IsSeparated(candidate, picked, OutdoorFieldConfig.MinSlotSeparationMeters))
         {
             return;
@@ -428,16 +485,6 @@ public static class MonsterSpawnSlotBaker
 
         validated.Add(refinedCandidate);
         picked.Add(refinedCandidate);
-    }
-
-    private static bool TryResolveCandidateGroundY(float x, float z, out float groundY)
-    {
-        if (WalkSurfaceCache.TrySampleWalkableGround(x, z, out groundY) && !float.IsNaN(groundY))
-        {
-            return true;
-        }
-
-        return WalkSurfaceCache.TrySampleGround(x, z, out groundY) && !float.IsNaN(groundY);
     }
 
     private static void MarkBakeFailure(

@@ -8,25 +8,25 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame;
 
-public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private const double MovementBroadcastDelta = 0.1;
 
-    private readonly SphereTimer FifteenSecondPing = new (15, true,
+    private readonly SphereTimer FifteenSecondPing = new(15, true,
         () => streamPeerTcp.PutData(CommonPackets.FifteenSecondPing(localId)));
 
     private readonly SphereTimer SixSecondPing =
-        new (6, true, () => streamPeerTcp.PutData(CommonPackets.SixSecondPing(localId)));
+        new(6, true, () => streamPeerTcp.PutData(CommonPackets.SixSecondPing(localId)));
 
     private readonly SphereTimer ThreeSecondPing =
-        new (3, true, () => streamPeerTcp.PutData(CommonPackets.TransmissionEndPacket));
+        new(3, true, () => streamPeerTcp.PutData(CommonPackets.TransmissionEndPacket));
 
     private ushort counter;
     private string? pingPreviousClientPingString;
     private bool pingShouldXorTopBit;
 
-    public async Task Handle (double delta)
+    public async Task Handle(double delta)
     {
         // TODO: rewrite without hex strings
         var clientPingBytesForComparison = clientConnection.ReceiveBuffer[17..55];
@@ -58,15 +58,17 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
                 var currentCharacter = clientConnection.GetSelectedCharacter();
                 if (currentCharacter is not null && Math.Abs(coords.x - currentCharacter.X) < 100000)
                 {
-                    if (MovementDeltaExceedsThreshold(coords, currentCharacter))
-                    {
-                        clientConnection.EnqueueClientEvent(new CurrentClientPositionChangedEvent());
-                    }
-
+                    var moved = MovementDeltaExceedsThreshold(coords, currentCharacter);
                     currentCharacter.X = coords.x;
                     currentCharacter.Y = -coords.y;
                     currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
+
+                    // Enqueue after updating coords so proximity/visibility handlers see the new position.
+                    if (moved)
+                    {
+                        clientConnection.EnqueueClientEvent(new CurrentClientPositionChangedEvent());
+                    }
                 }
 
                 pingPreviousClientPingString = clientPingBinaryStr;
@@ -82,9 +84,9 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
 
         if (counter == 0)
         {
-            var first = (ushort) ((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
+            var first = (ushort)((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
             first -= 0xE001;
-            counter = (ushort) (0xE001 + first / 12);
+            counter = (ushort)(0xE001 + first / 12);
         }
 
         var pong = new byte[]
@@ -106,14 +108,14 @@ public class PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientCon
         }
     }
 
-    public async Task Keepalive (double delta)
+    public async Task Keepalive(double delta)
     {
         FifteenSecondPing.Tick(delta);
         SixSecondPing.Tick(delta);
         ThreeSecondPing.Tick(delta);
     }
 
-    private static bool MovementDeltaExceedsThreshold (WorldCoords coords, CharacterDbEntry character)
+    private static bool MovementDeltaExceedsThreshold(WorldCoords coords, CharacterDbEntry character)
     {
         // Y and Z coords are negated for Godot
         return Math.Abs(coords.x - character.X) > MovementBroadcastDelta

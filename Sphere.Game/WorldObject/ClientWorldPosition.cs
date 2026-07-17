@@ -33,5 +33,15 @@ public static class ClientWorldPosition
 	}
 
 	private static Vector3 ResolveGodotWorldPosition(SphereClient client, CharacterDbEntry character)
-		=> character.Origin;
+	{
+		// Prefer the live Node3D pose when the client is in the scene tree — Character.Origin can lag a
+		// packet behind (or still hold pre-login DB values) while GlobalPosition is kept current by
+		// SphereClient.UpdateCoordinatesInWorld. Fall back to Origin when the node is not in the tree yet.
+		if (client.IsInsideTree())
+		{
+			return client.GlobalPosition;
+		}
+
+		return character.Origin;
+	}
 }

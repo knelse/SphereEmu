@@ -17,6 +17,7 @@ using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking;
@@ -57,6 +58,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 sphereClient.InitializeInteractions();
                 interactionWithOtherObjectsInitialized = true;
                 sphereClient.UpdateCoordinatesInWorld();
+                MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
             }
 

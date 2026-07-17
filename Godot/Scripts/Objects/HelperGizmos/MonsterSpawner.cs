@@ -206,7 +206,9 @@ public partial class MonsterSpawner : Node3D
 
 		lock (_spawnPlacementLock)
 		{
-			if (_spawningEnabled || HasSpawnError)
+			// SpawnPlacementInvalid means a prior activate already proved slots are unusable — retrying
+			// every proximity tick just spams warnings and never succeeds without a rebake.
+			if (_spawningEnabled || HasSpawnError || SpawnPlacementInvalid)
 			{
 				return;
 			}
@@ -420,13 +422,15 @@ public partial class MonsterSpawner : Node3D
 		var occupied = CaptureOccupiedWorldPositions();
 		if (TryBuildPlanFromBakedSlots(TargetRegularMonsterCount, TargetNamedMonsterCount, occupied, out var plan))
 		{
-			if (enableSpawningOnApply)
+			SpawnPlacementInvalid = false;
+			ApplySpawnPlan(plan);
+			// Only mark activated after a successful plan apply — otherwise proximity would treat a
+			// failed first spawn as done and never retry.
+			if (enableSpawningOnApply && !SpawnPlacementInvalid)
 			{
 				_spawningEnabled = true;
 			}
 
-			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(plan);
 			return;
 		}
 
@@ -552,11 +556,8 @@ public partial class MonsterSpawner : Node3D
 	///     Re-checks a previously baked spawn slot right before actually using it to spawn a monster. Only
 	///     re-checks things that can legitimately change without a rebake (the spawner moving, another
 	///     monster already occupying/being planned for a nearby slot) - walkability itself is intentionally
-	///     *not* re-checked here: <see cref="BakedSpawnSlots" /> were already validated once against the
-	///     baked navmesh (the walkability authority - see <see cref="MonsterSpawnSlotBaker" />), and
-	///     re-checking against the walk-surface atlas here is both redundant and less reliable than that
-	///     navmesh check (the atlas can have holes/bad samples in spots that are still perfectly walkable on
-	///     the navmesh - see the AAF7 bake investigation).
+	///     *not* re-checked here: <see cref="BakedSpawnSlots" /> were already validated against the baked
+	///     navmesh (see <see cref="MonsterSpawnSlotBaker" />), which is the sole outdoor walkability authority.
 	/// </summary>
 	private bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
@@ -1005,11 +1006,9 @@ public partial class MonsterSpawner : Node3D
 
 	private Vector3 ResolveBakedSlotPosition(Vector3 bakedSlot)
 	{
-		if (MonsterSpawnGroundQuery.TryResolveSpawnGroundY(this, bakedSlot.X, bakedSlot.Z, out var groundY))
-		{
-			return new Vector3(bakedSlot.X, groundY, bakedSlot.Z);
-		}
-
+		// BakedSpawnSlots already store navmesh-snapped Y from OutdoorSpawnSlotValidator.
+		// Do not re-resolve via physics/terrain raycasts: buildings often have no roof colliders, so
+		// those queries hit bare ground and pull roof-navmesh slots down onto terrain.
 		return bakedSlot;
 	}
 

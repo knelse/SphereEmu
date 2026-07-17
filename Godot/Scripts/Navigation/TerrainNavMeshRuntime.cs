@@ -39,10 +39,9 @@ public static class TerrainNavMeshRuntime
 
     private const float HorizontalSnapToleranceMeters = 0.2f;
 
-    // Empirically (see MapGetIterationId polling in SyncAsync), a freshly-created map's "active" flag and
-    // its first region can each take more than one physics frame to actually land - one await isn't always
-    // enough despite the docs suggesting it is. Poll instead of guessing a fixed frame count.
-    private const int MaxSyncWaitFrames = 20;
+    // Upper bound while polling for MapGetIterationId to advance. Editor physics can be slow/irregular;
+    // readiness is detected from the iteration id + a probe query, not from hitting this cap.
+    private const int MaxSyncWaitFrames = 60;
 
     private static readonly ConcurrentDictionary<string, Rid> RegionsByTileKey = new();
 
@@ -143,21 +142,43 @@ public static class TerrainNavMeshRuntime
     }
 
     /// <summary>
-    ///     Awaits enough physics frames for newly-registered regions (from <see cref="EnsureTilesLoaded" />) to
-    ///     become queryable. No-op (returns immediately) if nothing new was registered since the last sync.
-    ///     Only call from a context that can await - never from inside a <c>lock</c> (see class docs).
+    ///     Waits until newly-registered regions (from <see cref="EnsureTilesLoaded" />) are actually queryable.
+    ///     No-op if nothing new was registered since the last successful sync. Only call from a context that
+    ///     can await - never from inside a <c>lock</c> (use <see cref="TrySyncImmediate" /> there instead).
     /// </summary>
     /// <remarks>
-    ///     Godot's docs say one physics frame after registering map/region changes is enough, but that's not
-    ///     reliable in practice here: a newly-created map's "active" flag and its first region can each take
-    ///     more than one physics frame to actually land (confirmed empirically via
-    ///     <c>NavigationServer3D.MapGetIterationId</c> - it can stay unchanged for 2+ frames, and even once it
-    ///     first ticks the region isn't necessarily queryable yet). We just wait a fixed, generous frame count
-    ///     instead of trying to detect "done" from iteration id.
+    ///     Godot only applies region/map changes at physics-frame sync (or via
+    ///     <see cref="NavigationServer3D.MapForceUpdate" />). A fixed frame wait is not enough: async map
+    ///     iterations can lag, and the editor may barely tick physics - both used to make spawn-slot baking
+    ///     fail intermittently on valid spawners (retry later succeeded once the map had quietly finished
+    ///     syncing). We poll <see cref="NavigationServer3D.MapGetIterationId" /> and a probe query instead.
     /// </remarks>
-    public static async Task SyncAsync(SceneTree tree)
+    /// <param name="force">
+    ///     When true, re-flush/probe even if we already marked ourselves synced. Used by bake retries after a
+    ///     false NotWalkable failure so we do not early-out while the map is still settling.
+    /// </param>
+    public static async Task SyncAsync(SceneTree tree, bool force = false)
     {
-        if (!_pendingSync && _hasEverSynced)
+        if (!_mapCreated)
+        {
+            return;
+        }
+
+        if (!force && !_pendingSync && _hasEverSynced)
+        {
+            return;
+        }
+
+        var iterationBefore = NavigationServer3D.MapGetIterationId(_map);
+        // Only require an iteration bump when new regions were registered; a forced re-probe of an already
+        // synced map may not change the id.
+        var requireIterationAdvance = _pendingSync;
+
+        // Editor tool buttons often run without a steady physics tick. Force-flush first so baking does not
+        // depend on the viewport happening to process physics frames.
+        TryForceMapUpdate();
+
+        if (TryMarkSynced(iterationBefore, requireIterationAdvance))
         {
             return;
         }
@@ -165,10 +186,101 @@ public static class TerrainNavMeshRuntime
         for (var i = 0; i < MaxSyncWaitFrames; i++)
         {
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            if (TryMarkSynced(iterationBefore, requireIterationAdvance))
+            {
+                return;
+            }
+
+            // Fallback when the editor scene tree is not advancing physics (common for @tool inspectors).
+            await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+            TryForceMapUpdate();
+            if (TryMarkSynced(iterationBefore, requireIterationAdvance))
+            {
+                return;
+            }
         }
 
-        _pendingSync = false;
-        _hasEverSynced = true;
+        TryForceMapUpdate();
+        if (!TryMarkSynced(iterationBefore, requireIterationAdvance: false))
+        {
+            GD.PushWarning(
+                "TerrainNavMeshRuntime: navigation map did not become queryable after sync wait; "
+                + "spawn-slot bake may report false NotWalkable failures.");
+        }
+    }
+
+    /// <summary>
+    ///     Best-effort synchronous sync for callers that cannot await (e.g. locked runtime respawn). Uses
+    ///     <see cref="NavigationServer3D.MapForceUpdate" />. Returns true when the map is queryable afterward.
+    /// </summary>
+    public static bool TrySyncImmediate(bool force = false)
+    {
+        if (!_mapCreated)
+        {
+            return false;
+        }
+
+        if (!force && !_pendingSync && _hasEverSynced)
+        {
+            return true;
+        }
+
+        var iterationBefore = NavigationServer3D.MapGetIterationId(_map);
+        var requireIterationAdvance = _pendingSync;
+        TryForceMapUpdate();
+        return TryMarkSynced(iterationBefore, requireIterationAdvance)
+               || TryMarkSynced(iterationBefore, requireIterationAdvance: false);
+    }
+
+    private static void TryForceMapUpdate()
+    {
+        if (!_mapCreated)
+        {
+            return;
+        }
+
+        try
+        {
+            NavigationServer3D.MapForceUpdate(_map);
+        }
+        catch (Exception ex)
+        {
+            GD.PushWarning($"TerrainNavMeshRuntime: MapForceUpdate failed ({ex.Message}); waiting on frames instead.");
+        }
+    }
+
+    private static bool TryMarkSynced(uint iterationBefore, bool requireIterationAdvance)
+    {
+        if (!_mapCreated)
+        {
+            return false;
+        }
+
+        try
+        {
+            var iteration = NavigationServer3D.MapGetIterationId(_map);
+            if (iteration == 0)
+            {
+                return false;
+            }
+
+            // New regions require a sync that advances the iteration past what we observed before waiting.
+            if (requireIterationAdvance && iterationBefore != 0 && iteration == iterationBefore)
+            {
+                return false;
+            }
+
+            // Confirms queries no longer throw "before first map synchronization".
+            _ = NavigationServer3D.MapGetClosestPoint(_map, Vector3.Zero);
+
+            _pendingSync = false;
+            _hasEverSynced = true;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -347,6 +459,8 @@ public static class TerrainNavMeshRuntime
             NavigationServer3D.MapSetUp(_map, Vector3.Up);
             NavigationServer3D.MapSetCellSize(_map, CellSize);
             NavigationServer3D.MapSetCellHeight(_map, CellHeight);
+            // Deterministic physics-frame sync: async iterations made "wait N frames" flaky for bake tools.
+            NavigationServer3D.MapSetUseAsyncIterations(_map, false);
             NavigationServer3D.MapSetActive(_map, true);
             _mapCreated = true;
         }
