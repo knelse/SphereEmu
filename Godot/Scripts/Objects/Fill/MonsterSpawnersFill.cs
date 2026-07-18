@@ -42,12 +42,22 @@ public partial class MonsterSpawnersFill : Node3D
 	[ExportToolButton("Delete and respawn enabled spawners")]
 	public Callable DeleteAndRespawnEnabledSpawnersButton => Callable.From(DeleteAndRespawnEnabledSpawners);
 
+	/// <summary>
+	///     Incremental editor bake. Prefer <c>.\Tools\bake_spawn_slots.ps1</c> for full-world runs
+	///     (headless is much faster). This button still saves the edited scene every 100 dirty spawners.
+	/// </summary>
 	[ExportToolButton("Bake spawn slots on all spawners")]
 	public Callable BakeSpawnSlotsOnAllSpawnersButton => Callable.From(BakeSpawnSlotsOnAllSpawners);
 
 	public void BakeSpawnSlotsOnAllSpawners()
 	{
-		_ = MonsterSpawnSlotBaker.BakeAllUnderAsync(this);
+		_ = MonsterSpawnSlotBaker.BakeAllUnderAsync(
+			this,
+			new SpawnSlotBakeAllSettings
+			{
+				YieldProcessFrames = true,
+				OnCheckpoint = EditorSpawnSlotBakeCheckpoint.TrySave,
+			});
 	}
 
 	public void ApplySpawnerLevelsFromMobDump()

@@ -33,17 +33,18 @@ public static class OutdoorSpawnSlotValidator
             spawner.SpawnRadiusMeters,
             spawner.LeashRadiusMeters,
             candidate,
+            fastBake: false,
             out refinedCandidate,
             out reason);
 
     /// <summary>
-    ///     <paramref name="candidate" />'s Y is only a coarse seed (from the walk-surface atlas, which can be
-    ///     wildly wrong in spots the atlas never needed to be Y-accurate before - nothing checked it
-    ///     precisely until this navmesh query existed). Probing at <paramref name="spawnerOrigin" />'s Y
-    ///     instead is far more reliable (real placement data, and terrain near a spawner rarely varies more
-    ///     than a few meters within its spawn radius); <paramref name="refinedCandidate" /> comes back with
-    ///     the navmesh's own snapped ground Y, which is authoritative.
+    ///     <paramref name="candidate" />'s Y is only a coarse seed. Probing at <paramref name="spawnerOrigin" />'s
+    ///     Y is far more reliable; <paramref name="refinedCandidate" /> comes back with the navmesh's own
+    ///     snapped ground Y, which is authoritative.
     /// </summary>
+    /// <param name="fastBake">
+    ///     Batch rebake path: single-point reject first, then a cheaper 4-point disc query.
+    /// </param>
     public static bool TryValidateCandidate(
         Vector3 spawnerOrigin,
         float spawnRadiusMeters,
@@ -51,12 +52,44 @@ public static class OutdoorSpawnSlotValidator
         Vector3 candidate,
         out Vector3 refinedCandidate,
         out FailReason reason)
+        => TryValidateCandidate(
+            spawnerOrigin,
+            spawnRadiusMeters,
+            leashRadiusMeters,
+            candidate,
+            fastBake: false,
+            out refinedCandidate,
+            out reason);
+
+    public static bool TryValidateCandidate(
+        Vector3 spawnerOrigin,
+        float spawnRadiusMeters,
+        float leashRadiusMeters,
+        Vector3 candidate,
+        bool fastBake,
+        out Vector3 refinedCandidate,
+        out FailReason reason)
     {
         reason = FailReason.None;
         refinedCandidate = candidate;
 
         var probePoint = new Vector3(candidate.X, spawnerOrigin.Y, candidate.Z);
-        if (!TerrainNavMeshRuntime.IsDiscWalkable(probePoint, OutdoorFieldConfig.MobBodyRadiusMeters, out var snapped))
+
+        // Cheap reject before the multi-point disc (batch bake especially).
+        if (fastBake && !TerrainNavMeshRuntime.IsPointOnNavMesh(probePoint, out _, refineY: false))
+        {
+            reason = FailReason.NotWalkable;
+            return false;
+        }
+
+        var discMode = fastBake
+            ? TerrainNavMeshRuntime.DiscQueryMode.BakeFast
+            : TerrainNavMeshRuntime.DiscQueryMode.Full;
+        if (!TerrainNavMeshRuntime.IsDiscWalkable(
+                probePoint,
+                OutdoorFieldConfig.MobBodyRadiusMeters,
+                discMode,
+                out var snapped))
         {
             reason = FailReason.NotWalkable;
             return false;

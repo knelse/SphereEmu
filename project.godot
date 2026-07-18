@@ -49,6 +49,8 @@ project/assembly_name="SphServer"
 
 2d/warnings/navmesh_edge_merge_errors=false
 2d/warnings/navmesh_cell_size_mismatch=false
+3d/warnings/navmesh_edge_merge_errors=false
+3d/warnings/navmesh_cell_size_mismatch=false
 
 [physics]
 

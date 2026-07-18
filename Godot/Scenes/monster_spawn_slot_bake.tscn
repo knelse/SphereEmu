@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cspawnslotbake01"]
+
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawnSlotHeadlessBake.cs" id="1"]
+
+[node name="MonsterSpawnSlotHeadlessBake" type="Node"]
+script = ExtResource("1")

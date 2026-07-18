@@ -10,3 +10,4 @@ Tools/godot.local.ps1
 logs
 sph.db
 sph-log.db
+Godot/Terrain/spawn_slot_bake_progress.json

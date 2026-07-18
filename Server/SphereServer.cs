@@ -23,6 +23,13 @@ public partial class SphereServer : Node
 
 	public override void _Ready()
 	{
+		// Headless spawn-slot bake instantiates MainServer for terrain + spawners only.
+		if (MonsterSpawnSlotHeadlessBake.IsActive)
+		{
+			ServerNode = this;
+			return;
+		}
+
 		SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
 		SphLogger.Info("Starting SphServer...");
 
@@ -39,6 +46,11 @@ public partial class SphereServer : Node
 
 	public override void _Process(double delta)
 	{
+		if (MonsterSpawnSlotHeadlessBake.IsActive || tcpServer is null)
+		{
+			return;
+		}
+
 		if (!tcpServer.IsConnectionAvailable())
 		{
 			return;

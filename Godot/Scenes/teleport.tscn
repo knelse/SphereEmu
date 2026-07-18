@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b4c83wln6qro8"]
 
-[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Teleport.cs" id="1_wk5gv"]
+[ext_resource type="Script" uid="uid://du865gt6mf4ue" path="res://Sphere.Game/WorldObject/Teleport.cs" id="1_wk5gv"]
 [ext_resource type="PackedScene" uid="uid://cktw8qd20tbms" path="res://Godot/Models/portal1.glb" id="2_q88an"]
 
 [node name="Teleport" type="Node3D" unique_id=1943050220]

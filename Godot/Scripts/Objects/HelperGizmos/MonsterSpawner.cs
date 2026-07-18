@@ -176,6 +176,12 @@ public partial class MonsterSpawner : Node3D
 			return;
 		}
 
+		// Headless spawn-slot bake loads MainServer without wanting runtime spawn/activation.
+		if (MonsterSpawnSlotHeadlessBake.IsActive)
+		{
+			return;
+		}
+
 		StripPersistedMonsters();
 		MonsterSpawnerActivationManager.Register(this);
 		if (SpawningEnabled)

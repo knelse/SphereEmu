@@ -39,9 +39,21 @@ public static class TerrainNavMeshRuntime
 
     private const float HorizontalSnapToleranceMeters = 0.2f;
 
+    // Skip the Y-refine second closest-point when the first snap is already this tight horizontally.
+    private const float SkipYRefineHorizontalToleranceMeters = HorizontalSnapToleranceMeters * 0.5f;
+
     // Upper bound while polling for MapGetIterationId to advance. Editor physics can be slow/irregular;
     // readiness is detected from the iteration id + a probe query, not from hitting this cap.
     private const int MaxSyncWaitFrames = 60;
+
+    public enum DiscQueryMode
+    {
+        /// <summary>8-point disc + Y refine (runtime / single-spawner bake).</summary>
+        Full,
+
+        /// <summary>4-point cardinal disc; skips Y refine when first snap is already tight (batch bake).</summary>
+        BakeFast,
+    }
 
     private static readonly ConcurrentDictionary<string, Rid> RegionsByTileKey = new();
 
@@ -62,6 +74,9 @@ public static class TerrainNavMeshRuntime
     /// </summary>
     public static bool IsReadyForQueries => _hasEverSynced;
 
+    /// <summary>Number of navmesh tile regions currently registered on the bake map.</summary>
+    public static int LoadedRegionCount => RegionsByTileKey.Count;
+
     public static bool HasAnyTileFiles()
     {
         var absoluteDirectory = ProjectSettings.GlobalizePath(NavMeshResourcesDirectory);
@@ -71,12 +86,7 @@ public static class TerrainNavMeshRuntime
     /// <summary>Frees every registered region and the navigation map. Call after a full nav rebake.</summary>
     public static void Invalidate()
     {
-        foreach (var region in RegionsByTileKey.Values)
-        {
-            NavigationServer3D.FreeRid(region);
-        }
-
-        RegionsByTileKey.Clear();
+        UnloadAllRegions();
 
         if (_mapCreated)
         {
@@ -85,10 +95,24 @@ public static class TerrainNavMeshRuntime
             _mapCreated = false;
         }
 
-        _hasEverSynced = false;
-        _pendingSync = false;
         _transformResolved = false;
         _tileIndex = null;
+    }
+
+    /// <summary>
+    ///     Frees registered nav regions but keeps the map + terrain transform. Used between spatial bake
+    ///     batches so the whole world is not resident in NavigationServer at once.
+    /// </summary>
+    public static void UnloadAllRegions()
+    {
+        foreach (var region in RegionsByTileKey.Values)
+        {
+            NavigationServer3D.FreeRid(region);
+        }
+
+        RegionsByTileKey.Clear();
+        _hasEverSynced = false;
+        _pendingSync = false;
     }
 
     /// <summary>
@@ -178,23 +202,22 @@ public static class TerrainNavMeshRuntime
         // depend on the viewport happening to process physics frames.
         TryForceMapUpdate();
 
-        if (TryMarkSynced(iterationBefore, requireIterationAdvance))
+        // After MapForceUpdate (async iterations disabled on this map), a successful probe is enough —
+        // waiting for MapGetIterationId to advance was stranding bake-all between regions when the id
+        // did not bump even though regions were already queryable.
+        if (TryMarkSynced(iterationBefore, requireIterationAdvance)
+            || TryMarkSynced(iterationBefore, requireIterationAdvance: false))
         {
             return;
         }
 
+        // Never await PhysicsFrame here: in the editor @tool / inspector context it can stop emitting,
+        // hanging BakeAllUnderAsync forever after the first region. ProcessFrame + ForceUpdate is enough.
         for (var i = 0; i < MaxSyncWaitFrames; i++)
         {
-            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            if (TryMarkSynced(iterationBefore, requireIterationAdvance))
-            {
-                return;
-            }
-
-            // Fallback when the editor scene tree is not advancing physics (common for @tool inspectors).
             await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
             TryForceMapUpdate();
-            if (TryMarkSynced(iterationBefore, requireIterationAdvance))
+            if (TryMarkSynced(iterationBefore, requireIterationAdvance: false))
             {
                 return;
             }
@@ -290,23 +313,35 @@ public static class TerrainNavMeshRuntime
     ///     navmesh's actual surface height, so callers get an accurate ground Y as a side effect of validation.
     /// </summary>
     public static bool IsDiscWalkable(Vector3 worldPos, float radiusMeters, out Vector3 refinedCenter)
+        => IsDiscWalkable(worldPos, radiusMeters, DiscQueryMode.Full, out refinedCenter);
+
+    public static bool IsDiscWalkable(
+        Vector3 worldPos,
+        float radiusMeters,
+        DiscQueryMode mode,
+        out Vector3 refinedCenter)
     {
         refinedCenter = worldPos;
 
-        if (!IsPointOnNavMesh(worldPos, out var snappedCenter))
+        // Center always allows Y-refine (slot height comes from this snap); ring points in BakeFast skip it.
+        if (!IsPointOnNavMesh(worldPos, out var snappedCenter, refineY: true))
         {
             return false;
         }
 
         refinedCenter = snappedCenter;
 
-        foreach (var (offsetX, offsetZ) in WalkSurfaceMobBodyDisk.Offsets)
+        var ring = mode == DiscQueryMode.BakeFast
+            ? WalkSurfaceMobBodyDisk.CardinalOffsets
+            : WalkSurfaceMobBodyDisk.Offsets;
+        var refineRingY = mode == DiscQueryMode.Full;
+        foreach (var (offsetX, offsetZ) in ring)
         {
             var ringPoint = new Vector3(
                 worldPos.X + offsetX * radiusMeters,
                 worldPos.Y,
                 worldPos.Z + offsetZ * radiusMeters);
-            if (!IsPointOnNavMesh(ringPoint, out _))
+            if (!IsPointOnNavMesh(ringPoint, out _, refineRingY))
             {
                 return false;
             }
@@ -320,6 +355,9 @@ public static class TerrainNavMeshRuntime
     ///     <paramref name="snapped" /> is the closest point on the navmesh (accurate ground Y included).
     /// </summary>
     public static bool IsPointOnNavMesh(Vector3 worldPos, out Vector3 snapped)
+        => IsPointOnNavMesh(worldPos, out snapped, refineY: true);
+
+    public static bool IsPointOnNavMesh(Vector3 worldPos, out Vector3 snapped, bool refineY)
     {
         snapped = worldPos;
 
@@ -328,26 +366,30 @@ public static class TerrainNavMeshRuntime
             return false;
         }
 
-        // worldPos.Y is only ever a coarse guess (walk-surface atlas sample, or a spawner's own possibly
-        // stale placement height). MapGetClosestPoint is a full 3D nearest-neighbor search, so a bad Y can
-        // lock onto some unrelated, similarly-elevated polygon far away in XZ instead of the correct one
-        // directly below/above the query point. Re-probe once using the first pass's returned Y - real
-        // terrain height varies gradually relative to tile size, so this reliably converges to the right
-        // polygon even when the original Y guess was off by several meters.
-        var refinedProbe = new Vector3(worldPos.X, closest.Y, worldPos.Z);
-        if (TryClosestPoint(refinedProbe, out var refined))
+        var dx = closest.X - worldPos.X;
+        var dz = closest.Z - worldPos.Z;
+        var horizontalDistSq = dx * dx + dz * dz;
+        var alreadyTight = horizontalDistSq
+                           <= SkipYRefineHorizontalToleranceMeters * SkipYRefineHorizontalToleranceMeters;
+
+        // worldPos.Y is only ever a coarse guess. MapGetClosestPoint is a full 3D nearest-neighbor search,
+        // so a bad Y can lock onto an unrelated polygon. Re-probe once using the first pass's Y — unless the
+        // first snap is already horizontally tight (common on flat terrain / bake-fast path).
+        if (refineY && !alreadyTight)
         {
-            closest = refined;
+            var refinedProbe = new Vector3(worldPos.X, closest.Y, worldPos.Z);
+            if (TryClosestPoint(refinedProbe, out var refined))
+            {
+                closest = refined;
+                dx = closest.X - worldPos.X;
+                dz = closest.Z - worldPos.Z;
+                horizontalDistSq = dx * dx + dz * dz;
+            }
         }
 
         snapped = closest;
 
-        // Only horizontal (XZ) containment judges "is this actually on the mesh here" - Y is whatever the
-        // navmesh says, not something we independently know to compare against (this map's outdoor terrain
-        // is single-layer, so there's no multi-height ambiguity horizontal-only matching could confuse).
-        var dx = closest.X - worldPos.X;
-        var dz = closest.Z - worldPos.Z;
-        var horizontalDistSq = dx * dx + dz * dz;
+        // Only horizontal (XZ) containment judges "is this actually on the mesh here".
         return horizontalDistSq <= HorizontalSnapToleranceMeters * HorizontalSnapToleranceMeters;
     }
 
