@@ -19,7 +19,7 @@ public enum ConsoleCommandParseResult
     ERROR
 }
 
-public class ConsoleCommandParser
+public partial class ConsoleCommandParser
 {
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
     private readonly CharacterDbEntry currentCharacterDbEntry;
@@ -52,10 +52,27 @@ public class ConsoleCommandParser
         RegisteredCommands["packethex"] = SendPacketHex;
         RegisteredCommands["packet"] = SendPacket;
         RegisteredCommands["buff"] = Buff;
-        RegisteredCommands["mob"] = Mob;
+        // /clientmob sends the client-only template (no server node); /mob spawns a real one.
+        RegisteredCommands["clientmob"] = Mob;
+        RegisteredCommands["mob"] = SpawnRealMonster;
         RegisteredCommands["mobid"] = MobById;
         RegisteredCommands["loot"] = Loot;
         RegisteredCommands["tp"] = Teleport;
+    }
+
+    // Reports command output to the player in-game (a GM chat line), or to the server console
+    // when no client is attached.
+    private void SendFeedback (string text)
+    {
+        if (sphereClient is null)
+        {
+            Console.WriteLine(text);
+            return;
+        }
+
+        var response = MessageEncoder.EncodeToSendFromServer("GM: " + text, "GM",
+            (int) PublicChatType.GM_Outgoing);
+        sphereClient.MaybeQueueNetworkPacketSend(response);
     }
 
     public ConsoleCommandParseResult Parse (string? input)
