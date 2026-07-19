@@ -1,7 +1,9 @@
 # Export walkable previews for indoor base-tile clusters.
 # Pipeline is chosen PER CLUSTER by label (unless forced):
-#   cci*  → --pre-lb-walkable (simple upward slope; no shell/weld/strips)
-#   else  → latest lb* path (outer shell + inward/wing + weld + strips)
+#   rd_island3 → Tools/bake_rd_island3_nav.gd (band hand-nav + outdoor-style object punch)
+#   cci*       → --pre-lb-walkable (simple upward slope; no shell/weld/strips)
+#   else       → latest lb* path (outer shell + inward/wing + weld + strips)
+# -ForceOutdoorIsland still forces the legacy export_nearby --outdoor-island path.
 # Manifest clusters by mesh-AABB proximity (5m grace), not placement-origin distance.
 #
 # -WriteNavRes also bakes NavigationMesh .res under NavResDir (outdoor nav frame) + merges index.json.
@@ -18,6 +20,8 @@ param(
     [switch]$PreLbWalkable,
     ## Force ALL matched clusters onto latest lb* pipeline (overrides auto / cci default).
     [switch]$ForceLbPipeline,
+    ## Force ALL matched clusters onto outdoor-island terrain bake.
+    [switch]$ForceOutdoorIsland,
     [switch]$SkipManifestRebuild,
     ## Bake NavigationMesh .res (+ .nav.json) per cluster into NavResDir.
     [switch]$WriteNavRes,
@@ -89,20 +93,36 @@ $total = $clusters.Count
 if ($total -le 0) {
     throw "No clusters matched (LabelPrefix='$LabelPrefix' ClusterIds=$($ClusterIds -join ','))"
 }
-if ($PreLbWalkable -and $ForceLbPipeline) {
-    throw "Use only one of -PreLbWalkable / -ForceLbPipeline (or neither for auto by label)"
+$forceCount = @($PreLbWalkable, $ForceLbPipeline, $ForceOutdoorIsland).Where({ $_ }).Count
+if ($forceCount -gt 1) {
+    throw "Use only one of -PreLbWalkable / -ForceLbPipeline / -ForceOutdoorIsland (or none for auto by label)"
+}
+
+# Returns: rd_island3_hand | outdoor_island | pre_lb | lb_latest
+function Resolve-WalkPipeline {
+    param(
+        [string]$Label,
+        [bool]$ForcePreLb,
+        [bool]$ForceLb,
+        [bool]$ForceOutdoor
+    )
+    if ($ForceOutdoor) { return "outdoor_island" }
+    if ($ForceLb) { return "lb_latest" }
+    if ($ForcePreLb) { return "pre_lb" }
+    $lab = ([string]$Label).ToLowerInvariant()
+    if ($lab -eq "rd_island3") { return "rd_island3_hand" }
+    if ($lab.StartsWith("cci")) { return "pre_lb" }
+    return "lb_latest"
 }
 
 function Resolve-PreLbWalkable {
     param(
         [string]$Label,
         [bool]$ForcePreLb,
-        [bool]$ForceLb
+        [bool]$ForceLb,
+        [bool]$ForceOutdoor = $false
     )
-    if ($ForceLb) { return $false }
-    if ($ForcePreLb) { return $true }
-    # Auto: cci* → pre-lb*; everything else (lb*, rd_*, …) → latest lb* pipeline.
-    return ([string]$Label).ToLowerInvariant().StartsWith("cci")
+    return (Resolve-WalkPipeline -Label $Label -ForcePreLb $ForcePreLb -ForceLb $ForceLb -ForceOutdoor $ForceOutdoor) -eq "pre_lb"
 }
 
 function Write-IndoorNavIndex {
@@ -127,18 +147,22 @@ function Write-IndoorNavIndex {
     Write-Host "Wrote indoor nav index ($($entries.Count) clusters) -> $indexPath"
 }
 
-$cciN = @($clusters | Where-Object {
-        (Resolve-PreLbWalkable -Label ([string]$_.label) -ForcePreLb $PreLbWalkable -ForceLb $ForceLbPipeline)
+$islandN = @($clusters | Where-Object {
+        (Resolve-WalkPipeline -Label ([string]$_.label) -ForcePreLb $PreLbWalkable -ForceLb $ForceLbPipeline -ForceOutdoor $ForceOutdoorIsland) -eq "outdoor_island"
     }).Count
-$lbN = $total - $cciN
+$cciN = @($clusters | Where-Object {
+        (Resolve-WalkPipeline -Label ([string]$_.label) -ForcePreLb $PreLbWalkable -ForceLb $ForceLbPipeline -ForceOutdoor $ForceOutdoorIsland) -eq "pre_lb"
+    }).Count
+$lbN = $total - $cciN - $islandN
 $logPath = Join-Path $OutRoot "_export_log.txt"
-$policy = if ($ForceLbPipeline) { "force_lb_pipeline" }
+$policy = if ($ForceOutdoorIsland) { "force_outdoor_island" }
+    elseif ($ForceLbPipeline) { "force_lb_pipeline" }
     elseif ($PreLbWalkable) { "force_pre_lb" }
-    else { "auto_cci=pre_lb_else=lb_latest" }
-"godot=$godot clusters=$total max=$MaxClusters jobs=$Jobs label_prefix=$LabelPrefix policy=$policy pre_lb=$cciN lb_latest=$lbN write_nav_res=$WriteNavRes skip_preview_glb=$SkipPreviewGlb nav_res_dir=$NavResDir mesh_grace=$($manifest.mesh_grace_m)" |
+    else { "auto_rd_island3=outdoor_island_cci=pre_lb_else=lb_latest" }
+"godot=$godot clusters=$total max=$MaxClusters jobs=$Jobs label_prefix=$LabelPrefix policy=$policy outdoor_island=$islandN pre_lb=$cciN lb_latest=$lbN write_nav_res=$WriteNavRes skip_preview_glb=$SkipPreviewGlb nav_res_dir=$NavResDir mesh_grace=$($manifest.mesh_grace_m)" |
     Set-Content -LiteralPath $logPath -Encoding UTF8
 
-Write-Host "Exporting $total clusters (Jobs=$Jobs, prefix='$LabelPrefix', policy=$policy, pre_lb=$cciN lb_latest=$lbN write_nav=$WriteNavRes) -> $OutRoot"
+Write-Host "Exporting $total clusters (Jobs=$Jobs, prefix='$LabelPrefix', policy=$policy, outdoor_island=$islandN pre_lb=$cciN lb_latest=$lbN write_nav=$WriteNavRes) -> $OutRoot"
 $swAll = [System.Diagnostics.Stopwatch]::StartNew()
 
 $exportOne = {
@@ -157,7 +181,7 @@ $exportOne = {
         [double]$Radius,
         [int]$Count,
         [string]$Members,
-        [bool]$PreLbWalkable,
+        [string]$WalkPipeline,
         [bool]$WriteNavRes,
         [string]$NavResDir,
         [bool]$SkipPreviewGlb
@@ -168,7 +192,7 @@ $exportOne = {
     $tempWalkable = Join-Path $OutRoot ("cluster_{0}_walkable.glb" -f $Id)
     $tempManifest = Join-Path $OutRoot ("cluster_{0}_manifest.txt" -f $Id)
     $jobLog = Join-Path $LogsDir ("cluster_{0}.log" -f $Id)
-    $walkTag = if ($PreLbWalkable) { "pre_lb" } else { "lb_latest" }
+    $walkTag = $WalkPipeline
     $navResPath = Join-Path $NavResDir ("cluster_{0}.res" -f $Id)
     # Godot ResourceSaver prefers res:// for project resources.
     $navResGodot = ("res://Godot/Terrain/GeneratedIndoorNavMeshes/cluster_{0}.res" -f $Id)
@@ -187,27 +211,39 @@ $exportOne = {
         $Members = "D:/1/indoor-cluster-members/cluster_{0:D3}.json" -f $Id
     }
 
-    $argList = @(
-        "--path", $RepoRoot,
-        "--headless",
-        "-s", "Tools/export_nearby_objects_glb.gd",
-        "--",
-        "--center", "$Cx", "$Cy", "$Cz",
-        "--radius", "$Radius",
-        "--members", $Members,
-        "--with-walkable",
-        "--indoor-base-only",
-        "--cluster-id", "$Id",
-        "--out", $outGlb
-    )
-    if ($PreLbWalkable) {
-        $argList += "--pre-lb-walkable"
-    }
-    if ($WriteNavRes) {
-        $argList += @("--write-nav-res", $navResGodot)
-    }
-    if ($SkipPreviewGlb) {
-        $argList += "--skip-preview-glb"
+    $argList = @()
+    if ($WalkPipeline -eq "rd_island3_hand") {
+        # Dedicated baker: band walkable + object projected carve. Writes cluster_131.res itself.
+        $argList = @(
+            "--path", $RepoRoot,
+            "--headless",
+            "-s", "Tools/bake_rd_island3_nav.gd"
+        )
+    } else {
+        $argList = @(
+            "--path", $RepoRoot,
+            "--headless",
+            "-s", "Tools/export_nearby_objects_glb.gd",
+            "--",
+            "--center", "$Cx", "$Cy", "$Cz",
+            "--radius", "$Radius",
+            "--members", $Members,
+            "--with-walkable",
+            "--indoor-base-only",
+            "--cluster-id", "$Id",
+            "--out", $outGlb
+        )
+        if ($WalkPipeline -eq "outdoor_island") {
+            $argList += "--outdoor-island"
+        } elseif ($WalkPipeline -eq "pre_lb") {
+            $argList += "--pre-lb-walkable"
+        }
+        if ($WriteNavRes) {
+            $argList += @("--write-nav-res", $navResGodot)
+        }
+        if ($SkipPreviewGlb) {
+            $argList += "--skip-preview-glb"
+        }
     }
     $argsQuoted = ($argList | ForEach-Object {
             if ($_ -match '[\s"]') { '"' + ($_ -replace '"', '\"') + '"' } else { $_ }
@@ -249,11 +285,17 @@ $exportOne = {
         }
     }
 
-    $navOk = (-not $WriteNavRes) -or (Test-Path -LiteralPath $navResPath)
-    if ($SkipPreviewGlb) {
+    # Hand baker always writes cluster_131.res; other pipelines need -WriteNavRes for navOk.
+    if ($WalkPipeline -eq "rd_island3_hand") {
+        $navOk = Test-Path -LiteralPath $navResPath
         $ok = ($code -eq 0) -and $navOk
     } else {
-        $ok = ($code -eq 0) -and (Test-Path -LiteralPath $outGlb) -and (Test-Path -LiteralPath $walkableGlb) -and $navOk
+        $navOk = (-not $WriteNavRes) -or (Test-Path -LiteralPath $navResPath)
+        if ($SkipPreviewGlb) {
+            $ok = ($code -eq 0) -and $navOk
+        } else {
+            $ok = ($code -eq 0) -and (Test-Path -LiteralPath $outGlb) -and (Test-Path -LiteralPath $walkableGlb) -and $navOk
+        }
     }
     if ($ok) {
         Write-Host ("  ok id={0} ({1:n1}s)" -f $Id, $sw.Elapsed.TotalSeconds)
@@ -285,10 +327,11 @@ for ($i = 0; $i -lt $total; $i++) {
     if (-not $members) {
         $members = "D:/1/indoor-cluster-members/cluster_{0:D3}.json" -f ([int]$c.id)
     }
-    $usePreLb = Resolve-PreLbWalkable `
+    $walkPipeline = Resolve-WalkPipeline `
         -Label ([string]$c.label) `
         -ForcePreLb ([bool]$PreLbWalkable) `
-        -ForceLb ([bool]$ForceLbPipeline)
+        -ForceLb ([bool]$ForceLbPipeline) `
+        -ForceOutdoor ([bool]$ForceOutdoorIsland)
     $ps = [PowerShell]::Create()
     $ps.RunspacePool = $pool
     [void]$ps.AddScript($exportOne).AddParameters(@{
@@ -306,7 +349,7 @@ for ($i = 0; $i -lt $total; $i++) {
             Radius         = [double]$c.radius
             Count          = [int]$c.count
             Members        = $members
-            PreLbWalkable  = [bool]$usePreLb
+            WalkPipeline   = [string]$walkPipeline
             WriteNavRes    = [bool]$WriteNavRes
             NavResDir      = $NavResDir
             SkipPreviewGlb = [bool]$SkipPreviewGlb

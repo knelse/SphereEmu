@@ -56,7 +56,8 @@ def is_indoor_name(name: str) -> bool:
         return True
     if n.startswith("lb"):
         return True
-    if n.startswith("rd_island"):
+    # Only rd_island3 — rd_island1/2 are unused co-located height variants (no nav).
+    if n == "rd_island3":
         return True
     if n in (
         "rd_r1",

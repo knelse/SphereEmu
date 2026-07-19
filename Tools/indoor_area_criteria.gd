@@ -27,7 +27,8 @@ static func is_indoor_base_tile_name(object_name: String) -> bool:
 	# lb* labyrinth / dungeon shells — exclude lbridge*
 	if name.begins_with("lb"):
 		return true
-	if name.begins_with("rd_island"):
+	# Only rd_island3 — rd_island1/2 are unused co-located height variants (no nav).
+	if name == "rd_island3":
 		return true
 	if name in ["rd_r1", "rd_r2", "rd_r3", "rd_r4", "rd_r5"]:
 		return true

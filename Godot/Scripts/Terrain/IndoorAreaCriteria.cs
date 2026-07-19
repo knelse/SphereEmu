@@ -56,7 +56,8 @@ public static class IndoorAreaCriteria
             return true;
         }
 
-        if (name.StartsWith("rd_island", StringComparison.Ordinal))
+        // Only rd_island3 — rd_island1/2 are unused co-located height variants (no nav).
+        if (name == "rd_island3")
         {
             return true;
         }

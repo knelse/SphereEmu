@@ -2,7 +2,7 @@
 """Export one translucent-blue GLB per unique indoor room / base-tile model.
 
 Uses the same name criteria as indoor_area_criteria / build_indoor_cluster_manifest
-(cci*, lb* except lbridge*, *_in, rd_island*, rd_r1..5, rd_rh, room1, tn4_hotel)
+(cci*, lb* except lbridge*, *_in, rd_island3, rd_r1..5, rd_rh, room1, tn4_hotel)
 for placements that appear underground (Godot Y < -500).
 
 Does not export world clusters — just the kit mesh itself, see-through.
@@ -38,7 +38,7 @@ def is_indoor_name(name: str) -> bool:
         return True
     if n.startswith("lb"):
         return True
-    if n.startswith("rd_island"):
+    if n == "rd_island3":
         return True
     if n in (
         "rd_r1",

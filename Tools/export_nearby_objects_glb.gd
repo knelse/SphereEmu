@@ -5,7 +5,7 @@ extends SceneTree
 ##
 ## Indoor base-tile identity: IndoorAreaCriteria (Tools/indoor_area_criteria.gd /
 ## Godot/Scripts/Terrain/IndoorAreaCriteria.cs) — Godot Y < -500 and name in
-## (*_in, cci*, lb* except lbridge, rd_island*, rd_r1..5, rd_rh, room1, tn4_hotel).
+## (*_in, cci*, lb* except lbridge, rd_island3, rd_r1..5, rd_rh, room1, tn4_hotel).
 ## Props inside/around those shells are not name-matched.
 ##
 ## Indoor walkable on those shells (NOT the outdoor terrain bake cover/prune path):
@@ -98,6 +98,20 @@ const WELD_XZ_MIN := 0.45
 const WELD_XZ_MAX := 3.5
 ## Only weld edges from near-flat faces (landings / floors); skip ramp/stair side edges.
 const WELD_MAX_FACE_SLOPE := 25.0
+## rd_island3: strip steep cliff-wall faces that sit below nearby land (keep rim + basin decks).
+## rd_island1/2 are unused height variants — never contribute to nav.
+const ISLAND_CLIFF_CELL := 2.0
+const ISLAND_CLIFF_DILATE_ITERS := 4
+const ISLAND_CLIFF_STEEP_DEG := 30.0
+const ISLAND_CLIFF_BELOW_M := 4.0
+## Elevated decks (clifftops / terraces): carve walkable out from under their XZ footprint.
+const ISLAND_DECK_CARVE_CELL := 4.0
+const ISLAND_DECK_CARVE_DILATE := 4
+const ISLAND_DECK_CARVE_GAP_M := 6.0
+const ISLAND_DECK_LID_BAND_M := 2.5
+## Columns whose max Y is at/above this face-Y percentile count as elevated decks.
+const ISLAND_DECK_ELEV_PERCENTILE := 0.75
+const OUTDOOR_ISLAND_NAV_NAME := "rd_island3"
 
 var _center := Vector3(-92.2, -1095.74, -1094.7)
 var _radius := 40.0
@@ -107,6 +121,9 @@ var _with_walkable := true
 var _indoor_base_only := false
 ## Pre-lb* walkable: upward faces by slope only (no outer-shell carve, weld, or strips).
 var _pre_lb_walkable := false
+## rd_island3 only: treat the island mesh as outdoor terrain (upward faces + outdoor Recast).
+## Skips lb* shell/inward/weld/strips; land decks walkable, cliff insides stripped.
+var _outdoor_island := false
 ## Exact cluster membership keys from build_indoor_cluster_manifest.py (name|x|y|z|pitch|yaw|roll).
 ## When set, export only those placements (ignores sphere radius for inclusion).
 var _members_path := ""
@@ -118,6 +135,9 @@ var _write_nav_res_path := ""
 var _cluster_id := -1
 ## Skip preview object/walkable GLBs (nav-res bake still runs when requested).
 var _skip_preview_glb := false
+## Outdoor-island Recast knobs (cc_baseline_v1 outdoor).
+var _nav_region_min_size := 4.0
+var _nav_region_merge_size := 20.0
 var _objects_basis := Basis.from_euler(Vector3(0.0, deg_to_rad(-90.0), 0.0))
 
 func _initialize() -> void:
@@ -162,6 +182,17 @@ func _initialize() -> void:
 			if absf(_max_slope_deg - AGENT_MAX_SLOPE_DEFAULT) < 0.01:
 				_max_slope_deg = 70.0
 			i += 1
+		elif args[i] == "--outdoor-island":
+			# rd_island3 only: island mesh = terrain. Land decks walkable; steep cliff insides stripped.
+			# Slope 35° (not outdoor 55°) so Recast doesn't crawl cliff walls into the crater.
+			_outdoor_island = true
+			_pre_lb_walkable = true
+			_with_walkable = true
+			_indoor_base_only = true
+			_max_slope_deg = 35.0
+			_nav_region_min_size = 14.0
+			_nav_region_merge_size = 20.0
+			i += 1
 		elif args[i] == "--max-slope" and i + 1 < args.size():
 			_max_slope_deg = float(args[i + 1])
 			i += 2
@@ -180,13 +211,21 @@ func _initialize() -> void:
 		DirAccess.make_dir_recursive_absolute(_write_nav_res_path.get_base_dir())
 
 	print(
-		"Indexing placements near %s r=%.1f indoor_base_only=%s pre_lb=%s members=%d nav_res=%s ..." % [
-			_center, _radius, str(_indoor_base_only), str(_pre_lb_walkable), _member_keys.size(),
+		"Indexing placements near %s r=%.1f indoor_base_only=%s pre_lb=%s outdoor_island=%s members=%d nav_res=%s ..." % [
+			_center, _radius, str(_indoor_base_only), str(_pre_lb_walkable), str(_outdoor_island),
+			_member_keys.size(),
 			_write_nav_res_path if not _write_nav_res_path.is_empty() else "-",
 		]
 	)
 	var placements := _collect_nearby_placements()
 	print("Found %d unique placements" % placements.size())
+	# rd_island3 members keys can miss (float formatting / dual ObjectData copies). Fall back to
+	# radius + name filter so outdoor-island still bakes the terrain mesh.
+	if placements.is_empty() and _outdoor_island and not _member_keys.is_empty():
+		push_warning("outdoor-island: members matched 0; retrying with radius + rd_island3 filter")
+		_member_keys.clear()
+		placements = _collect_nearby_placements()
+		print("Found %d unique placements (outdoor-island fallback)" % placements.size())
 	if placements.is_empty():
 		push_error("No placements matched (radius/members)")
 		quit(1)
@@ -316,6 +355,36 @@ func _initialize() -> void:
 	elif _with_walkable and _pre_lb_walkable and walk_faces.is_empty():
 		push_warning("No simple upward walkable faces found (slope <= %.1f)" % _max_slope_deg)
 
+	# rd_island3: keep land; strip cliff-wall faces; carve under elevated clifftop decks.
+	if _with_walkable and _outdoor_island and not walk_faces.is_empty():
+		var before_tris := int(walk_faces.size() / 3)
+		var before_area := walk_area
+		var stripped := _filter_outdoor_island_cliff_insides(walk_faces)
+		walk_faces = stripped["faces"]
+		walk_tris = int(stripped["tris"])
+		walk_area = float(stripped["area"])
+		print(
+			"  outdoor-island cliff-inside strip: kept %d/%d tris, area=%.1f→%.1f (steep>=%.0f° below=%.1fm)" % [
+				walk_tris, before_tris, before_area, walk_area,
+				ISLAND_CLIFF_STEEP_DEG, ISLAND_CLIFF_BELOW_M,
+			]
+		)
+		if not walk_faces.is_empty():
+			var before_carve_tris := walk_tris
+			var before_carve_area := walk_area
+			var carved := _carve_under_island_elevated_decks(walk_faces)
+			walk_faces = carved["faces"]
+			walk_tris = int(carved["tris"])
+			walk_area = float(carved["area"])
+			print(
+				"  outdoor-island clifftop underside carve: kept %d/%d tris, area=%.1f→%.1f (p%.0f lids, gap=%.1fm)" % [
+					walk_tris, before_carve_tris, before_carve_area, walk_area,
+					ISLAND_DECK_ELEV_PERCENTILE * 100.0, ISLAND_DECK_CARVE_GAP_M,
+				]
+			)
+		if walk_faces.is_empty():
+			push_warning("outdoor-island filters removed all walkable faces")
+
 	# Build walkable connectivity once (expensive on large clusters).
 	var walk_root: Node3D = null
 	var weld_tris := 0
@@ -380,13 +449,18 @@ func _initialize() -> void:
 	if mf:
 		mf.store_line("center=%s radius=%.1f" % [_center, _radius])
 		mf.store_line("placements=%d used=%d missing_models=%d" % [placements.size(), used, missing])
-		if _pre_lb_walkable:
+		if _outdoor_island:
+			mf.store_line(
+				"method=outdoor_island_land (rd_island3; cliff strip + clifftop underside carve; region_min=%.0f)" % _nav_region_min_size
+			)
+		elif _pre_lb_walkable:
 			mf.store_line("method=pre_lb_simple_upward_slope (no shell/weld/strips)")
 		else:
 			mf.store_line("method=closed_outer_shell(+Y,+/-X,+/-Z) + inward_or_wing_or_covered_upper")
 		mf.store_line(
-			"max_slope_deg=%.1f inward_dot_min=%.2f wing_dot_min=%.2f roof_skin=%.2f headroom=[%.1f,%.1f] footprint_inset=%.2f" % [
-				_max_slope_deg, INWARD_DOT_MIN, WING_DOT_MIN, ROOF_SKIN_BAND,
+			"max_slope_deg=%.1f region_min=%.1f region_merge=%.1f inward_dot_min=%.2f wing_dot_min=%.2f roof_skin=%.2f headroom=[%.1f,%.1f] footprint_inset=%.2f" % [
+				_max_slope_deg, _nav_region_min_size, _nav_region_merge_size,
+				INWARD_DOT_MIN, WING_DOT_MIN, ROOF_SKIN_BAND,
 				CEILING_MIN_HEADROOM, CEILING_MAX_HEADROOM, FOOTPRINT_INSET,
 			]
 		)
@@ -472,8 +546,8 @@ func _bake_and_write_indoor_nav(center_relative_faces: PackedVector3Array) -> bo
 	nav.agent_height = NAV_AGENT_HEIGHT
 	nav.agent_max_climb = NAV_AGENT_MAX_CLIMB
 	nav.agent_max_slope = _max_slope_deg
-	nav.region_min_size = 4.0
-	nav.region_merge_size = 20.0
+	nav.region_min_size = _nav_region_min_size
+	nav.region_merge_size = _nav_region_merge_size
 	nav.edge_max_length = 12.0
 	nav.edge_max_error = 1.3
 	nav.detail_sample_distance = 6.0
@@ -489,10 +563,20 @@ func _bake_and_write_indoor_nav(center_relative_faces: PackedVector3Array) -> bo
 		return false
 	var aabb := _faces_aabb(nav_faces)
 	var center_nav := _source_point_to_nav_frame(_center)
+	var method := "lb_shell_inward"
+	if _outdoor_island:
+		method = "outdoor_island_land"
+	elif _pre_lb_walkable:
+		method = "pre_lb_simple_upward"
 	var meta := {
 		"id": _cluster_id,
 		"path": _write_nav_res_path,
 		"pre_lb": _pre_lb_walkable,
+		"outdoor_island": _outdoor_island,
+		"method": method,
+		"max_slope_deg": _max_slope_deg,
+		"region_min_size": _nav_region_min_size,
+		"region_merge_size": _nav_region_merge_size,
 		"radius": _radius,
 		"center_source": {"x": _center.x, "y": _center.y, "z": _center.z},
 		"center_nav": {"x": center_nav.x, "y": center_nav.y, "z": center_nav.z},
@@ -1395,6 +1479,9 @@ func _scan_file(path: String, out: Array, seen: Dictionary) -> void:
 				continue
 		if _indoor_base_only and not _is_indoor_base_tile(object_name, pos.y):
 			continue
+		# Outdoor-island bake: only rd_island3 (1/2 are unused co-located height variants).
+		if _outdoor_island and object_name.strip_edges().to_lower() != OUTDOOR_ISLAND_NAV_NAME:
+			continue
 		var euler := Vector3(rot.x, -rot.y, rot.z)
 		var basis_godot := SOURCE_BASIS * Basis.from_euler(euler) * SOURCE_BASIS
 		var xform := Transform3D(basis_godot, pos)
@@ -1419,7 +1506,8 @@ func _is_indoor_base_tile(object_name: String, godot_y: float) -> bool:
 		return true
 	if n.begins_with("lb"):
 		return true
-	if n.begins_with("rd_island"):
+	# Only rd_island3 contributes to indoor/island nav; 1/2 are unused mesh variants.
+	if n == OUTDOOR_ISLAND_NAV_NAME:
 		return true
 	if n in ["rd_r1", "rd_r2", "rd_r3", "rd_r4", "rd_r5", "rd_rh", "room1", "tn4_hotel"]:
 		return true
@@ -1843,6 +1931,177 @@ func _envelope_lookup_extreme(grid: Dictionary, key: Vector2i, want_max: bool) -
 	if not found:
 		return 1.0e20 if want_max else -1.0e20
 	return best
+
+
+## Drop steep cliff-wall faces that sit below nearby higher land. Basin/rim decks stay.
+func _filter_outdoor_island_cliff_insides(faces: PackedVector3Array) -> Dictionary:
+	var ntri := int(faces.size() / 3)
+	if ntri == 0:
+		return {"faces": PackedVector3Array(), "tris": 0, "area": 0.0}
+	var cell := ISLAND_CLIFF_CELL
+	var inv_cell := 1.0 / cell
+	var col_max: Dictionary = {} # Vector2i -> float
+	var cents: PackedVector3Array = PackedVector3Array()
+	cents.resize(ntri)
+	var areas: PackedFloat32Array = PackedFloat32Array()
+	areas.resize(ntri)
+	var slopes: PackedFloat32Array = PackedFloat32Array()
+	slopes.resize(ntri)
+	for ti in range(ntri):
+		var a: Vector3 = faces[ti * 3]
+		var b: Vector3 = faces[ti * 3 + 1]
+		var c: Vector3 = faces[ti * 3 + 2]
+		var cent := (a + b + c) / 3.0
+		cents[ti] = cent
+		var normal := (b - a).cross(c - a)
+		var nlen := normal.length()
+		areas[ti] = 0.5 * nlen
+		if nlen > 0.000001:
+			normal /= nlen
+			if normal.y < 0.0:
+				normal = -normal
+			slopes[ti] = rad_to_deg(acos(clampf(normal.y, 0.0, 1.0)))
+		else:
+			slopes[ti] = 90.0
+		var key := Vector2i(int(floor(cent.x * inv_cell)), int(floor(cent.z * inv_cell)))
+		if col_max.has(key):
+			col_max[key] = maxf(float(col_max[key]), cent.y)
+		else:
+			col_max[key] = cent.y
+	# Short dilate: rim height reaches nearby cliff-wall columns, not the whole crater.
+	var dil: Dictionary = col_max.duplicate()
+	for _iter in range(ISLAND_CLIFF_DILATE_ITERS):
+		var nxt: Dictionary = dil.duplicate()
+		for key in dil.keys():
+			var k: Vector2i = key
+			var h: float = float(dil[k])
+			for dx in range(-1, 2):
+				for dz in range(-1, 2):
+					var nk := Vector2i(k.x + dx, k.y + dz)
+					if nxt.has(nk):
+						nxt[nk] = maxf(float(nxt[nk]), h)
+					else:
+						nxt[nk] = h
+		dil = nxt
+	var out := PackedVector3Array()
+	var tris := 0
+	var area := 0.0
+	var dropped := 0
+	for ti in range(ntri):
+		var cent: Vector3 = cents[ti]
+		var key := Vector2i(int(floor(cent.x * inv_cell)), int(floor(cent.z * inv_cell)))
+		var sky: float = float(dil.get(key, cent.y))
+		var is_cliff_inside := (
+			float(slopes[ti]) >= ISLAND_CLIFF_STEEP_DEG
+			and cent.y < sky - ISLAND_CLIFF_BELOW_M
+		)
+		if is_cliff_inside:
+			dropped += 1
+			continue
+		out.append(faces[ti * 3])
+		out.append(faces[ti * 3 + 1])
+		out.append(faces[ti * 3 + 2])
+		tris += 1
+		area += float(areas[ti])
+	if dropped > 0:
+		print("    stripped %d steep cliff-inside faces" % dropped)
+	return {"faces": out, "tris": tris, "area": area}
+
+
+## Clifftop / elevated-terrace decks carve walkable out beneath their footprint.
+## Open basin land away from those decks is kept.
+func _carve_under_island_elevated_decks(faces: PackedVector3Array) -> Dictionary:
+	var ntri := int(faces.size() / 3)
+	if ntri == 0:
+		return {"faces": PackedVector3Array(), "tris": 0, "area": 0.0}
+	var cell := ISLAND_DECK_CARVE_CELL
+	var inv_cell := 1.0 / cell
+	var cents: PackedVector3Array = PackedVector3Array()
+	cents.resize(ntri)
+	var areas: PackedFloat32Array = PackedFloat32Array()
+	areas.resize(ntri)
+	var ys: PackedFloat32Array = PackedFloat32Array()
+	ys.resize(ntri)
+	var col_max: Dictionary = {} # Vector2i -> float
+	for ti in range(ntri):
+		var a: Vector3 = faces[ti * 3]
+		var b: Vector3 = faces[ti * 3 + 1]
+		var c: Vector3 = faces[ti * 3 + 2]
+		var cent := (a + b + c) / 3.0
+		cents[ti] = cent
+		ys[ti] = cent.y
+		areas[ti] = 0.5 * (b - a).cross(c - a).length()
+		var key := Vector2i(int(floor(cent.x * inv_cell)), int(floor(cent.z * inv_cell)))
+		if col_max.has(key):
+			col_max[key] = maxf(float(col_max[key]), cent.y)
+		else:
+			col_max[key] = cent.y
+	var elev_thr := _percentile_sorted_copy(ys, ISLAND_DECK_ELEV_PERCENTILE)
+	# Lid cells: elevated column tops (clifftops / terraces).
+	var lid_h: Dictionary = {} # Vector2i -> float
+	for key in col_max.keys():
+		var h: float = float(col_max[key])
+		if h >= elev_thr:
+			lid_h[key] = h
+	if lid_h.is_empty():
+		return {"faces": faces, "tris": ntri, "area": _faces_area(faces)}
+	var dil: Dictionary = lid_h.duplicate()
+	for _iter in range(ISLAND_DECK_CARVE_DILATE):
+		var nxt: Dictionary = dil.duplicate()
+		for key in dil.keys():
+			var k: Vector2i = key
+			var h: float = float(dil[k])
+			for dx in range(-1, 2):
+				for dz in range(-1, 2):
+					var nk := Vector2i(k.x + dx, k.y + dz)
+					if nxt.has(nk):
+						nxt[nk] = maxf(float(nxt[nk]), h)
+					else:
+						nxt[nk] = h
+		dil = nxt
+	var out := PackedVector3Array()
+	var tris := 0
+	var area := 0.0
+	var dropped := 0
+	for ti in range(ntri):
+		var cent: Vector3 = cents[ti]
+		var key := Vector2i(int(floor(cent.x * inv_cell)), int(floor(cent.z * inv_cell)))
+		if dil.has(key):
+			var deck: float = float(dil[key])
+			# Keep the elevated deck band; drop land clearly beneath the lid height.
+			if cent.y < deck - ISLAND_DECK_CARVE_GAP_M:
+				dropped += 1
+				continue
+		out.append(faces[ti * 3])
+		out.append(faces[ti * 3 + 1])
+		out.append(faces[ti * 3 + 2])
+		tris += 1
+		area += float(areas[ti])
+	print(
+		"    elevated-deck lids=%d elev_thr=%.2f carved_under=%d" % [
+			lid_h.size(), elev_thr, dropped,
+		]
+	)
+	return {"faces": out, "tris": tris, "area": area}
+
+
+func _percentile_sorted_copy(values: PackedFloat32Array, pct: float) -> float:
+	var n := values.size()
+	if n == 0:
+		return 0.0
+	var sorted := values.duplicate()
+	sorted.sort()
+	var idx := int(clampf(floor(pct * float(n - 1)), 0.0, float(n - 1)))
+	return float(sorted[idx])
+
+
+func _faces_area(faces: PackedVector3Array) -> float:
+	var area := 0.0
+	var i := 0
+	while i + 2 < faces.size():
+		area += 0.5 * (faces[i + 1] - faces[i]).cross(faces[i + 2] - faces[i]).length()
+		i += 3
+	return area
 
 
 ## Pre-lb* / early indoor: upward faces with slope ≤ max (flip downward windings).

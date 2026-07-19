@@ -1,0 +1,85 @@
+{
+	"aabb_nav": {
+		"max": {
+			"x": 188.411865234375,
+			"y": -1049.74426269531,
+			"z": 185.2744140625
+		},
+		"min": {
+			"x": 22.81201171875,
+			"y": -1080.22241210938,
+			"z": 17.769287109375
+		}
+	},
+	"band_tris": {
+		"base": 279,
+		"high_rim": 59,
+		"mid_ledge": 53,
+		"mid_plateau": 78
+	},
+	"bands": [
+		{
+			"name": "base",
+			"y0": 20.1,
+			"y1": 23.9
+		},
+		{
+			"name": "mid_ledge",
+			"y0": 26.9,
+			"y1": 27.6
+		},
+		{
+			"name": "mid_plateau",
+			"y0": 32.1,
+			"y1": 35.5
+		},
+		{
+			"name": "high_rim",
+			"y0": 47.9,
+			"y1": 50.0
+		}
+	],
+	"center_nav": {
+		"x": 105.612060546875,
+		"y": -1064.9833984375,
+		"z": 101.521728515625
+	},
+	"center_source": {
+		"x": -3898.47802734375,
+		"y": -1064.9833984375,
+		"z": 3894.38818359375
+	},
+	"id": 131,
+	"max_slope_deg": 35.0,
+	"method": "rd_island3_hand_bands_under_carve_object_punch",
+	"object_carve": {
+		"carved": 241,
+		"missing": 0,
+		"pad_m": 40.0,
+		"placed": 409,
+		"skipped": 168,
+		"trees": 132,
+		"walk_decks": 97,
+		"walls": 109
+	},
+	"outdoor_island": true,
+	"path": "res://Godot/Terrain/GeneratedIndoorNavMeshes/cluster_131.res",
+	"placement_godot": {
+		"x": -3900.0625,
+		"y": -1100.00036621094,
+		"z": 3898.49829101563
+	},
+	"polygon_count": 6096,
+	"pre_lb": true,
+	"radius": 151.8,
+	"region_merge_size": 20.0,
+	"region_min_size": 14.0,
+	"select_slope_deg": 22.0,
+	"under_carve": {
+		"cell": 2.0,
+		"dilate": 1,
+		"dropped": 21,
+		"gap_m": 4.0
+	},
+	"walkable_tris": 469
+}
