@@ -1,0 +1,32 @@
+{
+    // combat.json — damage formula + melee delivery tunables, loaded as CombatBalance.
+
+    // recovered: subtract-branch factor, exactly 6/7 (Damage = Roll - Defense*this when Roll >= Defense).
+    "defenseSubtractFactor": 0.8571428571428571,
+
+    // recovered: quadratic divisor (Damage = Roll^2/(Defense*this) when Roll < Defense); keep = 1/(1 - subtractFactor).
+    "defenseQuadraticDivisor": 7,
+
+    // invented: bare-fist [Amin, Amax] band — fists have no weapon game-object row.
+    "fistAminAmax": [1, 3],
+
+    // invented: "floor" or "round"; floor matches the client's int(...) truncation.
+    "roundingMode": "floor",
+
+    // recovered: wire cap — the s->c damage delta is a 16-bit biased field; do not raise above 30000.
+    "damageClampMax": 30000,
+
+    // invented: crit/miss rolled by the melee handler; no evidence the original game had them — off by default.
+    "critChance": 0.0,
+    "critMult": 1.5,
+    "missChance": 0.0,
+
+    // invented (anchor: original-game fists hit a flat ~2): added to |PAtk| to form H so naked fists aren't 0.
+    "fistStatSheetDamage": 2,
+
+    // invented: non-miss melee damage floor.
+    "minMeleeHit": 1,
+
+    // invented: melee range sanity bound in Godot meters; 0 disables (client already enforces ~1.5).
+    "meleeRangeMeters": 10.0
+}

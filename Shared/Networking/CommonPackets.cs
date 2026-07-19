@@ -16,6 +16,34 @@ public static class CommonPackets
         0x08, 0x40, 0x63, 0x08, 0x00, 0x00
     ];
 
+    // Damage reply to an attack request (fist_attack_target): the wire field carries 30000 - damage,
+    // the client applies raw - 30000 to the target's HP. damage 0 = swing-only echo, no HP change.
+    public static byte[] FistAttackTargetEcho (ushort targetClientLocalId, ushort attackerClientIndex, int damage)
+    {
+        if (damage is < 0 or > 30000)
+        {
+            throw new ArgumentOutOfRangeException(nameof (damage), damage, "Wire field encodes 30000 - damage.");
+        }
+
+        var biased = 30000 - damage;
+        return
+        [
+            0x15, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(targetClientLocalId), MajorByte(targetClientLocalId),
+            0x48, 0x43, 0xA1, 0xA1, (byte) ((attackerClientIndex & 0b111) << 5), (byte) (attackerClientIndex >> 3),
+            (byte) (attackerClientIndex >> 11), (byte) ((biased & 0b111) << 5), (byte) (biased >> 3),
+            (byte) (biased >> 11), 0x00, 0xE0
+        ];
+    }
+
+    // Kills an entity on the client (entity_killed): plays the death program (stop AI, death animation,
+    // fade). Fixed frame; only the two ids vary.
+    public static byte[] EntityKilled (ushort clientLocalEntityId, ushort clientLocalKillerId) =>
+    [
+        0x12, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(clientLocalEntityId), MajorByte(clientLocalEntityId),
+        0x48, 0x43, 0xA1, 0x81, (byte) ((clientLocalKillerId & 0b111) << 5), (byte) (clientLocalKillerId >> 3),
+        (byte) (clientLocalKillerId >> 11), 0x00, 0xF0
+    ];
+
     public static readonly byte[]
         // ReadyToLoadInitialData = { 0x0A, 0x00, 0xC8, 0x00, 0x14, 0x05, 0x00, 0x00, 0x1F, 0x42 };
         ReadyToLoadInitialData = [0x0A, 0x00, 0xC8, 0x00, 0x6C, 0x07, 0x00, 0x00, 0x40, 0x0E];
