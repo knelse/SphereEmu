@@ -1,24 +1,30 @@
 extends SceneTree
-## Export a merged outdoor NavigationMesh preview GLB near a dump/JSON center.
-## --center is ObjectDataJson / spawner-name space (pre-SOURCE_BASIS). Conversion matches bake:
-##   nav = Ry(-90°) * (SOURCE_BASIS * center) + (4000,0,4000)
-## Outdoor .res verts are in that nav/grid frame; the GLB is written back in dump/JSON space.
+## Export a merged outdoor NavigationMesh preview GLB near a center point.
+##
+## --center is Godot / MonsterSpawner.Position / editor space (post-SOURCE_BASIS), matching
+## outdoor spawner transforms like (1200, -173, -1400). Conversion to baked nav/grid:
+##   nav = Ry(-90°) * center + (4000, 0, 4000)
+## (same as TerrainObjects → TerrainGrid). The GLB is written back in that Godot frame,
+## rebased so --center is at the origin.
+##
+## Pass --dump if the center is ObjectDataJson / spawner-name space instead (applies SOURCE_BASIS
+## first: dump (x,y,z) → Godot (x,-y,-z)).
 ##
 ## Usage:
 ##   godot --path . --headless -s Tools/export_nav_region_glb.gd -- \
-##     --center 1200 -173 -1400 --radius 200 --out D:/1/bridge_nav.glb
+##     --center 1200 -173 -1400 --radius 200
+##   godot ... -- --dump --center 1200 173 1400 --radius 200
 
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
 const OBJECT_ORIGIN_SHIFT := Vector3(4000.0, 0.0, 4000.0)
-## Same as bake_and_export_single_nav.gd: dump (x,y,z) → Godot (x,-y,-z).
+## Dump/JSON (x,y,z) → Godot (x,-y,-z). Same as bake_and_export_single_nav.gd.
 const SOURCE_BASIS := Basis(Vector3.RIGHT, Vector3.DOWN, Vector3.FORWARD)
 
-# Dump/JSON space (ObjectDataJson). Outdoor heights are typically positive here; SOURCE_BASIS
-# flips Y into Godot/nav (e.g. dump +173 → nav -173). Default is the cliff bridge sample point.
-var _center_source := Vector3(1200.0, 173.0, -1400.0)
+var _center_input := Vector3(1200.0, -173.0, -1400.0)
 var _radius := 200.0
 var _out_path := ""
+var _dump_space := false
 var _objects_basis := Basis.from_euler(Vector3(0.0, deg_to_rad(-90.0), 0.0))
 
 
@@ -27,7 +33,7 @@ func _initialize() -> void:
 	var i := 0
 	while i < args.size():
 		if args[i] == "--center" and i + 3 < args.size():
-			_center_source = Vector3(float(args[i + 1]), float(args[i + 2]), float(args[i + 3]))
+			_center_input = Vector3(float(args[i + 1]), float(args[i + 2]), float(args[i + 3]))
 			i += 4
 		elif args[i] == "--radius" and i + 1 < args.size():
 			_radius = float(args[i + 1])
@@ -35,23 +41,41 @@ func _initialize() -> void:
 		elif args[i] == "--out" and i + 1 < args.size():
 			_out_path = args[i + 1]
 			i += 2
+		elif args[i] == "--dump":
+			_dump_space = true
+			i += 1
 		else:
 			i += 1
 
-	if _out_path.is_empty():
-		var stamp := Time.get_datetime_string_from_system().replace(":", "-").replace("T", "_")
-		var folder := "D:/1/%s_bridge-nav-r%d" % [stamp, int(_radius)]
-		_out_path = "%s/bridge_nav_%.0f_%.0f_%.0f_r%.0f.glb" % [
-			folder, _center_source.x, _center_source.y, _center_source.z, _radius,
-		]
-
-	var center_godot := SOURCE_BASIS * _center_source
+	var center_godot := SOURCE_BASIS * _center_input if _dump_space else _center_input
 	var center_nav := _godot_to_nav(center_godot)
 
-	DirAccess.make_dir_recursive_absolute(_out_path.get_base_dir())
+	# Always write under D:/1/{yyyy-M-d_HH-mm-ss}_nav-r{radius}/ — never a bare path.
+	# --out may set the .glb filename (or a path whose basename is used); the folder is always fresh.
+	var dt := Time.get_datetime_dict_from_system()
+	var stamp := "%d-%d-%d_%02d-%02d-%02d" % [
+		int(dt["year"]), int(dt["month"]), int(dt["day"]),
+		int(dt["hour"]), int(dt["minute"]), int(dt["second"]),
+	]
+	var folder := "D:/1/%s_nav-r%d" % [stamp, int(_radius)]
+	var glb_name := "nav_%.0f_%.0f_%.0f_r%.0f.glb" % [
+		_center_input.x, _center_input.y, _center_input.z, _radius,
+	]
+	if not _out_path.is_empty():
+		var base := _out_path.get_file()
+		if base.ends_with(".glb") or base.ends_with(".GLB"):
+			glb_name = base
+	_out_path = "%s/%s" % [folder, glb_name]
+
+	DirAccess.make_dir_recursive_absolute(folder)
 	print(
-		"Export nav region dump=%s godot=%s nav=%s radius=%.1f -> %s" % [
-			_center_source, center_godot, center_nav, _radius, _out_path,
+		"Export nav region input=%s (%s) godot=%s nav=%s radius=%.1f -> %s" % [
+			_center_input,
+			"dump/JSON" if _dump_space else "godot/spawner",
+			center_godot,
+			center_nav,
+			_radius,
+			_out_path,
 		]
 	)
 
@@ -65,9 +89,11 @@ func _initialize() -> void:
 		quit(1)
 		return
 
-	# nav → dump/JSON: SOURCE_BASIS * Ry(+90°) * (nav - shift)
-	# append_nav_xform does basis*(v - rebase); SOURCE_BASIS is an involution.
-	var nav_to_dump_basis := SOURCE_BASIS * _objects_basis.inverse()
+	# nav → Godot: Ry(+90°) * (nav - shift). Optional SOURCE_BASIS for dump-space GLB.
+	var nav_to_out_basis := _objects_basis.inverse()
+	if _dump_space:
+		nav_to_out_basis = SOURCE_BASIS * nav_to_out_basis
+	var rebase_center := _center_input if _dump_space else center_godot
 
 	dir.list_dir_begin()
 	var fname := dir.get_next()
@@ -78,7 +104,7 @@ func _initialize() -> void:
 			var nav := load(path) as NavigationMesh
 			if nav != null and _nav_intersects_sphere(nav, center_nav, radius_sq):
 				if NavGlbMerge.append_nav_xform(
-					merge["nav"], nav, OBJECT_ORIGIN_SHIFT, nav_to_dump_basis
+					merge["nav"], nav, OBJECT_ORIGIN_SHIFT, nav_to_out_basis
 				):
 					matched += 1
 					print("  + %s polys=%d" % [fname.get_basename(), nav.get_polygon_count()])
@@ -94,8 +120,7 @@ func _initialize() -> void:
 		quit(2)
 		return
 
-	# Rebase exported dump/JSON verts around the requested center so the GLB sits near origin.
-	_rebase_bucket(merge["nav"], _center_source)
+	_rebase_bucket(merge["nav"], rebase_center)
 
 	var root := Node3D.new()
 	root.name = "NavRegionPreview"

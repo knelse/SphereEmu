@@ -811,7 +811,7 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 			" wall_cells ", obst_count,
 			" defer_wall=", defer_wall
 		)
-	else:
+	elif OS.get_environment("NAV_EXPERIMENT_BRIDGE_RIBBON_ONLY") != "1":
 		source.add_faces(ground_faces, Transform3D.IDENTITY)
 	# Global building-fill accumulators (NAV_EXPERIMENT_BUILDING_FILL): every object's roofed cells
 	# and wall footprint cells across the whole tile, so the enclosure flood sees real gates/archways
@@ -1168,9 +1168,58 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 			" wall_cells ", dwall_cells,
 			" portal_skipped ", int(dwall_skipped["n"])
 		)
+	# Bridges first: bowl-shaped ribbon of quads following authored deck Y. Pull planks from the
+	# 3×3 neighbourhood (not just this tile's pivots) so a span that crosses a tile seam still
+	# gets one continuous ribbon in every overlapping bake — otherwise Recast leaves climb gaps
+	# at mid-span (~8m sag vs agent_max_climb 0.3).
+	var bridge_planks: Array = _collect_bridge_planks_for_tile(gx, gz, placements)
+	if not bridge_planks.is_empty():
+		# Pass ground grid so end approaches can step onto cliff rims (ribbon alone stops at
+		# the last plank pivot and leaves a climb/erosion gap to terrain nav).
+		var ribbon := _bridge_bowl_quad_strip(bridge_planks, ground_grid, surface_y)
+		if ribbon.size() > 0:
+			source.add_faces(ribbon, Transform3D.IDENTITY)
+			tile_walkable_faces.append_array(ribbon)
+			obst_count += 1
+			if OS.get_environment("DIAG_BRIDGE") == "1":
+				print(
+					"    bridge_bowl: ", bridge_planks.size(), " plank(s), ",
+					int(ribbon.size() / 3), " tris on ", tile_key
+				)
+				var rb := {}
+				var ri := 0
+				while ri + 2 < ribbon.size():
+					var rc := (ribbon[ri] + ribbon[ri + 1] + ribbon[ri + 2]) / 3.0
+					var rg: Vector3 = Basis.from_euler(Vector3(0, deg_to_rad(-90), 0)).inverse() * (rc - Vector3(4000, 0, 4000))
+					var rbin := int(floor(rg.z / 10.0)) * 10
+					if not rb.has(rbin):
+						rb[rbin] = {"n": 0, "ymin": rg.y, "ymax": rg.y}
+					rb[rbin]["n"] = int(rb[rbin]["n"]) + 1
+					rb[rbin]["ymin"] = minf(float(rb[rbin]["ymin"]), rg.y)
+					rb[rbin]["ymax"] = maxf(float(rb[rbin]["ymax"]), rg.y)
+					ri += 3
+				var rkeys: Array = rb.keys()
+				rkeys.sort()
+				for rbk in rkeys:
+					print(
+						"      ribbon_src z~", rbk,
+						" tris=", rb[rbk]["n"],
+						" y=[%.1f,%.1f]" % [float(rb[rbk]["ymin"]), float(rb[rbk]["ymax"])]
+					)
+				for bp in bridge_planks:
+					var bppos: Vector3 = bp["pos"]
+					var bpg: Vector3 = Basis.from_euler(Vector3(0, deg_to_rad(-90), 0)).inverse() * (bppos - Vector3(4000, 0, 4000))
+					print("      plank godot=", bpg, " nav=", bppos, " hw=", bp["half_width"])
+
+	var ribbon_only := OS.get_environment("NAV_EXPERIMENT_BRIDGE_RIBBON_ONLY") == "1"
 	for placement in placements:
+		if ribbon_only:
+			break
 		var object_name: String = placement["object_name"]
 		if _skip_obstruction(object_name):
+			continue
+		# Already contributed walkable ribbon above; skip mesh carve entirely.
+		if _is_bridge_deck_object(object_name):
 			continue
 		var parts: Array = _load_object_parts(object_name)
 		if parts.is_empty():
@@ -1539,7 +1588,9 @@ func _prepare_bake(tile_key: String, master: String, gx: int, gz: int) -> Dictio
 	nav.edge_max_error = 1.3
 	nav.detail_sample_distance = 6.0
 	nav.filter_ledge_spans = false
-	nav.filter_walkable_low_height_spans = true
+	# Floating suspension decks often sit under cliff lips / rope geometry; low-height filtering
+	# drops the sagging mid-span even when the bowl ribbon is present in source.
+	nav.filter_walkable_low_height_spans = OS.get_environment("NAV_EXPERIMENT_LOW_HEIGHT") != "0"
 
 	return {
 		"nav": nav,
@@ -5698,6 +5749,376 @@ func _is_solid_rock_terrain_object(object_name: String) -> bool:
 func _is_approach_ramp_object(object_name: String) -> bool:
 	var n := object_name.to_lower()
 	return n == "cc55" or n == "cc56"
+
+## Standalone bridge decks (brige* typo spelling in source data, tn3_bridge*, lbridge*, etc.).
+## Multi-plank spans → bowl ribbon from pivots; single-kit arches → hump ribbon from mesh deck samples.
+func _is_bridge_deck_object(object_name: String) -> bool:
+	var n := object_name.to_lower()
+	if n.contains("bridge") or n.contains("brige"):
+		return true
+	return n == "lbridge" or n.begins_with("lbridge")
+
+## All bridge planks that belong on this tile's ribbon: local placements plus any bridge in the
+## 3×3 cell neighbourhood flood-filled by proximity (so seam-crossing spans stay whole).
+func _collect_bridge_planks_for_tile(gx: int, gz: int, placements: Array) -> Array:
+	var planks: Array = [] # {pos, half_width, transform, object_name}
+	var seen: Dictionary = {} # rounded origin key -> true
+	const CHAIN_R := 25.0
+	for bpl in placements:
+		_try_append_bridge_plank(bpl, planks, seen)
+	if planks.is_empty():
+		return planks
+	# Candidates from 3×3 (bridges are pivot-bucketed; span often crosses the tile seam).
+	var candidates: Array = []
+	for dz in range(-1, 2):
+		for dx in range(-1, 2):
+			for npl in _objects_by_cell.get(Vector2i(gx + dx, gz + dz), []):
+				if _is_bridge_deck_object(str(npl["object_name"])):
+					candidates.append(npl)
+	# Flood-fill: keep absorbing candidates within CHAIN_R of any accepted plank.
+	var grew := true
+	while grew:
+		grew = false
+		for npl2 in candidates:
+			var npos: Vector3 = (npl2["transform"] as Transform3D).origin
+			var near := false
+			for p in planks:
+				var pp: Vector3 = p["pos"]
+				if Vector2(npos.x, npos.z).distance_to(Vector2(pp.x, pp.z)) <= CHAIN_R:
+					near = true
+					break
+			if near:
+				var before := planks.size()
+				_try_append_bridge_plank(npl2, planks, seen)
+				if planks.size() > before:
+					grew = true
+	return planks
+
+func _try_append_bridge_plank(placement: Dictionary, planks: Array, seen: Dictionary) -> void:
+	var bname: String = placement["object_name"]
+	if not _is_bridge_deck_object(bname) or _skip_obstruction(bname):
+		return
+	var bxform: Transform3D = placement["transform"]
+	var key := "%d,%d,%d" % [
+		roundi(bxform.origin.x * 10.0),
+		roundi(bxform.origin.y * 10.0),
+		roundi(bxform.origin.z * 10.0),
+	]
+	if seen.has(key):
+		return
+	var bparts: Array = _load_object_parts(bname)
+	if bparts.is_empty():
+		return
+	seen[key] = true
+	var baabb := _parts_world_aabb(bparts, bxform)
+	planks.append({
+		"pos": Vector3(bxform.origin.x, bxform.origin.y, bxform.origin.z),
+		"half_width": _bridge_plank_half_width(baabb),
+		"transform": bxform,
+		"object_name": bname,
+	})
+
+## Narrower horizontal AABB extent ≈ deck width (longer extent is the plank span).
+func _bridge_plank_half_width(aabb: AABB) -> float:
+	var hx := aabb.size.x
+	var hz := aabb.size.z
+	var width := minf(hx, hz)
+	if width < 0.4:
+		width = maxf(hx, hz)
+	# Clamp: rope AABBs can be huge; typical walkway is a few metres.
+	width = clampf(width, 1.5, 6.0)
+	return width * 0.5
+
+## Bowl/hump walkable ribbon: multi-plank pivots (suspension sag) or mesh-sampled single-kit arches.
+## When ground_grid is provided, also emit climb-stepped approaches from each end onto the
+## sampled rim so agents can step on/off.
+func _bridge_bowl_quad_strip(planks: Array, ground_grid: Dictionary = {}, ground_fallback: float = 0.0) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	if planks.is_empty():
+		return out
+	# Cluster planks that belong to the same span (gap > 30m starts a new chain).
+	var remaining: Array = planks.duplicate()
+	while not remaining.is_empty():
+		var chain: Array = [remaining.pop_back()]
+		var grew := true
+		while grew:
+			grew = false
+			var i := 0
+			while i < remaining.size():
+				var rp: Vector3 = remaining[i]["pos"]
+				var near := false
+				for c in chain:
+					var cp: Vector3 = c["pos"]
+					if Vector2(rp.x, rp.z).distance_to(Vector2(cp.x, cp.z)) <= 30.0:
+						near = true
+						break
+				if near:
+					chain.append(remaining[i])
+					remaining.remove_at(i)
+					grew = true
+				else:
+					i += 1
+		out.append_array(_bridge_bowl_quad_strip_chain(chain, ground_grid, ground_fallback))
+	return out
+
+func _bridge_bowl_quad_strip_chain(
+	chain: Array, ground_grid: Dictionary = {}, ground_fallback: float = 0.0
+) -> PackedVector3Array:
+	if chain.is_empty():
+		return PackedVector3Array()
+	# Peel tn3_bridge* kits out: each gets a mesh-sampled hump ribbon (pivot Y flattens arches).
+	# Remaining multi-plank suspension pieces (brige*) keep the authored-pivot bowl path.
+	var tn3s: Array = []
+	var others: Array = []
+	for c0 in chain:
+		if str(c0.get("object_name", "")).begins_with("tn3_bridge"):
+			tn3s.append(c0)
+		else:
+			others.append(c0)
+	var out := PackedVector3Array()
+	for tkit in tn3s:
+		var mesh_stations: Array = _bridge_mesh_deck_stations(tkit)
+		if mesh_stations.size() >= 2:
+			mesh_stations = _bridge_sort_stations_along_span(mesh_stations)
+			out.append_array(_bridge_stations_quad_strip(mesh_stations, ground_grid, ground_fallback))
+		else:
+			var p0: Vector3 = tkit["pos"]
+			var hw0: float = tkit["half_width"]
+			out.append_array(_portal_walkable_strip_aabb(
+				p0.x - hw0, p0.x + hw0, p0.z - hw0, p0.z + hw0, p0.y
+			))
+	if others.is_empty():
+		return out
+	if others.size() == 1:
+		# Non-tn3 singleton: try mesh sample (tn4_brige / lbridge arches), else pad.
+		var ostations := _bridge_mesh_deck_stations(others[0])
+		if ostations.size() >= 2:
+			ostations = _bridge_sort_stations_along_span(ostations)
+			out.append_array(_bridge_stations_quad_strip(ostations, ground_grid, ground_fallback))
+		else:
+			var op: Vector3 = others[0]["pos"]
+			var ohw: float = others[0]["half_width"]
+			out.append_array(_portal_walkable_strip_aabb(
+				op.x - ohw, op.x + ohw, op.z - ohw, op.z + ohw, op.y
+			))
+		return out
+	others = _bridge_sort_stations_along_span(others)
+	out.append_array(_bridge_stations_quad_strip(others, ground_grid, ground_fallback))
+	return out
+
+func _bridge_sort_stations_along_span(stations: Array) -> Array:
+	if stations.size() < 2:
+		return stations
+	var cx := 0.0
+	var cz := 0.0
+	for c in stations:
+		var p: Vector3 = c["pos"]
+		cx += p.x
+		cz += p.z
+	cx /= float(stations.size())
+	cz /= float(stations.size())
+	var var_x := 0.0
+	var var_z := 0.0
+	for c2 in stations:
+		var p2: Vector3 = c2["pos"]
+		var_x += absf(p2.x - cx)
+		var_z += absf(p2.z - cz)
+	var along_x := var_x >= var_z
+	var sorted: Array = stations.duplicate()
+	sorted.sort_custom(func(a, b):
+		var pa: Vector3 = a["pos"]
+		var pb: Vector3 = b["pos"]
+		if along_x:
+			return pa.x < pb.x
+		return pa.z < pb.z
+	)
+	return sorted
+
+## Deck-top stations along a single bridge mesh: up-facing near-horizontal face centroids, centerline
+## band, max Y per 1 m along-span bin (arch hump / flat deck — not pivot Y).
+func _bridge_mesh_deck_stations(plank: Dictionary) -> Array:
+	var out: Array = [] # {pos, half_width}
+	var bname := str(plank.get("object_name", ""))
+	if bname.is_empty() or not plank.has("transform"):
+		return out
+	var xform: Transform3D = plank["transform"]
+	var parts: Array = _load_object_parts(bname)
+	if parts.is_empty():
+		return out
+	var cents: Array = [] # Vector3
+	for part in parts:
+		var mesh: Mesh = part["mesh"]
+		var faces := _mesh_faces_world(mesh, xform * part["local"])
+		var fi := 0
+		while fi + 2 < faces.size():
+			var a: Vector3 = faces[fi]
+			var b: Vector3 = faces[fi + 1]
+			var c: Vector3 = faces[fi + 2]
+			fi += 3
+			var nrm := (b - a).cross(c - a)
+			if nrm.length_squared() < 1e-10:
+				continue
+			nrm = nrm.normalized()
+			# Up-facing, slope from horizontal ≤ ~45° (nrm.y >= cos45).
+			if nrm.y < 0.7:
+				continue
+			cents.append((a + b + c) / 3.0)
+	if cents.size() < 3:
+		return out
+	var mean := Vector3.ZERO
+	for p in cents:
+		mean += p
+	mean /= float(cents.size())
+	var var_x := 0.0
+	var var_z := 0.0
+	for p2 in cents:
+		var_x += absf(p2.x - mean.x)
+		var_z += absf(p2.z - mean.z)
+	var along_x := var_x >= var_z
+	var lats: Array = []
+	for p3 in cents:
+		lats.append(p3.z if along_x else p3.x)
+	lats.sort()
+	var med_lat: float = float(lats[int(lats.size() / 2)])
+	const LAT_BAND := 1.5
+	var bins: Dictionary = {} # along_int -> max_y
+	for p4 in cents:
+		var lat: float = p4.z if along_x else p4.x
+		if absf(lat - med_lat) > LAT_BAND:
+			continue
+		var along: float = p4.x if along_x else p4.z
+		var bkey := int(floor(along))
+		if not bins.has(bkey) or p4.y > float(bins[bkey]):
+			bins[bkey] = p4.y
+	var keys: Array = bins.keys()
+	keys.sort()
+	if keys.size() < 2:
+		return out
+	# Path-width for short arched kits (dirt-road bridges).
+	var half_w := clampf(float(plank.get("half_width", 2.25)), 2.0, 2.5)
+	for k in keys:
+		var along_v := float(k) + 0.5
+		var y: float = float(bins[k])
+		var pos := Vector3(along_v, y, med_lat) if along_x else Vector3(med_lat, y, along_v)
+		out.append({"pos": pos, "half_width": half_w})
+	return out
+
+## Climb-stepped ribbon through ordered stations + optional end approaches onto terrain rims.
+func _bridge_stations_quad_strip(
+	stations: Array, ground_grid: Dictionary = {}, ground_fallback: float = 0.0
+) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	if stations.size() < 2:
+		return out
+	var half_w := 0.0
+	for s0 in stations:
+		half_w = maxf(half_w, float(s0["half_width"]))
+	var max_dy := minf(0.25, _agent_max_climb() * 0.85)
+	const MAX_DXZ := 1.25
+	for i in range(stations.size() - 1):
+		var a: Vector3 = stations[i]["pos"]
+		var b: Vector3 = stations[i + 1]["pos"]
+		var dxz: float = Vector2(a.x, a.z).distance_to(Vector2(b.x, b.z))
+		var dy: float = absf(b.y - a.y)
+		var steps := maxi(1, maxi(ceili(dy / max_dy), ceili(dxz / MAX_DXZ)))
+		var prev := a
+		for s in range(1, steps + 1):
+			var t := float(s) / float(steps)
+			var cur := a.lerp(b, t)
+			out.append_array(_bridge_ribbon_quad(prev, cur, half_w))
+			prev = cur
+	if not ground_grid.is_empty():
+		var first: Vector3 = stations[0]["pos"]
+		var second: Vector3 = stations[1]["pos"]
+		var last: Vector3 = stations[stations.size() - 1]["pos"]
+		var prev_last: Vector3 = stations[stations.size() - 2]["pos"]
+		out.append_array(_bridge_end_approach(first, second, half_w, ground_grid, ground_fallback))
+		out.append_array(_bridge_end_approach(last, prev_last, half_w, ground_grid, ground_fallback))
+	return out
+
+## Step from an end plank outward onto cliff terrain. Skips canyon floor (ground far below deck).
+func _bridge_end_approach(
+	end_plank: Vector3,
+	inward_plank: Vector3,
+	half_width: float,
+	ground_grid: Dictionary,
+	ground_fallback: float
+) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	var tang := Vector3(end_plank.x - inward_plank.x, 0.0, end_plank.z - inward_plank.z)
+	if tang.length_squared() < 1e-8:
+		return out
+	tang = tang.normalized()
+	# Probe outward for a rim: terrain within a few metres of deck Y (not the ravine floor).
+	const PROBE_STEP := 1.0
+	const PROBE_MAX := 14.0
+	const RIM_Y_BAND := 4.5
+	var rim_dist := -1.0
+	var rim_y := end_plank.y
+	var d := PROBE_STEP
+	while d <= PROBE_MAX:
+		var xz := Vector2(end_plank.x + tang.x * d, end_plank.z + tang.z * d)
+		var gy := _sample_ground_height(ground_grid, GROUND_GRID_CELL, xz, ground_fallback)
+		if absf(gy - end_plank.y) <= RIM_Y_BAND:
+			rim_dist = d
+			rim_y = gy
+			# Keep scanning a bit further to land past the eroded lip.
+			var d2 := d + 2.0
+			while d2 <= minf(d + 6.0, PROBE_MAX):
+				var xz2 := Vector2(end_plank.x + tang.x * d2, end_plank.z + tang.z * d2)
+				var gy2 := _sample_ground_height(ground_grid, GROUND_GRID_CELL, xz2, ground_fallback)
+				if absf(gy2 - end_plank.y) <= RIM_Y_BAND:
+					rim_dist = d2
+					rim_y = gy2
+				else:
+					break
+				d2 += PROBE_STEP
+			break
+		d += PROBE_STEP
+	# Always extend past the end plank so agent_radius erosion can't open a seam; if no rim was
+	# found, stay at deck Y for a short pad (better than dropping into the canyon).
+	if rim_dist < 0.0:
+		rim_dist = 4.0
+		rim_y = end_plank.y
+	var max_dy := minf(0.25, _agent_max_climb() * 0.85)
+	const MAX_DXZ := 1.0
+	var dy: float = absf(rim_y - end_plank.y)
+	var steps := maxi(1, maxi(ceili(dy / max_dy), ceili(rim_dist / MAX_DXZ)))
+	var prev := end_plank
+	for s in range(1, steps + 1):
+		var t := float(s) / float(steps)
+		var cur := Vector3(
+			end_plank.x + tang.x * rim_dist * t,
+			lerpf(end_plank.y, rim_y, t),
+			end_plank.z + tang.z * rim_dist * t
+		)
+		out.append_array(_bridge_ribbon_quad(prev, cur, half_width))
+		prev = cur
+	# Small landing pad at rim height so cliff terrain and approach share footprint.
+	var land := prev
+	var land2 := land + tang * 1.5
+	land2.y = rim_y
+	out.append_array(_bridge_ribbon_quad(land, land2, half_width * 1.15))
+	return out
+
+## One slanted quad between two stations, extruded ±half_width perpendicular to the XZ tangent.
+func _bridge_ribbon_quad(p0: Vector3, p1: Vector3, half_width: float) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	var tang := Vector3(p1.x - p0.x, 0.0, p1.z - p0.z)
+	if tang.length_squared() < 1e-8:
+		return out
+	tang = tang.normalized()
+	var right := Vector3(-tang.z, 0.0, tang.x) * half_width
+	# Slight longitudinal overlap so neighbouring steps share an edge in the voxelizer.
+	var along := tang * 0.15
+	var a := Vector3(p0.x, p0.y, p0.z) - right - along
+	var b := Vector3(p0.x, p0.y, p0.z) + right - along
+	var c := Vector3(p1.x, p1.y, p1.z) + right + along
+	var d := Vector3(p1.x, p1.y, p1.z) - right + along
+	# CCW from +Y so face normals point up (a→b→c was clockwise; Recast dropped every tri).
+	out.append(a); out.append(d); out.append(c)
+	out.append(a); out.append(c); out.append(b)
+	return out
 
 ## Kit pieces whose near-horizontal surfaces are roofs/tops and must never become walkable nav.
 ## cc01-13, cc18, cc20, cc38-39, cc41-42, cc44-45, cc47-48, cc57-58, cc78-85,
