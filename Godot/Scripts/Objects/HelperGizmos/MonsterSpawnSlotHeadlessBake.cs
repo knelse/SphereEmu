@@ -98,6 +98,7 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
             YieldProcessFrames = false,
             ForceRebake = options.Force,
             ProgressFilePath = options.ProgressPath,
+            NameContains = options.NameContains,
         };
 
         var slotCount = await MonsterSpawnSlotBaker.BakeAllUnderAsync(spawners, settings);
@@ -188,6 +189,9 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
                 case "--progress" when i + 1 < args.Length:
                     options.ProgressPath = args[++i];
                     break;
+                case "--name-contains" when i + 1 < args.Length:
+                    options.NameContains = args[++i];
+                    break;
             }
         }
 
@@ -209,6 +213,7 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
               --skip-scene-save   Only write the progress sidecar (no MainServer.tscn pack)
               --scene <path>      Scene containing MonsterSpawners + Terrain (default MainServer)
               --progress <path>   Sidecar JSON path (default res://Godot/Terrain/spawn_slot_bake_progress.json)
+              --name-contains <s> Only bake spawners whose name/key contains s (debug)
               --help              Show this help
 
             Checkpoints every 100 dirty spawners go to the sidecar (fast). The scene is packed once at the end.
@@ -233,5 +238,6 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
         public bool SkipSceneSave { get; set; }
         public string ScenePath { get; set; } = DefaultScenePath;
         public string ProgressPath { get; set; } = SpawnSlotBakeProgress.DefaultResourcePath;
+        public string? NameContains { get; set; }
     }
 }

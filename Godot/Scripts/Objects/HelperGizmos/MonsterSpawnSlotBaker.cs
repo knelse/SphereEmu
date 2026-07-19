@@ -11,13 +11,16 @@ using SphServer.Godot.Scripts.Terrain.WalkSurface;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Pre-bakes validated outdoor spawn slots against the baked navmesh (see
-///     <see cref="TerrainNavMeshRuntime" />). The navmesh is the sole walkability/height authority.
-///     Candidate XZ seeding uses a loose grid (and optionally the walk-surface atlas when present for denser
-///     spread); atlas ground height is never used for placement.
+///     Pre-bakes validated spawn slots against the baked navmesh (see
+///     <see cref="TerrainNavMeshRuntime" /> — outdoor tiles + indoor clusters). The navmesh is the sole
+///     walkability/height authority. Candidate XZ seeding uses a loose grid (and optionally the walk-surface
+///     atlas when present for denser spread); atlas ground height is never used for placement.
 /// </summary>
 public static class MonsterSpawnSlotBaker
 {
+    /// <summary>When true, headless prints per-spawner failure details (set by --name-contains debug runs).</summary>
+    private static bool _verboseHeadlessFailures;
+
     /// <summary>Spatial batch size for full rebakes — keeps NavigationServer from holding the whole map.</summary>
     private const float BatchRegionSizeMeters = 500f;
 
@@ -107,6 +110,7 @@ public static class MonsterSpawnSlotBaker
     {
         ArgumentNullException.ThrowIfNull(settings);
 
+        _verboseHeadlessFailures = !string.IsNullOrEmpty(settings.NameContains);
         var stopwatch = Stopwatch.StartNew();
         SpawnSlotBakeProgress? progress = null;
         if (!string.IsNullOrEmpty(settings.ProgressFilePath))
@@ -130,14 +134,21 @@ public static class MonsterSpawnSlotBaker
                 continue;
             }
 
+            var key = SpawnSlotBakeProgress.GetSpawnerKey(spawner);
+            if (!string.IsNullOrEmpty(settings.NameContains)
+                && key.IndexOf(settings.NameContains, StringComparison.OrdinalIgnoreCase) < 0
+                && spawner.Name.ToString().IndexOf(settings.NameContains, StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                continue;
+            }
+
             var job = CreateBakeParamsOrNull(spawner, fastCandidateGeneration: true);
             if (job is null)
             {
                 continue;
             }
 
-            var key = SpawnSlotBakeProgress.GetSpawnerKey(spawner);
-            // Sidecar covers both successes and hard failures (e.g. dungeon Y with no outdoor nav).
+            // Sidecar covers both successes and hard failures (e.g. dungeon with no outdoor/indoor nav).
             if (!settings.ForceRebake && progress is not null && progress.Contains(key))
             {
                 skipped++;
@@ -202,9 +213,17 @@ public static class MonsterSpawnSlotBaker
                 TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Origin, job.SpawnRadiusMeters + 1f);
             }
 
-            // Batch path: force-flush only. SyncAsync's frame waits used to hang the editor between
-            // regions when PhysicsFrame stopped ticking after the first batch.
-            TerrainNavMeshRuntime.TrySyncImmediate(force: true);
+            // Regions need a physics tick before MapGetClosestPoint returns real points. Force-update
+            // alone leaves iteration_id=1 and closest=(0,0,0) → indoor WrongLevel (nav Y=1).
+            if (tree is not null)
+            {
+                await TerrainNavMeshRuntime.SyncAsync(tree, force: true);
+            }
+            else
+            {
+                TerrainNavMeshRuntime.TrySyncImmediate(force: true);
+            }
+
             if (settings.YieldProcessFrames && tree is not null)
             {
                 await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
@@ -213,19 +232,19 @@ public static class MonsterSpawnSlotBaker
             var loadedTiles = TerrainNavMeshRuntime.LoadedRegionCount;
             var results = new SpawnerBakeResult[regionWork.Count];
 
-            // Empty / dungeon XZ with no GeneratedNavMeshes tiles: do not run candidate loops — each
-            // spawner would burn seconds rejecting every loose-grid sample as NotWalkable.
+            // Empty XZ with neither outdoor GeneratedNavMeshes nor indoor cluster nav: skip candidate
+            // loops — each spawner would burn seconds rejecting every sample as NotWalkable.
             if (loadedTiles == 0)
             {
                 GD.Print(
                     $"MonsterSpawnSlotBaker: region {regionIndex}/{regions.Count} — "
-                    + $"0 nav tiles after load; marking {regionWork.Count} spawner(s) ERROR "
+                    + $"0 nav regions after load; marking {regionWork.Count} spawner(s) ERROR "
                     + $"({stopwatch.Elapsed.TotalSeconds:0.0}s)");
                 for (var i = 0; i < regionWork.Count; i++)
                 {
                     results[i] = new SpawnerBakeResult
                     {
-                        FailureDetail = "no outdoor nav tile coverage at spawner XZ (loaded 0 tiles)",
+                        FailureDetail = "no nav coverage at spawner (outdoor tiles + indoor clusters loaded 0)",
                     };
                 }
             }
@@ -262,7 +281,14 @@ public static class MonsterSpawnSlotBaker
                         TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Origin, job.SpawnRadiusMeters + 1f);
                     }
 
-                    TerrainNavMeshRuntime.TrySyncImmediate(force: true);
+                    if (tree is not null)
+                    {
+                        await TerrainNavMeshRuntime.SyncAsync(tree, force: true);
+                    }
+                    else
+                    {
+                        TerrainNavMeshRuntime.TrySyncImmediate(force: true);
+                    }
 
                     foreach (var index in retryIndexes)
                     {
@@ -385,6 +411,15 @@ public static class MonsterSpawnSlotBaker
     {
         var detail = result.FailureDetail ?? string.Empty;
         // Total wipeout NotWalkable is the sync-race signature; partial fills are real geometry limits.
+        // WrongLevel with nav Y≈0/1 is the pre-physics-sync MapGetClosestPoint(Zero) sentinel
+        // (remapped through objects→grid to ~Y=1 for indoor probes).
+        if (detail.Contains(nameof(OutdoorSpawnSlotValidator.FailReason.WrongLevel), StringComparison.Ordinal)
+            && (detail.Contains("nav Y=0", StringComparison.Ordinal)
+                || detail.Contains("nav Y=1", StringComparison.Ordinal)))
+        {
+            return true;
+        }
+
         return detail.Contains("navigation map not synced", StringComparison.Ordinal)
                || (result.FoundCount == 0
                    && detail.Contains(
@@ -396,8 +431,9 @@ public static class MonsterSpawnSlotBaker
     {
         var detail = result.FailureDetail ?? string.Empty;
 
-        // Wrong-level / dungeon early-outs are permanent for this bake.
+        // Wrong-level / no-coverage early-outs are permanent for this bake.
         if (detail.Contains(nameof(OutdoorSpawnSlotValidator.FailReason.WrongLevel), StringComparison.Ordinal)
+            || detail.Contains("no nav coverage at spawner", StringComparison.Ordinal)
             || detail.Contains("no outdoor nav tile coverage", StringComparison.Ordinal))
         {
             return false;
@@ -418,6 +454,34 @@ public static class MonsterSpawnSlotBaker
 
     internal static SpawnerBakeResult BakeCore(SpawnerBakeParams job)
     {
+        var result = BakeCoreAtOrigin(job);
+        if (result.Success)
+        {
+            return result;
+        }
+
+        // Outdoor markers often sit above terrain. If the first pass can't fill the pool, drop the
+        // spawn center straight down onto the navmesh (≤MaxOutdoorDropToNavMeshMeters) and measure
+        // radius from there.
+        if (!IndoorAreaCriteria.IsIndoorDepth(job.Origin.Y)
+            && TerrainNavMeshRuntime.TryFindNavMeshBelow(
+                job.Origin,
+                OutdoorFieldConfig.MaxOutdoorDropToNavMeshMeters,
+                out var groundCenter)
+            && job.Origin.Y - groundCenter.Y > 0.05f)
+        {
+            var dropped = BakeCoreAtOrigin(job with { Origin = groundCenter });
+            if (dropped.Success || dropped.FoundCount > result.FoundCount)
+            {
+                return dropped;
+            }
+        }
+
+        return result;
+    }
+
+    private static SpawnerBakeResult BakeCoreAtOrigin(SpawnerBakeParams job)
+    {
         if (!TerrainNavMeshRuntime.HasAnyTileFiles())
         {
             return new SpawnerBakeResult { FailureDetail = "no navigation mesh tiles baked" };
@@ -432,9 +496,9 @@ public static class MonsterSpawnSlotBaker
             };
         }
 
-        // Cheap reject before candidate generation: dungeon-layer spawners often sit far below/above
-        // outdoor nav at the same XZ. Use raw closest-point (not the 0.2m on-mesh test) so we still
-        // catch WrongLevel when the horizontal snap is slightly loose.
+        // Cheap reject before candidate generation: when only outdoor nav is loaded under a dungeon
+        // spawner (or vice versa), closest-point Y drifts far from the spawner. Indoor probes map
+        // through TerrainObjects→grid inside TerrainNavMeshRuntime so dungeon nav can match.
         if (TerrainNavMeshRuntime.TryClosestPoint(job.Origin, out var originSnap))
         {
             var maxVerticalDrift = Mathf.Max(
@@ -766,7 +830,7 @@ public static class MonsterSpawnSlotBaker
         string detail)
     {
         // Headless bake-all: region summaries only (thousands of per-spawner lines stall the console).
-        if (!MonsterSpawnSlotHeadlessBake.IsActive)
+        if (!MonsterSpawnSlotHeadlessBake.IsActive || _verboseHeadlessFailures)
         {
             GD.PushWarning(
                 $"MonsterSpawnSlotBaker: spawner '{spawner.Name}' at {spawner.GlobalPosition}: "

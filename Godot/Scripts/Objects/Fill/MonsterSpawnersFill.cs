@@ -9,9 +9,11 @@ namespace SphServer.Godot.Scripts.Objects.Fill;
 
 /// <summary>
 /// Editor tool: reads tab/space-separated spawner rows (ID, skip, skip, X, Y, Z, Angle),
-/// clears existing children, and instances <see cref="MonsterSpawnerScenePath"/> per row.
+/// clears rebuildable children, and instances <see cref="MonsterSpawnerScenePath"/> per row.
 /// Source space matches terrain: <c>(x,y,z)_src ↦ (x,-y,-z)</c>.
 /// Rows with duplicate source coordinates (same X, Y, Z columns) are skipped after the first occurrence.
+/// Existing spawners that already have baked spawn slots are kept; dump rows with the same
+/// 16-bit hex ID (name segment after <c>MonsterSpawner_</c>) are ignored.
 /// </summary>
 [Tool]
 public partial class MonsterSpawnersFill : Node3D
@@ -126,7 +128,8 @@ public partial class MonsterSpawnersFill : Node3D
 
 		try
 		{
-			WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
+			var idsWithBakedSlots = CollectSpawnerIdsWithBakedSlots();
+			ClearRebuildableSpawnersKeepingBaked(idsWithBakedSlots);
 
 			if (!WorldObjectDumpFillCommon.TryLoadPackedScene(MonsterSpawnerScenePath, "MonsterSpawnersFill", out var scene))
 			{
@@ -139,10 +142,11 @@ public partial class MonsterSpawnersFill : Node3D
 			}
 
 			var seenSourcePositions = new HashSet<(long Qx, long Qy, long Qz)>();
-			WorldObjectDumpFillCommon.SeedSeenSourcePositions(this, seenSourcePositions);
+			SeedSeenSourcePositionsFromKeptSpawners(seenSourcePositions);
 			var duplicateRowsSkipped = 0;
 			var rowsSkippedNotMatchingType = 0;
 			var rowsSkippedWeirdCoords = 0;
+			var rowsSkippedBakedId = 0;
 			var rowsConsidered = 0;
 			var rowsParsed = 0;
 			var spawned = 0;
@@ -172,6 +176,12 @@ public partial class MonsterSpawnersFill : Node3D
 					continue;
 				}
 
+				if (idsWithBakedSlots.Contains(id))
+				{
+					rowsSkippedBakedId++;
+					continue;
+				}
+
 				if (WorldObjectDumpFillCommon.ShouldSkipWeirdCoords(parts[3], parts[4], parts[5], x, y, z))
 				{
 					rowsSkippedWeirdCoords++;
@@ -192,7 +202,7 @@ public partial class MonsterSpawnersFill : Node3D
 				instance.Transform = BuildPlacementTransform((float)x, (float)y, (float)z, angleEncoded);
 				if (instance is MonsterSpawner spawner)
 				{
-					spawner.SpawnRadiusMeters = OutdoorFieldConfig.DefaultSpawnRadiusMeters;
+					spawner.SpawnRadiusMeters = IndoorFieldConfig.ResolveDefaultSpawnRadiusMeters(instance.Position.Y);
 					spawner.LeashRadiusMeters = OutdoorFieldConfig.DefaultLeashRadiusMeters;
 				}
 
@@ -204,7 +214,10 @@ public partial class MonsterSpawnersFill : Node3D
 			EnsureEditorPreviewMonstersOnSpawners();
 
 			GD.Print(
-				$"MonsterSpawnersFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, dupSkipped={duplicateRowsSkipped}, notTypeSkipped={rowsSkippedNotMatchingType}, weirdCoordSkipped={rowsSkippedWeirdCoords}, parseErrors={parseErrors}");
+				$"MonsterSpawnersFill: considered={rowsConsidered}, parsed={rowsParsed}, spawned={spawned}, "
+				+ $"keptBakedIds={idsWithBakedSlots.Count}, bakedIdSkipped={rowsSkippedBakedId}, "
+				+ $"dupSkipped={duplicateRowsSkipped}, notTypeSkipped={rowsSkippedNotMatchingType}, "
+				+ $"weirdCoordSkipped={rowsSkippedWeirdCoords}, parseErrors={parseErrors}");
 		}
 		finally
 		{
@@ -213,6 +226,96 @@ public partial class MonsterSpawnersFill : Node3D
 				MonsterMultiMeshVisuals.EndBulkEditorUpdate(tree);
 			}
 		}
+	}
+
+	private HashSet<int> CollectSpawnerIdsWithBakedSlots()
+	{
+		var ids = new HashSet<int>();
+		foreach (var child in GetChildren())
+		{
+			if (child is not MonsterSpawner spawner
+				|| !GodotObject.IsInstanceValid(spawner)
+				|| spawner.BakedSpawnSlots.Count == 0)
+			{
+				continue;
+			}
+
+			if (TryParseSpawnerIdFromName(ResolveSpawnerIdName(spawner), out var id))
+			{
+				ids.Add(id);
+			}
+		}
+
+		return ids;
+	}
+
+	private void ClearRebuildableSpawnersKeepingBaked(HashSet<int> idsWithBakedSlots)
+	{
+		for (var i = GetChildCount() - 1; i >= 0; i--)
+		{
+			var child = GetChild(i);
+			if (!GodotObject.IsInstanceValid(child))
+			{
+				continue;
+			}
+
+			if (child is MonsterSpawner spawner
+				&& spawner.BakedSpawnSlots.Count > 0
+				&& TryParseSpawnerIdFromName(ResolveSpawnerIdName(spawner), out var id)
+				&& idsWithBakedSlots.Contains(id))
+			{
+				continue;
+			}
+
+			child.Free();
+		}
+	}
+
+	private static string ResolveSpawnerIdName(MonsterSpawner spawner)
+	{
+		if (!string.IsNullOrEmpty(spawner.OriginalDisplayName))
+		{
+			return spawner.OriginalDisplayName;
+		}
+
+		return spawner.Name.ToString();
+	}
+
+	private void SeedSeenSourcePositionsFromKeptSpawners(HashSet<(long Qx, long Qy, long Qz)> seenSourcePositions)
+	{
+		foreach (var child in GetChildren())
+		{
+			if (child is not MonsterSpawner spawner || !GodotObject.IsInstanceValid(spawner))
+			{
+				continue;
+			}
+
+			seenSourcePositions.Add(WorldObjectDumpFillCommon.SourcePositionKeyFromPlacementNode(spawner, this));
+		}
+	}
+
+	/// <summary>
+	/// Parses the 16-bit hex ID from names like <c>MonsterSpawner_6DBE_[...]</c>
+	/// (optional <c>ERROR - </c> prefix is allowed).
+	/// </summary>
+	private static bool TryParseSpawnerIdFromName(string name, out int id)
+	{
+		id = 0;
+		const string marker = "MonsterSpawner_";
+		var start = name.IndexOf(marker, StringComparison.Ordinal);
+		if (start < 0)
+		{
+			return false;
+		}
+
+		start += marker.Length;
+		var end = name.IndexOf('_', start);
+		if (end <= start)
+		{
+			return false;
+		}
+
+		return WorldObjectDumpFillCommon.TryParseId(name.Substring(start, end - start), out id);
 	}
 
 	private void EnsureEditorPreviewMonstersOnSpawners()

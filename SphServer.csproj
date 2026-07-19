@@ -70,9 +70,8 @@
         <Compile Remove="Tools\**\bin\**\*.cs"/>
     </ItemGroup>
 
-    <!-- Editor plugin C# must not ship in the main assembly: headless runs load Debug and
-         fail to resolve EditorPlugin types without GodotSharpEditor at runtime. Re-enable
-         the gizmo later via a dedicated tools project or GDScript plugin. -->
+    <!-- Editor gizmo is GDScript (addons/monster_spawner_gizmo/*.gd). Keep any leftover C# addon
+         sources out of SphServer.dll — EditorPlugin in the game assembly TypeLoadExceptions headless. -->
     <ItemGroup>
         <Compile Remove="addons\**\*.cs"/>
     </ItemGroup>

@@ -1,0 +1,20 @@
+---
+description: Indoor walkable checkpoint for non-cci (lb*) clusters — pre key-fix golden
+globs:
+  - Tools/export_nearby_objects_glb.gd
+  - Tools/export_all_indoor_clusters.ps1
+  - Tools/indoor_walkable_checkpoint_non_cci.json
+  - Tools/INDOOR_WALKABLE_CHECKPOINT_NON_CCI.md
+  - Tools/simple_room_walk_strips.json
+alwaysApply: false
+---
+
+# Indoor walkable — non-cci checkpoint
+
+When rebaking or tuning **non-cci** indoor clusters (`lb*`, `rd_*`, `*_in`, …):
+
+1. Read `Tools/indoor_walkable_checkpoint_non_cci.json` (summary: `Tools/INDOOR_WALKABLE_CHECKPOINT_NON_CCI.md`).
+2. Golden compare: `D:/1/2026-7-18_18-47-51_indoor-clusters`.
+3. Keep shared walkable constants / weld / simple-room strips unless intentionally bumping the profile. Auto bulk uses latest lb* path for non-`cci*` labels.
+4. Production nav: `-WriteNavRes` → `GeneratedIndoorNavMeshes/` (loaded with outdoor tiles by `TerrainNavMeshRuntime`).
+5. For **cci*** clusters, use the cci checkpoint (pre-lb) instead — do not treat cci golden as the non-cci baseline.

@@ -36,6 +36,12 @@ public partial class MonsterSpawner : Node3D
 	[Export]
 	public int TargetRegularMonsterCount = 3;
 
+	/// <summary>
+	///     Field default is outdoor (<see cref="OutdoorFieldConfig.DefaultSpawnRadiusMeters" />).
+	///     Indoor-depth spawners (Y &lt; -500) should use
+	///     <see cref="IndoorFieldConfig.DefaultSpawnRadiusMeters" /> via
+	///     <see cref="IndoorFieldConfig.ResolveDefaultSpawnRadiusMeters" /> at placement time.
+	/// </summary>
 	[Export]
 	public float SpawnRadiusMeters = OutdoorFieldConfig.DefaultSpawnRadiusMeters;
 

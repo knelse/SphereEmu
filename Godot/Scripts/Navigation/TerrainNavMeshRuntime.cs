@@ -1,22 +1,26 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.Fill;
 using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Navigation;
 
 /// <summary>
-///     Lazy, proximity-loading bridge from the baked per-tile <see cref="NavigationMesh" /> resources under
-///     <see cref="NavMeshResourcesDirectory" /> (produced by <see cref="TerrainNavigationBaker" /> via
-///     <c>Tools/bake_and_export_single_nav.gd</c> + checkpoint overrides) to a live
-///     <see cref="NavigationServer3D" /> map, so spawn-slot baking (and, later, monster pathfinding) can query
-///     real navmesh walkability instead of the walk-surface raster. Mirrors <c>WalkSurfaceCache</c>'s
-///     lazy/static-loader shape so it fits the existing codebase conventions and stays cheap: regions are only
-///     registered for tiles actually queried near a spawner/agent, not the whole ~5100-tile map at once.
+///     Lazy, proximity-loading bridge from baked <see cref="NavigationMesh" /> resources to a live
+///     <see cref="NavigationServer3D" /> map:
+///     outdoor tiles under <see cref="NavMeshResourcesDirectory" /> (from
+///     <c>Tools/bake_and_export_single_nav.gd</c>) and indoor clusters under
+///     <see cref="IndoorNavMeshResourcesDirectory" /> (from
+///     <c>Tools/export_all_indoor_clusters.ps1 -WriteNavRes</c>).
+///     Regions load only near the queried spawner/agent.
 ///     <para>
 ///     Godot's <see cref="NavigationServer3D" /> only synchronizes region/map changes at the end of a physics
 ///     frame (Godot 4.4+ async nav updates) - querying a region immediately after registering it throws
@@ -30,6 +34,7 @@ namespace SphServer.Godot.Scripts.Navigation;
 public static class TerrainNavMeshRuntime
 {
     public const string NavMeshResourcesDirectory = "res://Godot/Terrain/GeneratedNavMeshes/";
+    public const string IndoorNavMeshResourcesDirectory = "res://Godot/Terrain/GeneratedIndoorNavMeshes/";
     public const string MapBinPath = "res://Godot/Terrain/map.txt";
     public const float TileSizeWorld = 100f;
 
@@ -57,6 +62,11 @@ public static class TerrainNavMeshRuntime
 
     private static readonly ConcurrentDictionary<string, Rid> RegionsByTileKey = new();
 
+    private static readonly JsonSerializerOptions IndoorIndexJsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
+
     private static Rid _map;
     private static bool _mapCreated;
     private static bool _hasEverSynced;
@@ -66,6 +76,16 @@ public static class TerrainNavMeshRuntime
     private static Transform3D _bakedToWorld = Transform3D.Identity;
     private static Vector3 _tileWorldOrigin;
     private static TerrainObjectsFill.TerrainTileGridIndex? _tileIndex;
+    private static List<IndoorClusterEntry>? _indoorIndex;
+    private static bool _indoorIndexAttempted;
+
+    /// <summary>
+    ///     TerrainObjects local → TerrainGrid / nav-mesh local (same as bake_and_export_single_nav.gd
+    ///     <c>Ry(-90°)+OBJECT_ORIGIN_SHIFT</c>). MonsterSpawners live in TerrainObjects/SOURCE_BASIS space;
+    ///     indoor <see cref="IndoorNavMeshResourcesDirectory" /> verts are in this nav-local frame.
+    /// </summary>
+    private static Transform3D _objectsToGridLocal = Transform3D.Identity;
+    private static bool _objectsToGridResolved;
 
     /// <summary>
     ///     False until at least one <see cref="SyncAsync" /> has completed. Query methods return "not walkable"
@@ -79,7 +99,12 @@ public static class TerrainNavMeshRuntime
 
     public static bool HasAnyTileFiles()
     {
-        var absoluteDirectory = ProjectSettings.GlobalizePath(NavMeshResourcesDirectory);
+        return HasResFiles(NavMeshResourcesDirectory) || HasResFiles(IndoorNavMeshResourcesDirectory);
+    }
+
+    private static bool HasResFiles(string resDirectory)
+    {
+        var absoluteDirectory = ProjectSettings.GlobalizePath(resDirectory);
         return Directory.Exists(absoluteDirectory) && Directory.GetFiles(absoluteDirectory, "*.res").Length > 0;
     }
 
@@ -97,6 +122,10 @@ public static class TerrainNavMeshRuntime
 
         _transformResolved = false;
         _tileIndex = null;
+        _indoorIndex = null;
+        _indoorIndexAttempted = false;
+        _objectsToGridResolved = false;
+        _objectsToGridLocal = Transform3D.Identity;
     }
 
     /// <summary>
@@ -150,11 +179,21 @@ public static class TerrainNavMeshRuntime
                 }
 
                 var tileKey = TerrainObjectsFill.TerrainTileGridIndex.BuildTileGroupKey(masterName, occurrence);
-                if (LoadAndRegisterTile(tileKey))
+                if (LoadAndRegisterNavRes(tileKey, $"{NavMeshResourcesDirectory}{tileKey}.res"))
                 {
                     newlyLoaded = true;
                 }
             }
+        }
+
+        // Indoor cluster index / .res verts are in objects→grid (nav-local) space. Spawn bake passes
+        // MonsterSpawner GlobalPosition (SOURCE_BASIS / TerrainObjects-local), which is NOT nav-local —
+        // convert before proximity test. Outdoor tile lookup above keeps using TerrainGrid.inv * pos
+        // (unchanged; outdoor terrain nav already lines up with spawner space).
+        var indoorLocalCenter = SpawnerSpaceToNavLocal(worldCenter);
+        if (LoadNearbyIndoorClusters(indoorLocalCenter, radiusMeters))
+        {
+            newlyLoaded = true;
         }
 
         if (newlyLoaded)
@@ -198,21 +237,26 @@ public static class TerrainNavMeshRuntime
         // synced map may not change the id.
         var requireIterationAdvance = _pendingSync;
 
-        // Editor tool buttons often run without a steady physics tick. Force-flush first so baking does not
-        // depend on the viewport happening to process physics frames.
+        // MapForceUpdate alone leaves iteration_id=1 and MapGetClosestPoint returns Vector3.Zero until the
+        // server has completed a real sync pass. Headless needs one PhysicsFrame; the editor @tool path
+        // must not await PhysicsFrame (it can stop emitting and hang BakeAll / the spawner plugin).
         TryForceMapUpdate();
-
-        // After MapForceUpdate (async iterations disabled on this map), a successful probe is enough —
-        // waiting for MapGetIterationId to advance was stranding bake-all between regions when the id
-        // did not bump even though regions were already queryable.
         if (TryMarkSynced(iterationBefore, requireIterationAdvance)
             || TryMarkSynced(iterationBefore, requireIterationAdvance: false))
         {
             return;
         }
 
-        // Never await PhysicsFrame here: in the editor @tool / inspector context it can stop emitting,
-        // hanging BakeAllUnderAsync forever after the first region. ProcessFrame + ForceUpdate is enough.
+        if (MonsterSpawnSlotHeadlessBake.IsActive)
+        {
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            TryForceMapUpdate();
+            if (TryMarkSynced(iterationBefore, requireIterationAdvance: false))
+            {
+                return;
+            }
+        }
+
         for (var i = 0; i < MaxSyncWaitFrames; i++)
         {
             await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
@@ -294,7 +338,13 @@ public static class TerrainNavMeshRuntime
             }
 
             // Confirms queries no longer throw "before first map synchronization".
-            _ = NavigationServer3D.MapGetClosestPoint(_map, Vector3.Zero);
+            // IMPORTANT: before a real sync pass Godot returns Vector3.Zero without throwing — that must
+            // not count as ready (indoor WrongLevel then reports nav Y=1 after SOURCE_BASIS remap).
+            var probe = NavigationServer3D.MapGetClosestPoint(_map, Vector3.Zero);
+            if (RegionsByTileKey.Count > 0 && probe == Vector3.Zero && iteration < 2)
+            {
+                return false;
+            }
 
             _pendingSync = false;
             _hasEverSynced = true;
@@ -393,7 +443,11 @@ public static class TerrainNavMeshRuntime
         return horizontalDistSq <= HorizontalSnapToleranceMeters * HorizontalSnapToleranceMeters;
     }
 
-    /// <summary>Raw closest-point query. Returns false (rather than throwing) before the map's first sync.</summary>
+    /// <summary>
+    ///     Raw closest-point query. Returns false (rather than throwing) before the map's first sync.
+    ///     <paramref name="worldPos" /> is spawner/SOURCE_BASIS space (same as <c>MonsterSpawner.GlobalPosition</c>);
+    ///     indoor-depth probes are mapped into NavigationServer world via TerrainObjects→grid.
+    /// </summary>
     public static bool TryClosestPoint(Vector3 worldPos, out Vector3 closest)
     {
         closest = worldPos;
@@ -405,7 +459,16 @@ public static class TerrainNavMeshRuntime
 
         try
         {
-            closest = NavigationServer3D.MapGetClosestPoint(_map, worldPos);
+            var indoor = IndoorAreaCriteria.IsIndoorDepth(worldPos.Y);
+            var queryPos = indoor ? SpawnerSpaceToNavWorld(worldPos) : worldPos;
+            var snapped = NavigationServer3D.MapGetClosestPoint(_map, queryPos);
+            // Pre-sync / empty-map sentinel: do not remap Zero into spawner space (becomes ~Y=1 indoor).
+            if (snapped == Vector3.Zero && queryPos.LengthSquared() > 1f)
+            {
+                return false;
+            }
+
+            closest = indoor ? NavWorldToSpawnerSpace(snapped) : snapped;
             return true;
         }
         catch (Exception ex)
@@ -417,6 +480,76 @@ public static class TerrainNavMeshRuntime
             return false;
         }
     }
+
+    /// <summary>
+    ///     Outdoor-only: cast straight down from <paramref name="worldPos" /> up to
+    ///     <paramref name="maxDropMeters" /> and return the first navmesh hit under the same XZ.
+    ///     Used when a spawner marker floats above terrain so bake can recenter on walkable ground.
+    /// </summary>
+    public static bool TryFindNavMeshBelow(Vector3 worldPos, float maxDropMeters, out Vector3 onNav)
+    {
+        onNav = worldPos;
+
+        if (!_mapCreated || !_hasEverSynced || maxDropMeters <= 0f)
+        {
+            return false;
+        }
+
+        // Indoor probes use a different frame; drop-to-ground is an outdoor bake convenience only.
+        if (IndoorAreaCriteria.IsIndoorDepth(worldPos.Y))
+        {
+            return false;
+        }
+
+        try
+        {
+            var end = worldPos + new Vector3(0f, -maxDropMeters, 0f);
+            var hit = NavigationServer3D.MapGetClosestPointToSegment(_map, worldPos, end);
+            if (hit == Vector3.Zero && worldPos.LengthSquared() > 1f)
+            {
+                return false;
+            }
+
+            var dx = hit.X - worldPos.X;
+            var dz = hit.Z - worldPos.Z;
+            if (dx * dx + dz * dz
+                > HorizontalSnapToleranceMeters * HorizontalSnapToleranceMeters)
+            {
+                return false;
+            }
+
+            var drop = worldPos.Y - hit.Y;
+            if (drop < 0f || drop > maxDropMeters)
+            {
+                return false;
+            }
+
+            // Re-query at the spawner's XZ with the hit Y so we keep the radius center under the marker.
+            var probe = new Vector3(worldPos.X, hit.Y, worldPos.Z);
+            if (!IsPointOnNavMesh(probe, out onNav, refineY: true))
+            {
+                return false;
+            }
+
+            drop = worldPos.Y - onNav.Y;
+            return drop >= 0f && drop <= maxDropMeters;
+        }
+        catch (Exception ex)
+        {
+            GD.PushWarning(
+                $"TerrainNavMeshRuntime: downward nav query failed ({ex.Message}); treating as no ground.");
+            return false;
+        }
+    }
+
+    private static Vector3 SpawnerSpaceToNavLocal(Vector3 spawnerSpace)
+        => _objectsToGridLocal * spawnerSpace;
+
+    private static Vector3 SpawnerSpaceToNavWorld(Vector3 spawnerSpace)
+        => _bakedToWorld * SpawnerSpaceToNavLocal(spawnerSpace);
+
+    private static Vector3 NavWorldToSpawnerSpace(Vector3 navWorld)
+        => _objectsToGridLocal.AffineInverse() * (_bakedToWorld.AffineInverse() * navWorld);
 
     /// <summary>
     ///     Reserved for the future pathfinding migration (replacing <c>OutdoorPathQuery</c>'s custom A* over
@@ -432,20 +565,177 @@ public static class TerrainNavMeshRuntime
         return NavigationServer3D.MapGetPath(_map, start, end, optimize);
     }
 
-    private static bool LoadAndRegisterTile(string tileGroupKey)
+    private static bool LoadNearbyIndoorClusters(Vector3 localCenter, float radiusMeters)
     {
-        if (RegionsByTileKey.ContainsKey(tileGroupKey))
+        EnsureIndoorIndexLoaded();
+        if (_indoorIndex is null || _indoorIndex.Count == 0)
         {
             return false;
         }
 
-        var path = $"{NavMeshResourcesDirectory}{tileGroupKey}.res";
-        if (!ResourceLoader.Exists(path))
+        var newlyLoaded = false;
+        var radiusSq = radiusMeters * radiusMeters;
+        foreach (var entry in _indoorIndex)
+        {
+            if (!ClusterIntersectsQuery(entry, localCenter, radiusMeters, radiusSq))
+            {
+                continue;
+            }
+
+            var key = $"indoor_cluster_{entry.Id}";
+            var path = string.IsNullOrWhiteSpace(entry.Path)
+                ? $"{IndoorNavMeshResourcesDirectory}cluster_{entry.Id}.res"
+                : entry.Path;
+            if (LoadAndRegisterNavRes(key, path))
+            {
+                newlyLoaded = true;
+            }
+        }
+
+        return newlyLoaded;
+    }
+
+    private static bool ClusterIntersectsQuery(
+        IndoorClusterEntry entry,
+        Vector3 localCenter,
+        float radiusMeters,
+        float radiusSq)
+    {
+        if (entry.HasAabb)
+        {
+            // Expand AABB by query radius (XZ + Y) so a nearby probe still pulls the cluster in.
+            var min = entry.AabbMin - new Vector3(radiusMeters, radiusMeters, radiusMeters);
+            var max = entry.AabbMax + new Vector3(radiusMeters, radiusMeters, radiusMeters);
+            return localCenter.X >= min.X && localCenter.X <= max.X
+                   && localCenter.Y >= min.Y && localCenter.Y <= max.Y
+                   && localCenter.Z >= min.Z && localCenter.Z <= max.Z;
+        }
+
+        var dx = entry.CenterNav.X - localCenter.X;
+        var dy = entry.CenterNav.Y - localCenter.Y;
+        var dz = entry.CenterNav.Z - localCenter.Z;
+        var reach = entry.Radius + radiusMeters;
+        return dx * dx + dy * dy + dz * dz <= reach * reach || dx * dx + dz * dz <= radiusSq;
+    }
+
+    private static void EnsureIndoorIndexLoaded()
+    {
+        if (_indoorIndexAttempted)
+        {
+            return;
+        }
+
+        _indoorIndexAttempted = true;
+        _indoorIndex = new List<IndoorClusterEntry>();
+
+        var indexPath = ProjectSettings.GlobalizePath($"{IndoorNavMeshResourcesDirectory}index.json");
+        if (File.Exists(indexPath))
+        {
+            try
+            {
+                var json = File.ReadAllText(indexPath);
+                if (json.Length > 0 && json[0] == '\uFEFF')
+                {
+                    json = json[1..];
+                }
+
+                var file = JsonSerializer.Deserialize<IndoorIndexFile>(json, IndoorIndexJsonOptions);
+                if (file?.Clusters != null)
+                {
+                    foreach (var c in file.Clusters)
+                    {
+                        if (TryParseIndoorEntry(c, out var entry))
+                        {
+                            _indoorIndex.Add(entry);
+                        }
+                    }
+                }
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                GD.PushWarning($"TerrainNavMeshRuntime: failed to read indoor nav index ({ex.Message}); scanning sidecars.");
+            }
+        }
+
+        var dir = ProjectSettings.GlobalizePath(IndoorNavMeshResourcesDirectory);
+        if (!Directory.Exists(dir))
+        {
+            return;
+        }
+
+        foreach (var sidecar in Directory.GetFiles(dir, "cluster_*.nav.json"))
+        {
+            try
+            {
+                var json = File.ReadAllText(sidecar);
+                var c = JsonSerializer.Deserialize<IndoorClusterJson>(json, IndoorIndexJsonOptions);
+                if (c != null && TryParseIndoorEntry(c, out var entry))
+                {
+                    _indoorIndex.Add(entry);
+                }
+            }
+            catch (Exception ex)
+            {
+                GD.PushWarning($"TerrainNavMeshRuntime: bad indoor nav sidecar {Path.GetFileName(sidecar)} ({ex.Message})");
+            }
+        }
+    }
+
+    private static bool TryParseIndoorEntry(IndoorClusterJson c, out IndoorClusterEntry entry)
+    {
+        entry = default;
+        if (c.Id < 0)
         {
             return false;
         }
 
-        var navMesh = ResourceLoader.Load<NavigationMesh>(path, cacheMode: ResourceLoader.CacheMode.Ignore);
+        var center = Vec3FromJson(c.CenterNav);
+        var hasAabb = false;
+        var aabbMin = Vector3.Zero;
+        var aabbMax = Vector3.Zero;
+        if (c.AabbNav?.Min != null && c.AabbNav.Max != null)
+        {
+            aabbMin = Vec3FromJson(c.AabbNav.Min);
+            aabbMax = Vec3FromJson(c.AabbNav.Max);
+            hasAabb = true;
+        }
+
+        entry = new IndoorClusterEntry(
+            c.Id,
+            string.IsNullOrWhiteSpace(c.Path) ? "" : c.Path.Trim(),
+            center,
+            c.Radius > 0 ? c.Radius : 40f,
+            hasAabb,
+            aabbMin,
+            aabbMax);
+        return true;
+    }
+
+    private static Vector3 Vec3FromJson(JsonVec3? v)
+    {
+        if (v is null)
+        {
+            return Vector3.Zero;
+        }
+
+        return new Vector3(v.X, v.Y, v.Z);
+    }
+
+    private static bool LoadAndRegisterNavRes(string regionKey, string resourcePath)
+    {
+        if (RegionsByTileKey.ContainsKey(regionKey))
+        {
+            return false;
+        }
+
+        if (!ResourceLoader.Exists(resourcePath))
+        {
+            return false;
+        }
+
+        var navMesh = ResourceLoader.Load<NavigationMesh>(resourcePath, cacheMode: ResourceLoader.CacheMode.Ignore);
         if (navMesh is null)
         {
             return false;
@@ -457,7 +747,61 @@ public static class TerrainNavMeshRuntime
         NavigationServer3D.RegionSetNavigationMesh(region, navMesh);
         NavigationServer3D.RegionSetTransform(region, _bakedToWorld);
 
-        return RegionsByTileKey.TryAdd(tileGroupKey, region);
+        return RegionsByTileKey.TryAdd(regionKey, region);
+    }
+
+    private readonly record struct IndoorClusterEntry(
+        int Id,
+        string Path,
+        Vector3 CenterNav,
+        float Radius,
+        bool HasAabb,
+        Vector3 AabbMin,
+        Vector3 AabbMax);
+
+    private sealed class IndoorIndexFile
+    {
+        [JsonPropertyName("clusters")]
+        public List<IndoorClusterJson>? Clusters { get; set; }
+    }
+
+    private sealed class IndoorClusterJson
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = -1;
+
+        [JsonPropertyName("path")]
+        public string? Path { get; set; }
+
+        [JsonPropertyName("radius")]
+        public float Radius { get; set; }
+
+        [JsonPropertyName("center_nav")]
+        public JsonVec3? CenterNav { get; set; }
+
+        [JsonPropertyName("aabb_nav")]
+        public JsonAabb? AabbNav { get; set; }
+    }
+
+    private sealed class JsonAabb
+    {
+        [JsonPropertyName("min")]
+        public JsonVec3? Min { get; set; }
+
+        [JsonPropertyName("max")]
+        public JsonVec3? Max { get; set; }
+    }
+
+    private sealed class JsonVec3
+    {
+        [JsonPropertyName("x")]
+        public float X { get; set; }
+
+        [JsonPropertyName("y")]
+        public float Y { get; set; }
+
+        [JsonPropertyName("z")]
+        public float Z { get; set; }
     }
 
     /// <summary>
@@ -485,6 +829,7 @@ public static class TerrainNavMeshRuntime
 
             _tileWorldOrigin = terrain.Position;
             _bakedToWorld = terrainGridNode.GlobalTransform;
+            ResolveObjectsToGridLocal(terrainGridNode);
 
             _tileIndex = TerrainObjectsFill.TerrainTileGridIndex.TryBuild(MapBinPath, TileSizeWorld, _tileWorldOrigin);
             if (_tileIndex is null)
@@ -508,5 +853,30 @@ public static class TerrainNavMeshRuntime
         }
 
         return true;
+    }
+
+    private static void ResolveObjectsToGridLocal(Node3D terrainGridNode)
+    {
+        if (_objectsToGridResolved)
+        {
+            return;
+        }
+
+        _objectsToGridResolved = true;
+        var terrainScene = terrainGridNode.GetParent();
+        var terrainObjects = terrainScene?.GetNodeOrNull<Node3D>("TerrainObjects");
+        if (terrainObjects is not null)
+        {
+            // Same formula as TerrainObjectsFill.GetObjectsToGridLocalTransform (sibling local xforms).
+            _objectsToGridLocal = terrainGridNode.Transform.AffineInverse() * terrainObjects.Transform;
+            return;
+        }
+
+        // Headless / missing scene graph: match bake_and_export_single_nav.gd defaults.
+        _objectsToGridLocal = new Transform3D(
+            Basis.FromEuler(new Vector3(0f, Mathf.DegToRad(-90f), 0f)),
+            new Vector3(4000f, 0f, 4000f));
+        GD.PushWarning(
+            "TerrainNavMeshRuntime: TerrainObjects not found; using Ry(-90°)+(4000,0,4000) for indoor nav space.");
     }
 }

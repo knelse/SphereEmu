@@ -1,0 +1,131 @@
+{
+  "id": "indoor-walkable-cci-2026-07-18-pre-lb",
+  "created": "2026-07-18",
+  "scope": "cci",
+  "purpose": "cci* indoor clusters restored to pre-lb* walkable: simple upward slope faces only (no outer-shell carve, weld, or strips). Still uses float64 membership keys so kits are not dropped.",
+  "golden_out": "D:/1/2026-7-18_21-57-38_indoor-cci-pre-lb",
+  "golden_note": "All 42 cci* with -PreLbWalkable. Walkable = upward faces slope<=70; no shell/weld/strips. float64 membership keys kept.",
+  "prior_lb_pipeline_out": "D:/1/2026-7-18_21-53-54_indoor-cci-clusters",
+  "prior_lb_pipeline_note": "Full lb* shell/weld/strips path — not used for cci after restore.",
+  "prior_broken_out": "D:/1/2026-7-18_18-51-52_indoor-cci-clusters",
+  "prior_broken_note": "Float32 Vector3 keys dropped members (cci03 etc.).",
+  "bake_script": "Tools/export_nearby_objects_glb.gd",
+  "bulk_script": "Tools/export_all_indoor_clusters.ps1",
+  "manifest": "D:/1/indoor-clusters-manifest.json",
+  "members_dir": "D:/1/indoor-cluster-members",
+  "cluster_filter": {
+    "label_prefix": "cci",
+    "cluster_count": 42
+  },
+  "param_profile": "indoor_walkable_cci_pre_lb_v1",
+  "cli": {
+    "with_walkable": true,
+    "pre_lb_walkable": true,
+    "indoor_base_only": true,
+    "members": "required",
+    "label_prefix": "cci",
+    "max_slope_deg": 70,
+    "jobs_default": 6
+  },
+  "membership_keys": {
+    "format": "name|x|y|z|pitch|yaw|roll with %.3f / %.4f",
+    "frame": "SOURCE_BASIS (x, -y, -z) from ObjectDataJson",
+    "required": "Build key from float64 px,py,pz BEFORE assigning Vector3 (float32). Python manifest uses float64.",
+    "bug_fixed": "Vector3 truncates e.g. -1101.0765 → formats as -1101.077 and misses member key -1101.076",
+    "example_dropped_keys": [
+      "cci03|303.249|-1101.076|-1078.104|0.0000|0.0000|0.0000",
+      "cci14|273.469|-1099.272|-1070.637|0.0000|1.5708|0.0000",
+      "cci11|315.072|-1096.322|-1070.564|0.0000|4.7124|0.0000",
+      "cci12|306.205|-1091.386|-1079.680|0.0000|4.7124|0.0000"
+    ]
+  },
+  "walkable_pipeline": [
+    "simple upward faces only (force normal up, slope <= 70)",
+    "NO closed outer shell",
+    "NO same-floor weld",
+    "NO simple-room strips"
+  ],
+  "constants": {
+    "AGENT_MAX_SLOPE_DEFAULT": 80.0,
+    "INWARD_DOT_MIN": 0.1,
+    "WING_DOT_MIN": -0.25,
+    "ROOF_SKIN_BAND": 0.9,
+    "CEILING_MIN_HEADROOM": 1.6,
+    "CEILING_MAX_HEADROOM": 10.0,
+    "CEILING_CELL": 1.0,
+    "FOOTPRINT_INSET": 2.5,
+    "SHELL_CELL": 0.5,
+    "SHELL_CLOSE_ITERS": 4,
+    "SHELL_EPS": 0.3,
+    "SHELL_SIDE_CROWN_BAND": 2.5,
+    "SHELL_SIDE_MIN_SLOPE": 20.0,
+    "SHELL_SIDE_MAX_SLOPE": 40.0,
+    "SHELL_SIDE_AABB_BAND": 1.5,
+    "STAIR_KEEP_MIN_SLOPE": 35.0,
+    "CONNECT_FLOOR_XZ": 3.5,
+    "CONNECT_FLOOR_Y": 0.18,
+    "CONNECT_STEP_XZ_MIN": 0.18,
+    "CONNECT_STEP_XZ_MAX": 2.0,
+    "CONNECT_STEP_Y": 2.2,
+    "CONNECT_TALL_RISER_Y_MIN": 0.7,
+    "CONNECT_MAJOR_MIN_TRIS": 12,
+    "WELD_FLOOR_Y": 0.18,
+    "WELD_XZ_MIN": 0.45,
+    "WELD_XZ_MAX": 3.5,
+    "WELD_MAX_FACE_SLOPE": 25.0
+  },
+  "simple_room_strips": {
+    "catalog": "Tools/simple_room_walk_strips.json",
+    "rooms": [
+      "lba_2i",
+      "lbc_2a",
+      "lbc_2d",
+      "lbm_2b",
+      "lbm_2e",
+      "lbm_2f",
+      "lbm_2g",
+      "lbm_2i",
+      "lbm_g2f"
+    ],
+    "policy": "always merge on top; cci kits typically have zero strip hits (catalog is lb*)"
+  },
+  "indoor_base_criteria": {
+    "godot_y_max": -500.0,
+    "names": ["*_in", "cci*", "lb* except lbridge*", "rd_island*", "rd_r1..5", "rd_rh", "room1", "tn4_hotel"]
+  },
+  "reference_cluster": {
+    "id": 100,
+    "label": "cci08",
+    "center": [290.146, -1097.986, -1072.818],
+    "members": 26,
+    "after_fix": {
+      "placements": 26,
+      "major_islands": 1,
+      "walkable_tris": 3518,
+      "cci03_walk_tris": 738
+    },
+    "before_fix": {
+      "placements": 22,
+      "major_islands": 3,
+      "walkable_tris": 2290
+    }
+  },
+  "rebake": {
+    "bulk_all_cci": ".\\Tools\\export_all_indoor_clusters.ps1 -LabelPrefix cci -SkipManifestRebuild -Jobs 6",
+    "bulk_nav_res": ".\\Tools\\export_all_indoor_clusters.ps1 -LabelPrefix cci -WriteNavRes -SkipPreviewGlb -SkipManifestRebuild -Jobs 6",
+    "nav_res_dir": "res://Godot/Terrain/GeneratedIndoorNavMeshes/",
+    "policy_note": "Auto: label cci* → --pre-lb-walkable. -PreLbWalkable forces all; -ForceLbPipeline overrides cci to lb* (do not use for goldens).",
+    "one_cluster": "godot --path . --headless -s Tools/export_nearby_objects_glb.gd -- --center <CX> <CY> <CZ> --radius <R> --members <MEMBERS.json> --pre-lb-walkable --indoor-base-only --out <OUT>/cluster_<ID>.glb",
+    "editor_bake": "TerrainNavigationBaker.BakeTerrainNavigation (outdoor + indoor when BakeIndoorNav and not BakeOnlyTileGroupKey)"
+  },
+  "verify": {
+    "placement_count": "Found N unique placements must equal members.keys length",
+    "manifest_method": "method=pre_lb_simple_upward_slope (no shell/weld/strips)",
+    "compare_golden": "Diff against golden_out walkable_cluster_*.glb"
+  },
+  "do_not_regress": [
+    "Membership keys must be formatted from float64 SOURCE_BASIS components, never from Vector3 fields",
+    "cci uses --pre-lb-walkable; do not apply lb* shell/weld/strips to cci without an explicit profile bump",
+    "Keep --members exact membership (do not rely on sphere radius alone for cci clusters)"
+  ]
+}

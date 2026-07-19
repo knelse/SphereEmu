@@ -1,0 +1,20 @@
+---
+description: Indoor walkable checkpoint for cci* — pre-lb simple upward walkable
+globs:
+  - Tools/export_nearby_objects_glb.gd
+  - Tools/export_all_indoor_clusters.ps1
+  - Tools/indoor_walkable_checkpoint_cci.json
+  - Tools/INDOOR_WALKABLE_CHECKPOINT_CCI.md
+alwaysApply: false
+---
+
+# Indoor walkable — cci checkpoint (pre-lb*)
+
+When rebaking or tuning **cci*** indoor clusters:
+
+1. Read `Tools/indoor_walkable_checkpoint_cci.json`.
+2. Golden: `D:/1/2026-7-18_21-57-38_indoor-cci-pre-lb`.
+3. Auto bulk routes `cci*` → `--pre-lb-walkable` (slope-up only). Do **not** apply lb* shell/weld/strips.
+4. Membership keys: float64 SOURCE_BASIS before Vector3.
+5. Bulk preview: `export_all_indoor_clusters.ps1 -LabelPrefix cci -SkipManifestRebuild`.
+6. Production nav: `-WriteNavRes -SkipPreviewGlb` → `GeneratedIndoorNavMeshes/` (also run via `TerrainNavigationBaker` when `BakeIndoorNav`).

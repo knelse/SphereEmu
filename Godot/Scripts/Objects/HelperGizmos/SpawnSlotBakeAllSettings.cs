@@ -28,4 +28,9 @@ public sealed class SpawnSlotBakeAllSettings
     ///     null and relies on the progress sidecar (+ optional final scene pack).
     /// </summary>
     public Action<int, int, Stopwatch>? OnCheckpoint { get; init; }
+
+    /// <summary>
+    ///     When set, only spawners whose key/name contains this substring are considered (debug / single-spawner).
+    /// </summary>
+    public string? NameContains { get; init; }
 }

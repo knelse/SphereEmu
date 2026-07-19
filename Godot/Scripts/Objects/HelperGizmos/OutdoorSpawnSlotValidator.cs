@@ -6,10 +6,9 @@ using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Bake-time filters for outdoor spawn slots. Walkability is a single navmesh disc check against
-///     <see cref="TerrainNavMeshRuntime" /> - the same navmesh written by <c>TerrainNavigationBaker</c>
-///     (via <c>bake_and_export_single_nav.gd</c> + checkpoint) and used
-///     by <c>MainServer</c>, so a slot that validates here is guaranteed walkable at runtime too.
+///     Bake-time filters for spawn slots. Walkability is a single navmesh disc check against
+///     <see cref="TerrainNavMeshRuntime" /> — outdoor <c>GeneratedNavMeshes</c> plus indoor
+///     <c>GeneratedIndoorNavMeshes</c> (dungeon probes map SOURCE_BASIS → nav frame inside the runtime).
 /// </summary>
 public static class OutdoorSpawnSlotValidator
 {

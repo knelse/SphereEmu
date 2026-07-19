@@ -15,6 +15,12 @@ public static class OutdoorFieldConfig
     public const float MaxOutdoorSpawnAboveTerrainMeters = 1.25f;
 
     /// <summary>
+    ///     When an outdoor spawner floats above the navmesh, bake may drop the spawn center straight down
+    ///     by at most this many meters to the first nav intersection and measure the spawn radius from there.
+    /// </summary>
+    public const float MaxOutdoorDropToNavMeshMeters = 50f;
+
+    /// <summary>
     ///     Multiplier applied to a spawner's spawn radius to get its max plausible height difference between
     ///     the spawner's own placement Y and a validated slot's navmesh-snapped Y (floor'd by
     ///     <see cref="MinSpawnSlotVerticalDriftMeters" />). <see cref="Navigation.TerrainNavMeshRuntime" />'s

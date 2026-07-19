@@ -1,0 +1,30 @@
+{
+	"aabb_nav": {
+		"max": {
+			"x": 537.5,
+			"y": -1694.95874023438,
+			"z": 4397.5
+		},
+		"min": {
+			"x": 417.50146484375,
+			"y": -1703.65124511719,
+			"z": 4217.5
+		}
+	},
+	"center_nav": {
+		"x": 485.0,
+		"y": -1698.25,
+		"z": 4313.9287109375
+	},
+	"center_source": {
+		"x": 313.928985595703,
+		"y": -1698.25,
+		"z": 3515.0
+	},
+	"id": 52,
+	"path": "res://Godot/Terrain/GeneratedIndoorNavMeshes/cluster_52.res",
+	"polygon_count": 7094,
+	"pre_lb": false,
+	"radius": 129.9,
+	"walkable_tris": 24811
+}
