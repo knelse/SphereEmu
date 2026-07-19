@@ -54,6 +54,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
         }
 
         MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
+        AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);
         WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
 
         return Task.CompletedTask;

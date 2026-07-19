@@ -1,4 +1,5 @@
 using Godot;
+using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
@@ -9,6 +10,9 @@ namespace SphServer.Sphere.Game.WorldObject;
 internal static partial class GlbVisualGrounding
 {
 	public const string DefaultModelsDirectory = "res://Godot/Models/";
+
+	/// <summary>Fixed Godot-Y spawn lift magnitude (replaces half-AABB for network placement).</summary>
+	public const float SpawnOriginYOffsetMeters = 1f;
 
 	private static readonly Dictionary<string, float?> ModelHeightCache = new(StringComparer.OrdinalIgnoreCase);
 
@@ -28,10 +32,27 @@ internal static partial class GlbVisualGrounding
 		glbRoot.Position += new Vector3(0f, -minY, 0f);
 	}
 
-	public static float GetSpawnOriginYOffset(string modelName, string modelsDirectory = DefaultModelsDirectory)
+	/// <summary>
+	///     Packet space flips Godot Y (<c>gameY = -godotY</c>). Negative Godot Y → add offset;
+	///     non-negative → subtract offset.
+	/// </summary>
+	public static float SignSpawnOriginYOffset(float godotY, float offsetAbs = SpawnOriginYOffsetMeters)
 	{
-		return TryGetModelBoundsHeight(modelName, modelsDirectory, out var height) ? height * 0.5f : 0f;
+		if (offsetAbs <= 0f)
+		{
+			return 0f;
+		}
+
+		return godotY < 0f ? offsetAbs : -offsetAbs;
 	}
+
+	/// <summary>Signed spawn-slot Y delta for monsters (fixed <see cref="SpawnOriginYOffsetMeters" />).</summary>
+	public static float GetSpawnOriginYOffsetForMonsterType(MonsterType monsterType, float godotY)
+		=> SignSpawnOriginYOffset(godotY);
+
+	/// <summary>Signed spawn-slot Y delta for alchemy GameObject IDs (fixed <see cref="SpawnOriginYOffsetMeters" />).</summary>
+	public static float GetSpawnOriginYOffsetForGameObjectId(int gameObjectId, float godotY)
+		=> SignSpawnOriginYOffset(godotY);
 
 	public static float GetEditorVisualExtraYOffset(string modelName, string modelsDirectory = DefaultModelsDirectory)
 	{

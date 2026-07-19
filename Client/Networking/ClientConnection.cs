@@ -59,6 +59,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 interactionWithOtherObjectsInitialized = true;
                 sphereClient.UpdateCoordinatesInWorld();
                 MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
+                AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
             }
 

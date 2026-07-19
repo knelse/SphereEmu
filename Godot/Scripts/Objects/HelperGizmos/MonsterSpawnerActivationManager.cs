@@ -155,6 +155,7 @@ public partial class MonsterSpawnerActivationManagerNode : Node
 
         _elapsedSeconds = 0;
         MonsterSpawnerActivationManager.CheckAllClients();
+        AlchemyMaterialSpawnerActivationManager.CheckAllClients();
         WorldObjectVisibilityManager.CheckAllClients();
     }
 }

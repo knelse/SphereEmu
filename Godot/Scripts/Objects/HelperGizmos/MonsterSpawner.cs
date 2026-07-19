@@ -182,13 +182,23 @@ public partial class MonsterSpawner : Node3D
 		}
 
 		// Headless spawn-slot bake loads MainServer without wanting runtime spawn/activation.
-		if (MonsterSpawnSlotHeadlessBake.IsActive)
+		if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
 		{
 			return;
 		}
 
-		StripPersistedMonsters();
 		MonsterSpawnerActivationManager.Register(this);
+
+		// Town/debug presets keep hierarchy mobs (e.g. cats). Apply spawn Y offset here — strip/respawn
+		// used to drop the correction for those already-placed instances.
+		if (SpawningEnabled && TryAdoptPersistedMonstersAtRuntime())
+		{
+			_spawningEnabled = true;
+			FillMissingMonstersAfterAdopt();
+			return;
+		}
+
+		StripPersistedMonsters();
 		if (SpawningEnabled)
 		{
 			ActivateFromProximity();
@@ -401,6 +411,83 @@ public partial class MonsterSpawner : Node3D
 		}
 
 		RebuildMonsterIdLists();
+	}
+
+	/// <summary>
+	///     Keeps scene-hierarchy monsters and applies signed spawn Y (scene slots are navmesh height).
+	/// </summary>
+	private bool TryAdoptPersistedMonstersAtRuntime()
+	{
+		RegularMonsters.Clear();
+		NamedMonsters.Clear();
+		_regularMonsterIds.Clear();
+		_namedMonsterIds.Clear();
+		ResetBindSlotCounter();
+
+		var adopted = 0;
+		foreach (var child in GetChildren())
+		{
+			if (child is not Monster monster || !IsInstanceValid(monster))
+			{
+				continue;
+			}
+
+			var slotWorld = monster.GlobalPosition;
+			monster.BindHome(
+				new MonsterHomeBinding(
+					ResolveSlotIndex(slotWorld),
+					slotWorld,
+					GlobalPosition,
+					LeashRadiusMeters,
+					GetPath(),
+					GetInstanceId(),
+					atlasVerticalDelta: 0f),
+				this);
+			ApplySpawnTransform(monster, slotWorld, randomizeAngle: false);
+			SetMonsterOwnerForPersistence(monster);
+
+			if (monster.IsNamed)
+			{
+				NamedMonsters.Add(monster);
+			}
+			else
+			{
+				RegularMonsters.Add(monster);
+			}
+
+			adopted++;
+		}
+
+		if (adopted == 0)
+		{
+			return false;
+		}
+
+		RebuildMonsterIdLists();
+		return true;
+	}
+
+	private void FillMissingMonstersAfterAdopt()
+	{
+		var needRegular = Math.Max(0, TargetRegularMonsterCount - CountAlive(RegularMonsters));
+		var needNamed = Math.Max(0, TargetNamedMonsterCount - CountAlive(NamedMonsters));
+		if (needRegular == 0 && needNamed == 0)
+		{
+			return;
+		}
+
+		lock (_spawnPlacementLock)
+		{
+			var occupied = CaptureOccupiedWorldPositions();
+			if (!TryBuildPlanFromBakedSlots(needRegular, needNamed, occupied, out var plan))
+			{
+				MarkSpawnPlacementInvalid();
+				return;
+			}
+
+			SpawnPlacementInvalid = false;
+			ApplySpawnPlan(plan);
+		}
 	}
 
 	private void StripPersistedMonsters()
@@ -968,11 +1055,18 @@ public partial class MonsterSpawner : Node3D
 		return true;
 	}
 
-	private static void ApplySpawnTransform(Monster monster, Vector3 spawnWorldPosition)
+	private static void ApplySpawnTransform(Monster monster, Vector3 spawnWorldPosition, bool randomizeAngle = true)
 	{
-		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset();
+		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset(spawnWorldPosition.Y);
 		monster.GlobalPosition = spawnWorldPosition;
-		monster.Angle = WorldObject.CreateRandomSpawnAngle();
+		if (randomizeAngle)
+		{
+			monster.Angle = WorldObject.CreateRandomSpawnAngle();
+		}
+
+		// _Ready registered visibility at the pre-placement pose; refresh after the final slot Y.
+		WorldObjectVisibilityManager.Unregister(monster);
+		WorldObjectVisibilityManager.Register(monster);
 		monster.RegisterMultiMeshVisualDeferred();
 	}
 

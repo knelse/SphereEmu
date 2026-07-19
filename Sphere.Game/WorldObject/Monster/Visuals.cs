@@ -85,9 +85,9 @@ public partial class Monster
 		MonsterMultiMeshVisuals.RegisterOrUpdate(this);
 	}
 
-	public float GetSpawnOriginYOffset()
+	public float GetSpawnOriginYOffset(float godotY)
 	{
-		return GlbVisualGrounding.GetSpawnOriginYOffset(GetVisualModelName());
+		return GlbVisualGrounding.GetSpawnOriginYOffsetForMonsterType(MonsterType, godotY);
 	}
 
 	public float GetEditorVisualExtraYOffset()

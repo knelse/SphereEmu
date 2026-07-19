@@ -358,7 +358,7 @@ public partial class Monster
     {
         var home = homeBinding!.Value.HomeSlotWorld;
         var spawnPosition = home;
-        spawnPosition.Y += GetSpawnOriginYOffset();
+        spawnPosition.Y += GetSpawnOriginYOffset(spawnPosition.Y);
         GlobalPosition = spawnPosition;
         navMode = MonsterNavMode.Idle;
         Angle = WorldObject.CreateRandomSpawnAngle();
@@ -409,14 +409,13 @@ public partial class Monster
 
     private float ResolveNavStandingY(float worldX, float worldZ)
     {
-        var offset = GetSpawnOriginYOffset();
         var currentY = GlobalPosition.Y;
         if (!TrySampleGodotGroundY(worldX, worldZ, out var groundY))
         {
             return currentY;
         }
 
-        var targetY = groundY + offset;
+        var targetY = groundY + GetSpawnOriginYOffset(groundY);
         return Mathf.Clamp(targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
     }
 

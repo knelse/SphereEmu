@@ -73,8 +73,9 @@ public static class OutdoorSpawnSlotValidator
 
         var probePoint = new Vector3(candidate.X, spawnerOrigin.Y, candidate.Z);
 
-        // Cheap reject before the multi-point disc (batch bake especially).
-        if (fastBake && !TerrainNavMeshRuntime.IsPointOnNavMesh(probePoint, out _, refineY: false))
+        // Cheap reject before the multi-point disc (batch bake especially). Must allow Y-refine:
+        // outdoor markers often float above nav, and refineY:false falsely rejects those probes.
+        if (fastBake && !TerrainNavMeshRuntime.IsPointOnNavMesh(probePoint, out _, refineY: true))
         {
             reason = FailReason.NotWalkable;
             return false;

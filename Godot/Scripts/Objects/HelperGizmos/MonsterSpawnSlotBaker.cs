@@ -447,7 +447,7 @@ public static class MonsterSpawnSlotBaker
                || detail.Contains("insufficient walkable candidates", StringComparison.Ordinal);
     }
 
-    internal static SpawnerBakeResult BakeCore(SpawnerBakeParams job)
+    public static SpawnerBakeResult BakeCore(SpawnerBakeParams job)
     {
         var result = BakeCoreAtOrigin(job);
         if (result.Success)
@@ -597,7 +597,25 @@ public static class MonsterSpawnSlotBaker
         ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
     {
         var samples = BuildSpreadSamplePool(job);
-        while (validated.Count < job.PoolCount && samples.Count > 0)
+        if (job.UseShuffledCandidateFill)
+        {
+            ShuffleInPlace(samples);
+            var maxAttempts = job.MaxCandidateAttempts > 0
+                ? Math.Min(job.MaxCandidateAttempts, samples.Count)
+                : samples.Count;
+            for (var i = 0; i < maxAttempts && validated.Count < job.PoolCount; i++)
+            {
+                var (x, z) = samples[i];
+                TryAddCandidate(job, x, z, validated, picked, ref lastFailure);
+            }
+
+            return;
+        }
+
+        var remainingAttempts = job.MaxCandidateAttempts > 0
+            ? job.MaxCandidateAttempts
+            : int.MaxValue;
+        while (validated.Count < job.PoolCount && samples.Count > 0 && remainingAttempts-- > 0)
         {
             var bestIndex = FindFarthestSampleIndex(job.Origin, samples, picked);
             var (x, z) = samples[bestIndex];
@@ -606,14 +624,25 @@ public static class MonsterSpawnSlotBaker
         }
     }
 
+    private static void ShuffleInPlace(List<(float X, float Z)> samples)
+    {
+        for (var i = samples.Count - 1; i > 0; i--)
+        {
+            var j = Random.Shared.Next(i + 1);
+            (samples[i], samples[j]) = (samples[j], samples[i]);
+        }
+    }
+
     private static List<(float X, float Z)> BuildSpreadSamplePool(SpawnerBakeParams job)
     {
         var samples = new List<(float X, float Z)>();
         var seen = new HashSet<(int, int)>();
         var radiusSq = job.SpawnRadiusMeters * job.SpawnRadiusMeters;
-        var spacing = job.FastCandidateGeneration
-            ? FastSampleSpacingMeters
-            : OutdoorFieldConfig.MinSlotSeparationMeters;
+        var spacing = job.CandidateSampleSpacingMeters > 0f
+            ? job.CandidateSampleSpacingMeters
+            : job.FastCandidateGeneration
+                ? FastSampleSpacingMeters
+                : OutdoorFieldConfig.MinSlotSeparationMeters;
 
         AddLooseGridSamples(
             job.Origin.X,
@@ -734,7 +763,10 @@ public static class MonsterSpawnSlotBaker
         // Placeholder Y only: OutdoorSpawnSlotValidator ignores candidate.Y and probes the navmesh at
         // spawnerOrigin.Y, returning the navmesh-snapped Y on success.
         var candidate = new Vector3(x, job.Origin.Y, z);
-        if (!IsSeparated(candidate, picked, OutdoorFieldConfig.MinSlotSeparationMeters))
+        var minSeparation = job.MinSlotSeparationMeters > 0f
+            ? job.MinSlotSeparationMeters
+            : OutdoorFieldConfig.MinSlotSeparationMeters;
+        if (!IsSeparated(candidate, picked, minSeparation))
         {
             return;
         }

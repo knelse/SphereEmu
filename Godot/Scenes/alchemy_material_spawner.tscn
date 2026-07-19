@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://tagh5guch4av"]
+
+[ext_resource type="Script" uid="uid://cgweghprt78cy" path="res://Godot/Scripts/Objects/HelperGizmos/AlchemyMaterialSpawner.cs" id="1_alch"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yfd0e"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.2, 0.95, 0.35, 0.28)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ylqwt"]
+material = SubResource("StandardMaterial3D_yfd0e")
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 12
+
+[node name="AlchemyMaterialSpawner" type="Node3D" unique_id=1845137439]
+script = ExtResource("1_alch")
+SpawnRadiusMeters = 100.0
+
+[node name="RadiusGizmo" type="MeshInstance3D" parent="." unique_id=2076395217]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_ylqwt")

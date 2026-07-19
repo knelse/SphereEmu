@@ -246,7 +246,7 @@ public static class TerrainNavMeshRuntime
             return;
         }
 
-        if (MonsterSpawnSlotHeadlessBake.IsActive)
+        if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
         {
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             TryForceMapUpdate();
@@ -386,9 +386,12 @@ public static class TerrainNavMeshRuntime
         var refineRingY = mode == DiscQueryMode.Full;
         foreach (var (offsetX, offsetZ) in ring)
         {
+            // Probe ring at the center's snapped ground Y. Using the caller's coarse Y (often a floating
+            // spawner marker) with BakeFast's refineY:false reject makes whole discs look unwalkable
+            // even when the XZ footprint is on nav.
             var ringPoint = new Vector3(
                 worldPos.X + offsetX * radiusMeters,
-                worldPos.Y,
+                snappedCenter.Y,
                 worldPos.Z + offsetZ * radiusMeters);
             if (!IsPointOnNavMesh(ringPoint, out _, refineRingY))
             {

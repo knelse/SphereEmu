@@ -6,7 +6,6 @@ using SphServer.Server.Config;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
-using SphServer.Sphere.Game.WorldObject.Spawner;
 
 namespace SphServer.Server;
 
@@ -24,7 +23,7 @@ public partial class SphereServer : Node
 	public override void _Ready()
 	{
 		// Headless spawn-slot bake instantiates MainServer for terrain + spawners only.
-		if (MonsterSpawnSlotHeadlessBake.IsActive)
+		if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
 		{
 			ServerNode = this;
 			return;
@@ -37,7 +36,6 @@ public partial class SphereServer : Node
 		SetupTcpServer();
 		ServerNode = this;
 		AddChild(new MonsterSpawnerActivationManagerNode());
-		WorldObjectSpawner.InstantiateObjects();
 
 		connectionHandler = new ConnectionHandler(ClientScene, this);
 
@@ -46,7 +44,9 @@ public partial class SphereServer : Node
 
 	public override void _Process(double delta)
 	{
-		if (MonsterSpawnSlotHeadlessBake.IsActive || tcpServer is null)
+		if (MonsterSpawnSlotHeadlessBake.IsActive
+			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
+			|| tcpServer is null)
 		{
 			return;
 		}
