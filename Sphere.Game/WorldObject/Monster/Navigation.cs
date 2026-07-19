@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
+using SphServer.Godot.Scripts.Navigation;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
-using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 using SphServer.Shared.WorldState;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -328,8 +328,14 @@ public partial class Monster
 
     private bool TrySampleGodotGroundY(float worldX, float worldZ, out float godotGroundY)
     {
-        var atlasDelta = homeBinding?.AtlasVerticalDelta ?? 0f;
-        return OutdoorPathQuery.TrySampleOutdoorGroundY(worldX, worldZ, out godotGroundY, atlasDelta);
+        if (TryGetHomeSpawner(out var spawner) && TryGetLeashDisk(out var leashCenter, out var leashRadius))
+        {
+            TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, leashCenter, leashRadius + 8f);
+            TerrainNavMeshRuntime.TrySyncImmediate();
+        }
+
+        var probeY = GlobalPosition.Y;
+        return NavPathQuery.TrySampleGroundY(worldX, worldZ, probeY, out godotGroundY);
     }
 
     private void EnforceOutdoorLeash()
@@ -525,5 +531,5 @@ public partial class Monster
     }
 
     private static bool IsInsideLeashDisk(Vector3 worldPosition, Vector3 leashCenterWorld, float leashRadiusMeters)
-        => OutdoorPathQuery.IsInsideLeash(worldPosition, leashCenterWorld, leashRadiusMeters);
+        => NavPathQuery.IsInsideLeash(worldPosition, leashCenterWorld, leashRadiusMeters);
 }

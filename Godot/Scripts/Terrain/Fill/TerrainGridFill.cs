@@ -1,6 +1,4 @@
 using Godot;
-using SphServer.Godot.Scripts.Terrain.OutdoorNav;
-using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
 
@@ -42,21 +40,6 @@ public partial class TerrainGridFill : Node3D
 	[Export]
 	public int CellOrientation { get; set; }
 
-	[Export]
-	public string WalkSurfaceDataDirectory { get; set; } = WalkSurfaceAtlasBuilder.DefaultOutputDirectory;
-
-	[Export]
-	public bool BuildWalkSurfaceAtlasOnRebuild { get; set; } = true;
-
-	[Export]
-	public string WalkSurfaceObjectDataDirectory { get; set; } = "res://Godot/Terrain/ObjectDataJson/";
-
-	[Export]
-	public string WalkSurfaceModelsDirectory { get; set; } = "res://Godot/Models/";
-
-	[Export]
-	public bool BuildWalkSurfaceObjectFootprints { get; set; } = true;
-
 	/// <summary>Inspector button: build or rebuild terrain from <c>map.bin</c> (editor only).</summary>
 	[ExportToolButton("Rebuild terrain")]
 	public Callable RebuildTerrainButton => Callable.From(RebuildTerrain);
@@ -64,15 +47,7 @@ public partial class TerrainGridFill : Node3D
 	/// <summary>Clears and repopulates the mesh library and <c>Terrain</c> <see cref="GridMap"/>.</summary>
 	public void RebuildTerrain()
 	{
-		if (!RebuildTerrainGrid())
-		{
-			return;
-		}
-
-		if (BuildWalkSurfaceAtlasOnRebuild)
-		{
-			BakeWalkSurfaceAtlas();
-		}
+		RebuildTerrainGrid();
 	}
 
 	/// <summary>Builds the mesh library and fills the terrain <see cref="GridMap"/> from <see cref="MapBinPath"/>.</summary>
@@ -158,56 +133,6 @@ public partial class TerrainGridFill : Node3D
 		}
 
 		return true;
-	}
-
-	public WalkSurfaceAtlasBuilder.ObjectFootprintSettings CreateWalkSurfaceFootprintSettings()
-	{
-		return new WalkSurfaceAtlasBuilder.ObjectFootprintSettings
-		{
-			ObjectDataDirectory = WalkSurfaceObjectDataDirectory,
-			ModelsDirectory = WalkSurfaceModelsDirectory,
-			Enabled = BuildWalkSurfaceObjectFootprints,
-		};
-	}
-
-	/// <summary>
-	///     Bakes outdoor walk-surface height chunks and terrain object blocked footprints.
-	/// </summary>
-	public int BakeWalkSurfaceAtlas(bool forceFullRebuild = false, bool resumeFromProgress = true)
-	{
-		var terrain = GetNodeOrNull<GridMap>(TerrainNodeName);
-		if (terrain?.MeshLibrary is null)
-		{
-			GD.PushError("TerrainGridFill: terrain GridMap or MeshLibrary is missing; run RebuildTerrainGrid first.");
-			return 0;
-		}
-
-		var savedChunks = WalkSurfaceAtlasBuilder.BuildFromGridMap(
-			terrain,
-			WalkSurfaceDataDirectory,
-			CreateWalkSurfaceFootprintSettings(),
-			resumeFromProgress: forceFullRebuild ? false : resumeFromProgress);
-		WalkSurfaceCache.Invalidate();
-		BakeOutdoorNavAtlas();
-		return savedChunks;
-	}
-
-	public int BakeOutdoorNavAtlas(string? walkDirectoryResourcePath = null, string? navDirectoryResourcePath = null)
-	{
-		return OutdoorNavAtlasBuilder.BuildFromWalkDirectory(
-			walkDirectoryResourcePath ?? WalkSurfaceDataDirectory,
-			navDirectoryResourcePath ?? OutdoorNavAtlasBuilder.DefaultOutputDirectory);
-	}
-
-	/// <summary>Re-stamps terrain object footprints onto existing walk-surface chunks.</summary>
-	public int RestampWalkSurfaceObjectFootprints()
-	{
-		var savedChunks = WalkSurfaceAtlasBuilder.ApplyObjectFootprintsToSavedChunks(
-			WalkSurfaceDataDirectory,
-			CreateWalkSurfaceFootprintSettings());
-		WalkSurfaceCache.Invalidate();
-		BakeOutdoorNavAtlas();
-		return savedChunks;
 	}
 
 	private GridMap GetOrCreateTerrainGridMap()

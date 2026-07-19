@@ -1,6 +1,5 @@
 using Godot;
 using Godot.Collections;
-using SphServer.Godot.Scripts.Terrain.WalkSurface;
 using FileAccess = Godot.FileAccess;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
@@ -67,12 +66,6 @@ public partial class TerrainObjectsFill : Node3D
     /// </summary>
     [Export]
     public string MultiMeshResourcesDirectory { get; set; } = "res://Godot/Terrain/GeneratedMultiMeshes/";
-
-    [Export]
-    public string WalkSurfaceDataDirectory { get; set; } = WalkSurfaceAtlasBuilder.DefaultOutputDirectory;
-
-    [Export]
-    public bool UpdateWalkSurfaceObjectFootprintsOnRebuild { get; set; } = true;
 
     [ExportToolButton("Rebuild terrain objects")]
     public Callable RebuildTerrainObjectsButton => Callable.From(RebuildTerrainObjects);
@@ -311,18 +304,6 @@ public partial class TerrainObjectsFill : Node3D
             mmi.Name = $"{safeObjectName}_MM_{objectIndex}";
         }
 
-        if (UpdateWalkSurfaceObjectFootprintsOnRebuild)
-        {
-            WalkSurfaceAtlasBuilder.ApplyObjectFootprintsToSavedChunks(
-                WalkSurfaceDataDirectory,
-                new WalkSurfaceAtlasBuilder.ObjectFootprintSettings
-                {
-                    ObjectDataDirectory = ObjectDataDirectory,
-                    ModelsDirectory = ModelsDirectory,
-                    Enabled = true,
-                });
-            WalkSurfaceCache.Invalidate();
-        }
     }
 
     // TEMP DIAGNOSTIC - remove after use.

@@ -5,16 +5,14 @@ using System.Threading.Tasks;
 using Godot;
 using SphServer.Godot.Scripts.Navigation;
 using SphServer.Godot.Scripts.Terrain;
-using SphServer.Godot.Scripts.Terrain.OutdoorNav;
-using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
 ///     Pre-bakes validated spawn slots against the baked navmesh (see
 ///     <see cref="TerrainNavMeshRuntime" /> — outdoor tiles + indoor clusters). The navmesh is the sole
-///     walkability/height authority. Candidate XZ seeding uses a loose grid (and optionally the walk-surface
-///     atlas when present for denser spread); atlas ground height is never used for placement.
+///     walkability/height authority. Candidate XZ seeding is a loose grid in the spawn radius only
+///     (no WalkData / OutdoorNavCache).
 /// </summary>
 public static class MonsterSpawnSlotBaker
 {
@@ -47,7 +45,6 @@ public static class MonsterSpawnSlotBaker
             return 0;
         }
 
-        PreloadCachesForJob(spawner, job.Value);
         TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Value.Origin, job.Value.SpawnRadiusMeters + 1f);
         // Cannot await physics frames under the respawn lock - force-flush instead.
         TerrainNavMeshRuntime.TrySyncImmediate();
@@ -56,8 +53,8 @@ public static class MonsterSpawnSlotBaker
     }
 
     /// <summary>
-    ///     Preferred entry point: preloads walk/nav caches and navmesh tiles, awaits the navmesh sync, then
-    ///     bakes. Used by the "Bake spawn slots" editor tool button, which can afford to await a frame.
+    ///     Preferred entry point: loads navmesh tiles, awaits sync, then bakes. Used by the
+    ///     "Bake spawn slots" editor tool button, which can afford to await a frame.
     ///     Always rebakes (ignores dirty-skip) at full query quality.
     /// </summary>
     public static async Task<int> BakeForSpawnerAsync(MonsterSpawner spawner)
@@ -68,7 +65,6 @@ public static class MonsterSpawnSlotBaker
             return 0;
         }
 
-        PreloadCachesForJob(spawner, job.Value);
         TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Value.Origin, job.Value.SpawnRadiusMeters + 1f);
 
         var tree = spawner.GetTree();
@@ -209,7 +205,6 @@ public static class MonsterSpawnSlotBaker
 
             foreach (var (spawner, job) in regionWork)
             {
-                PreloadCachesForJob(spawner, job);
                 TerrainNavMeshRuntime.EnsureTilesLoaded(spawner, job.Origin, job.SpawnRadiusMeters + 1f);
             }
 
@@ -515,14 +510,11 @@ public static class MonsterSpawnSlotBaker
             }
         }
 
-        var bakeContext = job.FastCandidateGeneration
-            ? default
-            : SpawnSlotBakeContext.Create(job.Origin, job.SpawnRadiusMeters);
         var validated = new List<Vector3>(job.PoolCount);
         OutdoorSpawnSlotValidator.FailReason? lastFailure = null;
         var picked = new List<Vector3>();
 
-        TryFillPoolWithSpread(job, bakeContext, validated, picked, ref lastFailure);
+        TryFillPoolWithSpread(job, validated, picked, ref lastFailure);
 
         if (validated.Count < job.MobCount)
         {
@@ -598,28 +590,13 @@ public static class MonsterSpawnSlotBaker
         };
     }
 
-    private static void PreloadCachesForJob(MonsterSpawner spawner, SpawnerBakeParams job)
-    {
-        var preloadRadius = job.SpawnRadiusMeters + 1f;
-        if (WalkSurfaceCache.HasAnyChunkFiles())
-        {
-            WalkSurfaceCache.PreloadChunksForRadius(job.Origin.X, job.Origin.Z, preloadRadius);
-        }
-
-        if (OutdoorNavCache.HasAnyNavFiles())
-        {
-            OutdoorNavCache.PreloadForRadius(job.Origin.X, job.Origin.Z, preloadRadius);
-        }
-    }
-
     private static void TryFillPoolWithSpread(
         SpawnerBakeParams job,
-        SpawnSlotBakeContext bakeContext,
         List<Vector3> validated,
         List<Vector3> picked,
         ref OutdoorSpawnSlotValidator.FailReason? lastFailure)
     {
-        var samples = BuildSpreadSamplePool(job, bakeContext);
+        var samples = BuildSpreadSamplePool(job);
         while (validated.Count < job.PoolCount && samples.Count > 0)
         {
             var bestIndex = FindFarthestSampleIndex(job.Origin, samples, picked);
@@ -629,9 +606,7 @@ public static class MonsterSpawnSlotBaker
         }
     }
 
-    private static List<(float X, float Z)> BuildSpreadSamplePool(
-        SpawnerBakeParams job,
-        SpawnSlotBakeContext bakeContext)
+    private static List<(float X, float Z)> BuildSpreadSamplePool(SpawnerBakeParams job)
     {
         var samples = new List<(float X, float Z)>();
         var seen = new HashSet<(int, int)>();
@@ -649,57 +624,10 @@ public static class MonsterSpawnSlotBaker
             spacing,
             samples,
             seen);
-
-        // Batch path: coarse loose grid only. Atlas dual-collect is expensive and redundant with navmesh authority.
-        if (job.FastCandidateGeneration)
-        {
-            return samples;
-        }
-
-        if (WalkSurfaceCache.HasAnyChunkFiles())
-        {
-            var atlasCandidates = new List<(float X, float Z, float Y)>();
-            WalkSurfaceCache.CollectWalkableCandidates(
-                job.Origin.X,
-                job.Origin.Z,
-                job.SpawnRadiusMeters,
-                atlasCandidates);
-            foreach (var (x, z, _) in atlasCandidates)
-            {
-                AddSample(x, z, job.Origin, radiusSq, samples, seen);
-            }
-        }
-
-        if (bakeContext.HasWalkAnchor)
-        {
-            if (WalkSurfaceCache.HasAnyChunkFiles())
-            {
-                var anchorCandidates = new List<(float X, float Z, float Y)>();
-                WalkSurfaceCache.CollectWalkableCandidates(
-                    bakeContext.WalkAnchor.X,
-                    bakeContext.WalkAnchor.Z,
-                    job.SpawnRadiusMeters,
-                    anchorCandidates);
-                foreach (var (x, z, _) in anchorCandidates)
-                {
-                    AddSample(x, z, job.Origin, radiusSq, samples, seen);
-                }
-            }
-
-            AddLooseGridSamples(
-                bakeContext.WalkAnchor.X,
-                bakeContext.WalkAnchor.Z,
-                job.SpawnRadiusMeters,
-                job.Origin,
-                radiusSq,
-                spacing,
-                samples,
-                seen);
-        }
-
         return samples;
     }
 
+    /// <summary>Uniform XZ grid in a disc — no WalkData / atlas filtering.</summary>
     private static void AddLooseGridSamples(
         float centerX,
         float centerZ,
@@ -710,17 +638,23 @@ public static class MonsterSpawnSlotBaker
         List<(float X, float Z)> samples,
         HashSet<(int, int)> seen)
     {
-        var scratch = new List<(float X, float Z)>();
-        WalkSurfaceCache.CollectLooseWalkSamplesInRadius(
-            centerX,
-            centerZ,
-            collectRadius,
-            scratch,
-            sampleSpacingMeters: sampleSpacingMeters,
-            requireLooseWalk: false);
-        foreach (var (x, z) in scratch)
+        var extent = Mathf.CeilToInt(collectRadius / sampleSpacingMeters);
+        var collectRadiusSq = collectRadius * collectRadius;
+        for (var z = -extent; z <= extent; z++)
         {
-            AddSample(x, z, spawnerOrigin, spawnRadiusSq, samples, seen);
+            for (var x = -extent; x <= extent; x++)
+            {
+                var worldX = centerX + x * sampleSpacingMeters;
+                var worldZ = centerZ + z * sampleSpacingMeters;
+                var cdx = worldX - centerX;
+                var cdz = worldZ - centerZ;
+                if (cdx * cdx + cdz * cdz > collectRadiusSq)
+                {
+                    continue;
+                }
+
+                AddSample(worldX, worldZ, spawnerOrigin, spawnRadiusSq, samples, seen);
+            }
         }
     }
 

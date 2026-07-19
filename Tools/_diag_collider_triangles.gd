@@ -10,8 +10,6 @@ func _initialize() -> void:
 	var root := packed.instantiate()
 
 	var objects_fill := root.get_node("TerrainObjects")
-	objects_fill.set("UpdateWalkSurfaceObjectFootprintsOnRebuild", false)
-
 	print("RebuildTerrainObjects starting (diagnostic run, no save)...")
 	objects_fill.call("RebuildTerrainObjects")
 

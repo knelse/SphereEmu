@@ -9,7 +9,6 @@ using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.Fill;
-using SphServer.Godot.Scripts.Terrain.WalkSurface;
 
 namespace SphServer.Godot.Scripts.Navigation;
 
@@ -382,8 +381,8 @@ public static class TerrainNavMeshRuntime
         refinedCenter = snappedCenter;
 
         var ring = mode == DiscQueryMode.BakeFast
-            ? WalkSurfaceMobBodyDisk.CardinalOffsets
-            : WalkSurfaceMobBodyDisk.Offsets;
+            ? NavMobBodyDisk.CardinalOffsets
+            : NavMobBodyDisk.Offsets;
         var refineRingY = mode == DiscQueryMode.Full;
         foreach (var (offsetX, offsetZ) in ring)
         {
@@ -552,8 +551,9 @@ public static class TerrainNavMeshRuntime
         => _objectsToGridLocal.AffineInverse() * (_bakedToWorld.AffineInverse() * navWorld);
 
     /// <summary>
-    ///     Reserved for the future pathfinding migration (replacing <c>OutdoorPathQuery</c>'s custom A* over
-    ///     the walk-surface grid) - not yet called from anywhere.
+    ///     Recast path between spawner-space endpoints. Indoor-depth points are mapped through
+    ///     TerrainObjects→grid (same as <see cref="TryClosestPoint" />); waypoints are returned in
+    ///     spawner space.
     /// </summary>
     public static Vector3[] FindPath(Vector3 start, Vector3 end, bool optimize = true)
     {
@@ -562,7 +562,34 @@ public static class TerrainNavMeshRuntime
             return [];
         }
 
-        return NavigationServer3D.MapGetPath(_map, start, end, optimize);
+        try
+        {
+            var startIndoor = IndoorAreaCriteria.IsIndoorDepth(start.Y);
+            var endIndoor = IndoorAreaCriteria.IsIndoorDepth(end.Y);
+            var navStart = startIndoor ? SpawnerSpaceToNavWorld(start) : start;
+            var navEnd = endIndoor ? SpawnerSpaceToNavWorld(end) : end;
+            var path = NavigationServer3D.MapGetPath(_map, navStart, navEnd, optimize);
+            if (path.Length == 0)
+            {
+                return path;
+            }
+
+            // Indoor cluster verts live in nav-world; remap when either endpoint was indoor-depth.
+            if (startIndoor || endIndoor)
+            {
+                for (var i = 0; i < path.Length; i++)
+                {
+                    path[i] = NavWorldToSpawnerSpace(path[i]);
+                }
+            }
+
+            return path;
+        }
+        catch (Exception ex)
+        {
+            GD.PushWarning($"TerrainNavMeshRuntime: FindPath failed ({ex.Message}).");
+            return [];
+        }
     }
 
     private static bool LoadNearbyIndoorClusters(Vector3 localCenter, float radiusMeters)
@@ -821,7 +848,7 @@ public static class TerrainNavMeshRuntime
 
         if (!_transformResolved)
         {
-            var terrain = MonsterSpawnGroundQuery.TryResolveTerrainGridMap(contextNode);
+            var terrain = TryResolveTerrainGridMap(contextNode);
             if (terrain is null || terrain.GetParent() is not Node3D terrainGridNode)
             {
                 return false;
@@ -878,5 +905,24 @@ public static class TerrainNavMeshRuntime
             new Vector3(4000f, 0f, 4000f));
         GD.PushWarning(
             "TerrainNavMeshRuntime: TerrainObjects not found; using Ry(-90°)+(4000,0,4000) for indoor nav space.");
+    }
+
+    private static GridMap? TryResolveTerrainGridMap(Node3D contextNode)
+    {
+        var tree = contextNode.GetTree();
+        if (tree is null)
+        {
+            return null;
+        }
+
+        foreach (var node in tree.Root.FindChildren("*", nameof(GridMap), recursive: true, owned: false))
+        {
+            if (node is GridMap gridMap && node.Name == TerrainGridFill.TerrainNodeName)
+            {
+                return gridMap;
+            }
+        }
+
+        return null;
     }
 }

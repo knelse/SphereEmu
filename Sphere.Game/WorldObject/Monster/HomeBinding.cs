@@ -32,7 +32,7 @@ public readonly struct MonsterHomeBinding
     public NodePath OwnerSpawnerPath { get; }
     public ulong OwnerSpawnerInstanceId { get; }
     /// <summary>
-    ///     walk-surface atlas Y minus Godot terrain Y at bind time; subtract from atlas samples at runtime.
+    ///     Legacy field (always 0). Pathing uses navmesh Y; kept for MonsterHomeBinding constructor shape.
     /// </summary>
     public float AtlasVerticalDelta { get; }
 }

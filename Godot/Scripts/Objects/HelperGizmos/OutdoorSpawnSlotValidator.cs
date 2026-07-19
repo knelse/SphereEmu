@@ -1,7 +1,6 @@
 using Godot;
 using SphServer.Godot.Scripts.Navigation;
 using SphServer.Godot.Scripts.Terrain;
-using SphServer.Godot.Scripts.Terrain.OutdoorNav;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
@@ -109,13 +108,13 @@ public static class OutdoorSpawnSlotValidator
 
         refinedCandidate = new Vector3(candidate.X, snapped.Y, candidate.Z);
 
-        if (!OutdoorPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, spawnRadiusMeters))
+        if (!NavPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, spawnRadiusMeters))
         {
             reason = FailReason.OutsideSpawnRadius;
             return false;
         }
 
-        if (!OutdoorPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, leashRadiusMeters))
+        if (!NavPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, leashRadiusMeters))
         {
             reason = FailReason.OutsideLeash;
             return false;

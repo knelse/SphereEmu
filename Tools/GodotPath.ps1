@@ -68,12 +68,12 @@ Permanent fix:
 Or copy and edit local config:
   copy '$exampleConfig' '$LocalConfig'
 
-Note: running GodotPath.ps1 by itself does nothing useful. Use rebake_walk_surface.ps1 instead.
+Note: running GodotPath.ps1 by itself does nothing useful. Dot-source it from bake scripts.
 "@
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
-    Write-Host "Resolve-GodotExecutable is loaded by rebake/convert scripts via dot-sourcing."
+    Write-Host "Resolve-GodotExecutable is loaded by bake scripts via dot-sourcing."
     Write-Host "Testing resolution..."
     Write-Host (Resolve-GodotExecutable)
 }

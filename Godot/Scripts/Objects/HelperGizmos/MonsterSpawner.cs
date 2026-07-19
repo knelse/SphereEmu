@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using SphServer.Godot.Scripts.Objects.Fill;
+using SphServer.Godot.Scripts.Navigation;
 using SphServer.Godot.Scripts.Terrain;
-using SphServer.Godot.Scripts.Terrain.OutdoorNav;
-using SphServer.Godot.Scripts.Terrain.WalkSurface;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -573,7 +572,7 @@ public partial class MonsterSpawner : Node3D
 	/// </summary>
 	private bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
-		if (!OutdoorPathQuery.IsInsideLeash(candidate, GlobalPosition, SpawnRadiusMeters))
+		if (!NavPathQuery.IsInsideLeash(candidate, GlobalPosition, SpawnRadiusMeters))
 		{
 			return false;
 		}
@@ -838,48 +837,10 @@ public partial class MonsterSpawner : Node3D
 
 	public NavPathResult RequestOutdoorPath(Monster monster, Vector3 goalWorld)
 	{
-		var startWorld = monster.GlobalPosition;
-		var resolvedGoal = OutdoorPathQuery.ClampGoalToLeash(goalWorld, LeashCenterWorld, LeashRadiusMeters);
-		var atlasVerticalDelta = monster.GetAtlasVerticalDelta();
-		if (Mathf.IsZeroApprox(atlasVerticalDelta))
-		{
-			atlasVerticalDelta = ResolveAtlasVerticalDelta(GlobalPosition);
-		}
-
-		if (OutdoorPathQuery.TrySampleOutdoorGroundY(
-				startWorld.X, startWorld.Z, out var startGroundY, atlasVerticalDelta))
-		{
-			startWorld.Y = startGroundY;
-		}
-
-		if (OutdoorPathQuery.TrySampleOutdoorGroundY(
-				resolvedGoal.X, resolvedGoal.Z, out var goalGroundY, atlasVerticalDelta))
-		{
-			resolvedGoal.Y = goalGroundY;
-		}
-
-		var request = new NavPathRequest(
-			startWorld,
-			resolvedGoal,
-			LeashCenterWorld,
-			LeashRadiusMeters);
-		return OutdoorPathQuery.FindPath(request);
-	}
-
-	private float ResolveAtlasVerticalDelta(Vector3 referenceGodotGround)
-	{
-		var delta = MonsterSpawnGroundQuery.ComputeAtlasVerticalOffset(this);
-		if (!Mathf.IsZeroApprox(delta))
-		{
-			return delta;
-		}
-
-		if (WalkSurfaceCache.TrySampleWalkableGround(referenceGodotGround.X, referenceGodotGround.Z, out var atlasY))
-		{
-			return atlasY - referenceGodotGround.Y;
-		}
-
-		return 0f;
+		var resolvedGoal = NavPathQuery.ClampGoalToLeash(goalWorld, LeashCenterWorld, LeashRadiusMeters);
+		return NavPathQuery.FindPath(
+			this,
+			new NavPathRequest(monster.GlobalPosition, resolvedGoal, LeashCenterWorld, LeashRadiusMeters));
 	}
 
 	public bool TryNavigateMonster(Monster monster, Vector3 goalWorld, out NavPathFailReason reason)
@@ -990,7 +951,6 @@ public partial class MonsterSpawner : Node3D
 
 		AddChild(monster);
 		var resolvedPosition = ResolveBakedSlotPosition(spawnWorldPosition);
-		var atlasVerticalDelta = ResolveAtlasVerticalDelta(resolvedPosition);
 		monster.BindHome(
 			new MonsterHomeBinding(
 				slotIndex,
@@ -999,7 +959,7 @@ public partial class MonsterSpawner : Node3D
 				LeashRadiusMeters,
 				GetPath(),
 				GetInstanceId(),
-				atlasVerticalDelta),
+				atlasVerticalDelta: 0f),
 			this);
 		ApplySpawnTransform(monster, resolvedPosition);
 		SetMonsterOwnerForPersistence(monster);

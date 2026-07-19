@@ -12,7 +12,7 @@ public readonly record struct SpawnerBakeParams
     public int PoolCount { get; init; }
 
     /// <summary>
-    ///     Batch rebake: coarser XZ seeding, no atlas dual-collect, cheaper nav disc checks.
+    ///     Batch rebake: coarser XZ seeding and cheaper nav disc checks.
     /// </summary>
     public bool FastCandidateGeneration { get; init; }
 }
