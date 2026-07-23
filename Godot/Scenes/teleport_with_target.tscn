@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://clfp686cd6kou"]
 
-[ext_resource type="Script" uid="uid://gdps3tauvr05r" path="res://Sphere.Game/WorldObject/TeleportWithTarget.cs" id="1_rs7kr"]
+[ext_resource type="Script" uid="uid://cibxirdmck5e0" path="res://Sphere.Game/WorldObject/TeleportWithTarget.cs" id="1_rs7kr"]
 [ext_resource type="PackedScene" uid="uid://cktw8qd20tbms" path="res://Godot/Models/portal1.glb" id="2_5xnku"]
 
 [node name="TeleportWithTarget" type="Node3D" unique_id=1943050220]

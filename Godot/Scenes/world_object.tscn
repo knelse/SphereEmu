@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c75fu8t5hnes4"]
 
-[ext_resource type="Script" uid="uid://c2t3mvyqs5fp3" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_5ouvc"]
+[ext_resource type="Script" uid="uid://o57f3mf206gm" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_5ouvc"]
 [ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_tb2jr"]
 
 [node name="WorldObject" type="Node3D" unique_id=1627497759]

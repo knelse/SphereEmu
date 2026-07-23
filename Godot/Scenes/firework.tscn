@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://id00aeux6mxl"]
 
-[ext_resource type="Script" uid="uid://c2t3mvyqs5fp3" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_r6eqx"]
+[ext_resource type="Script" uid="uid://o57f3mf206gm" path="res://Sphere.Game/WorldObject/WorldObject.cs" id="1_r6eqx"]
 [ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_r7qnr"]
 
 [node name="Firework" type="Node3D" unique_id=1233930950]
