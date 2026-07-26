@@ -235,8 +235,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 
                 foreach (var subpacket in subpackets)
                 {
-                    var shouldDecode = subpacket.Length > 12 &&
-                                       (subpacket[11] != localId >> 8 || subpacket[12] != (localId & 0b11111111));
+                    var shouldDecode = ShouldDecodeClientSubpacket(subpacket, localId);
                     var currentDecode = shouldDecode ? Packet.DecodeClientPacket(subpacket) : subpacket;
                     decodedSubpackets.AddRange(currentDecode);
                 }
@@ -301,5 +300,53 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     public void EnqueueClientEvent(ClientQueuedEvent clientEvent)
     {
         sphereClient.EnqueueClientEvent(clientEvent);
+    }
+
+    private static bool ShouldDecodeClientSubpacket(byte[] subpacket, ushort localId)
+    {
+        if (subpacket.Length <= 12)
+        {
+            return false;
+        }
+
+        return !ClientSubpacketReferencesLocalPlayer(subpacket, localId);
+    }
+
+    private static bool ClientSubpacketReferencesLocalPlayer(byte[] subpacket, ushort localId)
+    {
+        var localIdHigh = (byte)(localId >> 8);
+        var localIdLow = (byte)(localId & 0xFF);
+
+        if (subpacket[11] == localIdHigh && subpacket[12] == localIdLow)
+        {
+            return true;
+        }
+
+        if (subpacket.Length > 8 && subpacket[7] == localIdHigh && subpacket[8] == localIdLow)
+        {
+            return true;
+        }
+
+        // Main ping is wire-format and stores client id at 16–18, not 11–12.
+        if (subpacket.Length == 0x26
+            && TryGetPingPackedClientId(subpacket, out var pingClientId)
+            && pingClientId == localId)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryGetPingPackedClientId(byte[] packet, out ushort clientId)
+    {
+        clientId = 0;
+        if (packet.Length <= 18)
+        {
+            return false;
+        }
+
+        clientId = (ushort)((packet[16] >> 5) + (packet[17] << 3) + ((packet[18] & 0b11111) << 11));
+        return true;
     }
 }
