@@ -1,5 +1,8 @@
 using System;
+using SphereHelpers.Extensions;
 using SphServer.Helpers;
+using SphServer.Packets;
+using SphServer.Shared.BitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
@@ -26,23 +29,43 @@ public static class CommonPackets
         }
 
         var biased = 30000 - damage;
-        return
-        [
-            0x15, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(targetClientLocalId), MajorByte(targetClientLocalId),
-            0x48, 0x43, 0xA1, 0xA1, (byte) ((attackerClientIndex & 0b111) << 5), (byte) (attackerClientIndex >> 3),
-            (byte) (attackerClientIndex >> 11), (byte) ((biased & 0b111) << 5), (byte) (biased >> 3),
-            (byte) (biased >> 11), 0x00, 0xE0
-        ];
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteUInt16(targetClientLocalId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort) ObjectType.Monster, 10);
+        stream.WriteByte(0, 1);
+        // interaction
+        stream.WriteByte(0x0A, 8);
+        // attack
+        stream.WriteUInt16(0x050D, 16);
+        stream.WriteUInt16(attackerClientIndex, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteUInt16((ushort) biased, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0b111, 3);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
     }
 
     // Kills an entity on the client (entity_killed): plays the death program (stop AI, death animation,
     // fade). Fixed frame; only the two ids vary.
-    public static byte[] EntityKilled (ushort clientLocalEntityId, ushort clientLocalKillerId) =>
-    [
-        0x12, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(clientLocalEntityId), MajorByte(clientLocalEntityId),
-        0x48, 0x43, 0xA1, 0x81, (byte) ((clientLocalKillerId & 0b111) << 5), (byte) (clientLocalKillerId >> 3),
-        (byte) (clientLocalKillerId >> 11), 0x00, 0xF0
-    ];
+    public static byte[] EntityKilled (ushort clientLocalEntityId, ushort clientLocalKillerId)
+    {
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteUInt16(clientLocalEntityId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort) ObjectType.Monster, 10);
+        stream.WriteByte(0, 1);
+        // interaction
+        stream.WriteByte(0x0A, 8);
+        // death
+        stream.WriteUInt16(0x040D, 16);
+        stream.WriteUInt16(clientLocalKillerId, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0, 7);
+        stream.WriteByte(0b1111, 4);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
 
     public static readonly byte[]
         // ReadyToLoadInitialData = { 0x0A, 0x00, 0xC8, 0x00, 0x14, 0x05, 0x00, 0x00, 0x1F, 0x42 };

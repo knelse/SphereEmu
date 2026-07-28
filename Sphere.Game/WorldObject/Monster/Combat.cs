@@ -10,7 +10,7 @@ public enum DamageSchool
 	Magical = 1
 }
 
-/// <summary>One damage application request; Amount is post-mitigation, &gt;= 0 (0 == miss, still an event).</summary>
+/// <summary>One damage application request; Amount is post-mitigation, >= 0 (0 == miss, still an event).</summary>
 public readonly record struct DamageEvent (
 	ushort AttackerId,
 	SphereClient? AttackerClient,

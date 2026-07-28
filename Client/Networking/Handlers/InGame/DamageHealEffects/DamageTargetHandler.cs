@@ -33,9 +33,6 @@ public enum AttackFrameKind
     NotAnAttack = 3
 }
 
-/// <summary>Delivery-layer roll result (miss/crit applied on top of the base damage formula).</summary>
-public readonly record struct MeleeHitRoll (int Damage, bool IsMiss, bool IsCrit);
-
 // Fallback branch of first bytes 0x19/0x20: every frame that is not a buy-item request
 // (08 40 03, routed to BuyItemFromTargetHandler first) lands here.
 public class DamageTargetHandler (ushort localId, ClientConnection clientConnection)
@@ -44,40 +41,35 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
     // Per-connection RNG: handlers run on the Godot main thread and Random is not thread-safe.
     private readonly Random combatRng = new ();
 
-    private int droppedNotAnAttackCount;
-    private int droppedSelfTargetCount;
-    private bool notAnAttackDropLogged;
-    private bool selfTargetDropLogged;
-
-    public Task Handle (double delta)
+    public async Task Handle (double delta)
     {
         // Attack-wedge fix (#11): ack the use first — before any parse or early return — so the
         // client's use-lock (g_6008) is always cleared. See CommonPackets.ClearUseToutAck.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
 
         var character = clientConnection.GetSelectedCharacter();
-        if (character is null)
+        var attackerClient = ActiveClients.Get(localId);
+        if (character is null || attackerClient is null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
+        var attackerGlobalId = attackerClient.GetGlobalObjectId(localId);
         var cfg = BalanceConfig.Get<CombatBalance>("combat");
+        if (cfg is null)
+        {
+            LogAction(attackerGlobalId, 0, AttackFrameKind.NotAnAttack, "skip");
+            return;
+        }
 
         var frameKind = ParseAttackFrame(clientConnection.ReceiveBuffer, out var targetClientLocalId);
 
         switch (frameKind)
         {
             case AttackFrameKind.SelfTargetedAction:
-                droppedSelfTargetCount++;
-                if (!selfTargetDropLogged)
-                {
-                    selfTargetDropLogged = true;
-                    SphLogger.Info("op45 self-targeted action (Alt; 54 43 C1 at bytes 13-15) dropped — self-attack is a no-op, " +
-                                   "self-casts (mantras) are not implemented yet. " +
-                                   $"Counted per session, logged once. Client ID: {localId:X4}");
-                }
-
-                return Task.CompletedTask;
+                // The target is the player themselves; self-casts (mantras) are not implemented yet.
+                LogAction(attackerGlobalId, attackerGlobalId, frameKind, "skip");
+                return;
 
             case AttackFrameKind.WeaponAttack:
                 // Weapon target/damage parse unresolved — echo a 0-damage swing so the client renders it.
@@ -86,38 +78,33 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 var weaponEchoTarget = weaponStream.ReadUInt16();
                 clientConnection.MaybeScheduleNetworkPacketSend(
                     CommonPackets.FistAttackTargetEcho(weaponEchoTarget, character.ClientIndex, 0));
-                return Task.CompletedTask;
+                LogAction(attackerGlobalId, attackerClient.GetGlobalObjectId(weaponEchoTarget), frameKind, "0");
+                return;
 
             case AttackFrameKind.NotAnAttack:
-                droppedNotAnAttackCount++;
-                if (!notAnAttackDropLogged)
-                {
-                    notAnAttackDropLogged = true;
-                    var interactBuffer = clientConnection.ReceiveBuffer;
-                    SphLogger.Info("op45 non-attack cuse frame absorbed with NO reply (discriminator " +
-                                   $"{interactBuffer[13]:X2} {interactBuffer[14]:X2} {interactBuffer[15]:X2} — not the " +
-                                   "08 40 A3 melee attack; e.g. 08 40 83 = right-click object-interact/enter). " +
-                                   "Only genuine attacks get a melee reply, so client object interaction " +
-                                   $"is not corrupted. Counted per session, logged once. Client ID: {localId:X4}");
-                }
-
                 // No echo: an attack reply to an object-interact can corrupt the client's own handling.
                 // Dead-mob left-clicks also land here; their use-lock is cleared by the ack at the top.
-                return Task.CompletedTask;
+                LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
+                return;
         }
 
-        var attackerClient = ActiveClients.Get(localId);
-
-        // Bit-172 id is client-local; ActiveWorldObjects is keyed by global ids (identity-mapped for now).
-        var targetGlobalId = attackerClient?.GetGlobalObjectId(targetClientLocalId) ?? targetClientLocalId;
+        if (targetClientLocalId == 0)
+        {
+            LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
+            return;
+        }
 
         if (targetClientLocalId == ushort.MaxValue)
         {
             // Target-less attack (0xFFFF = the client's no-target sentinel; happens when the target
             // despawns mid-click). Never answer it: an entity-addressed echo to a nonexistent id
             // crashes the client's script VM (BoundCheckArray in _player, observed live).
-            return Task.CompletedTask;
+            LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
+            return;
         }
+
+        // Bit-172 id is client-local; ActiveWorldObjects is keyed by global ids (identity-mapped for now).
+        var targetGlobalId = attackerClient.GetGlobalObjectId(targetClientLocalId);
 
         if (ActiveWorldObjects.Get(targetGlobalId) is not Monster monster ||
             !IsWithinMeleeRange(attackerClient, monster, cfg))
@@ -125,7 +112,8 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             // Not a live in-range Monster — echo 0 damage to keep the client's swing visual consistent.
             clientConnection.MaybeScheduleNetworkPacketSend(
                 CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
-            return Task.CompletedTask;
+            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
+            return;
         }
 
         if (monster.IsDead)
@@ -133,10 +121,11 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             // Echo 0 damage with no state change — keeps the swing loop alive until the corpse despawns.
             clientConnection.MaybeScheduleNetworkPacketSend(
                 CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
-            return Task.CompletedTask;
+            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
+            return;
         }
 
-        var roll = RollMeleeHit(character.PAtk, monster.BasePDef, combatRng, cfg);
+        var roll = DamageCalc.RollMeleeHit(character.PAtk, monster.BasePDef, combatRng, cfg);
         var damageEvent = new DamageEvent(character.ClientIndex, attackerClient, roll.Damage,
             DamageSchool.Physical, roll.IsCrit);
         var outcome = monster.TakeDamage(in damageEvent);
@@ -145,7 +134,13 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         // echo the APPLIED damage so the client's HP delta matches the server clamp.
         clientConnection.MaybeScheduleNetworkPacketSend(
             CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, outcome.Applied));
-        return Task.CompletedTask;
+        LogAction(attackerGlobalId, targetGlobalId, frameKind, roll.IsMiss ? "miss" : outcome.Applied.ToString());
+    }
+
+    private static void LogAction (ushort sourceGlobalId, ushort targetGlobalId, AttackFrameKind action, string result)
+    {
+        SphLogger.Info($"DamageTargetHandler: Source [{sourceGlobalId:X4}] - Target [{targetGlobalId:X4}] - " +
+                       $"Action [{action}] - [{result}]");
     }
 
     /// <summary>Classifies a non-buy 0x19/0x20 frame; the fist-attack target id = LSB-first u16 after 172 skipped bits.</summary>
@@ -176,43 +171,18 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         return AttackFrameKind.NotAnAttack;
     }
 
-    /// <summary>
-    ///     Melee delivery layer: miss roll, then the damage formula, then crit (re-clamped), then
-    ///     the non-miss floor. Fixed rng draw order keeps seeded tests deterministic.
-    /// </summary>
-    public static MeleeHitRoll RollMeleeHit (int attackerPAtk, double targetPDef, Random rng, CombatBalance cfg)
+    /// <summary>Lenient server-side range sanity bound; skipped when no positive range is configured.</summary>
+    private static bool IsWithinMeleeRange (SphereClient attackerClient, Monster monster, CombatBalance cfg)
     {
-        ArgumentNullException.ThrowIfNull(rng);
-        ArgumentNullException.ThrowIfNull(cfg);
-
-        var missRoll = rng.NextDouble();
-        if (missRoll < cfg.MissChance)
-        {
-            return new MeleeHitRoll(0, true, false);
-        }
-
-        var statSheetDamage = Math.Abs(attackerPAtk) + cfg.FistStatSheetDamage;
-        var schoolInput = new DamageSchoolInput(statSheetDamage, cfg.FistAmin, cfg.FistAmax, targetPDef);
-        var damage = DamageFormula.RollSchoolDamage(in schoolInput, rng, cfg);
-
-        var critRoll = rng.NextDouble();
-        var isCrit = critRoll < cfg.CritChance;
-        if (isCrit)
-        {
-            damage = (int) Math.Min(Math.Floor(damage * cfg.CritMult), cfg.DamageClampMax);
-        }
-
-        damage = Math.Max(damage, cfg.MinMeleeHit);
-        return new MeleeHitRoll(damage, false, isCrit);
-    }
-
-    /// <summary>Lenient server-side range sanity bound; skipped when the attacker position or a positive configured range is unavailable.</summary>
-    private static bool IsWithinMeleeRange (SphereClient? attackerClient, Monster monster, CombatBalance cfg)
-    {
-        if (cfg.MeleeRangeMeters <= 0 || attackerClient is null ||
-            !ClientWorldPosition.TryGetGodotWorldPosition(attackerClient, out var attackerPosition))
+        if (cfg.MeleeRangeMeters <= 0)
         {
             return true;
+        }
+
+        if (!ClientWorldPosition.TryGetGodotWorldPosition(attackerClient, out var attackerPosition))
+        {
+            // Distance is unknown, so the attack cannot be bounded — reject it instead of allowing it.
+            return false;
         }
 
         var rangeSquared = cfg.MeleeRangeMeters * cfg.MeleeRangeMeters;

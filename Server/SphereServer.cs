@@ -26,6 +26,7 @@ public partial class SphereServer : Node
 		SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
 		SphLogger.Info("Starting SphServer...");
 
+		BalanceConfig.PreloadAll();
 		InitializeCollections();
 		SetupTcpServer();
 		ServerNode = this;

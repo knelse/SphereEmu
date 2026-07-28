@@ -1,3 +1,5 @@
+using SphServer.Shared.Logger;
+
 namespace SphServer.Server.GameplayLogic.Combat;
 
 /// <summary>
@@ -19,7 +21,11 @@ public static class DamageFormula
 {
     public static double RollRaw (double statSheetDamage, double weaponAmin, double weaponAmax, Random rng)
     {
-        ArgumentNullException.ThrowIfNull(rng);
+        if (rng is null)
+        {
+            SphLogger.Error("DamageFormula.RollRaw: rng is null — rolling zero damage.");
+            return 0.0;
+        }
 
         var weaponAvg = (weaponAmin + weaponAmax) / 2.0;
         if (weaponAvg <= 0.0)
@@ -43,15 +49,17 @@ public static class DamageFormula
     {
         if (defenseQuadraticDivisor <= 0.0)
         {
-            throw new ArgumentOutOfRangeException(nameof (defenseQuadraticDivisor), defenseQuadraticDivisor,
-                "defenseQuadraticDivisor must be > 0 (combat.json misconfigured?) — the Roll < Defense branch divides by Defense * divisor.");
+            SphLogger.Error(
+                $"DamageFormula.ApplyDefense: defenseQuadraticDivisor must be > 0 (combat.json misconfigured?), got {defenseQuadraticDivisor}. Dealing zero damage.");
+            return 0.0;
         }
 
         if (defenseSubtractFactor is <= 0.0 or > 1.0)
         {
             // A missing combat.json key deserializes to 0.0 and would silently disable mitigation.
-            throw new ArgumentOutOfRangeException(nameof (defenseSubtractFactor), defenseSubtractFactor,
-                "defenseSubtractFactor must be in (0, 1] (combat.json misconfigured or key missing?).");
+            SphLogger.Error(
+                $"DamageFormula.ApplyDefense: defenseSubtractFactor must be in (0, 1] (combat.json key missing?), got {defenseSubtractFactor}. Dealing zero damage.");
+            return 0.0;
         }
 
         if (roll <= 0.0)
@@ -78,8 +86,9 @@ public static class DamageFormula
     {
         if (clampMax <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof (clampMax), clampMax,
-                "damageClampMax must be > 0 (combat.json misconfigured?).");
+            SphLogger.Error(
+                $"DamageFormula.FinishDamage: damageClampMax must be > 0 (combat.json misconfigured?), got {clampMax}. Dealing zero damage.");
+            return 0;
         }
 
         if (double.IsNaN(damage) || damage <= 0.0)
@@ -92,13 +101,14 @@ public static class DamageFormula
             return clampMax;
         }
 
-        var rounded = roundingMode switch
+        if (roundingMode is not (DamageRounding.Floor or DamageRounding.Round))
         {
-            DamageRounding.Floor => (int) Math.Floor(damage),
-            DamageRounding.Round => (int) Math.Round(damage, MidpointRounding.AwayFromZero),
-            _ => throw new ArgumentOutOfRangeException(nameof (roundingMode), roundingMode,
-                "Unknown rounding mode.")
-        };
+            SphLogger.Error($"DamageFormula.FinishDamage: unknown rounding mode {roundingMode} — flooring.");
+        }
+
+        var rounded = roundingMode == DamageRounding.Round
+            ? (int) Math.Round(damage, MidpointRounding.AwayFromZero)
+            : (int) Math.Floor(damage);
 
         return Math.Clamp(rounded, 0, clampMax);
     }
@@ -109,7 +119,11 @@ public static class DamageFormula
     /// </summary>
     public static int RollSchoolDamage (in DamageSchoolInput school, Random rng, CombatBalance cfg)
     {
-        ArgumentNullException.ThrowIfNull(cfg);
+        if (cfg is null)
+        {
+            SphLogger.Error("DamageFormula.RollSchoolDamage: combat balance config is null — dealing zero damage.");
+            return 0;
+        }
 
         var roll = RollRaw(school.StatSheetDamage, school.WeaponAmin, school.WeaponAmax, rng);
         var mitigated = ApplyDefense(roll, school.TargetDefense, cfg.DefenseSubtractFactor,
