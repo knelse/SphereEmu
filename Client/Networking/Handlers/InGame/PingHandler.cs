@@ -14,13 +14,13 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     private const double MovementBroadcastDelta = 0.1;
 
     private readonly SphereTimer FifteenSecondPing = new(15, true,
-        () => streamPeerTcp.PutData(CommonPackets.FifteenSecondPing(localId)));
+        () => clientConnection.SendPacket(CommonPackets.FifteenSecondPing(localId)));
 
     private readonly SphereTimer SixSecondPing =
-        new(6, true, () => streamPeerTcp.PutData(CommonPackets.SixSecondPing(localId)));
+        new(6, true, () => clientConnection.SendPacket(CommonPackets.SixSecondPing(localId)));
 
     private readonly SphereTimer ThreeSecondPing =
-        new(3, true, () => streamPeerTcp.PutData(CommonPackets.TransmissionEndPacket));
+        new(3, true, () => clientConnection.SendPacket(CommonPackets.TransmissionEndPacket));
 
     private ushort counter;
     private string? pingPreviousClientPingString;
@@ -97,7 +97,7 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
 
         Array.Copy(clientPingBytesForPong, pong, 5);
         Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
-        streamPeerTcp.PutData(Packet.ToByteArray(pong, 1));
+        clientConnection.SendPacket(Packet.ToByteArray(pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
         counter++;
 

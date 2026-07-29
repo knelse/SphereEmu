@@ -235,6 +235,8 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 
                 foreach (var subpacket in subpackets)
                 {
+                    SphPacketLogger.LogIncoming(localId, subpacket);
+
                     var shouldDecode = ShouldDecodeClientSubpacket(subpacket, localId);
                     var currentDecode = shouldDecode ? Packet.DecodeClientPacket(subpacket) : subpacket;
                     decodedSubpackets.AddRange(currentDecode);
@@ -291,10 +293,16 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         return sphereClient.GetSelecterCharacter();
     }
 
+    public void SendPacket(byte[] packet)
+    {
+        SphPacketLogger.LogOutgoing(localId, packet);
+        streamPeerTcp.PutData(packet);
+    }
+
     public void MaybeScheduleNetworkPacketSend(byte[] packet)
     {
         // TODO: might need an actual queue. For now, just send
-        streamPeerTcp.PutData(packet);
+        SendPacket(packet);
     }
 
     public void EnqueueClientEvent(ClientQueuedEvent clientEvent)

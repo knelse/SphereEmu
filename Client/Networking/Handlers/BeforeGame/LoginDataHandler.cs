@@ -12,12 +12,12 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class LoginDataHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle (double delta)
+    public async Task Handle(double delta)
     {
         if (WaitForClientTimer is not null)
         {
@@ -38,7 +38,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
         {
             SphLogger.Error($"SRV {localId:X4}: Invalid login.");
-            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -46,7 +46,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         if (BannedClients.IsLoginBanned(login))
         {
             SphLogger.Error($"SRV {localId:X4}: Login is banned. Login: {login}");
-            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -57,7 +57,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         if (player is null)
         {
             SphLogger.Error($"SRV {localId:X4}: Incorrect password");
-            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -65,7 +65,7 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
         if (!ActiveWorldObjects.LoggedInClients.TryAdd(login, 1))
         {
             SphLogger.Error($"SRV {localId:X4}: Already logged in. Login: {login}");
-            streamPeerTcp.PutData(CommonPackets.CannotConnect(localId));
+            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -76,16 +76,16 @@ public class LoginDataHandler (StreamPeerTcp streamPeerTcp, ushort localId, Clie
 
         SphLogger.Info($"SRV {localId:X4}: Fetched char list data");
 
-        WaitForClientTimer = new (0.05, false, () =>
+        WaitForClientTimer = new(0.05, false, () =>
         {
-            streamPeerTcp.PutData(CommonPackets.CharacterSelectStartData(localId));
+            clientConnection.SendPacket(CommonPackets.CharacterSelectStartData(localId));
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - initial");
 
             // WaitForClientTimer.Arm(0.05, () =>
             // {
             var playerInitialData = new PlayerDbEntrySerializer(player).ToInitialDataByteArray();
 
-            streamPeerTcp.PutData(playerInitialData);
+            clientConnection.SendPacket(playerInitialData);
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - player characters");
             clientConnection.MoveToNextBeforeGameStage();
             // });

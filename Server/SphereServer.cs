@@ -30,6 +30,7 @@ public partial class SphereServer : Node
 		}
 
 		SphLogger.Initialize(ServerConfig.AppConfig.LogPath);
+		SphPacketLogger.Initialize();
 		SphLogger.Info("Starting SphServer...");
 
 		InitializeCollections();

@@ -7,12 +7,12 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class ServerCredentialsHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle (double delta)
+    public async Task Handle(double delta)
     {
         if (WaitForClientTimer is not null)
         {
@@ -24,10 +24,10 @@ public class ServerCredentialsHandler (StreamPeerTcp streamPeerTcp, ushort local
             return;
         }
 
-        WaitForClientTimer = new (0.1, false, () =>
+        WaitForClientTimer = new(0.1, false, () =>
         {
             SphLogger.Info($"CLI {localId:X4}: Connection initialized");
-            streamPeerTcp.PutData(CommonPackets.ServerCredentials(localId));
+            clientConnection.SendPacket(CommonPackets.ServerCredentials(localId));
             Console.WriteLine($"SRV {localId:X4}: Credentials sent");
             clientConnection.MoveToNextBeforeGameStage();
         });

@@ -124,8 +124,12 @@ public partial class Monster
         {
             var deltaSeconds = (float)delta;
             EnforceOutdoorLeash();
-            UpdateOutdoorChaseAi(deltaSeconds);
-            AdvanceNavPath(deltaSeconds);
+            if (OutdoorFieldConfig.NavigationMobMovementEnabled)
+            {
+                UpdateOutdoorChaseAi(deltaSeconds);
+                AdvanceNavPath(deltaSeconds);
+            }
+
             SyncPositionToVisibleClients();
         }
 

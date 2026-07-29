@@ -8,12 +8,12 @@ using SphServer.Shared.Networking.DataModel.Serializers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class CharacterSelectHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private int selectedCharacterIndex = -1;
 
-    public async Task Handle (double delta)
+    public async Task Handle(double delta)
     {
         if (selectedCharacterIndex == -1)
         {
@@ -63,11 +63,11 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
         }
 
         // TODO serializer field on object instead of creating them all the time
-        streamPeerTcp.PutData(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
+        clientConnection.SendPacket(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
         clientConnection.MoveToNextBeforeGameStage();
     }
 
-    private int CreateNewCharacter ()
+    private int CreateNewCharacter()
     {
         SphLogger.Info($"SRV {localId:X4}: Creating new character");
         var rcvBuffer = clientConnection.ReceiveBuffer;
@@ -86,15 +86,15 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
             if (currentCharCode % 2 == 0)
             {
                 // English
-                var currentLetter = (char) (currentCharCode / 2);
+                var currentLetter = (char)(currentCharCode / 2);
                 sb.Append(currentLetter);
             }
             else
             {
                 // Russian
                 var currentLetter = currentCharCode >= 193
-                    ? (char) ((currentCharCode - 192) / 2 + 'а')
-                    : (char) ((currentCharCode - 129) / 2 + 'А');
+                    ? (char)((currentCharCode - 192) / 2 + 'а')
+                    : (char)((currentCharCode - 129) / 2 + 'А');
                 sb.Append(currentLetter);
 
                 if (i == 2)
@@ -111,8 +111,8 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
         {
             firstLetterCharCode += 1;
             var firstLetter = firstLetterCharCode >= 193
-                ? (char) ((firstLetterCharCode - 192) / 2 + 'а')
-                : (char) ((firstLetterCharCode - 129) / 2 + 'А');
+                ? (char)((firstLetterCharCode - 192) / 2 + 'а')
+                : (char)((firstLetterCharCode - 129) / 2 + 'А');
             name = firstLetter + sb.ToString()[1..];
         }
         else
@@ -125,7 +125,7 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
         if (!isNameValid)
         {
             SphLogger.Error($"SRV {localId:X4}: Name [{name}] already exists!");
-            streamPeerTcp.PutData(CommonPackets.NameAlreadyExists(localId));
+            clientConnection.SendPacket(CommonPackets.NameAlreadyExists(localId));
             return -1;
         }
 
@@ -152,7 +152,7 @@ public class CharacterSelectHandler (StreamPeerTcp streamPeerTcp, ushort localId
 
         clientConnection.CreatePlayerCharacter(newCharacterData, charIndex);
 
-        streamPeerTcp.PutData(CommonPackets.NameCheckPassed(localId));
+        clientConnection.SendPacket(CommonPackets.NameCheckPassed(localId));
 
         SphLogger.Info($"SRV {localId:X4}: Successfully created character [{name}]");
 

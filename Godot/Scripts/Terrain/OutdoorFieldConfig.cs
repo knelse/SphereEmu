@@ -40,6 +40,11 @@ public static class OutdoorFieldConfig
     public const int AStarMaxExpandedNodes = 10_000;
     public const int PathRequestsPerTick = 48;
 
+    /// <summary>
+    ///     When false, monsters do not pathfind or move along nav paths.
+    /// </summary>
+    public const bool NavigationMobMovementEnabled = false;
+
     public static int ComputeBakedSlotPoolCount(int mobCount, float spawnRadiusMeters)
     {
         var desired = Math.Max(mobCount, MinBakedSpawnSlotsPerSpawner);
