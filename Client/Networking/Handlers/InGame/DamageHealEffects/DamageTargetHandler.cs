@@ -64,47 +64,36 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
 
         var frameKind = ParseAttackFrame(clientConnection.ReceiveBuffer, out var targetClientLocalId);
 
+        // 0 = no id in the frame, 0xFFFF = the client's no-target sentinel (target despawned mid-click).
+    
+        if (targetClientLocalId is 0 or ushort.MaxValue)
+        {
+            LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
+            return;
+        }
+
+        var targetGlobalId = attackerClient.GetGlobalObjectId(targetClientLocalId);
+
         switch (frameKind)
         {
             case AttackFrameKind.SelfTargetedAction:
                 // The target is the player themselves; self-casts (mantras) are not implemented yet.
-                LogAction(attackerGlobalId, attackerGlobalId, frameKind, "skip");
+                LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
                 return;
 
             case AttackFrameKind.WeaponAttack:
-                // Weapon target/damage parse unresolved — echo a 0-damage swing so the client renders it.
-                var weaponStream = new BitStream(clientConnection.ReceiveBuffer);
-                weaponStream.ReadBits(172);
-                var weaponEchoTarget = weaponStream.ReadUInt16();
+                // Weapon damage parse unresolved — echo a 0-damage swing so the client renders it.
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.FistAttackTargetEcho(weaponEchoTarget, character.ClientIndex, 0));
-                LogAction(attackerGlobalId, attackerClient.GetGlobalObjectId(weaponEchoTarget), frameKind, "0");
+                    CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
+                LogAction(attackerGlobalId, targetGlobalId, frameKind, "0");
                 return;
 
             case AttackFrameKind.NotAnAttack:
                 // No echo: an attack reply to an object-interact can corrupt the client's own handling.
                 // Dead-mob left-clicks also land here; their use-lock is cleared by the ack at the top.
-                LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
+                LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
                 return;
         }
-
-        if (targetClientLocalId == 0)
-        {
-            LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
-            return;
-        }
-
-        if (targetClientLocalId == ushort.MaxValue)
-        {
-            // Target-less attack (0xFFFF = the client's no-target sentinel; happens when the target
-            // despawns mid-click). Never answer it: an entity-addressed echo to a nonexistent id
-            // crashes the client's script VM (BoundCheckArray in _player, observed live).
-            LogAction(attackerGlobalId, targetClientLocalId, frameKind, "skip");
-            return;
-        }
-
-        // Bit-172 id is client-local; ActiveWorldObjects is keyed by global ids (identity-mapped for now).
-        var targetGlobalId = attackerClient.GetGlobalObjectId(targetClientLocalId);
 
         if (ActiveWorldObjects.Get(targetGlobalId) is not Monster monster ||
             !IsWithinMeleeRange(attackerClient, monster, cfg))
@@ -143,10 +132,12 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                        $"Action [{action}] - [{result}]");
     }
 
-    /// <summary>Classifies a non-buy 0x19/0x20 frame; the fist-attack target id = LSB-first u16 after 172 skipped bits.</summary>
+    /// <summary>Classifies a non-buy 0x19/0x20 frame; the target id = LSB-first u16 after 172 skipped bits.</summary>
     public static AttackFrameKind ParseAttackFrame (byte[] receiveBuffer, out ushort targetClientLocalId)
     {
-        targetClientLocalId = 0;
+        var receiveStream = new BitStream(receiveBuffer);
+        receiveStream.ReadBits(172);
+        targetClientLocalId = receiveStream.ReadUInt16();
 
         if (receiveBuffer[13] == 0x54 && receiveBuffer[14] == 0x43 && receiveBuffer[15] == 0xC1)
         {
@@ -162,9 +153,6 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         // 08 40 A3 (left-click melee attack) is the ONLY attack discriminator on this route.
         if (receiveBuffer[13] == 0x08 && receiveBuffer[14] == 0x40 && receiveBuffer[15] == 0xA3)
         {
-            var receiveStream = new BitStream(receiveBuffer);
-            receiveStream.ReadBits(172);
-            targetClientLocalId = receiveStream.ReadUInt16();
             return AttackFrameKind.FistAttack;
         }
 

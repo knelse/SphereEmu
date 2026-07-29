@@ -91,12 +91,19 @@ public static class BalanceConfig
                 $"Balance config '{configPath}' deserialized to null for {type.Name} — the file must contain a JSON object.");
         }
 
+        // PreloadAll catches and logs this, so a
+        // bad file fails once at startup instead of on every packet that reads the value.
+        if (config is IValidatableBalanceConfig validatable)
+        {
+            validatable.Validate(configPath);
+        }
+
         SphLogger.Info($"Loaded balance config '{name}' as {type.Name} from: {configPath}");
         return config;
     }
 
     /// <summary>
-    ///     Walks up from BaseDirectory then CWD probing <c>Config/Balance/&lt;file&gt;</c>, then falls
+    ///     Walks up from BaseDirectory then CWD probing <c>Config/Balance/<file></c>, then falls
     ///     back to <c>RepositoryPath</c> — Godot's CWD and build output location vary per run mode.
     /// </summary>
     private static string? FindBalanceConfigPath (string fileName, List<string> probedPaths)

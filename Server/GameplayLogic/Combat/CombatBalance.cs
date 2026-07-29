@@ -1,3 +1,5 @@
+using SphServer.Server.Config;
+
 namespace SphServer.Server.GameplayLogic.Combat;
 
 /// <summary>
@@ -13,7 +15,7 @@ public enum DamageRounding
 /// <summary>
 ///     Typed view of <c>Config/Balance/combat.json</c> — value provenance is commented there.
 /// </summary>
-public class CombatBalance
+public class CombatBalance : IValidatableBalanceConfig
 {
     /// <summary>Subtract-branch mitigation factor. Recovered: exactly 6/7.</summary>
     public double DefenseSubtractFactor { get; init; }
@@ -57,23 +59,27 @@ public class CombatBalance
 
     public double FistAmax => FistBandValue(1);
 
+    // Validate() rejects anything else at load time, so the packet path never sees an unknown mode.
     public DamageRounding Rounding =>
-        (RoundingMode ?? string.Empty).Trim().ToLowerInvariant() switch
-        {
-            "floor" => DamageRounding.Floor,
-            "round" => DamageRounding.Round,
-            _ => throw new InvalidDataException(
-                $"combat.json: unknown roundingMode '{RoundingMode}' — expected \"floor\" or \"round\".")
-        };
+        (RoundingMode ?? string.Empty).Trim().ToLowerInvariant() == "round"
+            ? DamageRounding.Round
+            : DamageRounding.Floor;
 
-    private double FistBandValue (int index)
+    public void Validate (string configPath)
     {
+        var mode = (RoundingMode ?? string.Empty).Trim().ToLowerInvariant();
+        if (mode is not ("floor" or "round"))
+        {
+            throw new InvalidDataException(
+                $"{configPath}: unknown roundingMode '{RoundingMode}' — expected \"floor\" or \"round\".");
+        }
+
         if (FistAminAmax is not { Length: 2 })
         {
             throw new InvalidDataException(
-                "combat.json: fistAminAmax must be a two-element array [Amin, Amax].");
+                $"{configPath}: fistAminAmax must be a two-element array [Amin, Amax].");
         }
-
-        return FistAminAmax[index];
     }
+
+    private double FistBandValue (int index) => FistAminAmax[index];
 }
