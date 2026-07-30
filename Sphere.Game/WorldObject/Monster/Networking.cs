@@ -18,16 +18,10 @@ public partial class Monster
 
 	private int GetMonsterLevel() => MonsterInstance?.Level ?? level;
 
-	private static string GetMonsterPacketDefinitionName(int level)
-	{
-		if (level <= 1)
-		{
-			return "monster_level_1";
-		}
-
-		// Same field layout as monster_full_level_* / entity_monster captures.
-		return "entity_monster";
-	}
+	// Same field layout as monster_full_level_* / entity_monster captures. Used for every level,
+	// including 1: the compact monster_level_1 template reads HP as 7 bits, so anything above 127
+	// spilled into mob_type and the client drew nothing.
+	private const string MonsterPacketDefinitionName = "entity_monster";
 
 	private static void UpdatePartAtBit(List<PacketPart> packetParts, int bitStart, int value, int? length = null)
 	{
@@ -68,16 +62,8 @@ public partial class Monster
 		return encoded;
 	}
 
-	private static void UpdateMonsterHpFields(List<PacketPart> packetParts, int currentHp, int maxHp, bool isLevelOne)
+	private static void UpdateMonsterHpFields(List<PacketPart> packetParts, int currentHp, int maxHp)
 	{
-		if (isLevelOne)
-		{
-			PacketPart.UpdateValue(packetParts, "hp_size_t", 8, 5);
-			PacketPart.UpdateValue(packetParts, "current_hp", currentHp, 8);
-			PacketPart.UpdateValue(packetParts, "max_hp", maxHp, 8);
-			return;
-		}
-
 		// entity_monster / monster_full_level_*: hp_size_type=01 + skip_100=100 => 0x11 (16-bit HP).
 		UpdatePartAtBit(packetParts, 141, 1, 2);
 		UpdatePartAtBit(packetParts, 143, 4, 3);
@@ -96,18 +82,13 @@ public partial class Monster
 
 	private static void UpdateMonsterLevelFields(List<PacketPart> packetParts, int level)
 	{
-		if (level <= 1)
-		{
-			PacketPart.UpdateValue(packetParts, "level_last_3", (level - 1) & 0b111, 3);
-			return;
-		}
-
+		// EncodeMobLevelBits(1) == 0, a valid level-1 encoding, so level 1 needs no special case.
 		PacketPart.UpdateValue(packetParts, "level", EncodeMobLevelBits(level), 29);
 	}
 
 	protected override List<PacketPart> GetPacketParts()
 	{
-		return PacketPart.LoadDefinedWithOverride(GetMonsterPacketDefinitionName(GetMonsterLevel()));
+		return PacketPart.LoadDefinedWithOverride(MonsterPacketDefinitionName);
 	}
 
 	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
@@ -116,7 +97,7 @@ public partial class Monster
 		var mobCurrentHp = MonsterInstance?.CurrentHp ?? 50;
 		var maxHp = MonsterInstance?.MaxHp ?? 50;
 
-		UpdateMonsterHpFields(packetParts, mobCurrentHp, maxHp, mobLevel <= 1);
+		UpdateMonsterHpFields(packetParts, mobCurrentHp, maxHp);
 		UpdateMonsterLevelFields(packetParts, mobLevel);
 		EnsureMonsterFullTrailer(packetParts);
 
