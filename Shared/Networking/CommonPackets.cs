@@ -3,6 +3,7 @@ using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
+using SphServer.Shared.Logger;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
@@ -25,7 +26,10 @@ public static class CommonPackets
     {
         if (damage is < 0 or > 30000)
         {
-            throw new ArgumentOutOfRangeException(nameof (damage), damage, "Wire field encodes 30000 - damage.");
+            // Clamp rather than throw: this runs on the packet path, where an exception reaches
+            // an async void _PhysicsProcess and takes the server down instead of being logged.
+            SphLogger.Error($"FistAttackTargetEcho: damage {damage} outside 0..30000 — clamped.");
+            damage = Math.Clamp(damage, 0, 30000);
         }
 
         var biased = 30000 - damage;

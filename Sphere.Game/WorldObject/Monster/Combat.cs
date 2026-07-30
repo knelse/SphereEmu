@@ -30,14 +30,11 @@ public static class MonsterCombat
 	/// <summary>HP clamps at 0; an already-dead monster (HP &lt;= 0) yields the no-op outcome.</summary>
 	public static DamageOutcome ComputeOutcome (int currentHp, int amount)
 	{
-		if (amount < 0)
-		{
-			throw new ArgumentOutOfRangeException(nameof (amount), amount,
-				"Damage amount must be >= 0 (0 == miss; heals are not damage events).");
-		}
-
+		// Clamped, not rejected: a negative amount would otherwise raise HP, and throwing here
+		// would reach the client packet path where nothing catches it.
+		var damage = Math.Max(amount, 0);
 		var hpBefore = Math.Max(currentHp, 0);
-		var applied = Math.Min(amount, hpBefore);
+		var applied = Math.Min(damage, hpBefore);
 		var remainingHp = hpBefore - applied;
 		var becameDead = hpBefore > 0 && remainingHp == 0;
 

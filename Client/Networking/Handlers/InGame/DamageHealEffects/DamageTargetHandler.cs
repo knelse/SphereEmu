@@ -51,6 +51,9 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         var attackerClient = ActiveClients.Get(localId);
         if (character is null || attackerClient is null)
         {
+            // Source is the raw local id: with no client there is nothing to resolve it against.
+            LogAction(localId, 0, AttackFrameKind.NotAnAttack,
+                character is null ? "skip-no-character" : "skip-no-client");
             return;
         }
 
@@ -82,10 +85,10 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 return;
 
             case AttackFrameKind.WeaponAttack:
-                // Weapon damage parse unresolved — echo a 0-damage swing so the client renders it.
-                clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
-                LogAction(attackerGlobalId, targetGlobalId, frameKind, "0");
+                // No echo: the weapon frame's target id offset is unknown (no client weapon-attack
+                // packet definition exists), and the value at bits 172-187 is fixed by the 7E 14
+                // discriminator itself, so it addresses no real entity.
+                LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
                 return;
 
             case AttackFrameKind.NotAnAttack:
@@ -115,7 +118,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         }
 
         var roll = DamageCalc.RollMeleeHit(character.PAtk, monster.BasePDef, combatRng, cfg);
-        var damageEvent = new DamageEvent(character.ClientIndex, attackerClient, roll.Damage,
+        var damageEvent = new DamageEvent(attackerGlobalId, attackerClient, roll.Damage,
             DamageSchool.Physical, roll.IsCrit);
         var outcome = monster.TakeDamage(in damageEvent);
 

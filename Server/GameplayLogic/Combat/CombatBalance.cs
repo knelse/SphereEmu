@@ -79,6 +79,29 @@ public class CombatBalance : IValidatableBalanceConfig
             throw new InvalidDataException(
                 $"{configPath}: fistAminAmax must be a two-element array [Amin, Amax].");
         }
+
+        // Bounds the damage path relies on; without them a bad file reaches the wire encoder.
+        if (DamageClampMax is < 0 or > 30000)
+        {
+            throw new InvalidDataException(
+                $"{configPath}: damageClampMax must be 0..30000 — the wire field encodes 30000 - damage.");
+        }
+
+        if (MinMeleeHit < 0)
+        {
+            throw new InvalidDataException($"{configPath}: minMeleeHit must be >= 0.");
+        }
+
+        if (CritMult < 0)
+        {
+            throw new InvalidDataException($"{configPath}: critMult must be >= 0.");
+        }
+
+        if (MeleeRangeMeters < 0)
+        {
+            throw new InvalidDataException(
+                $"{configPath}: meleeRangeMeters must be >= 0 (0 disables the range check).");
+        }
     }
 
     private double FistBandValue (int index) => FistAminAmax[index];

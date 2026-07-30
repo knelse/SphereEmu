@@ -37,7 +37,9 @@ public static class DamageCalc
             damage = (int) Math.Min(Math.Floor(damage * cfg.CritMult), cfg.DamageClampMax);
         }
 
-        damage = Math.Max(damage, cfg.MinMeleeHit);
+        // Re-clamp: the floor is applied after the formula's clamp and could otherwise push the
+        // result past DamageClampMax, which the wire field cannot encode.
+        damage = Math.Clamp(Math.Max(damage, cfg.MinMeleeHit), 0, (int) cfg.DamageClampMax);
         return new MeleeHitRoll(damage, false, isCrit);
     }
 }
