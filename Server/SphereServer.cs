@@ -33,6 +33,7 @@ public partial class SphereServer : Node
 		SphPacketLogger.Initialize();
 		SphLogger.Info("Starting SphServer...");
 
+		BalanceConfig.PreloadAll();
 		InitializeCollections();
 		SetupTcpServer();
 		ServerNode = this;

@@ -1,5 +1,9 @@
 using System;
+using SphereHelpers.Extensions;
 using SphServer.Helpers;
+using SphServer.Packets;
+using SphServer.Shared.BitStream;
+using SphServer.Shared.Logger;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
@@ -15,6 +19,57 @@ public static class CommonPackets
         0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(playerIndex), MinorByte(playerIndex),
         0x08, 0x40, 0x63, 0x08, 0x00, 0x00
     ];
+
+    // Damage reply to an attack request (fist_attack_target): the wire field carries 30000 - damage,
+    // the client applies raw - 30000 to the target's HP. damage 0 = swing-only echo, no HP change.
+    public static byte[] FistAttackTargetEcho (ushort targetClientLocalId, ushort attackerClientIndex, int damage)
+    {
+        if (damage is < 0 or > 30000)
+        {
+            // Clamp rather than throw: this runs on the packet path, where an exception reaches
+            // an async void _PhysicsProcess and takes the server down instead of being logged.
+            SphLogger.Error($"FistAttackTargetEcho: damage {damage} outside 0..30000 — clamped.");
+            damage = Math.Clamp(damage, 0, 30000);
+        }
+
+        var biased = 30000 - damage;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteUInt16(targetClientLocalId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort) ObjectType.Monster, 10);
+        stream.WriteByte(0, 1);
+        // interaction
+        stream.WriteByte(0x0A, 8);
+        // attack
+        stream.WriteUInt16(0x050D, 16);
+        stream.WriteUInt16(attackerClientIndex, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteUInt16((ushort) biased, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0b111, 3);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
+
+    // Kills an entity on the client (entity_killed): plays the death program (stop AI, death animation,
+    // fade). Fixed frame; only the two ids vary.
+    public static byte[] EntityKilled (ushort clientLocalEntityId, ushort clientLocalKillerId)
+    {
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteUInt16(clientLocalEntityId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort) ObjectType.Monster, 10);
+        stream.WriteByte(0, 1);
+        // interaction
+        stream.WriteByte(0x0A, 8);
+        // death
+        stream.WriteUInt16(0x040D, 16);
+        stream.WriteUInt16(clientLocalKillerId, 16);
+        stream.WriteByte(0, 8);
+        stream.WriteByte(0, 7);
+        stream.WriteByte(0b1111, 4);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
 
     public static readonly byte[]
         // ReadyToLoadInitialData = { 0x0A, 0x00, 0xC8, 0x00, 0x14, 0x05, 0x00, 0x00, 0x1F, 0x42 };
