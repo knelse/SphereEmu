@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -20,15 +21,48 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         IPAddress.Parse("77.223.107.69")
     };
 
+    private static readonly HashSet<int> KnownSphereServerPorts = new() { 25860, 25861 };
+
     private readonly Timer _scanTimer;
     private readonly object _stateLock = new();
     private int _clientLocalPort;
     private int _serverRemotePort;
     private bool _clientRunning;
+    private bool _preferLocalConnections;
 
     public SphereClientConnectionDiscovery(TimeSpan scanInterval)
     {
         _scanTimer = new Timer(_ => Scan(), null, TimeSpan.Zero, scanInterval);
+    }
+
+    /// <summary>
+    /// When true, prefer loopback/private LAN connections (local emu / MITM).
+    /// When false, ignore those and prefer live Sphere servers.
+    /// </summary>
+    public bool PreferLocalConnections
+    {
+        get
+        {
+            lock (_stateLock)
+            {
+                return _preferLocalConnections;
+            }
+        }
+        set
+        {
+            lock (_stateLock)
+            {
+                if (_preferLocalConnections == value)
+                {
+                    return;
+                }
+
+                _preferLocalConnections = value;
+            }
+
+            // Re-evaluate immediately so the UI/capture picks up the new mode.
+            Scan();
+        }
     }
 
     /// <summary>Local ephemeral TCP port on the game client (server sends packets here).</summary>
@@ -72,22 +106,28 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
     {
         lock (_stateLock)
         {
+            var localMode = _preferLocalConnections ? "Local capture: ON" : "Local capture: OFF";
+
             if (!_clientRunning)
             {
                 return
-                    $"Capturing on {captureDeviceCount} network adapter(s).\n\n" +
+                    $"Capturing on {captureDeviceCount} network adapter(s).\n{localMode}\n\n" +
                     "sphereclient.exe is not running. Ports will be detected automatically when the client starts.";
             }
 
             if (_clientLocalPort == 0 || _serverRemotePort == 0)
             {
+                var hint = _preferLocalConnections
+                    ? "No local/private established TCP connection was found yet."
+                    : "No live-server established TCP connection was found yet. Enable Local to capture localhost.";
+
                 return
-                    $"Capturing on {captureDeviceCount} network adapter(s).\n\n" +
-                    "sphereclient.exe is running but no established TCP connection was found yet.";
+                    $"Capturing on {captureDeviceCount} network adapter(s).\n{localMode}\n\n" +
+                    $"sphereclient.exe is running but {hint}";
             }
 
             return
-                $"Capturing on {captureDeviceCount} network adapter(s).\n\n" +
+                $"Capturing on {captureDeviceCount} network adapter(s).\n{localMode}\n\n" +
                 $"sphereclient.exe is running.\n" +
                 $"Incoming (local) port: {_clientLocalPort}\n" +
                 $"Outgoing (server) port: {_serverRemotePort}";
@@ -98,18 +138,29 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
     {
         var processIds = FindSphereClientProcessIds();
         TcpConnection? selectedConnection = null;
+        bool preferLocal;
+
+        lock (_stateLock)
+        {
+            preferLocal = _preferLocalConnections;
+        }
 
         foreach (var processId in processIds)
         {
             foreach (var connection in WindowsProcessTcpConnections.GetEstablishedConnectionsForProcess(processId))
             {
+                if (!IsEligibleConnection(connection, preferLocal))
+                {
+                    continue;
+                }
+
                 if (selectedConnection is null)
                 {
                     selectedConnection = connection;
                     continue;
                 }
 
-                if (ScoreConnection(connection) > ScoreConnection(selectedConnection.Value))
+                if (ScoreConnection(connection, preferLocal) > ScoreConnection(selectedConnection.Value, preferLocal))
                 {
                     selectedConnection = connection;
                 }
@@ -131,20 +182,85 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         }
     }
 
-    private static int ScoreConnection(TcpConnection connection)
+    private static bool IsEligibleConnection(TcpConnection connection, bool preferLocal)
     {
-        var score = 0;
-        if (PreferredServerAddresses.Contains(connection.RemoteAddress))
+        var remoteIsLocal = IsLocalCaptureAddress(connection.RemoteAddress);
+        if (preferLocal)
         {
-            score += 100;
+            // Local mode: accept loopback/private, or known sphere ports on any host.
+            return remoteIsLocal || KnownSphereServerPorts.Contains(connection.RemotePort);
         }
 
-        if (!IPAddress.IsLoopback(connection.RemoteAddress))
+        // Live mode: never track localhost/private targets.
+        if (remoteIsLocal)
         {
-            score += 10;
+            return false;
+        }
+
+        return PreferredServerAddresses.Contains(connection.RemoteAddress) ||
+               KnownSphereServerPorts.Contains(connection.RemotePort);
+    }
+
+    private static int ScoreConnection(TcpConnection connection, bool preferLocal)
+    {
+        var score = 0;
+
+        if (PreferredServerAddresses.Contains(connection.RemoteAddress))
+        {
+            score += preferLocal ? 10 : 100;
+        }
+
+        if (KnownSphereServerPorts.Contains(connection.RemotePort))
+        {
+            score += 50;
+        }
+
+        if (IsLocalCaptureAddress(connection.RemoteAddress))
+        {
+            score += preferLocal ? 100 : -1000;
         }
 
         return score;
+    }
+
+    internal static bool IsLocalCaptureAddress(IPAddress address)
+    {
+        if (IPAddress.IsLoopback(address))
+        {
+            return true;
+        }
+
+        if (address.AddressFamily != AddressFamily.InterNetwork)
+        {
+            return false;
+        }
+
+        var bytes = address.GetAddressBytes();
+        // 10.0.0.0/8
+        if (bytes[0] == 10)
+        {
+            return true;
+        }
+
+        // 172.16.0.0/12
+        if (bytes[0] == 172 && bytes[1] is >= 16 and <= 31)
+        {
+            return true;
+        }
+
+        // 192.168.0.0/16
+        if (bytes[0] == 192 && bytes[1] == 168)
+        {
+            return true;
+        }
+
+        // 169.254.0.0/16 link-local
+        if (bytes[0] == 169 && bytes[1] == 254)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private static List<int> FindSphereClientProcessIds()

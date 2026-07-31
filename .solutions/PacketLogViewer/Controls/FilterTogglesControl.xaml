@@ -50,5 +50,15 @@
                   IsChecked="True">
             Listener
         </CheckBox>
+
+        <CheckBox x:Name="EnableLocalCapture"
+                  x:FieldModifier="public"
+                  Margin="0 2 12 2"
+                  Background="White"
+                  VerticalAlignment="Center"
+                  IsChecked="False"
+                  ToolTip="Capture traffic to localhost / private LAN servers (Npcap loopback). Off by default.">
+            Local
+        </CheckBox>
     </WrapPanel>
 </UserControl>

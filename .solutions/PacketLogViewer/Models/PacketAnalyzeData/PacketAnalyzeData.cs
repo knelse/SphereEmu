@@ -44,13 +44,13 @@ public class PacketAnalyzeData
     public bool GetBitValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
-        return part is not null && part.Value[0].AsBool();
+        return part?.Value is { Length: > 0 } && part.Value[0].AsBool();
     }
 
     public double GetClientCoordValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
-        if (part is not null)
+        if (part?.Value is { Length: > 0 })
         {
             return CoordsHelper.DecodeClientCoordinateWithoutShift(
                 BitStream.BitArrayToBytes(part.Value.Reverse().ToArray()),
@@ -63,7 +63,7 @@ public class PacketAnalyzeData
     public string GetStringValue(string name)
     {
         var part = Parts.FirstOrDefault(x => x.Name == name);
-        return part is not null
+        return part?.Value is { Length: > 0 }
             ? PacketLogViewerMainWindow.Win1251.GetString(BitStream.BitArrayToBytes(part.Value.Reverse().ToArray()))
             : string.Empty;
     }

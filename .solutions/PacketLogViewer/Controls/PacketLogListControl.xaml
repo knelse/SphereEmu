@@ -14,6 +14,8 @@
                 <GridViewColumn Width="Auto" Header="#" DisplayMemberBinding="{Binding NumberInSequence}" />
                 <GridViewColumn Header="Timestamp" Width="Auto"
                                 DisplayMemberBinding="{Binding TimestampLocal, StringFormat='{}{0:dd.MM HH:mm:ss}'}" />
+                <GridViewColumn Header="Event" Width="220"
+                                DisplayMemberBinding="{Binding EventDisplay}" />
                 <GridViewColumn Header="Content" Width="Auto"
                                 DisplayMemberBinding="{Binding ContentString}" />
             </GridView>

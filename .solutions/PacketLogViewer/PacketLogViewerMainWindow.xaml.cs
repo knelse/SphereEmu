@@ -256,6 +256,8 @@ public partial class PacketLogViewerMainWindow
             MainView.FilterToggles.HideServerJunk.Unchecked += HideServerJunk_OnUnchecked;
             MainView.FilterToggles.EnableListener.Checked += ListenerEnabled_OnChecked;
             MainView.FilterToggles.EnableListener.Unchecked += ListenerEnabled_OnUnchecked;
+            MainView.FilterToggles.EnableLocalCapture.Checked += LocalCapture_OnChecked;
+            MainView.FilterToggles.EnableLocalCapture.Unchecked += LocalCapture_OnUnchecked;
             MainView.FilterToggles.ShowNewInUi.Checked += ShowInUI_OnChecked;
             MainView.FilterToggles.ShowNewInUi.Unchecked += ShowInUI_OnUnchecked;
 
@@ -313,7 +315,7 @@ public partial class PacketLogViewerMainWindow
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Exception: {ex.Message}");
+            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -361,7 +363,8 @@ public partial class PacketLogViewerMainWindow
 
         PacketCapture = new PacketCapture
         {
-            OnPacketProcessed = OnPacketProcessed
+            OnPacketProcessed = OnPacketProcessed,
+            CaptureLocalTraffic = LocalCaptureEnabled
         };
     }
 
@@ -407,6 +410,7 @@ public partial class PacketLogViewerMainWindow
     public ObservableCollection<StoredPacket> LogRecords { get; } = new();
     public bool ShowFavoritesOnly { get; set; }
     public bool ListenerEnabled { get; set; } = true;
+    public bool LocalCaptureEnabled { get; set; }
     public bool HideClientPackets { get; set; } = true;
     public bool HideServerJunk { get; set; } = true;
     public bool ShowNewInUI { get; set; } = true;
@@ -1057,6 +1061,24 @@ public partial class PacketLogViewerMainWindow
     private void ListenerEnabled_OnUnchecked(object sender, RoutedEventArgs e)
     {
         ListenerEnabled = false;
+    }
+
+    private void LocalCapture_OnChecked(object sender, RoutedEventArgs e)
+    {
+        LocalCaptureEnabled = true;
+        if (PacketCapture is not null)
+        {
+            PacketCapture.CaptureLocalTraffic = true;
+        }
+    }
+
+    private void LocalCapture_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        LocalCaptureEnabled = false;
+        if (PacketCapture is not null)
+        {
+            PacketCapture.CaptureLocalTraffic = false;
+        }
     }
 
     private void ScrollIntoViewIfSelectionExists()

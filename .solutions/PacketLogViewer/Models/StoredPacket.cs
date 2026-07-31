@@ -22,8 +22,15 @@ public class StoredPacket
     public List<PacketPart> PacketParts { get; set; } = new();
     public int NumberInSequence { get; set; }
 
+    /// <summary>Stable event label from packet classification (e.g. client.position_keepalive).</summary>
+    public string? EventName { get; set; }
+    public double EventConfidence { get; set; }
+    public string? EventReason { get; set; }
+    public bool IsClassifiedEvent { get; set; }
+
     [BsonIgnore] public string SourceStr => new(Source.ToString()[0], 1);
     [BsonIgnore] public string ContentString => Convert.ToHexString(ContentBytes);
+    [BsonIgnore] public string EventDisplay => EventName ?? string.Empty;
     [BsonIgnore]
     public DateTime TimestampLocal
     {

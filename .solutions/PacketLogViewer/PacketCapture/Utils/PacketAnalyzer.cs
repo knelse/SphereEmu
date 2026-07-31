@@ -141,7 +141,10 @@ internal static class PacketAnalyzer
         c => c.HasEqualElementsAs(packet_04_00_4F_01),
         c => c[0] == 0x08 && (c.Length < 8 || (c[6] == 0xF4 && c[7] == 0x01)),
         c => c[0] == 0x0C && (c.Length < 12 || (c[10] == 0x0D && c[11] == 0xE2)),
-        c => c[0] == 0x12 && (c.Length < 17 || (c[14] == 0x1B && c[15] == 0x01 && c[16] == 0x60)),
+        // PingHandler keepalive pong + CommonPackets timer pings
+        c => IsServerKeepalivePong(c),
+        c => IsServerSixSecondPing(c),
+        c => IsServerFifteenSecondPing(c),
         c => c[0] == 0x10 && (c.Length < 16 || (c[14] == 0x52 && c[15] == 0x09)),
         c => c[0] == 0x17 || c[0] == 0x1D || c[0] == 0x2D || c[0] == 0x22 || c[0] == 0x12 || c[0] == 0x0D,
         c => c[0] == 0x11 && (c.Length < 12 || (c[9] == 0x08 && c[10] == 0x40 && c[11] == 0x63)),
@@ -193,6 +196,68 @@ internal static class PacketAnalyzer
     public static bool IsClientPingPacket(StoredPacket storedPacket)
     {
         return storedPacket.Source == PacketSource.CLIENT && storedPacket.ContentBytes[0] == 0x26;
+    }
+
+    /// <summary>
+    /// Server pong built by <c>PingHandler.Handle</c> via <c>Packet.ToByteArray(pong, padZeros: 1)</c>.
+    /// Layout: len=0x12 | 2C 01 | pad 00 | 13-byte echo payload ending in 01 60 00.
+    /// </summary>
+    internal static bool IsServerKeepalivePong(byte[] content)
+    {
+        return content.Length >= 18
+               && content[0] == 0x12
+               && content[1] == 0x00
+               && content[2] == 0x2C
+               && content[3] == 0x01
+               && content[4] == 0x00
+               && content[15] == 0x01
+               && content[16] == 0x60
+               && content[17] == 0x00;
+    }
+
+    /// <summary>Matches <c>CommonPackets.SixSecondPing</c> (player index at bytes 7-8 varies).</summary>
+    internal static bool IsServerSixSecondPing(byte[] content)
+    {
+        // 13 00 2C 01 00 00 04 <PI_hi> <PI_lo> 08 C0 42 A0 FF D3 90 08 B0 07
+        return content.Length >= 19
+               && content[0] == 0x13
+               && content[1] == 0x00
+               && content[2] == 0x2C
+               && content[3] == 0x01
+               && content[4] == 0x00
+               && content[5] == 0x00
+               && content[6] == 0x04
+               && content[9] == 0x08
+               && content[10] == 0xC0
+               && content[11] == 0x42
+               && content[12] == 0xA0
+               && content[13] == 0xFF
+               && content[14] == 0xD3
+               && content[15] == 0x90
+               && content[16] == 0x08
+               && content[17] == 0xB0
+               && content[18] == 0x07;
+    }
+
+    /// <summary>Matches <c>CommonPackets.FifteenSecondPing</c> (player index at bytes 7-8 varies).</summary>
+    internal static bool IsServerFifteenSecondPing(byte[] content)
+    {
+        // 10 00 2C 01 00 00 04 <PI_hi> <PI_lo> 08 40 81 93 EE E4 08
+        return content.Length >= 16
+               && content[0] == 0x10
+               && content[1] == 0x00
+               && content[2] == 0x2C
+               && content[3] == 0x01
+               && content[4] == 0x00
+               && content[5] == 0x00
+               && content[6] == 0x04
+               && content[9] == 0x08
+               && content[10] == 0x40
+               && content[11] == 0x81
+               && content[12] == 0x93
+               && content[13] == 0xEE
+               && content[14] == 0xE4
+               && content[15] == 0x08;
     }
 
     internal static List<byte[]> SplitIntoItemSlots(BitStream stream, int separator, int separatorBitCount)
@@ -346,19 +411,40 @@ internal static class PacketAnalyzer
     {
         if (storedPacket.Source == PacketSource.CLIENT)
         {
-            // TODO
-            return storedPacket;
+            return UpdateClientPacketClassification(storedPacket);
         }
 
         storedPacket.AnalyzeState = PacketAnalyzeState.NONE;
+        ClearClassification(storedPacket);
+
+        if (IsServerKeepalivePong(storedPacket.ContentBytes))
+        {
+            return FinalizeKnownProtocolPacket(storedPacket, "KEEPALIVE PONG",
+                PacketEventClassifier.ClassifyServerKeepalivePong());
+        }
+
+        if (IsServerSixSecondPing(storedPacket.ContentBytes))
+        {
+            return FinalizeKnownProtocolPacket(storedPacket, "PING 6S",
+                PacketEventClassifier.ClassifyServerSixSecondPing());
+        }
+
+        if (IsServerFifteenSecondPing(storedPacket.ContentBytes))
+        {
+            return FinalizeKnownProtocolPacket(storedPacket, "PING 15S",
+                PacketEventClassifier.ClassifyServerFifteenSecondPing());
+        }
 
         var allParts = new List<PacketPart>();
         var undefTypes = false;
-        var typesInside = new List<ObjectType>();
-        var hpByLevel = new List<KeyValuePair<int, int>>();
+        var sawResolvedEntity = false;
         var shouldHidePacket = true;
         var subPacketIndex = 0;
+        var falseBoundaryScanBudget = 0;
+        const int maxFalseBoundaryScanBits = 4096;
         var fullStream = new BitStream(storedPacket.ContentBytes);
+        var totalBits = storedPacket.ContentBytes.Length * 8L;
+        PacketEventClassification? bestClassification = null;
 
         if (storedPacket.ContentBytes.HasEqualElementsAs(ok_mark, 2))
         {
@@ -371,14 +457,20 @@ internal static class PacketAnalyzer
         while (fullStream.ValidPosition)
         {
             subPacketIndex++;
+            if (subPacketIndex > 200)
+            {
+                break;
+            }
+
             var initialBitOffset = (int)fullStream.BitOffsetFromStart;
             var test1 = fullStream.ReadBytes(4, true);
-            var breakAfterCurrentTry = false;
             if (test1.HasEqualElementsAs(packet_04_00_4F_01))
             {
                 var parts = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "0x0400F401",
                     subPacketIndex);
                 allParts.AddRange(parts);
+                ConsiderClassification(ref bestClassification, PacketEventClassifier.ClassifyServerAck());
+                falseBoundaryScanBudget = 0;
                 if (!fullStream.ValidPosition)
                 {
                     break;
@@ -389,65 +481,78 @@ internal static class PacketAnalyzer
 
             fullStream.SeekBitOffset(initialBitOffset);
 
-            if (subPacketIndex > 100)
+            // Entity header: id(16) + reserved(2) + object_type(10) + reserved(1) + action_type(8) = 37 bits
+            if (fullStream.BitOffsetFromStart + 37 > totalBits)
             {
-                // something weird happened
                 break;
             }
 
-
-            // try to find entity id and object type
             var entId = fullStream.ReadUInt16();
-            if (!fullStream.ValidPosition)
-            {
-                break;
-            }
-
-            fullStream.ReadBits(2);
-            if (!fullStream.ValidPosition)
-            {
-                break;
-            }
-
+            var reservedLow = fullStream.ReadByte(2);
             var objectTypeVal = fullStream.ReadUInt16(10);
-            if (!fullStream.ValidPosition)
-            {
-                break;
-            }
+            var reservedBit28 = fullStream.ReadBit().AsBool();
+            var actionTypeVal = fullStream.ReadByte();
+            var headerValid = reservedLow == 0 && !reservedBit28;
 
             var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
                 ? (ObjectType)objectTypeVal
                 : ObjectType.Unknown;
-            if (objectType != ObjectType.Unknown)
+            var actionType = Enum.IsDefined(typeof(EntityActionType), (int)actionTypeVal)
+                ? (EntityActionType)actionTypeVal
+                : EntityActionType.UNDEF;
+
+            if (!headerValid)
             {
-                typesInside.Add(objectType);
+                // Reject mid-payload false entity starts; keep scanning one bit forward.
+                falseBoundaryScanBudget++;
+                if (falseBoundaryScanBudget > maxFalseBoundaryScanBits)
+                {
+                    break;
+                }
+
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyFalseBoundary(reservedLow, reservedBit28));
+                fullStream.SeekBitOffset(initialBitOffset + 1);
+                subPacketIndex--;
+                continue;
             }
+
+            falseBoundaryScanBudget = 0;
+            fullStream.SeekBitOffset(initialBitOffset);
 
             var currentParts = new List<PacketPart>();
             var typeWithDelimiter = false;
+            var actionRecovered = false;
+
             if (objectType == ObjectType.Despawn)
             {
-                fullStream.SeekBitOffset(initialBitOffset);
                 var despawn = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "despawn",
                     subPacketIndex, $"DESPAWN: {entId:X4}");
                 currentParts.AddRange(despawn);
                 typeWithDelimiter = true;
+                sawResolvedEntity = true;
+                storedPacket.ObjectType ??= objectType;
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyServerEntity(objectType, objectTypeVal, actionType, actionTypeVal,
+                        true, false));
             }
-            else if (EntityObjectTypes.Contains(objectType))
+            else if (EntityObjectTypes.Contains(objectType) || IsRecoverableEntityAction(actionType))
             {
+                // Re-read past the validated header fields for optional spawn payload probing.
+                fullStream.ReadUInt16();
+                fullStream.ReadByte(2);
+                fullStream.ReadUInt16(10);
                 fullStream.ReadBit();
-                var actionTypeVal = fullStream.ReadByte();
-                var actionType = Enum.IsDefined(typeof(EntityActionType), (int)actionTypeVal)
-                    ? (EntityActionType)actionTypeVal
-                    : EntityActionType.UNDEF;
-                if (actionType is EntityActionType.INTERACT or EntityActionType.FULL_SPAWN)
+                fullStream.ReadByte();
+
+                if (actionType is EntityActionType.INTERACT or EntityActionType.FULL_SPAWN
+                    or EntityActionType.FULL_SPAWN_2)
                 {
                     shouldHidePacket = false;
                 }
 
                 if (objectType == ObjectType.Other && actionType != EntityActionType.FULL_SPAWN)
                 {
-                    // for now, we can't really parse these, so we try to find divider (0x7E) and move on
                     var dividerFound = false;
                     while (fullStream.ValidPosition)
                     {
@@ -468,108 +573,146 @@ internal static class PacketAnalyzer
 
                     if (dividerFound)
                     {
-                        // analyze next packet as if nothing happened
                         continue;
                     }
 
                     break;
                 }
 
-                var interactionTypeVal = fullStream.ReadUInt16();
-                var interactionType = Enum.IsDefined(typeof(EntityInteractionType), (int)interactionTypeVal)
-                    ? (EntityInteractionType)interactionTypeVal
-                    : EntityInteractionType.UNDEF;
-                fullStream.ReadBits(112);
-                if (!fullStream.ValidPosition)
-                {
-                    break;
-                }
-
-                var suffixLength = 7;
-
-                var hasGameId = fullStream.ReadBit().AsBool();
+                var interactionType = EntityInteractionType.UNDEF;
+                var hasGameId = false;
                 var optionalFields = new List<OptionalPacketFields>();
-                if (hasGameId && actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
+                var canProbeSpawnFields = EntityObjectTypes.Contains(objectType);
+
+                if (canProbeSpawnFields && fullStream.BitOffsetFromStart + 16 + 112 + 1 <= totalBits)
                 {
-                    if (EquippableItemTypes.Contains(objectType))
+                    var interactionTypeVal = fullStream.ReadUInt16();
+                    interactionType = Enum.IsDefined(typeof(EntityInteractionType), (int)interactionTypeVal)
+                        ? (EntityInteractionType)interactionTypeVal
+                        : EntityInteractionType.UNDEF;
+                    fullStream.ReadBits(112);
+                    if (fullStream.ValidPosition)
                     {
-                        var gameId = fullStream.ReadBits(14);
-                        // has_suffix
-                        var hasSuffix = !fullStream.ReadBit().AsBool();
-                        var suffixLengthType = fullStream.ReadByte(2);
-                        if (!hasSuffix)
+                        hasGameId = fullStream.ReadBit().AsBool();
+                        if (hasGameId && actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
                         {
-                            suffixLengthType = 0;
+                            if (EquippableItemTypes.Contains(objectType))
+                            {
+                                fullStream.ReadBits(14);
+                                var hasSuffix = !fullStream.ReadBit().AsBool();
+                                var suffixLengthType = fullStream.ReadByte(2);
+                                if (!hasSuffix)
+                                {
+                                    suffixLengthType = 0;
+                                }
+
+                                var suffixLength = suffixLengthType switch
+                                {
+                                    0 => 3,
+                                    1 => 7,
+                                    _ => 7
+                                };
+                                _ = fullStream.ReadByte(suffixLength);
+                                fullStream.ReadBits(23);
+                                fullStream.ReadBits(55);
+                            }
+                            else
+                            {
+                                fullStream.ReadBits(98);
+                            }
+
+                            _ = fullStream.ReadInt64(31);
+                            optionalFields = GetOptionalFields(fullStream);
                         }
-
-                        suffixLength = suffixLengthType switch
+                        else if (actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
                         {
-                            0 => 3,
-                            1 => 7,
-                            _ => 7
-                        };
-                        // suffix
-                        _ = fullStream.ReadByte(suffixLength);
-                        // divider aka 00000011000000000000101 
-                        var divider = fullStream.ReadBits(23);
-
-                        fullStream.ReadBits(55);
+                            fullStream.ReadBits(87);
+                            _ = fullStream.ReadInt64(31);
+                            optionalFields = GetOptionalFields(fullStream);
+                            shouldHidePacket = false;
+                        }
                     }
-                    else
-                    {
-                        fullStream.ReadBits(98);
-                    }
-
-                    // should be equal to 2^32 - 1
-                    var t = fullStream.ReadInt64(31);
-                    optionalFields = GetOptionalFields(fullStream);
-                }
-                else if (actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
-                {
-                    fullStream.ReadBits(87);
-                    // should be equal to 2^32 - 1
-                    _ = fullStream.ReadInt64(31);
-                    optionalFields = GetOptionalFields(fullStream);
-                    shouldHidePacket = false;
                 }
 
                 fullStream.SeekBitOffset(initialBitOffset);
                 var (success, parts) = GetNewEntityPacketParts(fullStream, objectType,
                     entId, actionType, interactionType, subPacketIndex, hasGameId, optionalFields);
-                currentParts.AddRange(parts);
-                if (success)
+
+                if ((!success || !parts.Any()) && IsRecoverableEntityAction(actionType))
                 {
-                    if (actionType == EntityActionType.FULL_SPAWN)
+                    fullStream.SeekBitOffset(initialBitOffset);
+                    parts = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream,
+                        "header_with_action_type", subPacketIndex,
+                        $"RECOVERED ACTION 0x{actionTypeVal:X2} -- {objectType} [{entId:X4}]");
+                    actionRecovered = parts.Any();
+                    success = actionRecovered;
+                }
+
+                currentParts.AddRange(parts);
+                if (success && parts.Any())
+                {
+                    if (actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2
+                        or EntityActionType.INTERACT)
                     {
                         shouldHidePacket = false;
                     }
 
                     typeWithDelimiter = true;
+                    sawResolvedEntity = true;
+                    storedPacket.ObjectType ??= objectType == ObjectType.Unknown ? null : objectType;
                 }
-
-                if (!success || !parts.Any())
+                else if (actionType == EntityActionType.UNDEF)
+                {
+                    fullStream.SeekBitOffset(initialBitOffset);
+                    var unresolved = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream,
+                        "header_with_action_type", subPacketIndex,
+                        $"UNRESOLVED ACTION 0x{actionTypeVal:X2} -- type {objectTypeVal} [{entId:X4}]");
+                    currentParts.AddRange(unresolved);
+                    undefTypes = true;
+                }
+                else
                 {
                     undefTypes = true;
-                    breakAfterCurrentTry = false;
                 }
+
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyServerEntity(objectType, objectTypeVal, actionType, actionTypeVal,
+                        success && parts.Any() && !actionRecovered, actionRecovered));
+            }
+            else if (actionType == EntityActionType.UNDEF)
+            {
+                var unresolved = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream,
+                    "header_with_action_type", subPacketIndex,
+                    $"UNRESOLVED ACTION 0x{actionTypeVal:X2} -- type {objectTypeVal} [{entId:X4}]");
+                currentParts.AddRange(unresolved);
+                undefTypes = true;
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyUnresolvedAction(actionTypeVal));
             }
             else
             {
+                var header = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "entity_header",
+                    subPacketIndex,
+                    $"UNKNOWN TYPE: {objectType} ({objectTypeVal})");
+                currentParts.AddRange(header);
                 undefTypes = true;
-                breakAfterCurrentTry = false;
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyServerEntity(objectType, objectTypeVal, actionType, actionTypeVal,
+                        false, false));
             }
 
             allParts.AddRange(currentParts);
-            if (breakAfterCurrentTry)
-            {
-                break;
-            }
 
             if (typeWithDelimiter)
             {
                 if (objectType is ObjectType.Teleport or ObjectType.TeleportBroken or ObjectType.TeleportWild)
                 {
                     fullStream.ReadBit();
+                }
+
+                if (!fullStream.ValidPosition)
+                {
+                    break;
                 }
 
                 var delimTest = fullStream.ReadByte();
@@ -581,53 +724,70 @@ internal static class PacketAnalyzer
                 fullStream.SeekBack(8);
                 if (delimTest == 0x7E || delimTest == 0x7F)
                 {
-                    // fullStream.SeekBitOffset(currentFullStreamPosition);
                     subPacketIndex++;
                     var delimiter = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "delimiter",
                         subPacketIndex, PacketPart.UndefinedFieldValue);
                     allParts.AddRange(delimiter);
                     continue;
                 }
-                else if (objectType is ObjectType.DoorEntrance)
+
+                if (objectType is ObjectType.DoorEntrance)
                 {
                     var delimTestShort = fullStream.ReadByte(7);
-                    if (delimTestShort != 0x7E && delimTestShort != 0x7F && delimTestShort != 0x3F &&
-                        delimTestShort != 0x3E)
+                    if (delimTestShort is not (0x7E or 0x7F or 0x3F or 0x3E))
                     {
                         fullStream.SeekBack(7);
-                        continue;
                     }
                 }
+
+                continue;
+            }
+
+            // Valid header but incomplete parse: seek a delimiter instead of aborting the whole packet.
+            if (undefTypes && !sawResolvedEntity)
+            {
+                if (!TrySeekToNextDelimiter(fullStream))
+                {
+                    break;
+                }
+
+                subPacketIndex++;
+                var delimiter = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "delimiter",
+                    subPacketIndex, PacketPart.UndefinedFieldValue);
+                allParts.AddRange(delimiter);
+                undefTypes = false;
+                continue;
             }
 
             if (undefTypes)
             {
-                fullStream.SeekBitOffset(initialBitOffset);
-                var header = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream, "entity_header",
-                    subPacketIndex,
-                    $"UNKNOWN TYPE: {objectType} ({objectTypeVal})");
-                allParts.AddRange(header);
-                break;
+                if (!TrySeekToNextDelimiter(fullStream))
+                {
+                    break;
+                }
+
+                continue;
             }
+
+            break;
         }
 
         storedPacket.PacketParts = allParts;
         if (allParts.Any())
         {
-            storedPacket.AnalyzeState = undefTypes ? PacketAnalyzeState.UNDEF_TYPE : PacketAnalyzeState.PARTIAL;
+            storedPacket.AnalyzeState = undefTypes && !sawResolvedEntity
+                ? PacketAnalyzeState.UNDEF_TYPE
+                : PacketAnalyzeState.PARTIAL;
+        }
+
+        if (bestClassification is { } classification)
+        {
+            ApplyClassification(storedPacket, classification);
         }
 
         if (shouldHidePacket)
         {
-            if (storedPacket.Source == PacketSource.SERVER)
-            {
-                storedPacket.HiddenByDefaultServer = true;
-            }
-            else if (storedPacket.Source == PacketSource.CLIENT)
-            {
-                storedPacket.HiddenByDefaultClient = true;
-            }
-
+            storedPacket.HiddenByDefaultServer = true;
             storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
         }
 
@@ -644,6 +804,154 @@ internal static class PacketAnalyzer
         }
 
         return storedPacket;
+    }
+
+    private static StoredPacket FinalizeKnownProtocolPacket(StoredPacket storedPacket, string headerComment,
+        PacketEventClassification classification)
+    {
+        var allParts = new List<PacketPart>();
+        var stream = new BitStream(storedPacket.ContentBytes);
+        if (storedPacket.ContentBytes.HasEqualElementsAs(ok_mark, 2))
+        {
+            allParts.AddRange(FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(
+                stream, "server_packet_header", 0, headerComment));
+        }
+
+        storedPacket.PacketParts = allParts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        ApplyClassification(storedPacket, classification);
+        storedPacket.HiddenByDefaultServer = true;
+        storedPacket.HiddenByDefault = true;
+        return storedPacket;
+    }
+
+    private static StoredPacket UpdateClientPacketClassification(StoredPacket storedPacket)
+    {
+        ClearClassification(storedPacket);
+        storedPacket.AnalyzeState = PacketAnalyzeState.NONE;
+
+        var content = storedPacket.ContentBytes;
+        if (content.Length == 0)
+        {
+            ApplyClassification(storedPacket,
+                new PacketEventClassification("client.invalid_or_trailing", 0, "empty packet", false));
+            RefreshHiddenByDefaultFlags(storedPacket);
+            return storedPacket;
+        }
+
+        PacketEventClassification? bestClassification = null;
+        var offset = 0;
+        var frameIndex = 0;
+        var sawValidEvent = false;
+
+        while (offset < content.Length)
+        {
+            var declaredLength = content[offset];
+            if (declaredLength >= 1 && offset + declaredLength <= content.Length)
+            {
+                var frame = content.AsSpan(offset, declaredLength);
+                var classification = PacketEventClassifier.ClassifyClientFrame(frame);
+                if (frameIndex == 0 || (classification.IsEvent && !sawValidEvent))
+                {
+                    ConsiderClassification(ref bestClassification, classification);
+                }
+
+                if (classification.IsEvent)
+                {
+                    sawValidEvent = true;
+                }
+
+                offset += declaredLength;
+                frameIndex++;
+                continue;
+            }
+
+            // Length prefix is non-canonical or truncated — classify the remainder as one frame.
+            var remainderClassification = PacketEventClassifier.ClassifyClientFrame(content.AsSpan(offset));
+            if (!sawValidEvent || remainderClassification.IsEvent)
+            {
+                ConsiderClassification(ref bestClassification, remainderClassification);
+            }
+
+            break;
+        }
+
+        if (bestClassification is { } chosen)
+        {
+            ApplyClassification(storedPacket, chosen);
+            storedPacket.AnalyzeState = chosen.IsEvent ? PacketAnalyzeState.PARTIAL : PacketAnalyzeState.UNDEF;
+        }
+
+        RefreshHiddenByDefaultFlags(storedPacket);
+        return storedPacket;
+    }
+
+    private static bool IsRecoverableEntityAction(EntityActionType actionType)
+    {
+        return actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2
+            or EntityActionType.SET_POSITION or EntityActionType.ATTACK or EntityActionType.INTERACT
+            or EntityActionType.UNKNOWN;
+    }
+
+    private static bool TrySeekToNextDelimiter(BitStream stream)
+    {
+        while (stream.ValidPosition)
+        {
+            var delimiterTest = stream.ReadByte();
+            if (!stream.ValidPosition)
+            {
+                return false;
+            }
+
+            if (delimiterTest is 0x7E or 0x7F)
+            {
+                stream.SeekBack(8);
+                return true;
+            }
+
+            stream.SeekBack(7);
+        }
+
+        return false;
+    }
+
+    private static void ClearClassification(StoredPacket storedPacket)
+    {
+        storedPacket.EventName = null;
+        storedPacket.EventReason = null;
+        storedPacket.EventConfidence = 0;
+        storedPacket.IsClassifiedEvent = false;
+    }
+
+    private static void ApplyClassification(StoredPacket storedPacket, PacketEventClassification classification)
+    {
+        storedPacket.EventName = classification.EventName;
+        storedPacket.EventConfidence = classification.Confidence;
+        storedPacket.EventReason = classification.Reason;
+        storedPacket.IsClassifiedEvent = classification.IsEvent;
+        storedPacket.PacketType ??= PacketEventClassifier.ToPacketType(classification.EventName);
+    }
+
+    private static void ConsiderClassification(ref PacketEventClassification? current,
+        PacketEventClassification candidate)
+    {
+        if (current is null)
+        {
+            current = candidate;
+            return;
+        }
+
+        var currentValue = current.Value;
+        if (!currentValue.IsEvent && candidate.IsEvent)
+        {
+            current = candidate;
+            return;
+        }
+
+        if (currentValue.IsEvent == candidate.IsEvent && candidate.Confidence > currentValue.Confidence)
+        {
+            current = candidate;
+        }
     }
 
     private static List<OptionalPacketFields> GetOptionalFields(BitStream stream)
