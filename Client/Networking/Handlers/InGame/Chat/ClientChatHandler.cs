@@ -18,109 +18,124 @@ using static SphServer.Helpers.Cities;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Chat;
 
-public class ClientChatHandler (ushort localId, ClientConnection clientConnection)
+public class ClientChatHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 
 {
     private static readonly PackedScene FireworkScene =
-        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
+        (PackedScene)ResourceLoader.Load("res://Godot/Scenes/firework.tscn");
 
     public static ushort lastPlayerSpawned = 0;
 
-    private string previousMessageContent = string.Empty;
+    private static int nextChatServerSeq = 0xA800;
 
-    public async Task Handle (double delta)
+    /// <summary>Live median client→ACK is ~176ms; local RTT is ~0 so we pace the reply.</summary>
+    private static readonly TimeSpan ChatReplyDelay = TimeSpan.FromMilliseconds(150);
+
+    private string? lastHandledChatMessage;
+    private DateTime lastHandledChatAt;
+    private PendingChatReply? pendingReply;
+
+    private sealed class PendingChatReply(
+        DateTime sendAfterUtc,
+        byte[] ack,
+        byte[] nameBlock,
+        byte[] body,
+        string chatString,
+        string message,
+        string name,
+        int chatTypeVal,
+        bool skipBroadcast)
+    {
+        public DateTime SendAfterUtc { get; } = sendAfterUtc;
+        public byte[] Ack { get; } = ack;
+        public byte[] NameBlock { get; } = nameBlock;
+        public byte[] Body { get; } = body;
+        public string ChatString { get; } = chatString;
+        public string Message { get; } = message;
+        public string Name { get; } = name;
+        public int ChatTypeVal { get; } = chatTypeVal;
+        public bool SkipBroadcast { get; } = skipBroadcast;
+    }
+
+    public void FlushPendingReply()
+    {
+        if (pendingReply is null || DateTime.UtcNow < pendingReply.SendAfterUtc)
+        {
+            return;
+        }
+
+        var reply = pendingReply;
+        pendingReply = null;
+
+        clientConnection.MaybeScheduleNetworkPacketSend(reply.Ack);
+        clientConnection.MaybeScheduleNetworkPacketSend(reply.NameBlock);
+        clientConnection.MaybeScheduleNetworkPacketSend(reply.Body);
+
+        if (!reply.SkipBroadcast)
+        {
+            ChatBroadcast.MaybeScheduleBroadcastToClients(reply.ChatString, reply.Message, reply.Name,
+                reply.ChatTypeVal, clientConnection);
+        }
+    }
+
+    public async Task Handle(double delta)
     {
         try
         {
-            var chatTypeVal = ((clientConnection.ReceiveBuffer[18] & 0b11111) << 3) +
-                              (clientConnection.ReceiveBuffer[17] >> 5);
-
-            var firstPacket = clientConnection.ReceiveBuffer[..26];
-            var packetCount = (firstPacket[23] >> 5) + ((firstPacket[24] & 0b11111) << 3);
-            var packetStart = 26;
-            var decodeList = new List<byte[]>();
-
-            if (packetCount < 2)
+            if (!TryParseChatSend(clientConnection.ReceiveBuffer, out var firstPacket, out var decodeList,
+                    out var totalLength))
             {
                 SphLogger.Warning(
-                    $"Chat: broken client chat packet {Convert.ToHexString(clientConnection.ReceiveBuffer)}");
+                    $"Chat: incomplete/broken client chat packet {Convert.ToHexString(clientConnection.ReceiveBuffer)}");
                 return;
             }
 
-            for (var i = 0; i < packetCount; i++)
-            {
-                var packetLength = clientConnection.ReceiveBuffer[packetStart + 1] * 256 +
-                                   clientConnection.ReceiveBuffer[packetStart];
-                var packetEnd = packetStart + packetLength;
-                var packetDecode = clientConnection.ReceiveBuffer[packetStart..packetEnd];
-                packetStart = packetEnd;
-                decodeList.Add(packetDecode);
-            }
+            var chatTypeVal = ((firstPacket[18] & 0b11111) << 3) + (firstPacket[17] >> 5);
 
             var msgBytes = new List<byte>();
-            var clientMessageContentBytes = new List<byte[]>
-            {
-                firstPacket[11..]
-            };
-
             foreach (var decoded in decodeList)
             {
                 var messagePart = decoded[21..];
-                clientMessageContentBytes.Add(decoded[11..]);
                 for (var j = 0; j < messagePart.Length - 1; j++)
                 {
                     var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
-                    msgBytes.Add((byte) msgByte);
+                    msgBytes.Add((byte)msgByte);
                 }
-            }
-
-            // var chatTypeOverride = MainServer.Rng.Next(0, 17);
-            // clientMessageContentBytes[0][6] = (byte)((clientMessageContentBytes[0][6] & 0b11111) + ((chatTypeOverride & 0b111) << 5));
-            // clientMessageContentBytes[0][7] = (byte)((clientMessageContentBytes[0][7] & 0b11100000) + (chatTypeOverride >> 3));
-
-            var serverResponseBytes = new List<byte>();
-
-            // client_id 084043 content
-            byte[] GetResponseArray (byte[] clientBytes)
-            {
-                var responseBytes = new byte[clientBytes.Length + 7];
-                responseBytes[0] = (byte) (responseBytes.Length % 256);
-                responseBytes[1] = (byte) (responseBytes.Length / 256);
-                responseBytes[2] = 0x2C;
-                responseBytes[3] = 0x01;
-                responseBytes[4] = 0x00;
-                responseBytes[5] = 0x00;
-                responseBytes[6] = 0x00;
-                Array.Copy(clientBytes, 0, responseBytes, 7, clientBytes.Length);
-                return responseBytes;
-            }
-
-            serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[0]));
-            serverResponseBytes.AddRange(GetResponseArray(clientMessageContentBytes[1]));
-            // StreamPeer.PutData(serverResponseBytes.ToArray());
-
-            for (var i = 2; i < clientMessageContentBytes.Count; i++)
-            {
-                // StreamPeer.PutData(GetResponseArray(clientMessageContentBytes[i]));
-                // Console.WriteLine(Convert.ToHexString(GetResponseArray(clientMessageContentBytes[i])));
             }
 
             var chatString = SphEncoding.Win1251.GetString(msgBytes.ToArray());
             var nameClosingTagIndex = chatString.IndexOf("</l>: ", StringComparison.OrdinalIgnoreCase);
             var nameStart = chatString.IndexOf("\\]\"", nameClosingTagIndex - 30, StringComparison.OrdinalIgnoreCase);
-            var name = chatString[(nameStart + 4)..nameClosingTagIndex];
-            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char) 0); // weird but necessary
-
-            if (message == previousMessageContent)
+            if (nameClosingTagIndex < 0 || nameStart < 0)
             {
-                // SphLogger.Info($"Skipping client message (same content): {message}. Client ID: {localId}");
-                // return;
+                SphLogger.Warning($"Chat: failed to parse chat string from {totalLength}-byte send");
+                return;
             }
 
-            previousMessageContent = message;
+            var name = chatString[(nameStart + 4)..nameClosingTagIndex];
+            var message = chatString[(nameClosingTagIndex + 6)..].TrimEnd((char)0); // weird but necessary
 
-            ChatBroadcast.MaybeScheduleBroadcastToClients(chatString, message, name, chatTypeVal, clientConnection);
+            var serverSeq = NextChatServerSeq();
+            var isDuplicate = lastHandledChatMessage == message &&
+                              DateTime.UtcNow - lastHandledChatAt < TimeSpan.FromSeconds(2);
+            if (!isDuplicate)
+            {
+                lastHandledChatMessage = message;
+                lastHandledChatAt = DateTime.UtcNow;
+            }
+
+            // Defer reply onto the next Process ticks (don't block the Godot main thread).
+            pendingReply = new PendingChatReply(
+                DateTime.UtcNow + ChatReplyDelay,
+                BuildChatSendAck(firstPacket[11..], serverSeq),
+                BuildChatEchoFromClientFrame(decodeList[0], serverSeq, patchNameDisplayFlag: true),
+                BuildChatEchoFromClientFrame(decodeList[1], serverSeq, patchNameDisplayFlag: false),
+                chatString,
+                message,
+                name,
+                chatTypeVal,
+                skipBroadcast: isDuplicate);
 
             SphLogger.Info($"CLI: [{chatTypeVal}] {name}: {message}");
 
@@ -150,23 +165,23 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                     WorldCoords tpCoords;
                     if (coords[1].Equals("Shipstone", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Шипстоун)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Шипстоун)];
                     }
                     else if (coords[1].Equals("Bangville", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Бангвиль)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Бангвиль)];
                     }
                     else if (coords[1].Equals("Torweal", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Торвил)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Торвил)];
                     }
                     else if (coords[1].Equals("Sunpool", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Санпул)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Санпул)];
                     }
                     else if (coords[1].Equals("Umrad", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof (Умрад)];
+                        tpCoords = SavedCoords.TeleportPoints[Гиперион][CityCenter][nameof(Умрад)];
                     }
                     else if (coords[1].Equals("ChoiceIsland", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -248,24 +263,24 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket("/packet castle_tablet onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,
-                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); });
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char)1 + "Зеленый Слоник\0", true, 8); });
             }
 
             else if (message.StartsWith("gates"))
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket("/packet castle_gates_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,
-                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char) 1 + "Зеленый Слоник\0", true, 8); }
+                    parts => { PacketPart.UpdateValue(parts, "clan_name", (char)1 + "Зеленый Слоник\0", true, 8); }
                 );
             }
 
             else if (message.StartsWith("cdoor"))
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket("/packet castle_entrance_aris",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
@@ -274,7 +289,7 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
             else if (message.StartsWith("keydoor"))
             {
                 clientConnection.MaybeScheduleNetworkPacketSend(
-                    CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
+                    CommonPackets.DespawnEntity((ushort)WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket("/packet door_entrance_with_key_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
@@ -325,5 +340,120 @@ public class ClientChatHandler (ushort localId, ClientConnection clientConnectio
         {
             Console.WriteLine(ex.Message);
         }
+    }
+
+    private static ushort NextChatServerSeq()
+    {
+        return (ushort)Interlocked.Increment(ref nextChatServerSeq);
+    }
+
+    public static bool BufferStartsWithChatHeader(byte[] buffer, int length) =>
+        length >= 26 && IsChatHeaderFrame(buffer.AsSpan(0, 26).ToArray());
+
+    public static bool IsChatHeaderFrame(byte[] frame) =>
+        frame.Length == 0x1A && frame.Length >= 16 &&
+        frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x43;
+
+    public static bool IsChatContinuationFrame(byte[] frame) =>
+        frame.Length >= 16 && frame.Length != 0x1A &&
+        frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x43;
+
+    public static bool IsChatSendComplete(IReadOnlyList<byte> buffer)
+    {
+        return TryParseChatSend(buffer is byte[] arr ? arr : buffer.ToArray(), out _, out _, out _);
+    }
+
+    private static bool TryParseChatSend(byte[] buffer, out byte[] firstPacket, out List<byte[]> decodeList,
+        out int totalLength)
+    {
+        firstPacket = [];
+        decodeList = [];
+        totalLength = 0;
+
+        if (buffer.Length < 26 || !IsChatHeaderFrame(buffer.AsSpan(0, 26).ToArray()))
+        {
+            return false;
+        }
+
+        firstPacket = buffer[..26];
+        var packetCount = (firstPacket[23] >> 5) + ((firstPacket[24] & 0b11111) << 3);
+        if (packetCount < 2)
+        {
+            return false;
+        }
+
+        var packetStart = 26;
+        for (var i = 0; i < packetCount; i++)
+        {
+            if (packetStart + 2 > buffer.Length)
+            {
+                return false;
+            }
+
+            var packetLength = buffer[packetStart] | (buffer[packetStart + 1] << 8);
+            var packetEnd = packetStart + packetLength;
+            if (packetLength < 13 || packetEnd > buffer.Length)
+            {
+                return false;
+            }
+
+            decodeList.Add(buffer[packetStart..packetEnd]);
+            packetStart = packetEnd;
+        }
+
+        totalLength = packetStart;
+        return true;
+    }
+
+    /// <summary>
+    ///     Echo of client.chat.send header content (id + 08 40 43 + fields).
+    ///     Matches retail SRV 0x16 responses captured in source/chat*.txt.
+    /// </summary>
+    private static byte[] BuildChatSendAck(byte[] clientHeaderContent, ushort serverSeq)
+    {
+        var responseBytes = new byte[clientHeaderContent.Length + 7];
+        responseBytes[0] = (byte)(responseBytes.Length % 256);
+        responseBytes[1] = (byte)(responseBytes.Length / 256);
+        responseBytes[2] = 0x2C;
+        responseBytes[3] = 0x01;
+        responseBytes[4] = 0x00;
+        responseBytes[5] = (byte)(serverSeq & 0xFF);
+        responseBytes[6] = (byte)(serverSeq >> 8);
+        Array.Copy(clientHeaderContent, 0, responseBytes, 7, clientHeaderContent.Length);
+        return responseBytes;
+    }
+
+    /// <summary>
+    ///     Retail name/body reply: client continuation with the 4 encrypt bytes removed
+    ///     and client seq replaced by the shared server seq (verified on live 44910→44914).
+    ///     Name block also patches the display flag byte (client E07F40 → server E0BF40).
+    /// </summary>
+    private static byte[] BuildChatEchoFromClientFrame(byte[] clientFrame, ushort serverSeq,
+        bool patchNameDisplayFlag)
+    {
+        if (clientFrame.Length < 13)
+        {
+            return clientFrame;
+        }
+
+        var payloadFromPlayerId = clientFrame[11..];
+        var response = new byte[7 + payloadFromPlayerId.Length];
+        response[0] = (byte)(response.Length % 256);
+        response[1] = (byte)(response.Length / 256);
+        response[2] = 0x2C;
+        response[3] = 0x01;
+        response[4] = 0x00;
+        response[5] = (byte)(serverSeq & 0xFF);
+        response[6] = (byte)(serverSeq >> 8);
+        Array.Copy(payloadFromPlayerId, 0, response, 7, payloadFromPlayerId.Length);
+
+        // Layout: len(2) 2C01(2) 00 seq(2) id(2) 08 40 43 E0 xx 40...
+        // Live server uses high-bit form of xx (client E07F40 → server E0BF40).
+        if (patchNameDisplayFlag && response.Length > 14 && response[12] == 0xE0)
+        {
+            response[13] = (byte)((response[13] | 0x80) & ~0x40);
+        }
+
+        return response;
     }
 }

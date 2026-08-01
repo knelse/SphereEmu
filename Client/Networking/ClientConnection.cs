@@ -25,6 +25,8 @@ namespace SphServer.Client.Networking;
 
 public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, SphereClient sphereClient)
 {
+    public ushort LocalId => localId;
+
     public readonly byte[] ReceiveBuffer = new byte[ServerConfig.AppConfig.ReceiveBufferSize];
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
     private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
@@ -44,6 +46,12 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private PickupItemHandler? pickupItemHandler;
     private PingHandler? pingHandler;
     private UseItemHandler? useItemHandler;
+
+    /// <summary>
+    ///     Chat arrives as a 0x1A header plus continuation frames that often land in later TCP reads.
+    ///     Retail only replies after the full send is in; answering early causes lost/duped lines.
+    /// </summary>
+    private readonly List<byte> pendingChatBytes = [];
 
     public async Task Process(double delta)
     {
@@ -66,6 +74,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive(delta);
+            clientChatHandler?.FlushPendingReply();
             var incomingDataLength = GetIncomingData();
 
             if (incomingDataLength == 0)
@@ -74,10 +83,15 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 return;
             }
 
-            // Classify the leading frame. Chat may consume trailing concatenated data beyond the
-            // declared 0x1A length, so the full ReceiveBuffer stays available to handlers.
-            var frameLength = ReceiveBuffer[0];
-            var frame = frameLength >= 1 && frameLength <= incomingDataLength
+            if (pendingChatBytes.Count > 0 || ClientChatHandler.BufferStartsWithChatHeader(ReceiveBuffer, incomingDataLength))
+            {
+                await ProcessPossiblyFragmentedChat(incomingDataLength, delta);
+                return;
+            }
+
+            // Classify the leading frame (ushort length — high byte matters for frames > 255).
+            var frameLength = ReceiveBuffer[0] | (ReceiveBuffer[1] << 8);
+            var frame = frameLength >= 2 && frameLength <= incomingDataLength
                 ? ReceiveBuffer.AsSpan(0, frameLength)
                 : ReceiveBuffer.AsSpan(0, incomingDataLength);
             var classification = ClientPacketClassifier.ClassifyFrame(frame);
@@ -92,6 +106,55 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         else
         {
             await currentHandler!.Handle(delta);
+        }
+    }
+
+    private async Task ProcessPossiblyFragmentedChat(int incomingDataLength, double delta)
+    {
+        var offset = 0;
+        while (offset + 2 <= incomingDataLength)
+        {
+            var frameLength = ReceiveBuffer[offset] | (ReceiveBuffer[offset + 1] << 8);
+            if (frameLength < 2 || offset + frameLength > incomingDataLength)
+            {
+                break;
+            }
+
+            var frame = ReceiveBuffer.AsSpan(offset, frameLength).ToArray();
+            offset += frameLength;
+
+            if (ClientChatHandler.IsChatHeaderFrame(frame) ||
+                (pendingChatBytes.Count > 0 && ClientChatHandler.IsChatContinuationFrame(frame)))
+            {
+                if (ClientChatHandler.IsChatHeaderFrame(frame))
+                {
+                    pendingChatBytes.Clear();
+                }
+
+                pendingChatBytes.AddRange(frame);
+
+                if (ClientChatHandler.IsChatSendComplete(pendingChatBytes))
+                {
+                    var complete = pendingChatBytes.ToArray();
+                    pendingChatBytes.Clear();
+                    complete.CopyTo(ReceiveBuffer, 0);
+                    DataStream = new BitStream(ReceiveBuffer);
+                    DataStream.CutStream(0, complete.Length);
+                    await clientChatHandler!.Handle(delta);
+                }
+
+                continue;
+            }
+
+            // Interleaved non-chat (e.g. 0x26 ping) while assembling — dispatch immediately.
+            frame.CopyTo(ReceiveBuffer, 0);
+            DataStream = new BitStream(ReceiveBuffer);
+            DataStream.CutStream(0, frame.Length);
+            var classification = ClientPacketClassifier.ClassifyFrame(frame);
+            if (classification.IsEvent && classification.Event != ClientPacketEvent.ChatSend)
+            {
+                await DispatchClientPacketEvent(classification.Event, delta);
+            }
         }
     }
 

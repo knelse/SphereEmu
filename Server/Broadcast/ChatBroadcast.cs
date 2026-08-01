@@ -7,7 +7,7 @@ namespace SphServer.Server.Broadcast;
 
 public static class ChatBroadcast
 {
-    public static void MaybeScheduleBroadcastToClients (string fullMessage, string actualText, string characterName,
+    public static void MaybeScheduleBroadcastToClients(string fullMessage, string actualText, string characterName,
         int chatTypeVal,
         ClientConnection? clientOriginConnection = null)
     {
@@ -47,12 +47,14 @@ public static class ChatBroadcast
             var distance = targetClientOrigin.DistanceTo(origin);
             if (distance <= maxRange)
             {
+                // Origin needs MessageEncoder for chat UI; the 08 40 43 triple alone does not
+                // render a line. Dedup in ClientChatHandler avoids resend duplicates.
                 sphereClient.MaybeQueueNetworkPacketSend(encodedMessage);
             }
         }
     }
 
-    public static int GetMaxChatRange (int chatTypeVal)
+    public static int GetMaxChatRange(int chatTypeVal)
     {
         return chatTypeVal switch
         {

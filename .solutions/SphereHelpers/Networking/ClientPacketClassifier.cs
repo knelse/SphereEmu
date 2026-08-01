@@ -131,13 +131,14 @@ public static class ClientPacketClassifier
 		}
 
 		// Signature-only fallbacks when the length byte is unexpected but payload matches.
+		// ChatSend is intentionally NOT in this list: continuations also contain 08 40 43 at
+		// bytes 13–15 and must not be dispatched as a new client.chat.send.
 		if (b13 == 0x08 && b14 == 0x40)
 		{
 			return b15 switch
 			{
 				0x83 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true),
 				0xA3 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
-				0x43 => Result(ClientPacketEvent.ChatSend, 0.9, "handler signature 08 40 43", true),
 				0x63 => Result(ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
 				0x23 => Result(ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23", true),
 				0x81 => Result(ClientPacketEvent.ItemMove, 0.9, "handler signature 08 40 81", true),
