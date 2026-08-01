@@ -11,6 +11,7 @@ using SphServer.Client.Networking.Handlers.InGame.Communities;
 using SphServer.Client.Networking.Handlers.InGame.Containers;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Client.Networking.Handlers.InGame.Items;
+using SphServer.Client.Networking.Handlers.InGame.Mutator;
 using SphServer.Client.Networking.Handlers.InGame.NPC;
 using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 using SphServer.Helpers.Networking;
@@ -18,6 +19,7 @@ using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.WorldState;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -38,6 +40,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private DropItemToGroundHandler? dropItemToGroundHandler;
     private GroupActionsHandler? groupActionsHandler;
     private bool interactionWithOtherObjectsInitialized;
+    private bool seenFirstPositionKeepalive;
+    private double timeSinceFirstPositionKeepalive;
+    private bool starterMutatorSent;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
     private MoveItemHandler? moveItemHandler;
     private MoveObjectForClientHandler? moveObjectForClientHandler;
@@ -70,6 +75,12 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
+            }
+
+            if (seenFirstPositionKeepalive)
+            {
+                timeSinceFirstPositionKeepalive += delta;
+                MaybeSendStarterMutator();
             }
 
             // keepalive always happens - it's time-based instead of client input based
@@ -163,6 +174,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         switch (packetEvent)
         {
             case ClientPacketEvent.PositionKeepalive:
+                seenFirstPositionKeepalive = true;
                 await pingHandler!.Handle(delta);
                 sphereClient.UpdateCoordinatesInWorld();
                 break;
@@ -336,6 +348,18 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     {
         // TODO: might need an actual queue. For now, just send
         SendPacket(packet);
+    }
+
+    private void MaybeSendStarterMutator()
+    {
+        if (starterMutatorSent || timeSinceFirstPositionKeepalive < 3.0)
+        {
+            return;
+        }
+
+        MutatorHandler.SendSpecialMutator(this, localId, SpecialMutator.Прыг_х4, BelongingSlot.Mutator_1);
+        MutatorHandler.SendSpecialMutator(this, localId, SpecialMutator.СХ, BelongingSlot.Mutator_2);
+        starterMutatorSent = true;
     }
 
     public void EnqueueClientEvent(ClientQueuedEvent clientEvent)
