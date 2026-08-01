@@ -13,6 +13,7 @@ using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Client.Networking.Handlers.InGame.Items;
 using SphServer.Client.Networking.Handlers.InGame.NPC;
 using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
+using SphServer.Helpers.Networking;
 using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
@@ -73,105 +74,74 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 return;
             }
 
-            switch (ReceiveBuffer[0])
+            // Classify the leading frame. Chat may consume trailing concatenated data beyond the
+            // declared 0x1A length, so the full ReceiveBuffer stays available to handlers.
+            var frameLength = ReceiveBuffer[0];
+            var frame = frameLength >= 1 && frameLength <= incomingDataLength
+                ? ReceiveBuffer.AsSpan(0, frameLength)
+                : ReceiveBuffer.AsSpan(0, incomingDataLength);
+            var classification = ClientPacketClassifier.ClassifyFrame(frame);
+            if (!classification.IsEvent)
             {
-                case 0x26:
-                    await pingHandler.Handle(delta);
-                    sphereClient.UpdateCoordinatesInWorld();
-                    break;
-                case 0x13:
-                    if (ReceiveBuffer[13] != 0x08 || ReceiveBuffer[14] != 0x40 || ReceiveBuffer[15] != 0x23 ||
-                        ReceiveBuffer[16] != 0x23)
-                    {
-                        break;
-                    }
-
-                    await groupActionsHandler!.Handle(delta);
-                    break;
-
-                case 0x16:
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0x23)
-                    {
-                        await pickupItemHandler!.HandlePickupToNextAvailableEmptySlot(delta);
-                    }
-
-                    break;
-                case 0x18:
-                    // move to a different slot
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0x81)
-                    {
-                        await moveItemHandler!.Handle(delta);
-                    }
-                    // use item from inventory
-                    else
-                    {
-                        await useItemHandler!.Handle(delta);
-                    }
-
-                    break;
-                case 0x1A:
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0x43)
-                    {
-                        // chat
-                        await clientChatHandler!.Handle(delta);
-                    }
-                    else if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 &&
-                             ReceiveBuffer[15] == 0xC1)
-                    {
-                        await pickupItemHandler!.HandlePickupToTargetSlot(delta);
-                    }
-                    else if (ReceiveBuffer[13] == 0x5c && ReceiveBuffer[14] == 0x46 && ReceiveBuffer[15] == 0xe1)
-                    {
-                        await openLootContainerHandler!.Handle(delta);
-                    }
-
-                    break;
-                case 0x2D:
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0x63)
-                    {
-                        await dropItemToGroundHandler!.Handle(delta);
-                    }
-
-                    break;
-                case 0x31:
-                case 0x36:
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0xA3)
-                    {
-                        await npcInteractionHandler!.Handle(delta);
-                    }
-
-                    break;
-                case 0x15:
-                // case 0x19:
-                case 0x1B:
-                case 0x1F:
-                case 0x23:
-                    // item in hand
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 &&
-                        (ReceiveBuffer[15] == 0xA3 || ReceiveBuffer[15] == 0x83))
-                    {
-                        await mainhandTakeItemHandler!.Handle(delta);
-                    }
-
-                    break;
-                case 0x19:
-                case 0x20:
-                    if (ReceiveBuffer[13] == 0x08 && ReceiveBuffer[14] == 0x40 && ReceiveBuffer[15] == 0x03)
-                    {
-                        await buyItemFromTargetHandler!.Handle(delta);
-                    }
-                    else
-                    {
-                        await damageTargetHandler!.Handle(delta);
-                    }
-
-                    break;
+                return;
             }
+
+            await DispatchClientPacketEvent(classification.Event, delta);
         }
 
         else
         {
             await currentHandler!.Handle(delta);
+        }
+    }
+
+    private async Task DispatchClientPacketEvent(ClientPacketEvent packetEvent, double delta)
+    {
+        switch (packetEvent)
+        {
+            case ClientPacketEvent.PositionKeepalive:
+                await pingHandler!.Handle(delta);
+                sphereClient.UpdateCoordinatesInWorld();
+                break;
+            case ClientPacketEvent.GroupAction:
+                await groupActionsHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemPickup:
+                await pickupItemHandler!.HandlePickupToNextAvailableEmptySlot(delta);
+                break;
+            case ClientPacketEvent.ItemMove:
+                await moveItemHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemUse:
+                await useItemHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ChatSend:
+                await clientChatHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemPickupToSlot:
+                await pickupItemHandler!.HandlePickupToTargetSlot(delta);
+                break;
+            case ClientPacketEvent.ContainerOpenLoot:
+                await openLootContainerHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemDrop:
+                await dropItemToGroundHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.NpcInteract:
+                await npcInteractionHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemTakeMainhand:
+                await mainhandTakeItemHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.TradeBuy:
+                await buyItemFromTargetHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.CombatDamageTarget:
+                await damageTargetHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ProtocolControl:
+                // Short control frames — no gameplay handler.
+                break;
         }
     }
 
