@@ -16,6 +16,10 @@ func _init() -> void:
 	_spawner_script = load(SPAWNER_SCRIPT_PATH) as Script
 
 
+func _get_gizmo_name() -> String:
+	return "Alchemy Material Spawner"
+
+
 func _has_gizmo(node: Node3D) -> bool:
 	return _is_alchemy_material_spawner(node)
 

@@ -1,0 +1,12 @@
+root = true
+
+[*.cs]
+
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = none
+
+# ReSharper: same inspection family (sync bodies on async methods)
+resharper_async_method_without_await_highlighting = none
+resharper_async_override_method_without_await_highlighting = none
+resharper_async_void_method_without_await_highlighting = none
+resharper_async_void_override_method_without_await_highlighting = none

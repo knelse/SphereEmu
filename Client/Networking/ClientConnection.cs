@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BitStreams;
@@ -411,7 +412,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             return false;
         }
 
-        clientId = (ushort)((packet[16] >> 5) + (packet[17] << 3) + ((packet[18] & 0b11111) << 11));
+        // Bit field yields major/minor swapped vs localId; reverse to match.
+        var packed = (ushort)((packet[16] >> 5) + (packet[17] << 3) + ((packet[18] & 0b11111) << 11));
+        clientId = BinaryPrimitives.ReverseEndianness(packed);
         return true;
     }
 }

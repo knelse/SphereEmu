@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using SphServer.Helpers;
 using SphServer.Packets;
@@ -11,52 +12,46 @@ namespace SphServer.Client.Networking.Handlers.InGame;
 public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
+    public StreamPeerTcp _ { get; } = streamPeerTcp;
     private const double MovementBroadcastDelta = 0.1;
+    private const int PingFrameLength = 0x26;
+    private const int CoordPayloadOffset = 21;
+    private const int CoordPayloadLength = 17;
+    private const int PongEchoOffset = 9;
+    private const int PongEchoLength = 21;
 
-    private readonly SphereTimer FifteenSecondPing = new(15, true,
+    private readonly SphereTimer fifteenSecondPing = new(15, true,
         () => clientConnection.SendPacket(CommonPackets.FifteenSecondPing(localId)));
 
-    private readonly SphereTimer SixSecondPing =
+    private readonly SphereTimer sixSecondPing =
         new(6, true, () => clientConnection.SendPacket(CommonPackets.SixSecondPing(localId)));
 
-    private readonly SphereTimer ThreeSecondPing =
+    private readonly SphereTimer threeSecondPing =
         new(3, true, () => clientConnection.SendPacket(CommonPackets.TransmissionEndPacket));
 
     private ushort counter;
-    private string? pingPreviousClientPingString;
+    private byte[]? previousCoordPayload;
     private bool pingShouldXorTopBit;
 
     public async Task Handle(double delta)
     {
-        // TODO: rewrite without hex strings
-        var clientPingBytesForComparison = clientConnection.ReceiveBuffer[17..55];
-
-        var clientPingBytesForPong = clientConnection.ReceiveBuffer[9..30];
-        var clientPingBinaryStr =
-            StringConvertHelpers.ByteArrayToBinaryString(clientPingBytesForComparison, false, true);
-
-        // if (clientPingBinaryStr[0] == '0')
-        // {
-        //     // random different packet, idk
-        //     return;
-        // }
-
-        if (string.IsNullOrEmpty(pingPreviousClientPingString))
+        var buffer = clientConnection.ReceiveBuffer;
+        if (buffer.Length < PingFrameLength || buffer[0] != PingFrameLength)
         {
-            pingPreviousClientPingString = clientPingBinaryStr;
+            return;
         }
 
-        else
+        var coordPayload = buffer.AsSpan(CoordPayloadOffset, CoordPayloadLength);
+        var coordsChanged = previousCoordPayload is null
+                            || !coordPayload.SequenceEqual(previousCoordPayload);
+
+        if (coordsChanged)
         {
-            var pingHasChanges = string.Compare(clientPingBinaryStr, pingPreviousClientPingString,
-                StringComparison.Ordinal);
-
-            if (pingHasChanges != 0)
+            if (CoordsHelper.HasPingCoordMarker(buffer))
             {
-                var coords = CoordsHelper.GetCoordsFromPingBytes(clientConnection.ReceiveBuffer);
-
+                var coords = CoordsHelper.GetCoordsFromPingBytes(buffer);
                 var currentCharacter = clientConnection.GetSelectedCharacter();
-                if (currentCharacter is not null && Math.Abs(coords.x - currentCharacter.X) < 100000)
+                if (currentCharacter is not null && CoordsHelper.ArePingCoordsInWorldBounds(coords))
                 {
                     var moved = MovementDeltaExceedsThreshold(coords, currentCharacter);
                     currentCharacter.X = coords.x;
@@ -64,19 +59,18 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
                     currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
 
-                    // Enqueue after updating coords so proximity/visibility handlers see the new position.
                     if (moved)
                     {
                         clientConnection.EnqueueClientEvent(new CurrentClientPositionChangedEvent());
                     }
                 }
-
-                pingPreviousClientPingString = clientPingBinaryStr;
             }
+
+            previousCoordPayload = [.. coordPayload];
         }
 
-        var xored = clientPingBytesForPong[5];
-
+        var pongEcho = buffer.AsSpan(PongEchoOffset, PongEchoLength);
+        var xored = pongEcho[5];
         if (pingShouldXorTopBit)
         {
             xored ^= 0b10000000;
@@ -84,24 +78,23 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
 
         if (counter == 0)
         {
-            var first = (ushort)((clientPingBytesForPong[7] << 8) + clientPingBytesForPong[6]);
+            var first = (ushort)((pongEcho[7] << 8) + pongEcho[6]);
             first -= 0xE001;
             counter = (ushort)(0xE001 + first / 12);
         }
 
-        var pong = new byte[]
-        {
-            0x00, 0x00, 0x00, 0x00, 0x00, xored, SphereDbEntrySerializerBase.MinorByte(counter),
-            SphereDbEntrySerializerBase.MajorByte(counter), 0x00, 0x00, 0x00, 0x00, 0x00
-        };
+        var pong = new byte[13];
+        pongEcho[..5].CopyTo(pong);
+        pong[5] = xored;
+        pong[6] = SphereDbEntrySerializerBase.MinorByte(counter);
+        pong[7] = SphereDbEntrySerializerBase.MajorByte(counter);
+        pongEcho.Slice(8, 4).CopyTo(pong.AsSpan(8));
 
-        Array.Copy(clientPingBytesForPong, pong, 5);
-        Array.Copy(clientPingBytesForPong, 8, pong, 8, 4);
         clientConnection.SendPacket(Packet.ToByteArray(pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
         counter++;
 
-        //overflow
+        // overflow
         if (counter < 0xE001)
         {
             counter = 0xE001;
@@ -110,9 +103,9 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
 
     public async Task Keepalive(double delta)
     {
-        FifteenSecondPing.Tick(delta);
-        SixSecondPing.Tick(delta);
-        ThreeSecondPing.Tick(delta);
+        fifteenSecondPing.Tick(delta);
+        sixSecondPing.Tick(delta);
+        threeSecondPing.Tick(delta);
     }
 
     private static bool MovementDeltaExceedsThreshold(WorldCoords coords, CharacterDbEntry character)

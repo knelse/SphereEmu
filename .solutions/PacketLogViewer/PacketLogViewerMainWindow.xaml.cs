@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -643,8 +644,9 @@ public partial class PacketLogViewerMainWindow
             MainView.GameState.CoordsZBits.Text = StringConvertHelpers.ByteArrayToBinaryString(zBytes, false, true);
             MainView.GameState.CoordsTBits.Text = StringConvertHelpers.ByteArrayToBinaryString(tBytes, false, true);
 
-            var id = (storedPacket.ContentBytes[16] >> 5) + (storedPacket.ContentBytes[17] << 3) +
-                     ((storedPacket.ContentBytes[18] & 0b11111) << 11);
+            var packedId = (ushort)((storedPacket.ContentBytes[16] >> 5) + (storedPacket.ContentBytes[17] << 3) +
+                                    ((storedPacket.ContentBytes[18] & 0b11111) << 11));
+            var id = BinaryPrimitives.ReverseEndianness(packedId);
             MainView.GameState.ClientId.Text = $"{id:X4}";
             PacketCapture?.SetClientId((short)id);
 
