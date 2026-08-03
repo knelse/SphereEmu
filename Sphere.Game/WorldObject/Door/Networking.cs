@@ -11,7 +11,9 @@ public partial class Door
 
 	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
 	{
-		PacketPart.UpdateValue(packetParts, "door_id", DoorID, 7);
+		// door_entrance*.spdp uses subtype_id (15 bits); "door_id"/7 was a no-op.
+		packetParts = base.ModifyPacketParts(packetParts);
+		PacketPart.UpdateValue(packetParts, "subtype_id", DoorID, 15);
 		if (HasTarget)
 		{
 			PacketPart.UpdateTargetCoordinates(packetParts, TargetX, TargetY, TargetZ);

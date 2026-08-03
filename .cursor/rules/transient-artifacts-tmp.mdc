@@ -1,0 +1,19 @@
+---
+description: Put transient investigation scripts/artifacts under Tools/_tmp/
+alwaysApply: true
+---
+
+# Transient artifacts location
+
+All **transient** scripts, one-off tools, reports, DBs, calib images, and other throwaway artifacts produced while investigating or assisting — and **not** lasting project product — go under:
+
+`Tools/_tmp/...`
+
+Examples of what belongs there:
+- Ad-hoc Python/C# helpers (`FindOrphanDoors`, packet scanners, map calib)
+- Generated reports/maps/JSON from analysis
+- Copied DBs, temp extracts, scratch notes
+
+Do **not** leave these in repo roots like `.solutions/_tmp_*`, loose `Tools/*.py` one-offs (unless the user asks to keep a durable tool), or random workspace folders.
+
+Durable project tooling the user wants to keep can stay outside `_tmp` when that is clearly intentional.

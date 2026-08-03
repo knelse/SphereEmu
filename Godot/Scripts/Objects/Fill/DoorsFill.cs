@@ -184,7 +184,9 @@ public partial class DoorsFill : Node3D
 			}
 
 			var instance = scene.Instantiate<Door>();
-			instance.Name = hasTarget ? $"DoorEntrance_{id:X4}_Target" : $"DoorEntrance_{id:X4}_{doorIdOrSentinel}";
+			instance.Name = hasTarget
+				? $"DoorEntrance_{id:X4}_{FormatTargetCoords(targetX, targetY, targetZ)}"
+				: $"DoorEntrance_{id:X4}_{doorIdOrSentinel}";
 			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
 
 			instance.ModelName = DoorModelName;
@@ -297,7 +299,7 @@ public partial class DoorsFill : Node3D
 			}
 
 			var instance = scene.Instantiate<Door>();
-			instance.Name = $"DoorExit_{id:X4}_Target";
+			instance.Name = $"DoorExit_{id:X4}_{FormatTargetCoords(targetX, targetY, targetZ)}";
 			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
 
 			instance.ModelName = DoorModelName;
@@ -363,6 +365,9 @@ public partial class DoorsFill : Node3D
 		public int RowsSkippedWeirdTarget;
 		public int ParseErrors;
 	}
+
+	private static string FormatTargetCoords(double targetX, double targetY, double targetZ) =>
+		$"{(int)targetX}_{(int)targetY}_{(int)targetZ}";
 
 	private static bool LooksLikeWeirdTargetToken(string s)
 	{
