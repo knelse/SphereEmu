@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_81ryt"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_qfj8i"]
+
+[node name="Chunk_npc_-26_3" type="Node3D" unique_id=1498371555]
+
+[node name="NPC_5442_Оркус_Мантоблас_5442_5442_5442_5442_5442_5442_5442_5442_5442" type="Node3D" parent="." unique_id=2101517165 instance=ExtResource("1_81ryt")]
+transform = Transform3D(0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, 0.85772866, -2589.504, 96.421036, 318.1851)
+script = ExtResource("2_qfj8i")
+NameID = 4329
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 234
+ID = 5442
+ObjectType = 213
+ModelName = "npc08"

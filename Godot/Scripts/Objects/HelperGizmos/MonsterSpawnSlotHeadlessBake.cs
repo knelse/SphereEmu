@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Godot.Scripts.World;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
@@ -80,6 +81,17 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
             return ExitFailure;
         }
 
+        // Chunked MainServer: hydrate placement nodes before baking.
+        if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute(
+                ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+        {
+            var streamer = new WorldChunkStreamer { Name = "WorldChunkStreamer" };
+            root.AddChild(streamer);
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            streamer.LoadAll();
+            GD.Print($"MonsterSpawnSlotHeadlessBake: loaded chunks, spawners now={spawners.GetChildCount()}");
+        }
+
         var terrain = FindTerrainGridMap(root);
         if (terrain is null)
         {
@@ -105,17 +117,30 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
 
         if (!options.SkipSceneSave)
         {
-            GD.Print("MonsterSpawnSlotHeadlessBake: packing and saving scene…");
-            if (!TrySaveMainServer(root, options.ScenePath))
+            if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath)
+                || DirAccess.DirExistsAbsolute(ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
             {
-                return ExitFailure;
+                GD.Print("MonsterSpawnSlotHeadlessBake: re-packing world chunks + index…");
+                var packResult = WorldChunkPacker.PackFromMainServer(root, clearParents: true, extractSlots: true);
+                GD.Print(
+                    $"MonsterSpawnSlotHeadlessBake: chunks={packResult.ChunksWritten}, "
+                    + $"nodes={packResult.NodesPacked}, slots={packResult.SlotArraysExtracted}");
+            }
+            else
+            {
+                GD.Print("MonsterSpawnSlotHeadlessBake: packing and saving scene…");
+                if (!TrySaveMainServer(root, options.ScenePath))
+                {
+                    return ExitFailure;
+                }
             }
         }
         else
         {
+            WorldContentIndex.GetOrLoad().SaveTo(WorldChunkCatalog.IndexPath);
             GD.Print(
                 "MonsterSpawnSlotHeadlessBake: skipped scene save (--skip-scene-save); "
-                + "results are in the progress sidecar only.");
+                + "results are in the progress sidecar / index only.");
         }
 
         GD.Print($"MonsterSpawnSlotHeadlessBake: done (baked slot count returned={slotCount}).");

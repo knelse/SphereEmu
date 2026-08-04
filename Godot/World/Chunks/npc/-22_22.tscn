@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_egn65"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_rbsnl"]
+
+[node name="Chunk_npc_-22_22" type="Node3D" unique_id=1735140492]
+
+[node name="NPC_4714_Билл_Оузноморд_4714_4714_4714_4714_4714_4714_4714_4714_4714" type="Node3D" parent="." unique_id=1385320407 instance=ExtResource("1_egn65")]
+transform = Transform3D(0.7572089, 0, -0.6531728, 0, 1, 0, 0.6531728, 0, 0.7572089, -2197.088, 340.78775, 2209.6272)
+script = ExtResource("2_rbsnl")
+NameID = 4464
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 227
+ID = 4714
+ObjectType = 216
+ModelName = "npc58"

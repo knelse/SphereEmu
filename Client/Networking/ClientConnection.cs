@@ -22,6 +22,7 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Godot.Scripts.World;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking;
@@ -76,6 +77,8 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
+                SphServer.Server.SphereServer.ServerNode?.WorldChunks?.NotifyClientPosition(sphereClient);
+                SphServer.Server.SphereServer.ServerNode?.TerrainGround?.NotifyClientPosition(sphereClient);
             }
 
             if (seenFirstPositionKeepalive)

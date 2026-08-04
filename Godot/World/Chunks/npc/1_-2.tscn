@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_5w1g5"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_jaxkh"]
+
+[node name="Chunk_npc_1_-2" type="Node3D" unique_id=874068228]
+
+[node name="NPC_4697_Крис_Кросс_4697_4697_4697_4697_4697_4697_4697_4697_4697" type="Node3D" parent="." unique_id=463034119 instance=ExtResource("1_5w1g5")]
+transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, 116.6755, -161.03786, -115.14656)
+script = ExtResource("2_jaxkh")
+NameID = 4481
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 142
+ID = 4697
+ObjectType = 216
+ModelName = "npc07"

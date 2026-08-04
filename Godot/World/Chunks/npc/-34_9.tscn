@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_5knjd"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_owplq"]
+
+[node name="Chunk_npc_-34_9" type="Node3D" unique_id=897126429]
+
+[node name="NPC_4040_Томас_Гловер_4040_4040_4040_4040_4040_4040_4040_4040_4040" type="Node3D" parent="." unique_id=1933467778 instance=ExtResource("1_5knjd")]
+transform = Transform3D(-0.073564574, 0, 0.99729043, 0, 1, 0, -0.99729043, 0, -0.073564574, -3343.3486, 343.48618, 904.93994)
+script = ExtResource("2_owplq")
+NameID = 4277
+IconName = "npc_banker"
+NpcType = 17
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 67
+ID = 4040
+ObjectType = 225
+ModelName = "npc29d"

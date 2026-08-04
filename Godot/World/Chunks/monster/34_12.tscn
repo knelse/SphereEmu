@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_pxeo6"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_3hf5x"]
+
+[node name="Chunk_monster_34_12" type="Node3D" unique_id=1936682540]
+
+[node name="MonsterSpawner_131E_[3464]_[157]_[-1217]" type="Node3D" parent="." unique_id=1117091376 instance=ExtResource("1_pxeo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3464.6418, -157.64795, 1216.6786)
+script = ExtResource("2_3hf5x")
+OriginalDisplayName = "MonsterSpawner_131E_[3464]_[157]_[-1217]"
+RegularMonsterMinLevel = 32
+RegularMonsterMaxLevel = 38
+NamedMonsterMinLevel = 32
+NamedMonsterMaxLevel = 38
+
+[node name="MonsterSpawner_131D_[3405]_[157]_[-1243]" type="Node3D" parent="." unique_id=25877088 instance=ExtResource("1_pxeo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3405.4788, -157.64795, 1242.0674)
+script = ExtResource("2_3hf5x")
+OriginalDisplayName = "MonsterSpawner_131D_[3405]_[157]_[-1243]"
+RegularMonsterMinLevel = 32
+RegularMonsterMaxLevel = 38
+NamedMonsterMinLevel = 32
+NamedMonsterMaxLevel = 38
+
+[node name="MonsterSpawner_131C_[3456]_[157]_[-1294]" type="Node3D" parent="." unique_id=98390091 instance=ExtResource("1_pxeo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3456.335, -157.64795, 1293.0536)
+script = ExtResource("2_3hf5x")
+RegularMonsterMinLevel = 32
+RegularMonsterMaxLevel = 38
+NamedMonsterMinLevel = 32
+NamedMonsterMaxLevel = 38
+
+[node name="MonsterSpawner_10AA_[3473]_[157]_[-1251]" type="Node3D" parent="." unique_id=432237540 instance=ExtResource("1_pxeo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3473.7556, -157.64795, 1250.2177)
+script = ExtResource("2_3hf5x")
+RegularMonsterMinLevel = 32
+RegularMonsterMaxLevel = 38
+NamedMonsterMinLevel = 32
+NamedMonsterMaxLevel = 38
+
+[node name="MonsterSpawner_7402_[3457]_[156]_[-1201]" type="Node3D" parent="." unique_id=1147120862 instance=ExtResource("1_pxeo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3457.7617, -156.89749, 1200.4552)
+script = ExtResource("2_3hf5x")
+RegularMonsterMinLevel = 32
+RegularMonsterMaxLevel = 38
+NamedMonsterMinLevel = 32
+NamedMonsterMaxLevel = 38

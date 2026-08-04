@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_pnu3e"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_a85p7"]
+
+[node name="Chunk_door_12_-4" type="Node3D" unique_id=527936746]
+
+[node name="DoorExit_601D_1260_4518_323_24605_24605" type="Node3D" parent="." unique_id=138598186 instance=ExtResource("1_pnu3e")]
+transform = Transform3D(0.53499764, 0, 0.8448536, 0, 1, 0, -0.8448536, 0, 0.53499764, 1296.5088, -4463.498, -368.35474)
+script = ExtResource("2_a85p7")
+DoorID = 32767
+HasTarget = true
+TargetX = 1260.449
+TargetY = 4518.501
+TargetZ = 323.40332
+Angle = 41
+ID = 24605
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_6022_1296_4512_297_24610_24610" type="Node3D" parent="." unique_id=1693757579 instance=ExtResource("1_pnu3e")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 1263.5901, -4517.348, -323.5127)
+script = ExtResource("2_a85p7")
+DoorID = 32767
+HasTarget = true
+TargetX = 1296.2969
+TargetY = 4512.6577
+TargetZ = 297.89038
+Angle = 192
+ID = 24610
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_601E_1297_4464_368_24606_24606" type="Node3D" parent="." unique_id=1540979136 instance=ExtResource("1_pnu3e")]
+transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, 1259.2109, -4517.582, -323.56226)
+script = ExtResource("2_a85p7")
+DoorID = 32767
+HasTarget = true
+TargetX = 1297.1333
+TargetY = 4464.809
+TargetZ = 368.1355
+Angle = 191
+ID = 24606
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_6020_1310_4468_322_24608_24608" type="Node3D" parent="." unique_id=1198060377 instance=ExtResource("1_pnu3e")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 1259.1782, -4517.5977, -314.65552)
+script = ExtResource("2_a85p7")
+DoorID = 32767
+HasTarget = true
+TargetX = 1310.5325
+TargetY = 4468.4907
+TargetZ = 322.3352
+Angle = 192
+ID = 24608
+ObjectType = 60
+ModelName = "edoor"

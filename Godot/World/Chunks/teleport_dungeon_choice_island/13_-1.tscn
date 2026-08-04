@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport_dungeon_choice_island.tscn" id="1_exu6e"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportDungeonChoiceIsland.cs" id="2_op50n"]
+
+[node name="Chunk_teleport_dungeon_choice_island_13_-1" type="Node3D" unique_id=213456573]
+
+[node name="TeleportDungeonChoiceIsland_1226_[1358]_[1500]_[49]_4646_4646_4646_4646_4646_4646_4646_4646_4646" type="Node3D" parent="." unique_id=524686144 instance=ExtResource("1_exu6e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1358.642, -1500.963, -49.906)
+script = ExtResource("2_op50n")
+ID = 4646
+ObjectType = 103

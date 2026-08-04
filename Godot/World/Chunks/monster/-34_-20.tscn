@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_npc2e"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_ai7l7"]
+
+[node name="Chunk_monster_-34_-20" type="Node3D" unique_id=503319144]
+
+[node name="MonsterSpawner_9290_[-3381]_[403]_[1990]" type="Node3D" parent="." unique_id=1496419267 instance=ExtResource("1_npc2e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3380.8127, -403.58154, -1990.9044)
+script = ExtResource("2_ai7l7")
+OriginalDisplayName = "MonsterSpawner_9290_[-3381]_[403]_[1990]"
+RegularMonsterMinLevel = 29
+RegularMonsterMaxLevel = 31
+NamedMonsterMinLevel = 29
+NamedMonsterMaxLevel = 31

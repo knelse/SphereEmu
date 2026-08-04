@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_4ar44"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_1morb"]
+
+[node name="Chunk_npc_18_3" type="Node3D" unique_id=1432096516]
+
+[node name="NPC_4968_Эвен_Соу_4968_4968_4968_4968_4968_4968_4968_4968_4968" type="Node3D" parent="." unique_id=1039775063 instance=ExtResource("1_4ar44")]
+transform = Transform3D(-0.21910137, 0, -0.9757021, 0, 1, 0, 0.9757021, 0, -0.21910137, 1883.0952, -155.56778, 397.69275)
+script = ExtResource("2_1morb")
+NameID = 4400
+IconName = "npc_trade_magic"
+NpcType = 13
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 183
+ID = 4968
+ObjectType = 205
+ModelName = "npc07"

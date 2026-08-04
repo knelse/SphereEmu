@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_cvqxd"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_r5hfj"]
+
+[node name="Chunk_npc_25_-9" type="Node3D" unique_id=1400696917]
+
+[node name="NPC_4561_Роджер_Смит_4561_4561_4561_4561_4561_4561_4561_4561_4561" type="Node3D" parent="." unique_id=1996242495 instance=ExtResource("1_cvqxd")]
+transform = Transform3D(0.47139677, 0, 0.88192123, 0, 1, 0, -0.88192123, 0, 0.47139677, 2591.9387, -159.84889, -835.37714)
+script = ExtResource("2_r5hfj")
+NameID = 4490
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 44
+ID = 4561
+ObjectType = 216
+ModelName = "npc08"

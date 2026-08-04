@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using System.Net.Sockets;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.World;
 using SphServer.Server.Config;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
@@ -19,11 +22,21 @@ public partial class SphereServer : Node
 
 	public static SphereServer ServerNode = null!;
 	private ConnectionHandler connectionHandler = null!;
+	private WorldChunkStreamer? worldChunkStreamer;
+	private TerrainGroundStreamer? terrainGroundStreamer;
+
+	public WorldChunkStreamer? WorldChunks => worldChunkStreamer;
+	public TerrainGroundStreamer? TerrainGround => terrainGroundStreamer;
 
 	public override void _Ready()
 	{
-		// Headless spawn-slot bake instantiates MainServer for terrain + spawners only.
-		if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
+		StartupTiming.Mark("SphereServer._Ready enter");
+
+		// Headless tools instantiate MainServer for terrain + placements only.
+		if (MonsterSpawnSlotHeadlessBake.IsActive
+			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
+			|| WorldChunkSplitHeadless.IsActive
+			|| TerrainGroundPackHeadless.IsActive)
 		{
 			ServerNode = this;
 			return;
@@ -33,21 +46,49 @@ public partial class SphereServer : Node
 		SphPacketLogger.Initialize();
 		SphLogger.Info("Starting SphServer...");
 
+		var watch = Stopwatch.StartNew();
 		BalanceConfig.PreloadAll();
+		StartupTiming.MarkSpan("BalanceConfig.PreloadAll", watch.ElapsedMilliseconds);
+
+		watch.Restart();
 		InitializeCollections();
+		StartupTiming.MarkSpan("DbConnection.Initialize", watch.ElapsedMilliseconds);
+
 		SetupTcpServer();
 		ServerNode = this;
+
+		worldChunkStreamer = GetNodeOrNull<WorldChunkStreamer>("WorldChunkStreamer");
+		if (worldChunkStreamer is null)
+		{
+			worldChunkStreamer = new WorldChunkStreamer { Name = "WorldChunkStreamer" };
+			AddChild(worldChunkStreamer);
+		}
+
+		StartupTiming.Mark("WorldChunkStreamer ready");
+
+		terrainGroundStreamer = FindTerrainGroundStreamer();
+		if (terrainGroundStreamer is null)
+		{
+			terrainGroundStreamer = new TerrainGroundStreamer { Name = "TerrainGroundStreamer" };
+			AddChild(terrainGroundStreamer);
+		}
+
+		StartupTiming.Mark("TerrainGroundStreamer ready");
+
 		AddChild(new MonsterSpawnerActivationManagerNode());
 
 		connectionHandler = new ConnectionHandler(ClientScene, this);
 
 		SphLogger.Info("Server up, waiting for connections...");
+		StartupTiming.Mark("SphereServer._Ready complete");
 	}
 
 	public override void _Process(double delta)
 	{
 		if (MonsterSpawnSlotHeadlessBake.IsActive
 			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
+			|| WorldChunkSplitHeadless.IsActive
+			|| TerrainGroundPackHeadless.IsActive
 			|| tcpServer is null)
 		{
 			return;
@@ -61,6 +102,24 @@ public partial class SphereServer : Node
 		var streamPeer = tcpServer.TakeConnection();
 
 		connectionHandler.Handle(streamPeer);
+	}
+
+	private TerrainGroundStreamer? FindTerrainGroundStreamer()
+	{
+		if (GetNodeOrNull<TerrainGroundStreamer>("TerrainGroundStreamer") is { } direct)
+		{
+			return direct;
+		}
+
+		foreach (var node in FindChildren("*", recursive: true))
+		{
+			if (node is TerrainGroundStreamer streamer)
+			{
+				return streamer;
+			}
+		}
+
+		return null;
 	}
 
 	private static void InitializeCollections()

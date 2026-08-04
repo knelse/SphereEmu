@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_04oqj"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_o6yaa"]
+
+[node name="Chunk_npc_-20_-5" type="Node3D" unique_id=1677839208]
+
+[node name="NPC_5445_Пол_Маклауд_5445_5445_5445_5445_5445_5445_5445_5445_5445" type="Node3D" parent="." unique_id=2134882889 instance=ExtResource("1_04oqj")]
+transform = Transform3D(0.6715591, 0, -0.740951, 0, 1, 0, 0.740951, 0, 0.6715591, -1997.2186, 106.89213, -484.41504)
+script = ExtResource("2_o6yaa")
+NameID = 4042
+IconName = "npc_trade_wpon"
+NpcType = 11
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 222
+ID = 5445
+ObjectType = 213
+ModelName = "npc08"
+
+[node name="NPC_5446_Мак_Холханонгер_5446_5446_5446_5446_5446_5446_5446_5446_5446" type="Node3D" parent="." unique_id=1527309959 instance=ExtResource("1_04oqj")]
+transform = Transform3D(-0.72424704, 0, -0.6895406, 0, 1, 0, 0.6895406, 0, -0.72424704, -1972.2217, 108.239, -483.49744)
+script = ExtResource("2_o6yaa")
+NameID = 4043
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 159
+ID = 5446
+ObjectType = 213
+ModelName = "npc29c"
+
+[node name="NPC_5449_Бен_Мамуба_5449_5449_5449_5449_5449_5449_5449_5449_5449" type="Node3D" parent="." unique_id=426409450 instance=ExtResource("1_04oqj")]
+transform = Transform3D(0.44961125, 0, -0.89322436, 0, 1, 0, 0.89322436, 0, 0.44961125, -1965.199, 107.06505, -456.65872)
+script = ExtResource("2_o6yaa")
+NameID = 4046
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 211
+ID = 5449
+ObjectType = 213
+ModelName = "npc29b"
+
+[node name="NPC_5466_Дейв_Лампардо_5466_5466_5466_5466_5466_5466_5466_5466_5466" type="Node3D" parent="." unique_id=226331065 instance=ExtResource("1_04oqj")]
+transform = Transform3D(0.78834647, 0, 0.6152316, 0, 1, 0, -0.6152316, 0, 0.78834647, -1967.6174, 109.53333, -455.53372)
+script = ExtResource("2_o6yaa")
+NameID = 4067
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 27
+ID = 5466
+ObjectType = 213
+ModelName = "npc29b"

@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_cc8qy"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_8kq4g"]
+
+[node name="Chunk_door_-34_1" type="Node3D" unique_id=105834052]
+
+[node name="DoorEntrance_0901_-3383_-345_-104_2305_2305" type="Node3D" parent="." unique_id=953842044 instance=ExtResource("1_cc8qy")]
+transform = Transform3D(0.65317285, 0, -0.75720865, 0, 1, 0, 0.75720865, 0, 0.65317285, -3381.8337, 355.58728, 104.32245)
+script = ExtResource("2_8kq4g")
+DoorID = 32767
+HasTarget = true
+TargetX = -3383.6118
+TargetY = -345.18707
+TargetZ = -104.28464
+Angle = 221
+ID = 2305
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0900_-3379_-356_-102_2304_2304" type="Node3D" parent="." unique_id=1951568239 instance=ExtResource("1_cc8qy")]
+transform = Transform3D(0.098017134, 0, 0.9951847, 0, 1, 0, -0.9951847, 0, 0.098017134, -3382.9163, 346.2781, 104.262665)
+script = ExtResource("2_8kq4g")
+DoorID = 32767
+HasTarget = true
+TargetX = -3379.876
+TargetY = -356.71606
+TargetZ = -102.83722
+Angle = 60
+ID = 2304
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_08FF_-3384_-352_-117_2303_2303" type="Node3D" parent="." unique_id=2019968564 instance=ExtResource("1_cc8qy")]
+transform = Transform3D(0.94952816, 0, 0.31368175, 0, 1, 0, -0.31368175, 0, 0.94952816, -3384.7961, 355.83185, 119.332)
+script = ExtResource("2_8kq4g")
+DoorID = 32767
+HasTarget = true
+TargetX = -3384.3523
+TargetY = -352.51764
+TargetZ = -117.83972
+Angle = 13
+ID = 2303
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_08FE_-3384_-356_-121_2302_2302" type="Node3D" parent="." unique_id=1707269126 instance=ExtResource("1_cc8qy")]
+transform = Transform3D(0.92387956, 0, -0.38268343, 0, 1, 0, 0.38268343, 0, 0.92387956, -3384.5308, 353.73657, 118.59601)
+script = ExtResource("2_8kq4g")
+DoorID = 32767
+HasTarget = true
+TargetX = -3384.2104
+TargetY = -356.9436
+TargetZ = -121.630646
+Angle = 240
+ID = 2302
+ObjectType = 60
+ModelName = "edoor"

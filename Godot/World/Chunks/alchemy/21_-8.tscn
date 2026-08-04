@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/alchemy_material_spawner.tscn" id="1_tk8uj"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/AlchemyMaterialSpawner.cs" id="2_h8b5k"]
+
+[node name="Chunk_alchemy_21_-8" type="Node3D" unique_id=1744000576]
+
+[node name="AlchemyMaterialSpawner54" type="Node3D" parent="." unique_id=1740366913 instance=ExtResource("1_tk8uj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2186.0693, -205.45349, -790.7762)
+script = ExtResource("2_h8b5k")
+SpawnRadiusMeters = 75.0
+MineralGameObjectIds = PackedInt32Array(931, 929, 930)

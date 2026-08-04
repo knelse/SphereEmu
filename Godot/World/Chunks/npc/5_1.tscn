@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_2gv3p"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_6pkch"]
+
+[node name="Chunk_npc_5_1" type="Node3D" unique_id=538139325]
+
+[node name="NPC_5182_Бенджамин_Симпсон_5182_5182_5182_5182_5182_5182_5182_5182_5182" type="Node3D" parent="." unique_id=786483162 instance=ExtResource("1_2gv3p")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 515.3365, -159.84491, 197.91725)
+script = ExtResource("2_6pkch")
+NameID = 4103
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 64
+ID = 5182
+ObjectType = 213
+ModelName = "npc29b"
+
+[node name="NPC_5199_Сеймур_Хеффер_5199_5199_5199_5199_5199_5199_5199_5199_5199" type="Node3D" parent="." unique_id=454982064 instance=ExtResource("1_2gv3p")]
+transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, 510.45862, -159.86244, 193.44647)
+script = ExtResource("2_6pkch")
+NameID = 4127
+IconName = "npc_trade_wpon"
+NpcType = 11
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 142
+ID = 5199
+ObjectType = 213
+ModelName = "npc08"
+
+[node name="NPC_5203_Грифин_Той_5203_5203_5203_5203_5203_5203_5203_5203_5203" type="Node3D" parent="." unique_id=776985968 instance=ExtResource("1_2gv3p")]
+transform = Transform3D(-0.9951786, 0, -0.09801642, 0, 1, 0, 0.09801642, 0, -0.9951786, 501.47156, -159.88086, 192.81662)
+script = ExtResource("2_6pkch")
+NameID = 4159
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 132
+ID = 5203
+ObjectType = 213
+ModelName = "npc29a"

@@ -1,6 +1,7 @@
 #if TOOLS
 using System.Diagnostics;
 using Godot;
+using SphServer.Godot.Scripts.World;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
@@ -25,6 +26,15 @@ public static class EditorSpawnSlotBakeCheckpoint
                     $"MonsterSpawnSlotBaker: progress save failed ({err}) after "
                     + $"{processed}/{totalDirty} dirty spawner(s).");
                 return;
+            }
+
+            try
+            {
+                WorldContentIndex.GetOrLoad().SaveTo(WorldChunkCatalog.IndexPath);
+            }
+            catch (global::System.Exception indexEx)
+            {
+                GD.PushWarning($"MonsterSpawnSlotBaker: index save threw ({indexEx.Message}).");
             }
 
             GD.Print(

@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_lcm4d"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_uoqcq"]
+
+[node name="Chunk_monster_-25_-1" type="Node3D" unique_id=1329200002]
+
+[node name="MonsterSpawner_CFF8_[-2413]_[-93]_[95]" type="Node3D" parent="." unique_id=1946929778 instance=ExtResource("1_lcm4d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2412.974, 92.921455, -95.830734)
+script = ExtResource("2_uoqcq")
+RegularMonsterMinLevel = 42
+RegularMonsterMaxLevel = 46
+NamedMonsterMinLevel = 42
+NamedMonsterMaxLevel = 46
+
+[node name="MonsterSpawner_0A07_[-2500]_[1500]_[84]" type="Node3D" parent="." unique_id=-1294964729 instance=ExtResource("1_lcm4d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2499.9124, -1500.2225, -84.75118)
+script = ExtResource("2_uoqcq")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A07_[-2500]_[1500]_[84]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 25
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 25
+
+[node name="MonsterSpawner_0A08_[-2498]_[1500]_[53]" type="Node3D" parent="." unique_id=-1294964728 instance=ExtResource("1_lcm4d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2497.9036, -1500.9778, -53.050716)
+script = ExtResource("2_uoqcq")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A08_[-2498]_[1500]_[53]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 25
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 25
+
+[node name="MonsterSpawner_0A09_[-2456]_[1500]_[54]" type="Node3D" parent="." unique_id=-1294964727 instance=ExtResource("1_lcm4d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2455.2656, -1500.1443, -54.742443)
+script = ExtResource("2_uoqcq")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A09_[-2456]_[1500]_[54]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 25
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 25

@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_v3m1g"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_xv8dx"]
+
+[node name="Chunk_npc_22_27" type="Node3D" unique_id=1445603080]
+
+[node name="NPC_5177_Феликс_Дерегенерато_5177_5177_5177_5177_5177_5177_5177_5177_5177" type="Node3D" parent="." unique_id=1888731974 instance=ExtResource("1_v3m1g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2274.5122, -159.85492, 2709.2397)
+script = ExtResource("2_xv8dx")
+NameID = 4253
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+ID = 5177
+ObjectType = 213
+ModelName = "npc29a"

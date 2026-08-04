@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_0jgkp"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_6y60k"]
+
+[node name="Chunk_monster_-7_-2" type="Node3D" unique_id=1405404181]
+
+[node name="MonsterSpawner_8DEB_[-606]_[-94]_[195]" type="Node3D" parent="." unique_id=373791916 instance=ExtResource("1_0jgkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -605.4934, 93.3504, -195.26506)
+script = ExtResource("2_6y60k")
+OriginalDisplayName = "MonsterSpawner_8DEB_[-606]_[-94]_[195]"
+RegularMonsterMinLevel = 57
+RegularMonsterMaxLevel = 63
+NamedMonsterMinLevel = 57
+NamedMonsterMaxLevel = 63
+
+[node name="MonsterSpawner_00DA_[-685]_[1502]_[153]" type="Node3D" parent="." unique_id=32956979 instance=ExtResource("1_0jgkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -684.7212, -1502.1611, -153.2074)
+script = ExtResource("2_6y60k")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_00DA_[-685]_[1502]_[153]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_00CE_[-627]_[1501]_[147]" type="Node3D" parent="." unique_id=1955905224 instance=ExtResource("1_0jgkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -626.02606, -1501.2499, -147.5305)
+script = ExtResource("2_6y60k")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_00CE_[-627]_[1501]_[147]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 25
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 25
+
+[node name="MonsterSpawner_00CF_[-643]_[1501]_[114]" type="Node3D" parent="." unique_id=1007907249 instance=ExtResource("1_0jgkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -642.818, -1501.2499, -114.96817)
+script = ExtResource("2_6y60k")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_00CF_[-643]_[1501]_[114]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_00CD_[-670]_[1501]_[128]" type="Node3D" parent="." unique_id=1304331701 instance=ExtResource("1_0jgkp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -669.93225, -1501.2499, -128.9417)
+script = ExtResource("2_6y60k")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_00CD_[-670]_[1501]_[128]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20

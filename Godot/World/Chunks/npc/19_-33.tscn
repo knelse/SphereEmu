@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_siwlj"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_udweu"]
+
+[node name="Chunk_npc_19_-33" type="Node3D" unique_id=1222389614]
+
+[node name="NPC_5411_Марк_Клейтон_5411_5411_5411_5411_5411_5411_5411_5411_5411" type="Node3D" parent="." unique_id=2000449023 instance=ExtResource("1_siwlj")]
+transform = Transform3D(-0.98527765, 0, 0.17096181, 0, 1, 0, -0.17096181, 0, -0.98527765, 1902.9355, -403.1005, -3284.8127)
+script = ExtResource("2_udweu")
+NameID = 4025
+IconName = "npc_trade_wpon"
+NpcType = 11
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 121
+ID = 5411
+ObjectType = 213
+ModelName = "npc08"

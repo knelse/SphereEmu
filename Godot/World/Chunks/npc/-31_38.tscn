@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_p4hdr"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_0pwqm"]
+
+[node name="Chunk_npc_-31_38" type="Node3D" unique_id=895257885]
+
+[node name="NPC_5170_Базиль_Нозес_5170_5170_5170_5170_5170_5170_5170_5170_5170" type="Node3D" parent="." unique_id=1838690496 instance=ExtResource("1_p4hdr")]
+transform = Transform3D(-0.6152316, 0, -0.78834647, 0, 1, 0, 0.78834647, 0, -0.6152316, -3096.2134, -1100.0175, 3893.6104)
+script = ExtResource("2_0pwqm")
+NameID = 4202
+IconName = "npc_tavernkeepr"
+NpcType = 5
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 165
+ID = 5170
+ObjectType = 213
+ModelName = "npc29c"

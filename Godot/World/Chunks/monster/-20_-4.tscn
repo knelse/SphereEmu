@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_cdul5"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_7ix0a"]
+
+[node name="Chunk_monster_-20_-4" type="Node3D" unique_id=881466661]
+
+[node name="MonsterSpawner_568A_[-1999]_[-94]_[393]" type="Node3D" parent="." unique_id=1861115293 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_cdul5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1998.9817, 93.46343, -393.66095)
+script = ExtResource("2_7ix0a")
+OriginalDisplayName = "MonsterSpawner_568A_[-1999]_[-94]_[393]"
+RegularMonsterMinLevel = 31
+RegularMonsterMaxLevel = 34
+NamedMonsterMinLevel = 31
+NamedMonsterMaxLevel = 34
+RegularMonsters = [NodePath("Monster_Лесной_Карлик_32_10020_4117_4117"), NodePath("Monster_Номрадская_саламандра_32_10021_4118_4118"), NodePath("Monster_Снежный_мамонт_34_10022_4119_4119")]
+SpawningEnabled = true

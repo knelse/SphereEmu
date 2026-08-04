@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_0652p"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_hc1p7"]
+
+[node name="Chunk_npc_2_23" type="Node3D" unique_id=423108694]
+
+[node name="NPC_4551_Брэд_Баттер_4551_4551_4551_4551_4551_4551_4551_4551_4551" type="Node3D" parent="." unique_id=1735912015 instance=ExtResource("1_0652p")]
+transform = Transform3D(0.7883465, 0, -0.61523145, 0, 1, 0, 0.61523145, 0, 0.7883465, 260.45596, -158.2396, 2354.7231)
+script = ExtResource("2_hc1p7")
+NameID = 4482
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 229
+ID = 4551
+ObjectType = 216
+ModelName = "npc08"

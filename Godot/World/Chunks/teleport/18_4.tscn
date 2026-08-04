@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport.tscn" id="1_dooi1"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Teleport.cs" id="2_jghsc"]
+
+[node name="Chunk_teleport_18_4" type="Node3D" unique_id=429175656]
+
+[node name="Teleport_142E_[1896]_[156]_[-436]_5166_5166_5166_5166_5166_5166_5166_5166_5166" type="Node3D" parent="." unique_id=1526756335 instance=ExtResource("1_dooi1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1896.1787, -156.9255, 435.48474)
+script = ExtResource("2_jghsc")
+ID = 5166
+ObjectType = 63

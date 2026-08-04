@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_lkiij"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_yw1sc"]
+
+[node name="Chunk_monster_-8_-9" type="Node3D" unique_id=310840394]
+
+[node name="ERROR - MonsterSpawner_DAFA_[-709]_[501]_[853]" type="Node3D" parent="." unique_id=1562004887 instance=ExtResource("1_lkiij")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -708.7431, -501.2575, -853.65717)
+script = ExtResource("2_yw1sc")
+SpawnRadiusMeters = 4.0
+SpawnPlacementInvalid = true
+HasSpawnError = true
+OriginalDisplayName = "MonsterSpawner_DAFA_[-709]_[501]_[853]"
+RegularMonsterMinLevel = 66
+RegularMonsterMaxLevel = 68
+NamedMonsterMinLevel = 66
+NamedMonsterMaxLevel = 68

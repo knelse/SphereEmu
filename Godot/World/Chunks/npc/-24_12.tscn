@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_tfrwp"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_jl14p"]
+
+[node name="Chunk_npc_-24_12" type="Node3D" unique_id=469728286]
+
+[node name="NPC_5458_Мартин_Хип_5458_5458_5458_5458_5458_5458_5458_5458_5458" type="Node3D" parent="." unique_id=1894488381 instance=ExtResource("1_tfrwp")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2384.704, 345.52884, 1299.931)
+script = ExtResource("2_jl14p")
+NameID = 4333
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 64
+ID = 5458
+ObjectType = 213
+ModelName = "npc08"

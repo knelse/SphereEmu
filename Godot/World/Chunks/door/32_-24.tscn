@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_04huk"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_wuqgy"]
+
+[node name="Chunk_door_32_-24" type="Node3D" unique_id=97072418]
+
+[node name="DoorExit_9ED8_3260_4518_2323_40664_40664" type="Node3D" parent="." unique_id=201005830 instance=ExtResource("1_04huk")]
+transform = Transform3D(0.53499764, 0, 0.8448536, 0, 1, 0, -0.8448536, 0, 0.53499764, 3296.5088, -4463.498, -2368.3547)
+script = ExtResource("2_wuqgy")
+DoorID = 32767
+HasTarget = true
+TargetX = 3260.449
+TargetY = 4518.501
+TargetZ = 2323.4033
+Angle = 41
+ID = 40664
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_9EE4_3296_4512_2297_40676_40676" type="Node3D" parent="." unique_id=1049021252 instance=ExtResource("1_04huk")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 3263.59, -4517.348, -2323.5127)
+script = ExtResource("2_wuqgy")
+DoorID = 32767
+HasTarget = true
+TargetX = 3296.2969
+TargetY = 4512.6577
+TargetZ = 2297.8904
+Angle = 192
+ID = 40676
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_9ED9_3297_4464_2368_40665_40665" type="Node3D" parent="." unique_id=527499203 instance=ExtResource("1_04huk")]
+transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, 3259.211, -4517.582, -2323.5623)
+script = ExtResource("2_wuqgy")
+DoorID = 32767
+HasTarget = true
+TargetX = 3297.1333
+TargetY = 4464.809
+TargetZ = 2368.1355
+Angle = 191
+ID = 40665
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_B06A_3310_4468_2322_45162_45162" type="Node3D" parent="." unique_id=955107441 instance=ExtResource("1_04huk")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 3259.1782, -4517.5977, -2314.6555)
+script = ExtResource("2_wuqgy")
+DoorID = 32767
+HasTarget = true
+TargetX = 3310.5325
+TargetY = 4468.4907
+TargetZ = 2322.3352
+Angle = 192
+ID = 45162
+ObjectType = 60
+ModelName = "edoor"

@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_w5jjl"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_vnk5b"]
+
+[node name="Chunk_monster_-15_32" type="Node3D" unique_id=951732004]
+
+[node name="MonsterSpawner_09B5_[-1490]_[1700]_[-3286]" type="Node3D" parent="." unique_id=-1294964811 instance=ExtResource("1_w5jjl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1489.9685, -1700.7723, 3285.0417)
+script = ExtResource("2_vnk5b")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09B5_[-1490]_[1700]_[-3286]"
+RegularMonsterMinLevel = 110
+RegularMonsterMaxLevel = 110
+NamedMonsterMinLevel = 110
+NamedMonsterMaxLevel = 110
+
+[node name="MonsterSpawner_09B6_[-1500]_[1700]_[-3270]" type="Node3D" parent="." unique_id=-1294964810 instance=ExtResource("1_w5jjl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1499.4169, -1700.7723, 3269.878)
+script = ExtResource("2_vnk5b")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09B6_[-1500]_[1700]_[-3270]"
+RegularMonsterMinLevel = 110
+RegularMonsterMaxLevel = 110
+NamedMonsterMinLevel = 110
+NamedMonsterMaxLevel = 110
+
+[node name="MonsterSpawner_09B7_[-1466]_[1700]_[-3241]" type="Node3D" parent="." unique_id=-1294964809 instance=ExtResource("1_w5jjl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1465.1189, -1700.7723, 3240.3787)
+script = ExtResource("2_vnk5b")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09B7_[-1466]_[1700]_[-3241]"
+RegularMonsterMinLevel = 110
+RegularMonsterMaxLevel = 110
+NamedMonsterMinLevel = 110
+NamedMonsterMaxLevel = 110
+
+[node name="MonsterSpawner_09B8_[-1431]_[1700]_[-3300]" type="Node3D" parent="." unique_id=-1294964808 instance=ExtResource("1_w5jjl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1430.312, -1700.7723, 3299.936)
+script = ExtResource("2_vnk5b")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09B8_[-1431]_[1700]_[-3300]"
+RegularMonsterMinLevel = 110
+RegularMonsterMaxLevel = 110
+NamedMonsterMinLevel = 110
+NamedMonsterMaxLevel = 110

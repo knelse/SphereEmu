@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport_broken.tscn" id="1_jnf2w"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportBroken.cs" id="2_e510x"]
+
+[node name="Chunk_teleport_broken_0_-1" type="Node3D" unique_id=2082050347]
+
+[node name="TeleportBroken_1403_[32]_[160]_[67]_5123_5123_5123_5123_5123_5123_5123_5123_5123" type="Node3D" parent="." unique_id=617050033 instance=ExtResource("1_jnf2w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.068825, -160.29855, -67.93484)
+script = ExtResource("2_e510x")
+ID = 5123
+ObjectType = 64

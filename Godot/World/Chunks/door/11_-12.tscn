@@ -1,0 +1,59 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_41xrw"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_q82i3"]
+
+[node name="Chunk_door_11_-12" type="Node3D" unique_id=2034360912]
+
+[node name="DoorEntrance_08EC_-899_1699_-3218_2284_2284" type="Node3D" parent="." unique_id=341692203 instance=ExtResource("1_41xrw")]
+transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 1117.9177, -1098.2767, -1121.1975)
+script = ExtResource("2_q82i3")
+DoorID = 32767
+HasTarget = true
+TargetX = -899.9158
+TargetY = 1699.4457
+TargetZ = -3218.5452
+Angle = 213
+ID = 2284
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0816_-1392_-96_694_2070_2070" type="Node3D" parent="." unique_id=644712194 instance=ExtResource("1_41xrw")]
+transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 1116.7065, -1092.7208, -1125.4884)
+script = ExtResource("2_q82i3")
+DoorID = 32767
+HasTarget = true
+TargetX = -1392.716
+TargetY = -96.7424
+TargetZ = 694.92456
+Angle = 213
+ID = 2070
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0815_5484_2069_2069" type="Node3D" parent="." unique_id=340699085 instance=ExtResource("1_41xrw")]
+transform = Transform3D(0.55557024, 0, 0.8314696, 0, 1, 0, -0.8314696, 0, 0.55557024, 1103.271, -1092.7362, -1130.0614)
+script = ExtResource("2_q82i3")
+DoorID = 5484
+Angle = 40
+ID = 2069
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0814_5483_2068_2068" type="Node3D" parent="." unique_id=563706633 instance=ExtResource("1_41xrw")]
+transform = Transform3D(0.5956993, 0, 0.8032075, 0, 1, 0, -0.8032075, 0, 0.5956993, 1100.8965, -1092.6887, -1126.6147)
+script = ExtResource("2_q82i3")
+DoorID = 5483
+Angle = 38
+ID = 2068
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0813_5482_2067_2067" type="Node3D" parent="." unique_id=1284875026 instance=ExtResource("1_41xrw")]
+transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 1100.3745, -1092.8756, -1120.7483)
+script = ExtResource("2_q82i3")
+DoorID = 5482
+Angle = 213
+ID = 2067
+ObjectType = 60
+ModelName = "edoor"

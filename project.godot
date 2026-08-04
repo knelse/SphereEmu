@@ -32,7 +32,7 @@ project/assembly_name="SphServer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/alchemy_material_spawner_gizmo/plugin.cfg", "res://addons/monster_spawner_gizmo/plugin.cfg")
+enabled=PackedStringArray("res://addons/alchemy_material_spawner_gizmo/plugin.cfg", "res://addons/monster_spawner_gizmo/plugin.cfg", "res://addons/world_chunk_streamer/plugin.cfg")
 
 [filesystem]
 

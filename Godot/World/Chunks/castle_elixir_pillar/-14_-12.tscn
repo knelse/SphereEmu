@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_elixir_pillar.tscn" id="1_8ktbo"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleElixirPillar.cs" id="2_63auq"]
+
+[node name="Chunk_castle_elixir_pillar_-14_-12" type="Node3D" unique_id=1122478599]
+
+[node name="CastleElixirPillar_18_Триумфалер _0C40_3136_3136_3136_3136_3136_3136_3136_3136_3136" type="Node3D" parent="." unique_id=194355503 instance=ExtResource("1_8ktbo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1304.3213, -1095.845, -1121.8558)
+script = ExtResource("2_63auq")
+Castle = 18
+ID = 3136
+ObjectType = 83
+ModelName = "cs_knot"

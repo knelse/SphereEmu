@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_1u0hm"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_5rfnr"]
+
+[node name="Chunk_npc_2_13" type="Node3D" unique_id=188605243]
+
+[node name="NPC_5109_Кларк_Хамметт_5109_5109_5109_5109_5109_5109_5109_5109_5109" type="Node3D" parent="." unique_id=2073554069 instance=ExtResource("1_1u0hm")]
+transform = Transform3D(-0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, -0.3136817, 296.15265, -159.91182, 1392.3254)
+script = ExtResource("2_5rfnr")
+NameID = 4390
+IconName = "npc_guilder"
+NpcType = 19
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 179
+ID = 5109
+ObjectType = 216
+ModelName = "npc55"

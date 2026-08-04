@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_g1s32"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_3cx4k"]
+
+[node name="Chunk_npc_20_34" type="Node3D" unique_id=396078387]
+
+[node name="NPC_5260_Жак_Пергисон_5260_5260_5260_5260_5260_5260_5260_5260_5260" type="Node3D" parent="." unique_id=251643889 instance=ExtResource("1_g1s32")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2063.147, -157.95389, 3457.4312)
+script = ExtResource("2_3cx4k")
+NameID = 4310
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+ID = 5260
+ObjectType = 213
+ModelName = "npc08"

@@ -1,0 +1,147 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/item_light_crystal.tscn" id="1_sbemq"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="2_30olw"]
+
+[node name="Chunk_light_crystal_-35_18" type="Node3D" unique_id=1148311149]
+
+[node name="LightCrystalYellow_CFAD_[-3443]_[1300]_[-1840]_53165_53165_53165_53165_53165_53165_53165_53165_53165" type="Node3D" parent="." unique_id=1924155178 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.90398926, 0, -0.4275552, 0, 1, 0, 0.4275552, 0, 0.90398926, -3442.0977, -1300.9622, 1839.3608)
+script = ExtResource("2_30olw")
+Angle = 238
+ID = 53165
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_A46D_[-3443]_[1300]_[-1870]_42093_42093_42093_42093_42093_42093_42093_42093_42093" type="Node3D" parent="." unique_id=1179365993 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.99728405, 0, -0.07356413, 0, 1, 0, 0.07356413, 0, 0.99728405, -3442.1472, -1300.5448, 1869.2705)
+script = ExtResource("2_30olw")
+Angle = 253
+ID = 42093
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D662_[-3440]_[1290]_[-1853]_54882_54882_54882_54882_54882_54882_54882_54882_54882" type="Node3D" parent="." unique_id=1530766075 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.9924795, 0, -0.12241085, 0, 1, 0, 0.12241085, 0, 0.9924795, -3439.0945, -1290.8748, 1852.9128)
+script = ExtResource("2_30olw")
+Angle = 251
+ID = 54882
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_A46C_[-3439]_[1300]_[-1886]_42092_42092_42092_42092_42092_42092_42092_42092_42092" type="Node3D" parent="." unique_id=1836106130 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.9852775, 0, -0.1709617, 0, 1, 0, 0.1709617, 0, 0.9852775, -3438.912, -1300.5529, 1885.1895)
+script = ExtResource("2_30olw")
+Angle = 249
+ID = 42092
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_A46B_[-3440]_[1290]_[-1900]_42091_42091_42091_42091_42091_42091_42091_42091_42091" type="Node3D" parent="." unique_id=1634495186 instance=ExtResource("1_sbemq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3439.3113, -1290.6198, 1899.462)
+script = ExtResource("2_30olw")
+ID = 42091
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_CFAC_[-3410]_[1300]_[-1840]_53164_53164_53164_53164_53164_53164_53164_53164_53164" type="Node3D" parent="." unique_id=281680675 instance=ExtResource("1_sbemq")]
+transform = Transform3D(-0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, -0.57580805, -3409.162, -1300.8997, 1839.3136)
+script = ExtResource("2_30olw")
+Angle = 167
+ID = 53164
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="_Node3D_47690_53164_53164_53164_53164_53164_53164_53164_53164_53164" type="Node3D" parent="." unique_id=1333895722 instance=ExtResource("1_sbemq")]
+transform = Transform3D(-0.57580805, 0, -0.81758493, 0, 1, 0, 0.81758493, 0, -0.57580805, -3409.195, -1300.9117, 1839.3081)
+script = ExtResource("2_30olw")
+Angle = 167
+ID = 53164
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7E6_[-3472]_[1290]_[-1900]_55270_55270_55270_55270_55270_55270_55270_55270_55270" type="Node3D" parent="." unique_id=2072121064 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -3471.2166, -1290.5232, 1899.0211)
+script = ExtResource("2_30olw")
+Angle = 255
+ID = 55270
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D871_[-3455]_[1300]_[-1826]_55409_55409_55409_55409_55409_55409_55409_55409_55409" type="Node3D" parent="." unique_id=690956463 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.07356478, 0, -0.99729043, 0, 1, 0, 0.99729043, 0, 0.07356478, -3454.1628, -1300.9108, 1825.3096)
+script = ExtResource("2_30olw")
+Angle = 195
+ID = 55409
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7E0_[-3455]_[1290]_[-1856]_55264_55264_55264_55264_55264_55264_55264_55264_55264" type="Node3D" parent="." unique_id=1546268487 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.9569403, 0, -0.29028484, 0, 1, 0, 0.29028484, 0, 0.9569403, -3454.773, -1290.5287, 1855.0023)
+script = ExtResource("2_30olw")
+Angle = 244
+ID = 55264
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7EA_[-3468]_[1281]_[-1882]_55274_55274_55274_55274_55274_55274_55274_55274_55274" type="Node3D" parent="." unique_id=1655810606 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.8032074, 0, -0.5956995, 0, 1, 0, 0.5956995, 0, 0.8032074, -3467.9744, -1281.0502, 1881.2412)
+script = ExtResource("2_30olw")
+Angle = 230
+ID = 55274
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7DD_[-3466]_[1300]_[-1886]_55261_55261_55261_55261_55261_55261_55261_55261_55261" type="Node3D" parent="." unique_id=538283713 instance=ExtResource("1_sbemq")]
+transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0.122410536, -3465.2253, -1300.8539, 1885.4896)
+script = ExtResource("2_30olw")
+Angle = 187
+ID = 55261
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7DC_[-3486]_[1300]_[-1856]_55260_55260_55260_55260_55260_55260_55260_55260_55260" type="Node3D" parent="." unique_id=1691634538 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.8314696, 0, 0.55557024, 0, 1, 0, -0.55557024, 0, 0.8314696, -3485.3423, -1300.6172, 1855.8733)
+script = ExtResource("2_30olw")
+Angle = 24
+ID = 55260
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7EA_[-3469]_[1280]_[-1882]_55274_55274_55274_55274_55274_55274_55274_55274_55274" type="Node3D" parent="." unique_id=1056029131 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.7572089, 0, -0.6531728, 0, 1, 0, 0.6531728, 0, 0.7572089, -3468.8806, -1280.8772, 1881.8037)
+script = ExtResource("2_30olw")
+Angle = 227
+ID = 55274
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7E2_[-3486]_[1270]_[-1900]_55266_55266_55266_55266_55266_55266_55266_55266_55266" type="Node3D" parent="." unique_id=848795072 instance=ExtResource("1_sbemq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3485.078, -1270.6223, 1899.0944)
+script = ExtResource("2_30olw")
+ID = 55266
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D7CF_[-3500]_[1280]_[-1871]_55247_55247_55247_55247_55247_55247_55247_55247_55247" type="Node3D" parent="." unique_id=1282860700 instance=ExtResource("1_sbemq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3499.8953, -1280.6133, 1870.5305)
+script = ExtResource("2_30olw")
+ID = 55247
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_A753_[-3455]_[1300]_[-1826]_42835_42835_42835_42835_42835_42835_42835_42835_42835" type="Node3D" parent="." unique_id=1460831097 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.4275551, 0, 0.9039893, 0, 1, 0, -0.9039893, 0, 0.4275551, -3454.13, -1300.8987, 1825.3151)
+script = ExtResource("2_30olw")
+Angle = 46
+ID = 42835
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_A155_[-3469]_[1280]_[-1882]_41301_41301_41301_41301_41301_41301_41301_41301_41301" type="Node3D" parent="." unique_id=1104648987 instance=ExtResource("1_sbemq")]
+transform = Transform3D(0.7572088, 0, 0.65317285, 0, 1, 0, -0.65317285, 0, 0.7572088, -3468.574, -1280.939, 1881.6133)
+script = ExtResource("2_30olw")
+Angle = 29
+ID = 41301
+ObjectType = 711
+ModelName = "mn_quartz"

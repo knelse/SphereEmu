@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_fnnna"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_i16th"]
+
+[node name="Chunk_monster_-21_-6" type="Node3D" unique_id=1833898625]
+
+[node name="MonsterSpawner_AED6_[-2001]_[-143]_[507]" type="Node3D" parent="." unique_id=875464607 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_fnnna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2003.2408, 117.69555, -510.23334)
+script = ExtResource("2_i16th")
+TargetRegularMonsterCount = 7
+SpawnRadiusMeters = 10.0
+OriginalDisplayName = "MonsterSpawner_AED6_[-2001]_[-143]_[507]"
+RegularMonsterMinLevel = 31
+RegularMonsterMaxLevel = 31
+NamedMonsterMinLevel = 31
+NamedMonsterMaxLevel = 31
+MobTypeOverrides = Array[int]([87])
+RegularMonsters = [NodePath("Monster_Кошка_31_10003_4100_4100"), NodePath("Monster_Кошка_31_10004_4101_4101"), NodePath("Monster_Кошка_31_10005_4102_4102"), NodePath("Monster_Кошка_31_10006_4103_4103"), NodePath("Monster_Кошка_31_10007_4104_4104"), NodePath("Monster_Кошка_31_10008_4105_4105"), NodePath("Monster_Кошка_31_10009_4106_4106")]
+SpawningEnabled = true

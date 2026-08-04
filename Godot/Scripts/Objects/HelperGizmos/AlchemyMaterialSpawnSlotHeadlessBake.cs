@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Godot.Scripts.Navigation;
+using SphServer.Godot.Scripts.World;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
@@ -75,6 +76,17 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
             return ExitFailure;
         }
 
+        if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute(
+                ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+        {
+            var streamer = new WorldChunkStreamer { Name = "WorldChunkStreamer" };
+            root.AddChild(streamer);
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            streamer.LoadAll();
+            GD.Print(
+                $"AlchemyMaterialSpawnSlotHeadlessBake: loaded chunks, spawners now={spawnersRoot.GetChildCount()}");
+        }
+
         var terrain = FindTerrainGridMap(root);
         if (terrain is null)
         {
@@ -141,14 +153,27 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
 
         if (!options.SkipSceneSave)
         {
-            GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: packing and saving scene…");
-            if (!TrySaveMainServer(root, options.ScenePath))
+            if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath)
+                || DirAccess.DirExistsAbsolute(ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
             {
-                return ExitFailure;
+                GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: re-packing world chunks + index…");
+                var packResult = WorldChunkPacker.PackFromMainServer(root, clearParents: true, extractSlots: true);
+                GD.Print(
+                    $"AlchemyMaterialSpawnSlotHeadlessBake: chunks={packResult.ChunksWritten}, "
+                    + $"nodes={packResult.NodesPacked}");
+            }
+            else
+            {
+                GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: packing and saving scene…");
+                if (!TrySaveMainServer(root, options.ScenePath))
+                {
+                    return ExitFailure;
+                }
             }
         }
         else
         {
+            WorldContentIndex.GetOrLoad().SaveTo(WorldChunkCatalog.IndexPath);
             GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: skipped scene save (--skip-scene-save).");
         }
 

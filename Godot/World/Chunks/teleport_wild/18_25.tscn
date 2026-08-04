@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport_wild.tscn" id="1_ev5fv"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportWild.cs" id="2_lnnqu"]
+
+[node name="Chunk_teleport_wild_18_25" type="Node3D" unique_id=59694191]
+
+[node name="TeleportWild_1461_[1856]_[160]_[-2527]_5217_5217_5217_5217_5217_5217_5217_5217_5217" type="Node3D" parent="." unique_id=51411016 instance=ExtResource("1_ev5fv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1856.8191, -160.49846, 2526.9092)
+script = ExtResource("2_lnnqu")
+ID = 5217
+ObjectType = 67

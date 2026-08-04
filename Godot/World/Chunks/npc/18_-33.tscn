@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_afn5e"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_5tjfa"]
+
+[node name="Chunk_npc_18_-33" type="Node3D" unique_id=1786418173]
+
+[node name="NPC_5137_Беннет_Макфрансен_5137_5137_5137_5137_5137_5137_5137_5137_5137" type="Node3D" parent="." unique_id=1543267682 instance=ExtResource("1_afn5e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1867.2424, -402.69522, -3277.9004)
+script = ExtResource("2_5tjfa")
+NameID = 4412
+IconName = "npc_trade_magic"
+NpcType = 14
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+ID = 5137
+ObjectType = 209
+ModelName = "npc59"
+
+[node name="NPC_5416_Дерек_Арено_5416_5416_5416_5416_5416_5416_5416_5416_5416" type="Node3D" parent="." unique_id=1533507394 instance=ExtResource("1_afn5e")]
+transform = Transform3D(-0.65317285, 0, 0.7572088, 0, 1, 0, -0.7572088, 0, -0.65317285, 1890.6172, -402.9207, -3297.4673)
+script = ExtResource("2_5tjfa")
+NameID = 4026
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 93
+ID = 5416
+ObjectType = 213
+ModelName = "npc29c"
+
+[node name="NPC_5421_Жозефина_Ланнет_5421_5421_5421_5421_5421_5421_5421_5421_5421" type="Node3D" parent="." unique_id=640196 instance=ExtResource("1_afn5e")]
+transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 1888.3804, -404.09595, -3266.753)
+script = ExtResource("2_5tjfa")
+NameID = 4027
+IconName = "npc_trade_alchm"
+NpcType = 6
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 213
+ID = 5421
+ObjectType = 213
+ModelName = "npc14b"
+
+[node name="NPC_5426_Кристина_Стадель_5426_5426_5426_5426_5426_5426_5426_5426_5426" type="Node3D" parent="." unique_id=1287131304 instance=ExtResource("1_afn5e")]
+transform = Transform3D(-0.870087, 0, 0.49289814, 0, 1, 0, -0.49289814, 0, -0.870087, 1899.8375, -403.15427, -3287.7075)
+script = ExtResource("2_5tjfa")
+NameID = 4028
+IconName = "npc_trade_magic"
+NpcType = 9
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 107
+ID = 5426
+ObjectType = 213
+ModelName = "npc14"
+
+[node name="NPC_5431_Крейг_Долтон_5431_5431_5431_5431_5431_5431_5431_5431_5431" type="Node3D" parent="." unique_id=180529695 instance=ExtResource("1_afn5e")]
+transform = Transform3D(0.90398926, 0, -0.4275552, 0, 1, 0, 0.4275552, 0, 0.90398926, 1885.2067, -402.8137, -3289.575)
+script = ExtResource("2_5tjfa")
+NameID = 4029
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 238
+ID = 5431
+ObjectType = 213
+ModelName = "npc29b"

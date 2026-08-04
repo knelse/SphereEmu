@@ -109,8 +109,13 @@ public partial class TerrainGridFill : Node3D
 		terrain.MeshLibrary = meshLib;
 		SaveMeshLibrary(meshLib);
 
-		var cellSize = new Vector3(TileSizeWorld, TileSizeWorld, TileSizeWorld);
+		// Historical Terrain GridMap uses cell corner origin (CellCenter* false). CellSize.Y
+		// must stay small: with CellCenterY, MapToLocal lifts cells by Y/2 (~50 m).
+		var cellSize = new Vector3(TileSizeWorld, 1f, TileSizeWorld);
 		terrain.CellSize = cellSize;
+		terrain.CellCenterX = false;
+		terrain.CellCenterY = false;
+		terrain.CellCenterZ = false;
 		terrain.Position = TerrainWorldOrigin;
 		terrain.Clear();
 
@@ -292,13 +297,17 @@ public partial class TerrainGridFill : Node3D
 
 	private PackedScene? LoadTileScene(string baseName)
 	{
+		// On-disk tile/texture stems are lowercase; map master names use Patch* casing.
+		var fileStem = baseName.ToLowerInvariant();
 		foreach (var ext in new[] { "blend", "glb", "gltf" })
 		{
-			var path = $"{TilesDirectory.TrimEnd('/')}/{baseName}.{ext}";
-			if (ResourceLoader.Exists(path))
+			var path = $"{TilesDirectory.TrimEnd('/')}/{fileStem}.{ext}";
+			if (!ResourceLoader.Exists(path))
 			{
-				return ResourceLoader.Load<PackedScene>(path);
+				continue;
 			}
+
+			return ResourceLoader.Load<PackedScene>(path);
 		}
 
 		return null;
@@ -306,7 +315,7 @@ public partial class TerrainGridFill : Node3D
 
 	private Texture2D? TryLoadTexture(string baseName)
 	{
-		var path = $"{TexturesDirectory.TrimEnd('/')}/{baseName}.dds";
+		var path = $"{TexturesDirectory.TrimEnd('/')}/{baseName.ToLowerInvariant()}.dds";
 		if (!ResourceLoader.Exists(path))
 		{
 			return null;

@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_wj4ac"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_bsdew"]
+
+[node name="Chunk_door_-16_36" type="Node3D" unique_id=1325353143]
+
+[node name="DoorExit_C7FA_-1539_4718_-3676_51194_51194" type="Node3D" parent="." unique_id=760923795 instance=ExtResource("1_wj4ac")]
+transform = Transform3D(0.53499764, 0, 0.8448536, 0, 1, 0, -0.8448536, 0, 0.53499764, -1503.4912, -4663.498, 3631.645)
+script = ExtResource("2_bsdew")
+DoorID = 32767
+HasTarget = true
+TargetX = -1539.551
+TargetY = 4718.501
+TargetZ = -3676.5964
+Angle = 41
+ID = 51194
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_CBFD_-1503_4712_-3702_52221_52221" type="Node3D" parent="." unique_id=571963213 instance=ExtResource("1_wj4ac")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1536.4099, -4717.348, 3676.487)
+script = ExtResource("2_bsdew")
+DoorID = 32767
+HasTarget = true
+TargetX = -1503.7031
+TargetY = 4712.6577
+TargetZ = -3702.1094
+Angle = 192
+ID = 52221
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_CE6B_-1502_4664_-3631_52843_52843" type="Node3D" parent="." unique_id=663470177 instance=ExtResource("1_wj4ac")]
+transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, -1540.7891, -4717.582, 3676.4375)
+script = ExtResource("2_bsdew")
+DoorID = 32767
+HasTarget = true
+TargetX = -1502.8667
+TargetY = 4664.809
+TargetZ = -3631.8643
+Angle = 191
+ID = 52843
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_BB8C_-1489_4668_-3677_48012_48012" type="Node3D" parent="." unique_id=1730589207 instance=ExtResource("1_wj4ac")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -1540.8218, -4717.5977, 3685.3442)
+script = ExtResource("2_bsdew")
+DoorID = 32767
+HasTarget = true
+TargetX = -1489.4675
+TargetY = 4668.4907
+TargetZ = -3677.6646
+Angle = 192
+ID = 48012
+ObjectType = 60
+ModelName = "edoor"

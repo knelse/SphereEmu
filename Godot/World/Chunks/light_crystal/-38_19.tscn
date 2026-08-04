@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/item_light_crystal.tscn" id="1_gsux7"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="2_ro77a"]
+
+[node name="Chunk_light_crystal_-38_19" type="Node3D" unique_id=1409020555]
+
+[node name="LightCrystal_C414_[-3717]_[1312]_[-1905]_50196_50196_50196_50196_50196_50196_50196_50196_50196" type="Node3D" parent="." unique_id=217888854 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3716.2915, -1312.6151, 1904.53)
+script = ExtResource("2_ro77a")
+ID = 50196
+ObjectType = 702
+ModelName = "mn_quartz"
+
+[node name="LightCrystal_B7A3_[-3759]_[1302]_[-1957]_47011_47011_47011_47011_47011_47011_47011_47011_47011" type="Node3D" parent="." unique_id=1718549775 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3758.7964, -1302.6122, 1956.9656)
+script = ExtResource("2_ro77a")
+ID = 47011
+ObjectType = 702
+ModelName = "mn_quartz"
+
+[node name="LightCrystal_864D_[-3716]_[1312]_[-1944]_34381_34381_34381_34381_34381_34381_34381_34381_34381" type="Node3D" parent="." unique_id=143163368 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3715.9226, -1312.6122, 1943.843)
+script = ExtResource("2_ro77a")
+ID = 34381
+ObjectType = 702
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_B7A4_[-3759]_[1302]_[-1917]_47012_47012_47012_47012_47012_47012_47012_47012_47012" type="Node3D" parent="." unique_id=1832944291 instance=ExtResource("1_gsux7")]
+transform = Transform3D(0.9924795, 0, -0.12241085, 0, 1, 0, 0.12241085, 0, 0.9924795, -3758.8098, -1302.3057, 1916.1746)
+script = ExtResource("2_ro77a")
+Angle = 251
+ID = 47012
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_B796_[-3701]_[1302]_[-1977]_46998_46998_46998_46998_46998_46998_46998_46998_46998" type="Node3D" parent="." unique_id=54426993 instance=ExtResource("1_gsux7")]
+transform = Transform3D(0.9891765, 0, 0.14673047, 0, 1, 0, -0.14673047, 0, 0.9891765, -3700.661, -1302.3082, 1976.9135)
+script = ExtResource("2_ro77a")
+Angle = 6
+ID = 46998
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_B78F_[-3716]_[1292]_[-1961]_46991_46991_46991_46991_46991_46991_46991_46991_46991" type="Node3D" parent="." unique_id=1357305202 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3715.4526, -1292.6189, 1960.6642)
+script = ExtResource("2_ro77a")
+ID = 46991
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_B78E_[-3702]_[1312]_[-1960]_46990_46990_46990_46990_46990_46990_46990_46990_46990" type="Node3D" parent="." unique_id=1069315337 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3701.7297, -1312.6151, 1959.7714)
+script = ExtResource("2_ro77a")
+ID = 46990
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_B78C_[-3734]_[1302]_[-1959]_46988_46988_46988_46988_46988_46988_46988_46988_46988" type="Node3D" parent="." unique_id=450428994 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3733.3389, -1302.6178, 1958.818)
+script = ExtResource("2_ro77a")
+ID = 46988
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D6A5_[-3745]_[1302]_[-1947]_54949_54949_54949_54949_54949_54949_54949_54949_54949" type="Node3D" parent="." unique_id=734678202 instance=ExtResource("1_gsux7")]
+transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, -3744.2466, -1302.3248, 1946.4434)
+script = ExtResource("2_ro77a")
+Angle = 255
+ID = 54949
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D679_[-3734]_[1302]_[-1902]_54905_54905_54905_54905_54905_54905_54905_54905_54905" type="Node3D" parent="." unique_id=1540703129 instance=ExtResource("1_gsux7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3733.7039, -1302.6199, 1901.0743)
+script = ExtResource("2_ro77a")
+ID = 54905
+ObjectType = 711
+ModelName = "mn_quartz"

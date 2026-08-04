@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_iqiqo"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_1qcnb"]
+
+[node name="Chunk_monster_25_34" type="Node3D" unique_id=1295858733]
+
+[node name="MonsterSpawner_029E_[2501]_[1700]_[-3499]" type="Node3D" parent="." unique_id=2128745970 instance=ExtResource("1_iqiqo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2501.0466, -1700.6654, 3498.8743)
+script = ExtResource("2_1qcnb")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_029E_[2501]_[1700]_[-3499]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_0299_[2559]_[1700]_[-3471]" type="Node3D" parent="." unique_id=1491374786 instance=ExtResource("1_iqiqo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2559.4192, -1700.6654, 3470.2205)
+script = ExtResource("2_1qcnb")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0299_[2559]_[1700]_[-3471]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_E5A3_[2500]_[156]_[-3408]" type="Node3D" parent="." unique_id=1148430153 instance=ExtResource("1_iqiqo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2500.7988, -156.90848, 3407.7332)
+script = ExtResource("2_1qcnb")
+OriginalDisplayName = "MonsterSpawner_E5A3_[2500]_[156]_[-3408]"
+RegularMonsterMinLevel = 18
+RegularMonsterMaxLevel = 24
+NamedMonsterMinLevel = 18
+NamedMonsterMaxLevel = 24
+
+[node name="MonsterSpawner_0AF1_[2515]_[1700]_[-3442]" type="Node3D" parent="." unique_id=-1294964495 instance=ExtResource("1_iqiqo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2515.3728, -1700.6654, 3441.356)
+script = ExtResource("2_1qcnb")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0AF1_[2515]_[1700]_[-3442]"
+RegularMonsterMinLevel = 20
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 20
+NamedMonsterMaxLevel = 20

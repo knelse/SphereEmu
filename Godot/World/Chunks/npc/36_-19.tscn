@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_aagu6"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_iaslj"]
+
+[node name="Chunk_npc_36_-19" type="Node3D" unique_id=1441428431]
+
+[node name="NPC_5233_Лина_Паркер_5233_5233_5233_5233_5233_5233_5233_5233_5233" type="Node3D" parent="." unique_id=1444656218 instance=ExtResource("1_aagu6")]
+transform = Transform3D(-0.14673045, 0, 0.9891765, 0, 1, 0, -0.9891765, 0, -0.14673045, 3688.6775, -159.6069, -1881.4115)
+script = ExtResource("2_iaslj")
+NameID = 4144
+IconName = "npc_trade_magic"
+NpcType = 9
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 70
+ID = 5233
+ObjectType = 213
+ModelName = "npc14"
+
+[node name="NPC_5237_Фабия_Нандор_5237_5237_5237_5237_5237_5237_5237_5237_5237" type="Node3D" parent="." unique_id=725328945 instance=ExtResource("1_aagu6")]
+transform = Transform3D(-0.99247956, 0, -0.12241063, 0, 1, 0, 0.12241063, 0, -0.99247956, 3684.684, -159.44138, -1883.3022)
+script = ExtResource("2_iaslj")
+NameID = 4176
+IconName = "npc_trade_alchm"
+NpcType = 6
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 133
+ID = 5237
+ObjectType = 213
+ModelName = "npc14b"

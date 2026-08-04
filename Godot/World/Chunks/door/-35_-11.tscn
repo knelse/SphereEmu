@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_hgpem"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_hvnvq"]
+
+[node name="Chunk_door_-35_-11" type="Node3D" unique_id=1728449879]
+
+[node name="DoorEntrance_0445_-3469_1093_1091_1093_1093" type="Node3D" parent="." unique_id=980926525 instance=ExtResource("1_hgpem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3476.2813, -1087.281, -1090.8877)
+script = ExtResource("2_hvnvq")
+DoorID = 32767
+HasTarget = true
+TargetX = -3469.2007
+TargetY = 1093.6584
+TargetZ = 1091.6133
+ID = 1093
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0444_-3476_1088_1090_1092_1092" type="Node3D" parent="." unique_id=1871550529 instance=ExtResource("1_hgpem")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3468.4734, -1092.5844, -1091.6841)
+script = ExtResource("2_hvnvq")
+DoorID = 32767
+HasTarget = true
+TargetX = -3476.4417
+TargetY = 1088.3235
+TargetZ = 1090.064
+Angle = 64
+ID = 1092
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0443_3455_157_2460_1091_1091" type="Node3D" parent="." unique_id=2059189424 instance=ExtResource("1_hgpem")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3496.396, -1098.2626, -1098.5419)
+script = ExtResource("2_hvnvq")
+DoorID = 32767
+HasTarget = true
+TargetX = 3455.6257
+TargetY = 157.29509
+TargetZ = 2460.2644
+Angle = 64
+ID = 1091
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_03E3_5414_995_995" type="Node3D" parent="." unique_id=651136630 instance=ExtResource("1_hgpem")]
+transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, -3468.0225, -1100.9932, -1098.668)
+script = ExtResource("2_hvnvq")
+DoorID = 5414
+Angle = 28
+ID = 995
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_03E2_5413_994_994" type="Node3D" parent="." unique_id=39918209 instance=ExtResource("1_hgpem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3475.946, -1100.1564, -1091.6455)
+script = ExtResource("2_hvnvq")
+DoorID = 5413
+ID = 994
+ObjectType = 60
+ModelName = "edoor"

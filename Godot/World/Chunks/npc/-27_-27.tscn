@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_folch"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_wgrom"]
+
+[node name="Chunk_npc_-27_-27" type="Node3D" unique_id=512054288]
+
+[node name="NPC_5422_Глория_Астеран_5422_5422_5422_5422_5422_5422_5422_5422_5422" type="Node3D" parent="." unique_id=1122136762 instance=ExtResource("1_folch")]
+transform = Transform3D(0.92387956, 0, -0.38268343, 0, 1, 0, 0.38268343, 0, 0.92387956, -2601.8098, -408.09976, -2673.23)
+script = ExtResource("2_wgrom")
+NameID = 4033
+IconName = "npc_trade_alchm"
+NpcType = 6
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 240
+ID = 5422
+ObjectType = 213
+ModelName = "npc14b"

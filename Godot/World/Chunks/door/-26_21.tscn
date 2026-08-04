@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_i3ard"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_vn2u6"]
+
+[node name="Chunk_door_-26_21" type="Node3D" unique_id=409848358]
+
+[node name="DoorEntrance_0942_-2579_-358_-2102_2370_2370" type="Node3D" parent="." unique_id=785491857 instance=ExtResource("1_i3ard")]
+transform = Transform3D(0.098017134, 0, 0.9951847, 0, 1, 0, -0.9951847, 0, 0.098017134, -2583.0183, 347.8281, 2104.2954)
+script = ExtResource("2_vn2u6")
+DoorID = 32767
+HasTarget = true
+TargetX = -2579.876
+TargetY = -358.26605
+TargetZ = -2102.8372
+Angle = 60
+ID = 2370
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0943_-2583_-346_-2104_2371_2371" type="Node3D" parent="." unique_id=938478684 instance=ExtResource("1_i3ard")]
+transform = Transform3D(0.65317285, 0, -0.75720865, 0, 1, 0, 0.75720865, 0, 0.65317285, -2581.8337, 357.13727, 2104.3225)
+script = ExtResource("2_vn2u6")
+DoorID = 32767
+HasTarget = true
+TargetX = -2583.6118
+TargetY = -346.73706
+TargetZ = -2104.2847
+Angle = 221
+ID = 2371
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0941_-2584_-354_-2117_2369_2369" type="Node3D" parent="." unique_id=1919907610 instance=ExtResource("1_i3ard")]
+transform = Transform3D(0.94952816, 0, 0.31368175, 0, 1, 0, -0.31368175, 0, 0.94952816, -2584.7961, 357.38184, 2119.332)
+script = ExtResource("2_vn2u6")
+DoorID = 32767
+HasTarget = true
+TargetX = -2584.3523
+TargetY = -354.06763
+TargetZ = -2117.8398
+Angle = 13
+ID = 2369
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_0940_-2584_-358_-2121_2368_2368" type="Node3D" parent="." unique_id=1890514793 instance=ExtResource("1_i3ard")]
+transform = Transform3D(0.92387956, 0, -0.38268343, 0, 1, 0, 0.38268343, 0, 0.92387956, -2584.5308, 355.28656, 2118.596)
+script = ExtResource("2_vn2u6")
+DoorID = 32767
+HasTarget = true
+TargetX = -2584.2104
+TargetY = -358.4936
+TargetZ = -2121.6306
+Angle = 240
+ID = 2368
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_097F_335_1710_-3254_2431_2431" type="Node3D" parent="." unique_id=797976422 instance=ExtResource("1_i3ard")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2591.887, 347.54092, 2115.105)
+script = ExtResource("2_vn2u6")
+DoorID = 32767
+HasTarget = true
+TargetX = 335.87347
+TargetY = 1710.6952
+TargetZ = -3254.4214
+Angle = 128
+ID = 2431
+ObjectType = 60
+ModelName = "edoor"

@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_ixet2"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_nysdc"]
+
+[node name="Chunk_npc_-38_-3" type="Node3D" unique_id=2133609301]
+
+[node name="NPC_4579_Чак_Лойд_4579_4579_4579_4579_4579_4579_4579_4579_4579" type="Node3D" parent="." unique_id=1824342663 instance=ExtResource("1_ixet2")]
+transform = Transform3D(-0.5555704, 0, -0.8314695, 0, 1, 0, 0.8314695, 0, -0.5555704, -3755.3398, 340.01865, -205.03024)
+script = ExtResource("2_nysdc")
+NameID = 4472
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 168
+ID = 4579
+ObjectType = 216
+ModelName = "npc60e"

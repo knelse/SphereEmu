@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_wvj81"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_hk6k2"]
+
+[node name="Chunk_monster_11_17" type="Node3D" unique_id=1702354910]
+
+[node name="MonsterSpawner_1346_[1176]_[157]_[-1773]" type="Node3D" parent="." unique_id=842966760 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1176.547, -157.67429, 1772.6636)
+script = ExtResource("2_hk6k2")
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 21
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 21
+
+[node name="MonsterSpawner_1345_[1180]_[157]_[-1721]" type="Node3D" parent="." unique_id=1354172386 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1180.6354, -157.67429, 1720.8698)
+script = ExtResource("2_hk6k2")
+OriginalDisplayName = "MonsterSpawner_1345_[1180]_[157]_[-1721]"
+RegularMonsterMinLevel = 12
+RegularMonsterMaxLevel = 18
+NamedMonsterMinLevel = 12
+NamedMonsterMaxLevel = 18
+
+[node name="MonsterSpawner_1344_[1128]_[157]_[-1718]" type="Node3D" parent="." unique_id=1410380348 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1128.1647, -157.67429, 1717.7188)
+script = ExtResource("2_hk6k2")
+OriginalDisplayName = "MonsterSpawner_1344_[1128]_[157]_[-1718]"
+RegularMonsterMinLevel = 12
+RegularMonsterMaxLevel = 18
+NamedMonsterMinLevel = 12
+NamedMonsterMaxLevel = 18
+
+[node name="MonsterSpawner_1343_[1119]_[157]_[-1774]" type="Node3D" parent="." unique_id=1814376754 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1119.6757, -157.67429, 1773.1838)
+script = ExtResource("2_hk6k2")
+OriginalDisplayName = "MonsterSpawner_1343_[1119]_[157]_[-1774]"
+RegularMonsterMinLevel = 18
+RegularMonsterMaxLevel = 24
+NamedMonsterMinLevel = 18
+NamedMonsterMaxLevel = 24
+
+[node name="MonsterSpawner_10E5_[1145]_[157]_[-1757]" type="Node3D" parent="." unique_id=1177465523 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1145.0907, -157.67429, 1756.3881)
+script = ExtResource("2_hk6k2")
+RegularMonsterMinLevel = 12
+RegularMonsterMaxLevel = 18
+NamedMonsterMinLevel = 12
+NamedMonsterMaxLevel = 18
+
+[node name="MonsterSpawner_E319_[1173]_[156]_[-1701]" type="Node3D" parent="." unique_id=1044061955 instance=ExtResource("1_wvj81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1173.3372, -156.89592, 1700.6288)
+script = ExtResource("2_hk6k2")
+RegularMonsterMinLevel = 12
+RegularMonsterMaxLevel = 18
+NamedMonsterMinLevel = 12
+NamedMonsterMaxLevel = 18

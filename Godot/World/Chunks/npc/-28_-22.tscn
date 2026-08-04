@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_dkghq"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_ud7qg"]
+
+[node name="Chunk_npc_-28_-22" type="Node3D" unique_id=2087745128]
+
+[node name="NPC_5430_Ник_Хадсон_5430_5430_5430_5430_5430_5430_5430_5430_5430" type="Node3D" parent="." unique_id=102830579 instance=ExtResource("1_dkghq")]
+transform = Transform3D(-0.8932243, 0, -0.4496113, 0, 1, 0, 0.4496113, 0, -0.8932243, -2703.8245, -402.80917, -2125.456)
+script = ExtResource("2_ud7qg")
+NameID = 4024
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 147
+ID = 5430
+ObjectType = 213
+ModelName = "npc29b"

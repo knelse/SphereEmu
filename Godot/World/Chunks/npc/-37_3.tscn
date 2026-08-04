@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_ygb6d"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_orjoc"]
+
+[node name="Chunk_npc_-37_3" type="Node3D" unique_id=680136654]
+
+[node name="NPC_4572_Джошуа_Хелтер_4572_4572_4572_4572_4572_4572_4572_4572_4572" type="Node3D" parent="." unique_id=440133049 instance=ExtResource("1_ygb6d")]
+transform = Transform3D(-0.59569937, 0, 0.8032075, 0, 1, 0, -0.8032075, 0, -0.59569937, -3682.3445, 341.5985, 349.99075)
+script = ExtResource("2_orjoc")
+NameID = 4466
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 90
+ID = 4572
+ObjectType = 216
+ModelName = "npc59"

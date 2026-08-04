@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport_tournament.tscn" id="1_txbsm"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportTournament.cs" id="2_6qmqy"]
+
+[node name="Chunk_teleport_22_22" type="Node3D" unique_id=1757707275]
+
+[node name="TournamentTeleport_1477_[2293]_[159]_[-2293]_5239_5239_5239_5239_5239_5239_5239_5239_5239" type="Node3D" parent="." unique_id=882901582 instance=ExtResource("1_txbsm")]
+transform = Transform3D(0.70710665, 0, -0.7071069, 0, 1, 0, 0.7071069, 0, 0.70710665, 2293.8257, -159.822, 2292.2705)
+script = ExtResource("2_6qmqy")
+Angle = 224
+ID = 5239
+ObjectType = 71

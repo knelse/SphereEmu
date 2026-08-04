@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_tablet.tscn" id="1_rns8d"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleTablet.cs" id="2_5tec6"]
+
+[node name="Chunk_castle_tablet_7_-11" type="Node3D" unique_id=925321696]
+
+[node name="CastleTablet_28_Йонг _0F49_3913_3913_3913_3913_3913_3913_3913_3913_3913" type="Node3D" parent="." unique_id=1007183277 instance=ExtResource("1_rns8d")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 700.0818, -1100.0533, -1097.791)
+script = ExtResource("2_5tec6")
+Castle = 28
+ClanName = "Зеленый Слоник"
+Angle = 128
+ID = 3913
+ObjectType = 80
+ModelName = "cs_table"

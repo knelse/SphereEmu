@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_teleport.tscn" id="1_7h360"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleTeleport.cs" id="2_tf1l5"]
+
+[node name="Chunk_castle_teleport_-14_-12" type="Node3D" unique_id=305693348]
+
+[node name="CastleTeleport_18_Триумфалер _1488_5256_5256_5256_5256_5256_5256_5256_5256_5256" type="Node3D" parent="." unique_id=2081156459 instance=ExtResource("1_7h360")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1321.3296, -1090.2849, -1102.6327)
+script = ExtResource("2_tf1l5")
+Castle = 18
+ID = 5256
+ObjectType = 69

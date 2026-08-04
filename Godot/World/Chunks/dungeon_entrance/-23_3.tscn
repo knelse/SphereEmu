@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/dungeon_entrance.tscn" id="1_m20yt"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/DungeonEntrance.cs" id="2_bpkqh"]
+
+[node name="Chunk_dungeon_entrance_-23_3" type="Node3D" unique_id=776778895]
+
+[node name="DungeonEntrance_11FA_[-2221]_[-89]_[-335]_4602_4602" type="Node3D" parent="." unique_id=4247575 instance=ExtResource("1_m20yt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2220.0095, 88.492516, 334.78168)
+script = ExtResource("2_bpkqh")
+ID = 4602
+ObjectType = 65
+ModelName = "edoor"

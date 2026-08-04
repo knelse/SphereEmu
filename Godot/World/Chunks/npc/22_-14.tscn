@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_wqp05"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_hpbr5"]
+
+[node name="Chunk_npc_22_-14" type="Node3D" unique_id=64660164]
+
+[node name="NPC_4975_Аллан_Мамнок_4975_4975_4975_4975_4975_4975_4975_4975_4975" type="Node3D" parent="." unique_id=403979363 instance=ExtResource("1_wqp05")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2285.9993, -159.90208, -1396.0286)
+script = ExtResource("2_hpbr5")
+NameID = 4501
+IconName = "npc_trade_magic"
+NpcType = 14
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 64
+ID = 4975
+ObjectType = 209
+ModelName = "npc59"

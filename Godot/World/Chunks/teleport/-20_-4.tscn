@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport_with_target.tscn" id="1_yydkr"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/TeleportWithTarget.cs" id="2_vaoub"]
+
+[node name="Chunk_teleport_-20_-4" type="Node3D" unique_id=524635769]
+
+[node name="TeleportWithTarget_144B_[-1989]_[-94]_[390]_5195_5195_5195_5195_5195_5195_5195_5195_5195" type="Node3D" parent="." unique_id=1790513390 instance=ExtResource("1_yydkr")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1988.0581, 93.017204, -390.27036)
+script = ExtResource("2_vaoub")
+SubtypeID = 987
+Angle = 128
+ID = 5195
+ObjectType = 62

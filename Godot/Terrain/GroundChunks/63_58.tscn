@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://Godot/Terrain/GroundMeshes/fill_hr1_01.res" id="1_vm4cr"]
+[ext_resource type="Shape3D" path="res://Godot/Terrain/GroundShapes/fill_hr1_01.res" id="2_g0y3j"]
+
+[node name="Ground_63_58" type="Node3D" unique_id=202621849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6300, 0, 5800)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=730513733]
+mesh = ExtResource("1_vm4cr")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1102868959]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=715165196]
+shape = ExtResource("2_g0y3j")

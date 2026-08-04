@@ -5,6 +5,7 @@ using Godot.Collections;
 using SphServer.Godot.Scripts.Objects.Fill;
 using SphServer.Godot.Scripts.Navigation;
 using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.World;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -173,6 +174,7 @@ public partial class MonsterSpawner : Node3D
 	public override void _Ready()
 	{
 		_spawningEnabled = false;
+		WorldChunkSlotHydration.HydrateIfNeeded(WorldContentKind.Monster, this);
 
 		if (Engine.IsEditorHint())
 		{
@@ -275,12 +277,17 @@ public partial class MonsterSpawner : Node3D
 		RefreshEditorGizmo();
 	}
 
-	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots)
+	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots, bool syncIndex = true)
 	{
 		BakedSpawnSlots.Clear();
 		foreach (var slot in slots)
 		{
 			BakedSpawnSlots.Add(slot);
+		}
+
+		if (syncIndex)
+		{
+			WorldChunkSlotHydration.UpdateIndexSlots(WorldContentKind.Monster, this, slots);
 		}
 
 		NotifyPropertyListChanged();

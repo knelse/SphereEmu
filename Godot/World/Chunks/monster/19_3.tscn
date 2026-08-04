@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_sbsfg"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_nfm6w"]
+
+[node name="Chunk_monster_19_3" type="Node3D" unique_id=875033125]
+
+[node name="MonsterSpawner_12FA_[1929]_[157]_[-324]" type="Node3D" parent="." unique_id=855361912 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_sbsfg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1929.1641, -157.65593, 323.9588)
+script = ExtResource("2_nfm6w")
+OriginalDisplayName = "MonsterSpawner_12FA_[1929]_[157]_[-324]"
+RegularMonsterMaxLevel = 4
+NamedMonsterMaxLevel = 4
+RegularMonsters = [NodePath("Monster_Трухлявый_рыцарь_4_10093_4190_4190"), NodePath("Monster_Палочник_степной_3_10094_4191_4191"), NodePath("Monster_Псоглавец_4_10095_4192_4192")]
+SpawningEnabled = true
+
+[node name="MonsterSpawner_414F_[1939]_[149]_[-386]" type="Node3D" parent="." unique_id=2110789927 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_sbsfg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1967.1118, -150.4713, 385.4312)
+script = ExtResource("2_nfm6w")
+OriginalDisplayName = "MonsterSpawner_414F_[1939]_[149]_[-386]"
+RegularMonsters = [NodePath("Monster_Бангвильская_сколопендра_2_10109_4206_4206"), NodePath("Monster_Бангвильская_сколопендра_2_10110_4207_4207"), NodePath("Monster_Вепрь_3_10111_4208_4208")]
+SpawningEnabled = true
+
+[node name="MonsterSpawner_0B34_[1909]_[153]_[-393]" type="Node3D" parent="." unique_id=-1294964428 instance=ExtResource("1_sbsfg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1909.3513, -153.36995, 392.59708)
+script = ExtResource("2_nfm6w")
+OriginalDisplayName = "MonsterSpawner_0B34_[1909]_[153]_[-393]"
+RegularMonsterMaxLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([87])

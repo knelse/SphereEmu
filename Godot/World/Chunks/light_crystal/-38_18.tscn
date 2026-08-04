@@ -1,0 +1,75 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/item_light_crystal.tscn" id="1_v7ec4"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="2_0wegd"]
+
+[node name="Chunk_light_crystal_-38_18" type="Node3D" unique_id=1733003871]
+
+[node name="LightCrystalYellow_DB6F_[-3723]_[1292]_[-1841]_56175_56175_56175_56175_56175_56175_56175_56175_56175" type="Node3D" parent="." unique_id=1626500708 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -3722.9688, -1292.6166, 1840.0995)
+script = ExtResource("2_0wegd")
+Angle = 1
+ID = 56175
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D687_[-3732]_[1302]_[-1875]_54919_54919_54919_54919_54919_54919_54919_54919_54919" type="Node3D" parent="." unique_id=662693006 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3731.6829, -1302.6187, 1874.1917)
+script = ExtResource("2_0wegd")
+ID = 54919
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D684_[-3705]_[1292]_[-1885]_54916_54916_54916_54916_54916_54916_54916_54916_54916" type="Node3D" parent="." unique_id=868554708 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.9891765, 0, 0.14673047, 0, 1, 0, -0.14673047, 0, 0.9891765, -3704.348, -1292.2878, 1884.8511)
+script = ExtResource("2_0wegd")
+Angle = 6
+ID = 54916
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D67A_[-3745]_[1302]_[-1882]_54906_54906_54906_54906_54906_54906_54906_54906_54906" type="Node3D" parent="." unique_id=239689812 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3744.271, -1302.6206, 1881.8956)
+script = ExtResource("2_0wegd")
+ID = 54906
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D689_[-3711]_[1292]_[-1856]_54921_54921_54921_54921_54921_54921_54921_54921_54921" type="Node3D" parent="." unique_id=1013758534 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.19509035, 0, 0.98078525, 0, 1, 0, -0.98078525, 0, 0.19509035, -3710.4075, -1292.326, 1855.6035)
+script = ExtResource("2_0wegd")
+Angle = 56
+ID = 54921
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_D688_[-3727]_[1292]_[-1869]_54920_54920_54920_54920_54920_54920_54920_54920_54920" type="Node3D" parent="." unique_id=1559589521 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.99729043, 0, 0.07356457, 0, 1, 0, -0.07356457, 0, 0.99729043, -3726.7817, -1292.1844, 1868.465)
+script = ExtResource("2_0wegd")
+Angle = 3
+ID = 54920
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_8865_[-3705]_[1292]_[-1885]_34917_34917_34917_34917_34917_34917_34917_34917_34917" type="Node3D" parent="." unique_id=188477772 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.9329928, 0, 0.35989505, 0, 1, 0, -0.35989505, 0, 0.9329928, -3704.2969, -1292.2878, 1884.8511)
+script = ExtResource("2_0wegd")
+Angle = 15
+ID = 34917
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_89E4_[-3747]_[1292]_[-1867]_35300_35300_35300_35300_35300_35300_35300_35300_35300" type="Node3D" parent="." unique_id=145510209 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3746.3132, -1292.6116, 1866.0911)
+script = ExtResource("2_0wegd")
+ID = 35300
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_C66D_[-3704]_[1292]_[-1885]_50797_50797_50797_50797_50797_50797_50797_50797_50797" type="Node3D" parent="." unique_id=1402801449 instance=ExtResource("1_v7ec4")]
+transform = Transform3D(0.96377605, 0, -0.26671287, 0, 1, 0, 0.26671287, 0, 0.96377605, -3703.6992, -1292.1764, 1884.8511)
+script = ExtResource("2_0wegd")
+Angle = 245
+ID = 50797
+ObjectType = 711
+ModelName = "mn_quartz"

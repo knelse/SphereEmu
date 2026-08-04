@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/workshop.tscn" id="1_fue5n"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Workshop.cs" id="2_vfp6w"]
+
+[node name="Chunk_workshop_18_4" type="Node3D" unique_id=1396534700]
+
+[node name="Workshop_05A3_[1861]_[154]_[-420]_1443_1443_1443_1443_1443_1443_1443_1443_1443" type="Node3D" parent="." unique_id=540203054 instance=ExtResource("1_fue5n")]
+transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, 1861.6118, -154.21547, 419.46017)
+script = ExtResource("2_vfp6w")
+Angle = 212
+ID = 1443
+ObjectType = 805
+ModelName = "EDOOR"

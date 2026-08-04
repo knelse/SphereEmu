@@ -1,0 +1,84 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_m2vyy"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_ougs7"]
+
+[node name="Chunk_npc_18_4" type="Node3D" unique_id=1679350416]
+
+[node name="NPC_4035_Джек_Эванс_4035_4035_4035_4035_4035_4035_4035_4035_4035" type="Node3D" parent="." unique_id=1099778328 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(0.81758475, 0, -0.5758083, 0, 1, 0, 0.5758083, 0, 0.81758475, 1879.4082, -155.58539, 408.87637)
+script = ExtResource("2_ougs7")
+NameID = 4272
+IconName = "npc_banker"
+NpcType = 17
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 231
+ID = 4035
+ObjectType = 225
+ModelName = "npc29d"
+
+[node name="NPC_5150_Сьюзан_Голд_5150_5150_5150_5150_5150_5150_5150_5150_5150" type="Node3D" parent="." unique_id=1726687762 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(0.49289823, 0, -0.87008697, 0, 1, 0, 0.87008697, 0, 0.49289823, 1888.3804, -156.99612, 433.2471)
+script = ExtResource("2_ougs7")
+NameID = 4003
+IconName = "npc_trade_jewel"
+NpcType = 8
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 213
+ID = 5150
+ObjectType = 213
+ModelName = "npc14b"
+
+[node name="NPC_5159_Альфред_Кромвель_5159_5159_5159_5159_5159_5159_5159_5159_5159" type="Node3D" parent="." unique_id=144868064 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(-0.65317285, 0, 0.7572088, 0, 1, 0, -0.7572088, 0, -0.65317285, 1890.6172, -155.72084, 402.5326)
+script = ExtResource("2_ougs7")
+NameID = 4011
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 93
+ID = 5159
+ObjectType = 213
+ModelName = "npc29c"
+
+[node name="NPC_5160_Дин_Габбе_5160_5160_5160_5160_5160_5160_5160_5160_5160" type="Node3D" parent="." unique_id=1377112795 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(0.90398926, 0, -0.4275552, 0, 1, 0, 0.4275552, 0, 0.90398926, 1885.2067, -155.61386, 410.42502)
+script = ExtResource("2_ougs7")
+NameID = 4012
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 238
+ID = 5160
+ObjectType = 213
+ModelName = "npc29b"
+
+[node name="NPC_5161_Дорис_Найт_5161_5161_5161_5161_5161_5161_5161_5161_5161" type="Node3D" parent="." unique_id=134529740 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(-0.870087, 0, 0.49289814, 0, 1, 0, -0.49289814, 0, -0.870087, 1899.8375, -155.9544, 412.2926)
+script = ExtResource("2_ougs7")
+NameID = 4013
+IconName = "npc_trade_magic"
+NpcType = 9
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 107
+ID = 5161
+ObjectType = 213
+ModelName = "npc14"
+
+[node name="NPC_5247_Амелия_Саймонс_5247_5247_5247_5247_5247_5247_5247_5247_5247" type="Node3D" parent="." unique_id=2053596921 instance=ExtResource("1_m2vyy")]
+transform = Transform3D(-0.9142097, 0, -0.4052414, 0, 1, 0, 0.4052414, 0, -0.9142097, 1886.7378, -156.959, 427.45526)
+script = ExtResource("2_ougs7")
+NameID = 4183
+IconName = "npc_trade_alchm"
+NpcType = 6
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 145
+ID = 5247
+ObjectType = 213
+ModelName = "npc14a"

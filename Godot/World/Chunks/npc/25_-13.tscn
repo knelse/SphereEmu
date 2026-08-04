@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_pau2t"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_l4iof"]
+
+[node name="Chunk_npc_25_-13" type="Node3D" unique_id=542445717]
+
+[node name="NPC_5149_Хьюго_Бод_5149_5149_5149_5149_5149_5149_5149_5149_5149" type="Node3D" parent="." unique_id=2128180563 instance=ExtResource("1_pau2t")]
+transform = Transform3D(0.7572089, 0, -0.6531728, 0, 1, 0, 0.6531728, 0, 0.7572089, 2594.701, -157.47464, -1293.3757)
+script = ExtResource("2_l4iof")
+NameID = 4002
+IconName = "npc_trade_wpon"
+NpcType = 11
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 227
+ID = 5149
+ObjectType = 213
+ModelName = "npc08"

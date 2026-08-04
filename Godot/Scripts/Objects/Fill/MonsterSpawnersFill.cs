@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.World;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.Fill;
@@ -50,6 +51,54 @@ public partial class MonsterSpawnersFill : Node3D
 	/// </summary>
 	[ExportToolButton("Bake spawn slots on all spawners")]
 	public Callable BakeSpawnSlotsOnAllSpawnersButton => Callable.From(BakeSpawnSlotsOnAllSpawners);
+
+	[ExportToolButton("Load all world chunks")]
+	public Callable LoadAllWorldChunksButton => Callable.From(LoadAllWorldChunks);
+
+	[ExportToolButton("Repack spawners into world chunks")]
+	public Callable RepackWorldChunksButton => Callable.From(RepackWorldChunks);
+
+	public void LoadAllWorldChunks()
+	{
+		if (!Engine.IsEditorHint())
+		{
+			GD.PushWarning("MonsterSpawnersFill: Load all world chunks is editor-only.");
+			return;
+		}
+
+		var main = GetTree()?.EditedSceneRoot;
+		if (main is null || main.Name != "MainServer")
+		{
+			GD.PushWarning("MonsterSpawnersFill: open MainServer scene first.");
+			return;
+		}
+
+		var index = WorldContentIndex.GetOrLoad();
+		var loaded = new HashSet<(WorldContentKind Kind, int TileX, int TileZ)>();
+		var count = WorldChunkLoadOps.LoadAll(main, index, loaded, assignEditorOwner: false);
+		GD.Print($"MonsterSpawnersFill: LoadAll loaded {count} chunk(s)");
+	}
+
+	public void RepackWorldChunks()
+	{
+		if (!Engine.IsEditorHint())
+		{
+			GD.PushWarning("MonsterSpawnersFill: Repack world chunks is editor-only.");
+			return;
+		}
+
+		var main = GetTree()?.EditedSceneRoot;
+		if (main is null)
+		{
+			GD.PushWarning("MonsterSpawnersFill: no edited scene root.");
+			return;
+		}
+
+		var result = WorldChunkPacker.PackFromMainServer(main, clearParents: true, extractSlots: true);
+		GD.Print(
+			$"MonsterSpawnersFill: repacked chunks={result.ChunksWritten}, nodes={result.NodesPacked}, "
+			+ $"slots={result.SlotArraysExtracted}");
+	}
 
 	public void BakeSpawnSlotsOnAllSpawners()
 	{

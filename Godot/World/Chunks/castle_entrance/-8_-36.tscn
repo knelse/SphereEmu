@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_entrance.tscn" id="1_v7fl8"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleEntrance.cs" id="2_8u22r"]
+
+[node name="Chunk_castle_entrance_-8_-36" type="Node3D" unique_id=1691944591]
+
+[node name="CastleEntrance_20_Кабрад _1116_4155_4155_4155_4155_4155_4155_4155_4155_4155" type="Node3D" parent="." unique_id=1819358996 instance=ExtResource("1_v7fl8")]
+transform = Transform3D(0.97003126, 0, -0.24298023, 0, 1, 0, 0.24298023, 0, 0.97003126, -712.2514, -401.54996, -3509.755)
+script = ExtResource("2_8u22r")
+Castle = 20
+Angle = 246
+ID = 4155
+ObjectType = 98
+ModelName = "edoor"

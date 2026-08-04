@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_xt8cm"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_pvtxj"]
+
+[node name="Chunk_door_-30_-12" type="Node3D" unique_id=1410763270]
+
+[node name="DoorEntrance_03ED_5424_1005_1005" type="Node3D" parent="." unique_id=229182542 instance=ExtResource("1_xt8cm")]
+transform = Transform3D(0.8577286, 0, 0.51410276, 0, 1, 0, -0.51410276, 0, 0.8577286, -2902.324, -1087.3633, -1129.7471)
+script = ExtResource("2_pvtxj")
+DoorID = 5424
+Angle = 22
+ID = 1005
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_03EC_5423_1004_1004" type="Node3D" parent="." unique_id=684992713 instance=ExtResource("1_xt8cm")]
+transform = Transform3D(0.55557024, 0, 0.8314696, 0, 1, 0, -0.8314696, 0, 0.55557024, -2905.8853, -1087.3633, -1125.9434)
+script = ExtResource("2_pvtxj")
+DoorID = 5423
+Angle = 40
+ID = 1004
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_03EB_5422_1003_1003" type="Node3D" parent="." unique_id=732991620 instance=ExtResource("1_xt8cm")]
+transform = Transform3D(0.5758082, 0, 0.8175848, 0, 1, 0, -0.8175848, 0, 0.5758082, -2908.234, -1087.4294, -1122.5662)
+script = ExtResource("2_pvtxj")
+DoorID = 5422
+Angle = 39
+ID = 1003
+ObjectType = 60
+ModelName = "edoor"

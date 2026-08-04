@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_gate.tscn" id="1_y5lag"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleGate.cs" id="2_mve0h"]
+
+[node name="Chunk_castle_gate_37_-8" type="Node3D" unique_id=1368911235]
+
+[node name="CastleGate_11_Терноваль _1151_4108_4108_4108_4108_4108_4108_4108_4108_4108" type="Node3D" parent="." unique_id=930388599 instance=ExtResource("1_y5lag")]
+transform = Transform3D(-0.83146966, 0, 0.5555702, 0, 1, 0, -0.5555702, 0, -0.83146966, 3760.4688, -157.62189, -770.3456)
+script = ExtResource("2_mve0h")
+Castle = 11
+ClanName = "Зеленый Слоник"
+Angle = 104
+ID = 4108
+ObjectType = 81
+ModelName = "cc103"

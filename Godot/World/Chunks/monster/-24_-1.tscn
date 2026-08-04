@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_gi517"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_cqd5l"]
+
+[node name="Chunk_monster_-24_-1" type="Node3D" unique_id=1617553693]
+
+[node name="MonsterSpawner_0A0F_[-2301]_[1500]_[82]" type="Node3D" parent="." unique_id=-1294964721 instance=ExtResource("1_gi517")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2300.1963, -1500.1946, -82.28147)
+script = ExtResource("2_cqd5l")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A0F_[-2301]_[1500]_[82]"
+
+[node name="MonsterSpawner_0A16_[-2310]_[1499]_[54]" type="Node3D" parent="." unique_id=-1294964714 instance=ExtResource("1_gi517")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2309.5544, -1499.9299, -54.968327)
+script = ExtResource("2_cqd5l")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A16_[-2310]_[1499]_[54]"
+
+[node name="MonsterSpawner_0A17_[-2346]_[1500]_[48]" type="Node3D" parent="." unique_id=-1294964713 instance=ExtResource("1_gi517")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2345.052, -1500.2861, -48.555466)
+script = ExtResource("2_cqd5l")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A17_[-2346]_[1500]_[48]"
+
+[node name="MonsterSpawner_0A18_[-2333]_[1500]_[69]" type="Node3D" parent="." unique_id=-1294964712 instance=ExtResource("1_gi517")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2332.0542, -1500.4556, -69.709656)
+script = ExtResource("2_cqd5l")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A18_[-2333]_[1500]_[69]"
+
+[node name="MonsterSpawner_0A19_[-2346]_[1500]_[89]" type="Node3D" parent="." unique_id=-1294964711 instance=ExtResource("1_gi517")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2345.2244, -1500.6178, -89.45058)
+script = ExtResource("2_cqd5l")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A19_[-2346]_[1500]_[89]"

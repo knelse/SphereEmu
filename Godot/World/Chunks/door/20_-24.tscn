@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_5c0f7"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_8tw3t"]
+
+[node name="Chunk_door_20_-24" type="Node3D" unique_id=208205470]
+
+[node name="DoorExit_650A_2060_4518_2323_25866_25866" type="Node3D" parent="." unique_id=1477943869 instance=ExtResource("1_5c0f7")]
+transform = Transform3D(0.53499764, 0, 0.8448536, 0, 1, 0, -0.8448536, 0, 0.53499764, 2096.5088, -4463.498, -2368.3547)
+script = ExtResource("2_8tw3t")
+DoorID = 32767
+HasTarget = true
+TargetX = 2060.449
+TargetY = 4518.501
+TargetZ = 2323.4033
+Angle = 41
+ID = 25866
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_5EAB_2096_4512_2297_24235_24235" type="Node3D" parent="." unique_id=1652498537 instance=ExtResource("1_5c0f7")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2063.59, -4517.348, -2323.5127)
+script = ExtResource("2_8tw3t")
+DoorID = 32767
+HasTarget = true
+TargetX = 2096.2969
+TargetY = 4512.6577
+TargetZ = 2297.8904
+Angle = 192
+ID = 24235
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_650B_2097_4464_2368_25867_25867" type="Node3D" parent="." unique_id=1528185204 instance=ExtResource("1_5c0f7")]
+transform = Transform3D(-0.024541287, 0, -0.9996988, 0, 1, 0, 0.9996988, 0, -0.024541287, 2059.211, -4517.582, -2323.5623)
+script = ExtResource("2_8tw3t")
+DoorID = 32767
+HasTarget = true
+TargetX = 2097.1333
+TargetY = 4464.809
+TargetZ = 2368.1355
+Angle = 191
+ID = 25867
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorExit_650E_2110_4468_2322_25870_25870" type="Node3D" parent="." unique_id=119091000 instance=ExtResource("1_5c0f7")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2059.1782, -4517.5977, -2314.6555)
+script = ExtResource("2_8tw3t")
+DoorID = 32767
+HasTarget = true
+TargetX = 2110.5325
+TargetY = 4468.4907
+TargetZ = 2322.3352
+Angle = 192
+ID = 25870
+ObjectType = 60
+ModelName = "edoor"

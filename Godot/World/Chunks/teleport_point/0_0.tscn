@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[node name="Chunk_teleport_point_0_0" type="Node3D" unique_id=1061867949]
+
+[node name="Hyperion" type="Node3D" parent="." unique_id=1044916190]
+
+[node name="Haron" type="Node3D" parent="." unique_id=1899739705]
+
+[node name="Feb" type="Node3D" parent="." unique_id=1326759637]
+
+[node name="Rodos" type="Node3D" parent="." unique_id=718861828]

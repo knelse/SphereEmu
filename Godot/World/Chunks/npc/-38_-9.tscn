@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_xn4gx"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_hhavm"]
+
+[node name="Chunk_npc_-38_-9" type="Node3D" unique_id=391741212]
+
+[node name="NPC_4576_Бэб_Хмарис_4576_4576_4576_4576_4576_4576_4576_4576_4576" type="Node3D" parent="." unique_id=1053794095 instance=ExtResource("1_xn4gx")]
+transform = Transform3D(0.12241056, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, 0.12241056, -3740.2764, 341.83875, -838.5478)
+script = ExtResource("2_hhavm")
+NameID = 4469
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 197
+ID = 4576
+ObjectType = 216
+ModelName = "npc29a"

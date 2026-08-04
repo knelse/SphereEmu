@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/item_light_crystal.tscn" id="1_np5va"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="2_y1swp"]
+
+[node name="Chunk_light_crystal_12_-2" type="Node3D" unique_id=1294519838]
+
+[node name="LightCrystal_5F7B_[1299]_[1500]_[162]_24443_24443_24443_24443_24443_24443_24443_24443_24443" type="Node3D" parent="." unique_id=918164168 instance=ExtResource("1_np5va")]
+transform = Transform3D(0.9987915, 0, -0.049067445, 0, 1, 0, 0.049067445, 0, 0.9987915, 1299.927, -1500.7621, -162.7721)
+script = ExtResource("2_y1swp")
+Angle = 254
+ID = 24443
+ObjectType = 702
+ModelName = "mn_quartz"

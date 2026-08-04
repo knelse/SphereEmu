@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_haxbl"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_mkdp8"]
+
+[node name="Chunk_npc_-8_-35" type="Node3D" unique_id=525881338]
+
+[node name="NPC_5433_Артур_Гард_5433_5433_5433_5433_5433_5433_5433_5433_5433" type="Node3D" parent="." unique_id=1956086651 instance=ExtResource("1_haxbl")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -712.8683, -402.7651, -3490.944)
+script = ExtResource("2_mkdp8")
+NameID = 4320
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 192
+ID = 5433
+ObjectType = 213
+ModelName = "npc08"

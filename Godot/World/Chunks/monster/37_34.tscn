@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_siq33"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_686qa"]
+
+[node name="Chunk_monster_37_34" type="Node3D" unique_id=1773926320]
+
+[node name="MonsterSpawner_0258_[3729]_[1700]_[-3491]" type="Node3D" parent="." unique_id=263894536 instance=ExtResource("1_siq33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3729.6472, -1700.416, 3490.1638)
+script = ExtResource("2_686qa")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0258_[3729]_[1700]_[-3491]"
+RegularMonsterMinLevel = 55
+RegularMonsterMaxLevel = 55
+NamedMonsterMinLevel = 55
+NamedMonsterMaxLevel = 55
+
+[node name="MonsterSpawner_0A06_[3748]_[151]_[-3451]" type="Node3D" parent="." unique_id=-1294964730 instance=ExtResource("1_siq33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3748.841, -151.7908, 3450.8816)
+script = ExtResource("2_686qa")
+OriginalDisplayName = "MonsterSpawner_0A06_[3748]_[151]_[-3451]"
+
+[node name="MonsterSpawner_0AB7_[3715]_[1701]_[-3446]" type="Node3D" parent="." unique_id=-1294964553 instance=ExtResource("1_siq33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3715.7815, -1701.145, 3445.9446)
+script = ExtResource("2_686qa")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0AB7_[3715]_[1701]_[-3446]"
+RegularMonsterMinLevel = 55
+RegularMonsterMaxLevel = 55
+NamedMonsterMinLevel = 55
+NamedMonsterMaxLevel = 55

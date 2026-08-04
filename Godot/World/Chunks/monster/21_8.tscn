@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_k3kfh"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_u0wk3"]
+
+[node name="Chunk_monster_21_8" type="Node3D" unique_id=347611180]
+
+[node name="MonsterSpawner_1321_[2185]_[157]_[-824]" type="Node3D" parent="." unique_id=991104576 instance=ExtResource("1_k3kfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2185.0803, -157.69633, 823.2145)
+script = ExtResource("2_u0wk3")
+OriginalDisplayName = "MonsterSpawner_1321_[2185]_[157]_[-824]"
+RegularMonsterMinLevel = 9
+RegularMonsterMaxLevel = 15
+NamedMonsterMinLevel = 9
+NamedMonsterMaxLevel = 15
+
+[node name="MonsterSpawner_BA54_[2170]_[156]_[-801]" type="Node3D" parent="." unique_id=486351198 instance=ExtResource("1_k3kfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2170.262, -156.90546, 800.2817)
+script = ExtResource("2_u0wk3")
+RegularMonsterMinLevel = 7
+RegularMonsterMaxLevel = 11
+NamedMonsterMinLevel = 7
+NamedMonsterMaxLevel = 11
+
+[node name="MonsterSpawner_1322_[2154]_[157]_[-878]" type="Node3D" parent="." unique_id=283027087 instance=ExtResource("1_k3kfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2154.1714, -157.69633, 877.8723)
+script = ExtResource("2_u0wk3")
+RegularMonsterMinLevel = 7
+RegularMonsterMaxLevel = 11
+NamedMonsterMinLevel = 7
+NamedMonsterMaxLevel = 11
+
+[node name="MonsterSpawner_1320_[2123]_[157]_[-813]" type="Node3D" parent="." unique_id=222857760 instance=ExtResource("1_k3kfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2123.0535, -157.69633, 812.27765)
+script = ExtResource("2_u0wk3")
+OriginalDisplayName = "MonsterSpawner_1320_[2123]_[157]_[-813]"
+RegularMonsterMinLevel = 5
+RegularMonsterMaxLevel = 8
+NamedMonsterMinLevel = 5
+NamedMonsterMaxLevel = 8
+
+[node name="MonsterSpawner_10AB_[2130]_[157]_[-858]" type="Node3D" parent="." unique_id=854556774 instance=ExtResource("1_k3kfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2130.3967, -157.69633, 857.5613)
+script = ExtResource("2_u0wk3")
+OriginalDisplayName = "MonsterSpawner_10AB_[2130]_[157]_[-858]"
+RegularMonsterMinLevel = 7
+RegularMonsterMaxLevel = 11
+NamedMonsterMinLevel = 7
+NamedMonsterMaxLevel = 11

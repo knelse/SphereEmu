@@ -154,6 +154,16 @@ public partial class MonsterSpawnerActivationManagerNode : Node
         }
 
         _elapsedSeconds = 0;
+        if (SphServer.Server.SphereServer.ServerNode?.WorldChunks is { } streamer)
+        {
+            streamer.CheckAllClients();
+        }
+
+        if (SphServer.Server.SphereServer.ServerNode?.TerrainGround is { } ground)
+        {
+            ground.CheckAllClients();
+        }
+
         MonsterSpawnerActivationManager.CheckAllClients();
         AlchemyMaterialSpawnerActivationManager.CheckAllClients();
         WorldObjectVisibilityManager.CheckAllClients();

@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_ql8wx"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_b202b"]
+
+[node name="Chunk_npc_34_12" type="Node3D" unique_id=871899934]
+
+[node name="NPC_5259_Алекс_Ульман_5259_5259_5259_5259_5259_5259_5259_5259_5259" type="Node3D" parent="." unique_id=2114629220 instance=ExtResource("1_ql8wx")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3445.5037, -157.89415, 1254.6075)
+script = ExtResource("2_b202b")
+NameID = 4309
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 128
+ID = 5259
+ObjectType = 213
+ModelName = "npc08"

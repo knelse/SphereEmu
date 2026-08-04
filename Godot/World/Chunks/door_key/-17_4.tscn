@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door_with_key.tscn" id="1_eag75"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/DoorWithKey.cs" id="2_pdaax"]
+
+[node name="Chunk_door_key_-17_4" type="Node3D" unique_id=475636965]
+
+[node name="DoorWithKey_02DC_[-1619]_[-77]_[-406]_732_732" type="Node3D" parent="." unique_id=1410994139 instance=ExtResource("1_eag75")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1618.13, 76.21, 405.48)
+script = ExtResource("2_pdaax")
+SubtypeID = 13210
+ID = 732
+ObjectType = 101

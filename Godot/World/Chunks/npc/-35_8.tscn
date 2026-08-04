@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_df0xs"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_rtjny"]
+
+[node name="Chunk_npc_-35_8" type="Node3D" unique_id=1692252029]
+
+[node name="NPC_5328_Нейл_Пупински_5328_5328_5328_5328_5328_5328_5328_5328_5328" type="Node3D" parent="." unique_id=1728354735 instance=ExtResource("1_df0xs")]
+transform = Transform3D(0.07356478, 0, -0.99729043, 0, 1, 0, 0.99729043, 0, 0.07356478, -3454.454, 343.31686, 888.44116)
+script = ExtResource("2_rtjny")
+NameID = 4056
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 195
+ID = 5328
+ObjectType = 213
+ModelName = "npc29c"

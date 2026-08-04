@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_25y1t"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_y3me4"]
+
+[node name="Chunk_npc_-25_18" type="Node3D" unique_id=1803962702]
+
+[node name="NPC_4713_Тан_Катчер_4713_4713_4713_4713_4713_4713_4713_4713_4713" type="Node3D" parent="." unique_id=816589046 instance=ExtResource("1_25y1t")]
+transform = Transform3D(-0.9987915, 0, -0.049067467, 0, 1, 0, 0.049067467, 0, -0.9987915, -2435.608, 336.08978, 1859.1884)
+script = ExtResource("2_y3me4")
+NameID = 4463
+IconName = "npc_guilder"
+NpcType = 16
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 130
+ID = 4713
+ObjectType = 216
+ModelName = "npc06"

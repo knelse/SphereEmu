@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/castle_chest.tscn" id="1_a3r8n"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/CastleChest.cs" id="2_dmjrc"]
+
+[node name="Chunk_castle_chest_-37_-12" type="Node3D" unique_id=806154421]
+
+[node name="CastleChest_06_Шателье _0C03_3075_3075_3075_3075_3075_3075_3075_3075_3075" type="Node3D" parent="." unique_id=1505520375 instance=ExtResource("1_a3r8n")]
+transform = Transform3D(-0.51410276, 0, 0.8577286, 0, 1, 0, -0.8577286, 0, -0.51410276, -3674.5254, -1092.1755, -1140.2931)
+script = ExtResource("2_dmjrc")
+Castle = 6
+Angle = 86
+ID = 3075
+ObjectType = 82
+ModelName = "cs_chest"

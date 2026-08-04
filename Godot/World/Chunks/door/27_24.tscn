@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_rsucu"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_xhpwy"]
+
+[node name="Chunk_door_27_24" type="Node3D" unique_id=1854913341]
+
+[node name="DoorEntrance_0589_433_1500_100_1417_1417" type="Node3D" parent="." unique_id=844855626 instance=ExtResource("1_rsucu")]
+transform = Transform3D(0.9329928, 0, 0.35989505, 0, 1, 0, -0.35989505, 0, 0.9329928, 2759.2197, -155.96849, 2438.63)
+script = ExtResource("2_xhpwy")
+DoorID = 32767
+HasTarget = true
+TargetX = 433.5268
+TargetY = 1500.4532
+TargetZ = 100.0093
+Angle = 15
+ID = 1417
+ObjectType = 60
+ModelName = "edoor"

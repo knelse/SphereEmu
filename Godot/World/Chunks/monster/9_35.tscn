@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_qy416"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_m6s6r"]
+
+[node name="Chunk_monster_9_35" type="Node3D" unique_id=1443293105]
+
+[node name="MonsterSpawner_7F3F_[933]_[156]_[-3502]" type="Node3D" parent="." unique_id=1659881757 instance=ExtResource("1_qy416")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 933.27325, -156.91322, 3501.246)
+script = ExtResource("2_m6s6r")
+OriginalDisplayName = "MonsterSpawner_7F3F_[933]_[156]_[-3502]"
+RegularMonsterMinLevel = 46
+RegularMonsterMaxLevel = 46
+NamedMonsterMinLevel = 46
+NamedMonsterMaxLevel = 46
+
+[node name="MonsterSpawner_0AC1_[942]_[1700]_[-3501]" type="Node3D" parent="." unique_id=-1294964543 instance=ExtResource("1_qy416")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 942.2734, -1700.587, 3500.0977)
+script = ExtResource("2_m6s6r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0AC1_[942]_[1700]_[-3501]"
+RegularMonsterMinLevel = 16
+RegularMonsterMaxLevel = 16
+NamedMonsterMinLevel = 16
+NamedMonsterMaxLevel = 16
+
+[node name="MonsterSpawner_0AC2_[929]_[1700]_[-3560]" type="Node3D" parent="." unique_id=-1294964542 instance=ExtResource("1_qy416")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 929.5456, -1700.587, 3559.452)
+script = ExtResource("2_m6s6r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0AC2_[929]_[1700]_[-3560]"
+RegularMonsterMinLevel = 16
+RegularMonsterMaxLevel = 16
+NamedMonsterMinLevel = 16
+NamedMonsterMaxLevel = 16
+
+[node name="MonsterSpawner_0AC3_[957]_[1700]_[-3575]" type="Node3D" parent="." unique_id=-1294964541 instance=ExtResource("1_qy416")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 957.0781, -1700.587, 3574.6147)
+script = ExtResource("2_m6s6r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0AC3_[957]_[1700]_[-3575]"
+RegularMonsterMinLevel = 16
+RegularMonsterMaxLevel = 16
+NamedMonsterMinLevel = 16
+NamedMonsterMaxLevel = 16

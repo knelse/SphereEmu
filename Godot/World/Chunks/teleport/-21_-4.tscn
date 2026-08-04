@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/teleport.tscn" id="1_fonek"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Teleport.cs" id="2_tvn3r"]
+
+[node name="Chunk_teleport_-21_-4" type="Node3D" unique_id=767161812]
+
+[node name="Teleport_1456_[-2017]_[-91]_[393]_5206_5206_5206_5206_5206_5206_5206_5206_5206" type="Node3D" parent="." unique_id=1943050220 instance=ExtResource("1_fonek")]
+transform = Transform3D(0.44961125, 0, -0.89322436, 0, 1, 0, 0.89322436, 0, 0.44961125, -2016.3673, 90.08074, -393.23203)
+script = ExtResource("2_tvn3r")
+Angle = 211
+ID = 5206
+ObjectType = 63

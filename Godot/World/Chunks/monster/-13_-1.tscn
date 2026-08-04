@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_v0wl8"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_l1a3r"]
+
+[node name="Chunk_monster_-13_-1" type="Node3D" unique_id=1213280026]
+
+[node name="MonsterSpawner_D2F2_[-1201]_[-96]_[49]" type="Node3D" parent="." unique_id=749682784 instance=ExtResource("1_v0wl8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1200.8649, 95.460884, -49.199867)
+script = ExtResource("2_l1a3r")
+RegularMonsterMinLevel = 49
+RegularMonsterMaxLevel = 54
+NamedMonsterMinLevel = 49
+NamedMonsterMaxLevel = 54
+
+[node name="MonsterSpawner_00AC_[-1285]_[1501]_[81]" type="Node3D" parent="." unique_id=2133113583 instance=ExtResource("1_v0wl8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1284.8516, -1501.2227, -81.97996)
+script = ExtResource("2_l1a3r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_00AC_[-1285]_[1501]_[81]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_0A53_[-1275]_[1501]_[40]" type="Node3D" parent="." unique_id=-1294964653 instance=ExtResource("1_v0wl8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1274.448, -1501.2227, -40.666855)
+script = ExtResource("2_l1a3r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A53_[-1275]_[1501]_[40]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20
+
+[node name="MonsterSpawner_0A54_[-1241]_[1501]_[55]" type="Node3D" parent="." unique_id=-1294964652 instance=ExtResource("1_v0wl8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1240.3763, -1501.2227, -55.20129)
+script = ExtResource("2_l1a3r")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0A54_[-1241]_[1501]_[55]"
+RegularMonsterMinLevel = 15
+RegularMonsterMaxLevel = 20
+NamedMonsterMinLevel = 15
+NamedMonsterMaxLevel = 20

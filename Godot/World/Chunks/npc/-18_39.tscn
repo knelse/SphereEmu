@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_fncii"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_f0kig"]
+
+[node name="Chunk_npc_-18_39" type="Node3D" unique_id=1574684501]
+
+[node name="NPC_5314_Дилан_Харансон_5314_5314_5314_5314_5314_5314_5314_5314_5314" type="Node3D" parent="." unique_id=1777103487 instance=ExtResource("1_fncii")]
+transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, -1702.4767, -1102.6772, 3907.391)
+script = ExtResource("2_f0kig")
+NameID = 4205
+IconName = "npc_tavernkeepr"
+NpcType = 5
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 212
+ID = 5314
+ObjectType = 213
+ModelName = "npc29c"

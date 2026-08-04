@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_tdfas"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_v5rxl"]
+
+[node name="Chunk_npc_-28_-7" type="Node3D" unique_id=1445223037]
+
+[node name="NPC_5105_Жак_Лавезье_5105_5105_5105_5105_5105_5105_5105_5105_5105" type="Node3D" parent="." unique_id=895794466 instance=ExtResource("1_tdfas")]
+transform = Transform3D(0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, 0.3136817, -2726.573, 93.01794, -639.2817)
+script = ExtResource("2_v5rxl")
+NameID = 4416
+IconName = "npc_trade_magic"
+NpcType = 15
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 205
+ID = 5105
+ObjectType = 208
+ModelName = "npc58"

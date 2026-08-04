@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_yx6s1"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_c0wgh"]
+
+[node name="Chunk_npc_3_9" type="Node3D" unique_id=1148045296]
+
+[node name="NPC_5176_Фредерик_Строрн_5176_5176_5176_5176_5176_5176_5176_5176_5176" type="Node3D" parent="." unique_id=184102551 instance=ExtResource("1_yx6s1")]
+transform = Transform3D(-0.7572088, 0, 0.65317285, 0, 1, 0, -0.65317285, 0, -0.7572088, 389.76086, -159.83942, 998.3558)
+script = ExtResource("2_c0wgh")
+NameID = 4252
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 99
+ID = 5176
+ObjectType = 213
+ModelName = "npc29a"

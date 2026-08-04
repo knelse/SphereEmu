@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_xvb0m"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_o2oq2"]
+
+[node name="Chunk_npc_18_-34" type="Node3D" unique_id=2075719509]
+
+[node name="NPC_4177_Саймон_Олди_4177_4177_4177_4177_4177_4177_4177_4177_4177" type="Node3D" parent="." unique_id=7147948 instance=ExtResource("1_xvb0m")]
+transform = Transform3D(-0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, -0.70710677, 1888.5164, -402.80066, -3306.9531)
+script = ExtResource("2_o2oq2")
+NameID = 4275
+IconName = "npc_banker"
+NpcType = 17
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 96
+ID = 4177
+ObjectType = 225
+ModelName = "npc29d"
+
+[node name="NPC_5135_Эмиль_Картоне_5135_5135_5135_5135_5135_5135_5135_5135_5135" type="Node3D" parent="." unique_id=1343265860 instance=ExtResource("1_xvb0m")]
+transform = Transform3D(-0.21910137, 0, -0.9757021, 0, 1, 0, 0.9757021, 0, -0.21910137, 1883.0952, -402.76764, -3302.3071)
+script = ExtResource("2_o2oq2")
+NameID = 4410
+IconName = "npc_trade_magic"
+NpcType = 13
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 183
+ID = 5135
+ObjectType = 205
+ModelName = "npc08"

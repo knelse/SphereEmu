@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Godot.Collections;
+using SphServer.Godot.Scripts.World;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
@@ -73,6 +74,7 @@ public partial class AlchemyMaterialSpawner : Node3D
 	{
 		EnsureRadiusGizmo();
 		UpdateRadiusGizmo();
+		WorldChunkSlotHydration.HydrateIfNeeded(WorldContentKind.Alchemy, this);
 
 		if (Engine.IsEditorHint())
 		{
@@ -214,7 +216,7 @@ public partial class AlchemyMaterialSpawner : Node3D
 		_ = AlchemyMaterialSpawnSlotBaker.BakeForSpawnerAsync(this);
 	}
 
-	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots)
+	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots, bool syncIndex = true)
 	{
 		BakedSpawnSlots.Clear();
 		foreach (var slot in slots)
@@ -224,6 +226,11 @@ public partial class AlchemyMaterialSpawner : Node3D
 
 		HasBakeError = false;
 		BakeErrorDetail = string.Empty;
+		if (syncIndex)
+		{
+			WorldChunkSlotHydration.UpdateIndexSlots(WorldContentKind.Alchemy, this, slots);
+		}
+
 		RefreshEditorGizmo();
 	}
 

@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/item_light_crystal.tscn" id="1_08jgi"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/ItemWorldObject.cs" id="2_68vu4"]
+
+[node name="Chunk_light_crystal_23_-1" type="Node3D" unique_id=80654373]
+
+[node name="LightCrystalYellow_69FC_[2330]_[1501]_[40]_27132_27132_27132_27132_27132_27132_27132_27132_27132" type="Node3D" parent="." unique_id=676594540 instance=ExtResource("1_08jgi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2330, -1501.6154, -40)
+script = ExtResource("2_68vu4")
+ID = 27132
+ObjectType = 711
+ModelName = "mn_quartz"
+
+[node name="LightCrystalYellow_683A_[2300]_[1501]_[10]_26682_26682_26682_26682_26682_26682_26682_26682_26682" type="Node3D" parent="." unique_id=1694290818 instance=ExtResource("1_08jgi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2300, -1501.6154, -10)
+script = ExtResource("2_68vu4")
+ID = 26682
+ObjectType = 711
+ModelName = "mn_quartz"

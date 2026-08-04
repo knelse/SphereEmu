@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_atlge"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_ro1lb"]
+
+[node name="Chunk_npc_25_-14" type="Node3D" unique_id=1945714064]
+
+[node name="NPC_5148_Самания_Ролс_5148_5148_5148_5148_5148_5148_5148_5148_5148" type="Node3D" parent="." unique_id=906874388 instance=ExtResource("1_atlge")]
+transform = Transform3D(-0.8314694, 0, -0.5555702, 0, 1, 0, 0.5555702, 0, -0.8314694, 2590.675, -156.77106, -1314.979)
+script = ExtResource("2_ro1lb")
+NameID = 4001
+IconName = "npc_trade_jewel"
+NpcType = 8
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 152
+ID = 5148
+ObjectType = 213
+ModelName = "npc14b"
+
+[node name="NPC_5157_Сеймур_Ботус_5157_5157_5157_5157_5157_5157_5157_5157_5157" type="Node3D" parent="." unique_id=760371607 instance=ExtResource("1_atlge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2581.1965, -157.85597, -1300.844)
+script = ExtResource("2_ro1lb")
+NameID = 4009
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+ID = 5157
+ObjectType = 213
+ModelName = "npc29b"
+
+[node name="NPC_5158_Сара_Боннор_5158_5158_5158_5158_5158_5158_5158_5158_5158" type="Node3D" parent="." unique_id=1914988069 instance=ExtResource("1_atlge")]
+transform = Transform3D(-0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, -0.3136817, 2599.4067, -156.81796, -1304.6029)
+script = ExtResource("2_ro1lb")
+NameID = 4010
+IconName = "npc_trade_magic"
+NpcType = 9
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 179
+ID = 5158
+ObjectType = 213
+ModelName = "npc14"
+
+[node name="NPC_5246_Магина_Ламандер_5246_5246_5246_5246_5246_5246_5246_5246_5246" type="Node3D" parent="." unique_id=870661465 instance=ExtResource("1_atlge")]
+transform = Transform3D(-0.9757009, 0, -0.21910097, 0, 1, 0, 0.21910097, 0, -0.9757009, 2556.8867, -159.55754, -1317.191)
+script = ExtResource("2_ro1lb")
+NameID = 4151
+IconName = "npc_trade_alchm"
+NpcType = 6
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 137
+ID = 5246
+ObjectType = 213
+ModelName = "npc14a"

@@ -1,4 +1,5 @@
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Godot.Scripts.World;
 using SphServer.Shared.ClientEvents;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -56,6 +57,8 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
         MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
         AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);
         WorldObjectVisibilityManager.NotifyClientPosition(sphereClient);
+        SphServer.Server.SphereServer.ServerNode?.WorldChunks?.NotifyClientPosition(sphereClient);
+        SphServer.Server.SphereServer.ServerNode?.TerrainGround?.NotifyClientPosition(sphereClient);
 
         return Task.CompletedTask;
     }

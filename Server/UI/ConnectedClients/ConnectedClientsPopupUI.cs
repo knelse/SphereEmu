@@ -15,28 +15,40 @@ public partial class ConnectedClientsPopupUI : PopupMenu
     private const string BAN_MENU_LABEL = "Ban";
     public ushort currentClientId;
 
-    public override void _Ready ()
+    public override void _Ready()
     {
+        // Items are built in code; clear anything serialized into MainServer.tscn from a prior
+        // play+save (otherwise Kick/Ban/Teleport stack every time the scene is saved).
+        Clear();
+        foreach (var child in GetChildren())
+        {
+            if (child is PopupMenu submenu)
+            {
+                RemoveChild(submenu);
+                submenu.QueueFree();
+            }
+        }
+
         AddKickMenuItem();
         AddBanMenuItem();
         CreateTeleportMenuHierarchy();
         IndexPressed += OnMenuIndexPressed;
     }
 
-    private void AddKickMenuItem ()
+    private void AddKickMenuItem()
     {
         AddItem(KICK_MENU_LABEL);
     }
 
-    private void AddBanMenuItem ()
+    private void AddBanMenuItem()
     {
         AddItem(BAN_MENU_LABEL);
         AddSeparator();
     }
 
-    private void OnMenuIndexPressed (long index)
+    private void OnMenuIndexPressed(long index)
     {
-        var itemText = GetItemText((int) index);
+        var itemText = GetItemText((int)index);
 
         if (itemText == KICK_MENU_LABEL)
         {
@@ -48,7 +60,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         }
     }
 
-    private void HandleKickClient ()
+    private void HandleKickClient()
     {
         var client = ActiveClients.Get(currentClientId);
 
@@ -61,7 +73,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         client.RemoveClient();
     }
 
-    private void HandleBanClient ()
+    private void HandleBanClient()
     {
         var client = ActiveClients.Get(currentClientId);
 
@@ -84,7 +96,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         client.RemoveClient();
     }
 
-    private void CreateTeleportMenuHierarchy ()
+    private void CreateTeleportMenuHierarchy()
     {
         var teleportMenu = new PopupMenu();
         teleportMenu.Name = "Teleport";
@@ -99,7 +111,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         AddSubmenuNodeItem("Teleport", teleportMenu);
     }
 
-    private PopupMenu CreateSubmenuForContinent (Continents continent)
+    private PopupMenu CreateSubmenuForContinent(Continents continent)
     {
         var continentMenu = new PopupMenu();
         continentMenu.Name = continent.ToString();
@@ -144,11 +156,11 @@ public partial class ConnectedClientsPopupUI : PopupMenu
     }
 
     // TODO: this is awful and relies on item text, but good enough for now
-    private IndexPressedEventHandler GenerateOnIndexPressedForMenu (PopupMenu popupMenu)
+    private IndexPressedEventHandler GenerateOnIndexPressedForMenu(PopupMenu popupMenu)
     {
         return index =>
         {
-            var itemText = popupMenu.GetItemText((int) index);
+            var itemText = popupMenu.GetItemText((int)index);
 
             if (itemText is null)
             {

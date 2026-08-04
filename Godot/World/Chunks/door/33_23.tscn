@@ -1,0 +1,250 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/door.tscn" id="1_lqi03"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/Door.cs" id="2_fskqt"]
+
+[node name="Chunk_door_33_23" type="Node3D" unique_id=951243482]
+
+[node name="DoorEntrance_04F0_3351_150_-2328_1264_1264" type="Node3D" parent="." unique_id=1134600530 instance=ExtResource("1_lqi03")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3352.6035, -147.82765, 2324.0283)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3351.2412
+TargetY = 150.92072
+TargetZ = -2328.6497
+ID = 1264
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04EE_3362_150_-2333_1262_1262" type="Node3D" parent="." unique_id=877898090 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.8314696, 0, -0.5555703, 0, 1, 0, 0.5555703, 0, 0.8314696, 3362.7551, -147.81133, 2330.4063)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3362.9866
+TargetY = 150.92628
+TargetZ = -2333.014
+Angle = 232
+ID = 1262
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F2_3337_150_-2331_1266_1266" type="Node3D" parent="." unique_id=648019143 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.7883465, 0, -0.61523145, 0, 1, 0, 0.61523145, 0, 0.7883465, 3337.407, -147.75345, 2333.2178)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3337.1724
+TargetY = 150.96935
+TargetZ = -2331.7952
+Angle = 229
+ID = 1266
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F1_3335_146_-2335_1265_1265" type="Node3D" parent="." unique_id=1434845443 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.8032074, 0, -0.5956995, 0, 1, 0, 0.5956995, 0, 0.8032074, 3336.774, -149.7714, 2332.278)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3335.8025
+TargetY = 146.64136
+TargetZ = -2335.1326
+Angle = 230
+ID = 1265
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04EC_3372_151_-2344_1260_1260" type="Node3D" parent="." unique_id=941360549 instance=ExtResource("1_lqi03")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3369.398, -147.30157, 2342.6294)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3372.8354
+TargetY = 151.85794
+TargetZ = -2344.9175
+Angle = 64
+ID = 1260
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04EB_3371_146_-2342_1259_1259" type="Node3D" parent="." unique_id=558695537 instance=ExtResource("1_lqi03")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3372.0557, -150.64258, 2344.7249)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3371.6252
+TargetY = 146.22719
+TargetZ = -2342.6836
+Angle = 64
+ID = 1259
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04FE_3369_150_-2358_1278_1278" type="Node3D" parent="." unique_id=380709372 instance=ExtResource("1_lqi03")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3371.5017, -147.33879, 2356.4526)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3369.087
+TargetY = 150.6636
+TargetZ = -2358.325
+Angle = 64
+ID = 1278
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04FD_3368_146_-2356_1277_1277" type="Node3D" parent="." unique_id=1773178881 instance=ExtResource("1_lqi03")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3369.1843, -149.41327, 2357.6746)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3368.9688
+TargetY = 146.2141
+TargetZ = -2356.446
+ID = 1277
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F6_3333_150_-2360_1270_1270" type="Node3D" parent="." unique_id=1539726935 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, 3335.842, -147.96605, 2361.1328)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3333.7747
+TargetY = 150.98102
+TargetZ = -2360.765
+Angle = 12
+ID = 1270
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F5_3336_146_-2363_1269_1269" type="Node3D" parent="." unique_id=2041571067 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, 3333.775, -149.71005, 2361.4924)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3336.463
+TargetY = 146.83495
+TargetZ = -2363.5627
+Angle = 12
+ID = 1269
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04FB_3365_146_-2369_1275_1275" type="Node3D" parent="." unique_id=114572552 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.5956993, 0, 0.8032075, 0, 1, 0, -0.8032075, 0, 0.5956993, 3365.126, -149.68753, 2367.2617)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3365.5383
+TargetY = 146.1688
+TargetZ = -2369.5222
+Angle = 38
+ID = 1275
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04FC_3364_150_-2366_1276_1276" type="Node3D" parent="." unique_id=923516842 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.5758082, 0, 0.8175848, 0, 1, 0, -0.8175848, 0, 0.5758082, 3367.5466, -147.31769, 2370.9224)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3364.7295
+TargetY = 150.78137
+TargetZ = -2366.9514
+Angle = 39
+ID = 1276
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04FA_3358_150_-2373_1274_1274" type="Node3D" parent="." unique_id=1995156435 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.9757021, 0, 0.21910124, 0, 1, 0, -0.21910124, 0, 0.9757021, 3360.231, -147.56764, 2374.0188)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3358.7852
+TargetY = 150.76561
+TargetZ = -2373.443
+Angle = 9
+ID = 1274
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F9_3360_146_-2376_1273_1273" type="Node3D" parent="." unique_id=803957158 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.9757021, 0, 0.21910124, 0, 1, 0, -0.21910124, 0, 0.9757021, 3358.923, -149.66003, 2373.9875)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3360.6655
+TargetY = 146.41672
+TargetZ = -2376.5046
+Angle = 9
+ID = 1273
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F8_3343_150_-2372_1272_1272" type="Node3D" parent="." unique_id=387517443 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.89322424, 0, -0.4496115, 0, 1, 0, 0.4496115, 0, 0.89322424, 3342.8928, -147.64996, 2370.982)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3343.86
+TargetY = 150.8684
+TargetZ = -2372.9067
+Angle = 237
+ID = 1272
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F7_3341_146_-2373_1271_1271" type="Node3D" parent="." unique_id=2059162622 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.4275551, 0, 0.9039893, 0, 1, 0, -0.9039893, 0, 0.4275551, 3343.1484, -149.66315, 2372.76)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3341.7024
+TargetY = 146.5249
+TargetZ = -2373.2192
+Angle = 46
+ID = 1271
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04EF_3352_146_-2326_1263_1263" type="Node3D" parent="." unique_id=1259746348 instance=ExtResource("1_lqi03")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3351.322, -149.72368, 2328.0872)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3352.6003
+TargetY = 146.70398
+TargetZ = -2326.447
+ID = 1263
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04ED_3361_146_-2332_1261_1261" type="Node3D" parent="." unique_id=1847896286 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.5956993, 0, 0.8032075, 0, 1, 0, -0.8032075, 0, 0.5956993, 3362.5234, -149.71436, 2332.3398)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3361.3323
+TargetY = 146.67535
+TargetZ = -2332.424
+Angle = 38
+ID = 1261
+ObjectType = 60
+ModelName = "edoor"
+
+[node name="DoorEntrance_04F3_3333_146_-2344_1267_1267" type="Node3D" parent="." unique_id=878079738 instance=ExtResource("1_lqi03")]
+transform = Transform3D(0.9951847, 0, -0.098017246, 0, 1, 0, 0.098017246, 0, 0.9951847, 3332.0615, -149.74583, 2346.3723)
+script = ExtResource("2_fskqt")
+DoorID = 32767
+HasTarget = true
+TargetX = 3333.75
+TargetY = 146.74
+TargetZ = -2344.93
+Angle = 252
+ID = 1267
+ObjectType = 60
+ModelName = "edoor"

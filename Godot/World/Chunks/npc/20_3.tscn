@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_k8o11"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_32eip"]
+
+[node name="Chunk_npc_20_3" type="Node3D" unique_id=1179394920]
+
+[node name="NPC_5189_Камилус_Торогус_5189_5189_5189_5189_5189_5189_5189_5189_5189" type="Node3D" parent="." unique_id=1353388886 instance=ExtResource("1_k8o11")]
+transform = Transform3D(-0.88192123, 0, 0.47139683, 0, 1, 0, -0.47139683, 0, -0.88192123, 2089.9373, -159.83374, 389.92108)
+script = ExtResource("2_32eip")
+NameID = 4121
+IconName = "npc_trade_wpon"
+NpcType = 11
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 108
+ID = 5189
+ObjectType = 213
+ModelName = "npc08"
+
+[node name="NPC_5193_Эдвин_Тирс_5193_5193_5193_5193_5193_5193_5193_5193_5193" type="Node3D" parent="." unique_id=1016852441 instance=ExtResource("1_k8o11")]
+transform = Transform3D(0.4275551, 0, 0.9039893, 0, 1, 0, -0.9039893, 0, 0.4275551, 2091.5676, -159.85472, 399.54465)
+script = ExtResource("2_32eip")
+NameID = 4153
+IconName = "npc_trade_armor"
+NpcType = 7
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 46
+ID = 5193
+ObjectType = 213
+ModelName = "npc29a"

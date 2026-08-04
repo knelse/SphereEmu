@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_sbi6q"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_xnpm7"]
+
+[node name="Chunk_npc_21_8" type="Node3D" unique_id=947316922]
+
+[node name="NPC_5257_Дональд_Сандерс_5257_5257_5257_5257_5257_5257_5257_5257_5257" type="Node3D" parent="." unique_id=767318109 instance=ExtResource("1_sbi6q")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2149.0415, -158.01245, 834.277)
+script = ExtResource("2_xnpm7")
+NameID = 4308
+IconName = "npc_trade_travl"
+NpcType = 10
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+Angle = 64
+ID = 5257
+ObjectType = 213
+ModelName = "npc08"

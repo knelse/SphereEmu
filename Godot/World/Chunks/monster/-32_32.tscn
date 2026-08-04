@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_krnhr"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_8ewwk"]
+
+[node name="Chunk_monster_-32_32" type="Node3D" unique_id=584657264]
+
+[node name="MonsterSpawner_0755_[-3130]_[1691]_[-3268]" type="Node3D" parent="." unique_id=768982512 instance=ExtResource("1_krnhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3129.7466, -1691.3142, 3267.3955)
+script = ExtResource("2_8ewwk")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0755_[-3130]_[1691]_[-3268]"
+
+[node name="MonsterSpawner_067A_[-3130]_[1690]_[-3268]" type="Node3D" parent="." unique_id=1690980241 instance=ExtResource("1_krnhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3129.0598, -1690.2734, 3267.7178)
+script = ExtResource("2_8ewwk")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_067A_[-3130]_[1690]_[-3268]"
+
+[node name="MonsterSpawner_099F_[-3192]_[1680]_[-3292]" type="Node3D" parent="." unique_id=-1294964833 instance=ExtResource("1_krnhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3191.8894, -1680.8624, 3291.038)
+script = ExtResource("2_8ewwk")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_099F_[-3192]_[1680]_[-3292]"
+RegularMonsterMinLevel = 80
+RegularMonsterMaxLevel = 80
+NamedMonsterMinLevel = 80
+NamedMonsterMaxLevel = 80
+
+[node name="MonsterSpawner_09A0_[-3179]_[1694]_[-3270]" type="Node3D" parent="." unique_id=-1294964832 instance=ExtResource("1_krnhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3178.638, -1694.3647, 3269.445)
+script = ExtResource("2_8ewwk")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09A0_[-3179]_[1694]_[-3270]"
+RegularMonsterMinLevel = 80
+RegularMonsterMaxLevel = 80
+NamedMonsterMinLevel = 80
+NamedMonsterMaxLevel = 80
+
+[node name="MonsterSpawner_09A1_[-3159]_[1685]_[-3229]" type="Node3D" parent="." unique_id=-1294964831 instance=ExtResource("1_krnhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3158.781, -1685.4777, 3228.8264)
+script = ExtResource("2_8ewwk")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_09A1_[-3159]_[1685]_[-3229]"
+RegularMonsterMinLevel = 80
+RegularMonsterMaxLevel = 80
+NamedMonsterMinLevel = 80
+NamedMonsterMaxLevel = 80

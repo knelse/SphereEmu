@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_s2o4h"]
+[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_qg0xh"]
+
+[node name="Chunk_monster_-37_18" type="Node3D" unique_id=951481091]
+
+[node name="MonsterSpawner_0878_[-3672]_[1292]_[-1843]" type="Node3D" parent="." unique_id=699647688 instance=ExtResource("1_s2o4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3671.0974, -1292.0358, 1842.9335)
+script = ExtResource("2_qg0xh")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0878_[-3672]_[1292]_[-1843]"
+RegularMonsterMinLevel = 80
+RegularMonsterMaxLevel = 85
+NamedMonsterMinLevel = 80
+NamedMonsterMaxLevel = 85
+
+[node name="MonsterSpawner_0862_[-3697]_[1300]_[-1842]" type="Node3D" parent="." unique_id=88922001 instance=ExtResource("1_s2o4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3696.9001, -1300.9979, 1841.9103)
+script = ExtResource("2_qg0xh")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0862_[-3697]_[1300]_[-1842]"
+RegularMonsterMinLevel = 75
+RegularMonsterMaxLevel = 85
+NamedMonsterMinLevel = 75
+NamedMonsterMaxLevel = 85
+
+[node name="MonsterSpawner_087C_[-3687]_[1291]_[-1871]" type="Node3D" parent="." unique_id=1516751816 instance=ExtResource("1_s2o4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3686.3325, -1291.6083, 1870.3495)
+script = ExtResource("2_qg0xh")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_087C_[-3687]_[1291]_[-1871]"
+RegularMonsterMinLevel = 75
+RegularMonsterMaxLevel = 85
+NamedMonsterMinLevel = 75
+NamedMonsterMaxLevel = 85
+
+[node name="MonsterSpawner_087A_[-3671]_[1301]_[-1891]" type="Node3D" parent="." unique_id=1371828366 instance=ExtResource("1_s2o4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3670.4282, -1301.647, 1890.5762)
+script = ExtResource("2_qg0xh")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_087A_[-3671]_[1301]_[-1891]"
+RegularMonsterMinLevel = 75
+RegularMonsterMaxLevel = 85
+NamedMonsterMinLevel = 75
+NamedMonsterMaxLevel = 85
+
+[node name="MonsterSpawner_0879_[-3670]_[1291]_[-1883]" type="Node3D" parent="." unique_id=69900920 instance=ExtResource("1_s2o4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3669.1926, -1291.407, 1882.5245)
+script = ExtResource("2_qg0xh")
+SpawnRadiusMeters = 4.0
+OriginalDisplayName = "MonsterSpawner_0879_[-3670]_[1291]_[-1883]"
+RegularMonsterMinLevel = 75
+RegularMonsterMaxLevel = 85
+NamedMonsterMinLevel = 75
+NamedMonsterMaxLevel = 85

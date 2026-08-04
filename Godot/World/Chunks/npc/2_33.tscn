@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Godot/Scenes/npc_interactable.tscn" id="1_xl2o7"]
+[ext_resource type="Script" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="2_plhuy"]
+
+[node name="Chunk_npc_2_33" type="Node3D" unique_id=1196996381]
+
+[node name="NPC_5242_Гертруда_Шлоссен_5242_5242_5242_5242_5242_5242_5242_5242_5242" type="Node3D" parent="." unique_id=1198511725 instance=ExtResource("1_xl2o7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 227.15579, -159.87598, 3309.6348)
+script = ExtResource("2_plhuy")
+NameID = 4149
+IconName = "npc_trade_magic"
+NpcType = 9
+VendorItemTierMin = 1
+VendorItemTierMax = 15
+ID = 5242
+ObjectType = 213
+ModelName = "npc14"
