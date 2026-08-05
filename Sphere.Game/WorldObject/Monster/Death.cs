@@ -14,8 +14,12 @@ public partial class Monster
 	public event Action<Monster, DamageEvent, DamageOutcome>? MonsterKilled;
 
 	/// <summary>Overrides must call base to keep subscribers and the despawn working.</summary>
-	protected virtual void OnMonsterKilled (in DamageEvent hit, in DamageOutcome outcome)
+	protected virtual void OnMonsterKilled(in DamageEvent hit, in DamageOutcome outcome)
 	{
+		var xpAwarded = GetExperienceForKill();
+		SphLogger.Info(
+			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} XP.");
+
 		MonsterKilled?.Invoke(this, hit, outcome);
 		PerformDeath(hit.AttackerId);
 	}
@@ -24,7 +28,7 @@ public partial class Monster
 	///     Death pipeline: stop physics, death signal, then (one frame later) despawn + registry
 	///     unwind + free. The client plays its full death animation from the signal.
 	/// </summary>
-	private void PerformDeath (ushort killerGlobalId)
+	private void PerformDeath(ushort killerGlobalId)
 	{
 		if (_deathStarted)
 		{
@@ -38,17 +42,15 @@ public partial class Monster
 
 		BroadcastDeathSignalToVisibleClients(killerGlobalId);
 
-		SphLogger.Info($"Monster {Name} [{ID:X4}] killed by {killerGlobalId:X4}.");
-
 		// Deferred: the killing-blow damage echo is enqueued by the handler after TakeDamage returns,
 		// and the despawn must reach the client after that echo — a damage delta for an already
 		// removed entity crashes the client's script VM (BoundCheckArray in _player, observed live).
 		Callable.From(FinishDespawn).CallDeferred();
 	}
 
-	private void FinishDespawn ()
+	private void FinishDespawn()
 	{
-		if (!GodotObject.IsInstanceValid(this))
+		if (!IsInstanceValid(this))
 		{
 			return;
 		}
@@ -62,7 +64,7 @@ public partial class Monster
 	///     Don't spawn a dying mob to a client entering range after the killing blow — it would get
 	///     a live spawn and never see the death. The pending despawn broadcast is harmless for it.
 	/// </summary>
-	protected override void ShowForClient (SphereClient client)
+	protected override void ShowForClient(SphereClient client)
 	{
 		if (_deathStarted)
 		{

@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using SphServer.Server.GameplayLogic.Combat;
+using SphServer.Server.GameplayLogic.Experience;
 using SphServer.Shared.Logger;
 
 namespace SphServer.Server.Config;
@@ -14,7 +16,8 @@ public static class BalanceConfig
 {
     private static readonly (string Name, Type Type)[] KnownConfigs =
     [
-        ("combat", typeof(CombatBalance))
+        ("combat", typeof(CombatBalance)),
+        ("experience", typeof(ExperienceBalance))
     ];
 
     private static readonly ConcurrentDictionary<(string Name, Type Type), object> Loaded = new ();
@@ -24,7 +27,8 @@ public static class BalanceConfig
     {
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
     };
 
     /// <summary>Loads every known config once at startup; a broken file is logged, not thrown, so the rest still load.</summary>
