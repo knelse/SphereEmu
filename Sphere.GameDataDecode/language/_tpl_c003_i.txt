@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,7 +7,7 @@
 14 
 15 
 16 
-20 Non lontano da qui è stato lasciato un pacco per me, contiene degli ingredienti di cui ho bisogno. Portamelo. %s  
-21 Non lontano da qui è stato lasciato un pacco per me, contiene degli ingredienti di cui ho bisogno. Portamelo. %s 
- 
- 
+20 Un pacco con gli ingredienti necessari è stato lasciato qui non lontano per me. Portala! %s
+21 Un pacco con gli ingredienti necessari è stato lasciato qui non lontano per me. Portala! %s
+    
+    

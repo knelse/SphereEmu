@@ -1,8 +1,7 @@
-01 Эликсир Магической Атаки
-02 эликсир магической атаки
-03 эликсир магической атаки
-
-101 Эликсир магической атаки низкой концентрации. Увеличивает Магическую Атаку на 5%.
-102 Эликсир магической атаки средней концентрации. Увеличивает Магическую Атаку на 7.5%.
-103 Эликсир магической атаки высокой концентрации. Увеличивает Магическую Атаку на 10%.
-104 Эликсир магической атаки высокой концентрации. Увеличивает Магическую Атаку на 15%.
+01 Elixir Do Ataque Mбgico
+02 Elixir do Ataque Mбgico
+03 Elixir do Ataque Mбgico
+101 Elixir do Ataque Mбgico de baixa concentraзгo. Aumenta o ATQ mбgico em 5%.
+102 Elixir de um ataque mбgico de concentraзгo mйdia. Aumenta o ATQ mбgico em 7.5%.
+103 Elixir do Ataque Mбgico de alta concentraзгo. Aumenta o ATQ mбgico em 10%.
+104 Elixir do Ataque Mбgico de alta concentraзгo. Aumenta o ATQ mбgico em 15%.

@@ -1,0 +1,10 @@
+01 semilla
+03 semilla
+05 nuevo
+06 envejecimiento
+07 se desvanece
+10 Para activar, coloque la semilla en el Suelo.
+101 Dentro-psoglavets
+102 Dentro del cofre
+103 Dentro-piedra del castillo (activar dentro del castillo)
+104 Interior-piedra protectora (activar dentro del castillo)

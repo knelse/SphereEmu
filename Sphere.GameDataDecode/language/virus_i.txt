@@ -1,55 +1,56 @@
 01 Mutatore
-
-// descrizione dei virus particolari
 1000 Luce magica invisibile agli altri.
-1001 "Berserker". Lascia l'individuo affamato ed esausto.
+1001 "Berserker". Dopo l'azione, lascia fame e senza forza.
 1002 Permette di vedere l'invisibile.
-1003 "Ira della pietra". Causa un danno ogni 2 minuti.
-1004 Elimina un mutatore.
-1005 Riduce la vita ogni 2 minuti.
-1006 Aumenta la vita ogni 2 minuti.
-1007 Riduce la vita e il prana ogni 2 minuti.
-1008 Aumenta la vita e il prana ogni 2 minuti.
-1009 "Purificazione". Guarisce completamente la vita e il prana, rimuove tutti i mutatori.
-1010 Impedisce la corsa.
-1011 Impedisce di correre e camminare.
-1012 Ipotassia.
-1013 Impedisce di saltare.
-1014 salti 2 volte più lungo.
-1015 Salti 4 volte più lungo.
-1016 Mezza ciecità.
-1017 Ciecità completa.
-1018 Permette di respirare sott'acqua.
-1019 Protegge dalle cadute da qualsiasi altezza.
-1020 Rimuove il mutatore di aumento di salto.
-1021 Uccide i membri del clan dei Naath. Libera dalla maledizione degli spiriti malvagi.
-1022 Permette di vedere trappole nascoste.
-1023 Rende se stessi invisibili. L'effetto svanisce quando qualcosa viene brandito nelle mani.
+1003 "L'Ira Della Tavoletta". Provoca danni ogni 2 minuti.
+1004 Spara un mutatore.
+1005 Riduce la salute ogni 2 minuti.
+1006 Aumenta la salute ogni 2 minuti.
+1007 Riduce la salute e il prana ogni 2 minuti.
+1008 Aumenta la salute e il prana ogni 2 minuti.
+1009 "Purificazione". Ripristino completo della salute e del prana e rimozione di tutti i mutatori.
+1010 Vieta di correre.
+1011 Vieta di correre e camminare.
+1012 Mancanza di coordinamento.
+1013 Divieto di saltare.
+1014 Aumenta i salti di 2 volte.
+1015 Aumenta i salti di 4 volte.
+1016 Accecante a metà.
+1017 Abbagliamento totale.
+1018 Ti permette di respirare sott'acqua.
+1019 Protegge dalla caduta da qualsiasi altezza.
+1020 Rimuove il mutatore di aumento del salto.
+1021 Uccide un membro del clan "Naath". Libera dalla maledizione degli spiriti maligni.
+1022 Consente di vedere trappole nascoste.
+1023 Rende invisibile il supporto. L'azione termina se qualcosa viene preso in mano.
 1024 Rimuove 2 mutatori.
-1025 Rimuove 4 mutatori.
-1026 Rimuove 6 mutatori.
-1027 Permettere di lanciare 2 dardi contemporaneamente.
-1028 Aumenta la velocità della corsa. Questo mantra non è memorizzabile nel libro. Una volta usato scompare.
+1025 Spara 4 mutatori.
+1026 Spara 6 mutatori.
+1027 Consente di rilasciare 2 frecce contemporaneamente.
+1028 Aumenta la velocità di corsa.
 1029 Furto
-1030 Rende se stessi invisibili durante la notte. L'effetto svanisce quando qualcosa viene brandito nelle mani.
-1031 Kamae. Stato protettivo. Impedisce la corsa e rallenta qualsiasi azione.
-1032 Agente fissante. Blocca l'effetto della purificazione completa ai mutatori inferiori.
-1033 Ingegnosità. Aumenta la possibilità che vengano lasciati buoni oggetti dopo l'uccisione del mostro.
-1034 Vista lunga. Aumenta il campo d'azione di ogni arma di 30 metri.
-1035 Gestione del tempo. Rende 2 volte superiore la frequenza di attacco.
-1036 Catene. Impedisce di brandire qualsiasi cosa in mano.
-1037 Vista corta. Riduce il campo d'azione di ogni arma di 2 metri.
-1038 Meditazione. Affonda in uno stato di silezio, aumenta la protezione.
-1039 Maledizione. Trasforma in un cinghiale selvaggio. 
-1040 Stordimento. Acceca e previene dal legare le mani.
-1041 Metamorfosi. Trasforma in un lupo.
-1042 Corsa veloce prima del primo stop.
-1043 Armatura arrugginita. Impedisce di girarsi.
-1044 Tornado. Fa girare un avversario.
-1045 Berserker. Attacchi più potenti, ma una corsa più lenta.
-1046 Scudo del prana. Riduce il danno con un consumo di mantenimento del prana.
-1047 Metamorfosi. Trasforma in un vampiro.
-1111 Supporto dell'alfiere.
-2020 Aumenta la protezione dei cancelli di un castello.
-2021 Causa danno ai cancelli di un castello ogni 2 minuti.
-1049 Magic Mirror. Protects and returns half damage to attacker.
+1030 Rende il portatore invisibile di notte. L'azione termina se qualcosa viene preso in mano.
+1031 Kamae. Supporto protettivo. Vieta di correre e rallenta qualsiasi azione.
+1032 Fissatore. Blocca l'azione della purificazione completa sui mutatori sottostanti.
+1033 Risorsa. Aumenta la probabilità di cadere dal mostro ucciso delle risorse artigianali.
+1034 Lungimiranza. Aumenta la distanza di esposizione di qualsiasi arma fino a 30 metri.
+1035 Tempo di esecuzione. Aumenta la frequenza di attacco di 2 volte.
+1036 Catene. Vieta di prendere qualcosa in mano.
+1037 Miopia. Riduce la distanza di esposizione di qualsiasi arma fino a 2 metri.
+1038 Meditazione. Immerge in uno stato di silenzio, dando maggiore protezione.
+1039 Dannazione. Trasformandosi in un cinghiale che si precipita.
+1040 Stordimento. Acceca e non ti permette di muovere le mani.
+1041 Metamorfosi. Trasformandosi in un lupo.
+1042 Corsa veloce fino alla prima fermata.
+1043 Armatura arrugginita. Vieta le svolte.
+1044 Tornado. Gira il personaggio.
+1045 Berserk. Aumenta l'attacco, ma rallenta la corsa.
+1046 Scudo di prana. Estingue i danni alla salute con l'aiuto del consumo di prana.
+1047 Metamorfosi. Trasformarsi in un vampiro.
+1048 Metamorfosi. Trasformandosi in un pupazzo di neve.
+1049 Specchio magico. Inverte l'attacco contro l'attaccante stesso.
+1050 Elisir di libertà-rimuove qualsiasi 4 mutatori dannosi.
+1051 Incrollabile. Rimuove tutti i mutatori di controllo e li rende immuni.
+1111 Supporto Bandier.
+2020 Aumenta la protezione del cancello della serratura.
+2021 Danneggia il cancello della serratura ogni 2 minuti.

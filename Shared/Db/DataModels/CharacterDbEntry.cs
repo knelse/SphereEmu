@@ -12,24 +12,24 @@ namespace SphServer.Shared.Db.DataModels;
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry
 {
-    public readonly ItemDbEntry Fists = new ()
+    public readonly ItemDbEntry Fists = new()
     {
         ObjectKind = GameObjectKind.Fists,
         GameObjectType = GameObjectType.Fists
     };
 
-    public CharacterDbEntry ()
+    public CharacterDbEntry()
     {
         LookType = 0x7;
         IsTurnedOff = 0x9;
-        CurrentHP = (ushort) MaxHPBase;
-        MaxHP = (ushort) MaxHPBase;
-        CurrentMP = (ushort) MaxMPBase;
-        MaxMP = (ushort) MaxMPBase;
-        CurrentSatiety = 100;
+        CurrentSatiety = 50;
         MaxSatiety = 100;
-        AvailableDegreeStats = (ushort) AvailableStatsPrimary[0];
-        AvailableTitleStats = (ushort) AvailableStatsPrimary[0];
+        MaxHP = (ushort)WithSatietyMaxHpBonus(MaxHPBase);
+        CurrentHP = MaxHP;
+        CurrentMP = (ushort)MaxMPBase;
+        MaxMP = (ushort)MaxMPBase;
+        AvailableDegreeStats = AvailableStatsPrimary[0];
+        AvailableTitleStats = AvailableStatsPrimary[0];
         Fists.Id = DbConnection.Items.Insert(Fists);
     }
 
@@ -38,29 +38,29 @@ public class CharacterDbEntry
     public byte LookType { get; set; }
     public byte IsTurnedOff { get; set; }
     public ushort MaxMP { get; set; }
-    public ushort BaseStrength { get; set; }
-    public ushort CurrentStrength { get; set; }
-    public ushort BaseAgility { get; set; }
-    public ushort CurrentAgility { get; set; }
-    public ushort BaseAccuracy { get; set; }
-    public ushort CurrentAccuracy { get; set; }
-    public ushort BaseEndurance { get; set; }
-    public ushort CurrentEndurance { get; set; }
-    public ushort BaseEarth { get; set; }
-    public ushort CurrentEarth { get; set; }
-    public ushort BaseAir { get; set; }
-    public ushort CurrentAir { get; set; }
-    public ushort BaseWater { get; set; }
-    public ushort CurrentWater { get; set; }
-    public ushort BaseFire { get; set; }
-    public ushort CurrentFire { get; set; }
+    public int BaseStrength { get; set; }
+    public int CurrentStrength { get; set; }
+    public int BaseAgility { get; set; }
+    public int CurrentAgility { get; set; }
+    public int BaseAccuracy { get; set; }
+    public int CurrentAccuracy { get; set; }
+    public int BaseEndurance { get; set; }
+    public int CurrentEndurance { get; set; }
+    public int BaseEarth { get; set; }
+    public int CurrentEarth { get; set; }
+    public int BaseAir { get; set; }
+    public int CurrentAir { get; set; }
+    public int BaseWater { get; set; }
+    public int CurrentWater { get; set; }
+    public int BaseFire { get; set; }
+    public int CurrentFire { get; set; }
     public ushort MaxSatiety { get; set; }
     public uint TitleXP { get; set; }
     public uint DegreeXP { get; set; }
     public ushort CurrentSatiety { get; set; }
     public ushort CurrentMP { get; set; }
-    public ushort AvailableTitleStats { get; set; }
-    public ushort AvailableDegreeStats { get; set; }
+    public int AvailableTitleStats { get; set; }
+    public int AvailableDegreeStats { get; set; }
     public bool IsGenderFemale { get; set; }
     public string Name { get; set; } = "Test";
     [BsonRef("Clans")] public ClanDbEntry? Clan { get; set; } = ClanDbEntry.DefaultClanDbEntry;
@@ -90,55 +90,167 @@ public class CharacterDbEntry
     public ushort PDef { get; set; }
     public ushort MDef { get; set; }
     public KarmaTypes Karma { get; set; } = KarmaTypes.Нейтральная;
-    public Dictionary<BelongingSlot, int> Items { get; set; } = new ();
+    public Dictionary<BelongingSlot, int> Items { get; set; } = new();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
     public int KarmaCount { get; set; }
 
     public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
     public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
-    public ulong XpToLevelUp => GetXpToLevelUp();
-    public Vector3 Origin => new ((float) X, (float) Y, (float) Z);
 
-    public void LevelUp (int newTitleLevel, int newDegreeLevel)
+    /// <summary>
+    ///     Satiety tiers: 0–33 → +5% max HP, 34–66 → +10%, 67+ → +15%.
+    /// </summary>
+    public int SatietyMaxHpBonusPercent => CurrentSatiety switch
+    {
+        <= 33 => 5,
+        <= 66 => 10,
+        _ => 15
+    };
+
+    public int WithSatietyMaxHpBonus(int hpMax) =>
+        hpMax + hpMax * SatietyMaxHpBonusPercent / 100;
+    public ulong XpToLevelUp => GetXpToLevelUp();
+    public Vector3 Origin => new((float)X, (float)Y, (float)Z);
+
+    public void LevelUp(int newTitleLevel, int newDegreeLevel)
     {
         if (newTitleLevel > TitleMinusOne)
         {
             var bonusStatsFromReset = TitleMinusOne / 60 * StatBonusForResets[TitleMinusOne];
-            AvailableTitleStats =
-                (ushort) (AvailableTitleStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
-            AvailableDegreeStats = (ushort) (AvailableDegreeStats + AvailableStatsSecondary[newTitleLevel]);
+            AvailableTitleStats += AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset;
+            AvailableDegreeStats += AvailableStatsSecondary[newTitleLevel];
         }
         else if (newDegreeLevel > DegreeMinusOne)
         {
             var bonusStatsFromReset = DegreeMinusOne / 60 * StatBonusForResets[DegreeMinusOne];
-            AvailableDegreeStats =
-                (ushort) (AvailableDegreeStats + AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset);
-            AvailableTitleStats = (ushort) (AvailableTitleStats + AvailableStatsSecondary[newTitleLevel]);
+            AvailableDegreeStats += AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset;
+            AvailableTitleStats += AvailableStatsSecondary[newTitleLevel];
         }
     }
 
-    public static CharacterDbEntry CreateNewCharacter (ushort clientIndex, string name, bool isFemale, int face,
+    public void SetKarmaCount(int value)
+    {
+        KarmaCount = value;
+        SyncKarmaFromCount();
+    }
+
+    /// <summary>
+    ///     Clamp <see cref="KarmaCount"/> to [-5000, 5000] and set <see cref="Karma"/> from thresholds.
+    /// </summary>
+    public void SyncKarmaFromCount()
+    {
+        KarmaCount = Math.Clamp(KarmaCount, -5000, 5000);
+        Karma = KarmaCount switch
+        {
+            < -1000 => KarmaTypes.Очень_Плохая,
+            < -100 => KarmaTypes.Плохая,
+            <= 100 => KarmaTypes.Нейтральная,
+            <= 1000 => KarmaTypes.Хорошая,
+            _ => KarmaTypes.Благая
+        };
+    }
+
+    /// <summary>
+    ///     Admin edit of a displayed <c>Current*</c> stat. Applies the same delta to <c>Base*</c>
+    ///     (so gear bonuses are preserved) and adjusts the matching available pool by -delta.
+    ///     No remaining-points check; values may go negative. Does not persist or push to client.
+    /// </summary>
+    public bool ApplyCurrentStatEdit(Stat stat, int newCurrentValue)
+    {
+        var oldCurrent = GetCurrentStat(stat);
+        var delta = newCurrentValue - oldCurrent;
+        if (delta == 0)
+        {
+            return false;
+        }
+
+        SetBaseStat(stat, GetBaseStat(stat) + delta);
+        if (IsTitleStat(stat))
+        {
+            AvailableTitleStats -= delta;
+        }
+        else if (IsDegreeStat(stat))
+        {
+            AvailableDegreeStats -= delta;
+        }
+        else
+        {
+            return false;
+        }
+
+        RecalcCurrentStats();
+        return true;
+    }
+
+    public static bool IsTitleStat(Stat stat) =>
+        stat is Stat.Strength or Stat.Agility or Stat.Accuracy or Stat.Endurance;
+
+    public static bool IsDegreeStat(Stat stat) =>
+        stat is Stat.Earth or Stat.Air or Stat.Water or Stat.Fire;
+
+    public int GetCurrentStat(Stat stat) => stat switch
+    {
+        Stat.Strength => CurrentStrength,
+        Stat.Agility => CurrentAgility,
+        Stat.Accuracy => CurrentAccuracy,
+        Stat.Endurance => CurrentEndurance,
+        Stat.Earth => CurrentEarth,
+        Stat.Air => CurrentAir,
+        Stat.Water => CurrentWater,
+        Stat.Fire => CurrentFire,
+        _ => 0
+    };
+
+    public int GetBaseStat(Stat stat) => stat switch
+    {
+        Stat.Strength => BaseStrength,
+        Stat.Agility => BaseAgility,
+        Stat.Accuracy => BaseAccuracy,
+        Stat.Endurance => BaseEndurance,
+        Stat.Earth => BaseEarth,
+        Stat.Air => BaseAir,
+        Stat.Water => BaseWater,
+        Stat.Fire => BaseFire,
+        _ => 0
+    };
+
+    private void SetBaseStat(Stat stat, int value)
+    {
+        switch (stat)
+        {
+            case Stat.Strength: BaseStrength = value; break;
+            case Stat.Agility: BaseAgility = value; break;
+            case Stat.Accuracy: BaseAccuracy = value; break;
+            case Stat.Endurance: BaseEndurance = value; break;
+            case Stat.Earth: BaseEarth = value; break;
+            case Stat.Air: BaseAir = value; break;
+            case Stat.Water: BaseWater = value; break;
+            case Stat.Fire: BaseFire = value; break;
+        }
+    }
+
+    public static CharacterDbEntry CreateNewCharacter(ushort clientIndex, string name, bool isFemale, int face,
         int hairStyle, int hairColor, int tattoo)
     {
         return new CharacterDbEntry
         {
             Name = name,
             IsGenderFemale = isFemale,
-            FaceType = (byte) face,
-            HairStyle = (byte) hairStyle,
-            HairColor = (byte) hairColor,
-            Tattoo = (byte) tattoo,
+            FaceType = (byte)face,
+            HairStyle = (byte)hairStyle,
+            HairColor = (byte)hairColor,
+            Tattoo = (byte)tattoo,
             ClientIndex = clientIndex
         };
     }
 
-    public bool HasEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
+    public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         return FindEmptyInventorySlot != null;
     }
 
-    public BelongingSlot? FindEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
+    public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         // TODO: equipped slots, bags, etc
         var lookup = new List<BelongingSlot>
@@ -166,12 +278,12 @@ public class CharacterDbEntry
         return null;
     }
 
-    public bool IsItemSlotEmpty (BelongingSlot belongingSlot)
+    public bool IsItemSlotEmpty(BelongingSlot belongingSlot)
     {
         return !Items.ContainsKey(belongingSlot);
     }
 
-    private ulong GetXpToLevelUp ()
+    private ulong GetXpToLevelUp()
     {
         if (TitleMinusOne % 60 == 59 && DegreeMinusOne % 60 == 59)
         {
@@ -181,16 +293,16 @@ public class CharacterDbEntry
         var minLevel = Math.Min(TitleMinusOne, DegreeMinusOne);
         var maxLevel = Math.Max(TitleMinusOne, DegreeMinusOne);
 
-        return (ulong) (XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
+        return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
-    public bool CanUseItem (ItemDbEntry itemDbEntry)
+    public bool CanUseItem(ItemDbEntry itemDbEntry)
     {
         // TODO: actual check
         return true;
     }
 
-    public bool RecalcCurrentStats ()
+    public bool RecalcCurrentStats()
     {
         var slotsToUpdate = new HashSet<BelongingSlot>
         {
@@ -200,15 +312,14 @@ public class CharacterDbEntry
             BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight
         };
 
-        var str = (int) BaseStrength;
-        var agi = (int) BaseAgility;
-        var acc = (int) BaseAccuracy;
-        var end = (int) BaseEndurance;
-        var ear = (int) BaseEarth;
-        var wat = (int) BaseWater;
-        var air = (int) BaseAir;
-        var fir = (int) BaseFire;
-        // TODO: satiety not calculated atm
+        var str = BaseStrength;
+        var agi = BaseAgility;
+        var acc = BaseAccuracy;
+        var end = BaseEndurance;
+        var ear = BaseEarth;
+        var wat = BaseWater;
+        var air = BaseAir;
+        var fir = BaseFire;
         var hpMax = MaxHPBase;
         var mpMax = MaxMPBase;
         var pdef = 0;
@@ -245,22 +356,25 @@ public class CharacterDbEntry
             matk += item.MAtkUpNegative;
         }
 
-        CurrentStrength = (ushort) str;
-        CurrentAgility = (ushort) agi;
-        CurrentAccuracy = (ushort) acc;
-        CurrentEndurance = (ushort) end;
-        CurrentEarth = (ushort) ear;
-        CurrentWater = (ushort) wat;
-        CurrentAir = (ushort) air;
-        CurrentFire = (ushort) fir;
-        CurrentHP = (ushort) Math.Min(CurrentHP, hpMax);
-        CurrentMP = (ushort) Math.Min(CurrentMP, mpMax);
-        MaxHP = (ushort) hpMax;
-        MaxMP = (ushort) mpMax;
-        PDef = (ushort) pdef;
-        MDef = (ushort) mdef;
-        PAtk = (ushort) patk;
-        MAtk = (ushort) matk;
+        hpMax = WithSatietyMaxHpBonus(hpMax);
+
+        // PAtk/MAtk: armor/accessories only for now (MainHand omitted) — revisit later
+        CurrentStrength = str;
+        CurrentAgility = agi;
+        CurrentAccuracy = acc;
+        CurrentEndurance = end;
+        CurrentEarth = ear;
+        CurrentWater = wat;
+        CurrentAir = air;
+        CurrentFire = fir;
+        CurrentHP = (ushort)Math.Min(CurrentHP, hpMax);
+        CurrentMP = (ushort)Math.Min(CurrentMP, mpMax);
+        MaxHP = (ushort)hpMax;
+        MaxMP = (ushort)mpMax;
+        PDef = (ushort)pdef;
+        MDef = (ushort)mdef;
+        PAtk = (ushort)patk;
+        MAtk = (ushort)matk;
 
         // TODO: character state shouldn't be updated in starting dungeon
         // MainServer.CharacterCollection.Update(Id, this);

@@ -1,60 +1,88 @@
-01 Creature
+01 The creature
 
 #1030
-01 Flyer
+01 The Flyer
+
 #1031
-01 Storm flyer
+01 Storm Flyer
+
 #1032
-01 Fire flyer
+01 The Fiery Flyer
+
 #1033
-01 Amber flyer
+01 The Amber Flyer
+
 #1034
-01 Giant flyer
+01 The Giant Flyer
+
 #1160
-01 Green dragon
+01 The Green Dragon
+
 #1161
-01 Blue dragon
+01 Blue Dragon
+
 #1162
-01 Red dragon
+01 The Red Dragon
+
 #1163
-01 Steel dragon
+01 Steel Dragon
+
 #1164
-01 Giant dragon
+01 A giant dragon
+
 #1300
-01 Dragon
+01 Drac
+
 #1301
-01 Gold dragon
+01 Golden Dragon
+
 #1302
-01 Ice dragon
+01 Ice drakost
+
 #1360
-01 Black dragon
+01 The Black Dragon
+
 #1361
-01 White dragon
+01 The White Dragon
+
 #1362
-01 Black dragon
+01 The Black Dragon
+
 #1363
-01 White dragon
+01 The White Dragon
+
 #1364
-01 Black dragon
+01 The Black Dragon
+
 #1365
-01 White dragon
+01 The White Dragon
+
 #1366
-01 Great black dragon
+01 The Great Black Dragon
+
 #1367
-01 Great white dragon
+01 The Great White Dragon
+
 #1368
-01 Wounded black dragon
+01 The Black Wounded Dragon
+
 #1370
-01 Black rider
+01 The Black Rider
+
 #1371
-01 White rider
+01 The White rider
+
 #1380
-01 Water-dog
+01 Quicksand
+
 #1400
-01 Fire serpent
+01 The Fiery Serpent
+
 #1401
-01 Bone serpent
+01 The Bone Serpent
+
 #1402
-01 Iron serpent
+01 The Iron Serpent
+
 #1850-1855
-01 Flyer of Necromancer
+01 Necromancer's Flyer

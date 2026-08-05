@@ -1,25 +1,33 @@
 01 Oficina
-03 Oficina
-
-10 Artigo possui propriedades especiais
-11 Artigo pronto.
-12 Artigo reparado.
-13 Artigo reparado, mas está em pior situação.
-14 Artigo reparado, mas está em muito pior situação..
-
-15 É impossível dar propriedade especial para este artigo usando esta fórmula:
-16 É impossível criar artigo usando esta fórmula:
-17 É impossível reparar artigo:
-
-18 artigo não combina com a fórmula
-19 componentes insuficientes
-20 Estágio muito baixo na organização
-21 Artigo foi acidentalmente quebrado enquanto estava sendo reparado
-22 Muitos artigos
-23 artigo quebrado durante reparo era muito velho
-
-90 Enquanto criava um artigo, a fórmula esgotou seus poderes mágicos e foi destruída.
-91 Enquanto fornecia ao artigo propriedades mágicas, a fórmula esgotou seus poderes mágicos e foi destruída.
-92 Enquanto reparava, a fórmula esgotou seus poderes mágicos e foi destruída.
-
-100 Esta é uma oficina onde ferreiros e armeiros fazem armaduras e armas. Encantadores também utilizam para dar propriedades mágicas aos artigos feitos lá.
+03 oficina
+10 O objeto recebeu uma propriedade especial.
+11 Objeto fabricado.
+12 O item foi reparado.
+13 O item foi reparado, mas sua condição piorou.
+14 O item foi reparado, mas sua condição piorou significativamente.
+15 Não é possível atribuir uma propriedade especial a um objeto por esta fórmula:
+16 Não é possível produzir um item com esta fórmula:
+17 Não é possível reparar o item:
+18 o item não corresponde à fórmula
+19 faltam componentes
+20 nível muito baixo na guilda
+21 o objeto quebrou acidentalmente durante o reparo
+22 muitos itens
+23 o objeto quebrou de velhice durante a reparação
+40 Não há Tallers suficientes.
+90 Ao criar um item, a fórmula esgotou seus poderes mágicos e foi destruída.
+91 Ao dar ao objeto propriedades mágicas, a fórmula esgotou seus poderes mágicos e foi destruída.
+92 Durante o reparo, a fórmula esgotou seus poderes mágicos e foi destruída.
+100 É uma oficina onde ferreiros e armeiros fazem armaduras e armas. Os feiticeiros também usam oficinas para dar propriedades mágicas aos objetos que são feitos lá.
+0222 Candidato (1)
+0223 Candidata (1)
+0224 Estudante (2)
+0225 Estudante (2)
+0226 Aprendiz (3)
+0227 Aprendiz (3)
+0228 Mestre (4)
+0229 Mestre (4)
+0230 Prefeito (5)
+0231 Prefeito (5)
+0232 Expert (6)
+0233 Expert (6)

@@ -1,31 +1,28 @@
-01 Посох
-03 Посох
-
-10 Осталось зарядов:
-
-100 Ударное оружие. Бьет сильно, но удары наносит редко.
-
-200 истощения
-201 доблести
-202 урона
-203 жестокости
-204 спешки
-205 скорости
-206 беспорядка
-207 хаоса
-208 эфира
-209 усталости
-210 болезни
-211 неустойчивости
-212 расстояния
-213 дистанции
-214 разложения
-215 опустошения
-216 слабости
-217 проникновения
-218 запрета
-219 ценности
+01 The staff
+03 The staff
+10 There are charges left:
+100 Shock weapons. He hits hard, but rarely strikes.
+200 exhaustion
+201 Valor
+202 damage
+203 cruelty
+204 haste
+205 speeds
+206 disorder
+207 Chaos
+208 ether
+209 Fatigue
+210 diseases
+211 instabilities
+212 distances
+213 distances
+214 decompositions
+215 devastation
+216 weaknesses
+217 penetrations
+218 prohibition
+219 values
 
 #7413
-01 Посох Пастуха
-03 посох Пастуха
+01 The Shepherd's Staff
+03 The Shepherd's Staff

@@ -1,27 +1,30 @@
-
-200 de aventura
-201 de silêncio
-202 de profecia
-203 de segredo
-204 de mito
-205 de vida
-206 de campanha
-207 de existência
-208 de lenda
-209 de paz
+200 Aventura
+201 Silêncio
+202 Profecias
+203 Segredos
+204 Mitos
+205 Genesis
+206 Caminhadas
+207 Existência
+208 Legendas
+209 Mundo
 
 #2760-2761
 01 Escudo de madeira
-03 escudo de madeira
+03 Escudo de madeira
+
 #2762-2763
-01 Grande escudo
-03 grande escudo
+01 Grande Escudo
+03 Grande Escudo
+
 #2764-2765
-01 Escudo de madeira forrado
-03 escudo de madeira forrado
+01 Escudo de madeira estofado
+03 Escudo de madeira estofado
+
 #2766-2768
-01 Escudo grande forrado
-03 escudo grande forrado
+01 Grande escudo estofado
+03 grande escudo estofado
+
 #2769-2774
-01 Escudo de aço
-03 escudo de aço
+01 Escudo de ferro
+03 Escudo de ferro

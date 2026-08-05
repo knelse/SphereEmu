@@ -1,140 +1,140 @@
-01 key
-03 key
-
-5000 Inn, cheap room, Sheepstone
-5001 Inn, cheap room, Sheepstone
-5002 Inn, suite, Sheepstone (backdoor)
-5003 Inn, suite, Sheepstone (backdoor)
-5007 Inn, cheap room, Bangville
-5008 Inn, suite, Bangville
-5009 Inn, cheap room, Sunpool
-5010 Inn, cheap room, Sunpool
-5011 Inn, suite, Sunpool (backdoor)
-5012 Inn, suite, Sunpool (backdoor)
-5013 Inn, suite, Sunpool (backdoor)
-5014 Inn, suite, Sunpool (backdoor)
-5015 Inn, cheap room, Torweal
-5016 Inn, suite, Torweal
-5017 Inn, cheap apartment, Nomrad
-5018 Inn, luxury suite, Nomrad
-5019 Inn, cheap apartment, Gifes
-5020 Inn, luxury suite, Gifes
-5004 Hotel, cheap apartment, Umrad
-5005 Hotel, luxury suite, Umrad
-5006 Hotel, luxury suite with big trunk, Umrad (enter from the yard)
-5025 Hotel, luxury suite with big trunk, Umrad (enter from the yard)
-5026 Hotel, luxury suite with big trunk, Umrad (enter from the yard)
+01 The key
+03 The key
+5000 Hotel, cheap room, Shipstone
+5001 Hotel, cheap room, Shipstone
+5002 Hotel, Suite, Shipstone (entrance from the courtyard)
+5003 Hotel, Suite, Shipstone (entrance from the courtyard)
+5007 Hotel, cheap room, Bangville
+5008 Hotel, Suite, Bangville
+5009 Hotel, cheap room, Sanpool
+5010 Hotel, cheap room, Sanpool
+5011 Hotel, Suite, Sanpool (entrance from the courtyard)
+5012 Hotel, Suite, Sanpool (entrance from the courtyard)
+5013 Hotel, Suite, Sanpool (entrance from the courtyard)
+5014 Hotel, Suite, Sanpool (entrance from the courtyard)
+5015 Hotel, cheap room, Torvil
+5016 Hotel, suite, Torvil
+5017 Hotel, Cheap room, Room number
+5018 Hotel, Suite, Room
+5019 Hotel, cheap room, Gifes
+5020 Hotel, suite, Gifes
+5004 Hotel, cheap room, Umrad
+5005 Hotel, Suite, Umrad
+5006 Hotel, suite with a large chest, Umrad (entrance from the courtyard)
+5025 Hotel, suite with a large chest, Umrad (entrance from the courtyard)
+5026 Hotel, suite with a large chest, Umrad (entrance from the courtyard)
 5027 Workshop, Shipstone
 5028 Workshop, Bangville
-5029 Workshop, Sanpul
-5030 Workshop, Torwil
+5029 Workshop, Sanpool
+5030 Workshop, Torvil
 5031 Workshop, Nomrad
 5032 Workshop, Gifes
 5033 Workshop, Umrad
-5034 Hotel, suite with big trunk, Anhelm (enter from the yard)
-5035 Hotel, suite with big trunk, Anhelm (enter from the yard)
-5036 Hotel, suite with big trunk, Anhelm (enter from the yard)
-5037 Hotel, luxury suite with big trunk, Anhelm
-
-5200 Coaching inn, cheap room
-5201 Coaching inn, cheap room
-5202 Coaching inn, cheap room
-5203 Coaching inn, cheap room
-5204 Coaching inn, cheap room
-5205 Coaching inn, cheap room
-5206 Coaching inn, cheap room
-5207 Coaching inn, cheap room
-
-5400 Room in Castle Liege
-5401 Room in Castle Liege
-5402 Room in Castle Feoff
-5403 Room in Castle Aris
-5404 Room in Castle Aris
-5405 Room in Castle Latour
-5406 Room in Castle Eikum-Cas
-5407 Room in Castle Gideon
-5408 Room in Castle Gideon
-5409 Room in Castle Gideon
-5410 Room in Castle Chatelie
-5411 Room in Castle Chatelie
-5412 Room in Castle Chatelie
-5413 Room in Castle Tyanod
-5414 Room in Castle Tyanod
-5415 Room in Castle Tyanod
-5416 Room in Castle Peltier
-5417 Room in Castle Peltier
-5418 Room in Castle Peltier
-5419 Room in Castle Kare-Royal
-5420 Room in Castle Kare-Royal
-5421 Room in Castle Kare-Royal
-5422 Room in Castle Blessendour
-5423 Room in Castle Blessendour
-5424 Room in Castle Blessendour
-5425 Room in Castle Ternoval
-5426 Room in Castle Ternoval
-5427 Room in Castle Ternoval
-5428 Room in Castle Ammalaelle
-5429 Room in Castle Ammalaelle
-5430 Room in Castle Ammalaelle
-5431 Room in Castle Cablac 
-5432 Room in Castle Cablac
-5433 Room in Castle Cablac
-5434 Room in Castle Devanagary
-5435 Room in Castle Devanagary
-5436 Room in Castle Devanagary
-5437 Room in Castle Sabulat
-5438 Room in Castle Sabulat
-5439 Room in Castle Sabulat
-5440 Room in Castle Diffensat
-5441 Room in Castle Diffensat
-5442 Room in Castle Diffensat
-5443 Room in Castle Ionat 
-5444 Room in Castle Ionat
-5445 Room in Castle Ionat
-5446 Room in Castle Triumphaler
-5447 Room in Castle Triumphaler
-5448 Room in Castle Triumphaler
-5449 Room at Bagnarak Castle
-5450 Room at Bagnarak Castle
-5451 Room at Bagnarak Castle
-5452 Room at Kabrad Castle
-5453 Room at Kabrad Castle
-5454 Room at Kabrad Castle
-5455 A room in Set castle
-5456 A room in Set castle
-5457 A room in Set castle
-5458 A room in Lender castle
-5459 A room in Lender castle
-5460 A room in Lender castle
-5461 Room at Keles Castle
-5462 Room at Keles Castle
-5463 Room at Keles Castle
-5464 A room in Sheprostan castle
-5465 A room in Sheprostan castle
-5466 A room in Sheprostan castle
-5467 Room at Orkobien Castle
-5468 Room at Orkobien Castle
-5469 Room at Orkobien Castle
-5470 Room at Kanuak Castle
-5471 Room at Kanuak Castle
-5472 Room at Kanuak Castle
-5473 Room at Aldarnon Castle
-5474 Room at Aldarnon Castle
-5475 Room at Aldarnon Castle
-5476 A room in Yong castle
-5477 A room in Yong castle
-5478 A room in Yong castle
-5479 Room at Elek Castle
-5480 Room at Elek Castle
-5481 Room at Elek Castle
-5482 Room at Gavot Castle
-5483 Room at Gavot Castle
-5484 Room at Gavot Castle
-5485 Room at Kandur Castle
-5486 Room at Kandur Castle
-5487 Room at Kandur Castle
-5488 Room at Immertel Castle
-5489 Room at Narcissus Castle
-5490 Room at Randen Castle
-5491 Room at Nirgun Castle
-5492 Room at Gelgivinn Castle
+5034 Hotel, room with a large chest, Angelm (entrance from the courtyard)
+5035 Hotel, room with a large chest, Angelm (entrance from the courtyard)
+5036 Hotel, room with a large chest, Angelm (entrance from the courtyard)
+5037 Hotel, suite with a large chest, Angelm
+5200 Rural hotel, cheap room
+5201 Rural hotel, cheap room
+5202 Rural hotel, cheap room
+5203 Rural hotel, cheap room
+5204 Rural hotel, cheap room
+5205 Rural hotel, cheap room
+5206 Rural hotel, cheap room
+5207 Rural hotel, cheap room
+5400 A room in the castle of Liege
+5401 A room in the castle of Liege
+5402 A room in the castle of Fief
+5403 A room in Aris Castle
+5404 A room in Aris Castle
+5405 A room in Lator Castle
+5406 A room in the castle of Eikum-kas
+5407 A room in the castle of Gideon
+5408 A room in the castle of Gideon
+5409 A room in the castle of Gideon
+5410 A room in the Chateau Chatelier
+5411 A room in the Chateau Chatelier
+5412 A room in the Chateau Chatelier
+5413 A room in Tuanod Castle
+5414 A room in Tuanod Castle
+5415 A room in Tuanod Castle
+5416 A room in the Peltier Castle
+5417 A room in the Peltier Castle
+5418 A room in the Peltier Castle
+5419 A room in the castle of Care-Royal
+5420 A room in the castle of Care-Royal
+5421 A room in the castle of Care-Royal
+5422 A room in the castle of Blessendor
+5423 A room in the castle of Blessendor
+5424 A room in the castle of Blessendor
+5425 A room in Ternoval Castle
+5426 A room in Ternoval Castle
+5427 A room in Ternoval Castle
+5428 A room in the castle of Ammalael
+5429 A room in the castle of Ammalael
+5430 A room in the castle of Ammalael
+5431 A room in the castle Kablak
+5432 A room in the castle Kablak
+5433 A room in the castle Kablak
+5434 A room in the Devanagari Castle
+5435 A room in the Devanagari Castle
+5436 A room in the Devanagari Castle
+5437 A room in Sabulat Castle
+5438 A room in Sabulat Castle
+5439 A room in Sabulat Castle
+5440 A room in the castle of Deffensat
+5441 A room in the castle of Deffensat
+5442 A room in the castle of Deffensat
+5443 A room in the castle of Aionat
+5444 A room in the castle of Aionat
+5445 A room in the castle of Aionat
+5446 A room in the Triumphalier Castle
+5447 A room in the Triumphalier Castle
+5448 A room in the Triumphalier Castle
+5449 A room in the castle of Bagarnak
+5450 A room in the castle of Bagarnak
+5451 A room in the castle of Bagarnak
+5452 A room in the castle of Kabrad
+5453 A room in the castle of Kabrad
+5454 A room in the castle of Kabrad
+5455 A room in the castle Set
+5456 A room in the castle Set
+5457 A room in the castle Set
+5458 A room in the Lender Castle
+5459 A room in the Lender Castle
+5460 A room in the Lender Castle
+5461 A room in the castle of Keles
+5462 A room in the castle of Keles
+5463 A room in the castle of Keles
+5464 A room in the castle of Sheprostan
+5465 A room in the castle of Sheprostan
+5466 A room in the castle of Sheprostan
+5467 A room in the castle of Orcobien
+5468 A room in the castle of Orcobien
+5469 A room in the castle of Orcobien
+5470 A room in the castle of Kanuak
+5471 A room in the castle of Kanuak
+5472 A room in the castle of Kanuak
+5473 A room in Aldarnon Castle
+5474 A room in Aldarnon Castle
+5475 A room in Aldarnon Castle
+5476 A room in Yong Castle
+5477 A room in Yong Castle
+5478 A room in Yong Castle
+5479 A room in the castle.
+5480 A room in the castle.
+5481 A room in the castle.
+5482 A room in the castle Gavotte
+5483 A room in the castle Gavotte
+5484 A room in the castle Gavotte
+5485 A room in the castle of Kandur
+5486 A room in the castle of Kandur
+5487 A room in the castle of Kandur
+5488 A room in the castle of Immertel
+5489 A room in Narcissus Castle
+5490 A room in the castle of Randen
+5491 A room in Nirgun Castle
+5492 A room in the castle of Gelgivinn
+5493 A room in the castle of Ile-Souilly-Roy
+5494 A room in the castle of Ile-Souilly-Roy
+5495 A room in the castle of Ile-Souilly-Roy

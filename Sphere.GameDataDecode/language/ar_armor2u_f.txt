@@ -1,0 +1,135 @@
+01 Roba
+03 robu
+100 Vêtements traditionnels des magiciens.
+200 l'éradication
+201 dévastation
+202 fiabilité
+203 invulnérabilité
+204 vie
+205 l'éradication
+206 dévastation
+207 fiabilité
+208 invulnérabilité
+209 vie
+210 conseil d'administration
+211 aveuglements
+212 frayeur
+213 arrêts
+214 délivrance
+215 purification
+216 sanctions
+217 chaînes
+218 vortex
+219 malédictions
+
+#5008
+01 Rob brun
+03 Rob brun
+
+#5009
+01 Rob bleu
+03 Rob bleu
+
+#5010
+01 Rob blanc
+03 Rob blanc
+
+#5011
+01 Red Roba
+03 Red Rob
+
+#5028
+01 Rob brun
+03 Rob brun
+
+#5029
+01 Rob bleu
+03 Rob bleu
+
+#5030
+01 Rob blanc
+03 Rob blanc
+
+#5031
+01 Red Roba
+03 Red Rob
+
+#5048
+01 Rob brun
+03 Rob brun
+
+#5049
+01 Rob bleu
+03 Rob bleu
+
+#5050
+01 Rob blanc
+03 Rob blanc
+
+#5051
+01 Red Roba
+03 Red Rob
+
+#5068
+01 Rob brun
+03 Rob brun
+
+#5069
+01 Rob bleu
+03 Rob bleu
+
+#5070
+01 Rob blanc
+03 Rob blanc
+
+#5071
+01 Red Roba
+03 Red Rob
+
+#5118
+01 Rob brun
+03 Rob brun
+
+#5119
+01 Rob bleu
+03 Rob bleu
+
+#5120
+01 Rob blanc
+03 Rob blanc
+
+#5121
+01 Red Roba
+03 Red Rob
+
+#5138
+01 Rob brun
+03 Rob brun
+
+#5139
+01 Rob bleu
+03 Rob bleu
+
+#5140
+01 Rob blanc
+03 Rob blanc
+
+#5141
+01 Red Roba
+03 Red Rob
+
+#5167
+01 Rob brun
+03 Rob brun
+
+#5168
+01 Rob bleu
+03 Rob bleu
+
+#5169
+01 Rob blanc
+03 Rob blanc
+
+#5170
+01 Red Roba
+03 Red Rob

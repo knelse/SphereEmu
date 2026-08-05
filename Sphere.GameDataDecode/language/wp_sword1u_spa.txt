@@ -1,0 +1,50 @@
+01 Espada
+03 espada
+200 eliminación
+201 devastación
+202 fiabilidad
+203 invulnerabilidad
+204 vida
+205 eliminación
+206 devastación
+207 fiabilidad
+208 invulnerabilidad
+209 vida
+210 Junta directiva
+211 cegamiento
+212 susto
+213 paradas
+214 liberación
+215 limpieza
+216 castigos
+217 grilletes
+218 vórtice
+219 maldiciones
+
+#5150
+01 Shamsher
+03 shamsher
+
+#5151
+01 Cimitarra de élite
+03 Cimitarra de élite
+
+#5152
+01 Espada rúnica
+03 Espada rúnica
+
+#5153
+01 Katana rúnica
+03 Katana rúnica
+
+#5154
+01 Katana legendaria
+03 Katana legendaria
+
+#5155
+01 Katana fantasma
+03 Katana fantasma
+
+#5156
+01 Katana dragón
+03 Dragon Katana

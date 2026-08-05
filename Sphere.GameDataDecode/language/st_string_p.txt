@@ -1,33 +1,37 @@
-01 Cordão
-03 cordão
-
-10 Este cordão segura as orelhas de quem o karma era %s.
-11 Este cordão segura as orelhas de administradores das organizações. //nunca vem.
-12 Este cordão segura as orelhas dos membros do clã %s.
-
-50 Coletados: %d peças.
-
-0900 Este cordão segura as orelhas de membros da organização dos assassinos.
-0901 Este cordão segura as orelhas de membros da organização dos cruzados.
-0902 Este cordão segura as orelhas de membros da organização dos inquisidores.
-0903 Este cordão segura as orelhas de membros da organização dos caçadores.
-0904 Este cordão segura as orelhas de membros da organização dos mágicos.
-0905 Este cordão segura as orelhas de membros da organização dos bárbaros.
-0906 Este cordão segura as orelhas de membros da organização dos druidas.
-0907 Este cordão segura as orelhas de membros da organização dos ladrões.
-0908 Este cordão segura as orelhas de membros da organização dos mestres do aço.
-0909 Este cordão segura as orelhas de membros da organização dos armeiros.
-0910 Este cordão segura as orelhas de membros da organização dos ferreiros.
-0911 Este cordão segura as orelhas de membros da organização dos encantadores.
-0912 Este cordão segura as orelhas de membros da organização dos necromantes.
-0913 Este cordão segura as orelhas de membros da organização dos bandidos.
+01 Fio
+03 linha
+10 Neste fio estão reunidas as orelhas, cujo carma de proprietários foi %s.
+11 Este fio contém as orelhas dos membros da Guilda dos administradores. //never comes
+12 Este fio contém as orelhas dos membros do Clã %s.
+14 Nesta linha, as orelhas são coletadas, cujos proprietários têm um nível superior %d.
+50 Consolador %d pçs.
+0900 Este fio contém as orelhas dos membros da Guilda dos Assassinos.
+0901 Este fio contém as orelhas dos membros da Guilda dos Cruzados.
+0902 Este fio contém as orelhas dos membros da Guilda dos Inquisidores.
+0903 Este fio contém as orelhas dos membros da Guilda dos caçadores.
+0904 Este fio contém as orelhas dos membros da Guilda de Arquimago.
+0905 Este fio contém as orelhas dos membros da Guilda dos Bárbaros.
+0906 Este fio contém as orelhas dos membros da guilda Druida.
+0907 Este fio contém as orelhas dos membros da Guilda dos Ladrões.
+0908 Este fio contém as orelhas dos membros da Guilda dos mestres do aço.
+0909 Este fio contém as orelhas dos membros da Guilda dos armeiros.
+0910 Este fio contém as orelhas dos membros da Guilda dos Ferreiros.
+0911 Este fio contém as orelhas dos membros da Guilda dos Feiticeiros.
+0912 Este fio contém as orelhas dos membros da guilda Necromante.
+0913 Este fio contém as orelhas dos membros da Guilda de Bundier.
 
 #90
-01 Cordão vermelho para orelhas
-03 cordão vermelho para orelhas
+01 Fio de orelha vermelha
+03 fio vermelho para orelhas
+
 #91
-01 Cordão verde para orelhas
-03 cordão verde para orelhas
+01 Fio de orelha verde
+03 fio de orelha verde
+
 #92
-01 Cordão azul para orelhas
-03 cordão azul para orelhas
+01 Fio de orelha azul
+03 fio de orelha azul
+
+#93
+01 Fio de orelha amarela
+03 fio amarelo para orelhas

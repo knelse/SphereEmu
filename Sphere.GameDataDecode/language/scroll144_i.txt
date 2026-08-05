@@ -1,9 +1,7 @@
-01 Formula della polvere della pioggia sulfurea
-02 Formula della polvere della pioggia sulfurea
-03 Formula della polvere della pioggia sulfurea
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di pioggia di zolfo
+02 ricette di polvere di pioggia di zolfo
+03 ricetta polvere di pioggia di zolfo
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della pioggia sulfurea, i maghi esperti (con grado non più basso che doctor) mescolano Feirik, una pianta di Circulonius e Ferro nella fornace. Poi alimentano il fuoco con ramoscelli.
+    Maghi esperti (gradi non inferiori al medico) per ottenere polvere di pioggia di zolfo mescolano il feirik, una pianta chiamata "circulonia" e il ferro, in una fornace, e poi annegano la fornace con sottobosco.
+    

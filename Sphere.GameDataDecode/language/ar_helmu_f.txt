@@ -1,0 +1,51 @@
+01 Casque de fer
+03 casque de fer
+100 Dans la bataille, protège contre les armes des adversaires.
+200 l'éradication
+201 dévastation
+202 fiabilité
+203 invulnérabilité
+204 vie
+205 l'éradication
+206 dévastation
+207 fiabilité
+208 invulnérabilité
+209 vie
+210 conseil d'administration
+211 aveuglements
+212 frayeur
+213 arrêts
+214 délivrance
+215 purification
+216 sanctions
+217 chaînes
+218 vortex
+219 malédictions
+
+#5004
+01 Casque en cuir riveté
+03 casque en cuir riveté
+
+#5024
+01 Casque de fer
+03 casque de fer
+
+#5044
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#5064
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#5114
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#5134
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#5163
+01 Ancien casque de fer
+03 ancien casque de fer

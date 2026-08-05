@@ -1,9 +1,7 @@
-01 Fórmula do pó da completa purificação
-02 Fórmula do pó da completa purificação
-03 Fórmula do pó da completa purificação
-
-100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas.
-
+01 Receita do pó da purificação completa
+02 receita do pó da purificação completa
+03 receita do pó da purificação completa
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se obter o pó de purificação completa, você precisa primeiro achar Chatlite, Cleder e ouro. Mixture-os no pó alquimico e adicione o pó de Amilus para completar a reação and usar o pó. Não se esqueça que você precisa ser no minimo chanceler. 
+    Para obter o pó de purificação total, primeiro obtenha chatlit, Cleder e Ouro. Misture - os em um caldeirão alquímico, adicione o pó final de Amilus e use o pó resultante. Não se esqueça de que, para realizar essa reação, seu grau não deve ser menor que o do reitor.
+    

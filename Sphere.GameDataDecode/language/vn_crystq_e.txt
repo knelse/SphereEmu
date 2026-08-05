@@ -1,26 +1,33 @@
-01 Кристалл
+01 Crystal
 
 #231
-01 Кристалл вызова демона воды
-03 кристалл
+01 Water Demon Summoning Crystal
+03 crystal
+
 #232
-01 Кристалл вызова демона огня
-03 кристалл
+01 Fire Demon Summoning Crystal
+03 crystal
+
 #233
-01 Кристалл вызова демона земли
-03 кристалл
+01 Earth Demon Summoning Crystal
+03 crystal
+
 #234
-01 Кристалл вызова демона воздуха
-03 кристалл
+01 Air Demon Summoning Crystal
+03 crystal
+
 #235
-01 Водный кристалл Вызова
-03 кристалл
+01 Water Crystal Challenge
+03 crystal
+
 #236
-01 Огненный кристалл Вызова
-03 кристалл
+01 Fire Crystal Challenge
+03 crystal
+
 #237
-01 Земляной кристалл Вызова
-03 кристалл
+01 Earthen Crystal Challenge
+03 crystal
+
 #238
-01 Воздушный кристалл Вызова
-03 кристалл
+01 Air Crystal Challenge
+03 crystal

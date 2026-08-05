@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Non ho alcuna voglia di parlare, viaggiatore. Mi è capitata una disgrazia. Mio figlio minore %s, due giorni fa è andato in cerca di funghi e ancora non è tornato.  Se puoi aiutrami, trovalo e accompagnalo al teletrasporto più vicino. %s ti servirà per orientarti. Ti ringrazio, sei molto gentile.
-21 Non ho alcuna voglia di parlare, viaggiatore. Mi è capitata una disgrazia. Mia figlia %s, due giorni fa è andata in cerca di bacche e ancora non è tornata.  Se puoi aiutrami, trovala e accompagnala al teletrasporto più vicino. %s ti servirà per orientarti. Ti ringrazio, sei molto gentile.
+20 Non ho voglia di parlare adesso, viaggiatore. Ho dolore. Figlio più giovane %s sono partito due giorni fa per i funghi e non sono ancora tornato. Puoi aiutarmi? Quindi cercalo, ma non lasciarlo solo. Scorri fino al teletrasporto più vicino. %s il punto di riferimento sarà! Grazie, nobile!
+21 Nobile guerriero, ti saluto! Non lasciare il vecchio nel tuo dolore. Mia figlia %s sono andato due giorni fa per le bacche e non sono ancora tornato. Puoi aiutarmi? Quindi cercala, ma non lasciarla sola. Scorri fino al teletrasporto più vicino. %s il punto di riferimento sarà! Grazie, nobile!

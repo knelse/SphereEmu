@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Salute a te! %s dimora nel vecchio sotterraneo. Liberaci da quel mostro e non te ne pentirari, sarai ricompensato.
-23 Salute a te! %s dimora nel vecchio sotterraneo e spaventa la nostra gente. Liberaci da quella bestia maledetta!
+22 Saluti, vagabondo! Nel dungeon dell'antico %s si e ' sistemato. Liberaci dal mostro: sarai soddisfatto del pagamento.
+23 Ti saluto, nobile vagabondo! Nel dungeon dell'antico %s si stabilì, l'orrore sulle persone è suggestivo. Liberaci dalla dannata creatura!

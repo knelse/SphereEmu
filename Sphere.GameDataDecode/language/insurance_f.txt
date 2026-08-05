@@ -1,0 +1,11 @@
+01 Assurance
+03 assurance
+101 L'utilisation de l'assurance nécessitera %d$.
+102 Vous avez pris l'assurance.
+103 L'assurance est nulle.
+104 Il n'est pas nécessaire d'utiliser l'assurance maintenant.
+110 Nom du personnage: %s
+111 Titre: %s
+112 Degré: %s
+113 Timbres de titre: %d
+114 Marques de degré: %d

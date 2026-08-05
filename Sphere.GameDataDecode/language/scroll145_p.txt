@@ -1,9 +1,7 @@
-01 Fórmula do pó de fortalecimento
-02 Fórmula do pó de fortalecimento
-03 Fórmula do pó de fortalecimento
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de ganho de pó
+02 receitas do pó do ganho
+03 receita de ganho de pó
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se obter o pó do reforço, primeiro ache sapronak, a planta samalia e prata. Mixture-os na fornalha, e alimente-a com lenha e use o pó obtido. Não se esqueça que você precisa ter o grau de estudante ou acima.
+    Para obter o pó de ganho, primeiro obtenha sapronak, samalia e prata. Misture - os no forno, derreta o forno com lenha e use o pó resultante. Não se esqueça de que, para realizar essa reação, seu grau não deve ser menor que o do aluno.
+    

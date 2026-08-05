@@ -1,0 +1,434 @@
+01 Créature
+
+#1000
+01 Bâton
+
+#1001
+01 Bâton de steppe
+
+#1002
+01 Le bâtonnier de la forêt
+
+#1003
+01 Le bâtonnier des cavernes
+
+#1010
+01 Psoglavets
+
+#1011
+01 Psoglavets steppe
+
+#1012
+01 Psoglavec
+
+#1013
+01 Psoglavets caverneux
+
+#1020
+01 Chevalier déchu
+
+#1021
+01 Chevalier rouillé
+
+#1022
+01 Chevalier de la Légion d & apos; honneur
+
+#1023
+01 Chevalier d'or
+
+#1024
+01 Chevalier géant
+
+#1025
+01 Chevalier de l'air
+
+#1040
+01 Golem terrestre
+
+#1041
+01 Golem de sable
+
+#1042
+01 Golem d'argile
+
+#1043
+01 Golem libre
+
+#1044
+01 Golem géant
+
+#1050
+01 Scolopendra de bangville
+
+#1051
+01 Scolopendra Royal
+
+#1060
+01 Squelette
+
+#1061
+01 Squelette de forêt
+
+#1062
+01 Squelette D'Umrad
+
+#1063
+01 Squelette d'air
+
+#1064
+01 Squelette caverneux
+
+#1065
+01 Leach
+
+#1066
+01 Squelette géant
+
+#1067
+01 Liche aérienne
+
+#1069
+01 Assassin
+
+#1070
+01 Vepr
+
+#1071
+01 Verge enragée
+
+#1072
+01 Vepr sec
+
+#1073
+01 Vent d'air
+
+#1074
+01 Verge de fer
+
+#1075
+01 Verge de feu
+
+#1076
+01 Verge géante
+03 Verge géante
+
+#1080
+01 Cyanos
+
+#1081
+01 Cyanos Dark
+
+#1082
+01 Cyanos sec
+
+#1083
+01 Cyanos Iron
+
+#1084
+01 Cyanos air
+
+#1085
+01 Cyanos géant
+
+#1090
+01 Loup
+
+#1091
+01 Loup des steppes
+
+#1092
+01 Loup de glace
+
+#1093
+01 Loup sec
+
+#1094
+01 Loup de fer
+
+#1095
+01 Loup infernal
+
+#1100
+01 Araignée
+
+#1101
+01 Araignée sulfurique
+
+#1102
+01 Araignée sèche
+
+#1103
+01 Araignée de fer
+
+#1104
+01 Araignée de feu
+
+#1105
+01 Veuve noire
+
+#1106
+01 Araignée géante
+
+#1107
+01 Air Spider
+
+#1110
+01 Salamandre
+
+#1111
+01 Salamandre de nomrad
+
+#1112
+01 Salamandre terrestre
+
+#1113
+01 Salamandre de fer
+
+#1114
+01 Salamandiga
+
+#1120
+01 Scorpion rouge
+
+#1121
+01 Scorpion
+
+#1122
+01 Scorpion bleu
+
+#1123
+01 Scorpion de feu
+
+#1130
+01 Typhon
+
+#1131
+01 Typhon enfumé
+
+#1132
+01 Typhon hurlant
+
+#1133
+01 Typhon de fer
+
+#1134
+01 Typhon de feu
+
+#1135
+01 Typhon géant
+
+#1140
+01 Cannibale
+
+#1141
+01 Mangeur de soufre
+
+#1142
+01 Cannibale des cavernes
+
+#1143
+01 Mangeur géant
+
+#1150
+01 Niphon
+
+#1170
+01 Chat
+
+#1180
+01 Bull
+
+#1190
+01 Tropos
+
+#1191
+01 Tropos enragés
+
+#1192
+01 Tropos de tourbe
+
+#1193
+01 Tropos Royal
+
+#1194
+01 Tropos aérien
+
+#1200
+01 Mammouth
+
+#1201
+01 Mammouth de fer
+
+#1202
+01 Mammouth des neiges
+
+#1203
+01 Mammouth de charbon
+
+#1210
+01 Zombies
+
+#1211
+01 Zombie gris
+
+#1212
+01 Zombader
+
+#1213
+01 Zombie géant
+
+#1220
+01 Arbre enchanté
+
+#1221
+01 Acajou
+
+#1222
+01 Arbre mort
+
+#1230
+01 Pierre de granit
+
+#1231
+01 Pierre d'émeraude
+
+#1232
+01 Pierre de saphir
+
+#1233
+01 Maître des roches
+
+#1240
+01 Un cadavre ambulant
+
+#1241
+01 Kadavr
+
+#1242
+01 Spider-Man
+
+#1243
+01 Carcasse osseuse
+
+#1244
+01 Géant kadavr
+
+#1250
+01 Netopyr
+
+#1251
+01 Gris netopyr
+
+#1252
+01 Feu netopyr
+
+#1253
+01 Géant netopyr
+
+#1260
+01 Menade forestière
+
+#1261
+01 Ménade des steppes
+
+#1262
+01 Menade des cavernes
+
+#1263
+01 Ménade magique
+
+#1264
+01 Ménade aérienne
+
+#1270
+01 Nain
+
+#1271
+01 Nain Forestier
+
+#1272
+01 Nain De Cratère
+
+#1273
+01 Nain aérien
+
+#1290
+01 Assassin
+
+#1291
+01 Assassin gratuit
+
+#1292
+01 Assassin fantôme
+
+#1310
+01 Glot
+
+#1311
+01 Gorgée des marais
+
+#1320
+01 Le messager de la mort
+
+#1330
+01 Tumulus
+
+#1340-1343
+01 Rogue
+
+#1410
+01 Ver souterrain
+
+#1420
+01 Sirène
+
+#1430
+01 Tentacule de viande
+
+#1431
+01 Tentacule de fer
+
+#1440
+01 Chien d'OS
+
+#1450
+01 Chasseur de charons
+
+#1451
+01 Chasseur de feu
+
+#1452
+01 Chasseur de fer
+
+#1453
+01 Chasseur mort
+
+#1460
+01 Chasseur de feu
+
+#1461
+01 La chasseuse de fer
+
+#1462
+01 Chasseuse de Charonne
+
+#1463
+01 La chasseuse morte
+
+#1470
+01 Gardien des Abysses
+
+#1480
+01 Chimère
+
+#1880
+01 Scolopendra de bangville
+
+#1881
+01 Bâton
+
+#1882
+01 Tropos
+
+#1883
+01 Chevalier rouillé

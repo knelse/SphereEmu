@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione magica
-02 Formula della polvere della protezione magica
-03 Formula della polvere della protezione magica
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di protezione magica
+02 ricette di polvere di protezione magica
+03 ricetta polvere di protezione magica
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per creare la polvere della protezione magica, prima trova Spherite e Mandragora. Mescolali nel recipiente alchemico, aggiungi la polvere di Faynal e gioisci del risultato della reazione. Non dimenticare che per ottenere questa reazione il tuo titolo non deve essere inferiore a quello di candidato.
+    Per ottenere la polvere di difesa magica, prima di tutto ottieni sferite e Mandragora. Mescolali in una bombetta alchemica, aggiungi la polvere finale di Fainal e goditi la polvere risultante. Non dimenticare che per eseguire questa reazione, il tuo grado non deve essere inferiore al candidato.
+    

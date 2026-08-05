@@ -1,80 +1,80 @@
 01 teleportation token
 02 teleportation tokens
 03 teleportation token
-11 use token while standing in teleport.
-12 token is for teleportations within the conitent only.
-13 This teleport can only be used by castle owners.
-1800 to Sheepstone
-1801 to Bangville
-1802 to Sunpool
-1803 to Torweal
-1809 to Sunpool-Torweal Road
-1810 to Nomrad
-1811 to Gifes 
-1812 to Umrad
-1813 to Anhelm
-1850 to Northern Road of Hyperion
-1851 to north-western end of Hyperion
-1852 to Sheepstone-Sunpool Road
-1853 to field by the Sheepstone-Sunpool Road
-1854 to north-east of Hyperion
-1855 to Umrad Forest (Hyperion)
-1856 to Silver Forest (Hyperion)
-1857 to Sheepstone-Torweal Road
-1858 to mountains between Sheepstone and Bangville
-1859 to Lake Temer
-1860 to Sheepstone-Sunpool Road, near Lake Vortex
-1861 to Sunpool-Bangville Road, near Lake Vortex
-1862 to Heber Island (Lake Temer)
-1863 to Foros Island (Lake Vortex)
-1864 to mouth of the Nerey
-1865 to Deyros Island (Lake Vortex)
-1866 in the Eastern Forest (Hyperion)
-1877 to mouth of the Dioma
-1878 to Horton Forest (Hyperion)
-1879 to the mountains near the Sunpool-Torweal Road
-1880 to Island Patros (Lake Satin)
-1881 to South-Eastern mountain pocket (Hyperion)
-1882 to north of Coyton Forest (Hyperion)
-1883 to south-western end of Hyperion
-1884 to Tantal Bridge
-1885 to Obol
-1900 to Castle Liege (Hyperion)
-1901 to Castle Feoff (Hyperion)
-1902 to Castle Aris (Hyperion)
-1903 to Castle Latour (Hyperion)
-1904 to Castle Eikum-Cas (Hyperion)
-1905 to Castle Gideon (Hyperion)
-1906 to Castle Chatelie (Hyperion)
-1907 to Castle Tyanod (Hyperion)
-1908 to Castle Peltier (Hyperion)
-1909 to Castle Kare-Royal (Hyperion)
-1910 to Castle Blessendour (Hyperion)
-1911 to Castle Ternoval (Hyperion)
-1912 to Castle Ammalaelle (Hyperion)
-1913 to Castle Cablac (Hyperion)
-1914 to Castle Devanagary (Hyperion)
-1915 to Castle Sabulat (Hyperion)
-1916 to Castle Diffensat (Hyperion)
-1917 to Castle Ionat (Hyperion)
-1918 to Castle Triumphaler (Hyperion)
-1919 To Bagnarak Castle (Charon)
-1920 To Kabrad Castle (Charon)
-1921 To Set Castle (Charon)
-1922 To Lender Castle (Charon)
-1923 To Keles Castle (Charon)
-1924 To Sheprostan Castle (Charon)
-1925 To Orkobien Castle (Charon)
-1926 To Kanuak Castle (Charon)
-1927 To Aldarnon Castle (Charon)
-1928 To Iong Castle (Charon)
-1929 To Elek Castle (Phoebe)
-1930 To Gavot Castle (Phoebe)
-1931 To Kandur Castle (Phoebe)
-1932 To Immertel Castle (Rodos)
-1933 To Narcissus Castleá (Rodos)
-1934 To Randen Castle (Rodos)
-1935 To Nirgun Castle (Rodos)
-1936 To Gelgivinn Castle (Rodos)
-1937 To Il-Suili-Rua
-1979 To Black Tower (Charon)
+11 Use the token while standing on the teleport.
+12 The token works only within the mainland.
+13 This teleport can only be used by the owners of the castle.
+1800 Shipstone
+1801 To Bangville
+1802 To Sanpool
+1803 To Torvil
+1809 To the Sanpool-Torvil road
+1810 In Nomrad
+1811 To Hyphae
+1812 In Umrad
+1813 To Angelm
+1850 To the north road of Hyperion
+1851 To the northwestern edge of Hyperion
+1852 To the Shipstone-Sunpool road
+1853 In a field near the Shipstone-Bangville road
+1854 To the northeast of Hyperion
+1855 To the Umrad Forest (Hyperion)
+1856 To the Silver Forest (Hyperion)
+1857 To the Shipstone-Torvil road
+1858 To the mountains between Shipstone and Bangville
+1859 To Lake Temer
+1860 To the Sunpool-Shipstone road, near Vortex Lake
+1861 To the Sunpool-Bangville road, near Vortex Lake
+1862 To the island of Geber (oz.Temer)
+1863 On the island of Foros (oz.Vortex)
+1864 To the mouth of the Nereus River
+1865 To the island of Deyros (oz.Vortex)
+1866 To the Eastern Forest (Hyperion)
+1877 To the mouth of the river Dioma
+1878 To the Horton Forest (Hyperion)
+1879 In the mountains near the road Sanpool-Torvil
+1880 To the island of Patros (Lake Atlasnoye)
+1881 To the Southeastern mountain pocket (Hyperion)
+1882 North of the Coyton Forest (Hyperion)
+1883 To the southwestern edge of Hyperion
+1884 To the bridge to Tantalus
+1885 In Obol
+1900 To the Castle of Liege (Hyperion)
+1901 To the castle of Fief (Hyperion)
+1902 Aris Castle (Hyperion)
+1903 To Lator Castle (Hyperion)
+1904 To the castle of Eikum-kas (Hyperion)
+1905 To the castle of Gideon (Hyperion)
+1906 To the Chateau Chatelier (Hyperion)
+1907 To Tuanod Castle (Hyperion)
+1908 To Peltier Castle (Hyperion)
+1909 To the castle of Care-Royal (Hyperion)
+1910 To the Castle of Blessendor (Hyperion)
+1911 To Ternoval Castle (Hyperion)
+1912 Ammalael Castle (Hyperion)
+1913 To the castle of Kablak (Hyperion)
+1914 To the castle of Devanagari (Hyperion)
+1915 Sabulat Castle (Hyperion)
+1916 To Deffensat Castle (Hyperion)
+1917 To the castle of Aionat (Hyperion)
+1918 To the Triumphalier Castle (Hyperion)
+1919 To Bagarnak Castle (Charon)
+1920 To the castle of Kabrad (Charon)
+1921 To the Castle of Set (Charon)
+1922 To the Lender Castle (Charon)
+1923 To the castle of Keles (Charon)
+1924 To the castle of Sheprostan (Charon)
+1925 Orcobien Castle (Charon)
+1926 To the castle of Kanuak (Charon)
+1927 Aldarnon Castle (Charon)
+1928 To Yong Castle (Charon)
+1929 To the castle of Elek (Phoebus)
+1930 To the Castle of Gavotte (Phoebus)
+1931 To the castle of Kandur (Phoebus)
+1932 To the castle of Immertel (Rhodes)
+1933 To Narcissus Castle (Rhodes)
+1934 To Randen Castle (Rhodes)
+1935 To Nirgun Castle (Rhodes)
+1936 Gelgivinn Castle (Rhodes)
+1937 To the castle of Ile-Souilly-Roy
+1979 To the Black Tower (Charon)

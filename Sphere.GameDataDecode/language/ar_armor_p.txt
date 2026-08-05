@@ -1,178 +1,223 @@
 01 Cota de malha
-03 Cota de malha
-05 nova
-06 usada
-07 enferujada
-
-100 Protege contra os ataques de armas inimigas.
-
-200 do valor
-201 da durabilidade
-202 da absorsão
-203 da deflexão
-204 da segurança
-205 da invulnerabilidade
-206 da saúde
-207 da vida
-208 da meditação
-209 de prana
-210 do poder
-211 da destreza
-212 da grandiosidade
-213 da concentração
-214 da terra
-215 da água
-216 do ar
-217 do fogo
-218 dos elementos
-219 do valor
-220 do poder
-221 da destreza
-222 da grandiosidade
-223 da concentração
-224 da integridade
+03 cota de malha
+05 Nova
+06 usado
+07 oxidado
+100 Na batalha protege contra as armas dos inimigos.
+200 valor
+201 força
+202 absorção
+203 desvios
+204 segurança
+205 invulnerabilidade
+206 saúde
+207 vida
+208 meditação
+209 Prana
+210 força
+211 destreza
+212 grandeza
+213 concentrações
+214 Terra
+215 água
+216 ar
+217 fogo
+218 Elements
+219 valores
+220 força
+221 destreza
+222 grandeza
+223 concentrações
+224 integridade
 
 #301
 01 Jaqueta
 03 jaqueta
+
 #302
 01 Armadura de couro
-03 armadura de couro
+03 armadura couro
+
 #303-304
-01 Armadura de couro reforçada
-03 armadura de couro reforçada
+01 Armadura de couro rebitada
+03 Armadura de couro rebitada
+
 #305-306
 01 Cota de malha
 03 cota de malha
+
 #307-309
-01 Placa de torso
-03 placa de torso
+01 Kiras
+03 kierasu
+
 #310-312
-01 Armadura ancestral
-03 armadura ancestral
+01 Armadura antiga
+03 armadura antiga
+
 #3001-3004
 01 Jaqueta
 03 jaqueta
+
 #3005-3009
 01 Armadura de couro
-03 armadura de couro
+03 armadura couro
+
 #3010-3019
-01 Armadura de couro reforçada
-03 armadura de couro reforçada
+01 Armadura de couro rebitada
+03 Armadura de couro rebitada
+
 #3020-3029
 01 Cota de malha
 03 cota de malha
+
 #3030-3044
-01 Placa de torso
-03 placa de torso
+01 Kiras
+03 kierasu
+
 #3045-3060
-01 Armadura ancestral
-03 armadura ancestral
+01 Armadura antiga
+03 armadura antiga
+
 #4453-4461
-01 Placa de torso
-03 placa de torso
+01 Kiras
+03 kierasu
+
 #4740
-01 Grande couraça negra
-03 grande couraça negra
+01 Grande Couraça Negra
+03 A Grande Couraça Negra
+
 #4741
-01 Grande couraça branca
-03 Grande couraça branca
+01 Grande Couraça Branca
+03 A Grande Couraça Branca
+
 #4750
-01 Grã Couraça Negra
-03 Grã Couraça Negra
+01 Grande Couraça Negra
+03 A Grande Couraça Negra
+
 #4751
-01 Grã Couraça Branca
-03 Grã Couraça Branca
+01 Grande Couraça Branca
+03 A Grande Couraça Branca
+
 #5586
-01 Jaqueta da Vilania
-03 jaqueta da Vilania
+01 Jaqueta do vilão
+03 jaqueta vilão
+
 #5587
-01 Jaqueta de couro da Vilania
-03 jaqueta de couro da Vilania
+01 Jaqueta De Couro do vilão
+03 jaqueta vilão
+
 #5588
-01 Jaqueta de rebites da Vilania
-03 jaqueta da Vilania
+01 Jaqueta de vilão rebitada
+03 jaqueta vilão
+
 #5589
-01 Malha da Vilania
-03 malha da Vilania
+01 Cota de malha do vilão
+03 cota de malha do vilão
+
 #5590
-01 Meia armadura da Vilania
-03 meia armadura da Vilania
+01 Couraça do vilão
+03 curasu vilão
+
 #5591
-01 Armadura da Vilania
-03 armadura da Vilania
+01 Armadura do vilão
+03 armadura do vilão
+
 #5677
-01 Jaqueta da Radiância
-03 jaqueta da Radiância
+01 Jaqueta de brilho
+03 jaqueta de brilho
+
 #5678
-01 Jaqueta de couro da Radiância
-03 jaqueta da Radiância
+01 Jaqueta De Couro do brilho
+03 jaqueta de brilho
+
 #5679
-01 Jaqueta de rebites da Radiância
-03 jaqueta da Radiância
+01 Jaqueta de brilho rebitada
+03 jaqueta de brilho
+
 #5680
-01 Malha da Radiância
-03 malha da Radiância
+01 Cota de malha do brilho
+03 cota de malha do brilho
+
 #5681
-01 Meia armadura da Radiância
-03 meia armadura da Radiância
+01 A couraça da Aurora
+03 a couraça do brilho
+
 #5682
-01 Armadura radiante
-03 armadura radiante
+01 Armadura do brilho
+03 armadura do esplendor
+
 #5865
-01 Jaqueta do Segredo
-03 jaqueta do Segredo
+01 Revestimento do discrição
+03 revestimento do discrição
+
 #5866
-01 Jaqueta de couro do Segredo
-03 jaqueta do Segredo
+01 Jaqueta De Couro do discrição
+03 revestimento do discrição
+
 #5867
-01 Jaqueta de rebites do Segredo
-03 jaqueta do Segredo
+01 Revestimento rebitado do discrição
+03 revestimento do discrição
+
 #5868
-01 Malha do Segredo
-03 malha do Segredo
+01 Cota de malha do discrição
+03 cota de malha do discrição
+
 #5869
-01 Meia armadura do Segredo
-03 meia armadura do Segredo
+01 Couraça do discrição
+03 couraça do discrição
+
 #5870
-01 Armadura do Segredo
-03 armadura do Segredo
+01 Armadura furtiva
+03 armadura furtiva
+
 #6083
-01 Jaqueta de Titã
-03 jaqueta de Titã
+01 Jaqueta De Titânio
+03 Jaqueta De Titânio
+
 #6084
-01 Jaqueta de couro de Titã
-03 jaqueta de Titã
+01 Jaqueta De Couro De Titânio
+03 Jaqueta De Titânio
+
 #6085
-01 Jaqueta de rebites de Titã
-03 jaqueta de Titã
+01 Jaqueta De Titânio rebitada
+03 Jaqueta De Titânio
+
 #6086
-01 Malha de Titã
-03 malha de Titã
+01 Cota De Malha De Titânio
+03 Cota De Malha De Titânio
+
 #6087
-01 Meia armadura de Titã
-03 meia armadura de Titã
+01 Couraça De Titânio
+03 couraça de titânio
+
 #6088
-01 Armadura de Titã
-03 armadura de Titã
+01 Armadura De Titânio
+03 Armadura titânio
+
 #6551
-01 Armadura pesada de Caliester
-03 armadura pesada de Caliester
+01 Armadura pesada Kaliestra
+03 armadura pesada Kaliestra
+
 #6868
-01 Jaqueta da Confiabilidade
-03 jaqueta da Confiabilidade
+01 Jaqueta de confiabilidade
+03 jaqueta confiabilidade
+
 #6869
-01 Jaqueta de couro da Confiabilidade
-03 jaqueta da Confiabilidade
+01 Jaqueta De Couro de confiabilidade
+03 jaqueta confiabilidade
+
 #6870
-01 Jaqueta de rebites da Confiabilidade
-03 jaqueta da Confiabilidade
+01 Jaqueta de confiabilidade rebitada
+03 jaqueta confiabilidade
+
 #6871
-01 Malha da Confiabilidade
-03 malha da Confiabilidade
+01 Cota de malha da confiança
+03 cota de malha de confiança
+
 #6872
-01 Meia armadura da Confiabilidade
-03 meia armadura da Confiabilidade
+01 Couraça da confiança
+03 couraça confiabilidade
+
 #6873
-01 Armadura da Confiabilidade
-03 armadura da Confiabilidade
+01 Armadura de confiabilidade
+03 Armadura de confiabilidade

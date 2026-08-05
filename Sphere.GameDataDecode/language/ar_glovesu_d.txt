@@ -1,0 +1,51 @@
+01 Handschuhe
+03 handschuhe
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 angst
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5007
+01 Vernietete Lederhandschuhe
+03 vernietete Lederhandschuhe
+
+#5027
+01 Plattenhandschuhe
+03 plattenhandschuhe
+
+#5047
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#5067
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#5117
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#5137
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#5166
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe

@@ -1,27 +1,30 @@
-
-200 de aventura
-201 de silêncio
-202 de profecia
-203 do segredo
-204 de mito
-205 de vida
-206 de campanhas
-207 de existência
-208 de lenda
-209 de mundo
+200 Aventura
+201 Silêncio
+202 Profecias
+203 Segredos
+204 Mitos
+205 Genesis
+206 Caminhadas
+207 Existência
+208 Legendas
+209 Mundo
 
 #2850-2857
-01 Manto marrom
-03 manto marrom
+01 Robe marrom
+03 Robe castanho
+
 #2858-2864
-01 Manto azul
-03 manto azul
+01 Robe azul
+03 Blue Robe
+
 #2950-2955
-01 artefato de Manto vermelho
-03 manto vermelho
+01 Um artefacto. Robe vermelho
+03 Robe vermelho
+
 #2956-2961
-01 artefato de Manto branco
-03 manto branco
+01 Um artefacto. Veste branca
+03 white robe
+
 #2962-2967
-01 artefato de Manto azul
-03 manto azul
+01 Um artefacto. Robe azul
+03 Blue Robe

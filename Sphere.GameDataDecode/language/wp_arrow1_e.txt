@@ -1,8 +1,7 @@
-01 Bolt
-02 bolts
-03 bolt
+01 The arrow
+02 Arrows
+03 The arrow
 05 new
 06 old
 07 rotten
-
-100 Required to shoot from a crossbow.
+100 Required for crossbow shooting.

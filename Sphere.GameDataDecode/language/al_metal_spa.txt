@@ -1,0 +1,69 @@
+01 Metal
+02 metal
+03 metal
+
+#970
+01 Oro
+02 oro
+03 oro
+100 Se utiliza en reacciones alquímicas. Multiplicador 6.
+
+#971
+01 Plata
+02 plata
+03 plata
+100 Se utiliza en reacciones alquímicas. Multiplicador 3.
+
+#972
+01 Cobre
+02 cobre
+03 cobre
+100 Se utiliza en reacciones alquímicas. Multiplicador 1.
+
+#973
+01 Hierro
+02 hierro
+03 hierro
+100 Se utiliza en reacciones alquímicas. Multiplicador 3.
+
+#974
+01 Plomo
+02 plomo
+03 plomo
+100 Se utiliza en reacciones alquímicas. Multiplicador 6.
+
+#975
+01 Estaño
+02 estaño
+03 estaño
+100 Se utiliza en reacciones alquímicas. Multiplicador 12.
+
+#976
+01 Platino
+02 platino
+03 platino
+100 Se utiliza en reacciones alquímicas. Multiplicador 24.
+
+#977
+01 Mithril
+02 mithril
+03 mithril
+100 Se utiliza en reacciones alquímicas. Multiplicador 48.
+
+#978
+01 Aluminio
+02 aluminio
+03 aluminio
+100 Se utiliza en reacciones alquímicas. Multiplicador 72.
+
+#979
+01 Tungsteno
+02 tungsteno
+03 tungsteno
+100 Se utiliza en reacciones alquímicas. Multiplicador 6.
+
+#980
+01 Itrio
+02 itrio
+03 itrio
+100 Se utiliza en reacciones alquímicas. Multiplicador 6.

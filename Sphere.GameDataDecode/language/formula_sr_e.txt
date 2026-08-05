@@ -1,9 +1,7 @@
-01 Formula
-02 formula
-03 formula
-
-100 Repair formula of blacksmiths guild
-
-10000 This formula is used to repair the following articles: %l1 The stage of the craftsman in the blacksmiths guild must be at least %z1. Repairing requires %a1.
-10001 This formula is used to repair the following articles: %l1 The stage of the craftsman in the blacksmiths guild must be at least %z1. Repairing requires %a1 and %a2.
-10002 This formula is used to repair the following articles: %l1 The stage of the craftsman in the blacksmiths guild must be at least %z1. Repairing requires %a1, %a2 and %a3.
+01 The formula
+02 formulas
+03 the formula
+100 Blacksmith Guild Repair Formula
+10000 This formula is used to repair the following items:  The %l1 level of the master in the blacksmith guild should not be lower %z1. It is necessary for repair %a1.
+10001 This formula is used to fix the following items:  The %l1 level of the master in the blacksmith guild should not be lower %z1. For repair, you need %a1 and %a2.
+10002 This formula is used to repair the following items:  The %l1 level of the master in the blacksmith guild should not be lower %z1. For repairs are necessary %a1, %a2 and %a3.

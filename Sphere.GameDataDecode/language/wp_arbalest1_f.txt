@@ -1,0 +1,315 @@
+01 Arbalète
+03 arbalète
+10 Vous n'avez pas de flèches.
+100 Une arme à lancer. Vous permet de frapper l'ennemi à longue distance; nécessite une grande quantité de flèches.
+200 épuisement
+201 prouesses
+202 dégâts
+203 brutalités
+204 précipitation
+205 vitesses
+206 désordre
+207 chaos
+208 pénétrations
+209 instabilité
+210 décomposition
+211 distances
+212 distances
+213 maîtrise
+214 fatigue
+215 Ether
+216 les aurores
+217 maladies
+218 valeurs
+
+#201
+01 Arbalète manuelle
+03 arbalète manuelle
+
+#202
+01 Arbalète en cuivre
+03 arbalète en cuivre
+
+#203
+01 Arbalète légère
+03 arbalète légère
+
+#204
+01 Arbalète d'argent
+03 arbalète d'argent
+
+#205
+01 Arbalète d'or
+03 arbalète d'or
+
+#206
+01 Arbalète de chasse
+03 arbalète de chasse
+
+#207
+01 Arbalète duel
+03 arbalète duel
+
+#208
+01 Arbalète à main d'élite
+03 arbalète à main d'élite
+
+#209
+01 Arbalète légère d'élite
+03 arbalète légère d'élite
+
+#210
+01 Arbalète d'or d'élite
+03 arbalète d'or d'élite
+
+#211
+01 Arbalète duel d'élite
+03 arbalète duel d'élite
+
+#212
+01 Arbalète à main runique
+03 arbalète à main runique
+
+#213
+01 Arbalète légère runique
+03 arbalète légère runique
+
+#214
+01 Arbalète dorée runique
+03 arbalète dorée runique
+
+#215
+01 Arbalète de duel runique
+03 arbalète de duel runique
+
+#216
+01 Arbalète
+03 arbalète
+
+#217
+01 Grande arbalète
+03 grande arbalète
+
+#218
+01 Arbalète lourde
+03 arbalète lourde
+
+#219
+01 Arbalète de fer
+03 arbalète de fer
+
+#220
+01 Arbalète en acier
+03 arbalète en acier
+
+#221
+01 Arbalète de combat
+03 arbalète de combat
+
+#222
+01 Arbalète de siège
+03 arbalète de siège
+
+#223
+01 Arbalète d'élite
+03 arbalète d'élite
+
+#224
+01 Arbalète lourde d'élite
+03 arbalète lourde d'élite
+
+#225
+01 Arbalète en acier d'élite
+03 arbalète en acier d'élite
+
+#226
+01 Arbalète de siège d'élite
+03 arbalète de siège d'élite
+
+#227
+01 Arbalète runique
+03 arbalète runique
+
+#228
+01 Arbalète lourde runique
+03 arbalète lourde runique
+
+#229
+01 Arbalète en acier runique
+03 arbalète en acier runique
+
+#230
+01 Arbalète de siège runique
+03 arbalète de siège runique
+
+#3751-3752
+01 Arbalète manuelle
+03 arbalète manuelle
+
+#3753-3754
+01 Arbalète en cuivre
+03 arbalète en cuivre
+
+#3755-3757
+01 Arbalète légère
+03 arbalète légère
+
+#3758-3759
+01 Arbalète d'argent
+03 arbalète d'argent
+
+#3760-3762
+01 Arbalète d'or
+03 arbalète d'or
+
+#3763-3764
+01 Arbalète de chasse
+03 arbalète de chasse
+
+#3765-3769
+01 Arbalète duel
+03 arbalète duel
+
+#3770-3774
+01 Arbalète à main d'élite
+03 arbalète à main d'élite
+
+#3775-3779
+01 Arbalète légère d'élite
+03 arbalète légère d'élite
+
+#3780-3784
+01 Arbalète d'or d'élite
+03 arbalète d'or d'élite
+
+#3785-3789
+01 Arbalète duel d'élite
+03 arbalète duel d'élite
+
+#3790-3794
+01 Arbalète à main runique
+03 arbalète à main runique
+
+#3795-3799
+01 Arbalète légère runique
+03 arbalète légère runique
+
+#3800-3804
+01 Arbalète dorée runique
+03 arbalète dorée runique
+
+#3805-3810
+01 Arbalète de duel runique
+03 arbalète de duel runique
+
+#3811-3812
+01 Arbalète
+03 arbalète
+
+#3813-3814
+01 Grande arbalète
+03 grande arbalète
+
+#3815-3817
+01 Arbalète lourde
+03 arbalète lourde
+
+#3818-3819
+01 Arbalète de fer
+03 arbalète de fer
+
+#3820-3822
+01 Arbalète en acier
+03 arbalète en acier
+
+#3823-3824
+01 Arbalète de combat
+03 arbalète de combat
+
+#3825-3829
+01 Arbalète de siège
+03 arbalète de siège
+
+#3830-3834
+01 Arbalète d'élite
+03 arbalète d'élite
+
+#3835-3839
+01 Arbalète lourde d'élite
+03 arbalète lourde d'élite
+
+#3840-3844
+01 Arbalète en acier d'élite
+03 arbalète en acier d'élite
+
+#3845-3849
+01 Arbalète de siège d'élite
+03 arbalète de siège d'élite
+
+#3850-3854
+01 Arbalète runique
+03 arbalète runique
+
+#3855-3859
+01 Arbalète lourde runique
+03 arbalète lourde runique
+
+#3860-3864
+01 Arbalète en acier runique
+03 arbalète en acier runique
+
+#3865-3870
+01 Arbalète de siège runique
+03 arbalète de siège runique
+
+#3871-3873
+01 Arbalète de duel légendaire
+03 arbalète de duel légendaire
+
+#3874-3876
+01 Arbalète de duel fantôme
+03 arbalète de duel fantôme
+
+#3877-3879
+01 Arbalète de duel dragon
+03 arbalète de duel dragon
+
+#3880-3882
+01 Arbalète de siège légendaire
+03 arbalète de siège légendaire
+
+#3883-3885
+01 Arbalète de siège fantôme
+03 arbalète de siège fantôme
+
+#3886-3888
+01 Arbalète de siège dragon
+03 arbalète de siège dragon
+
+#5883
+01 Arbalète de chasse
+03 arbalète de chasse
+
+#5884
+01 Grande arbalète de chasse
+03 arbalète de chasse
+
+#5885
+01 Arbalète de chasse lourde
+03 arbalète de chasse
+
+#5886
+01 Arbalète de chasse en fer
+03 arbalète de chasse
+
+#5887
+01 Arbalète de chasse en acier
+03 arbalète de chasse
+
+#5888
+01 Grande arbalète de chasse
+03 arbalète de chasse
+
+#6454
+01 Arbalète D'Albeorn
+03 arbalète d'Albeorn

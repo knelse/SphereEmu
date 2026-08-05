@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-22 there appeared a horrible %s, who raises terror and fear. Kill the monster (waymark - %s).
-23 there appeared a cunning %s. Kill the monster (waymark - %s).
+01 Mission key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+22 Greetings, noble one! You are our last hope. We are constantly attacked by a terrible monster. We can't do anything with it on our own. %s very strong, and %s hides it. Get in there and kill the beast!
+23 Greetings to you, O noble warrior! You are our last hope. We are constantly attacked by a terrible monster. We can't do anything with it on our own. %s very strong, but you can catch her off guard. One of our fellow villagers stumbled upon her shelter. %s hides it. Get in there and finish her off!

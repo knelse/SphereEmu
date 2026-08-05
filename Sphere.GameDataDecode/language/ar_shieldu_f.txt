@@ -1,0 +1,50 @@
+01 Bouclier en bois
+03 bouclier en bois
+200 l'éradication
+201 dévastation
+202 fiabilité
+203 invulnérabilité
+204 vie
+205 l'éradication
+206 dévastation
+207 fiabilité
+208 invulnérabilité
+209 vie
+210 conseil d'administration
+211 aveuglements
+212 frayeur
+213 arrêts
+214 délivrance
+215 purification
+216 sanctions
+217 chaînes
+218 vortex
+219 malédictions
+
+#5002
+01 Grand bouclier
+03 grand bouclier
+
+#5022
+01 Bouclier en bois tapissé
+03 bouclier en bois tapissé
+
+#5042
+01 Grand bouclier tapissé
+03 grand bouclier tapissé
+
+#5062
+01 Bouclier de fer
+03 bouclier de fer
+
+#5112
+01 Bouclier de fer
+03 bouclier de fer
+
+#5132
+01 Bouclier de fer
+03 bouclier de fer
+
+#5161
+01 Bouclier de fer
+03 bouclier de fer

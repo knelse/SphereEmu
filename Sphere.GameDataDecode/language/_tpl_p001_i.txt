@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Mio fratello maggiore mi ha spedito un pacco che però non mi è stato recapitato, il corriere è stato ucciso nel tragitto. Il pacco non si trova molto lontano, riportamelo e sarai ricompensato. %s   
-21 Mio fratello maggiore mi ha spedito un pacco che però non mi è stato recapitato, il corriere è stato ucciso nel tragitto. Il pacco non si trova molto lontano, riportamelo e sarai ricompensato. %s  
+20 Il mio fratello maggiore mi ha mandato un pacco, ma non è successo a lei arrivare da me - si è verificato un problema con il messaggero lungo la strada. Bene, anche se il pacco è rimasto vicino. Portamela e non mi offendero'. %s
+21 Il mio fratello maggiore mi ha mandato un pacco, ma non è successo a lei arrivare da me - si è verificato un problema con il messaggero lungo la strada. Bene, anche se il pacco è rimasto vicino. Portamela e non mi offendero'. %s

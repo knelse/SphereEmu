@@ -1,10 +1,7 @@
-01 Fórmula do pó de fortificação
-02 Fórmula do pó de fortificação
-03 Fórmula do pó de fortificação
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de ganho de pó
+02 receitas do pó do ganho
+03 receita de ganho de pó
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se obter o pó de reforço um feiticeiro experiente com nivel acima de Bacharel, precisa mixturar kamelik, serepei e prata na fornalha que precisa ser alimentada com lenha.
-
+    Magos experientes (graus não inferiores a um bacharelado) para obter o pó de reforço, misture a camélica, serepei e prata no forno e, em seguida, afogue o forno com lenha.
+    

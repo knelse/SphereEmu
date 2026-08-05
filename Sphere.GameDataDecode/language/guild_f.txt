@@ -1,0 +1,335 @@
+#5500
+01 Guild assassin (1 étape)
+03 Gild assassin
+
+#5501
+01 Gild assassin (2e échelon)
+03 Gild assassin
+
+#5502
+01 Gild assassin (3 étapes)
+03 Gild assassin
+
+#5503
+01 Gild assassin (4 étapes)
+03 Gild assassin
+
+#5504
+01 Gild assassin (5e échelon)
+03 Gild assassin
+
+#5505
+01 Gild assassin (6e échelon)
+03 Gild assassin
+
+#5600
+01 Gild Crusader (1 étape)
+03 Gild Crusader
+
+#5601
+01 Gild Crusader (2 étapes)
+03 Gild Crusader
+
+#5602
+01 Gild Crusader (3 étapes)
+03 Gild Crusader
+
+#5603
+01 Gild Crusader (4 étapes)
+03 Gild Crusader
+
+#5604
+01 Gild Crusader (5 étapes)
+03 Gild Crusader
+
+#5605
+01 Gild Crusader (6e échelon)
+03 Gild Crusader
+
+#5700
+01 Gild inquisitor (1 étape)
+03 Guild of The inquisitor
+
+#5701
+01 Guild of The inquisitor (2 étapes)
+03 Guild of The inquisitor
+
+#5702
+01 Guild of The inquisitor (3 étapes)
+03 Guild of The inquisitor
+
+#5703
+01 Guild of The inquisitor (4 étapes)
+03 Guild of The inquisitor
+
+#5704
+01 Guild of The inquisitor (5 étapes)
+03 Guild of The inquisitor
+
+#5705
+01 Guild of The inquisitor (6 étapes)
+03 Guild of The inquisitor
+
+#5800
+01 Gild Hunter (1 étape)
+03 Gild Hunter
+
+#5801
+01 Gild Hunter (2 étapes)
+03 Gild Hunter
+
+#5802
+01 Gild Hunter (3 étapes)
+03 Gild Hunter
+
+#5803
+01 Gild Hunter (4 étapes)
+03 Gild Hunter
+
+#5804
+01 Gild Hunter (5 étapes)
+03 Gild Hunter
+
+#5805
+01 Gild Hunter (6 étapes)
+03 Gild Hunter
+
+#5900
+01 Gild archimage (1 étape)
+03 Gild archimage
+
+#5901
+01 Gild archimage (2e étape)
+03 Gild archimage
+
+#5902
+01 Gild archimage (3 étapes)
+03 Gild archimage
+
+#5903
+01 Gild archimage (4 étapes)
+03 Gild archimage
+
+#5904
+01 Gild archimage (5e étape)
+03 Gild archimage
+
+#5905
+01 Gild archimage (6e étape)
+03 Gild archimage
+
+#6000
+01 Gild Varvara (1 étape)
+03 Gild barbare
+
+#6001
+01 Gild Varvara (2e étape)
+03 Gild barbare
+
+#6002
+01 Gild Varvara (3 étapes)
+03 Gild barbare
+
+#6003
+01 Gild Varvara (4 étapes)
+03 Gild barbare
+
+#6004
+01 Gild Varvara (5 étapes)
+03 Gild barbare
+
+#6005
+01 Gild Varvara (6e échelon)
+03 Gild barbare
+
+#6100
+01 Gild druide (1 étape)
+03 Gild druide
+
+#6101
+01 Gild druide (2 étapes)
+03 Gild druide
+
+#6102
+01 Gild druide (3 étapes)
+03 Gild druide
+
+#6103
+01 Gild druide (4 étapes)
+03 Gild druide
+
+#6104
+01 Gild druide (5 étapes)
+03 Gild druide
+
+#6105
+01 Gild druide (6e échelon)
+03 Gild druide
+
+#6200
+01 Gild Vora (1 étape)
+03 Gild voleur
+
+#6201
+01 Gild voleur (2e étape)
+03 Gild voleur
+
+#6202
+01 Gild voleur (3 étapes)
+03 Gild voleur
+
+#6203
+01 Gild voleur (4 étapes)
+03 Gild voleur
+
+#6204
+01 Gild Vora (5 étapes)
+03 Gild voleur
+
+#6205
+01 Gild Vora (6e échelon)
+03 Gild voleur
+
+#6300
+01 Gild Masters of Steel (1 étape)
+03 Gild maîtres de l'acier
+
+#6301
+01 Gild Masters of Steel (2 étapes)
+03 Gild maîtres de l'acier
+
+#6302
+01 Gild Masters of Steel (3 étapes)
+03 Gild maîtres de l'acier
+
+#6303
+01 Gild Masters of Steel (4 étapes)
+03 Gild maîtres de l'acier
+
+#6304
+01 Guild of Steel (5 étapes)
+03 Gild maîtres de l'acier
+
+#6305
+01 Gild Masters of Steel (6 étapes)
+03 Gild maîtres de l'acier
+
+#6400
+01 Gild armurier (1 étape)
+03 Gild armurier
+
+#6401
+01 Gild armurier (2e étape)
+03 Gild armurier
+
+#6402
+01 Gild armurier (3 étapes)
+03 Gild armurier
+
+#6403
+01 Gild armurier (4 étapes)
+03 Gild armurier
+
+#6404
+01 Gild armurier (5e étape)
+03 Gild armurier
+
+#6405
+01 Gild armurier (6e échelon)
+03 Gild armurier
+
+#6500
+01 Gild forgeron (1 étape)
+03 Gild le forgeron
+
+#6501
+01 Gild forgeron (2e étape)
+03 Gild le forgeron
+
+#6502
+01 Gild forgeron (3 étapes)
+03 Gild le forgeron
+
+#6503
+01 Gild forgeron (4 étapes)
+03 Gild le forgeron
+
+#6504
+01 Gild forgeron (5 étapes)
+03 Gild le forgeron
+
+#6505
+01 Gild forgeron (6e étape)
+03 Gild le forgeron
+
+#6600
+01 Gild du sorcier (1 étape)
+03 Gild du sorcier
+
+#6601
+01 Gild du sorcier (2 étapes)
+03 Gild du sorcier
+
+#6602
+01 Gild du sorcier (3 étapes)
+03 Gild du sorcier
+
+#6603
+01 Gild du sorcier (4 étapes)
+03 Gild du sorcier
+
+#6604
+01 Gild du sorcier (5 étapes)
+03 Gild du sorcier
+
+#6605
+01 Gild du sorcier (6e échelon)
+03 Gild du sorcier
+
+#6700
+01 Gild nécromancien (1 étape)
+03 Gild nécromancien
+
+#6701
+01 Gild nécromancien (2e échelon)
+03 Gild nécromancien
+
+#6702
+01 Gild nécromancien (3e échelon)
+03 Gild nécromancien
+
+#6703
+01 Gild nécromancien (4e échelon)
+03 Gild nécromancien
+
+#6704
+01 Gild nécromancien (5e échelon)
+03 Gild nécromancien
+
+#6705
+01 Gild nécromancien (6e échelon)
+03 Gild nécromancien
+
+#6800
+01 Gild Bandiera (1 étape)
+03 Gild Bandiera
+
+#6801
+01 Gild Bandiera (2e étape)
+03 Gild Bandiera
+
+#6802
+01 Gild Bandiera (3 étapes)
+03 Gild Bandiera
+
+#6803
+01 Gild Bandiera (4 étapes)
+03 Gild Bandiera
+
+#6804
+01 Gild Bandiera (5e étape)
+03 Gild Bandiera
+
+#6805
+01 Gild Bandiera (6e étape)
+03 Gild Bandiera

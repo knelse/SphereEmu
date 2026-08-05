@@ -1,9 +1,7 @@
-01 Powder of Weaver formula (4th stage)
-02 powder of Weaver formula (4th stage)
-03 powder of Weaver formula (4th stage)
-
-100 Before you is a scroll with a recipe of a magic potion inscribed upon it. Behind every such recipe lies a life's work of several generations of mages. Make sure to save such a valuable possesion in your special book of recipes.
-
+01 Weaver's Powder Recipe (4th step)
+02 Weaver's Powder recipe (4th step)
+03 Weaver's Powder Recipe (4th step)
+100 In front of you is a scroll with a description of the recipe for magic powder. Each recipe hides the painstaking and long-term work of several generations of magicians. In order not to lose such a valuable scroll, save it in a special recipe book.
 TEXT
-
-    In order to obtain the powder of Weaver (4th stage), you should first of all find Charoite, Ferengon flowers and Iron. Mix them in the alchemical pot, add the Amilus powder to complete the reaction and use the powder that you just received.
+    To get the Weaver's powder (4th stage), first of all get charoite, ferengon flowers and iron. Mix them in an alchemical pot, add the final Amilus powder and use the resulting powder.
+    

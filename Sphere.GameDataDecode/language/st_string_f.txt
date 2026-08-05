@@ -1,0 +1,37 @@
+01 Fil
+03 fils
+10 Sur ce fil sont rassemblées les oreilles, dont le Karma était %s.
+11 Ce fil contient les oreilles des membres de la guilde des Administrateurs. //never comes
+12 Ce fil contient les oreilles des membres du clan %s.
+14 Ce fil contient des oreilles dont les propriétaires ont un niveau supérieur %d.
+50 Assemblé %d PC.
+0900 Ce fil contient les oreilles des membres de la guilde des Assassins.
+0901 Ce fil contient les oreilles des membres de la guilde des Croisés.
+0902 Ce fil contient les oreilles des membres de la guilde des Inquisiteurs.
+0903 Ce fil contient les oreilles des membres de la guilde des Chasseurs.
+0904 Ce fil contient les oreilles des membres de la guilde des Archimages.
+0905 Ce fil contient les oreilles des membres de la guilde des Barbares.
+0906 Ce fil contient les oreilles des membres de la guilde des Druides.
+0907 Ce fil contient les oreilles des membres de la guilde des Voleurs.
+0908 Ce fil contient les oreilles des Membres de la guilde des maîtres de l'acier.
+0909 Ce fil contient les oreilles des membres de la guilde des Armuriers.
+0910 Ce fil contient les oreilles des membres de la guilde des forgerons.
+0911 Ce fil contient les oreilles des membres de la guilde des Sorciers.
+0912 Ce fil contient les oreilles des membres de la guilde des Nécromanciens.
+0913 Ce fil contient les oreilles des membres de la guilde des Bandyers.
+
+#90
+01 Fil rouge pour les oreilles
+03 fil rouge pour les oreilles
+
+#91
+01 Fil vert pour les oreilles
+03 fil vert pour les oreilles
+
+#92
+01 Fil d'oreille bleu
+03 fil bleu pour les oreilles
+
+#93
+01 Fil d'oreille jaune
+03 fil jaune pour les oreilles

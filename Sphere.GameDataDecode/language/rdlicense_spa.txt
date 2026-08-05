@@ -1,0 +1,6 @@
+01 Licencia de restablecimiento de grado
+03 licencia para restablecer el grado
+100 Restablece el nivel de grado del personaje a 15. En este caso, por cada 5 (cinco) niveles de grado eliminados, se agrega 1 (un) nivel al título anterior. También se restablecen las características distribuidas del personaje, tales como: fuerza, agilidad, precisión, resistencia, tierra, aire, agua y fuego. ¡ATENCIÓN! ¡La licencia no funciona si el personaje tiene una especialidad!
+101 ¿Realmente quieres restablecer el grado?
+102 Grado restablecido.
+103 Ahora no es necesario utilizar la licencia.

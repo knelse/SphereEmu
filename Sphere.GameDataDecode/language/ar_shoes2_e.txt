@@ -1,16 +1,14 @@
-01 high-boots
-03 high-boots
-05 new
-06 used
+01 Boots
+03 boots
+05 new ones
+06 worn
 07 torn
-
-100 Protect from enemy weapons in battle.
-
-200 of durability
-201 of absorption
-202 of protection
-203 of health
-204 of meditation
-205 of accuracy
-206 of ether
-207 of value
+100 In battle, it protects against the weapons of opponents.
+200 Strength
+201 acquisitions
+202 security
+203 health
+204 meditations
+205 accuracy
+206 ether
+207 values

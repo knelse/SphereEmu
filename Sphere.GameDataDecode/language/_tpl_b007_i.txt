@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Grazie al cielo, sei qui! Sono ormai tre settimane e due giorni che %s sta terrorizzando il nostro villaggio! Lui è forte, ma tu lo sembri di più. Uccidilo, si nasconde in %s.   
-23 Grazie al cielo, sei qui! %s ci ha aggrediti stamattina! Lei è forte, ma tu lo sembri di più. Uccidila, si nasconde in %s. 
+22 Lode al cielo che vi ha portato a noi! Sono passate tre settimane e due giorni terribile %s tormenta il nostro villaggio. È forte, ma puoi gestirlo. %s lo nasconde.
+23 Piacere di vederti! %s ci ha aggrediti stamattina. Lei è forte, ma io credo in te! Ce la farai. %s - il suo habitat. Finiscila!

@@ -1,0 +1,171 @@
+01 Cinturón
+03 cinturón
+100 En la batalla protege de las armas de los enemigos.
+200 fuerza
+201 absorción
+202 seguridad
+203 salud
+204 meditaciones
+205 precisión
+206 Ether
+207 valores
+
+#349
+01 Sash
+03 Sash
+
+#350
+01 Cinturón de cuero
+03 cinturón de cuero
+
+#351-352
+01 Cinturón de cuero remachado
+03 cinturón de cuero remachado
+
+#353-354
+01 Cinturón de malla
+03 cinturón de malla
+
+#355-357
+01 Cinturón de hierro
+03 cinturón de hierro
+
+#358-360
+01 Cinturón de hierro antiguo
+03 cinturón de hierro antiguo
+
+#3171
+01 Sash
+03 Sash
+
+#3172
+01 Cinturón de cuero
+03 cinturón de cuero
+
+#3173-3174
+01 Cinturón de cuero remachado
+03 cinturón de cuero remachado
+
+#3175-3176
+01 Cinturón de malla
+03 cinturón de malla
+
+#3177-3179
+01 Cinturón de hierro
+03 cinturón de hierro
+
+#3180-3182
+01 Cinturón de hierro antiguo
+03 cinturón de hierro antiguo
+
+#4489-4497
+01 Cinturón de hierro antiguo
+03 cinturón de hierro antiguo
+
+#5665
+01 Cinturón de coraje
+03 cinturón de coraje
+
+#5666
+01 Cinturón de cuero de la valentía
+03 cinturón de coraje
+
+#5667
+01 Cinturón de coraje remachado
+03 cinturón de coraje
+
+#5668
+01 Cinturón de valor
+03 cinturón de coraje
+
+#5669
+01 Cinturón de hierro de coraje
+03 cinturón de coraje
+
+#5670
+01 Antiguo cinturón de coraje
+03 cinturón de coraje
+
+#5777
+01 Cinturón Del Tribunal
+03 cinturón del Tribunal
+
+#5778
+01 Cinturón de cuero del Tribunal
+03 cinturón del Tribunal
+
+#5779
+01 Cinturón remachado del Tribunal
+03 cinturón Trmbunal
+
+#5780
+01 Cinturón de malla del Tribunal
+03 cinturón del Tribunal
+
+#5781
+01 Cinturón de hierro del Tribunal
+03 cinturón del Tribunal
+
+#5782
+01 Cinturón antiguo del Tribunal
+03 cinturón del Tribunal
+
+#5962
+01 Cinturón
+03 cinturón
+
+#6077
+01 Cinturón De Titanio
+03 cinturón de Titanio
+
+#6078
+01 Cinturón de cuero de Titanio
+03 cinturón de Titanio
+
+#6079
+01 Cinturón de Titanio remachado
+03 cinturón de Titanio
+
+#6080
+01 Cinturón de malla de Titanio
+03 cinturón de Titanio
+
+#6081
+01 Cinturón de Titanio de hierro
+03 cinturón de Titanio
+
+#6082
+01 Cinturón antiguo de Titanio
+03 cinturón de Titanio
+
+#6476
+01 Cinturón de longevidad
+03 cinturón de longevidad
+
+#6477
+01 Cinturón de cuero de la longevidad
+03 cinturón de longevidad
+
+#6478
+01 Cinturón de longevidad remachado
+03 cinturón de longevidad
+
+#6479
+01 Cinturón de cadena de longevidad
+03 cinturón de longevidad
+
+#6480
+01 Cinturón de hierro de longevidad
+03 cinturón de longevidad
+
+#6481
+01 Antiguo cinturón de longevidad
+03 cinturón de longevidad
+
+#6657
+01 Correa de la facilidad
+03 correa de la facilidad
+
+#6758
+01 Cinturón de pantano
+03 cinturón de pantano

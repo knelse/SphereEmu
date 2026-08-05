@@ -1,0 +1,26 @@
+10000 X
+10100 Sie haben sich entschieden, die Verbleibenden und die Ausgehenden zu verraten und das Richtige zu tun. Lebe ein friedliches Leben und vervielfache das Leiden nicht in dieser Welt ohne den ohnehin vollen Schmerz.
+10101 Bringt den Ring zu meinem Freund %x1. %m1.
+10102 Bringen Sie das Paket meinem Freund mit %m1. %x1.
+10103 Bringt mir die zehn Ohren von Menschen mit sehr schlechtem Karma und die zehn Ohren von Menschen mit gutem Karma. %m1.
+10200 Ich begrüße Sie, %p1. Ich sehe, Sie wollen die Seite der Verbleibenden annehmen und diese Welt vor der Zerstörung schützen. Sie sind auf dem richtigen Weg, aber zuerst müssen Sie Ihre Hingabe beweisen.
+10201 Vergießt das Blut unserer Feinde und bringt mir die zehn Ohren von Menschen mit sehr schlechtem Karma. %m1.
+10300 Ich begrüße Sie, %p1. Ich sehe, dass Sie bereit sind, sich den Scheidenden anzuschließen und diese Welt des Leidens zu verlassen. Mit Ihrer Hilfe können wir das tun, was wir beabsichtigt haben, aber wir müssen sicherstellen, dass Sie loyal sind.
+10301 Vergießt das Blut unserer Feinde und bringt mir die zehn Ohren von Menschen mit gutem Karma. %m1.
+10700 %m1.
+10701 Ich begrüße Sie, %p1. Sie haben sich entschieden, die Verbleibenden und die Ausgehenden zu verraten und das Richtige zu tun. Lebe ein friedliches Leben und vervielfache das Leiden nicht in dieser Welt ohne Schmerz. Um das Siegel einer Fraktion aus dem Clan zu löschen, musst du zwei meiner Aufgaben erledigen. Sie müssen die Monster töten %z1 und %z2 in beiden Kerkern und bringen Sie mir den Kopf jedes Tieres. Gehen Sie auf die Suche %z1 und bringt mir seinen Kopf.
+10702 "...bringt mir seinen Kopf"
+10703 Okay, Sie haben den ersten Teil der Aufgabe bewältigt. Töte jetzt das Monster %z2 im zweiten Verlies.
+10704 "...bringt mir seinen Kopf"
+10800 
+10801 Ich begrüße Sie, %p1. Ich sehe, dass Ihr Clan den Verbleibenden Treue schwören will. Das sind gute Nachrichten für uns und schlechte Nachrichten für unsere Feinde, aber Sie müssen die Härte Ihrer Absichten beweisen, indem Sie ein paar meiner Aufgaben erledigen. Wenn Sie mit ihnen fertig werden, wird Ihr Clan in die Fraktion der Verbleibenden aufgenommen. Zuerst müssen Sie mir dreißig Ohren von Menschen mit sehr schlechtem Karma bringen. %m1.
+10802 Sie haben die erste Aufgabe sehr gut bewältigt. Jetzt müssen Sie die Nachricht von meinem Scout, seinem Namen, mitbringen %x1. Es befindet sich in der Stadt Nomrad. Geben Sie ihm diesen Brief, damit er versteht, wer Sie geschickt hat. %m1.
+10803 %p1? Hier. Pass auf, es gibt wichtige Informationen in diesem Rollup. %x1.
+10804 Großartig. Jetzt ist meine letzte Aufgabe für Sie und Ihren Clan. Es ist notwendig, das Monster allein zu besiegen %z1 und bringt mir seinen Kopf. %m1.
+10805 "...bringt mir seinen Kopf" - %m1.
+10900 
+10901 Ich begrüße Sie, %p1. Ich sehe, dass Ihr Clan den Scheidenden Treue schwören will. Sie müssen die Härte Ihrer Absichten beweisen, indem Sie ein paar meiner Aufgaben erledigen. Wenn Sie mit ihnen fertig werden, wird Ihr Clan in die Fraktion der Scheidenden aufgenommen. Zuerst müssen Sie mir dreißig Ohren von Menschen mit gutem Karma bringen. %m1.
+10902 Sie haben die erste Aufgabe sehr gut bewältigt. Jetzt müssen Sie die Nachricht von meinem Scout, seinem Namen, mitbringen %x1. Es befindet sich in der Stadt Umrad. Geben Sie ihm diesen Brief, damit er versteht, wer Sie geschickt hat. %m1.
+10903 %p1? Hier. Pass auf, es gibt wichtige Informationen in diesem Rollup. %x1.
+10904 Großartig. Jetzt ist meine letzte Aufgabe für Sie und Ihren Clan. Es ist notwendig, das Monster allein zu besiegen %z1 und bringt mir seinen Kopf. %m1.
+10905 "...bringt mir seinen Kopf" - %m1.

@@ -1,168 +1,178 @@
 01 Mineral
-02 Mineral
-03 Mineral
+02 mineral
+03 mineral
 
 #900
-01 Herudite
-02 Herudite
-03 Herudite
+01 Gerudit
+02 gerudit
+03 gerudit
 
 #901
 01 Turquoise
-02 Turquoise
-03 Turquoise
+02 turquoise
+03 turquoise
 
 #902
-01 Cornelian
-02 Cornelian
-03 Cornelian
+01 Carnelian
+02 carnelian
+03 carnelian
 
 #903
 01 Agate
-02 Agate
-03 Agate
+02 agate
+03 agate
 
 #904
-01 Spherite
-02 Spherite
-03 Spherite
+01 Spherical
+02 spherical
+03 spherical
 
 #905
 01 Terraton
-02 Terraton
-03 Terraton
+02 terraton
+03 terraton
 
 #906
-01 Astramate
-02 Astramate
-03 Astramate
+01 Astramat
+02 Astramat
+03 Astramat
 
 #907
 01 Parmelite
-02 Parmelite
-03 Parmelite
+02 parmelite
+03 parmelite
 
 #908
 01 Malachite
-02 Malachite
-03 Malachite
+02 malachite
+03 malachite
 
 #909
 01 Aquamarine
-02 Aquamarine
-03 Aquamarine
+02 aquamarine
+03 aquamarine
 
 #910
 01 Sodalite
-02 Sodalite
-03 Sodalite
+02 sodalite
+03 sodalite
 
 #911
-01 Eritrite
-02 Eritrite
-03 Eritrite
+01 Erythritol
+02 erythritol
+03 erythritol
 
 #912
 01 Marinite
-02 Marinite
-03 Marinite
+02 marinite
+03 marinite
 
 #913
 01 Hyperite
-02 Hyperite
-03 Hyperite
+02 hyperite
+03 hyperite
 
 #914
 01 Marsolic
-02 Marsolic
-03 Marsolic
+02 marsolic
+03 marsolic
 
 #915
-01 Phitolite
-02 Phitolite
-03 Phitolite
+01 Phytolith
+02 phytolith
+03 phytolith
 
 #916
-01 Camelic
-02 Camelic
-03 Camelic
+01 Kamelik
+02 kamelik
+03 kamelik
 
 #917
 01 Flint
-02 Flint
-03 Flint
+02 flint
+03 flint
 
 #918
 01 Coal
-02 Coal
-03 Coal
+02 coal
+03 coal
 
 #919
-01 Sapronac
-02 Sapronac
-03 Sapronac
+01 Sapronak
+02 sapronak
+03 sapronak
 
 #920
 01 Forves
-02 Forves
-03 Forves
+02 forves
+03 forves
 
 #921
-01 Phlema
-02 Phlema
-03 Phlema
+01 Flema
+02 Flema
+03 Flemu
 
 #922
 01 Veorant
-02 Veorant
-03 Veorant
+02 veorant
+03 veorant
 
 #923
 01 Patronite
-02 Patronite
-03 Patronite
+02 patronite
+03 patronite
 
 #924
 01 Pyrite
-02 Pyrite
-03 Pyrite
+02 pyrite
+03 pyrite
 
 #925
-01 Ardamate
-02 Ardamate
-03 Ardamate
+01 Ardamat
+02 ardamat
+03 ardamat
 
 #926
-01 Meleosite
-02 Meleosite
-03 Meleosite
+01 Meleozit
+02 meleozit
+03 meleozit
 
 #927
-01 Pheyric
-02 Pheyric
-03 Pheyric
+01 A fairy
+02 A fairy
+03 A fairy
 
 #928
-01 Chatlite
-02 Chatlite
-03 Chatlite
+01 Chatlit
+02 chatlit
+03 chatlit
 
 #929
-01 Bermanate
-02 Bermanate
-03 Bermanate
+01 Bermanat
+02 bermanat
+03 bermanat
 
 #930
 01 Granite
-02 Granite
-03 Granite
+02 granite
+03 granite
 
 #931
-01 Galeonate
-02 Galeonate
-03 Galeonate
+01 The Galleonate
+02 the galleonate
+03 the galleonate
 
 #932
 01 Alexandrite
 02 Alexandrite
 03 Alexandrite
+
+#933
+01 Hort
+02 hort
+03 hort
+
+#934
+01 Charoite
+02 charoite
+03 charoite

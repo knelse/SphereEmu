@@ -1,38 +1,44 @@
-01 Poção do nódulo
-03 poção do nódulo 
+01 Elixir Do Nó
+03 Elixir do nó
 
 #670
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 15. Seus efeitos permanecem durante 3.5 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir é para castelos de nível 15. São 3,5 dias.
+
 #671
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 30. Seus efeitos permanecem durante 5.5 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir destina-se a castelos de nível 30. São 5,5 dias.
+
 #672
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 45. Seus efeitos permanecem durante 7.5 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir destina-se a castelos de Nível 45. São 7,5 dias.
+
 #673
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 60. Seus efeitos permanecem durante 9 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir destina-se a castelos de nível 60. Válido por 9 dias.
+
 #674
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 75. Seus efeitos permanecem durante 10 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir destina-se a castelos de nível 75. Válido por 10 dias.
+
 #675
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 90. Seus efeitos permanecem durante 10.5 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir é para castelos de nível 90. São 10,5 dias.
+
 #676
-01 Poção do nódulo
-02 poção
-03 poção
-100 Esta poção é destinada para castelos de nível 120. Seus efeitos permanecem durante 12 dias.
+01 Elixir Do Nó
+02 Elixir
+03 Elixir
+100 Este elixir destina-se a castelos de nível 120. Válido por 12 dias.

@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,7 +7,7 @@
 14 
 15 
 16 
-20 Mi servono alcuni oggetti che puoi trovare non lontano da qui. Vai a prenderli e portameli. %s 
-21 Mi servono alcuni oggetti che puoi trovare non lontano da qui. Vai a prenderli e portameli. %s
- 
- 
+20 Ho bisogno di alcune cose perse non lontano da qui. Consegnatele a me. La ricompensa ti sta aspettando! %s
+21 Ho bisogno di alcune cose perse non lontano da qui. Consegnatele a me. La ricompensa ti sta aspettando! %s
+    
+    

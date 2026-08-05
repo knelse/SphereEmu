@@ -1,0 +1,35 @@
+01 La llave de la mazmorra
+03 la llave de la mazmorra
+10 Esta llave no encaja.
+
+#240
+01 Llave de la habitación negra del agua
+03 clave
+
+#241
+01 La llave de la habitación de fuego negro
+03 clave
+
+#242
+01 La llave de la habitación negra de la tierra
+03 clave
+
+#243
+01 Llave del Cuarto negro del aire
+03 clave
+
+#244
+01 La llave de la habitación blanca del agua
+03 clave
+
+#245
+01 La llave de la habitación blanca del fuego
+03 clave
+
+#246
+01 La llave de la habitación blanca de la tierra
+03 clave
+
+#247
+01 Llave de la habitación blanca del aire
+03 clave

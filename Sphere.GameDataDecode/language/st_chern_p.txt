@@ -1,7 +1,6 @@
 01 Tinteiro
 03 tinteiro
-05 cheio
-06 metade
+05 completo
+06 meio vazio
 07 quase vazio
-100 Usado para se escrever no registro e fazer anotações em mapas.
-
+100 Permite que você faça entradas no diário e marque nos cartões.

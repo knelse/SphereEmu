@@ -1,41 +1,46 @@
-01 Bracelete de proteção de bronze
-03 bracelete de proteção de bronze
-
-100 Braceletes produzem proteção extra contra ataques mágicos. Muitos passaram décadas tentando obter um com as qualidades necessárias. Alguns conseguiram.
-
-200 de durabilidade
-201 de absorção
-202 de reflexão
-203 de proteção
-204 de vida
-205 de meditação
-206 de precisão
-207 de éter
-208 de brilho
-209 de valor
-210 de dano
+01 Pulseira de segurança de Bronze
+03 pulseira de segurança de Bronze
+100 Dá uma vantagem adicional ao repelir ataques mágicos. Por trás de cada pulseira, há uma história. Às vezes, por muitas décadas, os artesãos gastaram tentando obter uma pulseira com as propriedades desejadas.  E a paciência de outros foi recompensada durante a vida.
+200 força
+201 absorção
+202 reflexos
+203 segurança
+204 saúde
+205 meditação
+206 precisão
+207 Ether
+208 the shining
+209 valores
+210 dano
 
 #413-424
-01 Bracelete protetor de bronze
-03 bracelete protetor de bronze
+01 Pulseira de segurança de Bronze
+03 pulseira de segurança de Bronze
+
 #4024-4046
-01 Bracelete protetor de bronze
-03 bracelete protetor de bronze
+01 Pulseira de segurança de Bronze
+03 pulseira de segurança de Bronze
+
 #4176-4184
-01 Bracelete protetor de bronze
-03 bracelete protetor de bronze
+01 Pulseira de segurança de Bronze
+03 pulseira de segurança de Bronze
+
 #5580-5585
-01 Bracelete da tempestade
-03 bracelete da tempestade
+01 Pulseira de tempestade
+03 pulseira de tempestade
+
 #5963
-01 Bracelete
-03 bracelete
+01 Pulseira
+03 pulseira
+
 #6255-6260
-01 Bracelete de Habilidade
-03 bracelete de Habilidade
+01 Pulseira de habilidade
+03 pulseira
+
 #6380-6385
-01 Bracelete de aço
-03 bracelete de aço
+01 Pulseira de aço
+03 pulseira de aço
+
 #6761
-01 Bracelete da serpente
-03 bracelete da serpente
+01 Pulseira cobra
+03 pulseira cobra

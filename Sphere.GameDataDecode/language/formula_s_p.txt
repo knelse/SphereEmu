@@ -1,9 +1,7 @@
 01 Fórmula
-02 fórmula
+02 fórmulas
 03 fórmula
-
-100 Fórmula da organização de ferreiros
-
-10000 Usando esta fórmula você pode ter %r1. Isto requer %a1, e o aprendizado na organização dos ferreiros deve ser de pelo menos %z1.
-10001 Usando esta fórmula você pode ter %r1. Isto requer %a1 e %a2, e o aprendizado na organização dos ferreiros deve ser de pelo menos %z1.
-10002 Usando esta fórmula você pode ter %r1. Isto requer %a1, %a2 e %a3, ae o aprendizado na organização dos ferreiros deve ser de pelo menos %z1.
+100 Fórmula da Guilda dos Ferreiros
+10000 Com esta fórmula é possível obter %r1. Para a produção é necessário %a1 e o nível na Guilda dos Ferreiros não deve ser inferior %z1.
+10001 Com esta fórmula é possível obter %r1. Para a produção são necessários %a1 e %a2 e o nível na Guilda dos Ferreiros não deve ser inferior %z1.
+10002 Com esta fórmula é possível obter %r1. Para a produção são necessários %a1, %a2 e %a3 e o nível na Guilda dos Ferreiros não deve ser inferior %z1.

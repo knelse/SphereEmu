@@ -1,0 +1,88 @@
+1000 Das Schloss wurde vor kurzem beschlagnahmt (es gibt keine Steuern)
+1001 Grundsteuer: %d$
+1002 Die Grundsteuer wurde bezahlt.
+1003 Torsteuer: %d$
+1004 Die Gate-Steuer wurde bezahlt.
+1005 Tafelsteuer: %d$
+1006 Die Tafelsteuer wurde bezahlt.
+1007 Dungeon-Steuer: %d$
+1008 Die Kerkersteuer wurde bezahlt.
+1090 Gesammelte Steuern: %d$
+1091 Entfernen
+8000 Tafel des Schlosses Lüttich
+8200 Das Tor des Schlosses Lüttich
+8001 Tafel des Schlosses Fief
+8201 Das Tor des Schlosses Fief
+8002 Die Tafel des Schlosses Aris
+8202 Das Tor des Schlosses Aris
+8003 Tafel des Schlosses Lator
+8203 Das Tor des Schlosses Lator
+8004 Tafel des Schlosses Eikum-kas
+8204 Das Tor des Schlosses Eikum-Kas
+8005 Die Tafel Schloss Gideon
+8205 Das Tor von Schloss Gideon
+8006 Tafel des Schlosses Châtelet
+8206 Das Tor des Schlosses Châtelet
+8007 Tuanod-Schloss-Tafel
+8207 Das Tor des Schlosses Tuanod
+8008 Tafel des Peltier-Schlosses
+8208 Die Pforte des Schlosses Peltier
+8009 Tafel des Schlosses Karé-Royal
+8209 Das Tor des Schlosses Karé Royal
+8010 Die Tafel von Schloss Blessendor
+8210 Das Tor von Schloss Blessendorf
+8011 Tafel des Schlosses Ternoval
+8211 Tor der Burg Ternoval
+8012 Tafel des Schlosses Ammalael
+8212 Das Tor des Schlosses Ammalael
+8013 Tafel des Schlosses Kablak
+8213 Das Tor des Schlosses Kablak
+8014 Die Tafel des Schlosses Davanagari
+8214 Das Tor der Burg Davanagari
+8015 Tafel des Schlosses Sabulat
+8215 Das Tor des Schlosses Sabulat
+8016 Tafel des Schlosses Deffensat
+8216 Das Tor des Schlosses Deffensat
+8017 Tafel des Schlosses Ayonat
+8217 Das Tor der Burg von Ayonat
+8018 Die Tafel des Schlosses Triumphaler
+8218 Das Tor des Triumphaler Schlosses
+8019 Tafel des Schlosses Bagarnak
+8219 Das Tor der Burg Bagarnak
+8020 Tafel von Schloss Cabrad
+8220 Das Tor des Schlosses Cabrad
+8021 Tafel des Schlosses Set
+8221 Das Tor des Schlosses Seth
+8022 Tafel des Schlosses Lender
+8222 Das Tor des Schlosses Lender
+8023 Tafel des Schlosses Keles
+8223 Das Tor des Schlosses Keles
+8024 Die Tafel des Schlosses Scheprostan
+8224 Das Tor des Schlosses Sheprostan
+8025 Tafel des Schlosses Orcobien
+8225 Das Tor des Schlosses Orcobien
+8026 Tafel des Kanuak-Schlosses
+8226 Das Tor der Burg Kanuak
+8027 Tafel des Schlosses Aldarnon
+8227 Das Tor des Schlosses Aldarnon
+8028 Tafel von Schloss Yong
+8228 Das Tor von Schloss Yong
+8029 Tafel des Schlosses Elek
+8229 Das Tor von Schloss Elek
+8030 Die Tafel des Schlosses Gavot
+8230 Das Tor des Schlosses Gavot
+8031 Tafel des Schlosses Kandur
+8231 Tor der Burg Kandur
+8032 Tafel des Schlosses Immertel
+8232 Das Tor des Schlosses Immertel
+8033 Die Tafel des Narzissenschlosses
+8233 Das Tor des Narzissenschlosses
+8034 Tafel des Schlosses Randen
+8234 Das Tor des Schlosses Randen
+8035 Tafel von Nirgun Castle
+8235 Das Tor von Nirgun Castle
+8036 Tafel des Schlosses Gelgivinn
+8236 Das Tor des Schlosses Gelgivinn
+8037 Tafel des Schlosses von Il Suilly-Rua
+8237 Das Tor des Schlosses Il Suilly-Rua
+8090 Tafel der Stadt Angelm

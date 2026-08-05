@@ -1,0 +1,6 @@
+01 Licence de réinitialisation
+03 licence de réinitialisation
+100 Réinitialise les caractéristiques distribuées du personnage telles que: force, agilité, précision, endurance, terre, air, eau et feu. Le niveau du titre et du degré du personnage reste le même.
+101 Voulez-vous vraiment réinitialiser les spécifications?
+102 Les caractéristiques sont réinitialisées.
+103 Maintenant, il n'est pas nécessaire d'utiliser la licence.

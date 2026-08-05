@@ -1,299 +1,391 @@
-01 axe
-03 axe
-
-100 A striking weapon. Blows are heavy but slow.
-
-200 of exhaustion
-201 of valour
-202 of damage
-203 of cruelty
-204 of rush
-205 of speed
-206 of disorder
-207 of chaos
-208 of ether
-209 of tiredness
-210 of sickness
-211 of instability
-212 of length
-213 of distance
-214 of deterioration
-215 of devastation
-216 of weakness
-217 of penetration
-218 of prohibition
-219 of value
+01 The axe
+03 The axe
+100 Shock weapons. He hits hard, but rarely strikes.
+200 exhaustion
+201 Valor
+202 damage
+203 cruelty
+204 haste
+205 speeds
+206 disorder
+207 Chaos
+208 ether
+209 Fatigue
+210 diseases
+211 instabilities
+212 distances
+213 distances
+214 decompositions
+215 devastation
+216 weaknesses
+217 penetrations
+218 prohibition
+219 values
 
 #101
-01 axe
-03 axe
+01 The axe
+03 The axe
+
 #102
-01 great axe
-03 great axe
+01 The big axe
+03 The big axe
+
 #103
-01 battle axe
+01 Battle axe
 03 battle axe
+
 #104
-01 infantry axe
+01 Infantry axe
 03 infantry axe
+
 #105
-01 Frances
-03 Frances
+01 Francis
+03 Francis
+
 #106
-01 poleaxe
-03 poleaxe
+01 The Axe
+03 The axe
+
 #107
 01 Tabar
-03 Tabar
+03 tabar
+
 #108
-01 elite great axe
-03 elite great axe
+01 Elite Big Axe
+03 elite big axe
+
 #109
-01 elite battle axe
+01 Elite Battle Axe
 03 elite battle axe
+
 #110
-01 elite frances
-03 elite frances
+01 The Elite Francisca
+03 The elite Francisca
+
 #111
-01 elite poleaxe
-03 elite poleaxe
+01 Elite Axe
+03 an elite axe
+
 #112
-01 rune great axe
-03 rune great axe
+01 Runic Big Axe
+03 runic big axe
+
 #113
-01 rune battle axe
-03 rune battle axe
+01 Runic Battle Axe
+03 runic battle axe
+
 #114
-01 rune frances
-03 rune frances
+01 Runic Francisca
+03 Runic Francis
+
 #115
-01 rune poleaxe
-03 rune poleaxe
+01 Runic Axe
+03 the runic axe
+
 #116
-01 club
-03 club
+01 The baton
+03 A club
+
 #117
-01 mace
-03 mace
+01 The Mace
+03 The mace
+
 #118
-01 cudgel
-03 cudgel
+01 The club
+03 a club
+
 #119
-01 hammer
-03 hammer
+01 The Hammer
+03 The hammer
+
 #120
-01 war hammer
-03 war hammer
+01 The War Hammer
+03 The war hammer
+
 #121
-01 morning star
-03 morning star
+01 Morgenstern
+03 Morgenstern
+
 #122
-01 blacksmith hammer
-03 blacksmith hammer
+01 The Blacksmith's Hammer
+03 the blacksmith's hammer
+
 #123
-01 elite mace
-03 elite mace
+01 Elite Mace
+03 an elite mace
+
 #124
-01 elite cudgel
-03 elite cudgel
+01 Elite club
+03 elite club
+
 #125
-01 elite war hammer
+01 Elite War Hammer
 03 elite war hammer
+
 #126
-01 elite morning star
-03 elite morning star
+01 Elite Morgenstern
+03 elite morgenstern
+
 #127
-01 rune mace
-03 rune mace
+01 Runic Mace
+03 the runic mace
+
 #128
-01 rune cudgel
-03 rune cudgel
+01 Runic club
+03 a runic club
+
 #129
-01 rune war hammer
-03 rune war hammer
+01 Runic War Hammer
+03 runic war hammer
+
 #3501-3502
-01 axe
-03 axe
+01 The axe
+03 The axe
+
 #3503-3504
-01 great axe
-03 great axe
+01 The big axe
+03 The big axe
+
 #3505-3507
-01 battle axe
+01 Battle axe
 03 battle axe
+
 #3508-3509
-01 infantry axe
+01 Infantry axe
 03 infantry axe
+
 #3510-3512
-01 frances
-03 frances
+01 Francis
+03 Francis
+
 #3513-3514
-01 poleaxe
-03 poleaxe
+01 The Axe
+03 The axe
+
 #3515-3519
 01 Tabar
-03 Tabar
+03 tabar
+
 #3520-3524
-01 elite great axe
-03 elite great axe
+01 Elite Big Axe
+03 elite big axe
+
 #3525-3529
-01 elite battle axe
+01 Elite Battle Axe
 03 elite battle axe
+
 #3530-3534
-01 elite frances
-03 elite frances
+01 The Elite Francisca
+03 The elite Francisca
+
 #3535-3539
-01 elite poleaxe
-03 elite poleaxe
+01 Elite Axe
+03 an elite axe
+
 #3540-3544
-01 rune great axe
-03 rune great axe
+01 Runic Big Axe
+03 runic big axe
+
 #3545-3549
-01 rune battle axe
-03 rune battle axe
+01 Runic Battle Axe
+03 runic battle axe
+
 #3550-3554
-01 rune frances
-03 rune frances
+01 Runic Francisca
+03 Runic Francis
+
 #3555-3560
-01 rune poleaxe
-03 rune poleaxe
+01 Runic Axe
+03 the runic axe
+
 #3561-3562
-01 club
-03 club
+01 The baton
+03 A club
+
 #3563-3564
-01 mace
-03 mace
+01 The Mace
+03 The mace
+
 #3565-3567
-01 cudgel
-03 cudgel
+01 The club
+03 a club
+
 #3568-3569
-01 hammer
-03 hammer
+01 The Hammer
+03 The hammer
+
 #3570-3572
-01 war hammer
-03 war hammer
+01 The War Hammer
+03 the washing hammer
+
 #3573-3574
-01 morning star
-03 morning star
+01 Morgenstern
+03 Morgenstern
+
 #3575-3579
-01 blacksmith hammer
-03 blacksmith hammer
+01 The Blacksmith's Hammer
+03 the blacksmith's hammer
+
 #3580-3584
-01 elite mace
-03 elite mace
+01 Elite Mace
+03 an elite mace
+
 #3585-3589
-01 elite cudgel
-03 elite cudgel
+01 Elite club
+03 elite club
+
 #3590-3594
-01 elite war hammer
+01 Elite War Hammer
 03 elite war hammer
+
 #3595-3599
-01 elite morning star
-03 elite morning star
+01 Elite Morgenstern
+03 elite morgenstern
+
 #3600-3604
-01 rune mace
-03 rune mace
+01 Runic Mace
+03 the runic mace
+
 #3605-3609
-01 rune cudgel
-03 rune cudgel
+01 Runic club
+03 a runic club
+
 #3610-3614
-01 rune war hammer
-03 rune war hammer
+01 Runic War Hammer
+03 runic war hammer
+
 #3615-3620
-01 rune morning star
-03 rune morning star
+01 Runic morgenstern
+03 runic morgenstern
+
 #3621
-01 Game-master staff
-03 Game-master staff
+01 The staff of the game master
+03 The staff of the game master
+
 #3622-3624
-01 legendary axe
-03 legendary axe
+01 The legendary Axe
+03 The legendary axe
+
 #3625-3627
-01 eerie axe
-03 eerie axe
+01 The Phantom Axe
+03 The phantom axe
+
 #3628-3630
-01 dragon axe
-03 dragon axe
+01 The Dragon Axe
+03 The dragon axe
+
 #3631-3633
-01 legendary hammer
-03 legendary hammer
+01 The Legendary Hammer
+03 The legendary hammer
+
 #3634-3636
-01 eerie hammer
-03 eerie hammer
+01 The Phantom Hammer
+03 The Phantom Hammer
+
 #3637-3639
-01 dragon hammer
-03 dragon hammer
+01 Dragon Hammer
+03 Dragon hammer
+
+#3644
+01 Game Developer's Staff
+03 Game developer's staff
+
 #5750
-01 Staff of Inquisitor 
-03 staff of Inquisitor 
+01 The Inquisitor's Staff
+03 The Inquisitor's Staff
+
 #5751
-01 Staff of Great Inquisitor
-03 staff of Great Inquisitor 
+01 The Staff of the Grand Inquisitor
+03 The staff of the Grand Inquisitor
+
 #5950
-01 Staff de Orko
-03 staff de Orko
+01 The Staff of de Orco
+03 the staff of de Orco
+
 #5951
-01 Staff of Archimagician
-03 staff of Archimagician
+01 The Archmage's Staff
+03 The Archmage's Staff
+
 #5952
-01 Staff of Magician
-03 staff of Magician
+01 The Magician's Staff
+03 The Magician's Staff
+
 #5953
 01 Staff of Elements
-03 staff of Elements
+03 Staff of Elements
+
 #5965
-01 Small staff of Archimagician
-03 staff of Archimagician
+01 The Archmage's Small Staff
+03 The Archmage's Staff
+
 #5966-5968
-01 Staff of Archimagician
-03 staff of Archimagician
+01 The Archmage's Staff
+03 The Archmage's Staff
+
 #5969
-01 Big staff of Archimagician
-03 staff of Archimagician
+01 The Archmage's Large Staff
+03 The Archmage's Staff
+
 #5970
-01 Great staff of Archimagician
-03 staff of Archimagician
+01 The Great Staff of the Archmage
+03 The Archmage's Staff
+
 #6065-6070
-01 hammer of thunder
-03 hammer of thunder
+01 Hammer of Thunder
+03 Hammer of thunder
+
 #6183
-01 Small staff of recovery
-03 staff of recovery
+01 Small Staff of Restoration
+03 The staff of restoration
+
 #6184-6185
-01 Middle staff of recovery
-03 staff of recovery
+01 The Middle Staff of Restoration
+03 The Staff of restoration
+
 #6186-6187
-01 Big staff of recovery
-03 staff of recovery
+01 The Great Staff of Restoration
+03 The Staff of restoration
+
 #6188
-01 Great staff of recovery
-03 staff of recovery
+01 The Great Staff of Restoration
+03 The Staff of restoration
+
 #6365-6368
 01 Labris
 03 labris
+
 #6369
 01 Steel Labris
 03 labris
+
 #6370
-01 Great Labris
+01 The Great Labris
 03 labris
+
 #6452
-01 Axe of Craftsman
-03 axe of Craftsman
+01 The Master's Axe
+03 The Master's Axe
+
 #6453
-01 Hammer of durability
-03 Hammer of durability
+01 Hammer of Strength
+03 hammer of strength
+
 #6552-6554
-01 Blacksmithing hammer
-03 blacksmithing hammer
+01 The Blacksmith's Hammer
+03 the blacksmith's hammer
+
 #6658
-01 Staff of Sorcerer
-03 staff of Sorcerer
+01 The Wizard's Staff
+03 The Wizard's Staff
+
 #6750
-01 Staff of mutilation
-03 staff of mutilation
+01 The Staff of Mutilation
+03 The staff of mutilation
+
 #6751
-01 Staff of darkness
-03 staff of darkness
+01 The Staff of Darkness
+03 The Staff of darkness
+
 #6752
-01 Staff of sacrifice
-03 staff of sacrifice
+01 The Staff of Sacrifice
+03 The Staff of sacrifice

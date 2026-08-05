@@ -1,56 +1,56 @@
-01 Mutator
-
-// special viruses descriptions
-1000 Magical light invisible to others.
-1001 "Berserker". Leaves one hungry and exhausted.
-1002 Allows seeing the invisible.
-1003 "Wrath of Tablet". Causes damage every 2 minutes.
-1004 Takes off one mutator.
-1005 Reduces health every 2 minutes.
-1006 Boosts health every 2 minutes.
+01 The Mutator
+1000 Magical light, invisible to others.
+1001 "The Berserker." After the action, it leaves you hungry and exhausted.
+1002 Allows you to see the invisible.
+1003 "Wrath of the Tablet." Inflicts damage every 2 minutes.
+1004 Removes one mutator.
+1005 Decreases health every 2 minutes.
+1006 Increases health every 2 minutes.
 1007 Reduces health and prana every 2 minutes.
-1008 Boosts health and prana every 2 minutes.
-1009 "Purification". Complete recovery of health and prana, takes off all mutators.
-1010 Prohibits running.
-1011 Prohibits running and walking.
-1012 Hypotaxia.
-1013 Prohibits jumps.
-1014 2 times longer jumps.
-1015 4 times longer jumps.
-1016 Half blindness.
+1008 Increases health and prana every 2 minutes.
+1009 "Purification." Complete restoration of health and prana and removal of all mutators.
+1010 Forbids running.
+1011 Forbids running and walking.
+1012 Violation of coordination.
+1013 The ban on jumping.
+1014 Increase jumps by 2 times.
+1015 Increase in jumps by 4 times.
+1016 Blinding by half.
 1017 Complete blindness.
-1018 Allows breathing under water.
-1019 Protects from falling from any height.
-1020 Takes off jump boosting mutator.
-1021 Kills members of Naath clan. Frees from the curse of evil spirits.
-1022 Allows seeing hidden traps.
-1023 Makes owner invisible. Effect ends when something taken in hand.
-1024 Takes off 2 mutators.
-1025 Takes off 4 mutators.
-1026 Takes off 6 mutators.
-1027 Allows shooting 2 bolts simultaneously.
-1028 Boosts running speed.
-1029 Thievery
-1030 Makes owner invisible at night. Effect ends when something taken in hand.
-1031 Kamae. Protective stand. Prohibits running and slows down any actions.
-1032 Fixing agent. Blocks the effect of complete purification on mutators below.
-1033 Resource. Higher chance of handicraft resources falling from killed monster.
-1034 Long sight. Boosts range of any weapon's effect to 30 meters.
-1035 Run of time. Makes attack frequency 2 times higher.
-1036 Fetters. Prohibits taking anything in hand.
-1037 Short sight. Reduces range of any weapon's effect to 2 meters.
-1038 Meditation. Plunges in a state of silence, gives higher protection.
-1039 Curse. Transforms into a wild boar rushing about. 
-1040 Stunning. Blinds and prevents from string hands.
-1041 Metamorphosis. Turns into a wolf.
-1042 Quick run before first stop.
-1043 Rusty armor. Prohibits turning around.
-1044 Tornado. Spins up character.
-1045 Berserker. Higher attack, but lower run.
-1046 Shield of prana. Reduces damage to health with prana consumption.
-1047 Metamorphosis. Turns into a vampire.
-1048 Metamorphosis. Turns into a snowman.
-1049 Magic Mirror. Protects and returns half damage to attacker.
-1111 Support of bandier.
-2020 Boosts castle gate protection.
-2021 Causes damage to castle gate every 2 minutes.
+1018 Allows you to breathe underwater.
+1019 Protects against falling from any height.
+1020 Removes the jump increase mutator.
+1021 Kills a member of the Naath clan. Frees from the curse of evil spirits.
+1022 Allows you to see hidden traps.
+1023 Makes the wearer invisible. The action ends if something is taken in hand.
+1024 Removes 2 mutators.
+1025 Removes 4 mutators.
+1026 Removes 6 mutators.
+1027 Allows you to release 2 arrows at the same time.
+1028 Increases running speed.
+1029 Theft
+1030 Makes the wearer invisible at night. The action ends if something is taken in hand.
+1031 Kamae. A protective stance. Prohibits running and slows down any actions.
+1032 The fixer. Blocks the effect of complete purification on the mutators located below.
+1033 Resource. Increases the probability of craft resources falling out of the killed monster.
+1034 Farsightedness. Increases the exposure distance of any weapon up to 30 meters.
+1035 The passage of time. Increases the attack frequency by 2 times.
+1036 Shackles. Forbids taking anything in your hand.
+1037 Myopia. Reduces the exposure distance of any weapon to 2 meters.
+1038 Meditation. Plunges into a state of silence, giving great protection.
+1039 Damn it. Transformation into a thrashing boar.
+1040 Stunning. It blinds and does not allow you to move your hands.
+1041 Metamorphosis. Turning into a wolf.
+1042 A quick run to the first stop.
+1043 Rusty armor. Prohibits turns.
+1044 A tornado. Unwinds the character.
+1045 The berserker. Increases the attack, but slows down the run.
+1046 Shield of prana. Extinguishes damage to health with the help of prana consumption.
+1047 Metamorphosis. Turning into a vampire.
+1048 Metamorphosis. Turning into a snowman.
+1049 A magic mirror. Turns the attack against the attacker himself.
+1050 Elixir of Freedom - removes any 4 malicious mutators.
+1051 Steadfastness. Removes all control mutators and makes it immune to them.
+1111 Bandier's support.
+2020 Increases the protection of the castle gate.
+2021 Causes damage to the castle gate every 2 minutes.

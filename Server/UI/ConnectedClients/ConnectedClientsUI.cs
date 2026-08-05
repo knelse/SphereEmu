@@ -10,43 +10,67 @@ namespace SphServer.Server.UI.ConnectedClients;
 
 public partial class ConnectedClientsUI : Tree
 {
-    private static readonly Dictionary<ushort, SphereClient> clients = new ();
+    [Signal]
+    public delegate void ClientSelectedEventHandler(ushort clientId);
+
+    // Godot signals can't be nullable ushort easily — use 0 for clear; AdminUiRoot treats missing character separately.
+    // Prefer a companion clear via metadata when selection lost.
+
+    private static readonly Dictionary<ushort, SphereClient> clients = new();
     private static TreeItem RootInstance = null!;
     private static Tree TreeInstance = null!;
-    private const string DEFAULT_EMPTY_VALUE = "<empty>";
-    private const int COLUMN_COUNT = 9;
-    private bool SetupSuccessful = true;
-    private ConnectedClientsPopupUI popupMenu = null;
+    private const string DefaultEmptyValue = "<empty>";
+    private const int ColumnCount = 3;
+    private bool setupSuccessful = true;
+    private ConnectedClientsPopupUI? popupMenu;
+    private ushort? selectedClientId;
 
-    private static readonly string[] ColumnNames =
-    [
-        "ID", "IP address", "Name", "X", "Y", "Z", "Angle", "Level", "HP"
-    ];
+    private static readonly string[] ColumnNames = ["ID", "IP address", "Name"];
 
-    public override void _Ready ()
+    public override void _Ready()
     {
-        if (COLUMN_COUNT != ColumnNames.Length)
+        if (ColumnCount != ColumnNames.Length)
         {
             SphLogger.Error(
-                $"ConnectedClientsUI: Column count mismatch. Name count: {ColumnNames.Length}, actual columns: {COLUMN_COUNT}");
-            SetupSuccessful = false;
+                $"ConnectedClientsUI: Column count mismatch. Name count: {ColumnNames.Length}, actual columns: {ColumnCount}");
+            setupSuccessful = false;
             return;
         }
 
-        popupMenu = FindChild("ConnectedClientPopup") as ConnectedClientsPopupUI;
+        Columns = ColumnCount;
+        SelectMode = SelectModeEnum.Row;
+        AllowReselect = true;
+        popupMenu = FindChild("ConnectedClientPopup", recursive: true) as ConnectedClientsPopupUI
+                    ?? GetNodeOrNull<ConnectedClientsPopupUI>("ConnectedClientPopup");
 
-        for (var i = 0; i < COLUMN_COUNT; i++)
-        {
-            SetColumnTitle(i, ColumnNames[i]);
-        }
+        // Fixed widths for ID (ushort hex) and IP so Name stays under its title
+        SetColumnTitle(0, ColumnNames[0]);
+        SetColumnTitleAlignment(0, HorizontalAlignment.Center);
+        SetColumnCustomMinimumWidth(0, 48);
+        SetColumnExpand(0, false);
+        SetColumnClipContent(0, false);
+
+        SetColumnTitle(1, ColumnNames[1]);
+        SetColumnTitleAlignment(1, HorizontalAlignment.Center);
+        SetColumnCustomMinimumWidth(1, 120);
+        SetColumnExpand(1, false);
+        SetColumnClipContent(1, false);
+
+        SetColumnTitle(2, ColumnNames[2]);
+        SetColumnTitleAlignment(2, HorizontalAlignment.Center);
+        SetColumnExpand(2, true);
+        SetColumnExpandRatio(2, 1);
+        SetColumnClipContent(2, true);
 
         RootInstance = CreateItem();
         TreeInstance = this;
+        ItemSelected += OnItemSelected;
+        NothingSelected += OnNothingSelected;
     }
 
-    public override async void _Process (double delta)
+    public override async void _Process(double delta)
     {
-        if (!SetupSuccessful)
+        if (!setupSuccessful)
         {
             return;
         }
@@ -54,29 +78,63 @@ public partial class ConnectedClientsUI : Tree
         await UpdateClientList();
     }
 
-    public override void _GuiInput (InputEvent inputEvent)
+    public override void _GuiInput(InputEvent inputEvent)
     {
+        // Left-click always notifies even when re-clicking the same row after a clear
+        // (Tree ItemSelected can miss that). Do not call TreeItem.Select here — it re-enters ItemSelected.
+        if (inputEvent is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } leftClick)
+        {
+            var item = GetItemAtPosition(leftClick.Position);
+            if (item is not null && item.GetParent() == GetRoot())
+            {
+                NotifyClientSelected(item.GetMetadata(0).AsUInt16());
+            }
+        }
+
         if (inputEvent is not InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Right } mouseEvent)
         {
             return;
         }
 
-        var item = TreeInstance.GetItemAtPosition(mouseEvent.Position);
+        var rightItem = GetItemAtPosition(mouseEvent.Position);
+        if (rightItem is null || popupMenu is null)
+        {
+            return;
+        }
+
+        popupMenu.currentClientId = rightItem.GetMetadata(0).AsUInt16();
+        popupMenu.PopupOnParent(new Rect2I(
+            new Vector2I((int)mouseEvent.GlobalPosition.X, (int)mouseEvent.GlobalPosition.Y), Vector2I.Zero));
+    }
+
+    private void OnItemSelected()
+    {
+        var item = GetSelected();
         if (item is null)
         {
             return;
         }
 
-        popupMenu.currentClientId = item.GetMetadata(0).AsUInt16();
-        popupMenu.PopupOnParent(new Rect2I(
-            new Vector2I((int) mouseEvent.GlobalPosition.X, (int) mouseEvent.GlobalPosition.Y), Vector2I.Zero));
+        NotifyClientSelected(item.GetMetadata(0).AsUInt16());
     }
 
-    private static async Task UpdateClientList ()
+    private void NotifyClientSelected(ushort id)
+    {
+        selectedClientId = id;
+        EmitSignal(SignalName.ClientSelected, id);
+    }
+
+    private void OnNothingSelected()
+    {
+        selectedClientId = null;
+        EmitSignal(SignalName.ClientSelected, (ushort)0);
+    }
+
+    private static async Task UpdateClientList()
     {
         var actualClients = ActiveClients.GetAll();
 
-        var disconnectedClients = clients.Where(x => !actualClients.ContainsKey(x.Key));
+        var disconnectedClients = clients.Where(x => !actualClients.ContainsKey(x.Key)).ToList();
         foreach (var disconnectedClientData in disconnectedClients)
         {
             clients.Remove(disconnectedClientData.Key);
@@ -96,100 +154,61 @@ public partial class ConnectedClientsUI : Tree
         }
     }
 
-    private static async Task AddClientRow (ushort id, SphereClient client)
+    private static async Task AddClientRow(ushort id, SphereClient client)
     {
         var clientItem = TreeInstance.CreateItem(RootInstance);
-        for (var i = 0; i < COLUMN_COUNT; i++)
+        for (var i = 0; i < ColumnCount; i++)
         {
             UpdateColumnStyle(clientItem, i);
         }
 
-        // just to be safe and not care about column ordering
         clientItem.SetMetadata(0, id);
-
-        clientItem.SetText(0, $"{id:X4}");
-        clientItem.SetText(1, client.GetIpAddressAndPort());
+        clientItem.SetText(0, FormatClientId(id));
+        clientItem.SetText(1, client.GetIpAddressWithoutPort());
         SetDisplayDataForClient(clientItem, client);
     }
 
-    private static void SetDisplayDataForClient (TreeItem clientItem, SphereClient client)
-    {
-        var displayData = GetDisplayDataForClient(client);
-        for (var i = 2; i < COLUMN_COUNT; i++)
-        {
-            clientItem.SetText(i, displayData[ColumnNames[i]]);
-        }
-    }
-
-    private static void UpdateColumnStyle (TreeItem item, int id)
-    {
-        item.SetCustomFontSize(id, 12);
-        item.SetTextAlignment(id, HorizontalAlignment.Center);
-        item.SetSelectable(id, false);
-    }
-
-    private static Dictionary<string, string> GetDisplayDataForClient (SphereClient client)
+    private static void SetDisplayDataForClient(TreeItem clientItem, SphereClient client)
     {
         var character = client.CurrentCharacter;
-
-        if (character is null)
-        {
-            return new Dictionary<string, string>
-            {
-                [ColumnNames[2]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[3]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[4]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[5]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[6]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[7]] = DEFAULT_EMPTY_VALUE,
-                [ColumnNames[8]] = DEFAULT_EMPTY_VALUE
-            };
-        }
-
-        var titleLevel = character.TitleMinusOne % 60 + 1;
-        var degreeLevel = character.DegreeMinusOne % 60 + 1;
-
-        var titleTier = titleLevel < 60 ? string.Empty : titleLevel < 120 ? "+" : titleLevel < 180 ? "++" : "+++";
-        var degreeTier = degreeLevel < 60 ? string.Empty : degreeLevel < 120 ? "+" : degreeLevel < 180 ? "++" : "+++";
-
-        return new Dictionary<string, string>
-        {
-            [ColumnNames[2]] = character.Name,
-            [ColumnNames[3]] = $"{character.X:F1}",
-            [ColumnNames[4]] = $"{character.Y:F1}",
-            [ColumnNames[5]] = $"{character.Z:F1}",
-            [ColumnNames[6]] = $"{character.Angle:F1}",
-            [ColumnNames[7]] = $"{titleLevel}{titleTier}/{degreeLevel}{degreeTier}",
-            [ColumnNames[8]] = $"{character.CurrentHP}/{character.MaxHP}"
-        };
+        clientItem.SetText(2, character?.Name ?? DefaultEmptyValue);
     }
 
-    private static async Task DeleteClientRow (ushort id)
+    private static void UpdateColumnStyle(TreeItem item, int column)
+    {
+        item.SetCustomFontSize(column, 12);
+        item.SetTextAlignment(column, HorizontalAlignment.Center);
+        item.SetSelectable(column, true);
+    }
+
+    private static string FormatClientId(ushort id) => id.ToString("X4");
+
+    private static async Task DeleteClientRow(ushort id)
     {
         var rowToRemove = FindRowByClientId(id);
-
         if (rowToRemove is null)
         {
-            SphLogger.Warning($"ConnectedClientsUI: unable to delete row for client ID: {id:X4}");
+            SphLogger.Warning($"ConnectedClientsUI: unable to delete row for client ID: {FormatClientId(id)}");
             return;
         }
 
         RootInstance.RemoveChild(rowToRemove);
     }
 
-    private static async Task UpdateClientRow (ushort id, SphereClient client)
+    private static async Task UpdateClientRow(ushort id, SphereClient client)
     {
         var rowToUpdate = FindRowByClientId(id);
-
         if (rowToUpdate is null)
         {
             return;
         }
 
+        rowToUpdate.SetText(0, FormatClientId(id));
+        rowToUpdate.SetText(1, client.GetIpAddressWithoutPort());
         SetDisplayDataForClient(rowToUpdate, client);
     }
 
-    private static TreeItem? FindRowByClientId (ushort id)
+    private static TreeItem? FindRowByClientId(ushort id)
     {
         return RootInstance.GetChildren()
             .Where(x => x.GetMetadata(0).AsUInt16() == id).FirstOrDefault();

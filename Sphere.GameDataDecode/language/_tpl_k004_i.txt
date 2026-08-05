@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 La tua presenza è un bene per noi. Abbiamo bisogno del tuo aiuto al villaggio. Sono già due settimane che gli abitanti non lasciano le loro case, a causa dell'arrivo di %s nelle vicinanze, che terrorizza tutti. Uccidilo e sarai ben ricompensato.
-23 La tua presenza è un bene per noi. Abbiamo bisogno del tuo aiuto al villaggio. Sono già due settimane che gli abitanti non lasciano le loro case, a causa dell'arrivo di %s nelle vicinanze, che terrorizza tutti. Uccidilo e sarai ben ricompensato.
+22 Che bello averti qui! Il nostro insediamento ha bisogno di aiuto! Gli abitanti del villaggio non escono per la seconda settimana. E il fatto è che si è nascosto nelle vicinanze %s . che porta paura alle persone. Finiscilo! Sarai ricompensato generosamente.
+23 Che bello averti qui! Il nostro insediamento ha bisogno di aiuto! Gli abitanti del villaggio non escono per la seconda settimana. E il fatto è che si è nascosto nelle vicinanze %s che porta paura alle persone. Uccidi la creatura! Sarai ricompensato generosamente.

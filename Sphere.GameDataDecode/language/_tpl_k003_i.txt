@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Salute a te, possente guerriero. E' un brutto periodo qui da noi, nel sotterraneo è giunto un terribile %s. Aiutaci a uscire da questa situazione disgraziata e noi saremo per sempre in debito con te. 
-23 Salute a te, possente guerriero. E' un brutto periodo qui da noi, nel sotterraneo è giunto un terribile %s. Ha già ucciso due dei nostri contadini. Metti termine alla sua vita e sarai ricompensato.
+22 Ciao a te, guerriero formidabile! Ha colpito l'attacco pesante, nel dungeon terribile %s si e ' sistemato. Aiutaci nel nostro dolore e non ti offenderemo.
+23 Saluti! Dicono nel dungeon %s si e ' sistemata. Un paio di vagabondi hanno già mangiato. Finiscila! Grazie.

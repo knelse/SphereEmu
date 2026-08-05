@@ -1,30 +1,34 @@
-
-200 Of adventure
-201 Of silence
-202 Of prophecy
-203 Of secret
-204 Of myths
-205 Of being
-206 Of campaigns
-207 Of existence
-208 Of legend
-209 Of peace
+200 Adventures
+201 Silence
+202 Prophecies
+203 Secrets
+204 Myths
+205 Genesis
+206 Hiking
+207 Existence
+208 Legends
+209 Mira
 
 #2775-2776
 01 Pants
 03 pants
+
 #2777-2778
 01 Leather pants
 03 leather pants
+
 #2779-2780
 01 Riveted leather pants
 03 riveted leather pants
+
 #2781-2782
-01 Chain mail pants
-03 chain mail pants
+01 Chainmail pants
+03 chainmail pants
+
 #2783-2785
-01 Armor chausses
-03 armor chausses
+01 Plate greaves
+03 plate greaves
+
 #2786-2789
-01 Ancient armor chausses
-03 ancient armor chausses
+01 Ancient gauntlet greaves
+03 ancient gauntlet greaves

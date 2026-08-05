@@ -1,0 +1,81 @@
+01 Anillo
+03 Anillo
+100 Decoración. Puede dotar al personaje de propiedades mágicas. Un montón de entretenimiento podría decir anillos sobre sus dueños anteriores. La historia es rica en ejemplos en los que las personas intentaron pagar un alto precio por el poder que da un anillo en particular.
+200 fuerza
+201 absorción
+202 seguridad
+203 salud
+204 vida
+205 meditaciones
+206 Prana
+207 Ether
+208 precisión
+209 fuerzas
+210 agilidad
+211 puntería
+212 resistencia
+213 tierra
+214 agua
+215 aire
+216 fuego
+217 valores
+
+#425-448
+01 Anillo
+03 anillo
+
+#4047-4166
+01 Anillo
+03 anillo
+
+#5954
+01 Anillo De Mago
+03 anillo de Mago
+
+#5955
+01 Anillo De Archimago
+03 anillo de archimago
+
+#5956
+01 El Anillo Del Gran Archimago
+03 el anillo del gran archimago
+
+#5977
+01 Anillo De Mago
+03 anillo de Mago
+
+#5978-5981
+01 Anillo De Archimago
+03 anillo de archimago
+
+#5982
+01 El Anillo Del Gran Archimago
+03 el anillo del gran archimago
+
+#6249-6254
+01 Anillo de habilidad
+03 anillo de habilidad
+
+#6555
+01 Anillo de acero
+03 anillo de acero
+
+#6556
+01 Anillo de plata
+03 anillo de plata
+
+#6654
+01 Anillo del artesano
+03 anillo del artesano
+
+#6655
+01 Anillo de aura
+03 anillo de aura
+
+#6656
+01 Anillo de cuatro colores
+03 anillo de cuatro colores
+
+#6754
+01 Anillo de Leach
+03 anillo de Leach

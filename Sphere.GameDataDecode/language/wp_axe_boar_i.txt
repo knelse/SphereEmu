@@ -1,31 +1,28 @@
-01 Посох
-03 Посох
-
-10 Осталось зарядов:
-
-100 Ударное оружие. Бьет сильно, но удары наносит редко.
-
-200 истощения
-201 доблести
-202 урона
-203 жестокости
-204 спешки
-205 скорости
-206 беспорядка
-207 хаоса
-208 эфира
-209 усталости
-210 болезни
-211 неустойчивости
-212 расстояния
-213 дистанции
-214 разложения
-215 опустошения
-216 слабости
-217 проникновения
-218 запрета
-219 ценности
+01 Staff
+03 Staff
+10 Cariche rimaste:
+100 Arma d'urto. Colpisce duramente, ma colpisce raramente.
+200 esaurimento
+201 valor
+202 danni
+203 crudeltа
+204 fretta
+205 velocitа
+206 disordine
+207 Caos
+208 etere
+209 fatica
+210 malattie
+211 instabilitа
+212 distanze
+213 distanze
+214 decomposizione
+215 devastazioni
+216 debolezze
+217 penetrazione
+218 divieto
+219 valori
 
 #7413
-01 Посох Пастуха
-03 посох Пастуха
+01 Bastone Del Pastore
+03 bastone del pastore

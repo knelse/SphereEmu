@@ -1,0 +1,127 @@
+01 Handschuhe
+03 handschuhe
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 stärke
+201 übernahmen
+202 sicherheit
+203 gesundheit
+204 meditation
+205 genauigkeit
+206 äther
+207 werte
+
+#325
+01 Handschuhe
+03 handschuhe
+
+#326
+01 lederhandschuhe
+03 lederhandschuhe
+
+#327-328
+01 Vernietete Lederhandschuhe
+03 vernietete Lederhandschuhe
+
+#329-330
+01 Kettenhandschuhe
+03 kettenhandschuhe
+
+#331-333
+01 Plattenhandschuhe
+03 plattenhandschuhe
+
+#334-336
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#3195
+01 Handschuhe
+03 handschuhe
+
+#3196
+01 Lederhandschuhe
+03 lederhandschuhe
+
+#3197-3198
+01 Vernietete Lederhandschuhe
+03 vernietete Lederhandschuhe
+
+#3199-3200
+01 Kettenhandschuhe
+03 kettenhandschuhe
+
+#3201-3203
+01 Plattenhandschuhe
+03 plattenhandschuhe
+
+#3204-3206
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#4507-4515
+01 Alte Plattenhandschuhe
+03 alte Plattenhandschuhe
+
+#4748
+01 Schwarze Handschuhe
+03 schwarze Handschuhe
+
+#4749
+01 Weiße Handschuhe
+03 weiße Handschuhe
+
+#5960
+01 Handschuhe
+03 handschuhe
+
+#6177
+01 Handschuhe der Weisen
+03 handschuhe der Weisen
+
+#6178
+01 Lederhandschuhe der Weisen
+03 Handschuhe weisen
+
+#6179
+01 Genietete Handschuhe der Weisen
+03 handschuhe der Weisen
+
+#6180
+01 Kettenhandschuhe der Weisen
+03 handschuhe der Weisen
+
+#6181
+01 Plattenhandschuhe der Weisen
+03 handschuhe der Weisen
+
+#6182
+01 Alte Handschuhe der Weisen
+03 handschuhe der Weisen
+
+#6456
+01 Handschuhe des Meisters
+02 handschuhe des Meisters
+
+#6457
+01 Lederhandschuhe des Meisters
+02 handschuhe des Meisters
+
+#6458
+01 Genietete Handschuhe des Meisters
+02 handschuhe des Meisters
+
+#6459
+01 Kettenhandschuhe des Meisters
+02 handschuhe des Meisters
+
+#6460
+01 Plattenhandschuhe des Meisters
+02 handschuhe des Meisters
+
+#6461
+01 Alte Handschuhe des Meisters
+02 handschuhe des Meisters
+
+#6762
+01 Krallen
+03 krallen

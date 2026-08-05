@@ -1,0 +1,335 @@
+#5500
+01 Die Assassinengilde (Stufe 1)
+03 gild des attentäters
+
+#5501
+01 Die Assassinengilde (Stufe 2)
+03 gild des attentäters
+
+#5502
+01 Die Assassinengilde (Stufe 3)
+03 gild des attentäters
+
+#5503
+01 Assassinengilde (4. Stufe)
+03 gild des attentäters
+
+#5504
+01 Die Assassinengilde (Stufe 5)
+03 gild des attentäters
+
+#5505
+01 Die Assassinengilde (Stufe 6)
+03 gild des attentäters
+
+#5600
+01 Kreuzritter-Gild (Stufe 1)
+03 kreuzritter-gild
+
+#5601
+01 Kreuzritter-Gild (Stufe 2)
+03 kreuzritter-gild
+
+#5602
+01 Kreuzritter-Gild (Stufe 3)
+03 kreuzritter-gild
+
+#5603
+01 Kreuzritter-Gild (Stufe 4)
+03 kreuzritter-gild
+
+#5604
+01 Kreuzritter-Gild (Stufe 5)
+03 kreuzritter-gild
+
+#5605
+01 Kreuzritter-Gild (Stufe 6)
+03 kreuzritter-gild
+
+#5700
+01 Gild des Inquisitors (Stufe 1)
+03 gild des inquisitors
+
+#5701
+01 Gild des Inquisitors (Stufe 2)
+03 gild des inquisitors
+
+#5702
+01 Gild des Inquisitors (Stufe 3)
+03 gild des inquisitors
+
+#5703
+01 Gild des Inquisitors (Stufe 4)
+03 gild des inquisitors
+
+#5704
+01 Gild des Inquisitors (Stufe 5)
+03 inquisitorengilde
+
+#5705
+01 Gild des Inquisitors (Stufe 6)
+03 gild des inquisitors
+
+#5800
+01 Gild des Jägers (Stufe 1)
+03 gild des jägers
+
+#5801
+01 Gild des Jägers (Stufe 2)
+03 gild des jägers
+
+#5802
+01 Gild des Jägers (Stufe 3)
+03 gild des jägers
+
+#5803
+01 Gild des Jägers (Stufe 4)
+03 gild des jägers
+
+#5804
+01 Gild des Jägers (Stufe 5)
+03 gild des jägers
+
+#5805
+01 Gild des Jägers (Stufe 6)
+03 gild des jägers
+
+#5900
+01 Erzmagier Gild (Stufe 1)
+03 gild erzmagier
+
+#5901
+01 Gild Erzmagier (Stufe 2)
+03 gild erzmagier
+
+#5902
+01 Gild Erzmagier (Stufe 3)
+03 gild erzmagier
+
+#5903
+01 Gild Erzmagier (Stufe 4)
+03 gild erzmagier
+
+#5904
+01 Gild Erzmagier (Stufe 5)
+03 gild erzmagier
+
+#5905
+01 Gild Erzmagier (Stufe 6)
+03 gild erzmagier
+
+#6000
+01 Gild der Barbara (Stufe 1)
+03 gild des barbaren
+
+#6001
+01 Gild der Barbara (Stufe 2)
+03 gild des barbaren
+
+#6002
+01 Gild der Barbara (Stufe 3)
+03 gild des barbaren
+
+#6003
+01 Barbarengilde (4. Stufe)
+03 gild des barbaren
+
+#6004
+01 Gild der Barbara (Stufe 5)
+03 gild des barbaren
+
+#6005
+01 Gild Barbara (Stufe 6)
+03 gild des barbaren
+
+#6100
+01 Gild des Druiden (Stufe 1)
+03 gild des druiden
+
+#6101
+01 Gild des Druiden (Stufe 2)
+03 gild des druiden
+
+#6102
+01 Gild des Druiden (Stufe 3)
+03 gild des druiden
+
+#6103
+01 Gild des Druiden (Stufe 4)
+03 gild des druiden
+
+#6104
+01 Gild des Druiden (Stufe 5)
+03 gild des druiden
+
+#6105
+01 Gild des Druiden (Stufe 6)
+03 gild des druiden
+
+#6200
+01 Die Diebesgilde (Stufe 1)
+03 gild des Diebes
+
+#6201
+01 Die Diebesgilde (Stufe 2)
+03 diebesgilde
+
+#6202
+01 Die Diebesgilde (Stufe 3)
+03 gild des Diebes
+
+#6203
+01 Gild des Diebes (Stufe 4)
+03 gild des Diebes
+
+#6204
+01 Die Diebesgilde (Stufe 5)
+03 gild des Diebes
+
+#6205
+01 Gild des Diebes (Stufe 6)
+03 gild des Diebes
+
+#6300
+01 Gild des Stahlmeisters (Stufe 1)
+03 Meister der Gilde der Stahlmeister
+
+#6301
+01 Gild des Stahlmeisters (Stufe 2)
+03 gild des stahlmeisters
+
+#6302
+01 Gild des Stahlmeisters (Stufe 3)
+03 gild des stahlmeisters
+
+#6303
+01 Gild des Stahlmeisters (Stufe 4)
+03 gild des stahlmeisters
+
+#6304
+01 Gild des Stahlmeisters (Stufe 5)
+03 gild des stahlmeisters
+
+#6305
+01 Gild des Stahlmeisters (Stufe 6)
+03 gild des stahlmeisters
+
+#6400
+01 Gunman Gild (Stufe 1)
+03 gild des büchsenmachers
+
+#6401
+01 Gunman Gild (Stufe 2)
+03 gild des büchsenmachers
+
+#6402
+01 Gunman Gild (Stufe 3)
+03 gild des büchsenmachers
+
+#6403
+01 Gunman Gild (Stufe 4)
+03 gild des büchsenmachers
+
+#6404
+01 Büchsenmachergilde (5. Stufe)
+03 gild des büchsenmachers
+
+#6405
+01 Gild des Waffenschmieds (Stufe 6)
+03 gild des büchsenmachers
+
+#6500
+01 Schmied Gild (Stufe 1)
+03 gild des schmieds
+
+#6501
+01 Schmied Gild (Stufe 2)
+03 Schmiedezunft
+
+#6502
+01 Schmied Gild (Stufe 3)
+03 gild des schmieds
+
+#6503
+01 Schmied Gild (Stufe 4)
+03 gild des schmieds
+
+#6504
+01 Schmiedegilde (5. Stufe)
+03 gild des schmieds
+
+#6505
+01 Schmied Gild (Stufe 6)
+03 gild des schmieds
+
+#6600
+01 Gild des Zauberers (Stufe 1)
+03 gild des zauberers
+
+#6601
+01 Gild des Zauberers (Stufe 2)
+03 gild des zauberers
+
+#6602
+01 Gild des Zauberers (Stufe 3)
+03 gild des zauberers
+
+#6603
+01 Gild des Zauberers (Stufe 4)
+03 gild des zauberers
+
+#6604
+01 Gild des Zauberers (Stufe 5)
+03 gild des zauberers
+
+#6605
+01 Gild des Zauberers (Stufe 6)
+03 gild des zauberers
+
+#6700
+01 Nekromantengilde (Stufe 1)
+03 gild des nekromanten
+
+#6701
+01 Nekromantengilde (Stufe 2)
+03 gild des nekromanten
+
+#6702
+01 Nekromantengilde (Stufe 3)
+03 gild des nekromanten
+
+#6703
+01 Die Nekromantengilde (Stufe 4)
+03 gild des nekromanten
+
+#6704
+01 Die Nekromantengilde (Stufe 5)
+03 gild des nekromanten
+
+#6705
+01 Die Nekromantengilde (Stufe 6)
+03 gild des nekromanten
+
+#6800
+01 Gild Bandiera (Stufe 1)
+03 gild bandiera
+
+#6801
+01 Gild Bandiera (Stufe 2)
+03 gild bandiera
+
+#6802
+01 Gild Bandiera (Stufe 3)
+03 gild bandiera
+
+#6803
+01 Gilde Bandiera (4. Stufe)
+03 gild bandiera
+
+#6804
+01 Gild Bandiera (Stufe 5)
+03 gild bandiera
+
+#6805
+01 Gild Bandiera (Stufe 6)
+03 gild bandiera

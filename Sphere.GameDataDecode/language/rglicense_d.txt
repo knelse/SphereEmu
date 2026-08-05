@@ -1,0 +1,6 @@
+01 Lizenz zum Zurücksetzen der Spezialität
+03 lizenz zum Zurücksetzen der Spezialität
+100 Hebt die Spezialisierung des Charakters auf. Dabei werden die verteilten Charaktereigenschaften wie Stärke, Beweglichkeit, Treffsicherheit, Ausdauer, Boden, Luft, Wasser und Feuer zurückgesetzt. Der Titel und der Grad des Charakters bleiben gleich.
+101 Willst du wirklich eine Spezialität fallen lassen?
+102 Die Spezialität wurde zurückgesetzt.
+103 Es ist jetzt nicht notwendig, eine Lizenz zu verwenden.

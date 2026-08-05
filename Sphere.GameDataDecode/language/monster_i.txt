@@ -1,291 +1,434 @@
 01 Creatura
 
 #1000
-01 Ramo vivente
+01 Stecco
+
 #1001
-01 Ramo vivente della steppa
+01 Stecco della steppa
+
 #1002
-01 Ramo vivente della foresta
+01 Stecco della foresta
+
 #1003
-01 Ramo vivente della caverna
+01 Stecco delle caverne
+
 #1010
-01 Canide
+01 Psoglavets
+
 #1011
-01 Canide della steppa
+01 Psoglavets steppa
+
 #1012
-01 Canide della foresta
+01 Psoglavets foresta
+
 #1013
-01 Canide della caverna
+01 Psoglavets grotta
+
 #1020
-01 Cavaliere putrido
+01 Cavaliere marcio
+
 #1021
 01 Cavaliere arrugginito
+
 #1022
-01 Cavaliere vagabondo
+01 Il cavaliere impenitente
+
 #1023
-01 Cavaliere dorato
+01 Il cavaliere d'oro
+
 #1024
 01 Cavaliere gigante
+
 #1025
-01 Cavaliere dell'aria
+01 Cavaliere aereo
+
 #1040
 01 Golem di terra
+
 #1041
 01 Golem di sabbia
+
 #1042
 01 Golem di argilla
+
 #1043
 01 Golem libero
+
 #1044
 01 Golem gigante
+
 #1050
-01 Centopiedi di Bangville
+01 Bangville Scolopendra
+
 #1051
-01 Centopiedi di Zar
+01 Scolopendra reale
+
 #1060
 01 Scheletro
+
 #1061
 01 Scheletro della foresta
+
 #1062
-01 Scheletro di Umrad
+01 Scheletro Di Umrad
+
 #1063
-01 Scheletro dell'aria
+01 Scheletro aereo
+
 #1064
-01 Scheletro della caverna
+01 Scheletro cavernoso
+
 #1065
-01 Leech
+01 Lich
+
 #1066
 01 Scheletro gigante
+
 #1067
-01 Leech dell'aria
+01 Lich aereo
+
 #1069
-01 Scheletro
+01 Assassino
+
 #1070
-01 Cinghiale selvaggio
+01 Cinghiale
+
 #1071
-01 Cinghiale furioso
+01 Cinghiale rabbioso
+
 #1072
-01 Cinghiale assetato
+01 Cinghiale secco
+
 #1073
-01 Cinghiale dell'aria
+01 Cinghiale d'aria
+
 #1074
 01 Cinghiale di ferro
+
 #1075
 01 Cinghiale di fuoco
+
 #1076
 01 Cinghiale gigante
 03 Cinghiale gigante
+
 #1080
 01 Cyanos
+
 #1081
-01 Cyanos oscuro
+01 Cyanos scuro
+
 #1082
-01 Cyanos assetato
+01 Cyanos secco
+
 #1083
-01 Cyanos di ferro
+01 Cianos di ferro
+
 #1084
-01 Cyanos dell'aria
+01 Cyanos aria
+
 #1085
 01 Cyanos gigante
+
 #1090
 01 Lupo
+
 #1091
-01 Lupo della steppa
+01 Steppenwolf
+
 #1092
-01 Lupo del ghiaccio
+01 Lupo di ghiaccio
+
 #1093
-01 Lupo assetato
+01 Lupo secco
+
 #1094
 01 Lupo di ferro
+
 #1095
-01 Lupo dell'inferno
+01 Lupo infernale
+
 #1100
 01 Ragno
+
 #1101
-01 Ragno sulfureo
+01 Ragno di zolfo
+
 #1102
-01 Ragno assetato
+01 Ragno secco
+
 #1103
 01 Ragno di ferro
+
 #1104
 01 Ragno di fuoco
+
 #1105
 01 Vedova nera
+
 #1106
 01 Ragno gigante
+
 #1107
-01 Ragno dell'aria
+01 Ragno d'aria
+
 #1110
 01 Salamandra
+
 #1111
-01 Salamandra di Nomrad
+01 Salamandra di nomrad
+
 #1112
-01 Salamandra della terra
+01 Salamandra di terra
+
 #1113
 01 Salamandra di ferro
+
 #1114
 01 Salamandiga
+
 #1120
 01 Scorpione rosso
+
 #1121
 01 Scorpione
+
 #1122
 01 Scorpione blu
+
 #1123
 01 Scorpione di fuoco
+
 #1130
 01 Tifone
+
 #1131
-01 Tifone di fumo
+01 Tifone fumoso
+
 #1132
-01 Tifone stridente
+01 Tifone stridulo
+
 #1133
 01 Tifone di ferro
+
 #1134
 01 Tifone di fuoco
+
 #1135
 01 Tifone gigante
+
 #1140
-01 Cannibale
+01 Orco
+
 #1141
-01 Cannibale sulfureo
+01 Mangiatore di zolfo
+
 #1142
-01 Cannibale della caverna
+01 Mangiatore di caverne
+
 #1143
-01 Cannibale gigante
+01 Orco gigante
+
 #1150
-01 Nyphon
+01 Nifone
+
 #1170
 01 Gatto
+
 #1180
 01 Toro
+
 #1190
-01 Thropos
+01 Tropos
+
 #1191
-01 Thropos folle
+01 Tropos rabbioso
+
 #1192
-01 Thropos della torba
+01 Tropos di torba
+
 #1193
-01 Thropos regale 
+01 Tropos reale
+
 #1194
-01 Thropos dell'aria
+01 Tropos aereo
+
 #1200
-01 Mammot
+01 Mammut
+
 #1201
-01 Mammoth di ferro
+01 Mammut di ferro
+
 #1202
-01 Mammoth della neve
+01 Mammut di neve
+
 #1203
-01 Mammoth di carbone
+01 Mammut di carbone
+
 #1210
 01 Zombie
+
 #1211
 01 Zombie grigio
+
 #1212
 01 Zombader
+
 #1213
 01 Zombie gigante
+
 #1220
 01 Albero incantato
+
 #1221
-01 Albero rosso
+01 Mogano
+
 #1222
 01 Albero morto
+
 #1230
-01 Mangiatore di pietre di granito
+01 Pietra di granito
+
 #1231
-01 Mangiatore di pietre di smeraldo
+01 Pietra emeraldaed
+
 #1232
-01 Mangiatore di pietre di zaffiro
+01 Pietra di zaffiro
+
 #1233
-01 Mastro della pietra
+01 Padrone delle rocce
+
 #1240
-01 Non morto
+01 Cadavere ambulante
+
 #1241
-01 Cadavere
+01 Kadavr
+
 #1242
-01 Cadavere ragno
+01 Ragno cadavere
+
 #1243
-01 Cadavere di ossa
+01 Osso cadavere
+
 #1244
-01 Cadavere di fiant
+01 Cadavere gigante
+
 #1250
-01 Pipistrello
+01 Antilope
+
 #1251
-01 Pipistrello grigio
+01 Grigio antigraffio
+
 #1252
-01 Pipistrello di fuoco
+01 Fuoco nethopyr
+
 #1253
-01 Pipiestrello gigante
+01 Gigante senza peli
+
 #1260
-01 Baccante della foresta
+01 Menade della foresta
+
 #1261
-01 Baccante della steppa
+01 Menade della steppa
+
 #1262
-01 Baccante della caverna
+01 Menada delle caverne
+
 #1263
-01 Baccante magica
+01 Menade magica
+
 #1264
-01 Baccante dell'aria
+01 Menade aerea
+
 #1270
-01 Folletto
+01 Nano
+
 #1271
-01 Folletto della foresta
+01 Nano Della Foresta
+
 #1272
-01 Folletto del cratere
+01 Nano Del Cratere
+
 #1273
-01 Folletto dell'aria
+01 Nano aereo
+
 #1290
-01 Assasino
+01 Assassino
+
 #1291
-01 Assasino libero
+01 Assassino libero
+
 #1292
-01 Assasino spettrale
+01 Assassino fantasma
+
 #1310
-01 Consumatore
+01 Gola
+
 #1311
-01 Consumatore della palude
+01 Gola di palude
+
 #1320
-01 Portatore di morte
+01 Araldo della morte
+
 #1330
-01 Barrower
+01 Tumulo
+
 #1340-1343
-01 Rogue
+01 Il ladro
+
 #1410
 01 Verme sotterraneo
+
 #1420
-01 Sirena
+01 La sirena
+
 #1430
-01 Tentatore di carne
+01 Tentacolo di carne
+
 #1431
-01 Tentatore di ferro
+01 Tentacolo di ferro
+
 #1440
-01 Cane di ossa
+01 Cane osseo
+
 #1450
-01 Cacciatore di Caronte
+01 Cacciatore di Charon
+
 #1451
 01 Cacciatore di fuoco
+
 #1452
 01 Cacciatore di ferro
+
 #1453
 01 Cacciatore morto
+
 #1460
 01 Cacciatrice di fuoco
+
 #1461
-01 Cacciatrice di ferro
+01 Cacciatore di ferro
+
 #1462
-01 Cacciatrice di Caronte
+01 La cacciatrice di Charon
+
 #1463
 01 Cacciatrice morta
+
 #1470
 01 Guardiano dell'abisso
+
 #1480
 01 Chimera
+
 #1880
-01 Centopiedi di Bangville
+01 Bangville Scolopendra
+
 #1881
-01 Ramo vivente
+01 Stecco
+
 #1882
-01 Thropos
+01 Tropos
+
 #1883
 01 Cavaliere arrugginito

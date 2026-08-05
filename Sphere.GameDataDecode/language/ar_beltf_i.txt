@@ -1,30 +1,34 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 Dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 del mondo
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2805-2806
-01 Cintola
-03 Cintola
+01 Sash
+03 sash
+
 #2807-2808
-01 Cintura di pelle
-03 cintura di pellet
+01 Cintura in pelle
+03 cintura in pelle
+
 #2809-2810
-01 Cintura di pelle rinforzata
-03 cintura di pelle rinforzata
+01 Cintura in pelle rivettata
+03 cintura in pelle rivettata
+
 #2811-2812
-01 Cintura di maglia
-03 cintura di maglia
+01 Cintura di cotta di maglia
+03 cintura di cotta di maglia
+
 #2813-2815
 01 Cintura di ferro
 03 cintura di ferro
+
 #2816-2819
-01 Antica cintura di ferro
-03 antica cintura di ferro
+01 Cintura di ferro antica
+03 cintura di ferro antica

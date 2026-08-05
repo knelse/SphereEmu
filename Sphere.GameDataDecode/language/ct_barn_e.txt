@@ -1,10 +1,10 @@
-01 Barn key
-03 barn key
-05 Barn
-
-5021 Marketplace, Shipstone
-5022 Marketplace, Bangville
-5023 Marketplace, Sanpul
-5024 Marketplace, Torwil
-5025 Marketplace, Nomrad
-5026 Marketplace, Gifes
+01 The barn key
+03 the barn key
+05 The barn
+5021 Shopping area, Shipstone
+5022 Shopping area, Bangville
+5023 Shopping area, Sanpool
+5024 Shopping area, Torvil
+5025 Shopping area, Nomrad
+5026 Shopping area, Gifes
+5038 Shopping area, Tower by the lake, northeast of Torvil

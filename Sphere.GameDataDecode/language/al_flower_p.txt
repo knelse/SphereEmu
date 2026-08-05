@@ -1,202 +1,214 @@
 #940
-01 Flor Fern 
-02 Flores Fern 
-03 Flor Fern 
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor de samambaia
+02 flores de samambaia
+03 flor de samambaia
+05 fresco
+06 flácido
+07 murchado
 
 #941
-01 Flor Ferengon 
-02 Flores Ferengon
-03 Flor Ferengon 
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor de ferengon
+02 flores de ferengon
+03 flor de ferengon
+05 fresco
+06 flácido
+07 murchado
 
 #942
-01 Flor Celesta
-02 Flores Celesta 
-03 Flor Celesta
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor Celeste
+02 flores de Celeste
+03 flor Celeste
+05 fresco
+06 flácido
+07 murchado
 
 #943
-01 Kledaire
-02 Kledaire
-03 Kledaire
-05 frescas
-06 sonolentas
-07 murchas
+01 Cleder
+02 Cleder
+03 Cleder
+05 fresco
+06 flácido
+07 murchado
 
 #944
 01 Florus
 02 Florus
 03 Florus
-05 frescas
-06 sonolentas
-07 murchas
+05 fresco
+06 flácido
+07 murchado
+
 #945
 01 Paris
 02 Paris
 03 Paris
-05 frescas
-06 sonolentas
-07 murchas
+05 fresco
+06 flácido
+07 murchado
 
 #946
-01 Flores Creatolus 
-02 Flores Creatolus 
-03 Flores Creatolus 
-05 frescas
-06 sonolentas
+01 Flores de creatolus
+02 flores de creatolus
+03 flores de creatolus
+05 fresco
+06 letárgico
 07 murchas
+
 #947
-01 Mandrake
-02 Mandrakes
-03 Mandrake
-05 frescas
-06 sonolentas
-07 murchas
+01 Raiz de mandrágora
+02 raízes de mandrágora
+03 raiz de mandrágora
+05 fresco
+06 flácido
+07 murchado
 
 #948
-01 Pichalle
-02 Pichalle
-03 Pichalle
-05 frescas
-06 sonolentas
-07 murchas
+01 Pishal
+02 pishal
+03 pishal
+05 fresco
+06 letárgico
+07 murcha
 
 #949
-01 Legra leaf
-02 Legra leaves
-03 Legra leaf
-05 frescas
-06 sonolentas
-07 murchas
+01 Folha de Legra
+02 folhas de Legra
+03 folha de Legra
+05 fresco
+06 flácido
+07 murchado
 
 #950
-01 Frutos Serepy 
-02 Frutos Serepy 
-03 Frutos Serepy
-05 frescas
-06 sonolentas
+01 Bagas serepei
+02 bagas serepei
+03 bagas serepei
+05 fresco
+06 letárgico
 07 murchas
 
 #951
-01 Flor Samalia
-03 Flores Samalia
-03 Flor Samalia 
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor samalia
+02 flores da samália
+03 flor samalia
+05 fresco
+06 flácido
+07 murchado
 
 #952
-01 Flor Zhelena
-02 Flores Zhelena
-03 Flor Zhelena
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor de gelatina
+02 flores são desejáveis
+03 flor de gelatina
+05 fresco
+06 flácido
+07 murchado
 
 #953
-01 Flor Circulonius
-02 Flores Circulonius
-03 Flor Circulonius
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor de Circinus
+02 flores de Circinus
+03 flor de Circinus
+05 fresco
+06 flácido
+07 murchado
 
 #954
-01 Flor Melvera
-02 Flores Melvera
-03 Flor Melvera
-05 frescas
-06 sonolentas
-07 murchas
+01 Flor de melver
+02 flores de melver
+03 flor de melver
+05 fresco
+06 flácido
+07 murchado
 
 #955
-01 Serden
-02 Serden
-03 Serden
-05 frescas
-06 sonolentas
-07 murchas
+01 Raiva
+02 raiva
+03 raiva
+05 fresco
+06 flácido
+07 murchado
 
 #956
 01 Adonis
 02 Adonis
 03 Adonis
-05 frescas
-06 sonolentas
-07 murchas
+05 fresco
+06 flácido
+07 murchado
 
 #957
-01 Palmirus
-02 Palmirus
-03 Palmirus
-05 frescas
-06 sonolentas
-07 murchas
+01 Palmyrus
+02 palmyrus
+03 palmyrus
+05 fresco
+06 flácido
+07 murchado
 
 #958
-01 Phesen
-02 Phesen
-03 Phesen
-05 frescas
-06 sonolentas
-07 murchas
+01 Fesen
+02 fesen
+03 fesen
+05 fresco
+06 flácido
+07 murchado
 
 #959
-01 Dragon-eye
-02 Dragon-eye
-03 Dragon-eye
-05 frescas
-06 sonolentas
-07 murchas
+01 Olho de dragão
+02 olho de dragão
+03 olho de dragão
+05 fresco
+06 flácido
+07 murchado
 
 #960
-01 Violus leaf
-02 Violus leaves
-03 Violus leaf
-05 frescas
-06 sonolentas
-07 murchas
+01 Folha do violus
+02 folhas do violus
+03 folha do violus
+05 fresco
+06 flácido
+07 murchado
 
 #961
 01 Kazadour
-02 Kazadour
-03 Kazadour
-05 frescas
-06 sonolentas
-07 murchas
+02 kazadour
+03 kazadour
+05 fresco
+06 flácido
+07 murchado
 
 #962
-01 Nevezhen
-02 Nevezhen
-03 Nevezhen
-05 frescas
-06 sonolentas
-07 murchas
+01 Ignorante
+02 ignorante
+03 ignorante
+05 fresco
+06 flácido
+07 murchado
 
 #963
-01 Zak
-02 Zak
-03 Zak
-05 frescas
-06 sonolentas
-07 murchas
+01 CAC
+02 CAC
+03 CAC
+05 fresco
+06 flácido
+07 murchado
 
 #964
 01 Kawaya
-02 Kawaya
-03 Kawaya
-05 frescas
-06 sonolentas
-07 murchas
+02 kawaya
+03 kawaya
+05 fresco
+06 letárgico
+07 murcha
 
 #965
 01 Edelweiss
 02 Edelweiss
 03 Edelweiss
+
+#966
+01 Sálvia
+02 sálvia
+03 sálvia
+
+#967
+01 Cataranthus
+02 cataranthus
+03 cataranthus

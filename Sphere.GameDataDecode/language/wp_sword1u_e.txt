@@ -1,45 +1,50 @@
-01 Sword
-03 sword
-
-200 of elimination
-201 of devastation
-202 of reliability
-203 of invulnerability
-204 of life
-205 of elimination
-206 of devastation
-207 of reliability
-208 of invulnerability
-209 of life
-210 of rule
-211 of blindness
-212 of fright
-213 of stop
-214 of deliverance
-215 of purification
-216 of punishment
-217 of fetters
-218 of whirlwind
-219 of curse
+01 The Sword
+03 The sword
+200 eradication
+201 devastation
+202 reliability
+203 invulnerability
+204 life
+205 eradication
+206 devastation
+207 reliability
+208 invulnerability
+209 life
+210 Boards of Directors
+211 Blinding
+212 Fright
+213 stops
+214 deliverance
+215 purifications
+216 punishments
+217 shackles
+218 The vortex
+219 Curses
 
 #5150
 01 Shamsher
 03 shamsher
+
 #5151
-01 Elite yataghan
-03 elite yataghan
+01 Elite Scimitar
+03 elite scimitar
+
 #5152
-01 Runic broad saber
-03 Runic broad saber
+01 Runic broadsword
+03 Runic broadsword
+
 #5153
-01 Runic katana
-03 runic katana
+01 Runic Katana
+03 a runic katana
+
 #5154
-01 Legendary katana
-03 legendary katana
+01 The legendary Katana
+03 The legendary katana
+
 #5155
-01 Ghostly katana
-03 ghostly katana
+01 The Phantom Katana
+03 A ghost katana
+
 #5156
-01 Dragon's katana
-03 dragon's katana 
+01 Dragon Katana
+03 A dragon katana

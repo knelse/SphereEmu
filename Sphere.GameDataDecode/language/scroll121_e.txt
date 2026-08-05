@@ -1,9 +1,7 @@
-01 Circuit lightning powder mixture
-02 Circuit lightning powder mixture
-03 Circuit lightning powder mixture
-
-100 In front of you is the scroll with the description of the magic powder. Behind each formula there is a painstaking and time consuming effort of several generations of magicians. In order not to lose such a valuable scroll, it’s better to save it in the special formula book.
-
+01 Chain Lightning Powder Recipe
+02 chain lightning powder recipes
+03 chain lightning powder recipe
+100 In front of you is a scroll with a description of the recipe for magic powder. Each recipe hides the painstaking and long-term work of several generations of magicians. In order not to lose such a valuable scroll, save it in a special recipe book.
 TEXT
-
-    Put Pirite, Serden and Lead into the alchemic pot. Mix accurately and add the Amilus powder to complete the reaction. If you are stronger than a student, you will get the circuit lightning powder. 
+    Put pyrite, cerden and lead into the alchemical pot. Mix thoroughly and add the final Amilus powder. If you're stronger than a student, you'll get chain lightning powder.
+    

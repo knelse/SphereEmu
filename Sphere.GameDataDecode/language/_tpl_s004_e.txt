@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-20 %s waits for a parcel from me. Deliver it (waymark - %s).
-21 %s waits for a parcel from me. Deliver it (waymark - %s).
+01 Mission Key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 My friend %s caught a cold and can not recover. If he doesn't come to work in two days, he will be fired. Find him and give him the medicine. %s "his house.
+21 My friend %s caught a cold and can not recover. If he doesn't come to work in two days, he will be fired. Find him and give him the medicine. %s "his house.

@@ -1,134 +1,171 @@
 01 Cinto
-03 Cinto
-
-100 Protege de armas inimigas em batalha.
-
-200 de durabilidade
-201 de absorção
-202 de proteção
-203 de vida
-204 de duração 
-205 de precisão
-206 do éter
-207 de valor
+03 cinto
+100 Na batalha protege contra as armas dos inimigos.
+200 força
+201 absorção
+202 segurança
+203 saúde
+204 meditação
+205 precisão
+206 Ether
+207 valores
 
 #349
-01 Cinto de pano
-03 cinto de pano
+01 Cinto
+03 cinto
+
 #350
 01 Cinto de couro
 03 cinto de couro
+
 #351-352
-01 Cinto de couro reforçado
-03 cinto de couro reforçado
+01 Cinto de couro rebitado
+03 cinto de couro rebitado
+
 #353-354
-01 Cinto de correntes
-03 cinto de correntes
+01 Cinto de malha
+03 cinto de malha
+
 #355-357
 01 Cinto de ferro
 03 cinto de ferro
+
 #358-360
-01 Cinto de ferro ancestral
-03 cinto de ferro ancestral
+01 Antigo cinturão de ferro
+03 antigo cinturão de ferro
+
 #3171
-01 Cinto de pano
-03 cinto de pano
+01 Cinto
+03 cinto
+
 #3172
 01 Cinto de couro
 03 cinto de couro
+
 #3173-3174
-01 Cinto de couro reforçado
-03 cinto de couro reforçado
+01 Cinto de couro rebitado
+03 cinto de couro rebitado
+
 #3175-3176
-01 Cinto de correntes
-03 cinto de correntes
+01 Cinto de malha
+03 cinto de malha
+
 #3177-3179
 01 Cinto de ferro
 03 cinto de ferro
+
 #3180-3182
-01 Cinto de ferro ancestral
-03 cinto de ferro ancestral
+01 Antigo cinturão de ferro
+03 antigo cinturão de ferro
+
 #4489-4497
-01 Cinto de ferro ancestral
-03 cinto de ferro ancestral
+01 Antigo cinturão de ferro
+03 antigo cinturão de ferro
+
 #5665
-01 Cinto da Coragem
-03 cinto da Coragem
+01 Cinturão da coragem
+03 cinturão da coragem
+
 #5666
-01 Cinto de couro da Coragem
-03 cinto da Coragem
+01 Cinto de couro coragem
+03 cinturão da coragem
+
 #5667
-01 Cinto de rebites da Coragem
-03 cinto da Coragem
+01 Cinto de coragem
+03 cinturão da coragem
+
 #5668
-01 Cinto de malha da Coragem
-03 cinto da Coragem
+01 Cinto de coragem
+03 cinturão da coragem
+
 #5669
-01 Cinto de ferro da Coragem
-03 cinto da Coragem
+01 Cinturão de ferro da coragem
+03 cinturão da coragem
+
 #5670
-01 Cinto antigo Ancient c
-03 cinto Ancient c
+01 O antigo cinturão da coragem
+03 cinturão da coragem
+
 #5777
-01 Cinto do Tribunal
-03 cinto do Tribunal
+01 Cinturão Do Tribunal
+03 cinturão do Tribunal
+
 #5778
-01 Cinto de couro do Tribunal
-03 cinto do Tribunal
+01 Cinto De Couro do Tribunal
+03 cinturão do Tribunal
+
 #5779
-01 Cinto de rebites do Tribunal
-03 cinto do Tribunal
+01 Cinto rebitado do Tribunal
+03 correia de Trmbunala
+
 #5780
-01 Cinto de malha do Tribunal
-03 cinto do Tribunal
+01 Cinto de cota de malha do Tribunal
+03 cinturão do Tribunal
+
 #5781
-01 Cinto de ferro do Tribunal
-03 cinto do Tribunal
+01 Cinturão de ferro do Tribunal
+03 cinturão do Tribunal
+
 #5782
-01 Cinto antigo do Tribunal
-03 cinto do Tribunal
+01 O antigo cinturão do Tribunal
+03 cinturão do Tribunal
+
 #5962
 01 Cinto
 03 cinto
+
 #6077
-01 Cinto de Titã
-03 cinto de Titã
+01 Cinto De Titânio
+03 Cinto De Titânio
+
 #6078
-01 Cinto de couro de Titã
-03 cinto de Titã
+01 Cinto De Couro De Titânio
+03 Cinto De Titânio
+
 #6079
-01 Cinto de rebites de Titã
-03 cinto of de Titã
+01 Cinto de titânio rebitado
+03 Cinto De Titânio
+
 #6080
-01 Cinto de malha de Titã
-03 cinto de Titã
+01 Cinto De Malha De Titânio
+03 Cinto De Titânio
+
 #6081
-01 Cinto de ferro de Titã
-03 cinto de Titã
+01 Cinto De Ferro De Titânio
+03 Cinto De Titânio
+
 #6082
-01 Cinto antigo de Titã
-03 cinto de Titã
+01 Antigo cinturão de titânio
+03 Cinto De Titânio
+
 #6476
-01 Cinto da Longevidade
-03 cinto da Longevidade
+01 Cinto de longevidade
+03 cinto de longevidade
+
 #6477
-01 Cinto de couro da Longevidade
-03 cinto da Longevidade
+01 Cinto de couro longevidade
+03 cinto de longevidade
+
 #6478
-01 Cinto de rebites da Longevidade
-03 cinto da Longevidade
+01 Cinto de longevidade rebitado
+03 cinto de longevidade
+
 #6479
-01 Cinto de malha da Longevidade
-03 cinto da Longevidade
+01 Cinto de longa duração
+03 cinto de longevidade
+
 #6480
-01 Cinto de ferro da Longevidade
-03 cinto da Longevidade
+01 Cinto de longevidade de ferro
+03 cinto de longevidade
+
 #6481
-01 Cinto antigo da Longevidade
-03 cinto da Longevidade
+01 O antigo cinturão da longevidade
+03 cinto de longevidade
+
 #6657
-01 Cinto da leveza
-03 cinta da leveza
+01 Correia da facilidade
+03 correia da facilidade
+
 #6758
-01 Cinto do Pântano
-03 Cinto do Pântano
+01 Cinturão do pântano
+03 cinturão do pântano

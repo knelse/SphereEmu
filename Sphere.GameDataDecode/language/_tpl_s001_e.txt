@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-20 %s waits for a parcel from me. Deliver it (waymark - %s).
-21 %s waits for a parcel from me. Deliver it (waymark - %s).
+01 Mission Key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 I need a fast, honest, brave one! A coward is not suitable for business. Take the parcel, a mature warrior, and give it to the one who is waiting.  It is %s located nearby. The reference point will be %s.
+21 I need a fast, honest, brave one! A coward is not suitable for business. Take the parcel, a mature warrior, and give it to the one who is waiting.  It is %s located nearby. The reference point will be %s.

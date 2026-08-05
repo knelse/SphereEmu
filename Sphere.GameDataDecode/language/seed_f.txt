@@ -1,0 +1,10 @@
+01 graine
+03 graine
+05 nouveau
+06 vieillissement
+07 flétrissement
+10 Pour activer, placez la graine sur le sol.
+101 À l'intérieur - psoglavets
+102 À l'intérieur - coffre
+103 À l'intérieur - pierre de verrouillage (activer dans le château)
+104 À l'intérieur - pierre de protection (activer dans le château)

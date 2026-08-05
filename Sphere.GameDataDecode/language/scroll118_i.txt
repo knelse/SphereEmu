@@ -1,9 +1,7 @@
-01 Formula della polvere traumatizzante
-02 Formula della polvere traumatizzante
-03 Formula della polvere traumatizzante
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di shock
+02 ricetta polvere di shock
+03 ricetta polvere di shock
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Metti Parmelite, Serden e Rame nel recipiente alchemico. Mescola accuratamente e aggiungi la polvere di Amilus per completare la reazione. Otterrai così la polvere traumatizzante. 
+    Nel pentola alchemica, metti giù la parmelite, il cuore e il rame. Mescolare accuratamente e aggiungere la polvere di Amilus finale. Otterrai polvere di shock.
+    

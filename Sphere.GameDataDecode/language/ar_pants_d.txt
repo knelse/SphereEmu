@@ -1,0 +1,99 @@
+01 Hose
+03 hose
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 stärke
+201 übernahmen
+202 sicherheit
+203 gesundheit
+204 meditation
+205 genauigkeit
+206 äther
+207 werte
+
+#373
+01 Hose
+03 hose
+
+#374
+01 Lederhose
+03 lederhose
+
+#375-376
+01 Lederhose mit Nieten besetzt
+03 lederhose mit Nieten besetzt
+
+#377-378
+01 Kettenhemden
+03 kettenhemden
+
+#379-381
+01 Platten-Leggings
+03 platten-Leggings
+
+#382-384
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#3121-3122
+01 Hose
+03 hose
+
+#3123-3124
+01 Lederhose
+03 lederhose
+
+#3125-3128
+01 Lederhose mit Nieten besetzt
+03 lederhose mit Nieten besetzt
+
+#3129-3132
+01 Kettenhemden
+03 kettenhemden
+
+#3133-3138
+01 Platten-Leggings
+03 platten-Leggings
+
+#3139-3145
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#4471-4479
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#4742
+01 Schwarze Platten-Leggings
+03 schwarze Platten-Leggings
+
+#4743
+01 Weiße Platten-Leggings
+03 weiße Platten-Leggings
+
+#6371
+01 Kampf-Leggings
+03 kampf-Leggings
+
+#6372
+01 Leder-Kampf-Leggings
+03 kampf-Leggings
+
+#6373
+01 Vernietete Kampf-Leggings
+03 kampf-Leggings
+
+#6374
+01 Kettenhemd-Kampf-Leggings
+03 kampf-Leggings
+
+#6375
+01 Plattenkampfgamaschen
+03 kampf-Leggings
+
+#6376
+01 Alte Kampf-Leggings
+03 kampf-Leggings
+
+#6760
+01 Knochen Leggings
+03 knochen leggings

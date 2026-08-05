@@ -1,25 +1,33 @@
 01 Laboratorio
 03 laboratorio
-
-10 L'oggetto ha ottenuto proprietà speciali
-11 Oggetto pronto.
+10 L'oggetto ha ricevuto una proprietà speciale.
+11 L'oggetto è fatto.
 12 Oggetto riparato.
-13 Oggetto riparato, ma le sue condizioni non sono buone.
-14 Oggetto riparato, ma le sue condizioni sono pessime.
-
-15 E' impossibile dare proprietà speciali all'oggetto utilizzando questa formula:
-16 E' impossibile creare l'oggetto utilizzando questa formula:
-17 E' impossibile riparare l'oggetto:
-
-18 La formula non coincide con l'oggetto
-19 non ci sono abbastanza componenti
-20 stadio nella gilda troppo basso
-21 l'oggetto si è accidentalmente rotto nella riparazione
-22 troppi oggetti
-23 l'oggetto si è rotto nella riparazione perchè troppo vecchio
-
-90 Nel creare l'oggetto, la formula ha terminato il suo potere magico e si è distrutta.
-91 Nel dare all'oggetto proprietà speciali, la formula ha terminato il suo potere magico e si è distrutta.
-92 Nella riparazione, la formula ha terminato il suo potere magico e si è distrutta.
-
-100 Questo è un laboratorio dove i fabbri e gli armaioli costruiscono armi e armature. Anche gli stregoni usano il laboratorio per infondere proprietà speciali agli oggetti lì costruiti.
+13 L'oggetto è stato riparato, ma le sue condizioni sono peggiorate.
+14 L'oggetto è stato riparato, ma le sue condizioni sono peggiorate in modo significativo.
+15 È impossibile dare una proprietà speciale al soggetto secondo questa formula:
+16 Non è possibile produrre un oggetto con questa formula:
+17 Impossibile riparare l'oggetto:
+18 l'oggetto non corrisponde alla formula
+19 mancano i componenti
+20 livello troppo basso nella gilda
+21 l'oggetto si è rotto accidentalmente durante la riparazione
+22 troppi articoli
+23 l'oggetto si è rotto dalla vecchiaia durante la riparazione
+40 Non abbastanza Taller.
+90 Durante la creazione dell'oggetto, la formula esaurì i suoi poteri magici e fu distrutta.
+91 Mentre conferiva all'oggetto proprietà magiche, la formula esaurì i suoi poteri magici e fu distrutta.
+92 Durante la riparazione, la formula esaurì i suoi poteri magici e fu distrutta.
+100 È un laboratorio in cui fabbri e armaioli realizzano armature e armi. Gli stregoni usano anche laboratori per dare proprietà magiche agli oggetti che sono fatti lì.
+0222 Candidato (1)
+0223 Candidato (1)
+0224 Scuola (2)
+0225 Scolaretta (2)
+0226 Operaio (3)
+0227 Operaio (3)
+0228 Maestro (4)
+0229 Maestro (4)
+0230 Capo (5)
+0231 Capo (5)
+0232 Esperto (6)
+0233 Esperto (6)

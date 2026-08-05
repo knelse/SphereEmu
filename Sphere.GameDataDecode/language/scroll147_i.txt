@@ -1,9 +1,7 @@
-01 Formula della polvere delle frecce infuocate
-02 Formula della polvere delle frecce infuocate
-03 Formula della polvere delle frecce infuocate
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta polvere di frecce infuocate
+02 ricetta polvere di frecce infuocate
+03 ricetta polvere di frecce infuocate
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere delle frecce infuocate, i maghi esperti (con grado non inferiore a quello di studente) mescolano Cornalina e Rame nella fornace. Poi aggiungono una pianta di Circulonius e alimentano la fornace con dei ramoscelli.
+    Maghi esperti (gradi non inferiori a uno studente) per ottenere polvere di frecce infuocate mescolano corniola e rame in una fornace, aggiungono circulonia e quindi riscaldano la fornace con sottobosco.
+    

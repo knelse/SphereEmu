@@ -1,0 +1,161 @@
+01 Schild aus Holz
+03 schild aus Holz
+200 tapferkeit
+201 stärke
+202 übernahmen
+203 abweichungen
+204 sicherheit
+205 unverwundbarkeit
+206 gesundheit
+207 leben
+208 meditation
+209 prana
+210 kräfte
+211 geschicklichkeit
+212 größe
+213 konzentration
+214 land
+215 wasser
+216 luft
+217 feuer
+218 elemente
+219 Werte
+220 kräfte
+221 geschicklichkeit
+222 größe
+223 konzentration
+224 ganzheitlichkeit
+225 elemente
+226 elemente
+
+#313
+01 Holzschild
+03 holzschild
+
+#314-316
+01 Großes Schild
+03 großes Schild
+
+#317-319
+01 Gepolstertes Holzschild
+03 gepolstertes Holzschild
+
+#320-322
+01 Gepolstertes großes Schild
+03 gepolstertes großes Schild
+
+#323-324
+01 Iron Shield
+03 eisenschild
+
+#3061-3064
+01 Holzschild
+03 holzschild
+
+#3065-3079
+01 Großes Schild
+03 großes Schild
+
+#3080-3094
+01 Gepolstertes Holzschild
+03 gepolstertes Holzschild
+
+#3095-3109
+01 Verziertes Schild groß
+03 gepolstertes großes Schild
+
+#3110-3120
+01 Eisenschild
+03 eisenschild
+
+#4462-4470
+01 Eisenschild
+03 eisenschild
+
+#5871-5876
+01 Schild des Jägers
+03 schild des Jägers
+
+#6386-6388
+01 Aspis
+03 aspis
+
+#6389
+01 Eisen-Aspis
+03 aspis
+
+#6390
+01 Stahl Aspis
+03 aspis
+
+#6391
+01 Großer Aspis
+03 aspis
+
+#6470
+01 Langlebigkeits-hölzernes Schild
+03 schild der Langlebigkeit
+
+#6471
+01 Großer Langlebigkeitsschild
+03 schild der Langlebigkeit
+
+#6472
+01 Gepolsterter Langlebigkeits-hölzerner Schild
+03 schild der Langlebigkeit
+
+#6473
+01 Gepolsterter großer Langlebigkeitsschild
+03 schild der Langlebigkeit
+
+#6474
+01 Eisenschild der Langlebigkeit
+03 schild der Langlebigkeit
+
+#6475
+01 Alter Schild der Langlebigkeit
+03 schild der Langlebigkeit
+
+#6559
+01 Holzschmiedeschild
+03 schmiedeschild
+
+#6560
+01 Großer Schmiedeschild
+03 schmiedeschild
+
+#6561-6562
+01 Gepolsterter Schmiedeschild
+03 schmiedeschild
+
+#6563
+01 Eisenschmiedeschild
+03 schmiedeschild
+
+#6564
+01 Alter Schmiedeschild
+03 schmiedeschild
+
+#6660
+01 Verzaubertes Schild aus Holz
+03 verzauberter Schild
+
+#6661
+01 Großer verzauberter Schild
+03 verzauberter Schild
+
+#6662-6663
+01 Gepolsterter verzauberter Schild
+03 verzauberter Schild
+
+#6664
+01 Eiserner verzauberter Schild
+03 verzauberter Schild
+
+#6665
+01 Alter verzauberter Schild
+03 verzauberter Schild
+
+#6756
+01 Knochenschild
+03 knochenschild

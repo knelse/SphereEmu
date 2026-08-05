@@ -1,30 +1,34 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 della pace
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2700-2701
 01 Sciabola
 03 sciabola
+
 #2702-2703
-01 Spada grande
-03 spada grande
+01 La grande spada
+03 la grande spada
+
 #2704-2705
-01 Katana d'elite
-03 katana d'elite
+01 Katana d'élite
+03 katana d'élite
+
 #2706-2707
-01 Gladio runico
-03 gladio runico
+01 Gladio Runico
+03 gladio Runico
+
 #2708-2709
-01 Spada di cristallo leggendaria
-03 spada di cristallo leggendaria
+01 La leggendaria spada di cristallo
+03 la leggendaria spada di cristallo
+
 #2710-2714
 01 Spada del drago
 03 spada del drago

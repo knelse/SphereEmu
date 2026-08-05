@@ -1,0 +1,7 @@
+01 Tournoi téléportation
+10 Le déplacement est actuellement interdit.
+11 Niveau maximum pour se déplacer: %d
+12 Niveau minimum pour se déplacer: %d
+13 Le téléport ne fonctionne pas pour le moment.
+14 Téléport ouvert aux niveaux C %d par %d.
+100 Se déplacer avec ce téléporteur n'est possible que dans l'Arène. Après la mort dans l'Arène, vous revenez à ce téléporteur.

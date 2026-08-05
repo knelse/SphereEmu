@@ -1,0 +1,137 @@
+01 Amuleto de cristal
+03 amuleto de cristal
+100 Proporciona una ventaja adicional al repeler ataques mágicos. Sin un buen amuleto no hay nada que hacer en la batalla. Sin embargo, había un mago que se jactaba de que se enfrentaría al monstruo más fuerte sin la protección de un amuleto mágico. La historia del nombre de este mago no ha conservado.
+200 fuerza
+201 absorción
+202 reflexiones
+203 seguridad
+204 salud
+205 meditaciones
+206 precisión
+207 Ether
+208 auroras
+209 valores
+210 daño
+
+#401-412
+01 Amuleto de cristal
+03 amuleto de cristal
+
+#4001-4023
+01 Amuleto de cristal
+03 amuleto de cristal
+
+#4167-4175
+01 Amuleto de cristal
+03 amuleto de cristal
+
+#4185-4187
+01 Amuleto De Celebración
+03 amuleto de celebración
+100 ¡El amuleto de la Celebración está programado para coincidir con los dos años del proyecto "Esfera"! La administración del proyecto le felicita por este evento! Gracias por su interés en nuestro juego y le deseamos más éxito en el mundo mágico.
+
+#4190
+01 Amuleto de cristal de la alegría
+03 amuleto de cristal de la alegría
+
+#4191
+01 Amuleto de cristal de la felicidad
+03 amuleto de cristal de la felicidad
+
+#4192
+01 Amuleto de cristal de la virtud
+03 amuleto de cristal de la virtud
+
+#4193
+01 Amuleto de consuelo de cristal
+03 amuleto de consuelo de cristal
+
+#4194
+01 Amuleto de júbilo de cristal
+03 amuleto de júbilo de cristal
+
+#4199
+01 Amuleto de la vida
+03 Amuleto de la vida
+
+#4242
+01 Crisantemo
+03 crisantemo
+
+#4243-4244
+01 Rosa
+03 rosa
+
+#4245-4246
+01 Iris
+03 iris
+
+#4247-4248
+01 Tulipán
+03 tulipán
+
+#4249-4250
+01 Gerbera
+03 Gerber
+
+#4251-4252
+01 Orquídea
+03 orquídea
+
+#4302
+01 Gran amuleto de año nuevo
+03 Gran amuleto de año nuevo
+
+#4304
+01 Pequeño amuleto de año nuevo
+03 Pequeño amuleto de año nuevo
+
+#4306
+01 Amuleto de júbilo de corta Duración
+03 amuleto de júbilo de corta Duración
+
+#4308
+01 Amuleto Del Renacimiento
+03 amuleto del Renacimiento
+100 El amuleto del Renacimiento está programado para el Fin del Mundo 2012..
+
+#4310
+01 Amuleto de regalo
+03 Amuleto de regalo
+100 Amuleto de regalo que otorga +10 a todos los parámetros.
+
+#5671-5676
+01 Buen amuleto
+03 buen amuleto
+
+#5877-5882
+01 El talismán de la bestia
+03 el talismán de la bestia
+
+#5957
+01 Amuleto De Mago
+03 amuleto de Mago
+
+#5958
+01 Amuleto De Archimago
+03 amuleto de archimago
+
+#5959
+01 Amuleto Del Gran Archimago
+03 amuleto del gran archimago
+
+#5971-5976
+01 Amuleto De Archimago
+03 amuleto de archimago
+
+#6565-6570
+01 Amuleto de rechazo
+03 amuleto de rechazo
+
+#6753
+01 Roger
+03 Roger
+
+#6755
+01 Amuleto de hueso
+03 amuleto de hueso

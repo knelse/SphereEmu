@@ -1,0 +1,6 @@
+01 Licence de remise à zéro de spécialité
+03 licence de remise à zéro de spécialité
+100 Annule la spécialisation du personnage. Ce faisant, réinitialise les caractéristiques distribuées du personnage, telles que: force, agilité, précision, endurance, terre, air, eau et feu. Le niveau du titre et du degré du personnage reste le même.
+101 Voulez-vous vraiment réinitialiser la spécialité?
+102 La spécialité est abandonnée.
+103 Maintenant, il n'est pas nécessaire d'utiliser la licence.

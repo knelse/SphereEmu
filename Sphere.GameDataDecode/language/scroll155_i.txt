@@ -1,9 +1,7 @@
-01 Formula della polvere dell'attacco di ghiaccio
-02 Formula della polvere dell'attacco di ghiaccio
-03 Formula della polvere dell'attacco di ghiaccio
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta attacco di ghiaccio in polvere
+02 ricette di polvere di attacco di ghiaccio
+03 ricetta attacco di ghiaccio in polvere
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Metti Phitolite, una foglia di Legra e Rame nella fornace. Mescolali accuratamente e alimenta la fornace con ramoscelli. Se sei più abile di un graduato otterrai la polvere dell'attacco di ghiaccio.
+    Nel forno metti il fitolite, la foglia di Legra e il rame. Mescolare accuratamente e sciogliere il forno con sottobosco. Se sei più forte di The Bachelor, otterrai la polvere di attacco di ghiaccio.
+    

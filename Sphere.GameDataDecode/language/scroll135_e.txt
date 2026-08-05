@@ -1,9 +1,7 @@
-01 Recipe of powder of Physical protection
-02 recipe of powder of physical protection
-03 recipe of powder of physical protection
-
-100 Before you is a scroll with a recipe of a magic potion inscribed upon it. Behind every such recipe lies a life's work of several generations of mages. Make sure to save such a valuable possesion in your special book of recipes.
-
+01 Physical Protection Powder Recipe
+02 physical protection powder recipes
+03 physical protection powder recipe
+100 In front of you is a scroll with a description of the recipe for magic powder. Each recipe hides the painstaking and long-term work of several generations of magicians. In order not to lose such a valuable scroll, save it in a special recipe book.
 TEXT
-
-    In order to compose a powder of physical defense, experienced mages mix meleosite and mandragora in an alchemist's pot and than add Fainal's powder to the resulting mixture.      
+    Experienced magicians mix meleozite and mandrake in an alchemical pot to obtain a physical protection powder, and then add the final Fainal powder to the mixture.
+    

@@ -1,0 +1,28 @@
+01 Bastón
+03 Bastón
+10 Quedan cargos:
+100 Armas de ataque. Golpea fuerte, pero rara vez golpea.
+200 agotamiento
+201 valor
+202 daño
+203 brutalidad
+204 prisa
+205 velocidad
+206 desorden
+207 caos
+208 Ether
+209 fatiga
+210 enfermedades
+211 inestabilidad
+212 distancias
+213 distancia
+214 descomposición
+215 devastación
+216 debilidades
+217 penetración
+218 prohibición
+219 valores
+
+#7413
+01 Bastón Del Pastor
+03 bastón del Pastor

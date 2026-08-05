@@ -1,0 +1,34 @@
+200 Abenteuer
+201 Stille
+202 Prophezeiungen
+203 Geheimnisse
+204 Mythen
+205 Des Seins
+206 Wanderungen
+207 Existenz
+208 Legenden
+209 Welt
+
+#2745-2746
+01 Jacke
+03 Jacke
+
+#2747-2748
+01 Lederrüstung
+03 lederrüstung
+
+#2749-2750
+01 Vernietete Lederrüstung
+03 vernietete Lederrüstung
+
+#2751-2752
+01 Kettenhemd
+03 kettenhemd
+
+#2753-2755
+01 Kiras
+03 kiras
+
+#2756-2759
+01 Alte Rüstung
+03 alte Rüstung

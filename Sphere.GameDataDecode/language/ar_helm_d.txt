@@ -1,0 +1,99 @@
+01 Eisenhelm
+03 eisenhelm
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 stärke
+201 übernahmen
+202 sicherheit
+203 gesundheit
+204 meditation
+205 genauigkeit
+206 äther
+207 werte
+
+#262-273
+01 Weihnachtsmütze
+03 kappe
+
+#337
+01 Mütze
+03 mütze
+
+#338
+01 Lederhelm
+03 lederhelm
+
+#339-340
+01 Genieteter Lederhut
+03 genieteter Lederhut
+
+#341-342
+01 Kettenhelm
+03 kettenhelm
+
+#343-345
+01 Eisenhelm
+03 eisenhelm
+
+#346-348
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#3146-3147
+01 Mütze
+03 mütze
+
+#3148-3149
+01 Lederhelm
+03 lederhelm
+
+#3150-3153
+01 Genieteter Lederhut
+03 genieteter Lederhut
+
+#3154-3157
+01 Kettenhelm
+03 kettenhelm
+
+#3158-3163
+01 Eisenhelm
+03 eisenhelm
+
+#3164-3170
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#4480-4488
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#4744
+01 Schwarzer Helm
+03 schwarzer Helm
+
+#4745
+01 Weißer Helm
+03 weißer Helm
+
+#5771
+01 Hut des Inquisitors
+03 die Kappe des Inquisitors
+
+#5772
+01 Lederhut des Inquisitors
+03 helm des Inquisitors
+
+#5773
+01 Genieteter Helm des Inquisitors
+03 helm des Inquisitors
+
+#5774
+01 Kettenhelm des Inquisitors
+03 helm des Inquisitors
+
+#5775
+01 Eisenhelm des Inquisitors
+03 helm des Inquisitors
+
+#5776
+01 Alter Helm des Inquisitors
+03 Helm Inquisitor

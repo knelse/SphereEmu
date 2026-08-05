@@ -1,90 +1,117 @@
 01 Cristallo
 03 cristallo
-10 Il tuo livello è troppo basso, non puoi ricevere l'attributo del castello.
-11 Appartenenza:
-100 Il cristallo dona delle abilità aggiuntive al suo proprietario o al suo gruppo.
+10 Hai un livello basso, non puoi ottenere l'attributo lock.
+11 Affiliazione:
+100 Il Cristallo offre ulteriori opzioni al suo proprietario o gruppo.
 
 #5081
-01 Piccolo cristallo della forza
-03 piccolo cristallo della forza
+01 Piccolo cristallo di potere
+03 piccolo cristallo di potere
+
 #5082
-01 Piccolo cristallo dell'energia
-03 piccolo cristallo dell'energia
+01 Piccolo cristallo di energia
+03 piccolo cristallo di energia
+
 #5083
-01 Piccolo cristallo della resistenza
-03 piccolo cristallo della resistenza
+01 Piccolo cristallo di durevolezza
+03 piccolo cristallo di durevolezza
+
 #5084
-01 Piccolo cristallo del riflesso
-03 piccolo cristallo del riflesso
+01 Piccolo cristallo di riflessione
+03 piccolo cristallo di riflessione
+
 #5085
-01 Cristallo medio della forza
-03 cristallo medio della forza
+01 Cristallo di potere medio
+03 cristallo di potere medio
+
 #5086
-01 Cristallo medio dell'energia
-03 cristallo medio dell'energia
+01 Cristallo medio di energia
+03 cristallo medio di energia
+
 #5087
-01 Cristallo medio della resistenza
-03 cristallo medio della resistenza
+01 Cristallo medio di durevolezza
+03 cristallo medio di durevolezza
+
 #5088
-01 Cristallo medio del riflesso
-03 cristallo medio del riflesso
+01 Cristallo medio di riflessione
+03 cristallo medio di riflessione
+
 #5089
-01 Grande cristallo della forza
-03 grande cristallo della forza
+01 Grande cristallo di potere
+03 grande cristallo di potere
+
 #5090
-01 Grande cristallo dell'energia
-03 grande cristallo dell'energia
+01 Grande cristallo di energia
+03 grande cristallo di energia
+
 #5091
-01 Grande cristallo della resistenza
-03 grande cristallo della resistenza
+01 Grande cristallo di durevolezza
+03 grande cristallo di durevolezza
+
 #5092
-01 Grande cristallo del riflesso
-03 grande cristallo del riflesso
+01 Grande cristallo di riflessione
+03 grande cristallo di riflessione
+
 #5093
-01 Piccolo cristallo oscuro della forza
-03 piccolo cristallo oscuro della forza
+01 Piccolo cristallo scuro di potere
+03 piccolo cristallo scuro di potere
+
 #5094
-01 Piccolo cristallo oscuro dell'energia
-03 piccolo cristallo oscuro dell'energia
+01 Piccolo cristallo scuro di energia
+03 piccolo cristallo scuro di energia
+
 #5095
-01 Piccolo cristallo oscuro della resistenza
-03 piccolo cristallo oscuro della resistenza
+01 Piccolo cristallo scuro di durevolezza
+03 piccolo cristallo scuro di durevolezza
+
 #5096
-01 Piccolo cristallo oscuro del riflesso
-03 piccolo cristallo oscuro del riflesso
+01 Piccolo cristallo di riflessione scuro
+03 piccolo cristallo di riflessione scuro
+
 #5097
-01 Cristallo medio oscuro della forza
-03 cristallo medio oscuro della forza
+01 Cristallo di potere scuro medio
+03 cristallo di potere scuro medio
+
 #5098
-01 Cristallo medio oscuro dell'energia
-03 cristallo medio oscuro dell'energia
+01 Cristallo di energia scuro medio
+03 cristallo di energia scuro medio
+
 #5099
-01 Cristallo medio oscuro della resistenza
-03 cristallo medio oscuro della resistenza
+01 Cristallo scuro medio di durevolezza
+03 cristallo scuro medio di durevolezza
+
 #5100
-01 Cristallo medio oscuro del riflesso
-03 cristallo medio oscuro del riflesso
+01 Cristallo di riflessione scuro medio
+03 cristallo di riflessione scuro medio
+
 #5101
-01 Grande cristallo oscuro della forza
-03 grande cristallo oscuro della forza
+01 Grande cristallo scuro poteri
+03 grande cristallo scuro poteri
+
 #5102
-01 Grande cristallo oscuro dell'energia
-03 grande cristallo oscuro dell'energia
+01 Grande cristallo scuro di energia
+03 grande cristallo scuro di energia
+
 #5103
-01 Grande cristallo oscuro del resistenza
-03 grande cristallo oscuro del resistenza
+01 Grande cristallo scuro di durevolezza
+03 grande cristallo scuro di durevolezza
+
 #5104
-01 Grandioso cristallo della forza
-03 grandioso cristallo della forza
+01 Il grande cristallo del potere
+03 il grande cristallo del potere
+
 #5105
-01 Grandioso cristallo dell'energia
-03 grandioso cristallo dell'energia
+01 Grande cristallo di energia
+03 grande cristallo cristallo di energia
+
 #5106
-01 Grandioso cristallo della resistenza
-03 grandioso cristallo della resistenza
+01 Grande cristallo di cristallo di durevolezza
+03 grande cristallo di durevolezza
+
 #5107
-01 Grandioso cristallo del riflesso
-03 grandioso cristallo del riflesso
+01 Grande cristallo di riflessione
+03 grande cristallo di riflessione
+
 #5108
-01 Grande cristallo oscuro del riflesso
-03 grande cristallo oscuro del riflesso
+01 Grande cristallo di riflessione scuro
+03 grande cristallo di riflessione scuro

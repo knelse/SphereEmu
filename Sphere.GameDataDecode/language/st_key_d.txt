@@ -1,0 +1,140 @@
+01 schlüssel
+03 schlüssel
+5000 Hotel, billiges Zimmer, Shipstone
+5001 Hotel, billiges Zimmer, Shipstone
+5002 Hotel, Suite, Shipstone (Eingang vom Hof)
+5003 Hotel, Suite, Shipstone (Eingang vom Hof)
+5007 Hotel, billiges Zimmer, Bangville
+5008 Hotel, Deluxe Zimmer, Bangville
+5009 Hotel, billiges Zimmer, Sanpool
+5010 Hotel, billiges Zimmer, Sanpool
+5011 Hotel, Suite, Sanpool (Eingang vom Hof)
+5012 Hotel, Suite, Sanpool (Eingang vom Hof)
+5013 Hotel, Suite, Sanpool (Eingang vom Hof)
+5014 Hotel, Suite, Sanpool (Eingang vom Hof)
+5015 Hotel, billiges Zimmer, Torville
+5016 Hotel, Deluxe Zimmer, Torville
+5017 Hotel, billiges Zimmer, Nomrad
+5018 Hotel, Deluxe Zimmer, Nomrad
+5019 Hotel, billiges Zimmer, Gifes
+5020 Hotel, Deluxe Zimmer, Gifes
+5004 Hotel, billiges Zimmer, Umrad
+5005 Hotel, Suite, Umrad
+5006 Hotel, Suite mit großer Truhe, Umrad (Eingang vom Hof)
+5025 Hotel, Suite mit großer Truhe, Umrad (Eingang vom Hof)
+5026 Hotel, Suite mit großer Truhe, Umrad (Eingang vom Hof)
+5027 Werkstatt in Shipstone
+5028 Werkstatt in Bangville
+5029 Werkstatt in Sanpool
+5030 Werkstatt in Torville
+5031 Werkstatt in Nomrad
+5032 Werkstatt, Gifes
+5033 Werkstatt, Umrad
+5034 Hotel, Zimmer mit großer Truhe, Angelm (Eingang vom Hof)
+5035 Hotel, Zimmer mit großer Truhe, Angelm (Eingang vom Hof)
+5036 Hotel, Zimmer mit großer Truhe, Anhelm (Eingang vom Hof)
+5037 Hotel, Suite mit großer Brust, Angelm
+5200 Landhotel, billiges Zimmer
+5201 Landhotel, billiges Zimmer
+5202 Landhotel, billiges Zimmer
+5203 Landhotel, billiges Zimmer
+5204 Landhotel, billiges Zimmer
+5205 Landhotel, billiges Zimmer
+5206 Landhotel, billiges Zimmer
+5207 Landhotel, billiges Zimmer
+5400 Zimmer im Schloss Lüttich
+5401 Zimmer im Schloss Lüttich
+5402 Zimmer im Schloss Fief
+5403 Bad in der Burg ARIS
+5404 Zimmer im Schloss Aris
+5405 Zimmer im Schloss Lator
+5406 Zimmer im Schloss Eikum-Kas
+5407 Zimmer im Schloss Gideon
+5408 Zimmer im Schloss Gideon
+5409 Zimmer im Schloss Gideon
+5410 Zimmer im Châtelet Castle
+5411 Zimmer im Châtelet Castle
+5412 Zimmer im Châtelet Castle
+5413 Zimmer im Schloss Tuanod
+5414 Zimmer im Schloss Tuanod
+5415 Zimmer im Schloss Tuanod
+5416 Zimmer im Schloss Peltier
+5417 Zimmer im Schloss Peltier
+5418 Zimmer im Schloss Peltier
+5419 Zimmer im Schloss Karé Royal
+5420 Zimmer im Schloss Karé Royal
+5421 Bad in der Burg Kara-Klavier
+5422 Zimmer im Schloss Blessendorf
+5423 Zimmer im Schloss Blessendorf
+5424 Zimmer im Schloss Blessendorf
+5425 Zimmer im Schloss Ternoval
+5426 Zimmer im Schloss Ternoval
+5427 Zimmer im Schloss Ternoval
+5428 Zimmer im Schloss Ammalael
+5429 Zimmer im Schloss Ammalael
+5430 Zimmer im Schloss Ammalael
+5431 Zimmer im Schloss Kablak
+5432 Zimmer im Schloss Kablak
+5433 Zimmer im Schloss Kablak
+5434 Zimmer im Schloss Davanagari
+5435 Zimmer im Schloss Davanagari
+5436 Zimmer im Schloss Davanagari
+5437 Zimmer im Schloss Sabulat
+5438 Zimmer im Schloss Sabulat
+5439 Zimmer im Schloss Sabulat
+5440 Zimmer im Schloss Deffensat
+5441 Zimmer im Schloss Deffensat
+5442 Zimmer im Schloss Deffensat
+5443 Zimmer im Schloss Ayonat
+5444 Zimmer im Schloss Ayonat
+5445 Zimmer im Schloss Ayonat
+5446 Zimmer im Triumphaler Schloss
+5447 Zimmer im Schloss Triumphaler
+5448 Zimmer im Schloss Triumphaler
+5449 Zimmer im Schloss Bagarnak
+5450 Zimmer im Schloss Bagarnak
+5451 Zimmer im Schloss Bagarnak
+5452 Zimmer im Schloss Cabrad
+5453 Zimmer im Schloss Cabrad
+5454 Zimmer im Schloss Cabrad
+5455 Zimmer im Schloss Seth
+5456 Zimmer im Schloss Seth
+5457 Zimmer im Schloss Seth
+5458 Zimmer im Schloss Lender
+5459 Zimmer im Schloss Lender
+5460 Zimmer im Schloss Lender
+5461 Zimmer im Schloss Keles
+5462 Zimmer im Schloss Keles
+5463 Zimmer im Schloss Keles
+5464 Zimmer im Schloss Sheprostan
+5465 Zimmer im Schloss Sheprostan
+5466 Zimmer im Schloss Sheprostan
+5467 Zimmer im Schloss Orcobien
+5468 Zimmer im Schloss Orcobien
+5469 Zimmer im Schloss Orcobien
+5470 Zimmer im Schloss Kanuak
+5471 Zimmer im Schloss Kanuak
+5472 Zimmer im Schloss Kanuak
+5473 Zimmer im Schloss Aldarnon
+5474 Ein Zimmer im Schloss Aldarnon
+5475 Zimmer im Schloss Aldarnon
+5476 Zimmer im Schloss Yong
+5477 Zimmer im Schloss Yong
+5478 Zimmer im Schloss Yong
+5479 Zimmer im Schloss Elek
+5480 Zimmer im Schloss Elek
+5481 Zimmer im Schloss Elek
+5482 Zimmer im Schloss Gavot
+5483 Zimmer im Schloss Gavot
+5484 Zimmer im Schloss Gavot
+5485 Zimmer im Schloss Kandur
+5486 Zimmer im Schloss Kandur
+5487 Zimmer im Schloss Kandur
+5488 Zimmer im Schloss Immertel
+5489 Zimmer im Narzissenschloss
+5490 Zimmer im Schloss Randen
+5491 Zimmer im Nirgun-Schloss
+5492 Zimmer im Schloss Gelgivinn
+5493 Zimmer im Schloss Il Suilly-Rua
+5494 Zimmer im Schloss Il Suilly-Rua
+5495 Zimmer im Schloss Il Suilly-Rua

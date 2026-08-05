@@ -1,0 +1,127 @@
+01 Guanti
+03 guanti
+100 In battaglia protegge dalle armi degli avversari.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 meditazione
+205 precisione
+206 etere
+207 valori
+
+#325
+01 Guanti
+03 guanti
+
+#326
+01 guanti in pelle
+03 guanti in pelle
+
+#327-328
+01 Guanti in pelle rivettata
+03 guanti in pelle rivettata
+
+#329-330
+01 Guanti di cotta di maglia
+03 guanti di cotta di maglia
+
+#331-333
+01 Guanti piatti
+03 guanti piatti
+
+#334-336
+01 Guanti antichi
+03 guanti antichi
+
+#3195
+01 Guanti
+03 guanti
+
+#3196
+01 Guanti in pelle
+03 guanti in pelle
+
+#3197-3198
+01 Guanti in pelle rivettata
+03 guanti in pelle rivettata
+
+#3199-3200
+01 Guanti di cotta di maglia
+03 guanti di cotta di maglia
+
+#3201-3203
+01 Guanti piatti
+03 guanti piatti
+
+#3204-3206
+01 Guanti antichi
+03 guanti antichi
+
+#4507-4515
+01 Guanti antichi
+03 guanti antichi
+
+#4748
+01 Guanti neri
+03 guanti neri
+
+#4749
+01 Guanti bianchi
+03 guanti bianchi
+
+#5960
+01 Guanti
+03 guanti
+
+#6177
+01 Guanti saggi
+03 guanti saggi
+
+#6178
+01 Guanti di cuoio saggi
+03 guanti saggi
+
+#6179
+01 Guanti rivettati dei saggi
+03 guanti saggi
+
+#6180
+01 Guanti di maglia saggi
+03 guanti saggi
+
+#6181
+01 Guanti piatti saggi
+03 guanti saggi
+
+#6182
+01 Guanti antichi dei saggi
+03 guanti saggi
+
+#6456
+01 Guanti da maestro
+02 guanti da maestro
+
+#6457
+01 Guanti in pelle da maestro
+02 guanti da maestro
+
+#6458
+01 Guanti da maestro rivettati
+02 guanti da maestro
+
+#6459
+01 Guanti di cotta di maglia del maestro
+02 guanti da maestro
+
+#6460
+01 Guanti da maestro
+02 guanti da maestro
+
+#6461
+01 Guanti antichi del maestro
+02 guanti da maestro
+
+#6762
+01 Artigli
+03 artigli

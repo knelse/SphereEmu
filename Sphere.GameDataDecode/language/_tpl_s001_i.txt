@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Ho bisogno di una persona veloce, onesta e coraggiosa. Prendi questo pacco, coraggioso guerriero e portalo a chi dovrà riceverlo. %s non si trova lontano. %s ti servirà per orientarti. 
-21 Ho bisogno di una persona veloce, onesta e coraggiosa. Prendi questo pacco, coraggioso guerriero e portalo a chi dovrà riceverlo. %s non si trova lontano. %s ti servirà per orientarti.
+20 Ho bisogno di un veloce, onesto, coraggioso! Per il caso, un codardo non funzionerà. Prendi il pacco, guerriero maturo, e consegnalo a chi sta aspettando. %s si trova nelle vicinanze. Il punto di riferimento sarà %s.
+21 Ho bisogno di un veloce, onesto, coraggioso! Per il caso, un codardo non funzionerà. Prendi il pacco, guerriero maturo, e consegnalo a chi sta aspettando. %s si trova nelle vicinanze. Il punto di riferimento sarà %s.

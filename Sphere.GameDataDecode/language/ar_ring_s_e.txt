@@ -1,21 +1,58 @@
-01 Ring
-03 ring
-
-
-
-
-
-
+01 The Ring
+03 The ring
 
 #4195
-01 Ring of wolf
-03 ring of wolf
+01 The Wolf Ring
+03 The wolf ring
+
 #4196
-01 Ring of golem
-03 ring of golem
+01 The Golem Ring
+03 The golem ring
+
 #4197
-01 Ring of cyanos
-03 ring of cyanos
-#4198
-01 Ring of invisibility
-03 ring of invisibility
+01 The Cyanos Ring
+03 the cyanos ring
+
+#4200
+01 Ring of Invisibility
+03 Ring of invisibility
+
+#4312
+01 The Skeleton Ring
+03 The skeleton ring
+
+#4314
+01 The Dwarf's Ring
+03 The dwarf's ring
+
+#4316
+01 The Elder's Ring
+03 The elder's ring
+
+#4318
+01 The Golem Ring
+03 The golem ring
+
+#4320
+01 The ring of the forest Maenad
+03 The ring of the forest maenad
+
+#4322
+01 The Ring of the Cave Maenad
+03 The ring of the cave maenad
+
+#4324
+01 The Cyanos Ring
+03 the cyanos ring
+
+#4326
+01 The vampire's Ring
+03 The vampire's ring
+
+#4328
+01 Ring of Tropos
+03 Ring of tropos
+
+#4330
+01 Ring of zombies
+03 Ring of zombies

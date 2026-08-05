@@ -1,0 +1,35 @@
+01 Der Schlüssel zum Dungeon
+03 der Schlüssel zum Dungeon
+10 Dieser Schlüssel passt nicht.
+
+#240
+01 Der Schlüssel zum schwarzen Wasserraum
+03 schlüssel
+
+#241
+01 Schlüssel zum schwarzen Feuerraum
+03 schlüssel
+
+#242
+01 Der Schlüssel zum schwarzen Raum der Erde
+03 schlüssel
+
+#243
+01 Der Schlüssel zum schwarzen Luftraum
+03 schlüssel
+
+#244
+01 Der Schlüssel zum weißen Wasserraum
+03 schlüssel
+
+#245
+01 Schlüssel zum weißen Feuerraum
+03 schlüssel
+
+#246
+01 Schlüssel zum weißen Raum der Erde
+03 schlüssel
+
+#247
+01 Der Schlüssel zum weißen Luftraum
+03 schlüssel

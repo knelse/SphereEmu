@@ -1,0 +1,33 @@
+01 Taller
+03 taller
+10 El objeto tiene una propiedad especial.
+11 Artículo fabricado.
+12 Artículo reparado.
+13 El objeto ha sido reparado, pero su estado ha empeorado.
+14 El objeto ha sido reparado, pero su estado se ha deteriorado considerablemente.
+15 Es imposible dar una propiedad especial a un objeto con esta fórmula:
+16 Es imposible fabricar un artículo con esta fórmula:
+17 No se puede reparar el artículo:
+18 el objeto no coincide con la fórmula
+19 faltan componentes
+20 nivel demasiado bajo en el gremio
+21 artículo roto accidentalmente durante la reparación
+22 demasiados artículos
+23 artículo roto de la vejez en reparación
+40 No hay suficientes Tallers.
+90 Al crear el objeto, la fórmula agotó sus poderes mágicos y se destruyó.
+91 Durante el otorgamiento de propiedades mágicas al objeto, la fórmula agotó sus poderes mágicos y se destruyó.
+92 Durante la reparación, la fórmula agotó sus poderes mágicos y se destruyó.
+100 Es un taller donde herreros y armeros hacen armaduras y armas. Los hechiceros también usan los talleres para dar propiedades mágicas a los objetos que se fabrican allí.
+0222 Candidato (1)
+0223 Candidato (1)
+0224 Colegial (2)
+0225 Colegiala (2)
+0226 Aprendiz (3)
+0227 Aprendiz (3)
+0228 Maestro (4)
+0229 Maestro (4)
+0230 Jefe (5)
+0231 Jefe (5)
+0232 Experto (6)
+0233 Experto (6)

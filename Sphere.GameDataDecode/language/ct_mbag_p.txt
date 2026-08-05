@@ -1,7 +1,6 @@
-01 Sacola
-03 sacola
-05 velho
-06 rasgada
-07 rasgada
-
-100 Uma sacola é a "companheira" de um viajante, frequentemente feita de tecido grosso. Uma sacola suporta mais de 4 diferentes objetos, tais como, pós magicos, aneis ou ingredientes químicos. Uma sacola é pequena, mas várias poderão ser colocadas na sua bolsa.
+01 Saco
+03 saco
+05 Velho
+06 ruiva
+07 ruiva
+100 A bolsa é um "companheiro" comum de um viajante experiente. Geralmente é feito de matéria grossa. Você pode colocar até 4 itens pequenos diferentes na bolsa-por exemplo, pós mágicos, anéis ou ingredientes alquímicos. A bolsa é pequena, mas várias peças são colocadas em um saco.

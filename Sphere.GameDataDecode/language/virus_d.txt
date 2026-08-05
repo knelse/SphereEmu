@@ -1,0 +1,56 @@
+01 Mutator
+1000 Magisches Licht, das für andere unsichtbar ist.
+1001 "Berserker". Nach der Aktion lässt er hungrig und ohne Kraft.
+1002 Ermöglicht es Ihnen, das Unsichtbare zu sehen.
+1003 "Der Zorn der Tafel." Verursacht Schaden alle 2 Minuten.
+1004 Entfernt einen Mutator.
+1005 Verringert die Gesundheit alle 2 Minuten.
+1006 Erhöht die Gesundheit alle 2 Minuten.
+1007 Reduziert Gesundheit und Pran alle 2 Minuten.
+1008 Erhöht die Gesundheit und den Pran alle 2 Minuten.
+1009 "Reinigung". Vollständige Wiederherstellung von Gesundheit und Prana und Entfernung aller Mutatoren.
+1010 Verbietet das Laufen.
+1011 Verbietet Laufen und laufen.
+1012 Koordinierungsstörung.
+1013 Springverbot.
+1014 Erhöhung der Sprünge um das 2-fache.
+1015 Erhöhung der Sprünge um das 4-fache.
+1016 Die Hälfte wird geblendet.
+1017 Totale Blendung.
+1018 Ermöglicht das Atmen unter Wasser.
+1019 Schützt vor Sturz aus jeder Höhe.
+1020 Entfernt den Sprungvergrößerungsmutator.
+1021 Tötet ein Mitglied des Naath-Clans. Befreit das Böse vom Fluch.
+1022 Hier können Sie versteckte Fallen sehen.
+1023 Macht den Träger unsichtbar. Die Aktion endet, wenn etwas in die Hand genommen wird.
+1024 Entfernt 2 Mutatoren.
+1025 Entfernt 4 Mutatoren.
+1026 Entfernt 6 Mutatoren.
+1027 Ermöglicht die gleichzeitige Freigabe von 2 Auslegern.
+1028 Erhöht die Laufgeschwindigkeit.
+1029 Diebstahl
+1030 Macht den Träger nachts unsichtbar. Die Aktion endet, wenn etwas in die Hand genommen wird.
+1031 Kamae. Schutzständer. Verbietet das Laufen und verlangsamt jede Aktivität.
+1032 Fixierer. Blockiert die Wirkung der vollständigen Reinigung auf die darunter liegenden Mutatoren.
+1033 Ressource. Erhöht die Wahrscheinlichkeit, dass handwerkliche Ressourcen aus einem getöteten Monster fallen.
+1034 Weitsichtigkeit. Erhöht die Reichweite mit jeder Waffe auf 30 Meter.
+1035 Lauf der Zeit. Erhöht die Angriffsfrequenz um das 2-fache.
+1036 Fesseln. Es verbietet, etwas in die Hand zu nehmen.
+1037 Kurzsichtigkeit. Verkürzt den Aufprallabstand mit jeder Waffe auf 2 Meter.
+1038 Meditation. Taucht in einen Zustand der Stille ein und bietet großen Schutz.
+1039 Verdammt. Sich in ein Wildschwein verwandeln.
+1040 Betäubung. Blendet und lässt sich nicht mit den Händen bewegen.
+1041 Metamorphose. Sich in einen Wolf verwandeln.
+1042 Schneller Lauf bis zum ersten Halt.
+1043 Rostige Rüstung. Verbietet Kurven.
+1044 Ein Tornado. Dreht den Charakter auf.
+1045 Berserker. Erhöht den Angriff, verlangsamt aber das Laufen.
+1046 Prana-Schild. Löscht Gesundheitsschäden durch Prana-Durchfluss.
+1047 Metamorphose. Sich in einen Vampir verwandeln.
+1048 Metamorphose. Verwandlung in einen Schneemann.
+1049 Ein magischer Spiegel. Wendet den Angriff gegen den Angreifer selbst um.
+1050 Elixier der Freiheit - Entfernt alle 4 bösartigen Mutatoren.
+1051 Unerschütterlich. Entfernt alle Kontrollmutatoren und macht sie immun gegen sie.
+1111 Unterstützung des Bandiers.
+2020 Erhöht den Schutz des Schlosstors.
+2021 Schädigt alle 2 Minuten das Schlosstor.

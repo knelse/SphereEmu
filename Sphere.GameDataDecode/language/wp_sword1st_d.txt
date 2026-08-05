@@ -1,0 +1,487 @@
+01 Schwert
+03 schwert
+100 Kalte Waffe. Die St‰rke des Schwertes ist, dass es schnell schl‰gt, wenn auch nicht sehr stark.
+200 erschˆpfung
+201 tapferkeit
+202 schaden
+203 grausamkeiten
+204 eile
+205 geschwindigkeit
+206 unordnung
+207 chaos
+208 ‰ther
+209 m¸digkeit
+210 krankheiten
+211 instabilit‰t
+212 entfernungen
+213 entfernungen
+214 zersetzungen
+215 verw¸stungen
+216 schw‰chen
+217 penetration
+218 verbot
+219 werte
+
+#1
+01 Krumm Schwert
+03 krumm Schwert
+
+#2
+01 S‰bel
+03 s‰bel
+
+#3
+01 Henker
+03 henker
+
+#4
+01 Skimitar
+03 skimitar
+
+#5
+01 Yatagan
+03 yatagan
+
+#6
+01 Katana
+03 katana
+
+#7
+01 Schamscher
+03 schamscher
+
+#8
+01 Elite-S‰bel
+03 elite-S‰bel
+
+#9
+01 Elite-Henker
+03 elite-Henker
+
+#10
+01 Elite-Yatagan
+03 elite-Yatagan
+
+#11
+01 Elite-Katana
+03 elite-Katana
+
+#12
+01 Runens‰bel
+03 runens‰bel
+
+#13
+01 Runen-Henker
+03 Runen-Henker
+
+#14
+01 Runenjatagan
+03 runenjatagan
+
+#15
+01 Runenkatana
+03 runenkatana
+
+#16
+01 Ein halbes Schwert
+03 ein halbes Schwert
+
+#17
+01 Groﬂschwert
+03 groﬂschwert
+
+#18
+01 Claymore
+03 claymore
+
+#19
+01 Espadon
+03 espadon
+
+#20
+01 Flamberg
+03 flamberg
+
+#21
+01 Das groﬂe Schwert
+03 das groﬂe Schwert
+
+#22
+01 Riesenschwert
+03 riesenschwert
+
+#23
+01 Elite-Groﬂschwert
+03 elite-Groﬂschwert
+
+#24
+01 Elite-Claymore
+03 elite-claymore
+
+#25
+01 Elite-Flamberg
+03 elite-flamberg
+
+#26
+01 Elite groﬂes Schwert
+03 elite groﬂes Schwert
+
+#27
+01 Runen-Groﬂschwert
+03 runen-Groﬂschwert
+
+#28
+01 Runen-Claymore
+03 runen-claymore
+
+#29
+01 Runen-Flamberg
+03 runen-Flamberg
+
+#30
+01 Runenschwert
+03 runenschwert
+
+#31
+01 Das kurze Schwert
+03 das kurze Schwert
+
+#32
+01 Breites Schwert
+03 breites Schwert
+
+#33
+01 Gladius
+03 gladius
+
+#34
+01 Infanterieschwert
+03 infanterieschwert
+
+#35
+01 Langes Schwert
+03 langes Schwert
+
+#36
+01 Kristallschwert
+03 kristallschwert
+
+#37
+01 Goldenes Schwert
+03 goldenes Schwert
+
+#38
+01 Elite-Kurzschwert
+03 elite-Kurzschwert
+
+#39
+01 Elite-Gladius
+03 elite-Gladius
+
+#40
+01 Elite langes Schwert
+03 elite langes Schwert
+
+#41
+01 Elit‰res Kristallschwert
+03 elit‰res Kristallschwert
+
+#42
+01 Runenschwert
+03 runenschwert
+
+#43
+01 Runen-Gladius
+03 runen-Gladius
+
+#44
+01 Langes Runenschwert
+03 langes Runenschwert
+
+#45
+01 Runenkristallschwert
+03 Runenkristallschwert
+
+#130
+01 Schwert des Drachen
+03 schwert des Drachen
+
+#3251-3252
+01 Krumm Schwert
+03 krumm Schwert
+
+#3253-3254
+01 S‰bel
+03 s‰bel
+
+#3255-3257
+01 Henker
+03 henker
+
+#3258-3259
+01 Skimitar
+03 skimitar
+
+#3260-3262
+01 Yatagan
+03 yatagan
+
+#3263-3264
+01 Katana
+03 katana
+
+#3265-3269
+01 Schamscher
+03 schamscher
+
+#3270-3274
+01 Elite-S‰bel
+03 Elite S‰bel
+
+#3275-3279
+01 Elite-Henker
+03 Elite-Henker
+
+#3280-3284
+01 Elite-Yatagan
+03 elite-Yatagan
+
+#3285-3289
+01 Elite-Katana
+03 elite-Katana
+
+#3290-3294
+01 Runens‰bel
+03 runens‰bel
+
+#3295-3299
+01 Runen-Henker
+03 Runen-Henker
+
+#3300-3304
+01 Runenjatagan
+03 runenjatagan
+
+#3305-3310
+01 Runenkatana
+03 runenkatana
+
+#3311-3312
+01 Ein halbes Schwert
+03 ein halbes Schwert
+
+#3313-3314
+01 Groﬂschwert
+03 groﬂschwert
+
+#3315-3317
+01 Claymore
+03 Claymore
+
+#3318-3319
+01 Espadon
+03 espadon
+
+#3320-3322
+01 Flamberg
+03 flamberg
+
+#3323-3324
+01 Das groﬂe Schwert
+03 das groﬂe Schwert
+
+#3325-3329
+01 Riesenschwert
+03 riesenschwert
+
+#3330-3334
+01 Elite-Groﬂschwert
+03 elite-Groﬂschwert
+
+#3335-3339
+01 Elite-Claymore
+03 elite-claymore
+
+#3340-3344
+01 Elite-Flamberg
+03 elite-flamberg
+
+#3345-3349
+01 Elite groﬂes Schwert
+03 elite groﬂes Schwert
+
+#3350-3354
+01 Runen-Groﬂschwert
+03 runen-Groﬂschwert
+
+#3355-3359
+01 Runen-Claymore
+03 runen-claymore
+
+#3360-3364
+01 Runen-Flamberg
+03 runen-Flamberg
+
+#3365-3370
+01 Runenschwert
+03 runenschwert
+
+#3371-3372
+01 Das kurze Schwert
+03 das kurze Schwert
+
+#3373-3374
+01 Breites Schwert
+03 breites Schwert
+
+#3375-3377
+01 Gladius
+03 gladius
+
+#3378-3379
+01 Infanterieschwert
+03 infanterieschwert
+
+#3380-3382
+01 Langes Schwert
+03 langes Schwert
+
+#3383-3384
+01 Kristallschwert
+03 kristallschwert
+
+#3385-3389
+01 Goldenes Schwert
+03 goldenes Schwert
+
+#3390-3394
+01 Elite-Kurzschwert
+03 elite-Kurzschwert
+
+#3395-3399
+01 Elite-Gladius
+03 elite-Gladius
+
+#3400-3404
+01 Elite langes Schwert
+03 elite langes Schwert
+
+#3405-3409
+01 Elit‰res Kristallschwert
+03 elit‰res Kristallschwert
+
+#3410-3414
+01 Runenschwert
+03 RUNE Kurzschwert
+
+#3415-3419
+01 Runen-Gladius
+03 runen-Gladius
+
+#3420-3424
+01 Langes Runenschwert
+03 langes Runenschwert
+
+#3425-3430
+01 Runenkristallschwert
+03 Runenkristallschwert
+
+#3431-3433
+01 Legend‰res Katana
+03 legend‰res Katana
+
+#3434-3436
+01 Gespenstisches Katana
+03 das gespenstische Katana
+
+#3437-3439
+01 Drachenkatana
+03 drachenkatana
+
+#3440-3442
+01 Legend‰res groﬂes Schwert
+03 legend‰res groﬂes Schwert
+
+#3443-3445
+01 Das gespenstische groﬂe Schwert
+03 das gespenstische groﬂe Schwert
+
+#3446-3448
+01 Drachenschwert
+03 drachenschwert
+
+#3449-3451
+01 Legend‰res Kristallschwert
+03 legend‰res Kristallschwert
+
+#3452-3454
+01 Geisterkristallschwert
+03 geisterkristallschwert
+
+#3455-3457
+01 Drachenkristallschwert
+03 Drachenkristallschwert
+
+#3459
+01 Drachenschwert
+03 drachenschwert
+
+#5565-5570
+01 Tˆtungsdolch
+03 tˆtungsdolch
+
+#5592-5594
+01 Tˆtungsdolch
+03 tˆtungsdolch
+
+#5683
+01 Das lange Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#5684-5686
+01 Elite-Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#5687
+01 Das groﬂe Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#5688
+01 Das groﬂe Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#5693
+01 Das groﬂe Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#5696
+01 Das groﬂe Schwert der Gerechtigkeit
+03 schwert der Gerechtigkeit
+
+#6071-6076
+01 Schwert der Feindschaft
+03 schwert der Feindschaft
+
+#6092-6093
+01 Schwert der Feindschaft
+03 schwert der Feindschaft
+
+#6095-6096
+01 Schwert der Feindschaft
+03 schwert der Feindschaft
+
+#6098-6099
+01 Schwert der Feindschaft
+03 schwert der Feindschaft
+
+#6451
+01 Runenschwert
+03 runenschwert
+
+#6875-6878
+01 Schwert der Feindschaft
+03 schwert der Feindschaft
+
+#6880
+01 Schwert der Feindschaft
+03 schwert der Feindschaft

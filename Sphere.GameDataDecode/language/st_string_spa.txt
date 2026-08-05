@@ -1,0 +1,37 @@
+01 Nitka
+03 hilos
+10 En este hilo se recogen las orejas, cuyo karma era %s.
+11 En este hilo se recogen las orejas de los miembros del gremio de Administradores. //never comes
+12 En este hilo se recogen las orejas de los miembros del clan %s.
+14 En este hilo se recogen las orejas, cuyos propietarios tienen un nivel superior %d.
+50 Recogido %d piezas
+0900 En este hilo se recogen las orejas de los miembros del gremio de Asesinos.
+0901 En este hilo se recogen las orejas de los miembros del gremio de los Cruzados.
+0902 En este hilo se recogen las orejas de los miembros del gremio de los Inquisidores.
+0903 En este hilo se recogen las orejas de los miembros del gremio de Cazadores.
+0904 En este hilo se recogen las orejas de los miembros del gremio de los Archimagos.
+0905 En este hilo se recogen las orejas de los miembros del gremio de los Bárbaros.
+0906 En este hilo se recogen las orejas de los miembros del gremio de los Druidas.
+0907 En este hilo se recogen las orejas de los miembros del gremio de Ladrones.
+0908 En este hilo se recogen las orejas de los miembros del gremio de maestros del acero.
+0909 En este hilo se recogen las orejas de los miembros del gremio de Armeros.
+0910 En este hilo se recogen las orejas de los miembros del gremio de herreros.
+0911 En este hilo se recogen las orejas de los miembros del gremio de Hechiceros.
+0912 Este hilo contiene las orejas de los miembros del gremio de Nigromantes.
+0913 En este hilo se recogen las orejas de los miembros del gremio Bandier.
+
+#90
+01 Hilo rojo para las orejas
+03 hilo rojo para los oídos
+
+#91
+01 Hilo de oreja verde
+03 hilo de oreja verde
+
+#92
+01 Hilo de oreja azul
+03 hilo de oreja azul
+
+#93
+01 Hilo de oreja amarillo
+03 hilo amarillo para las orejas

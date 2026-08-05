@@ -1,5 +1,4 @@
-01 Зелье сытости
-02 зелье сытости
-03 зелье сытости
-
-100 При применении, сытость не уменьшается в течение 6 часов, а максимум здоровья увеличивается на дополнительные 10%
+01 Satiety Potion
+02 satiety potion
+03 satiety potion
+100 When applied, satiety does not decrease for 6 hours, and maximum health increases by an additional 10%

@@ -1,0 +1,50 @@
+01 Schild aus Holz
+03 schild aus Holz
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 angst
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5002
+01 Großes Schild
+03 großes Schild
+
+#5022
+01 Gepolstertes Holzschild
+03 gepolstertes Holzschild
+
+#5042
+01 Gepolstertes großes Schild
+03 gepolstertes großes Schild
+
+#5062
+01 Eisenschild
+03 eisenschild
+
+#5112
+01 Eisenschild
+03 eisenschild
+
+#5132
+01 Iron Shield
+03 eisenschild
+
+#5161
+01 Eisenschild
+03 eisenschild

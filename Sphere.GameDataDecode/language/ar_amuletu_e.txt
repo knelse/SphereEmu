@@ -1,25 +1,23 @@
-01 Glass amulet
-03 glass amulet
-
-100 Gives extra advantage in repelling magical attacks. You are sure to lose a battle without a good amulet. There was a magician though who bragged he would come out against the most powerful monster without being protected by a magical amulet. History does not remember the name of the sorcerer.
-
-200 of elimination
-201 of devastation
-202 of reliability
-203 of invulnerability
-204 of life
-205 of elimination
-206 of devastation
-207 of reliability
-208 of invulnerability
-209 of life
-210 of rule
-211 of blindness
-212 of fright
-213 of stop
-214 of deliverance
-215 of purification
-216 of punishment
-217 of fetters
-218 of whirlwind
-219 of curse
+01 The glass Amulet
+03 The glass amulet
+100 Gives an additional advantage when repelling magical attacks. Without a good amulet, there is nothing to do in battle. There was, however, one magician who boasted that he would go up against the strongest monster without the protection of a magic amulet. The history of the name of this magician has not been preserved.
+200 eradication
+201 devastation
+202 reliability
+203 invulnerability
+204 life
+205 eradication
+206 devastation
+207 reliability
+208 invulnerability
+209 life
+210 Boards of Directors
+211 Blinding
+212 Fright
+213 stops
+214 deliverance
+215 purifications
+216 punishments
+217 shackles
+218 The vortex
+219 Curses

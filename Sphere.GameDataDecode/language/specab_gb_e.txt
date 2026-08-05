@@ -1,13 +1,14 @@
-01 Night Beast
-
+01 Beast of the Night
 100 Creates a wolf attacking the target
 
 #6120
-01 Night Beast
-100 A wolf comes when called by a druid at night, and a wild boar comes by day. The called beast at once attacks the target indicated by the druid.
+01 Beast of the Night
+100 At night, a wolf comes to the druid's call, and a boar in the daytime. The summoned beast immediately rushes to the target indicated by the druid.
+
 #6121
-01 Night Beast
-100 A wolf comes when called by a druid at night, and a wild boar comes by day. The called beast at once attacks the target indicated by the druid.
+01 Beast of the Night
+100 At night, a wolf comes to the druid's call, and a boar in the daytime. The summoned beast immediately rushes to the target indicated by the druid.
+
 #6122-6125
-01 Night Beast
-100 A wolf comes when called by a druid at night, and a wild boar comes by day. The called beast at once attacks the target indicated by the druid.
+01 Beast of the Night
+100 At night, a wolf comes to the druid's call, and a boar in the daytime. The summoned beast immediately rushes to the target indicated by the druid.

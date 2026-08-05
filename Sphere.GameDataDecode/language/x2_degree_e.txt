@@ -1,0 +1,11 @@
+#4334
+01 A pill of the X2 degree (should be in the inventory, for 3 hours)
+03 A pill of the X2 degree (should be in the inventory, for 3 hours)
+
+#4340
+01 A pill of the X2 degree (should be in the inventory, for 6 hours)
+03 A pill of the X2 degree (should be in the inventory, for 6 hours)
+
+#4346
+01 A pill of the X2 degree (must be in the inventory, for 12 hours)
+03 A pill of the X2 degree (must be in the inventory, for 12 hours)

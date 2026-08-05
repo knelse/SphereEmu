@@ -1,0 +1,117 @@
+01 Kristall
+03 kristall
+10 Sie haben ein niedriges Niveau, Sie kˆnnen das Schloss-Attribut nicht erhalten.
+11 Zugehˆrigkeit:
+100 Der Kristall bietet seinem Besitzer oder seiner Gruppe zus‰tzliche Mˆglichkeiten.
+
+#5081
+01 Kleiner Energiekristall
+03 kleiner Energiekristall
+
+#5082
+01 Kleiner Energiekristall
+03 kleiner Energiekristall
+
+#5083
+01 Kleiner Haltbarkeitskristall
+03 kleiner Haltbarkeitskristall
+
+#5084
+01 Kleiner Reflexionskristall
+03 kleiner Reflexionskristall
+
+#5085
+01 Mittlerer Energiekristall
+03 mittlerer Energiekristall
+
+#5086
+01 Mittlerer Energiekristall
+03 mittlerer Energiekristall
+
+#5087
+01 Mittlerer Haltbarkeitskristall
+03 mittlerer Haltbarkeitskristall
+
+#5088
+01 Mittlerer Reflexionskristall
+03 mittlerer Reflexionskristall
+
+#5089
+01 Groﬂer Energiekristall
+03 groﬂer Energiekristall
+
+#5090
+01 Groﬂer Energiekristall
+03 groﬂer Energiekristall
+
+#5091
+01 Groﬂer Haltbarkeitskristall
+03 groﬂer Haltbarkeitskristall
+
+#5092
+01 Groﬂer Reflexionskristall
+03 groﬂe Kristall Reflexionen
+
+#5093
+01 Kleiner dunkler Energiekristall
+03 kleiner dunkler Energiekristall
+
+#5094
+01 Kleiner dunkler Energiekristall
+03 kleiner dunkler Energiekristall
+
+#5095
+01 Kleiner dunkler Haltbarkeitskristall
+03 kleiner dunkler Haltbarkeitskristall
+
+#5096
+01 Kleiner dunkler Reflexionskristall
+03 kleiner dunkler Reflexionskristall
+
+#5097
+01 Mittlerer dunkler Energiekristall
+03 mittlerer dunkler Energiekristall
+
+#5098
+01 Mittlerer dunkler Energiekristall
+03 mittlerer dunkler Energiekristall
+
+#5099
+01 Mittlerer dunkler Haltbarkeitskristall
+03 mittlerer dunkler Haltbarkeitskristall
+
+#5100
+01 Mittlerer dunkler Reflexionskristall
+03 mittlerer dunkler Reflexionskristall
+
+#5101
+01 Groﬂer dunkler Kraftkristall
+03 groﬂer dunkler Kraftkristall
+
+#5102
+01 Groﬂer dunkler Energiekristall
+03 groﬂer dunkler Energiekristall
+
+#5103
+01 Groﬂer dunkler Haltbarkeitskristall
+03 groﬂer dunkler Haltbarkeitskristall
+
+#5104
+01 Der groﬂe Kristall der Macht
+03 der groﬂe Kristall der Macht
+
+#5105
+01 Der groﬂe Kristall Energie
+03 groﬂer Energie-Kristallkristall
+
+#5106
+01 Groﬂer Widerstandskristallkristall
+03 groﬂer Widerstandskristall
+
+#5107
+01 Der groﬂe Kristall der Reflexion
+03 der groﬂe Kristall der Reflexion
+
+#5108
+01 Groﬂer dunkler Reflexionskristall
+03 groﬂer dunkler Reflexionskristall

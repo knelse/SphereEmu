@@ -1,5 +1,4 @@
-01 Licenza di accesso al continente Phoebe
-03 licenza di accesso al continente Phoebe
-
-101 L'accesso a Phoebe richiede %d$.
-102 Hai ricevuto l'accesso a Phoebe.
+01 Licenza per accedere a Phoebus
+03 licenza di accesso su Phoebus
+101 L'accesso a Phoebus richiederà %d$.
+102 Hai avuto accesso a Phoebus.

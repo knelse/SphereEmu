@@ -1,30 +1,34 @@
-
-200 Of adventure
-201 Of silence
-202 Of prophecy
-203 Of secret
-204 Of myths
-205 Of being
-206 Of campaigns
-207 Of existence
-208 Of legend
-209 Of peace
+200 Adventures
+201 Silence
+202 Prophecies
+203 Secrets
+204 Myths
+205 Genesis
+206 Hiking
+207 Existence
+208 Legends
+209 Mira
 
 #2715-2716
-01 Francisca
-03 francisca
+01 Francis
+03 Francis
+
 #2717-2718
 01 Tabar
 03 tabar
+
 #2719-2720
-01 Elite pole-axe
-03 elite pole-axe
+01 Elite Axe
+03 an elite axe
+
 #2721-2722
-01 Runic club
-03 runic club
+01 Runic Mace
+03 the runic mace
+
 #2723-2725
-01 Ghostly axe
-03 ghostly axe
+01 The Phantom Axe
+03 The phantom axe
+
 #2726-2729
-01 Dragon's hammer
-03 dragon's hammer
+01 Dragon Hammer
+03 Dragon hammer

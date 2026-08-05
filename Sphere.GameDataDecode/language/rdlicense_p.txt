@@ -1,10 +1,6 @@
-01 License to reset degree
-03 license to reset degree
-
-100 Сбрасывает уровень степени персонажа до 15. При этом на каждые сброшенные 5 (пять) уровней степени добавляется  1  (один) уровень к предыдущему титулу. Также сбрасываются распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земля, воздух, вода и огонь. ВНИМАНИЕ! Лицензия не работает, если у персонажа есть специальность!
-
-101 Do you really want to reset degree?
-102 The degree has been reset.
-103 There is no need to use the license now.
-
-
+01 Licenзa de redefiniзгo de grau
+03 licenзa de redefiniзгo de grau
+100 Redefine o nнvel do personagem para 15. Alйm disso, para cada 5 (cinco) nнveis de grau descartados, um (1) nнvel й adicionado ao tнtulo anterior. As caracterнsticas distribuнdas do personagem tambйm sгo redefinidas, como: forзa, destreza, precisгo, resistкncia, terra, ar, бgua e fogo. Atenзгo! A licenзa nгo funciona se o personagem tiver uma especialidade!
+101 Vocк realmente quer redefinir o grau?
+102 O grau foi redefinido.
+103 Nгo hб necessidade de usar a licenзa.

@@ -1,14 +1,11 @@
-01 Seguro
-03 seguro
-
-101 O uso do seguro lhe custará %d$.
-102 Você usou o seguro.
-103 O seguro não tem mais validade.
-104 Precisa usar o seguro agora.
-
+01 Seguro de saúde
+03 seguros
+101 O uso do seguro exigirá %d$.
+102 Usou o seguro.
+103 O seguro não é válido.
+104 Não há necessidade de usar o seguro.
 110 Nome do personagem: %s
 111 Título: %s
-112 Ranque: %s
+112 Grau: %s
 113 Marcas de título: %d
-114 Marcas de ranque: %d
-
+114 Graus de grau: %d

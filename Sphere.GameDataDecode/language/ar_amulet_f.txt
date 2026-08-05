@@ -1,0 +1,137 @@
+01 Amulette de verre
+03 amulette de verre
+100 Donne un avantage supplémentaire lors de la réflexion des attaques magiques. Sans une bonne amulette au combat, il n'y a rien à faire. Il y avait, cependant, un magicien qui se vantait de s'opposer au monstre le plus puissant sans la protection de l'amulette magique. L'histoire du nom de ce sorcier n'a pas gardé.
+200 force
+201 absorption
+202 réflexions
+203 sécurité
+204 santé
+205 méditations
+206 précision
+207 Ether
+208 les aurores
+209 valeurs
+210 dégâts
+
+#401-412
+01 Amulette de verre
+03 amulette de verre
+
+#4001-4023
+01 Amulette de verre
+03 amulette de verre
+
+#4167-4175
+01 Amulette de verre
+03 amulette de verre
+
+#4185-4187
+01 Amulette De Célébration
+03 amulette de célébration
+100 L'amulette de la Célébration est programmée pour le bicentenaire du projet»Sphère"! L'administration du projet vous félicite pour cet événement! Nous vous remercions de votre intérêt pour notre jeu et nous souhaitons de nouveaux succès dans le monde magique.
+
+#4190
+01 Amulette en verre de joie
+03 amulette en verre de joie
+
+#4191
+01 Amulette de bonheur en verre
+03 amulette de bonheur en verre
+
+#4192
+01 Amulette en verre de vertu
+03 amulette en verre de vertu
+
+#4193
+01 Amulette de consolation en cristal
+03 amulette de consolation en cristal
+
+#4194
+01 Amulette de cristal de jubilation
+03 amulette de cristal de jubilation
+
+#4199
+01 Amulette life
+03 Amulette life
+
+#4242
+01 Chrysanthème
+03 chrysanthème
+
+#4243-4244
+01 Rose
+03 rose
+
+#4245-4246
+01 Iris
+03 Iris
+
+#4247-4248
+01 Tulipe
+03 tulipe
+
+#4249-4250
+01 Gerbera
+03 Gerber
+
+#4251-4252
+01 Orchidée
+03 orchidée
+
+#4302
+01 Grande amulette du nouvel an
+03 Grande amulette du nouvel an
+
+#4304
+01 Petite amulette du nouvel an
+03 Petite amulette du nouvel an
+
+#4306
+01 Amulette de jubilation de courte durée
+03 amulette de jubilation de courte durée
+
+#4308
+01 Amulette De La Renaissance
+03 amulette de la Renaissance
+100 L'amulette de la Renaissance date de la Fin du Monde 2012..
+
+#4310
+01 Amulette cadeau
+03 Amulette cadeau
+100 Amulette cadeau donnant +10 à tous les paramètres.
+
+#5671-5676
+01 Bonne amulette
+03 bonne amulette
+
+#5877-5882
+01 Amulette de la bête
+03 amulette de la bête
+
+#5957
+01 Amulette Du Magicien
+03 amulette du Magicien
+
+#5958
+01 Amulette D'Archimage
+03 amulette d'archimage
+
+#5959
+01 Amulette Du Grand Archimage
+03 amulette du grand archimage
+
+#5971-5976
+01 Amulette D'Archimage
+03 amulette d'archimage
+
+#6565-6570
+01 Amulette de rejet
+03 amulette de rejet
+
+#6753
+01 Roger
+03 Roger
+
+#6755
+01 Amulette d'OS
+03 amulette d'OS

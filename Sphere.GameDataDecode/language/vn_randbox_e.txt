@@ -1,8 +1,6 @@
-01 Surprise box
-02 Surprise box
-03 Surprise box
-
-10 Осталось зарядов:
-11 Стоимость одного использования:
-
-100 Use this box to get random item.
+01 A box with a surprise
+02 A box with a surprise
+03 A box with a surprise
+10 There are charges left:
+11 The cost of one use:
+100 Use the box to get a random item.

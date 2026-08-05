@@ -1,0 +1,26 @@
+10000 X
+10100 Has decidido traicionar a los que se Quedan y se Van y lo haces bien. Vivan una vida pacífica y no multipliquen el sufrimiento en este mundo ya lleno de dolor.
+10101 Llévale el anillo a mi amigo. %x1. %m1.
+10102 Lleva el paquete a mi amigo %m1. %x1.
+10103 Traedme diez orejas de hombres con muy mal karma y diez orejas de hombres con buen karma. %m1.
+10200 Bienvenido, %p1. Veo que quieren ponerse del lado de los que Quedan y proteger este mundo de la destrucción. Estás en el camino correcto, pero primero debes demostrar tu lealtad.
+10201 Derramad la sangre de nuestros enemigos y Traedme diez orejas de hombres con muy mal karma. %m1.
+10300 Bienvenido, %p1. Veo que desea unirse a los que se Van y dejar este mundo de sufrimiento. Con su ayuda, podemos hacer lo que queremos, pero debemos asegurarnos de su lealtad.
+10301 Derramad la sangre de nuestros enemigos y Traedme diez oídos de hombres de buen karma. %m1.
+10700 %m1.
+10701 Bienvenido, %p1. Has decidido traicionar a los que se Quedan y se Van y lo haces bien. Vivan una vida pacífica y no multipliquen el sufrimiento en este mundo ya lleno de dolor. Para borrar el sello de la facción del clan, debes completar dos de mis tareas. Tienes que matar a los monstruos %z1 y %z2 en ambas mazmorras y traerme la cabeza de cada bestia. Ir a buscar %z1 y tráeme su cabeza.
+10702 "...tráeme su cabeza".
+10703 Está bien, has hecho la primera parte de la tarea. Ahora mata al monstruo %z2 en la segunda mazmorra.
+10704 "...tráeme su cabeza".
+10800 
+10801 Bienvenido, %p1. Veo que su clan quiere jurar lealtad a los que Quedan. Estas son buenas noticias para nosotros y malas para nuestros enemigos, sin embargo, tendrás que demostrar la firmeza de tus intenciones completando algunas de mis tareas. Si usted puede hacer frente a ellos, su clan será aceptado en la facción Restante. Para empezar, necesitas traerme treinta orejas de personas con muy mal karma. %m1.
+10802 Hiciste un gran trabajo en la primera tarea. Ahora tiene que traer noticias de mi explorador, su nombre. %x1. Se encuentra en la ciudad de Nomrad. Dale esta carta para que sepa quién te envió. %m1.
+10803 %p1? Toma. Cuidado, hay información importante en esta convolución. %x1.
+10804 Genial. Ahora es mi Última misión para Usted y su clan. Tienes que derrotar al monstruo solo %z1 y traerme su cabeza. %m1.
+10805 "...tráeme su cabeza". - %m1.
+10900 
+10901 Bienvenido, %p1. Veo que su clan quiere jurar lealtad a los que se Van. Tendrás que demostrar la firmeza de tus intenciones completando algunas de mis tareas. Si puedes hacer frente a ellos, tu clan será aceptado en la facción de los que se Van. Para empezar, debes traerme treinta orejas de personas con buen karma. %m1.
+10902 Hiciste un gran trabajo en la primera tarea. Ahora tiene que traer noticias de mi explorador, su nombre. %x1. Se encuentra en la ciudad de Umrad. Dale esta carta para que sepa quién te envió. %m1.
+10903 %p1? Toma. Cuidado, hay información importante en esta convolución. %x1.
+10904 Genial. Ahora es mi Última misión para Usted y su clan. Tienes que derrotar al monstruo solo %z1 y traerme su cabeza. %m1.
+10905 "...tráeme su cabeza". - %m1.

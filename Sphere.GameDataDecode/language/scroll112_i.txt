@@ -1,9 +1,7 @@
-01 Formula della polvere della malattia
-02 Formula della polvere della malattia
-03 Formula della polvere della malattia
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta della polvere di malattia
+02 ricette di polvere di malattia
+03 ricetta della polvere di malattia
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    I maghi esperti (con un grado non inferiore a graduato) per ottenere la polvere della malattia mescolano Carbonio, Feregon e Ferro nel recipiente alchemico e infine aggiungono la polvere di Amilus alla mistura per completare la reazione. 
+    Maghi esperti (lauree non inferiori a bachelor) per ottenere la polvere di malattia mescolano carbone, ferengone e ferro in una bomboletta alchemica, quindi aggiungono la polvere di Amilus finale alla miscela.
+    

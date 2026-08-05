@@ -1,9 +1,7 @@
-01 Formula della polvere del Grande Fuoco
-02 Formula della polvere del Grande Fuoco
-03 Formula della polvere del Grande Fuoco
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta grande polvere di fuoco
+02 ricette di polvere di fuoco grande
+03 ricetta grande polvere di fuoco
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    I maghi esperti (con un grado non inferiore a quello di professore) per ottenere la polvere del Grande Fuoco mescolano Galeonate, Circulonius e Piombo nella fornace e infine bruciano rami secchi in essa. 
+    Maghi esperti (gradi non inferiori al professore) per ottenere una grande polvere di fuoco mescolano galeonato, circulonia e piombo in una fornace, quindi riscaldano la fornace con sottobosco.
+    

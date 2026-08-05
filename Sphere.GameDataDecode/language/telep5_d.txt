@@ -1,0 +1,7 @@
+01 Turnier-Teleporter
+10 Das Verschieben ist derzeit nicht gestattet.
+11 Maximale zu bewegende Ebene: %d
+12 Mindestniveau zum Verschieben: %d
+13 Der Teleport funktioniert momentan nicht.
+14 Teleporter ist für Level mit %d nach %d.
+100 Bewegen Sie mit Hilfe dieser Teleport ist nur möglich, in die Arena. Nach dem Tod in der Arena kehren Sie zu diesem teleportiert.

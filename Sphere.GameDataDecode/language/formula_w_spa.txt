@@ -1,0 +1,7 @@
+01 Fórmula
+02 fórmulas
+03 fórmula
+100 Fórmula del gremio de armeros
+10000 Con esta fórmula se puede obtener %r1. Para la producción es necesario %a1 . y el peldaño en el gremio de armeros no debe ser inferior %z1.
+10001 Con esta fórmula se puede obtener %r1. Para la producción es necesario %a1 y %a2 . y el peldaño en el gremio de armeros no debe ser inferior %z1.
+10002 Con esta fórmula se puede obtener %r1. Para la producción es necesario %a1, %a2 y %a3 . y el peldaño en el gremio de armeros no debe ser inferior %z1.

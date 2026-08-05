@@ -1,7 +1,7 @@
-01 Dry fish
-02 Dry fish
-03 Dry fish
+01 Dried fish
+02 dried fish
+03 dried fish
 05 fresh
 06 old
-07 mouldy
-10 You ate dry fish.
+07 with mold
+10 You ate dried fish.

@@ -1,9 +1,7 @@
-01 Formula della polvere della maledizione dell'aria
-02 Formula della polvere della maledizione dell'aria
-03 Formula della polvere della maledizione dell'aria
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di maledizione dell'aria
+02 ricette di polvere di maledizione dell'aria
+03 ricetta polvere di maledizione dell'aria
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    I maghi esperti (con grado non inferiore a quello di maestro) per ottenere la polvere della maledizione dell'aria mescolano Bermanate, Felce e Piombo nel recipiente alchemico, poi aggiungo la polvere di Amilus alla mistura per completare la reazione. 
+    Maghi esperti (gradi non inferiori al master) per ottenere la polvere della maledizione dell'aria mescolano bermanate, felce e piombo in una bombetta alchemica, quindi aggiungono la polvere di Amilus finale alla miscela.
+    

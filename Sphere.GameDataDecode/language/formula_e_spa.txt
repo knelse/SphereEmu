@@ -1,0 +1,7 @@
+01 Fórmula
+02 fórmulas
+03 fórmula
+100 Fórmula del gremio de hechiceros
+10000 Esta fórmula (si es aplicada por un mago de nivel no inferior %z1) otorga propiedades mágicas a uno de los siguientes elementos: %l1 Para llevar a cabo la reacción es necesario %a1.
+10001 Esta fórmula (si es aplicada por un mago de nivel no inferior %z1) otorga propiedades mágicas a uno de los siguientes elementos: %l1 Para llevar a cabo la reacción es necesario %a1 y %a2.
+10002 Esta fórmula (si es aplicada por un mago de nivel no inferior %z1) otorga propiedades mágicas a uno de los siguientes elementos: %l1 Para llevar a cabo la reacción es necesario %a1, %a2 y %a3.

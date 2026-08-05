@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione suprema
-02 Formula della polvere della protezione suprema
-03 Formula della polvere della protezione suprema
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere iperprotettiva
+02 ricetta polvere iperprotettiva
+03 ricetta polvere iperprotettiva
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    I maghi esperti (con grado non inferiore a professore) per creare la polvere della protezione suprema mescolano Meleosite, Zhelena e Oro in un recipiente alchemico e aggiungono alla fine la polvere di Amilus per completare la reazione.
+    Maghi esperti (gradi non inferiori al professore) per ottenere la polvere di protezione eccessiva mescolano meleosite, gelatina e oro in una bombetta alchemica, quindi aggiungono la polvere di Amilus finale alla miscela.
+    

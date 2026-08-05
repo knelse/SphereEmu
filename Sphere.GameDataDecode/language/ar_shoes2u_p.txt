@@ -1,13 +1,11 @@
-01 Botas elevadas
-03 botas elevadas
-
-100 Proteje você contra armas inimigas durante uma batalha.
-
-200 de durabilidade
-201 de absorção
-202 de proteção
-203 de saúde
-204 de meditação
-205 de precisão
-206 de éter
-207 de valor
+01 Botas
+03 Botas
+100 Na batalha protege contra as armas dos inimigos.
+200 força
+201 absorção
+202 segurança
+203 saúde
+204 meditação
+205 precisão
+206 Ether
+207 valores

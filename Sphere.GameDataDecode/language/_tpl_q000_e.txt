@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-22 %s seized a parcel of mine. Kill the monster and bring the parcel to me (waymark - %s).
-23 %s seized a parcel of mine. Kill the monster and bring the parcel to me (waymark - %s).
+01 Mission key
+03 Mission key
+10 Not far from here,
+11 On the great continent of Hyperion
+12 On the great continent of Helios
+13 On the great mainland of Rhodes
+14 On the small continent of Phoebe
+15 On the royal island of Leone
+16 On the ghost continent of Charon
+22 %s I grabbed a package belonging to me. Kill the monster and bring her back to me (landmark - %s).
+23 %s I grabbed a package belonging to me. Kill the monster and bring her back to me (landmark - %s).

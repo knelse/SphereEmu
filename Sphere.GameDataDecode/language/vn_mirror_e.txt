@@ -1,8 +1,6 @@
-01 Волшебное зеркальце
-02 Волшебные зеркальца
-03 волшебное зеркальце
-10 волшебное зеркальце
-
-101 Осталось зарядов:
-
-100 Волшебное зеркальце. При использовании вешает мутатор, обращающий последнюю атаку против самого атакующего, возвращая противнику половину урона атаки.
+01 The Magic Mirror
+02 Magic mirrors
+03 The magic mirror
+10 The magic mirror
+101 There are charges left:
+100 A magic mirror. When used, it hangs a mutator that turns the last attack against the attacker himself, returning half of the attack damage to the enemy.

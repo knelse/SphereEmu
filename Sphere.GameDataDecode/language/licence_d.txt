@@ -1,0 +1,23 @@
+01 Handelslizenz
+03 handelslizenz
+05 Die Lizenz kann nur auf einer Verkaufsfläche verwendet werden.
+06 Sie sollten nicht näher als 5 Meter zu einem anderen Händler stehen.
+10 Gültigkeitsdauer: 12 Stunden
+11 Gültigkeit: 1 Tag
+12 Gültigkeit: 1,5 Tage
+13 Gültigkeit: 2 Tage
+14 Gültigkeit: 2,5 Tage
+15 Gültigkeit: 3 Tage
+16 Gültigkeit: 3,5 Tage
+17 Gültigkeit: 4 Tage
+18 Gültigkeit: 4,5 Tage
+19 Gültigkeit: 5 Tage
+20 Gültigkeitsdauer: 5,5 Tage
+21 Gültigkeit: 6 Tage
+23 Gültigkeit: 7 Tage
+25 Gültigkeit: 8 Tage
+27 Gültigkeit: 9 Tage
+29 Gültigkeit: 10 Tage
+31 Gültigkeit: 11 Tage
+33 Gültigkeit: 12 Tage
+100 Wenn Sie die Lizenz verwenden, verlassen Sie die Sphäre, aber der Charakter bleibt für die angegebene Anzahl von sphärischen Tagen zu handeln. Sie können die Lizenz nur auf einer Verkaufsfläche anwenden, und Sie können nicht näher als 5 Meter an einen anderen Händler herankommen.

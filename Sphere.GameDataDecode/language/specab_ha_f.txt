@@ -1,0 +1,6 @@
+01 Vol
+100 Capacité de définition de la profession. Un voleur-pickpocket inexpérimenté ne peut compter que sur une paire de talers, mais il y a des légendes sur de tels poduhh que même les choses peuvent être retirées du sac d'un citadin gape.
+1000 Pour voler, il doit y avoir au moins une cellule libre dans l'inventaire.
+1001 Vous avez volé %s.
+1002 Le vol a échoué.
+1003 Vous avez volé %d$.

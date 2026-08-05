@@ -1,89 +1,88 @@
-1000 Castello appena conquistato (no tasse)
-1001 Tassa sulla terra: %d$
-1002 Tassa sulla terra pagata.
+1000 Castello catturato di recente (nessuna tassa)
+1001 Tassa fondiaria: %d$
+1002 La tassa fondiaria и stata pagata.
 1003 Tassa sui cancelli: %d$
-1004 Tassa sui cancelli pagata.
-1005 Tassa sul Grande Libro: %d$
-1006 Tassa sul Grande Libro pagata.
-1007 Tassa sul sotterraneo: %d$
-1008 Tassa sul sotterraneo pagata.
-
-8000 Grande Libro del Castello Liege
-8200 Cancelli del Castello Liege
-8001 Grande Libro del Castello Feoff
-8201 Cancelli del Castello Feoff
-8002 Grande Libro del Castello Aris
-8202 Cancelli del Castello Aris
-8003 Grande Libro del Castello Latour
-8203 Cancelli del Castello Latour
-8004 Grande Libro del Castello Eikum-Cas
-8204 Cancelli del Castello Eikum-Cas
-8005 Grande Libro del Castello Gideon
-8205 Cancelli del Castello Gideon
-8006 Grande Libro del Castello Chatelie
-8206 Cancelli del Castello Chatelie
-8007 Grande Libro del Castello Tyanod
-8207 Cancelli del Castello Tyanod
-8008 Grande Libro del Castello Peltier
-8208 Cancelli del Castello Peltier
-8009 Grande Libro del Castello Kare-Royal
-8209 Cancelli del Castello Kare-Royal
-8010 Grande Libro del Castello Blessendour
-8210 Cancelli del Castello Blessendour
-8011 Grande Libro del Castello Ternoval
-8211 Cancelli del Castello Ternoval
-8012 Grande Libro del Castello Ammalaelle
-8212 Cancelli del Castello Ammalaelle
-8013 Grande Libro del Castello Cablac
-8213 Cancelli del Castello Cablac
-8014 Grande Libro del Castello Devanagary
-8214 Cancelli del Castello Devanagary
-8015 Grande Libro del Castello Sabulat
-8215 Cancelli del Castello Sabulat
-8016 Grande Libro del Castello Diffensat
-8216 Cancelli del Castello Diffensat
-8017 Grande Libro del Castello Ionat
-8217 Cancelli del Castello Ionat
-8018 Grande Libro del Castello Triumphaler
-8218 Cancelli del Castello Triumphaler
-
-8019 Grande Libro del Castello Bagarnak
-8219 Cancelli del Castello Bagarnak
-8020 Grande Libro del Castello Kabrad
-8220 Cancelli del Castello Kabrad
-8021 Grande Libro del Castello Set
-8221 Cancelli del Castello Set
-8022 Grande Libro del Castello Lender
-8222 Cancelli del Castello Lender
-8023 Grande Libro del Castello Keles
-8223 Cancelli del Castello Keles
-8024 Grande Libro del Castello Sheprostan
-8224 Cancelli del Castello Sheprostan
-8025 Grande Libro del Castello Orkobien
-8225 Cancelli del Castello Orkobien
-8026 Grande Libro del Castello Kanuak
-8226 Cancelli del Castello Kanuak
-8027 Grande Libro del Castello Aldarnon
-8227 Cancelli del Castello Aldarnon
-8028 Grande Libro del Castello Iong
-8228 Cancelli del Castello Iong
-8029 Grande Libro del Castello Elek
-8229 Cancelli del Castello Elek
-8030 Grande Libro del Castello Gavot
-8230 Cancelli del Castello Gavot
-8031 Grande Libro del Castello Kandur
-8231 Cancelli del Castello Kandur
-
-8032 Grande Libro del Castello Immertel
-8232 Cancelli del Castello Immertel
-8033 Grande Libro del Castello Narcissus
-8233 Cancelli del Castello Narcissus
-8034 Grande Libro del Castello Randen
-8234 Cancelli del Castello Randen
-8035 Grande Libro del Castello Nirgun
-8235 Cancelli del Castello Nirgun
-8036 Grande Libro del Castello Gelgivinn
-8236 Cancelli del Castello Gelgivinn
-1090 Собрано налогов: %d$
-1091 Снять
-8090 Скрижаль города Анхельм
+1004 La tassa sul cancello и stata pagata.
+1005 Tassa sulla tavoletta: %d$
+1006 La tassa sulla tavoletta и stata pagata.
+1007 Tassa sui Dungeon: %d$
+1008 La tassa sui Dungeon и stata pagata.
+1090 Imposte raccolte: %d$
+1091 Rimuovere
+8000 Tavoletta del Castello di Liegi
+8200 Porta del Castello di Liegi
+8001 Tavoletta del Castello di fief
+8201 Porta del Castello di fief
+8002 Tavoletta del Castello di Aris
+8202 Porta del Castello di Aris
+8003 Tavoletta del Castello di Lator
+8203 Porta del Castello di Lator
+8004 Tavoletta del Castello di Eikum-CAS
+8204 Porta del Castello di Eikum CAS
+8005 Tavoletta del Castello di Gideon
+8205 Porta del Castello di Gideon
+8006 Tavoletta del Castello di Chatelier
+8206 Porta del Castello di Chatelier
+8007 Tavoletta del Castello di Tuanod
+8207 Porta del Castello di Tuanod
+8008 Tavoletta del Castello di Peltier
+8208 Porta del Castello di Peltier
+8009 La tavoletta del Castello di Kare-Royal
+8209 Porta del Castello di Kare-Royal
+8010 Tavoletta del Castello di Blessendor
+8210 Porta del Castello di Blessendor
+8011 Tavoletta del Castello di Ternoval
+8211 Porta del Castello di Ternoval
+8012 Tavoletta del Castello di Ammalael
+8212 Porta del Castello di Ammalael
+8013 Tavoletta del Castello di Kablak
+8213 Porta del Castello di Kablak
+8014 Tavoletta del Castello di Devanagari
+8214 Porta del Castello di Devanagari
+8015 Tavoletta del Castello di Sabulat
+8215 Porta del Castello di Sabulat
+8016 Tavoletta del Castello di Deffensat
+8216 Porta del Castello di Deffensat
+8017 Tavoletta del Castello di Aionat
+8217 Porta del Castello di Aionat
+8018 Tavoletta del Castello di Triumphaler
+8218 Porte del Castello di Triumphaler
+8019 Tavoletta del Castello di Bagarnak
+8219 Porta del Castello di Bagarnac
+8020 Tavoletta del Castello di Cabrad
+8220 Porta del Castello di Cabrad
+8021 Tavoletta del Castello di Seth
+8221 Porte del Castello di Seth
+8022 Tavoletta del Castello di Lander
+8222 Porta del Castello di Lander
+8023 Tavoletta del Castello di Keles
+8223 Porta del Castello di Keles
+8024 Tavoletta del Castello di Sheprostan
+8224 Porta del Castello di Sheprostan
+8025 Tavoletta del Castello di Orcobien
+8225 Porta del Castello di Orkobien
+8026 Tavoletta del Castello di Canuac
+8226 Porta del Castello di Canuac
+8027 Tavoletta del Castello di Aldarnon
+8227 Porta del Castello di Aldarnon
+8028 Tavoletta del Castello di Yong
+8228 Porta del Castello di Yong
+8029 Tavoletta del Castello di Elek
+8229 Porta del Castello di Elek
+8030 Tavoletta del Castello di Gavotte
+8230 Porta del Castello di Gavot
+8031 Tavoletta del Castello di Kandur
+8231 Porta del Castello di Kandur
+8032 Tavoletta del Castello di Immertel
+8232 Porta del Castello di Immertel
+8033 Tavoletta del Castello di Narciso
+8233 Porta del Castello di Narciso
+8034 Tavoletta del Castello di Randen
+8234 Porta del Castello di Randen
+8035 Tavoletta del Castello di Nirgun
+8235 Porta del Castello di Nirgun
+8036 Tavoletta del Castello di Gelgivinn
+8236 Porta del Castello di Gelgivinn
+8037 Tavoletta del Castello di Оle-Souilly-Roi
+8237 Porta del Castello di Оle-Souilly-Roi
+8090 Tavola della cittа di Angelm

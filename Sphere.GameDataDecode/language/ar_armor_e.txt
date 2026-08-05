@@ -1,178 +1,223 @@
-01 Chainmail
-03 Chainmail
+01 Chain mail
+03 chain mail
 05 new
-06 used
-07 rusted
-
-100 Protects from enemy weapons in battle.
-
-200 of valor
-201 of durability
-202 of absorption
-203 of deflection
-204 of safety
-205 of invulnerability
-206 of health
-207 of life
-208 of meditation
-209 of prana
-210 of power
-211 of dexterity
-212 of greatness
-213 of concentration
-214 of earth
-215 of water
-216 of air
-217 of fire
-218 of elements
-219 of value
-220 of power
-221 of dexterity
-222 of greatness
-223 of concentration
-224 of integrity
+06 worn
+07 rusty
+100 In battle, it protects against the weapons of opponents.
+200 Valor
+201 Strength
+202 acquisitions
+203 deviations
+204 security
+205 Invulnerability
+206 health
+207 life
+208 meditations
+209 pranas
+210 powers
+211 Dexterity
+212 greatness
+213 concentrations
+214 lands
+215 water
+216 air
+217 Fire
+218 elements
+219 values
+220 powers
+221 Dexterity
+222 greatness
+223 concentrations
+224 integrity
 
 #301
-01 jacket
-03 jacket
+01 Jacket
+03 A jacket
+
 #302
-01 leather armor
+01 Leather armor
 03 leather armor
+
 #303-304
-01 riveted leather armor
+01 Riveted leather armor
 03 riveted leather armor
+
 #305-306
-01 chainmail
-03 chainmail
+01 Chain mail
+03 chain mail
+
 #307-309
-01 breastplate
-03 breastplate
+01 Cuirass
+03 cuirass
+
 #310-312
-01 ancient armor
-03 ancient armor
+01 Ancient armor
+03 Ancient armor
+
 #3001-3004
-01 jacket
-03 jacket
+01 Jacket
+03 A jacket
+
 #3005-3009
-01 leather armor
+01 Leather armor
 03 leather armor
+
 #3010-3019
-01 riveted leather armor
+01 Riveted leather armor
 03 riveted leather armor
+
 #3020-3029
-01 chainmail
-03 chainmail
+01 Chain mail
+03 chain mail
+
 #3030-3044
-01 breastplate
-03 breastplate
+01 Cuirass
+03 cuirass
+
 #3045-3060
-01 ancient armor
-03 ancient armor
+01 Ancient armor
+03 Ancient armor
+
 #4453-4461
-01 breastplate
-03 breastplate
+01 Cuirass
+03 cuirass
+
 #4740
-01 Great Black Cuirass
-03 Great Black Cuirass
+01 The Great Black Cuirass
+03 The Great Black Cuirass
+
 #4741
-01 Great White Cuirass
-03 Great White Cuirass
+01 The Great White Cuirass
+03 The Great White Cuirass
+
 #4750
-01 Great Black Cuirass
-03 Great Black Cuirass
+01 The Great Black Cuirass
+03 The Great Black Cuirass
+
 #4751
-01 Great White Cuirass
-03 Great White Cuirass
+01 The Great White Cuirass
+03 The Great White Cuirass
+
 #5586
-01 Jacket of villain
-03 jacket of villain
+01 The villain's jacket
+03 The villain's jacket
+
 #5587
-01 Leather jacket of villain
-03 jacket of villain
+01 The villain's leather jacket
+03 The villain's jacket
+
 #5588
-01 Riveted jacket of villain
-03 jacket of villain
+01 The villain's Riveted jacket
+03 The villain's jacket
+
 #5589
-01 Chainmail of villain
-03 chainmail of villain
+01 The villain's Chain Mail
+03 The villain's chain mail
+
 #5590
-01 Breastplate of villain
-03 breastplate of villain
+01 The villain's Cuirass
+03 The villain's cuirass
+
 #5591
-01 Armor of villain
-03 armor of villain
+01 Villain Armor
+03 The villain's armor
+
 #5677
-01 Jacket of radiance
-03 jacket of radiance
+01 The jacket of Radiance
+03 The jacket of radiance
+
 #5678
 01 Leather jacket of radiance
-03 jacket of radiance
+03 The jacket of radiance
+
 #5679
-01 Riveted jacket of radiance
-03 jacket of radiance
+01 Riveted Radiance Jacket
+03 The jacket of radiance
+
 #5680
-01 Chainmail of radiance
-03 chainmail of radiance
+01 Chain mail of Radiance
+03 chain mail of radiance
+
 #5681
-01 Breastplate of radiance
-03 breastplate of radiance
+01 The Cuirass of Radiance
+03 The cuirass of radiance
+
 #5682
-01 Armor of radiance
-03 armor of radiance
+01 Armor of Radiance
+03 Armor of radiance
+
 #5865
-01 Jacket of secrecy
-03 jacket of secrecy
+01 Stealth Jacket
+03 a stealth jacket
+
 #5866
-01 Leather jacket of secrecy
-03 jacket of secrecy
+01 Leather Stealth Jacket
+03 a stealth jacket
+
 #5867
-01 Riveted jacket of secrecy
-03 jacket of secrecy
+01 Riveted Stealth Jacket
+03 a stealth jacket
+
 #5868
-01 Chainmail of secrecy
-03 chainmail of secrecy
+01 Chain mail of stealth
+03 chain mail of stealth
+
 #5869
-01 Breastplate of secrecy
-03 breastplate of secrecy
+01 The cuirass of secrecy
+03 the cuirass of secrecy
+
 #5870
-01 Armor of secrecy
-03 armor of secrecy
+01 Stealth Armor
+03 stealth armor
+
 #6083
-01 Jacket of Titan
-03 jacket of Titan
+01 Titanium Jacket
+03 the Titan jacket
+
 #6084
-01 Leather jacket of Titan
-03 jacket of Titan
+01 Titanium Leather Jacket
+03 the Titan jacket
+
 #6085
-01 Riveted jacket of Titan
-03 jacket of Titan
+01 Riveted Titanium Jacket
+03 the Titan jacket
+
 #6086
-01 Chainmail of Titan
-03 chainmail of Titan
+01 Titan's Chain Mail
+03 Titan's chain mail
+
 #6087
-01 Breastplate of Titan
-03 breastplate of Titan
+01 Titan's Cuirass
+03 Titan's cuirass
+
 #6088
-01 Armor of Titan
-03 armor of Titan
+01 Titan Armor
+03 Titan Armor
+
 #6551
-01 Heavy armor of Caliester
-03 heavy armor of Caliester
+01 Heavy armor of Kaliestra
+03 heavy armor of Kaliestra
+
 #6868
-01 Jacket of reliability
-03 jacket of reliability
+01 Reliability Jacket
+03 a reliability jacket
+
 #6869
-01 Leather jacket of reliability
-03 jacket of reliability
+01 Leather Reliability Jacket
+03 a reliability jacket
+
 #6870
-01 Riveted jacket of reliability
-03 jacket of reliability
+01 Riveted reliability jacket
+03 a reliability jacket
+
 #6871
-01 Chainmail of reliability
-03 chainmail of reliability
+01 Chain mail of reliability
+03 chain mail of reliability
+
 #6872
-01 Breastplate of reliability
-03 breastplate of reliability
+01 Reliability Cuirass
+03 reliability cuirass
+
 #6873
 01 Armor of reliability
-03 armor of reliability
+03 the armor of reliability

@@ -1,8 +1,6 @@
-01 Sui mostri giganti 
-03 Sui mostri giganti
-
-100 Davanti a te si trova una pergamena con un'antica leggenda sulla storia di Sphere. 
-
+01 A proposito di mostri giganti
+03 a proposito di mostri giganti
+100 Di fronte a te c'è un rotolo con un'antica leggenda del mondo della sfera.
 TEXT
-
-    Qualche volta i risultati delle mutazioni portano a mostri spaventosi: giganti, feroci e pericolosi. Molti cavalieri coraggiosi hanno perso la loro vita cercando di opporsi a questi figli del male. Ci sono voci che narrano che uno di questi mostri abita in un vecchio cratere a ovest di Bangwille.
+    A volte, a seguito di mutazioni, nascono mostri davvero terribili: Giganti, feroci e pericolosi. Non pochi valorosi cavalieri hanno piegato la testa, cercando di resistere a questi demoni dell'inferno. Si dice che uno di questi mostri risieda in un vecchio cratere situato a ovest di Bangville.
+    

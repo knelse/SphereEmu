@@ -1,30 +1,34 @@
-
-200 de aventura
-201 de silêncio
-202 de profecia
-203 de segrêdo
-204 de mito
-205 de vida
-206 de campanha
-207 de existência
-208 de lenda
-209 de paz
+200 Aventura
+201 Silêncio
+202 Profecias
+203 Segredos
+204 Mitos
+205 Genesis
+206 Caminhadas
+207 Existência
+208 Legendas
+209 Mundo
 
 #2700-2701
 01 Sabre
-03 sabre
+03 Sabre
+
 #2702-2703
-01 Espada grande
-03 espada grande
+01 A grande espada
+03 a grande espada
+
 #2704-2705
-01 Katana de elite
-03 katana de elite
+01 Elite katana
+03 Elite katana
+
 #2706-2707
-01 Espada rúnica
-03 espada rúnica
+01 Gladius Rúnico
+03 Gladius Rúnico
+
 #2708-2709
-01 Espada do lendário cristal
-03 espada do lendário cristal
+01 Espada de cristal lendária
+03 espada de cristal lendária
+
 #2710-2714
-01 Espada do dragão
-03 espada do dragão
+01 Espada dragão
+03 espada dragão

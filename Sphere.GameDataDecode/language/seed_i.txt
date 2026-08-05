@@ -1,11 +1,10 @@
 01 seme
 03 seme
 05 nuovo
-06 vecchio
-07 affievolito
-10 Per attivarlo metti il seme sul terreno.
-
-101 Interno - Testa di un cane
-102 Interno - Forziere 
-103 Interno - Pietra del castello (attivare nei limiti del castello)
-104 Interno - Pietra difensiva (attivare nei limiti del castello)
+06 invecchiamento
+07 dissolvenza
+10 Per attivare, metti il seme a terra.
+101 Dentro-psoglavets
+102 All'interno - petto
+103 All'interno-chiave di volta (attivare all'interno della serratura)
+104 Pietra interna-protettiva (attiva all'interno del castello)

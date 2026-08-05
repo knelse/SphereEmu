@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione fisica
-02 Formula della polvere della protezione fisica
-03 Formula della polvere della protezione fisica
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di protezione fisica
+02 ricette di polvere di protezione fisica
+03 ricetta polvere di protezione fisica
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della protezione fisica, i maghi esperti (con grado non inferiore a quello di bachelor) mescolano Meleosite, Mandragora e Rame nella fornace. Poi alimentano la fornace con dei ramoscelli.
+    Maghi esperti (gradi non inferiori al bachelor) per ottenere polvere di protezione fisica mescolano meleosite, mandragora e rame in un forno, quindi riscaldano il forno con sottobosco.
+    

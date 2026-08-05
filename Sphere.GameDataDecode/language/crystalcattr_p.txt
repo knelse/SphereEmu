@@ -1,90 +1,117 @@
 01 Cristal
-03 Cristal 
-10 Seu nível é muito baixo, você não pode receber atributos deste castelo.
-11 Aliança:
-100 Uma vez colocado no compêndio de um castelo, o cristal proporcionará a quem tocá-lo, habilidades adicionais.
+03 cristal
+10 Você tem um nível baixo, você não pode obter o atributo do Castelo.
+11 Afiliação:
+100 O cristal dá poderes adicionais ao seu dono ou grupo.
 
 #5081
-01 cristal pequeno de poder
-03 cristal pequeno de poder 
+01 Cristal pequeno do poder
+03 cristal pequeno do poder
+
 #5082
-01 cristal pequeno de energia
-03 cristal pequeno de energia
+01 Cristal de energia pequena
+03 cristal de energia pequena
+
 #5083
-01 cristal pequeno de estabilidade
-03 cristal pequeno de estabilidade
+01 Cristal pequeno da durabilidade
+03 cristal pequeno da durabilidade
+
 #5084
-01 cristal pequeno de reflexão
-03 cristal pequeno de reflexão
+01 Cristal pequeno da reflexão
+03 cristal pequeno da reflexão
+
 #5085
-01 cristal médio de poder
-03 cristal médio de poder
+01 Cristal médio do poder
+03 cristal médio do poder
+
 #5086
-01 cristal médio de energia
-03 cristal médio de energia
+01 Cristal de energia média
+03 cristal de energia média
+
 #5087
-01 cristal médio de estabilidade
-03 cristal médio de estabilidade
+01 Cristal médio da durabilidade
+03 cristal médio da durabilidade
+
 #5088
-01 cristal médio de reflexão
-03 cristal médio de reflexão
+01 Cristal médio da reflexão
+03 cristal médio da reflexão
+
 #5089
-01 grande cristal de poder
-03 grande cristal de poder
+01 Cristal Grande do poder
+03 Cristal Grande do poder
+
 #5090
-01 grande cristal de energia
+01 Grande cristal de energia
 03 grande cristal de energia
+
 #5091
-01 grande cristal de estabilidade
-03 grande cristal de estabilidade
+01 Cristal grande da durabilidade
+03 cristal grande da durabilidade
+
 #5092
-01 grande cristal de reflexão
-03 grande cristal de reflexão
+01 Cristal de reflexão grande
+03 cristal de reflexão grande
+
 #5093
-01 pequeno cristal negro do poder
-03 pequeno cristal negro do poder
+01 Cristal escuro pequeno do poder
+03 cristal escuro pequeno do poder
+
 #5094
-01 pequeno cristal negro de energia
-03 pequeno cristal negro de energia
+01 Pequeno cristal de energia escura
+03 pequeno cristal de energia escura
+
 #5095
-01 pequeno cristal negro de estabilidade
-03 pequeno cristal negro de estabilidade
+01 Cristal escuro pequeno da durabilidade
+03 cristal escuro pequeno da durabilidade
+
 #5096
-01 pequeno cristal negro de reflexão
-03 pequeno cristal negro de reflexão
+01 Cristal escuro pequeno da reflexão
+03 cristal escuro pequeno da reflexão
+
 #5097
-01 médio cristal negro do poder
-03 médio cristal negro do poder
+01 Cristal escuro médio da força
+03 cristal escuro médio da força
+
 #5098
-01 médio cristal negro de energia
-03 médio cristal negro de energia
+01 Cristal de energia escura médio
+03 cristal de energia escura médio
+
 #5099
-01 médio cristal negro de estabilidade
-03 médio cristal negro de estabilidade
+01 Cristal escuro médio da durabilidade
+03 cristal escuro médio da durabilidade
+
 #5100
-01 médio cristal negro de reflexão
-03 médio cristal negro de reflexão
+01 Cristal escuro médio da reflexão
+03 cristal escuro médio da reflexão
+
 #5101
-01 grande cristal negro do poder
-03 grande cristal negro do poder
+01 Grande poder de cristal escuro
+03 grande poder de cristal escuro
+
 #5102
-01 grande cristal negro de energia
-03 grande cristal negro de energia
+01 Grande cristal de energia escura
+03 grande cristal de energia escura
+
 #5103
-01 grande cristal negro de estabilidade
-03 grande cristal negro de estabilidade
+01 Grande cristal escuro da durabilidade
+03 grande cristal escuro da durabilidade
+
 #5104
-01 cristal grande de poder
-03 cristal grande de poder
+01 Grande cristal do poder
+03 grande cristal do poder
+
 #5105
-01 cristal grande de energia
-03 cristal grande de energia
+01 O grande cristal de energia
+03 grande cristal cristal de energia
+
 #5106
-01 cristal grande de estabilidade
-03 cristal grande de estabilidade
+01 Grande cristal cristal de durabilidade
+03 grande cristal da durabilidade
+
 #5107
-01 cristal grande de reflexão
-03 cristal grande de reflexão
+01 Grande cristal de reflexão
+03 grande cristal de reflexão
+
 #5108
-01 grande cristal negro de reflexão
-03 grande cristal negro de reflexão
+01 Cristal escuro grande da reflexão
+03 cristal escuro grande da reflexão

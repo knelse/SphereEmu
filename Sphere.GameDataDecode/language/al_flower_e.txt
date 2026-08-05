@@ -1,204 +1,214 @@
 #940
-01 Fern flower
-02 Fern flowers
-03 Fern flower
+01 Fern Flower
+02 fern flowers
+03 fern flower
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #941
-01 Ferengon flower
-02 Ferengon flowers
-03 Ferengon flower
+01 Ferengon Flower
+02 ferengon flowers
+03 ferengon flower
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #942
-01 Celesta flower
-02 Celesta flowers
-03 Celesta flower
+01 The flower of Celeste
+02 celeste flowers
+03 The flower of Celeste
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #943
-01 Kledaire
-02 Kledaire
-03 Kledaire
+01 Clover
+02 clover
+03 clover
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #944
 01 Florus
-02 Florus
-03 Florus
+02 florus
+03 florus
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #945
 01 Paris
 02 Paris
 03 Paris
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #946
 01 Creatolus flowers
-02 Creatolus flowers
-03 Creatolus flowers
+02 creatolus flowers
+03 creatolus flowers
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #947
-01 Mandrake
-02 Mandrakes
-03 Mandrake
+01 Mandrake root
+02 mandrake roots
+03 mandrake root
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #948
-01 Pichalle
-02 Pichalle
-03 Pichalle
+01 Pishal
+02 pishal
+03 pishal
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #949
 01 Legra leaf
-02 Legra leaves
-03 Legra leaf
+02 legra leaves
+03 legra leaf
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #950
-01 Serepy berries
-02 Serepy berries
-03 Serepy berries
+01 Serepey berries
+02 serepey berries
+03 serepey berries
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #951
-01 Samalia flower
-02 Samalia flowers
-03 Samalia flower
+01 The flower of samalya
+02 flowers of samalya
+03 the flower of samalya
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #952
-01 Zhelena flower
-02 Zhelena flowers
-03 Zhelena flower
+01 The flower is yellow
+02 flowers are yellow
+03 The flower is yellow
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #953
-01 Circulonius flower
-02 Circulonius flowers
-03 Circulonius flower
+01 Circulonia flower
+02 flowers of circulonia
+03 circulonia flower
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #954
-01 Melvera flower
-02 Melvera flowers
-03 Melvera flower
+01 Melvera's Flower
+02 melvera flowers
+03 Melvera's flower
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #955
 01 Serden
-02 Serden
-03 Serden
+02 serden
+03 serden
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #956
-01 Adonis
-02 Adonis
-03 Adonis
+01 Goritsvet
+02 goritsvet
+03 goritsvet
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #957
-01 Palmirus
-02 Palmirus
-03 Palmirus
+01 Palmyrus
+02 palmyrus
+03 palmyrus
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #958
-01 Phesen
-02 Phesen
-03 Phesen
+01 Fesen
+02 fesen
+03 fesen
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #959
-01 Dragon-eye
-02 Dragon-eye
-03 Dragon-eye
+01 The Dragon's Eye
+02 The dragon's eye
+03 The dragon's eye
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #960
-01 Violus leaf
-02 Violus leaves
-03 Violus leaf
+01 Violus Leaf
+02 leaves of violus
+03 violus leaf
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #961
-01 Kazadour
-02 Kazadour
-03 Kazadour
+01 Kazadur
+02 kazadur
+03 kazadur
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #962
-01 Nevezhen
-02 Nevezhen
-03 Nevezhen
+01 Ignorant
+02 ignorant
+03 ignorant
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #963
-01 Zak
-02 Zak
-03 Zak
+01 Cac
+02 cac
+03 cac
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #964
-01 Kawaya
-02 Kawaya
-03 Kawaya
+01 Kawaii
+02 kawaii
+03 kawaii
 05 fresh
-06 sleepy
-07 faded
+06 sluggish
+07 withered
 
 #965
 01 Edelweiss
-02 Edelweiss
-03 Edelweiss
+02 edelweiss
+03 edelweiss
+
+#966
+01 Sage
+02 sage
+03 sage
+
+#967
+01 Cataranthus
+02 cataranthus
+03 cataranthus

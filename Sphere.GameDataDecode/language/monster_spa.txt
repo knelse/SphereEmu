@@ -1,0 +1,434 @@
+01 Criatura
+
+#1000
+01 Palochnik
+
+#1001
+01 Palochnik esteparia
+
+#1002
+01 Palo del bosque
+
+#1003
+01 Palo cavernícola
+
+#1010
+01 Psoglavec
+
+#1011
+01 Psoglavets esteparia
+
+#1012
+01 Psoglavets bosque
+
+#1013
+01 Psoglavets cueva
+
+#1020
+01 El caballero rudo
+
+#1021
+01 Caballero oxidado
+
+#1022
+01 El caballero indecente
+
+#1023
+01 El caballero de oro
+
+#1024
+01 El caballero gigante
+
+#1025
+01 Caballero aéreo
+
+#1040
+01 Golem de tierra
+
+#1041
+01 Golem de arena
+
+#1042
+01 Golem de arcilla
+
+#1043
+01 Golem libre
+
+#1044
+01 Golem gigante
+
+#1050
+01 Bangville scolopendra
+
+#1051
+01 Scolopendra real
+
+#1060
+01 Esqueleto
+
+#1061
+01 Esqueleto del bosque
+
+#1062
+01 El Esqueleto De Umradsky
+
+#1063
+01 Esqueleto aéreo
+
+#1064
+01 Esqueleto cavernoso
+
+#1065
+01 Leach
+
+#1066
+01 Esqueleto gigante
+
+#1067
+01 Air Lich
+
+#1069
+01 Asesino
+
+#1070
+01 Jabalí
+
+#1071
+01 Jabalí loco
+
+#1072
+01 Jabalí seco
+
+#1073
+01 Jabalí de aire
+
+#1074
+01 Jabalí de hierro
+
+#1075
+01 Jabalí de fuego
+
+#1076
+01 Jabalí gigante
+03 Jabalí gigante
+
+#1080
+01 Cianos
+
+#1081
+01 Cianos oscuro
+
+#1082
+01 Cianos seco
+
+#1083
+01 Cianos de hierro
+
+#1084
+01 Cianos aire
+
+#1085
+01 Cianos gigante
+
+#1090
+01 Lobo
+
+#1091
+01 Lobo estepario
+
+#1092
+01 Lobo de hielo
+
+#1093
+01 Lobo seco
+
+#1094
+01 Lobo de hierro
+
+#1095
+01 Lobo Infernal
+
+#1100
+01 Araña
+
+#1101
+01 Araña de azufre
+
+#1102
+01 Araña seca
+
+#1103
+01 Araña de hierro
+
+#1104
+01 Araña de fuego
+
+#1105
+01 Viuda negra
+
+#1106
+01 Araña gigante
+
+#1107
+01 Araña de aire
+
+#1110
+01 Salamandra
+
+#1111
+01 Salamandra de nomrad
+
+#1112
+01 Salamandra de tierra
+
+#1113
+01 Salamandra de hierro
+
+#1114
+01 Salamandiga
+
+#1120
+01 Escorpión rojo
+
+#1121
+01 Escorpio
+
+#1122
+01 Escorpión azul
+
+#1123
+01 Escorpión de fuego
+
+#1130
+01 Tifón
+
+#1131
+01 Tifón ahumado
+
+#1132
+01 Tifón chillón
+
+#1133
+01 Tifón de hierro
+
+#1134
+01 Tifón de fuego
+
+#1135
+01 Tifón gigante
+
+#1140
+01 Caníbal
+
+#1141
+01 Ogro de azufre
+
+#1142
+01 El hombre de las cavernas
+
+#1143
+01 Ogro gigante
+
+#1150
+01 Nifon
+
+#1170
+01 Gato
+
+#1180
+01 Toro
+
+#1190
+01 Tropos
+
+#1191
+01 Tropos rabiosos
+
+#1192
+01 Tropos de turba
+
+#1193
+01 Royal Tropos
+
+#1194
+01 Tropos aéreos
+
+#1200
+01 Mamut
+
+#1201
+01 Mamut de hierro
+
+#1202
+01 Mamut de nieve
+
+#1203
+01 Mamut de carbón
+
+#1210
+01 Zombies
+
+#1211
+01 Zombie gris
+
+#1212
+01 Zombader
+
+#1213
+01 Zombie gigante
+
+#1220
+01 Árbol encantado
+
+#1221
+01 Caoba
+
+#1222
+01 Árbol muerto
+
+#1230
+01 Piedra de granito
+
+#1231
+01 Piedra Esmeralda
+
+#1232
+01 Piedra de zafiro
+
+#1233
+01 Amo de las rocas
+
+#1240
+01 El cadáver Andante
+
+#1241
+01 Cadauro
+
+#1242
+01 Araña de cadauro
+
+#1243
+01 Cadauro de hueso
+
+#1244
+01 Cadauro gigante
+
+#1250
+01 Netopyrus
+
+#1251
+01 Gris netopyrus
+
+#1252
+01 Netopyrus de fuego
+
+#1253
+01 Netopyrus gigante
+
+#1260
+01 Menada forestal
+
+#1261
+01 Estepa menada
+
+#1262
+01 Cueva menada
+
+#1263
+01 Menada mágica
+
+#1264
+01 Menada aérea
+
+#1270
+01 Enano
+
+#1271
+01 Enano Del Bosque
+
+#1272
+01 Enana Del Cráter
+
+#1273
+01 Enano aéreo
+
+#1290
+01 Asesino
+
+#1291
+01 Asesino libre
+
+#1292
+01 El asesino fantasma
+
+#1310
+01 Glot
+
+#1311
+01 Garganta de pantano
+
+#1320
+01 Heraldo de la muerte
+
+#1330
+01 Kurgánnik
+
+#1340-1343
+01 Rogue
+
+#1410
+01 Gusano subterráneo
+
+#1420
+01 Sirena
+
+#1430
+01 Tentáculo de carne
+
+#1431
+01 Tentáculo de hierro
+
+#1440
+01 Perro de hueso
+
+#1450
+01 Cazador de Caronte
+
+#1451
+01 Cazador de fuego
+
+#1452
+01 Cazador de hierro
+
+#1453
+01 Cazador muerto
+
+#1460
+01 Cazadora de fuego
+
+#1461
+01 La cazadora de hierro
+
+#1462
+01 Cazadora de Caronte
+
+#1463
+01 La cazadora muerta
+
+#1470
+01 Guardián del abismo
+
+#1480
+01 Quimera
+
+#1880
+01 Bangville scolopendra
+
+#1881
+01 Palochnik
+
+#1882
+01 Tropos
+
+#1883
+01 Caballero oxidado

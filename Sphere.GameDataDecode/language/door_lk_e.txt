@@ -1,5 +1,5 @@
-01 Door to dungeon
-03 Door to dungeon
-10 You need a key to open the door.
-11 Door open!
-12 Door closed.
+01 The door to the dungeon
+03 The door to the dungeon
+10 The door opens with a key
+11 The door is open!
+12 The door closed.

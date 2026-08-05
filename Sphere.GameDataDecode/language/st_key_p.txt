@@ -1,140 +1,140 @@
 01 chave
 03 chave
-
-5000 Taverna, quarto barato, Sheepstone
-5001 Taverna, quarto barato, Sheepstone
-5002 Taverna, suíte, Sheepstone (porta dos fundos)
-5003 Taverna, suíte, Sheepstone (porta dos fundos)
-5007 Taverna, quarto barato, Bangville
-5008 Taverna, suíte, Bangville
-5009 Taverna, quarto barato, Sunpool
-5010 Taverna, quarto barato, Sunpool
-5011 Taverna, suíte, Sunpool (porta dos fundos)
-5012 Taverna, suíte, Sunpool (porta dos fundos)
-5013 Taverna, suíte, Sunpool (porta dos fundos)
-5014 Taverna, suíte, Sunpool (porta dos fundos)
-5015 Taverna, quarto barato, Torweal
-5016 Taverna, suíte, Torweal
-5017 Taverna, apartamento barato, Nomrad
-5018 Taverna, suíte luxuosa, Nomrad
-5019 Taverna, apartamento barato, Gifes
-5020 Taverna, suíte luxuosa, Gifes
-5004 Hotel, apartamento barato, Umrad
-5005 Hotel, suíte luxuosa, Umrad
-5006 Hotel, suíte luxuosa com baú grande, Umrad (entrada do jardim)
-5025 Hotel, suíte luxuosa com baú grande, Umrad (entrada do jardim)
-5026 Hotel, suíte luxuosa com baú grande, Umrad (entrada do jardim)
-5027 Oficina, Sheepstone
+5000 Hotel, quarto barato, Shipstone
+5001 Hotel, quarto barato, Shipstone
+5002 Hotel, Suite, Shipstone (entrada do pátio)
+5003 Hotel, Suite, Shipstone (entrada do pátio)
+5007 Hotel, quarto barato, Bangville
+5008 Hotel, Suite, Bangville
+5009 Hotel, quarto barato, Sanpul
+5010 Hotel, quarto barato, Sanpul
+5011 Hotel, Suite, Sunpool (entrada do pátio)
+5012 Hotel, Suite, Sunpool (entrada do pátio)
+5013 Hotel, Suite, Sunpool (entrada do pátio)
+5014 Hotel, Suite, Sunpool (entrada do pátio)
+5015 Hotel, quarto barato, Torville
+5016 Hotel, Suite, Torville
+5017 Hotel, quarto barato, Nomrad
+5018 Hotel, Quarto de luxo, Nomrad
+5019 Hotel, quarto barato, Gifes
+5020 Hotel, suíte, Gifes
+5004 Hotel, quarto barato, Umrad
+5005 Hotel, Suite, Umrad
+5006 Hotel, Suite com grande baú, Umrad (entrada do pátio)
+5025 Hotel, Suite com grande baú, Umrad (entrada do pátio)
+5026 Hotel, Suite com grande baú, Umrad (entrada do pátio)
+5027 Oficina, Shipstone
 5028 Oficina, Bangville
-5029 Oficina, Sunpool
-5030 Oficina, Torweal
+5029 Oficina, Sanpul
+5030 Oficina, Torville
 5031 Oficina, Nomrad
 5032 Oficina, Gifes
 5033 Oficina, Umrad
-5034 Hotel, quarto com arca grande, Anhelm (entrada pelo jardim)
-5035 Hotel, quarto com arca grande, Anhelm (entrada pelo jardim)
-5036 Hotel, quarto com arca grande, Anhelm (entrada pelo jardim)
-5037 Hotel, quarto de luxo com arca grande, Anhelm
-
-5200 Albergue, quarto barato
-5201 Albergue, quarto barato
-5202 Albergue, quarto barato
-5203 Albergue, quarto barato
-5204 Albergue, quarto barato
-5205 Albergue, quarto barato
-5206 Albergue, quarto barato
-5207 Albergue, quarto barato
-
-5400 Quarto do castelo Lieze
-5401 Quarto do castelo Lieze
-5402 Quarto do castelo Fief
-5403 Quarto do castelo Aris
-5404 Quarto do castelo Aris
-5405 Quarto do castelo Lotar
-5406 Quarto do castelo Eikum-Kas
-5407 Quarto do castelo Gedeon
-5408 Quarto do castelo Gedeon
-5409 Quarto do castelo Gedeon
-5410 Quarto do castelo Chatelier
-5411 Quarto do castelo Chatelier
-5412 Quarto do castelo Chatelier
-5413 Quarto do castelo Tuanod
-5414 Quarto do castelo Tuanod
-5415 Quarto do castelo Tuanod
-5416 Quarto do castelo Peltier
-5417 Quarto do castelo Peltier
-5418 Quarto do castelo Peltier
-5419 Quarto do castelo Care-Royal
-5420 Quarto do castelo Care-Royal
-5421 Quarto do castelo Care-Royal
-5422 Quarto do castelo Blessendor
-5423 Quarto do castelo Blessendor
-5424 Quarto do castelo Blessendor
-5425 Quarto do castelo Temoval
-5426 Quarto do castelo Temoval
-5427 Quarto do castelo Temoval
-5428 Quarto do castelo Atral
-5429 Quarto do castelo Atral
-5430 Quarto do castelo Atral
-5431 Quarto do castelo Kablac
-5432 Quarto do castelo Kablac
-5433 Quarto do castelo Kablac
-5434 Quarto do castelo Davengar
-5435 Quarto do castelo Davengar
-5436 Quarto do castelo Davengar
-5437 Quarto do castelo Sabulat
-5438 Quarto do castelo Sabulat
-5439 Quarto do castelo Sabulat
-5440 Quarto do castelo Defensat
-5441 Quarto do castelo Defensat
-5442 Quarto do castelo Defensat
-5443 Quarto do castelo Aionat
-5444 Quarto do castelo Aionat
-5445 Quarto do castelo Aionat
-5446 Quarto do castelo Triunfaler
-5447 Quarto do castelo Triunfaler
-5448 Quarto do castelo Triunfaler
-5449 Quarto no castelo de Bagnarak
-5450 Quarto no castelo de Bagnarak 
-5451 Quarto no castelo de Bagnarak 
-5452 Quarto no castelo de Kabrad
-5453 Quarto no castelo de Kabrad 
-5454 Quarto no castelo de Kabrad 
-5455 Um quarto no castelo Set
-5456 Um quarto no castelo Set
-5457 Um quarto no castelo Set
-5458 Um quarto no castelo Lender
-5459 Um quarto no castelo Lender
-5460 Um quarto no castelo Lender
-5461 Quarto no castelo de Keles
-5462 Quarto no castelo de Keles
-5463 Quarto no castelo de Keles
-5464 Um quarto no castelo Sheprostan
-5465 Um quarto no castelo Sheprostan
-5466 Um quarto no castelo Sheprostan
-5467 Quarto no castelo de Orkobien
-5468 Quarto no castelo de Orkobien
-5469 Quarto no castelo de Orkobien
-5470 Quarto no castelo de Kanuak
-5471 Quarto no castelo de Kanuak
-5472 Quarto no castelo de Kanuak
-5473 Quarto no castelo de Aldarnon
-5474 Quarto no castelo de Aldarnon
-5475 Quarto no castelo de Aldarnon
-5476 Um quarto no castelo Yong
-5477 Um quarto no castelo Yong
-5478 Um quarto no castelo Yong
-5479 Quarto no castelo de Elek
-5480 Quarto no castelo de Elek
-5481 Quarto no castelo de Elek
-5482 Quarto no castelo de Gavot
-5483 Quarto no castelo de Gavot
-5484 Quarto no castelo de Gavot
-5485 Quarto no castelo de Kandur
-5486 Quarto no castelo de Kandur
-5487 Quarto no castelo de Kandur
-5488 Quarto no Castelo Immertel
-5489 Quarto no Castelo Narcissus
+5034 Hotel, quarto com baú grande, Angelm (entrada do pátio)
+5035 Hotel, quarto com baú grande, Angelm (entrada do pátio)
+5036 Hotel, quarto com baú grande, Angelm (entrada do pátio)
+5037 Hotel, suíte com baú grande, Angelm
+5200 Hotel Rural, quarto barato
+5201 Hotel Rural, quarto barato
+5202 Hotel Rural, quarto barato
+5203 Hotel Rural, quarto barato
+5204 Hotel Rural, quarto barato
+5205 Hotel Rural, quarto barato
+5206 Hotel Rural, quarto barato
+5207 Hotel Rural, quarto barato
+5400 Quarto no Castelo de Liège
+5401 Quarto no Castelo de Liège
+5402 Quarto no Castelo de fief
+5403 Quarto no Castelo de Aris
+5404 Quarto no Castelo de Aris
+5405 Quarto no Castelo de Lator
+5406 Quarto no Castelo de Eikum-CAS
+5407 Quarto no Castelo de Gideão
+5408 Quarto no Castelo de Gideão
+5409 Quarto no Castelo de Gideão
+5410 Quarto no Castelo de Chatelier
+5411 Quarto no Castelo de Chatelier
+5412 Quarto no Castelo de Chatelier
+5413 Quarto no Castelo de Tuanod
+5414 Quarto no Castelo de Tuanod
+5415 Quarto no Castelo de Tuanod
+5416 Quarto no Castelo de Peltier
+5417 Quarto no Castelo de Peltier
+5418 Quarto no Castelo de Peltier
+5419 Quarto no Castelo de Kare Royal
+5420 Quarto no Castelo de Kare Royal
+5421 Quarto no Castelo de Kare Royal
+5422 Quarto no Castelo de Blessendor
+5423 Quarto no Castelo de Blessendor
+5424 Quarto no Castelo de Blessendor
+5425 Quarto no Castelo de Ternoval
+5426 Quarto no Castelo de Ternoval
+5427 Quarto no Castelo de Ternoval
+5428 Quarto no Castelo de Ammalael
+5429 Quarto no Castelo de Ammalael
+5430 Quarto no Castelo de Ammalael
+5431 Quarto no Castelo de Salto
+5432 Quarto no Castelo de Salto
+5433 Quarto no Castelo de Salto
+5434 Quarto no castelo Devanagari
+5435 Quarto no castelo Devanagari
+5436 Quarto no castelo Devanagari
+5437 Quarto no Castelo Sabulat
+5438 Quarto no Castelo Sabulat
+5439 Quarto no Castelo Sabulat
+5440 Quarto no Castelo de Deffensat
+5441 Quarto no Castelo de Deffensat
+5442 Quarto no Castelo de Deffensat
+5443 Quarto no Castelo de Ayonat
+5444 Quarto no Castelo de Ayonat
+5445 Quarto no Castelo de Ayonat
+5446 Quarto no Castelo de Triumphaler
+5447 Quarto no Castelo de Triumphaler
+5448 Quarto no Castelo de Triumphaler
+5449 Quarto no Castelo de Bagarnak
+5450 Quarto no Castelo de Bagarnak
+5451 Quarto no Castelo de Bagarnak
+5452 Quarto no Castelo de Cabrad
+5453 Quarto no Castelo de Cabrad
+5454 Quarto no Castelo de Cabrad
+5455 Quarto no Castelo de Seth
+5456 Quarto no Castelo de Seth
+5457 Quarto no Castelo de Seth
+5458 Quarto no Castelo de Lander
+5459 Quarto no Castelo de Lander
+5460 Quarto no Castelo de Lander
+5461 Quarto no Castelo de Keles
+5462 Quarto no Castelo de Keles
+5463 Quarto no Castelo de Keles
+5464 Quarto no Castelo de Sheprostan
+5465 Quarto no Castelo de Sheprostan
+5466 Quarto no Castelo de Sheprostan
+5467 Quarto no Castelo de Orkobien
+5468 Quarto no Castelo de Orkobien
+5469 Quarto no Castelo de Orkobien
+5470 Quarto no Castelo de Kanuak
+5471 Quarto no Castelo de Kanuak
+5472 Quarto no Castelo de Kanuak
+5473 Quarto no castelo Aldarnon
+5474 Quarto no castelo Aldarnon
+5475 Quarto no castelo Aldarnon
+5476 Quarto no Castelo de Yong
+5477 Quarto no Castelo de Yong
+5478 Quarto no Castelo de Yong
+5479 Quarto no Castelo de Elek
+5480 Quarto no Castelo de Elek
+5481 Quarto no Castelo de Elek
+5482 Quarto no Castelo de Gavot
+5483 Quarto no Castelo de Gavot
+5484 Quarto no Castelo de Gavot
+5485 Quarto no Castelo de Kandur
+5486 Quarto no Castelo de Kandur
+5487 Quarto no Castelo de Kandur
+5488 Quarto no Castelo Immortelle
+5489 Quarto no Castelo Narcisse
 5490 Quarto no Castelo Randen
 5491 Quarto no Castelo Nirgun
-5492 Quarto no Castelo Gelgivinn
+5492 Quarto no Castelo de Gelgivinn
+5493 Quarto no Castelo de Ile-Suilly-Rua
+5494 Quarto no Castelo de Ile-Suilly-Rua
+5495 Quarto no Castelo de Ile-Suilly-Rua

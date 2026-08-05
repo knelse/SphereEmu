@@ -1,8 +1,5 @@
-01 Palavra que evoca os Seis
-03 Palavra que evoca os Seis
-
-100 Na sua frente está um fragmento de um pergaminho com uma palavra capaz de evocar os Seis. 
-
+01 A Palavra Que Expulsa Seis
+03 A Palavra Que Expulsa Seis
+100 Tens diante de ti um fragmento de um pergaminho com uma palavra capaz de expulsar seis homens.
 TEXT
-
-    .. .. .. ra
+    .. .. .. Ra

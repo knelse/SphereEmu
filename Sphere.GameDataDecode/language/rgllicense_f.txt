@@ -1,0 +1,6 @@
+01 Licence de magnitude
+03 licence de magnitude
+100 Donne au personnage une nouvelle Grandeur quand il n'y a pas d'autre moyen
+101 Voulez-vous vraiment réinitialiser le niveau?
+102 La Grandeur est reçue.
+103 Maintenant, il n'est pas nécessaire d'utiliser la licence.

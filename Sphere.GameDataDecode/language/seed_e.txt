@@ -1,11 +1,10 @@
-01 seed
-03 seed
+01 The seed
+03 The seed
 05 new
-06 old
-07 faded
-10 To activate put the seed on the ground.
-
-101 Doghead inside
-102 Chest inside
-103 Castle-stone inside (to be activated within a castle)
-104 Protective stone inside (to be activated within a castle)
+06 aging
+07 withering
+10 To activate, place the seed on the ground.
+101 Inside is a dog's head
+102 Inside is a chest
+103 Inside is a keystone (activate within the castle)
+104 Inside is a protective stone (activate within the castle)

@@ -1,56 +1,69 @@
 #140
-01 Ear of doghead
-02 ears of dogheads
-03 ear of doghead
+01 The Dog's Ear
+02 ears of dog-heads
+03 The dog's ear
+
 #141
-01 Bone of flyer
-02 bones of flyers
-03 bone of flyer
+01 The bone of the flyer
+02 Bones of flyers
+03 the bone of the flyer
+
 #142
-01 Antennae of scolopendra
-02 antennae of scolopendras
-03 antennae of scolopendra
+01 Antennae of the centipede
+02 antennae of centipedes
+03 antennae of the centipede
+
 #143
-01 Skull of lich
-02 skulls of liches
-03 skull of lich
+01 The skull of a Lich
+02 lich skulls
+03 The skull of a Lich
+
 #144
-01 Tusk of wild boar
-02 tusks of wild boars
-03 tusk of wild boar
+01 Boar's Fang
+02 boar fangs
+03 boar's fang
+
 #145
-01 Claw of cyanos
-02 claws of cyanos
-03 claw of cyanos
+01 The Claw of Cyanos
+02 the claws of cyanos
+03 the claw of cyanos
+
 #146
-01 Tail of wolf
+01 The wolf's Tail
 02 wolf tails
-03 tail of wolf
+03 The wolf's tail
+
 #147
-01 legs of spider
+01 Spider Paws
 02 spider legs
-03 legs of spider
+03 spider paws
+
 #148
-01 Tail of salamander
-02 tails of salamanders
-03 tail of salamander
+01 Salamander tail
+02 salamander tails
+03 salamander tail
+
 #149
-01 Sting of scorpion
-02 stings  of scorpions
-03 sting of scorpion
+01 Scorpion Sting
+02 Scorpion stings
+03 scorpion sting
+
 #150
-01 Scales of typhon
-02 scales of typhons
-03 scales of typhon
+01 Typhon Scales
+02 Typhon scales
+03 Typhon scales
+
 #151
-01 Tooth of dragon
-02 teeth of dragons
-03 tooth of dragon
+01 Dragon's Tooth
+02 dragon teeth
+03 Dragon's tooth
+
 #152
-01 Tusk of mammoth
-02 tusks of mammoths
-03 tusk of mammoth
+01 Mammoth Tusk
+02 mammoth tusks
+03 mammoth tusk
+
 #153
-01 Ear of bat
-02 ears of bats
-03 ear of bat
+01 The Bat's ear
+02 bat ears
+03 the bat's ear

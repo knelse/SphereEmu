@@ -1,0 +1,69 @@
+01 Metall
+02 metall
+03 metall
+
+#970
+01 Gold
+02 gold
+03 gold
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 6.
+
+#971
+01 Silber
+02 silber
+03 silber
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 3.
+
+#972
+01 Kupfer
+02 kupfer
+03 kupfer
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 1.
+
+#973
+01 Eisen
+02 eisen
+03 eisen
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 3.
+
+#974
+01 Blei
+02 blei
+03 blei
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 6.
+
+#975
+01 Zinn
+02 zinn
+03 zinn
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator ist 12.
+
+#976
+01 Platin
+02 Platin
+03 Platin
+100 Wird in alchemischen Reaktionen verwendet. Der Multiplikator ist 24.
+
+#977
+01 Mithril
+02 mithril
+03 mithril
+100 Wird in alchemischen Reaktionen verwendet. Der Multiplikator ist 48.
+
+#978
+01 Aluminium
+02 aluminium
+03 aluminium
+100 Wird in alchemischen Reaktionen verwendet. Der Multiplikator ist 72.
+
+#979
+01 Wolfram
+02 wolfram
+03 wolfram
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 6.
+
+#980
+01 Yttrium
+02 yttrium
+03 yttrium
+100 Wird in alchemischen Reaktionen verwendet. Multiplikator 6.

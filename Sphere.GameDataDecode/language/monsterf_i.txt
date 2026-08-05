@@ -1,0 +1,88 @@
+01 Creatura
+
+#1030
+01 Squirter
+
+#1031
+01 Volantino della tempesta
+
+#1032
+01 Volantino infuocato
+
+#1033
+01 Ambra Squirter
+
+#1034
+01 Gigante Squirter
+
+#1160
+01 Drago verde
+
+#1161
+01 Drago blu
+
+#1162
+01 Drago rosso
+
+#1163
+01 Drago d'acciaio
+
+#1164
+01 Drago gigante
+
+#1300
+01 Dracost
+
+#1301
+01 Drago d'oro
+
+#1302
+01 Drago di ghiaccio
+
+#1360
+01 Drago nero
+
+#1361
+01 Drago Bianco
+
+#1362
+01 Drago nero
+
+#1363
+01 Drago Bianco
+
+#1364
+01 Drago nero
+
+#1365
+01 Drago Bianco
+
+#1366
+01 Il grande drago nero
+
+#1367
+01 Il grande drago bianco
+
+#1368
+01 Drago ferito nero
+
+#1370
+01 Cavaliere Nero
+
+#1371
+01 Cavaliere bianco
+
+#1380
+01 Sabbie mobili
+
+#1400
+01 Serpente di fuoco
+
+#1401
+01 Serpente osseo
+
+#1402
+01 Serpente di ferro
+
+#1850-1855
+01 Lo Squirter del negromante

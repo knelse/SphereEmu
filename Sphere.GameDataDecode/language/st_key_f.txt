@@ -1,0 +1,140 @@
+01 clé
+03 clé
+5000 Hôtel, chambre bon marché, Shipstone
+5001 Hôtel, chambre bon marché, Shipstone
+5002 Hôtel, suite, Shipstone (entrée de la cour)
+5003 Hôtel, suite, Shipstone (entrée de la cour)
+5007 Hôtel, chambre bon marché, Bangville
+5008 Hôtel, suite, Bangville
+5009 Hôtel, chambre bon marché, Sanpool
+5010 Hôtel, chambre bon marché, Sanpool
+5011 Hôtel, suite, Sanpool (entrée de la cour)
+5012 Hôtel, suite, Sanpool (entrée de la cour)
+5013 Hôtel, suite, Sanpool (entrée de la cour)
+5014 Hôtel, suite, Sanpool (entrée de la cour)
+5015 Hôtel, chambre bon marché, Torville
+5016 Hôtel, suite, Torville
+5017 Hôtel, chambre bon marché, Nomrad
+5018 Hôtel, suite, Nomrad
+5019 Hôtel, chambre bon marché, Gifes
+5020 Hôtel, suite, Gifes
+5004 Hôtel, chambre bon marché, Umrad
+5005 Hôtel, suite, Umrad
+5006 Hôtel, suite avec grand coffre, Umrad (entrée de la cour)
+5025 Hôtel, suite avec grand coffre, Umrad (entrée de la cour)
+5026 Hôtel, suite avec grand coffre, Umrad (entrée de la cour)
+5027 Atelier, Shipstone
+5028 Atelier, Bangeville
+5029 Atelier, Sanpool
+5030 Atelier, Torville
+5031 Atelier, Nomrad
+5032 Atelier, Gifes
+5033 Atelier, Umrad
+5034 Hôtel, chambre avec grand coffre, Angelm (entrée de la cour)
+5035 Hôtel, chambre avec grand coffre, Angelm (entrée de la cour)
+5036 Hôtel, chambre avec grand coffre, Angelm (entrée de la cour)
+5037 Hôtel, suite avec grand coffre, Angelm
+5200 Hôtel rural, chambre bon marché
+5201 Hôtel rural, chambre bon marché
+5202 Hôtel rural, chambre bon marché
+5203 Hôtel rural, chambre bon marché
+5204 Hôtel rural, chambre bon marché
+5205 Hôtel rural, chambre bon marché
+5206 Hôtel rural, chambre bon marché
+5207 Hôtel rural, chambre bon marché
+5400 Chambre au château de liège
+5401 Chambre au château de liège
+5402 Chambre au château de Fief
+5403 Chambre au château d'Aris
+5404 Chambre au château d'Aris
+5405 Chambre au château de Latour
+5406 Chambre au château d'Eykum-Kas
+5407 Chambre au château de Gédéon
+5408 Chambre au château de Gédéon
+5409 Chambre au château de Gédéon
+5410 Chambre au château de Châtelet
+5411 Chambre au château de Châtelet
+5412 Chambre au château de Châtelet
+5413 Chambre au château de Thouanod
+5414 Chambre au château de Thouanod
+5415 Chambre au château de Thouanod
+5416 Chambre au château de Peltier
+5417 Chambre au château de Peltier
+5418 Chambre au château de Peltier
+5419 Chambre au château Carré-Royal
+5420 Chambre au château Carré-Royal
+5421 Chambre au château Carré-Royal
+5422 Chambre au château de Blessendor
+5423 Chambre au château de Blessendor
+5424 Chambre au château de Blessendor
+5425 Chambre au château de Ternoval
+5426 Chambre au château de Ternoval
+5427 Chambre au château de Ternoval
+5428 Chambre au château d'Ammalael
+5429 Chambre au château d'Ammalael
+5430 Chambre au château d'Ammalael
+5431 Chambre au château de Kablak
+5432 Chambre au château de Kablak
+5433 Chambre au château de Kablak
+5434 Chambre au château de Devanagari
+5435 Chambre au château de Devanagari
+5436 Chambre au château de Devanagari
+5437 Chambre au château de Saboulat
+5438 Chambre au château de Saboulat
+5439 Chambre au château de Saboulat
+5440 Chambre au château de Deffensat
+5441 Chambre au château de Deffensat
+5442 Chambre au château de Deffensat
+5443 Chambre au château d'Ayonat
+5444 Chambre au château d'Ayonat
+5445 Chambre au château d'Ayonat
+5446 Chambre au château de Triumfaler
+5447 Chambre au château de Triumfaler
+5448 Chambre au château de Triumfaler
+5449 Chambre au château de Bagarnac
+5450 Chambre au château de Bagarnac
+5451 Chambre au château de Bagarnac
+5452 Chambre au château de Cabrad
+5453 Chambre au château de Cabrad
+5454 Chambre au château de Cabrad
+5455 Chambre au château de Sète
+5456 Chambre au château de Sète
+5457 Chambre au château de Sète
+5458 Chambre au château de Lander
+5459 Chambre au château de Lander
+5460 Chambre au château de Lander
+5461 Chambre au château de Keles
+5462 Chambre au château de Keles
+5463 Chambre au château de Keles
+5464 Chambre au château de Sheprostan
+5465 Chambre au château de Sheprostan
+5466 Chambre au château de Sheprostan
+5467 Chambre au château d'Orcobien
+5468 Chambre au château d'Orcobien
+5469 Chambre au château d'Orcobien
+5470 Chambre au château de Canouac
+5471 Chambre au château de Canouac
+5472 Chambre au château de Canouac
+5473 Chambre au château d'Aldarnon
+5474 Chambre au château d'Aldarnon
+5475 Chambre au château d'Aldarnon
+5476 Chambre au château de Jong
+5477 Chambre au château de Jong
+5478 Chambre au château de Jong
+5479 Chambre au château d'Elek
+5480 Chambre au château d'Elek
+5481 Chambre au château d'Elek
+5482 Chambre au château de Gavot
+5483 Chambre au château de Gavot
+5484 Chambre au château de Gavot
+5485 Chambre au château de candour
+5486 Chambre au château de candour
+5487 Chambre au château de candour
+5488 Chambre au château d'Immertel
+5489 Chambre au château de Narcisse
+5490 Chambre au château de Randen
+5491 Chambre au château de Nirgun
+5492 Chambre au château de Gelgivinn
+5493 Chambre au château de l & apos; Isle-Suilly-Roya
+5494 Chambre au château de l & apos; Isle-Suilly-Roya
+5495 Chambre au château de l & apos; Isle-Suilly-Roya

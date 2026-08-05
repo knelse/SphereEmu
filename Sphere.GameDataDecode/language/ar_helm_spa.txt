@@ -1,0 +1,99 @@
+01 Casco de hierro
+03 casco de hierro
+100 En la batalla protege de las armas de los enemigos.
+200 fuerza
+201 absorción
+202 seguridad
+203 salud
+204 meditaciones
+205 precisión
+206 Ether
+207 valores
+
+#262-273
+01 Capuchón De Año Nuevo
+03 capuchón
+
+#337
+01 Sombrero
+03 sombrero
+
+#338
+01 Casco de cuero
+03 casco de cuero
+
+#339-340
+01 Casco de cuero remachado
+03 casco de cuero remachado
+
+#341-342
+01 Casco de malla
+03 casco de malla
+
+#343-345
+01 Casco de hierro
+03 casco de hierro
+
+#346-348
+01 Casco de hierro antiguo
+03 casco de hierro antiguo
+
+#3146-3147
+01 Sombrero
+03 sombrero
+
+#3148-3149
+01 Casco de cuero
+03 casco de cuero
+
+#3150-3153
+01 Casco de cuero remachado
+03 casco de cuero remachado
+
+#3154-3157
+01 Casco de malla
+03 casco de malla
+
+#3158-3163
+01 Casco de hierro
+03 casco de hierro
+
+#3164-3170
+01 Casco de hierro antiguo
+03 casco de hierro antiguo
+
+#4480-4488
+01 Casco de hierro antiguo
+03 casco de hierro antiguo
+
+#4744
+01 Casco negro
+03 casco negro
+
+#4745
+01 Casco blanco
+03 casco blanco
+
+#5771
+01 Sombrero Del Inquisidor
+03 el sombrero del Inquisidor
+
+#5772
+01 Casco de cuero Inquisidor
+03 casco del Inquisidor
+
+#5773
+01 Casco remachado del Inquisidor
+03 casco del Inquisidor
+
+#5774
+01 Casco de malla del Inquisidor
+03 casco del Inquisidor
+
+#5775
+01 Casco de hierro del Inquisidor
+03 casco del Inquisidor
+
+#5776
+01 Casco antiguo del Inquisidor
+03 casco del Inquisidor

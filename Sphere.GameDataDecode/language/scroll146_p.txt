@@ -1,9 +1,7 @@
-01 Fórmula do pó da bola de fogo
-02 Fórmula do pó da bola de fogo
-03 Fórmula do pó da bola de fogo
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de bolas de fogo em pó
+02 receitas de bolas de fogo em pó
+03 receita de bolas de fogo em pó
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Ponha feirik, a planta conhecida como zirculonia e cobre na fornalha. Mixture-os cuidadosamente e alimente a fornalha com lenha. Se você for mais forte que bacharel , você obterá o pó de bola de fogo.
+    Põe as fadas, A circulonia e o cobre no forno. Misture bem e derreta o forno com lenha. Se fores mais forte do que um universitário, receberás bolas de fogo em pó.
+    

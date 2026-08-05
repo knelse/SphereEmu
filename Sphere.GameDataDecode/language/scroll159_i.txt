@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione magica
-02 Formula della polvere della protezione magica
-03 Formula della polvere della protezione magica
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta polvere di protezione magica
+02 ricette di polvere di protezione magica
+03 ricetta polvere di protezione magica
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della protezione magica, prima devi ottenere Spherite e Argento. Senza una pianta di Mandragora però non si otterrà la reazione. Mescola i componenti nella fornace, alimentala con dei ramoscelli e utilizza la polvere ottenuta. Non dimenticare che il tuo grado non deve essere inferiore a quello di graduato per ottenere questa reazione.
+    Per ottenere la polvere di protezione magica, prima di tutto ottieni sferite e argento. Senza la pianta Mandragora, niente funzionerà. Mescolare i componenti nella fornace, sciogliere la fornace con sottobosco e utilizzare la polvere risultante. Non dimenticare che per fare questa reazione, il tuo grado non deve essere inferiore al Bachelor.
+    

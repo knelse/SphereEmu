@@ -56,5 +56,6 @@ public enum BelongingSlot
     Ammo = 1014,
     SpeedhackMantra = 1015,
     MainHand = 1016,
+    TokenIsland = 1017, // not sure
     Unknown = -1
 }

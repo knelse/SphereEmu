@@ -1,10 +1,6 @@
-01 Licenza per azzeramento del grado
-03 licenza per azzeramento del grado
-
-100 Сбрасывает уровень степени персонажа до 15. При этом на каждые сброшенные 5 (пять) уровней степени добавляется  1  (один) уровень к предыдущему титулу. Также сбрасываются распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земля, воздух, вода и огонь. ВНИМАНИЕ! Лицензия не работает, если у персонажа есть специальность!
-
-101 Vuoi veramente azzerare il tuo grado?
-102 Il grado и stato azzerato.
-103 Ora non hai bisogno di usare la licenza.
-
-
+01 Licenza di ripristino del grado
+03 licenza di ripristino del grado
+100 Ripristina il livello di grado del personaggio a 15. In questo caso, per ogni 5 (cinque) livelli di grado ripristinati, viene aggiunto 1 (Uno) livello al titolo precedente. Vengono ripristinate anche le statistiche distribuite del personaggio, come: forza, agilitа, precisione, resistenza, terra, aria, acqua e fuoco. Attenzione! La licenza non funziona se il personaggio ha una specialitа!
+101 Vuoi davvero ripristinare la laurea?
+102 Il grado и stato ripristinato.
+103 Ora non и necessario utilizzare una licenza.

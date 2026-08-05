@@ -1,33 +1,37 @@
-01 String
-03 string
-
-10 This string ties the ears of those whose karma was %s.
-11 This string ties the ears of Admins guild members. //never comes
-12 This string ties the ears of %s clan members.
-
-50 Collected: %d pieces.
-
-0900 This string ties the ears of Assassins guild members.
-0901 This string ties the ears of Crusaders guild members.
-0902 This string ties the ears of Inquisitors guild members.
-0903 This string ties the ears of Hunters guild members.
-0904 This string ties the ears of Archimagicians guild members.
-0905 This string ties the ears of Barbarians guild members.
-0906 This string ties the ears of Druids guild members.
-0907 This string ties the ears of Thieves guild members.
-0908 This string ties the ears of Steel Masters guild members.
-0909 This string ties the ears of Armorers guild members.
-0910 This string ties the ears of Blacksmiths guild members.
-0911 This string ties the ears of Sorcerers guild members.
-0912 This string ties the ears of Necromancers guild members.
-0913 This string ties the ears of Bandiers guild members.
+01 Thread
+03 threads
+10 Ears are collected on this thread, the karma of the owners of which was %s.
+11 The ears of the Admin guild members are collected on this thread. //never comes
+12 The ears of the clan members are collected on this thread %s.
+14 Ears are collected on this thread, the owners of which have a higher level %d.
+50 Collected %d pcs.
+0900 The ears of the Assassins Guild members are collected on this thread.
+0901 The ears of the Crusader Guild members are collected on this thread.
+0902 The ears of the members of the Inquisitors' Guild are collected on this thread.
+0903 The ears of the members of the Hunters Guild are collected on this thread.
+0904 The ears of the members of the Archmage Guild are collected on this thread.
+0905 The ears of the Barbarian Guild members are collected on this thread.
+0906 The ears of the Druid Guild members are collected on this thread.
+0907 The ears of the Thieves Guild members are collected on this thread.
+0908 The ears of the members of the guild of Masters of Steel are collected on this thread.
+0909 On this thread, the ears of the members of the guild of Gunsmiths are collected.
+0910 The ears of the Blacksmith Guild members are collected on this thread.
+0911 The ears of the members of the Sorcerers Guild are collected on this thread.
+0912 The ears of the Necromancers Guild members are collected on this thread.
+0913 On this thread are collected the ears of the members of the guild of Banders.
 
 #90
-01 Red string for ears
-03 red string for ears 
+01 Red thread for ears
+03 red thread for the ears
+
 #91
-01 Green string for ears
-03 green string for ears
+01 Green thread for ears
+03 a green thread for the ears
+
 #92
-01 Blue string for ears
-03 blue string for ears
+01 Blue thread for ears
+03 a blue thread for the ears
+
+#93
+01 Yellow ear thread
+03 yellow thread for ears

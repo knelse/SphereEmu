@@ -1,37 +1,26 @@
 10000 X
-
-10100 Вы решили предать Остающихся и Уходящих и правильно делаете. Живите мирной жизнью и не преумножайте страданий в этом мире и без того полного боли.
-10101 Отнесите кольцо моему другу %x1. %m1.
-10102 Отнесите посылку моему другу %m1. %x1.
-10103 Принесите мне десять ушей людей с очень плохой кармой и десять ушей людей с благой кармой. %m1.
-
-
-10200 Приветствую вас, %p1. Я вижу, вы желаете принять сторону Остающихся и защитить этот мир от разрушения. Вы встаете на правильный путь, но для начала вам необходимо доказать свою преданность.
-10201 Пролейте кровь наших врагов и принесите мне десять ушей людей с очень плохой кармой. %m1.
-
-
-10300 Приветствую вас, %p1. Я вижу, вы желаете присоединиться к Уходящим и покинуть этот мир страданий. С вашей помощью мы сможем совершить задуманное, но нам необходимо удостовериться в вашей преданности. 
-10301 Пролейте кровь наших врагов и принесите мне десять ушей людей с благой кармой. %m1.
-
-
+10100 You have decided to betray those who Remain and those who Leave, and you are doing the right thing. Live a peaceful life and do not multiply suffering in this world already full of pain.
+10101 Take the ring to my friend %x1. %m1.
+10102 Take the package to my friend %m1. %x1.
+10103 Bring me ten ears of people with very bad karma and ten ears of people with good karma. %m1.
+10200 Greetings to you, %p1. I see you are willing to take the side of the Remainers and protect this world from destruction. You are on the right path, but first you need to prove your loyalty.
+10201 Spill the blood of our enemies and bring me ten ears of people with very bad karma. %m1.
+10300 Greetings to you, %p1. I see that you wish to join the Departing Ones and leave this world of suffering. With your help, we will be able to accomplish our plans, but we need to make sure of your loyalty.
+10301 Spill the blood of our enemies and bring me ten ears of people with good karma. %m1.
 10700 %m1.
-10701 Приветствую вас, %p1. Вы решили предать Остающихся и Уходящих и правильно делаете. Живите мирной жизнью и не преумножайте страданий в этом мире и без того полном боли. Для того чтобы стереть печать фракции с клана вам необходимо выполнить два моих задания. Вы должны убить монстров %z1 и %z2 в обоих подземельях и принести мне голову каждого зверя. Отправляйтесь на поиски %z1 и принесите мне его голову.
-10702 "...принесите мне его голову"
-10703 Хорошо, вы справились с первой частью задания. Теперь убейте монстра %z2 во втором подземелье.
-10704 "...принесите мне его голову"
-
-
+10701 Greetings to you, %p1. You have decided to betray those who Remain and those who Leave, and you are doing the right thing. Live a peaceful life and do not multiply suffering in this world full of pain. In order to erase the faction seal from the clan, you need to complete two of my tasks. You have to kill the monsters %z1  %z2 in both dungeons and bring me the head of each beast. Go on a search %z1 and bring me his head.
+10702 "...bring me his head."
+10703 Well, you have coped with the first part of the task. Now kill the monster %z2 in the second dungeon.
+10704 "...bring me his head."
 10800 
-10801 Приветствую вас, %p1. Я вижу ваш клан хочет присягнуть на верность Остающимся. Это хорошая новость для нас и плохая для наших врагов, однако, вам придется доказать твердость своих намерений, выполнив несколько моих заданий. Если вы справитесь с ними, то ваш клан будет принят во фракцию Остающихся. Для начала вам необходимо принести мне тридцать ушей людей с очень плохой кармой. %m1.
-10802 Вы отлично справились с первым заданием. Теперь вам нужно принести известия от моего разведчика, его имя %x1. Он находится в городе Номрад. Передайте ему это письмо, так он поймет кто вас послал. %m1.
-10803 %p1? Держи. Смотри в оба, в этом свертке важная информация. %x1.
-10804 Отлично. Теперь мое последнее задание Вам и вашему клану. Необходимо в одиночку победить монстра %z1 и принести мне его голову. %m1.
-10805 "...принесите мне его голову" - %m1.
-
-
+10801 Greetings to you, %p1. I see your clan wants to pledge allegiance to the Remaining. This is good news for us and bad news for our enemies, however, you will have to prove the firmness of your intentions by completing several of my tasks. If you cope with them, then your clan will be accepted into the faction of the Remaining. First you need to bring me thirty ears of people with very bad karma. %m1.
+10802 You did a great job with the first task. Now you need to bring news from my scout, his name %x1. It is located in the city of Nomrad. Give him this letter, so he will understand who sent you. %m1.
+10803 %p1? Here you go. Keep your eyes peeled, this bundle contains important information. %x1.
+10804 Excellent. Now my last task is for you and your clan. It is necessary to defeat the monster alone %z1 and bring me his head. %m1.
+10805 "...bring me his head" - %m1.
 10900 
-10901 Приветствую вас, %p1. Я вижу ваш клан хочет присягнуть на верность Уходящим. Вам придется доказать твердость своих намерений, выполнив несколько моих заданий. Если вы справитесь с ними, то ваш клан будет принят во фракцию Уходящих. Для начала вам необходимо принести мне тридцать ушей людей с благой кармой. %m1.
-10902 Вы отлично справились с первым заданием. Теперь вам нужно принести известия от моего разведчика, его имя %x1. Он находится в городе Умрад. Передайте ему это письмо, так он поймет кто вас послал. %m1.
-10903 %p1? Держи. Смотри в оба, в этом свертке важная информация. %x1.
-10904 Отлично. Теперь мое последнее задание Вам и вашему клану. Необходимо в одиночку победить монстра %z1 и принести мне его голову. %m1.
-10905 "...принесите мне его голову" - %m1.
+10901 Greetings to you, %p1. I see your clan wants to swear allegiance to the Outgoing. You will have to prove the firmness of your intentions by completing several of my tasks. If you cope with them, then your clan will be accepted into the Outgoing faction. First you need to bring me thirty ears of people with good karma. %m1.
+10902 You did a great job with the first task. Now you need to bring news from my scout, his name %x1. It is located in the city of Umrad. Give him this letter, so he will understand who sent you. %m1.
+10903 %p1? Here you go. Keep your eyes open, there is important information in this bundle. %x1.
+10904 Excellent. Now my last task is for you and your clan. It is necessary to defeat the monster alone %z1 and bring me his head. %m1.
+10905 "...bring me his head" - %m1.

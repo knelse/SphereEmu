@@ -1,0 +1,40 @@
+01 Poudre
+02 poudre
+03 poudre
+
+#680
+01 Poudre de protection des Sœurs
+02 poudre
+03 poudre
+100 Cette poudre agit uniquement sur le clan des Sœurs
+
+#850
+01 Poudre d'attaque de Culte
+02 poudre d'attaque de Culte
+03 poudre d'attaque de Culte
+
+#851
+01 Saidakra
+02 saidakra
+03 saidakru
+100 Cette poudre est le seul moyen d'expulser instantanément de la Sphère de l'un des Six.
+
+#852
+01 Poudre de traitement de Culte
+02 poudre de traitement de Culte
+03 poudre de traitement de Culte
+
+#853
+01 Poudre de protection de Culte
+02 poudre de protection de Culte
+03 poudre de protection de Culte
+
+#875
+01 Poudre d'équité
+02 poudre d'équité
+03 poudre d'équité
+
+#876
+01 Poudre de mal
+02 poudre de mal
+03 poudre de mal

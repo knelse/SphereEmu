@@ -1,0 +1,1111 @@
+0001 Bereich wechseln...
+0002 Verbindung zu
+0003 Laden von Startdaten von %s...
+0004 Willkommen in der Sphäre!
+0005 Zugriff verweigert, der Name wird bereits verwendet
+0006 Die Autorisierung ist fehlgeschlagen. Versuchen Sie, das Spiel erneut anzumelden.
+0007 Der Autorisierungsserver ist nicht verfügbar
+0008 *Keine Verbindung*
+0009 Datei: %s (%d%%)
+0010 Update
+0011 Fehler beim Laden von Daten vom Server.
+0012 Keine Verbindung möglich
+0013 Offline-Modus
+0014 Spieler:
+0015 Echo:
+0016 Erzeugte. kanal:
+0017 Bytes empfangen:
+0018 Ein Byte wurde gesendet:
+0019 Neu gesendet:
+0020 Ihr Aussehen
+0021 Ihr Name:
+0022 Ist alles richtig? Sie können den Namen und das Aussehen später nicht mehr ändern.
+0023 Der Zugriff wurde verweigert, die Kontoaktivität ist abgelaufen.
+0024 Sie haben sich keinen Namen ausgesucht.
+0025 Gewicht: %4.3f
+0026 Dieser Name wird bereits verwendet oder ist ungültig, versuchen Sie einen anderen.
+0027 Überprüfung des Namens...
+0028 max.: %4.3f
+0029 Preis
+0030 Vorl.
+0031 Willst du wirklich ausgehen?
+0032 Hotkeys
+0033 %d  %s  %d
+0034 %02d:%02d
+0035 jan
+0036 feb
+0037 mar
+0038 apr
+0039 mai
+0040 jun
+0041 juli
+0042 aug
+0043 sen
+0044 okt
+0045 noah
+0046 dez
+0047 SIE MÜSSEN:
+0048 titel erhöhen
+0049 grad erhöhen
+0050 erhalten Sie Geld
+0051 karma verbessern
+0052 WO:
+0053 Mann
+0054 Frau
+0055 Bestätigen Sie Ihre Auswahl. Sie können den Namen und das Aussehen später nicht mehr ändern.
+0056 Der Autorisierungsserver wurde nicht gefunden.
+0057 Fehler beim Synchronisieren von Dateien.
+0058 Leon
+0059 Charon
+0060 TEILNEHMER:
+0061 © Mission ©
+0062 Dateien prüfen...
+0063 Geben Sie Ihren Namen und Ihr Passwort ein.
+0064 Name #%d
+0065 Ihr Konto ist gesperrt
+0066 Sie können keine Mission bekommen:
+0067 niedriger Titel (<%d)
+0068 der Titel ist zu hoch (>%d)
+0069 niedriger Grad (<%d)
+0070 der Grad ist zu hoch (>%d)
+0071 schlechtes Karma
+0072 zu gutes Karma
+0073 Mission erfüllt!
+0074 Es gibt keinen Platz für einen Missionsschlüssel.
+0075 Sie haben eine Mission erhalten.
+0076 Ihr Schlüssel passt nicht.
+0077 Die Mission ist abgelaufen.
+0078 eine Mission erhalten
+0079 Sie haben %d$.
+0080 Die Mission ist noch nicht abgeschlossen.
+0081 Es gibt keinen Platz für einen Gegenstand für eine Mission.
+0085 anwenden
+0086 auslegen
+0089 Karma: %s
+0090 sehr schlecht
+0091 schlecht
+0092 neutral
+0093 gut
+0094 das Gute
+0099 Sie sind tot.
+0100 Sie können nicht zusammen verwendet werden.
+0101 Das kann man hier nicht hineinlegen.
+0102 Um dies zu verwenden, legen Sie dies in das Inventar.
+0103 Sie sind tot. Ihr Mörder: %s
+0104 %s bietet, %s erhält den Missionsschlüssel.
+0105 Sie haben nicht genug Geld.
+0106 Du kannst es dir nicht nehmen.
+0107 %s gekauft(a) %s für %d$.
+0108 %s bietet %d$ pro %s
+0109 Die gekaufte Marke muss eine Stufe höher sein als die verfügbare Marke.
+0110 Sie können das nicht verwenden (niedriger Titel).
+0111 Sie können dies nicht verwenden (niedriger Grad).
+0112 Du kannst das nicht benutzen (schlechtes Karma).
+0113 Er kann diesen Missionsschlüssel nicht annehmen.
+0114 Sie kann diesen Missionsschlüssel nicht annehmen.
+0115 Die Tafel ist nicht verfügbar: Das Schloss ist von Monstern beherrscht.
+0116 Sie haben verloren %s.
+0117 Die Tafel ist nicht verfügbar: Das Schloss gehört einem anderen Clan und wird bewacht.
+0118 Die Tafel ist nicht zugänglich: Das Tor des Schlosses ist verschlossen.
+0119 ungeeignete Gilde oder niedrige Stufe
+0120 gesundheit: %+d
+0121 prana: %+d
+0122 premium-Level erforderlich %d.
+0123 Man kann keine Marke kaufen, da ist jemand auf der Insel.
+0124 Die Marke kann nur auf Rhodos gekauft werden
+0126 marken des Titels: %+d
+0127 grade briefmarken: %+d
+0128 Sie haben den Titel gewonnen: %s
+0129 Sie haben einen Abschluss erhalten: %s
+0130 Der Clan %s (%s)
+0131 Sie haben es gekauft %s für %d$.
+0132 Bitte an den Clan geschickt %s.
+0133 %s er bittet um Aufnahme in den Clan.
+0134 Den Clan betreten
+0135 Gruppe beitreten
+0136 Es wurde ein Antrag gestellt, der Gruppe beizutreten.
+0137 Überprüfen Sie den Namen des Clans...
+0138 Ein Clan wurde erstellt %s.
+0139 Es kann kein Clan mit Namen erstellt werden %s.
+0140 © %s ©
+0141 Señor
+0142 Señora
+0143 Seneshal
+0144 Seneshal
+0145 Vasall
+0146 Vasall
+0147 Neophyt
+0148 Neophyt
+0150 Akzeptieren Clan
+0151 Ablehnen
+0152 Verbannen
+0153 Erhöhen
+0154 Herabstufen
+0155 Raus aus dem Clan
+0156 Auslegen %s?
+0160 Dein neuer Rang im Clan: %s.
+0161 Ihr seid aus dem Clan vertrieben %s.
+0162 Sie werden in einen Clan aufgenommen %s.
+0163 Ihr seid aus dem Clan hervorgegangen %s.
+0164 halter: clan %s
+0165 es gibt keinen Besitzer
+0166 Das Schloss gehört fortan dem Clan %s.
+0167 Sie sind nicht im Clan!
+0168 Das Schloss gehört einem anderen Clan.
+0169 Der Clan %s
+0170 Schloss %s
+0171 Holen Sie sich den Schlüssel
+0172 %s beschäftigt und kann nicht mit Ihnen handeln.
+0173 Man kann die Mission nicht zu oft annehmen.
+0174 Sie sind aus der Gruppe ausgeschlossen.
+0175 Sie werden in die Gruppe aufgenommen.
+0176 Sie haben die Gruppe verlassen.
+0177 Sie sind der Kopf der Gruppe geworden.
+0178 Ein Antrag wurde an die Gruppe gesendet.
+0179 %s bittet um Aufnahme in die Gruppe.
+0180 nacht
+0181 morgen
+0182 tag
+0183 abend
+0185 Kann nicht verwendet werden %s
+0186 titel<%d
+0187 grad<%d
+0188 karma ist zu schlecht
+0189 karma ist zu gut
+0190 stärke<%d
+0191 geschicklichkeit<%d
+0192 treffsicherheit<%d
+0193 ausdauer<%d
+0194 land<%d
+0195 luft<%d
+0196 wasser<%d
+0197 feuer<%d
+0198 gesundheit<%d
+0199 prana<%d
+0200 Gesundheit
+0201 Prana
+0202 Sättigung
+0203 Stärke
+0204 Geschicklichkeit
+0205 Treffsicherheit
+0206 Ausdauer
+0207 Land
+0208 Luft
+0209 Wasser
+0210 Feuer
+0211 Kapitel
+0212 Kapitel
+0213 Teilnehmer
+0214 Teilnehmerin
+0215 Erstellen einer Gruppe...
+0216 Die Gruppe ist aufgelöst.
+0217 MS
+0218 Elementare:
+0220 Bedingungen
+0222 Kandidat (1)
+0223 Kandidatin (1)
+0224 Scholar (2)
+0225 Schülerin (2)
+0226 Lehrling (3)
+0227 Lehrling (3)
+0228 Meister (4)
+0229 Meister (4)
+0230 Altmeister (5)
+0231 Altmeister (5)
+0232 Experte (6)
+0233 Experte (6)
+0234 Verbrauch
+0235 gesundheit: %d
+0236 prana: %d
+0240 Premium-Level: %d
+0241 Aktion
+0242 kampf: %+d
+0243 magie: %+d
+0244 prana: %+d
+0245 gesundheit: %+d
+0254 Sie haben das Niveau Ihrer Insel erhöht
+0255 alchemistische Zutat
+0256 verwandtes Element: Erde
+0257 verwandtes Element: Luft
+0258 verwandtes Element: Wasser
+0259 verwandtes Element: Feuer
+0260 klasse "Liebe-Hass"
+0261 Klasse "Weisheit und Ignoranz"
+0262 klasse "Leichtigkeit-Schwere"
+0263 klasse "Hitze-Kälte"
+0264 klasse "Stärke-Schwäche"
+0265 klasse "Licht-Dunkelheit"
+0266 klasse "Ordnung-Chaos"
+0267 klasse "Leben-Tod"
+0268 nachts aktiv
+0269 morgens aktiv
+0270 tagsüber aktiv
+0271 abends aktiv
+0272 zeigt einen positiven Aspekt
+0273 zeigt wenig positiven Aspekt
+0274 neutral gegenüber Aspekten
+0275 zeigt schwach einen negativen Aspekt
+0276 zeigt einen negativen Aspekt
+0277 verbrauch von Land: %d
+0278 luftdurchfluss: %d
+0279 wasserdurchfluss: %d
+0280 der Verbrauch des Feuers: %d
+0281 Durchflussmultiplikator: 6
+0282 Durchflussmultiplikator: 3
+0283 Durchflussmultiplikator: 1
+0284 Durchflussmultiplikator: 3
+0285 Durchflussmultiplikator: 6
+0290 Keine Reaktion möglich:
+0295 Das Mantra ist auswendig gelernt.
+0296 Das Mantra ist nicht auswendig gelernt!
+0297 Nicht mehr als 1 mal pro %d H.
+0298 Die Nutzungsdauer ist noch nicht abgelaufen. Bleibt übrig
+0299 Das Mantra ist verloren!
+0700 Modifiziert
+0701 max. Gesundheit: %+d
+0702 max.: %+d
+0703 sättigung max.: %+d
+0704 physischer Schutz: %+d
+0705 magische Verteidigung: %+d
+0706 kraft: %+d
+0707 geschicklichkeit: %+d
+0708 treffsicherheit: %+d
+0709 ausdauer: %+d
+0710 erde: %+d
+0711 luft: %+d
+0712 wasser: %+d
+0713 feuer: %+d
+0714 geschwindigkeit: %+d
+0715 %d stunde
+0716 %d stunden
+0717 %d stunden
+0718 geblieben %d stunde
+0719 bleibt übrig %d stunden
+0720 bleibt übrig %d stunden
+0721 das Ablaufdatum läuft ab
+0722 Parameter
+0723 %2.1f sek.
+0724 %d m.
+0725 %d min.
+0726 Ein Mutator hängt am Ziel an
+0727 Ein Mutator hängt an dir (%s)
+0728 %d m. / [%d m.]
+0729 Dieses Mantra wird nicht in das Buch geschrieben.
+0730 Besitz des Clans %s. Durchgangsgebühr - %d$. Bezahlen oder gehen Sie weg.
+0731 Sie haben nicht genug Geld, um die Gebühr zu bezahlen.
+0732 Sie zahlen eine Gebühr %d$ an den Clan %s.
+0750 fallen
+0751 Sie sind abgestürzt.
+0752 luftmangel
+0753 Sie sind ertrunken.
+0754 Ihr seid vom königlichen Zorn zerstört.
+0755 Königlicher Zorn
+0756 Zorn der Tafel
+0757 Sie sind durch den Zorn der Tafel zerstört.
+0758 Tafel: %s angegriffen!
+0760 Tafel: %s ich habe die Gebühr nicht bezahlt.
+0761 %s ermordet (%s)
+0762 %s ermordet (%s)
+0763 %s tot
+0764 %s gestorben
+0765 Ein Stein kann nicht aktiviert werden, es gibt bereits zwei Steine in der Nähe.
+0766 Der Stein kann außerhalb des Schlosses nicht aktiviert werden.
+0767 Der Stein darf nicht in einem fremden Gebiet sein.
+0768 verbrennung
+0769 Sie sind an Verbrennungen gestorben.
+0770 Glühen
+0771 Sie werden durch das Leuchten getötet.
+0772 falle
+0773 Sie werden durch eine Falle getötet.
+0780 %s von Ihnen gestohlen %s (%d).
+0781 %s von Ihnen gestohlen %s (%d).
+0782 Sie wurden teleportiert (%s).
+0783 %s von Ihnen gestohlen %d$.
+0784 %s von Ihnen gestohlen %d$.
+0800 Befehle für GM:
+0801 "/set t <N>" - Titel festlegen
+0802 "/set d <N>" - Stellen Sie den Grad ein
+0803 "/heal" - volle Gesundheit, Prana und Sättigung
+0804 "/money <N>" - erhalten Sie Geld
+0805 "/jump <char name>" - Sprung zu diesem Charakter innerhalb des Servers
+0806 "/pull <char name>" - einen Spieler zu sich heranziehen
+0807 "/sayall <message>" - sagen Sie zu allen Servern
+0808 "/save <position name>" - Position speichern
+0809 "/load <position name>" - Springe zur gespeicherten Position
+0810 "/plist" - Erhalten Sie eine Liste von Petitionen mit Zahlen
+0811 "/pgot <petition number>" - die Petition annehmen
+0812 "/pdone <petition number>" - die Petition wurde bearbeitet
+0813 "/set clan <clan name>" - vorübergehend in den Clan eintreten
+0814 "/char <char name>" - mit einem anderen Charakter ins Spiel einsteigen
+0815 "/invis" - Unsichtbarkeit
+0816 "/vis" - Unsichtbarkeit ausschalten
+0817 "/turn <skin number>" - Verwandlung
+0818 "/anger off" - Schalten Sie den königlichen Zorn für eine Stunde aus
+0819 "/anger on" - Aktivieren Sie den königlichen Zorn
+0820 "/ban [reason] <hours>" - aktuellen Charakter sperren
+0821 "/ban [reason] <hours>  <char>" - Blockiere einen Charakter innerhalb des Servers. Parameter "reason" beim Sperren:
+0822 a - mate, Beleidigungen, Aggression gegenüber GM
+0823 k - Mord an einem falschen Ort
+0824 d - Dinge oder Geld duplizieren
+0825 t - Handel für echtes Geld
+0826 n - vorbeugendes Verbot bei Diebstahl
+0827 e ist ein fehlerhafter Charakter
+0828 r - Betrug oder Verwendung von Spielfehlern
+0829 l - zu häufiges Senden von Versammlungen (Flut)
+0830 Befehle:
+0831 "/help" - Hilfe
+0832 "/petition <your petition>" - eine Petition an den Spielemeister senden. Beschreiben Sie das Problem in der Petition klar und kurz.
+0833 "/sayclan <your message>" - Sendet eine Nachricht an den Clan an alle Server (nicht mehr als einmal alle 15 Sekunden).
+0834 "/saygrp <your message>" - eine Nachricht an die Gruppe an alle Server senden (nicht mehr als einmal alle 15 Sekunden).
+0835 "/sayally <your message>" - Sendet der Allianz eine Nachricht an alle Server (nicht mehr als 1 Mal alle 30 Sekunden).
+0836 "/clanlist" - eine Liste aller Mitglieder des Clans (nur für Señora).
+0837 "/kick <player name>"- aus dem Clan verbannen Charakter unabhängig von der Anwesenheit im Spiel (nur für Señora).
+0838 "/resetcastle" - bringt alle Sperrsachen in die Kasse zurück (löscht alle unauffälligen Dinge!). Arbeitet in der Nähe der Burgtafel, nur für Senioren.
+0839 "/resetskills" - Übersetzt alle Fertigkeiten zurück in Elementare (gilt 1 Mal).
+0840 "/titledown" - Setzt den Titel auf Stufe 15 zurück. Auf 5 zurückgeworfenen Titelebenen wird 1 Stufe des Grades gegeben (gilt 1 Mal). Funktioniert nicht nach degreedown!
+0841 "/degreedown" - Setzt den Grad auf Stufe 15 zurück. Auf 5 abgeworfenen Stufen des Grades wird 1 Titelstufe gegeben (gilt 1 Mal). Funktioniert nicht nach titledown!
+0842 "/rebirth" - wiedergeboren werden (Titel oder Grad müssen Stufe 60 sein). Der Charakter wird Stufe 15/15! Ein Team ist nicht verfügbar, wenn der Titel oder Grad die Grenze der Großartigkeit (legendär) erreicht hat.
+0843 "/ignore <player name>" - einen Charakter zur Ignorierliste hinzufügen.
+0844 "/unignore <player name>" - Lösche einen Charakter aus der Ignorierliste.
+0845 "/unignore all" - Löscht den Inhalt der Ignorierliste.
+0846 "/resetguild" - setzt den aktuellen Beruf zurück (nur PA2).
+0847 "/resetimage" - Setzt das Aussehen des Charakters zurück (nur für EXTRA-Vip).
+0850 Die Eigenschaften sind zurückgesetzt!
+0851 Sie haben die Charaktereigenschaften bereits zurückgesetzt.
+0852 Die Petition wurde gesendet.
+0853 Eine Petition kann nicht mehr als 1 Mal alle 12 Stunden gesendet werden.
+0854 Die Petition wird bearbeitet.
+0855 Die Petition ist als abgeschlossen markiert.
+0856 Die Petition wurde bereits markiert oder bearbeitet.
+0857 Kein Charakter gefunden.
+0858 Du kannst ein neues Aussehen wählen, ohne das Geschlecht und den Namen zu ändern.
+0859 Der Befehl ist nicht verfügbar.
+0860 Der Clan %s bietet die Allianz.
+0861 Der Clan %s erklärt den Krieg.
+0862 Der Clan %s und der Clan %s sie haben eine Allianz geschlossen.
+0863 Der Clan %s und der Clan %s sie sind in einen Kriegszustand eingetreten.
+0864 Der Clan %s aus der Clan-Allianz hervorgegangen %s.
+0865 Der Clan %s bietet Frieden.
+0866 Clans %s und %s wir haben die Welt erklärt.
+0867 Der Clan %s die Allianz mit dem Clan aufgegeben %s.
+0868 Der Clan %s den Krieg mit dem Clan aufgegeben %s.
+0869 Der Clan %s das Angebot des Friedens mit dem Clan abgelehnt %s.
+0870 Der Clan %s besteht bereits in 5 Allianzen.
+0871 Clan %s bereits im Krieg mit der 5. Clans.
+0872 Die Tafel ist nicht verfügbar: Das Schloss gehört dem alliierten Clan.
+0876 Die Liste wird in eine Clanlist-Datei geschrieben.xls
+0877 Eine Anfrage nach einer Clanliste ist einmal am Tag möglich.
+0878 Der Name des Charakters ist falsch oder es gibt kein Recht zu vertreiben.
+0879 Der Charakter ist aus deinem Clan vertrieben.
+0880 "/msg player name>text" - Sendet eine private Nachricht an einen anderen Charakter.
+0881 "/reg" - Registrieren Sie Ihre Handynummer auf Ihrem Konto.
+0882 "/unreg", um die Registrierung des Telefons aufzuheben.
+0883 "/claim" - Zeigt eine Liste der verfügbaren Preise an.
+0884 "/removebankpass" - setzt das Bankpasswort zurück.
+0900 Attentäter
+0901 Der Kreuzritter
+0902 Inquisitor
+0903 Jäger
+0904 Erzmagier
+0905 Barbar
+0906 Druide
+0907 Dieb
+0908 Meister des Stahls
+0909 Büchsenmacher
+0910 Schmied
+0911 Zauberer
+0912 Der Nekromant
+0913 Bandier
+0919 (%d-ich bin eine Stufe)
+0920 Erstellt vom Kandidaten (Stufe 1)
+0921 Erstellt von Shkolyar (2. Stufe)
+0922 Erstellt von einem Lehrling (Stufe 3)
+0923 Erstellt vom Meister (Stufe 4)
+0924 Erstellt vom Ältesten (Stufe 5)
+0925 Erstellt von einem Experten (Stufe 6)
+0930 Anforderungen
+0931 Stufe für Stufe 2
+0932 Stufe für Stufe 3
+0933 Stufe für Stufe 4
+0934 Stufe 5 für den Übergang
+0935 Stufe für Stufe 6
+0936 Der Titel ist nicht niedriger als %s
+0937 Titel nicht höher als %s
+0938 Der Grad ist nicht niedriger als %s
+0939 Der Grad ist nicht höher als %s
+0940 Die Gilde ist für Sie geschlossen.
+0941 Sie sind bereits auf Stufe 6
+0942 Der Gilde beitreten
+0943 Eine neue Stufe erhalten
+0950 Die Spieldateien sind beschädigt, ein Neustart ist erforderlich.
+0955 Die Serveradresse ist falsch, die Verbindung ist nicht möglich.
+0956 Verbindung herstellen
+0957 Update
+0958 Insgesamt
+0959 - Leer -
+0960 Willst du den Charakter wirklich entfernen?
+0961 Bereich wechseln...
+0962 Der Charakter ist zum Löschen markiert und wird nach 5 Tagen physisch gelöscht.
+0963 Sie haben ein illegal dupliziertes Ding gefunden und es wurde gelöscht.
+0964 Das Festland von Charon aktualisieren
+0965 Laden Sie das Update mit neuen Ländern herunter?
+0966 Den Bereich verlassen, indem Sie den Charakter im Handelsmodus verlassen?
+0967 Die Lizenz ist nur auf dem Marktplatz gültig.
+0968 Der Charakter ist gesperrt (Verstoß gegen die Spielregeln). Sperrung endet durch %dh.
+0969 Der Charakter ist gesperrt %dh.
+0970 Der Charakter ist freigeschaltet.
+0971 Nachrichten können nicht zu oft gesendet werden.
+0972 Es wurde festgestellt, dass ein Programm eines Drittanbieters verwendet wird, das den Client beeinträchtigt.
+0973 Sie haben keine Rechte für dieses Team.
+0974 Du kannst einen Charakter nicht länger als 12 Stunden verbannen.
+0975 Schreibfehler beim Versuch, die Datei zu aktualisieren %s. Überprüfen Sie die Zugriffsrechte für die angegebene Datei und den angegebenen Ordner.
+0976 Fehler beim Laden der Datei %s
+0977 Aktualisieren Sie das Festland Feb
+0978 Das Zeichen wurde entfernt, um es zu löschen.
+0979 Unkorrekte Clientversion: Führen Sie das Spiel mit einer vollständigen Dateiüberprüfung aus.
+0980 Der Charakter ist gesperrt (Verwendung eines Programms, das den Client stört). Sperrung endet durch %dh.
+0981 Charakter gesperrt ist, wird der ungültige oder beschädigte Dateien Spiele). Sperrung endet durch %dh.
+0982 Der Charakter ist gesperrt (Matte im allgemeinen Chat, Beleidigung von Spielern oder Verwaltung). Sperrung endet durch %dh.
+0983 Charakter gesperrt ist, wird der Mord an Stelle der Wiedergeburt, in der Stadt oder auf dem Marktplatz). Sperrung endet durch %dH.
+0984 Der Charakter ist gesperrt (illegale Vervielfältigung von Dingen oder Geld). Sperrung endet durch %dh.
+0985 Der Charakter ist gesperrt (verbotene Handelsgeschäfte). Sperrung endet durch %dh.
+0986 Der Charakter ist gesperrt (Verdacht auf Kontodiebstahl). Sperrung endet durch %dh.
+0987 Der Charakter ist gesperrt (Fehler in den Charakterdaten! Wenden Sie sich an den technischen Support). Sperrung endet durch %dh.
+0988 Der Charakter ist gesperrt (Betrug oder bewusste Verwendung von Spielfehlern). Sperrung endet durch %dh.
+0989 Der Charakter ist gesperrt (zu häufiges Senden von Nachrichten). Sperrung endet durch %dh.
+0990 Der Charakter ist kein Clan
+0991 Der Charakter ist nicht Mitglied einer Gruppe
+0992 Der Charakter ist nicht Mitglied einer Allianz
+0995 Warnung: Sie senden zu oft Nachrichten! Ein Charakter kann gesperrt werden.
+0997 Rhodos-Festland aktualisieren (Premium-Konto erforderlich)
+0998 Es gibt keine Autorisierungsserverantwort. Versuchen Sie, in 1-2 Minuten vorbeizukommen.
+0999 Sie können sich nicht anmelden, der Name wird bereits verwendet.
+0300 wanderer (1)
+0301 wanderin (1)
+0302 wanderer (2)
+0303 wanderin (2)
+0304 wanderer (3)
+0305 wanderin (3)
+0306 wanderer (4)
+0307 wanderin (4)
+0308 wanderer (5)
+0309 wanderin (5)
+0310 gast (6)
+0311 gast (6)
+0312 gast (7)
+0313 gast (7)
+0314 gast (8)
+0315 gast (8)
+0316 gast (9)
+0317 gast (9)
+0318 gast (10)
+0319 gast (10)
+0320 bürger (11)
+0321 bürger (11)
+0322 bürger (12)
+0323 bürger (12)
+0324 bürger (13)
+0325 bürgerin (13)
+0326 bürger (14)
+0327 bürgerin (14)
+0328 bürger (15)
+0329 bürger (15)
+0330 bürger (16)
+0331 bürgerin (16)
+0332 bürger (17)
+0333 bürger (17)
+0334 bürger (18)
+0335 städterin (18)
+0336 bürger (19)
+0337 bürgerin (19)
+0338 bürger (20)
+0339 bürgerin (20)
+0340 squire (21)
+0341 frau (21)
+0342 squire (22)
+0343 frau (22)
+0344 squire (23)
+0345 frau (23)
+0346 squire (24)
+0347 frau (24)
+0348 squire (25)
+0349 frau (25)
+0350 chevalier (26)
+0351 lady (26)
+0352 chevalier (27)
+0353 lady (27)
+0354 chevalier (28)
+0355 lady (28)
+0356 chevalier (29)
+0357 lady (29)
+0358 chevalier (30)
+0359 lady (30)
+0360 baron (31)
+0361 baronin (31)
+0362 baron (32)
+0363 Baroness (32)
+0364 baron (33)
+0365 baronin (33)
+0366 baron (34)
+0367 baronin (34)
+0368 baron (35)
+0369 baronin (35)
+0370 viscount (36)
+0371 vicontessa (36)
+0372 viscount (37)
+0373 vicontessa (37)
+0374 viscount (38)
+0375 vicontessa (38)
+0376 viscount (39)
+0377 vicontessa (39)
+0378 viscount (40)
+0379 vicontessa (40)
+0380 graf (41)
+0381 gräfin (41)
+0382 Graf (42)
+0383 gräfin (42)
+0384 graf (43)
+0385 gräfin (43)
+0386 graf (44)
+0387 gräfin (44)
+0388 graf (45)
+0389 gräfin (45)
+0390 marquis (46)
+0391 marquis (46)
+0392 marquis (47)
+0393 marquis (47)
+0394 marquis (48)
+0395 marquis (48)
+0396 marquis (49)
+0397 marquis (49)
+0398 marquis (50)
+0399 marquis (50)
+0400 Herzog (51)
+0401 herzogin (51)
+0402 herzog (52)
+0403 herzogin (52)
+0404 herzog (53)
+0405 herzogin (53)
+0406 herzog (54)
+0407 die Herzogin (54)
+0408 herzog (55)
+0409 herzogin (55)
+0410 prinz (56)
+0411 prinzessin (56)
+0412 prinz (57)
+0413 prinzessin (57)
+0414 prinz (58)
+0415 prinzessin (58)
+0416 prinz (59)
+0417 prinzessin (59)
+0418 prinz (60)
+0419 prinzessin (60)
+0500 ungelernte (1)
+0501 ungelernte (1)
+0502 ungelernte (2)
+0503 ungelernte (2)
+0504 ungelernte (3)
+0505 ungelernte (3)
+0506 ungelernte (4)
+0507 ungelernte (4)
+0508 ungelernte (5)
+0509 ungelernte (5)
+0510 kandidat (6)
+0511 kandidatin (6)
+0512 kandidat (7)
+0513 kandidatin (7)
+0514 kandidat (8)
+0515 kandidatin (8)
+0516 kandidat (9)
+0517 kandidatin (9)
+0518 kandidat (10)
+0519 kandidatin (10)
+0520 schüler (11)
+0521 schülerin (11)
+0522 schüler (12)
+0523 schülerin (12)
+0524 schüler (13)
+0525 schülerin (13)
+0526 schüler (14)
+0527 schülerin (14)
+0528 schüler (15)
+0529 schülerin (15)
+0530 novize (16)
+0531 novizin (16)
+0532 novize (17)
+0533 novizin (17)
+0534 novize (18)
+0535 novizin (18)
+0536 novize (19)
+0537 novizin (19)
+0538 novize (20)
+0539 novizin (20)
+0540 abiturient (21)
+0541 abiturientin (21)
+0542 abiturient (22)
+0543 abiturientin (22)
+0544 Studienbewerber (23)
+0545 abiturientin (23)
+0546 teilnehmer (24)
+0547 abiturientin (24)
+0548 teilnehmer (25)
+0549 abiturientin (25)
+0550 student (26)
+0551 studentin (26)
+0552 student (27)
+0553 studentin (27)
+0554 student (28)
+0555 studentin (28)
+0556 student (29)
+0557 studentin (29)
+0558 student (30)
+0559 studentin (30)
+0560 bachelor (31)
+0561 bachelor (31)
+0562 bachelor (32)
+0563 bachelor (32)
+0564 bachelor (33)
+0565 bachelor (33)
+0566 bachelor (34)
+0567 bachelor (34)
+0568 Bachelor (35)
+0569 bachelor (35)
+0570 meister (36)
+0571 magistrata (36)
+0572 meister (37)
+0573 magistrata (37)
+0574 meister (38)
+0575 magistrata (38)
+0576 meister (39)
+0577 masterstudiengang (39)
+0578 meister (40)
+0579 masterstudiengang (40)
+0580 arzt (41)
+0581 doktorand (41)
+0582 arzt (42)
+0583 doktorand (42)
+0584 arzt (43)
+0585 doktorand (43)
+0586 arzt (44)
+0587 doktorand (44)
+0588 arzt (45)
+0589 doktorand (45)
+0590 professor (46)
+0591 professor (46)
+0592 Professor (47)
+0593 professor (47)
+0594 professor (48)
+0595 professor (48)
+0596 professor (49)
+0597 professor (49)
+0598 professor (50)
+0599 professor (50)
+0600 dekan (51)
+0601 dekanin (51)
+0602 dekan (52)
+0603 dekanin (52)
+0604 dekan (53)
+0605 dekanin (53)
+0606 dekan (54)
+0607 dekanin (54)
+0608 dekan (55)
+0609 dekaness (55)
+0610 rektor (56)
+0611 rektorin (56)
+0612 rektor (57)
+0613 rektorin (57)
+0614 rektor (58)
+0615 rektorin (58)
+0616 rektor (59)
+0617 rektorin (59)
+0618 rektor (60)
+0619 rektorin (60)
+0650 groß
+0651 groß
+0652 der größte
+0653 die größte
+0654 legendär
+0655 die legendäre
+0660 Berater
+4000 Besitz von Schloss Lüttich
+4001 Besitz von Schloss Fief
+4002 Besitz von Aris Castle
+4003 Besitz von Schloss Lator
+4004 Besitz von Schloss Eikum-kas
+4005 Besitz von Schloss Gideon
+4006 Besitzungen des Châtelet-Schlosses
+4007 Tuanod-Schloss-Einflüsse
+4008 Besitz von Peltier Castle
+4009 Besitz des Schlosses Karé Royal
+4010 Besitz von Schloss Blessendorf
+4011 Besitz der Burg Ternoval
+4012 Besitz des Schlosses Ammalael
+4013 Besitz von Kablak Castle
+4014 Besitzungen des Davanagari-Schlosses
+4015 Besitz von Schloss Sabulat
+4016 Deffensat Schloss-Besitzungen
+4017 Besitz von Schloss Ayonat
+4018 Besitz von Schloss Triumphal
+4019 Besitz von Bagarnak Castle
+4020 Besitz von Schloss Cabrad
+4021 Einflüsse des Schlosses Seth
+4022 Besitzungen des Lender-Schlosses
+4023 Besitz von Schloss Keles
+4024 Die Ländereien des Schlosses Sheprostan
+4025 Besitz von Schloss Orcobien
+4026 Besitz von Kanuak Castle
+4027 Besitz von Schloss Aldarnon
+4028 Besitz von Schloss Yong
+4029 Elek-Burgbesitz
+4030 Besitz von Schloss Gavot
+4031 Besitz von Schloss Kandur
+4032 Besitz des Schlosses Immertel
+4033 Besitz des Narzissenschlosses
+4034 Besitz von Schloss Randen
+4035 Besitz von Nirgun Castle
+4036 Das Schlossgut Gelgivinn
+4037 Besitz des Schlosses von Il Suilly-Rua
+4200 Stadt Shipstone
+4201 Stadt Bangville
+4202 Stadt Sanpool
+4203 Stadt Torvil
+4204 Die Stadt Nomrad
+4205 Stadt Gifes
+4206 Stadt Umrad
+4207 Die Stadt Angelm
+4998 Verkaufsfläche
+4999 Neutrales Gebiet
+4301 Hyperion
+4302 Helios
+4303 Rhodos
+4304 Feb
+4305 Leon
+4306 Charon
+3000 Schloss Lüttich
+3001 Schloss Fief
+3002 Schloss Aris
+3003 Schloss Lator
+3004 Schloss Eikum-kas
+3005 Burg Gideon
+3006 Schloss Châtelet
+3007 Tuanode Schloss
+3008 Burg Peltier
+3009 Das Schloss von Kare Royal
+3010 Schloss Blessendorf
+3011 Schloss Ternoval
+3012 Schloss Ammalael
+3013 Burg Kablak
+3014 Davanagari Schloss
+3015 Schloss Sabulat
+3016 Schloss Deffensat
+3017 Schloss Ayonat
+3018 Schloss Triumphaler
+3019 Schloss Bagarnak
+3020 Schloss Cabrad
+3021 Schloss Seth
+3022 Schloss Lender
+3023 Schloss Keles
+3024 Schloss Scheprostan
+3025 Schloss Orcobien
+3026 Schloss Kanuak
+3027 Schloss Aldarnon
+3028 Schloss Yong
+3029 Schloss Elek
+3030 Schloss Gavot
+3031 Schloss Kandur
+3032 Schloss Immertel
+3033 Das Schloss der Narzisse
+3034 Schloss Randen
+3035 Schloss Nirgun
+3036 Schloss Gelgivinn
+3037 Schloss von Il Suilly-Rua
+9990 Senden Sie eine SMS mit dem Wort SPGPIN an die Nummer 4161 - und erhalten Sie eine PIN für 15
+9991 spieltage als Geschenk. Details auf der offiziellen Website von "Sphere".
+10000 Um Ihr Mobiltelefon für Ihr Konto zu registrieren, müssen Sie eine SMS an die Nummer 4446 mit dem Text SPGOLD senden %s.
+10001 Ihr Telefon ist bereits auf Ihrem Konto registriert <%s>. Verwenden Sie den Befehl /unreg, um die aktuelle Nummer zu löschen.
+10002 Ihr Telefon ist auf Ihrem Konto registriert <%s>. Um die aktuelle Nummer zu löschen, klicken Sie auf die Schaltfläche "Löschen".
+10003 Ihr Telefon ist nicht auf Ihrem Konto registriert. Verwenden Sie den Befehl /reg, um das Telefon zu registrieren.
+10004 Sie sind sicher, dass Sie es als Geschenk abholen möchten %s?
+10005 Keine Geschenke verfügbar
+10006 Löschen
+10007 Sicher
+10008 OK
+10009 Es gibt keinen Platz für einen Preis.
+10010 Wählen Sie eines aus der Liste:
+10011 Haben Sie bereits eine solche Möglichkeit.
+10020 Der Raum enthält Dinge.
+10021 Das Ziel steht unter Schutz.
+10022 Sie haben ein niedriges Niveau, Sie können das Schloss-Attribut nicht erhalten.
+10023 Sie haben nicht genug Bargeld, um das ausgewählte Produkt zu bezahlen. Möchten Sie über die Bank bezahlen? Die Provision der Bank wird berechnet %d$.
+10024 Es wurde ein falsches Passwort eingegeben.
+10025 Das alte Passwort wurde falsch eingegeben.
+10026 Das Passwort wurde erfolgreich geändert.
+10027 Die Bank ist nicht initialisiert.
+10028 Das Geld aus dem Zimmer der Taverne wurde auf die Bank überwiesen.
+10029 Das Geld von der persönlichen Insel wurde an die Bank überwiesen.
+10030 Die eingegebenen Passwörter stimmen nicht überein.
+10031 Das Bankpasswort wurde zurückgesetzt.
+10032 Um in das Zimmer zu gelangen, wenden Sie den gewünschten Schlüssel an die Tür des Zimmers an.
+10033 Der Geldbetrag ist ungültig.
+10034 Der Verkäufer kann die Zahlung nicht annehmen.
+10035 Der Verkauf von nicht leeren Containern ist verboten.
+10036 Sie können keinen leeren Behälter aufstellen.
+10037 Sie haben es gekauft %s für %d.
+10038 geld setzen
+10039 geld abheben
+10043 Sie haben ungenutzte Boni.
+10044 Fehler.
+10045 Vor dem Ablegen eines Titels oder Grades muss die Spezialität zurückgesetzt werden.
+10047 Eine Gastmarke für den Charakter wurde erstellt %s.
+10048 Der Befehl ist nicht verfügbar. Sie haben einen Kristall(s), der für ein niedriges Niveau nicht geeignet ist.
+10049 Der Titel oder Grad muss Stufe 60 sein.
+10050 Die Grenze der Großartigkeit nach Titel oder Grad ist erreicht.
+10051 Warnung - Ein Team ist nicht verfügbar, wenn der Titel oder Grad die Grenze der Großartigkeit (legendär) erreicht hat.
+10053 Versuchen Sie später, eine Verbindung herzustellen, wenn der Server zum Aktualisieren angehalten wurde.
+10057 Dieses Ding wird nur Ihnen dienen. Sind Sie sicher, dass Sie es aktivieren möchten?
+10058 Die Namensgegenstände sind nicht verkaufbar.
+10059 Dieses Ding gehört dir nicht.
+10060 Dieses Ding wird nur Ihnen dienen.
+10061 Der Kristall stimmt nicht mit dem Schloss überein.
+10062 Dieses Ding wird nur seinem Besitzer dienen, ist aber noch nicht aktiviert.
+10064 Initialisierungsfehler.
+10071 Sie haben das Pulver der Verwundbarkeit angewendet.
+10077 Die Übergabezeit für den Missionsschlüssel ist abgelaufen.
+10078 Sie haben das Elixier des physischen Angriffs angewendet.
+10079 Sie haben das Elixier des magischen Angriffs angewendet.
+10080 Sie haben ein physisches Abwehrelixier angewendet.
+10081 Sie haben das Elixier der magischen Verteidigung benutzt.
+10082 Elixier des physischen Angriffs
+10083 Elixier des magischen Angriffs
+10084 Elixier des physischen Schutzes
+10085 Elixier der magischen Verteidigung
+10086 Minuten bis zum Ende des Effekts: %d
+10087 Sekunden bis zum Ende des Effekts: %d
+10088 Die Portale zur Arena sind offen.
+10089 Die Portale zur Arena sind geschlossen.
+10090 Verbleibende
+10091 Abreisende
+10092 Fraktion geändert
+10093 Fraktion: %s
+10094 Ihr Clan hat bereits die Konfliktseite gewählt, verlassen Sie den Clan und dann können Sie Ihr Schicksal selbst bestimmen.
+10095 Neutral
+10096 Verbleibende
+10097 Abreisende
+10098 Die Mission, das Präfix zu erhalten, kann nur vom Senor des Clans übernommen werden
+10099 Wenn der Mond stirbt und wiedergeboren wird, hat dein Clan das Recht, die Fraktion zu ändern.
+10100 Herzlichen Glückwunsch, Sie haben meine Aufgaben bewältigt und Ihr Clan ist von nun an frei von Feindseligkeiten zwischen den Zurückgebliebenen und den Zurückgebliebenen. Möge Frieden und Wohlstand mit euch kommen!
+10101 Sie und Ihr Clan haben die Stärke und Loyalität der Fraktion der Verbleibenden bewiesen. Von nun an ist Euer Clan auf der Seite der Verbleibenden. Jetzt, mit der Ankunft eines neuen Clans, sind wir stärker geworden und haben immer weniger Chancen zu gewinnen.
+10102 Sie und Ihr Clan haben die Stärke und Hingabe der scheidenden Fraktion bewiesen. Von nun an ist Euer Clan auf der Seite der Scheidenden. Jetzt, mit der Ankunft eines neuen Clans, sind wir stärker geworden und haben immer weniger Chancen zu gewinnen.
+10103 Du kannst dem Clan nicht beitreten, weil du einer anderen Fraktion angehörst
+10104 Sie können der Allianz nicht beitreten, weil Sie einer anderen Fraktion angehören
+10105 Die Allianzverbindungen müssen abgebrochen werden
+10112 Der Gegenstand ist nicht geladen
+10117 Nach 2 Minuten die Verbindung unterbrochen wird, da Sie zeigen keine Aktivität.
+10118 Im Spiel bleiben
+10121 Ihr Karma ist neutral oder höher - der Stein kann nicht verwendet werden.
+10124 Einer deiner Charaktere steht auf dem Marktplatz. Wenn ein Charakter eintritt, erlischt die Handelslizenz.
+10125 Kann nicht benutzt werden! Dieser Gegenstand kann nur von einem weiblichen Charakter verwendet werden.
+10126 Erhöhung der physischen und magischen Verteidigung um 600.
+10128 Wiederherstellung des Prana um die Hälfte des maximalen.
+10129 Wiederherstellung der Gesundheit um die Hälfte des Maximums.
+10130 Erhöhte Laufgeschwindigkeit.
+10131 Erhöhung der Sprünge um das 2-fache.
+10132 Koordinierungsstörung.
+10133 Feuerwerk!
+10134 Vision versteckte fallen.
+10135 Erhöhung des physischen Schutzes um 1000.
+10136 Fehler beim löschen des Charakters. Wiederholen Sie den Vorgang nach einiger Zeit
+10137 Der Charakter konnte nicht gelöscht werden. Du hast keinen Charakter mit diesem Namen
+10138 Ein magischer Spiegel.
+10139 Sie haben das Sättigungselixier verwendet
+10140 Es fehlt das Geld, um die Steuer zu bezahlen
+10141 Sie haben den Stein der Erleuchtung aufgetragen
+10142 Sie haben den Karmastein aufgetragen
+10143 Sie haben den Rückgabestein angewendet
+10144 Sie haben einen großen Rückgabestein angewendet
+10145 Sie haben das Limit für die Entfernung des Charakters ausgeschöpft, wenden Sie sich an den technischen Support.
+10146 Du fühlst eine besondere Kraft in deinen Händen!
+10147 Sie fühlen sich wacher und frischer!
+10201 s
+10205 Das Turnier ist geschlossen
+10216 Derzeit können nur GM eine Verbindung zum Server herstellen.
+10217 Es ist unmöglich, Schlossgegenstände zu kombinieren.
+10218 gegenstand
+10219 taler
+10300 Du kannst den Spieler nicht angreifen, da dein Titel und dein Grad kleiner sind %d.
+10301 Du kannst keinen Spieler angreifen, dessen Titel und Grad kleiner sind %d.
+10302 Du kannst den Spieler nicht angreifen, da du dich in einer friedlichen Zone (Stadt, Marktplatz) befindest.
+10303 Du kannst einen Spieler nicht angreifen, da er sich in einer friedlichen Zone (Stadt, Marktplatz) befindet.
+10304 Die Evakuierung wurde erfolgreich abgebrochen.
+10305 Die Evakuierungszeit ist noch nicht abgelaufen.
+10306 Die Evakuierung erfolgt durch %d sec
+10307 Während der Evakuierung kann man sich nicht bewegen und die Hand sollte leer sein.
+10308 Fäuste
+10324 Schreiben Sie privat
+10325 Zu einer Gruppe einladen
+10326 %s lädt zu einer Gruppe ein. Die Einladung annehmen?
+10327 %s lädt zu einer Gruppe ein.
+10328 %s bereits in die Gruppe eingeladen.
+10329 %s akzeptiert die Einladung zur Gruppe.
+10330 %s lehnt die Einladung zur Gruppe ab.
+10331 Sie können nicht einladen %s in einer Gruppe, da er zu weit von dir entfernt ist.
+10332 %s ist bereits in der Gruppe.
+10333 Petition senden
+10334 Beschwerde gegen den Spieler
+10335 Sie können einer Gruppe nicht beitreten, da sie voll ist.
+10336 Technischer Support: Es gibt zurückgegebene Artikel für Sie:
+10337 Technischer Support: Sie haben den Artikel erhalten: '%s'
+10338 Technischer Support: Für den Artikel '%s' kein Platz im Inventar
+10339 Technischer Support: Fehler beim Erstellen eines Artikels
+10340 Sie haben einen zufälligen Gegenstand erhalten.
+10341 Es gibt keinen Platz für einen zufälligen Gegenstand.
+10342 Fehler beim erstellen des Gegenstandes.
+10343 %d minute
+10344 %d minuten
+10345 %d minuten
+10346 Fehlschuss!
+10347 Der Schutzstein kann nur auf dem Territorium seines Schlosses verwendet werden
+10348 Der Schutzstein kann nicht in einem Schloss dieser Stufe verwendet werden
+10349 Schutzstein aktiviert
+10350 Das Niveau stieg Monster
+10351 Sie gingen in die Arena während des Turniers. Geh Weg!
+10352 Arena
+10353 Die Portale sind offen. Du kannst dich in die Arena des Turniers teleportieren. Der Anfang ist in wenigen Minuten.
+10354 Das Turnier hat begonnen.
+10355 1/%d das Finale. Teilnehmer:
+10356 finale
+10357 Spieler werden in die Arena gerufen %s und %s!
+10358 Kampf gewonnen %s
+10359 %s ich habe das Turnier gewonnen. Lassen Sie uns ihm gratulieren.
+10360 Beide Spieler waren nicht zum Turnier erschienen. Nach den Ergebnissen des Los geht der Spieler in die nächste Stufe - %s.
+10361 Spieler %s ich habe Angst gehabt und bin nicht zum Turnier gekommen. Gewinner %s.
+10362 Spieler haben die gleiche Anzahl an Gesundheits-Einheiten. Durch das Los habe ich gewonnen %s.
+10363 Spieler %s gewonnen hat, weil er mehr Lebenspunkte.
+10364 Achtung! Offene Registrierung für das Turnier.
+10365 turnier
+10366 Man kann den Spielern während des Turniers nicht helfen!
+10367 Sie erhalten einen Preis!
+10368 Kehrt zurück in die Turnierarena, sonst wird die Niederlage automatisch gezählt.
+10369 Spieler %s ich bin während des Kampfes davongelaufen. Gewonnen %s.
+10370 Spieler %s ich habe mich geweigert, am Turnier teilzunehmen.
+10371 Die Anmeldung für das Turnier ist noch nicht offen.
+10372 Spieler %s registriert im Turnier.
+10373 Die Registrierung ist beendet.
+10374 Spieler %s er ist gestorben und verlässt das Turnier.
+10375 Sie haben das Turnier verloren.
+10376 Spieler %s ich bin während des Kampfes davongelaufen.
+10377 Teilnehmer:
+10378 duell
+10379 könig des Berges
+10380 Man kann sich nicht anmelden - es gibt zu viele Spieler.
+10381 Diese Mission kann alle 12 Stunden ausgeführt werden
+10382 Sie erhalten einen Preis für 150 Minuten aktiven Spielens.
+10383 Momentan ist es nicht möglich, das Schloss zu beschlagnahmen
+10384 Sie haben das Schloss zurückgegeben. Alle Upgrades wurden entfernt, weil sie bestanden haben %d tage.
+10385 Sie haben das Schloss zurückgegeben. %d die Upgrades wurden entfernt, weil sie bestanden haben %d tage.
+10386 Sie haben das Schloss zurückgegeben.
+10387 Das Schloss wird zum ersten Mal von einem Clan erobert %s.
+10388 Du kannst das Schloss-Ding nicht benutzen, da du ein Clanmitglied bist, das nicht genug Zeit hat (es ist notwendig %d tage). Das Ding wurde entfernt.
+10389 Du kannst in dieser Schlosszone keine Spieler mit geringerem Level beeinflussen
+10390 Sie können das nicht verwenden (eine Schlosssache).
+10391 Dieses Ding wird jetzt nur Ihnen dienen.
+10392 Du kannst nicht in einer Fraktion einem Clan beitreten.
+10393 registrierung
+10394 ablehnen
+10395 Die Quest kann nur vom Besitzer übertragen werden
+10396 Du kannst diese Quest nicht mehr austeilen
+10397 Es ist unmöglich, die Quest zu übergeben - der Unterschied in den Ebenen ist zu groß
+10399 Sie können sich nicht registrieren - Sie passen nicht auf das Niveau.
+10400 Du kannst jetzt nicht kämpfen - bereite dich auf den Kampf vor!
+10401 Du kannst jetzt nicht kämpfen - eine Friedenszone!
+10402 Der Kampf hat begonnen!
+10403 Das Duell beginnt durch %d sekunden. Machen Sie sich bereit.
+10449 Die Beschlagnahme der Tafel ist abgebrochen!
+10450 Das Gegenstandlimit ist erreicht.
+10451 Jack Ailstätter: Für das Ritual wird gesammelt %d blutige Drachenzähne (erforderlich %d).
+10452 Jack Ailstätter: Durch %d ich werde in wenigen Minuten mit dem Portal-Schließritual beginnen. Allen, denen das Schicksal dieser Welt nicht gleichgültig ist, geht zum Portal, ich werde dort auf euch warten!
+10453 Jack Ailstätter: Wir beginnen das Portal-Schließritual! Lasst mich nicht sterben und schützt mich vor Monstern, zum Lesen brauche ich volle Konzentration! Bleibt übrig %d minuten.
+10454 Jack ist tot. Sie haben noch einen Versuch, aber sammeln Sie dafür 100 weitere blutige Drachenzähne.
+10455 Hurra, das Portal ist geschlossen und die Welt ist gerettet! Alle, die teilgenommen haben, gehen zu Jack Ailstätter, um eine Belohnung zu erhalten.
+10456 Bis zum Beginn des Portalschließungsrituals bleibt %d  %s.
+10457 minuten
+10458 minuten
+10459 minute
+10460 sekunden
+10461 Dieser Gegenstand wird beim Beenden des Spiels entfernt - vergiss nicht, ihn zurückzuholen.
+10462 Du kannst dich nicht zum Schloss teleportieren. Bleibt übrig %d sekunden.
+10463 Eine Sache mit einer begrenzten Lebensdauer
+10464 Sie haben das Ding mit einer begrenzten Frist entfernt.
+10466 (links %s).
+10467 %d tag
+10468 %d des Tages
+10469 %d tage
+10470 Bis zum neuen Jahr bleibt es: %s.
+10471 weniger als eine Minute
+10472 Sie haben ein Weihnachtsgeschenk erhalten.
+10473 Sie haben bereits ein Weihnachtsgeschenk erhalten.
+10474 Keine Aktion: Dieses Mantra kann während des Turniers nicht verwendet werden.
+10475 Jetzt nicht teleportieren.
+10476 Die "Mammutläufe" haben begonnen.
+10477 %s er kam als erster ins Ziel.
+10479 Die Fähigkeit hat nicht funktioniert
+10481 Der Zauber wirkt nicht auf Monster
+10483 Der Kristall kann nicht aktiviert werden, wenn er sich unter einer unverwundbaren Sphäre befindet.
+10484 Geschlossen
+10490 %s ich habe das Turnier gewonnen.
+10491 %s ich habe das Turnier bei den Großen gewonnen.
+10492 %s ich habe das Turnier unter den größten gewonnen.
+10493 %s ich habe das Turnier unter den Legendären gewonnen.
+10494 Für %s es gab keine Gegner.
+10495 In die Arena gerufen
+10496 Die Teilnehmer erhalten %d sekunden zur Vorbereitung
+10497 Spieler %s er ist gestorben.
+10498 Unentschieden. Alle haben verloren.
+10499 Das rote Team hat gewonnen.
+10500 Das grüne Team hat gewonnen.
+10501 Die Teams sind nicht gleich, das Turnier findet nicht statt.
+10502 Sie haben die Gruppe gewechselt.
+10503 Sie sind bereits registriert.
+10505 
+10506 in
+10507 bb
+10508 vv2
+10509 %s ich bin nicht zum Turnier erschienen.
+10510 gruppe
+10511 aktuelles Turnier
+10512 ergebnisse
+10513 Rot: %d
+10514 Grüne: %d
+10520 Die Zeit ist abgelaufen
+10521 Es gibt nur wenige Gegner
+10522 Die Geisel ist geflohen
+10523 Es ist niemand mehr übrig
+10530 geiselnahme
+10532 ermordet
+10533 weggelaufen
+10534 kam nicht
+10540 Sie sind im roten Team
+10541 Sie sind im grünen Team
+10542 Das Ohr dieses Spielers ist bereits am Faden
+10543 Das Ohr passt nicht zu diesem Faden
+10545 Die Verbindung zum Server ist verloren gegangen.
+10550 Die Zeit der Autorisierungssitzung ist abgelaufen. Versuchen Sie, das Spiel erneut anzumelden. Wenn der Fehler weiterhin auftritt, wenden Sie sich an den technischen Support help.gamexp.ru
+10551 Die Verbindung konnte nicht hergestellt werden.
+10552 Noch einmal versuchen?
+10553 Wieder verbinden?
+10554 Diese Funktion ist derzeit nicht verfügbar.
+10555 Der Rückgabestein hat nicht funktioniert!
+10556 Der Titel X2 ist aktiviert.
+10557 X2 Grad aktiviert.
+10558 Die Fähigkeit kann hier nicht angewendet werden
+10559 Das Limit für verschachtelte Taschen wurde erreicht
+10560 Das Amulett des Neujahrs wurde entfernt
+10561 Der Vorgang ist derzeit nicht verfügbar
+10562 Es ist verboten, einen Beutel hierher zu legen, wenn er andere Beutel enthält
+10563 Zu weit weg
+10564 Die Tafel wird bereits von einem anderen Spieler erfasst
+10565 Das Spezialniveau wurde erhöht.
+10566 Die Anwendung ist unmöglich - holen Sie sich zuerst eine Spezialität.
+10567 Die Anwendung ist nicht möglich - Sie haben das höchste Niveau der Spezialität erreicht.
+10568 Die Anwendung ist nicht möglich - es gibt nicht genügend Lizenzen auf dem Stapel.
+10569 Die Anwendung ist nicht möglich - kein geeigneter Titel oder Grad.

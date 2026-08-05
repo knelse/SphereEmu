@@ -1,30 +1,34 @@
-
-200 De aventura
-201 De silencio
-202 De profecia
-203 De segredo
-204 De mito
-205 De vida
-206 De campanhas
-207 De existência
-208 De lenda
-209 De paz
+200 Aventura
+201 Silêncio
+202 Profecias
+203 Segredos
+204 Mitos
+205 Genesis
+206 Caminhadas
+207 Existência
+208 Legendas
+209 Mundo
 
 #2820-2821
-01 Bota elevada
-03 bota elevada
+01 Botas
+03 Botas
+
 #2822-2823
-01 Bota de couro
-03 bota de couro
+01 Sapatos de couro
+03 sapatos de couro
+
 #2824-2825
-01 Bota de couro reforçado
-03 bota de couro reforçado
+01 Sapatos de couro rebitados
+03 sapatos de couro rebitados
+
 #2826-2827
-01 Bota de corrente reforçada
-03 bota de corrente reforçada
+01 Botas de Chainmail
+03 botas de Chainmail
+
 #2828-2830
-01 Bota elevada de armadura
-03 bota elevada de armadura
+01 Botas de placa
+03 botas de placa
+
 #2831-2834
-01 Bota elevada de armadura ancestral
-03 bota elevada de armadura ancestral
+01 Botas de placa antiga
+03 botas de placa antiga

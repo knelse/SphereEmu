@@ -1,30 +1,34 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 della pace
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2835-2836
 01 Guanti
 03 guanti
+
 #2837-2838
-01 Guanti di pelle
-03 guanti di pelle
+01 Guanti in pelle
+03 guanti in pelle
+
 #2839-2840
-01 Guanti di pelle rinforzata
-03 guanti di pelle rinforzata
+01 Guanti in pelle rivettata
+03 guanti in pelle rivettata
+
 #2841-2842
-01 Guanti di maglia
-03 guanti di maglia
+01 Guanti di cotta di maglia
+03 guanti di cotta di maglia
+
 #2843-2845
-01 Guanti di armatura
-03 guanti di armatura
+01 Guanti piatti
+03 guanti piatti
+
 #2846-2849
-01 Guanti di armatura antichi
-03 guanti di armatura antichi
+01 Guanti antichi
+03 guanti antichi

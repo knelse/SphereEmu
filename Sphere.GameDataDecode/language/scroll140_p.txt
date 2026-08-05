@@ -1,9 +1,7 @@
-01 Receita do pó de Amilus
-02 receita do pó de Amilus
-03 receita do pó de Amilus
-
-100 Na sua frente está um pergaminho com uma receita de uma poção mágica escrita nele. Junto com qualquer receita está uma vida inteira de trabalho de varias gerações de mágicos. Tenha certeza de ter em seu livro especial de receitas algo bem valioso.
-
+01 Receita de Amilus em pó
+02 receitas de Amilus em pó
+03 receita de Amilus em pó
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para fazer o pó de Amilus, primeiro pegue ardamate e kreatolus. Misture num pote alquimista, adicione pó de Fainal e utilize o resultado. 
+    Para obter Amilus em pó, primeiro obtenha ardamato e creatolus. Misture - os em um caldeirão alquímico, adicione o pó Finial final e aproveite o pó resultante.
+    

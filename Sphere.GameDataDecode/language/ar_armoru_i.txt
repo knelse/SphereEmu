@@ -1,47 +1,51 @@
 01 Cotta di maglia
-03 Cotta di maglia
-
-100 Protegge dalle armi nemiche in battaglia.
-
-200 dell'eliminazione
-201 della devastazione
-202 della fiducia
-203 dell'invulnerabilità
-204 della vita
-205 dell'eliminazione
-206 della devastazione
-207 della fiducia
-208 dell'invulnerabilità
-209 della vita
-210 del dominio
-211 della cecità
-212 della paura
-213 dell'arresto
-214 della liberazione
-215 della purificazione
-216 della punizione
-217 dell'intrappolamento
-218 del turbine
-219 della maledizione
+03 cotta di maglia
+100 In battaglia protegge dalle armi degli avversari.
+200 eradicazione
+201 devastazioni
+202 affidabilità
+203 invulnerabilità
+204 vita
+205 eradicazione
+206 devastazioni
+207 affidabilità
+208 invulnerabilità
+209 vita
+210 del Consiglio
+211 abbagliamento
+212 paura
+213 fermate
+214 liberazione
+215 pulizia
+216 punizioni
+217 catene
+218 vortice
+219 maledizioni
 
 #5001
-01 Armatura di pelle rinforzata
-03 Armatura di pelle rinforzata
+01 Armatura in pelle rivettata
+03 armatura in pelle rivettata
+
 #5021
 01 Corazza
-03 Corazza
+03 corazza
+
 #5041
 01 Armatura antica
-03 Armatura antica
+03 armatura antica
+
 #5061
 01 Armatura antica
-03 Armatura antica
+03 armatura antica
+
 #5111
 01 Armatura antica
-03 Armatura antica
+03 armatura antica
+
 #5131
 01 Armatura antica
-03 Armatura antica
+03 armatura antica
+
 #5160
 01 Armatura antica
-03 Armatura antica
+03 armatura antica

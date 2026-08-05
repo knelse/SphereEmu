@@ -1,10 +1,6 @@
-01 License to reset title
-03 license to reset title
-
-100 Сбрасывает уровень титула персонажа до 15. При этом на каждые 5 (пять) сброшенных уровней титула добавляется 1 (один) уровень к предыдущей степени. Также сбрасываются распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земля, воздух, вода и огонь. ВНИМАНИЕ! Лицензия не работает, если у персонажа есть специальность!
-
-101 Do you really want to reset title?
+01 License to reset the title
+03 license to reset the title
+100 Resets the character's title level to 15. At the same time, for every 5 (five) dropped title levels, 1 (one) level is added to the previous degree. Distributed character characteristics such as strength, agility, accuracy, endurance, earth, air, water and fire are also reset. ATTENTION! The license does not work if the character has a specialty!
+101 Do you really want to drop the title?
 102 The title has been reset.
-103 There is no need to use the license now.
-
-
+103 There is no need to use a license now.

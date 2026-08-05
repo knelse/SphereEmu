@@ -1,0 +1,315 @@
+01 Armbrust
+03 armbrust
+10 Sie haben keine Pfeile.
+100 Eine Wurfwaffe. Ermöglicht es, einen Gegner aus großer Entfernung zu treffen; erfordert einen großen Vorrat an Pfeilen.
+200 erschöpfung
+201 tapferkeit
+202 schaden
+203 grausamkeiten
+204 eile
+205 geschwindigkeit
+206 unordnung
+207 chaos
+208 penetration
+209 instabilität
+210 zersetzungen
+211 entfernungen
+212 entfernungen
+213 geschicklichkeit
+214 müdigkeit
+215 äther
+216 ausstrahlung
+217 krankheiten
+218 werte
+
+#201
+01 Hand-Armbrust
+03 hand-Armbrust
+
+#202
+01 Kupfer Armbrust
+03 kupfer Armbrust
+
+#203
+01 Leichte Armbrust
+03 leichte Armbrust
+
+#204
+01 Silberne Armbrust
+03 silberne Armbrust
+
+#205
+01 Goldene Armbrust
+03 goldene Armbrust
+
+#206
+01 Jagd Armbrust
+03 jagd Armbrust
+
+#207
+01 Duell Armbrust
+03 duell armbrust
+
+#208
+01 Elite Hand Armbrust
+03 elite Hand Armbrust
+
+#209
+01 Elite leichte Armbrust
+03 elite leichte Armbrust
+
+#210
+01 Elite goldene Armbrust
+03 elite goldene Armbrust
+
+#211
+01 Elite-Duell-Armbrust
+03 elite-Duell-Armbrust
+
+#212
+01 Rune Hand Armbrust
+03 rune Hand Armbrust
+
+#213
+01 Runen-leichte Armbrust
+03 runen-leichte Armbrust
+
+#214
+01 Runen-goldene Armbrust
+03 runen-goldene Armbrust
+
+#215
+01 Runenduell Armbrust
+03 runenduell Armbrust
+
+#216
+01 Armbrust
+03 armbrust
+
+#217
+01 Große Armbrust
+03 große Armbrust
+
+#218
+01 Schwere Armbrust
+03 schwere Armbrust
+
+#219
+01 Eiserne Armbrust
+03 eiserne Armbrust
+
+#220
+01 Stahl Armbrust
+03 stahl Armbrust
+
+#221
+01 Kampf Armbrust
+03 kampf Armbrust
+
+#222
+01 Belagerungs-Armbrust
+03 belagerungs-Armbrust
+
+#223
+01 Elite-Armbrust
+03 elite-Armbrust
+
+#224
+01 Elite schwere Armbrust
+03 elite schwere Armbrust
+
+#225
+01 Elite Stahl Armbrust
+03 elite Stahl Armbrust
+
+#226
+01 Elite-Belagerungs-Armbrust
+03 elite-Belagerungs-Armbrust
+
+#227
+01 Runenbrust
+03 runenbrust
+
+#228
+01 Runenschwere Armbrust
+03 runenschwere Armbrust
+
+#229
+01 Runen-Stahl-Armbrust
+03 runen-Stahl-Armbrust
+
+#230
+01 Belagerungs-Runenbrust
+03 belagerungs-Runenbrust
+
+#3751-3752
+01 Hand-Armbrust
+03 hand-Armbrust
+
+#3753-3754
+01 Kupfer Armbrust
+03 kupfer Armbrust
+
+#3755-3757
+01 Leichte Armbrust
+03 leichte Armbrust
+
+#3758-3759
+01 Silberne Armbrust
+03 silberne Armbrust
+
+#3760-3762
+01 Goldene Armbrust
+03 goldene Armbrust
+
+#3763-3764
+01 Jagd Armbrust
+03 jagd Armbrust
+
+#3765-3769
+01 Duell Armbrust
+03 duell armbrust
+
+#3770-3774
+01 Elite Hand Armbrust
+03 elite Hand Armbrust
+
+#3775-3779
+01 Elite leichte Armbrust
+03 elite leichte Armbrust
+
+#3780-3784
+01 Elite goldene Armbrust
+03 elite goldene Armbrust
+
+#3785-3789
+01 Elite-Duell-Armbrust
+03 elite-Duell-Armbrust
+
+#3790-3794
+01 Rune Hand Armbrust
+03 rune Hand Armbrust
+
+#3795-3799
+01 Runen-leichte Armbrust
+03 runen-leichte Armbrust
+
+#3800-3804
+01 Runen-goldene Armbrust
+03 runen-goldene Armbrust
+
+#3805-3810
+01 Runenduell Armbrust
+03 runenduell Armbrust
+
+#3811-3812
+01 Armbrust
+03 armbrust
+
+#3813-3814
+01 Große Armbrust
+03 große Armbrust
+
+#3815-3817
+01 Schwere Armbrust
+03 schwere Armbrust
+
+#3818-3819
+01 Eiserne Armbrust
+03 eiserne Armbrust
+
+#3820-3822
+01 Stahl Armbrust
+03 stahl Armbrust
+
+#3823-3824
+01 Kampf Armbrust
+03 kampf Armbrust
+
+#3825-3829
+01 Belagerungs-Armbrust
+03 belagerungs-Armbrust
+
+#3830-3834
+01 Elite-Armbrust
+03 elite-Armbrust
+
+#3835-3839
+01 Elite schwere Armbrust
+03 elite schwere Armbrust
+
+#3840-3844
+01 Elite Stahl Armbrust
+03 elite Stahl Armbrust
+
+#3845-3849
+01 Elite-Belagerungs-Armbrust
+03 elite-Belagerungs-Armbrust
+
+#3850-3854
+01 Runenbrust
+03 runenbrust
+
+#3855-3859
+01 Runenschwere Armbrust
+03 runenschwere Armbrust
+
+#3860-3864
+01 Runen-Stahl-Armbrust
+03 runen-Stahl-Armbrust
+
+#3865-3870
+01 Belagerungs-Runenbrust
+03 belagerungs-Runenbrust
+
+#3871-3873
+01 Legendäre Armbrust
+03 legendäre Armbrust
+
+#3874-3876
+01 Geisterduell Armbrust
+03 geisterduell armbrust
+
+#3877-3879
+01 Drachenduell Armbrust
+03 drachenduell Armbrust
+
+#3880-3882
+01 Legendäre Belagerungs Armbrust
+03 legendäre Belagerungs Armbrust
+
+#3883-3885
+01 Geisterhafte Belagerungs Armbrust
+03 geisterhafte Belagerungs Armbrust
+
+#3886-3888
+01 Belagerungsdrachen-Armbrust
+03 Belagerungsdrachen-Armbrust
+
+#5883
+01 Jagd Armbrust
+03 jagd Armbrust
+
+#5884
+01 Große Jagd Armbrust
+03 jagd Armbrust
+
+#5885
+01 Schwere Jagdbrust
+03 jagd Armbrust
+
+#5886
+01 Eiserne Jagd Armbrust
+03 jagd Armbrust
+
+#5887
+01 Stahl Jagd Armbrust
+03 jagd Armbrust
+
+#5888
+01 Große Jagd Armbrust
+03 jagd Armbrust
+
+#6454
+01 Armbrust des Albeorns
+03 armbrust des Albeorns

@@ -1,0 +1,11 @@
+01 Seguro
+03 seguro
+101 El uso del seguro requerirá %d$.
+102 Usted utilizó el seguro.
+103 El seguro no es válido.
+104 Ahora no hay necesidad de un seguro.
+110 Nombre del personaje: %s
+111 Título: %s
+112 Grado: %s
+113 Sellos del título: %d
+114 Sellos de grado: %d

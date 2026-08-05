@@ -1,0 +1,223 @@
+01 Kettenhemd
+03 kettenhemd
+05 neu
+06 abgenutzt
+07 rostig
+100 Im Kampf schützt vor den Waffen der Gegner.
+200 tapferkeit
+201 stärke
+202 übernahmen
+203 abweichungen
+204 sicherheit
+205 unverwundbarkeit
+206 gesundheit
+207 leben
+208 meditation
+209 prana
+210 kräfte
+211 geschicklichkeit
+212 größe
+213 konzentration
+214 land
+215 wasser
+216 luft
+217 feuer
+218 elemente
+219 werte
+220 kräfte
+221 geschicklichkeit
+222 größe
+223 konzentration
+224 ganzheitlichkeit
+
+#301
+01 Jacke
+03 jacke
+
+#302
+01 Lederrüstung
+03 lederrüstung
+
+#303-304
+01 Vernietete Lederrüstung
+03 vernietete Lederrüstung
+
+#305-306
+01 Kettenhemd
+03 kettenhemd
+
+#307-309
+01 Kiras
+03 kiras
+
+#310-312
+01 Alte Rüstung
+03 alte Rüstung
+
+#3001-3004
+01 Jacke
+03 jacke
+
+#3005-3009
+01 Lederrüstung
+03 lederrüstung
+
+#3010-3019
+01 Beschlagene Lederrüstung
+03 vernietete Lederrüstung
+
+#3020-3029
+01 Kettenhemd
+03 kettenhemd
+
+#3030-3044
+01 Kiras
+03 kiras
+
+#3045-3060
+01 Alte Rüstung
+03 alte Rüstung
+
+#4453-4461
+01 Kiras
+03 kiras
+
+#4740
+01 Große Schwarze Kiras
+03 Große Schwarze Kiras
+
+#4741
+01 Große Weiße Kiras
+03 Der große weiße Brustpanzer
+
+#4750
+01 Große Schwarze Kiras
+03 Große Schwarze Kiras
+
+#4751
+01 Große Weiße Kiras
+03 Große Weiße Kiras
+
+#5586
+01 Bösewicht-Jacke
+03 jacke des Bösewichts
+
+#5587
+01 Lederjacke des Bösewichts
+03 jacke des Bösewichts
+
+#5588
+01 Genietete Jacke des Bösewichts
+03 jacke des Bösewichts
+
+#5589
+01 Kettenhemd des Bösewichts
+03 kettenhemd des Bösewichts
+
+#5590
+01 Der Schurke des Bösewichts
+03 der Schurke des Bösewichts
+
+#5591
+01 Rüstung des Bösewichts
+03 rüstung des Bösewichts
+
+#5677
+01 Glänzende Jacke
+03 jacke des Glücks
+
+#5678
+01 Glänzende Lederjacke
+03 jacke des Glücks
+
+#5679
+01 Genietete glänzende Jacke
+03 jacke des Glücks
+
+#5680
+01 Kettenhemd der Ausstrahlung
+03 kettenhemd der Ausstrahlung
+
+#5681
+01 Die Kiras der Ausstrahlung
+03 die kiras der ausstrahlung
+
+#5682
+01 Rüstung der Ausstrahlung
+03 rüstung der Ausstrahlung
+
+#5865
+01 Heimlichkeits-Jacke
+03 stealth-Jacke
+
+#5866
+01 Lederne Heimlichkeitsjacke
+03 stealth-Jacke
+
+#5867
+01 Genietete Stealth-Jacke
+03 stealth-Jacke
+
+#5868
+01 Kettenhemd der Heimlichkeit
+03 kettenhemd der Heimlichkeit
+
+#5869
+01 Tarnkiras
+03 tarnkiras
+
+#5870
+01 Stealth-Rüstung
+03 stealth-Rüstung
+
+#6083
+01 Titan-Jacke
+03 Titan-Jacke
+
+#6084
+01 Lederjacke Titan
+03 Titan-Jacke
+
+#6085
+01 Titan Nietenjacke
+03 Titan-Jacke
+
+#6086
+01 Kettenhemd aus Titan
+03 Kettenhemd aus Titan
+
+#6087
+01 Titan-Kiras
+03 titan-Kiras
+
+#6088
+01 Titan-Rüstung
+03 Titan-Rüstung
+
+#6551
+01 Schwere Kaliestra-Rüstung
+03 schwere Kaliestra-Rüstung
+
+#6868
+01 Zuverlässigkeit Jacke
+03 Jacke Zuverlässigkeit
+
+#6869
+01 Lederjacke der Zuverlässigkeit
+03 jacke der Zuverlässigkeit
+
+#6870
+01 Vernietete Jacke der Zuverlässigkeit
+03 jacke der Zuverlässigkeit
+
+#6871
+01 Kettenhemd der Zuverlässigkeit
+03 kettenhemd der Zuverlässigkeit
+
+#6872
+01 Robustheitskorasse
+03 die Sicherheitskurse
+
+#6873
+01 Rüstung der Zuverlässigkeit
+03 rüstung der Zuverlässigkeit

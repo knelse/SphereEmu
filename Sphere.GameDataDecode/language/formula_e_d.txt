@@ -1,0 +1,7 @@
+01 Formel
+02 formeln
+03 formel
+100 Die Formel der Zauberergilde
+10000 Diese Formel (wenn sie von einem Zauberer einer Stufe oder einer Stufe verwendet wird %z1) verleiht einem der folgenden Gegenstände magische Eigenschaften: %l1 Um eine Reaktion durchzuführen, ist es notwendig %a1.
+10001 Diese Formel (wenn sie von einem Zauberer einer Stufe oder einer Stufe verwendet wird %z1) verleiht einem der folgenden Gegenstände magische Eigenschaften: %l1 Um eine Reaktion durchzuführen, sind %a1 und %a2.
+10002 Diese Formel (wenn sie von einem Zauberer einer Stufe oder einer Stufe verwendet wird %z1) verleiht einem der folgenden Gegenstände magische Eigenschaften: %l1 Um eine Reaktion durchzuführen, sind %a1, %a2 und %a3.

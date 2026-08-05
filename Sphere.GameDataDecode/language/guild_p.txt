@@ -1,252 +1,335 @@
 #5500
-01 Organização de assassinos (1º estágio)
-03 organização de assassinos
+01 Gild assassino (1 fase)
+03 Gild Assassin
+
 #5501
-01 Organização de assassinos (2º estágio)
-03 organização de assassinos
+01 Gild assassino (2 fases)
+03 Gild Assassin
+
 #5502
-01 Organização de assassinos (3º estágio)
-03 organização de assassinos
+01 Gild Assassino (3 fases)
+03 Gild Assassin
+
 #5503
-01 Organização de assassinos (4º estágio)
-03 organização de assassinos
+01 Gild Assassino (4 fases)
+03 Gild Assassin
+
 #5504
-01 Organização de assassinos (5º estágio)
-03 organização de assassinos
+01 Gild Assassino (fase 5)
+03 Gild Assassin
+
 #5505
-01 Organização de assassinos (6º estágio)
-03 organização de assassinos
+01 Gild Assassino (Fase 6)
+03 Gild Assassin
+
 #5600
-01 Organização de cruzados (1º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (1 Nível)
+03 Gild dos cruzados
+
 #5601
-01 Organização de cruzados (2º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (2 níveis)
+03 Gild dos cruzados
+
 #5602
-01 Organização de cruzados (3º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (3 níveis)
+03 Gild dos cruzados
+
 #5603
-01 Organização de cruzados (4º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (4 níveis)
+03 Gild dos cruzados
+
 #5604
-01 Organização de cruzados (5º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (nível 5)
+03 Gild dos cruzados
+
 #5605
-01 Organização de cruzados (6º estágio)
-03 organização de cruzados
+01 Gild do Cruzado (6 níveis)
+03 Gild dos cruzados
+
 #5700
-01 Organização de inquisidores (1º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (nível 1)
+03 Gild Inquisitor
+
 #5701
-01 Organização de inquisidores (2º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (Fase 2)
+03 Gild Inquisitor
+
 #5702
-01 Organização de inquisidores (3º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (3 níveis)
+03 Gild Inquisitor
+
 #5703
-01 Organização de inquisidores (4º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (Fase 4)
+03 Gild Inquisitor
+
 #5704
-01 Organização de inquisidores (5º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (fase 5)
+03 Gild Inquisitor
+
 #5705
-01 Organização de inquisidores (6º estágio)
-03 organização de inquisidores
+01 Gild do Inquisidor (Fase 6)
+03 Gild Inquisitor
+
 #5800
-01 Organização de caçadores (1º estágio)
-03 organização de caçadores
+01 Gild do caçador (1 fase)
+03 Gild Hunter
+
 #5801
-01 Organização de caçadores (2º estágio)
-03 organização de caçadores
+01 Gild do caçador (2 níveis)
+03 Gild Hunter
+
 #5802
-01 Organização de caçadores (3º estágio)
-03 organização de caçadores
+01 Gild do caçador (3 níveis)
+03 Gild Hunter
+
 #5803
-01 Organização de caçadores (4º estágio)
-03 organização de caçadores
+01 Gild do caçador (4 níveis)
+03 Gild Hunter
+
 #5804
-01 Organização de caçadores (5º estágio)
-03 organização de caçadores
+01 Gild do caçador (fase 5)
+03 Gild Hunter
+
 #5805
-01 Organização de caçadores (6º estágio)
-03 organização de caçadores
+01 Gild do caçador (Fase 6)
+03 Gild Hunter
+
 #5900
-01 Organização dos mágicos (1º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (1 estágio)
+03 Gild Arquimago
+
 #5901
-01 Organização dos mágicos (2º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (2 níveis)
+03 Gild Arquimago
+
 #5902
-01 Organização dos mágicos (3º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (3 níveis)
+03 Gild Arquimago
+
 #5903
-01 Organização dos mágicos (4º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (4 níveis)
+03 Gild Arquimago
+
 #5904
-01 Organização dos mágicos (5º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (fase 5)
+03 Gild Arquimago
+
 #5905
-01 Organização dos mágicos (6º estágio)
-03 organização dos mágicos
+01 Gild Arquimago (6 níveis)
+03 Gild Arquimago
+
 #6000
-01 Organização dos bárbaros (1º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (1 fase)
+03 Gild Bárbara
+
 #6001
-01 Organização dos bárbaros (2º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (2 níveis)
+03 Gild Bárbara
+
 #6002
-01 Organização dos bárbaros (3º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (3 níveis)
+03 Gild Bárbara
+
 #6003
-01 Organização dos bárbaros (4º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (4 níveis)
+03 Gild Bárbara
+
 #6004
-01 Organização dos bárbaros (5º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (fase 5)
+03 Gild Bárbara
+
 #6005
-01 Organização dos bárbaros (6º estágio)
-03 organização dos bárbaros
+01 Gild Bárbara (Fase 6)
+03 Gild Bárbara
+
 #6100
-01 Organização dos druidas (1º estágio)
-03 organização dos druidas
+01 Guild Druida (1 fase)
+03 Gild Druida
+
 #6101
-01 Organização dos druidas (2º estágio)
-03 organização dos druidas
+01 Guild Druida (2 níveis)
+03 Gild Druida
+
 #6102
-01 Organização dos druidas (3º estágio)
-03 organização dos druidas
+01 Guild Druida (3 níveis)
+03 Gild Druida
+
 #6103
-01 Organização dos druidas (4º estágio)
-03 organização dos druidas
+01 Guild Druida (4 níveis)
+03 Gild Druida
+
 #6104
-01 Organização dos druidas (5º estágio)
-03 organização dos druidas
+01 Guild Druida (fase 5)
+03 Gild Druida
+
 #6105
-01 Organização dos druidas (6º estágio)
-03 organização dos druidas
+01 Gild Druida (6ª fase)
+03 Gild Druida
+
 #6200
-01 Organização dos ladrões (1º estágio)
-03 organização dos ladrões
+01 Gild ladrão (1 etapa)
+03 Gild ladrão
+
 #6201
-01 Organização dos ladrões (2º estágio)
-03 organização dos ladrões
+01 Gild ladrão (2 níveis)
+03 Gild ladrão
+
 #6202
-01 Organização dos ladrões (3º estágio)
-03 organização dos ladrões
+01 Gild ladrão (3 níveis)
+03 Gild ladrão
+
 #6203
-01 Organização dos ladrões (4º estágio)
-03 organização dos ladrões
+01 Gild ladrão (4 níveis)
+03 Gild ladrão
+
 #6204
-01 Organização dos ladrões (5º estágio)
-03 organização dos ladrões
+01 Gild ladrão (fase 5)
+03 Gild ladrão
+
 #6205
-01 Organização dos ladrões (6º estágio)
-03 organização dos ladrões
+01 Gild ladrão (Fase 6)
+03 Gild ladrão
+
 #6300
-01 Organização dos mestres do aço (1º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (1 estágio)
+03 Gild mestres aço
+
 #6301
-01 Organização dos mestres do aço (2º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (2 estágio)
+03 Gild mestres aço
+
 #6302
-01 Organização dos mestres do aço (3º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (3 estágio)
+03 Gild mestres aço
+
 #6303
-01 Organização dos mestres do aço (4º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (4 Estágio)
+03 Gild mestres aço
+
 #6304
-01 Organização dos mestres do aço (5º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (fase 5)
+03 Gild mestres aço
+
 #6305
-01 Organização dos mestres do aço (6º estágio)
-03 organização dos mestres do aço
+01 Gild mestres de aço (6 Fase)
+03 Gild mestres aço
+
 #6400
-01 Organização dos armeiros (1º estágio)
-03 organização dos armeiros
+01 Gild do Armeiro (1 Nível)
+03 Gild armeiro
+
 #6401
-01 Organização dos armeiros (2º estágio)
-03 organização dos armeiros
+01 Gild do Armeiro (2 níveis)
+03 Gild armeiro
+
 #6402
-01 Organização dos armeiros (3º estágio)
-03 organização dos armeiros
+01 Gild armeiro (3 níveis)
+03 Gild armeiro
+
 #6403
-01 Organização dos armeiros (4º estágio)
-03 organização dos armeiros
+01 Gild armeiro (4 níveis)
+03 Gild armeiro
+
 #6404
-01 Organização dos armeiros (5º estágio)
-03 organização dos armeiros
+01 Gild armeiro (5 níveis)
+03 Gild armeiro
+
 #6405
-01 Organização dos armeiros (6º estágio)
-03 organização dos armeiros
+01 Gild armeiro (6 níveis)
+03 Gild armeiro
+
 #6500
-01 Organização dos ferreiros (1º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (1 Nível)
+03 Gild ferreiro
+
 #6501
-01 Organização dos ferreiros (2º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (2 níveis)
+03 Gild ferreiro
+
 #6502
-01 Organização dos ferreiros (3º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (3 níveis)
+03 Gild ferreiro
+
 #6503
-01 Organização dos ferreiros (4º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (4 níveis)
+03 Gild ferreiro
+
 #6504
-01 Organização dos ferreiros (5º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (5 níveis)
+03 Gild ferreiro
+
 #6505
-01 Organização dos ferreiros (6º estágio)
-03 organização dos ferreiros
+01 Gild ferreiro (6 níveis)
+03 Gild ferreiro
+
 #6600
-01 Organização dos encantadores (1º estágio)
-03 organização dos encantadores
+01 Guilda do feiticeiro (1 Nível)
+03 Guild of the wizard
+
 #6601
-01 Organização dos encantadores (2º estágio)
-03 organização dos encantadores
+01 Guilda do feiticeiro (2 níveis)
+03 Guild of the wizard
+
 #6602
-01 Organização dos encantadores (3º estágio)
-03 organização dos encantadores
+01 Guilda do feiticeiro (3 níveis)
+03 Guild of the wizard
+
 #6603
-01 Organização dos encantadores (4º estágio)
-03 organização dos encantadores
+01 Guild of the wizard (4 níveis)
+03 Guild of the wizard
+
 #6604
-01 Organização dos encantadores (5º estágio)
-03 organização dos encantadores
+01 Guilda do feiticeiro (5 níveis)
+03 Guild of the wizard
+
 #6605
-01 Organização dos encantadores (6º estágio)
-03 organização dos encantadores
+01 Guild of the wizard (Nível 6)
+03 Guild of the wizard
+
 #6700
-01 Organização dos necromantes (1º estágio)
-03 organização dos necromantes
+01 Gild Necromante (nível 1)
+03 Gild Necromante
+
 #6701
-01 Organização dos necromantes (2º estágio)
-03 organização dos necromantes
+01 Gild Necromante (Fase 2)
+03 Gild Necromante
+
 #6702
-01 Organização dos necromantes (3º estágio)
-03 organização dos necromantes
+01 Gild Necromante (Fase 3)
+03 Gild Necromante
+
 #6703
-01 Organização dos necromantes (4º estágio)
-03 organização dos necromantes
+01 Gild Necromante (Fase 4)
+03 Gild Necromante
+
 #6704
-01 Organização dos necromantes (5º estágio)
-03 organização dos necromantes
+01 Gild Necromante (nível 5)
+03 Gild Necromante
+
 #6705
-01 Organização dos necromantes (6º estágio)
-03 organização dos necromantes
+01 Gild Necromante (Nível 6)
+03 Gild Necromante
+
 #6800
-01 Organização dos bandidos (1º estágio)
-03 organização dos bandidos
+01 Gild bundyera (1 etapa)
+03 Gild bundyera
+
 #6801
-01 Organização dos bandidos (2º estágio)
-03 organização dos bandidos
+01 Gild bundyera (2 níveis)
+03 Gild bundyera
+
 #6802
-01 Organização dos bandidos (3º estágio)
-03 organização dos bandidos
+01 Gild bundyera (3 níveis)
+03 Gild bundyera
+
 #6803
-01 Organização dos bandidos (4º estágio)
-03 organização dos bandidos
+01 Gild bundyera (4 níveis)
+03 Gild bundyera
+
 #6804
-01 Organização dos bandidos (5º estágio)
-03 organização dos bandidos
+01 Gild bundyera (nível 5)
+03 Gild bundyera
+
 #6805
-01 Organização dos bandidos (6º estágio)
-03 organização dos bandidos
+01 Gild bundyera (Nível 6)
+03 Gild bundyera

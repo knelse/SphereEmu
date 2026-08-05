@@ -25,9 +25,16 @@ public static class SphObjectDb
     private static readonly char[] TabCharacter = { '\t' };
     public static readonly Dictionary<int, SphGameObject> GameObjectDataDb = new();
     public static readonly Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>> SuffixDataDb = new();
-    private const string langSuffixEnglish = "_e";
-    private const string langSuffixItalian = "_i";
-    private const string langSuffixPortuguese = "_p";
+    // Longer suffixes first so EndsWith matching stays unambiguous.
+    private static readonly (string Suffix, Locale Locale)[] LangSuffixes =
+    [
+        ("_spa", Locale.Spanish),
+        ("_e", Locale.English),
+        ("_d", Locale.German),
+        ("_f", Locale.French),
+        ("_i", Locale.Italian),
+        ("_p", Locale.Portuguese),
+    ];
 
     public static readonly Dictionary<string, LocalizationEntryArray> LocalisationContent = new();
 
@@ -445,27 +452,17 @@ public static class SphObjectDb
         {
             var name = Path.GetFileNameWithoutExtension(localeFile);
             var locale = Locale.Russian;
-            var removeSuffix = false;
 
-            if (name.EndsWith(langSuffixEnglish))
+            foreach (var (suffix, mappedLocale) in LangSuffixes)
             {
-                locale = Locale.English;
-                removeSuffix = true;
-            }
-            else if (name.EndsWith(langSuffixItalian))
-            {
-                locale = Locale.Italian;
-                removeSuffix = true;
-            }
-            else if (name.EndsWith(langSuffixPortuguese))
-            {
-                locale = Locale.Portuguese;
-                removeSuffix = true;
-            }
+                if (!name.EndsWith(suffix, StringComparison.Ordinal))
+                {
+                    continue;
+                }
 
-            if (removeSuffix)
-            {
-                name = name[..^2];
+                locale = mappedLocale;
+                name = name[..^suffix.Length];
+                break;
             }
 
             if (!LocalisationContent.ContainsKey(name))

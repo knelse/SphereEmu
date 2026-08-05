@@ -1,0 +1,9 @@
+01 Alchemistischer Ofen
+03 alchemistischer Ofen
+11 Keine Reaktion möglich:
+12 prana<%d
+13 land<%d
+14 luft<%d
+15 wasser<%d
+16 feuer<%d
+100 Dies ist einer der wenigen alchemistischen Öfen, die in unsere Zeit gekommen sind, in denen die ersten Zauberer der Sphäre ihre Tränke und Pulver gekocht haben.

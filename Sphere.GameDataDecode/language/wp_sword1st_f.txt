@@ -1,0 +1,487 @@
+01 Épée
+03 épée
+100 Armes blanches. La force de l'épée est qu'elle Bat rapidement, mais pas très fort.
+200 épuisement
+201 prouesses
+202 dégâts
+203 brutalités
+204 précipitation
+205 vitesses
+206 désordre
+207 chaos
+208 Ether
+209 fatigue
+210 maladies
+211 instabilité
+212 distances
+213 distances
+214 décomposition
+215 dévastation
+216 faiblesses
+217 pénétrations
+218 interdiction
+219 valeurs
+
+#1
+01 Épée courbe
+03 épée courbe
+
+#2
+01 Sabre
+03 sabre
+
+#3
+01 Palash
+03 palash
+
+#4
+01 Skimitar
+03 skimitar
+
+#5
+01 Cimeterre
+03 cimeterre
+
+#6
+01 Katana
+03 katana
+
+#7
+01 Shamsher
+03 shamsher
+
+#8
+01 Sabre d'élite
+03 sabre d'élite
+
+#9
+01 Palash d'élite
+03 palash d'élite
+
+#10
+01 Cimeterre d'élite
+03 cimeterre d'élite
+
+#11
+01 Katana élite
+03 katana d'élite
+
+#12
+01 Sabre runique
+03 sabre runique
+
+#13
+01 Palash runique
+03 Palash runique
+
+#14
+01 Cimeterre runique
+03 cimeterre runique
+
+#15
+01 Katana runique
+03 katana runique
+
+#16
+01 Une épée et demie
+03 une épée et demie
+
+#17
+01 Épée à deux mains
+03 épée à deux mains
+
+#18
+01 CLAYMORE
+03 CLAYMORE
+
+#19
+01 Espadon
+03 Espadon
+
+#20
+01 Flamberg
+03 flamberg
+
+#21
+01 Grande épée
+03 grande épée
+
+#22
+01 Épée géante
+03 épée géante
+
+#23
+01 Espadon d'élite
+03 Espadon d'élite
+
+#24
+01 CLAYMORE Elite
+03 CLAYMORE Elite
+
+#25
+01 Flamberg élite
+03 flamberg élite
+
+#26
+01 Grande épée d'élite
+03 grande épée d'élite
+
+#27
+01 Épée à deux mains runique
+03 épée à deux mains runique
+
+#28
+01 CLAYMORE runique
+03 CLAYMORE runique
+
+#29
+01 Runic flamberg
+03 Runic flamberg
+
+#30
+01 Grande épée runique
+03 grande épée runique
+
+#31
+01 Épée courte
+03 épée courte
+
+#32
+01 Épée large
+03 épée large
+
+#33
+01 Gladius
+03 Gladius
+
+#34
+01 Épée d'infanterie
+03 épée d'infanterie
+
+#35
+01 Épée longue
+03 épée longue
+
+#36
+01 Épée de cristal
+03 épée de cristal
+
+#37
+01 Épée d'or
+03 épée d'or
+
+#38
+01 Épée courte d'élite
+03 épée courte d'élite
+
+#39
+01 Gladius d'élite
+03 Gladius d'élite
+
+#40
+01 Épée longue d'élite
+03 épée longue d'élite
+
+#41
+01 Épée de cristal d'élite
+03 épée de cristal d'élite
+
+#42
+01 Épée courte runique
+03 épée courte runique
+
+#43
+01 Gladius runique
+03 Gladius runique
+
+#44
+01 Épée longue runique
+03 épée longue runique
+
+#45
+01 Épée de cristal runique
+03 épée de cristal runique
+
+#130
+01 Épée De Dragon
+03 épée de dragon
+
+#3251-3252
+01 Épée courbe
+03 épée courbe
+
+#3253-3254
+01 Sabre
+03 sabre
+
+#3255-3257
+01 Palash
+03 palash
+
+#3258-3259
+01 Skimitar
+03 skimitar
+
+#3260-3262
+01 Cimeterre
+03 cimeterre
+
+#3263-3264
+01 Katana
+03 katana
+
+#3265-3269
+01 Shamsher
+03 shamsher
+
+#3270-3274
+01 Sabre d'élite
+03 sabre d'élite
+
+#3275-3279
+01 Palash d'élite
+03 Palash d'élite
+
+#3280-3284
+01 Cimeterre d'élite
+03 cimeterre d'élite
+
+#3285-3289
+01 Katana élite
+03 katana d'élite
+
+#3290-3294
+01 Sabre runique
+03 sabre runique
+
+#3295-3299
+01 Palash runique
+03 Palash runique
+
+#3300-3304
+01 Cimeterre runique
+03 cimeterre runique
+
+#3305-3310
+01 Katana runique
+03 katana runique
+
+#3311-3312
+01 Une épée et demie
+03 une épée et demie
+
+#3313-3314
+01 Épée à deux mains
+03 épée à deux mains
+
+#3315-3317
+01 CLAYMORE
+03 CLAYMORE
+
+#3318-3319
+01 Espadon
+03 Espadon
+
+#3320-3322
+01 Flamberg
+03 flamberg
+
+#3323-3324
+01 Grande épée
+03 grande épée
+
+#3325-3329
+01 Épée géante
+03 épée géante
+
+#3330-3334
+01 Espadon d'élite
+03 Espadon d'élite
+
+#3335-3339
+01 CLAYMORE Elite
+03 CLAYMORE Elite
+
+#3340-3344
+01 Flamberg élite
+03 flamberg élite
+
+#3345-3349
+01 Grande épée d'élite
+03 grande épée d'élite
+
+#3350-3354
+01 Épée à deux mains runique
+03 épée à deux mains runique
+
+#3355-3359
+01 CLAYMORE runique
+03 CLAYMORE runique
+
+#3360-3364
+01 Runic flamberg
+03 Runic flamberg
+
+#3365-3370
+01 Grande épée runique
+03 grande épée runique
+
+#3371-3372
+01 Épée courte
+03 épée courte
+
+#3373-3374
+01 Épée large
+03 épée large
+
+#3375-3377
+01 Gladius
+03 Gladius
+
+#3378-3379
+01 Épée d'infanterie
+03 épée d'infanterie
+
+#3380-3382
+01 Épée longue
+03 épée longue
+
+#3383-3384
+01 Épée de cristal
+03 épée de cristal
+
+#3385-3389
+01 Épée d'or
+03 épée d'or
+
+#3390-3394
+01 Épée courte d'élite
+03 épée courte d'élite
+
+#3395-3399
+01 Gladius d'élite
+03 Gladius d'élite
+
+#3400-3404
+01 Épée longue d'élite
+03 épée longue d'élite
+
+#3405-3409
+01 Épée de cristal d'élite
+03 épée de cristal d'élite
+
+#3410-3414
+01 Épée courte runique
+03 épée courte runique
+
+#3415-3419
+01 Gladius runique
+03 Gladius runique
+
+#3420-3424
+01 Épée longue runique
+03 épée longue runique
+
+#3425-3430
+01 Épée de cristal runique
+03 épée de cristal runique
+
+#3431-3433
+01 Katana légendaire
+03 katana légendaire
+
+#3434-3436
+01 Katana fantôme
+03 katana fantôme
+
+#3437-3439
+01 Dragon katana
+03 dragon katana
+
+#3440-3442
+01 La grande épée légendaire
+03 la grande épée légendaire
+
+#3443-3445
+01 La grande épée fantôme
+03 la grande épée fantôme
+
+#3446-3448
+01 Grande épée de dragon
+03 grande épée de dragon
+
+#3449-3451
+01 Épée de cristal légendaire
+03 épée de cristal légendaire
+
+#3452-3454
+01 Épée de cristal fantôme
+03 épée de cristal fantôme
+
+#3455-3457
+01 Épée de cristal de dragon
+03 épée de cristal de dragon
+
+#3459
+01 Grande épée de dragon
+03 grande épée de dragon
+
+#5565-5570
+01 Poignard de meurtre
+03 poignard de meurtre
+
+#5592-5594
+01 Poignard de meurtre
+03 poignard de meurtre
+
+#5683
+01 Longue épée de justice
+03 épée de justice
+
+#5684-5686
+01 Épée de justice d'élite
+03 épée de justice
+
+#5687
+01 La grande épée de justice
+03 épée de justice
+
+#5688
+01 La grande épée de justice
+03 épée de justice
+
+#5693
+01 La grande épée de justice
+03 épée de justice
+
+#5696
+01 La grande épée de justice
+03 épée de justice
+
+#6071-6076
+01 Épée d'inimitié
+03 épée d'inimitié
+
+#6092-6093
+01 Épée d'inimitié
+03 épée d'inimitié
+
+#6095-6096
+01 Épée d'inimitié
+03 épée d'inimitié
+
+#6098-6099
+01 Épée d'inimitié
+03 épée d'inimitié
+
+#6451
+01 Épée runique
+03 épée runique
+
+#6875-6878
+01 Épée d'inimitié
+03 épée d'inimitié
+
+#6880
+01 Épée d'inimitié
+03 épée d'inimitié

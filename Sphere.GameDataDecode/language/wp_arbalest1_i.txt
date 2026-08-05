@@ -1,0 +1,315 @@
+01 Balestra
+03 balestra
+10 Non hai frecce.
+100 Armi da lancio. Consente di colpire il nemico a lunga distanza; richiede una grande scorta di frecce.
+200 esaurimento
+201 valor
+202 danni
+203 crudeltà
+204 fretta
+205 velocità
+206 disordine
+207 Caos
+208 penetrazione
+209 instabilità
+210 decomposizione
+211 distanze
+212 distanze
+213 abilità
+214 fatica
+215 etere
+216 splendore
+217 malattie
+218 valori
+
+#201
+01 Balestra a mano
+03 balestra a mano
+
+#202
+01 Balestra di rame
+03 balestra di rame
+
+#203
+01 Balestra leggera
+03 balestra leggera
+
+#204
+01 Balestra d'argento
+03 balestra d'argento
+
+#205
+01 Balestra d'oro
+03 balestra d'oro
+
+#206
+01 Balestra da caccia
+03 balestra da caccia
+
+#207
+01 Balestra da Duello
+03 balestra da Duello
+
+#208
+01 Balestra a mano d'élite
+03 balestra a mano d'élite
+
+#209
+01 Balestra leggera d'élite
+03 balestra leggera d'élite
+
+#210
+01 Balestra d'oro d'élite
+03 balestra d'oro d'élite
+
+#211
+01 Balestra da Duello d'élite
+03 balestra da Duello d'élite
+
+#212
+01 Balestra a mano runica
+03 balestra a mano runica
+
+#213
+01 Balestra leggera runica
+03 balestra leggera runica
+
+#214
+01 Balestra d'oro runica
+03 balestra d'oro runica
+
+#215
+01 Balestra da Duello runica
+03 balestra da Duello runica
+
+#216
+01 Balestra
+03 balestra
+
+#217
+01 Grande balestra
+03 grande balestra
+
+#218
+01 Balestra pesante
+03 balestra pesante
+
+#219
+01 Balestra di ferro
+03 balestra di ferro
+
+#220
+01 Balestra d'acciaio
+03 balestra d'acciaio
+
+#221
+01 Balestra da combattimento
+03 balestra da combattimento
+
+#222
+01 Balestra d'assedio
+03 balestra d'assedio
+
+#223
+01 Balestra d'élite
+03 balestra d'élite
+
+#224
+01 Balestra pesante d'élite
+03 balestra pesante d'élite
+
+#225
+01 Balestra d'acciaio d'élite
+03 balestra d'acciaio d'élite
+
+#226
+01 Balestra d'assedio d'élite
+03 balestra d'assedio d'élite
+
+#227
+01 Balestra runica
+03 balestra runica
+
+#228
+01 Balestra pesante runica
+03 balestra pesante runica
+
+#229
+01 Balestra d'acciaio runica
+03 balestra d'acciaio runica
+
+#230
+01 Balestra d'assedio runica
+03 balestra d'assedio runica
+
+#3751-3752
+01 Balestra a mano
+03 balestra a mano
+
+#3753-3754
+01 Balestra di rame
+03 balestra di rame
+
+#3755-3757
+01 Balestra leggera
+03 balestra leggera
+
+#3758-3759
+01 Balestra d'argento
+03 balestra d'argento
+
+#3760-3762
+01 Balestra d'oro
+03 balestra d'oro
+
+#3763-3764
+01 Balestra da caccia
+03 balestra da caccia
+
+#3765-3769
+01 Balestra da Duello
+03 balestra da Duello
+
+#3770-3774
+01 Balestra a mano d'élite
+03 balestra a mano d'élite
+
+#3775-3779
+01 Balestra leggera d'élite
+03 balestra leggera d'élite
+
+#3780-3784
+01 Balestra d'oro d'élite
+03 balestra d'oro d'élite
+
+#3785-3789
+01 Balestra da Duello d'élite
+03 balestra da Duello d'élite
+
+#3790-3794
+01 Balestra a mano runica
+03 balestra a mano runica
+
+#3795-3799
+01 Balestra leggera runica
+03 balestra leggera runica
+
+#3800-3804
+01 Balestra d'oro runica
+03 balestra d'oro runica
+
+#3805-3810
+01 Balestra da Duello runica
+03 balestra da Duello runica
+
+#3811-3812
+01 Balestra
+03 balestra
+
+#3813-3814
+01 Grande balestra
+03 grande balestra
+
+#3815-3817
+01 Balestra pesante
+03 balestra pesante
+
+#3818-3819
+01 Balestra di ferro
+03 balestra di ferro
+
+#3820-3822
+01 Balestra d'acciaio
+03 balestra d'acciaio
+
+#3823-3824
+01 Balestra da combattimento
+03 balestra da combattimento
+
+#3825-3829
+01 Balestra d'assedio
+03 balestra d'assedio
+
+#3830-3834
+01 Balestra d'élite
+03 balestra d'élite
+
+#3835-3839
+01 Balestra pesante d'élite
+03 balestra pesante d'élite
+
+#3840-3844
+01 Balestra d'acciaio d'élite
+03 balestra d'acciaio d'élite
+
+#3845-3849
+01 Balestra d'assedio d'élite
+03 balestra d'assedio d'élite
+
+#3850-3854
+01 Balestra runica
+03 balestra runica
+
+#3855-3859
+01 Balestra pesante runica
+03 balestra pesante runica
+
+#3860-3864
+01 Balestra d'acciaio runica
+03 balestra d'acciaio runica
+
+#3865-3870
+01 Balestra d'assedio runica
+03 balestra d'assedio runica
+
+#3871-3873
+01 La leggendaria balestra da Duello
+03 la leggendaria balestra da Duello
+
+#3874-3876
+01 Balestra da Duello fantasma
+03 balestra da Duello fantasma
+
+#3877-3879
+01 Balestra Duello Drago
+03 balestra Duello Drago
+
+#3880-3882
+01 La leggendaria balestra d'assedio
+03 la leggendaria balestra d'assedio
+
+#3883-3885
+01 Balestra d'assedio fantasma
+03 balestra d'assedio fantasma
+
+#3886-3888
+01 Balestra d'assedio del drago
+03 balestra d'assedio del drago
+
+#5883
+01 Balestra da caccia
+03 balestra da caccia
+
+#5884
+01 Grande balestra da caccia
+03 balestra da caccia
+
+#5885
+01 Balestra Da Caccia Pesante
+03 balestra da caccia
+
+#5886
+01 Balestra da caccia in ferro
+03 balestra da caccia
+
+#5887
+01 Balestra da caccia in acciaio
+03 balestra da caccia
+
+#5888
+01 Grande balestra da caccia
+03 balestra da caccia
+
+#6454
+01 Balestra Di Albeorn
+03 balestra di Albeorn

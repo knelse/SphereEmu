@@ -1,8 +1,7 @@
-01 Эликсир Магической Атаки
-02 эликсир магической атаки
-03 эликсир магической атаки
-
-101 Эликсир магической атаки низкой концентрации. Увеличивает Магическую Атаку на 5%.
-102 Эликсир магической атаки средней концентрации. Увеличивает Магическую Атаку на 7.5%.
-103 Эликсир магической атаки высокой концентрации. Увеличивает Магическую Атаку на 10%.
-104 Эликсир магической атаки высокой концентрации. Увеличивает Магическую Атаку на 15%.
+01 Elisir Di Attacco Magico
+02 elisir di attacco magico
+03 elisir di attacco magico
+101 Elisir di attacco magico a bassa concentrazione. Aumenta L'attacco magico del 5%.
+102 Elisir di attacco magico di media concentrazione. Aumenta L'attacco magico del 7.5%.
+103 Elisir di attacco magico ad alta concentrazione. Aumenta L'attacco magico del 10%.
+104 Elisir di attacco magico ad alta concentrazione. Aumenta L'attacco magico del 15%.

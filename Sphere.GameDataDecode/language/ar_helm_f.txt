@@ -1,0 +1,99 @@
+01 Casque de fer
+03 casque de fer
+100 Dans la bataille, protège contre les armes des adversaires.
+200 force
+201 absorption
+202 sécurité
+203 santé
+204 méditations
+205 précision
+206 Ether
+207 valeurs
+
+#262-273
+01 Chapeau De Noël
+03 Cap
+
+#337
+01 Chapeau
+03 chapeau
+
+#338
+01 Casque en cuir
+03 casque en cuir
+
+#339-340
+01 Casque en cuir riveté
+03 casque en cuir riveté
+
+#341-342
+01 Casque en mailles
+03 casque en mailles
+
+#343-345
+01 Casque de fer
+03 casque de fer
+
+#346-348
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#3146-3147
+01 Chapeau
+03 chapeau
+
+#3148-3149
+01 Casque en cuir
+03 casque en cuir
+
+#3150-3153
+01 Casque en cuir riveté
+03 casque en cuir riveté
+
+#3154-3157
+01 Casque en mailles
+03 casque en mailles
+
+#3158-3163
+01 Casque de fer
+03 casque de fer
+
+#3164-3170
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#4480-4488
+01 Ancien casque de fer
+03 ancien casque de fer
+
+#4744
+01 Casque noir
+03 casque noir
+
+#4745
+01 Casque blanc
+03 casque blanc
+
+#5771
+01 Chapeau De L'Inquisiteur
+03 le chapeau de l'Inquisiteur
+
+#5772
+01 Casque en cuir de l'Inquisiteur
+03 casque de l'Inquisiteur
+
+#5773
+01 Casque riveté de l'Inquisiteur
+03 casque de l'Inquisiteur
+
+#5774
+01 Casque en mailles de l'Inquisiteur
+03 casque de l'Inquisiteur
+
+#5775
+01 Casque de fer de l'Inquisiteur
+03 casque de l'Inquisiteur
+
+#5776
+01 Ancien casque de l'Inquisiteur
+03 casque de l'Inquisiteur

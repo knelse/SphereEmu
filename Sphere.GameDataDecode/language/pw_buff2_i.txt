@@ -1,8 +1,7 @@
-01 Эликсир Физической защиты
-02 эликсир физической защиты
-03 эликсир физической защиты
-
-101 Эликсир физической защиты низкой концентрации. Увеличивает Физическую Защиту на 5%.
-102 Эликсир физической защиты средней концентрации. Увеличивает Физическую Защиту на 7.5%.
-103 Эликсир физической защиты высокой концентрации. Увеличивает Физическую Защиту на 10%.
-104 Эликсир физической защиты высокой концентрации. Увеличивает Физическую Защиту на 15%.
+01 Elisir di protezione fisica
+02 elisir di protezione fisica
+03 elisir di protezione fisica
+101 Elisir di protezione fisica a bassa concentrazione. Aumenta la protezione fisica del 5%.
+102 Elisir di protezione fisica a media concentrazione. Aumenta la protezione fisica del 7.5%.
+103 Elisir di protezione fisica ad alta concentrazione. Aumenta la protezione fisica del 10%.
+104 Elisir di protezione fisica ad alta concentrazione. Aumenta la protezione fisica del 15%.

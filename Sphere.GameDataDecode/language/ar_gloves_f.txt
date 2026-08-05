@@ -1,0 +1,127 @@
+01 Gants
+03 gants
+100 Dans la bataille, protège contre les armes des adversaires.
+200 force
+201 absorption
+202 sécurité
+203 santé
+204 méditations
+205 précision
+206 Ether
+207 valeurs
+
+#325
+01 Gants
+03 gants
+
+#326
+01 gants en cuir
+03 gants en cuir
+
+#327-328
+01 Gants en cuir riveté
+03 gants en cuir riveté
+
+#329-330
+01 Gants en mailles
+03 gants en mailles
+
+#331-333
+01 Gants en plates
+03 gants en plates
+
+#334-336
+01 Gants en plates anciens
+03 gants en plates anciens
+
+#3195
+01 Gants
+03 gants
+
+#3196
+01 Gants en cuir
+03 gants en cuir
+
+#3197-3198
+01 Gants en cuir riveté
+03 gants en cuir riveté
+
+#3199-3200
+01 Gants en mailles
+03 gants en mailles
+
+#3201-3203
+01 Gants en plates
+03 gants en plates
+
+#3204-3206
+01 Gants en plates anciens
+03 gants en plates anciens
+
+#4507-4515
+01 Gants en plates anciens
+03 gants en plates anciens
+
+#4748
+01 Gants noirs
+03 gants noirs
+
+#4749
+01 Gants blancs
+03 gants blancs
+
+#5960
+01 Gants
+03 gants
+
+#6177
+01 Gants sages
+03 gants sages
+
+#6178
+01 Gants en cuir des sages
+03 gants sages
+
+#6179
+01 Gants rivetés des sages
+03 gants sages
+
+#6180
+01 Gants en mailles des sages
+03 gants sages
+
+#6181
+01 Gants en plates des sages
+03 gants sages
+
+#6182
+01 Gants anciens des sages
+03 gants sages
+
+#6456
+01 Gants de maître
+02 gants de maître
+
+#6457
+01 Gants en cuir de maître
+02 gants de maître
+
+#6458
+01 Gants de maître rivetés
+02 gants de maître
+
+#6459
+01 Gants en mailles de maître
+02 gants de maître
+
+#6460
+01 Gants en plates du maître
+02 gants de maître
+
+#6461
+01 Gants anciens du maître
+02 gants de maître
+
+#6762
+01 Griffes
+03 griffes

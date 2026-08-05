@@ -1,9 +1,6 @@
-01 Коробка конфет
-02 Коробки конфет
-03 Коробку конфет
-10 Коробка конфет
-
-101 Осталось зарядов:
-
-100 Волшебная коробка конфет. Случайным образом навешивает мутатор.
-
+01 A box of chocolates
+02 Boxes of chocolates
+03 A box of chocolates
+10 A box of chocolates
+101 There are charges left:
+100 A magic box of chocolates. Randomly hangs a mutator.

@@ -1,47 +1,51 @@
 01 Luvas
-03 luvas
-
-100 Proteje vocÊ contra armas inimigas durante uma batalha.
-
-200 de eliminação
-201 de devastação
-202 de confiança
-203 de vulnerabilidade
-204 de vida
-205 de eliminação
-206 de devastação
-207 de confiança
-208 de vulnerabilidade
-209 de vida
-210 de regra
-211 de cegueira
-212 de medo
-213 de parada
-214 de entrega
-215 de purificação
-216 de punição
-217 de cadeia
-218 de furacão
-219 de praga
+03 Luvas
+100 Na batalha protege contra as armas dos inimigos.
+200 erradicação
+201 devastação
+202 confiabilidade
+203 invulnerabilidade
+204 vida
+205 erradicação
+206 devastação
+207 confiabilidade
+208 invulnerabilidade
+209 vida
+210 do Conselho
+211 cegueira
+212 susto
+213 paragens
+214 Livramento
+215 purificação
+216 punições
+217 grilhões
+218 Vortex
+219 maldições
 
 #5007
-01 Luvas de couro reforçadas
-03 luvas de couro reforçadas
+01 Luvas de couro rebitadas
+03 luvas de couro rebitadas
+
 #5027
-01 Luvas de armadura
-03 luvas de armadura
+01 Luvas de placa
+03 luvas de placa
+
 #5047
-01 Luvas de armadura ancestral
-03 luvas de armadura ancestral
+01 Luvas de placa antigas
+03 luvas de placa antigas
+
 #5067
-01 Luvas de armadura ancestral
-03 luvas de armadura ancestral
+01 Luvas de placa antigas
+03 luvas de placa antigas
+
 #5117
-01 Luvas de armadura ancestral
-03 luvas de armadura ancestral
+01 Luvas de placa antigas
+03 luvas de placa antigas
+
 #5137
-01 Luvas de armadura ancestral
-03 luvas de armadura ancestral
+01 Luvas de placa antigas
+03 luvas de placa antigas
+
 #5166
-01 Luvas de armadura ancestral
-03 luvas de armadura ancestral
+01 Luvas de placa antigas
+03 luvas de placa antigas

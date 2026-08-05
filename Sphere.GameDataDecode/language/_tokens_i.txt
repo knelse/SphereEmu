@@ -1,79 +1,80 @@
-01 pietra del teletrasporto
-02 pietre del teletrasporto
-03 pietra del teletrasporto
-11 usa la pietra mentre sei in piedi nel teletrasporto.
-12 la pietra serve solo per il teletrasporto tra i continenti.
-13 Questo teletrasporto può essere usato solamente dai proprietari del castello.
-1800 a Sheepstone
-1801 a Bangville
-1802 a Sunpool
-1803 a Torweal
-1809 a Sunpool-Torweal Road
-1810 a Nomrad
-1811 a Gifes 
-1812 a Umrad
-1813 a Anhelm
-1850 alla strada a nord di Hyperion
-1851 alla fine nord-ovest di Hyperion
-1852 alla strada Sheepstone-Sunpool
-1853 ai campi vicino la strada Sheepstone-Sunpool 
-1854 a nord-est di Hyperion
-1855 a Umrad Forest (Hyperion)
-1856 a Silver Forest (Hyperion)
-1857 alla strada Sheepstone-Torweal 
-1858 alle montagne tra Sheepstone e Bangville
-1859 a Lake Temer
-1860 alla strada Sheepstone-Sunpool, vicino Lake Vortex
-1861 alla strada Sunpool-Bangville, vicino Lake Vortex
-1862 a Heber Island (Lake Temer)
-1863 a Foros Island (Lake Vortex)
-1864 alla bocca di Nerey
-1865 a Deyros Island (Lake Vortex)
-1866 alla Eastern Forest (Hyperion)
-1877 alla bocca di Dioma
-1878 a Horton Forest (Hyperion)
-1879 alle montagne vicino la strada Sunpool-Torweal
-1880 a Island Patros (Lake Satin)
-1881 all'insenatura delle montagne a sud-est (Hyperion)
-1882 a nord di Coyton Forest (Hyperion)
-1883 alla fine sud-ovest di Hyperion
-1884 a Tantal Bridge
-1885 a Obol
-1900 a Castello Liege (Hyperion)
-1901 a Castello Feoff (Hyperion)
-1902 a Castello Aris (Hyperion)
-1903 a Castello Latour (Hyperion)
-1904 a Castello Eikum-Cas (Hyperion)
-1905 a Castello Gideon (Hyperion)
-1906 a Castello Chatelie (Hyperion)
-1907 a Castello Tyanod (Hyperion)
-1908 a Castello Peltier (Hyperion)
-1909 a Castello Kare-Royal (Hyperion)
-1910 a Castello Blessendour (Hyperion)
-1911 a Castello Ternoval (Hyperion)
-1912 a Castello Ammalaelle (Hyperion)
-1913 a Castello Cablac (Hyperion)
-1914 a Castello Devanagary (Hyperion)
-1915 a Castello Sabulat (Hyperion)
-1916 a Castello Diffensat (Hyperion)
-1917 a Castello Ionat (Hyperion)
-1918 a Castello Triumphaler (Hyperion)
-1919 a Castello Bagnarak (Charon)
-1920 a Castello Kabrad (Charon)
-1921 a Castello Set (Charon)
-1922 a Castello Lender (Charon)
-1923 a Castello Keles (Charon)
-1924 a Castello Sheprostan (Charon)
-1925 a Castello Orkobien (Charon)
-1926 a Castello Kanuak (Charon)
-1927 a Castello Aldarnon (Charon)
-1928 a Castello Iong (Charon)
-1929 a Castello Elek (Phoebe)
-1930 a Castello Gavot (Phoebe)
-1931 a Castello Kandur (Phoebe)
-1932 a Castello Immertel (Rodos)
-1933 a Castello Narcissus (Rodos)
-1934 A Castello Randen (Rodos)
-1935 A Castello Nirgun (Rodos)
-1936 A Castello Gelgivinn (Rodos)
-1979 A Castello Black Tower (Charon)
+01 token di teletrasporto
+02 gettoni teletrasporto
+03 token di teletrasporto
+11 Usa il gettone in piedi sul teletrasporto.
+12 Il token funziona solo all'interno della terraferma.
+13 Questo teletrasporto può essere utilizzato solo dai proprietari del castello.
+1800 A Shipstone
+1801 A Bangville
+1802 Sanpool
+1803 A Torvil
+1809 Alla strada Sanpool-Torvil
+1810 A Nomrad
+1811 Il Giefes
+1812 A Umrad
+1813 A Angelm
+1850 Verso la strada nord di Hyperion
+1851 Sul bordo nord-occidentale di Hyperion
+1852 Alla strada Shipstone-Sanpool
+1853 In un campo vicino alla strada Shipstone-Bangville
+1854 A nord-est di Hyperion
+1855 Alla Foresta di Umrad (Hyperion)
+1856 Alla foresta D'Argento (Hyperion)
+1857 Alla strada Shipstone-Torvil
+1858 Alle montagne tra Shipstone e Bangville
+1859 Al Lago Temer
+1860 Alla strada Sunpool-Shipstone, vicino al Lago Vortex
+1861 Alla strada Sanpool-Bangville, vicino al Lago Vortex
+1862 Sull'Isola di Geber (oz.Temer)
+1863 Sull'Isola di Foros (oz.Vortex)
+1864 Alla foce del fiume Nereo
+1865 Sull'Isola di Deiros (oz.Vortex)
+1866 Alla foresta orientale (Hyperion)
+1877 Alla foce del fiume Dioma
+1878 Alla foresta di Horton (Hyperion)
+1879 Nelle montagne vicino alla strada Sanpool-Torvil
+1880 Sull'Isola di Patros (oz.Raso)
+1881 Il Tasca di montagna sud-orientale (Hyperion)
+1882 A nord della foresta di Coiton (Hyperion)
+1883 Sul bordo sud-occidentale di Hyperion
+1884 Al Ponte di tantalio
+1885 In Obol
+1900 Al Castello di Liegi (Hyperion)
+1901 Al Castello di fief (Hyperion)
+1902 Al Castello di Aris (Hyperion)
+1903 Al Castello di Lator (Hyperion)
+1904 Al Castello di Eikum-CAS (Hyperion)
+1905 Al Castello di Gideon (Hyperion)
+1906 Al Castello di Chatelier (Hyperion)
+1907 Al Castello di Tuanod (Hyperion)
+1908 Al Castello di Peltier (Hyperion)
+1909 Al Castello di Kare-Royal (Hyperion)
+1910 Al Castello di Blessendor (Hyperion)
+1911 Al Castello di Ternoval (Hyperion)
+1912 Al Castello di Ammalael (Hyperion)
+1913 Al Castello di Kablak (Hyperion)
+1914 Al Castello di Davanagari (Hyperion)
+1915 Al Castello di Sabulat (Hyperion)
+1916 Al castello Deffensat (Hyperion)
+1917 Al Castello di Aionat (Hyperion)
+1918 Al Castello di Triumphaler (Hyperion)
+1919 Al Castello di Bagarnac (Caronte)
+1920 Al Castello di Cabrad (Caronte)
+1921 Al Castello di Seth (Caronte)
+1922 Al Castello di Lander (Caronte)
+1923 Al Castello di Keles (Caronte)
+1924 Al Castello di Sheprostan (Caronte)
+1925 Al Castello di Orcobien (Caronte)
+1926 Al Castello di Canuac (Caronte)
+1927 Al Castello di Aldarnon (Caronte)
+1928 Al Castello di Yong (Caronte)
+1929 Al Castello di Elek (Phoebus)
+1930 Al Castello di Gavot (Phoebus)
+1931 Al Castello di Kandur (Phoebus)
+1932 Al Castello di Immertel (Rodi)
+1933 Al Castello di Narciso (Rodi)
+1934 Al Castello di Randen (Rodi)
+1935 Al Castello di Nirgun (Rodi)
+1936 Al Castello di Gelgivinn (Rodi)
+1937 Al Castello di Île-Souilly-Roi
+1979 Alla Torre Nera (Caronte)

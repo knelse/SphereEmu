@@ -1,0 +1,117 @@
+01 Cristal
+03 cristal
+10 Vous avez un niveau bas, vous ne pouvez pas obtenir l'attribut de verrouillage.
+11 Affiliation:
+100 Le cristal donne des possibilités supplémentaires à son propriétaire ou à son groupe.
+
+#5081
+01 Petit cristal de puissance
+03 petit cristal de puissance
+
+#5082
+01 Petit cristal d'énergie
+03 petit cristal d'énergie
+
+#5083
+01 Petit cristal de longévité
+03 petit cristal de longévité
+
+#5084
+01 Petit cristal de réflexion
+03 petit cristal de réflexion
+
+#5085
+01 Cristal moyen de puissance
+03 cristal moyen de puissance
+
+#5086
+01 Cristal moyen d'énergie
+03 cristal moyen d'énergie
+
+#5087
+01 Cristal moyen de longévité
+03 cristal moyen de longévité
+
+#5088
+01 Cristal moyen de réflexion
+03 cristal moyen de réflexion
+
+#5089
+01 Grand cristal de puissance
+03 grand cristal de puissance
+
+#5090
+01 Grand cristal d'énergie
+03 grand cristal d'énergie
+
+#5091
+01 Grand cristal de longévité
+03 grand cristal de longévité
+
+#5092
+01 Grand cristal de réflexion
+03 grand cristal de réflexion
+
+#5093
+01 Petit cristal foncé de puissance
+03 petit cristal foncé de puissance
+
+#5094
+01 Petit cristal foncé d'énergie
+03 petit cristal foncé d'énergie
+
+#5095
+01 Petit cristal foncé de longévité
+03 petit cristal foncé de longévité
+
+#5096
+01 Petit cristal foncé de réflexion
+03 petit cristal foncé de réflexion
+
+#5097
+01 Cristal foncé moyen de puissance
+03 cristal foncé moyen de puissance
+
+#5098
+01 Cristal foncé moyen d'énergie
+03 cristal foncé moyen d'énergie
+
+#5099
+01 Cristal foncé moyen de longévité
+03 cristal foncé moyen de longévité
+
+#5100
+01 Cristal foncé moyen de réflexion
+03 cristal foncé moyen de réflexion
+
+#5101
+01 Grand cristal foncé de puissance
+03 grand cristal foncé de puissance
+
+#5102
+01 Grand cristal foncé d'énergie
+03 grand cristal foncé d'énergie
+
+#5103
+01 Grand cristal foncé de longévité
+03 grand cristal foncé de longévité
+
+#5104
+01 Grand cristal de puissance
+03 grand cristal de puissance
+
+#5105
+01 Grand cristal d'énergie
+03 grand cristal cristal énergie
+
+#5106
+01 Grand cristal cristal de longévité
+03 grand cristal de longévité
+
+#5107
+01 Grand cristal de réflexion
+03 grand cristal de réflexion
+
+#5108
+01 Grand cristal foncé de réflexion
+03 grand cristal foncé de réflexion

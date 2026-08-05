@@ -1,11 +1,13 @@
-01 chave da missão
+01 Chave da missão
 03 chave da missão
-10 não longe daqui,
-11 no grande continente de  Hyperion
-12 no grande continente de  Helios
-13 no grande continente de  Rodos
-14 no pequeno continente de Phoebe
-15 na ilha real de Leon
-16 no assustador continente de Haron
-20 Exitem algumas coisas que eu preciso. Ache-as, traga-as para mim e será generosamente recompensado. %s.
-21 Exitem algumas coisas que eu preciso. Ache-as, traga-as para mim e será generosamente recompensado. %s.
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 Há um pacote aqui perto com os ingredientes necessários. Vai buscá-la! %s
+21 Há um pacote aqui perto com os ingredientes necessários. Vai buscá-la! %s
+    
+    

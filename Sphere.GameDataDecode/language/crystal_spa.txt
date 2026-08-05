@@ -1,0 +1,341 @@
+01 Cristal
+03 cristal
+10 Tienes un nivel bajo, no puedes obtener el atributo de bloqueo.
+11 Pertenencia:
+100 Al ser colocado en la tabla del castillo correspondiente, el cristal otorga a cualquiera que lo toque un atributo que le da oportunidades adicionales.
+
+#5081
+01 Pequeño cristal de poder
+03 pequeño cristal de poder
+
+#5082
+01 Pequeño cristal de energía
+03 pequeño cristal de energía
+
+#5083
+01 Pequeño cristal de la durabilidad
+03 pequeño cristal de la durabilidad
+
+#5084
+01 Pequeño cristal de reflexión
+03 pequeño cristal de reflexión
+
+#5085
+01 Cristal medio de la fuerza
+03 cristal medio de la fuerza
+
+#5086
+01 Cristal medio de la energía
+03 cristal medio de la energía
+
+#5087
+01 Cristal medio de la durabilidad
+03 cristal medio de la durabilidad
+
+#5088
+01 Cristal medio de la reflexión
+03 cristal medio de la reflexión
+
+#5089
+01 Cristal grande del poder
+03 cristal grande del poder
+
+#5090
+01 Gran cristal de energía
+03 gran cristal de energía
+
+#5091
+01 Cristal grande de la durabilidad
+03 cristal grande de la durabilidad
+
+#5092
+01 Cristal grande de la reflexión
+03 cristal grande de la reflexión
+
+#5093
+01 Pequeño cristal oscuro del poder
+03 pequeño cristal oscuro del poder
+
+#5094
+01 Pequeño cristal oscuro de la energía
+03 pequeño cristal oscuro de la energía
+
+#5095
+01 Pequeño cristal oscuro de la durabilidad
+03 pequeño cristal oscuro de la durabilidad
+
+#5096
+01 Pequeño cristal oscuro de la reflexión
+03 pequeño cristal oscuro de la reflexión
+
+#5097
+01 Cristal oscuro medio de la fuerza
+03 cristal oscuro medio de la fuerza
+
+#5098
+01 Cristal de energía oscura media
+03 cristal de energía oscura media
+
+#5099
+01 Cristal oscuro medio de la durabilidad
+03 cristal oscuro medio de la durabilidad
+
+#5100
+01 Cristal oscuro medio de la reflexión
+03 cristal oscuro medio de la reflexión
+
+#5101
+01 Gran poder de cristal oscuro
+03 gran poder de cristal oscuro
+
+#5102
+01 Gran cristal de energía oscura
+03 gran cristal de energía oscura
+
+#5103
+01 Cristal oscuro grande de la durabilidad
+03 cristal oscuro grande de la durabilidad
+
+#5104
+01 El gran cristal de poder
+03 el gran cristal de poder
+
+#5105
+01 El gran cristal de energía
+03 gran cristal de cristal de energía
+
+#5106
+01 Gran cristal de cristal de la durabilidad
+03 gran cristal de durabilidad
+
+#5107
+01 Gran cristal de reflexión
+03 gran cristal de reflexión
+
+#5108
+01 Cristal oscuro grande de la reflexión
+03 cristal oscuro grande de la reflexión
+
+#5181
+01 Pequeño cristal de poder
+03 pequeño cristal de poder
+
+#5182
+01 Pequeño cristal de energía
+03 pequeño cristal de energía
+
+#5183
+01 Pequeño cristal de la durabilidad
+03 pequeño cristal de la durabilidad
+
+#5184
+01 Pequeño cristal de reflexión
+03 pequeño cristal de reflexión
+
+#5185
+01 Cristal medio de la fuerza
+03 cristal medio de la fuerza
+
+#5186
+01 Cristal medio de la energía
+03 cristal medio de la energía
+
+#5187
+01 Cristal medio de la durabilidad
+03 cristal medio de la durabilidad
+
+#5188
+01 Cristal medio de la reflexión
+03 cristal medio de la reflexión
+
+#5189
+01 Cristal grande del poder
+03 cristal grande del poder
+
+#5190
+01 Gran cristal de energía
+03 gran cristal de energía
+
+#5191
+01 Cristal grande de la durabilidad
+03 cristal grande de la durabilidad
+
+#5192
+01 Cristal grande de la reflexión
+03 cristal grande de la reflexión
+
+#5193
+01 Pequeño cristal oscuro del poder
+03 pequeño cristal oscuro del poder
+
+#5194
+01 Pequeño cristal oscuro de la energía
+03 pequeño cristal oscuro de la energía
+
+#5195
+01 Pequeño cristal oscuro de la durabilidad
+03 pequeño cristal oscuro de la durabilidad
+
+#5196
+01 Pequeño cristal oscuro de la reflexión
+03 pequeño cristal oscuro de la reflexión
+
+#5197
+01 Cristal oscuro medio de la fuerza
+03 cristal oscuro medio de la fuerza
+
+#5198
+01 Cristal de energía oscura media
+03 cristal de energía oscura media
+
+#5199
+01 Cristal oscuro medio de la durabilidad
+03 cristal oscuro medio de la durabilidad
+
+#5200
+01 Cristal oscuro medio de la reflexión
+03 cristal oscuro medio de la reflexión
+
+#5201
+01 Gran poder de cristal oscuro
+03 gran poder de cristal oscuro
+
+#5202
+01 Gran cristal de energía oscura
+03 gran cristal de energía oscura
+
+#5203
+01 Cristal oscuro grande de la durabilidad
+03 cristal oscuro grande de la durabilidad
+
+#5204
+01 El gran cristal de poder
+03 el gran cristal de poder
+
+#5205
+01 El gran cristal de energía
+03 gran cristal de cristal de energía
+
+#5206
+01 Gran cristal de cristal de la durabilidad
+03 gran cristal de durabilidad
+
+#5207
+01 Gran cristal de reflexión
+03 gran cristal de reflexión
+
+#5208
+01 Cristal oscuro grande de la reflexión
+03 cristal oscuro grande de la reflexión
+
+#5281
+01 Pequeño cristal de poder
+03 pequeño cristal de poder
+
+#5282
+01 Pequeño cristal de energía
+03 pequeño cristal de energía
+
+#5283
+01 Pequeño cristal de la durabilidad
+03 pequeño cristal de la durabilidad
+
+#5284
+01 Pequeño cristal de reflexión
+03 pequeño cristal de reflexión
+
+#5285
+01 Cristal medio de la fuerza
+03 cristal medio de la fuerza
+
+#5286
+01 Cristal medio de la energía
+03 cristal medio de la energía
+
+#5287
+01 Cristal medio de la durabilidad
+03 cristal medio de la durabilidad
+
+#5288
+01 Cristal medio de la reflexión
+03 cristal medio de la reflexión
+
+#5289
+01 Cristal grande del poder
+03 cristal grande del poder
+
+#5290
+01 Gran cristal de energía
+03 gran cristal de energía
+
+#5291
+01 Cristal grande de la durabilidad
+03 cristal grande de la durabilidad
+
+#5292
+01 Cristal grande de la reflexión
+03 cristal grande de la reflexión
+
+#5293
+01 Pequeño cristal oscuro del poder
+03 pequeño cristal oscuro del poder
+
+#5294
+01 Pequeño cristal oscuro de la energía
+03 pequeño cristal oscuro de la energía
+
+#5295
+01 Pequeño cristal oscuro de la durabilidad
+03 pequeño cristal oscuro de la durabilidad
+
+#5296
+01 Pequeño cristal oscuro de la reflexión
+03 pequeño cristal oscuro de la reflexión
+
+#5297
+01 Cristal oscuro medio de la fuerza
+03 cristal oscuro medio de la fuerza
+
+#5298
+01 Cristal de energía oscura media
+03 cristal de energía oscura media
+
+#5299
+01 Cristal oscuro medio de la durabilidad
+03 cristal oscuro medio de la durabilidad
+
+#5300
+01 Cristal oscuro medio de la reflexión
+03 cristal oscuro medio de la reflexión
+
+#5301
+01 Gran poder de cristal oscuro
+03 gran poder de cristal oscuro
+
+#5302
+01 Gran cristal de energía oscura
+03 gran cristal de energía oscura
+
+#5303
+01 Cristal oscuro grande de la durabilidad
+03 cristal oscuro grande de la durabilidad
+
+#5304
+01 El gran cristal de poder
+03 el gran cristal de poder
+
+#5305
+01 El gran cristal de energía
+03 gran cristal de cristal de energía
+
+#5306
+01 Gran cristal de cristal de la durabilidad
+03 gran cristal de durabilidad
+
+#5307
+01 Gran cristal de reflexión
+03 gran cristal de reflexión
+
+#5308
+01 Cristal oscuro grande de la reflexión
+03 cristal oscuro grande de la reflexión

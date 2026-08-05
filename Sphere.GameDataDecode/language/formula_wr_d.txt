@@ -1,0 +1,7 @@
+01 Formel
+02 formeln
+03 formel
+100 Reparaturformel der Waffengilde
+10000 Diese Formel dient dazu, die folgenden Gegenstände zu reparieren: %l1 Die Stufe des Meisters in der Waffengilde muss mindestens niedriger sein %z1. Zur Reparatur ist es notwendig %a1.
+10001 Diese Formel dient dazu, die folgenden Gegenstände zu reparieren: %l1 Die Stufe des Meisters in der Waffengilde muss mindestens niedriger sein %z1. Zur Reparatur notwendig %a1 und %a2.
+10002 Diese Formel dient dazu, die folgenden Gegenstände zu reparieren: %l1 Die Stufe des Meisters in der Waffengilde muss mindestens niedriger sein %z1. Zur Reparatur notwendig %a1, %a2 und %a3.

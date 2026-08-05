@@ -1,688 +1,655 @@
-0001 Mudança de domínio...
-0002 Conectando a 
-0003 Carregando dados de fundo de %s...
-0004 Bem-Vindo ao Sphere!
-0005 Acesso negado, nome já em uso
-0006 Acesso negado, nome incorreto ou senha
-0007 Servidor não achado
-0008 *Desconectado*
-0009 Arquivo: %s (%d%%)
-0010 Baixando
-0011 Erro de download do servidor.
-0012 Conexão impossível
+0001 Mudança de área...
+0002 Conexão com
+0003 Carregando os dados iniciais de %s...
+0004 Bem-vindo à esfera!
+0005 Acesso negado, o nome já está em uso
+0006 A autenticação falhou. Tente entrar no jogo novamente.
+0007 O servidor de autorização não está disponível
+0008 * Sem conexão*
+0009 Ficheiro: %s (%d%%)
+0010 Atualização
+0011 Erro ao carregar dados do servidor.
+0012 Não foi possível ligar
 0013 Modo offline
 0014 Jogadores:
-0015 Ping:
-0016 Canal:
+0015 Echo:
+0016 Produção canal:
 0017 Bytes recebidos:
-0018 Bytes enviados:
-0019 Reenviar:
+0018 Byte enviado:
+0019 Enviado:
 0020 Sua aparência
 0021 Seu nome:
-0022 Está tudo certo? Você não poderá mudar seu nome ou aparência no futuro.
-0023 Acesso negado. Conta desatualizada.
-0024 Você não escolheu o seu nome.
-0025 preço: %4.3f
-0026 Este nome já esta em uso ou é inválido tente outro.
-0027 Checando nome...
-0028 Peso máximo: %4.3f
+0022 É verdade? Você não poderá alterar o nome ou a aparência no futuro.
+0023 Acesso negado, Conta expirada.
+0024 Não escolheu um nome.
+0025 peso: %4.3f
+0026 Este nome já está em uso ou é inválido, tente outro.
+0027 Verificação de nome...
+0028 Peso Máx.: %4.3f
 0029 Preço
-0030 Oferta
-0031 Tem certeza que quer sair?
-0032 Atalhos
-0033 %d %s %d
+0030 PREL.
+0031 Você realmente quer sair?
+0032 Teclas de atalho
+0033 %d  %s  %d
 0034 %02d:%02d
 0035 Jan
-0036 Fev
-0037 Mar
-0038 Abr
-0039 Mai
-0040 Jun
+0036 fev
+0037 mar
+0038 abr
+0039 maio
+0040 junho
 0041 Jul
-0042 Ago
-0043 Set
-0044 Otu
-0045 Nov
-0046 Dez
-0047 você precisa:
-0048 aumentar seu ranque
-0049 aumentar seu nível
-0050 receber dinheiro
-0051 melhorar o karma 
+0042 Aug
+0043 sen
+0044 outubro
+0045 Noé
+0046 Dec
+0047 VOCÊ PRECISA:
+0048 aumentar o título
+0049 aumentar o grau
+0050 obter dinheiro
+0051 melhorar o karma
 0052 Onde:
 0053 Homem
 0054 Mulher
-0055 Confime sua escolha. Não será possível mudar seu nome ou aparência no futuro.
-0056 Servidor de autenticação não encontrado.
-0057 Erro na sincronização dos aquivos.
+0055 Confirme sua escolha. Você não poderá alterar o nome ou a aparência no futuro.
+0056 Não foi encontrado o servidor de autorização.
+0057 A sincronização de ficheiros falhou.
 0058 Leon
-0059 Haron 
-0060 PARTICIPANTES:
+0059 Caronte
+0060 Participantes:
 0061 © Missão ©
-0062 Checagem de aquivo...
+0062 Verificação de ficheiros...
 0063 Digite seu nome e senha.
 0064 Nome #%d
-0065 Your account has been blocked
-0066 Você não pode receber uma missão:
-0067 baixo ranque ( < %d )
-0068 ranque muito alto ( > %d )
-0069 nível baixo  ( < %d )
-0070 nível muito alto ( > %d )
+0065 Sua conta foi bloqueada
+0066 Você não pode obter uma missão:
+0067 título baixo (<%d)
+0068 título muito alto (>%d)
+0069 baixo grau (<%d)
+0070 muito alto grau (>%d)
 0071 karma ruim
-0072 karma muito bom
-0073 Missão completa!
-0074 Sem espaço para a chave da missão.
-0075 Você recebeu uma missão.
-0076 Sua chave não serve.
-0077 Missão expirou.
-0078 recebendo missão 
-0079 Você recebeu %d$.
-0080 Missão imcompleta.
-0081 Sem espaço para a chave da missão.
+0072 Karma muito bom
+0073 Missão cumprida!
+0074 Não há espaço para a chave da missão.
+0075 Tem uma missão.
+0076 A sua chave não combina.
+0077 A missão expirou.
+0078 obtendo uma missão
+0079 Você tem %d$.
+0080 A missão ainda não foi cumprida.
+0081 Não há espaço para o item da missão.
 0085 aplicar
-0086 jogar fora
+0086 carregar
 0089 Karma: %s
-0090 malígno 
-0091 ruim
+0090 muito ruim
+0091 má
 0092 neutro
-0093 bom
-0094 benígno
-0099 Você esta morto.
-0100 Eles não podem ser utilizados em conjunto.
-0101 Isto não pode ser colocado neste local.
-0102 Para utilizar coloque no invetório.
-0103 Você foi morto. Seu assassino: %s
+0093 boa
+0094 boa
+0099 Está morto.
+0100 Eles não podem ser usados juntos.
+0101 Não podes pôr isso aqui.
+0102 Para usar, Coloque isso no inventário.
+0103 Estão mortos. Seu assassino: %s
 0104 %s oferece, %s recebe a chave da missão.
-0105 Você não possui dinheiro suficiente.
-0106 Você não pode pegar isto.
-0107 %s comprou %s por %d$.
+0105 Não tem dinheiro suficiente.
+0106 Não pode ficar com isto.
+0107 %s compra (a) %s para %d$.
 0108 %s oferece %d$ por %s
-0109 O passe para compra deve ser um nível acima do atual.
-0110 Você não pode usar isto (ranque baixo).
-0111 você não pode usar isto (Nível baixo).
-0112 você não pode usar isto (karma ruim).
-0113 Ele não pode aceitar essa chave de missão.
-0114 Ela não pode aceitar essa chave de missão.
-0115 Compêndio inacessível: castelo no poder de monstros.
-0116 você perdeu %s.
-0117 Compêndio inacessível: castelo pertence a outro clã e esta guardado.
-0118 Compêndio inacessível: portões do castelo trancados.
-0119 guilda inapropriada ou estágio inicial
-0120 vida: %+d
-0121 prana: %+d
-0122 É preciso %d de nível Premium.
-0123 Não foi prossível comprar o passe: alguém está na ilha.
-0124 O passe só pode ser comprado em Rodos
-0126 ranque: %+d 
-0127 nível: %+d
-0128 Você recebeu um título: %s
-0129 Você recebeu um nível: %s
-0130 clã %s (%s)
-0131 Você comprou %s por %d$.
-0132 Requisição envidao ao Clã %s.
-0133 %s solicita juntar-se no clã.
-0134 Juntar-se ao clã
-0135 Juntar-se ao grupo
-0136 Requisição enviada para juntar-se ao grupo.
-0137 Cheque o nome do clã...
-0138 Clã %s criado.
-0139 Impossível criar clã com nome %s.
+0109 O token comprado deve estar em um nível superior ao existente.
+0110 Você não pode usar isso (título baixo).
+0111 Você não pode usar isso (baixo grau).
+0112 Você não pode usar isso (karma ruim).
+0113 Ele não pode aceitar a chave da missão.
+0114 Ela não pode aceitar a chave da missão.
+0115 A tábua não está disponível: o castelo é dominado por monstros.
+0116 Você perdeu %s.
+0117 A placa não está disponível: o castelo pertence a outro clã e está protegido.
+0118 A placa não está disponível: as portas do castelo estão trancadas.
+0119 guilda inadequada ou nível baixo
+0120 saúde: %+d
+0121 Prana: %+d
+0122 Requer Nível Premium %d.
+0123 Não pode ser comprado: há alguém na ilha.
+0124 O token só pode ser comprado em Rhodes
+0126 marcas de título: %+d
+0127 graus de grau: %+d
+0128 Você recebeu o título: %s
+0129 Você recebeu um diploma: %s
+0130 Klan %s (%s)
+0131 Você comprou %s para %d$.
+0132 Pedido enviado ao clã %s.
+0133 %s pede admissão no clã.
+0134 Entrar no clã
+0135 Entrar no grupo
+0136 Pedido de adesão ao grupo.
+0137 Verificar o nome do Clã...
+0138 Criado um clã %s.
+0139 Não é possível criar um clã com um nome %s.
 0140 © %s ©
-0141 Conde	
-0142 Condessa
-0143 Barão
-0144 Baronesa
+0141 Senhor.
+0142 Senhora
+0143 Senescal
+0144 Senescal
 0145 Vassalo
-0146 Vassala
-0147 Novato
-0148 Novata
-0150 Permitir juntar-se ao clã
-0151 Negar
+0146 Vassalo
+0147 Neófito
+0148 Neófito
+0150 Entrar no clã
+0151 Recusar
 0152 Banir
 0153 Aumentar
-0154 Reduzir
-0155 Deixar Clã
-0156 Jogar fora %s?
-0160 Você tem novo nível no clã: %s.
-0161 Você foi banido do clã %s.
-0162 Você foi admitido no clã %s.
-0163 Você saiu do clã %s.
-0164 dono: clã %s
-0165 sem dono 
-0166 Castelo agora pertence ao clã %s.
-0167 Você não pertence ao clã!
-0168 Castelo pertence a outro clã.
-0169 clã %s
+0154 Baixar
+0155 Sair do Clã
+0156 Carregar %s?
+0160 Seu novo ranque no clã: %s.
+0161 Você foi expulso do Clã %s.
+0162 Você é aceito no clã %s.
+0163 Você saiu do Clã %s.
+0164 proprietário: Clã %s
+0165 proprietário não
+0166 O castelo agora pertence ao clã %s.
+0167 Vocês não fazem parte do Clã!
+0168 O castelo pertence a outro clã.
+0169 Klan %s
 0170 Castelo %s
-0171 Pegar chave 
-0172 %s está ocupado e não pode negociar com você.
-0173 Você não pode pegar missões tão frequentemente.
-0174 Você foi excluido do grupo.
-0175 Você foi admitido no grupo.
-0176 Você deixou o grupo.
-0177 Você torno-se o líder do grupo.
-0178 Requisição enviada ao grupo.
-0179 %s requer participar do grupo.
+0171 Obter a chave
+0172 %s ocupado (a) e não pode negociar com você.
+0173 Não podes levar a missão com muita frequência.
+0174 Você foi expulso do grupo.
+0175 Foi aceite no grupo.
+0176 Você saiu do grupo.
+0177 Tornou-se o líder do grupo.
+0178 Pedido enviado ao grupo.
+0179 %s pede admissão no grupo.
 0180 noite
 0181 manhã
 0182 dia
-0183 tarde
-0185 %s não pode ser utilizado 
-0186 Ranque<%d
-0187 Nível<%d
-0188 karma ruim demais
-0189 karma bom demais
+0183 noite
+0185 Não pode ser usado %s
+0186 título<%d
+0187 grau<%d
+0188 Karma é muito ruim
+0189 Karma é bom demais
 0190 força<%d
-0191 habilidade<%d
+0191 destreza<%d
 0192 precisão<%d
 0193 resistência<%d
-0194 terra<%d
+0194 Terra<%d
 0195 ar<%d
 0196 água<%d
 0197 fogo<%d
-0198 vida<%d
-0199 prana<%d
-0200 Vida
-0201 prana
-0202 Sede
-
-0203 Força 
-0204 Habilidade 
-0205 Precisão 
-0206 Resistência 
+0198 saúde<%d
+0199 Prana<%d
+0200 Saúde
+0201 Prana
+0202 Saciedade
+0203 Força
+0204 Destreza
+0205 Precisão
+0206 Resistência
 0207 Terra
 0208 Ar
-0209 Água 
-0210 Fogo 
-
-0211 Líder
-0212 Líder
-0213 Participante
-0214 Participante 
-0215 Criando grupo...
-0216 Grupo desmontado.
-
+0209 Água
+0210 Fogo
+0211 Cabeça
+0212 Cabeça
+0213 Membro
+0214 Membro
+0215 Criação de grupo...
+0216 O grupo foi dissolvido.
 0217 MS
 0218 Elementais:
-
 0220 Condições
-
 0222 Candidato (1)
 0223 Candidata (1)
-0224 Aluno (2)
-0225 Aluna(2)
+0224 Estudante (2)
+0225 Estudante (2)
 0226 Aprendiz (3)
 0227 Aprendiz (3)
-0228 Artezão (4)
-0229 Artezã (4)
-0230 Senior (5)
-0231 Senior (5)
+0228 Mestre (4)
+0229 Mestre (4)
+0230 Prefeito (5)
+0231 Prefeito (5)
 0232 Expert (6)
 0233 Expert (6)
-
-
 0234 Consumo
-0235 vida: %d
-0236 prana: %d
-
+0235 saúde: %d
+0236 Prana: %d
 0240 Nível Premium: %d
-
-0241 Ação
-0242 combate: %+d
-0243 magica: %+d
-0244 prana: %+d
-0245 vida: %+d
-
-0254 Âû ïîâûñèëè óğîâåíü ñâîåãî îñòğîâà
-0255 ingrediente alquímico
-0256 elemento relativo: terra
-0257 elemento relativo: ar
-0258 elemento relativo: água
-0259 elemento relativo: fogo
+0241 Acção
+0242 luta: %+d
+0243 magia: %+d
+0244 Prana: %+d
+0245 saúde: %+d
+0254 Você aumentou o nível da sua ilha
+0255 Ingrediente alquímico
+0256 elemento relacionado: Terra
+0257 elemento relacionado: ar
+0258 elemento relacionado: água
+0259 elemento relacionado: fogo
 0260 classe "amor-ódio"
-0261 classe "sabedoria-ignorancia"
-0262 classe "leveza-pesado"
+0261 classe "sabedoria-ignorância"
+0262 classe "leveza-peso"
 0263 classe "calor-frio"
-0264 classe "poder-fraqueza"
-0265 classe "luz-escuridão"
-0266 classe "ordem-caos"
+0264 classe"força-fraqueza"
+0265 classe "Luz-Escuridão"
+0266 classe "Ordem-Caos"
 0267 classe "vida-morte"
 0268 ativo à noite
 0269 ativo pela manhã
-0270 ativo de dia
-0271 ativo à tarde
-0272 mostra aspecto positivo
-0273 mostra aspecto moderadamente positivo
-0274 aspecto neutro
-0275 mostra aspecto moderadamente negativo
-0276 mostra aspecto negativo
-0277 consumo de terra: %d
+0270 ativo durante o dia
+0271 ativo à noite
+0272 mostra um aspecto positivo
+0273 Apresenta pouco aspecto positivo
+0274 neutro em relação aos aspectos
+0275 mostra pouco aspecto negativo
+0276 mostra um aspecto negativo
+0277 consumo da terra: %d
 0278 consumo de ar: %d
 0279 consumo de água: %d
-0280 consumo de fogo: %d
-0281 fator de consumo: 6
-0282 fator de consumo: 3
-0283 fator de consumo: 1
-0284 fator de consumo: 3
-0285 fator de consumo: 6
+0280 consumo do fogo: %d
+0281 Multiplicador de fluxo: 6
+0282 Multiplicador de fluxo: 3
+0283 Multiplicador de fluxo: 1
+0284 Multiplicador de fluxo: 3
+0285 Multiplicador de fluxo: 6
 0290 Reação impossível:
-
-0295 Mantra aprendido.
-0296 Mantra não aprendido!
-0297 Não mais frequentemente que um em %d h.
-0298 O tempo de uso ainda não terminou. Sobro 
-0299 Mantra perdido!
-
-
-0700 Modificadores
-0701 max. saúde: %+d
-0702 max. prana: %+d
-0703 max. fartura: %+d
+0295 O mantra foi memorizado.
+0296 O mantra não é aprendido!
+0297 Não mais do que 1 vez por %d C.
+0298 O período de uso ainda não expirou. Continua
+0299 O mantra está perdido!
+0700 Modifica
+0701 Max. saúde: %+d
+0702 Max. Prana: %+d
+0703 Max. saciedade: %+d
 0704 proteção física: %+d
 0705 proteção mágica: %+d
 0706 força: %+d
-0707 habilidade: %+d
+0707 destreza: %+d
 0708 precisão: %+d
 0709 resistência: %+d
-0710 terra: %+d
+0710 Terra: %+d
 0711 ar: %+d
 0712 água: %+d
 0713 fogo: %+d
 0714 velocidade: %+d
-
-0715 %d hora(s)
-0716 %d hora(s)
-0717 %d hora(s)
-0718 %d hora(s) faltando
-0719 %d hora(s) faltando
-0720 %d hora(s) faltando
-0721 período expira
-0722 Parâmetros
+0715 %d hora
+0716 %d hora
+0717 %d horas
+0718 fica %d hora
+0719 continua %d hora
+0720 continua %d horas
+0721 expira
+0722 Opções
 0723 %2.1f seg.
-0724 %d m.
+0724 %d M.
 0725 %d min.
-0726 Modificador fixo ao alvo 
-0727 Modificador fixo a você (%s)
-0728 %d m. / [%d m.]
-0729 This mantra cannot be saved to a book.
-
-0730 Domínios do clã %s. Pedágio - %d$. Pague ou retire-se.
-0731 Você não possui dinheiro suficiente para pagar o pedágio.
-0732 Você pagou o pedágio %d$ do clã %s.
-
+0726 O alvo é atingido por um mutante.
+0727 Você tem um mutante (%s)
+0728 %d M. / [%d M.]
+0729 Este mantra não está escrito no livro.
+0730 Propriedade do Clã %s. Taxa de passagem - %d$. Pague ou saia.
+0731 Você não tem dinheiro suficiente para pagar a taxa.
+0732 Você pagou a taxa %d$ Clã %s.
 0750 queda
-0751 Você foi esmagado.
+0751 Despenhou-se.
 0752 falta de ar
-0753 Você se afogou.
-0754 Você foi eliminado pela fúria do Rei.
-0755 Fúria do Rei
-0756 Fúria do Compêndio
-0757 Você foi destruido pela fúria do Compêndio.
-0758 Compêndio: %s sob ataque! 
-0760 Compêndio: %s Não pagou o pedágio.
-0761 %s foi morto por (%s)
-0762 %s matou (%s)
-0763 %s morreu
-0764 %s morreu
-0765 O cristal não pode ser ativada já exitem duas pedras nas proximidades.
-0766 O cristal não pode ser ativada fora do castelo.
-0767 O cristal não pode existir em território estrangeiro.
-0768 queimar
-0769 Você não resistiu às queimaduras e morreu.
-0770 Luminescence
-0771 Você foi morto Luminescence.
+0753 Afogou-se.
+0754 Foste destruído pela ira do Rei.
+0755 Raiva Real
+0756 Placas De Raiva
+0757 Vocês foram destruídos pela Ira da tábua.
+0758 A tábua: %s atacado!
+0760 A tábua: %s não pagou a taxa.
+0761 %s morto (%s)
+0762 %s morto (%s)
+0763 %s morto
+0764 %s falecida
+0765 A Pedra não pode ser ativada, já existem duas pedras nas proximidades.
+0766 A Pedra não pode ser ativada fora do Castelo.
+0767 A Pedra não pode estar em território estrangeiro.
+0768 queimadura
+0769 Você morreu de queimaduras.
+0770 Brilho
+0771 Você está morto pelo brilho.
 0772 armadilha
-0773 Você foi morto por uma armadilha.
-0780 %s roubou o seu %s (%d).
-0781 %s roubou o seu %s (%d).
-0782 Você foi teleportado por %s.
-0783 %s roubou %d$ de você.
-0784 %s roubou %d$ de você.
-
-0800  Commandos para GMS:
-0801  "/set t <N>" - arrumar título
-0802  "/set d <N>" - arrumar ranque
-0803  "/heal" - recarregar tudo
-0804  "/money <N>" - pegar $$
-0805  "/jump <char name>" - ir p/ personagem 
-0806  "/pull <char name>" - puxar personagem
-0807  "/sayall <message>" - falar p/ todos os servidores 
-0808  "/save <position name>" - salvar posição
-0809  "/load <position name>" - ir p/ posição salva
-0810  "/plist" - pegar lista de petições 
-0811  "/pgot <petition number>" - aceitar petição
-0812  "/pdone <petition number>" - petição processada
-0813  "/set clan <clan name>" - entrar no clã por enquanto
-0814  "/char <char name>" - entrar no jogo como outro personagem 
-0815  "/invis" - invisibilidade
-0816  "/vis" - desativar invisibilidade
-0817  "/turn <skin number>" - transformar em 
-0818  "/anger off" - desliga a fúria do rei por uma hora
-0819  "/anger on" - liga a fúria do rei
-0820  "/ban [reason] <horas>" - congela o personagem corrente
-0821  "/ban [reason] <horas> <char>" - congela o personagem no servidor
-0822     Parâmetro para bloqueio (motivo):
-0823     a - linguagem inapropriada ou desrespeito
-0824     k - matando em lugar inapropriado
-0825     d - duplicando ítens
-0826     t - vendendo ítens por dinheiro real  
-0827     n - roubando ou contribuindo com roubo de contas
-0828     e - erro no personagem
-0829     r - trapasseando 
-
-
-0830  Comandos:
-//831  "/say <player name> <message>" -mengagem privada
-0831  "/help" - ajuda
-0832  "/petition <your petition>" - Manda uma petição para os GMs. Descreve seu problema de forma clara e curta.
-0833  "/sayclan <your message>" - Manda uma mensagem para todos no clã (não mais frequentemente que uma a cada 15 segundos).
-0834  "/saygrp <your message>" - Manda uma mesangem para o grupo (não mais frequentemente que uma a cada 15 segundos).
-0835  "/sayally <your message>" - Manda uma mensagem para os aliados (não mais frequentemente que uma a cada 30 segundos).
-0836  "/clanlist" - Lista todos os membros do clã (somente para o Líder).
-0837  "/kick <player name>" - Bane um personagem do clã (somente para lorde).
-0838  "/resetcastle" - retorna os itens do castelo ao baú. Funciona perto do pergaminho, apenas para os líderes.
-0839  "/resetskills" - reseta as skills (somente uma vez).
-0840  "/titledown" - reduz o título para 15. Um nível é dado para cada 5 títulos (somente uma vez). Não funciona depois de degreedown!
-0841  "/degreedown" - reduz o nível para 15. Um título é dado para cada 5 níveis (somente uma vez). Não funciona depois de titledown!
-0842  "/rebirth" - reencarnação (título ou nível deve ser 60). O personagem se torna level 15/15!
-0843  "/ignore <personagem>" - coloca o personagem na lista de ignorados.
-0844  "/unignore <personagem>" - remove o personagem da lista de ignorados.
-0845  "/unignore all" - limpa a lista de ignorados.
-0846  "/resetguild" - reseta a especialização atual (somente contas premium).
-0847  "/resetimage" - reseta a imagem do personagem (somente contas premium).
-
-0850  Propriedades re-iniciadas!
-0851  Você já reiniciou as propriedades do seu personagem.
-0852  Petição enviada.
-0853  Petições não podem ser envidas mais que uma vez a cada 12 horas.
-0854  Petição na fila para ser processada.
-0855  Petição etiquetada como completa.
-0856  Petição já etiquetada como para processar.
-0857  Personagem não encontrado.
-0858  Você pode escolher uma nova aparência para seu personagem sem mudar nome e sexo.
-0859  Comando não é permitido.
-
-0860  Clã %s oferece aliança
-0861  Clã %s declara guerra.
-0862  Clã %s e clã %s se aliaram
-0863  Clã %s e clã %s declararam guerra entre si.
-0864  Clã %s quebrou a aliança com o clã %s.
-0865  Clã %s oferece paz.
-0866  Clans %s and %s have declared peace.
-0867  Clã %s recusou aliança com clã.
-0868  Clã %s recusou guerra com clã.
-0869  Clã %s recusou a oferta de paz do seu clã.
-0870  Clã %s já esta em 5 alianças.
-0871  Clã %s já esta em guerra com 5 clãs.
-0872  Compêndio: castelo pertence à clã aliado.
-
-0876  Lista salva para o arquivo clanlist.xls
-0877  Requisição para lista de clã somente possivel uma vez por dia.
-0878  Nome do personagem incorreto ou você não possui direito de baní-lo.
-0879  Personagem banido do seu clã.
-
-0880  "/msg player name>text" - send private message to another character.
-0881  "/reg" - registered mobile phone number on your account.
-0882  "/unreg" - cancel registration of phone number.
-0883  "/claim" - show list of available presents.
-0884  "/removebankpass" - reset bank password.
-
+0773 Foi morto por uma armadilha.
+0780 %s roubei de você %s (%d).
+0781 %s roubei de você %s (%d).
+0782 Você foi teletransportado (%s).
+0783 %s roubei de você %d$.
+0784 %s roubei de você %d$.
+0800 Equipes para GM:
+0801 "/set t <N>"definir título
+0802 "/set d <N>"- definir o grau
+0803 "/heal " - saúde plena, prana e saciedade
+0804 "/money <N>"- obter dinheiro
+0805 "/jump <char name>"- um salto para este personagem dentro do servidor
+0806 "/pull <char name>"atrair o jogador
+0807 "/sayall <message>"- dizer a todos os servidores
+0808 "/save <position name>"- manter posição
+0809 "/load <position name>"- Saltar para a posição guardada
+0810 "/plist " - obter uma lista de petições com números
+0811 "/pgot <petition number>"- aceitar a petição
+0812 "/pdone <petition number>"petição processada
+0813 "/set clan <clan name>entrar temporariamente no clã
+0814 "/char <char name>"- entrar no jogo com outro personagem
+0815 invis-invisibilidade
+0816 "/vis " - desligue a invisibilidade
+0817 "/turn <skin number>"- transformação
+0818 "/anger off " - desligue a ira do rei por uma hora
+0819 "/anger on " - ativar a Raiva Real
+0820 "/ban [reason] <hours>"- bloquear o personagem atual
+0821 "/ban [reason] <hours>  <char>"- bloquear o personagem dentro do servidor. Opção "reason" ao bloquear:
+0822 a-mat, insultos, agressão para GM
+0823 K-assassinato no lugar errado
+0824 d-duplicação de coisas ou dinheiro
+0825 t-negociação com dinheiro real
+0826 n-proibição preventiva em caso de roubo
+0827 e-personagem com defeito
+0828 r-fraude ou uso de erros de jogo
+0829 l-Envio muito frequente de mensagens (inundação)
+0830 Equipes:
+0831 "/help " - Ajuda
+0832 "/petition <your petition>"- enviar uma petição ao Game Master. Na petição, descreva o problema de forma clara e concisa.
+0833 "/sayclan <your message>"- enviar uma mensagem para o clã em todos os servidores (não mais do que 1 vez em 15 segundos).
+0834 "/saygrp <your message>"- enviar uma mensagem para o grupo em todos os servidores (não mais do que 1 vez em 15 segundos).
+0835 "/sayally <your message>"- enviar uma mensagem para a aliança em todos os servidores (não mais do que 1 vez a cada 30 segundos).
+0836 "/clanlist " - obtém uma lista de todos os membros do Clã (apenas para o Senhor).
+0837 "/kick <player name>"- banir um personagem do Clã, independentemente de sua presença no jogo (apenas para o Senhor).
+0838 "/resetcastle " - devolver todos os itens do castelo ao tesouro (remove todos os itens não essenciais!). Trabalha perto da placa do Castelo, só para os senhores.
+0839 "/resetskills " - transfere todas as habilidades de volta para os elementais (válido 1 vez).
+0840 "/titledown " - redefine o título para o nível 15. Em 5 níveis de título descartados, é dado 1 Nível de grau (válido 1 vez). Não funciona após degreedown!
+0841 "/degreedown " - redefine o grau para o nível 15. Em 5 níveis de grau descartados é dado 1 Nível de título (válido 1 vez). Não funciona após titledown!
+0842 "/rebirth " - renascer (um título ou grau deve ser nível 60). O personagem torna-se Nível 15/15! A equipe ficará indisponível se o título ou grau atingir o limite de grandeza (lendário).
+0843 "/ignore <player name>"- adicione um personagem à lista de ignorados.
+0844 "/unignore <player name>"- remover o personagem da lista de ignorados.
+0845 "/unignore all " - limpa o conteúdo da lista de ignorar.
+0846 "/resetguild " - redefine a profissão atual (apenas para PA2).
+0847 "/resetimage " -redefine a aparência do personagem (apenas para VIP extra).
+0850 ESPECIFICAÇÕES descartadas!
+0851 Você já redefiniu as características do personagem.
+0852 A petição foi enviada.
+0853 A petição pode ser enviada no máximo 1 vez a cada 12 horas.
+0854 Petição para processamento.
+0855 A petição está marcada como concluída.
+0856 A petição já foi marcada ou processada.
+0857 Personagem não encontrado.
+0858 Você pode escolher um novo visual de personagem sem alterar o sexo e o nome.
+0859 Comando indisponível.
+0860 Klan %s proposta da aliança.
+0861 Klan %s declara guerra.
+0862 Klan %s e o clã %s fizeram uma aliança.
+0863 Klan %s e o clã %s entraram em estado de guerra.
+0864 Klan %s aliança com o clã %s.
+0865 Klan %s oferece paz.
+0866 Clãs %s e %s proclamaram a paz.
+0867 Klan %s abandonou a aliança com o clã %s.
+0868 Klan %s abandonou a guerra com o clã %s.
+0869 Klan %s recusou uma oferta de paz com o clã %s.
+0870 Klan %s já está em 5 alianças.
+0871 Klan %s já está em guerra com os 5 clãs.
+0872 Placa indisponível: o castelo pertence ao clã aliado.
+0876 A lista foi escrita no arquivo clanlist.xls
+0877 É possível solicitar uma lista de clãs 1 vez por dia.
+0878 Nome de personagem incorreto ou Não direitos de expulsão.
+0879 O personagem foi expulso do seu clã.
+0880 "/msg player name > text" - enviar uma mensagem privada a outro personagem.
+0881 "/reg " - registro do número de telefone celular em sua conta.
+0882 "/unreg " - cancelar o registro do telefone.
+0883 "/claim " - exibe a lista de prêmios disponíveis.
+0884 "/removebankpass " - redefine a senha do banco.
 0900 Assassino
-0901 Cruzado
-0902 Sacerdote
+0901 O cruzado
+0902 Inquisidor
 0903 Caçador
-0904 Mago
+0904 Arquimago
 0905 Bárbaro
 0906 Druida
 0907 Ladrão
-0908 Mestre do aço
+0908 Mestre de aço
 0909 Armeiro
 0910 Ferreiro
-0911 Encantador
-0912 Necromântico
-0913 Bandido
-
-0919 (%d estágio)
-0920 Criado pelo candidato (1º estágio)
-0921 Criado por  estudante (2º estágio)
-0922 Criado por  aprendiz (3º estágio)
-0923 Criado por  mestre (4º estágio)
-0924 Criado por  superior (5º estágio)
-0925 Criado por  especialista (6º estágio)
-
-0930 Requerimentos
-0931 Nível para ir para 2º estágio
-0932 Nível para ir para 3º estágio
-0933 Nível para ir para 4º estágio
-0934 Nível para ir para 5º estágio
-0935 Nível para ir para 6º estágio
-0936 Título não  menor que %s
-0937 Título não  menor que %s
-0938 Nível não menor que %s
-0939 Nível não menor que %s
-0940 Associação fechada para você.
-0941 Você já esta no 6º estágio
-0942 Unir na associação 
-0943 Passa para o próximo estágio
-
-0950 Arquivos do jogo danificados, re-inicie.
-
-0955 Endereço do servidor errado, Conexão impossível.
+0911 Mago
+0912 Necromante
+0913 Bundier
+0919 (%d(eu sou um degrau)
+0920 Criado pelo candidato (nível 1)
+0921 Criado pela escola (2ª etapa)
+0922 Criado por aprendiz (3ª etapa)
+0923 Criado pelo Mestre (Nível 4)
+0924 Criado pelo chefe (5ª etapa)
+0925 Criado por um especialista (Nível 6)
+0930 Requisitos
+0931 Nível de transição para o Nível 2
+0932 Nível de transição para o Nível 3
+0933 Nível de transição para o Nível 4
+0934 Nível de transição para o nível 5
+0935 Nível de transição para o Nível 6
+0936 O título não é inferior a %s
+0937 O título não é maior do que %s
+0938 O grau não é mais baixo do que %s
+0939 O grau não é maior do que %s
+0940 A guilda está fechada para si.
+0941 Você já está na 6ª etapa
+0942 Junte-se à Guilda
+0943 Obter um novo nível
+0950 Os arquivos do jogo estão corrompidos e é necessário reiniciar.
+0955 O endereço do servidor é inválido, a ligação não é possível.
 0956 Conexão
-0957 Baixar
+0957 Atualização
 0958 Total
-0959 - vazio -
-0960 Tem certeza que quer apagar seu personagem?
-0961 Mudança de domínio...
-0962 Personagem marcado como apagado será removido do servidor em 5 dias.
-0963 Registro ilegal duplicado, encontrado e apagado.
-0964 Update do continente de Charon
-0965 Carregar o update com novos continentes?
-0966 Sair do sphere com o personagem em modo de venda?
-0967 Licença somente válida no mercado.
-0968 Personagem congelado (regras do jogo violadas). Congelamento termina em %dh.
-0969 Personagem congelado por  %dh.
-0970 Personagem descongelado.
-0971 Mensagens não podem ser enviadas tão frequentemente.
-0972 Aplicação de terceiros interferindo com o cliente.
-0973 Você não pode executar este comando.
-0974 Você não pode banir um personagem por mais que 12 horas.
-0975 Houve um erro ao tentar update nos arquivos %s. Cheque os direitos de acesso para o arquivo e pasta selecionados.
-0976 Erro ao carregar o arquivo %s 
-0977 Update do continente de Phoebe
-0978 Etiqueta para apagar removida do personagem.
-0979 Versão incorreta do cliente: inicie o jogo com checagem completa de arquivos.
-
-0980 Personagem congelado (uso de aplicações ilegais detectado). Congelamento termina em %dh.
-0981 Personagem congelado (arquivos incorretos ou corruptos). Congelamento termina em %dh.
-0982 Personagem congelado (uso de linguagem inapropriada). Congelamento termina em %dh.
-0983 Personagem congelado (matando em locais re-nascimento, na cidade ou no mercado). Congelamento termina em %dh.
-0984 Personagem congelado (duplicação ilegal de ítens por dinheiro). Congelamento termina em %dh.
-0985 Personagem congelado (trocando ítens do jogo por dinheiro real). Congelamento termina em %dh.
-0986 Personagem congelado (roubo de conta suspeito). Congelamento termina em %dh.
-0987 Personagem congelado (erro nos dados do personagem. Contate o suporte). Congelamento termina em %dh.
-0988 Personagem congelado (usando técnicas de jogo ilegais para ganhar vantagens). Congelamento termina em %dh.
-0989 Personagem bloquiado (flood abusivo).  Bloqueio termina em %dh.
-
-0990 The character is not in clan
-0991 The character is not in group
-0992 The character is not in alliance
-
-0995 Aviso: Você está floodando! Seu personagme pode ser banido.
-
-0997 Update do continente de Rodos (somente contas premium)
-
-0300 andarilho (1)
-0301 andarilho (1)
-0302 andarilho (2)
-0303 andarilho (2)
-0304 andarilho (3) 
-0305 andarilho (3)
-0306 andarilho (4) 
-0307 andarilho (4)
-0308 andarilho (5)
-0309 andarilho (5)
+0959 - Vazio. -
+0960 Você realmente quer remover o personagem?
+0961 Mudança de área...
+0962 O personagem está marcado para exclusão e será fisicamente excluído após 5 dias.
+0963 Você encontrou um item duplicado ilegalmente e foi removido.
+0964 Renovação do continente Charon
+0965 Baixar atualização com novas terras?
+0966 Sair da esfera deixando o personagem no modo de negociação?
+0967 A licença é válida apenas na área comercial.
+0968 O personagem está bloqueado (violação das regras do jogo). O bloqueio termina em %dC.
+0969 O personagem está bloqueado %dC.
+0970 Personagem desbloqueado.
+0971 As mensagens não podem ser enviadas com muita frequência.
+0972 Foi detectado o uso de um programa de terceiros que viola o trabalho do cliente.
+0973 Você não tem permissão para esta equipe.
+0974 Você não pode banir um personagem por mais de 12 horas.
+0975 Erro ao tentar actualizar o ficheiro %s. Verifique as permissões para o arquivo e a pasta especificados.
+0976 Erro ao carregar o ficheiro %s
+0977 Renovação do continente Feb
+0978 O personagem foi marcado para exclusão.
+0979 Versão do cliente incorreta: execute o jogo com uma verificação completa dos arquivos.
+0980 O personagem está bloqueado (usando um programa que perturba o cliente). O bloqueio termina em %dC.
+0981 Personagem bloqueado (arquivos de jogo incorretos ou corrompidos). O bloqueio termina em %dC.
+0982 O personagem está bloqueado (xeque-mate no chat geral, insultos de jogadores ou administração). O bloqueio termina em %dC.
+0983 O personagem está bloqueado (matar no ponto de renascimento, na cidade ou na Praça do comércio). O bloqueio termina em %dC.
+0984 O personagem está bloqueado (duplicação ilegal de coisas ou dinheiro). O bloqueio termina em %dC.
+0985 O personagem está bloqueado (negociações proibidas). O bloqueio termina em %dC.
+0986 O personagem está bloqueado (suspeita de roubo de conta). O bloqueio termina em %dC.
+0987 Personagem bloqueado (falha nos dados do personagem! Entre em contato com o suporte técnico). O bloqueio termina em %dC.
+0988 O personagem está bloqueado (fraude ou uso consciente de erros de jogo). O bloqueio termina em %dC.
+0989 O personagem está bloqueado (envio frequente de mensagens). O bloqueio termina em %dC.
+0990 O personagem não faz parte do Clã
+0991 O personagem não faz parte do grupo
+0992 O personagem não faz parte da aliança.
+0995 Aviso: você envia mensagens com muita frequência! O personagem pode ser bloqueado.
+0997 Atualizar o continente Rhodes (requer uma conta Premium)
+0998 Não há resposta do servidor de autorização. Tente entrar em 1-2 minutos.
+0999 Não foi possível entrar, o nome já está em uso.
+0300 Andarilho (1)
+0301 peregrina (1)
+0302 viajante (2)
+0303 peregrina (2)
+0304 viajante (3)
+0305 peregrina (3)
+0306 viajante (4)
+0307 peregrina (4)
+0308 viajante (5)
+0309 peregrina (5)
 0310 convidado (6)
-0311 convidado (6)
+0311 convidados (6)
 0312 convidado (7)
-0313 convidado (7)
+0313 convidados (7)
 0314 convidado (8)
-0315 convidado (8)
+0315 convidados (8)
 0316 convidado (9)
-0317 convidado (9)
+0317 convidados (9)
 0318 convidado (10)
-0319 convidado (10)
+0319 convidados (10)
 0320 cidadão (11)
-0321 cidadão (11)
+0321 cidadÃ (11)
 0322 cidadão (12)
-0323 cidadão (12)
+0323 cidadÃ (12)
 0324 cidadão (13)
-0325 cidadão (13)
+0325 cidadÃ (13)
 0326 cidadão (14)
-0327 cidadão (14)
+0327 cidadÃ (14)
 0328 cidadão (15)
-0329 cidadão (15)
-0330 comerciante (16)
-0331 comerciante (16)
-0332 comerciante (17)
-0333 comerciante (17)
-0334 comerciante (18)
-0335 comerciante (18)
-0336 comerciante (19)
-0337 comerciante (19)
-0338 comerciante (20)
-0339 comerciante (20)
+0329 cidadÃ (15)
+0330 cidadão (16)
+0331 mulher da cidade (16)
+0332 cidadão (17)
+0333 mulher da Cidade (17)
+0334 cidadão (18)
+0335 mulher da Cidade (18)
+0336 cidadão (19)
+0337 mulher da cidade (19)
+0338 cidadão (20)
+0339 mulher da cidade (20)
 0340 escudeiro (21)
-0341 escudeiro (21)
+0341 senhora (21)
 0342 escudeiro (22)
-0343 escudeiro (22)
+0343 senhora (22)
 0344 escudeiro (23)
-0345 escudeiro (23)
+0345 senhora (23)
 0346 escudeiro (24)
-0347 escudeiro (24)
+0347 senhora (24)
 0348 escudeiro (25)
-0349 escudeiro (25)
+0349 senhora (25)
 0350 cavaleiro (26)
-0351 dama (26)
+0351 senhora (26)
 0352 cavaleiro (27)
-0353 dama (27)
+0353 senhora (27)
 0354 cavaleiro (28)
-0355 dama (28)
+0355 senhora (28)
 0356 cavaleiro (29)
-0357 dama (29) 
+0357 senhora (29)
 0358 cavaleiro (30)
-0359 dama (30)
-0360 barão (31)
-0361 baronesa (31)
-0362 barão (32)
-0363 baronesa (32)
-0364 barão (33)
-0365 baronesa (33)
-0366 barão (34)
-0367 baronesa (34)
-0368 barão (35)
-0369 baronesa (35)
-0370 visconde (36)
-0371 viscondessa (36)
-0372 visconde (37)
-0373 viscondessa (37)
-0374 visconde (38)
-0375 viscondessa (38)
-0376 visconde (39)
-0377 viscondessa (39)
-0378 visconde (40)
-0379 viscondessa (40)
-0380 conde (41)
-0381 condessa (41)
-0382 conde (42)
-0383 condessa (42)
-0384 conde (43)
-0385 condessa (43)
-0386 conde (44)
-0387 condessa (44)
-0388 conde (45)
-0389 condessa (45)
-0390 marquês (46)
-0391 marquêsa (46)
-0392 marquês (47)
-0393 marquêsa (47)
-0394 marquês (48)
-0395 marquêsa (48)
-0396 marquês (49)
-0397 marquêsa (49)
-0398 marquês (50)
-0399 marquêsa (50)
-0400 duque (51)
-0401 duquesa (51)
-0402 duque (52)
-0403 duquesa (52)
-0404 duque (53)
-0405 duquesa (53)
-0406 duque (54)
-0407 duquesa (54)
-0408 duque (55)
-0409 duquesa (55)
-0410 príncipe (56)
+0359 senhora (30)
+0360 Barão (31)
+0361 Baronesa (31)
+0362 Barão (32)
+0363 Baronesa (32)
+0364 Barão (33)
+0365 Baronesa (33)
+0366 Barão (34)
+0367 Baronesa (34)
+0368 Barão (35)
+0369 Baronesa (35)
+0370 Visconde (36)
+0371 Viscondessa (36)
+0372 Visconde (37)
+0373 Viscondessa (37)
+0374 Visconde (38)
+0375 Viscondessa (38)
+0376 Visconde (39)
+0377 Viscondessa (39)
+0378 Visconde (40)
+0379 Viscondessa (40)
+0380 Contagem (41)
+0381 Condessa (41)
+0382 Contagem (42)
+0383 Condessa (42)
+0384 Contagem (43)
+0385 Condessa (43)
+0386 Contagem (44)
+0387 Condessa (44)
+0388 Contagem (45)
+0389 Condessa (45)
+0390 Marquês (46)
+0391 Marquesa (46)
+0392 Marquês (47)
+0393 Marquesa (47)
+0394 Marquês (48)
+0395 Marquesa (48)
+0396 Marquês (49)
+0397 Marquesa (49)
+0398 Marquês (50)
+0399 Marquesa (50)
+0400 Duque (51)
+0401 Duquesa (51)
+0402 Duque (52)
+0403 Duquesa (52)
+0404 Duque (53)
+0405 Duquesa (53)
+0406 Duque (54)
+0407 Duquesa (54)
+0408 Duque (55)
+0409 Duquesa (55)
+0410 Príncipe (56)
 0411 princesa (56)
-0412 príncipe (57)
+0412 Príncipe (57)
 0413 princesa (57)
-0414 príncipe (58)
+0414 Príncipe (58)
 0415 princesa (58)
-0416 príncipe (59)
+0416 Príncipe (59)
 0417 princesa (59)
-0418 príncipe (60)
+0418 Príncipe (60)
 0419 princesa (60)
-
-0500 ignorante (1)
-0501 ignorante (1)
-0502 ignorante (2)
-0503 ignorante (2)
-0504 ignorante (3)
-0505 ignorante (3)
-0506 ignorante (4)
-0507 ignorante (4)
-0508 ignorante (5)
-0509 ignorante (5)
+0500 não instruído (1)
+0501 não instruído (1)
+0502 não instruído (2)
+0503 não instruído (2)
+0504 não instruído (3)
+0505 não instruído (3)
+0506 não instruído (4)
+0507 não instruído (4)
+0508 não instruído (5)
+0509 não instruído (5)
 0510 candidato (6)
-0511 candidato (6)
+0511 candidata (6)
 0512 candidato (7)
-0513 candidato (7)
+0513 candidata (7)
 0514 candidato (8)
-0515 candidato (8)
+0515 candidata (8)
 0516 candidato (9)
-0517 candidato (9)
+0517 candidata (9)
 0518 candidato (10)
-0519 candidato (10)
-0520 pupilo (11)
-0521 pupila (11)
-0522 pupilo (12)
-0523 pupila (12)
-0524 pupilo (13)
-0525 pupila (13)
-0526 pupilo (14)
-0527 pupila (14)
-0528 pupilo (15)
-0529 pupila (15)
+0519 candidata (10)
+0520 estudante (11)
+0521 estudante (11)
+0522 estudante (12)
+0523 estudante (12)
+0524 estudante (13)
+0525 estudante (13)
+0526 estudante (14)
+0527 estudante (14)
+0528 estudante (15)
+0529 estudante (15)
 0530 noviço (16)
-0531 noviço (16)
+0531 Noviça (16)
 0532 noviço (17)
-0533 noviço (17)
+0533 Noviça (17)
 0534 noviço (18)
-0535 noviço (18)
+0535 Noviça (18)
 0536 noviço (19)
-0537 noviço (19)
+0537 Noviça (19)
 0538 noviço (20)
-0539 noviço (20)
-0540 iniciante (21)
-0541 iniciante (21)
-0542 iniciante (22)
-0543 iniciante (22)
-0544 iniciante (23)
-0545 iniciante (23)
-0546 iniciante (24)
-0547 iniciante (24)
-0548 iniciante (25)
-0549 iniciante (25)
+0539 Noviça (20)
+0540 estudante (21)
+0541 estudante (21)
+0542 estudante (22)
+0543 estudante (22)
+0544 estudante (23)
+0545 estudante (23)
+0546 estudante (24)
+0547 estudante (24)
+0548 estudante (25)
+0549 estudante (25)
 0550 estudante (26)
 0551 estudante (26)
 0552 estudante (27)
@@ -693,36 +660,36 @@
 0557 estudante (29)
 0558 estudante (30)
 0559 estudante (30)
-0560 bacharéu (31)
-0561 bacharéu (31)
-0562 bacharéu (32)
-0563 bacharéu (32)
-0564 bacharéu (33)
-0565 bacharéu (33)
-0566 bacharéu (34)
-0567 bacharéu (34)
-0568 bacharéu (35)
-0569 bacharéu (35)
+0560 Graduação (31)
+0561 Graduação (31)
+0562 Graduação (32)
+0563 Graduação (32)
+0564 Graduação (33)
+0565 Graduação (33)
+0566 Graduação (34)
+0567 Graduação (34)
+0568 Graduação (35)
+0569 Graduação (35)
 0570 mestre (36)
-0571 mestre (36)
+0571 Mestrado (36)
 0572 mestre (37)
-0573 mestre (37)
+0573 Mestrado (37)
 0574 mestre (38)
-0575 mestre (38)
-0576 mestre (39)
-0577 mestre (39)
+0575 Mestrado (38)
+0576 Mestre (39)
+0577 Mestrado (39)
 0578 mestre (40)
-0579 mestre (40)
+0579 Mestrado (40)
 0580 doutor (41)
-0581 doutor (41)
+0581 doutorados (41)
 0582 doutor (42)
-0583 doutor (42)
+0583 doutorados (42)
 0584 doutor (43)
-0585 doutor (43)
+0585 doutorados (43)
 0586 doutor (44)
-0587 doutor (44)
+0587 doutorados (44)
 0588 doutor (45)
-0589 doutor (45)
+0589 doutorados (45)
 0590 professor (46)
 0591 professor (46)
 0592 professor (47)
@@ -733,346 +700,412 @@
 0597 professor (49)
 0598 professor (50)
 0599 professor (50)
-0600 reitor (51)
-0601 reitor (51)
-0602 reitor (52)
-0603 reitor (52)
-0604 reitor (53)
-0605 reitor (53)
-0606 reitor (54)
-0607 reitor (54)
-0608 reitor (55)
-0609 reitor (55)
-0610 chanceler (56)
-0611 chanceler (56)
-0612 chanceler (57)
-0613 chanceler (57)
-0614 chanceler (58)
-0615 chanceler (58)
-0616 chanceler (59)
-0617 chanceler (59)
-0618 chanceler (60)
-0619 chanceler (60)
-
-0650 superior
-0651 superior
-0652 grão
-0653 grão
-0654 grão
-0655 grão
-
-0660 Ñîâåòíèê
-
-4000 Domínios do castelo Lieze 
-4001 Domínios do castelo Fief 
-4002 Domínios do castelo Aris 
-4003 Domínios do castelo Lotar 
-4004 Domínios do castelo Eikum-kas
-4005 Domínios do castelo Gedeon
-4006 Domínios do castelo Chatelier
-4007 Domínios do castelo Tuanod
-4008 Domínios do castelo Peltier
-4009 Domínios do castelo Care-Real
-4010 Domínios do castelo Blessendor
-4011 Domínios do castelo Termoval
-4012 Domínios do castelo Atral
-4013 Domínios do castelo Kablak
-4014 Domínios do castelo Davengar
-4015 Domínios do castelo Sabulat 
-4016 Domínios do castelo Defensat
-4017 Domínios do castelo Aionat
-4018 Domínios do castelo Triunfaler
-
-4019 Domínios do castelo Bagarnak
-4020 Domínios do castelo Kabrad 
-4021 Domínios do castelo Set 
-4022 Domínios do castelo Lender
-4023 Domínios do castelo Keles 
-4024 Domínios do castelo Sheprostan 
-4025 Domínios do castelo Orkobien 
-4026 Domínios do castelo Kanuak 
-4027 Domínios do castelo Aldarnon 
-4028 Domínios do castelo Iong 
-
-4029 Domínios do castelo Elek 
-4030 Domínios do castelo Gavot 
-4031 Domínios do castelo Kandur
-
-4032 domínios do Castelo Immertel
-4033 domínios do Castelo Narcissus
-4034 domínios do Castelo Randen
-4035 domínios do Castelo Nirgun
-4036 domínios do Castelo Gelgivinn
-
-4200 Cidade de Sheepstone 
-4201 Cidade de Bangville
-4202 Cidade de Sunpool 
-4203 Cidade de Torweal 
-4204 Cidade de Nomrad 
-4205 Cidade de Gifes
-4206 Cidade de Umrad
-4207 Cidade de Anhelm
-4998 Mercado 
-4999 Território Neutro
-
+0600 Reitor (51)
+0601 maria ozawa (51)
+0602 Reitor (52)
+0603 maria ozawa (52)
+0604 Reitor (53)
+0605 maria ozawa (53)
+0606 Reitor (54)
+0607 maria ozawa (54)
+0608 Reitor (55)
+0609 maria ozawa (55)
+0610 Reitor (56)
+0611 Reitoria (56)
+0612 Reitor (57)
+0613 Reitoria (57)
+0614 Reitor (58)
+0615 Secretaria (58)
+0616 Reitor (59)
+0617 Reitoria (59)
+0618 Reitor (60)
+0619 Reitoria (60)
+0650 grande
+0651 grande
+0652 o maior
+0653 o maior
+0654 lendário
+0655 Legendado
+0660 Conselheiro
+4000 Castelo Liège
+4001 Propriedade Castelo Fief
+4002 Propriedade do Castelo de Aris
+4003 Propriedade do Castelo de Lator
+4004 Propriedade Castelo Eikum kas
+4005 Castelo Gideão
+4006 Propriedade Castelo Chatelier
+4007 Castelo Tuanod
+4008 Castelo Peltier
+4009 Propriedade do Castelo de Kare Royal
+4010 Castelo blessendor
+4011 Castelo Ternoval
+4012 Propriedade do Castelo de Ammalael
+4013 Propriedade Castelo Salto
+4014 Castelo Devanagari
+4015 Castelo Sabulat
+4016 Possessões do Castelo de Deffensat
+4017 Propriedade do Castelo de Ayonat
+4018 Propriedade do Castelo de Triumphaler
+4019 Castelo Bagarnak
+4020 Castelo Cabrad
+4021 Do Castelo Set
+4022 Propriedade do Castelo de Lander
+4023 Propriedade Castelo Keles
+4024 Castelo Sheprostan
+4025 Castelo Orkobien
+4026 Propriedade do Castelo Canouac
+4027 Castelo Aldarnon
+4028 Propriedade do Castelo Yong
+4029 Propriedade Castelo Elek
+4030 Castelo Gavot
+4031 Castelo Kandur
+4032 Castelo Immertel
+4033 Castelo Narciso
+4034 Propriedade Castelo Randen
+4035 Castelo Nirgun
+4036 Castelo Gelgivinn
+4037 Do Castelo de Ile Suilli Rua
+4200 Cidade De Shipstone
+4201 Cidade De Bangville
+4202 Cidade Sanpul
+4203 Cidade De Torville
+4204 Cidade Nomrad
+4205 Cidade Gifes
+4206 Cidade Umrad
+4207 Cidade De Ángel
+4998 Praça do comércio
+4999 Território neutro
 4301 Hyperion
-4302 Helios  
-4303 Rhodes
-4304 Phoebe
+4302 Helios
+4303 Rodes
+4304 Feb
 4305 Leon
-4306 Haron 
-
-3000 Castelo Lieze  
-3001 Castelo Fief 
-3002 Castelo Aris 
-3003 Castelo Lotar 
-3004 Castelo Eikum-kas
-3005 Castelo Gedeon 
+4306 Caronte
+3000 Castelo Liège
+3001 Castelo Fief
+3002 Castelo Aris
+3003 Castelo De Lator
+3004 Castelo Eikum kas
+3005 Castelo Gideão
 3006 Castelo Chatelier
-3007 Castelo Tuanod 
-3008 Castelo Peltier 
-3009 Castelo Care-Royal
-3010 Castelo Blessendor 
-3011 Castelo Temoval 
-3012 Castelo Atral 
-3013 Castelo Kablac 
-3014 Castelo Davengar
+3007 Castelo Tuanod
+3008 Castelo Peltier
+3009 Castelo De Kare Royal
+3010 Castelo Blessendor
+3011 Castelo Ternoval
+3012 Castelo Ammalael
+3013 Cadeado De Salto
+3014 Castelo Devanagari
 3015 Castelo Sabulat
-3016 Castelo Defensat 
-3017 Castelo Aionat
-3018 Castelo Triunfaler 
-
+3016 Castelo De Deffensat
+3017 Castelo De Ayonat
+3018 Castelo Do Triunfo
 3019 Castelo Bagarnak
-3020 Castelo Kabrad 
-3021 Castelo Set
-3022 Castelo Lender 
-3023 Castelo Keles 
-3024 Castelo Sheprostan 
-3025 Castelo Orkobien 
-3026 Castelo Kanuak 
+3020 Castelo Cabrad
+3021 Castle Set
+3022 Castelo Lander
+3023 Castelo Keles
+3024 Castelo Sheprostan
+3025 Castelo Orkobien
+3026 Castelo Kanuak
 3027 Castelo Aldarnon
-3028 Castelo Iong 
-
-3029 Castelo Elek 
-3030 Castelo Gavot 
+3028 Castelo Yong
+3029 Castelo Elek
+3030 Castelo Gavot
 3031 Castelo Kandur
-
-3032 Immertel Castle
-3033 Narcissus Castle
-3034 Randen Castle
-3035 Nirgun Castle
-3036 Gelgivinn Castle
-
-9990 Send SMS with the word SPHERE on number 8883 - receive screenshots
-9991 and PIN-code as a present. Visit official site for details.
-
-10000 To register your mobile phone on your account, send SMS to number 8881 with text SPGOLD %s.
-10001 The number <%s> is already registered on your account. Use /unreg command to delete current number.
-10002 The number <%s> has been registered on your account. Use "Delete" button to remove current number.
-10003 There is no number registered on your account. Use /reg command to register a number.
-10004 You want to take %s as a present. Are you sure?
-10005 No presents available
-10006 Delete
-10007 Yes
+3032 Castelo Immortel
+3033 Castelo Narciso
+3034 Castelo Randen
+3035 Castelo Nirgun
+3036 Castelo Gelgivinn
+3037 O Castelo De Il Suilly
+9990 Envie um SMS com a palavra SPGPIN para o número 4161 e receba um PIN no 15
+9991 jogos de presente. Detalhes no site oficial da "esfera".
+10000 Para registrar seu celular em sua conta, você precisa enviar um SMS para o número 4446 com o texto SPGOLD %s.
+10001 Seu telefone já está registrado em sua conta <%s>. Para remover o número atual, use o comando / unreg.
+10002 Telefone registrado em sua conta <%s>. Para excluir o número atual, clique no botão "Excluir".
+10003 Seu telefone não está registrado em sua conta. Para registrar um telefone, use o comando / reg.
+10004 Você tem certeza de que quer pegar como um presente %s?
+10005 Não há presentes disponíveis
+10006 Remover
+10007 Tenho a certeza.
 10008 OK
-10009 No room for the present.
-10010 Select one item from the list:
-10011 You already have such possibility.
-10020 The room is not empty.
-10021 The object is under protection.
-10022 Your level is too low, you cannot receive the castle attribute.
-10023 You have not enough cash to pay for the goods. Do you want to pay via bank? The bank rate will make up %d$.
-10024 Wrong password entered.
-10025 Wrong old password is entered.
-10026 The password changed successfully.
-10027 The bank has not been initialized.
-10028 The money from your room have been moved to bank.
-10029 The money from your island have been moved to bank.
-10030 The passwords entered are different.
-10031 The bank password has been reset.
-10032 Apply the needed key to the door to enter the room.
-10033 Wrong amount of money.
-10034 The seller cannot take payment.
-10035 Sale of non-empty containers is prohibited.
-10036 You cannot drop non-empty container.
-10037 You have bought %s for %d.
-10038 put money into bank
-10039 take money from bank
-10043 You have untaken presents.
-10044 Error.
-10045 You have to reset specialization before dropping title or degree.
-10046 Created guest token for character %s.
-10048 Êîìàíäà íåäîñòóïíà. Ó Âàñ åñòü êğèñòàëë(û) íå ïîäõîäÿùèå äëÿ íèçêîãî óğîâíÿ.
-
-10053 The servers are being updated, please try to connect a bit later.
-10059 This item does not belong to you.
-10061 The crystal does not match this castle.
-10071 Voce usou po de vulnerabilidade.
-10078 Voce usou um elixir de ataque fisico.
-10079 Voce usou um elixir de ataque magico.
-10080 Voce usou um elixir de protecao fisica.
-10081 Voce usou um elixir de protecao magica.
-10112 O item nao e cobrado
-10121 Seu carma e neutro ou superior - a pedra nao pode ser usada.
-
-10124 Îäèí èç âàøèõ ïåğñîíàæåé ñòîèò íà òîğãîâîé ïëîùàäè. Âõîä ëşáûì ïåğñîíàæåì àííóëèğóåò òîğãîâóş ëèöåíçèş.
-10125 Íåâîçìîæíî èñïîëüçîâàòü! İòîò ïğåäìåò ìîæåò áûòü èñïîëüçîâàí òîëüêî ïåğñîíàæåì æåíñêîãî ïîëà.
-10126 Óâåëè÷åíèå ôèçè÷åñêîé è ìàãè÷åñêîé çàùèòû íà 600.
-10128 Âîññòàíîâëåíèå ïğàíû íà ïîëîâèíó îò ìàêñèìàëüíîé.
-10129 Âîññòàíîâëåíèå çäîğîâüÿ íà ïîëîâèíó îò ìàêñèìàëüíîãî.
-10130 Óâåëè÷åíèå ñêîğîñòè áåãà.
-10131 Óâåëè÷åíèå ïğûæêîâ â 2 ğàçà.
-10132 Íàğóøåíèå êîîğäèíàöèè.
-10133 Ôåéåğâåğê!
-10134 Âèäåíèå ñêğûòûõ ëîâóøåê.
-10135 Óâåëè÷åíèå ôèçè÷åñêîé çàùèòû íà 1000.
-10136 Íå óäàëîñü óäàëèòü ïåğñîíàæà. Ïîâòîğèòå ïîïûòêó ñïóñòÿ íåêîòîğîå âğåìÿ
-10137 Íå óäàëîñü óäàëèòü ïåğñîíàæà. Ó âàñ íåò ïåğñîíàæà ñ òàêèì èìåíåì
-10138 Âîëøåáíîå çåğêàëüöå.
-
-10139 Âû ïğèìåíèëè ıëèêñèğ ñûòîñòè
-10140 Íå õâàòàåò äåíåã äëÿ óïëàòû íàëîãà
-10141 Âû ïğèìåíèëè êàìåíü ïğîñâåòëåíèÿ
-10142 Âû ïğèìåíèëè êàìåíü êàğìû
-10143 Âû ïğèìåíèëè êàìåíü âîçâğàòà
-10144 Âû ïğèìåíèëè Áîëüøîé êàìåíü âîçâğàòà
-10145 Âû èñ÷åğïàëè ëèìèò óäàëåíèé ïåğñîíàæà, îáğàòèòåñü â òåõíè÷åñêóş ïîääåğæêó.
-
+10009 Não há espaço para o prémio.
+10010 Escolha um da lista:
+10011 Você já tem essa oportunidade.
+10020 O quarto contém coisas.
+10021 O alvo está protegido.
+10022 Você tem um nível baixo, você não pode obter o atributo do Castelo.
+10023 Você não tem dinheiro suficiente para pagar o produto selecionado. Quer pagar pelo banco? Comissão do banco será %d$.
+10024 A senha inserida é inválida.
+10025 A senha antiga é inválida.
+10026 A senha foi alterada com sucesso.
+10027 O banco não foi institucionalizado.
+10028 O dinheiro do quarto da taverna foi transferido para o banco.
+10029 O dinheiro da ilha privada foi transferido para o banco.
+10030 As senhas inseridas não correspondem.
+10031 A senha do Banco foi redefinida.
+10032 Para entrar no quarto, aplique a chave desejada na porta do quarto.
+10033 Quantidade de dinheiro inaceitável.
+10034 O vendedor não pode aceitar o pagamento.
+10035 A venda de contêineres não vazios é proibida.
+10036 Você não pode colocar um recipiente vazio.
+10037 Você comprou %s para %d.
+10038 colocar dinheiro
+10039 retirar dinheiro
+10043 Você tem bônus não utilizados.
+10044 Erro.
+10045 Antes de redefinir um título ou grau, uma especialidade deve ser redefinida.
+10047 Criado token de convidado para o personagem %s.
+10048 Comando indisponível. Você tem um(s) cristal (s) que não é adequado para um nível baixo.
+10049 O título ou grau deve ser de nível 60.
+10050 O limite de grandeza por título ou grau foi atingido.
+10051 Aviso-a equipe ficará indisponível se o título ou grau atingir o limite de grandeza (lendário).
+10053 Os servidores estão parados para atualizar, tente se conectar mais tarde.
+10057 Esta coisa só servirá a você. Tem a certeza que quer activá-la?
+10058 Os nomes não podem ser vendidos.
+10059 Esta coisa não lhe pertence.
+10060 Esta coisa só servirá a você.
+10061 O cristal não corresponde à fechadura.
+10062 Este item servirá apenas ao seu proprietário, mas ainda não está ativado.
+10064 A inicialização falhou.
+10071 Usou pó de vulnerabilidade.
+10077 O tempo de entrega da chave da missão expirou.
+10078 Usou o Elixir do Ataque Físico.
+10079 Usou o Elixir do Ataque Mágico.
+10080 Usou o Elixir da proteção física.
+10081 Usou o Elixir da proteção mágica.
+10082 Elixir do Ataque Físico
+10083 Elixir do Ataque Mágico
+10084 Elixir da proteção física
+10085 Elixir da proteção mágica
+10086 Minutos antes do fim do efeito: %d
+10087 Segundos para o fim do efeito: %d
+10088 Os portais para a Arena estão abertos.
+10089 Os portais para a Arena estão fechados.
+10090 Os restantes
+10091 A partir
+10092 Facção alterada
+10093 Facção: %s
+10094 Seu Clã já escolheu o lado do conflito, sair do clã e, em seguida, você será capaz de fazer o seu próprio destino.
+10095 Neutro
+10096 Os restantes
+10097 A partir
+10098 Apenas o Senhor do Clã pode assumir a missão de obter o prefixo
+10099 Quando Luna morrer e renascer, seu clã terá o direito de mudar de facção.
+10100 Parabéns, você cumpriu as minhas tarefas e a partir de agora o seu clã está livre da inimizade dos que permanecem e dos que vão. Que a paz e a prosperidade estejam convosco!
+10101 Você e seu clã provaram a força e a lealdade da facção remanescente. A partir de agora, o teu clã está do lado dos restantes. Agora, com a chegada de um novo clã, estamos mais fortes e os que partem têm menos chances de vencer.
+10102 Você e seu clã provaram a força e a lealdade da facção The Parting. A partir de agora, o vosso Clã está do lado dos que partiram. Agora, com a chegada de um novo clã, estamos mais fortes e os restantes têm cada vez menos hipóteses de ganhar.
+10103 Você não pode se juntar ao clã por pertencer a uma facção diferente
+10104 Você não pode se juntar à aliança por pertencer a outra facção
+10105 É preciso romper alianças
+10112 Item não carregado
+10117 Em 2 minutos, a conexão será interrompida porque você não está ativo.
+10118 Permanecer no jogo
+10121 Seu karma é neutro ou superior - a Pedra não pode ser usada.
+10124 Um dos seus personagens está na Praça do comércio. A entrada de qualquer personagem anula a Licença Comercial.
+10125 Impossível de usar! Este item só pode ser usado por uma personagem feminina.
+10126 Aumenta a proteção física e mágica em 600.
+10128 Restaurar o prana a metade do máximo.
+10129 Restaurar a saúde para metade do máximo.
+10130 Aumento da velocidade de corrida.
+10131 Aumento de saltos em 2 vezes.
+10132 Falta de coordenação.
+10133 Fogo de artifício!
+10134 Visão de armadilhas escondidas.
+10135 Aumento da proteção física em 1000.
+10136 Não foi possível remover o personagem. Tente novamente depois de algum tempo
+10137 Não foi possível remover o personagem. Você não tem um personagem com esse nome.
+10138 Espelho mágico.
+10139 Você usou o Elixir da saciedade
+10140 Falta dinheiro para pagar impostos
+10141 Você usou a Pedra da iluminação
+10142 Você usou a pedra do karma
+10143 Você usou a pedra de retorno
+10144 Você aplicou uma grande pedra de retorno
+10145 Você esgotou o limite de remoção de personagem, entre em contato com o suporte técnico.
+10146 Você sente uma força especial em suas mãos!
+10147 Você se sente mais revigorado e fresco!
 10201 s
-
-10217 Nao e possivel combinar itens bloqueaveis.
-
-10218 item
-10219 taler
-
-10300 Âû íå ìîæåòå àòàêîâàòü èãğîêà, òàê êàê Âàø òèòóë è ñòåïåíü ìåíüøå %d.
-10301 Âû íå ìîæåòå àòàêîâàòü èãğîêà, ÷åé òèòóë è ñòåïåíü ìåíüøå %d.
-10302 Âû íå ìîæåòå àòàêîâàòü èãğîêà, òàê êàê Âû íàõîäèòåñü â ìèğíîé çîíå (ãîğîä, òîğãîâàÿ ïëîùàäü).
-10303 Âû íå ìîæåòå àòàêîâàòü èãğîêà, òàê êàê îí íàõîäèòñÿ â ìèğíîé çîíå (ãîğîä, òîğãîâàÿ ïëîùàäü).
-
-10304 A evacuacao foi cancelada com sucesso.
-10305 O tempo limite de evacuacao ainda nao expirou.
-10306 A evacuacao ocorrera em %d segundos
-10307 Durante a evacuacao, voce nao deve se mover e sua mao deve estar vazia.
-10308 Punhos
-
-10324 Escreva em particular
-10325 Convidar para grupo
-10326 %s ïğèãëàøàåò â ãğóïïó. Ïğèíÿòü ïğèãëàøåíèå?
-10327 %s ïğèãëàøàåò â ãğóïïó.
-10328 %s óæå ïğèãëàø¸í â ãğóïïó.
-10329 %s ïğèíèìàåò ïğèãëàøåíèå â ãğóïïó.
-10330 %s îòâåğãàåò ïğèãëàøåíèå â ãğóïïó.
-10331 Âû íå ìîæåòå ïğèãëàñèòü %s â ãğóïïó, òàê êàê îí íàõîäèòñÿ ñëèøêîì äàëåêî îò Âàñ.
-10332 %s óæå íàõîäèòñÿ â ãğóïïå.
-
-10333 Ïîñëàòü ïåòèöèş
-10334 Æàëîáà íà èãğîêà
-
-10335 Âû íå ìîæåòå âñòóïèòü â ãğóïïó, òàê êàê îíà ïîëíà.
-10336 Òåõïîääåğæêà: Äëÿ Âàñ åñòü âîçâğàùåííûå ïğåäìåòû:
-10337 Òåõïîääåğæêà: Âû ïîëó÷èëè ïğåäìåò: '%s'
-10338 Òåõïîääåğæêà: Äëÿ ïğåäìåòà '%s' íåò ìåñòà â èíâåíòàğå
-10339 Òåõïîääåğæêà: Îøèáêà ñîçäàíèÿ ïğåäìåòà
-
-10340 Voce recebeu um item aleatorio.
-10341 Nao ha espaco para um item aleatorio.
-10342 Erro ao criar item.
-
+10205 Torneio encerrado
+10216 No momento, apenas a GM pode se conectar ao servidor.
+10217 Não é possível combinar itens do Castelo.
+10218 assunto
+10219 Thaler
+10300 Você não pode atacar um jogador, pois seu título e grau são menores %d.
+10301 Você não pode atacar um jogador cujo título e grau são menores %d.
+10302 Você não pode atacar o jogador, pois você está em uma área pacífica (cidade, Praça do comércio).
+10303 Você não pode atacar o jogador, pois ele está em uma zona pacífica (cidade, Praça do comércio).
+10304 A evacuação foi cancelada com sucesso.
+10305 O tempo de evacuação ainda não expirou.
+10306 A evacuação ocorrerá através %d sexo
+10307 Durante a evacuação, você não pode se mover e o braço deve estar vazio.
+10308 Kulaks
+10324 Chat de
+10325 Convidar para o grupo
+10326 %s convida para o grupo. Aceitar o convite?
+10327 %s convida para o grupo.
+10328 %s já foi convidado para o grupo.
+10329 %s aceita o convite para o grupo.
+10330 %s recusa o convite para o grupo.
+10331 Você não pode convidar %s para o grupo, pois ele está muito longe de você.
+10332 %s já está no grupo.
+10333 Enviar petição
+10334 Reclamação de Jogador
+10335 Você não pode se juntar a um grupo, pois está cheio.
+10336 Suporte técnico: há itens devolvidos para você:
+10337 Suporte técnico: você recebeu o item: '%s'
+10338 Suporte técnico: para o item '%snão há espaço no inventário
+10339 Suporte técnico: não foi possível criar um item
+10340 Você recebeu um item aleatório.
+10341 Não há espaço para um item aleatório.
+10342 Erro ao criar o item.
 10343 %d minuto
 10344 %d minutos
 10345 %d minutos
-
-10346 Perder!
-10347 A pedra de protecao so pode ser usada no territorio do seu castelo
-10348 A pedra de protecao nao pode ser usada em um castelo deste nivel
-10349 Pedra de Protecao Ativada
-10350 O nivel do monstro aumentou
-
-10351 Âû âîøëè íà àğåíó âî âğåìÿ òóğíèğà. Óõîäèòå!
-10352 Àğåíà
-10353 Ïîğòàëû îòêğûòû. Ìîæíî òåëåïîğòèğîâàòüñÿ íà àğåíó òóğíèğà. Íà÷àëî ÷åğåç íåñêîëüêî ìèíóò.
-10354 Òóğíèğ íà÷àëñÿ.
-10355 1/%d ôèíàëà. Ó÷àñòíèêè:
-10356 ôèíàë
-10357 Íà àğåíó âûçûâàşòñÿ èãğîêè %s è %s!
-10358 Áîé âûèãğàë %s
-10359 Ïîáåäèòåëü òóğíèğà - %s.
-10360 Îáà èãğîêà íå ÿâèëèñü íà òóğíèğ. Ïî ğåçóëüòàòàì æğåáèÿ íà ñëåäóşùèé ıòàï ïğîõîäèò èãğîê - %s.
-10361 Èãğîê %s ñòğóñèë è íå ïğèø¸ë íà òóğíèğ. Ïîáåäèòåëü %s.
-10362 Ó èãğîêîâ îäèíàêîâîå êîëè÷åñòâî åäèíèö çäîğîâüÿ. Ïî ğåçóëüòàòàì æğåáèÿ ïîáåäèë %s.
-10363 Èãğîê %s ïîáåäèë, òàê êàê ó íåãî áîëüøå åäèíèö çäîğîâüÿ.
-10364 Âíèìàíèå! Îòêğûòà ğåãèñòğàöèÿ íà òóğíèğ.
-10365 òóğíèğ
-10366 Íåëüçÿ ïîìîãàòü èãğîêàì âî âğåìÿ òóğíèğà!
-10367 Âû ïîëó÷àåòå ïğèç!
-10368 Âåğíèòåñü îáğàòíî íà àğåíó òóğíèğà, èíà÷å Âàì àâòîìàòè÷åñêè çàñ÷èòàåòñÿ ïîğàæåíèå.
-10369 Èãğîê %s ñáåæàë âî âğåìÿ áîÿ. Âûèãğàë %s.
-10370 Èãğîê %s îòêàçàëñÿ îò ó÷àñòèÿ â òóğíèğå.
-10371 Ğåãèñòğàöèÿ íà òóğíèğ åù¸ íå îòêğûòà.
-10372 Èãğîê %s çàğåãèñòğèğîâàí â òóğíèğå.
-10373 Ğåãèñòğàöèÿ çàêîí÷èëàñü.
-10374 Èãğîê %s óìåğ è âûáûâàåò èç òóğíèğà.
-10375 Âû ïğîèãğàëè â òóğíèğå.
-10376 Èãğîê %s ñáåæàë âî âğåìÿ áîÿ.
-10377 Ó÷àñòíèêè:
-10378 îáû÷íûé
-10379 öàğü ãîğû
-10380 Íåëüçÿ çàğåãèñòğèğîâàòüñÿ - ñëèøêîì ìíîãî èãğîêîâ.
-
-10381 İòó ìèññèş ìîæíî âûïîëíÿòü ğàç â 12 ÷àñîâ
-10382 Âû ïîëó÷àåòå ïğèç çà 150 ìèíóò àêòèâíîé èãğû.
-
-10383 Capturar o castelo e atualmente impossivel
-10384 Âû âåğíóëè çàìîê. Âñå àïãğåéäû áûëè ñíÿòû, ïîòîìó ÷òî ïğîøëî %d ñóòîê.
-10385 Âû âåğíóëè çàìîê. %d àïãğåéäîâ áûëî ñíÿòî, ïîòîìó ÷òî ïğîøëî %d ñóòîê.
-10386 Âû âåğíóëè çàìîê.
-10387 O castelo e capturado pelo cla pela primeira vez %s.
-
-10388 Âû íå ìîæåòå ïîëüçîâàòüñÿ çàìêîâîé âåùüş, òàê êàê ÿâëÿåòåñü ÷ëåíîì êëàíà íåäîñòàòî÷íî âğåìåíè (íåîáõîäèìî %d äíåé). Âåùü óäàëåíà.
-10389 Âàì íåëüçÿ âîçäåéñòâîâàòü íà èãğîêîâ ìåíüøåãî óğîâíÿ â ıòîé çàìêîâîé çîíå
-10390 Âû íå ìîæåòå èñïîëüçîâàòü ıòî (çàìêîâàÿ âåùü).
-
-10391 İòà âåùü òåïåğü áóäåò ñëóæèòü òîëüêî Âàì.
-10392 Íåëüçÿ âñòóïàòü â êëàí, íàõîäÿñü âî ôğàêöèè.
-
-10393 ğåãèñòğàöèÿ
-10394 îòêàçàòüñÿ
-
-10395 Somente seu dono pode transferir uma missao
-10396 Voce nao pode mais distribuir esta missao
-10397 A missao nao pode ser repassada - a diferenca de niveis e muito grande
-
-10399 Íåëüçÿ çàğåãèñòğèğîâàòüñÿ - Âû íå ïîäõîäèòå ïî óğîâíş.
-10400 Íåëüçÿ ñğàæàòüñÿ ñåé÷àñ - ïîäãîòîâüòåñü ê ñğàæåíèş!
-10401 Íåëüçÿ ñğàæàòüñÿ ñåé÷àñ - ìèğíàÿ çîíà!
-10402 Ñğàæåíèå íà÷àëîñü!
-10403 Ïîåäèíîê íà÷íåòñÿ ÷åğåç %d ñåêóíä. Ïğèãîòîâüòåñü.
-10450 You reach the limit of items.
-
-10461 İòîò ïğåäìåò áóäåò óäàë¸í ïğè âûõîäå èç èãğû - íå çàáóäüòå ïîäîáğàòü åãî îáğàòíî.
-10462 Íåëüçÿ òåëåïîğòèğîâàòüñÿ â çàìîê. Îñòàëîñü %d ñåêóíä.
-
-10463 Âåùü ñ îãğàíè÷åííûì ñğîêîì æèçíè
-10464 Ó âàñ áûëà óäàëåíà âåùü ñ îãğàíè÷åííûì ñğîêîì.
-
-10466 (îñòàëîñü %s).
-10467 %d äåíü
-10468 %d äíÿ
-10469 %d äíåé
-
-10470 Äî Íîâîãî Ãîäà îñòàëîñü: %s.
-10471 ìåíüøå ìèíóòû
-10472 Âû ïîëó÷èëè íîâîãîäíèé ïîäàğîê.
-10473 Âû óæå ïîëó÷èëè íîâîãîäíèé ïîäàğîê.
-
-10474 Äåéñòâèå íåâîçìîæíî: ıòó ìàíòğó íåëüçÿ èñïîëüçîâàòü âî âğåìÿ òóğíèğà.
-
-10475 Voce nao pode se teletransportar agora.
-
-10476 "Ìàìîíòîâûå áåãà" íà÷àëèñü.
-10477 %s ïğèø¸ë ê ôèíèøó ïåğâûì.
-10561 Operation not available now
-10562 E proibido colocar aqui uma sacola se contiver outras sacolas
+10346 Falhaste!
+10347 A pedra de proteção só pode ser usada em seu castelo
+10348 A pedra de proteção não pode ser usada em um castelo deste nível
+10349 Pedra de proteção ativada
+10350 O nível dos monstros subiu
+10351 Você entrou na arena durante o torneio. Vão-se embora!
+10352 Arena
+10353 Portais abertos. Você pode se teletransportar para a arena do torneio. Começa dentro de minutos.
+10354 O torneio começou.
+10355 1/%d final. Participantes:
+10356 final
+10357 Jogadores são convocados para a arena %s e %s!
+10358 A luta ganhou %s
+10359 %s ganhou o torneio. Vamos dar-lhe os parabéns.
+10360 Os dois jogadores não compareceram ao torneio. De acordo com os resultados do sorteio, o jogador passa para a próxima fase - %s.
+10361 Jogador %s acobardou-se e não veio ao torneio. Vencedor %s.
+10362 Os jogadores têm o mesmo número de pontos de vida. De acordo com os resultados do sorteio venceu %s.
+10363 Jogador %s ganhou porque tem mais pontos de vida.
+10364 Atenção! Inscrições abertas para o torneio.
+10365 Torneio
+10366 Você não pode ajudar os jogadores durante o torneio!
+10367 Você ganha um prêmio!
+10368 Volte para a arena do torneio ou você será automaticamente derrotado.
+10369 Jogador %s fugiu durante a luta. Ganhou %s.
+10370 Jogador %s desistiu de participar do torneio.
+10371 As inscrições para o torneio ainda não estão abertas.
+10372 Jogador %s registrado no Torneio.
+10373 O registo acabou.
+10374 Jogador %s morreu e está fora do torneio.
+10375 Perdeu o torneio.
+10376 Jogador %s fugiu durante a luta.
+10377 Participantes:
+10378 duelo
+10379 rei da montanha
+10380 Você não pode se inscrever - há muitos jogadores.
+10381 Esta missão pode ser realizada a cada 12 horas
+10382 Você ganha um prêmio por 150 minutos de jogo ativo.
+10383 No momento, a captura do castelo não é possível
+10384 Recuperaste o castelo. Todas as atualizações foram retiradas porque passaram %d dias.
+10385 Recuperaste o castelo. %d as atualizações foram retiradas porque passaram %d dias.
+10386 Recuperaste o castelo.
+10387 O castelo é capturado pela primeira vez pelo clã %s.
+10388 Você não pode usar a coisa do Castelo porque é um membro do Clã tempo insuficiente (necessário %d dias). Coisa removida.
+10389 Você não pode influenciar jogadores de nível inferior nesta área do Castelo
+10390 Você não pode usar isso (coisa do Castelo).
+10391 Esta coisa agora servirá apenas a você.
+10392 Você não pode entrar em um clã enquanto estiver em uma facção.
+10393 cadastre-se
+10394 recusar
+10395 Apenas o proprietário pode transmitir a busca
+10396 Você não pode mais distribuir essa busca
+10397 Você não pode passar Quest - muita diferença nos níveis
+10399 Você não pode se registrar - você não se encaixa no nível.
+10400 Você não pode lutar agora-prepare-se para a batalha!
+10401 Não podemos lutar agora, é uma zona de paz!
+10402 A batalha começou!
+10403 A luta começa em %d segundos. Preparem-se.
+10449 Captura da placa interrompida!
+10450 O limite de itens foi atingido.
+10451 Jack Eilshatter: para realizar o ritual %d dentes de sangue de dragão (necessário %d).
+10452 Jack Eilshatter: através %d minutos vou começar o ritual de encerramento do portal. Para todos aqueles que se importam com o destino deste mundo, vão para o portal, eu estarei lá esperando por vocês!
+10453 Jack Eilshatter: vamos começar o ritual de encerramento do portal! Não me deixem morrer e me protejam dos monstros, preciso de concentração total para ler! Continua %d minutos.
+10454 O Jack morreu. Você tem mais uma tentativa, mas para isso coletar mais 100 dentes de sangue de dragão.
+10455 Viva, o portal está fechado e o mundo está salvo! Todos os que estiveram envolvidos, vão ter com o Jack Eilshatter para a recompensa.
+10456 Até o início do ritual de fechamento do portal %d  %s.
+10457 minutos
+10458 minutos
+10459 minuto
+10460 segundos
+10461 Este item será removido ao sair do jogo-não se esqueça de recuperá-lo.
+10462 Não podemos teletransportar-nos para o castelo. Continua %d segundos.
+10463 Uma coisa com um tempo de vida limitado
+10464 Você foi removido por um tempo limitado.
+10466 (restante %s).
+10467 %d dia
+10468 %d dia
+10469 %d dias
+10470 Até o Ano Novo: %s.
+10471 menos de um minuto
+10472 Você recebeu um presente de Ano Novo.
+10473 Você já recebeu um presente de Ano Novo.
+10474 Ação impossível: este mantra não pode ser usado durante o torneio.
+10475 Não podemos teletransportar-nos agora.
+10476 A corrida dos mamutes começou.
+10477 %s chegou à linha de chegada em primeiro lugar.
+10479 A habilidade não funcionou.
+10481 O feitiço não funciona em monstros
+10483 Não é possível ativar o cristal enquanto estiver sob a esfera de invulnerabilidade.
+10484 Fechado
+10490 %s ganhou o torneio.
+10491 %s venceu o torneio entre os grandes.
+10492 %s venceu o torneio entre os maiores.
+10493 %s venceu o torneio entre os lendários.
+10494 Para %s não havia adversários.
+10495 Na arena são chamados
+10496 Os participantes recebem %d segundos de preparação
+10497 Jogador %s morreu.
+10498 Um empate. Todos perderam.
+10499 Venceu a equipe vermelha.
+10500 Ganhou a equipe verde.
+10501 As equipes não são iguais, o torneio não vai acontecer.
+10502 Mudou de grupo.
+10503 Você já está registrado.
+10505 
+10506 a
+10507 VW
+10508 BB2
+10509 %s não compareceu ao torneio.
+10510 grupo
+10511 torneio atual
+10512 resultados
+10513 Vermelho: %d
+10514 Verde: %d
+10520 Acabou o tempo.
+10521 Os adversários são poucos
+10522 Refém fugiu
+10523 Não sobrou ninguém.
+10530 retirada do refém
+10532 morto
+10533 fugiu.
+10534 não apareceu.
+10540 Você está na equipe vermelha
+10541 Você está na equipe verde
+10542 O fio já tem a orelha deste jogador
+10543 A orelha não é adequada para este fio
+10545 Perdemos a ligação ao servidor.
+10550 A sessão de autorização expirou. Tente entrar no jogo novamente. Se o erro persistir, entre em contato com o suporte técnico help.gamexp.ru
+10551 Não foi possível ligar-se.
+10552 Tentar de novo?
+10553 Ligar novamente?
+10554 Esta função não está disponível no momento.
+10555 A pedra de retorno não funcionou!
+10556 Título X2 activado.
+10557 Grau X2 activado.
+10558 Você não pode usar a habilidade aqui
+10559 Limite de sacos aninhados atingido
+10560 Amuleto de Ano Novo removido
+10561 Operação não disponível no momento
+10562 É proibido colocar uma bolsa aqui se ela contiver outras bolsas
 10563 Muito longe
-10564 O tablet ja esta sendo capturado por outro jogador
+10564 A placa já está sendo capturada por outro jogador
+10565 Nível de especialidade aumentado.
+10566 A aplicação é impossível-primeiro obtenha uma especialidade.
+10567 A aplicação é impossível-você atingiu o nível mais alto da especialidade.
+10568 Não é possível aplicar-não há licenças suficientes na pilha.
+10569 Não é possível aplicar-um título ou grau inadequado.

@@ -1,0 +1,56 @@
+01 Mutador
+1000 Una luz mágica invisible para los demás.
+1001 Berserk. Después de la acción deja hambre y sin fuerzas.
+1002 Permite ver lo invisible.
+1003 "La Ira De La Tabla". Causa daño cada 2 minutos.
+1004 Dispara un mutador.
+1005 Reduce la salud cada 2 minutos.
+1006 Aumenta la salud cada 2 minutos.
+1007 Reduce la salud y el Prana cada 2 minutos.
+1008 Aumenta la salud y el Prana cada 2 minutos.
+1009 "Limpieza". Restauración completa de la salud y el Prana y eliminación de todos los mutadores.
+1010 Prohíbe correr.
+1011 Prohíbe correr y caminar.
+1012 Falta de coordinación.
+1013 Prohibición de saltar.
+1014 Aumentar los saltos 2 veces.
+1015 Aumentar los saltos en 4 veces.
+1016 Cegado a medias.
+1017 Cegamiento total.
+1018 Permite respirar bajo el agua.
+1019 Protege contra caídas desde cualquier altura.
+1020 Dispara el mutador de aumento de salto.
+1021 Mata a un miembro del clan Naath. Libera de la maldición del mal.
+1022 Permite ver las trampas ocultas.
+1023 Hace que el portador sea invisible. La acción termina si se toma algo en la mano.
+1024 Dispara 2 mutadores.
+1025 Dispara 4 mutadores.
+1026 Dispara 6 mutadores.
+1027 Permite lanzar 2 flechas simultáneamente.
+1028 Aumenta la velocidad de carrera.
+1029 Robo
+1030 Hace que el portador sea invisible por la noche. La acción termina si se toma algo en la mano.
+1031 Kamae. Soporte de protección. Prohíbe correr y ralentiza cualquier acción.
+1032 Fijador. Bloquea la acción de limpieza completa en los mutadores ubicados debajo.
+1033 Recurso. Aumenta la probabilidad de caer de un monstruo muerto de recursos artesanales.
+1034 Hipermetropía. Aumenta la distancia de impacto de cualquier arma a 30 metros.
+1035 Tiempo de ejecución. Aumenta la frecuencia de ataque 2 veces.
+1036 Grilletes. Prohíbe tomar algo en la mano.
+1037 Miopía. Reduce la distancia de impacto de cualquier arma a 2 metros.
+1038 Meditación. Se sumerge en un estado de silencio, dando una gran protección.
+1039 Maldita sea. Transformándose en un jabalí trepidante.
+1040 Aturdimiento. Deslumbra y no deja mover las manos.
+1041 Metamorfosis. Transformarse en lobo.
+1042 Correr rápido hasta la primera parada.
+1043 Armadura oxidada. Prohíbe los giros.
+1044 Tornado. Gira el personaje.
+1045 Berserker. Aumenta el ataque, pero ralentiza la carrera.
+1046 Escudo de Prana. Elimina el daño a la salud con el uso de Prana.
+1047 Metamorfosis. Convertirse en vampiro.
+1048 Metamorfosis. Convertirse en un muñeco de nieve.
+1049 Espejo mágico. Dirige el ataque contra el propio atacante.
+1050 Elixir de la libertad-elimina cualquiera de los 4 mutadores maliciosos.
+1051 Inquebrantable. Elimina todos los mutadores de control y los hace inmunes a ellos.
+1111 Apoyo de bandier.
+2020 Aumenta la protección de la puerta de la Cerradura.
+2021 Daña la puerta de la Cerradura cada 2 minutos.

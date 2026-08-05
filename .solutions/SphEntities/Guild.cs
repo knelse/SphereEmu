@@ -16,3 +16,13 @@ public enum Guild : byte
     Necromancer = 0x13,
     Bandier = 0x14
 }
+
+public enum GuildRank : byte
+{
+    Candidate = 0x0,
+    Scholar = 0x1,
+    Apprentice = 0x2,
+    Master = 0x3,
+    Elder = 0x4,
+    Expert = 0x5,
+}

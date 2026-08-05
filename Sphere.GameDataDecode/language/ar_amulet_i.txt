@@ -1,0 +1,137 @@
+01 Amuleto di vetro
+03 amuleto di vetro
+100 Offre un ulteriore vantaggio nel respingere gli attacchi magici. Senza un buon amuleto, non c'è niente da fare in battaglia. C'era, tuttavia, un mago che si vantava di opporsi al mostro più forte senza la protezione di un amuleto magico. La storia del nome di questo stregone non ha conservato.
+200 forza
+201 assorbimento
+202 riflessioni
+203 sicurezza
+204 salute
+205 meditazione
+206 precisione
+207 etere
+208 splendore
+209 valori
+210 danni
+
+#401-412
+01 Amuleto di vetro
+03 amuleto di vetro
+
+#4001-4023
+01 Amuleto di vetro
+03 amuleto di vetro
+
+#4167-4175
+01 Amuleto di vetro
+03 amuleto di vetro
+
+#4185-4187
+01 Amuleto Di Celebrazione
+03 amuleto di celebrazione
+100 L'Amuleto della celebrazione è programmato per il biennio del progetto Sphere! L'amministrazione del progetto si congratula con te per questo evento! Grazie per il vostro interesse per il nostro gioco e vi auguriamo un ulteriore successo nel mondo magico.
+
+#4190
+01 Amuleto di vetro di gioia
+03 amuleto di vetro di gioia
+
+#4191
+01 Amuleto di vetro della felicità
+03 amuleto di vetro della felicità
+
+#4192
+01 Amuleto di vetro della virtù
+03 amuleto di vetro della virtù
+
+#4193
+01 Amuleto di cristallo di consolazione
+03 amuleto di cristallo di consolazione
+
+#4194
+01 Amuleto di cristallo di gioia
+03 amuleto di cristallo di gioia
+
+#4199
+01 Amuleto vita
+03 Amuleto vita
+
+#4242
+01 Crisantemo
+03 crisantemo
+
+#4243-4244
+01 Rosa
+03 rosa
+
+#4245-4246
+01 Iris
+03 Iris
+
+#4247-4248
+01 Tulipano
+03 tulipano
+
+#4249-4250
+01 Gerbera
+03 Gerber
+
+#4251-4252
+01 Orchidea
+03 orchidea
+
+#4302
+01 Grande amuleto di Capodanno
+03 Grande amuleto di Capodanno
+
+#4304
+01 Piccolo amuleto di Capodanno
+03 Piccolo amuleto di Capodanno
+
+#4306
+01 Amuleto di gioia di breve durata
+03 amuleto di gioia di breve durata
+
+#4308
+01 Amuleto Della Rinascita
+03 Amuleto della rinascita
+100 L'Amuleto della rinascita è datato alla fine del Mondo 2012..
+
+#4310
+01 Amuleto regalo
+03 Amuleto regalo
+100 Amuleto regalo che dà +10 a tutti i parametri.
+
+#5671-5676
+01 Buon amuleto
+03 buon amuleto
+
+#5877-5882
+01 Amuleto della bestia
+03 Amuleto della bestia
+
+#5957
+01 Amuleto Del Mago
+03 amuleto del mago
+
+#5958
+01 Amuleto Dell'Arcimago
+03 amuleto Dell'Arcimago
+
+#5959
+01 Amuleto Del Grande Arcimago
+03 amuleto del grande Arcimago
+
+#5971-5976
+01 Amuleto Dell'Arcimago
+03 amuleto Dell'Arcimago
+
+#6565-6570
+01 Amuleto di rifiuto
+03 amuleto di rifiuto
+
+#6753
+01 Roger
+03 Roger
+
+#6755
+01 Amuleto dell'osso
+03 amuleto dell'osso

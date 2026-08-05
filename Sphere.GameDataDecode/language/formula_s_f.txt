@@ -1,0 +1,7 @@
+01 Formule
+02 formules
+03 formule
+100 Formule de la guilde des forgerons
+10000 Avec cette formule, vous pouvez obtenir %r1. Pour la production est nécessaire %a1 . et le niveau de la guilde des forgerons ne doit pas être inférieur %z1.
+10001 Avec cette formule, vous pouvez obtenir %r1. Pour la production nécessaire %a1 et %a2 . et le niveau de la guilde des forgerons ne doit pas être inférieur %z1.
+10002 Avec cette formule, vous pouvez obtenir %r1. Pour la production nécessaire %a1, %a2 et %a3 . et le niveau de la guilde des forgerons ne doit pas être inférieur %z1.

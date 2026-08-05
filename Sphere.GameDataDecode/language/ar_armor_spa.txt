@@ -1,0 +1,223 @@
+01 Cota de malla
+03 cota de malla
+05 nuevo
+06 gastada
+07 oxidado
+100 En la batalla protege de las armas de los enemigos.
+200 valor
+201 fuerza
+202 absorción
+203 desviaciones
+204 seguridad
+205 invulnerabilidad
+206 salud
+207 vida
+208 meditaciones
+209 Prana
+210 fuerzas
+211 agilidad
+212 grandeza
+213 concentraciones
+214 tierra
+215 agua
+216 aire
+217 fuego
+218 elementos
+219 valores
+220 fuerzas
+221 agilidad
+222 grandeza
+223 concentraciones
+224 integridad
+
+#301
+01 Chaqueta
+03 chaqueta
+
+#302
+01 Armadura de cuero
+03 armadura de cuero
+
+#303-304
+01 Armadura de cuero remachado
+03 armadura de cuero remachada
+
+#305-306
+01 Cota de malla
+03 cota de malla
+
+#307-309
+01 Coraza
+03 corasu
+
+#310-312
+01 Armadura antigua
+03 armadura antigua
+
+#3001-3004
+01 Chaqueta
+03 chaqueta
+
+#3005-3009
+01 Armadura de cuero
+03 armadura de cuero
+
+#3010-3019
+01 Armadura de cuero remachado
+03 armadura de cuero remachada
+
+#3020-3029
+01 Cota de malla
+03 cota de malla
+
+#3030-3044
+01 Coraza
+03 corasu
+
+#3045-3060
+01 Armadura antigua
+03 armadura antigua
+
+#4453-4461
+01 Coraza
+03 corasu
+
+#4740
+01 La Gran Coraza Negra
+03 La Gran Coraza Negra
+
+#4741
+01 Gran Coraza Blanca
+03 La Gran Coraza Blanca
+
+#4750
+01 La Gran Coraza Negra
+03 La Gran Coraza Negra
+
+#4751
+01 Gran Coraza Blanca
+03 La Gran Coraza Blanca
+
+#5586
+01 Chaqueta de villano
+03 la chaqueta del villano
+
+#5587
+01 Chaqueta de cuero villano
+03 la chaqueta del villano
+
+#5588
+01 Chaqueta de villano remachada
+03 la chaqueta del villano
+
+#5589
+01 La cota de malla del villano
+03 la cota de malla del villano
+
+#5590
+01 Coraza del villano
+03 la coraza del villano
+
+#5591
+01 Armadura del villano
+03 armadura de villano
+
+#5677
+01 Chaqueta del resplandor
+03 chaqueta del resplandor
+
+#5678
+01 Chaqueta de cuero del resplandor
+03 chaqueta del resplandor
+
+#5679
+01 Chaqueta remachada del resplandor
+03 chaqueta del resplandor
+
+#5680
+01 Cota de malla del resplandor
+03 la cota de malla del resplandor
+
+#5681
+01 Coraza del resplandor
+03 coraza del resplandor
+
+#5682
+01 Armadura del resplandor
+03 armadura del resplandor
+
+#5865
+01 Chaqueta de sigilo
+03 chaqueta de sigilo
+
+#5866
+01 Chaqueta de cuero de sigilo
+03 chaqueta de sigilo
+
+#5867
+01 Chaqueta de sigilo remachada
+03 chaqueta de sigilo
+
+#5868
+01 Cota de malla de sigilo
+03 cota de malla de sigilo
+
+#5869
+01 Coraza de sigilo
+03 coraza de sigilo
+
+#5870
+01 Armadura de sigilo
+03 armadura de sigilo
+
+#6083
+01 Chaqueta Del Titanio
+03 chaqueta de Titanio
+
+#6084
+01 Chaqueta de cuero del Titanio
+03 chaqueta de Titanio
+
+#6085
+01 Chaqueta remachada del Titanio
+03 chaqueta de Titanio
+
+#6086
+01 Cota De Malla De Titanio
+03 cota de malla de Titanio
+
+#6087
+01 Coraza De Titanio
+03 la coraza del Titán
+
+#6088
+01 Armadura De Titanio
+03 armadura de Titanio
+
+#6551
+01 Armadura pesada Caliestra
+03 armadura pesada Caliestra
+
+#6868
+01 Chaqueta de la confiabilidad
+03 chaqueta confiabilidad
+
+#6869
+01 Chaqueta de cuero de la confiabilidad
+03 chaqueta confiabilidad
+
+#6870
+01 Chaqueta remachada de la confiabilidad
+03 chaqueta confiabilidad
+
+#6871
+01 Cota de malla de fiabilidad
+03 cota de malla de fiabilidad
+
+#6872
+01 Coraza de fiabilidad
+03 coraza
+
+#6873
+01 Armadura de fiabilidad
+03 armadura de fiabilidad

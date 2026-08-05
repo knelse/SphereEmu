@@ -1,9 +1,7 @@
-01 Fórmula do elixir se armeiro (1º estágio)
-02 fórmula do elixir se armeiro (1º estágio)
-03 fórmula do elixir se armeiro (1º estágio)
-
-100 Diante de ti está um pergaminho contendo uma fóruma mágica. Atrás de fórmulas como essa está o trabalho longo de várias gerações de magos. Tenha certeza de guardá-la no livro especial de receitas.
-
+01 Receita de Elixir de armeiro (1 etapa)
+02 receitas do elixir do Armeiro (1 etapa)
+03 receita de Elixir de armeiro (1 etapa)
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para obter o elixir se armeiro (1º estágio), deve primeiro achar Terraton, Sage e Cobre. Misture tudo no pote alquímico, adicione o pó de Amilus para completar a reação e obter o pó pronto para uso.
+    Para obter o Elixir do Armeiro (Fase 1), primeiro obtenha terratônio, sálvia e cobre. Misture - os em um caldeirão alquímico, adicione o pó final de Amilus e use o pó resultante.
+    

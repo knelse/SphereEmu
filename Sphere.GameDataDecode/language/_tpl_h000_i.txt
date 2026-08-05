@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Lasciami perdere! Mio figlio %s è scappato con quel maledetto fuorilegge! Se vuoi essermi d'aiuto, allora riportalo a casa. %s ti aiuterà ad orientarti. 
-21 Lasciami perdere! Mia figlia %s è scappata con quel maledetto fuorilegge! Se vuoi essermi d'aiuto, allora riportala a casa. %s ti aiuterà ad orientarti.
+20 No, Non molestarmi ora, figlio mio %s scappato con quel ladro! Vuoi aiutarmi? Allora restituiscimi tuo figlio! %s ti servira ' da guida.
+21 No, Non molestarmi ora, mia figlia minore %s sono scappata con quel ladro! Vuoi aiutarmi? Allora trovala. So dove potrebbe essere. %s ti servira ' da guida.

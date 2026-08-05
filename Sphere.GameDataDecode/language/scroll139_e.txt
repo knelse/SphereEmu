@@ -1,9 +1,7 @@
-01 Recipe of powder of strengthening
-02 recipe of powder of strengthening
-03 recipe of powder of strengthening
-
-100 Before you is a scroll with a recipe of a magic potion inscribed upon it. Behind every such recipe lies a life's work of several generations of mages. Make sure to save such a valuable possesion in your special book of recipes.
-
+01 Amplification Powder Recipe
+02 enhancement powder recipes
+03 amplification powder recipe
+100 In front of you is a scroll with a description of the recipe for magic powder. Each recipe hides the painstaking and long-term work of several generations of magicians. In order not to lose such a valuable scroll, save it in a special recipe book.
 TEXT
-
-    To compose a powder of magical protection, first obtain some sapronak and samalia. Mix those in an alchemist's pot, add Fainal's powder and enjoy the resulting powder. 
+    To get the enhancement powder, first of all get sapronak and samalya. Mix them in an alchemical pot, add the final powder of the Fainal and enjoy the resulting powder.
+    

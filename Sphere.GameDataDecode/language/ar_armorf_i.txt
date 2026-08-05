@@ -1,30 +1,34 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 Dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 del mondo
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2745-2746
-01 Mantello
-03 mantello
+01 Giacca
+03 giacca
+
 #2747-2748
-01 Armatura in pelle
-03 armatura in pelle
+01 Armatura di cuoio
+03 armatura di cuoio
+
 #2749-2750
-01 Armatura in pelle rinforzata
-03 armatura in pelle rinforzata
+01 Armatura in pelle rivettata
+03 armatura in pelle rivettata
+
 #2751-2752
 01 Cotta di maglia
 03 cotta di maglia
+
 #2753-2755
 01 Corazza
 03 corazza
+
 #2756-2759
 01 Armatura antica
 03 armatura antica

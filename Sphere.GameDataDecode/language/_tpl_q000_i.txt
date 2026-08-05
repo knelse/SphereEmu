@@ -1,11 +1,11 @@
-01 chiave della missione
-03 chiave della missione
-10 non lontano da qui, 
-11 nel grande continente di Hyperion 
-12 nel grande continente di Helios 
-13 nel grande continente di Rodos 
-14 nel piccolo continente di Phoebe 
-15 nell'isola reale di Leon 
-16 nel mistrerioso continente di Charon
-22 %s mi ha rubato un pacco. Uccidi il mostro e riportami il pacco. (orientamento - %s)
-23 %s mi ha rubato un pacco. Uccidi il mostro e riportami il pacco. (orientamento - %s)
+01 chiave di missione
+03 chiave di missione
+10 Non lontano da qui,
+11 Sulla Grande terraferma di Hyperion
+12 Sulla grande terraferma Helios
+13 Sulla grande terraferma di Rodi
+14 Nella piccola terraferma di Febe
+15 Sull'Isola regale di Leone
+16 Sulla terraferma fantasma di Caronte
+22 %s ho preso un pacco di mia proprietà. Uccidi il mostro e riportalo a me (punto di riferimento - %s).
+23 %s ho preso un pacco di mia proprietà. Uccidi il mostro e riportalo a me (punto di riferimento - %s).

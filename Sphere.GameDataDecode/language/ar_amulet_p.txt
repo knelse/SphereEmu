@@ -1,96 +1,137 @@
 01 Amuleto de vidro
 03 amuleto de vidro
-
-100 Proporciona proteзгo extra contra ataques mбgicos. Vocк certemente perderб uma batalha sem um bom amuleto. Houve uma mago que disse poder atacar um poderoso monstro sem um amuleto. A histуria nгo lembra o nome do tolo.
-
-200 da durabilidade
-201 de absorзгo
-202 de proteзгo 
-203 de seguranзao
-204 de vida 
-205 de meditaзгo
-206 de precisгo
-207 de йter
-208 brilhante
-209 valoroso
-210 de dano
+100 Dб uma vantagem adicional ao repelir ataques mбgicos. Nгo hб nada a fazer sem um bom Amuleto. Havia, no entanto, um mбgico que se gabava de se opor ao monstro mais forte sem a proteзгo do amuleto mбgico. A histуria deste mago nгo guardou o nome.
+200 forзa
+201 absorзгo
+202 reflexos
+203 seguranзa
+204 saъde
+205 meditaзгo
+206 precisгo
+207 Ether
+208 the shining
+209 valores
+210 dano
 
 #401-412
 01 Amuleto de vidro
 03 amuleto de vidro
+
 #4001-4023
 01 Amuleto de vidro
 03 amuleto de vidro
+
 #4167-4175
 01 Amuleto de vidro
 03 amuleto de vidro
+
 #4185-4187
-01 Amuleto da Celebraзгo
-03 Amuleto da Celebraзгo
-100 Amuleto da Celebraзгo
+01 Amuleto Da Celebraзгo
+03 amuleto da celebraзгo
+100 O amuleto da celebraзгo й dedicado aos dois anos do projeto "esfera"! A administraзгo do projeto parabeniza vocк por esse evento! Obrigado pelo seu interesse no nosso jogo e desejamos-lhe sucesso contнnuo no mundo mбgico.
+
 #4190
-01 Amuleto de vidro da alegria
-03 amuleto de vidro da alegria
+01 Amuleto de alegria de vidro
+03 amuleto de alegria de vidro
+
 #4191
 01 Amuleto de vidro da felicidade
 03 amuleto de vidro da felicidade
+
 #4192
 01 Amuleto de vidro da virtude
 03 amuleto de vidro da virtude
+
 #4193
-01 Amuleto de cristal da Consolaзгo
-03 amuleto de cristal da Consolaзгo
+01 Amuleto de consolaзгo de cristal
+03 amuleto de consolaзгo de cristal
+
 #4194
-01 Amuleto de cristal da Exaltaзгo
-03 amuleto de cristal da Exaltaзгo
+01 Amuleto de alegria de cristal
+03 amuleto de alegria de cristal
+
 #4199
-01 Amuleto da Vida
-03 Amuleto da Vida
+01 Amuleto da vida
+03 Amuleto da vida
+
 #4242
-01 Хризантема
-03 хризантему
+01 Crisвntemo
+03 crisвntemo
+
 #4243-4244
-01 Роза
-03 розу
+01 Rosa
+03 rosa
+
 #4245-4246
-01 Ирис
-03 ирис
+01 Iris
+03 Iris
+
 #4247-4248
-01 Тюльпан
-03 тюльпан
+01 Tulipa
+03 tulipa
+
 #4249-4250
-01 Гербера
-03 герберу
+01 Gerber
+03 Gerber
+
 #4251-4252
-01 Орхидея
-03 орхидею
+01 Orquнdea
+03 orquнdea
+
 #4302
-01 Большой новогодний амулет
-03 Большой новогодний амулет
+01 Grande amuleto de Ano Novo
+03 Grande amuleto de Ano Novo
+
 #4304
-01 Малый новогодний амулет
-03 Малый новогодний амулет
+01 Pequeno amuleto de Ano Novo
+03 Pequeno amuleto de Ano Novo
+
 #4306
-01 Недолговечный амулет ликования
-03 недолговечный амулет ликования
+01 Amuleto de alegria de curta duraзгo
+03 amuleto de alegria de curta duraзгo
+
+#4308
+01 Amuleto Do Renascimento
+03 amuleto do Renascimento
+100 O amuleto do Renascimento estб marcado para o fim do mundo em 2012..
+
+#4310
+01 Amuleto de presente
+03 Amuleto de presente
+100 Um amuleto de presente que dб +10 a todos os parвmetros.
+
 #5671-5676
-01 Amuleto Abenзoado
-03 amuleto Abenзoado
+01 Bom Amuleto
+03 bom Amuleto
+
 #5877-5882
-01 Amuleto da Besta
-03 amuleto da Besta
+01 Guarda da besta
+03 guarda da besta
+
 #5957
-01 Amuleto do Mago
-03 Amuleto do Mago
+01 Amuleto Mбgico
+03 amuleto mбgico
+
 #5958
-01 Amuleto do Mestre Mago
-03 Amuleto do Mestre Mago
+01 Amuleto De Arquimago
+03 amuleto de Arquimago
+
 #5959
-01 Amuleto do Grande Mestre Mago
-03 Amuleto do Grande Mestre Mago 
+01 Amuleto Do Grande Arquimago
+03 amuleto do Grande Arquimago
+
+#5971-5976
+01 Amuleto De Arquimago
+03 amuleto de Arquimago
+
+#6565-6570
+01 Amuleto da rejeiзгo
+03 amuleto da rejeiзгo
+
 #6753
 01 Roger
 03 Roger
+
 #6755
 01 Amuleto de osso
 03 amuleto de osso

@@ -1,8 +1,6 @@
-01 Nos velhos cemitérios 
-03 nos velhos cemitérios
-
-100 Na sua frente está um pergaminho com uma antiga escrita da vida na Sphere.
-
+01 Os antigos cemitérios
+03 os antigos cemitérios
+100 Tens um pergaminho com uma lenda antiga do mundo da esfera.
 TEXT
-
-    Existem rumores que alguns grandes monstros estão enterrados nas catacumbas ao sudoeste de Sheepstone. Muitos aventureiros tentaram pegar as riquezas, porém em vão: A morte constantemente guarda o silêncio em suas lápides. 
+    Há rumores de que grandes tesouros estão enterrados nas catacumbas de um antigo cemitério a sudeste de Shipstone. Muitos aventureiros tentaram obter as jóias-mas em vão, os mortos guardam com segurança a paz de seus túmulos.
+    

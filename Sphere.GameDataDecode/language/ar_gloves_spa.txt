@@ -1,0 +1,127 @@
+01 Guantes
+03 guantes
+100 En la batalla protege de las armas de los enemigos.
+200 fuerza
+201 absorción
+202 seguridad
+203 salud
+204 meditaciones
+205 precisión
+206 Ether
+207 valores
+
+#325
+01 Guantes
+03 guantes
+
+#326
+01 guantes de cuero
+03 guantes de cuero
+
+#327-328
+01 Guantes de cuero remachados
+03 guantes de cuero remachados
+
+#329-330
+01 Guantes de malla
+03 guantes de malla
+
+#331-333
+01 Guantes de placa
+03 guantes de placa
+
+#334-336
+01 Guantes de placa antiguos
+03 guantes de placa antiguos
+
+#3195
+01 Guantes
+03 guantes
+
+#3196
+01 Guantes de cuero
+03 guantes de cuero
+
+#3197-3198
+01 Guantes de cuero remachados
+03 guantes de cuero remachados
+
+#3199-3200
+01 Guantes de malla
+03 guantes de malla
+
+#3201-3203
+01 Guantes de placa
+03 guantes de placa
+
+#3204-3206
+01 Guantes de placa antiguos
+03 guantes de placa antiguos
+
+#4507-4515
+01 Guantes de placa antiguos
+03 guantes de placa antiguos
+
+#4748
+01 Guantes negros
+03 guantes negros
+
+#4749
+01 Guantes blancos
+03 guantes blancos
+
+#5960
+01 Guantes
+03 guantes
+
+#6177
+01 Guantes sabios
+03 guantes sabios
+
+#6178
+01 Guantes de cuero sabios
+03 guantes sabios
+
+#6179
+01 Guantes remachados sabios
+03 guantes sabios
+
+#6180
+01 Guantes de malla sabios
+03 guantes sabios
+
+#6181
+01 Guantes de placa sabia
+03 guantes sabios
+
+#6182
+01 Los antiguos guantes de los sabios
+03 guantes sabios
+
+#6456
+01 Guantes del maestro
+02 guantes del maestro
+
+#6457
+01 Guantes de cuero del artesano
+02 guantes del maestro
+
+#6458
+01 Guantes remachados del artesano
+02 guantes del maestro
+
+#6459
+01 Guantes de cota de malla del maestro
+02 guantes del maestro
+
+#6460
+01 Guantes de placa de maestro
+02 guantes del maestro
+
+#6461
+01 Guantes antiguos del maestro
+02 guantes del maestro
+
+#6762
+01 Garras
+03 garras

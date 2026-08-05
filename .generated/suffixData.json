@@ -62,8 +62,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èñòîùåíèÿ",
-        "English": "of exhaustion",
-        "Portuguese": "de exaustão"
+        "German": "erschöpfung",
+        "English": "exhaustion",
+        "French": "épuisement",
+        "Italian": "esaurimento",
+        "Portuguese": "exaustão",
+        "Spanish": "agotamiento"
       },
       "CurrentDurability": 0
     },
@@ -129,8 +133,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äîáëåñòè",
-        "English": "of valour",
-        "Portuguese": "de valor"
+        "German": "tapferkeit",
+        "English": "Valor",
+        "French": "prouesses",
+        "Italian": "valor",
+        "Portuguese": "valor",
+        "Spanish": "valor"
       },
       "CurrentDurability": 0
     },
@@ -196,8 +204,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "óğîíà",
-        "English": "of damage",
-        "Portuguese": "de dano"
+        "German": "schaden",
+        "English": "damage",
+        "French": "dégâts",
+        "Italian": "danni",
+        "Portuguese": "dano",
+        "Spanish": "daño"
       },
       "CurrentDurability": 0
     },
@@ -263,8 +275,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æåñòîêîñòè",
-        "English": "of cruelty",
-        "Portuguese": "de crueldade"
+        "German": "grausamkeiten",
+        "English": "cruelty",
+        "French": "brutalités",
+        "Italian": "crudeltà",
+        "Portuguese": "brutalidade",
+        "Spanish": "brutalidad"
       },
       "CurrentDurability": 0
     },
@@ -330,8 +346,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñïåøêè",
-        "English": "of rush",
-        "Portuguese": "de investida"
+        "German": "eile",
+        "English": "haste",
+        "French": "précipitation",
+        "Italian": "fretta",
+        "Portuguese": "pressa",
+        "Spanish": "prisa"
       },
       "CurrentDurability": 0
     },
@@ -397,8 +417,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñêîğîñòè",
-        "English": "of speed",
-        "Portuguese": "de velocidade"
+        "German": "geschwindigkeit",
+        "English": "speeds",
+        "French": "vitesses",
+        "Italian": "velocità",
+        "Portuguese": "velocidade",
+        "Spanish": "velocidad"
       },
       "CurrentDurability": 0
     },
@@ -464,8 +488,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåñïîğÿäêà",
-        "English": "of disorder",
-        "Portuguese": "de desordem"
+        "German": "unordnung",
+        "English": "disorder",
+        "French": "désordre",
+        "Italian": "disordine",
+        "Portuguese": "desordem",
+        "Spanish": "desorden"
       },
       "CurrentDurability": 0
     },
@@ -531,8 +559,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "õàîñà",
-        "English": "of chaos",
-        "Portuguese": "de caos"
+        "German": "chaos",
+        "English": "Chaos",
+        "French": "chaos",
+        "Italian": "Caos",
+        "Portuguese": "Caos",
+        "Spanish": "caos"
       },
       "CurrentDurability": 0
     },
@@ -598,8 +630,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Portuguese": "de éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -665,8 +701,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "óñòàëîñòè",
-        "English": "of tiredness",
-        "Portuguese": "de fadiga"
+        "German": "müdigkeit",
+        "English": "Fatigue",
+        "French": "fatigue",
+        "Italian": "fatica",
+        "Portuguese": "fadiga",
+        "Spanish": "fatiga"
       },
       "CurrentDurability": 0
     },
@@ -732,8 +772,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áîëåçíè",
-        "English": "of sickness",
-        "Portuguese": "de doença"
+        "German": "krankheiten",
+        "English": "diseases",
+        "French": "maladies",
+        "Italian": "malattie",
+        "Portuguese": "doenças",
+        "Spanish": "enfermedades"
       },
       "CurrentDurability": 0
     },
@@ -799,8 +843,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóñòîé÷èâîñòè",
-        "English": "of instability",
-        "Portuguese": "de instabilidade"
+        "German": "instabilität",
+        "English": "instabilities",
+        "French": "instabilité",
+        "Italian": "instabilità",
+        "Portuguese": "instabilidade",
+        "Spanish": "inestabilidad"
       },
       "CurrentDurability": 0
     },
@@ -866,8 +914,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ğàññòîÿíèÿ",
-        "English": "of length",
-        "Portuguese": "de extensão"
+        "German": "entfernungen",
+        "English": "distances",
+        "French": "distances",
+        "Italian": "distanze",
+        "Portuguese": "distâncias",
+        "Spanish": "distancias"
       },
       "CurrentDurability": 0
     },
@@ -933,8 +985,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äèñòàíöèè",
-        "English": "of distance",
-        "Portuguese": "de distancia"
+        "German": "entfernungen",
+        "English": "distances",
+        "French": "distances",
+        "Italian": "distanze",
+        "Portuguese": "distâncias",
+        "Spanish": "distancia"
       },
       "CurrentDurability": 0
     },
@@ -1000,8 +1056,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ğàçëîæåíèÿ",
-        "English": "of deterioration",
-        "Portuguese": "de deterioração"
+        "German": "zersetzungen",
+        "English": "decompositions",
+        "French": "décomposition",
+        "Italian": "decomposizione",
+        "Portuguese": "decomposição",
+        "Spanish": "descomposición"
       },
       "CurrentDurability": 0
     },
@@ -1067,8 +1127,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îïóñòîøåíèÿ",
-        "English": "of devastation",
-        "Portuguese": "de devastação"
+        "German": "verwüstungen",
+        "English": "devastation",
+        "French": "dévastation",
+        "Italian": "devastazioni",
+        "Portuguese": "devastação",
+        "Spanish": "devastación"
       },
       "CurrentDurability": 0
     },
@@ -1134,8 +1198,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñëàáîñòè",
-        "English": "of weakness",
-        "Portuguese": "de fraqueza"
+        "German": "schwächen",
+        "English": "weaknesses",
+        "French": "faiblesses",
+        "Italian": "debolezze",
+        "Portuguese": "fraquezas",
+        "Spanish": "debilidades"
       },
       "CurrentDurability": 0
     },
@@ -1201,8 +1269,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğîíèêíîâåíèÿ",
-        "English": "of penetration",
-        "Portuguese": "de penetração"
+        "German": "penetration",
+        "English": "penetrations",
+        "French": "pénétrations",
+        "Italian": "penetrazione",
+        "Portuguese": "Penetração",
+        "Spanish": "penetración"
       },
       "CurrentDurability": 0
     },
@@ -1268,8 +1340,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çàïğåòà",
-        "English": "of prohibition",
-        "Portuguese": "de proibição"
+        "German": "verbot",
+        "English": "prohibition",
+        "French": "interdiction",
+        "Italian": "divieto",
+        "Portuguese": "proibição",
+        "Spanish": "prohibición"
       },
       "CurrentDurability": 0
     },
@@ -1335,8 +1411,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "de valor"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     }
@@ -1404,8 +1484,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èñòîùåíèÿ",
-        "English": "of exhaustion",
-        "Portuguese": "de exaustão"
+        "German": "erschöpfung",
+        "English": "exhaustion",
+        "French": "épuisement",
+        "Italian": "esaurimento",
+        "Portuguese": "exaustão",
+        "Spanish": "agotamiento"
       },
       "CurrentDurability": 0
     },
@@ -1471,8 +1555,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äîáëåñòè",
-        "English": "of valour",
-        "Portuguese": "de valor"
+        "German": "tapferkeit",
+        "English": "Valor",
+        "French": "prouesses",
+        "Italian": "valor",
+        "Portuguese": "valor",
+        "Spanish": "valor"
       },
       "CurrentDurability": 0
     },
@@ -1538,8 +1626,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "óğîíà",
-        "English": "of damage",
-        "Portuguese": "de dano"
+        "German": "schaden",
+        "English": "damage",
+        "French": "dégâts",
+        "Italian": "danni",
+        "Portuguese": "dano",
+        "Spanish": "daño"
       },
       "CurrentDurability": 0
     },
@@ -1605,8 +1697,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æåñòîêîñòè",
-        "English": "of cruelty",
-        "Portuguese": "de crueldade"
+        "German": "grausamkeiten",
+        "English": "cruelty",
+        "French": "brutalités",
+        "Italian": "crudeltà",
+        "Portuguese": "brutalidade",
+        "Spanish": "brutalidad"
       },
       "CurrentDurability": 0
     },
@@ -1672,8 +1768,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñïåøêè",
-        "English": "of rush",
-        "Portuguese": "de corrida"
+        "German": "eile",
+        "English": "haste",
+        "French": "précipitation",
+        "Italian": "fretta",
+        "Portuguese": "pressa",
+        "Spanish": "prisa"
       },
       "CurrentDurability": 0
     },
@@ -1739,8 +1839,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñêîğîñòè",
-        "English": "of speed",
-        "Portuguese": "de velocidade"
+        "German": "geschwindigkeit",
+        "English": "speeds",
+        "French": "vitesses",
+        "Italian": "velocità",
+        "Portuguese": "velocidade",
+        "Spanish": "velocidad"
       },
       "CurrentDurability": 0
     },
@@ -1806,8 +1910,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåñïîğÿäêà",
-        "English": "of disorder",
-        "Portuguese": "de desordem"
+        "German": "unordnung",
+        "English": "disorder",
+        "French": "désordre",
+        "Italian": "disordine",
+        "Portuguese": "desordem",
+        "Spanish": "desorden"
       },
       "CurrentDurability": 0
     },
@@ -1873,8 +1981,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "õàîñà",
-        "English": "of chaos",
-        "Portuguese": "de caos"
+        "German": "chaos",
+        "English": "Chaos",
+        "French": "chaos",
+        "Italian": "Caos",
+        "Portuguese": "Caos",
+        "Spanish": "caos"
       },
       "CurrentDurability": 0
     },
@@ -1940,8 +2052,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğîíèêíîâåíèÿ",
-        "English": "of penetration",
-        "Portuguese": "de penetração"
+        "German": "penetration",
+        "English": "penetrations",
+        "French": "pénétrations",
+        "Italian": "penetrazione",
+        "Portuguese": "Penetração",
+        "Spanish": "penetración"
       },
       "CurrentDurability": 0
     },
@@ -2007,8 +2123,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóñòîé÷èâîñòè",
-        "English": "of instability",
-        "Portuguese": "de instabilidade"
+        "German": "instabilität",
+        "English": "instabilities",
+        "French": "instabilité",
+        "Italian": "instabilità",
+        "Portuguese": "instabilidade",
+        "Spanish": "inestabilidad"
       },
       "CurrentDurability": 0
     },
@@ -2074,8 +2194,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ğàçëîæåíèÿ",
-        "English": "of deterioration",
-        "Portuguese": "de deterioração"
+        "German": "zersetzungen",
+        "English": "decompositions",
+        "French": "décomposition",
+        "Italian": "decomposizione",
+        "Portuguese": "decomposição",
+        "Spanish": "descomposición"
       },
       "CurrentDurability": 0
     },
@@ -2141,8 +2265,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ğàññòîÿíèÿ",
-        "English": "of length",
-        "Portuguese": "de tamanho"
+        "German": "entfernungen",
+        "English": "distances",
+        "French": "distances",
+        "Italian": "distanze",
+        "Portuguese": "distâncias",
+        "Spanish": "distancias"
       },
       "CurrentDurability": 0
     },
@@ -2208,8 +2336,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äèñòàíöèè",
-        "English": "of distance",
-        "Portuguese": "de distância"
+        "German": "entfernungen",
+        "English": "distances",
+        "French": "distances",
+        "Italian": "distanze",
+        "Portuguese": "distâncias",
+        "Spanish": "distancia"
       },
       "CurrentDurability": 0
     },
@@ -2275,8 +2407,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìàñòåğñòâà",
-        "English": "of mastership",
-        "Portuguese": "de poder"
+        "German": "geschicklichkeit",
+        "English": "Mastery",
+        "French": "maîtrise",
+        "Italian": "abilità",
+        "Portuguese": "artesanato",
+        "Spanish": "artesanía"
       },
       "CurrentDurability": 0
     },
@@ -2342,8 +2478,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "óñòàëîñòè",
-        "English": "of tiredness",
-        "Portuguese": "de cansaço"
+        "German": "müdigkeit",
+        "English": "Fatigue",
+        "French": "fatigue",
+        "Italian": "fatica",
+        "Portuguese": "fadiga",
+        "Spanish": "fatiga"
       },
       "CurrentDurability": 0
     },
@@ -2409,8 +2549,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Portuguese": "de éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -2476,8 +2620,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèÿíèÿ",
-        "English": "of glow",
-        "Portuguese": "de brilho"
+        "German": "ausstrahlung",
+        "English": "radiance",
+        "French": "les aurores",
+        "Italian": "splendore",
+        "Portuguese": "the shining",
+        "Spanish": "auroras"
       },
       "CurrentDurability": 0
     },
@@ -2543,8 +2691,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áîëåçíè",
-        "English": "of sickness",
-        "Portuguese": "de doença"
+        "German": "krankheiten",
+        "English": "diseases",
+        "French": "maladies",
+        "Italian": "malattie",
+        "Portuguese": "doenças",
+        "Spanish": "enfermedades"
       },
       "CurrentDurability": 0
     },
@@ -2610,8 +2762,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "de valor"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     }
@@ -2679,8 +2835,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äîáëåñòè",
-        "English": "of valor",
-        "Portuguese": "do valor"
+        "German": "tapferkeit",
+        "English": "Valor",
+        "French": "prouesses",
+        "Italian": "valor",
+        "Portuguese": "valor",
+        "Spanish": "valor"
       },
       "CurrentDurability": 0
     },
@@ -2746,8 +2906,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Portuguese": "da durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -2813,8 +2977,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïîãëîùåíèÿ",
-        "English": "of absorption",
-        "Portuguese": "da absorsão"
+        "German": "übernahmen",
+        "English": "acquisitions",
+        "French": "absorption",
+        "Italian": "assorbimento",
+        "Portuguese": "absorção",
+        "Spanish": "absorción"
       },
       "CurrentDurability": 0
     },
@@ -2880,8 +3048,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îòêëîíåíèÿ",
-        "English": "of deflection",
-        "Portuguese": "da deflexão"
+        "German": "abweichungen",
+        "English": "deviations",
+        "French": "écarts",
+        "Italian": "deviazioni",
+        "Portuguese": "desvios",
+        "Spanish": "desviaciones"
       },
       "CurrentDurability": 0
     },
@@ -2947,8 +3119,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of safety",
-        "Portuguese": "da segurança"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -3014,8 +3190,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóÿçâèìîñòè",
-        "English": "of invulnerability",
-        "Portuguese": "da invulnerabilidade"
+        "German": "unverwundbarkeit",
+        "English": "Invulnerability",
+        "French": "invulnérabilité",
+        "Italian": "invulnerabilità",
+        "Portuguese": "invulnerabilidade",
+        "Spanish": "invulnerabilidad"
       },
       "CurrentDurability": 0
     },
@@ -3081,8 +3261,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Portuguese": "da saúde"
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -3148,8 +3332,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Portuguese": "da vida"
+        "German": "leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -3215,8 +3403,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè",
-        "English": "of meditation",
-        "Portuguese": "da meditação"
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -3282,8 +3474,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğàíû",
-        "English": "of prana",
-        "Portuguese": "de prana"
+        "German": "prana",
+        "English": "pranas",
+        "French": "Prana",
+        "Italian": "Prana",
+        "Portuguese": "Prana",
+        "Spanish": "Prana"
       },
       "CurrentDurability": 0
     },
@@ -3349,8 +3545,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèëû",
-        "English": "of power",
-        "Portuguese": "do poder"
+        "German": "kräfte",
+        "English": "powers",
+        "French": "forces",
+        "Italian": "forze",
+        "Portuguese": "força",
+        "Spanish": "fuerzas"
       },
       "CurrentDurability": 0
     },
@@ -3416,8 +3616,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ëîâêîñòè",
-        "English": "of dexterity",
-        "Portuguese": "da destreza"
+        "German": "geschicklichkeit",
+        "English": "Dexterity",
+        "French": "agilité",
+        "Italian": "agilità",
+        "Portuguese": "destreza",
+        "Spanish": "agilidad"
       },
       "CurrentDurability": 0
     },
@@ -3483,8 +3687,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âåëè÷èÿ",
-        "English": "of greatness",
-        "Portuguese": "da grandiosidade"
+        "German": "größe",
+        "English": "greatness",
+        "French": "Grandeur",
+        "Italian": "grandezza",
+        "Portuguese": "grandeza",
+        "Spanish": "grandeza"
       },
       "CurrentDurability": 0
     },
@@ -3550,8 +3758,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "êîíöåíòğàöèè",
-        "English": "of concentration",
-        "Portuguese": "da concentração"
+        "German": "konzentration",
+        "English": "concentrations",
+        "French": "concentrations",
+        "Italian": "concentrazioni",
+        "Portuguese": "concentrações",
+        "Spanish": "concentraciones"
       },
       "CurrentDurability": 0
     },
@@ -3617,8 +3829,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çåìëè",
-        "English": "of earth",
-        "Portuguese": "da terra"
+        "German": "land",
+        "English": "lands",
+        "French": "terres",
+        "Italian": "terra",
+        "Portuguese": "Terra",
+        "Spanish": "tierra"
       },
       "CurrentDurability": 0
     },
@@ -3684,8 +3900,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîäû",
-        "English": "of water",
-        "Portuguese": "da água"
+        "German": "wasser",
+        "English": "water",
+        "French": "eau",
+        "Italian": "acqua",
+        "Portuguese": "água",
+        "Spanish": "agua"
       },
       "CurrentDurability": 0
     },
@@ -3751,8 +3971,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîçäóõà",
-        "English": "of air",
-        "Portuguese": "do ar"
+        "German": "luft",
+        "English": "air",
+        "French": "air",
+        "Italian": "aria",
+        "Portuguese": "ar",
+        "Spanish": "aire"
       },
       "CurrentDurability": 0
     },
@@ -3818,8 +4042,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îãíÿ",
-        "English": "of fire",
-        "Portuguese": "do fogo"
+        "German": "feuer",
+        "English": "Fire",
+        "French": "feu",
+        "Italian": "fuoco",
+        "Portuguese": "fogo",
+        "Spanish": "fuego"
       },
       "CurrentDurability": 0
     },
@@ -3885,8 +4113,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñòèõèé",
-        "English": "of elements",
-        "Portuguese": "dos elementos"
+        "German": "elemente",
+        "English": "elements",
+        "French": "éléments",
+        "Italian": "elementi",
+        "Portuguese": "Elements",
+        "Spanish": "elementos"
       },
       "CurrentDurability": 0
     },
@@ -3952,8 +4184,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "do valor"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     },
@@ -4019,8 +4255,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèëû",
-        "English": "of power",
-        "Portuguese": "do poder"
+        "German": "kräfte",
+        "English": "powers",
+        "French": "forces",
+        "Italian": "forze",
+        "Portuguese": "força",
+        "Spanish": "fuerzas"
       },
       "CurrentDurability": 0
     },
@@ -4086,8 +4326,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ëîâêîñòè",
-        "English": "of dexterity",
-        "Portuguese": "da destreza"
+        "German": "geschicklichkeit",
+        "English": "Dexterity",
+        "French": "agilité",
+        "Italian": "agilità",
+        "Portuguese": "destreza",
+        "Spanish": "agilidad"
       },
       "CurrentDurability": 0
     },
@@ -4153,8 +4397,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âåëè÷èÿ",
-        "English": "of greatness",
-        "Portuguese": "da grandiosidade"
+        "German": "größe",
+        "English": "greatness",
+        "French": "Grandeur",
+        "Italian": "grandezza",
+        "Portuguese": "grandeza",
+        "Spanish": "grandeza"
       },
       "CurrentDurability": 0
     },
@@ -4220,8 +4468,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "êîíöåíòğàöèè",
-        "English": "of concentration",
-        "Portuguese": "da concentração"
+        "German": "konzentration",
+        "English": "concentrations",
+        "French": "concentrations",
+        "Italian": "concentrazioni",
+        "Portuguese": "concentrações",
+        "Spanish": "concentraciones"
       },
       "CurrentDurability": 0
     },
@@ -4287,8 +4539,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåëüíîñòè",
-        "English": "of integrity",
-        "Portuguese": "da integridade"
+        "German": "ganzheitlichkeit",
+        "English": "integrity",
+        "French": "intégrité",
+        "Italian": "integrità",
+        "Portuguese": "integridade",
+        "Spanish": "integridad"
       },
       "CurrentDurability": 0
     }
@@ -4356,8 +4612,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Portuguese": "de durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -4423,8 +4683,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïîãëîùåíèÿ",
-        "English": "of absorption",
-        "Portuguese": "de absorção"
+        "German": "übernahmen",
+        "English": "acquisitions",
+        "French": "absorption",
+        "Italian": "assorbimento",
+        "Portuguese": "absorção",
+        "Spanish": "absorción"
       },
       "CurrentDurability": 0
     },
@@ -4490,8 +4754,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of protection",
-        "Portuguese": "de proteção"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -4557,8 +4825,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Portuguese": "de vida"
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -4624,8 +4896,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè",
-        "English": "of meditation",
-        "Portuguese": "de duração "
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -4691,8 +4967,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "òî÷íîñòè",
-        "English": "of accuracy",
-        "Portuguese": "de precisão"
+        "German": "genauigkeit",
+        "English": "accuracy",
+        "French": "précision",
+        "Italian": "precisione",
+        "Portuguese": "precisão",
+        "Spanish": "precisión"
       },
       "CurrentDurability": 0
     },
@@ -4758,8 +5038,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Portuguese": "do éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -4825,8 +5109,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "de valor"
+        "German": "Werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     }
@@ -4894,8 +5182,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Portuguese": "da durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -4961,8 +5253,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïîãëîùåíèÿ",
-        "English": "of absorption",
-        "Portuguese": "de absorção"
+        "German": "übernahmen",
+        "English": "acquisitions",
+        "French": "absorption",
+        "Italian": "assorbimento",
+        "Portuguese": "absorção",
+        "Spanish": "absorción"
       },
       "CurrentDurability": 0
     },
@@ -5028,8 +5324,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îòğàæåíèÿ",
-        "English": "of protection",
-        "Portuguese": "de proteção "
+        "German": "reflexionen",
+        "English": "reflections",
+        "French": "réflexions",
+        "Italian": "riflessioni",
+        "Portuguese": "reflexos",
+        "Spanish": "reflexiones"
       },
       "CurrentDurability": 0
     },
@@ -5095,8 +5395,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of safety",
-        "Portuguese": "de segurançao"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -5162,8 +5466,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Portuguese": "de vida "
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -5229,8 +5537,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè",
-        "English": "of meditation",
-        "Portuguese": "de meditação"
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -5296,8 +5608,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "òî÷íîñòè",
-        "English": "of accuracy",
-        "Portuguese": "de precisão"
+        "German": "genauigkeit",
+        "English": "accuracy",
+        "French": "précision",
+        "Italian": "precisione",
+        "Portuguese": "precisão",
+        "Spanish": "precisión"
       },
       "CurrentDurability": 0
     },
@@ -5363,8 +5679,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Portuguese": "de éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -5430,8 +5750,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèÿíèÿ",
-        "English": "of radiance",
-        "Portuguese": "brilhante"
+        "German": "ausstrahlung",
+        "English": "radiance",
+        "French": "les aurores",
+        "Italian": "splendore",
+        "Portuguese": "the shining",
+        "Spanish": "auroras"
       },
       "CurrentDurability": 0
     },
@@ -5497,8 +5821,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "valoroso"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     },
@@ -5564,8 +5892,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "óğîíà",
-        "English": "of damage",
-        "Portuguese": "de dano"
+        "German": "schaden",
+        "English": "damage",
+        "French": "dégâts",
+        "Italian": "danni",
+        "Portuguese": "dano",
+        "Spanish": "daño"
       },
       "CurrentDurability": 0
     }
@@ -5633,9 +5965,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Italian": "della durata",
-        "Portuguese": "de durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -5701,9 +6036,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïîãëîùåíèÿ",
-        "English": "of absorption",
-        "Italian": "dell'assorbimento",
-        "Portuguese": "de absorção"
+        "German": "übernahmen",
+        "English": "acquisitions",
+        "French": "absorption",
+        "Italian": "assorbimento",
+        "Portuguese": "absorção",
+        "Spanish": "absorción"
       },
       "CurrentDurability": 0
     },
@@ -5769,9 +6107,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of protection",
-        "Italian": "della protezione",
-        "Portuguese": "de proteção"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -5837,9 +6178,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Italian": "della salute",
-        "Portuguese": "de saúde"
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -5905,9 +6249,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Italian": "della vita",
-        "Portuguese": "de vida"
+        "German": "leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -5973,9 +6320,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè",
-        "English": "of meditation",
-        "Italian": "della meditazione",
-        "Portuguese": "de meditação"
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -6041,9 +6391,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğàíû",
-        "English": "of prana",
-        "Italian": "del prana",
-        "Portuguese": "de prana"
+        "German": "prana",
+        "English": "pranas",
+        "French": "Prana",
+        "Italian": "Prana",
+        "Portuguese": "Prana",
+        "Spanish": "Prana"
       },
       "CurrentDurability": 0
     },
@@ -6109,9 +6462,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Italian": "dell'etere",
-        "Portuguese": "de éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -6177,9 +6533,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "òî÷íîñòè",
-        "English": "of accuracy",
-        "Italian": "della precisione",
-        "Portuguese": "de precisão"
+        "German": "genauigkeit",
+        "English": "accuracy",
+        "French": "précision",
+        "Italian": "precisione",
+        "Portuguese": "precisão",
+        "Spanish": "precisión"
       },
       "CurrentDurability": 0
     },
@@ -6245,9 +6604,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèëû",
-        "English": "of strength",
-        "Italian": "della forza",
-        "Portuguese": "de força"
+        "German": "kräfte",
+        "English": "powers",
+        "French": "forces",
+        "Italian": "forze",
+        "Portuguese": "força",
+        "Spanish": "fuerzas"
       },
       "CurrentDurability": 0
     },
@@ -6313,9 +6675,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ëîâêîñòè",
-        "English": "of dexterity",
-        "Italian": "della destrezza",
-        "Portuguese": "de habilidade"
+        "German": "geschicklichkeit",
+        "English": "Dexterity",
+        "French": "agilité",
+        "Italian": "agilità",
+        "Portuguese": "destreza",
+        "Spanish": "agilidad"
       },
       "CurrentDurability": 0
     },
@@ -6381,9 +6746,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåòêîñòè",
-        "English": "of accuracy",
-        "Italian": "della precisione",
-        "Portuguese": "de precisão"
+        "German": "treffsicherheit",
+        "English": "Accuracy",
+        "French": "précision",
+        "Italian": "precisione",
+        "Portuguese": "precisão",
+        "Spanish": "puntería"
       },
       "CurrentDurability": 0
     },
@@ -6449,9 +6817,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âûíîñëèâîñòè",
-        "English": "of endurance",
-        "Italian": "della resistenza",
-        "Portuguese": "de resistência"
+        "German": "ausdauer",
+        "English": "Endurance",
+        "French": "endurance",
+        "Italian": "resistenza",
+        "Portuguese": "resistência",
+        "Spanish": "resistencia"
       },
       "CurrentDurability": 0
     },
@@ -6517,9 +6888,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çåìëè",
-        "English": "of earth",
-        "Italian": "della terra",
-        "Portuguese": "de terra"
+        "German": "land",
+        "English": "lands",
+        "French": "terres",
+        "Italian": "terra",
+        "Portuguese": "Terra",
+        "Spanish": "tierra"
       },
       "CurrentDurability": 0
     },
@@ -6585,9 +6959,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîäû",
-        "English": "of water",
-        "Italian": "dell'acqua",
-        "Portuguese": "de água"
+        "German": "wasser",
+        "English": "water",
+        "French": "eau",
+        "Italian": "acqua",
+        "Portuguese": "água",
+        "Spanish": "agua"
       },
       "CurrentDurability": 0
     },
@@ -6653,9 +7030,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîçäóõà",
-        "English": "of air",
-        "Italian": "dell'aria",
-        "Portuguese": "de ar"
+        "German": "luft",
+        "English": "air",
+        "French": "air",
+        "Italian": "aria",
+        "Portuguese": "ar",
+        "Spanish": "aire"
       },
       "CurrentDurability": 0
     },
@@ -6721,9 +7101,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îãíÿ",
-        "English": "of fire",
-        "Italian": "del fuoco",
-        "Portuguese": "de fogo"
+        "German": "feuer",
+        "English": "Fire",
+        "French": "feu",
+        "Italian": "fuoco",
+        "Portuguese": "fogo",
+        "Spanish": "fuego"
       },
       "CurrentDurability": 0
     },
@@ -6789,9 +7172,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Italian": "della stima",
-        "Portuguese": "de valor"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     }
@@ -6859,8 +7245,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Portuguese": "de valor"
+        "German": "werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     },
@@ -6926,8 +7316,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Portuguese": "de durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -6993,8 +7387,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îòêëîíåíèÿ",
-        "English": "of deflection",
-        "Portuguese": "de reflexão"
+        "German": "abweichungen",
+        "English": "deviations",
+        "French": "écarts",
+        "Italian": "deviazioni",
+        "Portuguese": "desvios",
+        "Spanish": "desviaciones"
       },
       "CurrentDurability": 0
     },
@@ -7060,8 +7458,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of protection",
-        "Portuguese": "de proteção"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -7127,8 +7529,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Portuguese": "de saúde"
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -7194,8 +7600,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Portuguese": "de vida"
+        "German": "leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -7261,8 +7671,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè ",
-        "English": "of meditation",
-        "Portuguese": "de meditação"
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -7328,8 +7742,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğàíû",
-        "English": "of prana",
-        "Portuguese": "de prana"
+        "German": "prana",
+        "English": "pranas",
+        "French": "Prana",
+        "Italian": "Prana",
+        "Portuguese": "Prana",
+        "Spanish": "Prana"
       },
       "CurrentDurability": 0
     },
@@ -7395,8 +7813,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çåìëè",
-        "English": "of earth",
-        "Portuguese": "da terra"
+        "German": "land",
+        "English": "lands",
+        "French": "terres",
+        "Italian": "terra",
+        "Portuguese": "Terra",
+        "Spanish": "tierra"
       },
       "CurrentDurability": 0
     },
@@ -7462,8 +7884,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîäû",
-        "English": "of water",
-        "Portuguese": "da água"
+        "German": "wasser",
+        "English": "water",
+        "French": "eau",
+        "Italian": "acqua",
+        "Portuguese": "água",
+        "Spanish": "agua"
       },
       "CurrentDurability": 0
     },
@@ -7529,8 +7955,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîçäóõà",
-        "English": "of air",
-        "Portuguese": "do ar"
+        "German": "luft",
+        "English": "air",
+        "French": "air",
+        "Italian": "aria",
+        "Portuguese": "ar",
+        "Spanish": "aire"
       },
       "CurrentDurability": 0
     },
@@ -7596,8 +8026,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îãíÿ",
-        "English": "of fire",
-        "Portuguese": "do fogo"
+        "German": "feuer",
+        "English": "Fire",
+        "French": "feu",
+        "Italian": "fuoco",
+        "Portuguese": "fogo",
+        "Spanish": "fuego"
       },
       "CurrentDurability": 0
     },
@@ -7663,8 +8097,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ıôèğà",
-        "English": "of ether",
-        "Portuguese": "de éter"
+        "German": "äther",
+        "English": "ether",
+        "French": "Ether",
+        "Italian": "etere",
+        "Portuguese": "Ether",
+        "Spanish": "Ether"
       },
       "CurrentDurability": 0
     },
@@ -7730,8 +8168,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çàòìåíèÿ",
-        "English": "of eclipse",
-        "Portuguese": "do eclipse"
+        "German": "sonnenfinsternis",
+        "English": "eclipses",
+        "French": "éclipses",
+        "Italian": "eclissi",
+        "Portuguese": "eclipses",
+        "Spanish": "eclipses"
       },
       "CurrentDurability": 0
     },
@@ -7797,8 +8239,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "àğõèìàãà",
-        "English": "of archimage",
-        "Portuguese": "do Mestre Mago"
+        "German": "erzmagier",
+        "English": "The Archmage",
+        "French": "archimage",
+        "Italian": "archimago",
+        "Portuguese": "Arquimago",
+        "Spanish": "Archimaga"
       },
       "CurrentDurability": 0
     },
@@ -7864,8 +8310,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äğàêîíà",
-        "English": "of the Dragon",
-        "Portuguese": "do dragão"
+        "German": "drachen",
+        "English": "The dragon",
+        "French": "dragon",
+        "Italian": "Drago",
+        "Portuguese": "dragão",
+        "Spanish": "dragón"
       },
       "CurrentDurability": 0
     }
@@ -7933,9 +8383,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èñêîğåíåíèÿ",
-        "English": "of elimination",
-        "Italian": "dell'eliminazione",
-        "Portuguese": "da eliminação"
+        "German": "ausrottung",
+        "English": "eradication",
+        "French": "l'éradication",
+        "Italian": "eradicazione",
+        "Portuguese": "erradicação",
+        "Spanish": "eliminación"
       },
       "CurrentDurability": 0
     },
@@ -8001,9 +8454,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îïóñòîøåíèÿ",
-        "English": "of devastation",
-        "Italian": "della devastazione",
-        "Portuguese": "da devastação"
+        "German": "verwüstungen",
+        "English": "devastation",
+        "French": "dévastation",
+        "Italian": "devastazioni",
+        "Portuguese": "devastação",
+        "Spanish": "devastación"
       },
       "CurrentDurability": 0
     },
@@ -8069,9 +8525,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íàä¸æíîñòè",
-        "English": "of reliability",
-        "Italian": "della fiducia",
-        "Portuguese": "da confiança"
+        "German": "zuverlässigkeit",
+        "English": "reliability",
+        "French": "fiabilité",
+        "Italian": "affidabilità",
+        "Portuguese": "confiabilidade",
+        "Spanish": "fiabilidad"
       },
       "CurrentDurability": 0
     },
@@ -8137,9 +8596,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóÿçâèìîñòè",
-        "English": "of invulnerability",
-        "Italian": "dell'invulnerabilità",
-        "Portuguese": "da invulnerabilidade"
+        "German": "unverwundbarkeit",
+        "English": "invulnerability",
+        "French": "invulnérabilité",
+        "Italian": "invulnerabilità",
+        "Portuguese": "invulnerabilidade",
+        "Spanish": "invulnerabilidad"
       },
       "CurrentDurability": 0
     },
@@ -8205,9 +8667,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Italian": "della vita",
-        "Portuguese": "da vida"
+        "German": "Leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -8273,9 +8738,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èñêîğåíåíèÿ",
-        "English": "of elimination",
-        "Italian": "dell'eliminazione",
-        "Portuguese": "da eliminação"
+        "German": "ausrottung",
+        "English": "eradication",
+        "French": "l'éradication",
+        "Italian": "eradicazione",
+        "Portuguese": "erradicação",
+        "Spanish": "eliminación"
       },
       "CurrentDurability": 0
     },
@@ -8341,9 +8809,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îïóñòîøåíèÿ",
-        "English": "of devastation",
-        "Italian": "della devastazione",
-        "Portuguese": "da devastação"
+        "German": "verwüstungen",
+        "English": "devastation",
+        "French": "dévastation",
+        "Italian": "devastazioni",
+        "Portuguese": "devastação",
+        "Spanish": "devastación"
       },
       "CurrentDurability": 0
     },
@@ -8409,9 +8880,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íàä¸æíîñòè",
-        "English": "of reliability",
-        "Italian": "della fiducia",
-        "Portuguese": "da conviança"
+        "German": "zuverlässigkeit",
+        "English": "reliability",
+        "French": "fiabilité",
+        "Italian": "affidabilità",
+        "Portuguese": "confiabilidade",
+        "Spanish": "fiabilidad"
       },
       "CurrentDurability": 0
     },
@@ -8477,9 +8951,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóÿçâèìîñòè",
-        "English": "of invulnerability",
-        "Italian": "dell'invulnerabilità",
-        "Portuguese": "da invulenarabilidade"
+        "German": "unverwundbarkeit",
+        "English": "invulnerability",
+        "French": "invulnérabilité",
+        "Italian": "invulnerabilità",
+        "Portuguese": "invulnerabilidade",
+        "Spanish": "invulnerabilidad"
       },
       "CurrentDurability": 0
     },
@@ -8545,9 +9022,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Italian": "della vita",
-        "Portuguese": "da vida"
+        "German": "leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -8613,9 +9093,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğàâëåíèÿ",
-        "English": "of rule",
-        "Italian": "del dominio",
-        "Portuguese": "das regras"
+        "German": "vorstand",
+        "English": "Boards of Directors",
+        "French": "conseil d'administration",
+        "Italian": "del Consiglio",
+        "Portuguese": "do Conselho",
+        "Spanish": "Junta directiva"
       },
       "CurrentDurability": 0
     },
@@ -8681,9 +9164,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îñëåïëåíèÿ",
-        "English": "of blindness",
-        "Italian": "della cecità",
-        "Portuguese": "da cegueira"
+        "German": "blendung",
+        "English": "Blinding",
+        "French": "aveuglements",
+        "Italian": "abbagliamento",
+        "Portuguese": "cegueira",
+        "Spanish": "cegamiento"
       },
       "CurrentDurability": 0
     },
@@ -8749,9 +9235,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èñïóãà",
-        "English": "of fright",
-        "Italian": "della paura",
-        "Portuguese": "do medo"
+        "German": "angst",
+        "English": "Fright",
+        "French": "frayeur",
+        "Italian": "paura",
+        "Portuguese": "susto",
+        "Spanish": "susto"
       },
       "CurrentDurability": 0
     },
@@ -8817,9 +9306,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îñòàíîâêè",
-        "English": "of stop",
-        "Italian": "dell'arresto",
-        "Portuguese": "da parada"
+        "German": "haltestellen",
+        "English": "stops",
+        "French": "arrêts",
+        "Italian": "fermate",
+        "Portuguese": "paragens",
+        "Spanish": "paradas"
       },
       "CurrentDurability": 0
     },
@@ -8885,9 +9377,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "èçáàâëåíèÿ",
-        "English": "of deliverance",
-        "Italian": "della liberazione",
-        "Portuguese": "da deliberação"
+        "German": "befreiung",
+        "English": "deliverance",
+        "French": "délivrance",
+        "Italian": "liberazione",
+        "Portuguese": "Livramento",
+        "Spanish": "liberación"
       },
       "CurrentDurability": 0
     },
@@ -8953,9 +9448,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "î÷èùåíèÿ",
-        "English": "of purification",
-        "Italian": "della purificazione",
-        "Portuguese": "da purificação"
+        "German": "reinigung",
+        "English": "purifications",
+        "French": "purification",
+        "Italian": "pulizia",
+        "Portuguese": "purificação",
+        "Spanish": "limpieza"
       },
       "CurrentDurability": 0
     },
@@ -9021,9 +9519,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íàêàçàíèÿ",
-        "English": "of punishment",
-        "Italian": "della punizione",
-        "Portuguese": "da punição"
+        "German": "strafen",
+        "English": "punishments",
+        "French": "sanctions",
+        "Italian": "punizioni",
+        "Portuguese": "punições",
+        "Spanish": "castigos"
       },
       "CurrentDurability": 0
     },
@@ -9089,9 +9590,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îêîâ",
-        "English": "of fetters",
-        "Italian": "dell'intrappolamento",
-        "Portuguese": "do grilhões"
+        "German": "fesseln",
+        "English": "shackles",
+        "French": "chaînes",
+        "Italian": "catene",
+        "Portuguese": "grilhões",
+        "Spanish": "grilletes"
       },
       "CurrentDurability": 0
     },
@@ -9157,9 +9661,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âèõğÿ",
-        "English": "of whirlwind",
-        "Italian": "del turbine",
-        "Portuguese": "do redemoinho"
+        "German": "wirbel",
+        "English": "The vortex",
+        "French": "vortex",
+        "Italian": "vortice",
+        "Portuguese": "Vortex",
+        "Spanish": "vórtice"
       },
       "CurrentDurability": 0
     },
@@ -9225,9 +9732,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğîêëÿòèÿ",
-        "English": "of curse",
-        "Italian": "della maledizione",
-        "Portuguese": "da maldição"
+        "German": "flüche",
+        "English": "Curses",
+        "French": "malédictions",
+        "Italian": "maledizioni",
+        "Portuguese": "maldições",
+        "Spanish": "maldiciones"
       },
       "CurrentDurability": 0
     }
@@ -9295,9 +9805,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "äîáëåñòè",
-        "English": "of valour",
-        "Italian": "del valore",
-        "Portuguese": "de valor"
+        "German": "tapferkeit",
+        "English": "Valor",
+        "French": "prouesses",
+        "Italian": "valor",
+        "Portuguese": "valor",
+        "Spanish": "valor"
       },
       "CurrentDurability": 0
     },
@@ -9363,9 +9876,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğî÷íîñòè",
-        "English": "of durability",
-        "Italian": "della durata",
-        "Portuguese": "de durabilidade"
+        "German": "stärke",
+        "English": "Strength",
+        "French": "force",
+        "Italian": "forza",
+        "Portuguese": "força",
+        "Spanish": "fuerza"
       },
       "CurrentDurability": 0
     },
@@ -9431,9 +9947,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïîãëîùåíèÿ",
-        "English": "of absorption",
-        "Italian": "dell'assorbimento",
-        "Portuguese": "de absorção"
+        "German": "übernahmen",
+        "English": "acquisitions",
+        "French": "absorption",
+        "Italian": "assorbimento",
+        "Portuguese": "absorção",
+        "Spanish": "absorción"
       },
       "CurrentDurability": 0
     },
@@ -9499,9 +10018,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îòêëîíåíèÿ",
-        "English": "of deflection",
-        "Italian": "della deflessione",
-        "Portuguese": "de reflexão"
+        "German": "abweichungen",
+        "English": "deviations",
+        "French": "écarts",
+        "Italian": "deviazioni",
+        "Portuguese": "desvios",
+        "Spanish": "desviaciones"
       },
       "CurrentDurability": 0
     },
@@ -9567,9 +10089,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "áåçîïàñíîñòè",
-        "English": "of protection",
-        "Italian": "della protezione",
-        "Portuguese": "de proteção"
+        "German": "sicherheit",
+        "English": "security",
+        "French": "sécurité",
+        "Italian": "sicurezza",
+        "Portuguese": "segurança",
+        "Spanish": "seguridad"
       },
       "CurrentDurability": 0
     },
@@ -9635,9 +10160,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "íåóÿçâèìîñòè",
-        "English": "of invincibility",
-        "Italian": "dell'invincibilità",
-        "Portuguese": "de invencibilidade"
+        "German": "unverwundbarkeit",
+        "English": "invulnerability",
+        "French": "invulnérabilité",
+        "Italian": "invulnerabilità",
+        "Portuguese": "invulnerabilidade",
+        "Spanish": "invulnerabilidad"
       },
       "CurrentDurability": 0
     },
@@ -9703,9 +10231,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çäîğîâüÿ",
-        "English": "of health",
-        "Italian": "della salute",
-        "Portuguese": "de saúde"
+        "German": "gesundheit",
+        "English": "health",
+        "French": "santé",
+        "Italian": "salute",
+        "Portuguese": "saúde",
+        "Spanish": "salud"
       },
       "CurrentDurability": 0
     },
@@ -9771,9 +10302,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "æèçíè",
-        "English": "of life",
-        "Italian": "della vita",
-        "Portuguese": "de vida"
+        "German": "leben",
+        "English": "life",
+        "French": "vie",
+        "Italian": "vita",
+        "Portuguese": "vida",
+        "Spanish": "vida"
       },
       "CurrentDurability": 0
     },
@@ -9839,9 +10373,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ìåäèòàöèè",
-        "English": "of meditation",
-        "Italian": "della meditazione",
-        "Portuguese": "de meditação"
+        "German": "meditation",
+        "English": "meditations",
+        "French": "méditations",
+        "Italian": "meditazione",
+        "Portuguese": "meditação",
+        "Spanish": "meditaciones"
       },
       "CurrentDurability": 0
     },
@@ -9907,9 +10444,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ïğàíû",
-        "English": "of prana",
-        "Italian": "del prana",
-        "Portuguese": "de prana"
+        "German": "prana",
+        "English": "pranas",
+        "French": "Prana",
+        "Italian": "Prana",
+        "Portuguese": "Prana",
+        "Spanish": "Prana"
       },
       "CurrentDurability": 0
     },
@@ -9975,9 +10515,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèëû",
-        "English": "of power",
-        "Italian": "della potenza",
-        "Portuguese": "de poder"
+        "German": "kräfte",
+        "English": "powers",
+        "French": "forces",
+        "Italian": "forze",
+        "Portuguese": "força",
+        "Spanish": "fuerzas"
       },
       "CurrentDurability": 0
     },
@@ -10043,9 +10586,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ëîâêîñòè",
-        "English": "of dexterity",
-        "Italian": "della destrezza",
-        "Portuguese": "de habilidade"
+        "German": "geschicklichkeit",
+        "English": "Dexterity",
+        "French": "agilité",
+        "Italian": "agilità",
+        "Portuguese": "destreza",
+        "Spanish": "agilidad"
       },
       "CurrentDurability": 0
     },
@@ -10111,9 +10657,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âåëè÷èÿ",
-        "English": "of greatness",
-        "Italian": "della grandezza",
-        "Portuguese": "de grandeza"
+        "German": "größe",
+        "English": "greatness",
+        "French": "Grandeur",
+        "Italian": "grandezza",
+        "Portuguese": "grandeza",
+        "Spanish": "grandeza"
       },
       "CurrentDurability": 0
     },
@@ -10179,9 +10728,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "êîíöåíòğàöèè",
-        "English": "of concentration",
-        "Italian": "della concentrazione",
-        "Portuguese": "de concentração"
+        "German": "konzentration",
+        "English": "concentrations",
+        "French": "concentrations",
+        "Italian": "concentrazioni",
+        "Portuguese": "concentrações",
+        "Spanish": "concentraciones"
       },
       "CurrentDurability": 0
     },
@@ -10247,9 +10799,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "çåìëè",
-        "English": "of earth",
-        "Italian": "della terra",
-        "Portuguese": "de terra"
+        "German": "land",
+        "English": "lands",
+        "French": "terres",
+        "Italian": "terra",
+        "Portuguese": "Terra",
+        "Spanish": "tierra"
       },
       "CurrentDurability": 0
     },
@@ -10315,9 +10870,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîäû",
-        "English": "of water",
-        "Italian": "dell'acqua",
-        "Portuguese": "de água"
+        "German": "wasser",
+        "English": "water",
+        "French": "eau",
+        "Italian": "acqua",
+        "Portuguese": "água",
+        "Spanish": "agua"
       },
       "CurrentDurability": 0
     },
@@ -10383,9 +10941,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âîçäóõà",
-        "English": "of air",
-        "Italian": "dell'aria",
-        "Portuguese": "de ar"
+        "German": "luft",
+        "English": "air",
+        "French": "air",
+        "Italian": "aria",
+        "Portuguese": "ar",
+        "Spanish": "aire"
       },
       "CurrentDurability": 0
     },
@@ -10451,9 +11012,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "îãíÿ",
-        "English": "of fire",
-        "Italian": "del fuoco",
-        "Portuguese": "de fogo"
+        "German": "feuer",
+        "English": "Fire",
+        "French": "feu",
+        "Italian": "fuoco",
+        "Portuguese": "fogo",
+        "Spanish": "fuego"
       },
       "CurrentDurability": 0
     },
@@ -10519,9 +11083,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñòèõèé",
-        "English": "of elements",
-        "Italian": "degi elementi",
-        "Portuguese": "de elementos"
+        "German": "elemente",
+        "English": "elements",
+        "French": "éléments",
+        "Italian": "elementi",
+        "Portuguese": "Elements",
+        "Spanish": "elementos"
       },
       "CurrentDurability": 0
     },
@@ -10587,9 +11154,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåííîñòè",
-        "English": "of value",
-        "Italian": "della stima",
-        "Portuguese": "de valor"
+        "German": "Werte",
+        "English": "values",
+        "French": "valeurs",
+        "Italian": "valori",
+        "Portuguese": "valores",
+        "Spanish": "valores"
       },
       "CurrentDurability": 0
     },
@@ -10655,9 +11225,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñèëû",
-        "English": "of strength",
-        "Italian": "della forza",
-        "Portuguese": "de força"
+        "German": "kräfte",
+        "English": "powers",
+        "French": "forces",
+        "Italian": "forze",
+        "Portuguese": "força",
+        "Spanish": "fuerzas"
       },
       "CurrentDurability": 0
     },
@@ -10723,9 +11296,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ëîâêîñòè",
-        "English": "of dexterity",
-        "Italian": "della destrezza",
-        "Portuguese": "de habilidade"
+        "German": "geschicklichkeit",
+        "English": "Dexterity",
+        "French": "agilité",
+        "Italian": "agilità",
+        "Portuguese": "destreza",
+        "Spanish": "agilidad"
       },
       "CurrentDurability": 0
     },
@@ -10791,9 +11367,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "âåëè÷èÿ",
-        "English": "of greatness",
-        "Italian": "della grandezza",
-        "Portuguese": "de grandeza "
+        "German": "größe",
+        "English": "greatness",
+        "French": "Grandeur",
+        "Italian": "grandezza",
+        "Portuguese": "grandeza",
+        "Spanish": "grandeza"
       },
       "CurrentDurability": 0
     },
@@ -10859,9 +11438,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "êîíöåíòğàöèè",
-        "English": "of concentration",
-        "Italian": "della concentrazione",
-        "Portuguese": "de concentração "
+        "German": "konzentration",
+        "English": "concentrations",
+        "French": "concentrations",
+        "Italian": "concentrazioni",
+        "Portuguese": "concentrações",
+        "Spanish": "concentraciones"
       },
       "CurrentDurability": 0
     },
@@ -10927,9 +11509,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "öåëüíîñòè",
-        "English": "of integrity",
-        "Italian": "dell'integrità",
-        "Portuguese": "de integridade"
+        "German": "ganzheitlichkeit",
+        "English": "integrity",
+        "French": "intégrité",
+        "Italian": "integrità",
+        "Portuguese": "integridade",
+        "Spanish": "integridad"
       },
       "CurrentDurability": 0
     },
@@ -10995,9 +11580,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñòèõèé",
-        "English": "of elements",
-        "Italian": "degli elementi",
-        "Portuguese": "de elementos"
+        "German": "elemente",
+        "English": "elements",
+        "French": "éléments",
+        "Italian": "elementi",
+        "Portuguese": "Elements",
+        "Spanish": "elementos"
       },
       "CurrentDurability": 0
     },
@@ -11063,9 +11651,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "ñòèõèé",
-        "English": "of elements",
-        "Italian": "degli elementi",
-        "Portuguese": "de elementos"
+        "German": "elemente",
+        "English": "elements",
+        "French": "éléments",
+        "Italian": "elementi",
+        "Portuguese": "Elements",
+        "Spanish": "elementos"
       },
       "CurrentDurability": 0
     }
@@ -11133,9 +11724,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ïğèêëş÷åíèÿ",
-        "English": "Of adventure",
-        "Italian": "dell'avventura",
-        "Portuguese": "da aventura"
+        "German": "Abenteuer",
+        "English": "Adventures",
+        "French": "Aventures",
+        "Italian": "Avventura",
+        "Portuguese": "Aventura",
+        "Spanish": "Aventuras"
       },
       "CurrentDurability": 0
     },
@@ -11201,9 +11795,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Áåçìîëâèÿ",
-        "English": "Of silence",
-        "Italian": "del silenzio",
-        "Portuguese": "do silêncio"
+        "German": "Stille",
+        "English": "Silence",
+        "French": "Silence",
+        "Italian": "Silenzio",
+        "Portuguese": "Silêncio",
+        "Spanish": "Silencio"
       },
       "CurrentDurability": 0
     },
@@ -11269,9 +11866,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ïğîğî÷åñòâà",
-        "English": "Of prophecy",
-        "Italian": "della profezia",
-        "Portuguese": "da profecia"
+        "German": "Prophezeiungen",
+        "English": "Prophecies",
+        "French": "Prophéties",
+        "Italian": "Profezie",
+        "Portuguese": "Profecias",
+        "Spanish": "Profecías"
       },
       "CurrentDurability": 0
     },
@@ -11337,9 +11937,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Òàéíû",
-        "English": "Of secret",
-        "Italian": "del segreto",
-        "Portuguese": "do segredo"
+        "German": "Geheimnisse",
+        "English": "Secrets",
+        "French": "Mystères",
+        "Italian": "Segreti",
+        "Portuguese": "Segredos",
+        "Spanish": "Secretos"
       },
       "CurrentDurability": 0
     },
@@ -11405,9 +12008,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ìèôîâ",
-        "English": "Of myths",
-        "Italian": "del mito",
-        "Portuguese": "dos mitos"
+        "German": "Mythen",
+        "English": "Myths",
+        "French": "Mythes",
+        "Italian": "Miti",
+        "Portuguese": "Mitos",
+        "Spanish": "Mitos"
       },
       "CurrentDurability": 0
     },
@@ -11473,9 +12079,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Áûòèÿ",
-        "English": "Of being",
-        "Italian": "Dell'essenza",
-        "Portuguese": "do ser"
+        "German": "Des Seins",
+        "English": "Genesis",
+        "French": "Genèse",
+        "Italian": "Genesi",
+        "Portuguese": "Genesis",
+        "Spanish": "Génesis"
       },
       "CurrentDurability": 0
     },
@@ -11541,9 +12150,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ïîõîäîâ",
-        "English": "Of campaigns",
-        "Italian": "della campagna",
-        "Portuguese": "das campanhas"
+        "German": "Wanderungen",
+        "English": "Hiking",
+        "French": "Randonnée",
+        "Italian": "Escursioni",
+        "Portuguese": "Caminhadas",
+        "Spanish": "Senderismo"
       },
       "CurrentDurability": 0
     },
@@ -11609,9 +12221,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ñóùåñòâîâàíèÿ",
-        "English": "Of existence",
-        "Italian": "dell'esistenza",
-        "Portuguese": "da existência"
+        "German": "Existenz",
+        "English": "Existence",
+        "French": "L'existence",
+        "Italian": "Esistenza",
+        "Portuguese": "Existência",
+        "Spanish": "Existencia"
       },
       "CurrentDurability": 0
     },
@@ -11677,9 +12292,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ëåãåíäû",
-        "English": "Of legend",
-        "Italian": "della leggenda",
-        "Portuguese": "da lenda"
+        "German": "Legenden",
+        "English": "Legends",
+        "French": "Légendes",
+        "Italian": "Leggende",
+        "Portuguese": "Legendas",
+        "Spanish": "Leyendas"
       },
       "CurrentDurability": 0
     },
@@ -11745,9 +12363,12 @@
       "ItemCount": 1,
       "Localisation": {
         "Russian": "Ìèğà",
-        "English": "Of world",
-        "Italian": "del mondo",
-        "Portuguese": "do mundo"
+        "German": "Welt",
+        "English": "Mira",
+        "French": "Du monde",
+        "Italian": "Pace",
+        "Portuguese": "Mundo",
+        "Spanish": "Mundo"
       },
       "CurrentDurability": 0
     }

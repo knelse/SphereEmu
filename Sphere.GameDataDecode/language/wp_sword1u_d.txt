@@ -1,0 +1,50 @@
+01 Schwert
+03 schwert
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 Blendung
+212 angst
+213 Haltestelle
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5150
+01 Schamscher
+03 schamsher
+
+#5151
+01 Elite-Yatagan
+03 elite-Yatagan
+
+#5152
+01 Runen-Henker
+03 Runen-Henker
+
+#5153
+01 Runenkatana
+03 runenkatana
+
+#5154
+01 Die legendäre Katana
+03 legendäres Katana
+
+#5155
+01 Gespenstisches Katana
+03 das gespenstische Katana
+
+#5156
+01 Drachenkatana
+03 drachenkatana

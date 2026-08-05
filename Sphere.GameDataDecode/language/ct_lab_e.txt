@@ -1,11 +1,11 @@
 01 Container
-10 Box
-11 Coffin
-12 Coffin
-13 Sarcophagus
-14 Sarcophagus
-15 Basket
-16 Barrel
-17 Trunk
-20 Trap cannot be neutralized
-21 Trap neutralized!
+10 Mailbox
+11 The coffin
+12 The coffin
+13 The sarcophagus
+14 The sarcophagus
+15 Shopping Cart
+16 The barrel
+17 The Chest
+20 The trap cannot be defused
+21 The trap is defused!

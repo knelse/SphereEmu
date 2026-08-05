@@ -1,8 +1,6 @@
-01 Sui mercanti 
-03 Sui mercanti
-
-100 Davanti a te si trova una pergamena con un'antica leggenda sulla storia di Sphere.
-
+01 Circa i commercianti
+03 circa i commercianti
+100 Di fronte a te c'è un rotolo con un'antica leggenda del mondo della sfera.
 TEXT
-
-    Molti mercanti e artigiani vendono i loro prodotti lontano dalle grandi città: preferiscono farlo in locande sperdute o nelle loro case situate vicino a grandi strade. Una strana pratica, diresti, per vendere qualcosa lontano dalle città, ma è l'alta qualità dei beni che permette ai negozzi di questi mercanti di essere pieni di acquirenti.
+    Molti commercianti e artigiani vendono i loro prodotti lontano dalle città rumorose: in locande remote o nelle loro case situate vicino a strade principali. Sembrerebbe una decisione strana: vendere qualcosa lontano dalle città, ma la qualità delle merci di tali commercianti è così alta che non ci sono luci spente da parte degli acquirenti.
+    

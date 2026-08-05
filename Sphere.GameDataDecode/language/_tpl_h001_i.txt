@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Oh, come sono distratto!  Pensa te, ieri sera, passeggiando per il bosco con %s, un mio amico, mi sono distratto e mi sono completamente dimenticato di lui! In fin dei conti... sono tornato a casa da solo. Se avessi potuto sentire tutto quanto sua moglie mi ha urlato dietro! Per favore, vai a cercarlo e riportalo a casa, non riuscirei a sopportare un'altra discussione con quella donna. %s lo nasconde. 
-21 Oh, come sono distratto!  Pensa te, ieri sera, passeggiando per il bosco con %s, una bellssima donna, mi sono fatto distrarre dalla vegetazione e mi sono completamente dimenticato di lei! Mi vergogno al solo pensiero di guardarla negli occhi... Ti prego, aiutala a tornare a casa. L'ultimo posto in cui l'ho vista è %s.
+20 Oh, La mia dimenticanza! Immagina, ieri sera abbiamo camminato con un amico nel bosco. Il suo nome %s. Mi sono lasciato trasportare e me ne sono completamente dimenticato. Alla fine è tornato a casa da solo. Avresti sentito le parole che mi ha detto sua moglie. Aiutalo a tornare a casa, altrimenti non trasferirò un'altra conversazione con lei. %s - dove vive.
+21 Oh, La mia dimenticanza! Immagina, ieri sera abbiamo camminato con una bella sferiana nella foresta. Il suo nome %s. Mi sono appassionato alle bellezze circostanti e me ne sono dimenticato. Mi vergogno di guardarla negli occhi. Aiuta la bella signora a casa. Il luogo in cui vive - %s.

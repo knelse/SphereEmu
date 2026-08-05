@@ -1,25 +1,23 @@
-01 ring
-03 ring
-
-100 Piece of jewelry. Can enhance the character with magic powers. If rings could talk they would have told many an interesting story about their former owners. History knows a lot of examples when people were prepared to pay a very dear price for the power that a magic ring can provide.
-
-200 of elimination
-201 of devastation
-202 of reliability
-203 of invulnerability
-204 of life
-205 of elimination
-206 of devastation
-207 of reliability
-208 of invulnerability
-209 of life
-210 of rule
-211 of blindness
-212 of fright
-213 of stop
-214 of deliverance
-215 of purification
-216 of punishment
-217 of fetters
-218 of whirlwind
-219 of curse
+01 The Ring
+03 The Ring
+100 Decoration. Can endow a character with magical properties. Rings could tell a lot of interesting things about their past owners. History is rich in examples when people tried to pay a high price for the power that this or that ring gives.
+200 eradication
+201 devastation
+202 reliability
+203 invulnerability
+204 life
+205 eradication
+206 devastation
+207 reliability
+208 invulnerability
+209 life
+210 Boards of Directors
+211 Blinding
+212 Fright
+213 stops
+214 deliverance
+215 purifications
+216 punishments
+217 shackles
+218 The vortex
+219 Curses

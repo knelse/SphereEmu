@@ -1,0 +1,10 @@
+01 Le grand chaudron alchimique
+03 Le grand chaudron alchimique
+10 Pour l'utiliser, placez le wok sur le sol.
+11 Réaction impossible:
+12 Prana<%d
+13 terre<%d
+14 air<%d
+15 eau<%d
+16 feu<%d
+100 Dans le grand pot alchimique, vous pouvez faire cuire deux fois plus de poudres que dans un pot ordinaire. Le chaudron alchimique a été créé pour la première fois en 1008 par le magicien de la cour du roi Valentin, Amilus. Avant son invention, des fours alchimiques encombrants occupaient des maisons entières. Le chaudron a également permis d'effectuer la plupart des transformations alchimiques nécessaires dans des conditions de marche. Ce n'est que pour des réactions complexes et coûteuses que des fours étaient encore nécessaires. Pendant de nombreux siècles, l'art de la construction de fours a été perdu et le nombre de fours en fonctionnement a diminué en raison des guerres et des catastrophes.  Dans le Domaine moderne, aucun four alchimique entier n'est inconnu. Si quelqu'un trouve un four qui fonctionne, il peut effectuer des transformations très rares et précieuses.

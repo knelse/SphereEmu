@@ -1,373 +1,487 @@
-01 Меч
-03 меч
-100 Холодное оружие. Сила меча в том, что он бьет быстро, хотя и не очень сильно.
-
-200 истощения
-201 доблести
-202 урона
-203 жестокости
-204 спешки
-205 скорости
-206 беспорядка
-207 хаоса
-208 эфира
-209 усталости
-210 болезни
-211 неустойчивости
-212 расстояния
-213 дистанции
-214 разложения
-215 опустошения
-216 слабости
-217 проникновения
-218 запрета
-219 ценности
+01 The Sword
+03 The sword
+100 Cold steel. The strength of the sword is that it strikes quickly, although not very hard.
+200 exhaustion
+201 Valor
+202 damage
+203 cruelty
+204 haste
+205 speeds
+206 disorder
+207 Chaos
+208 ether
+209 Fatigue
+210 diseases
+211 instabilities
+212 distances
+213 distances
+214 decompositions
+215 devastation
+216 weaknesses
+217 penetrations
+218 prohibition
+219 values
 
 #1
-01 Кривой меч
-03 кривой меч
+01 A curved sword
+03 a curved sword
+
 #2
-01 Сабля
-03 саблю
+01 The Saber
+03 A saber
+
 #3
-01 Палаш
-03 палаш
+01 Broadsword
+03 Broadsword
+
 #4
-01 Скимитар
-03 скимитар
+01 The Scimitar
+03 The scimitar
+
 #5
-01 Ятаган
-03 ятаган
+01 The Scimitar
+03 The scimitar
+
 #6
-01 Катана
-03 катану
+01 Katana
+03 katana
+
 #7
-01 Шамшер
-03 шамшер
+01 Shamsher
+03 shamsher
+
 #8
-01 Элитная сабля
-03 элитную саблю
+01 Elite Saber
+03 An elite saber
+
 #9
-01 Элитный палаш
-03 элитный палаш
+01 Elite broadsword
+03 elite broadsword
+
 #10
-01 Элитный ятаган
-03 элитный ятаган
+01 Elite Scimitar
+03 elite scimitar
+
 #11
-01 Элитная катана
-03 элитную катану
+01 Elite katana
+03 elite katana
+
 #12
-01 Руническая сабля
-03 руническую саблю
+01 Runic Saber
+03 A runic saber
+
 #13
-01 Рунический палаш
-03 Рунический палаш
+01 Runic broadsword
+03 Runic broadsword
+
 #14
-01 Рунический ятаган
-03 рунический ятаган
+01 Runic Scimitar
+03 runic scimitar
+
 #15
-01 Руническая катана
-03 руническую катану
+01 Runic Katana
+03 a runic katana
+
 #16
-01 Полуторный меч
-03 полуторный меч
+01 One and a half swords
+03 one and a half swords
+
 #17
-01 Двуручный меч
-03 двуручный меч
+01 Two-handed sword
+03 two-handed sword
+
 #18
-01 Клеймор
-03 клеймор
+01 Claymore
+03 Claymore
+
 #19
-01 Эспадон
-03 эспадон
+01 Espadon
+03 espadon
+
 #20
-01 Фламберг
-03 фламберг
+01 Flamberg
+03 flamberg
+
 #21
-01 Великий меч
-03 великий меч
+01 The Great Sword
+03 The great sword
+
 #22
-01 Гигантский меч
-03 гигантский меч
+01 The Giant Sword
+03 The giant sword
+
 #23
-01 Элитный двуручный меч
-03 элитный двуручный меч
+01 Elite Two-handed Sword
+03 elite two-handed sword
+
 #24
-01 Элитный клеймор
-03 элитный клеймор
+01 Elite Claymore
+03 elite claymore
+
 #25
-01 Элитный фламберг
-03 элитный фламберг
+01 Elite Flamberg
+03 elite flamberg
+
 #26
-01 Элитный великий меч
-03 элитный великий меч
+01 Elite Great Sword
+03 Elite great sword
+
 #27
-01 Рунический двуручный меч
-03 рунический двуручный меч
+01 Runic Two-handed sword
+03 runic two-handed sword
+
 #28
-01 Рунический клеймор
-03 рунический клеймор
+01 Runic Claymore
+03 runic claymore
+
 #29
-01 Рунический фламберг
-03 рунический фламберг
+01 Runic flamberg
+03 runic flamberg
+
 #30
-01 Рунический великий меч
-03 рунический великий меч
+01 The Runic Great Sword
+03 The runic great sword
+
 #31
-01 Короткий меч
-03 короткий меч
+01 A short sword
+03 a short sword
+
 #32
-01 Широкий меч
-03 широкий меч
+01 A broadsword
+03 a broadsword
+
 #33
-01 Гладиус
-03 гладиус
+01 Gladius
+03 Gladius
+
 #34
-01 Пехотный меч
-03 пехотный меч
+01 Infantry Sword
+03 infantry sword
+
 #35
-01 Длинный меч
-03 длинный меч
+01 The Long Sword
+03 The long sword
+
 #36
-01 Кристальный меч
-03 кристальный меч
+01 The Crystal Sword
+03 The crystal sword
+
 #37
-01 Золотой меч
-03 золотой меч
+01 The Golden Sword
+03 The golden sword
+
 #38
-01 Элитный короткий меч
-03 элитный короткий меч
+01 Elite Short Sword
+03 elite short sword
+
 #39
-01 Элитный гладиус
-03 элитный гладиус
+01 Elite Gladius
+03 elite gladius
+
 #40
-01 Элитный длинный меч
-03 элитный длинный меч
+01 Elite Long Sword
+03 elite long sword
+
 #41
-01 Элитный кристальный меч
-03 элитный кристальный меч
+01 Elite Crystal Sword
+03 Elite crystal sword
+
 #42
-01 Рунический короткий меч
-03 рунический короткий меч
+01 Runic Short Sword
+03 runic short sword
+
 #43
-01 Рунический гладиус
-03 рунический гладиус
+01 Runic Gladius
+03 runic gladius
+
 #44
-01 Рунический длинный меч
-03 рунический длинный меч
+01 Runic Long Sword
+03 runic long sword
+
 #45
-01 Рунический кристальный меч
-03 рунический кристальный меч
+01 Runic Crystal Sword
+03 runic crystal sword
+
 #130
-01 Меч Дракона
-03 меч дракона
+01 Dragon Sword
+03 Dragon sword
+
 #3251-3252
-01 Кривой меч
-03 кривой меч
+01 A curved sword
+03 a curved sword
+
 #3253-3254
-01 Сабля
-03 саблю
+01 The Saber
+03 A saber
+
 #3255-3257
-01 Палаш
-03 палаш
+01 Broadsword
+03 Broadsword
+
 #3258-3259
-01 Скимитар
-03 скимитар
+01 The Scimitar
+03 The scimitar
+
 #3260-3262
-01 Ятаган
-03 ятаган
+01 The Scimitar
+03 The scimitar
+
 #3263-3264
-01 Катана
-03 катану
+01 Katana
+03 katana
+
 #3265-3269
-01 Шамшер
-03 шамшер
+01 Shamsher
+03 shamsher
+
 #3270-3274
-01 Элитная сабля
-03 элитную саблю
+01 Elite Saber
+03 An elite saber
+
 #3275-3279
-01 Элитный палаш
-03 Элитный палаш
+01 Elite broadsword
+03 Elite broadsword
+
 #3280-3284
-01 Элитный ятаган
-03 элитный ятаган
+01 Elite Scimitar
+03 elite scimitar
+
 #3285-3289
-01 Элитная катана
-03 элитную катану
+01 Elite katana
+03 elite katana
+
 #3290-3294
-01 Руническая сабля
-03 руническую саблю
+01 Runic Saber
+03 A runic saber
+
 #3295-3299
-01 Рунический палаш
-03 Рунический палаш
+01 Runic broadsword
+03 Runic broadsword
+
 #3300-3304
-01 Рунический ятаган
-03 рунический ятаган
+01 Runic Scimitar
+03 runic scimitar
+
 #3305-3310
-01 Руническая катана
-03 руническую катану
+01 Runic Katana
+03 a runic katana
+
 #3311-3312
-01 Полуторный меч
-03 полуторный меч
+01 One and a half swords
+03 one and a half swords
+
 #3313-3314
-01 Двуручный меч
-03 двуручный меч
+01 Two-handed sword
+03 two-handed sword
+
 #3315-3317
-01 Клеймор
-03 клеймор
+01 Claymore
+03 Claymore
+
 #3318-3319
-01 Эспадон
-03 эспадон
+01 Espadon
+03 espadon
+
 #3320-3322
-01 Фламберг
-03 фламберг
+01 Flamberg
+03 flamberg
+
 #3323-3324
-01 Великий меч
-03 великий меч
+01 The Great Sword
+03 The great sword
+
 #3325-3329
-01 Гигантский меч
-03 гигантский меч
+01 The Giant Sword
+03 The giant sword
+
 #3330-3334
-01 Элитный двуручный меч
-03 элитный двуручный меч
+01 Elite Two-handed Sword
+03 elite two-handed sword
+
 #3335-3339
-01 Элитный клеймор
-03 элитный клеймор
+01 Elite Claymore
+03 elite claymore
+
 #3340-3344
-01 Элитный фламберг
-03 элитный фламберг
+01 Elite Flamberg
+03 elite flamberg
+
 #3345-3349
-01 Элитный великий меч
-03 элитный великий меч
+01 Elite Great Sword
+03 Elite great sword
+
 #3350-3354
-01 Рунический двуручный меч
-03 рунический двуручный меч
+01 Runic Two-handed sword
+03 runic two-handed sword
+
 #3355-3359
-01 Рунический клеймор
-03 рунический клеймор
+01 Runic Claymore
+03 runic claymore
+
 #3360-3364
-01 Рунический фламберг
-03 рунический фламберг
+01 Runic flamberg
+03 runic flamberg
+
 #3365-3370
-01 Рунический великий меч
-03 рунический великий меч
+01 The Runic Great Sword
+03 The runic great sword
+
 #3371-3372
-01 Короткий меч
-03 короткий меч
+01 A short sword
+03 a short sword
+
 #3373-3374
-01 Широкий меч
-03 широкий меч
+01 A broadsword
+03 a broadsword
+
 #3375-3377
-01 Гладиус
-03 гладиус
+01 Gladius
+03 Gladius
+
 #3378-3379
-01 Пехотный меч
-03 пехотный меч
+01 Infantry Sword
+03 infantry sword
+
 #3380-3382
-01 Длинный меч
-03 длинный меч
+01 The Long Sword
+03 The long sword
+
 #3383-3384
-01 Кристальный меч
-03 кристальный меч
+01 The Crystal Sword
+03 The crystal sword
+
 #3385-3389
-01 Золотой меч
-03 золотой меч
+01 The Golden Sword
+03 The golden sword
+
 #3390-3394
-01 Элитный короткий меч
-03 элитный короткий меч
+01 Elite Short Sword
+03 elite short sword
+
 #3395-3399
-01 Элитный гладиус
-03 элитный гладиус
+01 Elite Gladius
+03 elite gladius
+
 #3400-3404
-01 Элитный длинный меч
-03 элитный длинный меч
+01 Elite Long Sword
+03 elite long sword
+
 #3405-3409
-01 Элитный кристальный меч
-03 элитный кристальный меч
+01 Elite Crystal Sword
+03 Elite crystal sword
+
 #3410-3414
-01 Рунический короткий меч
-03 рунический короткий меч
+01 Runic Short Sword
+03 runic short sword
+
 #3415-3419
-01 Рунический гладиус
-03 рунический гладиус
+01 Runic Gladius
+03 runic gladius
+
 #3420-3424
-01 Рунический длинный меч
-03 рунический длинный меч
+01 Runic Long Sword
+03 runic long sword
+
 #3425-3430
-01 Рунический кристальный меч
-03 рунический кристальный меч
+01 Runic Crystal Sword
+03 runic crystal sword
+
 #3431-3433
-01 Легендарная катана
-03 легендарную катану
+01 The legendary Katana
+03 The legendary katana
+
 #3434-3436
-01 Призрачная катана
-03 призрачную катану
+01 The Phantom Katana
+03 A ghost katana
+
 #3437-3439
-01 Драконья катана
-03 драконью катану
+01 Dragon Katana
+03 A dragon katana
+
 #3440-3442
-01 Легендарный великий меч
-03 легендарный великий меч
+01 The legendary Great Sword
+03 The legendary great sword
+
 #3443-3445
-01 Призрачный великий меч
-03 призрачный великий меч
+01 The Ghostly Great Sword
+03 The ghostly great sword
+
 #3446-3448
-01 Драконий великий меч
-03 драконий великий меч
+01 The Dragon Great Sword
+03 The dragon great sword
+
 #3449-3451
-01 Легендарный кристальный меч
-03 легендарный кристальный меч
+01 The Legendary Crystal Sword
+03 The legendary Crystal sword
+
 #3452-3454
-01 Призрачный кристальный меч
-03 призрачный кристальный меч
+01 Ghost Crystal Sword
+03 ghost crystal sword
+
 #3455-3457
-01 Драконий кристальный меч
-03 драконий кристальный меч
+01 Dragon Crystal Sword
+03 dragon crystal sword
+
 #3459
-01 Драконий великий меч
-03 драконий великий меч
+01 The Dragon Great Sword
+03 The dragon great sword
+
 #5565-5570
-01 Кинжал убийства
-03 кинжал убийства
+01 The Dagger of Murder
+03 The dagger of murder
+
 #5592-5594
-01 Кинжал убийства
-03 кинжал убийства
+01 The Dagger of Murder
+03 The dagger of murder
+
 #5683
-01 Длинный меч справедливости
-03 меч  справедливости
+01 The Long Sword of Justice
+03 The Sword of Justice
+
 #5684-5686
-01 Элитный меч справедливости
-03 меч  справедливости
+01 The Elite Sword of Justice
+03 The Sword of Justice
+
 #5687
-01 Большой меч справедливости
-03 меч  справедливости
+01 The Great Sword of Justice
+03 The Sword of Justice
+
 #5688
-01 Великий меч справедливости
-03 меч  справедливости
+01 The Great Sword of Justice
+03 The Sword of Justice
+
 #5693
-01 Великий меч справедливости
-03 меч  справедливости
+01 The Great Sword of Justice
+03 The Sword of Justice
+
 #5696
-01 Великий меч справедливости
-03 меч  справедливости
+01 The Great Sword of Justice
+03 The Sword of Justice
+
 #6071-6076
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity
+
 #6092-6093
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity
+
 #6095-6096
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity
+
 #6098-6099
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity
+
 #6451
-01 Рунический меч 
-03 рунический меч
+01 The Runic Sword
+03 the runic sword
+
 #6875-6878
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity
+
 #6880
-01 Меч вражды
-03 меч вражды
+01 The Sword of Enmity
+03 The sword of enmity

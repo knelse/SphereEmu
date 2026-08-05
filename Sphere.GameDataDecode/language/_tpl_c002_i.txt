@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,7 +7,7 @@
 14 
 15 
 16 
-20 Stanotte sono stato derubato, sono entrati in casa mia! Oltre ai gioielli hanno preso degli oggetti a cui tenevo molto, anche se non di grande valore. Per piacere, trovali e riportali a me, te ne sarò grato. %s
-21 Stanotte sono stato derubato, sono entrati in casa mia! Oltre ai gioielli hanno preso degli oggetti a cui tenevo molto, anche se non di grande valore. Per piacere, trovali e riportali a me, te ne sarò grato. %s
- 
- 
+20 Di notte, la mia casa è stata attaccata da ladri. Oltre ai gioielli, hanno preso anche quelle cose che mi erano care. Sii gentile, trova queste cose e restituiscile a me. %s
+21 Di notte, la mia casa è stata attaccata da ladri. Oltre ai gioielli, hanno preso anche quelle cose che mi erano care. Sii gentile, trova queste cose e restituiscile a me. %s
+    
+    

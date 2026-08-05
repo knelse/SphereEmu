@@ -1,0 +1,171 @@
+01 Ceinture
+03 ceinture
+100 Dans la bataille, protège contre les armes des adversaires.
+200 force
+201 absorption
+202 sécurité
+203 santé
+204 méditations
+205 précision
+206 Ether
+207 valeurs
+
+#349
+01 Sash
+03 Sash
+
+#350
+01 Ceinture en cuir
+03 ceinture en cuir
+
+#351-352
+01 Ceinture en cuir riveté
+03 ceinture en cuir riveté
+
+#353-354
+01 Ceinture en mailles
+03 ceinture en mailles
+
+#355-357
+01 Ceinture de fer
+03 ceinture de fer
+
+#358-360
+01 Ceinture de fer antique
+03 ceinture de fer antique
+
+#3171
+01 Sash
+03 Sash
+
+#3172
+01 Ceinture en cuir
+03 ceinture en cuir
+
+#3173-3174
+01 Ceinture en cuir riveté
+03 ceinture en cuir riveté
+
+#3175-3176
+01 Ceinture en mailles
+03 ceinture en mailles
+
+#3177-3179
+01 Ceinture de fer
+03 ceinture de fer
+
+#3180-3182
+01 Ceinture de fer antique
+03 ceinture de fer antique
+
+#4489-4497
+01 Ceinture de fer antique
+03 ceinture de fer antique
+
+#5665
+01 Ceinture de courage
+03 ceinture de courage
+
+#5666
+01 Ceinture en cuir de bravoure
+03 ceinture de courage
+
+#5667
+01 Ceinture de courage rivetée
+03 ceinture de courage
+
+#5668
+01 Ceinture en mailles de bravoure
+03 ceinture de courage
+
+#5669
+01 Ceinture de fer de bravoure
+03 ceinture de courage
+
+#5670
+01 Ancienne ceinture de bravoure
+03 ceinture de courage
+
+#5777
+01 Ceinture Du Tribunal
+03 ceinture du Tribunal
+
+#5778
+01 Ceinture en cuir
+03 ceinture du Tribunal
+
+#5779
+01 Ceinture rivetée
+03 ceinture de Trmbunal
+
+#5780
+01 Ceinture en mailles du Tribunal
+03 ceinture du Tribunal
+
+#5781
+01 Ceinture de fer du Tribunal
+03 ceinture du Tribunal
+
+#5782
+01 Ancienne ceinture du Tribunal
+03 ceinture du Tribunal
+
+#5962
+01 Ceinture
+03 ceinture
+
+#6077
+01 Ceinture De Titane
+03 ceinture de Titane
+
+#6078
+01 Ceinture en cuir de Titane
+03 ceinture de Titane
+
+#6079
+01 Ceinture rivetée de Titane
+03 ceinture de Titane
+
+#6080
+01 Ceinture en mailles de Titane
+03 ceinture de Titane
+
+#6081
+01 Ceinture de titane de Fer
+03 ceinture de Titane
+
+#6082
+01 Ancienne ceinture de Titane
+03 ceinture de Titane
+
+#6476
+01 Ceinture de longévité
+03 ceinture de longévité
+
+#6477
+01 Ceinture de longévité en cuir
+03 ceinture de longévité
+
+#6478
+01 Ceinture de longévité rivetée
+03 ceinture de longévité
+
+#6479
+01 Ceinture en mailles de longévité
+03 ceinture de longévité
+
+#6480
+01 Ceinture de longévité en fer
+03 ceinture de longévité
+
+#6481
+01 Ancienne ceinture de longévité
+03 ceinture de longévité
+
+#6657
+01 Ceinture de facilité
+03 ceinture de facilité
+
+#6758
+01 Ceinture des marais
+03 ceinture des marais

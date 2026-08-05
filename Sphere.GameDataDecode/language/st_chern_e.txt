@@ -1,7 +1,6 @@
-01 Inkpot
-03 inkpot
+01 Inkwell
+03 the inkwell
 05 full
-06 half-empty
+06 half empty
 07 almost empty
-100 Used to make notes in the log and put marks on maps.
-
+100 Allows you to make journal entries and put notes on maps.

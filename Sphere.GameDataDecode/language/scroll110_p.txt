@@ -1,9 +1,7 @@
-01 Fórmula do pó de ataque gelado
-02 Fórmula do pó do ataque gelado
-03 Fórmula do pó do ataque gelado
-
-100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas. 
-
+01 Receita de pó de ataque de gelo
+02 receita de pó de ataque de gelo
+03 receita de pó de ataque de gelo
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Coloque Fitolite, folha de Legra e cobre dentro do pote. Misture cuidadosamente e adicione pó de Amilus para completar a reação. Você terá o pó do ataque de gelo. 
+    Põe o fitólito, a folha de Legra e o cobre no caldeirão alquímico. Misture bem e adicione o pó de Amilus final. Receberás pó de ataque gelado.
+    

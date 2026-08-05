@@ -1,10 +1,10 @@
-01 Semente
+01 semente
 03 semente
-05 nova
-06 velha
-07 murcha
-10 para plantar, coloque a semente no chão.
-101 Dentro do carniceiro
+05 novo
+06 envelhecimento
+07 murchando
+10 Para ativar, coloque a semente no chão.
+101 Dentro-psoglavets
 102 Dentro do baú
-103 Cristal de castelo (para ser ativada dentro de um castelo)
-104 Protective stone inside (to be activated within a castle)
+103 Dentro-pedra do Castelo (ativar dentro do Castelo)
+104 Pedra Da dentro-prova (ativar dentro do Castelo)

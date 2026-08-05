@@ -1,0 +1,391 @@
+01 Hache
+03 hache
+100 Arme de choc. Il frappe fort, mais frappe rarement.
+200 épuisement
+201 prouesses
+202 dégâts
+203 brutalités
+204 précipitation
+205 vitesses
+206 désordre
+207 chaos
+208 Ether
+209 fatigue
+210 maladies
+211 instabilité
+212 distances
+213 distances
+214 décomposition
+215 dévastation
+216 faiblesses
+217 pénétrations
+218 interdiction
+219 valeurs
+
+#101
+01 Hache
+03 hache
+
+#102
+01 Grande hache
+03 grande hache
+
+#103
+01 Hache de guerre
+03 hache de guerre
+
+#104
+01 Hache d'infanterie
+03 hache d'infanterie
+
+#105
+01 François
+03 François
+
+#106
+01 Sekira
+03 sekiru
+
+#107
+01 Tabar
+03 Tabar
+
+#108
+01 Grande hache d'élite
+03 grande hache d'élite
+
+#109
+01 Hache de guerre d'élite
+03 hache de guerre d'élite
+
+#110
+01 Élites franciscaines
+03 élites de France
+
+#111
+01 Elite sekira
+03 élites
+
+#112
+01 Grande hache runique
+03 grande hache runique
+
+#113
+01 Hache de guerre runique
+03 hache de guerre runique
+
+#114
+01 François runique
+03 François runique
+
+#115
+01 Sekira runique
+03 Runic sekira
+
+#116
+01 Matraque
+03 matraque
+
+#117
+01 Masse
+03 masse
+
+#118
+01 Palica
+03 Palice
+
+#119
+01 Marteau
+03 marteau
+
+#120
+01 Marteau de combat
+03 marteau de combat
+
+#121
+01 Morgenstern
+03 Morgenstern
+
+#122
+01 Marteau de Forge
+03 marteau de Forge
+
+#123
+01 Masse d'élite
+03 masse d'élite
+
+#124
+01 Bâton d'élite
+03 bâton d'élite
+
+#125
+01 Marteau de combat d'élite
+03 marteau de combat d'élite
+
+#126
+01 Élite Morgenstern
+03 élite Morgenstern
+
+#127
+01 Masse runique
+03 masse runique
+
+#128
+01 Bâton runique
+03 bâton runique
+
+#129
+01 Marteau de combat runique
+03 marteau de combat runique
+
+#3501-3502
+01 Hache
+03 hache
+
+#3503-3504
+01 Grande hache
+03 grande hache
+
+#3505-3507
+01 Hache de guerre
+03 hache de guerre
+
+#3508-3509
+01 Hache d'infanterie
+03 hache d'infanterie
+
+#3510-3512
+01 François
+03 François
+
+#3513-3514
+01 Sekira
+03 sekiru
+
+#3515-3519
+01 Tabar
+03 Tabar
+
+#3520-3524
+01 Grande hache d'élite
+03 grande hache d'élite
+
+#3525-3529
+01 Hache de guerre d'élite
+03 hache de guerre d'élite
+
+#3530-3534
+01 Élites franciscaines
+03 élites de France
+
+#3535-3539
+01 Elite sekira
+03 élites
+
+#3540-3544
+01 Grande hache runique
+03 grande hache runique
+
+#3545-3549
+01 Hache de guerre runique
+03 hache de guerre runique
+
+#3550-3554
+01 François runique
+03 François runique
+
+#3555-3560
+01 Sekira runique
+03 Runic sekira
+
+#3561-3562
+01 Matraque
+03 matraque
+
+#3563-3564
+01 Masse
+03 masse
+
+#3565-3567
+01 Palica
+03 Palice
+
+#3568-3569
+01 Marteau
+03 marteau
+
+#3570-3572
+01 Marteau de combat
+03 mon marteau
+
+#3573-3574
+01 Morgenstern
+03 Morgenstern
+
+#3575-3579
+01 Marteau de Forge
+03 marteau de Forge
+
+#3580-3584
+01 Masse d'élite
+03 masse d'élite
+
+#3585-3589
+01 Bâton d'élite
+03 bâton d'élite
+
+#3590-3594
+01 Marteau de combat d'élite
+03 marteau de combat d'élite
+
+#3595-3599
+01 Élite Morgenstern
+03 élite Morgenstern
+
+#3600-3604
+01 Masse runique
+03 masse runique
+
+#3605-3609
+01 Bâton runique
+03 bâton runique
+
+#3610-3614
+01 Marteau de combat runique
+03 marteau de combat runique
+
+#3615-3620
+01 Runic Morgenstern
+03 Runic Morgenstern
+
+#3621
+01 Bâton de maître de jeu
+03 bâton de maître de jeu
+
+#3622-3624
+01 Hache légendaire
+03 hache légendaire
+
+#3625-3627
+01 Hache fantôme
+03 hache fantôme
+
+#3628-3630
+01 Hache de dragon
+03 hache de dragon
+
+#3631-3633
+01 Marteau légendaire
+03 marteau légendaire
+
+#3634-3636
+01 Marteau fantôme
+03 marteau fantôme
+
+#3637-3639
+01 Marteau de dragon
+03 marteau de dragon
+
+#3644
+01 Bâton du développeur du jeu
+03 bâton du développeur du jeu
+
+#5750
+01 Bâton De L'Inquisiteur
+03 bâton de l'Inquisiteur
+
+#5751
+01 Bâton Du Grand Inquisiteur
+03 bâton du Grand Inquisiteur
+
+#5950
+01 Bâton d'ORCO
+03 bâton d'ORCO
+
+#5951
+01 Bâton D'Archimage
+03 bâton d'archimage
+
+#5952
+01 Bâton De Mage
+03 bâton de Mage
+
+#5953
+01 Bâton D'Éléments
+03 bâton d'Éléments
+
+#5965
+01 Petit bâton d'archimage
+03 bâton d'archimage
+
+#5966-5968
+01 Bâton D'Archimage
+03 bâton d'archimage
+
+#5969
+01 Grand bâton d'archimage
+03 bâton d'archimage
+
+#5970
+01 Grand bâton d'archimage
+03 bâton d'archimage
+
+#6065-6070
+01 Marteau du tonnerre
+03 marteau du tonnerre
+
+#6183
+01 Petit bâton de récupération
+03 bâton de restauration
+
+#6184-6185
+01 Bâton moyen de récupération
+03 bâton de récupération
+
+#6186-6187
+01 Grand bâton de récupération
+03 bâton de récupération
+
+#6188
+01 Grand bâton de récupération
+03 bâton de récupération
+
+#6365-6368
+01 Labris
+03 labris
+
+#6369
+01 Labris En Acier
+03 labris
+
+#6370
+01 Grand Labris
+03 labris
+
+#6452
+01 Hache De Maître
+03 hache de Maître
+
+#6453
+01 Marteau de force
+03 marteau de force
+
+#6552-6554
+01 Marteau de Forge
+03 marteau de Forge
+
+#6658
+01 Bâton De Sorcier
+03 bâton de Sorcier
+
+#6750
+01 Bâton de mutilation
+03 bâton de mutilation
+
+#6751
+01 Bâton des ténèbres
+03 bâton des ténèbres
+
+#6752
+01 Bâton de sacrifice
+03 bâton de sacrifice

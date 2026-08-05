@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Salute a te guerriero! %s sta aspettando questo pacco prezioso. Portaglielo e otterrai una ricompensa. %s ti servirà per orientarti. 
-21 Salute a te guerriero! %s sta aspettando questo pacco prezioso. Portaglielo e otterrai una ricompensa. %s ti servirà per orientarti.
+20 Saluti, guerriero! %s aspetta il mio pacco prezioso. Consegnala e la ricompensa ti troverà immediatamente. E la guida ti servirà %s.
+21 Ti saluto, nobile guerriero! %s aspetta il mio pacco prezioso. Consegnala e la ricompensa ti troverà immediatamente. E la guida ti servirà %s.

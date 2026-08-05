@@ -1,0 +1,99 @@
+01 Pantalon
+03 pantalon
+100 Dans la bataille, protège contre les armes des adversaires.
+200 force
+201 absorption
+202 sécurité
+203 santé
+204 méditations
+205 précision
+206 Ether
+207 valeurs
+
+#373
+01 Pantalon
+03 pantalon
+
+#374
+01 Pantalon en cuir
+03 pantalon en cuir
+
+#375-376
+01 Pantalon en cuir riveté
+03 pantalon en cuir riveté
+
+#377-378
+01 Pantalon en mailles
+03 pantalon en mailles
+
+#379-381
+01 Jambières en plates
+03 Jambières en plates
+
+#382-384
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#3121-3122
+01 Pantalon
+03 pantalon
+
+#3123-3124
+01 Pantalon en cuir
+03 pantalon en cuir
+
+#3125-3128
+01 Pantalon en cuir riveté
+03 pantalon en cuir riveté
+
+#3129-3132
+01 Pantalon en mailles
+03 pantalon en mailles
+
+#3133-3138
+01 Jambières en plates
+03 Jambières en plates
+
+#3139-3145
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#4471-4479
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#4742
+01 Jambières en plates noires
+03 Jambières en plates noires
+
+#4743
+01 Jambières en plates blanches
+03 Jambières en plates blanches
+
+#6371
+01 Jambières de combat
+03 Jambières de combat
+
+#6372
+01 Jambières de combat en cuir
+03 Jambières de combat
+
+#6373
+01 Jambières de combat rivetées
+03 Jambières de combat
+
+#6374
+01 Jambières de combat en mailles
+03 Jambières de combat
+
+#6375
+01 Jambières de combat en plates
+03 Jambières de combat
+
+#6376
+01 Anciens Jambières de combat
+03 Jambières de combat
+
+#6760
+01 Jambières osseuses
+03 Jambières osseuses

@@ -1,0 +1,33 @@
+01 Atelier
+03 atelier
+10 L'objet a reçu une propriété spéciale.
+11 L'objet est fabriqué.
+12 L'objet est réparé.
+13 L'objet a été réparé, mais son état s'est détérioré.
+14 L'objet a été réparé, mais son état s'est considérablement détérioré.
+15 Il est impossible de donner une propriété particulière à un objet par cette formule:
+16 Il est impossible de fabriquer un objet avec cette formule:
+17 Impossible de réparer l'objet:
+18 l'objet ne correspond pas à la formule
+19 manque de composants
+20 niveau de guilde trop bas
+21 article accidentellement cassé lors de la réparation
+22 trop d'articles
+23 article cassé de vieillesse lors de la réparation
+40 Pas assez de Tallers.
+90 Lors de la création de l'objet, la formule a épuisé ses pouvoirs magiques et a été détruite.
+91 Lors de la confection d'un objet magique, la formule a épuisé ses pouvoirs magiques et a été détruite.
+92 Lors de la réparation, la formule a épuisé ses pouvoirs magiques et a été détruite.
+100 C'est un atelier où les forgerons et les armuriers fabriquent des armures et des armes. Les sorciers utilisent également des ateliers pour conférer des propriétés magiques aux objets qui y sont fabriqués.
+0222 Candidat (1)
+0223 Candidate (1)
+0224 École (2)
+0225 Écolière (2)
+0226 Apprenti (3)
+0227 Apprenti (3)
+0228 Maître (4)
+0229 Maître (4)
+0230 Chef (5)
+0231 Chef (5)
+0232 Expert (6)
+0233 Expert (6)

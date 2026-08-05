@@ -1,8 +1,6 @@
-01 Licenza per azzeramento delle caratteristiche
-03 licenza per azzeramento delle caratteristiche
-
-101 Vuoi veramente azzerare le tue caratteristiche?
-102 Le caratteristiche sono state azzerate.
-103 Ora non hai bisogno di usare la licenza.
-
-
+01 Licenza di ripristino delle caratteristiche
+03 licenza di ripristino delle caratteristiche
+100 Ripristina le statistiche distribuite del personaggio come: forza, agilità, precisione, resistenza, terra, aria, acqua e fuoco. Il livello del titolo e del grado del personaggio rimane lo stesso.
+101 Vuoi davvero ripristinare le statistiche?
+102 Caratteristiche ripristinate.
+103 Ora non è necessario utilizzare una licenza.

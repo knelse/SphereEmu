@@ -1,96 +1,137 @@
-01 Glass amulet
-03 glass amulet
-
-100 Gives extra advantage in repelling magical attacks. You are sure to lose a battle without a good amulet. There was a magician though who bragged he would come out against the most powerful monster without being protected by a magical amulet. History does not remember the name of the sorcerer.
-
-200 of durability
-201 of absorption
-202 of protection
-203 of safety
-204 of health
-205 of meditation
-206 of accuracy
-207 of ether
-208 of radiance
-209 of value
-210 of damage
+01 The glass Amulet
+03 The glass amulet
+100 Gives an additional advantage when repelling magical attacks. There is nothing to do in battle without a good amulet. There was, however, one magician who boasted that he would go up against the strongest monster without the protection of a magic amulet. The history of the name of this magician has not been preserved.
+200 Strength
+201 acquisitions
+202 reflections
+203 security
+204 health
+205 meditations
+206 accuracy
+207 ether
+208 radiance
+209 values
+210 damage
 
 #401-412
-01 Glass amulet
-03 glass amulet
+01 The glass Amulet
+03 The glass amulet
+
 #4001-4023
-01 Glass amulet
-03 glass amulet
+01 The glass Amulet
+03 The glass amulet
+
 #4167-4175
-01 Glass amulet
-03 glass amulet
+01 The glass Amulet
+03 The glass amulet
+
 #4185-4187
-01 Amulet of Celebration
-03 Amulet of celebration
-100 Amulet of Celebration
+01 The Amulet of Celebration
+03 The amulet of celebration
+100 The Celebration amulet is timed to coincide with the two-year anniversary of the Sphere project! The project administration congratulates you on this event! Thank you for your interest in our game and wish you further success in the magical world.
+
 #4190
-01 Glass amulet of joy
-03 glass amulet of joy
+01 The Glass Amulet of Joy
+03 The glass amulet of joy
+
 #4191
-01 Glass amulet of happiness
-03 glass amulet of happiness
+01 The glass amulet of happiness
+03 the glass amulet of happiness
+
 #4192
-01 Glass amulet of virtue
-03 glass amulet of virtue
+01 The Glass Amulet of Virtue
+03 The glass amulet of virtue
+
 #4193
-01 Crystal amulet of consolation
+01 Crystal Amulet of consolation
 03 crystal amulet of consolation
+
 #4194
-01 Crystal amulet of exultation
-03 crystal amulet of exultation
+01 Crystal Amulet of Jubilation
+03 crystal amulet of jubilation
+
 #4199
-01 Amulet life
-03 Amulet life
+01 Amulet of life
+03 Amulet of life
+
 #4242
-01 Хризантема
-03 хризантему
+01 Chrysanthemum
+03 Chrysanthemum
+
 #4243-4244
-01 Роза
-03 розу
+01 Rose
+03 A rose
+
 #4245-4246
-01 Ирис
-03 ирис
+01 Iris
+03 iris
+
 #4247-4248
-01 Тюльпан
-03 тюльпан
+01 Tulip
+03 tulip
+
 #4249-4250
-01 Гербера
-03 герберу
+01 Gerbera
+03 Gerber
+
 #4251-4252
-01 Орхидея
-03 орхидею
+01 Orchid
+03 an orchid
+
 #4302
-01 Большой новогодний амулет
-03 Большой новогодний амулет
+01 Big New Year's amulet
+03 Big New Year's amulet
+
 #4304
-01 Малый новогодний амулет
-03 Малый новогодний амулет
+01 Small New Year's amulet
+03 Small New Year's amulet
+
 #4306
-01 Недолговечный амулет ликования
-03 недолговечный амулет ликования
+01 A short-lived amulet of jubilation
+03 a short-lived amulet of jubilation
+
+#4308
+01 The Amulet of Rebirth
+03 The Amulet of Rebirth
+100 The Amulet of Rebirth is timed to the End of the World 2012..
+
+#4310
+01 Gift amulet
+03 Gift amulet
+100 A gift amulet that gives +10 to all parameters.
+
 #5671-5676
-01 Blessing amulet
-03 blessing amulet
+01 The Good Amulet
+03 The good amulet
+
 #5877-5882
-01 Beast amulet
-03 beast amulet
+01 Amulet of the beast
+03 amulet of the beast
+
 #5957
-01 Amulet of Magician
-03 Amulet of Magician
+01 The Magician's Amulet
+03 The Magician's Amulet
+
 #5958
-01 Amulet of Archimagician
-03 Amulet of Archimagician
+01 The Archmage's Amulet
+03 The Archmage's Amulet
+
 #5959
-01 Amulet of Grand Archimagician
-03 Amulet of Grand Archimagician
+01 The Amulet of the Great Archmage
+03 The Amulet of the Great Archmage
+
+#5971-5976
+01 The Archmage's Amulet
+03 The Archmage's Amulet
+
+#6565-6570
+01 The Amulet of rejection
+03 The amulet of rejection
+
 #6753
 01 Roger
 03 Roger
+
 #6755
-01 Bone amulet
+01 Bone Amulet
 03 bone amulet

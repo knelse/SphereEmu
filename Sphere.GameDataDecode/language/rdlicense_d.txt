@@ -1,0 +1,6 @@
+01 Lizenz zum Zurücksetzen des Grads
+03 lizenz zum Zurücksetzen des Grades
+100 Setzt den Grad des Charakters auf 15 zurück. Dabei wird für alle zurückgesetzten 5 (fünf) Stufen der Stufe eine Stufe zum vorherigen Titel hinzugefügt. Außerdem werden die verteilten Charaktereigenschaften wie Stärke, Beweglichkeit, Genauigkeit, Ausdauer, Boden, Luft, Wasser und Feuer zurückgesetzt. ACHTUNG! Die Lizenz funktioniert nicht, wenn der Charakter eine Spezialität hat!
+101 Möchten Sie Ihren Abschluss wirklich zurücksetzen?
+102 Der Grad wurde zurückgesetzt.
+103 Es ist jetzt nicht notwendig, eine Lizenz zu verwenden.

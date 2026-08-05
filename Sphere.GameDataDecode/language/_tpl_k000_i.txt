@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Buon viaggiatore, aiutami. Si dice che nei sotterranei si nasconde %s, famoso per le sue malefatte. Aiuta i cittadini a liberarsi dalla sua malvagia presenza e sarai ben ricompensato.
-23 Buon viaggiatore, aiutami. Si dice che nei sotterranei si nasconde una terribile %s. Liberaci da lei e sarai ben ricompensato.
+22 Aiuto, buon viaggiatore! C'è stata una voce che si nasconde nel dungeon %s .noto per i suoi oltraggi. Aiuta i cittadini a liberarsene. Non resteremo in debito.
+23 Aiuto, buon viaggiatore! Dicono che una terribile prigione si sia stabilita %s. Liberaci da lei! Non resteremo in debito.

@@ -1,0 +1,38 @@
+01 Armbrust
+03 armbrust
+10 Sie haben keine Pfeile.
+100 Eine Wurfwaffe. Ermöglicht es, einen Gegner aus großer Entfernung zu treffen; erfordert einen großen Vorrat an Pfeilen.
+200 Abenteuer
+201 Stille
+202 Prophezeiungen
+203 Geheimnisse
+204 Mythen
+205 Des Seins
+206 Wanderungen
+207 Existenz
+208 Legenden
+209 Frieden
+
+#2730-2731
+01 Manuelle Armbrust
+03 hand-Armbrust
+
+#2732-2733
+01 Schwere Armbrust
+03 schwere Armbrust
+
+#2734-2735
+01 Elite Hand Armbrust
+03 elite Hand Armbrust
+
+#2736-2737
+01 Runen-leichte Armbrust
+03 runen-leichte Armbrust
+
+#2738-2740
+01 Geisterhafte Stahl Armbrust
+03 geisterhafte Stahl Armbrust
+
+#2741-2744
+01 Belagerungsdrachen-Armbrust
+03 Belagerungsdrachen-Armbrust

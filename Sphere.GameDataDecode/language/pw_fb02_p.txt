@@ -1,192 +1,238 @@
 01 Pó mágico
-02 Pó mágico
-03 Pó mágico
+02 pó mágico
+03 pó mágico
 
 #501-508
 01 Pó de proteção física
-02 Pó de proteção física
-03 Pó de proteção física
+02 pó de proteção física
+03 pó de proteção física
+
 #509-520
-01 Pó de ataque terrestre
-02 Pó de ataque terrestre
-03 Pó de ataque terrestre
+01 Pó do Ataque da Terra
+02 pó do Ataque da Terra
+03 pó do Ataque da Terra
+
 #521-528
 01 Pó de proteção mágica
-02 Pó de proteção mágica
-03 Pó de proteção mágica
+02 pó de proteção mágica
+03 pó de proteção mágica
+
 #537-542
 01 Pó da saúde
-02 Pó da saúde
-03 Pó da saúde
+02 pó da saúde
+03 pó da saúde
+
 #543-546
 01 Pó da fraqueza
-02 Pó da fraqueza
-03 Pó da fraqueza
+02 pó da fraqueza
+03 pó da fraqueza
+
 #547-549
-01 Pó da super proteção
-02 Pó da super proteção
-03 Pó da super proteção
+01 Pó de super proteção
+02 pó de super proteção
+03 pó de super proteção
+
 #550
-01 Pó da cegueira
-02 Pó da cegueira
-03 Pó da cegueira
+01 Brilho em pó
+02 brilho em pó
+03 brilho em pó
+
 #551-553
 01 Pó de proteção física
-02 Pó de proteção física
-03 Pó de proteção física
+02 pó de proteção física
+03 pó de proteção física
+
 #554-556
-01 Pó de ataque terrestre
-02 Pó de ataque terrestre
-03 Pó de ataque terrestre
+01 Pó do Ataque da Terra
+02 pó do Ataque da Terra
+03 pó do Ataque da Terra
+
 #557-559
 01 Pó de proteção mágica
-02 Pó de proteção mágica
-03 Pó de proteção mágica
+02 pó de proteção mágica
+03 pó de proteção mágica
+
 #563-565
-01 Pó da super proteção
-02 Pó da super proteção
-03 Pó da super proteção
+01 Pó de super proteção
+02 pó de super proteção
+03 pó de super proteção
+
 #601-606
 01 Pó da saúde
-02 Pó da saúde
-03 Pó da saúde
+02 pó da saúde
+03 pó da saúde
+
 #607-618
-01 Pó do ataque gelado
-02 Pó do ataque gelado
-03 Pó do ataque gelado
+01 Pó de ataque de gelo
+02 pó de ataque de gelo
+03 pó de ataque de gelo
+
 #626-631
-01 Pó da doença
-02 Pó da doença
-03 Pó da doença
+01 Doença em pó
+02 doença em pó
+03 doença em pó
+
 #635
 01 Pó da purificação
-02 Pó da purificação
-03 Pó da purificação
+02 pó da purificação
+03 pó da purificação
+
 #636-640
-01 Pó venenoso
-02 Pó venenoso
-03 Pó venenoso
+01 Pó do veneno
+02 pó do veneno
+03 pó do veneno
+
 #641-644
 01 Pó da regeneração
-02 Pó da regeneração
-03 Pó da regeneração
+02 pó da regeneração
+03 pó da regeneração
+
 #645
-01 Pó da plena regeneração
-02 Pó da plena regeneração
-03 Pó da plena regeneração
+01 Pó da purificação completa
+02 pó da purificação completa
+03 pó da purificação completa
+
 #646-654
 01 Pó da saúde
-02 Pó da saúde
-03 Pó da saúde
+02 pó da saúde
+03 pó da saúde
+
 #655-657
-01 Pó do ataque gelado
-02 Pó do ataque gelado
-03 Pó do ataque gelado
+01 Pó de ataque de gelo
+02 pó de ataque de gelo
+03 pó de ataque de gelo
+
 #661-663
-01 Pó da doença
-02 Pó da doença
-03 Pó da doença
+01 Doença em pó
+02 doença em pó
+03 doença em pó
+
 #701-712
-01 Pó repelente
-02 Pó repelente
-03 Pó repelente
+01 Pó do Choque
+02 pó do Choque
+03 pó do Choque
+
 #713-721
-01 Pó da luz
-02 Pó da luz
-03 Pó da luz
+01 Pó dos zíperes
+02 pó dos zíperes
+03 pó dos zíperes
+
 #722-726
-01 Pó da força
-02 Pó da força
-03 Pó da força
+01 Pó de ganho
+02 pó de ganho
+03 pó de ganho
+
 #734-737
-01 Pó da fraqueza
-02 Pó da fraqueza
-03 Pó da fraqueza
+01 Pó de atenuação
+02 pó de atenuação
+03 pó de atenuação
+
 #738-739
-01 Pó da tempestade
-02 Pó da tempestade
-03 Pó da tempestade
+01 Pó da maldição do ar
+02 pó da maldição do ar
+03 pó da maldição do ar
+
 #740
-01 Pó da lentidão
-02 Pó da lentidão
-03 Pó da lentidão
+01 Pó de desaceleração
+02 pó de desaceleração
+03 pó de desaceleração
+
 #741-743
-01 Pó repelente
-02 Pó repelente
-03 Pó repelente
+01 Pó do Choque
+02 pó do Choque
+03 pó do Choque
+
 #744-746
-01 Pó da luz
-02 Pó da luz
-03 Pó da luz
+01 Pó dos zíperes
+02 pó dos zíperes
+03 pó dos zíperes
+
 #750-752
-01 Pó da fraqueza
-02 Pó da fraqueza
-03 Pó da fraqueza
+01 Pó de atenuação
+02 pó de atenuação
+03 pó de atenuação
+
 #753-755
-01 Pó da força
-02 Pó da força
-03 Pó da força
+01 Pó de ganho
+02 pó de ganho
+03 pó de ganho
+
 #801-806
-01 Pó da flecha ardente
-02 Pó da flecha ardente
-03 Pó da flecha ardente
+01 Pó de flechas flamejantes
+02 pó de flechas flamejantes
+03 pó de flechas flamejantes
+
 #812-817
-01 Pó da força
-02 Pó da força
-03 Pó da força
+01 Pó de ganho
+02 pó de ganho
+03 pó de ganho
+
 #822-826
-01 Pó das chamas
-02 Pó das chamas
-03 Pó das chamas
+01 Pó da maldição do fogo
+02 pó da maldição do fogo
+03 pó da maldição do fogo
+
 #827-831
 01 Pó da incineração
-02 Pó da incineração
-03 Pó da incineração
+02 pó da incineração
+03 pó da incineração
+
 #835
 01 Pó do grande fogo
-02 Pó do grande fogo
-03 Pó do grande fogo
+02 pó do grande fogo
+03 pó do grande fogo
+
 #836-840
 01 Pó da chama venenosa
-02 Pó da chama venenosa
-03 Pó da chama venenosa
+02 pó da chama venenosa
+03 pó da chama venenosa
+
 #841
-01 Pó do fogo cego
-02 Pó do fogo cego
-03 Pó do fogo cego
+01 Pó de cegueira de fogo
+02 pó de cegueira de fogo
+03 pó de cegueira de fogo
+
 #854-856
-01 Pó da flecha ardente
-02 Pó da flecha ardente
-03 Pó da flecha ardente
+01 Pó de flechas flamejantes
+02 pó de flechas flamejantes
+03 pó de flechas flamejantes
+
 #860-862
-01 Pó da força
-02 Pó da força
-03 Pó da força
+01 Pó de ganho
+02 pó de ganho
+03 pó de ganho
+
 #866-868
-01 Pó das chamas
-02 Pó das chamas
-03 Pó das chamas
+01 Pó da maldição do fogo
+02 pó da maldição do fogo
+03 pó da maldição do fogo
+
 #869-871
 01 Pó da incineração
-02 Pó da incineração
-03 Pó da incineração
+02 pó da incineração
+03 pó da incineração
+
 #6265-6270
 01 Faca de arremesso
 02 faca de arremesso
 03 faca de arremesso
-#6557-6558
-01 Pó do ferreiro
-03 Pó do ferreiro
-03 Pó do ferreiro
+
 #6455
-01 Elixir do armadureiro
-02 Elixir do armadureiro
-03 Elixir do armadureiro
+01 Elixir do Armeiro
+02 Elixir do Armeiro
+03 Elixir do Armeiro
+
+#6557-6558
+01 Pó De Forjamento
+02 pó de forjamento
+03 pó de forjamento
+
 #6653
-01 Elixir da liberdade
-02 elixir da liberdade
-03 elixir da liberdade
+01 Elixir da Liberdade
+02 Elixir da Liberdade
+03 Elixir da Liberdade
+
 #6759
-01 Pó da degradação
-02 pó da degradação
-03 Pó da degradação
+01 Pó de degradação
+02 pó de degradação
+03 pó de degradação

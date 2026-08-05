@@ -1,0 +1,6 @@
+01 Licencia de restablecimiento de características
+03 licencia de restablecimiento de características
+100 Restablece las características distribuidas del personaje, como: fuerza, agilidad, precisión, resistencia, tierra, aire, agua y fuego. El nivel de título y grado del personaje permanece sin cambios.
+101 ¿Realmente quieres restablecer las características?
+102 Características restablecidas.
+103 Ahora no es necesario utilizar la licencia.

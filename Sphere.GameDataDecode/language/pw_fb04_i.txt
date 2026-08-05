@@ -3,31 +3,37 @@
 03 polvere
 
 #680
-01 Polvere della difesa delle Sorelle
+01 Polvere di protezione delle Sorelle
 02 polvere
 03 polvere
-100 Questa polvere ha effetto solo sui membri del Clan delle Sorelle
+100 Questa polvere funziona solo sul Clan della sorella
+
 #850
-01 Polvere di attacco del cultista
-02 polvere di attacco del cultista
-03 polvere di attacco del cultista
+01 Polvere di attacco di culto
+02 polvere di attacco di culto
+03 polvere di attacco di culto
+
 #851
 01 Saidakra
-02 Saidakra
-03 saidakra
-100 Questa polvere è l'unica via per eliminere chiunque dei Sei da Sphere.
+02 saidakra
+03 saidakru
+100 Questa polvere è l'unico mezzo per espellere istantaneamente uno qualsiasi dei Sei dalla sfera.
+
 #852
-01 Polvere di guarigione del cultista
-02 polvere di guarigione del cultista
-03 polvere di guarigione del cultista
+01 Polvere di trattamento di culto
+02 polvere di trattamento di culto
+03 polvere di trattamento di culto
+
 #853
-01 Polvere di difesa del cultista
-02 polvere di difesa del cultista
-03 polvere di difesa del cultista
+01 Polvere di protezione di culto
+02 polvere di protezione di culto
+03 polvere di protezione di culto
+
 #875
-01 Polvere della giustizia
-02 polvere della giustizia
-03 polvere della giustizia
+01 Polvere di giustizia
+02 polvere di giustizia
+03 polvere di giustizia
+
 #876
 01 Polvere degli spiriti maligni
 02 polvere degli spiriti maligni

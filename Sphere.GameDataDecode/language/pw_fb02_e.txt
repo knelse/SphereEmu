@@ -1,192 +1,238 @@
-01 Magic powder
-02 Magic powder
-03 Magic powder
+01 Magic Powder
+02 magic powder
+03 magic powder
 
 #501-508
-01 Powder of physical protection
-02 Powder of physical protection
-03 Powder of physical protection
+01 Physical Protection Powder
+02 Physical protection powder
+03 Physical protection powder
+
 #509-520
-01 Powder of Earth attack
-02 Powder of Earth attack
-03 Powder of Earth attack
+01 Earth Attack Powder
+02 Earth Attack powder
+03 Earth Attack powder
+
 #521-528
-01 Powder of magic protection
-02 Powder of magic protection
-03 Powder of magic protection
+01 Magic Protection Powder
+02 magic protection powder
+03 magic protection powder
+
 #537-542
-01 Health powder
-02 Health powder
-03 Health powder
+01 Health Powder
+02 health powder
+03 health powder
+
 #543-546
-01 Powder of weakness
-02 Powder of weakness
-03 Powder of weakness
+01 Weakness Powder
+02 weakness powder
+03 weakness powder
+
 #547-549
-01 Powder of super-protection
-02 Powder of super-protection
-03 Powder of super-protection
+01 Super Protection Powder
+02 super protection powder
+03 super protection powder
+
 #550
-01 Blinding powder
-02 Blinding powder
-03 Blinding powder
+01 Blinding Powder
+02 blinding powder
+03 blinding powder
+
 #551-553
-01 Powder of physical protection
-02 Powder of physical protection
-03 Powder of physical protection
+01 Physical Protection Powder
+02 Physical protection powder
+03 Physical protection powder
+
 #554-556
-01 Powder of Earth attack
-02 Powder of Earth attack
-03 Powder of Earth attack
+01 Earth Attack Powder
+02 Earth Attack powder
+03 Earth Attack powder
+
 #557-559
-01 Powder of magic protection
-02 Powder of magic protection
-03 Powder of magic protection
+01 Magic Protection Powder
+02 magic protection powder
+03 magic protection powder
+
 #563-565
-01 Powder of super-protection
-02 Powder of super-protection
-03 Powder of super-protection
+01 Super Protection Powder
+02 super protection powder
+03 super protection powder
+
 #601-606
-01 Health powder
-02 Health powder
-03 Health powder
+01 Health Powder
+02 health powder
+03 health powder
+
 #607-618
-01 Powder of ice attack
-02 Powder of ice attack
-03 Powder of ice attack
+01 Ice Attack Powder
+02 Ice attack powder
+03 Ice attack powder
+
 #626-631
-01 Powder of sickness
-02 Powder of sickness
-03 Powder of sickness
+01 Disease Powder
+02 disease powder
+03 disease powder
+
 #635
-01 Powder of catharsis
-02 Powder of catharsis
-03 Powder of catharsis
+01 Cleansing Powder
+02 cleansing powder
+03 cleansing powder
+
 #636-640
-01 Poisonous powder
-02 Poisonous powder
-03 Poisonous powder
+01 Poison Powder
+02 poison powder
+03 poison powder
+
 #641-644
-01 Powder of regeneration
-02 Powder of regeneration
-03 Powder of regeneration
+01 Regeneration Powder
+02 regeneration powder
+03 regeneration powder
+
 #645
-01 Powder of full catharsis
-02 Powder of full catharsis
-03 Powder of full catharsis
+01 Full Cleansing Powder
+02 full cleansing powder
+03 full cleansing powder
+
 #646-654
-01 Health powder
-02 Health powder
-03 Health powder
+01 Health Powder
+02 health powder
+03 health powder
+
 #655-657
-01 Powder of ice attack
-02 Powder of ice attack
-03 Powder of ice attack
+01 Ice Attack Powder
+02 Ice attack powder
+03 Ice attack powder
+
 #661-663
-01 Powder of sickness
-02 Powder of sickness
-03 Powder of sickness
+01 Disease Powder
+02 disease powder
+03 disease powder
+
 #701-712
-01 Shocking powder
-02 Shocking powder
-03 Shocking powder
+01 Shock Powder
+02 shock powder
+03 shock powder
+
 #713-721
-01 Powder of lightning
-02 Powder of lightning
-03 Powder of lightning
+01 Lightning Powder
+02 lightning powder
+03 lightning powder
+
 #722-726
-01 Force powder
-02 Force powder
-03 Force powder
+01 Amplification Powder
+02 amplification powder
+03 amplification powder
+
 #734-737
-01 Powder of weakness
-02 Powder of weakness
-03 Powder of weakness
+01 Loosening Powder
+02 loosening powder
+03 loosening powder
+
 #738-739
-01 Powder of air curse
-02 Powder of air curse
-03 Powder of air curse
+01 Air Curse Powder
+02 air curse powder
+03 air curse powder
+
 #740
-01 Slowing powder
-02 Slowing powder
-03 Slowing powder
+01 Deceleration Powder
+02 deceleration powder
+03 deceleration powder
+
 #741-743
-01 Shocking powder
-02 Shocking powder
-03 Shocking powder
+01 Shock Powder
+02 shock powder
+03 shock powder
+
 #744-746
-01 Powder of lightning
-02 Powder of lightning
-03 Powder of lightning
+01 Lightning Powder
+02 lightning powder
+03 lightning powder
+
 #750-752
-01 Powder of weakness
-02 Powder of weakness
-03 Powder of weakness
+01 Loosening Powder
+02 loosening powder
+03 loosening powder
+
 #753-755
-01 Force powder
-02 Force powder
-03 Force powder
+01 Amplification Powder
+02 amplification powder
+03 amplification powder
+
 #801-806
 01 Powder of flaming arrows
 02 Powder of flaming arrows
 03 Powder of flaming arrows
+
 #812-817
-01 Force powder
-02 Force powder
-03 Force powder
+01 Amplification Powder
+02 amplification powder
+03 amplification powder
+
 #822-826
-01 Powder of fire curse
-02 Powder of fire curse
-03 Powder of fire curse
+01 Fire Curse Powder
+02 fire curse powder
+03 fire curse powder
+
 #827-831
-01 Powder of incineration
-02 Powder of incineration
-03 Powder of incineration
+01 Incineration Powder
+02 incineration powder
+03 incineration powder
+
 #835
-01 Powder of the Great Fire
-02 Powder of the Great Fire
-03 Powder of the Great Fire
+01 The Powder of the Great Fire
+02 The powder of the great fire
+03 The powder of the great fire
+
 #836-840
-01 Powder of poisonous flame
-02 Powder of poisonous flame
-03 Powder of poisonous flame
+01 Poison Flame Powder
+02 poison flame powder
+03 poison flame powder
+
 #841
-01 Powder of blinding fire
-02 Powder of blinding fire
-03 Powder of blinding fire
+01 Fire Blinding Powder
+02 fire blinding powder
+03 fire blinding powder
+
 #854-856
 01 Powder of flaming arrows
 02 Powder of flaming arrows
 03 Powder of flaming arrows
+
 #860-862
-01 Force powder
-02 Force powder
-03 Force powder
+01 Amplification Powder
+02 amplification powder
+03 amplification powder
+
 #866-868
-01 Powder of fire curse
-02 Powder of fire curse
-03 Powder of fire curse
+01 Fire Curse Powder
+02 fire curse powder
+03 fire curse powder
+
 #869-871
-01 Powder of incineration
-02 Powder of incineration
-03 Powder of incineration
+01 Incineration Powder
+02 incineration powder
+03 incineration powder
+
 #6265-6270
-01 Dart knife
-02 dart knife
-03 dart knife
+01 Throwing knife
+02 throwing knife
+03 throwing knife
+
 #6455
-01 Elixir of armorer
-02 Elixir of armorer
-03 Elixir of armorer
+01 The Gunsmith's Elixir
+02 The Gunsmith's Elixir
+03 The Gunsmith's Elixir
+
 #6557-6558
-01 Blacksmithing Powder
-02 blacksmithing powder
-03 blacksmithing powder
+01 Forging Powder
+02 forging powder
+03 forging powder
+
 #6653
-01 Elixir of freedom
-02 elixir of freedom
-03 elixir of freedom
+01 The Elixir of Freedom
+02 The elixir of freedom
+03 The elixir of freedom
+
 #6759
-01 Powder of degradation
-02 powder of degradation
-03 powder of degradation
+01 Degradation powder
+02 degradation powder
+03 degradation powder

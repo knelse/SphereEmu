@@ -1,9 +1,7 @@
-01 Formula della polvere della pioggia di pietre
-02 Formula della polvere della pioggia di pietre
-03 Formula della polvere della pioggia di pietre
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta della polvere di caduta massi
+02 ricette di polvere di caduta massi
+03 ricetta della polvere di caduta massi
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della pioggia di pietre, i maghi esperti (con grado non inferiore a quello di professore) mescolano Terraton e Piombo nella fornace. Poi aggiungono una pianta di Melvera e alimentano la fornace con ramoscelli.
+    Maghi esperti (gradi non inferiori al professore) per ottenere la polvere di caduta di massi, mescolano terraton e piombo in una fornace, aggiungono la pianta di melver e quindi riscaldano la fornace con sottobosco.
+    

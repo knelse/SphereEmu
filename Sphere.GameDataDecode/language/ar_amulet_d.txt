@@ -1,0 +1,137 @@
+01 Glas-Amulett
+03 glas-Amulett
+100 Bietet einen zusätzlichen Vorteil bei der Abwehr magischer Angriffe. Ohne ein gutes Amulett gibt es im Kampf nichts zu tun. Es gab jedoch einen Magier, der damit prahlte, das stärkste Monster ohne den Schutz eines magischen Amuletts zu bekämpfen. Die Geschichte des Namens dieses Zauberers hat sich nicht bewahrt.
+200 stärke
+201 übernahmen
+202 reflexionen
+203 sicherheit
+204 gesundheit
+205 meditation
+206 genauigkeit
+207 äther
+208 ausstrahlung
+209 werte
+210 schaden
+
+#401-412
+01 Glas-Amulett
+03 glas-Amulett
+
+#4001-4023
+01 Glas-Amulett
+03 glas-Amulett
+
+#4167-4175
+01 Glas-Amulett
+03 glas-Amulett
+
+#4185-4187
+01 Amulett der Feier
+03 amulett der Feier
+100 Das Amulett der Feier ist für das zweijährige Projekt «Sphere» zeitlich festgelegt! Die Projektverwaltung gratuliert Ihnen zu diesem Ereignis! Wir danken Ihnen für Ihr Interesse an unserem Spiel und wünschen Ihnen viel Erfolg in der magischen Welt.
+
+#4190
+01 Glas-Amulett der Freude
+03 glas-Amulett der Freude
+
+#4191
+01 Glas-Amulett des Glücks
+03 glas-Amulett des Glücks
+
+#4192
+01 Glas-Amulett Tugend
+03 das Glasamulett der Tugend
+
+#4193
+01 Kristall-Amulett des Trostes
+03 kristall-Amulett des Trostes
+
+#4194
+01 Kristall-Amulett des Jubels
+03 kristall-Amulett des Jubels
+
+#4199
+01 Amulett life
+03 Amulett life
+
+#4242
+01 Chrysantheme
+03 chrysantheme
+
+#4243-4244
+01 Rose
+03 rose
+
+#4245-4246
+01 Iris
+03 iris
+
+#4247-4248
+01 Tulpe
+03 tulpe
+
+#4249-4250
+01 Gerbera
+03 herbert
+
+#4251-4252
+01 Orchidee
+03 orchidee
+
+#4302
+01 Großes Silvester-Amulett
+03 Großes Silvester-Amulett
+
+#4304
+01 Kleines Silvester-Amulett
+03 Kleines Silvester-Amulett
+
+#4306
+01 Ein kurzlebiges Amulett des Jubels
+03 ein kurzlebiges Amulett des Jubels
+
+#4308
+01 Amulett der Wiedergeburt
+03 amulett der Wiedergeburt
+100 Das Amulett der Wiedergeburt ist bis zum Ende der Welt 2012 zeitlich festgelegt..
+
+#4310
+01 Geschenk-Amulett
+03 Geschenk-Amulett
+100 Ein Geschenk-Amulett, das +10 zu allen Parametern gibt.
+
+#5671-5676
+01 Ein gutes Amulett
+03 ein gutes Amulett
+
+#5877-5882
+01 Amulett des Tieres
+03 amulett des Tieres
+
+#5957
+01 Amulett des Magiers
+03 amulett des Magiers
+
+#5958
+01 Amulett Des Erzmagiers
+03 amulett des Erzmagier
+
+#5959
+01 Amulett des Großen Erzmagier
+03 amulett des Großen Erzmagier
+
+#5971-5976
+01 Amulett des Erzmagier
+03 amulett des Erzmagier
+
+#6565-6570
+01 Amulett der Abstoßung
+03 Amulett der Ablehnung
+
+#6753
+01 Roger
+03 Roger
+
+#6755
+01 Knochen-Amulett
+03 knochen-Amulett

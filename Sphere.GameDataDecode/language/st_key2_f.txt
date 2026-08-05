@@ -1,0 +1,35 @@
+01 Clé du donjon
+03 clé du donjon
+10 Cette clé ne convient pas.
+
+#240
+01 La clé de la salle noire de l'eau
+03 clé
+
+#241
+01 La clé de la chambre noire du feu
+03 clé
+
+#242
+01 La clé de la chambre noire de la terre
+03 clé
+
+#243
+01 Clé de la pièce noire d'air
+03 clé
+
+#244
+01 La clé de la salle blanche de l'eau
+03 clé
+
+#245
+01 La clé de la salle blanche du feu
+03 clé
+
+#246
+01 La clé de la salle blanche de la terre
+03 clé
+
+#247
+01 Clé de la salle blanche d'air
+03 clé

@@ -1,9 +1,7 @@
 01 Fórmula
-02 fórmula
+02 fórmulas
 03 fórmula
-
-100 Fórmula de restauração da organização de ferreiros 
-
-10000 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador na organização dos ferreiros deve ser no mínimo %z1. Reparo requer %a1.
-10001 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador na organização dos ferreiros deve ser no mínimo %z1. Reparo requer %a1 e %a2.
-10002 Esta fórmula é usada para se reparar os seguintes artigos: %l1 O estágio necessário do operador na organização dos ferreiros deve ser no mínimo %z1. Reparo requer %a1, %a2 e %a3.
+100 Fórmula de reparação da Guilda dos Ferreiros
+10000 Esta fórmula serve para reparar os seguintes itens: %l1 O nível de mestre na Guilda dos Ferreiros não deve ser inferior %z1. Para o reparo é necessário %a1.
+10001 Esta fórmula serve para reparar os seguintes itens: %l1 O nível de mestre na Guilda dos Ferreiros não deve ser inferior %z1. O reparo é necessário %a1 e %a2.
+10002 Esta fórmula serve para reparar os seguintes itens: %l1 O nível de mestre na Guilda dos Ferreiros não deve ser inferior %z1. O reparo é necessário %a1, %a2 e %a3.

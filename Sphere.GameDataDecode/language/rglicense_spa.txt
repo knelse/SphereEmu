@@ -1,0 +1,6 @@
+01 Licencia de Reset de especialidad
+03 licencia de Reset especialidad
+100 Cancela la Especialización del personaje. Al hacerlo, restablece las características distribuidas del personaje, como: fuerza, agilidad, precisión, resistencia, tierra, aire, agua y fuego. El nivel de título y grado del personaje permanece sin cambios.
+101 ¿Realmente quieres restablecer la especialidad?
+102 Especialidad descartada.
+103 Ahora no es necesario utilizar la licencia.

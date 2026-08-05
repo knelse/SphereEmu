@@ -1,0 +1,434 @@
+01 Kreatur
+
+#1000
+01 Der Zauberstab
+
+#1001
+01 Steppenstab
+
+#1002
+01 Der Waldbesitzer
+
+#1003
+01 Höhlenstab
+
+#1010
+01 Psoglaw
+
+#1011
+01 Steppenkopf
+
+#1012
+01 Der Waldläufer
+
+#1013
+01 Höhlenmensch
+
+#1020
+01 Der faule Ritter
+
+#1021
+01 Der rostige Ritter
+
+#1022
+01 Unruhig Ritter
+
+#1023
+01 Goldener Ritter
+
+#1024
+01 Riesiger Ritter
+
+#1025
+01 Luftritter
+
+#1040
+01 Der Erdgolem
+
+#1041
+01 Sandgolem
+
+#1042
+01 Tongolem
+
+#1043
+01 Freier Golem
+
+#1044
+01 Riesiger Golem
+
+#1050
+01 Bangville Scolopendra
+
+#1051
+01 Das königliche Skolopendra
+
+#1060
+01 Skelett
+
+#1061
+01 Waldskelett
+
+#1062
+01 Das Skelett von Umradsky
+
+#1063
+01 Luftskelett
+
+#1064
+01 Höhlenskelett
+
+#1065
+01 Lich
+
+#1066
+01 Riesiges Skelett
+
+#1067
+01 Luft-Lich
+
+#1069
+01 Attentäter
+
+#1070
+01 Der Wildschwein
+
+#1071
+01 Tollwütiger Wildschwein
+
+#1072
+01 Trockener Wildschwein
+
+#1073
+01 Luftiger Wildschwein
+
+#1074
+01 Eiserne Wildschweine
+
+#1075
+01 Feuriger Wildschwein
+
+#1076
+01 Riesiger Wildschwein
+03 Riesiger Wildschwein
+
+#1080
+01 Cyanos
+
+#1081
+01 Cyanos dunkel
+
+#1082
+01 Cyanos trocken
+
+#1083
+01 Cyanos Eisen
+
+#1084
+01 Luft-Cyanos
+
+#1085
+01 Cyanos sind gigantisch
+
+#1090
+01 Der Wolf
+
+#1091
+01 Steppenwolf
+
+#1092
+01 Eiswolf
+
+#1093
+01 Trockener Wolf
+
+#1094
+01 Der eiserne Wolf
+
+#1095
+01 Höllenwolf
+
+#1100
+01 Spinne
+
+#1101
+01 Schwefelspinne
+
+#1102
+01 Trockene Spinne
+
+#1103
+01 Eisenspinne
+
+#1104
+01 Feurige Spinne
+
+#1105
+01 Schwarze Witwe
+
+#1106
+01 Riesenspinne
+
+#1107
+01 Luftspinne
+
+#1110
+01 Salamander
+
+#1111
+01 Nomrad-Salamander
+
+#1112
+01 Erdige Salamander
+
+#1113
+01 Eisensalamander
+
+#1114
+01 Salamandiga
+
+#1120
+01 Roter Skorpion
+
+#1121
+01 Skorpion
+
+#1122
+01 Blauer Skorpion
+
+#1123
+01 Feuerskorpion
+
+#1130
+01 Typhon
+
+#1131
+01 Rauchiger Typhon
+
+#1132
+01 Kreischender Typhon
+
+#1133
+01 Eisen-Typhon
+
+#1134
+01 Feuriger Typhon
+
+#1135
+01 Riesiger Typhon
+
+#1140
+01 Oger
+
+#1141
+01 Schwefelhaltiger Esser
+
+#1142
+01 Höhlenmensch
+
+#1143
+01 Riesiger Esser
+
+#1150
+01 Niphon
+
+#1170
+01 Katze
+
+#1180
+01 Stier
+
+#1190
+01 Tropos
+
+#1191
+01 Tollwütiger Tropos
+
+#1192
+01 Torf-Tropos
+
+#1193
+01 Königlicher Tropos
+
+#1194
+01 Air tropos
+
+#1200
+01 Ein Mammut
+
+#1201
+01 Das eiserne Mammut
+
+#1202
+01 Schnee-Mammut
+
+#1203
+01 Kohle-Mammut
+
+#1210
+01 Zombies
+
+#1211
+01 Grauer Zombie
+
+#1212
+01 Zombader
+
+#1213
+01 Riesiger Zombie
+
+#1220
+01 Verzauberter Baum
+
+#1221
+01 Mahagoni
+
+#1222
+01 Toter Baum
+
+#1230
+01 Granit Steinbrecher
+
+#1231
+01 Smaragd-Steinmetze
+
+#1232
+01 Saphirsteinmäher
+
+#1233
+01 Der Meister der Felsen
+
+#1240
+01 Wandelnde Leiche
+
+#1241
+01 Leiche
+
+#1242
+01 Spider-Kadaver
+
+#1243
+01 Knochen-Kadaver
+
+#1244
+01 Riesiger Kadaver
+
+#1250
+01 Nichtbestäubung
+
+#1251
+01 Graues Vlies
+
+#1252
+01 Feuriger Netopyr
+
+#1253
+01 Ein riesiger nichtbestäubter
+
+#1260
+01 Waldmenade
+
+#1261
+01 Steppenmenade
+
+#1262
+01 Höhlenmenade
+
+#1263
+01 Magische Menada
+
+#1264
+01 Luftmenade
+
+#1270
+01 Zwerg
+
+#1271
+01 Wald Zwerg
+
+#1272
+01 Krater-Zwerg
+
+#1273
+01 Luft-Zwerg
+
+#1290
+01 Attentäter
+
+#1291
+01 Freier Attentäter
+
+#1292
+01 Der Geistermörder
+
+#1310
+01 Schluck
+
+#1311
+01 Sumpfschluck
+
+#1320
+01 Der Bote des Todes
+
+#1330
+01 Grabhügel
+
+#1340-1343
+01 Schurke
+
+#1410
+01 Unterirdische Wurm
+
+#1420
+01 Meerjungfrau
+
+#1430
+01 Fleisch-Tentakel
+
+#1431
+01 Eiserner Tentakel
+
+#1440
+01 Knochen-Hund
+
+#1450
+01 Haron-Jäger
+
+#1451
+01 Feuerjäger
+
+#1452
+01 Der eiserne Jäger
+
+#1453
+01 Toter Jäger
+
+#1460
+01 Feurige Jägerin
+
+#1461
+01 Eiserne Jägerin
+
+#1462
+01 Haron-Jägerin
+
+#1463
+01 Tote Jägerin
+
+#1470
+01 Wächter des Abgrunds
+
+#1480
+01 Chimera
+
+#1880
+01 Bangville Scolopendra
+
+#1881
+01 Der Zauberstab
+
+#1882
+01 Tropos
+
+#1883
+01 Der rostige Ritter

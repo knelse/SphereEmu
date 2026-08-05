@@ -1,0 +1,51 @@
+01 Cota de malla
+03 cota de malla
+100 En la batalla protege de las armas de los enemigos.
+200 eliminación
+201 devastación
+202 fiabilidad
+203 invulnerabilidad
+204 vida
+205 eliminación
+206 devastación
+207 fiabilidad
+208 invulnerabilidad
+209 vida
+210 Junta directiva
+211 cegamiento
+212 susto
+213 paradas
+214 liberación
+215 limpieza
+216 castigos
+217 grilletes
+218 vórtice
+219 maldiciones
+
+#5001
+01 Armadura de cuero remachado
+03 armadura de cuero remachada
+
+#5021
+01 Coraza
+03 corasu
+
+#5041
+01 Armadura antigua
+03 armadura antigua
+
+#5061
+01 Armadura antigua
+03 armadura antigua
+
+#5111
+01 Armadura antigua
+03 armadura antigua
+
+#5131
+01 Armadura antigua
+03 armadura antigua
+
+#5160
+01 Armadura antigua
+03 armadura antigua

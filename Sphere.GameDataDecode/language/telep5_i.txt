@@ -1,7 +1,7 @@
-01 Teletrasporto per il torneo
-10 E' proibito viaggiare ora.
-11 Livello massimo permesso: %d
-12 Livello minimo permesso: %d
-13 Teletrasporto inattivo ora.
-14 Teletrasporto aperto per i livelli da %d a %d.
-100 Questo teletrasporto serve per raggiungere l'arena. Se morirai nell'arena verrai riportato in questo luogo.
+01 Teletrasporto del torneo
+10 Lo spostamento è attualmente vietato.
+11 Livello massimo per muoversi: %d
+12 Livello minimo da spostare: %d
+13 Il teletrasporto non funziona al momento.
+14 Il teletrasporto è aperto ai livelli con %d di %d.
+100 Muoversi con questo teletrasporto è possibile solo Nell'Arena. Dopo la morte Nell'Arena, torni a questo teletrasporto.

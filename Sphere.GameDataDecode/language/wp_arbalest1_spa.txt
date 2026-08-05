@@ -1,0 +1,315 @@
+01 Ballesta
+03 Ballesta
+10 No tienes flechas.
+100 Arma arrojadiza. Le permite golpear al enemigo a gran distancia; requiere un gran suministro de flechas.
+200 agotamiento
+201 valor
+202 daño
+203 brutalidad
+204 prisa
+205 velocidad
+206 desorden
+207 caos
+208 penetración
+209 inestabilidad
+210 descomposición
+211 distancias
+212 distancia
+213 artesanía
+214 fatiga
+215 Ether
+216 auroras
+217 enfermedades
+218 valores
+
+#201
+01 Ballesta de mano
+03 Ballesta de mano
+
+#202
+01 Ballesta de cobre
+03 Ballesta de cobre
+
+#203
+01 Ballesta ligera
+03 Ballesta ligera
+
+#204
+01 Ballesta de plata
+03 Ballesta de plata
+
+#205
+01 Ballesta de oro
+03 Ballesta de oro
+
+#206
+01 Ballesta de caza
+03 Ballesta de caza
+
+#207
+01 Ballesta de duelo
+03 Ballesta de duelo
+
+#208
+01 Ballesta de mano de élite
+03 Ballesta de mano de élite
+
+#209
+01 Ballesta ligera Elite
+03 Ballesta ligera Elite
+
+#210
+01 Ballesta de oro de élite
+03 Ballesta de oro de élite
+
+#211
+01 Ballesta de duelo de élite
+03 Ballesta de duelo de élite
+
+#212
+01 Ballesta de mano rúnica
+03 Ballesta de mano rúnica
+
+#213
+01 Ballesta ligera rúnica
+03 Ballesta ligera rúnica
+
+#214
+01 Ballesta dorada rúnica
+03 Ballesta dorada rúnica
+
+#215
+01 Ballesta de duelo rúnico
+03 Ballesta de duelo rúnico
+
+#216
+01 Ballesta
+03 Ballesta
+
+#217
+01 Ballesta grande
+03 Ballesta grande
+
+#218
+01 Ballesta pesada
+03 Ballesta pesada
+
+#219
+01 Ballesta de hierro
+03 Ballesta de hierro
+
+#220
+01 Ballesta de acero
+03 Ballesta de acero
+
+#221
+01 Ballesta de combate
+03 Ballesta de combate
+
+#222
+01 Ballesta de asedio
+03 Ballesta de asedio
+
+#223
+01 Ballesta de élite
+03 Ballesta de élite
+
+#224
+01 Ballesta pesada de élite
+03 Ballesta pesada de élite
+
+#225
+01 Ballesta de acero de élite
+03 Ballesta de acero de élite
+
+#226
+01 Ballesta de asedio de élite
+03 Ballesta de asedio de élite
+
+#227
+01 Ballesta rúnica
+03 Ballesta rúnica
+
+#228
+01 Ballesta pesada rúnica
+03 Ballesta pesada rúnica
+
+#229
+01 Ballesta de acero rúnico
+03 Ballesta de acero rúnico
+
+#230
+01 Ballesta de asedio rúnica
+03 Ballesta de asedio rúnica
+
+#3751-3752
+01 Ballesta de mano
+03 Ballesta de mano
+
+#3753-3754
+01 Ballesta de cobre
+03 Ballesta de cobre
+
+#3755-3757
+01 Ballesta ligera
+03 Ballesta ligera
+
+#3758-3759
+01 Ballesta de plata
+03 Ballesta de plata
+
+#3760-3762
+01 Ballesta de oro
+03 Ballesta de oro
+
+#3763-3764
+01 Ballesta de caza
+03 Ballesta de caza
+
+#3765-3769
+01 Ballesta de duelo
+03 Ballesta de duelo
+
+#3770-3774
+01 Ballesta de mano de élite
+03 Ballesta de mano de élite
+
+#3775-3779
+01 Ballesta ligera Elite
+03 Ballesta ligera Elite
+
+#3780-3784
+01 Ballesta de oro de élite
+03 Ballesta de oro de élite
+
+#3785-3789
+01 Ballesta de duelo de élite
+03 Ballesta de duelo de élite
+
+#3790-3794
+01 Ballesta de mano rúnica
+03 Ballesta de mano rúnica
+
+#3795-3799
+01 Ballesta ligera rúnica
+03 Ballesta ligera rúnica
+
+#3800-3804
+01 Ballesta dorada rúnica
+03 Ballesta dorada rúnica
+
+#3805-3810
+01 Ballesta de duelo rúnico
+03 Ballesta de duelo rúnico
+
+#3811-3812
+01 Ballesta
+03 Ballesta
+
+#3813-3814
+01 Ballesta grande
+03 Ballesta grande
+
+#3815-3817
+01 Ballesta pesada
+03 Ballesta pesada
+
+#3818-3819
+01 Ballesta de hierro
+03 Ballesta de hierro
+
+#3820-3822
+01 Ballesta de acero
+03 Ballesta de acero
+
+#3823-3824
+01 Ballesta de combate
+03 Ballesta de combate
+
+#3825-3829
+01 Ballesta de asedio
+03 Ballesta de asedio
+
+#3830-3834
+01 Ballesta de élite
+03 Ballesta de élite
+
+#3835-3839
+01 Ballesta pesada de élite
+03 Ballesta pesada de élite
+
+#3840-3844
+01 Ballesta de acero de élite
+03 Ballesta de acero de élite
+
+#3845-3849
+01 Ballesta de asedio de élite
+03 Ballesta de asedio de élite
+
+#3850-3854
+01 Ballesta rúnica
+03 Ballesta rúnica
+
+#3855-3859
+01 Ballesta pesada rúnica
+03 Ballesta pesada rúnica
+
+#3860-3864
+01 Ballesta de acero rúnico
+03 Ballesta de acero rúnico
+
+#3865-3870
+01 Ballesta de asedio rúnica
+03 Ballesta de asedio rúnica
+
+#3871-3873
+01 Ballesta de duelo legendaria
+03 Ballesta de duelo legendaria
+
+#3874-3876
+01 Ballesta de duelo fantasma
+03 Ballesta de duelo fantasma
+
+#3877-3879
+01 Ballesta de duelo de dragón
+03 Ballesta de duelo de dragón
+
+#3880-3882
+01 Ballesta de asedio legendaria
+03 Ballesta de asedio legendaria
+
+#3883-3885
+01 Ballesta de asedio fantasma
+03 Ballesta de asedio fantasma
+
+#3886-3888
+01 Ballesta de asedio de dragón
+03 Ballesta de asedio de dragón
+
+#5883
+01 Ballesta de caza
+03 Ballesta de caza
+
+#5884
+01 Ballesta de caza grande
+03 Ballesta de caza
+
+#5885
+01 Ballesta de caza pesada
+03 Ballesta de caza
+
+#5886
+01 Ballesta de caza de hierro
+03 Ballesta de caza
+
+#5887
+01 Ballesta de caza de acero
+03 Ballesta de caza
+
+#5888
+01 Gran Ballesta de caza
+03 Ballesta de caza
+
+#6454
+01 Ballesta De Albehorn
+03 Ballesta de Albehorn

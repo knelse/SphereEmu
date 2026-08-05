@@ -1,0 +1,335 @@
+#5500
+01 Gild del asesino (1 etapa)
+03 Gild Assassin
+
+#5501
+01 Gild del asesino (2 etapas)
+03 Gild Assassin
+
+#5502
+01 Gild del asesino (3 etapas)
+03 Gild Assassin
+
+#5503
+01 Gild del asesino (4 etapas)
+03 Gild Assassin
+
+#5504
+01 Gild del asesino (5 etapas)
+03 Gild Assassin
+
+#5505
+01 Gild del asesino (6 etapas)
+03 Gild Assassin
+
+#5600
+01 Gild del cruzado (1 etapa)
+03 Gild el cruzado
+
+#5601
+01 Gild del cruzado (2 escalones)
+03 Gild el cruzado
+
+#5602
+01 Gild del cruzado (3 etapas)
+03 Gild el cruzado
+
+#5603
+01 Gild del cruzado (4 etapas)
+03 Gild el cruzado
+
+#5604
+01 Gild del cruzado (5 etapas)
+03 Gild el cruzado
+
+#5605
+01 Gild del cruzado (6 etapas)
+03 Gild el cruzado
+
+#5700
+01 Gild Inquisidor (1 etapa)
+03 Gild Inquisidor
+
+#5701
+01 Gild Inquisidor (2 etapas)
+03 Gild Inquisidor
+
+#5702
+01 Gild Inquisidor (3 etapas)
+03 Gild Inquisidor
+
+#5703
+01 Gild Inquisidor (4 etapas)
+03 Gild Inquisidor
+
+#5704
+01 Gild Inquisidor (5 etapas)
+03 Gild Inquisidor
+
+#5705
+01 Gild Inquisidor (6 etapas)
+03 Gild Inquisidor
+
+#5800
+01 Guild Hunter (1 etapa)
+03 Guild Hunter
+
+#5801
+01 Guild Hunter (2 etapas)
+03 Guild Hunter
+
+#5802
+01 Guild Hunter (3 etapas)
+03 Guild Hunter
+
+#5803
+01 Guild Hunter (4 etapas)
+03 Guild Hunter
+
+#5804
+01 Guild Hunter (5 etapas)
+03 Guild Hunter
+
+#5805
+01 Guild Hunter (6 etapas)
+03 Guild Hunter
+
+#5900
+01 Guild Archimaga (1 etapa)
+03 Guild Archimaga
+
+#5901
+01 Guild Archimaga (2 etapas)
+03 Guild Archimaga
+
+#5902
+01 Guild Archimaga (3 etapas)
+03 Guild Archimaga
+
+#5903
+01 Guild Archimaga (4 etapas)
+03 Guild Archimaga
+
+#5904
+01 Guild Archimaga (etapa 5)
+03 Guild Archimaga
+
+#5905
+01 Guild Archimaga (etapa 6)
+03 Guild Archimaga
+
+#6000
+01 Gild Bárbara (1 etapa)
+03 Gild Bárbara
+
+#6001
+01 Gild Bárbara (2 escalones)
+03 Gild Bárbara
+
+#6002
+01 Gild Bárbara (3 pasos)
+03 Gild Bárbara
+
+#6003
+01 Gild Bárbara (4 etapas)
+03 Gild Bárbara
+
+#6004
+01 Gild Bárbara (5 pasos)
+03 Gild Bárbara
+
+#6005
+01 Gild Bárbara (6 escalones)
+03 Gild Bárbara
+
+#6100
+01 Gild druida (1 etapa)
+03 Gild druida
+
+#6101
+01 Guild druida (2 etapas)
+03 Gild druida
+
+#6102
+01 Guild druida (3 etapas)
+03 Gild druida
+
+#6103
+01 Guild druida (4 etapas)
+03 Gild druida
+
+#6104
+01 Guild druida (5 etapas)
+03 Gild druida
+
+#6105
+01 Guild druida (6 etapas)
+03 Gild druida
+
+#6200
+01 Gild ladrón (1 etapa)
+03 Gild Vora
+
+#6201
+01 Guildhora (2 etapas)
+03 Gild Vora
+
+#6202
+01 Gild ladrón (3 etapas)
+03 Gild Vora
+
+#6203
+01 Guildhora (4 etapas)
+03 Gild Vora
+
+#6204
+01 Guildhora (etapa 5)
+03 Gild Vora
+
+#6205
+01 Guildhora (etapa 6)
+03 Gild Vora
+
+#6300
+01 Guild Masters de acero (1 etapa)
+03 Guild Masters of Steel
+
+#6301
+01 Guild Masters de acero (2 etapas)
+03 Guild Masters of Steel
+
+#6302
+01 Guild Masters de acero (3 etapas)
+03 Guild Masters of Steel
+
+#6303
+01 Guild Masters of Steel (4 etapas)
+03 Guild Masters of Steel
+
+#6304
+01 Guild Masters de acero (5 etapas)
+03 Guild Masters of Steel
+
+#6305
+01 Guild Masters de acero (6 etapas)
+03 Guild Masters of Steel
+
+#6400
+01 Guild Armero (1 etapa)
+03 Guild Armero
+
+#6401
+01 Guild Armero (2 etapas)
+03 Guild Armero
+
+#6402
+01 Guild Armero (3 etapas)
+03 Guild Armero
+
+#6403
+01 Guild Armero (4 etapas)
+03 Guild Armero
+
+#6404
+01 Guild Armero (5 etapas)
+03 Guild Armero
+
+#6405
+01 Guild Armero (6 etapas)
+03 Guild Armero
+
+#6500
+01 Herrero Gild (1 etapa)
+03 Gild Herrero
+
+#6501
+01 Herrero Gild (2 etapas)
+03 Gild Herrero
+
+#6502
+01 Herrero Gild (3 etapas)
+03 Gild Herrero
+
+#6503
+01 Herrero Gild (4 etapas)
+03 Gild Herrero
+
+#6504
+01 Herrero Gild (5 etapas)
+03 Gild Herrero
+
+#6505
+01 Herrero Gild (6 etapas)
+03 Gild Herrero
+
+#6600
+01 Guild of the hechicero (1 etapa)
+03 Gild el mago
+
+#6601
+01 Guild of the hechicero (2 etapas)
+03 Gild el mago
+
+#6602
+01 Guild of the hechicero (3 etapas)
+03 Gild el mago
+
+#6603
+01 Guild of the hechicero (4 etapas)
+03 Gild el mago
+
+#6604
+01 Guild of the hechicero (5 etapas)
+03 Gild el mago
+
+#6605
+01 Guild of the hechicero (6 etapas)
+03 Gild el mago
+
+#6700
+01 Gild Nigromante (1 etapa)
+03 Gild Nigromante
+
+#6701
+01 Gild Nigromante (2 etapas)
+03 Gild Nigromante
+
+#6702
+01 Gild Nigromante (3 etapas)
+03 Gild Nigromante
+
+#6703
+01 Gild Nigromante (4 etapas)
+03 Gild Nigromante
+
+#6704
+01 Gild Nigromante (5 etapas)
+03 Gild Nigromante
+
+#6705
+01 Gild Nigromante (6 etapas)
+03 Gild Nigromante
+
+#6800
+01 Gild Bandiera (1 etapa)
+03 Gild Bandiera
+
+#6801
+01 Gild Bandiera (2 escalones)
+03 Gild Bandiera
+
+#6802
+01 Gild Bandiera (3 etapas)
+03 Gild Bandiera
+
+#6803
+01 Gild Bandiera (4 etapas)
+03 Gild Bandiera
+
+#6804
+01 Gild Bandiera (5 escalones)
+03 Gild Bandiera
+
+#6805
+01 Gild Bandiera (6 etapas)
+03 Gild Bandiera

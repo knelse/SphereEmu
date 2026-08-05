@@ -1,8 +1,7 @@
-01 Эликсир Физической Атаки
-02 эликсир физической атаки
-03 эликсир физической атаки
-
-101 Эликсир физической атаки низкой концентрации. Увеличивает Физическую Атаку на 5%.
-102 Эликсир физической атаки средней концентрации. Увеличивает Физическую Атаку на 7.5%.
-103 Эликсир физической атаки высокой концентрации. Увеличивает Физическую Атаку на 10%.
-104 Эликсир физической атаки высокой концентрации. Увеличивает Физическую Атаку на 15%.
+01 Elixir Do Ataque Fнsico
+02 Elixir do Ataque Fнsico
+03 Elixir do Ataque Fнsico
+101 Elixir de ataque fнsico de baixa concentraзгo. Aumenta o Ataque Fнsico em 5%.
+102 Elixir de ataque fнsico de concentraзгo mйdia. Aumenta o ATQ fнsico em 7.5%.
+103 Elixir do ataque fнsico de alta concentraзгo. Aumenta o Ataque Fнsico em 10%.
+104 Elixir do ataque fнsico de alta concentraзгo. Aumenta o Ataque Fнsico em 15%.

@@ -1,77 +1,80 @@
-01 pedra de teleporte
-02 pedras de teleporte
-03 pedra de teleporte
-11 use a pedra equanto estiver parado no teleporte.
-12 esta pedra somente vale para localizações neste continente.
-13 este teleporte só pode ser usado pelos donos do castelo.
-1800 para Sheepstone
-1801 para Bangville
-1802 para Sunpool
-1803 para Torweal
-1809 para a estrada Sunpool-Torweal
-1810 para Nomrad
-1811 para Gifes 
-1812 para Umrad
-1813 para Anhelm
-1852 para a estrada Sheepstone-Sunpool 
-1853 para o campo na estrada Sheepstone-Sunpool
-1854 para o nordeste de Hyperion
-1855 para Floresta Umrad (Hyperion)
-1856 para a Floresta Prateada (Hyperion)
-1857 para a Estrada Sheepstone-Torweal
-1858 para as montanhas entre Sheepstone e Bangville
-1859 para o lago Temer
-1860 para a estrada Sheepstone-Sunpool, próximo ao lago Vortex
-1861 para a estrada Sunpool-Bangville, próximo  ao lago Vortex
-1862 para a ilha Heber (Lago Temer)
-1863 para a ilha Foros (Lago Vortex)
-1864 para desembocadura do Nerey
-1865 para a ilha Deyros (Lago Vortex)
-1866 na Floresta Ocidental (Hyperion)
-1877 para desembocadura do Dioma
-1878 para Floresta Horton (Hyperion)
-1879 para as montanhas proximas a estrada Sunpool-Torweal
-1880 para ilha Patros (Lago Satin)
-1881 para cordilheira sudeste (Hyperion)
-1882 para norte da floresta Coyton (Hyperion)
-1883 para canto sudoeste de  Hyperion
-1884 para ponte Tantal
-1885 para Obol
-1900 para Castelo Lieze (Hyperion)
-1901 para Castelo Fief (Hyperion)
-1902 para Castelo Aris (Hyperion)
-1903 para Castelo Lotar (Hyperion)
-1904 para Castelo Eikum-kas (Hyperion)
-1905 para Castelo Gedeon (Hyperion)
-1906 para Castelo Chatelier (Hyperion)
-1907 para Castelo Tuanod (Hyperion)
-1908 para Castelo Peltier (Hyperion)
-1909 para Castelo Care-Royal (Hyperion)
-1910 para Castelo Blessendor (Hyperion)
-1911 para Castelo Temoval (Hyperion)
-1912 para Castelo Atral (Hyperion)
-1913 para Castelo Kablac (Hyperion)
-1914 para Castelo Davengar (Hyperion)
-1915 para Castelo Sabulat (Hyperion)
-1916 para Castelo Defensat (Hyperion)
-1917 para Castelo Aionat (Hyperion)
-1918 para Castelo Triumfaler (Hyperion)
-1919 para Castelo Bagnarak (Haron)
-1920 para Castelo Kabrad  (Haron)
-1921 para Castelo Set (Haron)
-1922 para Castelo Lender  (Haron)
-1923 para Castelo Keles  (Haron)
-1924 para Castelo Sheprostan (Haron)
-1925 para Castelo Orkobien (Haron)
-1926 para Castelo Kanuak (Haron)
-1927 para Castelo Aldarnon (Haron)
-1928 para Castelo Iong (Haron)
-1929 para Castelo Elek (Phoebe)
-1930 para Castelo Gavot (Phoebe)
-1931 para Castelo Kandur (Phoebe)
-1932 para o Castelo Immertel (Rodos)
-1933 para o Castelo Narcissus (Rodos)
-1934 para o Castelo Randen (Rodos)
-1935 para o Castelo Nirgun (Rodos)
-1936 para o Castelo Gelgivinn (Rodos)
-1979 pata a Torre Negra (Charon)
+01 distintivo de teletransporte
+02 etiquetas de teletransporte
+03 distintivo de teletransporte
+11 Use o distintivo em pé no teletransporte.
+12 O distintivo só funciona dentro do continente.
+13 Este teletransporte só pode ser usado pelos proprietários do Castelo.
+1800 Em Shipstone
+1801 Bangville
+1802 Em Sanpul
+1803 Em Torville
+1809 A estrada Sanpul-Torville
+1810 Nomrad
+1811 Em Gifes
+1812 Umrad
+1813 Ángel
+1850 A Estrada Norte Hyperion
+1851 A borda Noroeste Hyperion
+1852 A estrada Shipstone-Sunpool
+1853 Em um campo perto da estrada Shipstone-Bangville
+1854 Nordeste Hyperion
+1855 Floresta de Umrad (Hyperion)
+1856 Floresta de prata (Hyperion)
+1857 A estrada Shipstone-Torville
+1858 Para as montanhas entre Shipstone e Bangville
+1859 O Lago Temer
+1860 Na estrada Sunpool-Shipstone, perto do lago Vortex
+1861 Na estrada Sunpool-Bangville, perto do lago Vortex
+1862 Na Ilha de Geber.Temer)
+1863 Na Ilha de Foros (oz.Vórtice)
+1864 A foz do Rio Nereu
+1865 Na Ilha de deiros (oz.Vórtice)
+1866 A floresta Oriental (Hyperion)
+1877 A foz do rio Dioma
+1878 A floresta de Horton (Hyperion)
+1879 Nas montanhas perto da estrada Sanpul-Torville
+1880 Na Ilha de Patros.Cetim)
+1881 O bolso da Montanha do Sudeste (Hyperion)
+1882 Norte da floresta de Coyton (Hyperion)
+1883 A borda sudoeste Hyperion
+1884 A Ponte tântalo
+1885 Aubol
+1900 Castelo Liège (Hyperion)
+1901 Castelo Fief (Hyperion)
+1902 Castelo Aris (Hyperion)
+1903 Castelo de Lator (Hyperion)
+1904 Castelo Eikum-CAS (Hyperion)
+1905 Castelo Gideão (Hyperion)
+1906 Castelo Châtelier (Hyperion)
+1907 Castelo Tuanod (Hyperion)
+1908 Castelo Peltier (Hyperion)
+1909 Castelo de Kare-Royal (Hyperion)
+1910 Castelo Blessendor (Hyperion)
+1911 Castelo Ternoval (Hyperion)
+1912 Castelo de Ammalael (Hyperion)
+1913 Para o Castelo de Salto (Hyperion)
+1914 Castelo Devanagari (Hyperion)
+1915 Castelo Sabulat (Hyperion)
+1916 Ao castelo Defense (Hyperion)
+1917 O Castelo de Ayonath (Hyperion)
+1918 Castelo do Triunfo (Hyperion)
+1919 Castelo Bagarnac (Charon)
+1920 Castelo Cabrad (Charon)
+1921 Castelo Set (Charon)
+1922 Castelo Lander (Charon)
+1923 Castelo Keles (Charon)
+1924 Castelo de Sheprostan (Charon)
+1925 Castelo Orkobien (Charon)
+1926 Castelo de Canouac (Charon)
+1927 Castelo Aldarnon (Charon)
+1928 Castelo Yong (Charon)
+1929 Ao fechamento de Elec (Feb)
+1930 Castelo Gavot (Feb)
+1931 Castelo de Kandur (Feb)
+1932 Castelo Immortel (Rhodes)
+1933 Castelo Narciso (Rhodes)
+1934 Castelo Randen (Rhodes)
+1935 Castelo Nirgun (Rhodes)
+1936 Castelo de Gelgivinn (Rhodes)
+1937 O Castelo de Ile-Suilly-Rua
+1979 A Torre Negra (Charon)

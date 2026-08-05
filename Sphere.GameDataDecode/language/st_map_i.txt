@@ -2,30 +2,43 @@
 03 mappa
 
 #2000
-01 Mappa di Hyperion
+01 Mappa Di Hyperion
+
 #2001
-01 Hyperion, N-E
+01 Hyperion, S-V
+
 #2002
-01 Hyperion, N-W
+01 Hyperion, S-Z
+
 #2003
-01 Hyperion, W
+01 Hyperion, Z
+
 #2004
-01 Hyperion, S-W
+01 Hyperion, U-Z
+
 #2005
-01 Hyperion, S-E
+01 Hyperion, YU-V
+
 #2006
-01 Hyperion, E
+01 Hyperion, In
+
 #2007
-01 Mappa di Sheepstone
+01 Mappa Di Shipstone
+
 #2008
-01 Mappa di Torweal
+01 Mappa Di Torvil
+
 #2009
-01 Mappa di Bangville
+01 Mappa Di Bangville
+
 #2010
-01 Mappa di Sunpool
+01 Mappa Di Sanpool
+
 #2011
-01 Mappa di Charon
+01 Mappa Di Caronte
+
 #2012
-01 Mappa di Phoebe
+01 Mappa Di Phoebus
+
 #2013
-01 Mappa di Rodos
+01 Mappa Di Rodi

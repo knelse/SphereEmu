@@ -1,0 +1,99 @@
+01 Pantalones
+03 pantalones
+100 En la batalla protege de las armas de los enemigos.
+200 fuerza
+201 absorción
+202 seguridad
+203 salud
+204 meditaciones
+205 precisión
+206 Ether
+207 valores
+
+#373
+01 Pantalones
+03 pantalones
+
+#374
+01 Pantalones de cuero
+03 pantalones de cuero
+
+#375-376
+01 Pantalones de cuero remachados
+03 pantalones de cuero remachados
+
+#377-378
+01 Pantalones de malla
+03 pantalones de malla
+
+#379-381
+01 Polainas de placa
+03 polainas de placa
+
+#382-384
+01 Polainas de placas antiguas
+03 polainas de placas antiguas
+
+#3121-3122
+01 Pantalones
+03 pantalones
+
+#3123-3124
+01 Pantalones de cuero
+03 pantalones de cuero
+
+#3125-3128
+01 Pantalones de cuero remachados
+03 pantalones de cuero remachados
+
+#3129-3132
+01 Pantalones de malla
+03 pantalones de malla
+
+#3133-3138
+01 Polainas de placa
+03 polainas de placa
+
+#3139-3145
+01 Polainas de placas antiguas
+03 polainas de placas antiguas
+
+#4471-4479
+01 Polainas de placas antiguas
+03 polainas de placas antiguas
+
+#4742
+01 Leggings de placa negra
+03 leggings de placa negra
+
+#4743
+01 Polainas de placa blanca
+03 polainas de placa blanca
+
+#6371
+01 Polainas de combate
+03 polainas de combate
+
+#6372
+01 Polainas de combate de cuero
+03 polainas de combate
+
+#6373
+01 Polainas de combate remachadas
+03 polainas de combate
+
+#6374
+01 Polainas de combate de malla
+03 polainas de combate
+
+#6375
+01 Polainas de combate de placas
+03 polainas de combate
+
+#6376
+01 Antiguas polainas de combate
+03 polainas de combate
+
+#6760
+01 Polainas de hueso
+03 polainas de hueso

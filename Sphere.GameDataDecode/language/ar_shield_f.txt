@@ -1,0 +1,161 @@
+01 Bouclier en bois
+03 bouclier en bois
+200 prouesses
+201 force
+202 absorption
+203 écarts
+204 sécurité
+205 invulnérabilité
+206 santé
+207 vie
+208 méditations
+209 Prana
+210 forces
+211 agilité
+212 Grandeur
+213 concentrations
+214 terres
+215 eau
+216 air
+217 feu
+218 éléments
+219 valeurs
+220 forces
+221 agilité
+222 Grandeur
+223 concentrations
+224 intégrité
+225 éléments
+226 éléments
+
+#313
+01 Bouclier en bois
+03 bouclier en bois
+
+#314-316
+01 Grand bouclier
+03 grand bouclier
+
+#317-319
+01 Bouclier en bois tapissé
+03 bouclier en bois tapissé
+
+#320-322
+01 Grand bouclier tapissé
+03 grand bouclier tapissé
+
+#323-324
+01 Bouclier de fer
+03 bouclier de fer
+
+#3061-3064
+01 Bouclier en bois
+03 bouclier en bois
+
+#3065-3079
+01 Grand bouclier
+03 grand bouclier
+
+#3080-3094
+01 Bouclier en bois tapissé
+03 bouclier en bois tapissé
+
+#3095-3109
+01 Grand bouclier tapissé
+03 grand bouclier tapissé
+
+#3110-3120
+01 Bouclier de fer
+03 bouclier de fer
+
+#4462-4470
+01 Bouclier de fer
+03 bouclier de fer
+
+#5871-5876
+01 Bouclier du chasseur
+03 bouclier du chasseur
+
+#6386-6388
+01 Aspis
+03 aspis
+
+#6389
+01 Fer Aspis
+03 aspis
+
+#6390
+01 Aspis En Acier
+03 aspis
+
+#6391
+01 Grand Aspis
+03 aspis
+
+#6470
+01 Bouclier de longévité en bois
+03 bouclier de longévité
+
+#6471
+01 Grand bouclier de longévité
+03 bouclier de longévité
+
+#6472
+01 Bouclier de longévité en bois tapissé
+03 bouclier de longévité
+
+#6473
+01 Grand bouclier de longévité tapissé
+03 bouclier de longévité
+
+#6474
+01 Bouclier de longévité de fer
+03 bouclier de longévité
+
+#6475
+01 Ancien bouclier de longévité
+03 bouclier de longévité
+
+#6559
+01 Bouclier de Forge en bois
+03 bouclier de Forge
+
+#6560
+01 Grand bouclier de Forge
+03 bouclier de Forge
+
+#6561-6562
+01 Bouclier de Forge tapissé
+03 bouclier de Forge
+
+#6563
+01 Bouclier de Forge de fer
+03 bouclier de Forge
+
+#6564
+01 Bouclier de Forge antique
+03 bouclier de Forge
+
+#6660
+01 Bouclier enchanté en bois
+03 bouclier enchanté
+
+#6661
+01 Grand bouclier enchanté
+03 bouclier enchanté
+
+#6662-6663
+01 Bouclier enchanté tapissé
+03 bouclier enchanté
+
+#6664
+01 Bouclier enchanté de fer
+03 bouclier enchanté
+
+#6665
+01 Bouclier enchanté antique
+03 bouclier enchanté
+
+#6756
+01 Bouclier osseux
+03 bouclier osseux

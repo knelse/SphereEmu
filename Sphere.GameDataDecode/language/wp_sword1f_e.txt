@@ -1,30 +1,34 @@
-
-200 Of adventure
-201 Of silence
-202 Of prophecy
-203 Of secret
-204 Of myths
-205 Of being
-206 Of campaigns
-207 Of existence
-208 Of legend
-209 Of peace
+200 Adventures
+201 Silence
+202 Prophecies
+203 Secrets
+204 Myths
+205 Genesis
+206 Hiking
+207 Existence
+208 Legends
+209 Mira
 
 #2700-2701
-01 Saber
-03 saber
+01 The Saber
+03 A saber
+
 #2702-2703
-01 Great sword
-03 great sword
+01 The Great Sword
+03 The great sword
+
 #2704-2705
 01 Elite katana
 03 elite katana
+
 #2706-2707
-01 Runic gladius
+01 Runic Gladius
 03 runic gladius
+
 #2708-2709
-01 Legendary crystal sword
-03 legendary crystal sword
+01 The Legendary Crystal Sword
+03 The legendary Crystal sword
+
 #2710-2714
-01 Dragon's sword
-03 dragon's sword
+01 The Dragon Sword
+03 The dragon sword

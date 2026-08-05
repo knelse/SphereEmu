@@ -1,9 +1,10 @@
-01 Chave do celeiro
-03 chave do celeiro
+01 Chave de celeiro
+03 chave de celeiro
 05 Celeiro
-5021 Mercado, Sheepstone
-5022 Mercado, Bangville
-5023 Mercado, Sunpool
-5024 Mercado, Torweal
-5025 Mercado, Nomrad
-5026 Mercado, Gifes
+5021 Praça do comércio, Shipstone
+5022 Praça do comércio, Bangville
+5023 Praça do comércio, Sanpul
+5024 Praça do comércio, Torville
+5025 Praça do comércio, Nomrad
+5026 Praça do comércio, Gifes
+5038 Praça do Comércio, Torre do lago, a nordeste de Torville

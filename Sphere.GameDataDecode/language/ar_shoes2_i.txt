@@ -1,16 +1,14 @@
-01 stivali alti
-03 stivali alti
-05 nuovi
-06 usati
-07 lacerati
-
-100 Proteggono dalle armi dei nemici in battaglia.
-
-200 della durata
-201 dell'assorbimento
-202 della protezione
-203 della salute
-204 della meditazione
-205 della precisione
-206 del' etere
-207 della stima
+01 Stivali
+03 stivali
+05 nuovo
+06 usurati
+07 strappato
+100 In battaglia protegge dalle armi degli avversari.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 meditazione
+205 precisione
+206 etere
+207 valori

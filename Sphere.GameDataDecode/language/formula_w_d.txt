@@ -1,0 +1,7 @@
+01 Formel
+02 formeln
+03 formel
+100 Die Formel der Waffengilde
+10000 Mit dieser Formel können Sie Folgendes erhalten %r1. Für die Produktion ist es notwendig %a1 und die Stufe in der Waffengilde sollte nicht niedriger sein %z1.
+10001 Mit dieser Formel können Sie Folgendes erhalten %r1. Für die Produktion sind %a1 und %a2 und die Stufe in der Waffengilde sollte nicht niedriger sein %z1.
+10002 Mit dieser Formel können Sie Folgendes erhalten %r1. Für die Produktion sind %a1, %a2 und %a3 und die Stufe in der Waffengilde sollte nicht niedriger sein %z1.

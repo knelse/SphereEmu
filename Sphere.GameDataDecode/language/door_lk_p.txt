@@ -1,5 +1,5 @@
-01 Porta para a masmorra
-03 Porta para a masmorra
-10 Você precisa da chave para abrir a porta.
-11 Porta aberta!
-12 Porta fechada.
+01 A porta do calabouço
+03 a porta do calabouço
+10 A porta abre com chave
+11 A porta está aberta!
+12 A porta fechou-se.

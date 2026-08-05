@@ -1,9 +1,7 @@
-01 Fórmula do pó de enfraquecimento
-02 Fórmula do pó de enfraquecimento
-03 Fórmula do pó de enfraquecimento
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de pó de atenuação
+02 receita de pó de atenuação
+03 receita de pó de atenuação
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se obter o pó de enfraquecimento, primeiro ache Camelic, Serden e ferro. Mixture-os na fornalha queimando galhos secos e use o pó obtido. Não se esqueça que para se obter este pó você tem que ser no minimo doutor.
+    Para obter pó de atenuação, primeiro obtenha camélica, corações e ferro. Misture - os no forno, derreta o forno com lenha e use o pó resultante. Não se esqueça de que, para realizar essa reação, seu grau não deve ser menor que o médico.
+    

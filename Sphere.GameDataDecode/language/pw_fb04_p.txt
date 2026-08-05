@@ -3,32 +3,38 @@
 03 pó
 
 #680
-01 Pó de defesa da irmandade
+01 Pó de proteção de irmãs
 02 pó
 03 pó
-100 Este pó afeta somente membros dos clãs irmãos
+100 Este pó só funciona no clã da irmã
+
 #850
-01 Pó do ataque mágico
-02 Pó do ataque mágico
-03 Pó do ataque mágico
+01 Pó do ataque do Culto
+02 pó do ataque do Culto
+03 pó do ataque do Culto
+
 #851
 01 Saidakra
-02 Saidakra
-03 saidakra
-100 Este pó é a única maneira de imediatamente banir um dos 6 da Sphere.
+02 saidakra
+03 saidakru
+100 Este pó é o único meio de expulsar instantaneamente qualquer um dos Seis da esfera.
+
 #852
-01 Pó de cura mágico 
-02 Pó de cura mágico 
-03 Pó de cura mágico 
+01 Culto de cura em pó
+02 culto de cura em pó
+03 culto de cura em pó
+
 #853
-01 Pó de defesa mágico
-02 Pó de defesa mágico
-03 Pó de defesa mágico
+01 Pó da proteção do Culto
+02 pó da proteção do Culto
+03 pó da proteção do Culto
+
 #875
-01 Pó da justiça
-02 pó da justiça
-03 pó da justiça
+01 Pó da Justiça
+02 pó da Justiça
+03 pó da Justiça
+
 #876
-01 Pó dos espíritos malígnos
-02 pó dos espíritos malígnos
-03 pó dos espíritos malígnos
+01 Pó do mal
+02 pó do mal
+03 pó do mal

@@ -2,30 +2,43 @@
 03 map
 
 #2000
-01 Map of Hyperion
+01 Hyperion Map
+
 #2001
-01 Hyperion, N-E
+01 Hyperion, C-V
+
 #2002
-01 Hyperion, N-W
+01 Hyperion, S-Z
+
 #2003
-01 Hyperion, W
+01 Hyperion, Z
+
 #2004
-01 Hyperion, S-W
+01 Hyperion, South-West
+
 #2005
-01 Hyperion, S-E
+01 Hyperion, Yu-V
+
 #2006
-01 Hyperion, E
+01 Hyperion, In
+
 #2007
-01 Map of Sheepstone
+01 Shipstone Map
+
 #2008
-01 Map of Torweal
+01 Torvil's Map
+
 #2009
 01 Map of Bangville
+
 #2010
-01 Map of Sunpool
+01 Map of Sanpool
+
 #2011
-01 Map of Charon
+01 Charon's Map
+
 #2012
-01 Map of Phoebe
+01 Phoebus Map
+
 #2013
-01 Map of Rodos
+01 Map of Rhodes

@@ -1,0 +1,161 @@
+01 Escudo de madera
+03 escudo de madera
+200 valor
+201 fuerza
+202 absorción
+203 desviaciones
+204 seguridad
+205 invulnerabilidad
+206 salud
+207 vida
+208 meditaciones
+209 Prana
+210 fuerzas
+211 agilidad
+212 grandeza
+213 concentraciones
+214 tierra
+215 agua
+216 aire
+217 fuego
+218 elementos
+219 valores
+220 fuerzas
+221 agilidad
+222 grandeza
+223 concentraciones
+224 integridad
+225 elementos
+226 elementos
+
+#313
+01 Escudo de madera
+03 escudo de madera
+
+#314-316
+01 Gran escudo
+03 gran escudo
+
+#317-319
+01 Escudo de madera tapizado
+03 escudo de madera tapizado
+
+#320-322
+01 Escudo grande tapizado
+03 escudo grande tapizado
+
+#323-324
+01 Escudo de hierro
+03 escudo de hierro
+
+#3061-3064
+01 Escudo de madera
+03 escudo de madera
+
+#3065-3079
+01 Gran escudo
+03 gran escudo
+
+#3080-3094
+01 Escudo de madera tapizado
+03 escudo de madera tapizado
+
+#3095-3109
+01 Escudo grande tapizado
+03 escudo grande tapizado
+
+#3110-3120
+01 Escudo de hierro
+03 escudo de hierro
+
+#4462-4470
+01 Escudo de hierro
+03 escudo de hierro
+
+#5871-5876
+01 Escudo del cazador
+03 escudo del cazador
+
+#6386-6388
+01 Aspis
+03 aspis
+
+#6389
+01 Aspis De Hierro
+03 aspis
+
+#6390
+01 Aspis De Acero
+03 aspis
+
+#6391
+01 El Gran Aspis
+03 aspis
+
+#6470
+01 Escudo de madera de la longevidad
+03 escudo de la longevidad
+
+#6471
+01 El gran escudo de la longevidad
+03 escudo de la longevidad
+
+#6472
+01 Escudo de longevidad de madera tapizada
+03 escudo de la longevidad
+
+#6473
+01 Escudo de longevidad grande tapizado
+03 escudo de la longevidad
+
+#6474
+01 Escudo de hierro de la longevidad
+03 escudo de la longevidad
+
+#6475
+01 Escudo antiguo de la longevidad
+03 escudo de la longevidad
+
+#6559
+01 Escudo de herrería de madera
+03 escudo de herrería
+
+#6560
+01 Gran escudo de herrería
+03 escudo de herrería
+
+#6561-6562
+01 Escudo de herrería tapizado
+03 escudo de herrería
+
+#6563
+01 Escudo de herrería de hierro
+03 escudo de herrería
+
+#6564
+01 Escudo de herrería antigua
+03 escudo de herrería
+
+#6660
+01 Escudo encantado de madera
+03 escudo encantado
+
+#6661
+01 Gran escudo encantado
+03 escudo encantado
+
+#6662-6663
+01 Escudo encantado tapizado
+03 escudo encantado
+
+#6664
+01 Escudo encantado de hierro
+03 escudo encantado
+
+#6665
+01 Antiguo escudo encantado
+03 escudo encantado
+
+#6756
+01 Escudo óseo
+03 escudo óseo

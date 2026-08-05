@@ -1,9 +1,6 @@
-01 Коробка конфет
-02 Коробки конфет
-03 Коробку конфет
-10 Коробка конфет
-
-101 Осталось зарядов:
-
-100 Волшебная коробка конфет. Случайным образом навешивает мутатор.
-
+01 Caixa de doces
+02 Caixas de doces
+03 Caixa de doces
+10 Caixa de doces
+101 Restam cargas:
+100 Caixa Mбgica de doces. Um mutante aparece aleatoriamente.

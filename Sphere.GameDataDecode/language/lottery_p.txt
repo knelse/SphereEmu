@@ -1,28 +1,31 @@
-01 Лотерейный билет
-03 лотерейный билет
-
-101 Вы выиграли %s.
-102 Нет места для предмета. 
-103 Ваш билет не выиграл.
-104 Билеты должны лежать в инвентаре.
+01 Bilhete de loteria
+03 bilhete de loteria
+101 Vocк ganhou %s.
+102 Nгo hб espaзo para o objeto.
+103 O seu bilhete nгo ganhou.
+104 Os bilhetes devem estar no inventбrio.
 
 #60
-01 Лотерейный билет (класс 1)
-02 лотерейные билеты (класс 1)
-03 лотерейный билет (класс 1)
+01 Bilhete de loteria (classe 1)
+02 bilhetes de loteria (classe 1)
+03 bilhete de loteria (classe 1)
+
 #61
-01 Лотерейный билет (класс 2)
-02 лотерейные билеты (класс 2)
-03 лотерейный билет (класс 2)
+01 Bilhete de loteria (classe 2)
+02 bilhetes de loteria (classe 2)
+03 bilhete de loteria (classe 2)
+
 #62
-01 Лотерейный билет (класс 3)
-02 лотерейные билеты (класс 3)
-03 лотерейный билет (класс 3)
+01 Bilhete de loteria (classe 3)
+02 bilhetes de loteria (classe 3)
+03 bilhete de loteria (classe 3)
+
 #63
-01 Лотерейный билет (класс 4)
-02 лотерейные билеты (класс 4)
-03 лотерейный билет (класс 4)
+01 Bilhete de loteria (classe 4)
+02 bilhetes de loteria (classe 4)
+03 bilhete de loteria (classe 4)
+
 #64
-01 Лотерейный билет (класс 5)
-02 лотерейные билеты (класс 5)
-03 лотерейный билет (класс 5)
+01 Bilhete de loteria (classe 5)
+02 bilhetes de loteria (classe 5)
+03 bilhete de loteria (classe 5)

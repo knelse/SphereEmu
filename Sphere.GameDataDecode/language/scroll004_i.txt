@@ -1,28 +1,29 @@
-01 Basi dell'Alchimia (parte uno)
-03 Basi dell'Alchimia (parte uno)
-
+01 Fondamenti di alchimia (prima parte)
+03 Fondamenti di alchimia (prima parte)
 TEXT
-    ALL'ONORABILE LETTORE DALL'AUTORE
-    Questo manoscritto intende aiutare i maghi esperti ed ad aumentare la seggezza degli studenti.
-
-    Cui che rispetterà l'arte dell'Alchimia e che studierà assiduamente otterrà grandi risultati, mentre colui che sarà irrispettoso verso questa conoscenza rinascerò in un debole reame.
-
-    Bertrand di Leon, Rettore della Scuola dell'Alchimia, mago di corte di Sua Maestà Leon, Re di Sphere. Febbraio, 1072 dopo la crazione di Sphere.
-
-    SULLA FORNACE ALCHEMICA
-    Senza una fornace alchemica, creata con grande abilità e incantata magicamente, è impossibile raggiungere l'apice nella nostra più grande e intricata delle arti. Tutto è racchiuso nel potere della fornace che contiene in se stessa il potere dei quattro elementi come una creatura vivente. Colui che crede che ci sia qualcosa oltre il suo potere erra nella sua arroganza! Non esiste nulla di più potente, o almeno tra tutte le cose fin ora scoperte. Comunque ai maghi inesperti non serve la fornace magica. Infatti uno dei più grandi maghi, Amilus di Nomrad, nell'anno 1008 creò un recipiente alchemico, più leggero e contenente molte delle qualità della fornace alchemica. Essendo piccola non permettete di completare tutte le reazioni, ma molte delle più importanti. Questo recipiente alchemico verrà utilizzato dai maghi inesperti, così come i maghi esperti che non hanno la possibilità di utilizzare la fornace.
-
-    VARIE REAZIONI ALCHEMICE
-    Oh, Onorabile Lettore! Senza un sistema, chiaro e trasparente, che permetta di collocare qualsiasi elemento alchemico, è praticamente impossibile capirela saggezza della nostra scienza. Molti uomini colti cercarono di gerarchizzare centinaia di formule conosciute alla nostra scienza. Molti dei loro metodi era abbastanza ingegnosi e potrebbero risultare utili; alcuni invece sono falsi e ingannevoli; altri semplicmente ridicoli. Ma non parliamo di loro ora, in quanto ho creato con accuratezza una classificazione chiara, capibile e utile. Oggi questa classificazione è accettata dalla maggioranza degli alchemisti più famosi
-    La classificazione si compone di tre grandi categorie: principali, stabili e mutabili.
-
-    Per completare una reazione principale una persona necessita di tre ingredienti: una pietra, una pianta e la polvere di Faynal. Queste reazioni sono semplice, poche e generano mediocri risultati e di uso neutrale.
-
-    Le reazioni stabili sono lo sviluppo e la sofisticazzione delle reazioni principali. Queste reazioni richiedono quattro ingredienti: una pietra, una pianta, un metallo e la polvere di Amilus. Queste reazioni generano sia utili risultati, ma anche molto pericolosi, così che questa arte sia gestita con grande cura in modo che non cada nelle mani sbagliate.
-    A proposito, molte persone ignoranti errano nel pensare che, al contrario di quanto detto, le reazioni principali siano una semplificazione di quelle stabili, così che alleggeriscano la reazione con la polvere di Faynal al posto che quella di Amilus. Pateticamente sbagliano nel loro errore, infatti recenti studi nell'archivio di Sheepstone ha provato che esisteva una reazione tricomponente in Sphere, ma al posto che la polvere di Faynal si utilizzavano le radici di Sildarill, una pianta ora estinta.
-    Il recipiente alchemico di Amilus può sopportare solo i cinque metalli di base, mentre la fornace alchemica permette di utilizzare gli altri metalli oltre ai cinque di base, come lo stagno, il mercurio, il platino; questa una prima differenza tra i due strumenti alchemici.
-    I risultati di una reazione stabile o principale non sono una sorpresa per un mago dotato di intelletto: con determinate abilità ed esperienza un mago può dire a priori quali siano le proprietà degli ingredienti che prendono parte alla reazione.
-
-    Le reazioni mutabili non obbediscono a nessuna legge; vengono completate con tre o quattro ingredienti. L'unico elemento che accomuna tutte le reazioni mutabili è la polvere speciale utilizzata, mentre tutti gl'altri componenti possono variare e non sono necessariamente pietre o piante. Alcune richiedono di gettare un paio di vecchi stivali nella fornace e senza crederci ottenere risultati eccellenti.
-
-    Molti uomini colti considerano le reazioni mutabili essere una creazione del caos, a parte Jacknaspe De Orco, che si fa chiamare Gwydeon e che ora si nasconde nel folto delle foreste di Charon in conseguenza della sua incapacità magica! Comunque la promessa che diedi sotto la paura della morte mi forza a menzionare la sua falsa teoria, ovver che presumibilimente qualsiasi cosa in questo mondo ha nel suo interno il nome dell'essenza, scritto in un linguaggio incomprensibile. L'alfabeto di questo linguaggio consiste solo in quattro lettere che corrispondono ai quattro elementi: terra, aria, acqua e fuoco. Secondo De Orco, nelle reazioni mutabili queste lettere-elemento si mescolano e qualche volta producono un mondo reale, il cui aspetto è quello degli oggetti conosciuti, altre volte non portano a nessun risultato se non a una catastrofe. Comunque la teoria di De Orco non è nulla se non senza senso, in quanto lui stesso non è mai stato in grado di leggere una parola che sia in correlazione con qualche oggetto.
+    AL NOBILE LETTORE DELL'AUTORE
+    Scrivo questo ai maghi esperti per aiutare e ai discepoli per l'accumulo di saggezza.
+    
+    Coloro che rispettano la scienza dell'alchimia e che sono diligenti nel suo studio trarranno grandi benefici, coloro che non sono consapevoli di questa conoscenza riceveranno una rinascita in una cattiva sorte.
+    
+    Bertrand di Léon, rettore della scuola di alchimisti, mago di corte di Sua Maestà Leon, re della sfera. Febbraio è il mese dell'anno 1072 dalla creazione della sfera.
+    
+    A PROPOSITO DI FORNACE ALCHEMICA
+    Senza una fornace alchemica, sapientemente realizzata e magicamente lavorata, è impensabile raggiungere altezze nella nostra più grande e raffinata delle arti. Tutto è soggetto a una fornace che combina le proprietà dei quattro elementi, simile a un essere vivente. E chi pensa che ci sia qualcosa al di là del suo controllo, si sbaglia nel suo orgoglio! Perché non c'è al di là del controllo, c'è solo ciò che non è stato scoperto da noi. Tuttavia, non dovresti avvicinare un mago inesperto a una fornace alchimistica. Uno dei più grandi maghi Amilus Nomradsky nell'anno 1008 ha realizzato una pentola alchemica, che a basso peso e volume conserva molte delle virtù di una grande fornace alchemica. Essendo di piccole dimensioni, consente di effettuare, anche se non tutte, ma molte delle reazioni più importanti. Sim Bowler è alchemico e dovrebbe essere usato da studenti inesperti, così come da maghi esperti, quando non c'è una stufa nelle vicinanze.
+    
+    VARIETÀ DI REAZIONI ALCHEMICHE
+    O lettore nobile! Senza un sistema chiaro e comprensibile che consenta di determinare il luogo di ogni reazione alchemica, è impossibile comprendere la saggezza della nostra scienza. Molti esperti hanno cercato di ordinare quelle dozzine e centinaia di ricette conosciute dalla nostra scienza. Altri modi erano spiritosi e fino ad oggi possono essere utili; altri sono troppo confusi e falsi; altri sono semplicemente ridicoli. Non parliamo di loro qui, poiché il tuo umile servitore, Bertrand di Léon, è riuscito a creare una classificazione chiara, comprensibile e utile. È riconosciuto oggi dalla maggior parte degli eminenti alchimisti.
+    Quindi Dividiamo le reazioni in tre generi: Cardinale, fisso e mutabile.
+    
+    Per realizzare una reazione Cardinale, sono necessari tre ingredienti: pietra, pianta e polvere di Fainal. Tali reazioni sono semplici, poche e producono risultati eccezionalmente buoni o neutri
+    
+    Le reazioni fisse secondo la nostra classificazione sono lo sviluppo e la complicazione del Cardinale. Hanno bisogno di quattro ingredienti: pietra, pianta, metallo e polvere di Amilus. Tali reatskii sono in grado di dare, oltre a droghe utili e molto pericolose nell'uso, quindi non dovresti insegnare a nessuno di entrare in questa arte.
+    A proposito, molti neuchi credono erroneamente che al contrario, le reazioni cardinali siano una successiva semplificazione di quelle fisse, poiché Feinal, dicono, ha creato la sua polvere dopo L'Amilus. Sono crudelmente fuorviati, perché le ultime ricerche negli archivi di Shipstone dimostrano in modo convincente che sono state le reazioni con i tre componenti che sono state utilizzate per la prima volta nel nostro campo! Invece della polvere di Fainal, la radice della pianta Sildarilla è stata quindi utilizzata, che ora non si trova sotto i nostri cieli.
+    Solo cinque metalli di base possono essere gettati nella pentola alchemica Dell'Amilus; la fornace alchemica consente anche l'uso di altri metalli Oltre ai cinque principali, ad esempio stagno, mercurio e platino, che è ciò che distingue questi due dispositivi.
+    Il risultato di qualsiasi reazione Cardinale o fissa per un mago ragionevole non è Neozelandese: con una certa abilità, può essere indovinato dalle qualità degli ingredienti inclusi nella reazione.
+    
+    Le reazioni mutabili non obbediscono a nessuna legge; coinvolgono tre o quattro ingredienti. Solo polveri speciali sono necessarie per completare una reazione mutevole, gli altri componenti possono essere qualsiasi, facoltativamente anche piante e pietre. Altri gettarono anche le loro vecchie scarpe nella fornace e raggiunsero risultati sorprendenti.
+    
+    La maggior parte degli esperti ritiene che le reazioni mutevoli generino Caos, ad eccezione del parvenu de Orco, che si fa chiamare Gwydion e ora Si nasconde nelle terre selvagge del Caronte dalle conseguenze della propria magia inetta! Tuttavia, una promessa fatta sotto pena di morte mi fa menzionare la sua falsa teoria, che ogni cosa nel mondo ha la sua essenza interiore-un nome inscritto in una lingua sconosciuta, l'alfabeto di questa lingua contiene solo quattro lettere, e queste lettere corrispondono ai quattro elementi: terra, aria, acqua e fuoco. E così, afferma De Orco, in reazioni mutevoli, le lettere elementali vengono mescolate e talvolta danno una parola significativa, in modo che nasca un oggetto noto, e talvolta danno sciocchezze, in modo che nulla nasca o si verifichi un disastro. Ma la stessa teoria di De orco non è altro che sciocchezze, perché lui stesso non è stato in grado di leggere una sola parola che è presumibilmente nascosta in qualsiasi cosa.
+    
+    

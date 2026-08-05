@@ -1,8 +1,5 @@
-01 Word that casts out the Six 
-03 Word that casts out the Six
-
-100 In front of you is the fragment of the scroll with a word capable to cast out the Six. 
-
+01 The Word That Banishes Six
+03 The Word That Banishes Six
+100 In front of you is a fragment of a scroll with a word that can expel Six
 TEXT
-
     .. id .. ..

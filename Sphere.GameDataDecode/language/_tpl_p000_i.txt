@@ -1,12 +1,13 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
-11
+11 
 12 
 13 
 14 
 15 
 16 
-20 Un mio lontano parente mi ha mandato le sue pergamene dove ha riportato tutti i suoi esperimenti scientifici. Purtroppo il corriere e stato assalito e ucciso, ma ha fatto in tempo a nascondere le pergamene in uno dei sotterranei. Trovali per me. %s  
-21 Un mio lontano parente mi ha mandato le sue pergamene dove ha riportato tutti i suoi esperimenti scientifici. Purtroppo il corriere e stato assalito e ucciso, ma ha fatto in tempo a nascondere le pergamene in uno dei sotterranei. Trovali per me. %s 
-
+20 Il mio lontano parente mi ha inviato i suoi appunti in cui ha descritto i suoi esperimenti scientifici. Sfortunatamente, il messaggero è stato ucciso. Ma è riuscito a nascondere i record in uno dei sotterranei. Prendili per me. %s
+21 Il mio lontano parente mi ha inviato i suoi appunti in cui ha descritto i suoi esperimenti scientifici. Sfortunatamente, il messaggero è stato ucciso. Ma è riuscito a nascondere i record in uno dei sotterranei. Prendili per me. %s
+    
+    

@@ -1,8 +1,7 @@
-01 Recipe of powder of flame arrows
-02 recipe of powder of flame arrows
-03 recipe of powder of flame arrows
-
-100 Before you is a scroll with a recipe of a magic potion inscribed upon it. Behind every such recipe lies a life's work of several generations of mages. Make sure to save such a valuable possesion in your special book of recipes.
-
+01 Recipe for Flaming Arrow Powder
+02 recipes for flame arrow powder
+03 recipe for flaming arrow powder
+100 In front of you is a scroll with a description of the recipe for magic powder. Each recipe hides the painstaking and long-term work of several generations of magicians. In order not to lose such a valuable scroll, save it in a special recipe book.
 TEXT
-    In order to compose a powder of flame arrows, experienced mages mix sard and circulonia in an alchemist's pot and than add Fainal's powder to the resulting mixture.      
+    Experienced magicians mix carnelian and circulonia in an alchemical cauldron to obtain the powder of flaming arrows, and then add the final powder of Fainal to the mixture.
+    

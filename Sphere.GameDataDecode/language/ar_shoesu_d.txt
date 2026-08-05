@@ -1,0 +1,51 @@
+01 Schuhe
+03 schuhe
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 Schreck
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5006
+01 Nieten Lederschuhe
+03 nieten Lederschuhe
+
+#5026
+01 Plattenstiefel
+03 plattenstiefel
+
+#5046
+01 Alte Plattenstiefel
+03 alte Plattenstiefel
+
+#5066
+01 Alte Plattenstiefel
+03 alte Plattenstiefel
+
+#5116
+01 Alte Plattenstiefel
+03 alte Plattenstiefel
+
+#5136
+01 Alte Plattenstiefel
+03 alte Plattenstiefel
+
+#5165
+01 Alte Plattenstiefel
+03 alte Plattenstiefel

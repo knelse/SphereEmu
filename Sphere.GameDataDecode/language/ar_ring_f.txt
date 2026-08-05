@@ -1,0 +1,81 @@
+01 Anneau
+03 Anneau
+100 Décoration. Peut donner à un personnage des propriétés magiques. Beaucoup de choses divertissantes pourraient en dire sur leurs propriétaires passés. L'histoire est riche en exemples, quand les gens ont essayé de payer un prix cher pour le pouvoir donné par tel ou tel anneau.
+200 force
+201 absorption
+202 sécurité
+203 santé
+204 vie
+205 méditations
+206 Prana
+207 Ether
+208 précision
+209 forces
+210 agilité
+211 précision
+212 endurance
+213 terres
+214 eau
+215 air
+216 feu
+217 valeurs
+
+#425-448
+01 Anneau
+03 anneau
+
+#4047-4166
+01 Anneau
+03 anneau
+
+#5954
+01 L'Anneau Du Magicien
+03 l'anneau du Magicien
+
+#5955
+01 Anneau D'Archimage
+03 anneau d'archimage
+
+#5956
+01 Anneau Du Grand Archimage
+03 anneau du grand archimage
+
+#5977
+01 L'Anneau Du Magicien
+03 l'anneau du Magicien
+
+#5978-5981
+01 Anneau D'Archimage
+03 anneau d'archimage
+
+#5982
+01 Anneau Du Grand Archimage
+03 anneau du grand archimage
+
+#6249-6254
+01 Anneau de compétence
+03 anneau de compétence
+
+#6555
+01 Anneau en acier
+03 anneau en acier
+
+#6556
+01 Bague en argent
+03 bague en argent
+
+#6654
+01 Anneau d'artisan
+03 anneau d'artisan
+
+#6655
+01 Anneau d'aura
+03 anneau d'aura
+
+#6656
+01 Bague quadrichromie
+03 bague quadrichromie
+
+#6754
+01 L'anneau de liche
+03 l'anneau de liche

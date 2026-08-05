@@ -6,52 +6,64 @@
 01 Ouro
 02 ouro
 03 ouro
-100 Usado em reações alquímicas. Fator de 6.
+100 Usado em reações alquímicas. Multiplicador 6.
 
 #971
 01 Prata
 02 prata
 03 prata
-100 Usado em reações alquímicas. Fator de 3.
+100 Usado em reações alquímicas. Multiplicador 3.
 
 #972
 01 Cobre
 02 cobre
 03 cobre
-100 Usado em reações alquímicas. Fator de 1.
+100 Usado em reações alquímicas. Multiplicador 1.
 
 #973
 01 Ferro
 02 ferro
 03 ferro
-100 Usado em reações alquímicas. Fator de 3.
+100 Usado em reações alquímicas. Multiplicador 3.
 
 #974
 01 Chumbo
 02 chumbo
 03 chumbo
-100 Usado em reações alquímicas. Fator de 6.
+100 Usado em reações alquímicas. Multiplicador 6.
 
 #975
-01 Estanho
-02 estanho
-03 estanho
-100 Usado em reações alquímicas. Fator de 12.
+01 Lata
+02 lata
+03 lata
+100 Usado em reações alquímicas. Multiplicador 12.
 
 #976
 01 Platina
 02 platina
-03 Platina
-100 Usado em reações alquímicas. Fator de 24.
+03 platina
+100 Usado em reações alquímicas. Multiplicador 24.
 
 #977
-01 Mitril
-02 mitril
-03 mitril
-100 Usado em reações alquímicas. Fator de 48.
+01 Mithril
+02 Mithril
+03 Mithril
+100 Usado em reações alquímicas. Multiplicador 48.
 
 #978
 01 Alumínio
 02 alumínio
 03 alumínio
-100 Usado em reações alquímicas. Fator de 72.
+100 Usado em reações alquímicas. Multiplicador 72.
+
+#979
+01 Tungstênio
+02 tungstênio
+03 tungstênio
+100 Usado em reações alquímicas. Multiplicador 6.
+
+#980
+01 Ítrio
+02 ítrio
+03 ítrio
+100 Usado em reações alquímicas. Multiplicador 6.

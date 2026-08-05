@@ -1,9 +1,7 @@
-01 Fórmula do pó da pancada venenosa
-02 Fórmula do pó da pancada venenosa
-03 Fórmula do pó da pancada venenosa
-
-100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas.
-
+01 Receita do pó de choque venenoso
+02 receita do pó de choque venenoso
+03 receita do pó de choque venenoso
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Ponha Ardamant, Legra leave e chumbo no caldeirão alquimico. Misture cuidadosamente e ponha pó de Amilus para fazer a reação alquimica. Você obterá o pó de pancada venenosa se você tiver o nivel de professor ou acima.
+    No caldeirão alquímico, coloque ardamato, folha de Legra e chumbo. Misture bem e adicione o pó de Amilus final. Se fores mais forte do que o professor, receberás pó de veneno.
+    

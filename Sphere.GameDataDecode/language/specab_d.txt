@@ -1,0 +1,111 @@
+#5510-5515
+01 Unsichtbarkeit
+100 Der Attentäter wird durch einen speziellen Gildenzauber maskiert, aber sobald er seine magische oder kalte Stahlwaffe herausnimmt, fällt die Abdeckung der Unsichtbarkeit sofort ab.
+
+#5520-5525
+01 Kritischer Schlag
+100 Wenn der Moment kommt, braucht man einen präzisen und rücksichtslosen Schlag. Die Attentäter verbringen Jahre damit, genau diesen tödlichen Schlag zu trainieren - das Geheimnis ihrer Schule.
+
+#5530-5535
+01 Gift
+100 Ein starkes Gift, das auf Cyanid und einem uralten Zauber basiert.
+
+#5620-5625
+01 Prana-Schild
+100 Der Kreuzritter wird von einer göttlichen Aura umhüllt, die Schäden durch den Prana des Kriegers absorbiert.
+
+#5630-5635
+01 Lauf der Zeit
+100 Ein sofortiger Übergang in einen Zustand, in dem Kreuzritterangriffe doppelt so schnell werden. Natürlich ist es schwierig, diesen Zustand beizubehalten, denn selbst bei den am meisten trainierten ist es nur von kurzer Dauer.
+
+#5720-5725
+01 Fesseln
+100 Das heilige Wort bindet die Hände. Solange es in Kraft ist, kann man weder das Schwert heben noch das Mantra herausziehen. Sogar die Bänder eines Puderbeutels zu lösen, ist eine unerträgliche Aufgabe.
+
+#5730-5735
+01 Reinigung
+100 Je höher die Stufe des heiligen Inquisitors ist, desto stärker ist sein Geist. Die jüngeren Sans können die Ladung der Mutatoren nur um ein oder zwei erleichtern, die höhere Stufe befreit die sechs Mutatoren.
+
+#5810-5815
+01 Das Belkin-Auge
+100 Eine ruhige Hand und ein scharfes Auge Wald-Jäger sind bekannt im ganzen Bereich. Wenn Sie wollen, sogar normale Armbrust in der Lage, effizienter nutzen, wodurch seine Fähigkeit, die Niederlage.
+
+#5820-5825
+01 Doppelter Pfeil
+100 Nur die Jäger schaffen es, zwei Pfeile auf einmal in eine normale Armbrust zu legen und nicht zu verfehlen!
+
+#5830-5835
+01 Wanderer
+100 Die Jäger, die an ständige Reisen auf der Suche nach Beute gewöhnt sind und die schnellsten Tiere verfolgen können, können auf Wunsch eine wirklich beeindruckende Laufgeschwindigkeit entwickeln.
+
+#5920-5925
+01 Kurzsichtigkeit
+100 Er legt einen Fluch auf das Ziel, der die ganze Welt vor seinem Blick verwischt. Es ist unmöglich, seine Waffe in einer Entfernung von mehr als zwei Metern zu benutzen.
+
+#5930-5935
+01 Der Fluch
+100 Der verfluchte Mensch verwandelt sich in ein Schwein, und obwohl das Bewusstsein im Inneren des Tieres unverändert bleibt, ist der Körper ihm nicht vollständig unterworfen. Der Verfluchte kann seine Beine nicht aufhalten und jede Waffe benutzen.
+
+#6010-6015
+01 Weitsichtigkeit
+100 Mit dem geheimen Getränk der Druiden kann ein Barbar mit jeder Waffe bis zu dreißig Meter weit angreifen - im Wesentlichen ist es eine telekinetische Übertragung von Schaden auf ein entferntes Ziel.
+
+#6020-6025
+01 Berserker
+100 Ein Krieger kann sich künstlich in einen Berserkerzustand versetzen. Der Barbar vergisst seine eigene Sicherheit durch vernichtende Schläge.
+
+#6030-6035
+01 Betäubung
+100 Der Mensch verliert fast seine Gefühle. Er wird für eine Weile blind und seine Hände hören ihm nicht zu.
+
+#6110-6115
+01 Das Leben der Natur
+100 Mit der Weisheit des Waldes weiß der Druide, wie er das Leben eines Menschen verlängern kann, kann ihn aber trotzdem nicht unsterblich machen.
+
+#6130-6135
+01 Metamorphose
+100 Der Druide, der die alten Runen ständig wiederholt, verwandelt sich in einen starken und schnellfüßigen Wolf.
+
+#6220-6225
+01 Flucht
+100 In der Zeit, die Füße wegzunehmen, ist der wichtigste Moment des Diebeshandwerks.
+
+#6230-6235
+01 Nachtschatten
+100 Ein Dieb kann seinem Opfer nachts unsichtbar folgen und sich in jedem Schatten tarnen. Aber jede unvorsichtige Bewegung - und der Dieb wird entdeckt.
+
+#6320-6325
+01 Kamae
+100 Ein Zustand, der einer Trance oder Meditation ähnelt, erlaubt es einem Kämpfer, sich auf seine eigene Verteidigung zu konzentrieren und fast alle auf ihn gerichteten Schläge abzuwehren.
+
+#6410-6415
+01 Handwerkskunst
+100 Nach den gefundenen Formeln kann ein Waffenschmied natürlich jede Waffe erstellen oder reparieren, wenn er genug Geschick hat.
+
+#6420-6425
+01 Flucht
+100 Handwerker hat noch nie eine Besondere Fähigkeit zu kämpfen, besser zu laufen, ohne anzuhalten, Weg von der Gefahr.
+
+#6510-6515
+01 Handwerkskunst
+100 Nach den gefundenen Formeln und Zeichnungen kann ein Schmied natürlich jede Rüstung oder einen magischen Roboter erschaffen oder reparieren, wenn er genug Geschick hat.
+
+#6520-6525
+01 Flucht
+100 Handwerker hat noch nie eine Besondere Fähigkeit zu kämpfen, besser zu laufen, ohne anzuhalten Weg von der Gefahr.
+
+#6610-6615
+01 Verzauberung
+100 Wenn ein Zauberer eine passende Formel findet, kann er seine Kenntnisse in der Magie nutzen, um Waffen oder Rüstungen besondere Eigenschaften zu verleihen.
+
+#6620-6625
+01 Tornado
+100 Der Zauberer benutzt die Magie des Denkens, um sich vor den Angreifern zu verstecken, und das Ziel der Magie dreht sich an einer Stelle und verliert vorübergehend die Kontrolle über seine Bewegungen.
+
+#6630-6635
+01 Rostige Rüstung
+100 Ein böser Witz mit Vernunft. Die Fähigkeit, eine Person so zu verzaubern, als ob sie eine rostige Ritterrüstung trägt und sich nur seitwärts oder vorwärts oder rückwärts bewegt.
+
+#6900
+01 Das Mantra von Haka Sapid ist odnaka
+03 Erhöht die Geschwindigkeit um das 1,5-fache.

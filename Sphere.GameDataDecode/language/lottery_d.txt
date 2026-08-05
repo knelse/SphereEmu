@@ -1,0 +1,31 @@
+01 Lottoschein
+03 lottoschein
+101 Sie haben gewonnen %s.
+102 Es gibt keinen Platz für den Gegenstand.
+103 Ihr Ticket hat nicht gewonnen.
+104 Die Tickets müssen im Inventar liegen.
+
+#60
+01 Lottoschein (Klasse 1)
+02 lottoscheine (Klasse 1)
+03 lottoschein (Klasse 1)
+
+#61
+01 Lottoschein (Klasse 2)
+02 lottoscheine (Klasse 2)
+03 lottoschein (Klasse 2)
+
+#62
+01 Lottoschein (Klasse 3)
+02 lottoscheine (Klasse 3)
+03 lottoschein (Klasse 3)
+
+#63
+01 Lottoschein (Klasse 4)
+02 lottoscheine (Klasse 4)
+03 lottoschein (Klasse 4)
+
+#64
+01 Lottoschein (Klasse 5)
+02 lottoscheine (Klasse 5)
+03 lottoschein (Klasse 5)

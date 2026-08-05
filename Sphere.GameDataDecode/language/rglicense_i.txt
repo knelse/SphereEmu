@@ -1,10 +1,6 @@
-01 Licenza per azzeramento della specializzazione
-03 licenza per azzeramento della specializzazione
-
-100 Отменяет специализацию персонажа. При этом сбрасывает распределенные характеристики персонажа, такие как: сила, ловкость, меткость, выносливость, земля, воздух, вода и огонь. Уровень титула и степени персонажа остается неизменным.
-
-101 Vuoi veramente azzerare la tua specializzazione?
-102 La specializzazione и stata azzerata.
-103 Ora non hai bisogno di usare la licenza.
-
-
+01 Licenza per reimpostare la specialitа
+03 licenza per reimpostare la specialitа
+100 Annulla la specializzazione del personaggio. In tal modo, Ripristina le caratteristiche distribuite del personaggio, come: forza, agilitа, precisione, resistenza, terra, aria, acqua e fuoco. Il livello del titolo e del grado del personaggio rimane lo stesso.
+101 Vuoi davvero ripristinare la specialitа?
+102 Specialitа ripristinata.
+103 Ora non и necessario utilizzare una licenza.

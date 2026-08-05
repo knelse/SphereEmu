@@ -1,28 +1,29 @@
-01 The Basics of Alchemy (part 1)
-03 The Basics of Alchemy (part 1)
-
+01 Fundamentals of Alchemy (Part one)
+03 Fundamentals of Alchemy (part one)
 TEXT
-    TO HONORABLE READER FROM THE AUTHOR
-    This written here is to assist the knowing magi and increase the wisdom of the students. 
-
-    He who respects the art of Alchemy and studies it assiduously shall obtain great use from this, while he who is discourteous to this knowledge shall be reborn in a wicked realm.
-
-    Bertrand of Leon, Rector of the Alchemic School, court mage of His Royal Majesty Leon, King of the Sphere. February, 1072 after the creation of the Sphere.
-
-    ON THE ALCHEMIC FURNACE
-    Without an alchemic furnace, skillfully made and magically enchanted,  it is impossible to reach the heights in our greatest and most intricate of arts. Everything is in the power of the furnace, that combines in itself the powers of four elements similar to a living being. He who thinks there is anything outside of its power errs in his arrogance! For there is nothing out of its power, there is only that which we have not discovered yet. However let no unlearned mage approach an alchemic furnace. One of the greatest magi Amilus of Nomrad in the year of 1008 made an alchemic pot, which in a smaller weight and amount holds many of the dignities of the great alchemic furnace. Being small in size it allows to complete not all but man of the most important reactions. This alchemic pot is what the unworldly students should use, as well as experienced magi when they have no access to the furnace. 
-
-    VARIOUS ALCHEMIC REACTIONS
-    O, Honorable Reader! Without a system, clear and transparent, that would allow a place for each alchemic reaction, it is impractical to understand the wisdom of our science. Many a learned man tried to hierarchize dozens  and hundred of recipes known to our science. Some of their methods were quite ingenious and may still be useful; some were too fastidious and false; some simply ridiculous. But let us not speak of them here, since yours truly, Bertrand of Leon, has invented a classification that is clear, understandable, and useful. Today it is accepted by the majority of famed alchemists.
-    Thus we classify the reactions into three main categories: cardinal, fixed, and mutable. 
-
-    To complete a cardinal reaction one needs three ingredients: a stone, a plant and the Faynal Powder. These reactions are simple, few in number and provide for only pro bono and neutral results.
-
-    Fixed reactions, as of our classification, are the development and sophistication of the cardinal reactions. These require four ingredients: a stone, a plant, metal, and the Amilus Powder. These reactions can provide both useful and very dangerous concoctions, so this art should be shared with great care so that it doesn’t fall into the wrong hands. 
-    A propos, many ignoramuses err in thinking that, on the contrary, cardinal reactions are a later simplification of the fixed ones, since, allegedly, Faynal concocted his powder after Amilus did. Pathetic they are in their error, since the latest researches in the archives of Sheepstone provide for a sound proof of the fact that it were tri-component reactions that were applied in the Sphere for the first time! Instead of the Faynal Powder they then used the root of Sildarill, a plant now extinct.
-    The Amilus alchemic pot can only hold five basic metals; while an alchemic furnace allows for the use of other metals in addition to the five basic ones, such as for instance tin, mercury, and platinum, which is one of the differences between the two devices.
-    The result of any cardinal or fixed reaction shall not be a surprise for any reasonable mage: with certain skill and experience one can foretell it from the properties of the ingredients that make the reaction. 
-
-    Mutable reactions obey to no law; they are completed with three or four ingredients. The only mandatory element of a mutable reaction are the special powders, while all the other components can be at random, not even necessarily stones or plants. Some would even throw a pair of old boots into the furnace and still obtain most wonderful results.
-
-    Most of the learned men consider mutable reactions to be the spawn of chaos, aside form that jackanapes De Orco, who calls himself Gwydeon and who now hides in the thick of the Charon forests from the consequences of his own inapt magic! However the promise I gave under the fear of death forces me to mention his false theory, that allegedly each thing in this world has its own inner name-essence, scribed in a unknown language. The alphabet of this language allegedly consists of only four letters that correspond to the four elements: earth, air, water, and fire. According to De Orco, in mutable reactions these letter-elements would mix, and sometimes would produce a real word, which results in the appearance of a known object, whilst sometimes they would make nonsense with zero results or else a catastrophe. However De Orco’s theory in itself is nothing but nonsense, since he himself never managed to read one word which he claims is concealed within each object. 
+    TO THE NOBLE READER FROM THE AUTHOR
+    I am writing this to knowledgeable magicians for help, and to students for the sake of accumulating wisdom.
+    
+    Those who respect the science of alchemy and are diligent in its study will benefit greatly, those who are not polite to this knowledge will receive rebirth in a bad lot.
+    
+    Bertrand of Leon, rector of the School of Alchemists, court magician of His Majesty Leon, King of the Sphere. February is the month of the year 1072 from the creation of the Sphere.
+    
+    ABOUT THE ALCHEMICAL FURNACE
+    Without an alchemical furnace, skillfully manufactured and magically processed, it is unthinkable to reach heights in our greatest and subtlest of arts. Everything is subject to the furnace, combining the properties of the four elements, like a living being. And who thinks that there is something beyond her control, he is mistaken in his pride! For there is nothing beyond our control, there is only what we have not discovered. However, an inexperienced magician should not approach an alchemical furnace. One of the greatest magicians Amilus Nomradsky in the year 1008 made an alchemical cauldron, which in low weight and volume stores many of the advantages of a large alchemical furnace. Being small in size, it allows you to carry out, although not all, but many of the most important reactions. This alchemical cauldron should be used by inexperienced students, as well as experienced magicians, when there is no furnace nearby.
+    
+    TYPES OF ALCHEMICAL REACTIONS
+    O noble reader! Without a clear and understandable system to determine the location of each alchemical reaction, it is impossible to comprehend the wisdom of our science. Many pundits have tried to organize those tens and hundreds of recipes that are known to our science. Some ways were witty and can still be useful to this day; others are too confusing and false; others are simply ridiculous. We will not talk about them here, because your humble servant, Bertrand Leonsky, managed to create a clear, understandable and useful classification. It is recognized today by most eminent alchemists.
+    So, we divide reactions into three kinds: cardinal, fixed and mutable.
+    
+    To accomplish a cardinal reaction, three ingredients are needed: a stone, a plant and a Fainal powder. Such reactions are simple, few in number and give exceptionally good or neutral results.
+    
+    Fixed reactions according to our classification are the development and complication of cardinal ones. They need four ingredients: stone, plant, metal and Amilus powder. Such reactions are capable of giving, in addition to useful, and very dangerous drugs to use, so you should not teach anyone this art.
+    By the way, many ignoramuses mistakenly believe that, on the contrary, cardinal reactions are a later simplification of fixed ones, since Fainal, they say, created his powder after Amilus. They are cruelly mistaken, because the latest research in the Shipstone archives convincingly proves that it was reactions with three components that were first used in our Field! Instead of Fainal powder, the root of the Sildarilla plant was used then, which is no longer found under our skies.
+    Only five basic metals can be thrown into the alchemical cauldron of Amilus; the alchemical furnace allows the use of other metals in addition to the five basic ones, such as tin, mercury and platinum, which distinguishes these two devices.
+    The result of any cardinal or fixed reaction for a reasonable magician is not a non-eventuality: with some skill, it can be guessed by the qualities of the ingredients included in the reaction.
+    
+    Mutable reactions do not obey any laws; they involve three or four ingredients. Only special powders are required to complete the mutable reaction, while other components can be any, not necessarily even plants and stones. Some even threw their old shoes into the oven and achieved amazing results.
+    
+    Most pundits consider mutable reactions to be the product of chaos, except for the upstart de Orco, who calls himself Gwydion and is now hiding in the Charonian wilds from the consequences of his own inept magic! However, a promise made on pain of death makes me mention his false theory that every thing in the world has its own inner essence-a name inscribed in an unknown language, the alphabet of this language contains only four letters, and these letters correspond to the four elements: earth, air, water and fire. And so, says de Orco, in mutable reactions, the letters-elements are mixed up, and sometimes they give a meaningful word, so that a known object is born, and sometimes they give nonsense, so that nothing is born or a disaster occurs. But de Orco's theory itself is nothing but nonsense, because he himself could not read a single word that is supposedly hidden in any thing.
+    
+    

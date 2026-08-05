@@ -1,9 +1,7 @@
-01 Formula della polvere delle frecce infuocate
-02 Formula della polvere delle frecce infuocate
-03 Formula della polvere delle frecce infuocate
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di frecce infuocate
+02 ricette di polvere di frecce infuocate
+03 ricetta polvere di frecce infuocate
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per creare la polvere delle frecce infuocate, i maghi esperti mescolano Sarda e Circulonius nel recipiente alchemico e infine aggiungono la polvere di Faynal alla mistura così ottenuta.
+    Maghi esperti per ottenere la polvere di frecce infuocate mescolano corniola e circulonia in una bombetta alchemica, quindi aggiungono la polvere finale di Feinal alla miscela.
+    

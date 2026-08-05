@@ -1,45 +1,50 @@
 01 Spada
-03 Spada
-
-200 dell'eliminazione
-201 della devastazione
-202 della fiducia
-203 dell'invulnerabilità
-204 della vita
-205 dell'eliminazione
-206 della devastazione
-207 della fiducia
-208 dell'invulnerabilità
-209 della vita
-210 del dominio
-211 della cecità
-212 della paura
-213 dell'arresto
-214 della liberazione
-215 della purificazione
-216 della punizione
-217 dell'intrappolamento
-218 del turbine
-219 della maledizione
+03 spada
+200 eradicazione
+201 devastazioni
+202 affidabilità
+203 invulnerabilità
+204 vita
+205 eradicazione
+206 devastazioni
+207 affidabilità
+208 invulnerabilità
+209 vita
+210 del Consiglio
+211 abbagliamento
+212 paura
+213 fermate
+214 liberazione
+215 pulizia
+216 punizioni
+217 catene
+218 vortice
+219 maledizioni
 
 #5150
-01 Scimitarra
-03 scimitarra
+01 Shamsher
+03 Shamsher
+
 #5151
-01 Yatagan d'elite
-03 Yatagan d'elite
+01 Scimitarra d'élite
+03 scimitarra d'élite
+
 #5152
-01 Spada lunga runica
-03 Spada lunga runica
+01 Spadone Runico
+03 Spadone Runico
+
 #5153
 01 Katana runica
-03 Katana runica
+03 katana runica
+
 #5154
-01 Katana leggendaria
-03 Katana leggendaria
+01 La leggendaria katana
+03 la leggendaria katana
+
 #5155
 01 Katana fantasma
-03 Katana fantasma
+03 la katana fantasma
+
 #5156
 01 Katana del drago
-03 Katana del drago
+03 Dragon katana

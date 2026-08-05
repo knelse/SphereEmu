@@ -1,9 +1,7 @@
-01 Fórmula do pó de bolas de fogo
-02 Fórmula do pó de bolas de fogo
-03 Fórmula do pó de bolas de fogo
-
-100 Na sua frente tem um pergaminho com a descrição de uma poção mágica. Do lado de cada fórmula tem uma lista de tempo de consumo e danos de muitas gerações de mágicos. Para não se perder um precioso pergaminho, é melhor salvá-lo num livro especial de fórmulas.
-
+01 Receita de bolas de fogo em pó
+02 receita de bolas de fogo em pó
+03 receita de bolas de fogo em pó
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Coloque Feirik, Circulonia e cobre dentro do pote de alquimia. Misture com precisão e adicione pó de Amilus para finalizar a reação. Se você for mais forte que um candidato, finalizará e terá o pó de bolas de fogo. 
+    No caldeirão alquímico, mergulha as fadas, A circulonia e o cobre. Misture bem e adicione o pó de Amilus final. Se fores mais forte do que o candidato, receberás bolas de fogo em pó.
+    

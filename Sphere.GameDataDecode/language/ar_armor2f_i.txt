@@ -1,27 +1,30 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 Dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 del mondo
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2850-2857
-01 Veste marrone
-03 veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #2858-2864
-01 Veste blu
-03 veste blu
+01 Rob blu
+03 Rob blu
+
 #2950-2955
-01 artefatto. Veste rossa
-03 veste rossa
+01 Artefatto. Rob rosso
+03 Red Rob
+
 #2956-2961
-01 artefatto. Veste bianca
-03 veste bianca
+01 Artefatto. Rob bianco
+03 Rob bianco
+
 #2962-2967
-01 artefatto. Veste blu
-03 veste blu
+01 Artefatto. Rob blu
+03 Rob blu

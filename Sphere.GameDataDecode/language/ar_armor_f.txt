@@ -1,0 +1,223 @@
+01 Cotte de mailles
+03 Cotte de mailles
+05 nouvelle
+06 usée
+07 rouillé
+100 Dans la bataille, protège contre les armes des adversaires.
+200 prouesses
+201 force
+202 absorption
+203 écarts
+204 sécurité
+205 invulnérabilité
+206 santé
+207 vie
+208 méditations
+209 Prana
+210 forces
+211 agilité
+212 Grandeur
+213 concentrations
+214 terres
+215 eau
+216 air
+217 feu
+218 éléments
+219 valeurs
+220 forces
+221 agilité
+222 Grandeur
+223 concentrations
+224 intégrité
+
+#301
+01 Veste
+03 veste
+
+#302
+01 Armure en cuir
+03 armure en cuir
+
+#303-304
+01 Armure en cuir riveté
+03 armure en cuir riveté
+
+#305-306
+01 Cotte de mailles
+03 Cotte de mailles
+
+#307-309
+01 Cuirasse
+03 cuirassé
+
+#310-312
+01 Armure ancienne
+03 armure ancienne
+
+#3001-3004
+01 Veste
+03 veste
+
+#3005-3009
+01 Armure en cuir
+03 armure en cuir
+
+#3010-3019
+01 Armure en cuir riveté
+03 armure en cuir riveté
+
+#3020-3029
+01 Cotte de mailles
+03 Cotte de mailles
+
+#3030-3044
+01 Cuirasse
+03 cuirassé
+
+#3045-3060
+01 Armure ancienne
+03 armure ancienne
+
+#4453-4461
+01 Cuirasse
+03 cuirassé
+
+#4740
+01 La Grande Cuirasse Noire
+03 La Grande Cuirasse Noire
+
+#4741
+01 Grande Cuirasse Blanche
+03 La Grande Cuirasse Blanche
+
+#4750
+01 La Grande Cuirasse Noire
+03 La Grande Cuirasse Noire
+
+#4751
+01 Grande Cuirasse Blanche
+03 La Grande Cuirasse Blanche
+
+#5586
+01 La veste du méchant
+03 la veste du méchant
+
+#5587
+01 Veste en cuir de méchant
+03 la veste du méchant
+
+#5588
+01 Veste rivetée du méchant
+03 la veste du méchant
+
+#5589
+01 Cotte de mailles du méchant
+03 la Cotte de mailles du méchant
+
+#5590
+01 Cuirasse du méchant
+03 cuirasse du méchant
+
+#5591
+01 Armure du méchant
+03 armure du méchant
+
+#5677
+01 Veste d'éclat
+03 veste d'éclat
+
+#5678
+01 Veste en cuir brillant
+03 veste d'éclat
+
+#5679
+01 Veste rayonnante rivetée
+03 veste d'éclat
+
+#5680
+01 Cotte de mailles de l'aurore
+03 la Cotte de mailles de l'aurore
+
+#5681
+01 Cuirasse de l'aurore
+03 cuirasse de l'aurore
+
+#5682
+01 Armure d'aurore
+03 armure d'aurore
+
+#5865
+01 Veste de discrétion
+03 veste de discrétion
+
+#5866
+01 Veste en cuir de discrétion
+03 veste de discrétion
+
+#5867
+01 Veste rivetée de discrétion
+03 veste de discrétion
+
+#5868
+01 Cotte de mailles de furtivité
+03 Cotte de mailles de furtivité
+
+#5869
+01 Cuirasse de furtivité
+03 cuirassé furtif
+
+#5870
+01 Armure furtive
+03 armure furtive
+
+#6083
+01 Veste De Titane
+03 veste Titan
+
+#6084
+01 Veste en cuir Titane
+03 veste Titan
+
+#6085
+01 Veste rivetée de Titane
+03 veste Titan
+
+#6086
+01 Cotte De Mailles De Titane
+03 Cotte de mailles de Titane
+
+#6087
+01 Cuirasse De Titan
+03 cuirassé Titan
+
+#6088
+01 Armure Titan
+03 armure de Titan
+
+#6551
+01 Armure lourde de Kaliestra
+03 armure lourde de Kaliestra
+
+#6868
+01 Veste de fiabilité
+03 veste de fiabilité
+
+#6869
+01 Veste en cuir de fiabilité
+03 veste de fiabilité
+
+#6870
+01 Veste rivetée de fiabilité
+03 veste de fiabilité
+
+#6871
+01 Cotte de mailles
+03 Cotte de mailles
+
+#6872
+01 Cuirasse
+03 cuirassé
+
+#6873
+01 Armure de fiabilité
+03 armure de fiabilité

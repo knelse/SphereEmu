@@ -1,7 +1,7 @@
 01 Pesce
-02 pesce
+02 pesci
 03 pesce
-05 vivo
+05 dal vivo
 06 fresco
 07 marcio
-10 Non puoi mangiare pesce non cotto.
+10 Il pesce crudo non può essere mangiato.

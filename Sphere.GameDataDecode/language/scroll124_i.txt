@@ -1,10 +1,7 @@
-01 Formula della polvere rallentante
-02 Formula della polvere rallentante
-03 Formula della polvere rallentante
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta della polvere di decelerazione
+02 ricette di polvere di decelerazione
+03 ricetta della polvere di decelerazione
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Metti Camelic, Felce e Ferro nel recipiente alchemico. Mescola accuratamente e aggiungi la polvere di Amilus per completare la reazione. Se sei più esperto di un debuttante otterrai la polvere rallentante.
-
+    Nel la bombetta alchemica, metti giù la camelica, la felce e il ferro. Mescolare accuratamente e aggiungere la polvere di Amilus finale. Se sei più forte di un concorrente, otterrai una polvere di decelerazione.
+    

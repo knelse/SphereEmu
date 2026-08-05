@@ -1,0 +1,140 @@
+01 clave
+03 clave
+5000 Hotel, habitación barata, Shipstone
+5001 Hotel, habitación barata, Shipstone
+5002 Hotel, Suite, Shipstone (entrada desde el patio)
+5003 Hotel, Suite, Shipstone (entrada desde el patio)
+5007 Hotel, habitación barata, Bangville
+5008 Hotel, Suite, Bangville
+5009 Hotel, habitación barata, Sanpool
+5010 Hotel, habitación barata, Sanpool
+5011 Hotel, Suite, Sanpool (entrada desde el patio)
+5012 Hotel, Suite, Sanpool (entrada desde el patio)
+5013 Hotel, Suite, Sanpool (entrada desde el patio)
+5014 Hotel, Suite, Sanpool (entrada desde el patio)
+5015 Hotel, habitación barata, Torvil
+5016 Hotel, Suite, Torvil
+5017 Hotel, habitación barata, Habitación
+5018 Hotel, habitación de lujo, Numrad
+5019 Hotel, habitación barata, Gifes
+5020 Hotel, Suite, Gifes
+5004 Hotel, habitación barata, Umrad
+5005 Hotel, Suite, Umrad
+5006 Hotel, Suite con cofre grande, Umrad(entrada desde el patio)
+5025 Hotel, Suite con cofre grande, Umrad(entrada desde el patio)
+5026 Hotel, Suite con cofre grande, Umrad(entrada desde el patio)
+5027 Taller, Shipstone
+5028 Taller, Bangville
+5029 Taller, Sanpool
+5030 Taller, Torvil
+5031 Taller, Nomrad
+5032 Taller, Gifes
+5033 Taller, Umrad
+5034 Hotel, habitación con cofre grande, Angelm (entrada desde el patio)
+5035 Hotel, habitación con cofre grande, Angelm (entrada desde el patio)
+5036 Hotel, habitación con cofre grande, Angelm (entrada desde el patio)
+5037 Hotel, Suite con cofre grande, Angelm
+5200 Hotel rural, habitación barata
+5201 Hotel rural, habitación barata
+5202 Hotel rural, habitación barata
+5203 Hotel rural, habitación barata
+5204 Hotel rural, habitación barata
+5205 Hotel rural, habitación barata
+5206 Hotel rural, habitación barata
+5207 Hotel rural, habitación barata
+5400 Habitación en el castillo de Lieja
+5401 Habitación en el castillo de Lieja
+5402 Habitación en el castillo de Fief
+5403 Habitación en el castillo de Aris
+5404 Habitación en el castillo de Aris
+5405 Habitación en el castillo de Lator
+5406 Habitación en el castillo de Eikum-Kas
+5407 Habitación en el castillo de Gedeón
+5408 Habitación en el castillo de Gedeón
+5409 Habitación en el castillo de Gedeón
+5410 Habitación en el castillo de chatelier
+5411 Habitación en el castillo de chatelier
+5412 Habitación en el castillo de chatelier
+5413 Habitación en el castillo de Tuanod
+5414 Habitación en el castillo de Tuanod
+5415 Habitación en el castillo de Tuanod
+5416 Habitación en el castillo Peltier
+5417 Habitación en el castillo Peltier
+5418 Habitación en el castillo Peltier
+5419 Habitación en el castillo de Caret-Royal
+5420 Habitación en el castillo de Caret-Royal
+5421 Habitación en el castillo de Caret-Royal
+5422 Habitación en el castillo de Blessendor
+5423 Habitación en el castillo de Blessendor
+5424 Habitación en el castillo de Blessendor
+5425 Habitación en el castillo de Ternoval
+5426 Habitación en el castillo de Ternoval
+5427 Habitación en el castillo de Ternoval
+5428 Habitación en el castillo de Ammalael
+5429 Habitación en el castillo de Ammalael
+5430 Habitación en el castillo de Ammalael
+5431 Habitación en el castillo de Talón
+5432 Habitación en el castillo de Talón
+5433 Habitación en el castillo de Talón
+5434 Habitación en el castillo de Devanagari
+5435 Habitación en el castillo de Devanagari
+5436 Habitación en el castillo de Devanagari
+5437 Habitación en el castillo de Sabulat
+5438 Habitación en el castillo de Sabulat
+5439 Habitación en el castillo de Sabulat
+5440 Habitación en el castillo de Deffensat
+5441 Habitación en el castillo de Deffensat
+5442 Habitación en el castillo de Deffensat
+5443 Habitación en el castillo de Ayonat
+5444 Habitación en el castillo de Ayonat
+5445 Habitación en el castillo de Ayonat
+5446 Habitación en el castillo de Triomphaler
+5447 Habitación en el castillo de Triomphaler
+5448 Habitación en el castillo de Triomphaler
+5449 Habitación en el castillo de Bagarnak
+5450 Habitación en el castillo de Bagarnak
+5451 Habitación en el castillo de Bagarnak
+5452 Habitación en el castillo de Cabrad
+5453 Habitación en el castillo de Cabrad
+5454 Habitación en el castillo de Cabrad
+5455 Habitación en el castillo de Seth
+5456 Habitación en el castillo de Seth
+5457 Habitación en el castillo de Seth
+5458 Habitación en el castillo de lender
+5459 Habitación en el castillo de lender
+5460 Habitación en el castillo de lender
+5461 Habitación en el castillo de keles
+5462 Habitación en el castillo de keles
+5463 Habitación en el castillo de keles
+5464 Habitación en el castillo de Sheprostan
+5465 Habitación en el castillo de Sheprostan
+5466 Habitación en el castillo de Sheprostan
+5467 Habitación en el castillo de Orcobien
+5468 Habitación en el castillo de Orcobien
+5469 Habitación en el castillo de Orcobien
+5470 Habitación en el castillo de Canuac
+5471 Habitación en el castillo de Canuac
+5472 Habitación en el castillo de Canuac
+5473 Habitación en el castillo de Aldarnon
+5474 Habitación en el castillo de Aldarnon
+5475 Habitación en el castillo de Aldarnon
+5476 Habitación en el castillo de Yong
+5477 Habitación en el castillo de Yong
+5478 Habitación en el castillo de Yong
+5479 Habitación en el castillo de Elek
+5480 Habitación en el castillo de Elek
+5481 Habitación en el castillo de Elek
+5482 Habitación en el castillo de Gavot
+5483 Habitación en el castillo de Gavot
+5484 Habitación en el castillo de Gavot
+5485 Habitación en el castillo de kandur
+5486 Habitación en el castillo de kandur
+5487 Habitación en el castillo de kandur
+5488 Habitación en el castillo de Immortelle
+5489 Habitación en el castillo de narciso
+5490 Habitación en el castillo de Randen
+5491 Habitación en el castillo de Nirgun
+5492 Habitación en el castillo de Gelgivinn
+5493 Habitación en el castillo de Île-Suilly-Rúa
+5494 Habitación en el castillo de Île-Suilly-Rúa
+5495 Habitación en el castillo de Île-Suilly-Rúa

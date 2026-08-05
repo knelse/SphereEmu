@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione suprema
-02 Formula della polvere della protezione suprema
-03 Formula della polvere della protezione suprema
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta polvere iperprotettiva
+02 ricette di polvere iperprotettiva
+03 ricetta polvere iperprotettiva
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della protezione superiore, i maghi esperti (con grado non inferiore a professore) mescolano Meleosite e Oro nella fornace. Poi aggiungono una pianta di Jelena e alimentano la fornace con ramoscelli.
+    Maghi esperti (gradi non inferiori al professore) per ottenere polvere di protezione eccessiva mescolano meleosite e oro in un forno. Quindi aggiungere la pianta di gelatina e riscaldare il forno con sottobosco.
+    

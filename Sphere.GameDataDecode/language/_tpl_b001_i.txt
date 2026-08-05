@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Salute valoroso guerriero! Sei la nostra ultima speranza. Siamo sotto continuo attacco di un mostro terribile. Non possiamo contrastarlo! %s è molto forte e %s lo nasconde. Vai, intrufolati e uccidilo!  
-23 Salute valoroso guerriero! Sei la nostra ultima speranza. Siamo sotto continuo attacco di un mostro terribile. Non possiamo contrastarlo! %s è molto forte, ma puoi prenderla di sorpresa. Un nostro contadino ha trovato la sua tana. %s la nasconde. Vai, intrufolati e uccidila! 
+22 Saluti, nobile! Sei la nostra ultima speranza. Siamo costantemente attaccati da un terribile mostro. Non possiamo farci niente da soli. %s molto forte, e %s lo nasconde. Entra e uccidi la bestia!
+23 Saluti, Oh, nobile guerriero! Sei la nostra ultima speranza. Siamo costantemente attaccati da un terribile mostro. Non possiamo farci niente da soli. %s molto forte, ma puoi prenderla alla sprovvista. Uno dei nostri compaesani si è imbattuto nel suo rifugio. %s lo nasconde. Entra e finiscila!

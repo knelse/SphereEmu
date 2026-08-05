@@ -1,8 +1,7 @@
-01 Элексир Магической Защиты
-02 элексир магической защиты
-03 элексир магической защиты
-
-101 Эликсир магической защиты низкой концентрации. Увеличивает Магическую Защиту на 5%.
-102 Эликсир магической защиты средней концентрации. Увеличивает Магическую Защиту на 7.5%.
-103 Эликсир магической защиты высокой концентрации. Увеличивает Магическую Защиту на 10%.
-104 Эликсир магической защиты высокой концентрации. Увеличивает Магическую Защиту на 15%.
+01 Elixir of Magical Protection
+02 elixir of magical protection
+03 elixir of magical protection
+101 Elixir of magic protection of low concentration. Increases Magic Defense by 5%.
+102 Elixir of magic protection of medium concentration. Increases Magic Defense by 7.5%.
+103 An elixir of high concentration magical protection. Increases Magic Defense by 10%.
+104 An elixir of high concentration magical protection. Increases Magic Defense by 15%.

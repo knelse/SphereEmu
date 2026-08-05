@@ -1,21 +1,58 @@
 01 Anel
 03 anel
 
-
-
-
-
-
-
 #4195
 01 Anel do lobo
 03 anel do lobo
+
 #4196
-01 Anel de golem
-03 anel de golem
+01 Anel de Golem
+03 anel de Golem
+
 #4197
-01 Anel de cyano
-03 anel de cyano
-#4198
+01 Anel de ciano
+03 anel de ciano
+
+#4200
 01 Anel de invisibilidade
-03 abek de invisibilidade
+03 anel de invisibilidade
+
+#4312
+01 Anel de esqueleto
+03 anel de esqueleto
+
+#4314
+01 Anel do anão
+03 anel do anão
+
+#4316
+01 Anel do ancião
+03 anel do ancião
+
+#4318
+01 Anel de Golem
+03 anel de Golem
+
+#4320
+01 Anel da ménade da floresta
+03 anel da ménade da floresta
+
+#4322
+01 Anel da ménade da caverna
+03 anel da ménade da caverna
+
+#4324
+01 Anel de ciano
+03 anel de ciano
+
+#4326
+01 Anel da vampira
+03 anel da vampira
+
+#4328
+01 Anel tropos
+03 anel tropos
+
+#4330
+01 Anel zumbi
+03 anel zumbi

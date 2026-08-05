@@ -1,7 +1,6 @@
-01 Sack
-03 sack
+01 The bag
+03 The bag
 05 old
-06 torn
-07 torn
-
-100 A sack is the usual "companion" of a seasoned traveler, usually made of thick cloth. A sack can hold up to 4 different small items, such as, magic powders, rings, or alchemic ingredients. A sack is normally small, but one could put several of those into a bag.
+06 rotten
+07 rotten
+100 The pouch is an ordinary "companion" of an experienced traveler. It is usually made of thick cloth. You can put up to 4 different small items in the bag - for example: magic powders, rings or alchemical ingredients. The bag is small, but there are several pieces in the bag.

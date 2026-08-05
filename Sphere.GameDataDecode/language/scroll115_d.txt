@@ -1,0 +1,7 @@
+01 Giftpulver Rezept
+02 giftpulver Rezepte
+03 giftpulver Rezept
+100 Vor dir liegt eine Schriftrolle mit einer Beschreibung des Rezepts für magisches Pulver. Hinter jedem Rezept verbirgt sich die mühsame und lange Arbeit mehrerer Generationen von Magiern. Um eine so wertvolle Schriftrolle nicht zu verlieren, behalte sie in einem speziellen Rezeptbuch.
+TEXT
+    Erfahrene Magier (mindestens ein Schüler) werden Aquamarin, Ferengon und Eisen in einem alchemischen Topf gemischt, um das Giftpulver zu erhalten, und dann wird das Amiluspulver zu der Mischung hinzugefügt.
+    

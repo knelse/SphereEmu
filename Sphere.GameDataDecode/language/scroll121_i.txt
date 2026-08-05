@@ -1,9 +1,7 @@
-01 Formula della polvere della catena di fulmini
-02 Formula della polvere della catena di fulmini
-03 Formula della polvere della catena di fulmini
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta della polvere della cerniera a catena
+02 ricette della polvere della chiusura lampo della catena
+03 ricetta della polvere della cerniera a catena
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Metti Pirite, Serden e Piombo nel recipiente alchemico. Mescola accuratamente e aggiungi la polvere di Amilus per completare la reazione. Se sei più esperto di uno studente otterrai la polvere della catena di fulmini.
+    Nel Bowler alchemico, abbassa la pirite, il cuore e il piombo. Mescolare accuratamente e aggiungere la polvere di Amilus finale. Se sei più forte di uno studente, otterrai la polvere del fulmine a catena.
+    

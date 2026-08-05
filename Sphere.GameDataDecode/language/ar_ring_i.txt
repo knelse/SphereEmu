@@ -1,69 +1,81 @@
-01 anello
-03 anello
-
-100 Pezzo di gioielleria. Può migliorare il personaggio con poteri magici. Se gli anelli potessero parlare racconterebbero innumerevoli interessanti storie riguardanti i loro primi proprietari. La storia racconta di molteplici esempi di persone disposte a pagare ingenti somme per ottenere il potere che un anello può conferire.
-
-200 della durata
-201 dell'assorbimento
-202 della protezione
-203 della salute
-204 della vita
-205 della meditazione
-206 del prana
-207 dell'etere
-208 della precisione
-209 della forza
-210 della destrezza
-211 della precisione
-212 della resistenza
-213 della terra
-214 dell'acqua
-215 dell'aria
-216 del fuoco
-217 della stima
+01 Anello
+03 Anello
+100 Decorazione. Può dotare il personaggio di proprietà magiche. Molto divertente potrebbe dire gli anelli sui loro proprietari passati. La storia è ricca di esempi in cui le persone hanno cercato di pagare un prezzo costoso per il potere che questo o quell'anello dà.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 vita
+205 meditazione
+206 Prana
+207 etere
+208 precisione
+209 forze
+210 agilità
+211 precisione
+212 resistenza
+213 terra
+214 acqua
+215 aria
+216 fuoco
+217 valori
 
 #425-448
 01 Anello
 03 anello
+
 #4047-4166
 01 Anello
 03 anello
+
 #5954
-01 Anello del Mago
-03 anello del Mago
+01 Anello Del Mago
+03 anello del mago
+
 #5955
-01 Anello dell'Arcimago
-03 anello dell'Arcimago
+01 Anello Dell'Arcimago
+03 anello Dell'Arcimago
+
 #5956
-01 Anello del Grande Arcimago
-03 anello del Grande Arcimago
+01 Anello Del Grande Arcimago
+03 anello del grande Arcimago
+
 #5977
-01 Anello del Mago
-03 anello del Mago
+01 Anello Del Mago
+03 anello del mago
+
 #5978-5981
-01 Anello dell'Arcimago
-03 anello dell'Arcimago
+01 Anello Dell'Arcimago
+03 anello Dell'Arcimago
+
 #5982
-01 Anello del Grande Arcimago
-03 anello del Grande Arcimago
+01 Anello Del Grande Arcimago
+03 anello del grande Arcimago
+
 #6249-6254
-01 Anello delle abilità
-03 anello delle abilità
+01 Anello di abilità
+03 anello di abilità
+
 #6555
-01 Anello di acciaio
-03 anello di acciaio
+01 Anello in acciaio
+03 anello in acciaio
+
 #6556
-01 Anello di argento
-03 anello di argento
+01 Anello d'argento
+03 anello d'argento
+
 #6654
-01 Anello dell'esperto
-03 anello dell'esperto
+01 Anello dell'artigiano
+03 anello dell'artigiano
+
 #6655
-01 Anello dell'aura
-03 anello dell'aura
+01 Anello aura
+03 anello aura
+
 #6656
-01 Anello dai quattro colori
-03 anello dai quattro colori
+01 Anello a quattro colori
+03 anello a quattro colori
+
 #6754
-01 Anello del lich
-03 anello del lich
+01 Anello del Lich
+03 anello del Lich

@@ -1,9 +1,7 @@
-01 Formula
-02 formula
-03 formula
-
-100 Formula of blacksmiths guild
-
-10000 Using this formula you can get %r1. This requires %a1, and the stage in the blacksmiths guild must be at least %z1.
-10001 Using this formula you can get %r1. This requires %a1 and %a2, and the stage in the blacksmiths guild must be at least %z1.
-10002 Using this formula you can get %r1. This requires %a1, %a2 and %a3, and the stage in the blacksmiths guild must be at least %z1.
+01 The formula
+02 formulas
+03 the formula
+100 The Blacksmith Guild Formula
+10000 Using this formula, you can get %r1. It is necessary for production %a1, and the level in the guild of blacksmiths should not be lower %z1.
+10001 Using this formula, you can get %r1. Production requires %a1 and %a2, and the level in the guild of blacksmiths should not be lower %z1.
+10002 Using this formula, you can get %r1. Production requires %a1, %a2 and %a3, and the level in the guild of blacksmiths should not be lower %z1.

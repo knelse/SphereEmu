@@ -1,5 +1,4 @@
-01 Stamina potion
-02 stamina potion
-03 stamina potion
-
-100 Recovers 1000 points of stamina.
+01 The Vigor Potion
+02 The Vigor potion
+03 The Vigor potion
+100 Restores 1000 units of vigor.

@@ -1,0 +1,5 @@
+01 Licence de perfectionnement professionnel
+02 Licences de perfectionnement professionnel
+03 licence de perfectionnement professionnel
+100 Augmente le niveau de spécialisation du personnage de 1. Le niveau d'une étape nécessite autant de licences dans la pile que le niveau de spécialisation. Par exemple, le passage du niveau 3 au niveau 4 nécessite 4 licences par pile. Aucun bonus supplémentaire n'est disponible pour l'exécution des tâches correspondantes. Cela réinitialise les caractéristiques distribuées du personnage.
+101 Voulez-vous vraiment augmenter votre niveau de spécialité?

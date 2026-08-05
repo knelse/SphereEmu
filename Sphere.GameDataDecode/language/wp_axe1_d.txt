@@ -1,0 +1,391 @@
+01 Axt
+03 axt
+100 Eine Schlagwaffe. Schl‰gt hart, trifft aber selten.
+200 erschˆpfung
+201 tapferkeit
+202 schaden
+203 grausamkeiten
+204 eile
+205 geschwindigkeit
+206 unordnung
+207 chaos
+208 ‰ther
+209 m¸digkeit
+210 krankheiten
+211 instabilit‰t
+212 entfernungen
+213 entfernungen
+214 zersetzungen
+215 verw¸stungen
+216 schw‰chen
+217 penetration
+218 verbot
+219 werte
+
+#101
+01 Axt
+03 axt
+
+#102
+01 Groﬂe Axt
+03 groﬂe Axt
+
+#103
+01 Kampf-Axt
+03 kampf-Axt
+
+#104
+01 Infanterie-Axt
+03 infanterie-Axt
+
+#105
+01 Franziska
+03 franziskus
+
+#106
+01 Axt
+03 axt
+
+#107
+01 Tabar
+03 tabar
+
+#108
+01 Elite groﬂe Axt
+03 elite groﬂe Axt
+
+#109
+01 Elite-Kampf-Axt
+03 elite-Kampf-Axt
+
+#110
+01 Die Elite von Franziska
+03 die elite von franziskus
+
+#111
+01 Elite-Axt
+03 elite-Axt
+
+#112
+01 Runen-groﬂe Axt
+03 runen-groﬂe Axt
+
+#113
+01 RUNE Schlacht Axt
+03 runen-Axt
+
+#114
+01 Runen-Franziskus
+03 runen-franziskus
+
+#115
+01 Rune-Axt
+03 rune-Axt
+
+#116
+01 Schlagstock
+03 Keule
+
+#117
+01 Keule
+03 keule
+
+#118
+01 Palitsa
+03 palitsa
+
+#119
+01 Hammer
+03 hammer
+
+#120
+01 Kampfhammer
+03 kampfhammer
+
+#121
+01 Morgenstern
+03 morgenstern
+
+#122
+01 Schmiedehammer
+03 schmiedehammer
+
+#123
+01 Elite-Keule
+03 elite-Keule
+
+#124
+01 Elite-Palisade
+03 elite-palisade
+
+#125
+01 Elite-Kampfhammer
+03 elite-Kampfhammer
+
+#126
+01 Elite Morgenstern
+03 luxuriˆs Morgenstern
+
+#127
+01 Runen-Keule
+03 runen-Keule
+
+#128
+01 Runenstock
+03 runenstock
+
+#129
+01 Runenkampfhammer
+03 runenkampfhammer
+
+#3501-3502
+01 Axt
+03 axt
+
+#3503-3504
+01 Groﬂe Axt
+03 groﬂe Axt
+
+#3505-3507
+01 Kampf-Axt
+03 kampf-Axt
+
+#3508-3509
+01 Infanterie-Axt
+03 infanterie-Axt
+
+#3510-3512
+01 Franziska
+03 franziskus
+
+#3513-3514
+01 Axt
+03 axt
+
+#3515-3519
+01 Tabar
+03 tabar
+
+#3520-3524
+01 Elite groﬂe Axt
+03 elite groﬂe Axt
+
+#3525-3529
+01 Elite-Kampf-Axt
+03 elite-Kampf-Axt
+
+#3530-3534
+01 Elite Francis
+03 die elite von franziskus
+
+#3535-3539
+01 Elite-Axt
+03 elite-Axt
+
+#3540-3544
+01 Runic groﬂe Axt
+03 runen-groﬂe Axt
+
+#3545-3549
+01 Runen-Axt
+03 runen-Axt
+
+#3550-3554
+01 Runen-Franziskus
+03 runen-franziskus
+
+#3555-3560
+01 Rune-Axt
+03 rune-Axt
+
+#3561-3562
+01 Schlagstock
+03 schlagstock
+
+#3563-3564
+01 Keule
+03 keule
+
+#3565-3567
+01 Palitsa
+03 palitsa
+
+#3568-3569
+01 Hammer
+03 hammer
+
+#3570-3572
+01 Kampfhammer
+03 mein Hammer
+
+#3573-3574
+01 Morgenstern
+03 morgenstern
+
+#3575-3579
+01 Schmiedehammer
+03 schmiedehammer
+
+#3580-3584
+01 Elite-Keule
+03 elite-Keule
+
+#3585-3589
+01 Elite-Palisade
+03 elite-palisade
+
+#3590-3594
+01 Elite-Kampfhammer
+03 elite-Kampfhammer
+
+#3595-3599
+01 Elite Morgenstern
+03 elite morgenstern
+
+#3600-3604
+01 Runen-Keule
+03 runen-Keule
+
+#3605-3609
+01 Runenstock
+03 runenstock
+
+#3610-3614
+01 Runenkampfhammer
+03 runenkampfhammer
+
+#3615-3620
+01 Runen-Morgenstern
+03 runen-Morgenstern
+
+#3621
+01 Stab des Spielmachers
+03 stab des Spielmachers
+
+#3622-3624
+01 Legend‰re Axt
+03 legend‰re Axt
+
+#3625-3627
+01 Geisteraxt
+03 geisteraxt
+
+#3628-3630
+01 Drachenaxt
+03 drachenaxt
+
+#3631-3633
+01 Legend‰rer Hammer
+03 legend‰rer Hammer
+
+#3634-3636
+01 Der Geisterhammer
+03 der Geisterhammer
+
+#3637-3639
+01 Drachenhammer
+03 drachenhammer
+
+#3644
+01 Stab des Spieleentwicklers
+03 stab des Spieleentwicklers
+
+#5750
+01 Stab des Inquisitors
+03 stab des Inquisitors
+
+#5751
+01 Stab des Groﬂen Inquisitors
+03 stab des Groﬂen Inquisitors
+
+#5950
+01 Stab des Orcos
+03 stab des Orcos
+
+#5951
+01 Stab des Archimagiers
+03 stab des Archimagiers
+
+#5952
+01 Stab des Magiers
+03 stab des Magiers
+
+#5953
+01 Stab der Elemente
+03 stab der Elemente
+
+#5965
+01 Kleiner Stab des Archimagiers
+03 stab des Archimagiers
+
+#5966-5968
+01 Stab Des Erzmagiers
+03 stab des Archimagiers
+
+#5969
+01 Groﬂer Stab des Archimagiers
+03 stab des Archimagiers
+
+#5970
+01 Der groﬂe Stab des Erzmagier
+03 stab des Archimagiers
+
+#6065-6070
+01 Der Hammer des Donners
+03 der Hammer des Donners
+
+#6183
+01 Kleiner Stab des Wiederaufbaus
+03 stab des Wiederaufbaus
+
+#6184-6185
+01 Mittlerer Wiederherstellungsstab
+03 stab der Wiederherstellung
+
+#6186-6187
+01 Groﬂer Wiederherstellungsstab
+03 stab der Wiederherstellung
+
+#6188
+01 Groﬂer Stab der Wiederherstellung
+03 stab der Wiederherstellung
+
+#6365-6368
+01 Labris
+03 labris
+
+#6369
+01 Stahl Labrys
+03 labris
+
+#6370
+01 Groﬂe Labrys
+03 labris
+
+#6452
+01 Axt des Meisters
+03 axt des Meisters
+
+#6453
+01 St‰rke-Hammer
+03 st‰rke-Hammer
+
+#6552-6554
+01 Schmiedehammer
+03 schmiedehammer
+
+#6658
+01 Stab des Zauberers
+03 stab des Zauberers
+
+#6750
+01 Stab der Verst¸mmelung
+03 stab der Verst¸mmelung
+
+#6751
+01 Stab der Finsternis
+03 stab der Finsternis
+
+#6752
+01 Stab des Opfers
+03 stab des Opfers

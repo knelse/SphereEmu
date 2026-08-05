@@ -1,0 +1,206 @@
+01 Paquet
+02 colis
+03 colis
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#155
+01 Eau
+02 eau
+03 eau
+
+#160
+01 Paquet
+02 colis
+03 colis
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#161
+01 Lettre
+02 lettres
+03 lettre
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#162
+01 Note
+02 notes
+03 Note
+10 Écrit %s, bénéficiaire: %s.
+
+#163
+01 Enveloppe
+02 enveloppes
+03 enveloppe
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#164
+01 Documents
+02 documents
+03 documents
+10 Propriétaire: %s, bénéficiaire: %s.
+
+#165
+01 Épée
+02 épées
+03 épée
+10 Propriétaire: %s . livrer: %s.
+
+#166
+01 Poisson empoisonné
+03 poisson empoisonné
+10 Dal %s . apporter: %s.
+
+#167
+01 Dessin
+03 dessin
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#168
+01 Recette
+03 recette
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#169
+01 Le sang du monstre
+03 le sang du monstre
+10 le sang d'un monstre nommé %s. %s il veut l'avoir.
+
+#170
+01 Parchemin
+02 parchemins
+03 parchemin
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#171
+01 Tête
+02 têtes
+03 tête
+10 La tête qui portait sur les épaules %s.
+
+#172
+01 Tête de monstre
+02 têtes de monstres
+03 tête de monstre
+10 Cette tête appartenait à un monstre nommé %s. %s il a envie de l'avoir.
+
+#173
+01 Livre
+02 livres
+03 livre
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#174
+01 Livre
+02 livres
+03 livre
+
+#175
+01 Crâne
+02 crânes
+03 crâne
+10 Crâne appartenant à %s. %s il veut l'avoir.
+
+#176
+01 Oeil
+02 yeux
+03 oeil
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#177
+01 Archives
+02 archives
+03 archives
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#178
+01 Formule
+02 formules
+03 formule
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#179
+01 UC
+03 UC
+
+#180
+01 Champignon
+02 champignons
+03 champignon
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#181-183
+01 Élixir
+02 élixirs
+03 élixir
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#184-185
+01 Plume
+02 plumes
+03 plume
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#186
+01 Diamant
+02 diamants
+03 diamant
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#187
+01 Rubis
+02 rubis
+03 rubis
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#188
+01 Émeraude
+02 émeraudes
+03 émeraude
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#189
+01 Pierre
+02 pierres
+03 pierre
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#190
+01 Formule
+02 formules
+03 formule
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#191
+01 Vin
+02 vins
+03 vin
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#192
+01 Poison
+02 poisons
+03 poison
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#193-194
+01 Anneau
+02 anneaux
+03 anneau
+10 Expéditeur: %s, bénéficiaire: %s.
+
+#195
+01 Ancienne clé
+02 anciennes clés
+03 ancienne clé
+10 Une clé appartenant à un dragon nommé %s. %s je voulais avoir un cœur, mais il a été détruit au combat.
+
+#196
+01 Coeur de dragon
+02 coeurs de dragons
+03 coeur de dragon
+10 Coeur de dragon nommé %s
+
+#197-199
+01 Sang de dragon
+02 sang de dragon
+03 sang de dragon
+10 Le sang du dragon qui possédait %s. %s fera avec son aide une épée magique.

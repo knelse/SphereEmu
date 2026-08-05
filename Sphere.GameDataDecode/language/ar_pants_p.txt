@@ -1,80 +1,99 @@
-01 calça
-03 calça
-
-100 Proteje você contra armas inimigas durante uma batalha.
-
-200 de durabilidade
-201 de absorção
-202 de proteção
-203 de saúde
-204 de meditação
-205 de precisão
-206 de éter
-207 de valor
+01 Calças
+03 calças
+100 Na batalha protege contra as armas dos inimigos.
+200 força
+201 absorção
+202 segurança
+203 saúde
+204 meditação
+205 precisão
+206 Ether
+207 valores
 
 #373
-01 Calça
-03 calça
+01 Calças
+03 calças
+
 #374
-01 Calça de couro
-03 calça de couro
+01 Calças de couro
+03 calças de couro
+
 #375-376
-01 Calça de couro reforçada
-03 calça de couro reforçada
+01 Calças de couro rebitadas
+03 calças de couro rebitadas
+
 #377-378
-01 Calça de correntes reforçadas
-03 calça de correntes reforçadas
+01 Calças de Chainmail
+03 calças de Chainmail
+
 #379-381
-01 Cobertura de armadura
-03 cobertura de armadura
+01 Leggings de placa
+03 Leggings de placa
+
 #382-384
-01 Cobertura de armadura ancestral
-03 cobertura de armadura ancestral
+01 Leggings de placa antiga
+03 Leggings de placa antiga
+
 #3121-3122
-01 Calça
-03 calça
+01 Calças
+03 calças
+
 #3123-3124
-01 Calça de couro
-03 calça de couro
+01 Calças de couro
+03 calças de couro
+
 #3125-3128
-01 Calça de couro reforçada
-03 calça de couro reforçada
+01 Calças de couro rebitadas
+03 calças de couro rebitadas
+
 #3129-3132
-01 Calça de correntes reforçadas
-03 calça de correntes reforçadas
+01 Calças de Chainmail
+03 calças de Chainmail
+
 #3133-3138
-01 Cobertura de armadura
-03 cobertura de armadura
+01 Leggings de placa
+03 Leggings de placa
+
 #3139-3145
-01 Cobertura de armadura ancestral
-03 cobertura de armadura ancestral
+01 Leggings de placa antiga
+03 Leggings de placa antiga
+
 #4471-4479
-01 Cobertura de armadura ancestral
-03 cobertura de armadura ancestral
+01 Leggings de placa antiga
+03 Leggings de placa antiga
+
 #4742
-01 Cobertura de armadura preta
-03 cobertura de armadura preta
+01 Leggings de placa preta
+03 Leggings de placa preta
+
 #4743
-01 Cobertura de armadura branca
-03 cobertura de armadura branca
+01 Leggings de placa branca
+03 Leggings de placa branca
+
 #6371
-01 Pantalona de rebite de Batalha
-03 pantalona de Batalha
+01 Leggings de combate
+03 Leggings de combate
+
 #6372
-01 Pantalona de couro de Batalha
-03 pantalona de Batalha
+01 Leggings de combate de couro
+03 Leggings de combate
+
 #6373
-01 Pantalona de rebite de Batalha
-03 pantalona de Batalha
+01 Leggings de batalha rebitadas
+03 Leggings de combate
+
 #6374
-01 Pantalona de malha de Batalha
-03 pantalona de Batalha
+01 Leggings de combate de cota de malha
+03 Leggings de combate
+
 #6375
-01 Pantalona armadurada de Batalha
-03 pantalona de Batalha
+01 Leggings de combate de placa
+03 Leggings de combate
+
 #6376
-01 Pantalona antiga de Batalha
-03 pantalona de Batalha
+01 Leggings de batalha antigos
+03 Leggings de combate
+
 #6760
-01 Cobertura de ossos
-03 cobertura de osso
+01 Leggings de osso
+03 Leggings de osso

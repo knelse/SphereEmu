@@ -1,7 +1,7 @@
-01 Teleporte do torneio
-10 Viajem proibida no momento.
-11 Nível máximo de viajem: %d
-12 Nível mínimo de viajem: %d
-13 Teleporte desligado agora.
-14 Teleporte funciona para níveis %d até %d.
-100 Este teleporte somente pode ser usado pra viajens até a arena. Após a morte na arena, você retorna para este teleporte.
+01 Teletransporte de Torneio
+10 No momento, o deslocamento é proibido.
+11 Nível máximo para mover: %d
+12 Nível mínimo para mover: %d
+13 O teletransporte não está a funcionar.
+14 Teletransporte aberto para níveis c %d po %d.
+100 Só é possível mover-se com este teletransporte para a Arena. Depois de morrer na arena, você volta para este teletransportador.

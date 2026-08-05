@@ -1,11 +1,11 @@
 01 Contenitore
-10 Box
+10 Cassetto
 11 Bara
 12 Bara
 13 Sarcofago
 14 Sarcofago
-15 Cesto
-16 Botte
-17 Baule
-20 La trappola non può essere disattivata
-21 Trappola disattivata!
+15 Carrello
+16 Barile
+17 Petto
+20 La trappola non può essere disinnescata
+21 Trappola disinnescata!

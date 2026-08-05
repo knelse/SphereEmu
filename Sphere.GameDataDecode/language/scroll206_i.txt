@@ -1,8 +1,6 @@
-01 Sui mercanti 
-03 Sui mercanti
-
-100 Davanti a te si trova una pergamena con un'antica leggenda sulla storia di Sphere.
-
+01 Circa i commercianti
+03 circa i commercianti
+100 Di fronte a te c'è un rotolo con un'antica leggenda del mondo della sfera.
 TEXT
-
-    La maggior parte dei maghi detestano lasciare le loro maliconiche torre per raggiungere le città affollate. Se però avrai la possibilità di visitare una torre solitaria di un mago, il suo proprietario sarà lieto di questa visita e molto probabilmente ti venderà qualche amuleto.
+    È improbabile che la maggior parte dei maghi lasci le loro torri appartate per le città affollate. Tuttavia, se visiti accidentalmente la Torre eremita del mago, il suo proprietario sarà sinceramente felice per te e forse accetterà persino di vendere un paio di preziosi amuleti.
+    

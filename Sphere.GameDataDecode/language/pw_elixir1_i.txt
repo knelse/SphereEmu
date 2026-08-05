@@ -1,67 +1,77 @@
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
 20 La trappola non può essere disinnescata
-21 La trappola è stata disinnescata!
+21 Trappola disinnescata!
 
 #570
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 5 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 5.
+
 #571
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 10 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 10.
+
 #572
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 15 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 15.
+
 #573
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 20 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 20.
+
 #574
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 25 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 25.
+
 #575
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 30 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 30.
+
 #576
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 35 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 35.
+
 #577
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 40 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 40.
+
 #578
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 45 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 45.
+
 #579
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 50 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 50.
+
 #580
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 55 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 55.
+
 #581
-01 Elisir disinnescante
-02 elisir disinnescante
-03 elisir disinnescante
-100 Questo elisir è in grado di disinnescare le trappole che si trovano nei sotteranei di Sphere. Elisir disinnesca le trappole fino 60 livello.
+01 Elisir di eliminazione delle trappole
+02 elisir di eliminazione delle trappole
+03 elisir di eliminazione delle trappole
+100 Questo elisir è in grado di eliminare il pericolo rappresentato dalle trappole che si trovano in abbondanza nei sotterranei della sfera. Elisir sblocca trappole fino al livello 60.

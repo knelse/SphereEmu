@@ -1,0 +1,37 @@
+01 Faden
+03 fäden
+10 An diesem Strang sind die Ohren gesammelt, deren Besitzer Karma war %s.
+11 An diesem Strang sind die Ohren der Mitglieder der Admingilde gesammelt. //never comes
+12 An diesem Strang sind die Ohren der Clanmitglieder gesammelt %s.
+14 An diesem Strang sind Ohren montiert, deren Besitzer eine höhere Stufe haben %d.
+50 Gesammelt %d stück.
+0900 An diesem Strang sind die Ohren der Mitglieder der Assassinengilde gesammelt.
+0901 An diesem Strang sind die Ohren der Mitglieder der Kreuzrittergilde gesammelt.
+0902 An diesem Strang sind die Ohren der Mitglieder der Gilde der Inquisitoren gesammelt.
+0903 An diesem Strang sind die Ohren der Mitglieder der Jägergilde gesammelt.
+0904 An diesem Strang sind die Ohren der Mitglieder der Erzmagiergilde gesammelt.
+0905 An diesem Strang sind die Ohren der Mitglieder der Barbarengilde gesammelt.
+0906 An diesem Strang sind die Ohren der Mitglieder der Druidengilde gesammelt.
+0907 An diesem Strang sind die Ohren der Mitglieder der Diebesgilde gesammelt.
+0908 An diesem Strang sind die Ohren der Mitglieder der Zunftmeister aus Stahl gesammelt.
+0909 An diesem Strang sind die Ohren der Mitglieder der Waffengilde gesammelt.
+0910 An diesem Strang sind die Ohren der Mitglieder der Schmiedegilde gesammelt.
+0911 An diesem Strang sind die Ohren der Mitglieder der Zauberergilde gesammelt.
+0912 An diesem Strang sind die Ohren der Mitglieder der Nekromanten-Gilde gesammelt.
+0913 An diesem Strang sind die Ohren der Mitglieder der Bandierengilde gesammelt.
+
+#90
+01 Roter Faden für die Ohren
+03 roter Faden für die Ohren
+
+#91
+01 Grüner Faden für die Ohren
+03 grüner Faden für die Ohren
+
+#92
+01 Blauer Faden für die Ohren
+03 blauer Faden für die Ohren
+
+#93
+01 Gelber Faden für die Ohren
+03 gelber Faden für die Ohren

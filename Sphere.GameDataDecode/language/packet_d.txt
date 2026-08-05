@@ -1,0 +1,206 @@
+01 Paket
+02 pakete
+03 paket
+10 Absender: %s . empfänger: %s.
+
+#155
+01 Wasser
+02 wasser
+03 wasser
+
+#160
+01 Paket
+02 pakete
+03 paket
+10 Absender: %s Empfänger: %s.
+
+#161
+01 Brief
+02 briefe
+03 brief
+10 Absender: %s . empfänger: %s.
+
+#162
+01 Hinweis
+02 notizen
+03 eine Notiz
+10 Geschrieben %s . empfänger: %s.
+
+#163
+01 Umschlag
+02 umschläge
+03 umschlag
+10 Absender: %s . empfänger: %s.
+
+#164
+01 Dokumente
+02 dokumente
+03 dokumente
+10 Besitzer: %s . empfänger: %s.
+
+#165
+01 Schwert
+02 schwerter
+03 schwert
+10 Besitzer: %s, liefern: %s.
+
+#166
+01 Vergifteter Fisch
+03 vergifteter Fisch
+10 Gab %s, bringen: %s.
+
+#167
+01 Zeichnung
+03 zeichnung
+10 Absender: %s . empfänger: %s.
+
+#168
+01 Rezept
+03 rezept
+10 Absender: %s . empfänger: %s.
+
+#169
+01 Blut des Monsters
+03 blut des Monsters
+10 blut eines Monsters namens %s. %s er will sie bekommen.
+
+#170
+01 Schriftrolle
+02 schriftrollen
+03 schriftrolle
+10 Absender: %s Empfänger: %s.
+
+#171
+01 Kopf
+02 köpfe
+03 kopf
+10 Der Kopf, den er auf seinen Schultern trug %s.
+
+#172
+01 Kopf des Monsters
+02 monster-Köpfe
+03 kopf des Monsters
+10 Dieser Kopf gehörte einem Monster namens %s. %s er sehnt sich danach, es zu bekommen.
+
+#173
+01 Buch
+02 bücher
+03 buch
+10 Absender: %s . empfänger: %s.
+
+#174
+01 Buch
+02 bücher
+03 buch
+
+#175
+01 Schädel
+02 Schädel
+03 schädel
+10 Der Schädel, der gehörte %s. %s er will es bekommen.
+
+#176
+01 Das Auge
+02 augen
+03 das Auge
+10 Absender: %s . empfänger: %s.
+
+#177
+01 Archive
+02 archive
+03 archive
+10 Absender: %s . empfänger: %s.
+
+#178
+01 Formel
+02 formeln
+03 formel
+10 Absender: %s . empfänger: %s.
+
+#179
+01 UC
+03 UC
+
+#180
+01 Pilz
+02 pilze
+03 pilz
+10 Absender: %s . empfänger: %s.
+
+#181-183
+01 Elixier
+02 elixiere
+03 elixier
+10 Absender: %s . empfänger: %s.
+
+#184-185
+01 Stift
+02 federn
+03 stift
+10 Absender: %s . empfänger: %s.
+
+#186
+01 Diamant
+02 diamanten
+03 diamant
+10 Absender: %s . empfänger: %s.
+
+#187
+01 Rubin
+02 rubine
+03 rubin
+10 Absender: %s . empfänger: %s.
+
+#188
+01 Smaragd
+02 smaragde
+03 smaragd
+10 Absender: %s Empfänger: %s.
+
+#189
+01 Stein
+02 steine
+03 stein
+10 Absender: %s . empfänger: %s.
+
+#190
+01 Formel
+02 formeln
+03 formel
+10 Absender: %s . empfänger: %s.
+
+#191
+01 Wein
+02 weine
+03 wein
+10 Absender: %s . empfänger: %s.
+
+#192
+01 Gift
+02 gifte
+03 gift
+10 Absender: %s . empfänger: %s.
+
+#193-194
+01 Ring
+02 ringe
+03 ring
+10 Absender: %s . empfänger: %s.
+
+#195
+01 Alter Schlüssel
+02 alte Schlüssel
+03 alter Schlüssel
+10 Ein Schlüssel, der einem Drachen namens gehörte %s. %s ich wollte ein Herz bekommen, aber es wurde im Kampf zerstört.
+
+#196
+01 Das Herz des Drachen
+02 herzen der Drachen
+03 das Herz des Drachen
+10 Drachenherz mit Namen %s
+
+#197-199
+01 Drachenblut
+02 drachenblut
+03 drachenblut
+10 Drachenblut, das er besaß %s. %s wird mit seiner Hilfe ein magisches Schwert machen.

@@ -1,47 +1,51 @@
 01 Stivali
 03 stivali
-
-100 Proteggono dai colpi dei nemici in battaglia.
-
-200 dell'eliminazione
-201 della devastazione
-202 della fiducia
-203 dell'invulnerabilità
-204 della vita
-205 dell'eliminazione
-206 della devastazione
-207 della fiducia
-208 dell'invulnerabilità
-209 della vita
-210 del dominio
-211 della cecità
-212 della paura
-213 dell'arresto
-214 della liberazione
-215 della purificazione
-216 della punizione
-217 dell'intrappolamento
-218 del turbine
-219 della maledizione
+100 In battaglia protegge dalle armi degli avversari.
+200 eradicazione
+201 devastazioni
+202 affidabilità
+203 invulnerabilità
+204 vita
+205 eradicazione
+206 devastazioni
+207 affidabilità
+208 invulnerabilità
+209 vita
+210 del Consiglio
+211 abbagliamento
+212 paura
+213 fermate
+214 liberazione
+215 pulizia
+216 punizioni
+217 catene
+218 vortice
+219 maledizioni
 
 #5006
-01 Stivali in pelle rinforzata
-03 stivali in pelle rinforzata
+01 Stivali di pelle rivettati
+03 stivali di pelle rivettati
+
 #5026
-01 Gambali di armatura
-03 gambali di armatura
+01 Stivali piatti
+03 stivali piatti
+
 #5046
-01 Gambali antichi di armatura
-03 gambali antichi di armatura
+01 Stivali antichi
+03 stivali antichi
+
 #5066
-01 Gambali antichi di armatura
-03 gambali antichi di armatura
+01 Stivali antichi
+03 stivali antichi
+
 #5116
-01 Gambali antichi di armatura
-03 gambali antichi di armatura
+01 Stivali antichi
+03 stivali antichi
+
 #5136
-01 Gambali antichi di armatura
-03 gambali antichi di armatura
+01 Stivali antichi
+03 stivali antichi
+
 #5165
-01 Gambali antichi di armatura
-03 gambali antichi di armatura
+01 Stivali antichi
+03 stivali antichi

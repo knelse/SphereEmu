@@ -1,9 +1,7 @@
-01 Fórmula do pó de grande fogo
-02 Fórmula do pó de grande fogo
-03 Fórmula do pó de grande fogo
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas.
-
+01 Receita de pó de grande fogo
+02 receitas de pó de fogo grande
+03 receita de pó de grande fogo
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Feiticeiros experientes (não abaixo de professor) para obter o pó de fogo grande mixturar Galeonat, Circulonia e Chumbo na fornalha e queimar galhos secos. 
+    Magos experientes (graus não inferiores a um professor) para obter um pó de grande fogo, o galeonato, o circulônio e o chumbo são misturados no forno e, em seguida, o forno é afogado com lenha.
+    

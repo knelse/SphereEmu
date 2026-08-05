@@ -1,366 +1,438 @@
-01 Mantra 
-02 Mantra
-03 Mantra
-10 Tare mladbad abkhard
+01 Mantra
+02 mantra
+03 mantra
+10 Tara mladbad abhard
 
 #2401
 01 Mantra
-02 Mantra
-03 Mantra
-10 Abadra dakhta
+02 mantra
+03 mantra
+10 Abadra Dahta
+
 #2402
 01 Mantra
-02 Mantra
-03 Mantra
-10 Abadra dakhta kha
+02 mantra
+03 mantra
+10 Abadra Dahta ha
+
 #2403
 01 Mantra
-02 Mantra
-03 Mantra
-10 Abadra dakhta tkha
+02 mantra
+03 mantra
+10 Abadra Dahta THA
+
 #2404
 01 Mantra
-02 Mantra
-03 Mantra
-10 Pranat dabkha
+02 mantra
+03 mantra
+10 Pranath dubha
+
 #2405
 01 Mantra
-02 Mantra
-03 Mantra
+02 mantra
+03 mantra
 10 Shabad pranat
+
 #2406
 01 Mantra
-02 Mantra
-03 Mantra
-10 Kayapad mladakh
+02 mantra
+03 mantra
+10 Kayapad mladah
+
 #2407
 01 Mantra
-02 Mantra
-03 Mantra
-10 Gadara koumbakh
+02 mantra
+03 mantra
+10 Ghadara kumbah
+
 #2410
 01 Mantra
-02 Mantra
-03 Mantra
-10 Djelakhna epkhana
+02 mantra
+03 mantra
+10 Jelahna ephana
+
 #2411
 01 Mantra
-02 Mantra
-03 Mantra
-10 Djelakhna epkhana kha
+02 mantra
+03 mantra
+10 Jelahna ephana ha
+
 #2412
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tarkha makhanat
+02 mantra
+03 mantra
+10 Tarha mahanat
+
 #2413
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tarkha makhanat kha
+02 mantra
+03 mantra
+10 Tarha mahanat ha
+
 #2414
 01 Mantra
-02 Mantra
-03 Mantra
-10 Pakharna djanka
+02 mantra
+03 mantra
+10 Paharna Janka
+
 #2415
 01 Mantra
-02 Mantra
-03 Mantra
-10 Pakharna djanka kha
+02 mantra
+03 mantra
+10 Paharna Janka ha
+
 #2416
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tarkha anat
+02 mantra
+03 mantra
+10 Tarha Anat
+
 #2417
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tarkha anat kha
+02 mantra
+03 mantra
+10 Tarha Anat ha
+
 #2418
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ashna djakhara 
+02 mantra
+03 mantra
+10 Ashna Jahara
+
 #2419
 01 Mantra
-02 Mantra
-03 Mantra
-10 Efalakh pakhanara
+02 mantra
+03 mantra
+10 Efalah pahanara
+
 #2420
 01 Mantra
-02 Mantra
-03 Mantra
-10 Trasha ekhna
+02 mantra
+03 mantra
+10 Trasha akhen
+
 #2421
 01 Mantra
-02 Mantra
-03 Mantra
-10 Trasha ekhna kha
+02 mantra
+03 mantra
+10 Trasha akhna ha
+
 #2422
 01 Mantra
-02 Mantra
-03 Mantra
-10 Trasha ekhna tkha
+02 mantra
+03 mantra
+10 Trasha akhna THA
+
 #2423
 01 Mantra
-02 Mantra
-03 Mantra
-10 Trasha ekhna pra
+02 mantra
+03 mantra
+10 Trasha akhna pra
+
 #2424
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash opatakh 
+02 mantra
+03 mantra
+10 Darkash opatah
+
 #2425
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash opatakh kha
+02 mantra
+03 mantra
+10 Darkash opatah ha
+
 #2426
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash opatakh tkha
+02 mantra
+03 mantra
+10 Darkash opatah THA
+
 #2427
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash opatakh pra
+02 mantra
+03 mantra
+10 Darkash opatah pra
+
 #2428
 01 Mantra
-02 Mantra
-03 Mantra
-10 Dakhadja oprakhna
+02 mantra
+03 mantra
+10 Dahaja oprahna
+
 #2429
 01 Mantra
-02 Mantra
-03 Mantra
-10 Dakhadja oprakhna kha
+02 mantra
+03 mantra
+10 Dahaja oprahna ha
+
 #2430
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tadjkhafar parala
+02 mantra
+03 mantra
+10 Tazhafar parala
+
 #2431
 01 Mantra
-02 Mantra
-03 Mantra
-10 Tadjkhafar parala kha
+02 mantra
+03 mantra
+10 Tajhafar parala ha
+
 #2432
 01 Mantra
-02 Mantra
-03 Mantra
-10 Orapakh rakha
+02 mantra
+03 mantra
+10 Orapah Rakha
+
 #2433
 01 Mantra
-02 Mantra
-03 Mantra
-10 Orapakh rakha kha
+02 mantra
+03 mantra
+10 Orapah Rakha ha
+
 #2434
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yokatkha apfakhna
+02 mantra
+03 mantra
+10 Yokatha apfahna
+
 #2435
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yokatkha apfakhna kha
+02 mantra
+03 mantra
+10 Yokatha apfahna ha
+
 #2436
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash dkhana
+02 mantra
+03 mantra
+10 Darkash Dhana
+
 #2437
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash dkhana kha
+02 mantra
+03 mantra
+10 Darkash Dhana ha
+
 #2438
 01 Mantra
-02 Mantra
-03 Mantra
+02 mantra
+03 mantra
 10 Darkash parla
+
 #2439
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash parla kha
+02 mantra
+03 mantra
+10 Darkash parla ha
+
 #2440
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash ilan 
+02 mantra
+03 mantra
+10 Darkash ilan
+
 #2441
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash ilan kha
+02 mantra
+03 mantra
+10 Darkash ilan ha
+
 #2442
 01 Mantra
-02 Mantra
-03 Mantra
+02 mantra
+03 mantra
 10 Darkash rashna
+
 #2443
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash rashna kha
+02 mantra
+03 mantra
+10 Darkash rashna ha
+
 #2444
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash raspakha
+02 mantra
+03 mantra
+10 Darkash
+
 #2445
 01 Mantra
-02 Mantra
-03 Mantra
-10 Darkash raspakha kha
+02 mantra
+03 mantra
+10 Darkash raskah ha
+
 #2446
 01 Mantra
-02 Mantra
-03 Mantra
+02 mantra
+03 mantra
 10 Yanak orakha
+
 #2447
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yanak orakha kha
+02 mantra
+03 mantra
+10 Yanak orakha ha
+
 #2448
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yanak orakha tkha
+02 mantra
+03 mantra
+10 Yanak orakha THA
+
 #2449
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yanak razhkhak
+02 mantra
+03 mantra
+10 Janak rajhak
+
 #2450
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yanak razhkhak kha
+02 mantra
+03 mantra
+10 Yanak rajhak ha
+
 #2451
 01 Mantra
-02 Mantra
-03 Mantra
-10 Yanak razhkhak tkha
+02 mantra
+03 mantra
+10 Yanak rajhak THA
+
 #2452
 01 Mantra
-02 Mantra
-03 Mantra
-10 Navraakh eskha
+02 mantra
+03 mantra
+10 Navraah Esha
+
 #2453
 01 Mantra
-02 Mantra
-03 Mantra
-10 Navraakh eskha kha
+02 mantra
+03 mantra
+10 Navraah Esha ha
+
 #2454
 01 Mantra
-02 Mantra
-03 Mantra
-10 Navraakh eskha tkha
+02 mantra
+03 mantra
+10 Navraah Esha THA
+
 #2455
 01 Mantra
-02 Mantra
-03 Mantra
-10 Dalpala narudja
+02 mantra
+03 mantra
+10 Dalpala Naruja
+
 #2456
 01 Mantra
-02 Mantra
-03 Mantra
-10 Dalpala narudja kha
+02 mantra
+03 mantra
+10 Dalpala Naruja ha
+
 #2457
 01 Mantra
-02 Mantra
-03 Mantra
-10 Dalpala narudja tkha
+02 mantra
+03 mantra
+10 Dalpala Naruja THA
+
 #2459
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka
+02 mantra
+03 mantra
+10 Ezhankak Onaka
+
 #2460
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka kha
+02 mantra
+03 mantra
+10 Ezhankah Onaka ha
+
 #2461
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka tkha
+02 mantra
+03 mantra
+10 Ezhankak Onaka THA
+
 #2462
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka pra
+02 mantra
+03 mantra
+10 Ezhankak Onaka pra
+
 #2463
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka dja
+02 mantra
+03 mantra
+10 Ezhankah Onaka ja
+
 #2464
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka dakh
+02 mantra
+03 mantra
+10 Ezhankak Onaka Dah
+
 #2465
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka rkha
+02 mantra
+03 mantra
+10 Ezhankak Onaka RHA
+
 #2466
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka vna
+02 mantra
+03 mantra
+10 Ezhankak Onaka VNA
+
 #2467
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka dkhar
+02 mantra
+03 mantra
+10 Ezhankah Onaka Dhar
+
 #2468
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka prakh
+02 mantra
+03 mantra
+10 Ezhankah Onaka polvere
+
 #2469
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka fkha
+02 mantra
+03 mantra
+10 Ezhankak Onaka FHA
+
 #2470
 01 Mantra
-02 Mantra
-03 Mantra
-10 Ezhankakh onaka fna
+02 mantra
+03 mantra
+10 Ezhankak Onaka Fna
+
 #2471
 01 Mantra
-02 Mantra
-03 Mantra
-10 Arnala onadja
+02 mantra
+03 mantra
+10 Arnal onaj
+
 #2472
 01 Mantra
-02 Mantra
-03 Mantra
-10 Arnala onadja kha
+02 mantra
+03 mantra
+10 Arnala onaja ha
+
 #2473
 01 Mantra
-02 Mantra
-03 Mantra
-10 Arnala onadja tkha
+02 mantra
+03 mantra
+10 Arnala onaja THA
+
 #2474
 01 Mantra
-02 Mantra
-03 Mantra
-10 Arnala onadja fna
+02 mantra
+03 mantra
+10 Arnala onaja Fna
+
 #6650
-01 Mantra of disintegration
-03 Mantra of disintegration
+01 Il mantra della decomposizione
+03 mantra di decomposizione
+
 #6651
-01 Mantra of weakness
-03 Mantra of weakness
+01 Il mantra della debolezza
+03 il mantra della debolezza

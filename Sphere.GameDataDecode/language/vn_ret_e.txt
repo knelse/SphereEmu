@@ -1,7 +1,4 @@
-01 Камень Возврата
-03 Камень Возврата
-
-10 Осталось зарядов:
-
-100 Позволяет владельцу перемещаться в ближайший город. Камень достаточно положить в инвентарь. Для перезарядки камня вам необходимо посетить Джима Моррисона в городе Санпул.
-
+01 The Stone of Return
+03 The Stone of Return
+10 There are charges left:
+100 Allows the owner to move to the nearest city. It is enough to put the stone in the inventory. To recharge the stone, you need to visit Jim Morrison in the city of Sunpool. Attention, in order for the stone to work, you cannot take damage for 20 seconds.

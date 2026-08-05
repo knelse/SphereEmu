@@ -1,8 +1,6 @@
-01 Nos comerciantes 
-03 nos comerciantes
-
-100 Na sua frente está um pergaminho com uma antiga escrita da vida na Sphere.
-
+01 Sobre os comerciantes
+03 sobre os comerciantes
+100 Tens um pergaminho com uma lenda antiga do mundo da esfera.
 TEXT
-
-    A maioria dos magos não gosta de deixar sua torre sózinha. Se você persistir em visitar uma solitária torre de algum mago, ele ficará receoso mas talvez concorde em vender alguns amuletos. 
+    A maioria dos feiticeiros dificilmente abandonaria suas torres isoladas por cidades barulhentas. No entanto, se você visitar acidentalmente a torre eremita do mago, seu mestre ficará sinceramente feliz com você e talvez até concorde em vender um par de Amuletos valiosos.
+    

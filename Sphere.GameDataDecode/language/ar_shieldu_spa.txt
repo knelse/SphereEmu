@@ -1,0 +1,50 @@
+01 Escudo de madera
+03 escudo de madera
+200 eliminación
+201 devastación
+202 fiabilidad
+203 invulnerabilidad
+204 vida
+205 eliminación
+206 devastación
+207 fiabilidad
+208 invulnerabilidad
+209 vida
+210 Junta directiva
+211 cegamiento
+212 susto
+213 paradas
+214 liberación
+215 limpieza
+216 castigos
+217 grilletes
+218 vórtice
+219 maldiciones
+
+#5002
+01 Gran escudo
+03 gran escudo
+
+#5022
+01 Escudo de madera tapizado
+03 escudo de madera tapizado
+
+#5042
+01 Escudo grande tapizado
+03 escudo grande tapizado
+
+#5062
+01 Escudo de hierro
+03 escudo de hierro
+
+#5112
+01 Escudo de hierro
+03 escudo de hierro
+
+#5132
+01 Escudo de hierro
+03 escudo de hierro
+
+#5161
+01 Escudo de hierro
+03 escudo de hierro

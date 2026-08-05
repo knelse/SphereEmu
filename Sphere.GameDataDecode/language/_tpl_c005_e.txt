@@ -1,11 +1,13 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-20 There are certain things that I need. Find them, bring them to me, and you will be generously rewarded. %s.
-21 There are certain things that I need. Find them, bring them to me, and you will be generously rewarded. %s.
+01 Mission Key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 I was looking into my armory and found that some of the weapons and armor stored there were useless. Be so kind, bring me new ones instead of spoiled things, the same ones. In return, I will give you a decent reward. %s
+21 I was cleaning my barn and found that some of the things stored in it were no longer good for anything. Bring me new ones instead of spoiled things. In return, I will give you a decent reward. %s
+    
+    

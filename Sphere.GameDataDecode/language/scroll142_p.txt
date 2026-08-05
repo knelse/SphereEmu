@@ -1,9 +1,7 @@
-01 Fórmula do pó de incineração
-02 Fórmula do pó de incineração
-03 Fórmula do pó de incineração
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas.
-
+01 Receita do pó da incineração
+02 receitas do pó da incineração
+03 receita do pó da incineração
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se obter o pó da incenração ,antes de mais nada ache galeonat, a planta zirculonia e ferro. Mixture-os na fornalha e alimente o fogo com lenha e use o pó obtido. Você precisa ser ter o grau de Professor ou acima para se obter este pó.
+    Para obter o pó de incineração, primeiro obtenha galeonato, circulônio e ferro. Misture - os no forno, derreta o forno com lenha e use o pó resultante. Não se esqueça de que, para realizar essa reação, seu grau não deve ser menor que o de um professor.
+    

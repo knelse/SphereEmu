@@ -1,0 +1,238 @@
+01 Polvere magica
+02 polvere magica
+03 polvere magica
+
+#501-508
+01 Polvere di protezione fisica
+02 polvere di protezione fisica
+03 polvere di protezione fisica
+
+#509-520
+01 Polvere di attacco della Terra
+02 polvere di attacco della Terra
+03 polvere di attacco della Terra
+
+#521-528
+01 Polvere di protezione magica
+02 polvere di protezione magica
+03 polvere di protezione magica
+
+#537-542
+01 Polvere di salute
+02 polvere di salute
+03 polvere di salute
+
+#543-546
+01 Polvere di debolezza
+02 polvere di debolezza
+03 polvere di debolezza
+
+#547-549
+01 Polvere di protezione eccessiva
+02 polvere di protezione eccessiva
+03 polvere di protezione eccessiva
+
+#550
+01 Polvere di abbagliamento
+02 polvere di abbagliamento
+03 polvere di abbagliamento
+
+#551-553
+01 Polvere di protezione fisica
+02 polvere di protezione fisica
+03 polvere di protezione fisica
+
+#554-556
+01 Polvere di attacco della Terra
+02 polvere di attacco della Terra
+03 polvere di attacco della Terra
+
+#557-559
+01 Polvere di protezione magica
+02 polvere di protezione magica
+03 polvere di protezione magica
+
+#563-565
+01 Polvere di protezione eccessiva
+02 polvere di protezione eccessiva
+03 polvere di protezione eccessiva
+
+#601-606
+01 Polvere di salute
+02 polvere di salute
+03 polvere di salute
+
+#607-618
+01 Attacco di ghiaccio in polvere
+02 attacco di ghiaccio in polvere
+03 attacco di ghiaccio in polvere
+
+#626-631
+01 Malattia in polvere
+02 malattia in polvere
+03 malattia in polvere
+
+#635
+01 Polvere di purificazione
+02 polvere di purificazione
+03 polvere di purificazione
+
+#636-640
+01 Polvere di veleno
+02 polvere di veleno
+03 polvere di veleno
+
+#641-644
+01 Polvere di rigenerazione
+02 polvere di rigenerazione
+03 polvere di rigenerazione
+
+#645
+01 Polvere di purificazione completa
+02 polvere di purificazione completa
+03 polvere di purificazione completa
+
+#646-654
+01 Polvere di salute
+02 polvere di salute
+03 polvere di salute
+
+#655-657
+01 Attacco di ghiaccio in polvere
+02 attacco di ghiaccio in polvere
+03 attacco di ghiaccio in polvere
+
+#661-663
+01 Malattia in polvere
+02 malattia in polvere
+03 malattia in polvere
+
+#701-712
+01 Polvere di shock
+02 polvere di shock
+03 polvere di shock
+
+#713-721
+01 Polvere di fulmini
+02 polvere di fulmini
+03 polvere di fulmini
+
+#722-726
+01 Polvere di rinforzo
+02 polvere di rinforzo
+03 polvere di rinforzo
+
+#734-737
+01 Polvere di allentamento
+02 polvere di allentamento
+03 polvere di allentamento
+
+#738-739
+01 Polvere di maledizione dell'aria
+02 polvere di maledizione dell'aria
+03 polvere di maledizione dell'aria
+
+#740
+01 Polvere di decelerazione
+02 polvere di decelerazione
+03 polvere di decelerazione
+
+#741-743
+01 Polvere di shock
+02 polvere di shock
+03 polvere di shock
+
+#744-746
+01 Polvere di fulmini
+02 polvere di fulmini
+03 polvere di fulmini
+
+#750-752
+01 Polvere di allentamento
+02 polvere di allentamento
+03 polvere di allentamento
+
+#753-755
+01 Polvere di rinforzo
+02 polvere di rinforzo
+03 polvere di rinforzo
+
+#801-806
+01 Polvere di frecce infuocate
+02 polvere di frecce infuocate
+03 polvere di frecce infuocate
+
+#812-817
+01 Polvere di rinforzo
+02 polvere di rinforzo
+03 polvere di rinforzo
+
+#822-826
+01 Polvere di maledizione del fuoco
+02 polvere di maledizione del fuoco
+03 polvere di maledizione del fuoco
+
+#827-831
+01 Polvere di incenerimento
+02 polvere di incenerimento
+03 polvere di incenerimento
+
+#835
+01 Grande polvere di fuoco
+02 grande polvere di fuoco
+03 grande polvere di fuoco
+
+#836-840
+01 Polvere di fiamma velenosa
+02 polvere di fiamma velenosa
+03 polvere di fiamma velenosa
+
+#841
+01 Polvere di abbagliamento infuocato
+02 polvere di abbagliamento infuocato
+03 polvere di abbagliamento infuocato
+
+#854-856
+01 Polvere di frecce infuocate
+02 polvere di frecce infuocate
+03 polvere di frecce infuocate
+
+#860-862
+01 Polvere di rinforzo
+02 polvere di rinforzo
+03 polvere di rinforzo
+
+#866-868
+01 Polvere di maledizione del fuoco
+02 polvere di maledizione del fuoco
+03 polvere di maledizione del fuoco
+
+#869-871
+01 Polvere di incenerimento
+02 polvere di incenerimento
+03 polvere di incenerimento
+
+#6265-6270
+01 Coltello da lancio
+02 coltello da lancio
+03 coltello da lancio
+
+#6455
+01 Elisir dell'armaiolo
+02 elisir dell'armaiolo
+03 elisir dell'armaiolo
+
+#6557-6558
+01 Polvere Di Fabbro
+02 polvere di fabbro
+03 polvere di fabbro
+
+#6653
+01 Elisir di libertà
+02 elisir di libertà
+03 elisir di libertà
+
+#6759
+01 Degradazione della polvere
+02 degradazione della polvere
+03 degradazione della polvere

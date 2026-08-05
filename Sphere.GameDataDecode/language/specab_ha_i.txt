@@ -1,7 +1,6 @@
 01 Furto
-100 Un'abilità di professione. Un inesperto borsaiolo può racimolare giusto qualche tallero, ma le leggende narrano che ci sono così abili truffatori che possono perfino rubare oggetti dalle borse delle guardie delle città. 
-
-1000 Il furto richiede almeno uno slot libero nell'inventario.
+100 Abilità che definisce la professione. Un ladro borseggiatore inesperto può contare solo su un paio di talleri, ma ci sono leggende su tali imbroglioni che persino le cose dalla borsa possono essere tirate fuori da un cittadino spalancato.
+1000 Ci deve essere almeno una cella libera nell'inventario per rubare.
 1001 Hai rubato %s.
-1002 Furto fallito.
+1002 Il furto non è riuscito.
 1003 Hai rubato %d$.

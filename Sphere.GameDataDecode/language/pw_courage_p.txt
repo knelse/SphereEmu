@@ -1,5 +1,4 @@
-01 Stamina potion
-02 stamina potion
-03 stamina potion
-
-100 Recovers 1000 points of stamina.
+01 Poção de vivacidade
+02 poção de vivacidade
+03 poção de vivacidade
+100 Restaura 1000 pontos de vivacidade.

@@ -1,0 +1,135 @@
+01 Rob
+03 robu
+100 Ropa tradicional de los magos.
+200 eliminación
+201 devastación
+202 fiabilidad
+203 invulnerabilidad
+204 vida
+205 eliminación
+206 devastación
+207 fiabilidad
+208 invulnerabilidad
+209 vida
+210 Junta directiva
+211 cegamiento
+212 susto
+213 paradas
+214 liberación
+215 limpieza
+216 castigos
+217 grilletes
+218 vórtice
+219 maldiciones
+
+#5008
+01 Traje marrón
+03 traje marrón
+
+#5009
+01 Traje azul
+03 Blue Rob
+
+#5010
+01 Bata blanca
+03 traje blanco
+
+#5011
+01 Roba roja
+03 el traje rojo
+
+#5028
+01 Traje marrón
+03 traje marrón
+
+#5029
+01 Traje azul
+03 Blue Rob
+
+#5030
+01 Bata blanca
+03 traje blanco
+
+#5031
+01 Roba roja
+03 el traje rojo
+
+#5048
+01 Traje marrón
+03 traje marrón
+
+#5049
+01 Traje azul
+03 Blue Rob
+
+#5050
+01 Bata blanca
+03 traje blanco
+
+#5051
+01 Roba roja
+03 el traje rojo
+
+#5068
+01 Traje marrón
+03 traje marrón
+
+#5069
+01 Traje azul
+03 Blue Rob
+
+#5070
+01 Bata blanca
+03 traje blanco
+
+#5071
+01 Roba roja
+03 el traje rojo
+
+#5118
+01 Traje marrón
+03 traje marrón
+
+#5119
+01 Traje azul
+03 Blue Rob
+
+#5120
+01 Bata blanca
+03 traje blanco
+
+#5121
+01 Roba roja
+03 el traje rojo
+
+#5138
+01 Traje marrón
+03 traje marrón
+
+#5139
+01 Traje azul
+03 Blue Rob
+
+#5140
+01 Bata blanca
+03 traje blanco
+
+#5141
+01 Roba roja
+03 el traje rojo
+
+#5167
+01 Traje marrón
+03 traje marrón
+
+#5168
+01 Traje azul
+03 Blue Rob
+
+#5169
+01 Bata blanca
+03 traje blanco
+
+#5170
+01 Roba roja
+03 el traje rojo

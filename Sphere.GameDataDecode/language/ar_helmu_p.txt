@@ -1,47 +1,51 @@
-01 Elmo de ferro
-03 elmo de ferro
-
-100 Proteje você contra armas inimigas durante uma batalha.
-
-200 de eliminação
-201 de devastação
-202 de confiança
-203 de vulnerabilidade
-204 de vida
-205 de eliminação
-206 de devastação
-207 de confiança
-208 de vulnerabilidade
-209 de vida
-210 de regra
-211 de cegueira
-212 de medo
-213 de parada
-214 de entrega
-215 de purificação
-216 de castigo
-217 de cadeia
-218 de furacão
-219 de praga
+01 Capacete de ferro
+03 capacete de ferro
+100 Na batalha protege contra as armas dos inimigos.
+200 erradicação
+201 devastação
+202 confiabilidade
+203 invulnerabilidade
+204 vida
+205 erradicação
+206 devastação
+207 confiabilidade
+208 invulnerabilidade
+209 vida
+210 do Conselho
+211 cegueira
+212 susto
+213 paragens
+214 Livramento
+215 purificação
+216 punições
+217 grilhões
+218 Vortex
+219 maldições
 
 #5004
-01 Elmo de couro reforçado
-03 elmo de couro reforçado
+01 Capacete de couro rebitado
+03 capacete de couro rebitado
+
 #5024
-01 Elmo de ferro
-03 elmo de ferro
+01 Capacete de ferro
+03 capacete de ferro
+
 #5044
-01 Elmo de ferro ancestral
-03 elmo de ferro ancestral
+01 Capacete de ferro antigo
+03 capacete de ferro antigo
+
 #5064
-01 Elmo de ferro ancestral
-03 elmo de ferro ancestral
+01 Capacete de ferro antigo
+03 capacete de ferro antigo
+
 #5114
-01 Elmo de ferro ancestral
-03 elmo de ferro ancestral
+01 Capacete de ferro antigo
+03 capacete de ferro antigo
+
 #5134
-01 Elmo de ferro ancestral
-03 elmo de ferro ancestral
+01 Capacete de ferro antigo
+03 capacete de ferro antigo
+
 #5163
-01 Elmo de ferro ancestral
-03 elmo de ferro ancestral
+01 Capacete de ferro antigo
+03 capacete de ferro antigo

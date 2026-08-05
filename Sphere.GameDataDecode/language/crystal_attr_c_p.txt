@@ -1,4 +1,3 @@
-01 Atributo de estabilidade
-03 Atributo de estabilidade
-
-100 Adiciona ao jogador habilidades adicionais. O atributo é diretamente relacionado com o cristal do compêndio no castelo: Uma vez destruido (Cristal), todos atributos serão removidos.
+01 Atributo de durabilidade
+03 atributo de durabilidade
+100 Dá ao proprietário mais oportunidades. O atributo depende diretamente do cristal na placa do Castelo: quando o cristal é destruído, todos os atributos são removidos.

@@ -1,69 +1,81 @@
-01 anel
-03 anel
-
-100 Peça preciosa. Pode elevar o poder de magia do jogador. Se os anéis pudessem falar, eles teriam contado muitas histórias interessantes sobre seus donos anteriores. Historias conhecidas de pessoas que estavam preparadas para pagar um elevado preço pelo poder que o anel pode oferecer.
-
-200 de durabilidade
-201 de absorção
-202 de proteção
-203 de saúde
-204 de vida
-205 de meditação
-206 de prana
-207 de éter
-208 de precisão
-209 de força
-210 de habilidade
-211 de precisão
-212 de resistência
-213 de terra
-214 de água
-215 de ar
-216 de fogo
-217 de valor
+01 Anel
+03 Anel
+100 Decoração. Pode dar ao personagem propriedades mágicas. Os anéis podem contar muito sobre seus antigos donos. A história é rica em exemplos quando as pessoas tentaram pagar um preço caro pelo poder que um anel dá.
+200 força
+201 absorção
+202 segurança
+203 saúde
+204 vida
+205 meditação
+206 Prana
+207 Ether
+208 precisão
+209 força
+210 destreza
+211 precisão
+212 resistência
+213 Terra
+214 água
+215 ar
+216 fogo
+217 valores
 
 #425-448
 01 Anel
 03 anel
+
 #4047-4166
 01 Anel
 03 anel
+
 #5954
-01 Anel de mágico
-03 anel de mágico
+01 Anel Do Mago
+03 Anel Do Mago
+
 #5955
-01 Anel de Mágico superior
-03 anel de Mágico superior
+01 Anel De Arquimago
+03 anel de Arquimago
+
 #5956
-01 Anel de Grande mágico superior
-03 anel de Grande mágico superior 
+01 O Anel Do Grande Arquimago
+03 o anel do Grande Arquimago
+
 #5977
-01 Alem de Mágico
-03 anel de Mágico
+01 Anel Do Mago
+03 Anel Do Mago
+
 #5978-5981
-01 Anel de Arquimago
-03 anel de arquimago
+01 Anel De Arquimago
+03 anel de Arquimago
+
 #5982
-01 Anel de Grão Arquimago
-03 anel de Grão Arquimago
+01 O Anel Do Grande Arquimago
+03 o anel do Grande Arquimago
+
 #6249-6254
-01 Anel de pulverização
-03 anel de pulverização 
-#6555
-01 Anel de Aço
-03 anel de aço
-#6556
 01 Anel de habilidade
 03 anel de habilidade
+
+#6555
+01 Anel de aço
+03 anel de aço
+
+#6556
+01 Anel de prata
+03 anel de prata
+
 #6654
-01 Anel de homem hábil
-03 anel de homem hábil 
+01 Anel do artesão
+03 anel do artesão
+
 #6655
-01 Anel de aura
-03 anel de aura
+01 Anel da aura
+03 anel da aura
+
 #6656
 01 Anel de quatro cores
-03 Anel de quatro cores
+03 anel de quatro cores
+
 #6754
-01 Anel de cadáver
-03 anel de cadáver
+01 Anel de Lich
+03 anel de Lich

@@ -1,0 +1,88 @@
+1000 Castillo ocupado recientemente (sin impuestos)
+1001 Impuesto a la tierra: %d$
+1002 Impuesto sobre la tierra pagado.
+1003 Impuesto a la puerta: %d$
+1004 Se pagó el impuesto de la puerta.
+1005 Impuesto a la tabla: %d$
+1006 Se pagó el impuesto de la tabla.
+1007 Impuesto de mazmorras: %d$
+1008 Se pagó el impuesto de mazmorras.
+1090 Impuestos recaudados: %d$
+1091 Eliminar
+8000 Tabla del castillo de Lieja
+8200 Puerta del castillo de Lieja
+8001 Tabla del castillo de Fief
+8201 Puerta del castillo de Fief
+8002 Tabla del castillo de Aris
+8202 Puerta del castillo de Aris
+8003 Tabla del castillo de Lator
+8203 Puerta del castillo de Lator
+8004 Tabla del castillo de Eikum-Kas
+8204 Puerta del castillo de Eikum-Kas
+8005 Tabla del castillo de Gedeón
+8205 Puerta del castillo de Gedeón
+8006 Tabla del castillo de chatelier
+8206 Puerta del castillo de chatelier
+8007 Tabla del castillo de Tuanod
+8207 Puerta del castillo de Tuanod
+8008 Tabla del castillo Peltier
+8208 Puerta del castillo Peltier
+8009 Tabla del castillo de Caret-Royal
+8209 Puerta del castillo de Caret-Royal
+8010 Tabla del castillo Blessendor
+8210 Puerta del castillo Blessendor
+8011 Tabla del castillo de Ternoval
+8211 Puerta del castillo de Ternoval
+8012 Tabla del castillo de Ammalael
+8212 Puerta del castillo de Ammalael
+8013 Tabla de bloqueo Talón
+8213 Puerta del castillo Talón
+8014 Tabla del castillo de Devanagari
+8214 Puerta del castillo de Devanagari
+8015 Tabla del castillo de Sabulat
+8215 Puerta del castillo de Sabulat
+8016 Tabla del castillo de Deffensat
+8216 Puerta del castillo de Deffensat
+8017 Tabla del castillo de Ayonat
+8217 Puerta del castillo de Ayonat
+8018 Tabla del castillo de Triomphaler
+8218 Puerta del castillo de Triomphaler
+8019 Tabla del castillo de Bagarnak
+8219 Puerta del castillo de Bagarnak
+8020 Tabla del castillo de Cabrada
+8220 Puerta del castillo de Cabrad
+8021 Tabla del castillo de Seth
+8221 Puerta del castillo de Seth
+8022 Tabla del castillo de lender
+8222 Puerta del castillo de lender
+8023 Tabla del castillo de keles
+8223 Puerta del castillo de keles
+8024 Tabla del castillo de Sheprostan
+8224 Puerta del castillo de Sheprostan
+8025 Tabla del castillo de Orcobien
+8225 Puerta del castillo de Orcobien
+8026 Tabla del castillo de Canuac
+8226 Puerta del castillo de Canuac
+8027 Tabla del castillo de Aldarnon
+8227 Puerta del castillo de Aldarnon
+8028 Tabla del castillo de Yong
+8228 Puerta del castillo de Yong
+8029 Tabla del castillo de Elek
+8229 Puerta del castillo de Elek
+8030 Tabla del castillo de Gavot
+8230 Puerta del castillo de Gavot
+8031 Tabla del castillo de kandur
+8231 Puerta del castillo de kandur
+8032 Tabla del castillo de Immortel
+8232 Puerta del castillo de Immortelle
+8033 Tabla del castillo de narciso
+8233 Puerta del castillo de narciso
+8034 Tabla del castillo de Randen
+8234 Puerta del castillo de Randen
+8035 Tabla del castillo de Nirgun
+8235 Puerta del castillo de Nirgun
+8036 Tabla del castillo de Gelgivinn
+8236 Puerta del castillo de Gelgivinn
+8037 Tabla del castillo de Île-Suilly-Rúa
+8237 Puerta del castillo de Île-Suilly-Rúa
+8090 Tabla de la ciudad de Ángel

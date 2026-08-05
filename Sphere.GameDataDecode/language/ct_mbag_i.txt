@@ -1,7 +1,6 @@
-01 Sacca
-03 sacca
-05 vecchia
-06 lacerata
-07 lacerata
-
-100 La sacca è il classico "compagno" per un viaggiatore di lunga data. Una sacca può contenere 4 diversi piccoli oggetti come polvere magica, anelli o ingredienti alchemici. Una sacca è normalmente piccola, ma se ne possono mettere diverse in una borsa.
+01 Borsa
+03 borsa
+05 vecchio
+06 marcio
+07 marcio
+100 La borsa è il solito "compagno" di un viaggiatore esperto. Di solito è fatto di materia spessa. Puoi mettere fino a 4 diversi piccoli oggetti nella borsa - ad esempio: polveri magiche, anelli o ingredienti alchemici. La borsa è piccola, ma diversi pezzi sono collocati nel torba.

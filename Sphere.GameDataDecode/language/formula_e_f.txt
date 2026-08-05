@@ -1,0 +1,7 @@
+01 Formule
+02 formules
+03 formule
+100 Formule de guilde des sorciers
+10000 Cette formule (si elle est utilisée par le sorcier d'au moins un degré inférieur %z1) confère des propriétés magiques à l'un des éléments suivants: %l1 Pour la mise en œuvre de la réaction est nécessaire %a1.
+10001 Cette formule (si elle est utilisée par le sorcier d'au moins un degré inférieur %z1) confère des propriétés magiques à l'un des éléments suivants: %l1 Pour la mise en œuvre de la réaction est nécessaire %a1 et %a2.
+10002 Cette formule (si elle est utilisée par le sorcier d'au moins un degré inférieur %z1) confère des propriétés magiques à l'un des éléments suivants: %l1 Pour la mise en œuvre de la réaction est nécessaire %a1, %a2 et %a3.

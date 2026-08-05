@@ -1,101 +1,99 @@
-01 elmo di ferro
-03 elmo di ferro
-
-100 Protegge dalle armi dei nemici in battaglia.
-
-200 della durata
-201 dell'assorbimento
-202 della protezione
-203 della salute
-204 della meditazione
-205 della precisione
-206 dell'etere
-207 della stima
+01 Casco di ferro
+03 casco di ferro
+100 In battaglia protegge dalle armi degli avversari.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 meditazione
+205 precisione
+206 etere
+207 valori
 
 #262-273
-01 New Year copricapo
-03 copricapo
+01 Cappello Di Natale
+03 coprimozzo
+
 #337
-01 copricapo
-03 copricapo
+01 Cappello
+03 cappello
+
 #338
-01 elmo di pelle
-03 elmo di pelle
+01 Casco in pelle
+03 casco in pelle
+
 #339-340
-01 elmo di pelle rinforzata
-03 elmo di pelle rinforzata
+01 Casco in pelle rivettata
+03 casco in pelle rivettata
+
 #341-342
-01 elmo di maglia
-03 elmo di maglia
+01 Casco di cotta di maglia
+03 casco di cotta di maglia
+
 #343-345
-01 elmo di ferro
-03 elmo di ferro
+01 Casco di ferro
+03 casco di ferro
+
 #346-348
-01 elmo antico di ferro 
-03 elmo antico di ferro 
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #3146-3147
-01 copricapo
-03 copricapo
+01 Cappello
+03 cappello
+
 #3148-3149
-01 elmo di pelle
-03 elmo di pelle
+01 Casco in pelle
+03 casco in pelle
+
 #3150-3153
-01 elmo di pelle rinforzata
-03 elmo di pelle rinforzata
+01 Casco in pelle rivettata
+03 casco in pelle rivettata
+
 #3154-3157
-01 elmo di maglia
-03 elmo di maglia
+01 Casco di cotta di maglia
+03 casco di cotta di maglia
+
 #3158-3163
-01 elmo di ferro
-03 elmo di ferro
+01 Casco di ferro
+03 casco di ferro
+
 #3164-3170
-01 elmo antico di ferro 
-03 elmo antico di ferro 
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #4480-4488
-01 elmo antico di ferro 
-03 elmo antico di ferro 
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #4744
-01 Elmo nero
-03 elmo nero
+01 Casco nero
+03 casco nero
+
 #4745
-01 Elmo bianco
-03 elmo bianco
+01 Casco bianco
+03 casco bianco
+
 #5771
-01 Copricapo dell'Inquisitore 
-03 copricapo dell'Inquisitore 
+01 Cappello Dell'Inquisitore
+03 il cappello Dell'Inquisitore
+
 #5772
-01 Elmo di pelle dell'Inquisitore
-03 elmo dell'inquisitore
+01 Casco in pelle dell'Inquisitore
+03 Elmo Dell'Inquisitore
+
 #5773
-01 Elmo rinforzato dell'Inquisitore
-03 elmo dell'inquisitore
+01 Elmo rivettato Dell'Inquisitore
+03 Elmo Dell'Inquisitore
+
 #5774
-01 Elmo di maglia dell'Inquisitore
-03 elmo dell'inquisitore
+01 Elmo di cotta di maglia Dell'Inquisitore
+03 Elmo Dell'Inquisitore
+
 #5775
-01 Elmo di ferro dell'Inquisitore
-03 elmo dell'inquisitore
+01 Elmo di ferro Dell'Inquisitore
+03 Elmo Dell'Inquisitore
+
 #5776
-01 Elmo antico dell'Inquisitore
-03 elmo dell'inquisitore
-#5785
-01 Elmo rinforzato dell'Inquisitore
-03 elmo dell'inquisitore
-#5785
-01 Клепанный шлем Инквизитора
-03 шлем Инквизитора
-#5787
-01 Древний шлем Инквизитора
-03 шлем Инквизитора
-#5790
-01 Шапка Инквизитора
-03 шапку Инквизитора
-#7200
-01 Кольчужный шлем Инквизитора
-03 шлем Инквизитора
-#7202
-01 Железный шлем Инквизитора
-03 шлем Инквизитора
-#7204
-01 Кольчужный шлем Инквизитора
-03 шлем Инквизитора
+01 Elmo antico Dell'Inquisitore
+03 Elmo Dell'Inquisitore

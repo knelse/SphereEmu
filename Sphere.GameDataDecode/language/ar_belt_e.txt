@@ -1,134 +1,171 @@
 01 Belt
-03 Belt
-
-100 Protects from enemy weapons in battle.
-
-200 of durability
-201 of absorption
-202 of protection
-203 of health
-204 of meditation
-205 of accuracy
-206 of ether
-207 of value
+03 belt
+100 In battle, it protects against the weapons of opponents.
+200 Strength
+201 acquisitions
+202 security
+203 health
+204 meditations
+205 accuracy
+206 ether
+207 values
 
 #349
-01 girdle
-03 girdle
+01 Sash
+03 sash
+
 #350
-01 leather belt
+01 Leather belt
 03 leather belt
+
 #351-352
-01 riveted leather belt
+01 Riveted leather belt
 03 riveted leather belt
+
 #353-354
-01 chainmail belt
+01 Chainmail belt
 03 chainmail belt
+
 #355-357
-01 iron belt
-03 iron belt
+01 The Iron Belt
+03 The iron belt
+
 #358-360
-01 ancient iron belt
-03 ancient iron belt
+01 The Ancient Iron Belt
+03 the ancient iron belt
+
 #3171
-01 girdle
-03 girdle
+01 Sash
+03 sash
+
 #3172
-01 leather belt
+01 Leather belt
 03 leather belt
+
 #3173-3174
-01 riveted leather belt
+01 Riveted leather belt
 03 riveted leather belt
+
 #3175-3176
-01 chainmail belt
+01 Chainmail belt
 03 chainmail belt
+
 #3177-3179
-01 iron belt
-03 iron belt
+01 The Iron Belt
+03 The iron belt
+
 #3180-3182
-01 ancient iron belt
-03 ancient iron belt
+01 The Ancient Iron Belt
+03 the ancient iron belt
+
 #4489-4497
-01 ancient iron belt
-03 ancient iron belt
+01 The Ancient Iron Belt
+03 the ancient iron belt
+
 #5665
-01 Belt of courage
-03 belt of courage
+01 The Belt of Courage
+03 The belt of courage
+
 #5666
-01 Leather belt of courage
-03 belt of courage
+01 Leather Belt of Courage
+03 The belt of courage
+
 #5667
 01 Riveted belt of courage
-03 belt of courage
+03 The belt of courage
+
 #5668
-01 Chainmail belt of courage
-03 belt of courage
+01 Chain mail belt of courage
+03 The belt of courage
+
 #5669
-01 Iron belt of courage
-03 belt of courage
+01 The Iron Belt of Courage
+03 The belt of courage
+
 #5670
-01 Ancient belt of courage
-03 belt of courage
+01 The ancient Belt of Courage
+03 The belt of courage
+
 #5777
-01 Belt of Tribunal
-03 belt of Tribunal
+01 Tribunal Belt
+03 Tribunal Belt
+
 #5778
-01 Leather belt of Tribunal
-03 belt of Tribunal
+01 Tribunal Leather Belt
+03 Tribunal Belt
+
 #5779
-01 Riveted belt of Tribunal
-03 belt of Tribunal
+01 Riveted Tribunal Belt
+03 Trmbunal Belt
+
 #5780
-01 Chainmail belt of Tribunal
-03 belt of Tribunal
+01 Chain mail belt of the Tribunal
+03 Tribunal Belt
+
 #5781
-01 Iron belt of Tribunal
-03 belt of Tribunal
+01 The Iron Belt of the Tribunal
+03 Tribunal Belt
+
 #5782
-01 Ancient belt of Tribunal
-03 belt of Tribunal
+01 The Ancient Belt of the Tribunal
+03 Tribunal Belt
+
 #5962
 01 Belt
 03 belt
+
 #6077
-01 Belt of Titan
-03 belt of Titan
+01 Titanium Belt
+03 Titanium Belt
+
 #6078
-01 Leather belt of Titan
-03 belt of Titan
+01 Titanium Leather Belt
+03 Titanium Belt
+
 #6079
-01 Riveted belt of Titan
-03 belt of Titan
+01 Riveted Titanium Belt
+03 Titanium Belt
+
 #6080
-01 Chainmail belt of Titan
-03 belt of Titan
+01 Titanium Chainmail Belt
+03 Titanium Belt
+
 #6081
-01 Iron belt of Titan
-03 belt of Titan
+01 The Iron Belt of Titan
+03 Titanium Belt
+
 #6082
-01 Ancient belt of Titan
-03 belt of Titan
+01 The ancient belt of Titan
+03 Titanium Belt
+
 #6476
-01 Belt of longevity
-03 belt of longevity
+01 Longevity Belt
+03 longevity belt
+
 #6477
-01 Leather belt of longevity
-03 belt of longevity
+01 Leather Longevity Belt
+03 longevity belt
+
 #6478
-01 Riveted belt of longevity
-03 belt of longevity
+01 Riveted Longevity Belt
+03 longevity belt
+
 #6479
 01 Chainmail belt of longevity
-03 belt of longevity
+03 longevity belt
+
 #6480
-01 Iron belt of longevity
-03 belt of longevity
+01 The Iron Belt of Longevity
+03 longevity belt
+
 #6481
-01 Ancient belt of longevity
-03 belt of longevity
+01 The ancient belt of longevity
+03 longevity belt
+
 #6657
-01 Belt of lightness
-03 belt of lightness
+01 The belt of lightness
+03 the belt of lightness
+
 #6758
-01 Swamp belt
-03 swamp belt
+01 The Swamp Belt
+03 the swamp belt

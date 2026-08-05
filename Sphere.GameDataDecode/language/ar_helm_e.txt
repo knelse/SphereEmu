@@ -1,80 +1,99 @@
-01 iron helm
-03 iron helm
-
-100 Protects from enemy weapons in battle.
-
-200 of durability
-201 of absorption
-202 of protection
-203 of health
-204 of meditation
-205 of accuracy
-206 of ether
-207 of value
+01 The Iron Helmet
+03 The iron helmet
+100 In battle, it protects against the weapons of opponents.
+200 Strength
+201 acquisitions
+202 security
+203 health
+204 meditations
+205 accuracy
+206 ether
+207 values
 
 #262-273
-01 New Year cap
-03 cap
+01 New Year's Hat
+03 the hood
+
 #337
-01 cap
-03 cap
+01 Header
+03 header
+
 #338
-01 leather helm
-03 leather helm
+01 Leather helmet
+03 leather helmet
+
 #339-340
-01 riveted leather helm
-03 riveted leather helm
+01 Riveted leather helmet
+03 riveted leather helmet
+
 #341-342
-01 chainmail helm
-03 chainmail helm
+01 Chain mail helmet
+03 chain mail helmet
+
 #343-345
-01 iron helm
-03 iron helm
+01 The Iron Helmet
+03 The iron helmet
+
 #346-348
-01 ancient iron helm
-03 ancient iron helm
+01 An ancient iron helmet
+03 an ancient iron helmet
+
 #3146-3147
-01 cap
-03 cap
+01 Header
+03 header
+
 #3148-3149
-01 leather helm
-03 leather helm
+01 Leather helmet
+03 leather helmet
+
 #3150-3153
-01 riveted leather helm
-03 riveted leather helm
+01 Riveted leather helmet
+03 riveted leather helmet
+
 #3154-3157
-01 chainmail helm
-03 chainmail helm
+01 Chain mail helmet
+03 chain mail helmet
+
 #3158-3163
-01 iron helm
-03 iron helm
+01 The Iron Helmet
+03 The iron helmet
+
 #3164-3170
-01 ancient iron helm
-03 ancient iron helm
+01 An ancient iron helmet
+03 an ancient iron helmet
+
 #4480-4488
-01 ancient iron helm
-03 ancient iron helm
+01 An ancient iron helmet
+03 an ancient iron helmet
+
 #4744
 01 Black helmet
 03 black helmet
+
 #4745
 01 White helmet
 03 white helmet
+
 #5771
-01 Cap of Inquisitor
-03 cap of Inquisitor
+01 Inquisitor's Hat
+03 the Inquisitor's hat
+
 #5772
-01 Leather helm of Inquisitor
-03 helm of Inquisitor
+01 Leather helmet of the Inquisitor
+03 The Inquisitor's Helmet
+
 #5773
-01 Riveted helm of Inquisitor
-03 helm of Inquisitor
+01 Riveted helmet of the Inquisitor
+03 The Inquisitor's Helmet
+
 #5774
-01 Chainmail helm of Inquisitor
-03 helm of Inquisitor
+01 The chain mail helmet of the Inquisitor
+03 The Inquisitor's Helmet
+
 #5775
-01 Iron helm of Inquisitor
-03 helm of Inquisitor
+01 The Iron Helmet of the Inquisitor
+03 The Inquisitor's Helmet
+
 #5776
-01 Ancient helm of Inquisitor
-03 helm of Inquisitor
+01 The Ancient helmet of the Inquisitor
+03 The Inquisitor's Helmet

@@ -1,354 +1,459 @@
-01 Manto
-03 Manto
-
-100 Vestimenta tradicional dos Magos.
-
-200 de valor
-201 de durabilidade
-202 de reflexão
-203 de proteção
-204 de saúde
-205 de vida
-206 de meditação
-207 de prana
-208 da terra
-209 da água
-210 do ar
-211 do fogo
-212 do éter
-213 do eclipse
-214 do Mestre Mago
-215 de durabilidade
-216 de reflexão
-217 de proteção
-218 de saúde
-219 de vida
-220 de meditação
-221 de prana
-222 de éter
-223 do dragão
+01 Rob
+03 Rob
+100 As roupas tradicionais dos Magos.
+200 valores
+201 força
+202 desvios
+203 segurança
+204 saúde
+205 vida
+206 meditação
+207 Prana
+208 Terra
+209 água
+210 ar
+211 fogo
+212 Ether
+213 eclipses
+214 Arquimago
+215 força
+216 desvios
+217 segurança
+218 saúde
+219 vida
+220 meditação
+221 Prana
+222 Ether
+223 dragão
 
 #4251
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4253
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4255
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4257
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4259
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4261
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4263
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4265
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4267
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4269
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4271
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4273
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4275
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4277
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4279
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4281
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4283
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4285
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4287
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4289
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4291
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4293
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4295
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4297
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4299
-01 "Velho" manto verde
-03 "Velho" manto verde
+01 O velho Robe verde
+03 O velho vestido verde
+
 #4301
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4303
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4305
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4307
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4309
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4311
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4313
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4315
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4317
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4319
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4321
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4323
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4325
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4327
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4329
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4331
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4333
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4335
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4337
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4339
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4341
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4343
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4345
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4347
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4349
-01 "Velho" manto branco
-03 "Velho" manto branco
+01 O "velho" Robe branco
+03 O "velho" Robe branco
+
 #4351
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4353
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4355
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4357
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4359
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4361
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4363
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4365
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4367
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4369
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4371
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4373
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4375
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4377
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4379
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4381
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4383
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4385
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4387
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4389
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4391
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4393
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4395
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4397
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4399
-01 "Velho" manto azul
-03 "Velho" manto azul
+01 O "velho" Robe azul
+03 O velho vestido azul
+
 #4401
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4403
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4405
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4407
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4409
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4411
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4413
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4415
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4417
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4419
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4421
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4423
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4425
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4427
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4429
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4431
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4433
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4435
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4437
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4439
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4441
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4443
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4445
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4447
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4449
-01 "Velho" manto vermelho
-03 "Velho" manto vermelho
+01 O "velho" Robe vermelho
+03 O "velho" vestido vermelho
+
 #4450
-01 Manto de GM
-03 manto de GM
+01 Rob mestres do jogo
+03 Rob mestre do jogo
+
 #4451-4452
-01 Manto de Culto
-03 manto de Culto
+01 Rob Culto
+03 Rob Culto
+
 #4600-4633
-01 Manto verde
-03 manto verde
+01 Robe verde
+03 veste verde
+
 #4634-4667
-01 Manto azul
-03 manto azul
+01 Robe azul
+03 Blue Robe
+
 #4668-4701
-01 Manto branco
-03 manto branco
+01 Veste branca
+03 white robe
+
 #4702-4735
-01 Manto vermelho
-03 manto vermelho
+01 Robe vermelho
+03 Robe vermelho
+
 #6271-6276
-01 Capa da Deflexão
-03 Capa da Deflexão
+01 Capa de desvio
+03 Capa de desvio
+
 #6757
-01 Manto negro
-03 manto negro
+01 Black robe
+03 black robe

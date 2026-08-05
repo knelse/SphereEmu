@@ -1,60 +1,88 @@
-01 Criaturas
+01 Criatura
 
 #1030
-01 Alado
+01 Flyer
+
 #1031
-01 Alado da tormenta
+01 Tempestade voadora
+
 #1032
-01 Alado do fogo
+01 Flyer de fogo
+
 #1033
-01 Alado ambêr
+01 Flyer âmbar
+
 #1034
-01 Alado gigante
+01 Vôo gigante
+
 #1160
 01 Dragão verde
+
 #1161
 01 Dragão azul
+
 #1162
 01 Dragão vermelho
+
 #1163
-01 Dragão de ferro
+01 Dragão de aço
+
 #1164
 01 Dragão gigante
+
 #1300
-01 Dragão
+01 Dracost
+
 #1301
 01 Dragão dourado
+
 #1302
 01 Dragão de gelo
+
 #1360
-01 Dragão negro
+01 Dragão Negro
+
 #1361
-01 Dragão branco
+01 Dragão Branco
+
 #1362
-01 Dragão negro
+01 Dragão Negro
+
 #1363
-01 Dragão branco
+01 Dragão Branco
+
 #1364
-01 Dragão negro
+01 Dragão Negro
+
 #1365
-01 Dragão branco
+01 Dragão Branco
+
 #1366
-01 Grande dragão negro
+01 O grande dragão negro
+
 #1367
-01 Grande dragão branco
+01 O grande dragão branco
+
 #1368
-01 Dragão negro ferido
+01 Dragão preto ferido
+
 #1370
 01 Cavaleiro negro
+
 #1371
-01 Cavaleiro branco
+01 Vaqueira branca
+
 #1380
-01 Cão aquático
+01 Nadador
+
 #1400
-01 Serpente de Fogo
+01 Serpente de fogo
+
 #1401
-01 Serpente de Osso
+01 Serpente dos ossos
+
 #1402
-01 Serpente de Ferro
+01 Serpente de ferro
+
 #1850-1855
-01 Alado de necromante
+01 Necromante voador

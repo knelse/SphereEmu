@@ -1,0 +1,206 @@
+01 Paquete
+02 paquetes
+03 paquete
+10 Remitente: %s . receptor: %s.
+
+#155
+01 Agua
+02 agua
+03 agua
+
+#160
+01 Paquete
+02 paquetes
+03 paquete
+10 Remitente: %s . receptor: %s.
+
+#161
+01 Carta
+02 cartas
+03 carta
+10 Remitente: %s . receptor: %s.
+
+#162
+01 Nota
+02 notas
+03 nota
+10 Escribió %s . receptor: %s.
+
+#163
+01 Sobre
+02 sobres
+03 sobre
+10 Remitente: %s . receptor: %s.
+
+#164
+01 Asamblea general documentos
+02 Asamblea general documentos
+03 Asamblea general documentos
+10 Propietario: %s . receptor: %s.
+
+#165
+01 Espada
+02 espadas
+03 espada
+10 Propietario: %s . entregar: %s.
+
+#166
+01 Pescado envenenado
+03 pescado envenenado
+10 Dal %s . traer: %s.
+
+#167
+01 Figura
+03 figura
+10 Remitente: %s . receptor: %s.
+
+#168
+01 Receta
+03 receta
+10 Remitente: %s . receptor: %s.
+
+#169
+01 Sangre de monstruo
+03 sangre de monstruo
+10 sangre de un monstruo llamado %s. %s quiere tenerla.
+
+#170
+01 Pergamino
+02 pergaminos
+03 pergamino
+10 Remitente: %s . receptor: %s.
+
+#171
+01 Cabeza
+02 cabezas
+03 cabeza
+10 La cabeza que llevaba sobre los hombros %s.
+
+#172
+01 Cabeza de monstruo
+02 cabezas de monstruos
+03 cabeza de monstruo
+10 Esta cabeza pertenecía a un monstruo llamado %s. %s anhela tenerla.
+
+#173
+01 Libro
+02 libros
+03 libro
+10 Remitente: %s . receptor: %s.
+
+#174
+01 Libro
+02 libros
+03 libro
+
+#175
+01 Cráneo
+02 cráneos
+03 cráneo
+10 El cráneo que pertenecía %s. %s quiere conseguirlo.
+
+#176
+01 Ojo
+02 ojos
+03 ojo
+10 Remitente: %s . receptor: %s.
+
+#177
+01 Archivos
+02 archivos
+03 archivos
+10 Remitente: %s . receptor: %s.
+
+#178
+01 Fórmula
+02 fórmulas
+03 fórmula
+10 Remitente: %s . receptor: %s.
+
+#179
+01 UC
+03 UC
+
+#180
+01 Seta
+02 setas
+03 seta
+10 Remitente: %s . receptor: %s.
+
+#181-183
+01 Elixir
+02 elixires
+03 elixir
+10 Remitente: %s . receptor: %s.
+
+#184-185
+01 Pluma
+02 plumas
+03 pluma
+10 Remitente: %s . receptor: %s.
+
+#186
+01 Diamante
+02 diamantes
+03 diamante
+10 Remitente: %s . receptor: %s.
+
+#187
+01 Rubí
+02 rubíes
+03 rubí
+10 Remitente: %s . receptor: %s.
+
+#188
+01 Esmeralda
+02 Esmeraldas
+03 Esmeralda
+10 Remitente: %s . receptor: %s.
+
+#189
+01 Piedra
+02 piedras
+03 piedra
+10 Remitente: %s . receptor: %s.
+
+#190
+01 Fórmula
+02 fórmulas
+03 fórmula
+10 Remitente: %s . receptor: %s.
+
+#191
+01 Vino
+02 vinos
+03 vino
+10 Remitente: %s . receptor: %s.
+
+#192
+01 Veneno
+02 venenos
+03 veneno
+10 Remitente: %s . receptor: %s.
+
+#193-194
+01 Anillo
+02 anillos
+03 anillo
+10 Remitente: %s . receptor: %s.
+
+#195
+01 Llave antigua
+02 llaves viejas
+03 llave antigua
+10 La llave pertenecía a un dragón llamado %s. %s quería un corazón, pero fue destruido en la batalla.
+
+#196
+01 Corazón de dragón
+02 corazones de dragón
+03 corazón de dragón
+10 Corazón de dragón llamado %s
+
+#197-199
+01 Sangre de dragón
+02 sangre de dragón
+03 sangre de dragón
+10 La sangre del dragón que poseía %s. %s hará con su ayuda una espada mágica.

@@ -1,0 +1,56 @@
+01 Mutator
+1000 Lumière magique, invisible aux autres.
+1001 Berserk. Après l'action laisse faim et sans force.
+1002 Permet de voir l'invisible.
+1003 "La Colère De La Tablette." Inflige des dégâts toutes les 2 minutes.
+1004 Enlève un mutateur.
+1005 Réduit la santé toutes les 2 minutes.
+1006 Augmente la santé toutes les 2 minutes.
+1007 Réduit la santé et le Prana toutes les 2 minutes.
+1008 Augmente la santé et le Prana toutes les 2 minutes.
+1009 "Purification". Restauration complète de la santé et du Prana et élimination de tous les mutateurs.
+1010 Interdit de courir.
+1011 Interdit de courir et de marcher.
+1012 Violation de la coordination.
+1013 Interdiction de sauter.
+1014 Augmenter les sauts de 2 fois.
+1015 Augmenter les sauts de 4 fois.
+1016 Aveuglement à moitié.
+1017 Aveuglement total.
+1018 Vous permet de respirer sous l'eau.
+1019 Protège contre les chutes de n'importe quelle hauteur.
+1020 Supprime le mutateur de l'augmentation des sauts.
+1021 Il tue un membre du clan Naath. Libère de la malédiction du mal.
+1022 Permet de voir les pièges cachés.
+1023 Rend le porteur invisible. L'action se termine si quelque chose est pris dans la main.
+1024 Enlève 2 mutateurs.
+1025 Enlève 4 mutateurs.
+1026 Enlève 6 mutateurs.
+1027 Vous permet de libérer 2 flèches en même temps.
+1028 Augmente la vitesse de course.
+1029 Vol
+1030 Rend le porteur invisible la nuit. L'action se termine si quelque chose est pris dans la main.
+1031 Kamae. Support de protection. Interdit de courir et ralentit toute action.
+1032 Fixateur. Bloque l'action de purification complète sur les mutateurs situés en dessous.
+1033 Ressource. Augmente la probabilité de tomber d'un monstre tué de ressources artisanales.
+1034 Hypermétropie. Augmente la distance d'impact de n'importe quelle arme jusqu'à 30 mètres.
+1035 La course du temps. Augmente la fréquence d'attaque de 2 fois.
+1036 Les chaînes. Interdit de prendre quoi que ce soit dans la main.
+1037 Myopie. Réduit la distance d'impact de n'importe quelle arme à 2 mètres.
+1038 Méditation. Plonge dans un état de silence, donnant une grande protection.
+1039 Putain. Se transformer en sanglier.
+1040 Étourdissement. Aveugle et ne permet pas de bouger les mains.
+1041 Métamorphose. Se transformer en loup.
+1042 Course rapide jusqu'au premier arrêt.
+1043 Armure rouillée. Interdit les virages.
+1044 Tornade. Tourne le personnage.
+1045 Berserk. Augmente l'attaque, mais ralentit la course.
+1046 Bouclier de Prana. Il atténue les dommages à la santé en utilisant la consommation de Prana.
+1047 Métamorphose. Se transformer en vampire.
+1048 Métamorphose. Se transformer en bonhomme de neige.
+1049 Un miroir magique. Attaque contre l'attaquant lui-même.
+1050 Élixir de liberté-supprime 4 mutateurs malveillants.
+1051 Inébranlable. Enlève tous les mutateurs de contrôle et les rend immunisés contre eux.
+1111 Soutien Bandiera.
+2020 Augmente la protection de la porte de la serrure.
+2021 Inflige des dégâts aux portes du château toutes les 2 minutes.

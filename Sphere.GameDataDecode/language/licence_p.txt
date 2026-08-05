@@ -1,6 +1,7 @@
-01 Licença de comércio
-03 Licença de comércio 
-05 A licença só poderá ser usada na área de comércio.
+01 Licença Comercial
+03 Licença Comercial
+05 A licença só pode ser usada na Praça do comércio.
+06 Você não deve estar mais perto de 5 medidores de outro negociante.
 10 Validade: 12 horas
 11 Validade: 1 dia
 12 Validade: 1,5 dias
@@ -19,4 +20,4 @@
 29 Validade: 10 dias
 31 Validade: 11 dias
 33 Validade: 12 dias
-100 Se durante utilização da licença você sair da Sphere, o jogador continuará comercializando pelo tempo restante no calendário Sphere. A licença só poderá ser usada na área de comércio.
+100 Ao usar a licença, você sai da esfera, mas o personagem permanece negociando por um número especificado de dias esféricos. A licença só pode ser aplicada na Praça do Comércio, e você não pode ficar a menos de 5 metros de outro comerciante.

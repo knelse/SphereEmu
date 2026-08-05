@@ -1,0 +1,6 @@
+01 Robo
+100 Capacidad definidora de la profesión. Un carterista sin experiencia puede contar solo con un par de Táleros, pero hay leyendas sobre tales caminantes que incluso pueden sacar cosas de la bolsa de un ciudadano gape.
+1000 Para robar, debe haber al menos una celda libre en el inventario.
+1001 Robaste %s.
+1002 El robo fracasó.
+1003 Robaste %d$.

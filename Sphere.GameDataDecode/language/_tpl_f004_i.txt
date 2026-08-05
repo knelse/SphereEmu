@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Hai sentito che terribile guaio è successo al nostro villaggio? L'unico figlio del nostro capo villaggio, %s, si trova nel sotterraneo. Nella notte siamo stati attaccatti dai mostri che lo hanno preso e portato con loro. Trovalo per piacere e sarai ricompensato. 
-21 Hai sentito che terribile guaio è successo al nostro villaggio? La figlia del capo villaggio, %s, si trova nel sotterraneo. Nella notte siamo stati attaccatti dai mostri che la hanno presa e portata con loro. Trovala per piacere e sarai ricompensato.
+20 Non hai sentito cos'e ' successo nel nostro insediamento? %s . l'unico figlio del nostro anziano, è nel dungeon. I mostri ci hanno attaccato di notte e lo hanno portato via con loro. Cercalo! Grazie.
+21 Saluti, viandante! Ho sentito che tipo di guai si sono verificati nel nostro insediamento? %s . la figlia del nostro anziano, murata in una prigione. I mostri hanno attaccato il villaggio e lo hanno portato via con loro. Cercala, ti prego! Non resteremo in debito.

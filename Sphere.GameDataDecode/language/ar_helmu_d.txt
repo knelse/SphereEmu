@@ -1,0 +1,51 @@
+01 Eisenhelm
+03 eisenhelm
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 angst
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5004
+01 Genieteter Lederhut
+03 genieteter Lederhut
+
+#5024
+01 Eisenhelm
+03 eisenhelm
+
+#5044
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#5064
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#5114
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#5134
+01 Alter Eisenhelm
+03 alter Eisenhelm
+
+#5163
+01 Alter Eisenhelm
+03 alter Eisenhelm

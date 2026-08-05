@@ -1,0 +1,38 @@
+01 Arbalète
+03 arbalète
+10 Vous n'avez pas de flèches.
+100 Une arme à lancer. Vous permet de frapper l'ennemi à longue distance; nécessite une grande quantité de flèches.
+200 Aventures
+201 Silence
+202 Prophéties
+203 Mystères
+204 Mythes
+205 Genèse
+206 Randonnée
+207 L'existence
+208 Légendes
+209 Du monde
+
+#2730-2731
+01 Arbalète manuelle
+03 arbalète manuelle
+
+#2732-2733
+01 Arbalète lourde
+03 arbalète lourde
+
+#2734-2735
+01 Arbalète à main d'élite
+03 arbalète à main d'élite
+
+#2736-2737
+01 Arbalète légère runique
+03 arbalète légère runique
+
+#2738-2740
+01 Arbalète en acier fantôme
+03 arbalète en acier fantôme
+
+#2741-2744
+01 Arbalète de siège dragon
+03 arbalète de siège dragon

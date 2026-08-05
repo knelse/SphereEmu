@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-22 there appeared a horrible %s, who raises terror and fear. Kill the monster (waymark - %s).
-23 there appeared a cunning %s. Kill the monster (waymark - %s).
+01 Mission key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+22 Thank heaven for bringing you to us! For three weeks and two days now, a terrible one has been %s tormenting our village. He's strong, but you can handle him. %s hides it.
+23 Glad to see you! %s attacked us this morning. She's strong, but I believe in you! You can handle it. %s - her place of residence. Finish her off!

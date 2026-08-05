@@ -1,8 +1,5 @@
-01 Parola che evoca i Sei.
-03 Parola che evoca i Sei.
-
-100 Davanti a te si trova un frammento della pergamena con una parola per evocare i Sei.
-
+01 La Parola Che Bandisce I Sei
+03 La Parola Che Bandisce I Sei
+100 Davanti a te c'è un frammento di un rotolo con una parola in grado di espellere i sei
 TEXT
-
-    .. .. .. ra
+    .. .. .. Ra

@@ -1,9 +1,7 @@
-01 Formula della polvere della catena indebolente
-02 Formula della polvere della catena indebolente
-03 Formula della polvere della catena indebolente
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta della polvere di allentamento
+02 ricette di polvere di allentamento
+03 ricetta della polvere di allentamento
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della catena indebolente, prima trova Camelic, Serden e Ferro. Mescola tutto nel recipiente alchemico, aggiungi la polvere di Amilus per completare la reazione e otterrai la polvere. Non dimenticare che per ottenere questa reazione il tuo grado non deve essere inferiore a quello di debuttante.
+    Per ottenere la polvere di indebolimento, prima di tutto ottieni camelica, cerden e ferro. Mescolali in una bombetta alchemica, aggiungi la polvere di Amilus finale e usa la polvere risultante. Non dimenticare che per eseguire questa reazione, il tuo grado non deve essere inferiore al candidato.
+    

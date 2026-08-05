@@ -1,0 +1,28 @@
+01 Stab
+03 Stab
+10 Noch Ladungen übrig:
+100 Eine Schlagwaffe. Schlägt hart, trifft aber selten.
+200 erschöpfung
+201 tapferkeit
+202 schaden
+203 grausamkeiten
+204 eile
+205 geschwindigkeit
+206 unordnung
+207 chaos
+208 Ester
+209 müdigkeit
+210 krankheiten
+211 instabilität
+212 entfernungen
+213 entfernungen
+214 zersetzungen
+215 verwüstungen
+216 schwächen
+217 penetration
+218 verbot
+219 werte
+
+#7413
+01 Stab des Hirten
+03 stab des Hirten

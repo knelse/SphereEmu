@@ -1,9 +1,6 @@
-01 Коробка конфет
-02 Коробки конфет
-03 Коробку конфет
-10 Коробка конфет
-
-101 Осталось зарядов:
-
-100 Волшебная коробка конфет. Случайным образом навешивает мутатор.
-
+01 Scatola di caramelle
+02 Scatole di caramelle
+03 Una scatola di cioccolatini
+10 Scatola di caramelle
+101 Cariche rimaste:
+100 Scatola magica di caramelle. Il mutatore si blocca in modo casuale.

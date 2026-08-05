@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using Godot;
 using SphServer.Helpers;
-using SphServer.Server.Config;
-using SphServer.Shared.Logger;
-using SphServer.Shared.Networking.DataModel.Serializers;
-using SphServer.Shared.WorldState;
+using SphServer.Server.UI.Admin;
 
 namespace SphServer.Server.UI.ConnectedClients;
 
@@ -62,38 +59,12 @@ public partial class ConnectedClientsPopupUI : PopupMenu
 
     private void HandleKickClient()
     {
-        var client = ActiveClients.Get(currentClientId);
-
-        if (client is null)
-        {
-            return;
-        }
-
-        SphLogger.Info($"Kicking client via UI. Client ID: {currentClientId:X4}");
-        client.RemoveClient();
+        AdminClientActions.Kick(currentClientId);
     }
 
     private void HandleBanClient()
     {
-        var client = ActiveClients.Get(currentClientId);
-
-        if (client is null)
-        {
-            return;
-        }
-
-        var login = client.GetLogin();
-        var ipAddress = client.GetIpAddressWithoutPort();
-
-        if (string.IsNullOrEmpty(login))
-        {
-            SphLogger.Warning($"Cannot ban client: login is null. Client ID: {currentClientId:X4}");
-            return;
-        }
-
-        SphLogger.Info($"Banning client via UI. Client ID: {currentClientId:X4}, Login: {login}, IP: {ipAddress}");
-        BannedClients.BanClient(login, ipAddress);
-        client.RemoveClient();
+        AdminClientActions.Ban(currentClientId);
     }
 
     private void CreateTeleportMenuHierarchy()
@@ -177,19 +148,8 @@ public partial class ConnectedClientsPopupUI : PopupMenu
             var z = float.Parse(coordsSplit[2]);
             var angle = float.Parse(coordsSplit[3]);
 
-            var client = ActiveClients.Get(currentClientId);
-
-            if (client is null)
-            {
-                return;
-            }
-
             var worldCoords = new WorldCoords(x, y, z, angle);
-
-            var teleportPacket =
-                new CharacterDbEntrySerializer(client.CurrentCharacter).GetTeleportByteArray(worldCoords);
-
-            client.MaybeQueueNetworkPacketSend(teleportPacket);
+            AdminClientActions.Teleport(currentClientId, worldCoords, itemText);
         };
     }
 }

@@ -1,9 +1,7 @@
-01 Receita do pó de cura
-02 receita do pó de cura
-03 receita do pó de cura
-
-100 Na sua frente está um pergaminho com uma receita de uma poção mágica escrita nele. Junto com qualquer receita está uma vida inteira de trabalho de varias gerações de mágicos. Tenha certeza de ter em seu livro especial de receitas algo bem valioso.
-
+01 Receita de pó de saúde
+02 receitas de pó de saúde
+03 receita de pó de saúde
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Para se compor o pó de cura, mágicos experientes misturam chatlite e kleder num pote alquimista e adicionam pó de Fainal.      
+    Magos experientes misturam o pó de saúde em um caldeirão alquímico, chatlit e kleder, e depois adicionam o pó Finalal à mistura.
+    

@@ -1,0 +1,31 @@
+01 Billete de lotería
+03 billete de lotería
+101 Has ganado %s.
+102 No hay espacio para el tema.
+103 Su boleto no ganó.
+104 Los boletos deben estar en el inventario.
+
+#60
+01 Billete de lotería (clase 1)
+02 billetes de lotería (clase 1)
+03 billete de lotería (clase 1)
+
+#61
+01 Billete de lotería (clase 2)
+02 billetes de lotería (clase 2)
+03 billete de lotería (clase 2)
+
+#62
+01 Billete de lotería (clase 3)
+02 billetes de lotería (clase 3)
+03 billete de lotería (clase 3)
+
+#63
+01 Billete de lotería (clase 4)
+02 billetes de lotería (clase 4)
+03 billete de lotería (clase 4)
+
+#64
+01 Billete de lotería (clase 5)
+02 billetes de lotería (clase 5)
+03 billete de lotería (clase 5)

@@ -4,8 +4,7 @@
 [ext_resource type="Script" uid="uid://bf5g2twjjlsw3" path="res://Godot/Scripts/Objects/Fill/DoorsFill.cs" id="5_g3owr"]
 [ext_resource type="Script" uid="uid://dlvdb0ui8ktpi" path="res://Godot/Scripts/Objects/Fill/NpcsFill.cs" id="5_npcfill"]
 [ext_resource type="Script" uid="uid://bpvrwmxhbie2y" path="res://Godot/Scripts/Objects/Fill/TeleportsFill.cs" id="5_tpfill"]
-[ext_resource type="Script" uid="uid://cs50b4byaauol" path="res://Server/UI/ConnectedClients/ConnectedClientsUI.cs" id="7_v85dg"]
-[ext_resource type="Script" uid="uid://cuq7362rbruhh" path="res://Server/UI/ConnectedClients/ConnectedClientsPopupUI.cs" id="8_w4ogy"]
+[ext_resource type="Script" path="res://Server/UI/Admin/AdminUiRoot.cs" id="7_adminui"]
 [ext_resource type="Script" uid="uid://dy0pj5pr1a" path="res://Godot/Scripts/Objects/Fill/MonsterSpawnersFill.cs" id="11_mspwn"]
 [ext_resource type="Script" uid="uid://dkxh8kc158k6y" path="res://Godot/Scripts/Objects/Fill/CastleTeleportsFill.cs" id="13_ctfill"]
 [ext_resource type="Script" uid="uid://o2fo352svov1" path="res://Godot/Scripts/Objects/Fill/DungeonEntrancesFill.cs" id="13_denfill"]
@@ -32,19 +31,15 @@ script = ExtResource("2")
 script = ExtResource("99_wchunk")
 LoadRadiusMeters = 200.0
 
-[node name="ConnectedClients" type="Tree" parent="." unique_id=403283480]
-offset_right = 811.0
-offset_bottom = 294.0
-columns = 9
-column_titles_visible = true
-hide_folding = true
-hide_root = true
-scroll_horizontal_enabled = false
-script = ExtResource("7_v85dg")
-
-[node name="ConnectedClientPopup" type="PopupMenu" parent="ConnectedClients" unique_id=953134202]
-submenu_popup_delay = 0.1
-script = ExtResource("8_w4ogy")
+[node name="AdminUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_adminui")
 
 [node name="Castles" type="Node3D" parent="." unique_id=770123536]
 

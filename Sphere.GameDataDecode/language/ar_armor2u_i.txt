@@ -1,110 +1,135 @@
-01 Veste
-03 Veste
-
-100 Abito tradizionale dei Maghi.
-
-200 dell'eliminazione
-201 della devastazione
-202 della fiducia
-203 dell'invulnerabilità
-204 della vita
-205 dell'eliminazione
-206 della devastazione
-207 della fiducia
-208 dell'invulnerabilità
-209 della vita
-210 del dominio
-211 della cecità
-212 della paura
-213 dell'arresto
-214 della liberazione
-215 della purificazione
-216 della punizione
-217 dell'intrappolamento
-218 del turbine
-219 della maledizione
+01 Rob
+03 robu
+100 Abbigliamento tradizionale dei maghi.
+200 eradicazione
+201 devastazioni
+202 affidabilità
+203 invulnerabilità
+204 vita
+205 eradicazione
+206 devastazioni
+207 affidabilità
+208 invulnerabilità
+209 vita
+210 del Consiglio
+211 abbagliamento
+212 paura
+213 fermate
+214 liberazione
+215 pulizia
+216 punizioni
+217 catene
+218 vortice
+219 maledizioni
 
 #5008
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5009
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5010
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5011
-01 Veste rossa
-03 Veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5028
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5029
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5030
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5031
-01 Veste rossa
-03 Veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5048
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5049
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5050
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5051
-01 Veste rossa
-03 Veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5068
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5069
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5070
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5071
-01 Veste rossa
-03 Veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5118
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5119
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5120
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5121
-01 Veste rossa
-03 Veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5138
-01 Veste marrone
-03 Veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5139
-01 Veste blu
-03 Veste blu
+01 Rob blu
+03 Rob blu
+
 #5140
-01 Veste bianca
-03 Veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5141
-01 Veste rossa
-03 veste rossa
+01 Rob rosso
+03 Red Rob
+
 #5167
-01 Veste marrone
-03 veste marrone
+01 Rob marrone
+03 Rob marrone
+
 #5168
-01 Veste blu
-03 veste blu
+01 Rob blu
+03 Rob blu
+
 #5169
-01 Veste bianca
-03 veste bianca
+01 Rob bianco
+03 Rob bianco
+
 #5170
-01 Veste rossa
-03 veste rossa
+01 Rob rosso
+03 Red Rob

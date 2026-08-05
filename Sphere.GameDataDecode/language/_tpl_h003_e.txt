@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-20 %s got lost. Find him and lead him to the nearest town teleport (%s).
-21 %s got lost. Find her and lead her to the nearest town teleport (%s).
+01 Mission key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 I don't feel like talking at all right now, traveler. I have a grief. The youngest son %s left two days ago for mushrooms and still hasn't returned. Can you help? So find him, just don't leave him alone. Take me to the nearest teleport.  The %s reference point will be! Thank you, noble one!
+21 Noble warrior, I greet you! Do not leave the old man in his grief. My daughter %s left two days ago for berries and has not returned yet. Can you help? So find her, just don't leave her alone. Take me to the nearest teleport.  The %s reference point will be! Thank you, noble one!

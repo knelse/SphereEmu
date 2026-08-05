@@ -1,25 +1,33 @@
 01 Workshop
 03 workshop
-
-10 Article given special property
-11 Article ready.
-12 Article repaired.
-13 Article repaired, but its condition worse.
-14 Article repaired, but its condition much worse.
-
-15 Is impossible to give a special property to article using this formula:
-16 Is impossible to make article using this formula:
-17 Is impossible to repair article:
-
-18 article doesn't match formula
-19 not enough components
-20 too low stage in guild
-21 article accidentaly broken while repaired
-22 too many articles
-23 article broken while repaired as too old
-
-90 While creating the article, the formula exhausted its magical power and was destroyed.
-91 While providing the article with magical properties, the formula exhausted its magical power and was destroyed.
-92 While repairing, the formula exhausted its magical power and was destroyed.
-
-100 This is a workshop where blacksmiths and armorers make armor and arms. Sorcerers also use workshops to give magical properties to articles made there.
+10 The item has received a special property.
+11 The item is manufactured.
+12 The item has been repaired.
+13 The item has been repaired, but its condition has deteriorated.
+14 The item has been repaired, but its condition has deteriorated significantly.
+15 It is impossible to give a special property to an object by this formula:
+16 It is impossible to make an item using this formula:
+17 It is impossible to repair the item:
+18 the item does not match the formula
+19 missing components
+20 too low a rung in the guild
+21 the item accidentally broke during repair
+22 too many items
+23 the item broke down from old age during repair
+40 Not enough tallers.
+90 When creating an item, the formula exhausted its magical powers and was destroyed.
+91 During the giving of magical properties to the object, the formula exhausted its magical powers and was destroyed.
+92 During the repair, the formula exhausted its magical powers and was destroyed.
+100 This is a workshop where blacksmiths and gunsmiths make armor and weapons. Sorcerers also use workshops to impart magical properties to objects that are made there.
+0222 Candidate (1)
+0223 Candidate (1)
+0224 Schoolboy (2)
+0225 Schoolgirl (2)
+0226 The Apprentice (3)
+0227 The Apprentice (3)
+0228 Master (4)
+0229 Master (4)
+0230 Headman (5)
+0231 Headman (5)
+0232 Expert (6)
+0233 Expert (6)

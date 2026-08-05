@@ -1,8 +1,6 @@
-01 O castelo de Vassalo
-03 O castelo de Vassalo
-
-100 Na sua frente tem um pergaminho com uma antiga lenda da vida em Sphere.
-
+01 Castelo Liège
+03 Castelo Liège
+100 Tens um pergaminho com uma lenda antiga do mundo da esfera.
 TEXT
-
-    No ano de 5236 lorde Stubborn construiu o castelo de vassalos para guardar a estrada de Bangville até Sheepstone de ataques dos monstros diversos. As torres eram altas, as paredes fortes, mas isto não ajudou o lorde: os monstros capturaram e saquearam o castelo durante quatro anos. Desde então, o lorde fez inúmeras apelos pelo castelo, mas eventualmente os monstros sempre capturavam os vassalos. O castelo dos vassalos se encontra a oeste da estrada que vai ao norte de Bagville. 
+    Em 5236, Lord stubborn construiu o Castelo de Liège para proteger contra os monstros da estrada de Bangville a Shipstone. As torres do Castelo eram altas e as paredes fortes, mas isso não ajudou o Senhor: quatro anos depois, o castelo foi capturado e saqueado por monstros. Desde então, Lord tentou várias vezes recuperar o controle do castelo, mas eventualmente os monstros novamente tomaram Liège a cada vez. O Castelo de Liège pode ser encontrado a oeste da estrada que leva ao norte de Bangville.
+    

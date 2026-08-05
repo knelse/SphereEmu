@@ -1,14 +1,11 @@
 01 Insurance
 03 insurance
-
-101 Using the insurance will cost you %d$.
-102 You have used the insurance.
-103 The insurance is no longer valid.
-104 You have no need to use the insurance right now.
-
-110 Name of character: %s
+101 Using insurance will require %d$.
+102 You used the insurance.
+103 The insurance is invalid.
+104 There is no need to use insurance now.
+110 Character Name: %s
 111 Title: %s
 112 Degree: %s
-113 Title marks: %d
-114 Degree marks: %d
-
+113 Title Stamps: %d
+114 Grade Marks: %d

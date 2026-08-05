@@ -1,110 +1,135 @@
-01 Robe
-03 Robe
-
-100 Traditional Magi clothing.
-
-200 of elimination
-201 of devastation
-202 of reliability
-203 of invulnerability
-204 of life
-205 of elimination
-206 of devastation
-207 of reliability
-208 of invulnerability
-209 of life
-210 of rule
-211 of blindness
-212 of fright
-213 of stop
-214 of deliverance
-215 of purification
-216 of punishment
-217 of fetters
-218 of whirlwind
-219 of curse
+01 Rob
+03 Rob
+100 Traditional magicians' clothes.
+200 eradication
+201 devastation
+202 reliability
+203 invulnerability
+204 life
+205 eradication
+206 devastation
+207 reliability
+208 invulnerability
+209 life
+210 Boards of Directors
+211 Blinding
+212 Fright
+213 stops
+214 deliverance
+215 purifications
+216 punishments
+217 shackles
+218 The vortex
+219 Curses
 
 #5008
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5009
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5010
 01 White robe
-03 White robe
+03 a white robe
+
 #5011
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5028
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5029
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5030
 01 White robe
-03 White robe
+03 a white robe
+
 #5031
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5048
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5049
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5050
 01 White robe
-03 White robe
+03 a white robe
+
 #5051
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5068
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5069
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5070
 01 White robe
-03 White robe
+03 a white robe
+
 #5071
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5118
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5119
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5120
 01 White robe
-03 White robe
+03 a white robe
+
 #5121
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5138
 01 Brown robe
-03 Brown robe
+03 a brown robe
+
 #5139
 01 Blue robe
-03 Blue robe
+03 The blue robe
+
 #5140
 01 White robe
-03 White robe
+03 a white robe
+
 #5141
 01 Red robe
-03 Red robe
+03 The red robe
+
 #5167
 01 Brown robe
-03 brown robe
+03 a brown robe
+
 #5168
 01 Blue robe
-03 blue robe
+03 The blue robe
+
 #5169
 01 White robe
-03 white robe
+03 a white robe
+
 #5170
 01 Red robe
-03 red robe
+03 The red robe

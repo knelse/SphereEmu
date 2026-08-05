@@ -1,0 +1,33 @@
+01 Werkstatt
+03 werkstatt
+10 Der Gegenstand hat eine besondere Eigenschaft erhalten.
+11 Der Gegenstand wird hergestellt.
+12 Der Gegenstand wurde repariert.
+13 Der Gegenstand wurde repariert, aber sein Zustand hat sich verschlechtert.
+14 Der Gegenstand wurde repariert, aber sein Zustand hat sich erheblich verschlechtert.
+15 Es ist unmöglich, einem Gegenstand nach dieser Formel eine besondere Eigenschaft zu verleihen:
+16 Es ist unmöglich, einen Gegenstand nach dieser Formel herzustellen:
+17 Der Gegenstand kann nicht repariert werden:
+18 der Gegenstand entspricht nicht der Formel
+19 es fehlen Komponenten
+20 zu niedrige Stufe in der Gilde
+21 der Gegenstand ist bei der Reparatur versehentlich kaputt gegangen
+22 zu viele Gegenstände
+23 der Gegenstand brach bei der Reparatur aus Altersgründen ab
+40 Es gibt nicht genug Taller.
+90 Bei der Erstellung des Gegenstandes erschöpfte die Formel ihre magischen Kräfte und wurde zerstört.
+91 Während sie dem Gegenstand magische Eigenschaften verliehen, erschöpfte die Formel ihre magischen Kräfte und wurde zerstört.
+92 Bei der Reparatur erschöpfte die Formel ihre magischen Kräfte und wurde zerstört.
+100 Dies ist eine Werkstatt, in der Schmiede und Büchsenmacher Rüstungen und Waffen herstellen. Zauberer benutzen auch Werkstätten, um den Objekten, die dort hergestellt werden, magische Eigenschaften zu verleihen.
+0222 Kandidat (1)
+0223 Kandidatin (1)
+0224 Scholar (2)
+0225 Schülerin (2)
+0226 Lehrling (3)
+0227 Lehrling (3)
+0228 Meister (4)
+0229 Meister (4)
+0230 Altmeister (5)
+0231 Altmeister (5)
+0232 Experte (6)
+0233 Experte (6)

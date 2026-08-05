@@ -1,8 +1,7 @@
-01 Ёликсир ‘изической јтаки
-02 эликсир физической атаки
-03 эликсир физической атаки
-
-101 Ёликсир физической атаки низкой концентрации. ”величивает ‘изическую јтаку на 5%.
-102 Ёликсир физической атаки средней концентрации. ”величивает ‘изическую јтаку на 7.5%.
-103 Ёликсир физической атаки высокой концентрации. ”величивает ‘изическую јтаку на 10%.
-104 Ёликсир физической атаки высокой концентрации. ”величивает ‘изическую јтаку на 15%.
+01 The Elixir of Physical Attack
+02 The elixir of physical attack
+03 The elixir of physical attack
+101 A low-concentration physical attack elixir. Increases Physical Attack by 5%.
+102 The elixir of physical attack of medium concentration. Increases Physical Attack by 7.5%.
+103 The elixir of a high-concentration physical attack. Increases Physical Attack by 10%.
+104 The elixir of a high-concentration physical attack. Increases Physical Attack by 15%.

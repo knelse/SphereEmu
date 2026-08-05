@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-22 Salute guerriero! Sei appena in tempo. %s sta terrorizzando la nostra città. La sua tana è %s. Uccidilo ti prego. 
-23 Salute guerriero! Sei appena in tempo. %s sta terrorizzando la nostra città. La sua tana è %s. Uccidilo ti prego. 
+22 Ciao guerriero! Sei giusto in tempo. La nostra città terrorizza il terribile %s. La sua tana - %s. Liberaci presto da lui.
+23 Ciao guerriero! Sei giusto in tempo. La nostra città terrorizza vile %s. La sua tana - %s. Finiscila!

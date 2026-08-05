@@ -1,9 +1,7 @@
-01 Formula della polvere della protezione magica
-02 Formula della polvere della protezione magica
-03 Formula della polvere della protezione magica
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di protezione magica
+02 ricette di polvere di protezione magica
+03 ricetta polvere di protezione magica
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della protezione magica bisogna ottenere Spherite, Mandragora e Argento. Mischiali insieme nel recipiente alchemico, aggiungi la polvere di Amilus per completare la reazione e potrai utilizzare così la polvere creata. Non dimenticare che per creare questa reazione il tuo grado non deve essere inferiore a quello di candidato.
+    Per ottenere la polvere di difesa magica, ottieni prima sferite, mandragora e argento. Mescolali in una bombetta alchemica, aggiungi la polvere di Amilus finale e usa la polvere risultante. Non dimenticare che per eseguire questa reazione, il tuo grado non deve essere inferiore al candidato.
+    

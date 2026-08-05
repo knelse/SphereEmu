@@ -1,130 +1,161 @@
 01 Escudo de madeira
 03 Escudo de madeira
-
-200 de valor
-201 de durabilidade
-202 de absorção
-203 de reflexão
-204 de proteção
-205 de invencibilidade
-206 de saúde
-207 de vida
-208 de meditação
-209 de prana
-210 de poder
-211 de habilidade
-212 de grandeza
-213 de concentração
-214 de terra
-215 de água
-216 de ar
-217 de fogo
-218 de elementos
-219 de valor
-220 de força
-221 de habilidade
-222 de grandeza 
-223 de concentração 
-224 de integridade
-225 de elementos
-226 de elementos
+200 valor
+201 força
+202 absorção
+203 desvios
+204 segurança
+205 invulnerabilidade
+206 saúde
+207 vida
+208 meditação
+209 Prana
+210 força
+211 destreza
+212 grandeza
+213 concentrações
+214 Terra
+215 água
+216 ar
+217 fogo
+218 Elements
+219 valores
+220 força
+221 destreza
+222 grandeza
+223 concentrações
+224 integridade
+225 Elements
+226 Elements
 
 #313
-01 escudo de madeira
-03 escudo de madeira
+01 Escudo de madeira
+03 Escudo de madeira
+
 #314-316
-01 escudo grande
-03 escudo grande
+01 Grande Escudo
+03 Grande Escudo
+
 #317-319
-01 escudo de madeira com anel de ferro
-03 escudo de madeira com anel de ferro 
+01 Escudo de madeira estofado
+03 Escudo de madeira estofado
+
 #320-322
-01 escudo grande com anel de ferro
-03 escudo grande com anel de ferro
+01 Grande escudo estofado
+03 grande escudo estofado
+
 #323-324
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #3061-3064
-01 escudo de madeira
-03 escudo de madeira
+01 Escudo de madeira
+03 Escudo de madeira
+
 #3065-3079
-01 escudo grande
-03 escudo grande
+01 Grande Escudo
+03 Grande Escudo
+
 #3080-3094
-01 escudo de madeira com anel de ferro 
-03 escudo de madeira com anel de ferro 
+01 Escudo de madeira estofado
+03 Escudo de madeira estofado
+
 #3095-3109
-01 escudo grande com anel de ferro
-03 escudo grande com anel de ferro
+01 Grande escudo estofado
+03 grande escudo estofado
+
 #3110-3120
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #4462-4470
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #5871-5876
-01 Escudo de Caça
-03 escudo de Caça
+01 Escudo do caçador
+03 escudo do caçador
+
 #6386-6388
-01 Áspide
-03 Áspide 
+01 Aspis
+03 Aspis
+
 #6389
-01 Broquel de Ferro
-03 broquel
+01 Aspis De Ferro
+03 Aspis
+
 #6390
-01 Broquel de Aço
-03 broquel
+01 Aspis De Aço
+03 Aspis
+
 #6391
-01 Grão broquel
-03 broquel
+01 Grande Aspis
+03 Aspis
+
 #6470
-01 Escudo de madeira do Longevidade
-03 escudo da Longevidade
+01 Escudo de madeira da longevidade
+03 Escudo longevidade
+
 #6471
-01 Escudo grande da Longevidade
-03 escudo da Longevidade
+01 O grande escudo da longevidade
+03 Escudo longevidade
+
 #6472
-01 Escudo híbrido da Longevidade
-03 escudo da Longevidade
+01 Escudo de madeira estofado da longevidade
+03 Escudo longevidade
+
 #6473
-01 Grande escudo híbrido da Longevidade
-03 escudo da Longevidade
+01 Estofado grande escudo da longevidade
+03 Escudo longevidade
+
 #6474
-01 Escudo de ferro da Longevidade
-03 escudo da Longevidade
+01 Escudo de ferro da longevidade
+03 Escudo longevidade
+
 #6475
-01 Escudo antigo da Longevidade
-03 escudo da Longevidade
+01 O antigo escudo da longevidade
+03 Escudo longevidade
+
 #6559
-01 Escudo de madeira do Ferreiro
-03 escudo do Ferreiro
+01 Escudo de forjamento de madeira
+03 Escudo de forjamento
+
 #6560
-01 Escudo grande do Ferreiro
-03 escudo do Ferreiro
+01 Grande Escudo de forjamento
+03 Escudo de forjamento
+
 #6561-6562
-01 Escudo híbrido do Ferreiro
-03 escudo do Ferreiro
+01 Escudo de forjamento estofado
+03 Escudo de forjamento
+
 #6563
-01 Escudo de ferro do Ferreiro
-03 escudo do Ferreiro
+01 Escudo de forjamento de ferro
+03 Escudo de forjamento
+
 #6564
-01 Escudo antigo do Ferreiro
-03 escudo do Ferreiro
+01 Antigo escudo de forjamento
+03 Escudo de forjamento
+
 #6660
-01 Escudo de madeira encantado
-03 escudo encantando
+01 Escudo encantado de madeira
+03 Escudo Encantado
+
 #6661
-01 Grande escudo encantado
-03 escudo encantando
+01 O Grande Escudo Encantado
+03 Escudo Encantado
+
 #6662-6663
-01 Escudo híbrido encantado
-03 escudo encantando
+01 Escudo Encantado estofado
+03 Escudo Encantado
+
 #6664
-01 Escudo de ferro encantado
-03 escudo encantando
+01 Escudo encantado de ferro
+03 Escudo Encantado
+
 #6665
-01 Escudo antigo encantado
-03 escudo encantando
+01 Antigo escudo Encantado
+03 Escudo Encantado
+
 #6756
-01 Escudo de ossos
-03 escudo de ossos
+01 Escudo ósseo
+03 Escudo ósseo

@@ -1,8 +1,6 @@
-01 On the merchants 
-03 On the merchants
-
-100 In front of you is a scroll with an ancient legend from the life of the Sphere.
-
+01 About merchants
+03 about merchants
+100 In front of you is a scroll with an ancient legend from the world of the Sphere.
 TEXT
-
-    Most of the magi are unlikely to leave their lonesome towers for the sake of bustling towns. Non the less if you perchance visit a solitary tower of such a magus, its owner will be pleased in earnest and will perhaps agree to sell a couple of amulets. 
+    Most magicians are unlikely to leave their secluded towers for the bustling cities. Nevertheless, if you accidentally visit the hermit tower of the magician, its owner will be sincerely glad to see you and may even agree to sell a couple of valuable amulets.
+    

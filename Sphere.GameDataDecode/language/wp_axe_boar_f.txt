@@ -1,0 +1,28 @@
+01 Bâton
+03 Bâton
+10 Charges restantes:
+100 Arme de choc. Il frappe fort, mais frappe rarement.
+200 épuisement
+201 prouesses
+202 dégâts
+203 brutalités
+204 précipitation
+205 vitesses
+206 désordre
+207 chaos
+208 Ether
+209 fatigue
+210 maladies
+211 instabilité
+212 distances
+213 distances
+214 décomposition
+215 dévastation
+216 faiblesses
+217 pénétrations
+218 interdiction
+219 valeurs
+
+#7413
+01 Bâton De Berger
+03 bâton de Berger

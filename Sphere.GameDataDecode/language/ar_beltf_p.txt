@@ -1,30 +1,34 @@
-
-200 de aventura
-201 de silêncio
-202 de profecia
-203 de segredo
-204 de mito
-205 de vida
-206 de campanha
-207 de existência
-208 de lenda
-209 de paz
+200 Aventura
+201 Silêncio
+202 Profecias
+203 Segredos
+204 Mitos
+205 Genesis
+206 Caminhadas
+207 Existência
+208 Legendas
+209 Mundo
 
 #2805-2806
-01 Cinta
-03 cinta
+01 Cinto
+03 cinto
+
 #2807-2808
 01 Cinto de couro
 03 cinto de couro
+
 #2809-2810
-01 Cinto de couro reforçado
-03 cinto de couro reforçado
+01 Cinto de couro rebitado
+03 cinto de couro rebitado
+
 #2811-2812
-01 Cinto de correntes reforçadas
-03 cinto de correntes reforçadas
+01 Cinto de malha
+03 cinto de malha
+
 #2813-2815
 01 Cinto de ferro
 03 cinto de ferro
+
 #2816-2819
-01 Cinto de ferro ancestral
-03 cinto de ferro ancestral
+01 Antigo cinturão de ferro
+03 antigo cinturão de ferro

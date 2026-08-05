@@ -1,30 +1,34 @@
-
-200 Of adventure
-201 Of silence
-202 Of prophecy
-203 Of secret
-204 Of myths
-205 Of being
-206 Of campaigns
-207 Of existence
-208 Of legend
-209 Of peace
+200 Adventures
+201 Silence
+202 Prophecies
+203 Secrets
+204 Myths
+205 Genesis
+206 Hiking
+207 Existence
+208 Legends
+209 Mira
 
 #2820-2821
-01 Top-boots
-03 top-boots
+01 Boots
+03 boots
+
 #2822-2823
-01 Leather boots
-03 leather boots
+01 Leather shoes
+03 leather shoes
+
 #2824-2825
 01 Riveted leather boots
 03 riveted leather boots
+
 #2826-2827
-01 Chain mail boots
-03 chain mail boots
+01 Chainmail boots
+03 chainmail boots
+
 #2828-2830
-01 Armor top-boots
-03 armor top-boots
+01 Plate boots
+03 plate boots
+
 #2831-2834
-01 Ancient armor top-boots
-03 ancient armor top-boots
+01 Ancient plate boots
+03 ancient plate boots

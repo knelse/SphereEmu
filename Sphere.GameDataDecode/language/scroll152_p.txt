@@ -1,10 +1,7 @@
-01 Fórmula do pó de impacto
-02 Fórmula do pó de impacto
-03 Fórmula do pó de impacto
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de pó de choque
+02 receitas do pó do Choque
+03 receita de pó de choque
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-    Ponha Parmelit, Serden e Cobre na fornalha. Mixture precisamente e queime galhos. Se você for mais forte que bacharel e você obterá o pó de choque. 
-
+    Põe a parmelita, a raiva e o cobre no forno. Misture bem e derreta o forno com lenha. Se fores mais forte do que um universitário, receberás pó de choque.
+    

@@ -1,9 +1,6 @@
-01 Licenza per il cambio di aspetto
-03 licenza per il cambio di aspetto
-
-101 Vuoi veramente cambiare aspetto?
-102 Hai cambiato il tuo aspetto.
-103 Licenza non valida.
-104 Ora non hai bisogno di usare la licenza.
-
-
+01 Licenza per cambiare volto
+03 licenza per cambiare volto
+101 Vuoi davvero cambiare look?
+102 Hai usato l'opportunità di cambiare aspetto.
+103 La licenza non è valida.
+104 Ora non è necessario utilizzare una licenza.

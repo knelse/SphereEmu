@@ -1,0 +1,6 @@
+01 Licence pour réinitialiser le titre
+03 licence pour réinitialiser le titre
+100 Réinitialise le niveau de titre du personnage à 15. Dans ce cas, pour chaque 5 (cinq) niveaux de titre remis à zéro est Ajouté 1 (un) niveau au niveau précédent. Les caractéristiques distribuées du personnage, telles que la force, l'agilité, la précision, l'endurance, la terre, l'air, l'eau et le feu, sont également réinitialisées. ATTENTION! La licence ne fonctionne pas si le personnage a une spécialité!
+101 Voulez-vous vraiment réinitialiser le titre?
+102 Titre remis à zéro.
+103 Maintenant, il n'est pas nécessaire d'utiliser la licence.

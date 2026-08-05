@@ -1,0 +1,6 @@
+01 Licencia para restablecer el título
+03 licencia para restablecer el título
+100 Restablece el nivel de título del personaje a 15. En este caso, por cada 5 (5) niveles de título eliminados, se agrega 1 (1) nivel al grado anterior. También se restablecen las características distribuidas del personaje, tales como: fuerza, agilidad, precisión, resistencia, tierra, aire, agua y fuego. ¡ATENCIÓN! ¡La licencia no funciona si el personaje tiene una especialidad!
+101 ¿Realmente quieres perder el título?
+102 Título abandonado.
+103 Ahora no es necesario utilizar la licencia.

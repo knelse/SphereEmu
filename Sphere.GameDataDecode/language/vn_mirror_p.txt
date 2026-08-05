@@ -1,8 +1,6 @@
-01 Волшебное зеркальце
-02 Волшебные зеркальца
-03 волшебное зеркальце
-10 волшебное зеркальце
-
-101 Осталось зарядов:
-
-100 Волшебное зеркальце. При использовании вешает мутатор, обращающий последнюю атаку против самого атакующего, возвращая противнику половину урона атаки.
+01 Espelho mбgico
+02 Espelhos mбgicos
+03 espelho mбgico
+10 espelho mбgico
+101 Restam cargas:
+100 Espelho mбgico. Ative para pendurar um mutador que vira o ъltimo ataque contra o prуprio atacante, devolvendo metade do dano de ataque ao inimigo.

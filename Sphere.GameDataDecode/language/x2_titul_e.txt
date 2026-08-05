@@ -1,0 +1,11 @@
+#4332
+01 Title Pill X2 (should be in the inventory, for 3 hours)
+03 Title Pill X2 (should be in the inventory, for 3 hours)
+
+#4338
+01 Title Pill X2 (must be in the inventory, for 6 hours)
+03 Title Pill X2 (must be in the inventory, for 6 hours)
+
+#4344
+01 Title Pill X2 (must be in the inventory, for 12 hours)
+03 Title Pill X2 (must be in the inventory, for 12 hours)

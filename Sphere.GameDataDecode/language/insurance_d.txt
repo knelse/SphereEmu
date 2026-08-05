@@ -1,0 +1,11 @@
+01 Versicherung
+03 versicherung
+101 Die Verwendung der Versicherung erfordert %d$.
+102 Sie haben die Versicherung genutzt.
+103 Die Versicherung ist ungültig.
+104 Es ist jetzt nicht notwendig, eine Versicherung zu verwenden.
+110 Name des Charakters: %s
+111 Titel: %s
+112 Grad: %s
+113 Marken des Titels: %d
+114 Grade Briefmarken: %d

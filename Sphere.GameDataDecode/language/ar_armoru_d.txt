@@ -1,0 +1,51 @@
+01 Kettenhemd
+03 kettenhemd
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 Leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 angst
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5001
+01 Vernietete Lederrüstung
+03 vernietete Lederrüstung
+
+#5021
+01 Kiras
+03 kiras
+
+#5041
+01 Alte Rüstung
+03 alte Rüstung
+
+#5061
+01 Alte Rüstung
+03 alte Rüstung
+
+#5111
+01 Alte Rüstung
+03 alte Rüstung
+
+#5131
+01 Alte Rüstung
+03 alte Rüstung
+
+#5160
+01 Alte Rüstung
+03 alte Rüstung

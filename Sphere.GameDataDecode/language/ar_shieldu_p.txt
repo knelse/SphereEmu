@@ -1,45 +1,50 @@
 01 Escudo de madeira
 03 Escudo de madeira
-
-200 de eliminação
-201 de devastação
-202 de confiança
-203 de vulnerabilidade
-204 de vida
-205 de eliminação 
-206 de devastação 
-207 de confiança 
-208 de vulnerabilidade 
-209 de vida 
-210 de regra
-211 de cegueira
-212 de medo
-213 de parada
-214 de entrega
-215 de purificação
-216 de punição
-217 de cadeia
-218 de furacão
-219 de praga
+200 erradicação
+201 devastação
+202 confiabilidade
+203 invulnerabilidade
+204 vida
+205 erradicação
+206 devastação
+207 confiabilidade
+208 invulnerabilidade
+209 vida
+210 do Conselho
+211 cegueira
+212 susto
+213 paragens
+214 Livramento
+215 purificação
+216 punições
+217 grilhões
+218 Vortex
+219 maldições
 
 #5002
-01 escudo grande
-03 escudo grande
+01 Grande Escudo
+03 Grande Escudo
+
 #5022
-01 escudo de madeira com anel de ferro
-03 escudo de madeira com anel de ferro
+01 Escudo de madeira estofado
+03 Escudo de madeira estofado
+
 #5042
-01 escudo grande com anel de ferro
-03 escudo grande com anel de ferro
+01 Grande escudo estofado
+03 grande escudo estofado
+
 #5062
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #5112
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #5132
-01 escudo de ferro
-03 escudo de ferro
+01 Escudo de ferro
+03 Escudo de ferro
+
 #5161
 01 Escudo de ferro
-03 escudo de ferro
+03 Escudo de ferro

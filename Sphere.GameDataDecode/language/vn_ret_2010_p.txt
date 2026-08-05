@@ -1,7 +1,4 @@
-01 Return stone
-03 Return stone
-
-10 Charges:
-
-100 Allows return to nearest town. Use GXP-service for recharge ("]" key).
-
+01 Pedra Do Retorno
+03 Pedra Do Retorno
+10 Restam cargas:
+100 Permite que o proprietário se mova para a cidade mais próxima. A pedra é suficiente para colocar no inventário. Para recarregar, use o serviço GXP (tecla "]").

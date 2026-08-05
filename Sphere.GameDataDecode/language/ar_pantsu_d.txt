@@ -1,0 +1,51 @@
+01 Hose
+03 hose
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 ausrottung
+201 verwüstungen
+202 zuverlässigkeit
+203 unverwundbarkeit
+204 leben
+205 ausrottung
+206 verwüstungen
+207 zuverlässigkeit
+208 unverwundbarkeit
+209 leben
+210 vorstand
+211 blendung
+212 angst
+213 haltestellen
+214 befreiung
+215 reinigung
+216 strafen
+217 fesseln
+218 wirbel
+219 flüche
+
+#5003
+01 Lederhose mit Nieten besetzt
+03 lederhose mit Nieten besetzt
+
+#5023
+01 Platten-Leggings
+03 platten-Leggings
+
+#5043
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#5063
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#5113
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#5133
+01 Alte Platten-Leggings
+03 alte Platten-Leggings
+
+#5162
+01 Alte Platten-Leggings
+03 alte Platten-Leggings

@@ -1,13 +1,14 @@
-01 Besta noturna
-
-100 Cria um lobo atacando o alvo
+01 Besta da noite
+100 Cria um lobo que ataca o alvo
 
 #6120
-01 Besta noturna
-100 À noite quando o druida chama vem um lobo, e um javali selvagem de dia. A besta invocada ataca o alvo indicado pelo druida.
+01 Besta da noite
+100 À noite, um lobo é chamado pelo Druida e, durante o dia, um javali. A besta evocada imediatamente corre para o alvo indicado pelo Druida.
+
 #6121
-01 Besta noturna
-100 À noite quando o druida chama vem um lobo, e um javali selvagem de dia. A besta invocada ataca o alvo indicado pelo druida.
+01 Besta da noite
+100 À noite, um lobo é chamado pelo Druida e, durante o dia, um javali. A besta evocada imediatamente corre para o alvo indicado pelo Druida.
+
 #6122-6125
-01 Besta noturna
-100 À noite quando o druida chama vem um lobo, e um javali selvagem de dia. A besta invocada ataca o alvo indicado pelo druida.
+01 Besta da noite
+100 À noite, um lobo é chamado pelo Druida e, durante o dia, um javali. A besta evocada imediatamente corre para o alvo indicado pelo Druida.

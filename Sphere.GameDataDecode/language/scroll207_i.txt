@@ -1,8 +1,6 @@
-01 Il castello Liege
-03 Il castello Liege
-
-100 Davanti a te si trova una pergamena con un'antica leggenda sulla storia di Sphere.
-
+01 Castello Di Liegi
+03 Castello di Liegi
+100 Di fronte a te c'è un rotolo con un'antica leggenda del mondo della sfera.
 TEXT
-
-    Nell'anno 5236 lord Stubborn costruì il castello Liege per controllare la strada che porta da Bangville Sheepstone dai mostri. Le torri del castello erano alte, le mura resistenti, ma non aiutarono i lord: i mostri penetrarono in esso e lo saccheggiarono per quattro anni. In seguito il lord spese molti soldi per la difesa del castello, ma i mostri riuscirono ancora una volta a catturare Liege. Il castello Liege può essere trovato a ovest della strada nord di Bagville.
+    Nel 5236 Lord stubborn costruì il Castello di Liegi per difendersi dai mostri della strada Da Bangville a Shipstone. Le torri del castello erano alte e le mura robuste, ma questo non aiutò il Signore: dopo quattro anni il castello fu invaso e saccheggiato dai mostri. Da allora, il Signore ha tentato più volte di riconquistare il potere sul castello, ma alla fine i mostri hanno ripreso Liegi ogni volta. Il Castello di Liegi si trova a ovest della strada che porta a nord da Bangville.
+    

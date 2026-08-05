@@ -1,8 +1,6 @@
-01 Волшебное зеркальце
-02 Волшебные зеркальца
-03 волшебное зеркальце
-10 волшебное зеркальце
-
-101 Осталось зарядов:
-
-100 Волшебное зеркальце. При использовании вешает мутатор, обращающий последнюю атаку против самого атакующего, возвращая противнику половину урона атаки.
+01 Specchio magico
+02 Specchi magici
+03 specchio magico
+10 specchio magico
+101 Cariche rimaste:
+100 Specchio magico. Quando viene utilizzato, il mutatore si blocca invertendo l'ultimo attacco contro l'attaccante stesso, restituendo all'avversario metа del danno dell'attacco.

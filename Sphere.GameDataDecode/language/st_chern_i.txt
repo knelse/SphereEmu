@@ -1,7 +1,6 @@
 01 Calamaio
-03 calamaio
-05 pieno
-06 mezzo pieno
+03 Calamaio
+05 completa
+06 semivuota
 07 quasi vuoto
-100 Utilizzato per prendere nota nel diario e per segnare le mappe.
-
+100 Consente di effettuare voci di diario e di contrassegnare le carte.

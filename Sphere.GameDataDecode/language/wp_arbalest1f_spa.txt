@@ -1,0 +1,38 @@
+01 Ballesta
+03 Ballesta
+10 No tienes flechas.
+100 Arma arrojadiza. Le permite golpear al enemigo a gran distancia; requiere un gran suministro de flechas.
+200 Aventuras
+201 Silencio
+202 Profecías
+203 Secretos
+204 Mitos
+205 Génesis
+206 Senderismo
+207 Existencia
+208 Leyendas
+209 Mundo
+
+#2730-2731
+01 Ballesta de mano
+03 Ballesta de mano
+
+#2732-2733
+01 Ballesta pesada
+03 Ballesta pesada
+
+#2734-2735
+01 Ballesta de mano de élite
+03 Ballesta de mano de élite
+
+#2736-2737
+01 Ballesta ligera rúnica
+03 Ballesta ligera rúnica
+
+#2738-2740
+01 Ballesta de acero fantasma
+03 Ballesta de acero fantasma
+
+#2741-2744
+01 Ballesta de asedio de dragón
+03 Ballesta de asedio de dragón

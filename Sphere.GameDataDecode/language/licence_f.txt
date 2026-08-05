@@ -1,0 +1,23 @@
+01 Licence commerciale
+03 licence commerciale
+05 La licence ne peut être utilisée que sur la zone commerciale.
+06 Vous ne devez pas vous tenir à moins de 5 mètres d'un autre marchand.
+10 Durée: 12 heures
+11 Durée: 1 jour
+12 Durée: 1,5 jours
+13 Durée: 2 jours
+14 Durée: 2,5 jours
+15 Durée: 3 jours
+16 Durée: 3,5 jours
+17 Durée: 4 jours
+18 Durée: 4,5 jours
+19 Durée: 5 jours
+20 Durée: 5,5 jours
+21 Durée: 6 jours
+23 Durée: 7 jours
+25 Durée: 8 jours
+27 Durée: 9 jours
+29 Validité: 10 jours
+31 Durée: 11 jours
+33 Durée: 12 jours
+100 Lorsque vous utilisez la licence, vous quittez la Sphère, mais le personnage reste à négocier pour le nombre spécifié de jours sphériques. Vous ne pouvez appliquer la licence que sur la zone de vente au détail, et vous ne pouvez pas vous rapprocher de 5 mètres d'un autre commerçant.

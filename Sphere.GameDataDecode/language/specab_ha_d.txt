@@ -1,0 +1,6 @@
+01 Diebstahl
+100 Die Fähigkeit, den Beruf zu bestimmen. Ein unerfahrener Taschendieb kann nur auf ein paar Taler zählen, aber es gibt Legenden über solche Lücken, die sogar Dinge aus einer Tasche von einem klaffenden Bürger ziehen können.
+1000 Für Diebstahl sein und mindestens eine freie Zelle im Inventar.
+1001 Sie haben gestohlen %s.
+1002 Der Diebstahl ist fehlgeschlagen.
+1003 Sie haben gestohlen %d$.

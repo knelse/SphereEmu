@@ -1,0 +1,7 @@
+01 Teletransportador de torneo
+10 El traslado está Prohibido en este momento.
+11 Nivel máximo para mover: %d
+12 Nivel mínimo para moverse: %d
+13 El teletransportador no funciona en este momento.
+14 Teletransportador abierto para niveles con %d por %d.
+100 Mover con este teletransportador sólo es posible en la Arena. Después de morir en la Arena, regresas a este teletransportador.

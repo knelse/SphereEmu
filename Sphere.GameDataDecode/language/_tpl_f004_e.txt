@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-20 the horrible monsters captured %s. Free him and lead him to the exit from the dungeons.
-21 the horrible monsters captured %s. Free her and lead her to the exit from the dungeons.
+01 Mission key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+20 Didn't you hear what a disaster happened in our settlement? %s, the only son of our elder, is in the dungeon. Monsters attacked us at night and dragged him away with them. Find him! Thank you.
+21 Greetings, traveler! Have you heard what kind of trouble happened in our settlement? %s, the daughter of our elder, is immured in a dungeon. Monsters attacked the village and dragged it away with them. Find her, I beg you! We will not remain in debt.

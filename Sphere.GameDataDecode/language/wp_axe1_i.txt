@@ -1,0 +1,391 @@
+01 Ascia
+03 ascia
+100 Arma d'urto. Colpisce duramente, ma colpisce raramente.
+200 esaurimento
+201 valor
+202 danni
+203 crudeltà
+204 fretta
+205 velocità
+206 disordine
+207 Caos
+208 etere
+209 fatica
+210 malattie
+211 instabilità
+212 distanze
+213 distanze
+214 decomposizione
+215 devastazioni
+216 debolezze
+217 penetrazione
+218 divieto
+219 valori
+
+#101
+01 Ascia
+03 ascia
+
+#102
+01 Grande ascia
+03 grande ascia
+
+#103
+01 Ascia da battaglia
+03 ascia da battaglia
+
+#104
+01 Ascia di fanteria
+03 ascia di fanteria
+
+#105
+01 Francesco
+03 Francesco
+
+#106
+01 Ascia
+03 sekiru
+
+#107
+01 Tabar
+03 Tabar
+
+#108
+01 Elite grande ascia
+03 Elite grande ascia
+
+#109
+01 Ascia da battaglia d'élite
+03 ascia da battaglia d'élite
+
+#110
+01 Francisca d'élite
+03 Francesco d'élite
+
+#111
+01 Ascia d'élite
+03 l'ascia d'élite
+
+#112
+01 Grande ascia runica
+03 grande ascia runica
+
+#113
+01 Ascia da battaglia runica
+03 ascia da battaglia runica
+
+#114
+01 Francisca runica
+03 Francesco Runico
+
+#115
+01 Ascia runica
+03 l'ascia runica
+
+#116
+01 Manganello
+03 manganello
+
+#117
+01 Mazza
+03 mazza
+
+#118
+01 Palica
+03 palitsa
+
+#119
+01 Martello
+03 martello
+
+#120
+01 Martello da guerra
+03 martello da guerra
+
+#121
+01 Morgenstern
+03 Morgenstern
+
+#122
+01 Martello da fabbro
+03 martello da fabbro
+
+#123
+01 Mazza d'élite
+03 mazza d'élite
+
+#124
+01 Elite palitsa
+03 Elite palitsa
+
+#125
+01 Martello da guerra d'élite
+03 martello da guerra d'élite
+
+#126
+01 Morgenstern d'élite
+03 Morgenstern d'élite
+
+#127
+01 Mazza runica
+03 mazza runica
+
+#128
+01 Bastone Runico
+03 bastone Runico
+
+#129
+01 Martello da guerra Runico
+03 martello da guerra Runico
+
+#3501-3502
+01 Ascia
+03 ascia
+
+#3503-3504
+01 Grande ascia
+03 grande ascia
+
+#3505-3507
+01 Ascia da battaglia
+03 ascia da battaglia
+
+#3508-3509
+01 Ascia di fanteria
+03 ascia di fanteria
+
+#3510-3512
+01 Francesco
+03 Francesco
+
+#3513-3514
+01 Ascia
+03 sekiru
+
+#3515-3519
+01 Tabar
+03 Tabar
+
+#3520-3524
+01 Elite grande ascia
+03 Elite grande ascia
+
+#3525-3529
+01 Ascia da battaglia d'élite
+03 ascia da battaglia d'élite
+
+#3530-3534
+01 Francisca d'élite
+03 Francesco d'élite
+
+#3535-3539
+01 Ascia d'élite
+03 l'ascia d'élite
+
+#3540-3544
+01 Grande ascia runica
+03 grande ascia runica
+
+#3545-3549
+01 Ascia da battaglia runica
+03 ascia da battaglia runica
+
+#3550-3554
+01 Francisca runica
+03 Francesco Runico
+
+#3555-3560
+01 Ascia runica
+03 l'ascia runica
+
+#3561-3562
+01 Manganello
+03 manganello
+
+#3563-3564
+01 Mazza
+03 mazza
+
+#3565-3567
+01 Palica
+03 palitsa
+
+#3568-3569
+01 Martello
+03 martello
+
+#3570-3572
+01 Martello da guerra
+03 martello di Moya
+
+#3573-3574
+01 Morgenstern
+03 Morgenstern
+
+#3575-3579
+01 Martello da fabbro
+03 martello da fabbro
+
+#3580-3584
+01 Mazza d'élite
+03 mazza d'élite
+
+#3585-3589
+01 Elite palitsa
+03 Elite palitsa
+
+#3590-3594
+01 Martello da guerra d'élite
+03 martello da guerra d'élite
+
+#3595-3599
+01 Morgenstern d'élite
+03 Morgenstern d'élite
+
+#3600-3604
+01 Mazza runica
+03 mazza runica
+
+#3605-3609
+01 Bastone Runico
+03 bastone Runico
+
+#3610-3614
+01 Martello da guerra Runico
+03 martello da guerra Runico
+
+#3615-3620
+01 Morgenstern Runico
+03 Morgenstern Runico
+
+#3621
+01 Il personale del maestro del gioco
+03 il personale del maestro del gioco
+
+#3622-3624
+01 Ascia leggendaria
+03 ascia leggendaria
+
+#3625-3627
+01 Ascia fantasma
+03 ascia fantasma
+
+#3628-3630
+01 Ascia del drago
+03 ascia del drago
+
+#3631-3633
+01 Martello leggendario
+03 martello leggendario
+
+#3634-3636
+01 Martello fantasma
+03 martello fantasma
+
+#3637-3639
+01 Martello del drago
+03 martello del drago
+
+#3644
+01 Staff dello sviluppatore del gioco
+03 staff dello sviluppatore del gioco
+
+#5750
+01 Il Personale Dell'Inquisitore
+03 il personale Dell'Inquisitore
+
+#5751
+01 Il Bastone Del Grande Inquisitore
+03 il bastone del Grande Inquisitore
+
+#5950
+01 Staff de Orco
+03 staff de Orco
+
+#5951
+01 Il Personale Dell'Arcimago
+03 il personale Dell'Arcimago
+
+#5952
+01 Bastone Del Mago
+03 bastone del mago
+
+#5953
+01 Il Personale Degli Elementi
+03 il personale degli elementi
+
+#5965
+01 Piccolo bastone Dell'Arcimago
+03 il personale Dell'Arcimago
+
+#5966-5968
+01 Il Personale Dell'Arcimago
+03 il personale Dell'Arcimago
+
+#5969
+01 Il grande staff Dell'Arcimago
+03 il personale Dell'Arcimago
+
+#5970
+01 Il grande staff Dell'Arcimago
+03 il personale Dell'Arcimago
+
+#6065-6070
+01 Martello di tuono
+03 martello di tuono
+
+#6183
+01 Piccolo staff di restaurazione
+03 il personale della Restaurazione
+
+#6184-6185
+01 Staff di recupero medio
+03 personale di restauro
+
+#6186-6187
+01 Grande staff di restauro
+03 personale di restauro
+
+#6188
+01 Grande staff di restauro
+03 personale di restauro
+
+#6365-6368
+01 Labris
+03 Labris
+
+#6369
+01 Labris D'Acciaio
+03 Labris
+
+#6370
+01 Il Grande Labris
+03 Labris
+
+#6452
+01 Ascia Del Maestro
+03 ascia del Maestro
+
+#6453
+01 Martello di forza
+03 martello di forza
+
+#6552-6554
+01 Martello da fabbro
+03 martello da fabbro
+
+#6658
+01 Il Personale Dello Stregone
+03 il personale dello stregone
+
+#6750
+01 Bastone di mutilazione
+03 bastone di mutilazione
+
+#6751
+01 Bastone delle tenebre
+03 bastone delle tenebre
+
+#6752
+01 Bastone del sacrificio
+03 bastone del sacrificio

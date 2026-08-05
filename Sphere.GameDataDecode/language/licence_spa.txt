@@ -1,0 +1,23 @@
+01 Licencia comercial
+03 licencia comercial
+05 La licencia solo se puede usar en el área comercial.
+06 No debe pararse a menos de 5 metros de otro comerciante.
+10 Duración: 12 horas
+11 Duración: 1 día
+12 Duración: 1,5 días
+13 Duración: 2 días
+14 Duración: 2,5 días
+15 Duración: 3 días
+16 Duración: 3,5 días
+17 Duración: 4 días
+18 Duración: 4,5 días
+19 Duración: 5 días
+20 Duración: 5,5 días
+21 Duración: 6 días
+23 Duración: 7 días
+25 Duración: 8 días
+27 Duración: 9 días
+29 Duración: 10 días
+31 Duración: 11 días
+33 Duración: 12 días
+100 Cuando se usa la licencia, se sale de la Esfera, pero el personaje permanece operando por un número especificado de días esféricos. La licencia solo se puede aplicar en el área comercial, y no se puede acercarse a más de 5 metros a otro comerciante.

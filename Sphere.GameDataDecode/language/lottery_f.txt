@@ -1,0 +1,31 @@
+01 Billet de loterie
+03 billet de loterie
+101 Vous avez gagné %s.
+102 Pas de place pour le sujet.
+103 Votre billet n'a pas gagné.
+104 Les billets doivent être dans l'inventaire.
+
+#60
+01 Billet de loterie (classe 1)
+02 billets de loterie (classe 1)
+03 billet de loterie (classe 1)
+
+#61
+01 Billet de loterie (classe 2)
+02 billets de loterie (classe 2)
+03 billet de loterie (classe 2)
+
+#62
+01 Billet de loterie (classe 3)
+02 billets de loterie (classe 3)
+03 billet de loterie (classe 3)
+
+#63
+01 Billet de loterie (classe 4)
+02 billets de loterie (classe 4)
+03 billet de loterie (classe 4)
+
+#64
+01 Billet de loterie (classe 5)
+02 billets de loterie (classe 5)
+03 billet de loterie (classe 5)

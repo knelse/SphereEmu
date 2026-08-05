@@ -1,8 +1,6 @@
-01 On the merchants 
-03 On the merchants
-
-100 In front of you is a scroll with an ancient legend from the life of the Sphere.
-
+01 About merchants
+03 about merchants
+100 In front of you is a scroll with an ancient legend from the world of the Sphere.
 TEXT
-
-    Many a merchant and artisan sell their goods far away from bustling towns: at remote inns or in their own houses situated close to larger roads. A strange practice, you would say, to sell something far from towns, but it is the high quality of goods that make those merchants’ shops crowded with customers.
+    Many merchants and artisans sell their goods away from noisy cities: at remote inns or in their own homes located near major roads. It would seem a strange decision: to sell something away from cities, but the quality of goods from such merchants is so high that there is no end of customers.
+    

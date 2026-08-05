@@ -1,7 +1,7 @@
 01 Pesce essiccato
-02 Pesce essiccato
-03 Pesce essiccato
+02 pesce essiccato
+03 pesce essiccato
 05 fresco
 06 vecchio
-07 ammuffito
-10 Hai mangiato il pesce essiccato.
+07 con muffa
+10 Hai mangiato pesce essiccato.

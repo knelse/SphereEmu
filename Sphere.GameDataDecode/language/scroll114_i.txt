@@ -1,9 +1,7 @@
-01 Formula della polvere della purificazione
-02 Formula della polvere della purificazione
-03 Formula della polvere della purificazione
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta della polvere di purificazione
+02 ricette della polvere di purificazione
+03 ricetta della polvere di purificazione
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere della purificazione devi prima trovare Turchese, Paris e Rame. Mescolali nel recipiente alchemico, aggiungi la polvere di Amilus e otterrai la polvere. Non dimenticare che per ottenere la reazione il tuo grado non deve essere inferiore a quello di un candidato. 
+    Per ottenere la polvere di purificazione, prima di tutto ottieni turchese, Parigi e rame. Mescolali in una bombetta alchemica, aggiungi la polvere di Amilus finale e usa la polvere risultante. Non dimenticare che per eseguire questa reazione, il tuo grado non deve essere inferiore al candidato.
+    

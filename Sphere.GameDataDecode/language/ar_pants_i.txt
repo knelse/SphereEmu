@@ -1,0 +1,99 @@
+01 Pantaloni
+03 pantaloni
+100 In battaglia protegge dalle armi degli avversari.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 meditazione
+205 precisione
+206 etere
+207 valori
+
+#373
+01 Pantaloni
+03 pantaloni
+
+#374
+01 Pantaloni di pelle
+03 pantaloni di pelle
+
+#375-376
+01 Pantaloni di pelle rivettati
+03 pantaloni di pelle rivettati
+
+#377-378
+01 Pantaloni di cotta di maglia
+03 pantaloni di cotta di maglia
+
+#379-381
+01 Leggings piatti
+03 leggings piatti
+
+#382-384
+01 Gambali antichi
+03 gambali antichi
+
+#3121-3122
+01 Pantaloni
+03 pantaloni
+
+#3123-3124
+01 Pantaloni di pelle
+03 pantaloni di pelle
+
+#3125-3128
+01 Pantaloni di pelle rivettati
+03 pantaloni di pelle rivettati
+
+#3129-3132
+01 Pantaloni di cotta di maglia
+03 pantaloni di cotta di maglia
+
+#3133-3138
+01 Leggings piatti
+03 leggings piatti
+
+#3139-3145
+01 Gambali antichi
+03 gambali antichi
+
+#4471-4479
+01 Gambali antichi
+03 gambali antichi
+
+#4742
+01 Leggings neri
+03 leggings neri
+
+#4743
+01 Leggings bianchi
+03 leggings bianchi
+
+#6371
+01 Leggings da combattimento
+03 leggings da combattimento
+
+#6372
+01 Leggings da combattimento in pelle
+03 leggings da combattimento
+
+#6373
+01 Leggings da combattimento rivettati
+03 leggings da combattimento
+
+#6374
+01 Gambali di battaglia di cotta di maglia
+03 leggings da combattimento
+
+#6375
+01 Leggings da combattimento a piastre
+03 leggings da combattimento
+
+#6376
+01 Leggings da combattimento antichi
+03 leggings da combattimento
+
+#6760
+01 Leggings ossei
+03 leggings ossei

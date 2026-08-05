@@ -1,0 +1,5 @@
+01 License to increase the level of specialty
+02 Licenses to increase the level of specialty
+03 license to increase the level of specialty
+100 Increases the level of specialization of the character by 1. To increase the level by 1 step, you need as many licenses in the stack as the level to which the specialization increases. For example, to go from level 3 to level 4, you need 4 licenses in a stack. There are no additional bonuses available for completing the relevant tasks. At the same time resets the distributed characteristics of the character.
+101 Do you really want to increase the level of specialty?

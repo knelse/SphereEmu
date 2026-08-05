@@ -1,10 +1,7 @@
-01 Fórmula do pó dos dardos de fogo
-02 Fórmula do pó dos dardos de fogo
-03 Fórmula do pó dos dardos de fogo
-
-100 Na sua frente está um pergaminho com a descriçao da fabricação do pó mágico. Junto com cada fórmula estão muitos sofrimentos e tempo tomado por varias gerações de mágicos. Para não perder tão valiosa anotação, melhor salvar no seu livro especial de fórmulas. 
-
+01 Receita de pó de flechas flamejantes
+02 receita de pó de flechas flamejantes
+03 receita de pó de flechas flamejantes
+100 Tens um pergaminho com uma receita para um pó mágico. Por trás de cada receita está o trabalho árduo e duradouro de várias gerações de Magos. Para não perder um pergaminho tão valioso, guarde-o em um livro especial de receitas.
 TEXT
-
-
-    Para se obter o pó de flecha de fogo, o feiticeiro experiente (não abaixo de estudante) precisa mixturar cornelia e cobre na fornalha. Então adicione a planta zirculonia and alimente a fornalha com lenha.
+    Magos experientes (graus não inferiores a um estudante) para obter o pó de flechas de fogo, a cornalina e o cobre são misturados no forno, a circulonia é adicionada e, em seguida, o forno é afogado com lenha.
+    

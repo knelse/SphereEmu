@@ -1,0 +1,7 @@
+01 Formule
+02 formules
+03 formule
+100 Formule de réparation de la guilde des forgerons
+10000 Cette formule permet de réparer les éléments suivants: %l1 Le niveau du maître dans la guilde des forgerons ne doit pas être inférieur %z1. Pour la difficulté est nécessaire %a1.
+10001 Cette formule permet de réparer les éléments suivants: %l1 Le niveau du maître dans la guilde des forgerons ne doit pas être inférieur %z1. Pour la difficulté est nécessaire %a1 et %a2.
+10002 Cette formule permet de réparer les éléments suivants: %l1 Le niveau du maître dans la guilde des forgerons ne doit pas être inférieur %z1. Pour la difficulté est nécessaire %a1, %a2 et %a3.

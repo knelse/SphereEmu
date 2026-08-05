@@ -1,0 +1,40 @@
+01 Polvo
+02 polvo
+03 polvo
+
+#680
+01 Polvo de la protección de las Hermanas
+02 polvo
+03 polvo
+100 Este polvo solo funciona para el clan de la Hermana
+
+#850
+01 Polvo del ataque del Culto
+02 polvo del ataque del Culto
+03 polvo del ataque del Culto
+
+#851
+01 Saidakra
+02 saidakra
+03 saidakru
+100 Este polvo es el único medio para expulsar instantáneamente a cualquiera de los Seis de la Esfera.
+
+#852
+01 Polvo de la curación del Culto
+02 polvo de la curación del Culto
+03 polvo de la curación del Culto
+
+#853
+01 Polvo de la protección del Culto
+02 polvo de la protección del Culto
+03 polvo de la protección del Culto
+
+#875
+01 Polvo de la justicia
+02 polvo de la justicia
+03 polvo de la justicia
+
+#876
+01 Polvo del mal
+02 polvo del mal
+03 polvo del mal

@@ -1,9 +1,7 @@
-01 Formula della polvere dei fulmini
-02 Formula della polvere dei fulmini
-03 Formula della polvere dei fulmini
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo.
-
+01 Ricetta polvere di fulmini
+02 ricette in polvere di fulmini
+03 ricetta polvere di fulmini
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica per la cottura in forno. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    Per ottenere la polvere dei fulmini, prima devi trovare Pirite, Serden e Ferro. Mescolali nelal fornace, alimenta il fuoco con ramoscelli secchi e utilizza la polvere ottenuta. Non dimenticare che per ottenere questa reazione il tuo grado non deve essere inferiore a quello di maestro.
+    Per ottenere la polvere di fulmini, prima di tutto prendi pirite, cerden e ferro. Mescolali nel forno, sciogli il forno con sottobosco e usa la polvere risultante. Non dimenticare che per eseguire questa reazione, il tuo grado non deve essere inferiore al master.
+    

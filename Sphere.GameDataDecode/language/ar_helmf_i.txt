@@ -1,30 +1,34 @@
-
-200 dell'avventura
-201 del silenzio
-202 della profezia
-203 del segreto
-204 del mito
-205 Dell'essenza
-206 della campagna
-207 dell'esistenza
-208 della leggenda
-209 del mondo
+200 Avventura
+201 Silenzio
+202 Profezie
+203 Segreti
+204 Miti
+205 Genesi
+206 Escursioni
+207 Esistenza
+208 Leggende
+209 Pace
 
 #2790-2791
-01 cappello
+01 Cappello
 03 cappello
+
 #2792-2793
-01 Elmo di pelle
-03 elmo di pelle
+01 Casco in pelle
+03 casco in pelle
+
 #2794-2795
-01 Elmo di pelle rinforzata
-03 elmo di pelle rinforzata
+01 Casco in pelle rivettata
+03 casco in pelle rivettata
+
 #2796-2797
-01 Elmo di maglia
-03 elmo di maglia
+01 Casco di cotta di maglia
+03 casco di cotta di maglia
+
 #2798-2800
-01 Elmo di ferro
-03 elmo di ferro
+01 Casco di ferro
+03 casco di ferro
+
 #2801-2804
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico

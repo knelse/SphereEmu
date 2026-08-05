@@ -1,0 +1,171 @@
+01 Cintura
+03 cintura
+100 In battaglia protegge dalle armi degli avversari.
+200 forza
+201 assorbimento
+202 sicurezza
+203 salute
+204 meditazione
+205 precisione
+206 etere
+207 valori
+
+#349
+01 Sash
+03 sash
+
+#350
+01 Cintura in pelle
+03 cintura in pelle
+
+#351-352
+01 Cintura in pelle rivettata
+03 cintura in pelle rivettata
+
+#353-354
+01 Cintura di cotta di maglia
+03 cintura di cotta di maglia
+
+#355-357
+01 Cintura di ferro
+03 cintura di ferro
+
+#358-360
+01 Cintura di ferro antica
+03 cintura di ferro antica
+
+#3171
+01 Sash
+03 sash
+
+#3172
+01 Cintura in pelle
+03 cintura in pelle
+
+#3173-3174
+01 Cintura in pelle rivettata
+03 cintura in pelle rivettata
+
+#3175-3176
+01 Cintura di cotta di maglia
+03 cintura di cotta di maglia
+
+#3177-3179
+01 Cintura di ferro
+03 cintura di ferro
+
+#3180-3182
+01 Cintura di ferro antica
+03 cintura di ferro antica
+
+#4489-4497
+01 Cintura di ferro antica
+03 cintura di ferro antica
+
+#5665
+01 Cintura di coraggio
+03 cintura di coraggio
+
+#5666
+01 Cintura di coraggio in pelle
+03 cintura di coraggio
+
+#5667
+01 Cintura rivettata di coraggio
+03 cintura di coraggio
+
+#5668
+01 Cintura di posta del coraggio
+03 cintura di coraggio
+
+#5669
+01 Cintura di ferro del coraggio
+03 cintura di coraggio
+
+#5670
+01 Antica cintura di coraggio
+03 cintura di coraggio
+
+#5777
+01 Cintura Del Tribunale
+03 Cintura del Tribunale
+
+#5778
+01 Cintura di cuoio del Tribunale
+03 Cintura del Tribunale
+
+#5779
+01 Cintura rivettata del Tribunale
+03 Cintura di Trmbunal
+
+#5780
+01 Cintura di cotta di maglia del Tribunale
+03 Cintura del Tribunale
+
+#5781
+01 Cintura di ferro del Tribunale
+03 Cintura del Tribunale
+
+#5782
+01 Cintura antica del Tribunale
+03 Cintura del Tribunale
+
+#5962
+01 Cintura
+03 cintura
+
+#6077
+01 Cintura Di Titanio
+03 Cintura di titanio
+
+#6078
+01 Cintura In Pelle di titanio
+03 Cintura di titanio
+
+#6079
+01 Cintura rivettata in titanio
+03 Cintura di titanio
+
+#6080
+01 Cintura di maglia di titanio
+03 Cintura di titanio
+
+#6081
+01 Cintura di ferro di titanio
+03 Cintura di titanio
+
+#6082
+01 Cintura di titanio antica
+03 Cintura di titanio
+
+#6476
+01 Cintura di longevità
+03 cintura di longevità
+
+#6477
+01 Cintura di longevità in pelle
+03 cintura di longevità
+
+#6478
+01 Cintura di longevità rivettata
+03 cintura di longevità
+
+#6479
+01 Cintura di longevità della cotta di maglia
+03 cintura di longevità
+
+#6480
+01 Cintura di longevità in ferro
+03 cintura di longevità
+
+#6481
+01 Antica cintura di longevità
+03 cintura di longevità
+
+#6657
+01 Cintura di leggerezza
+03 cintura di leggerezza
+
+#6758
+01 Cintura di palude
+03 cintura di palude

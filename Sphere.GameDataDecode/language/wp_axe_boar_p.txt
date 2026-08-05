@@ -1,31 +1,28 @@
-01 Посох
-03 Посох
-
-10 Осталось зарядов:
-
-100 Ударное оружие. Бьет сильно, но удары наносит редко.
-
-200 истощения
-201 доблести
-202 урона
-203 жестокости
-204 спешки
-205 скорости
-206 беспорядка
-207 хаоса
-208 эфира
-209 усталости
-210 болезни
-211 неустойчивости
-212 расстояния
-213 дистанции
-214 разложения
-215 опустошения
-216 слабости
-217 проникновения
-218 запрета
-219 ценности
+01 Ceptro
+03 Ceptro
+10 Restam cargas:
+100 Armas de ataque. Bate forte, mas raramente bate.
+200 exaustгo
+201 valor
+202 dano
+203 brutalidade
+204 pressa
+205 velocidade
+206 desordem
+207 Caos
+208 Ether
+209 fadiga
+210 doenзas
+211 instabilidade
+212 distвncias
+213 distвncias
+214 decomposiзгo
+215 devastaзгo
+216 fraquezas
+217 Penetraзгo
+218 proibiзгo
+219 valores
 
 #7413
-01 Посох Пастуха
-03 посох Пастуха
+01 Cajado Do Pastor
+03 cajado do Pastor

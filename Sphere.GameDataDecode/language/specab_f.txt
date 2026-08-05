@@ -1,0 +1,111 @@
+#5510-5515
+01 Invisibilité
+100 L'assassin est masqué grâce à un sort spécial de guilde, mais dès qu'il sort une arme magique ou de l'acier froid, la couverture de l'invisibilité diminue immédiatement.
+
+#5520-5525
+01 Coup critique
+100 Quand vient le moment, vous avez besoin d'un coup précis et impitoyable. Les assassins passent des années dans la formation de ce coup mortel - le secret de leur école.
+
+#5530-5535
+01 Poison
+100 Un poison puissant à base de cyanure et d'un ancien sort.
+
+#5620-5625
+01 Bouclier de Prana
+100 Le croisé est enveloppé par une aura divine qui absorbe les dégâts causés par le Prana du guerrier.
+
+#5630-5635
+01 Course de temps
+100 Transition instantanée vers un état où les attaques du croisé deviennent deux fois plus rapides. Bien sûr, il est difficile de maintenir cet état, car même chez les plus entraînés, il est de courte durée.
+
+#5720-5725
+01 Chaînes
+100 La parole sacrée lie les mains. Tant qu'il est en force, vous ne pouvez ni lever l'épée ni retirer le Mantra. Même détacher les rubans d'un sac de poudre est une tâche impossible.
+
+#5730-5735
+01 Purification
+100 Plus le degré du Saint inquisiteur est élevé, plus son esprit est fort. Les sanas juniors ne peuvent alléger la charge des mutateurs que d'un à deux, l'échelon supérieur libérera les six mutateurs.
+
+#5810-5815
+01 Belkin Eye
+100 La main ferme et l'œil vif des chasseurs forestiers sont célèbres dans toute la Sphère. S'ils le souhaitent, même une arbalète ordinaire peut être utilisée plus efficacement, augmentant sa capacité de défaite.
+
+#5820-5825
+01 Double flèche
+100 Seuls les chasseurs parviennent à mettre dans une arbalète ordinaire à la fois deux flèches et ne manquez pas!
+
+#5830-5835
+01 Wanderer
+100 Habitués aux voyages constants à la recherche de proies et capables de chasser les animaux les plus rapides, les chasseurs peuvent, s'ils le souhaitent, développer une vitesse de course vraiment impressionnante.
+
+#5920-5925
+01 Myopie
+100 Il met sur la cible un sort brouillant devant ses yeux tout le monde qui l'entoure. Il est impossible d'utiliser son arme à une distance de plus de deux mètres.
+
+#5930-5935
+01 Malédiction
+100 L'homme maudit se transforme en cochon et, bien que la conscience à l'intérieur de l'animal reste inchangée, le corps ne lui est pas entièrement soumis. Le maudit ne peut pas arrêter ses jambes et utiliser n'importe quelle arme.
+
+#6010-6015
+01 Hypermétropie
+100 En utilisant la boisson secrète des druides, le barbare peut frapper n'importe quelle arme à une distance de trente mètres - en fait, il s'agit d'un transfert télékinétique des dommages à une cible éloignée.
+
+#6020-6025
+01 Berserk
+100 Un guerrier peut s'introduire artificiellement dans l'état de berserk. En infligeant des coups dévastateurs, le barbare oublie sa propre sécurité.
+
+#6030-6035
+01 Étourdissement
+100 L'homme est presque privé de sentiments. Il est aveugle pendant un moment et ses mains ne l'écoutent pas.
+
+#6110-6115
+01 La vie de la nature
+100 En utilisant la sagesse de la forêt, le druide sait comment prolonger la vie d'un homme, mais ne peut toujours pas le rendre immortel.
+
+#6130-6135
+01 Métamorphose
+100 En répétant constamment les anciennes runes, le druide se transforme en un loup fort et rapide.
+
+#6220-6225
+01 La fuite
+100 Pendant le vol, les jambes sont le moment le plus important du métier de voleur.
+
+#6230-6235
+01 Ombre de nuit
+100 Le voleur peut suivre sa victime invisible la nuit, se déguisant dans chaque ombre. Mais tout mouvement imprudent - et le voleur sera découvert.
+
+#6320-6325
+01 Kamae
+100 Un état similaire à la transe ou à la méditation permet au combattant de se concentrer sur sa propre défense, repoussant presque tous les coups dirigés vers lui.
+
+#6410-6415
+01 Maîtrise
+100 Selon les formules trouvées, l'armurier peut créer ou réparer n'importe quelle arme, bien sûr, s'il a assez de compétences.
+
+#6420-6425
+01 La fuite
+100 Les artisans n'ont jamais été particulièrement capables de se battre, il est préférable de courir sans s'arrêter, loin du danger.
+
+#6510-6515
+01 Maîtrise
+100 Selon les formules et les dessins trouvés, le forgeron peut créer ou réparer n'importe quelle armure ou robe magique, bien sûr, s'il a assez de compétences.
+
+#6520-6525
+01 La fuite
+100 Les artisans n'ont jamais été particulièrement capables de se battre, il est préférable de courir sans s'arrêter loin du danger.
+
+#6610-6615
+01 Enchantements
+100 Si le sorcier trouve la formule appropriée, il peut utiliser sa connaissance de la magie pour imposer des propriétés spéciales sur les armes ou les armures.
+
+#6620-6625
+01 Tornade
+100 Pour échapper aux assaillants, le sorcier utilise la magie de la pensée et le but de la magie tourne au même endroit, perdant temporairement le contrôle de ses mouvements.
+
+#6630-6635
+01 Armure rouillée
+100 Mauvaise blague avec l'esprit. La possibilité d'enchanter une personne comme si elle portait une armure de chevalier rouillée, et il ne se déplacera que latéralement ou d'avant en arrière.
+
+#6900
+01 Mantra de Haka sapida
+03 Augmente la vitesse de 1,5 fois.

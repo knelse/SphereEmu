@@ -1,82 +1,80 @@
-01 Жетон грешника
-03 жетон грешника
-10 Количество перемещений:
-11 Используйте жетон стоя на телепорте.
-12 Жетон работает только в пределах материка.
-13 Этот телепорт могут использовать только владельцы замка.
-
-100 Жетон для телепортации на Гиперион вне зависимости от кармы. 
-
-1800 В Шипстоун
-1801 В Бангвиль
-1802 В Санпул
-1803 В Торвил
-1809 К дороге Санпул-Торвил
-1810 В Номрад
-1811 В Гифес
-1812 В Умрад
-1813 В Анхельм
-1850 К северной дороге Гипериона
-1851 На северо-западный край Гипериона
-1852 К дороге Шипстоун-Санпул
-1853 В поле близ дороги Шипстоун-Бангвиль
-1854 На северо-восток Гипериона
-1855 К Умрадскому лесу  (Гиперион)
-1856 К Серебряному лесу (Гиперион)
-1857 К дороге Шипстоун-Торвил
-1858 К горам между Шипстоуном и Бангвилем
-1859 К озеру Темер
-1860 К дороге Санпул-Шипстоун, возле озера Вортекс
-1861 К дороге Санпул-Бангвиль, возле озера Вортекс
-1862 На остров Гебер (оз.Темер)
-1863 На остров Форос (оз.Вортекс)
-1864 К устью реки Нерей
-1865 На остров Дейрос (оз.Вортекс)
-1866 К Восточному лесу (Гиперион)
-1877 К устью реки Диомы
-1878 К Хортонскому лесу (Гиперион)
-1879 В горы близ дороги Санпул-Торвил
-1880 На остров Патрос (оз.Атласное)
-1881 В юго-восточный горный карман (Гиперион)
-1882 На север от Койтонского леса (Гиперион)
-1883 На юго-западный край Гипериона
-1884 К мосту на Тантал
-1885 В Обол
-1900 К замку Льеж (Гиперион)
-1901 К замку Фьеф (Гиперион)
-1902 К замку Арис (Гиперион)
-1903 К замку Латор (Гиперион)
-1904 К замку Эйкум-кас (Гиперион)
-1905 К замку Гедеон (Гиперион)
-1906 К замку Шателье (Гиперион)
-1907 К замку Туанод (Гиперион)
-1908 К замку Пельтье (Гиперион)
-1909 К замку Каре-Рояль (Гиперион)
-1910 К замку Блессендор (Гиперион)
-1911 К замку Терноваль (Гиперион)
-1912 К замку Аммалаэль (Гиперион)
-1913 К замку Каблак (Гиперион)
-1914 К замку Дэванагари (Гиперион)
-1915 К замку Сабулат (Гиперион)
-1916 К замку Деффенсат (Гиперион)
-1917 К замку Айонат (Гиперион)
-1918 К замку Триумфалер (Гиперион)
-1919 К замку Багарнак (Харон)
-1920 К замку Кабрад (Харон)
-1921 К замку Сет (Харон)
-1922 К замку Лендер (Харон)
-1923 К замку Келес (Харон)
-1924 К замку Шепростан (Харон)
-1925 К замку Оркобьен (Харон)
-1926 К замку Кануак (Харон)
-1927 К замку Алдарнон (Харон)
-1928 К замку Йонг (Харон)
-1929 К замку Элек (Феб)
-1930 К замку Гавот (Феб)
-1931 К замку Кандур (Феб)
-1932 К замку Иммертель (Родос)
-1933 К замку Нарцисс (Родос)
-1934 К замку Ранден (Родос)
-1935 К замку Ниргун (Родос)
-1936 К замку Гелгивинн (Родос)
-1979 К Чёрной Башне (Харон)
+01 Ficha do pecador
+03 ficha do pecador
+10 Nъmero de movimentos:
+11 Use o distintivo em pй no teletransporte.
+12 O distintivo sу funciona dentro do continente.
+13 Este teletransporte sу pode ser usado pelos proprietбrios do Castelo.
+100 Distintivo de teletransporte para Hyperion independentemente do karma.
+1800 Em Shipstone
+1801 Bangville
+1802 Em Sanpul
+1803 Em Torville
+1809 A estrada Sanpul-Torville
+1810 Nomrad
+1811 Em Gifes
+1812 Umrad
+1813 Бngel
+1850 A Estrada Norte Hyperion
+1851 A borda Noroeste Hyperion
+1852 A estrada Shipstone-Sunpool
+1853 Em um campo perto da estrada Shipstone-Bangville
+1854 Nordeste Hyperion
+1855 Floresta de Umrad (Hyperion)
+1856 Floresta de prata (Hyperion)
+1857 A estrada Shipstone-Torville
+1858 Para as montanhas entre Shipstone e Bangville
+1859 O Lago Temer
+1860 Na estrada Sunpool-Shipstone, perto do lago Vortex
+1861 Na estrada Sunpool-Bangville, perto do lago Vortex
+1862 Na Ilha de Geber.Temer)
+1863 Na Ilha de Foros (oz.Vуrtice)
+1864 A foz do Rio Nereu
+1865 Na Ilha de deiros (oz.Vуrtice)
+1866 A floresta Oriental (Hyperion)
+1877 A foz do rio Dioma
+1878 A floresta de Horton (Hyperion)
+1879 Nas montanhas perto da estrada Sanpul-Torville
+1880 Na Ilha de Patros.Cetim)
+1881 O bolso da Montanha do Sudeste (Hyperion)
+1882 Norte da floresta de Coyton (Hyperion)
+1883 A borda sudoeste Hyperion
+1884 A Ponte tвntalo
+1885 Aubol
+1900 Castelo Liиge (Hyperion)
+1901 Castelo Fief (Hyperion)
+1902 Castelo Aris (Hyperion)
+1903 Castelo de Lator (Hyperion)
+1904 Castelo Eikum-CAS (Hyperion)
+1905 Castelo Gideгo (Hyperion)
+1906 Castelo Chвtelier (Hyperion)
+1907 Castelo Tuanod (Hyperion)
+1908 Castelo Peltier (Hyperion)
+1909 Castelo de Kare-Royal (Hyperion)
+1910 Castelo Blessendor (Hyperion)
+1911 Castelo Ternoval (Hyperion)
+1912 Castelo de Ammalael (Hyperion)
+1913 Para o Castelo de Salto (Hyperion)
+1914 Castelo Devanagari (Hyperion)
+1915 Castelo Sabulat (Hyperion)
+1916 Ao castelo Defense (Hyperion)
+1917 O Castelo de Ayonath (Hyperion)
+1918 Castelo do Triunfo (Hyperion)
+1919 Castelo Bagarnac (Charon)
+1920 Castelo Cabrad (Charon)
+1921 Castelo Set (Charon)
+1922 Castelo Lander (Charon)
+1923 Castelo Keles (Charon)
+1924 Castelo de Sheprostan (Charon)
+1925 Castelo Orkobien (Charon)
+1926 Castelo de Canouac (Charon)
+1927 Castelo Aldarnon (Charon)
+1928 Castelo Yong (Charon)
+1929 Ao fechamento de Elec (Feb)
+1930 Castelo Gavot (Feb)
+1931 Castelo de Kandur (Feb)
+1932 Castelo Immortel (Rhodes)
+1933 Castelo Narciso (Rhodes)
+1934 Castelo Randen (Rhodes)
+1935 Castelo Nirgun (Rhodes)
+1936 Castelo de Gelgivinn (Rhodes)
+1979 A Torre Negra (Charon)

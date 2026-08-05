@@ -1,258 +1,341 @@
 01 Crystal
-03 Crystal
-10 Your level is too low, you cannot receive the castle attribute.
-11 Belongs to:
-100 Once placed into the scroll of a certain castle, the crystal will provide anyone who touches it with an attribute of additional abilities.
+03 crystal
+10 You have a low level, you can't get the lock attribute.
+11 Affiliation:
+100 Being placed in the tablet of the corresponding lock, the crystal endows anyone who touches it with an attribute that gives additional opportunities.
 
 #5081
-01 small crystal of power
-03 small crystal of power
+01 Small Power Crystal
+03 small power crystal
+
 #5082
-01 small crystal of energy
-03 small crystal of energy
+01 Small Energy Crystal
+03 small energy crystal
+
 #5083
-01 small crystal of stability
-03 small crystal of stability
+01 Small durability crystal
+03 small durability crystal
+
 #5084
-01 small crystal of reflection
-03 small crystal of reflection
+01 Small reflection crystal
+03 small reflection crystal
+
 #5085
-01 middle crystal of power
-03 middle crystal of power
+01 The Average Power Crystal
+03 The average power crystal
+
 #5086
-01 middle crystal of energy
-03 middle crystal of energy
+01 Medium Energy Crystal
+03 Medium energy crystal
+
 #5087
-01 middle crystal of stability
-03 middle crystal of stability
+01 Medium durability crystal
+03 medium durability crystal
+
 #5088
-01 middle crystal of reflection
-03 middle crystal of reflection
+01 Medium reflection crystal
+03 medium reflection crystal
+
 #5089
-01 big crystal of power
-03 big crystal of power
+01 A large crystal of power
+03 A large crystal of power
+
 #5090
-01 big crystal of energy
-03 big crystal of energy
+01 A large crystal of energy
+03 a large crystal of energy
+
 #5091
-01 big crystal of stability
-03 big crystal of stability
+01 Large durability crystal
+03 large durability crystal
+
 #5092
-01 big crystal of reflection
-03 big crystal of reflection
+01 Large reflection crystal
+03 large reflection crystal
+
 #5093
-01 small dark crystal of power
-03 small dark crystal of power
+01 Small Dark Power Crystal
+03 small dark power crystal
+
 #5094
-01 small dark crystal of energy
-03 small dark crystal of energy
+01 Small Dark Energy Crystal
+03 small dark energy crystal
+
 #5095
-01 small dark crystal of stability
-03 small dark crystal of stability
+01 Small dark durability crystal
+03 small dark durability crystal
+
 #5096
-01 small dark crystal of reflection
-03 small dark crystal of reflection
+01 Small dark reflection crystal
+03 small dark reflection crystal
+
 #5097
-01 middle dark crystal of power
-03 middle dark crystal of power
+01 Medium Dark Power Crystal
+03 medium dark power crystal
+
 #5098
-01 middle dark crystal of energy
-03 middle dark crystal of energy
+01 Medium Dark Energy Crystal
+03 medium dark energy crystal
+
 #5099
-01 middle dark crystal of stability
-03 middle dark crystal of stability
+01 Medium dark crystal durability
+03 medium dark crystal durability
+
 #5100
-01 middle dark crystal of reflection
-03 middle dark crystal of reflection
+01 Medium dark reflection crystal
+03 medium dark reflection crystal
+
 #5101
-01 big dark crystal of power
-03 big dark crystal of power
+01 A large dark crystal of power
+03 A large dark crystal of power
+
 #5102
-01 big dark crystal of energy
-03 big dark crystal of energy
+01 A large dark crystal of energy
+03 A large dark crystal of energy
+
 #5103
-01 big dark crystal of stability
-03 big dark crystal of stability
+01 Large dark crystal of durability
+03 large dark crystal of durability
+
 #5104
-01 great crystal of power
-03 great crystal of power
+01 The Great Crystal of Power
+03 The great crystal of power
+
 #5105
-01 great crystal of energy
-03 great crystal of energy
+01 The Great Crystal of Energy
+03 The great crystal is a crystal of energy
+
 #5106
-01 great crystal of stability
-03 great crystal of stability
+01 The great crystal is the crystal of fortitude
+03 The great crystal of fortitude
+
 #5107
-01 great crystal of reflection
-03 great crystal of reflection
+01 The Great Crystal of Reflection
+03 The great crystal of reflection
+
 #5108
-01 big dark crystal of reflection
-03 big dark crystal of reflection
+01 Large dark reflection crystal
+03 large dark reflection crystal
+
 #5181
-01 Малый кристалл силы
-03 малый кристалл силы
+01 Small Power Crystal
+03 small power crystal
+
 #5182
-01 Малый кристалл энергии
-03 малый кристалл энергии
+01 Small Energy Crystal
+03 small energy crystal
+
 #5183
-01 Малый кристалл стойкости
-03 малый кристалл стойкости
+01 Small durability crystal
+03 small durability crystal
+
 #5184
-01 Малый кристалл отражения
-03 малый кристалл отражения
+01 Small reflection crystal
+03 small reflection crystal
+
 #5185
-01 Средний кристалл силы
-03 средний кристалл силы
+01 The Average Power Crystal
+03 The average power crystal
+
 #5186
-01 Средний кристалл энергии
-03 средний кристалл энергии
+01 Medium Energy Crystal
+03 Medium energy crystal
+
 #5187
-01 Средний кристалл стойкости
-03 средний кристалл стойкости
+01 Medium durability crystal
+03 medium durability crystal
+
 #5188
-01 Средний кристалл отражения
-03 средний кристалл отражения
+01 Medium reflection crystal
+03 medium reflection crystal
+
 #5189
-01 Большой кристалл силы
-03 большой кристалл силы
+01 A large crystal of power
+03 A large crystal of power
+
 #5190
-01 Большой кристалл энергии
-03 большой кристалл энергии
+01 A large crystal of energy
+03 a large crystal of energy
+
 #5191
-01 Большой кристалл стойкости
-03 большой кристалл стойкости
+01 Large durability crystal
+03 large durability crystal
+
 #5192
-01 Большой кристалл отражения
-03 большой кристалл отражения
+01 Large reflection crystal
+03 large reflection crystal
+
 #5193
-01 Малый темный кристалл силы
-03 малый темный кристалл силы
+01 Small Dark Power Crystal
+03 small dark power crystal
+
 #5194
-01 Малый темный кристалл энергии
-03 малый темный кристалл энергии
+01 Small Dark Energy Crystal
+03 small dark energy crystal
+
 #5195
-01 Малый темный кристалл стойкости
-03 малый темный кристалл стойкости
+01 Small dark durability crystal
+03 small dark durability crystal
+
 #5196
-01 Малый темный кристалл отражения
-03 малый темный кристалл отражения
+01 Small dark reflection crystal
+03 small dark reflection crystal
+
 #5197
-01 Средний темный кристалл силы
-03 средний темный кристалл силы
+01 Medium Dark Power Crystal
+03 medium dark power crystal
+
 #5198
-01 Средний темный кристалл энергии
-03 средний темный кристалл энергии
+01 Medium Dark Energy Crystal
+03 medium dark energy crystal
+
 #5199
-01 Средний темный кристалл стойкости
-03 средний темный кристалл стойкости
+01 Medium dark crystal durability
+03 medium dark crystal durability
+
 #5200
-01 Средний темный кристалл отражения
-03 средний темный кристалл отражения
+01 Medium dark reflection crystal
+03 medium dark reflection crystal
+
 #5201
-01 Большой темный кристалл силы
-03 большой темный кристалл силы
+01 A large dark crystal of power
+03 A large dark crystal of power
+
 #5202
-01 Большой темный кристалл энергии
-03 большой темный кристалл энергии
+01 A large dark crystal of energy
+03 A large dark crystal of energy
+
 #5203
-01 Большой темный кристалл стойкости
-03 большой темный кристалл стойкости
+01 Large dark crystal of durability
+03 large dark crystal of durability
+
 #5204
-01 Великий кристалл силы
-03 великий кристалл силы
+01 The Great Crystal of Power
+03 The great crystal of power
+
 #5205
-01 Великий кристалл энергии
-03 великий кристалл кристалл энергии
+01 The Great Crystal of Energy
+03 The great crystal is a crystal of energy
+
 #5206
-01 Великий кристалл кристалл стойкости
-03 великий кристалл стойкости
+01 The great crystal is the crystal of fortitude
+03 The great crystal of fortitude
+
 #5207
-01 Великий кристалл отражения
-03 великий кристалл отражения
+01 The Great Crystal of Reflection
+03 The great crystal of reflection
+
 #5208
-01 Большой темный кристалл отражения
-03 большой темный кристалл отражения
+01 Large dark reflection crystal
+03 large dark reflection crystal
+
 #5281
-01 Малый кристалл силы
-03 малый кристалл силы
+01 Small Power Crystal
+03 small power crystal
+
 #5282
-01 Малый кристалл энергии
-03 малый кристалл энергии
+01 Small Energy Crystal
+03 small energy crystal
+
 #5283
-01 Малый кристалл стойкости
-03 малый кристалл стойкости
+01 Small durability crystal
+03 small durability crystal
+
 #5284
-01 Малый кристалл отражения
-03 малый кристалл отражения
+01 Small reflection crystal
+03 small reflection crystal
+
 #5285
-01 Средний кристалл силы
-03 средний кристалл силы
+01 The Average Power Crystal
+03 The average power crystal
+
 #5286
-01 Средний кристалл энергии
-03 средний кристалл энергии
+01 Medium Energy Crystal
+03 Medium energy crystal
+
 #5287
-01 Средний кристалл стойкости
-03 средний кристалл стойкости
+01 Medium durability crystal
+03 medium durability crystal
+
 #5288
-01 Средний кристалл отражения
-03 средний кристалл отражения
+01 Medium reflection crystal
+03 medium reflection crystal
+
 #5289
-01 Большой кристалл силы
-03 большой кристалл силы
+01 A large crystal of power
+03 A large crystal of power
+
 #5290
-01 Большой кристалл энергии
-03 большой кристалл энергии
+01 A large crystal of energy
+03 a large crystal of energy
+
 #5291
-01 Большой кристалл стойкости
-03 большой кристалл стойкости
+01 Large durability crystal
+03 large durability crystal
+
 #5292
-01 Большой кристалл отражения
-03 большой кристалл отражения
+01 Large reflection crystal
+03 large reflection crystal
+
 #5293
-01 Малый темный кристалл силы
-03 малый темный кристалл силы
+01 Small Dark Power Crystal
+03 small dark power crystal
+
 #5294
-01 Малый темный кристалл энергии
-03 малый темный кристалл энергии
+01 Small Dark Energy Crystal
+03 small dark energy crystal
+
 #5295
-01 Малый темный кристалл стойкости
-03 малый темный кристалл стойкости
+01 Small dark durability crystal
+03 small dark durability crystal
+
 #5296
-01 Малый темный кристалл отражения
-03 малый темный кристалл отражения
+01 Small dark reflection crystal
+03 small dark reflection crystal
+
 #5297
-01 Средний темный кристалл силы
-03 средний темный кристалл силы
+01 Medium Dark Power Crystal
+03 medium dark power crystal
+
 #5298
-01 Средний темный кристалл энергии
-03 средний темный кристалл энергии
+01 Medium Dark Energy Crystal
+03 medium dark energy crystal
+
 #5299
-01 Средний темный кристалл стойкости
-03 средний темный кристалл стойкости
+01 Medium dark crystal durability
+03 medium dark crystal durability
+
 #5300
-01 Средний темный кристалл отражения
-03 средний темный кристалл отражения
+01 Medium dark reflection crystal
+03 medium dark reflection crystal
+
 #5301
-01 Большой темный кристалл силы
-03 большой темный кристалл силы
+01 A large dark crystal of power
+03 A large dark crystal of power
+
 #5302
-01 Большой темный кристалл энергии
-03 большой темный кристалл энергии
+01 A large dark crystal of energy
+03 A large dark crystal of energy
+
 #5303
-01 Большой темный кристалл стойкости
-03 большой темный кристалл стойкости
+01 Large dark crystal of durability
+03 large dark crystal of durability
+
 #5304
-01 Великий кристалл силы
-03 великий кристалл силы
+01 The Great Crystal of Power
+03 The great crystal of power
+
 #5305
-01 Великий кристалл энергии
-03 великий кристалл кристалл энергии
+01 The Great Crystal of Energy
+03 The great crystal is a crystal of energy
+
 #5306
-01 Великий кристалл кристалл стойкости
-03 великий кристалл стойкости
+01 The great crystal is the crystal of fortitude
+03 The great crystal of fortitude
+
 #5307
-01 Великий кристалл отражения
-03 великий кристалл отражения
+01 The Great Crystal of Reflection
+03 The great crystal of reflection
+
 #5308
-01 Большой темный кристалл отражения
-03 большой темный кристалл отражения
+01 Large dark reflection crystal
+03 large dark reflection crystal

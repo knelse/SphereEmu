@@ -1,11 +1,11 @@
-01 mission key
-03 mission key
-10 not far from here,
-11 on the great continent of Hyperion
-12 on the great continent of Helios
-13 on the great continent of Rodos
-14 on the small continent of Phoebe
-15 on the royal island of Leon
-16 on the eerie continent of Charon
-22 there appeared a horrible %s, who raises terror and fear. Kill the monster (waymark - %s).
-23 there appeared a cunning %s. Kill the monster (waymark - %s).
+01 Mission key
+03 Mission key
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+22 Do you think today is a wonderful day? I could say that recently, too, but it's been %s bothering us for the second week now. The other day he ruined a caravan of peaceful merchants. Fortunately, people managed to escape. I'm asking you to deal with him at any cost. %s "his lair. Good luck to you!
+23 Do you think today is a wonderful day, traveler? Recently, I could also say that, but for the second week now, the nasty one %s has been haunting us. The other day she attacked civilians. Let her know who's boss here!. %s - its habitat.

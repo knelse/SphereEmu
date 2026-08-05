@@ -1,0 +1,7 @@
+01 Fórmula
+02 fórmulas
+03 fórmula
+100 Fórmula de reparación del gremio de armeros
+10000 Esta fórmula sirve para reparar los siguientes elementos: %l1 El nivel de maestro en el gremio de armeros no debe ser inferior %z1. Para la reparación es necesario %a1.
+10001 Esta fórmula sirve para reparar los siguientes elementos: %l1 El nivel de maestro en el gremio de armeros no debe ser inferior %z1. Para la reparación es necesario %a1 y %a2.
+10002 Esta fórmula sirve para reparar los siguientes elementos: %l1 El nivel de maestro en el gremio de armeros no debe ser inferior %z1. Para la reparación es necesario %a1, %a2 y %a3.

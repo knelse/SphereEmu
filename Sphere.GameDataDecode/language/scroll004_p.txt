@@ -1,26 +1,29 @@
-01 O básico da alquimia (parte 1)
-03 O básico da alquimia (parte 1)
-
+01 Fundamentos da alquimia (primeira parte)
+03 Fundamentos da alquimia (primeira parte)
 TEXT
-    PARA JUSTIFICAR A LEITURA DO AUTOR
-    Este texto foi escrito para ajudar o conhecimento de magia e elevar a sabedoria dos estudantes.
-    Aquele que respeitar a arte da alquimia e estuda ela assiduamente deve obter grande uso disto, enquanto aquele que for grosseiro com este conhecimento deverá renascer sob o domínio do mal.
-    Bertrand de Leon, reitor da escola de alquimia, mago da corte real de sua majestade Leon, rei de Sphere. Fevereiro, 1072 após criação de Sphere.
-
-    NO FORNO DE ALQUIMIA	
-    Sem um forno de alquimia, feito de magias e encantamentos, é impossível alcançar as alturas na nossa maior arte. Tudo esta no poder do forno, que combina o poder de 4 elementos similar ao ser vivo. Não há nada alem de seu poder, somente aquela bruxa que ainda não descobrimos. Entretanto não devemos deixar algum mago ignorante se aproximar do forno. Um dos grandes mágicos, Amilus de Nomrad no ano de 1008 fabricou um pote de alquimia, com um peso bem menor e com capacidade de realizar grande parte das magias que um forno executa. Sendo menor em tamanho permite completar não todas porem a maioria das reações importantes. Este pote é o que todos estudantes deveriam usar, assim como experientes magos quando não tiverem acesso aos fornos. 
-
-    REAÇÕES DE ALQUIMIA
-    O, Honrado leitor! Sem um sistema, limpo e transparente, que permitiria um local para cada reação, é impossível entender a sabedoria de nossa ciência. Muitos homens sábios tentaram organizar centenas de receitas conhecidas pela nossa ciência. Alguns de seus métodos eram engenhosos e ainda podem ser úteis, alguns eram delicados e falsos; alguns simples e ridículos. Mas não vamos falar deles aqui, desde que seu verdadeiro, Bertrand of Leon, inventou uma classificação que é clara, compreensível, e útil. Hoje é aceita pela maioria dos alquimistas elevados.
-    Desta forma nós classificamos as reações em três categorias: cardinal, fixa e mutante. 
-
-    Para completar uma cardinal são necessários 3 ingredientes: uma pedra, uma planta e pó de Faynal. Estas reações são simples, poucas em números e fornecem bono e resultados neutros.
-
-    Reações fixas, na nossa classificação, são desenvolvimentos e sofisticação da cardinal. Isto requer 4 ingredientes: uma pedra, uma planta, metal e o pó de Amilus. Estas reações podem fornecer misturas muito úteis e perigosas, então esta arte deve ser compartilhada com muito cuidado para que não caiam em mãos erradas. 
-    Reações cardinais são uma simplificação das fixas, desde que, presumem, Faynal misturou seu pó depois que Amilus. São patéticos em seus erros, as ultimas pesquisas nos arquivos de Sheepstone provam claramente que a reação de 3 componentes foi aplicada em Sphere pela primeira vez! No lugar do pó de Faynal eles usaram raiz de Sildarill, uma planta que agora está extinta.
-    O pote de Amilus pode suportar somente 5 metais básicos; enquanto que o forno permite o uso dos 5 metais junto com outros, mercúrio e platina, é uma das diferenças entre os dois dispositivos.
-    O resultado de qualquer reação cardinal ou fixa não deverá ser surpresa para nenhum mago razoável: com certa habilidade e experiência pode antecipar das propriedades dos ingredientes que fizeram esta reação. 
-
-    Reações mutantes não seguem regras; elas são completadas com 3 ou 4 ingredientes. O único elemento obrigatório de uma reação mutante são os pós especiais, enquanto todos outros elementos podem ser ao acaso, nem sempre são necessários plantas e pedras. Alguns até jogam às vezes um par de botas velhas no forno e obtém resultados maravilhosos.
-
-    Muitos sábios consideram as reações mutantes como o nascimento do caos, comentário de um sujeito, De Orço, que chama a si mesmo de Gwydeon e que agora se esconde na floresta de Haron pela conseqüência de sua própria mágica imprópria! Entretanto que dei sobre o medo da morte me força a mencionar sua falsa teoria, que provavelmente cada coisa neste mundo tem seu próprio nome de essência, escrito numa linguagem desconhecida. O alfabeto desta linguagem consiste em somente 4 letras que correspondem aos 4 elementos: terra, ar, água e fogo. De acordo com De Orco, nas reações mutantes estas letras-elementos iriam se misturar, e algumas vezes produzir um mundo real, que resulta na aparição de um objeto conhecido, algumas vezes podem produzir coisas sem sentido ou até mesmo uma catástrofe. Entretanto a teoria de Orco não faz sentido, já que ele mesmo nunca conseguiu ler uma palavra sequer que segundo ele está escondida em cada objeto. 
+    NOBRE LEITOR DO AUTOR
+    Escrevo isto aos sábios para ajudar, e aos discípulos para acumular sabedoria.
+    
+    Aquele que respeita a Ciência da alquimia e é diligente em estudá-la obterá grande benefício, mas aquele que não é educado para esse conhecimento receberá um renascimento em um destino ruim.
+    
+    Bertrand de León, reitor da Escola dos alquimistas, mago da Corte De Sua Majestade Leão, Rei da esfera. Fevereiro mês do ano 1072 desde a criação da esfera.
+    
+    O FORNO ALQUÍMICO
+    Sem uma fornalha alquímica, elaborada e trabalhada magicamente, é inconcebível alcançar as alturas em nossa maior e mais sutil das artes. Tudo está sujeito a um forno, combinando as propriedades dos quatro elementos, semelhante a uma criatura viva. E quem pensa que há algo além do seu controle, está enganado em seu orgulho. Porque não há nada que não possa ser controlado, há apenas o que não foi descoberto por nós. No entanto, um mago inexperiente não deve se aproximar do forno alquímico. Um dos maiores magos, Amilus de Nomrad, no ano de 1008, fez um caldeirão alquímico, que em peso e volume mantém muitas das vantagens do grande forno alquímico. Sendo de tamanho pequeno, permite realizar, embora não todas, muitas das reações mais importantes. Este é um caldeirão alquímico e deve ser usado por estudantes inexperientes, bem como por magos experientes, quando não há forno por perto.
+    
+    TIPOS DE REAÇÕES ALQUÍMICAS
+    Ó nobre leitor! Sem um sistema claro e inteligível que permita determinar o lugar de cada reação alquímica, é impossível compreender a sabedoria da nossa ciência. Muitos cientistas tentaram organizar as dezenas e centenas de receitas conhecidas pela nossa ciência. Outros métodos foram espirituosos e ainda podem ser úteis; outros são muito confusos e falsos; outros são simplesmente ridículos. Não vamos falar deles aqui, porque este escritor, Bertrand de Leónski, conseguiu criar uma classificação clara, compreensível e útil. Ela é hoje reconhecida pela maioria dos eminentes alquimistas.
+    Assim, dividimos as reações em três tipos: Cardinal, fixa e mutável.
+    
+    Para realizar uma reação Cardinal, são necessários três ingredientes: pedra, planta e pó de Final. Tais reações são simples, poucas e produzem resultados excepcionalmente bons ou neutros.
+    
+    Reações fixas de acordo com nossa classificação, é o desenvolvimento e a complicação dos Cardeais. Eles precisam de quatro ingredientes: pedra, planta, metal e pó de Amilus. Tais reatzkii são capazes de dar, além de útil, e muito perigoso no uso de drogas, de modo que ninguém deve ser ensinado a entrar nesta arte.
+    A propósito, muitos ignorantes acreditam erroneamente que, pelo contrário, as reações cardinais são uma simplificação posterior das fixas, uma vez que Fainal, dizem eles, criou seu pó depois do Amilus. Eles estão profundamente enganados, pois pesquisas recentes nos arquivos de Shipstone provam conclusivamente que foram as reações com três componentes que foram aplicadas pela primeira vez em nosso campo! Em vez do pó de final, foi usada a raiz da planta Sildarilla, que agora não é mais encontrada sob nossos céus.
+    No caldeirão alquímico do Amilus só podem ser lançados cinco Metais básicos; o forno alquímico permite o uso de outros metais além dos cinco básicos, por exemplo, estanho, mercúrio e platina, que distinguem esses dois instrumentos.
+    O resultado de qualquer reação Cardinal ou fixa para um mago inteligente não é uma falta de vontade: com alguma habilidade, ele pode ser adivinhado pelas qualidades dos ingredientes que entram na reação.
+    
+    Reações mutáveis não obedecem a nenhuma lei; elas envolvem três ou quatro ingredientes. Apenas pós especiais são necessários para completar a reação mutável, enquanto outros componentes podem ser qualquer coisa, não necessariamente plantas e pedras. Alguns até atiravam seus sapatos velhos para o forno e obtinham resultados extraordinários.
+    
+    A maioria dos homens de ciência acredita que as reações mutáveis são causadas pelo caos, exceto o arrivista de Orco, que se chama Guidion e agora se esconde nas profundezas de Charon das consequências de sua própria magia inábil! No entanto, a promessa feita sob pena de morte me obriga a mencionar sua falsa teoria de que cada coisa no mundo tem sua própria essência interior-um nome escrito em uma língua desconhecida, enquanto o alfabeto dessa língua contém apenas quatro letras, e essas letras correspondem aos quatro elementos: terra, ar, água e fogo. E assim, afirma de Orco, nas reações mutáveis, as letras dos elementos se misturam, e às vezes dão uma palavra significativa, de modo que um certo objeto nasce, e às vezes dão um absurdo, de modo que nada nasce ou um desastre ocorre. Mas a própria teoria de Orco não é mais do que um absurdo, pois ele próprio não pôde ler uma única palavra que supostamente está escondida em qualquer coisa.
+    
+    

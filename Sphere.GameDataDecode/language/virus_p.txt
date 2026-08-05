@@ -1,54 +1,56 @@
-01 Modificador
-
-// descrição especial dos vírus
-1000 Invisibilidade mágica leve para outros.
-1001 "Furioso". Deixa cansado e exausto.
-1002 Permite enxergar o invisível.
-1003 "Ira de Tablet". Causa danos a cada 2 minutos.
-1004 Retira um modificador.
-1005 Reduz saúde a cada 2 minutos.
-1006 Eleva saúde a cada 2 minutos.
-1007 Reduz saúde e prana a cada 2 minutos.
-1008 Eleva saúde e prana a cada 2 minutos.
-1009 "Purificação". Recuperação completa de saúde e prana, pega de todos modificadores.
-1010 Proíbe correr.
+01 Mutator
+1000 Uma luz mágica invisível para os outros.
+1001 Berserker. Após a ação, deixa com fome e sem forças.
+1002 Permite ver o invisível.
+1003 "A Ira Da Tábua". Causa dano a cada 2 minutos.
+1004 Um mutante a filmar.
+1005 Reduz a saúde a cada 2 minutos.
+1006 Aumenta a saúde a cada 2 minutos.
+1007 Reduz a saúde e o prana a cada 2 minutos.
+1008 Aumenta a saúde e Prana a cada 2 minutos.
+1009 "Purificação". Restauração completa da saúde e prana e remoção de todos os mutantes.
+1010 Proibido de correr.
 1011 Proíbe correr e andar.
-1012 Hipotaxia.
-1013 Proíbe saltar.
-1014 2 saltos mais longos.
-1015 4 saltos mais longos.
-1016 Cegueira parcial.
-1017 Cegueira completa.
-1018 Permite respirar embaixo d'água.
-1019 Protege ao cair de qualquer altura.
-1020 Desativa a elevação do modificador.
-1021 Mate os membros do clã Naath. Liberte-os da maldição dos espiritos malignos.
-1022 Permite enxergar armadilhas escondidas.
-1023 Fica invisível. Efeito termina quando segura algo na mão.
-1024 Retira 2 modificadores.
-1025 Retira 4 modificadores.
-1026 Retira 6 modificadores.
-1027 Permite atirar 2 dardos simultâneos.
-1028 Eleva velocidade de corrida.
-1029 Furto
-1030 Faz o proprietário invisível a noite. Efeito cessa quando segura algo na mão.
-1031 Kamae. Proteção lenta. Proíbe correr e diminui qualquer reação.
-1032 Agente fixador. Bloqueia o efeito da purificação completa nos modificadores abaixo.
-1033 Recurso. Maior chance de recursos de perícia manual caírem dos monstros abatidos.1034 Alvo longo. Eleva alcance de qualquer arma para 30 metros.
-1035 Corrida contra o tempoRun of time.Duplica a frequencia de ataque.
-1036 Algemas. Proíbe de pegar qualquer coisa na mão.
-1037 Alvo curto. Reduz alcance de qualquer arma para 2 metros.
-1038 Meditação. Mergulha num estado de silêncio, da maior proteção.
-1039 Praga. Transforma em um javali selvagem. 
-1040 Stunning. Cega e previne contra ataque de mão.
-1041 Metamorfose. Transforma em um lobo.
-1042 Corrida rápida antes da primeira parada.
-1043 Armadura enferrujada. Proíbe se virar.
-1044 Tornado. Rodopio no personagem.
-1045 Furioso. Alto ataque, porém pouca velocidade de corrida.
-1046 Escudo de prana. Reduz dano consumindo prana.
-1047 Metamorfose. Transforma em um vampiro.
-1111 Suporte dos Bandoleiros.
-2020 Eleva a proteção do portão do castelo.
-2021 Causa danos ao portão do castelo a cada 2 minutos.
-1049 Magic Mirror. Protects and returns half damage to attacker.
+1012 Falta de coordenação.
+1013 Proibição de saltos.
+1014 Aumento de saltos em 2 vezes.
+1015 Aumento de saltos de 4 vezes.
+1016 Cegueira pela metade.
+1017 Totalmente cego.
+1018 Permite respirar debaixo d'água.
+1019 Protege contra quedas de qualquer altura.
+1020 Remove o mutador de salto aumentado.
+1021 Mata um membro do Clã Naath. Liberta da maldição do mal.
+1022 Permite-lhe ver armadilhas escondidas.
+1023 Torna o hospedeiro invisível. A ação termina quando algo é tomado na mão.
+1024 Remove 2 mutantes.
+1025 Remove 4 mutantes.
+1026 Remove 6 mutantes.
+1027 Permite disparar 2 flechas ao mesmo tempo.
+1028 Aumenta a velocidade de corrida.
+1029 Roubo
+1030 Torna o hospedeiro invisível à noite. A ação termina quando algo é tomado na mão.
+1031 Kamae. Suporte de segurança. Proíbe correr e retarda qualquer ação.
+1032 Fixador. Bloqueia a ação de limpeza completa nos mutadores abaixo.
+1033 Recurso. Aumenta a probabilidade de recursos artesanais serem perdidos de um monstro morto.
+1034 Hipermetropia. Aumenta a distância de impacto de qualquer arma para 30 metros.
+1035 A passagem do tempo. Aumenta a frequência de ataque em 2 vezes.
+1036 Grilhões. Proíbe tomar qualquer coisa na mão.
+1037 Miopia. Reduz a distância de impacto de qualquer arma para 2 metros.
+1038 Meditação. Mergulha em um estado de silêncio, dando maior proteção.
+1039 Raios partam. Transformar-se num javali.
+1040 Atordoamento. Fica cego e não me deixa mexer as mãos.
+1041 Metamorfose. Transformar-se em lobo.
+1042 Corrida rápida até a primeira parada.
+1043 Armadura enferrujada. Proíbe as curvas.
+1044 Tornado. Desenrola o personagem.
+1045 Berserker. Aumenta o ataque, mas diminui a velocidade de corrida.
+1046 Escudo do prana. Suprime os danos à saúde com o consumo de prana.
+1047 Metamorfose. Transformação em vampiro.
+1048 Metamorfose. Transformando-se em um boneco de neve.
+1049 Espelho mágico. Vira o ataque contra o próprio atacante.
+1050 Elixir da Liberdade-remove quaisquer 4 mutantes maliciosos.
+1051 Inabalável. Remove todos os mutantes de controle e os torna imunes a eles.
+1111 Apoio do Bundy.
+2020 Aumenta a proteção do portão do Castelo.
+2021 Danifica o portão do Castelo a cada 2 minutos.

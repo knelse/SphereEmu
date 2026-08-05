@@ -1,90 +1,117 @@
 01 Crystal
-03 Crystal
-10 Your level is too low, you cannot receive the castle attribute.
-11 Belongs to:
-100 Once placed into the scroll of a certain castle, the crystal will provide anyone who touches it with an attribute of additional abilities.
+03 crystal
+10 You have a low level, you can't get the lock attribute.
+11 Affiliation:
+100 The crystal gives additional opportunities to its owner or group.
 
 #5081
-01 small crystal of power
-03 small crystal of power
+01 Small Power Crystal
+03 small power crystal
+
 #5082
-01 small crystal of energy
-03 small crystal of energy
+01 Small Energy Crystal
+03 small energy crystal
+
 #5083
-01 small crystal of stability
-03 small crystal of stability
+01 Small durability crystal
+03 small durability crystal
+
 #5084
-01 small crystal of reflection
-03 small crystal of reflection
+01 Small reflection crystal
+03 small reflection crystal
+
 #5085
-01 middle crystal of power
-03 middle crystal of power
+01 The Average Power Crystal
+03 The average power crystal
+
 #5086
-01 middle crystal of energy
-03 middle crystal of energy
+01 Medium Energy Crystal
+03 Medium energy crystal
+
 #5087
-01 middle crystal of stability
-03 middle crystal of stability
+01 Medium durability crystal
+03 medium durability crystal
+
 #5088
-01 middle crystal of reflection
-03 middle crystal of reflection
+01 Medium reflection crystal
+03 medium reflection crystal
+
 #5089
-01 big crystal of power
-03 big crystal of power
+01 A large crystal of power
+03 A large crystal of power
+
 #5090
-01 big crystal of energy
-03 big crystal of energy
+01 A large crystal of energy
+03 a large crystal of energy
+
 #5091
-01 big crystal of stability
-03 big crystal of stability
+01 Large durability crystal
+03 large durability crystal
+
 #5092
-01 big crystal of reflection
-03 big crystal of reflection
+01 Large reflection crystal
+03 large reflection crystal
+
 #5093
-01 small dark crystal of power
-03 small dark crystal of power
+01 Small Dark Power Crystal
+03 small dark power crystal
+
 #5094
-01 small dark crystal of energy
-03 small dark crystal of energy
+01 Small Dark Energy Crystal
+03 small dark energy crystal
+
 #5095
-01 small dark crystal of stability
-03 small dark crystal of stability
+01 Small dark durability crystal
+03 small dark durability crystal
+
 #5096
-01 small dark crystal of reflection
-03 small dark crystal of reflection
+01 Small dark reflection crystal
+03 small dark reflection crystal
+
 #5097
-01 middle dark crystal of power
-03 middle dark crystal of power
+01 Medium Dark Power Crystal
+03 medium dark power crystal
+
 #5098
-01 middle dark crystal of energy
-03 middle dark crystal of energy
+01 Medium Dark Energy Crystal
+03 medium dark energy crystal
+
 #5099
-01 middle dark crystal of stability
-03 middle dark crystal of stability
+01 Medium dark crystal durability
+03 medium dark crystal durability
+
 #5100
-01 middle dark crystal of reflection
-03 middle dark crystal of reflection
+01 Medium dark reflection crystal
+03 medium dark reflection crystal
+
 #5101
-01 big dark crystal of power
-03 big dark crystal of power
+01 A large dark crystal of power
+03 A large dark crystal of power
+
 #5102
-01 big dark crystal of energy
-03 big dark crystal of energy
+01 A large dark crystal of energy
+03 A large dark crystal of energy
+
 #5103
-01 big dark crystal of stability
-03 big dark crystal of stability
+01 Large dark crystal of durability
+03 large dark crystal of durability
+
 #5104
-01 great crystal of power
-03 great crystal of power
+01 The Great Crystal of Power
+03 The great crystal of power
+
 #5105
-01 great crystal of energy
-03 great crystal of energy
+01 The Great Crystal of Energy
+03 The great crystal is a crystal of energy
+
 #5106
-01 great crystal of stability
-03 great crystal of stability
+01 The great crystal is the crystal of fortitude
+03 The great crystal of fortitude
+
 #5107
-01 great crystal of reflection
-03 great crystal of reflection
+01 The Great Crystal of Reflection
+03 The great crystal of reflection
+
 #5108
-01 big dark crystal of reflection
-03 big dark crystal of reflection
+01 Large dark reflection crystal
+03 large dark reflection crystal

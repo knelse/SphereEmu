@@ -1,0 +1,51 @@
+01 Pantalon
+03 pantalon
+100 Dans la bataille, protège contre les armes des adversaires.
+200 l'éradication
+201 dévastation
+202 fiabilité
+203 invulnérabilité
+204 vie
+205 l'éradication
+206 dévastation
+207 fiabilité
+208 invulnérabilité
+209 vie
+210 conseil d'administration
+211 aveuglements
+212 frayeur
+213 arrêts
+214 délivrance
+215 purification
+216 sanctions
+217 chaînes
+218 vortex
+219 malédictions
+
+#5003
+01 Pantalon en cuir riveté
+03 pantalon en cuir riveté
+
+#5023
+01 Jambières en plates
+03 Jambières en plates
+
+#5043
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#5063
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#5113
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#5133
+01 Anciens Jambières en plates
+03 anciens Jambières en plates
+
+#5162
+01 Anciens Jambières en plates
+03 anciens Jambières en plates

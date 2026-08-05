@@ -1,47 +1,51 @@
-01 Elmo di ferro
-03 elmo di ferro
-
-100 Protegge dalle armii dei nemici in battaglia.
-
-200 dell'eliminazione
-201 della devastazione
-202 della fiducia
-203 dell'invulnerabilità
-204 della vita
-205 dell'eliminazione
-206 della devastazione
-207 della fiducia
-208 dell'invulnerabilità
-209 della vita
-210 del dominio
-211 della cecità
-212 della paura
-213 dell'arresto
-214 della liberazione
-215 della purificazione
-216 della punizione
-217 dell'intrappolamento
-218 del turbine
-219 della maledizione
+01 Casco di ferro
+03 casco di ferro
+100 In battaglia protegge dalle armi degli avversari.
+200 eradicazione
+201 devastazioni
+202 affidabilità
+203 invulnerabilità
+204 vita
+205 eradicazione
+206 devastazioni
+207 affidabilità
+208 invulnerabilità
+209 vita
+210 del Consiglio
+211 abbagliamento
+212 paura
+213 fermate
+214 liberazione
+215 pulizia
+216 punizioni
+217 catene
+218 vortice
+219 maledizioni
 
 #5004
-01 Elmo di pelle rinforzata
-03 elmo di pelle rinforzata
+01 Casco in pelle rivettata
+03 casco in pelle rivettata
+
 #5024
-01 Elmo di ferro
-03 elmo di ferro
+01 Casco di ferro
+03 casco di ferro
+
 #5044
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #5064
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #5114
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #5134
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico
+
 #5163
-01 Elmo antico di ferro
-03 elmo antico di ferro
+01 Elmo di ferro antico
+03 elmo di ferro antico

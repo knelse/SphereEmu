@@ -1,0 +1,171 @@
+01 Gürtel
+03 gürtel
+100 Schützt im Kampf vor den Waffen der Gegner.
+200 stärke
+201 übernahmen
+202 sicherheit
+203 gesundheit
+204 meditation
+205 genauigkeit
+206 äther
+207 Werte
+
+#349
+01 Schärpe
+03 schärpe
+
+#350
+01 Ledergürtel
+03 ledergürtel
+
+#351-352
+01 Ledergürtel mit Nieten
+03 ledergürtel mit Nieten
+
+#353-354
+01 Kettengürtel
+03 kettengürtel
+
+#355-357
+01 Eisengürtel
+03 eisengürtel
+
+#358-360
+01 Alter eiserner Gürtel
+03 alter eiserner Gürtel
+
+#3171
+01 Schärpe
+03 schärpe
+
+#3172
+01 Ledergürtel
+03 ledergürtel
+
+#3173-3174
+01 Ledergürtel mit Nieten
+03 ledergürtel mit Nieten
+
+#3175-3176
+01 Kettengürtel
+03 kettengürtel
+
+#3177-3179
+01 Eisengürtel
+03 eisengürtel
+
+#3180-3182
+01 Alter eiserner Gürtel
+03 alter eiserner Gürtel
+
+#4489-4497
+01 Alter eiserner Gürtel
+03 alter eiserner Gürtel
+
+#5665
+01 Gürtel des Mutes
+03 gürtel des Mutes
+
+#5666
+01 Ledergürtel des Mutes
+03 gürtel des Mutes
+
+#5667
+01 Genieteter Gürtel des Mutes
+03 gürtel des Mutes
+
+#5668
+01 Kettengürtel des Mutes
+03 gürtel des Mutes
+
+#5669
+01 Eiserner Gürtel des Mutes
+03 gürtel des Mutes
+
+#5670
+01 Alter Gürtel des Mutes
+03 gürtel des Mutes
+
+#5777
+01 Gürtel des Tribunals
+03 gürtel des Tribunals
+
+#5778
+01 Ledergürtel des Tribunals
+03 gürtel des Tribunals
+
+#5779
+01 Genieteter Gürtel des Tribunals
+03 Trmbunal-Gürtel
+
+#5780
+01 Kettengürtel des Tribunals
+03 gürtel des Tribunals
+
+#5781
+01 Der eiserne Gürtel des Tribunals
+03 gürtel des Tribunals
+
+#5782
+01 Alter Gürtel des Tribunals
+03 gürtel des Tribunals
+
+#5962
+01 Gürtel
+03 gürtel
+
+#6077
+01 Titan-Gürtel
+03 Titan-Gürtel
+
+#6078
+01 Ledergürtel Titan
+03 Titan-Gürtel
+
+#6079
+01 Titanen-Nietengürtel
+03 Titan-Gürtel
+
+#6080
+01 Kolchuzhny Titan Gürtel
+03 Titan-Gürtel
+
+#6081
+01 Eisen-Titan-Gürtel
+03 Titan-Gürtel
+
+#6082
+01 Alter Titan-Gürtel
+03 Titan-Gürtel
+
+#6476
+01 Gürtel der Langlebigkeit
+03 gürtel der Langlebigkeit
+
+#6477
+01 Langlebigkeits-Ledergürtel
+03 gürtel der Langlebigkeit
+
+#6478
+01 Genieteter Gürtel der Langlebigkeit
+03 gürtel der Langlebigkeit
+
+#6479
+01 Langlebigkeits-Kettengürtel
+03 gürtel der Langlebigkeit
+
+#6480
+01 Langlebigkeits-Eisengürtel
+03 gürtel der Langlebigkeit
+
+#6481
+01 Alter Langlebigkeitsgürtel
+03 gürtel der Langlebigkeit
+
+#6657
+01 Mühelosigkeitsgurt
+03 mühelosigkeitsgurt
+
+#6758
+01 Sumpfgürtel
+03 sumpfgürtel

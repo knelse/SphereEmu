@@ -1,7 +1,4 @@
-01 Return stone
-03 Return stone
-
-10 Charges:
-
-100 Allows return to nearest town. Use GXP-service for recharge ("]" key).
-
+01 The Stone of Return
+03 The Stone of Return
+10 There are charges left:
+100 Allows the owner to move to the nearest city. It is enough to put the stone in the inventory. To recharge, use the GXP Service ("]" key).

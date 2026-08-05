@@ -21,18 +21,18 @@ public enum ConsoleCommandParseResult
 
 public class ConsoleCommandParser
 {
-    private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new ();
+    private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new();
     private readonly CharacterDbEntry currentCharacterDbEntry;
-    private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
+    private readonly Dictionary<string, Action<string>> RegisteredCommands = new();
     private readonly SphereClient? sphereClient;
 
-    private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
+    private ConsoleCommandParser(CharacterDbEntry characterDbEntry)
     {
         currentCharacterDbEntry = characterDbEntry;
         sphereClient = ActiveClients.Get(characterDbEntry.ClientIndex);
     }
 
-    public static ConsoleCommandParser Get (CharacterDbEntry characterDbEntry)
+    public static ConsoleCommandParser Get(CharacterDbEntry characterDbEntry)
     {
         if (!ParserCache.ContainsKey(characterDbEntry.ClientIndex))
         {
@@ -43,7 +43,7 @@ public class ConsoleCommandParser
         return ParserCache[characterDbEntry.ClientIndex];
     }
 
-    private void InitCommands ()
+    private void InitCommands()
     {
         RegisteredCommands["stats"] = UpdateStats;
         RegisteredCommands["money"] = UpdateMoney;
@@ -58,7 +58,7 @@ public class ConsoleCommandParser
         RegisteredCommands["tp"] = Teleport;
     }
 
-    public ConsoleCommandParseResult Parse (string? input)
+    public ConsoleCommandParseResult Parse(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
@@ -89,7 +89,7 @@ public class ConsoleCommandParser
         return ConsoleCommandParseResult.OK;
     }
 
-    private void UpdateStats (string args)
+    private void UpdateStats(string args)
     {
         var stats = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -109,27 +109,28 @@ public class ConsoleCommandParser
         currentCharacterDbEntry.MDef = ushort.Parse(stats[13]);
         currentCharacterDbEntry.TitleMinusOne = ushort.Parse(stats[14]);
         currentCharacterDbEntry.DegreeMinusOne = ushort.Parse(stats[15]);
-        currentCharacterDbEntry.Karma = (KarmaTypes) ushort.Parse(stats[16]);
+        currentCharacterDbEntry.Karma = (KarmaTypes)ushort.Parse(stats[16]);
         currentCharacterDbEntry.KarmaCount = ushort.Parse(stats[17]);
+        currentCharacterDbEntry.SyncKarmaFromCount();
         currentCharacterDbEntry.TitleXP = uint.Parse(stats[18]);
         currentCharacterDbEntry.DegreeXP = uint.Parse(stats[19]);
         currentCharacterDbEntry.AvailableTitleStats = ushort.Parse(stats[20]);
         currentCharacterDbEntry.AvailableDegreeStats = ushort.Parse(stats[21]);
-        currentCharacterDbEntry.ClanRank = (ClanRank) ushort.Parse(stats[22]);
+        currentCharacterDbEntry.ClanRank = (ClanRank)ushort.Parse(stats[22]);
         currentCharacterDbEntry.Money = int.Parse(stats[23]);
         currentCharacterDbEntry.PAtk = int.Parse(stats[24]);
         currentCharacterDbEntry.MAtk = int.Parse(stats[25]);
         NetworkedStatsUpdater.Update(currentCharacterDbEntry);
     }
 
-    private void UpdateMoney (string args)
+    private void UpdateMoney(string args)
     {
         var stats = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         currentCharacterDbEntry.Money = int.Parse(stats[0]);
         NetworkedStatsUpdater.Update(currentCharacterDbEntry);
     }
 
-    private void SendMessage (string args)
+    private void SendMessage(string args)
     {
         var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 3)
@@ -151,7 +152,7 @@ public class ConsoleCommandParser
         sphereClient?.MaybeQueueNetworkPacketSend(response);
     }
 
-    private void UpdateClan (string args)
+    private void UpdateClan(string args)
     {
         var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 1)
@@ -181,8 +182,8 @@ public class ConsoleCommandParser
                 responseStream.WriteByte(0x0, 7);
                 responseStream.WriteByte(0x1A);
                 responseStream.WriteByte(0x16);
-                responseStream.WriteByte((byte) (nameBytes.Length + 2));
-                responseStream.WriteByte((byte) targetRank);
+                responseStream.WriteByte((byte)(nameBytes.Length + 2));
+                responseStream.WriteByte((byte)targetRank);
                 responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
                 responseStream.WriteByte(0x0, 4);
                 responseStream.WriteByte(0x0);
@@ -194,7 +195,7 @@ public class ConsoleCommandParser
         }
     }
 
-    private void SendPacketHex (string args)
+    private void SendPacketHex(string args)
     {
         var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 1)
@@ -215,12 +216,12 @@ public class ConsoleCommandParser
         }
     }
 
-    private void SendPacket (string args)
+    private void SendPacket(string args)
     {
         DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
     }
 
-    private void Buff (string args)
+    private void Buff(string args)
     {
         var jumpx4 =
             "3F002C01006AF6B98878800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF9994D83C00A0F07F70391E1004F6F";
@@ -235,7 +236,7 @@ public class ConsoleCommandParser
         // StreamPeer.PutData(Convert.FromHexString(test));
     }
 
-    private void Mob (string args)
+    private void Mob(string args)
     {
         var split = args.Split(' ',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -246,7 +247,7 @@ public class ConsoleCommandParser
             bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
     }
 
-    private void MobById (string args)
+    private void MobById(string args)
     {
         var split = args.Split(' ',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -270,7 +271,7 @@ public class ConsoleCommandParser
         }
     }
 
-    private void Loot (string args)
+    private void Loot(string args)
     {
         ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
             currentCharacterDbEntry.Z + 1,
@@ -286,7 +287,7 @@ public class ConsoleCommandParser
             LootRatity.DEFAULT_MOB);
     }
 
-    private void Teleport (string args)
+    private void Teleport(string args)
     {
         var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (split.Length > 1)

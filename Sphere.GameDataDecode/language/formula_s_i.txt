@@ -1,10 +1,7 @@
 01 Formula
-02 formula
+02 formule
 03 formula
-
-100 Formula della gilda dei fabbri
-
-10000 Utilizzando questa formula guadagni %r1. Questo richiede %a1 e lo stadio nella gilda dei fabbri deve essere almeno %z1.
-10001 Utilizzando questa formula guadagni %r1. Questo richiede %a1 e %a2 e lo stadio nella gilda dei fabbri deve essere almeno %z1.
-10002 Utilizzando questa formula guadagni %r1. Questo richiede %a1, %a2 e %a3 e lo stadio nella gilda dei fabbri deve essere almeno %z1.
-
+100 Formula della Gilda dei fabbri
+10000 Con questa formula è possibile ottenere %r1. Per la produzione è necessario %a1 . e il gradino nella Gilda dei fabbri non dovrebbe essere inferiore %z1.
+10001 Con questa formula è possibile ottenere %r1. Per la produzione sono necessari %a1 e %a2 . e il gradino nella Gilda dei fabbri non dovrebbe essere inferiore %z1.
+10002 Con questa formula è possibile ottenere %r1. Per la produzione sono necessari %a1, %a2 e %a3 . e il gradino nella Gilda dei fabbri non dovrebbe essere inferiore %z1.

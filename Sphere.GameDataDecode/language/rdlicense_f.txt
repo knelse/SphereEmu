@@ -1,0 +1,6 @@
+01 Licence de remise à zéro
+03 licence pour réinitialiser le degré
+100 Réinitialise le niveau de degré du personnage à 15. Dans ce cas, pour tous les 5 (cinq) niveaux de degré réinitialisés, un (1) niveau est Ajouté au titre précédent. Les caractéristiques distribuées du personnage, telles que la force, l'agilité, la précision, l'endurance, la terre, l'air, l'eau et le feu, sont également réinitialisées. ATTENTION! La licence ne fonctionne pas si le personnage a une spécialité!
+101 Voulez-vous vraiment réinitialiser le degré?
+102 Le degré est réinitialisé.
+103 Maintenant, il n'est pas nécessaire d'utiliser la licence.

@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,5 +7,5 @@
 14 
 15 
 16 
-20 Valoroso guerriero, non lasciare che io affondi nelle mie disgrazie. Un mio parente è venuto in mia visita, ma non ho più le forze per poterlo andare a prendere. Per favore, sii così gentile da portarlo da me. Il suo nome è %s. Ti aspetterò al teletrasporto più vicino. %s ti aiuterà ad orientarti. 
-21 Valoroso guerriero, non lasciare che io affondi nelle mie disgrazie. La figlia di un vecchio amico è venuta a trovarmi, ma non riesce a trovare la strada. Per favore, sii così gentile da accompagnarla da me. Il suo nome è %s. Ti aspetterò al teletrasporto più vicino. %s ti aiuterà ad orientarti.
+20 Nobile cavaliere! Non lasciarmi nei guai! Un lontano parente è venuto da me, ma non c'è forza per incontrarlo. Conduci, Sii misericordioso, una persona cara verso di me. %s - il suo nome. Ti aspetterò al teletrasporto più vicino. Punto di riferimento %s servira'.
+21 Nobile cavaliere! Non lasciarmi nei guai! La figlia del mio amico di lunga data è venuta da me e non riesce a trovare la strada. Porta la bella da me, Sii misericordioso. %s - il suo nome. Ti aspetterò al teletrasporto più vicino. Punto di riferimento %s servira'.

@@ -1,5 +1,5 @@
-01 chiave della missione
-03 chiave della missione
+01 Chiave di missione
+03 chiave di missione
 10 
 11 
 12 
@@ -7,7 +7,7 @@
 14 
 15 
 16 
-20 Ho fatto ordine nell'armeria e ho scoperto che alcune armature ed armi che avevo, sono rovinati. Sii gentile e portami degli oggetti per sostituirli, ma che siano nuovi. Per questo favore, ti regalerò uno dei miei rari oggetti che custodisco gelosamente. %s 
-21 Facendo ordine in cantina ho trovato degli oggetti che ormai non hanno più alcuna possibilità di essere utilizzati. Sii gentile e portami degli oggetti per sostituirli, ma che siano nuovi. Per questo favore, ti regalerò uno dei miei rari oggetti che custodisco gelosamente. %s 
- 
- 
+20 Ho capito la mia Armeria e ho scoperto che alcune armi e armature immagazzinate lì non erano buone per nulla. Sii così gentile, portami, invece di cose viziate, nuove, le stesse. In cambio ti darò una ricompensa decente. %s
+21 Stavo pulendo nel mio fienile e ho scoperto che alcune delle cose immagazzinate in esso non erano più buone per nulla. Portami le stesse cose nuove invece di quelle rovinate. In cambio ti darò una ricompensa decente. %s
+    
+    

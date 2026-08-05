@@ -1,0 +1,223 @@
+01 Cotta di maglia
+03 cotta di maglia
+05 nuovo
+06 usurato
+07 arrugginito
+100 In battaglia protegge dalle armi degli avversari.
+200 valor
+201 forza
+202 assorbimento
+203 deviazioni
+204 sicurezza
+205 invulnerabilità
+206 salute
+207 vita
+208 meditazione
+209 Prana
+210 forze
+211 agilità
+212 grandezza
+213 concentrazioni
+214 terra
+215 acqua
+216 aria
+217 fuoco
+218 elementi
+219 valori
+220 forze
+221 agilità
+222 grandezza
+223 concentrazioni
+224 integrità
+
+#301
+01 Giacca
+03 giacca
+
+#302
+01 Armatura di cuoio
+03 armatura di cuoio
+
+#303-304
+01 Armatura in pelle rivettata
+03 armatura in pelle rivettata
+
+#305-306
+01 Cotta di maglia
+03 cotta di maglia
+
+#307-309
+01 Corazza
+03 corazza
+
+#310-312
+01 Armatura antica
+03 armatura antica
+
+#3001-3004
+01 Giacca
+03 giacca
+
+#3005-3009
+01 Armatura di cuoio
+03 armatura di cuoio
+
+#3010-3019
+01 Armatura in pelle rivettata
+03 armatura in pelle rivettata
+
+#3020-3029
+01 Cotta di maglia
+03 cotta di maglia
+
+#3030-3044
+01 Corazza
+03 corazza
+
+#3045-3060
+01 Armatura antica
+03 armatura antica
+
+#4453-4461
+01 Corazza
+03 corazza
+
+#4740
+01 Grande Corazza Nera
+03 Grande Corazza Nera
+
+#4741
+01 Grande Corazza Bianca
+03 Grande Corazza Bianca
+
+#4750
+01 Grande Corazza Nera
+03 Grande Corazza Nera
+
+#4751
+01 Grande Corazza Bianca
+03 Grande Corazza Bianca
+
+#5586
+01 Giacca da cattivo
+03 la giacca del cattivo
+
+#5587
+01 Giacca di pelle del cattivo
+03 la giacca del cattivo
+
+#5588
+01 Giacca da cattivo rivettata
+03 la giacca del cattivo
+
+#5589
+01 Cotta di maglia del cattivo
+03 la cotta di maglia del cattivo
+
+#5590
+01 Corazza del cattivo
+03 corazza del cattivo
+
+#5591
+01 Armatura del cattivo
+03 armatura del cattivo
+
+#5677
+01 Giacca radiante
+03 giacca di splendore
+
+#5678
+01 Giacca di pelle radiante
+03 giacca di splendore
+
+#5679
+01 Giacca rivettata di splendore
+03 giacca di splendore
+
+#5680
+01 Cotta di maglia di splendore
+03 cotta di maglia di splendore
+
+#5681
+01 Corazza di splendore
+03 corazza di splendore
+
+#5682
+01 Armatura di splendore
+03 armatura di Aurora
+
+#5865
+01 Giacca furtiva
+03 giacca furtiva
+
+#5866
+01 Giacca di pelle di furtività
+03 giacca furtiva
+
+#5867
+01 Giacca furtiva rivettata
+03 giacca furtiva
+
+#5868
+01 Cotta di maglia di furtività
+03 cotta di maglia di furtività
+
+#5869
+01 Corazza furtiva
+03 corazzata furtiva
+
+#5870
+01 Armatura stealth
+03 armatura stealth
+
+#6083
+01 Giacca Di Titanio
+03 rivestimento di titanio
+
+#6084
+01 Giacca di pelle di titanio
+03 rivestimento di titanio
+
+#6085
+01 Giacca rivettata in titanio
+03 rivestimento di titanio
+
+#6086
+01 Cotta Di Maglia Di Titanio
+03 cotta di maglia di titanio
+
+#6087
+01 Corazza Di Titano
+03 corazza di Titano
+
+#6088
+01 Armatura Di Titano
+03 Armatura di titanio
+
+#6551
+01 Armatura pesante di Kaliestra
+03 armatura pesante di Kaliestra
+
+#6868
+01 Giacca di affidabilità
+03 giacca di affidabilità
+
+#6869
+01 Giacca di pelle di affidabilità
+03 giacca di affidabilità
+
+#6870
+01 Giacca rivettata di affidabilità
+03 giacca di affidabilità
+
+#6871
+01 Cotta di maglia di affidabilità
+03 affidabilità cotta di maglia
+
+#6872
+01 Corazza di affidabilità
+03 corazza di affidabilità
+
+#6873
+01 Armatura di affidabilità
+03 armatura di affidabilità

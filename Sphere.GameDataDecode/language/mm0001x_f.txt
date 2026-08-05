@@ -1,0 +1,26 @@
+10000 X
+10100 Vous avez décidé de trahir ceux qui Restent et qui Partent et de le faire correctement. Vivez une vie paisible et ne multipliez pas la souffrance dans ce monde déjà plein de douleur.
+10101 Apportez la bague à mon ami. %x1. %m1.
+10102 Apportez le colis à mon ami. %m1. %x1.
+10103 Apportez-moi dix oreilles de gens avec un très mauvais Karma et dix oreilles de gens avec un bon Karma. %m1.
+10200 Je vous souhaite la bienvenue, %p1. Je vois que vous voulez prendre parti pour ceux qui Restent et protéger ce monde de la destruction. Vous êtes sur la bonne voie, mais pour commencer, vous devez prouver votre dévouement.
+10201 Versez le sang de nos ennemis et apportez-moi dix oreilles de gens avec un très mauvais Karma. %m1.
+10300 Je vous souhaite la bienvenue, %p1. Je vois que vous voulez vous joindre à ceux qui Partent et quitter ce monde de souffrance. Avec votre aide, nous pouvons accomplir ce que nous avons prévu, mais nous devons nous assurer de votre dévouement.
+10301 Versez le sang de nos ennemis et apportez-moi dix oreilles de gens avec du bon Karma. %m1.
+10700 %m1.
+10701 Je vous souhaite la bienvenue, %p1. Vous avez décidé de trahir ceux qui Restent et qui Partent et de le faire correctement. Vivez une vie paisible et ne multipliez pas la souffrance dans ce monde déjà plein de douleur. Pour effacer le sceau de la faction du clan, vous devez effectuer deux de mes tâches. Vous devez tuer les monstres %z1 et %z2 dans les deux donjons et apportez-moi la tête de chaque bête. Partez à la recherche %z1 et apportez - moi sa tête.
+10702 "...apportez - moi sa tête"
+10703 OK, vous avez réussi la première partie de la mission. Maintenant, tuez le monstre %z2 dans le deuxième donjon.
+10704 "...apportez - moi sa tête"
+10800 
+10801 Je vous souhaite la bienvenue, %p1. Je vois que votre clan veut prêter serment d'allégeance aux Autres. C'est une bonne nouvelle pour nous et une mauvaise pour nos ennemis, mais vous devrez prouver la fermeté de vos intentions en accomplissant plusieurs de mes missions. Si vous y parvenez, votre clan sera accepté dans la faction Restante. Pour commencer, vous devez m'apporter trente oreilles de gens avec un très mauvais Karma. %m1.
+10802 Vous avez fait un excellent travail. Maintenant, vous devez apporter des nouvelles de mon éclaireur, son nom %x1. Il est situé dans la ville de Nomrad. Donnez - lui cette lettre pour qu'il comprenne qui vous a envoyé. %m1.
+10803 %p1? Tiens. Il y a des informations importantes dans ce paquet. %x1.
+10804 Super. C'est ma Dernière mission pour vous et votre clan. Vous devez vaincre le monstre seul %z1 et apportez-moi sa tête. %m1.
+10805 "...apportez - moi sa tête" - %m1.
+10900 
+10901 Je vous souhaite la bienvenue, %p1. Je vois que votre clan veut prêter allégeance aux Sortants. Vous devrez prouver vos intentions en accomplissant quelques-unes de mes tâches. Si vous les gérez, votre clan sera accepté dans la faction des Sortants. Pour commencer, vous devez m'apporter trente oreilles de gens avec du bon Karma. %m1.
+10902 Vous avez fait un excellent travail. Maintenant, vous devez apporter des nouvelles de mon éclaireur, son nom %x1. Il est situé dans la ville d'Umrad. Donnez - lui cette lettre pour qu'il comprenne qui vous a envoyé. %m1.
+10903 %p1? Tiens. Il y a des informations importantes dans ce paquet. %x1.
+10904 Super. C'est ma Dernière mission pour vous et votre clan. Vous devez vaincre le monstre seul %z1 et apportez-moi sa tête. %m1.
+10905 "...apportez - moi sa tête" - %m1.

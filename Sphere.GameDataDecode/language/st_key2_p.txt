@@ -1,28 +1,35 @@
-01 Chave para a masmorra
-03 Chave para a masmorra
-10 Chave incorreta.
+01 Chave da masmorra
+03 chave da masmorra
+10 Esta chave não combina.
 
 #240
-01 Chave para o quarto preto da água
-03 Chave
+01 A chave da sala de água preta
+03 chave
+
 #241
-01 Chave para o quarto preto do fogo
-03 Chave
+01 A chave da sala de fogo Negra
+03 chave
+
 #242
-01 Chave para o quarto preto da terra
-03 Chave
+01 A chave da Câmara negra da terra
+03 chave
+
 #243
-01 Chave para o quarto preto do ar
-03 Chave
+01 A chave da sala de ar preto
+03 chave
+
 #244
-01 Chave para o quarto branco da água
-03 Chave
+01 A chave da sala branca da água
+03 chave
+
 #245
-01 Chave para o quarto branco do fogo
-03 Chave
+01 A chave da sala branca do fogo
+03 chave
+
 #246
-01 Chave para o quarto branco da terra
-03 Chave
+01 A chave da Câmara branca da terra
+03 chave
+
 #247
-01 Chave para o quarto branco do ar
-03 Chave
+01 A chave da sala de ar branco
+03 chave

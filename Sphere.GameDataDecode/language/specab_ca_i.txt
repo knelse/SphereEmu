@@ -1,13 +1,14 @@
-01 Risveglio
-
-100 Trasporta il personaggio alla sua città di origine.
+01 Rinascita
+100 Porta al luogo di nascita del personaggio
 
 #5710
-01 Risveglio
-100 Un Inquisitore può teleportarsi nella città più vicina, oppure può mandare altre persone nelle fauci di mostri terribili.
+01 Rinascita
+100 L'inquisitore si sposta in una città vicina e manda altre persone nelle grinfie di terribili mostri.
+
 #5711
-01 Risveglio 
-100 Un Inquisitore può teleportarsi nella città più vicina, oppure può mandare altre persone nelle fauci di mostri terribili. 
+01 Rinascita
+100 L'inquisitore si sposta in una città vicina e manda altre persone nelle grinfie di terribili mostri.
+
 #5712-5715
-01 Risveglio
-100 Un Inquisitore può teleportarsi nella città più vicina, oppure può mandare altre persone nelle fauci di mostri terribili.
+01 Rinascita
+100 L'inquisitore si sposta in una città vicina e manda altre persone nelle grinfie di terribili mostri.

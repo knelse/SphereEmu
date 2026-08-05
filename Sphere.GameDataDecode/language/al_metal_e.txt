@@ -6,52 +6,64 @@
 01 Gold
 02 gold
 03 gold
-100 Used in alchemic reactions. Factor of 6.
+100 It is used in alchemical reactions. The multiplier is 6.
 
 #971
 01 Silver
 02 silver
 03 silver
-100 Used in alchemic reactions. Factor of 3.
+100 It is used in alchemical reactions. Multiplier 3.
 
 #972
 01 Copper
 02 copper
 03 copper
-100 Used in alchemic reactions. Factor of 1.
+100 It is used in alchemical reactions. The multiplier is 1.
 
 #973
 01 Iron
 02 iron
 03 iron
-100 Used in alchemic reactions. Factor of 3.
+100 It is used in alchemical reactions. Multiplier 3.
 
 #974
 01 Lead
 02 lead
 03 lead
-100 Used in alchemic reactions. Factor of 6.
+100 It is used in alchemical reactions. The multiplier is 6.
 
 #975
 01 Tin
 02 tin
 03 tin
-100 Used in alchemic reactions. Factor of 12.
+100 It is used in alchemical reactions. The multiplier is 12.
 
 #976
 01 Platinum
 02 platinum
 03 platinum
-100 Used in alchemic reactions. Factor of 24.
+100 It is used in alchemical reactions. The multiplier is 24.
 
 #977
 01 Mithril
-02 mithril
-03 mithril
-100 Used in alchemic reactions. Factor of 48.
+02 Mithril
+03 Mithril
+100 It is used in alchemical reactions. The multiplier is 48.
 
 #978
-01 Aluminium
-02 aluminium
-03 aluminium
-100 Used in alchemic reactions. Factor of 72.
+01 Aluminum
+02 aluminum
+03 aluminum
+100 It is used in alchemical reactions. The multiplier is 72.
+
+#979
+01 Tungsten
+02 tungsten
+03 tungsten
+100 It is used in alchemical reactions. The multiplier is 6.
+
+#980
+01 Yttrium
+02 yttrium
+03 yttrium
+100 It is used in alchemical reactions. The multiplier is 6.

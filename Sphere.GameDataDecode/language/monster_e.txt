@@ -1,291 +1,434 @@
-01 Creature
+01 The creature
 
 #1000
-01 Leaf insect
+01 Stickman
+
 #1001
-01 Steppe leaf insect
+01 Steppe stick insect
+
 #1002
-01 Forest leaf insect
+01 The stickman of the forest
+
 #1003
-01 Cave leaf insect
+01 Stick insect cave
+
 #1010
-01 Doghead
+01 Psoglavets
+
 #1011
-01 Steppe doghead
+01 Psoglavets steppe
+
 #1012
-01 Forest doghead
+01 Psoglavets forest
+
 #1013
-01 Cave doghead
+01 Psoglavets cave
+
 #1020
-01 Rotten knight
+01 The rotten Knight
+
 #1021
-01 Rusted knight
+01 The Rusty Knight
+
 #1022
-01 Outcast knight
+01 The Lost Knight
+
 #1023
-01 Golden knight
+01 The Golden Knight
+
 #1024
-01 Giant knight
+01 The Giant Knight
+
 #1025
-01 Air knight
+01 The Aerial Knight
+
 #1040
-01 Earth golem
+01 The Earth Golem
+
 #1041
-01 Sand golem
+01 The Sand Golem
+
 #1042
-01 Clay golem
+01 Clay Golem
+
 #1043
-01 Free golem
+01 The Free Golem
+
 #1044
-01 Giant golem
+01 The Giant Golem
+
 #1050
 01 Bangville scolopendra
+
 #1051
-01 Zar scolopendra
+01 The Royal scolopendra
+
 #1060
-01 Skeleton
+01 The skeleton
+
 #1061
-01 Forest skeleton
+01 The skeleton of the forest
+
 #1062
-01 Umrad skeleton
+01 The Umrad Skeleton
+
 #1063
-01 Air skeleton
+01 The skeleton is airy
+
 #1064
-01 Cave skeleton
+01 The skeleton is a cave
+
 #1065
-01 Leach
+01 Lich
+
 #1066
-01 Giant skeleton
+01 The giant skeleton
+
 #1067
-01 Air leach
+01 The Air Lich
+
 #1069
-01 Skeleton
+01 The Assassin
+
 #1070
-01 Wild boar
+01 The Boar
+
 #1071
-01 Rabid boar
+01 The Mad Boar
+
 #1072
 01 Dry boar
+
 #1073
-01 Air boar
+01 The Air Boar
+
 #1074
-01 Iron boar
+01 The Iron Boar
+
 #1075
-01 Fire boar
+01 The Fiery Boar
+
 #1076
-01 Giant boar
-03 Giant boar
+01 The Giant Boar
+03 The Giant Boar
+
 #1080
 01 Cyanos
+
 #1081
-01 Dark cyanos
+01 Cyanos dark
+
 #1082
 01 Dry cyanos
+
 #1083
-01 Iron cyanos
+01 Cyanos iron
+
 #1084
-01 Air cyanos
+01 Cyanos air
+
 #1085
-01 Giant cyanos
+01 Cyanos is gigantic
+
 #1090
-01 Wolf
+01 The Wolf
+
 #1091
-01 Steppe wolf
+01 The Steppenwolf
+
 #1092
-01 Ice wolf
+01 The Ice Wolf
+
 #1093
-01 Dry wolf
+01 Dry Wolf
+
 #1094
-01 Iron wolf
+01 The Iron Wolf
+
 #1095
-01 Hell wolf
+01 The Hell Wolf
+
 #1100
-01 Spider
+01 The Spider
+
 #1101
-01 Sulphuric spider
+01 The Sulfur Spider
+
 #1102
-01 Dry spider
+01 Dry Spider
+
 #1103
-01 Iron spider
+01 The Iron Spider
+
 #1104
-01 Fire spider
+01 The Fire Spider
+
 #1105
-01 Black Widow
+01 The Black Widow
+
 #1106
-01 Giant spider
+01 The Giant Spider
+
 #1107
-01 Air spider
+01 The Aerial Spider
+
 #1110
-01 Salamandra
+01 The Salamander
+
 #1111
-01 Nomrad salamandra
+01 Nomrad Salamander
+
 #1112
-01 Earth salamandra
+01 The Ground Salamander
+
 #1113
-01 Iron salamandra
+01 The Iron Salamander
+
 #1114
 01 Salamandiga
+
 #1120
-01 Red scorpion
+01 The Red Scorpion
+
 #1121
-01 Scorpion
+01 Scorpio
+
 #1122
-01 Blue scorpion
+01 The Blue Scorpion
+
 #1123
-01 Fire scorpion
+01 The Fiery Scorpion
+
 #1130
 01 Typhon
+
 #1131
-01 Smoke typhon
+01 Smoky Typhon
+
 #1132
-01 Screaming typhon
+01 The Shrieking Typhon
+
 #1133
-01 Iroin typhon
+01 The Iron Typhon
+
 #1134
-01 Fire typhon
+01 The Fiery Typhon
+
 #1135
-01 Giant typhon
+01 Giant Typhon
+
 #1140
-01 Cannibal
+01 The ogre
+
 #1141
-01 Sulphuric cannibal
+01 The Sulfur Man-eater
+
 #1142
-01 Cave cannibal
+01 The Man-eating Cave
+
 #1143
-01 Giant cannibal
+01 The Giant Ogre
+
 #1150
-01 Nyphon
+01 Niphon
+
 #1170
-01 Cat
+01 The cat
+
 #1180
-01 Bull
+01 The Bull
+
 #1190
-01 Thropos
+01 Tropos
+
 #1191
-01 Mad thropos
+01 Rabid tropos
+
 #1192
-01 Peat thropos
+01 Peat tropos
+
 #1193
-01 Royal thropos
+01 Royal Tropos
+
 #1194
-01 Air thropos
+01 Air tropos
+
 #1200
-01 Mammoth
+01 The Mammoth
+
 #1201
-01 Iron mammoth
+01 The Iron Mammoth
+
 #1202
-01 Snow mammoth
+01 The Snow Mammoth
+
 #1203
-01 Coal mammoth
+01 The Coal Mammoth
+
 #1210
-01 Sombie
+01 Zombies
+
 #1211
-01 Grey sombie
+01 Grey Zombie
+
 #1212
 01 Zombader
+
 #1213
-01 Giant zombie
+01 A giant zombie
+
 #1220
-01 Enchanted tree
+01 The Enchanted Tree
+
 #1221
-01 Red tree
+01 Mahogany
+
 #1222
-01 Dead tree
+01 A dead tree
+
 #1230
-01 Granite stoneater
+01 Granite Stone eater
+
 #1231
-01 Emerald stoneater
+01 Emerald Stone-eater
+
 #1232
-01 Sapphire stoneater
+01 Sapphire Stone Eater
+
 #1233
-01 Rockmaster
+01 The Owner of the Rocks
+
 #1240
-01 Undead
+01 A walking corpse
+
 #1241
-01 Cadaver
+01 The Cadaver
+
 #1242
-01 Cadaver-spider
+01 The Spider Cadaver
+
 #1243
-01 Bone cadaver
+01 The Bone Cadaver
+
 #1244
-01 Fiant cadaver
+01 The Giant Cadaver
+
 #1250
-01 Bat
+01 The bat
+
 #1251
-01 Grey bat
+01 Grey Bat
+
 #1252
-01 Fire bat
+01 The Fire Bat
+
 #1253
-01 Giant bat
+01 The Giant Bat
+
 #1260
-01 Forest maenad
+01 Forest Maenad
+
 #1261
-01 Steppe maenad
+01 Steppe Maenad
+
 #1262
-01 Cave maenad
+01 The Cave Maenad
+
 #1263
-01 Magic maenad
+01 The Magical Maenad
+
 #1264
-01 Air maenad
+01 The Aerial Maenad
+
 #1270
-01 Midget
+01 The dwarf
+
 #1271
-01 Forest midget
+01 The Forest Dwarf
+
 #1272
-01 Crater midget
+01 Crater Dwarf
+
 #1273
-01 Air midget
+01 The Air Dwarf
+
 #1290
-01 Assasin
+01 The Assassin
+
 #1291
-01 Free assasin
+01 The Free Assassin
+
 #1292
-01 Spectral assasin
+01 The Ghost Assassin
+
 #1310
-01 Devourer
+01 Glot
+
 #1311
-01 Bog devourer
+01 Swamp throat
+
 #1320
-01 Bringer of death
+01 The Messenger of Death
+
 #1330
-01 Barrower
+01 The burial mound
+
 #1340-1343
-01 Rogue
+01 The Robber
+
 #1410
-01 Subterranean worm
+01 The Underground Worm
+
 #1420
-01 Mermaid
+01 The Mermaid
+
 #1430
-01 Meat prober
+01 Meat Tentacle
+
 #1431
-01 Iron prober
+01 The Iron Tentacle
+
 #1440
-01 Bone dog
+01 Bone Dog
+
 #1450
-01 Charon hunter
+01 The Charonian Hunter
+
 #1451
-01 Fire hunter
+01 The Fire Hunter
+
 #1452
-01 Iron hunter
+01 The Iron Hunter
+
 #1453
-01 Dead hunter
+01 The Dead Hunter
+
 #1460
-01 Fire huntress
+01 The Fiery Huntress
+
 #1461
-01 Iron huntress
+01 The Iron Huntress
+
 #1462
-01 Charon huntress
+01 The Charonian Huntress
+
 #1463
-01 Dead huntress
+01 The Dead Huntress
+
 #1470
-01 Abyss guardian
+01 Guardian of the Abyss
+
 #1480
-01 Chimera
+01 The Chimera
+
 #1880
 01 Bangville scolopendra
+
 #1881
-01 Leaf insect
+01 Stickman
+
 #1882
-01 Thropos
+01 Tropos
+
 #1883
-01 Rusted knight
+01 The Rusty Knight

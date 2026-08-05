@@ -1,0 +1,10 @@
+01 Alchemistischer Kessel
+03 alchemistischer Kessel
+10 Stellen Sie den Wok auf den Boden, um ihn zu verwenden.
+11 Keine Reaktion möglich:
+12 prana<%d
+13 land<%d
+14 luft<%d
+15 wasser<%d
+16 feuer<%d
+100 Der alchemistische Kessel wurde erstmals im Jahr 1008 vom Hofmagier von König Valentin, Amilus, geschaffen. Vor seiner Erfindung wurden sperrige alchemische Öfen verwendet, die ganze Häuser besetzten. Der Kessel erlaubte auch, die meisten notwendigen alchemistischen Umwandlungen unter Wanderbedingungen durchzuführen. Nur für komplexe und teure Reaktionen wurden immer noch Öfen benötigt. Im Laufe vieler Jahrhunderte ging die Kunst des Ofenbaus verloren, und die Anzahl der funktionierenden Öfen wurde aufgrund von Kriegen und Katastrophen reduziert.  In der heutigen Sphäre ist kein ganzer alchemistischer Ofen bekannt. Wenn jemand einen funktionierenden Ofen findet, kann er sehr seltene und wertvolle Umwandlungen durchführen.

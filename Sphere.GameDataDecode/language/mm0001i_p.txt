@@ -1,37 +1,32 @@
 10000 I
-
-10100 Bem vindo %p1! Vejo que está pronto para promoção na nossa organização. Prove que você merece e que não estava enganado a seu respeito.
-10101 Para pegar o segundo estágio, traga-me a prova de sua lealdade e poder. Tem um lugar em uma masmorra de Hyperion onde %z1 reside. Deve ter o que nosso amigo perdeu. Traga-me de volta.
-
-10200 Você cresceu tão rápido! Eu me lembro de você quando recém entrou na organização. Você era um jovem guerreiro! Bem, tenho trabalho para um desenvolvido guerreiro como você está agora. Um de nossos aliados está com problemas, ele precisa de nossa ajuda. Ajude-o e ele lhe dará uma recomendação...
-10201 Aqui está uma carta, entregue para %m2 e ele dirá para você a causa do problema. %m1.
-10202 Pelo menos! Ele enviou você. Eu espero muito que você consiga me ajudar! Uma terrível coisa aconteceu: meu melhor amigo %a1 foi aprisionado! Liberte-o e mostre a saída para ele! Ele achará depois seu caminho para retornar. %m2.
-10203 Obrigado por me ajudar a sair de lá. Vejo que meu amigo nao me deixaria jamais em apuros. Você diz que precisa de uma recomendação? Sem problemas, pegue e agradeça a toda sua roganização pelo favor. Leve para seu mestre. %a1.
-
-10300 Opa, o quarto estágio: Sei que você merece, mas, infelizmente, eu não tenho força e tampouco desejo de iniciar jogos burocráticos para promover você. Estou numa grande tristeza, não tenho tempo para organização agora.
-10301 Meu parente próximo, %m2, está muito doente. Sua doença é penosa e incurável e até os melhores médicos que já estiveram aqui não podem ajudá-lo. Eles dizem que %m3 é um grande médico bruxo e tem curado pessoas com este tipo de enfermidade. Ai de mim, a organização negou-me o direito de entrar nesta longa jornada. Se você me ajudasse eu ajustaria a promoção para o quarto estágio sem demora. %m1.
-10302 Conheço a doença de que você esta se referindo, %p1. É causada pelo veneno de escorpião e somente pode ser curada com um elixir feito do mesmo veneno combinado com algumas ervas. Para começar, traga-me 20 ferrões de escorpião. %m3.
-10303 Bom, agora algumas ervas e o elixir estará pronto para uso! Tenho certeza que vai curar %m1! %m3.
-10304 O elixir está pronto, %p1. Não perca tempo, leve de uma vez para %m2. Com esta doença que ele tem, cada minuto é precioso. %m3.
-10305 Obrigado, %p1! Pegue esta carta, Descrevi nela tudo que fez por mim. Eu acho que %m1 irá admiti-lo no quarto estágio dos Mestres de aço uma vez que ele leia isso. %m2.
-
-10400 Nós, Mestres de aço, somos conhecidos não somente pelo nosso pleno comando de armas. Também conhecemos os segredos de lâminas mágicas de poderes nunca antes ouvidos. Antes de ir para o quinto estágio você terá obter uma lâmina como aquela para você
-10401 O velho armeiro %m2 ajudou gerações nossas a obter as armas poderosas. Entretanto, não é aconselhado ir até ele de mãos vazias. Eu tenho um diamante perfeito para ele e ficarei feliz em dá-lo por 20 dentes de mamute. %m1. Leve para %m2 e diga para ele que você foi indicado por mim. Eu acho que ele ficara contente em ajudá-lo. %m1.
-10403 Oi, %p1. Ficarei feliz em ajudá-lo. Já tenho a fórmula perfeita que descreve como fazer uma lâmina mágica, mas serão necessários 3 lâminas. A primeira delas esta numa caverna guardada por %a1. Se você puder conversar com ele de coração para coração, ele dará a você e dirá onde a Segunda se encontra.
-10404 Ooh, podemos conversar calmamente aqui, sem aqueles problemáticos vermes. Pegue esta lâmina. Terá que ir até %z1 para pegar a segunda. Nós costumavamos conversar um com o outro, mas agora ele perdeu tudo que restava em sua mente. Você não será capaz de concordar com nada que ele diga. Pegue a segunda arma dele e leve para %m2. %a1.
-10405 "...Leve a lâmina de %z1's para o velho armeiro %m2...". %a1.
-10406 Bom, resta somente uma lâmina agora. Para dizer a verdade, eu a comprei a muitos anos atrás, então se você me reembolsar o seu preço, 2 milhões de thalers, farei para você uma espada tão valiosa quanto a do líder de sua organização. %m2.
-10407 A espada está pronta, pegue, assim como meu certificado pessoal de qualidade. Mostre o certificado para %m1 e o quinto estágio será seu. %m2.
-
-10500 Você agora realmente é um autentico Mestre do aço, %p1! Porem, o sexto estágio é uma recompensa somente para um verdadeiro herói, então se quiser deverá provar que merece, tenho uma tarefa perfeita para você.
-10501 Nossos velhos inimigos, Mágicos, estão novamente bolando algo contra nós. Tenho importantes e reais informações que eles estão tentando recriar a população de dragões e querendo soltá-la contra nós! Iremos destruir eles antes que os mágicos possam levar adiante seus planos! Cada membro de nossa organização deve me trazer pelo menos 20 dentes de dragões. %m1.
-10502 O plano dos mágicos foi destruído, mas o perigo ainda existe. Enquanto eu decido onde suas habilidades e experiências podem ser de melhor aproveitamento para nós, termine outra tarefa. Mágicos roubaram %a1, o tesoureiro de nossa organização, e trancaram-no em uma terrível prisão guardada por monstros horríveis. Ele não deverá ser abandonado nas mãos do inimigo, pois sabe muito sobre nossos assuntos particulares. Liberte-o, %p1! %m1.
-10503 Obrigado, %p1! Mereço um descanso após tudo que passei dentro desta prisão imunda, enquanto você leva meus relatos para %m1, estarão mais seguros com ele. %a1.
-10504 Pegamos grande numero de provas que os mágicos estavam tentando armar um ataque na nossa organização. O conselho de nossa organização tomou uma decisão oficial de declarar guerra contra os mágicos. Leve esta pena, o sinal da guerra, ao líder dos mágicos, %m2. %m1.
-10505 Vocês querem guerra - ótimo. Espero que você tome parte disso, %p1! Enquanto passava o sinal de guerra sem meu conhecimento, você quebrou pelo menos 20 regras de etiqueta de nossos guerreiros. Você foi excluído da organização imediatamente por vários motivos, mas: se me fizer um serviço, não direi para %m1 sobre seus erros. Meu bom amigo %a2 esta perdido na floresta rodeado por vários monstros. Encontre-o e mostre como chegar ao teleporte mais próximo. %m2.
-10506 Obrigado por ajudar, %p1. Aqui está uma nota que confirma que estou bem, leve para %m2. %a2.
-10507 Bem, fez suas obrigações e não vou relatar para %m1 sobre seu erro. Leve minha carta para %m1, esta escrito que aceitamos o desafio e iremos lutar até o fim cruel de uma guerra, quando alguém perde! %m2.
-10508 A guerra começou e se quiser ser um mestre no sexto estágio, deverá se destacar na guerra. Traga-me pelo menos 30 orelhas de mágicos. %m1.
-10509 Bem, %p1! Os mágicos foram praticamente destruídos e eliminados da Sphere. A ultima esperança deles é %z1, um monstro terrível criado especialmente para lutar contra nós! Vários membros morreram repetidamente tentando matá-lo. Mas eu acredito em você e desejo a vitória! Uma vez derrotado, não haverá mais obstáculo para seu sexto estágio. %m1.
-
-121212 Teste de LoadMsgGroup
+10100 Saudações. %p1! Vejo que estás pronto para te juntares à nossa guilda.  Prova-me que és digno, e não estou enganado a teu respeito.
+10101 Para o segundo grau, traz-me a prova da tua lealdade e força. Em uma das masmorras de Hyperion, há um lugar onde habita %z1 ele deve ter o que o nosso último amigo perdeu. Devolve-me isso.
+10200 Estás a crescer mesmo à frente dos meus olhos! Lembro-me de TI quando escolheste a nossa guilda, quando eras um jovem guerreiro! Bem, para um guerreiro tão estabelecido, tenho um trabalho para fazer. Um dos nossos aliados teve um acidente e precisa da nossa ajuda. Ajuda-o e ele já me vai dar uma recomendação...
+10201 Aqui tens a carta, dá-ma. %m2 e então ele lhe dirá qual é a verdadeira essência do problema. %m1.
+10202 Finalmente! Ele enviou-te! Espero mesmo que consigas!  O que aconteceu foi que o meu melhor amigo foi capturado. %a1! Liberta-o e mostra-lhe a saída! A partir daqui, ele vai encontrar o seu próprio caminho. %m2.
+10203 Muito obrigado por me ajudares a sair daqui. Vejo que o meu amigo não me deixou em apuros. Estás a dizer que precisas de uma recomendação? Não há problema em segurá-la, mas por uma coisa e um agradecimento a toda a sua guilda! Dá-a ao teu mestre. %a1.
+10300 Sim, a quarta etapa: eu sei que você merece, mas infelizmente não tenho a força, a capacidade ou o desejo de iniciar jogos burocráticos e promovê-lo. Estou de luto, Não tenho tempo para a guilda agora.
+10301 Meu parente próximo, %m2 muito doente. Sua doença é grave e incurável, e mesmo os melhores médicos da esfera não podem ajudá-lo. Dizem que %m3 - um grande curandeiro, e curou pessoas de tais doenças. Infelizmente, a liderança da guilda recusou-se a deixar-me ir nesta longa viagem. Se você me ajudasse, eu resolveria a questão do quarto estágio sem demora. %m1.
+10302 A doença que você fala, %p1 conhecida por mim. É causada pelo veneno do Escorpião, e só pode ser curada com um elixir do mesmo veneno, em combinação com algumas ervas. Primeiro, traz-me 20 ferros de Escorpião. %m3.
+10303 Ótimo, agora um pouco de ervas e o Elixir está pronto! Tenho a certeza que ele vai curar. %m1! %m3.
+10304 Elixir pronto, %p1. Não perca tempo, leve-o diretamente para %m2. Cada minuto conta com a doença dele. %m3.
+10305 Obrigado., %p1! Tome esta carta, eu descrevi tudo o que você fez por mim. Acho que consegui-lo., %m1 ele vai levá-lo imediatamente para o quarto nível da Guilda dos Mestres do aço. %m2.
+10400 Nós, mestres do aço, não somos chamados assim apenas porque somos mestres em armas. Também conhecemos os segredos das lâminas mágicas de força sem precedentes. Antes de obter o quinto nível na guilda, você terá que obter uma lâmina semelhante para si mesmo.
+10401 Velho Armeiro %m2 ajudou mais de uma geração de mestres começaram a obter as armas estimadas. Mas de mãos vazias não vale a pena ir até ele. Tenho um diamante perfeito para ele, e vou dar-To por 20 presas de mamute. %m1.
+10402 O diamante é seu, %p1. Levá-lo %m2 e diz-lhe que vieste de mim. Acho que ele adoraria ajudar-te. %m1.
+10403 Olá., %p1. Vou ajudar-te a obter a tua arma. Tenho uma fórmula adequada que descreve como fazer uma grande de três lâminas incomuns. O primeiro dos três é mantido em uma masmorra sob proteção %a1. Se conseguires falar com ele, ele dá-to e diz-te onde está a segunda lâmina.
+10404 Aqui podemos falar em paz, sem ser incomodados. Pegue esta lâmina e depois da próxima você terá que ir para %z1. Já falámos com ele uma vez, mas agora ele perdeu o resto da sua mente. Acho que não vais conseguir negociar com ele. Tira-lhe a arma e leva-a. %m2. %a1.
+10405 "...leva a lâmina. %z1 ao velho Armeiro %m2...". %a1.
+10406 Muito bem, Só falta o último. Para dizer a verdade, comprei - o há alguns anos, por isso, se me compensares o preço, meio milhão. tálerov, então eu me separarei dele, e faremos para você uma espada digna até mesmo do chefe da Guilda dos Mestres do aço. %m2.
+10407 A espada está pronta, pegue-a, bem como o meu certificado de qualidade pessoal para ele. Mostre o certificado %m1 e o quinto nível da sua guilda é o seu. %m2.
+10500 Você já é um verdadeiro mestre do aço, %p1! No entanto, o sexto nível em nossa guilda é uma recompensa para o verdadeiro herói, e se você quiser provar que é digno dela, eu tenho uma tarefa para você.
+10501 Os arquimagos, os nossos inimigos, estão outra vez a conspirar contra nós. Tenho informações credíveis de que eles estão a tentar restaurar a população de dragões e colocar estas coisas contra nós! Destruímo-los-emos antes que os Arquimagues ponham em prática o seu plano! Cada membro da nossa guilda deve trazer-me pelo menos 20 dentes de dragão. %m1.
+10502 Os planos dos arquimagos foram frustrados, mas o perigo ainda não passou. Enquanto eu penso onde suas habilidades e experiência são mais úteis, faça outra tarefa. Arquimago %a1 o tesoureiro da nossa guilda, e prendemo-lo numa masmorra, sob a protecção de monstros terríveis. Não podemos deixá-lo nas mãos dos inimigos, ele sabe muito sobre os nossos assuntos. Liberta-o., %p1! %m1.
+10503 Obrigado., %p1! Depois de tudo o que passei nas masmorras, preciso de descansar. leva os meus livros de contabilidade para a %m1 ele os terá em segurança. %a1.
+10504 Temos provas suficientes de que os arquimagos estavam a preparar um ataque contra nós.	 O Conselho da nossa guilda decidiu declarar guerra oficial à sua guilda. Leva esta pena para o chefe dos arquimagos., %m2. %m1.
+10505 Se querem guerra, tudo bem. É pena que não te juntes a ela., %p1! Ao dar-me um sinal, violaste quase 20 regras de etiqueta militar da tua guilda. Por causa disso, você é imediatamente expulso da guilda: embora: se você me servir, eu não vou falar %m1 os teus erros. Meu bom amigo, %a2 perdeu-se numa floresta cheia de monstros perigosos. Encontra-o e leva-o ao teletransporte mais próximo. %m2.
+10506 Obrigado pela ajuda, %p1.Aqui está um bilhete a confirmar que estou bem. %m2. %a2.
+10507 Bem, tu cumpriste as tuas obrigações e eu também não vou escrever. %m1 o teu erro. Pegue minha carta para %m1 diz que aceitamos o desafio e vamos lutar até ao fim! %m2.
+10508 A guerra começou, e se você quer se tornar um mestre do sexto estágio, você deve se destacar nela. Traz - me pelo menos 30 orelhas de inimigos. %m1.
+10509 Excelente., %p1! Os arquimagos estão praticamente derrotados. Sua última esperança é %z1 um monstro terrível criado especialmente contra nós! Mais de um mestre se deitou em combate com ele. Mas eu acredito em você e desejo a vitória! Depois que você acabar com ele, não haverá mais obstáculos para você entrar no sexto nível da guilda. %m1.
+121212 Test of LoadMsgGroup

@@ -1,10 +1,7 @@
-01 Formula della polvere della pioggia sulfurea
-02 Formula della polvere della pioggia sulfurea
-03 Formula della polvere della pioggia sulfurea
-
-100 Davanti a te si trova la pergamena con la descrizione della polvere magica. Sotto ogni formula c'è un disegno ed essa è consumata dal passare del tempo. Al fine di non perdere una così importante pergamena sarebbe meglio conservarla in un libro speciale per le formule.
-
+01 Ricetta polvere di pioggia di zolfo
+02 ricette di polvere di pioggia di zolfo
+03 ricetta polvere di pioggia di zolfo
+100 Ecco un rotolo con una descrizione della ricetta della polvere magica. Dietro ogni ricetta si nasconde il lavoro scrupoloso e lungo di diverse generazioni di maghi. Per non perdere una pergamena così preziosa, salvala in un ricettario speciale.
 TEXT
-
-    I maghi esperti (con un grado non inferiore a debuttante) per ottenere la polvere della pioggia sulfurea mescolano Feirik, Circulonius e Ferro nel recipiente alchemico e infine aggiungono la polvere di Amilus alla mistura per completare la reazione. 
-
+    Maghi esperti (gradi non inferiori al candidato) per ottenere la polvere di pioggia di zolfo mescolano feirik, circulonia e ferro in una bombola alchemica, quindi aggiungono la polvere di Amilus finale alla miscela.
+    

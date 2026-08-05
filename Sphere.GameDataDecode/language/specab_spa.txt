@@ -1,0 +1,111 @@
+#5510-5515
+01 Invisibilidad
+100 El asesino se disfraza gracias a un hechizo especial del gremio, pero tan pronto como saca un arma mágica o de acero frío, la capa de invisibilidad desaparece de inmediato.
+
+#5520-5525
+01 Golpe crítico
+100 Cuando llega el momento, se necesita un golpe preciso y despiadado. Los asesinos pasan años entrenando precisamente este golpe mortal, el secreto de su escuela.
+
+#5530-5535
+01 Veneno
+100 Un veneno fuerte basado en cianuro y un hechizo antiguo.
+
+#5620-5625
+01 Escudo de Prana
+100 El cruzado está envuelto en un aura divina que absorbe el daño debido al Prana del guerrero.
+
+#5630-5635
+01 Tiempo de ejecución
+100 Transición instantánea a un estado en el que los ataques cruzados se vuelven dos veces más rápidos. Por supuesto, es difícil mantener este estado, porque incluso en los más entrenados es de corta Duración.
+
+#5720-5725
+01 Grilletes
+100 La palabra Sagrada une las manos. Mientras esté en vigor, no se puede levantar la espada ni sacar el mantra. Incluso desatar las cintas de la bolsa de polvo es una tarea abrumadora.
+
+#5730-5735
+01 Limpieza
+100 Cuanto más alto es el escalón del Santo Inquisidor, más fuerte es su espíritu. Los sans más jóvenes solo pueden aliviar la carga de los mutadores en uno o dos, el nivel superior liberará a los seis mutadores.
+
+#5810-5815
+01 Ojo de Belkin
+100 La mano firme y el ojo agudo de los cazadores forestales son famosos en toda la Esfera. Si lo desean, incluso una Ballesta ordinaria puede usar de manera más efectiva, aumentando su capacidad de derrota.
+
+#5820-5825
+01 Doble flecha
+100 ¡Solo los cazadores logran poner dos flechas en una Ballesta normal a la vez y no fallar!
+
+#5830-5835
+01 Wanderer
+100 Acostumbrados a los viajes constantes en busca de presas y capaces de perseguir a los animales de patas más rápidas, los cazadores pueden desarrollar una velocidad de carrera realmente impresionante si lo desean.
+
+#5920-5925
+01 Miopía
+100 Impone un hechizo que difumina todo el mundo que lo rodea ante su mirada. Es imposible usar su arma a una distancia de más de dos metros.
+
+#5930-5935
+01 Maldición
+100 El hombre maldito se convierte en cerdo y, aunque la conciencia dentro del animal permanece sin cambios, el cuerpo no está completamente sujeto a él. El maldito no puede detener sus piernas y usar cualquier arma.
+
+#6010-6015
+01 Hipermetropía
+100 Usando la bebida secreta de los druidas, el bárbaro puede atacar con cualquier arma a una distancia de hasta treinta metros , de hecho, es una transferencia telequinética de daño a un objetivo remoto.
+
+#6020-6025
+01 Berserk
+100 Un guerrero puede introducirse artificialmente en un estado de Berserker. Al infligir golpes devastadores, el bárbaro olvida su propia seguridad.
+
+#6030-6035
+01 Aturdimiento
+100 El hombre casi pierde sus sentimientos. Se queda ciego por un tiempo y sus manos no le escuchan.
+
+#6110-6115
+01 Vida de la naturaleza
+100 Usando la sabiduría del bosque, el druida sabe cómo prolongar la vida de una persona, pero aún así no puede hacerla inmortal.
+
+#6130-6135
+01 Metamorfosis
+100 Repitiendo constantemente las runas antiguas, el druida se transforma en un lobo fuerte y de patas rápidas.
+
+#6220-6225
+01 Huida
+100 En el momento de llevarse las piernas es el momento más importante del oficio de ladrón.
+
+#6230-6235
+01 Sombra nocturna
+100 El ladrón puede seguir a su víctima por la noche, disfrazándose en cada sombra. Pero cualquier movimiento descuidado-y el ladrón será descubierto.
+
+#6320-6325
+01 Kamae
+100 Un estado similar al trance o la meditación permite al luchador concentrarse en su propia defensa, repeliendo casi todos los golpes dirigidos a él.
+
+#6410-6415
+01 Habilidad
+100 De acuerdo con las fórmulas encontradas, un Armero puede crear o reparar cualquier arma, por supuesto, si tiene suficiente habilidad.
+
+#6420-6425
+01 Huida
+100 Los artesanos nunca se distinguieron por una habilidad especial para luchar, es mejor correr sin detenerse, lejos del peligro.
+
+#6510-6515
+01 Habilidad
+100 De acuerdo con las fórmulas y dibujos encontrados, el Herrero puede crear o reparar cualquier armadura o robo mágico, por supuesto, si tiene suficiente habilidad.
+
+#6520-6525
+01 Huida
+100 Los artesanos nunca se distinguieron por una habilidad especial para luchar, es mejor correr sin detenerse lejos del peligro.
+
+#6610-6615
+01 Encantamiento
+100 Si el mago encuentra la fórmula adecuada, puede usar su conocimiento de la magia para imponer propiedades especiales en un arma o armadura.
+
+#6620-6625
+01 Tornado
+100 Para escapar de los atacantes, el hechicero usa la magia del pensamiento, y el objetivo de la magia gira en un lugar, perdiendo temporalmente el control de sus movimientos.
+
+#6630-6635
+01 Armadura oxidada
+100 Una broma malvada con la mente. La capacidad de encantar a una persona como si estuviera usando una armadura de caballero oxidada, y solo se movería de lado o de adelante hacia atrás.
+
+#6900
+01 Mantra Haka sapida odnaka
+03 Aumenta la velocidad en 1.5 veces.

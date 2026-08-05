@@ -1,0 +1,5 @@
+01 Licencia de ascenso
+02 Licencias de ascenso
+03 licencia de ascenso
+100 Aumenta el nivel de Especialización del personaje en 1. Para subir de nivel en 1 paso, se requieren tantas licencias por pila como el nivel al que se eleva la Especialización. Por ejemplo, pasar del nivel 3 al nivel 4 requiere 4 licencias por pila. No hay bonos adicionales disponibles para completar las tareas correspondientes. Al hacerlo, restablece las características distribuidas del personaje.
+101 ¿Realmente quieres aumentar el nivel de la especialidad?
