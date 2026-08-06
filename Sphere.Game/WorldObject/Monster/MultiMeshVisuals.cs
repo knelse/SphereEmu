@@ -684,8 +684,8 @@ public static class MonsterMultiMeshVisuals
 			return cached;
 		}
 
-		var glbPath = $"{ModelsDirectory}{modelName}.glb";
-		if (!ResourceLoader.Exists(glbPath))
+		var glbPath = GlbModelPaths.Resolve(modelName, ModelsDirectory);
+		if (glbPath is null || !ResourceLoader.Exists(glbPath))
 		{
 			MeshPartsCache[modelName] = null;
 			return null;

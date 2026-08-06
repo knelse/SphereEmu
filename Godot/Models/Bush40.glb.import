@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ddruljhlpjysw"
-path="res://.godot/imported/bush40.glb-ef5af94db688408080aae8ac90924012.scn"
+path="res://.godot/imported/Bush40.glb-6c5eb9486ecb4ae1d5fe3948084b6661.scn"
 
 [deps]
 
-source_file="res://Godot/Models/bush40.glb"
-dest_files=["res://.godot/imported/bush40.glb-ef5af94db688408080aae8ac90924012.scn"]
+source_file="res://Godot/Models/Bush40.glb"
+dest_files=["res://.godot/imported/Bush40.glb-6c5eb9486ecb4ae1d5fe3948084b6661.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

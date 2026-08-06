@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using SphServer.Sphere.Game.WorldObject;
 using FileAccess = Godot.FileAccess;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
@@ -1282,17 +1283,15 @@ public partial class TerrainObjectsFill : Node3D
 
     private PackedScene? GetOrLoadScene(string objectName)
     {
-        var baseDir = ModelsDirectory.TrimEnd('/') + "/";
-        foreach (var ext in new[] { "glb", "gltf" })
+        // Resolve real on-disk casing — loading lowercase paths on Windows rewrites NTFS names and
+        // causes Godot case-mismatch warnings for sibling textures (see GlbModelPaths).
+        var path = GlbModelPaths.Resolve(objectName, ModelsDirectory);
+        if (path is null || !ResourceLoader.Exists(path))
         {
-            var path = $"{baseDir}{objectName}.{ext}";
-            if (ResourceLoader.Exists(path))
-            {
-                return ResourceLoader.Load<PackedScene>(path);
-            }
+            return null;
         }
 
-        return null;
+        return ResourceLoader.Load<PackedScene>(path);
     }
 
     private void SetOwnerIfEditor(Node node)

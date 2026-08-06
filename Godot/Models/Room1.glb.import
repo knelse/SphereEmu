@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://duvno3aj1kbgt"
-path="res://.godot/imported/room1.glb-e75e7a9ca0e1600a3dd45fe0c66aa833.scn"
+path="res://.godot/imported/Room1.glb-c9a5b6b0776bb4c7ae4dd343a4847d56.scn"
 
 [deps]
 
-source_file="res://Godot/Models/room1.glb"
-dest_files=["res://.godot/imported/room1.glb-e75e7a9ca0e1600a3dd45fe0c66aa833.scn"]
+source_file="res://Godot/Models/Room1.glb"
+dest_files=["res://.godot/imported/Room1.glb-c9a5b6b0776bb4c7ae4dd343a4847d56.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

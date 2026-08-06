@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://d2hwdaphasojj"
-path="res://.godot/imported/s_ruin07.glb-471557d706c87d609093aed7ac229cdb.scn"
+path="res://.godot/imported/S_Ruin07.glb-ce9b8e04fce8d0ef036407adef32aecd.scn"
 
 [deps]
 
-source_file="res://Godot/Models/s_ruin07.glb"
-dest_files=["res://.godot/imported/s_ruin07.glb-471557d706c87d609093aed7ac229cdb.scn"]
+source_file="res://Godot/Models/S_Ruin07.glb"
+dest_files=["res://.godot/imported/S_Ruin07.glb-ce9b8e04fce8d0ef036407adef32aecd.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

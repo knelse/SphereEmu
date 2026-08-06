@@ -67,7 +67,7 @@ public partial class WorldObject
 		return !TryGetExistingGlbVisual(BuildModelGlbPath(trimmed), out _);
 	}
 
-	private static string BuildModelGlbPath(string modelName) => $"res://Godot/Models/{modelName}.glb";
+	private static string BuildModelGlbPath(string modelName) => GlbModelPaths.ResolveOrFallback(modelName);
 
 	private bool HasAnyGlbVisualChild()
 	{

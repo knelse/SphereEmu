@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dae5lpbotse1n"
-path="res://.godot/imported/lbridge.glb-b3271cbddb99a95c896c3598725e96d4.scn"
+path="res://.godot/imported/LBRIDGE.glb-5c0b585e7c905e291dbcce406c020f92.scn"
 
 [deps]
 
-source_file="res://Godot/Models/lbridge.glb"
-dest_files=["res://.godot/imported/lbridge.glb-b3271cbddb99a95c896c3598725e96d4.scn"]
+source_file="res://Godot/Models/LBRIDGE.glb"
+dest_files=["res://.godot/imported/LBRIDGE.glb-5c0b585e7c905e291dbcce406c020f92.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

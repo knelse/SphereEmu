@@ -3,7 +3,6 @@
 obj
 bin
 .mono/temp
-.godot
 Tools/godot.local.ps1
 .import
 .mono

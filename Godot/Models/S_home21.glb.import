@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dls777ipepdsl"
-path="res://.godot/imported/s_home21.glb-e33042d4cc52e0c6baa47e66ba25b91d.scn"
+path="res://.godot/imported/S_home21.glb-95377d76b17f25de40ef7b813f4f062d.scn"
 
 [deps]
 
-source_file="res://Godot/Models/s_home21.glb"
-dest_files=["res://.godot/imported/s_home21.glb-e33042d4cc52e0c6baa47e66ba25b91d.scn"]
+source_file="res://Godot/Models/S_home21.glb"
+dest_files=["res://.godot/imported/S_home21.glb-95377d76b17f25de40ef7b813f4f062d.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

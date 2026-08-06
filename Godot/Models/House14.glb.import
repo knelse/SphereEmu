@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bwt41y7ldxuy2"
-path="res://.godot/imported/house14.glb-d6695bf44e84a5789e27805ba5beae53.scn"
+path="res://.godot/imported/House14.glb-a9869db6492d53562d00f70fe957350a.scn"
 
 [deps]
 
-source_file="res://Godot/Models/house14.glb"
-dest_files=["res://.godot/imported/house14.glb-d6695bf44e84a5789e27805ba5beae53.scn"]
+source_file="res://Godot/Models/House14.glb"
+dest_files=["res://.godot/imported/House14.glb-a9869db6492d53562d00f70fe957350a.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

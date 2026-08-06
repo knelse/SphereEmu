@@ -81,8 +81,8 @@ internal static partial class GlbVisualGrounding
 			return height > 0f;
 		}
 
-		var glbPath = $"{modelsDirectory.TrimEnd('/')}/{modelName}.glb";
-		if (!ResourceLoader.Exists(glbPath))
+		var glbPath = GlbModelPaths.Resolve(modelName, modelsDirectory);
+		if (glbPath is null || !ResourceLoader.Exists(glbPath))
 		{
 			ModelHeightCache[modelName] = null;
 			return false;

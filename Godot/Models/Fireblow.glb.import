@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cbmuu2sve0q2h"
-path="res://.godot/imported/fireblow.glb-31abb084d519352dd51e16102f2f8789.scn"
+path="res://.godot/imported/Fireblow.glb-5ec916a7b302f9b13661f35740cff666.scn"
 
 [deps]
 
-source_file="res://Godot/Models/fireblow.glb"
-dest_files=["res://.godot/imported/fireblow.glb-31abb084d519352dd51e16102f2f8789.scn"]
+source_file="res://Godot/Models/Fireblow.glb"
+dest_files=["res://.godot/imported/Fireblow.glb-5ec916a7b302f9b13661f35740cff666.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

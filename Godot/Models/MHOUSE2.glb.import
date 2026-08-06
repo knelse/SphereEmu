@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dhxrtsaxufvl8"
-path="res://.godot/imported/mhouse2.glb-33ed610b8d65dc7ce22d13220518d608.scn"
+path="res://.godot/imported/MHOUSE2.glb-44ae5d02700375c5a1ee575cd0c4b649.scn"
 
 [deps]
 
-source_file="res://Godot/Models/mhouse2.glb"
-dest_files=["res://.godot/imported/mhouse2.glb-33ed610b8d65dc7ce22d13220518d608.scn"]
+source_file="res://Godot/Models/MHOUSE2.glb"
+dest_files=["res://.godot/imported/MHOUSE2.glb-44ae5d02700375c5a1ee575cd0c4b649.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

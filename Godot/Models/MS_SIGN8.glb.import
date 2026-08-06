@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dlnto37ddebg7"
-path="res://.godot/imported/ms_sign8.glb-db1e67da0de82e2ab83b6a8ff88b7070.scn"
+path="res://.godot/imported/MS_SIGN8.glb-72ef38ceaa875c430d04df8c5a62177b.scn"
 
 [deps]
 
-source_file="res://Godot/Models/ms_sign8.glb"
-dest_files=["res://.godot/imported/ms_sign8.glb-db1e67da0de82e2ab83b6a8ff88b7070.scn"]
+source_file="res://Godot/Models/MS_SIGN8.glb"
+dest_files=["res://.godot/imported/MS_SIGN8.glb-72ef38ceaa875c430d04df8c5a62177b.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

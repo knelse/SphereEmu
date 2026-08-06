@@ -4,18 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c0q65f1jjvtp4"
-path="res://.godot/imported/cam_cube.glb-75cc2154775bfa4fe4d6efec5a960be2.scn"
+path="res://.godot/imported/Cam_cube.glb-9da390f8965948c3d92f5b1b50cae1e6.scn"
 
 [deps]
 
-source_file="res://Godot/Models/cam_cube.glb"
-dest_files=["res://.godot/imported/cam_cube.glb-75cc2154775bfa4fe4d6efec5a960be2.scn"]
+source_file="res://Godot/Models/Cam_cube.glb"
+dest_files=["res://.godot/imported/Cam_cube.glb-9da390f8965948c3d92f5b1b50cae1e6.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -40,3 +42,4 @@ materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
+gltf/texture_map_mode=0
