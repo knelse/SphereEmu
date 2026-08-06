@@ -322,6 +322,11 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         sphereClient.SetPlayerDbEntry(entry);
     }
 
+    public void SaveSelectedCharacter()
+    {
+        sphereClient.SaveCharacter();
+    }
+
     public void DeletePlayerCharacter(int index)
     {
         sphereClient.DeletePlayerCharacter(index);

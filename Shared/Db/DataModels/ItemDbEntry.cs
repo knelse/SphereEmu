@@ -102,6 +102,10 @@ public class ItemDbEntry
         }
 
         item.GameObjectDbId = go.GameObjectDbId;
+
+        // Spelled Localisation on the game object, so the copy above misses it.
+        item.Localization = go.Localisation;
+
         if (item.Suffix != ItemSuffix.None)
         {
             item.UpdateStatsForSuffix();

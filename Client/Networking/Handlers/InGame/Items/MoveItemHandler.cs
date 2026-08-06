@@ -33,16 +33,24 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
 
         var returnToOldSlot = false;
 
-        if (targetSlot is BelongingSlot.Unknown || oldSlot is BelongingSlot.Unknown ||
-            !character.Items.ContainsKey(oldSlot))
+        // Only an empty source slot is unanswerable. An unknown target still has somewhere to go
+        // back to, and the slot check below sends it there.
+        if (oldSlot is BelongingSlot.Unknown || !character.Items.ContainsKey(oldSlot))
         {
             SphLogger.Warning($"Item not found in slot [{Enum.GetName(oldSlot)}]");
-            returnToOldSlot = true;
+            return;
         }
 
         var globalOldItemId = character.Items[oldSlot];
 
         var item = DbConnection.Items.FindById(globalOldItemId);
+
+        if (item is null)
+        {
+            SphLogger.Warning($"Move: slot [{Enum.GetName(oldSlot)}] points at item {globalOldItemId}, " +
+                              $"which is not in the database. Client ID: {localId:X4}");
+            return;
+        }
 
         if (!item.IsValidForSlot(targetSlot) || !character.CanUseItem(item))
         {

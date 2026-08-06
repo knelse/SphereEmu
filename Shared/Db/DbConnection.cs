@@ -3,6 +3,7 @@ using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Sphere.Game;
+using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Shared.Db;
@@ -150,7 +151,16 @@ public static class DbConnection
 
     private static void InitializeData()
     {
-        Items.DeleteAll();
+        // A character stores "slot -> item id", so the rows have to outlive a restart. Fists rows
+        // are the exception: nothing reads them, and a stored one only spends id space.
+        var staleFists = Items.DeleteMany(x => x.ObjectKind == GameObjectKind.Fists);
+        if (staleFists > 0)
+        {
+            SphLogger.Info($"Cleared {staleFists} unused fists row(s) from the item collection");
+        }
+
+        // The counter lives in memory, so move it past the stored ids before anything allocates one.
+        WorldObjectIndex.SeedFrom(Items.Count() == 0 ? 0u : (uint) Items.Max(x => x.Id));
         Monsters.DeleteAll();
         // ItemContainers.DeleteAll();
         // Vendors.DeleteAll();

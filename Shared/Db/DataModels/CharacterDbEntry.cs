@@ -12,6 +12,8 @@ namespace SphServer.Shared.Db.DataModels;
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry
 {
+    // Deliberately not inserted into the item collection: nothing reads this row, and one per
+    // character load would spend world object ids that are never given back.
     public readonly ItemDbEntry Fists = new()
     {
         ObjectKind = GameObjectKind.Fists,
@@ -30,7 +32,6 @@ public class CharacterDbEntry
         MaxMP = (ushort)MaxMPBase;
         AvailableDegreeStats = AvailableStatsPrimary[0];
         AvailableTitleStats = AvailableStatsPrimary[0];
-        Fists.Id = DbConnection.Items.Insert(Fists);
     }
 
     public int Id { get; set; }
@@ -247,7 +248,7 @@ public class CharacterDbEntry
 
     public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
     {
-        return FindEmptyInventorySlot != null;
+        return FindEmptyInventorySlot() != null;
     }
 
     public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)

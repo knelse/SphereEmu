@@ -106,6 +106,22 @@ public partial class SphereClient : WorldObject
 		return CurrentCharacter;
 	}
 
+	/// <summary>Write the character back to the database.</summary>
+	public void SaveCharacter()
+	{
+		// Characters are [BsonRef], so they live in their own collection and the player row only
+		// holds references — updating the player alone leaves the character document untouched.
+		if (CurrentCharacter is not null)
+		{
+			DbConnection.Characters.Update(CurrentCharacter);
+		}
+
+		if (playerDbEntry is not null)
+		{
+			DbConnection.Players.Update(playerDbEntry);
+		}
+	}
+
 	public void SetSelectedCharacterIndex(int index)
 	{
 		selectedCharacterIndex = index;
