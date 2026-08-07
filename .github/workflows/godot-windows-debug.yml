@@ -16,6 +16,9 @@ env:
   EXPORT_DIR: build/windows-debug
   PACKS_DIR: build/packs
   ASSET_BUNDLES_TAG: asset-bundles
+  SLIM_RELEASE_TAG: windows-debug-slim
+  # Godot Windows player + embedded slim PCK should be tens of MB; tiny zips are runtime_data-only failures.
+  MIN_SLIM_EXE_BYTES: "20000000"
 
 jobs:
   export-windows-debug:
@@ -101,7 +104,27 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path $env:EXPORT_DIR | Out-Null
           $out = Join-Path $env:EXPORT_DIR "SphServer.exe"
-          godot --headless --path . --export-debug "$env:EXPORT_PRESET" $out
+          $log = Join-Path $env:EXPORT_DIR "export-slim.log"
+          # Godot can exit 0 after a failed .NET export; always verify the binary.
+          & godot --headless --path . --export-debug "$env:EXPORT_PRESET" $out 2>&1 |
+            Tee-Object -FilePath $log
+          $code = $LASTEXITCODE
+          Write-Host "export-debug exit=$code"
+          Get-ChildItem -LiteralPath $env:EXPORT_DIR -Force |
+            Select-Object Name, Length |
+            Format-Table -AutoSize |
+            Out-String |
+            Write-Host
+
+          if (-not (Test-Path -LiteralPath $out)) {
+            throw "Export did not create $out (exit=$code). See $log"
+          }
+          $size = (Get-Item -LiteralPath $out).Length
+          $min = [int64]$env:MIN_SLIM_EXE_BYTES
+          if ($size -lt $min) {
+            throw "SphServer.exe is only $size bytes (min $min). Export likely failed; see $log"
+          }
+          Write-Host ("OK SphServer.exe size={0:N1} MB" -f ($size / 1MB))
 
       - name: Copy runtime_data into build
         run: ./Tools/asset_packs/Copy-RuntimeData.ps1 -ExportDir $env:EXPORT_DIR
@@ -112,6 +135,49 @@ jobs:
           name: SphServer-windows-debug-slim-${{ github.sha }}
           path: ${{ env.EXPORT_DIR }}
           if-no-files-found: error
+          include-hidden-files: true
+
+      - name: Publish slim build to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = $env:SLIM_RELEASE_TAG
+          $zipName = "SphServer-windows-debug-slim.zip"
+          $zipPath = Join-Path (Split-Path $env:EXPORT_DIR -Parent) $zipName
+
+          # Exclude the export log from the playable zip.
+          $log = Join-Path $env:EXPORT_DIR "export-slim.log"
+          $logTmp = $null
+          if (Test-Path -LiteralPath $log) {
+            $logTmp = Join-Path ([System.IO.Path]::GetTempPath()) "export-slim-$([guid]::NewGuid()).log"
+            Move-Item -LiteralPath $log -Destination $logTmp -Force
+          }
+
+          # Compress-Archive skips hidden items (.generated); ZipFile includes them.
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          if (Test-Path -LiteralPath $zipPath) { Remove-Item -LiteralPath $zipPath -Force }
+          try {
+            [System.IO.Compression.ZipFile]::CreateFromDirectory(
+              (Resolve-Path -LiteralPath $env:EXPORT_DIR).Path,
+              $zipPath
+            )
+          }
+          finally {
+            if ($logTmp -and (Test-Path -LiteralPath $logTmp)) {
+              Move-Item -LiteralPath $logTmp -Destination $log -Force
+            }
+          }
+
+          gh release view $tag 2>$null | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag `
+              --title 'Windows debug slim' `
+              --notes "Playable slim Godot server build. Heavy packs download from the ``asset-bundles`` release on first launch.`n`nPer-commit copies also upload as workflow artifacts." `
+              --latest=false
+          }
+
+          Write-Host "Uploading $zipName to release $tag (sha=$env:GITHUB_SHA)"
+          gh release upload $tag $zipPath --clobber
 
       - name: Prune old slim artifacts
         uses: actions/github-script@v7
