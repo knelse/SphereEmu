@@ -1,4 +1,5 @@
-# Pack per-cell ground chunks + shared meshes, strip TerrainMeshLibrary from terrain_scene.
+# Pack per-cell ground chunks + shared meshes, strip MeshLibrary from terrain_scene.
+# (Full MeshLibrary lives under GodotAssetSource/Terrain/; runtime uses ground chunks.)
 #
 # Usage (from repo root):
 #   .\Tools\pack_terrain_ground_chunks.ps1

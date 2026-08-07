@@ -39,6 +39,15 @@ public static class TerrainBakePaths
 	public static string GeneratedMultiMeshesDir => Combine("GeneratedMultiMeshes");
 	public static string GeneratedIndoorNavMeshesDir => Combine("GeneratedIndoorNavMeshes");
 
+	/// <summary>
+	///     Full MeshLibrary used only by <c>TerrainGridFill</c> rebuilds. Kept under
+	///     <c>GodotAssetSource/Terrain/</c> (parent <c>.gdignore</c>) so opening the project does not
+	///     import/parse this ~300MB LFS file.
+	/// </summary>
+	public static string MeshLibraryTres =>
+		Path.GetFullPath(Path.Combine(ProjectDir, AssetSourceFolderName, "Terrain", "TerrainMeshLibrary.tres"))
+			.Replace('\\', '/');
+
 	/// <summary>Absolute path with forward slashes for <see cref="ResourceLoader"/> / <see cref="ResourceSaver"/>.</summary>
 	public static string Combine(params string[] relativeParts)
 	{

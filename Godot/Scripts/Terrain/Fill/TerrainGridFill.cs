@@ -1,3 +1,4 @@
+using System.IO;
 using Godot;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
@@ -10,7 +11,9 @@ namespace SphServer.Godot.Scripts.Terrain.Fill;
 public partial class TerrainGridFill : Node3D
 {
 	public const string TerrainNodeName = "Terrain";
-	public const string DefaultMeshLibraryPath = "res://Godot/Terrain/TerrainMeshLibrary.tres";
+
+	/// <summary>Legacy path; empty export uses <see cref="TerrainBakePaths.MeshLibraryTres"/>.</summary>
+	public const string DefaultMeshLibraryPath = "";
 
 	/// <summary>Path to the map.txt file. Has to be txt instead of bin because Godot will not 
 	/// recognize it as a resource with unknown extension.</summary>
@@ -23,7 +26,10 @@ public partial class TerrainGridFill : Node3D
 	[Export]
 	public string TexturesDirectory { get; set; } = "res://Godot/Terrain/Textures/";
 
-	/// <summary>Written after each build; loaded on the next run so the same resource is cleared and refilled.</summary>
+	/// <summary>
+	///     Written after each build; loaded on the next run so the same resource is cleared and refilled.
+	///     Leave empty for <see cref="TerrainBakePaths.MeshLibraryTres"/> (outside Godot import).
+	/// </summary>
 	[Export]
 	public string MeshLibraryResourcePath { get; set; } = DefaultMeshLibraryPath;
 
@@ -155,9 +161,10 @@ public partial class TerrainGridFill : Node3D
 
 	private MeshLibrary LoadOrCreateMeshLibrary()
 	{
-		if (ResourceLoader.Exists(MeshLibraryResourcePath))
+		var path = ResolveMeshLibraryPath();
+		if (ResourceLoader.Exists(path) || File.Exists(path.Replace('/', Path.DirectorySeparatorChar)))
 		{
-			var loaded = ResourceLoader.Load<MeshLibrary>(MeshLibraryResourcePath);
+			var loaded = ResourceLoader.Load<MeshLibrary>(path);
 			if (loaded is not null)
 			{
 				return loaded;
@@ -178,11 +185,34 @@ public partial class TerrainGridFill : Node3D
 
 	private void SaveMeshLibrary(MeshLibrary meshLib)
 	{
-		var err = ResourceSaver.Save(meshLib, MeshLibraryResourcePath);
+		var path = ResolveMeshLibraryPath();
+		var dir = Path.GetDirectoryName(path.Replace('/', Path.DirectorySeparatorChar));
+		if (!string.IsNullOrEmpty(dir))
+		{
+			Directory.CreateDirectory(dir);
+		}
+
+		var err = ResourceSaver.Save(meshLib, path);
 		if (err != Error.Ok)
 		{
-			GD.PushError($"TerrainGridFill: failed to save mesh library ({err}): {MeshLibraryResourcePath}");
+			GD.PushError($"TerrainGridFill: failed to save mesh library ({err}): {path}");
 		}
+	}
+
+	private string ResolveMeshLibraryPath()
+	{
+		if (string.IsNullOrWhiteSpace(MeshLibraryResourcePath)
+			|| MeshLibraryResourcePath == "res://Godot/Terrain/TerrainMeshLibrary.tres")
+		{
+			return TerrainBakePaths.MeshLibraryTres;
+		}
+
+		if (MeshLibraryResourcePath.StartsWith("res://"))
+		{
+			return ProjectSettings.GlobalizePath(MeshLibraryResourcePath).Replace('\\', '/');
+		}
+
+		return MeshLibraryResourcePath.Replace('\\', '/');
 	}
 
 	private Mesh? TryBuildTexturedMesh(string masterName)

@@ -14,7 +14,7 @@ namespace SphServer.Godot.Scripts.Terrain;
 /// <summary>
 ///     Streams individual ground tiles (MeshInstance + collision) near clients / editor camera.
 ///     Leaves TerrainObjects MultiMeshes untouched. Expects the Terrain GridMap MeshLibrary to be stripped
-///     so opening MainServer does not pull TerrainMeshLibrary.tres.
+///     so opening MainServer does not pull the MeshLibrary (kept under GodotAssetSource, not imported).
 /// </summary>
 [Tool]
 public partial class TerrainGroundStreamer : Node
