@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Build changed heavy packs and publish to GitHub release tag asset-bundles.
+  Build changed heavy packs and publish to GitHub prerelease tag asset-bundles (CDN, not a game build).
   Intended for CI (requires gh + GODOT on PATH, GITHUB_TOKEN / GH_TOKEN).
 #>
 [CmdletBinding()]
@@ -200,10 +200,31 @@ if ($SkipUpload) {
     return
 }
 
+# Packs must stay on a public release so /releases/download/... works for slim builds.
+# GitHub cannot truly hide that; mark as prerelease and make the title obviously not a game build.
+$packReleaseTitle = '[internal] Asset pack CDN (not a game build)'
+$packReleaseNotes = @'
+Internal CDN for CRC-versioned Godot heavy packs (models/terrain/textures).
+
+This is **not** a playable build. Download the server from the **windows-debug-slim** release instead; it pulls these packs on first launch.
+'@
+
 gh release view $ReleaseTag 2>$null | Out-Null
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Creating release $ReleaseTag"
-    gh release create $ReleaseTag --title 'Asset bundles' --notes 'CRC-versioned Godot heavy asset packs (models/terrain/textures).' --latest=false
+    Write-Host "Creating prerelease $ReleaseTag"
+    gh release create $ReleaseTag `
+        --title $packReleaseTitle `
+        --notes $packReleaseNotes `
+        --prerelease `
+        --latest=false
+}
+else {
+    # Keep metadata correct if the release already existed from older CI.
+    gh release edit $ReleaseTag `
+        --title $packReleaseTitle `
+        --notes $packReleaseNotes `
+        --prerelease `
+        --latest=false
 }
 
 foreach ($id in $changed) {

@@ -105,10 +105,35 @@ jobs:
           New-Item -ItemType Directory -Force -Path $env:EXPORT_DIR | Out-Null
           $out = Join-Path $env:EXPORT_DIR "SphServer.exe"
           $log = Join-Path $env:EXPORT_DIR "export-slim.log"
-          # Godot can exit 0 after a failed .NET export; always verify the binary.
-          & godot --headless --path . --export-debug "$env:EXPORT_PRESET" $out 2>&1 |
-            Tee-Object -FilePath $log
-          $code = $LASTEXITCODE
+
+          # Prefer setup-godot's real exe; PATH "godot" can be a shim that breaks under pipelines.
+          $godot = if ($env:GODOT4 -and (Test-Path -LiteralPath $env:GODOT4)) { $env:GODOT4 }
+            elseif ($env:GODOT -and (Test-Path -LiteralPath $env:GODOT)) { $env:GODOT }
+            else { (Get-Command godot -ErrorAction Stop).Source }
+          Write-Host "Using Godot at: $godot"
+
+          # Avoid PowerShell pipelines ("Cannot run a document in the middle of a pipeline").
+          $psi = [System.Diagnostics.ProcessStartInfo]::new()
+          $psi.FileName = $godot
+          $psi.UseShellExecute = $false
+          $psi.RedirectStandardOutput = $true
+          $psi.RedirectStandardError = $true
+          $psi.CreateNoWindow = $true
+          foreach ($a in @('--headless', '--path', '.', '--export-debug', $env:EXPORT_PRESET, $out)) {
+            [void]$psi.ArgumentList.Add([string]$a)
+          }
+          $proc = [System.Diagnostics.Process]::new()
+          $proc.StartInfo = $psi
+          [void]$proc.Start()
+          $outTask = $proc.StandardOutput.ReadToEndAsync()
+          $errTask = $proc.StandardError.ReadToEndAsync()
+          $proc.WaitForExit()
+          $combined = @($outTask.GetAwaiter().GetResult(), $errTask.GetAwaiter().GetResult()) -join "`n"
+          Set-Content -LiteralPath $log -Value $combined -Encoding utf8
+          if ($combined) { Write-Host $combined }
+          $code = [int]$proc.ExitCode
+          $proc.Dispose()
+
           Write-Host "export-debug exit=$code"
           Get-ChildItem -LiteralPath $env:EXPORT_DIR -Force |
             Select-Object Name, Length |
@@ -168,12 +193,24 @@ jobs:
             }
           }
 
+          $slimTitle = 'Windows debug slim (playable)'
+          $slimNotes = @"
+Playable slim Godot server build.
+
+Heavy packs download automatically on first launch from the internal ``asset-bundles`` CDN prerelease (not a separate game download).
+
+Per-commit copies also upload as workflow artifacts.
+"@
+
           gh release view $tag 2>$null | Out-Null
           if ($LASTEXITCODE -ne 0) {
             gh release create $tag `
-              --title 'Windows debug slim' `
-              --notes "Playable slim Godot server build. Heavy packs download from the ``asset-bundles`` release on first launch.`n`nPer-commit copies also upload as workflow artifacts." `
-              --latest=false
+              --title $slimTitle `
+              --notes $slimNotes `
+              --latest
+          }
+          else {
+            gh release edit $tag --title $slimTitle --notes $slimNotes --latest
           }
 
           Write-Host "Uploading $zipName to release $tag (sha=$env:GITHUB_SHA)"
