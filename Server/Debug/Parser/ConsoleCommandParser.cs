@@ -61,6 +61,9 @@ public partial class ConsoleCommandParser
         RegisteredCommands["mob"] = SpawnRealMonster;
         RegisteredCommands["mobid"] = MobById;
         RegisteredCommands["loot"] = Loot;
+        RegisteredCommands["give"] = Give;
+        RegisteredCommands["giveinv"] = GiveToInventory;
+        RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
     }
 
