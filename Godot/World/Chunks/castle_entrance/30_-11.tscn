@@ -5,7 +5,7 @@
 
 [node name="Chunk_castle_entrance_30_-11" type="Node3D" unique_id=969474709]
 
-[node name="CastleEntrance_02_Арис _107B_4135_4135_4135_4135_4135_4135_4135_4135_4135" type="Node3D" parent="." unique_id=1912384671 instance=ExtResource("1_vd7rn")]
+[node name="CastleEntrance_02_Арис _107B_4135" type="Node3D" parent="." unique_id=1912384671 instance=ExtResource("1_vd7rn")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3053.735, -156.74692, -1053.8176)
 script = ExtResource("2_4kkkj")
 Castle = 2

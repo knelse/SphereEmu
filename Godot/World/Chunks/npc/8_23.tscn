@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_8_23" type="Node3D" unique_id=20483752]
 
-[node name="NPC_5227_Роза_Кларенс_5227_5227_5227_5227_5227_5227_5227_5227_5227" type="Node3D" parent="." unique_id=24013783 instance=ExtResource("1_w6b85")]
+[node name="NPC_5227_Роза_Кларенс_5227" type="Node3D" parent="." unique_id=24013783 instance=ExtResource("1_w6b85")]
 transform = Transform3D(-0.98527765, 0, 0.17096181, 0, 1, 0, -0.17096181, 0, -0.98527765, 882.645, -159.53502, 2378.033)
 script = ExtResource("2_2dgic")
 NameID = 4142
@@ -18,7 +18,7 @@ ID = 5227
 ObjectType = 213
 ModelName = "npc14"
 
-[node name="NPC_5231_Эклера_Тарантон_5231_5231_5231_5231_5231_5231_5231_5231_5231" type="Node3D" parent="." unique_id=2139409143 instance=ExtResource("1_w6b85")]
+[node name="NPC_5231_Эклера_Тарантон_5231" type="Node3D" parent="." unique_id=2139409143 instance=ExtResource("1_w6b85")]
 transform = Transform3D(-0.26671273, 0, 0.96377605, 0, 1, 0, -0.96377605, 0, -0.26671273, 885.5142, -159.53015, 2381.615)
 script = ExtResource("2_2dgic")
 NameID = 4174

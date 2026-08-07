@@ -5,7 +5,7 @@
 
 [node name="Chunk_castle_gate_18_-1" type="Node3D" unique_id=745230630]
 
-[node name="CastleGate_00_Льеж _110A_4097_4097_4097_4097_4097_4097_4097_4097_4097" type="Node3D" parent="." unique_id=543946931 instance=ExtResource("1_7hg1x")]
+[node name="CastleGate_00_Льеж _110A_4097" type="Node3D" parent="." unique_id=543946931 instance=ExtResource("1_7hg1x")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1880.6327, -158.97696, -48.82068)
 script = ExtResource("2_ryrt3")
 ClanName = "Зеленый Слоник"

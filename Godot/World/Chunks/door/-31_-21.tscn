@@ -5,7 +5,7 @@
 
 [node name="Chunk_door_-31_-21" type="Node3D" unique_id=1051462687]
 
-[node name="DoorEntrance_07EF_-3097_358_2078_2031_2031" type="Node3D" parent="." unique_id=2126062931 instance=ExtResource("1_0bxmo")]
+[node name="DoorEntrance_07EF_-3097_358_2078_2031" type="Node3D" parent="." unique_id=2126062931 instance=ExtResource("1_0bxmo")]
 transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -3094.9165, -355.60474, -2083.8203)
 script = ExtResource("2_swodx")
 DoorID = 32767
@@ -18,7 +18,7 @@ ID = 2031
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07EE_-3094_354_2081_2030_2030" type="Node3D" parent="." unique_id=1243111359 instance=ExtResource("1_0bxmo")]
+[node name="DoorEntrance_07EE_-3094_354_2081_2030" type="Node3D" parent="." unique_id=1243111359 instance=ExtResource("1_0bxmo")]
 transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -3096.7588, -357.91122, -2079.8137)
 script = ExtResource("2_swodx")
 DoorID = 32767
@@ -31,7 +31,7 @@ ID = 2030
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07ED_-3086_359_2086_2029_2029" type="Node3D" parent="." unique_id=2011834402 instance=ExtResource("1_0bxmo")]
+[node name="DoorEntrance_07ED_-3086_359_2086_2029" type="Node3D" parent="." unique_id=2011834402 instance=ExtResource("1_0bxmo")]
 transform = Transform3D(0.7572088, 0, 0.65317285, 0, 1, 0, -0.65317285, 0, 0.7572088, -3084.808, -356.16656, -2086.3545)
 script = ExtResource("2_swodx")
 DoorID = 32767
@@ -44,7 +44,7 @@ ID = 2029
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07EC_-3083_354_2084_2028_2028" type="Node3D" parent="." unique_id=1486597458 instance=ExtResource("1_0bxmo")]
+[node name="DoorEntrance_07EC_-3083_354_2084_2028" type="Node3D" parent="." unique_id=1486597458 instance=ExtResource("1_0bxmo")]
 transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, -3086.0776, -358.38025, -2085.9321)
 script = ExtResource("2_swodx")
 DoorID = 32767

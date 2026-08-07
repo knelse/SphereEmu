@@ -5,7 +5,7 @@
 
 [node name="Chunk_door_-32_-22" type="Node3D" unique_id=1339327726]
 
-[node name="DoorEntrance_07E5_-3110_360_2125_2021_2021" type="Node3D" parent="." unique_id=335360950 instance=ExtResource("1_duu4y")]
+[node name="DoorEntrance_07E5_-3110_360_2125_2021" type="Node3D" parent="." unique_id=335360950 instance=ExtResource("1_duu4y")]
 transform = Transform3D(0.95694035, 0, 0.29028466, 0, 1, 0, -0.29028466, 0, 0.95694035, -3106.8179, -356.09274, -2130.0972)
 script = ExtResource("2_mtfpx")
 DoorID = 32767
@@ -18,7 +18,7 @@ ID = 2021
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07E4_-3106_354_2127_2020_2020" type="Node3D" parent="." unique_id=1927980992 instance=ExtResource("1_duu4y")]
+[node name="DoorEntrance_07E4_-3106_354_2127_2020" type="Node3D" parent="." unique_id=1927980992 instance=ExtResource("1_duu4y")]
 transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, -3109.4248, -359.1592, -2126.5989)
 script = ExtResource("2_mtfpx")
 DoorID = 32767
@@ -31,7 +31,7 @@ ID = 2020
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07E3_-3122_360_2117_2019_2019" type="Node3D" parent="." unique_id=1842504944 instance=ExtResource("1_duu4y")]
+[node name="DoorEntrance_07E3_-3122_360_2117_2019" type="Node3D" parent="." unique_id=1842504944 instance=ExtResource("1_duu4y")]
 transform = Transform3D(0.68954057, 0, 0.72424704, 0, 1, 0, -0.72424704, 0, 0.68954057, -3124.6199, -356.77466, -2117.0112)
 script = ExtResource("2_mtfpx")
 DoorID = 32767
@@ -44,7 +44,7 @@ ID = 2019
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07E2_-3126_355_2118_2018_2018" type="Node3D" parent="." unique_id=2098475045 instance=ExtResource("1_duu4y")]
+[node name="DoorEntrance_07E2_-3126_355_2118_2018" type="Node3D" parent="." unique_id=2098475045 instance=ExtResource("1_duu4y")]
 transform = Transform3D(0.65317285, 0, 0.7572088, 0, 1, 0, -0.7572088, 0, 0.65317285, -3123.4307, -359.06586, -2117.684)
 script = ExtResource("2_mtfpx")
 DoorID = 32767

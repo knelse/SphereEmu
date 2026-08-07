@@ -145,7 +145,7 @@ public partial class CastleElixirPillarsFill : Node3D
 			CastleTabletLookup.TryGetNearestCastle(this, ToGlobal(localPos), out var castle);
 
 			var instance = scene.Instantiate<CastleElixirPillar>();
-			instance.Name = $"CastleElixirPillar_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Name = $"CastleElixirPillar_{(int)castle}_{id:X4}";
 			instance.Position = localPos;
 			instance.Castle = castle;
 

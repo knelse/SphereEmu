@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/canyon_hr07_11.res" id="1_dg822"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/canyon_hr07_11.res" id="2_t1fog"]
+
+[node name="Ground_71_45" type="Node3D" unique_id=1551917168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7100, 0, 4500)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1366627834]
+mesh = ExtResource("1_dg822")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1909775578]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=1298366827]
+shape = ExtResource("2_t1fog")

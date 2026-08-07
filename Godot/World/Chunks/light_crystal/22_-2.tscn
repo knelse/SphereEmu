@@ -5,7 +5,7 @@
 
 [node name="Chunk_light_crystal_22_-2" type="Node3D" unique_id=1917694233]
 
-[node name="LightCrystalYellow_2F15_[2270]_[1501]_[115]_12053_12053_12053_12053_12053_12053_12053_12053_12053" type="Node3D" parent="." unique_id=379278685 instance=ExtResource("1_eck7h")]
+[node name="LightCrystalYellow_2F15_[2270]_[1501]_[115]_12053" type="Node3D" parent="." unique_id=379278685 instance=ExtResource("1_eck7h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2270, -1501.6154, -115)
 script = ExtResource("2_tf6ui")
 ID = 12053

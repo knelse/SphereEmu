@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_3_12" type="Node3D" unique_id=81420757]
 
-[node name="NPC_4972_Лесли_Нольсен_4972_4972_4972_4972_4972_4972_4972_4972_4972" type="Node3D" parent="." unique_id=518022040 instance=ExtResource("1_wrdee")]
+[node name="NPC_4972_Лесли_Нольсен_4972" type="Node3D" parent="." unique_id=518022040 instance=ExtResource("1_wrdee")]
 transform = Transform3D(-0.8032075, 0, -0.5956993, 0, 1, 0, 0.5956993, 0, -0.8032075, 393.20547, -152.91183, 1290.374)
 script = ExtResource("2_r31hk")
 NameID = 4402
@@ -18,7 +18,7 @@ ID = 4972
 ObjectType = 205
 ModelName = "npc06"
 
-[node name="NPC_5164_Альма_Мэддокс_5164_5164_5164_5164_5164_5164_5164_5164_5164" type="Node3D" parent="." unique_id=1006941960 instance=ExtResource("1_wrdee")]
+[node name="NPC_5164_Альма_Мэддокс_5164" type="Node3D" parent="." unique_id=1006941960 instance=ExtResource("1_wrdee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.604, -152.9312, 1280.7285)
 script = ExtResource("2_r31hk")
 IconName = "npc_trade_magic"

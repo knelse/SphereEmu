@@ -1,0 +1,8 @@
+res://addons/world_chunk_streamer/world_chunk_streamer_editor_plugin.gd
+res://Godot/Scripts/Objects/Fill/CastleChestsFill.cs
+res://Godot/Scripts/Objects/Fill/CastleElixirPillarsFill.cs
+res://Godot/Scripts/Objects/Fill/CastleEntrancesFill.cs
+res://Godot/Scripts/Objects/Fill/CastleGatesFill.cs
+res://Godot/Scripts/Objects/Fill/CastleTabletsFill.cs
+res://Godot/Scripts/Objects/Fill/CastleTeleportsFill.cs
+res://Sphere.Game/WorldObject/WorldObject.cs

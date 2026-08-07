@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_-34_8" type="Node3D" unique_id=1973896430]
 
-[node name="NPC_5323_Элемир_Бакерус_5323_5323_5323_5323_5323_5323_5323_5323_5323" type="Node3D" parent="." unique_id=1699109303 instance=ExtResource("1_0c0gd")]
+[node name="NPC_5323_Элемир_Бакерус_5323" type="Node3D" parent="." unique_id=1699109303 instance=ExtResource("1_0c0gd")]
 transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, -3349.8706, 343.4642, 881.7604)
 script = ExtResource("2_tfb2u")
 NameID = 4063
@@ -18,7 +18,7 @@ ID = 5323
 ObjectType = 213
 ModelName = "npc29b"
 
-[node name="NPC_5324_Адам_Парски_5324_5324_5324_5324_5324_5324_5324_5324_5324" type="Node3D" parent="." unique_id=1247682481 instance=ExtResource("1_0c0gd")]
+[node name="NPC_5324_Адам_Парски_5324" type="Node3D" parent="." unique_id=1247682481 instance=ExtResource("1_0c0gd")]
 transform = Transform3D(0.07356478, 0, -0.99729043, 0, 1, 0, 0.99729043, 0, 0.07356478, -3353.5688, 343.4661, 884.5892)
 script = ExtResource("2_tfb2u")
 NameID = 4066
@@ -31,7 +31,7 @@ ID = 5324
 ObjectType = 213
 ModelName = "npc29b"
 
-[node name="NPC_5330_Ванесса_Ламаненкене_5330_5330_5330_5330_5330_5330_5330_5330_5330" type="Node3D" parent="." unique_id=1287759184 instance=ExtResource("1_0c0gd")]
+[node name="NPC_5330_Ванесса_Ламаненкене_5330" type="Node3D" parent="." unique_id=1287759184 instance=ExtResource("1_0c0gd")]
 transform = Transform3D(-0.9757009, 0, -0.21910097, 0, 1, 0, 0.21910097, 0, -0.9757009, -3381.1453, 339.48645, 859.7418)
 script = ExtResource("2_tfb2u")
 NameID = 4058

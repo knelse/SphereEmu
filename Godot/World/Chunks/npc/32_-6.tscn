@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_32_-6" type="Node3D" unique_id=1639223145]
 
-[node name="NPC_4976_Джером_Лежар_4976_4976_4976_4976_4976_4976_4976_4976_4976" type="Node3D" parent="." unique_id=1639343957 instance=ExtResource("1_d70s2")]
+[node name="NPC_4976_Джером_Лежар_4976" type="Node3D" parent="." unique_id=1639343957 instance=ExtResource("1_d70s2")]
 transform = Transform3D(-0.7572088, 0, 0.65317285, 0, 1, 0, -0.65317285, 0, -0.7572088, 3231.4973, -159.80093, -589.6371)
 script = ExtResource("2_bbt0h")
 NameID = 4502
@@ -18,7 +18,7 @@ ID = 4976
 ObjectType = 205
 ModelName = "npc06"
 
-[node name="NPC_5181_Лайон_Пордел_5181_5181_5181_5181_5181_5181_5181_5181_5181" type="Node3D" parent="." unique_id=44765573 instance=ExtResource("1_d70s2")]
+[node name="NPC_5181_Лайон_Пордел_5181" type="Node3D" parent="." unique_id=44765573 instance=ExtResource("1_d70s2")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3214.6404, -159.80707, -588.7894)
 script = ExtResource("2_bbt0h")
 NameID = 4102
@@ -31,7 +31,7 @@ ID = 5181
 ObjectType = 213
 ModelName = "npc29a"
 
-[node name="NPC_5196_Рамон_Ганульо_5196_5196_5196_5196_5196_5196_5196_5196_5196" type="Node3D" parent="." unique_id=2110867297 instance=ExtResource("1_d70s2")]
+[node name="NPC_5196_Рамон_Ганульо_5196" type="Node3D" parent="." unique_id=2110867297 instance=ExtResource("1_d70s2")]
 transform = Transform3D(-0.99879545, 0, 0.049067724, 0, 1, 0, -0.049067724, 0, -0.99879545, 3220.4097, -159.84698, -596.9954)
 script = ExtResource("2_bbt0h")
 NameID = 4124
@@ -44,7 +44,7 @@ ID = 5196
 ObjectType = 213
 ModelName = "npc08"
 
-[node name="NPC_5200_Донат_Хьюберт_5200_5200_5200_5200_5200_5200_5200_5200_5200" type="Node3D" parent="." unique_id=1276558725 instance=ExtResource("1_d70s2")]
+[node name="NPC_5200_Донат_Хьюберт_5200" type="Node3D" parent="." unique_id=1276558725 instance=ExtResource("1_d70s2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3219.6392, -159.67844, -580.41736)
 script = ExtResource("2_bbt0h")
 NameID = 4156

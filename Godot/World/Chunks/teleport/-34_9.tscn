@@ -7,14 +7,14 @@
 
 [node name="Chunk_teleport_-34_9" type="Node3D" unique_id=1938258641]
 
-[node name="Teleport_146D_[-3385]_[-334]_[-906]_5229_5229_5229_5229_5229_5229_5229_5229_5229" type="Node3D" parent="." unique_id=288473094 instance=ExtResource("1_wx46q")]
+[node name="Teleport_146D_[-3385]_[-334]_[-906]_5229" type="Node3D" parent="." unique_id=288473094 instance=ExtResource("1_wx46q")]
 transform = Transform3D(0.8819213, 0, 0.4713967, 0, 1, 0, -0.4713967, 0, 0.8819213, -3384.3071, 333.251, 905.53503)
 script = ExtResource("2_dw1wi")
 Angle = 20
 ID = 5229
 ObjectType = 63
 
-[node name="TeleportWithTarget_1454_[-3320]_[-340]_[-982]_5204_5204_5204_5204_5204_5204_5204_5204_5204" type="Node3D" parent="." unique_id=1311730818 instance=ExtResource("8_1quo6")]
+[node name="TeleportWithTarget_1454_[-3320]_[-340]_[-982]_5204" type="Node3D" parent="." unique_id=1311730818 instance=ExtResource("8_1quo6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3319.8884, 339.48486, 981.44855)
 script = ExtResource("9_bj2ca")
 SubtypeID = 993

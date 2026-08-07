@@ -10,7 +10,7 @@
 *.gdshader text eol=lf
 *.shader text eol=lf
 *.tscn text eol=lf
-*.scn text eol=lf
+*.scn binary
 *.import text eol=lf
 *.cfg text eol=lf
 *.md text eol=lf

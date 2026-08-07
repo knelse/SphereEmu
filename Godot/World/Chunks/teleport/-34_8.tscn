@@ -5,7 +5,7 @@
 
 [node name="Chunk_teleport_-34_8" type="Node3D" unique_id=317810977]
 
-[node name="TeleportWithTarget_1461_[-3319]_[-340]_[-804]_5217_5217_5217_5217_5217_5217_5217_5217_5217" type="Node3D" parent="." unique_id=331911331 instance=ExtResource("1_u3es2")]
+[node name="TeleportWithTarget_1461_[-3319]_[-340]_[-804]_5217" type="Node3D" parent="." unique_id=331911331 instance=ExtResource("1_u3es2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3318.0457, 339.33133, 803.97034)
 script = ExtResource("2_57fqc")
 SubtypeID = 990

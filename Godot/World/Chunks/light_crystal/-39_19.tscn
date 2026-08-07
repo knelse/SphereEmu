@@ -5,28 +5,28 @@
 
 [node name="Chunk_light_crystal_-39_19" type="Node3D" unique_id=397986059]
 
-[node name="LightCrystal_D51A_[-3826]_[1301]_[-1930]_54554_54554_54554_54554_54554_54554_54554_54554_54554" type="Node3D" parent="." unique_id=1734775837 instance=ExtResource("1_woenu")]
+[node name="LightCrystal_D51A_[-3826]_[1301]_[-1930]_54554" type="Node3D" parent="." unique_id=1734775837 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3825.437, -1301.6215, 1929.5442)
 script = ExtResource("2_smiow")
 ID = 54554
 ObjectType = 702
 ModelName = "mn_quartz"
 
-[node name="LightCrystal_D33B_[-3856]_[1301]_[-1931]_54075_54075_54075_54075_54075_54075_54075_54075_54075" type="Node3D" parent="." unique_id=815597237 instance=ExtResource("1_woenu")]
+[node name="LightCrystal_D33B_[-3856]_[1301]_[-1931]_54075" type="Node3D" parent="." unique_id=815597237 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3855.063, -1301.6194, 1930.2661)
 script = ExtResource("2_smiow")
 ID = 54075
 ObjectType = 702
 ModelName = "mn_quartz"
 
-[node name="LightCrystal_D33E_[-3888]_[1301]_[-1914]_54078_54078_54078_54078_54078_54078_54078_54078_54078" type="Node3D" parent="." unique_id=2084202947 instance=ExtResource("1_woenu")]
+[node name="LightCrystal_D33E_[-3888]_[1301]_[-1914]_54078" type="Node3D" parent="." unique_id=2084202947 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3887.1182, -1301.6198, 1913.4548)
 script = ExtResource("2_smiow")
 ID = 54078
 ObjectType = 702
 ModelName = "mn_quartz"
 
-[node name="LightCrystal_D34E_[-3883]_[1301]_[-1960]_54094_54094_54094_54094_54094_54094_54094_54094_54094" type="Node3D" parent="." unique_id=407011453 instance=ExtResource("1_woenu")]
+[node name="LightCrystal_D34E_[-3883]_[1301]_[-1960]_54094" type="Node3D" parent="." unique_id=407011453 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3882.5767, -1301.6235, 1959.91)
 script = ExtResource("2_smiow")
 ID = 54094

@@ -211,7 +211,16 @@ func _refresh_pending_around_camera() -> void:
 				_enqueue(kind, tx, tz, dist)
 
 	_enqueue_ground_around_camera(root, camera)
-	_pending.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.dist < b.dist)
+	# Prefer world-object chunks over ground so dense GroundChunks don't starve doors/NPCs/etc.
+	_pending.sort_custom(_pending_sort)
+
+
+func _pending_sort(a: Dictionary, b: Dictionary) -> bool:
+	var a_ground: bool = a.kind == GROUND_KIND
+	var b_ground: bool = b.kind == GROUND_KIND
+	if a_ground != b_ground:
+		return not a_ground
+	return a.dist < b.dist
 
 
 func _enqueue_ground_around_camera(root: Node, camera: Camera3D) -> void:
@@ -312,6 +321,9 @@ func _instantiate_into_tree(root: Node, kind: String, key: String, packed: Packe
 		var ground_node: Node = packed.instantiate()
 		_clear_owner_recursive(ground_node)
 		ground_parent.add_child(ground_node)
+		# Own the full tree so viewport picking works; fold so Glb/collision stay collapsed.
+		_set_owner_recursive(ground_node, root)
+		_fold_tree(ground_node)
 		_loaded[key] = true
 		return
 
@@ -324,10 +336,26 @@ func _instantiate_into_tree(root: Node, kind: String, key: String, packed: Packe
 	var chunk_root: Node = packed.instantiate()
 	for child in chunk_root.get_children():
 		_clear_owner_recursive(child)
+		_compact_duplicated_id_name(child)
 		chunk_root.remove_child(child)
 		parent.add_child(child)
+		_set_owner_recursive(child, root)
+		_fold_tree(child)
 	chunk_root.queue_free()
 	_loaded[key] = true
+
+
+func _compact_duplicated_id_name(node: Node) -> void:
+	if not ("ID" in node):
+		return
+	var id: int = int(node.get("ID"))
+	if id <= 0:
+		return
+	var suffix := "_%d" % id
+	var current := String(node.name)
+	while current.ends_with(suffix):
+		current = current.substr(0, current.length() - suffix.length())
+	node.name = ("WO" + suffix) if current.is_empty() else (current + suffix)
 
 
 func _get_or_create_ground_root(root: Node) -> Node:
@@ -336,11 +364,13 @@ func _get_or_create_ground_root(root: Node) -> Node:
 		return null
 	var streamed := terrain.get_node_or_null(GROUND_STREAMED_NAME)
 	if streamed != null:
+		if streamed.owner != root:
+			streamed.owner = root
 		return streamed
 	streamed = Node3D.new()
 	streamed.name = GROUND_STREAMED_NAME
 	terrain.add_child(streamed)
-	streamed.owner = null
+	streamed.owner = root
 	return streamed
 
 
@@ -409,6 +439,23 @@ func _clear_owner_recursive(node: Node) -> void:
 	node.owner = null
 	for child in node.get_children():
 		_clear_owner_recursive(child)
+
+
+func _set_owner_recursive(node: Node, owner: Node) -> void:
+	# Editor-only: full ownership so meshes/colliders are pickable. Save guard blocks
+	# persisting these into MainServer.tscn.
+	# WorldObject visuals set unique_name_in_owner on "Glb"; under MainServer that name
+	# is scene-global and every streamed placement fights over %Glb — clear it.
+	node.unique_name_in_owner = false
+	node.owner = owner
+	for child in node.get_children():
+		_set_owner_recursive(child, owner)
+
+
+func _fold_tree(node: Node) -> void:
+	node.set_display_folded(true)
+	for child in node.get_children():
+		_fold_tree(child)
 
 
 func _reset_if_scene_changed(root: Node) -> void:

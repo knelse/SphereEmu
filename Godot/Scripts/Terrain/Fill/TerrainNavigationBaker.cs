@@ -200,7 +200,7 @@ public partial class TerrainNavigationBaker : Node3D
         Directory.CreateDirectory(logOutDir);
 
         var navResAbs = Path.GetFullPath(
-            Path.Combine(repoRoot, "TerrainBake", "GeneratedIndoorNavMeshes"));
+            Path.Combine(repoRoot, "GodotAssetSource", "TerrainBake", "GeneratedIndoorNavMeshes"));
         Directory.CreateDirectory(navResAbs);
 
         var args = new StringBuilder();

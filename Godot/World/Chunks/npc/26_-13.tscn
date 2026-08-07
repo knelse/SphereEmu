@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_26_-13" type="Node3D" unique_id=1747062514]
 
-[node name="NPC_4969_Маршан_Бусико_4969_4969_4969_4969_4969_4969_4969_4969_4969" type="Node3D" parent="." unique_id=939814376 instance=ExtResource("1_hs6ej")]
+[node name="NPC_4969_Маршан_Бусико_4969" type="Node3D" parent="." unique_id=939814376 instance=ExtResource("1_hs6ej")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2603.8325, -157.5283, -1293.5085)
 script = ExtResource("2_mt87k")
 NameID = 4401
@@ -17,7 +17,7 @@ ID = 4969
 ObjectType = 205
 ModelName = "npc06"
 
-[node name="NPC_5111_Джеймс_Хэтбилд_5111_5111_5111_5111_5111_5111_5111_5111_5111" type="Node3D" parent="." unique_id=1371419346 instance=ExtResource("1_hs6ej")]
+[node name="NPC_5111_Джеймс_Хэтбилд_5111" type="Node3D" parent="." unique_id=1371419346 instance=ExtResource("1_hs6ej")]
 transform = Transform3D(-0.9891765, 0, -0.1467305, 0, 1, 0, 0.1467305, 0, -0.9891765, 2639.222, -157.60866, -1239.1997)
 script = ExtResource("2_mt87k")
 NameID = 4392
@@ -30,7 +30,7 @@ ID = 5111
 ObjectType = 216
 ModelName = "npc55"
 
-[node name="NPC_5156_Квентин_Дорбун_5156_5156_5156_5156_5156_5156_5156_5156_5156" type="Node3D" parent="." unique_id=1531282880 instance=ExtResource("1_hs6ej")]
+[node name="NPC_5156_Квентин_Дорбун_5156" type="Node3D" parent="." unique_id=1531282880 instance=ExtResource("1_hs6ej")]
 transform = Transform3D(0.4713967, 0, -0.8819213, 0, 1, 0, 0.8819213, 0, 0.4713967, 2611.1172, -157.59186, -1279.7626)
 script = ExtResource("2_mt87k")
 NameID = 4008

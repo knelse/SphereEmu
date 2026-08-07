@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/river_hr01_11.res" id="1_ovly0"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/river_hr01_11.res" id="2_xpqom"]
+
+[node name="Ground_63_27" type="Node3D" unique_id=519381411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6300, 0, 2700)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1058604041]
+mesh = ExtResource("1_ovly0")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1735036722]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=1283571996]
+shape = ExtResource("2_xpqom")

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bd0jhc3oqqoia"]
 
 [ext_resource type="Script" uid="uid://88f1n8i31gxe" path="res://Sphere.Game/WorldObject/DoorWithKey.cs" id="1_qgmmf"]
-[ext_resource type="PackedScene" uid="uid://lsjwbrnxavbp" path="res://Godot/Models/EDOOR.glb" id="2_vc8fi"]
+[ext_resource type="PackedScene" path="res://Godot/Models/EDOOR.scn" id="2_vc8fi"]
 
 [node name="DoorWithKey" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)

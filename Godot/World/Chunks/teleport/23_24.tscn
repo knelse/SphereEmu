@@ -5,7 +5,7 @@
 
 [node name="Chunk_teleport_23_24" type="Node3D" unique_id=998140392]
 
-[node name="Teleport_13F8_[2326]_[157]_[-2453]_5112_5112_5112_5112_5112_5112_5112_5112_5112" type="Node3D" parent="." unique_id=540671340 instance=ExtResource("1_gbb8v")]
+[node name="Teleport_13F8_[2326]_[157]_[-2453]_5112" type="Node3D" parent="." unique_id=540671340 instance=ExtResource("1_gbb8v")]
 transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, 2326.3157, -157.62073, 2452.9)
 script = ExtResource("2_53jmr")
 Angle = 28

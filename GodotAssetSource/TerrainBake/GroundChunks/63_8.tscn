@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/plato_hr02_01.res" id="1_s611t"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/plato_hr02_01.res" id="2_rk1hy"]
+
+[node name="Ground_63_8" type="Node3D" unique_id=1965824802]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6300, 0, 800)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=197970444]
+mesh = ExtResource("1_s611t")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=491301303]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=1633469925]
+shape = ExtResource("2_rk1hy")

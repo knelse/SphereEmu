@@ -5,7 +5,7 @@
 
 [node name="Chunk_teleport_-28_-22" type="Node3D" unique_id=1876257227]
 
-[node name="Teleport_1446_[-2703]_[402]_[2118]_5190_5190_5190_5190_5190_5190_5190_5190_5190" type="Node3D" parent="." unique_id=1084546300 instance=ExtResource("1_jc362")]
+[node name="Teleport_1446_[-2703]_[402]_[2118]_5190" type="Node3D" parent="." unique_id=1084546300 instance=ExtResource("1_jc362")]
 transform = Transform3D(0.9807853, 0, -0.19509023, 0, 1, 0, 0.19509023, 0, 0.9807853, -2702.554, -402.51642, -2118.449)
 script = ExtResource("2_wprtf")
 Angle = 248

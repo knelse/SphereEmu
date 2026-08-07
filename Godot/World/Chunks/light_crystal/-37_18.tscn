@@ -5,14 +5,14 @@
 
 [node name="Chunk_light_crystal_-37_18" type="Node3D" unique_id=139924339]
 
-[node name="LightCrystalYellow_DB6D_[-3672]_[1292]_[-1843]_56173_56173_56173_56173_56173_56173_56173_56173_56173" type="Node3D" parent="." unique_id=110896856 instance=ExtResource("1_gbkqa")]
+[node name="LightCrystalYellow_DB6D_[-3672]_[1292]_[-1843]_56173" type="Node3D" parent="." unique_id=110896856 instance=ExtResource("1_gbkqa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3671.0974, -1292.618, 1842.9335)
 script = ExtResource("2_sv16k")
 ID = 56173
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D68F_[-3670]_[1292]_[-1883]_54927_54927_54927_54927_54927_54927_54927_54927_54927" type="Node3D" parent="." unique_id=135708302 instance=ExtResource("1_gbkqa")]
+[node name="LightCrystalYellow_D68F_[-3670]_[1292]_[-1883]_54927" type="Node3D" parent="." unique_id=135708302 instance=ExtResource("1_gbkqa")]
 transform = Transform3D(0.99729043, 0, 0.07356457, 0, 1, 0, -0.07356457, 0, 0.99729043, -3669.2703, -1292.2826, 1882.5265)
 script = ExtResource("2_sv16k")
 Angle = 3
@@ -20,14 +20,14 @@ ID = 54927
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D68B_[-3671]_[1302]_[-1891]_54923_54923_54923_54923_54923_54923_54923_54923_54923" type="Node3D" parent="." unique_id=586003899 instance=ExtResource("1_gbkqa")]
+[node name="LightCrystalYellow_D68B_[-3671]_[1302]_[-1891]_54923" type="Node3D" parent="." unique_id=586003899 instance=ExtResource("1_gbkqa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3670.4282, -1302.6118, 1890.5762)
 script = ExtResource("2_sv16k")
 ID = 54923
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D68C_[-3687]_[1292]_[-1871]_54924_54924_54924_54924_54924_54924_54924_54924_54924" type="Node3D" parent="." unique_id=1283509994 instance=ExtResource("1_gbkqa")]
+[node name="LightCrystalYellow_D68C_[-3687]_[1292]_[-1871]_54924" type="Node3D" parent="." unique_id=1283509994 instance=ExtResource("1_gbkqa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3686.3325, -1292.6241, 1870.3495)
 script = ExtResource("2_sv16k")
 ID = 54924

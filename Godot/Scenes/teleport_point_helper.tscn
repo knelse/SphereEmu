@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cxplsjm15bap0"]
 
-[ext_resource type="PackedScene" uid="uid://bp1cx55f3p0eo" path="res://Godot/Models/Extras/green_arrow_down.glb" id="1_68q2k"]
+[ext_resource type="PackedScene" path="res://Godot/Models/Extras/green_arrow_down.scn" id="1_68q2k"]
 [ext_resource type="Script" uid="uid://0lrsb70h1wod" path="res://Godot/Scripts/Objects/HelperGizmos/TeleportPointHelper.cs" id="1_xv5ub"]
 [ext_resource type="Texture2D" uid="uid://kiqe8eqaqbod" path="res://Godot/Models/portal1_S_PR01.png" id="2_xkjd2"]
 

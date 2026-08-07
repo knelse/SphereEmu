@@ -5,7 +5,7 @@
 
 [node name="Chunk_teleport_dungeon_choice_island_12_-1" type="Node3D" unique_id=723541053]
 
-[node name="TeleportDungeonChoiceIsland_1229_[1227]_[1500]_[84]_4649_4649_4649_4649_4649_4649_4649_4649_4649" type="Node3D" parent="." unique_id=1271743249 instance=ExtResource("1_a0eke")]
+[node name="TeleportDungeonChoiceIsland_1229_[1227]_[1500]_[84]_4649" type="Node3D" parent="." unique_id=1271743249 instance=ExtResource("1_a0eke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1227.894, -1500.951, -84.044)
 script = ExtResource("2_sf54t")
 ID = 4649

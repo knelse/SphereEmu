@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_23_24" type="Node3D" unique_id=1547356183]
 
-[node name="NPC_4983_Камил_Ростон_4983_4983_4983_4983_4983_4983_4983_4983_4983" type="Node3D" parent="." unique_id=1484485908 instance=ExtResource("1_hw06j")]
+[node name="NPC_4983_Камил_Ростон_4983" type="Node3D" parent="." unique_id=1484485908 instance=ExtResource("1_hw06j")]
 transform = Transform3D(0.07356461, 0, 0.99729043, 0, 1, 0, -0.99729043, 0, 0.07356461, 2333.1484, -156.5681, 2462.077)
 script = ExtResource("2_2s3wx")
 NameID = 4408
@@ -18,7 +18,7 @@ ID = 4983
 ObjectType = 209
 ModelName = "npc59"
 
-[node name="NPC_5155_Сола_Маркес_5155_5155_5155_5155_5155_5155_5155_5155_5155" type="Node3D" parent="." unique_id=872806784 instance=ExtResource("1_hw06j")]
+[node name="NPC_5155_Сола_Маркес_5155" type="Node3D" parent="." unique_id=872806784 instance=ExtResource("1_hw06j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2323.6526, -157.29404, 2417.7415)
 script = ExtResource("2_2s3wx")
 NameID = 4007
@@ -30,7 +30,7 @@ ID = 5155
 ObjectType = 213
 ModelName = "npc14b"
 
-[node name="NPC_5167_Грейс_Полянски_5167_5167_5167_5167_5167_5167_5167_5167_5167" type="Node3D" parent="." unique_id=731528784 instance=ExtResource("1_hw06j")]
+[node name="NPC_5167_Грейс_Полянски_5167" type="Node3D" parent="." unique_id=731528784 instance=ExtResource("1_hw06j")]
 transform = Transform3D(-0.3368898, 0, 0.94154406, 0, 1, 0, -0.94154406, 0, -0.3368898, 2308.309, -155.45453, 2407.6033)
 script = ExtResource("2_2s3wx")
 NameID = 4019
@@ -43,7 +43,7 @@ ID = 5167
 ObjectType = 213
 ModelName = "npc14"
 
-[node name="NPC_5248_Рамина_Монд_5248_5248_5248_5248_5248_5248_5248_5248_5248" type="Node3D" parent="." unique_id=1413563741 instance=ExtResource("1_hw06j")]
+[node name="NPC_5248_Рамина_Монд_5248" type="Node3D" parent="." unique_id=1413563741 instance=ExtResource("1_hw06j")]
 transform = Transform3D(0.098017134, 0, 0.9951847, 0, 1, 0, -0.9951847, 0, 0.098017134, 2338.8713, -157.49605, 2406.7114)
 script = ExtResource("2_2s3wx")
 NameID = 4184

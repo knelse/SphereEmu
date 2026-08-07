@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/cliffn_ph01_01.res" id="1_perrb"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/cliffn_ph01_01.res" id="2_l6pi1"]
+
+[node name="Ground_33_37" type="Node3D" unique_id=1665287709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3300, 0, 3700)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=726719902]
+mesh = ExtResource("1_perrb")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=325072714]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=713146638]
+shape = ExtResource("2_l6pi1")

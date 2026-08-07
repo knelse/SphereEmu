@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Godot;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.World;
 
@@ -90,6 +91,11 @@ public static class WorldChunkLoadOps
 		foreach (var child in chunkRoot.GetChildren())
 		{
 			ClearOwnerRecursive(child);
+			if (child is WorldObject worldObject)
+			{
+				worldObject.CompactDuplicatedIdNameSuffix();
+			}
+
 			chunkRoot.RemoveChild(child);
 			parent.AddChild(child);
 			// Keep Owner null in editor so Save Scene does not bake streamed nodes into MainServer.

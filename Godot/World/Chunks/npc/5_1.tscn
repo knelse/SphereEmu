@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_5_1" type="Node3D" unique_id=538139325]
 
-[node name="NPC_5182_Бенджамин_Симпсон_5182_5182_5182_5182_5182_5182_5182_5182_5182" type="Node3D" parent="." unique_id=786483162 instance=ExtResource("1_2gv3p")]
+[node name="NPC_5182_Бенджамин_Симпсон_5182" type="Node3D" parent="." unique_id=786483162 instance=ExtResource("1_2gv3p")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 515.3365, -159.84491, 197.91725)
 script = ExtResource("2_6pkch")
 NameID = 4103
@@ -18,7 +18,7 @@ ID = 5182
 ObjectType = 213
 ModelName = "npc29b"
 
-[node name="NPC_5199_Сеймур_Хеффер_5199_5199_5199_5199_5199_5199_5199_5199_5199" type="Node3D" parent="." unique_id=454982064 instance=ExtResource("1_2gv3p")]
+[node name="NPC_5199_Сеймур_Хеффер_5199" type="Node3D" parent="." unique_id=454982064 instance=ExtResource("1_2gv3p")]
 transform = Transform3D(-0.94154406, 0, -0.33688995, 0, 1, 0, 0.33688995, 0, -0.94154406, 510.45862, -159.86244, 193.44647)
 script = ExtResource("2_6pkch")
 NameID = 4127
@@ -31,7 +31,7 @@ ID = 5199
 ObjectType = 213
 ModelName = "npc08"
 
-[node name="NPC_5203_Грифин_Той_5203_5203_5203_5203_5203_5203_5203_5203_5203" type="Node3D" parent="." unique_id=776985968 instance=ExtResource("1_2gv3p")]
+[node name="NPC_5203_Грифин_Той_5203" type="Node3D" parent="." unique_id=776985968 instance=ExtResource("1_2gv3p")]
 transform = Transform3D(-0.9951786, 0, -0.09801642, 0, 1, 0, 0.09801642, 0, -0.9951786, 501.47156, -159.88086, 192.81662)
 script = ExtResource("2_6pkch")
 NameID = 4159

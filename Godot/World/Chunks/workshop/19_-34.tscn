@@ -5,7 +5,7 @@
 
 [node name="Chunk_workshop_19_-34" type="Node3D" unique_id=1114386979]
 
-[node name="Workshop_05A9_[1931]_[402]_[3305]_1449_1449_1449_1449_1449_1449_1449_1449_1449" type="Node3D" parent="." unique_id=1375974941 instance=ExtResource("1_asn5k")]
+[node name="Workshop_05A9_[1931]_[402]_[3305]_1449" type="Node3D" parent="." unique_id=1375974941 instance=ExtResource("1_asn5k")]
 transform = Transform3D(0.17096186, 0, 0.98527765, 0, 1, 0, -0.98527765, 0, 0.17096186, 1931.4414, -402.62558, -3305.8843)
 script = ExtResource("2_0gucx")
 Angle = 57

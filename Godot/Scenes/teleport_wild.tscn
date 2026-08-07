@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ctik12h7myo4"]
 
 [ext_resource type="Script" uid="uid://das0anhv8ep7b" path="res://Sphere.Game/WorldObject/TeleportWild.cs" id="1_tpw"]
-[ext_resource type="PackedScene" uid="uid://dkacklw1vuico" path="res://Godot/Models/portal3.glb" id="2_8tduf"]
+[ext_resource type="PackedScene" path="res://Godot/Models/portal3.scn" id="2_8tduf"]
 
 [node name="TeleportWild" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)

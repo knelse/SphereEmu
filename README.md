@@ -24,7 +24,7 @@ NB: client in the repo already has dgVoodoo bundled. If it breaks, try deleting 
    2. Godot (4.7.1 Mono or higher)
 2. Download the repo
 3. Update appsettings.json for your setup.
-4. Open project in Godot, build and run (editor uses the full `Godot/` tree; exported slim builds download models/terrain/textures packs on first launch from the `asset-bundles` release). Bake outputs live in `TerrainBake/` (git-tracked, `.gdignore` so Godot does not import them).
+4. Open project in Godot, build and run (editor uses the full `Godot/` tree; exported slim builds download models/terrain/textures packs on first launch from the `asset-bundles` release). Bake outputs live in `GodotAssetSource/TerrainBake/` (git-tracked, `.gdignore` so Godot does not import them).
 5. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
 6. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
 7. Next time, use those credentials or create a new user if you like

@@ -1,5 +1,5 @@
 # Regenerates terrain_scene.scn's TerrainObjects subtree (multimesh visuals only)
-# and optionally bakes per-tile navigation meshes to TerrainBake/GeneratedNavMeshes/.
+# and optionally bakes per-tile navigation meshes to GodotAssetSource/TerrainBake/GeneratedNavMeshes/.
 # Requires Godot 4.x on PATH, or set $env:GODOT_PATH to the editor executable.
 #
 # Examples:

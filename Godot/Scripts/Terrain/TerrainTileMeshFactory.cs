@@ -191,7 +191,7 @@ public static class TerrainTileMeshFactory
 	{
 		// On-disk tile/texture stems are lowercase; map master names use Patch* casing.
 		var fileStem = baseName.ToLowerInvariant();
-		foreach (var ext in new[] { "blend", "glb", "gltf" })
+		foreach (var ext in new[] { "scn", "blend", "glb", "gltf" })
 		{
 			var path = $"{TilesDirectory.TrimEnd('/')}/{fileStem}.{ext}";
 			if (!ResourceLoader.Exists(path))

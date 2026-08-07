@@ -437,7 +437,7 @@ public partial class TerrainObjectsFill : Node3D
                     else
                     {
                         GD.PushWarning(
-                            $"TerrainObjectsFill: no model for '{rec.ObjectName}' (tried .glb / .gltf under {ModelsDirectory})");
+                            $"TerrainObjectsFill: no model for '{rec.ObjectName}' (tried .scn / .glb / .gltf under {ModelsDirectory})");
                     }
 
                     continue;

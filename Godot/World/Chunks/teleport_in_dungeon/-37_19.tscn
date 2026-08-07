@@ -5,7 +5,7 @@
 
 [node name="Chunk_teleport_in_dungeon_-37_19" type="Node3D" unique_id=1918861833]
 
-[node name="TeleportInDungeon_1484_[-3675]_[1302]_[-1918]_5252_5252_5252_5252_5252_5252_5252_5252_5252" type="Node3D" parent="." unique_id=1595726751 instance=ExtResource("1_dqto8")]
+[node name="TeleportInDungeon_1484_[-3675]_[1302]_[-1918]_5252" type="Node3D" parent="." unique_id=1595726751 instance=ExtResource("1_dqto8")]
 transform = Transform3D(0.9757009, 0, -0.21910095, 0, 1, 0, 0.21910095, 0, 0.9757009, -3674.711, -1302.2839, 1917.2136)
 script = ExtResource("2_ifm01")
 Angle = 247

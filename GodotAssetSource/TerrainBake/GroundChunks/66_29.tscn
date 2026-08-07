@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/lake_hr06_10.res" id="1_qyxof"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/lake_hr06_10.res" id="2_hj40f"]
+
+[node name="Ground_66_29" type="Node3D" unique_id=576888735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6600, 0, 2900)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1411256281]
+mesh = ExtResource("1_qyxof")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1285835870]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=1622808764]
+shape = ExtResource("2_hj40f")

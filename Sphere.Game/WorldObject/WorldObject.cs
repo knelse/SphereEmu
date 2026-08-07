@@ -109,6 +109,27 @@ public partial class WorldObject : Node3D
 		base._ExitTree();
 	}
 
+	/// <summary>
+	///     Collapses stacked <c>_{ID}</c> suffixes from repeated <see cref="_Ready" /> appends
+	///     (legacy World/Chunks names). Safe to call from editor streaming and pack paths.
+	/// </summary>
+	public void CompactDuplicatedIdNameSuffix()
+	{
+		if (ID == 0)
+		{
+			return;
+		}
+
+		var suffix = $"_{ID}";
+		var current = Name.ToString();
+		while (current.EndsWith(suffix, StringComparison.Ordinal))
+		{
+			current = current[..^suffix.Length];
+		}
+
+		Name = string.IsNullOrEmpty(current) ? $"WO{suffix}" : current + suffix;
+	}
+
 	public override void _Ready()
 	{
 		ApplyAngleToRotation();
@@ -137,7 +158,9 @@ public partial class WorldObject : Node3D
 				ID = WorldObjectIndex.New();
 			}
 
-			Name = Name + $"_{ID}";
+			// Append once only — re-entering the tree (chunk stream / repack) used to stack
+			// _{ID}_{ID}_{ID}… onto names already baked into World/Chunks/*.tscn.
+			CompactDuplicatedIdNameSuffix();
 
 			ActiveNodes.Add(GetInstanceId(), this);
 			ActiveWorldObjects.Add(ID, this);

@@ -5,7 +5,7 @@
 
 [node name="Chunk_castle_elixir_pillar_-16_-12" type="Node3D" unique_id=733999717]
 
-[node name="CastleElixirPillar_17_Айонат _0C4C_3148_3148_3148_3148_3148_3148_3148_3148_3148" type="Node3D" parent="." unique_id=547164829 instance=ExtResource("1_jx0rq")]
+[node name="CastleElixirPillar_17_Айонат _0C4C_3148" type="Node3D" parent="." unique_id=547164829 instance=ExtResource("1_jx0rq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1511.7504, -1100.3464, -1110.1788)
 script = ExtResource("2_d0gfd")
 Castle = 17

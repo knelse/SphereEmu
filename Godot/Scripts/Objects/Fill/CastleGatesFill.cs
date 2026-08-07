@@ -145,12 +145,16 @@ public partial class CastleGatesFill : Node3D
 			}
 
 			var instance = scene.Instantiate<CastleGate>();
-			instance.Name = $"CastleGate_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Name = $"CastleGate_{(int)castle}_{id:X4}";
 			var pos = BuildPlacementPosition((float)x, (float)y, (float)z);
 
 			instance.Position = pos;
 			instance.Castle = castle;
 			instance.Angle = angleEncoded;
+			if (id is >= 0 and <= ushort.MaxValue)
+			{
+				instance.ID = (ushort)id;
+			}
 
 			AddChild(instance);
 			SetOwnerIfEditor(instance);

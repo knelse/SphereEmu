@@ -344,7 +344,12 @@ func _load_tile_mesh(master: String) -> Mesh:
 		return _tile_mesh_cache[master]
 	if master.is_empty():
 		return null
-	var glb_path := TILES_DIR + master + ".glb"
+	var glb_path := ""
+	for ext: String in ["scn", "glb", "gltf"]:
+		var cand: String = TILES_DIR + master + "." + ext
+		if ResourceLoader.exists(cand):
+			glb_path = cand
+			break
 	if not ResourceLoader.exists(glb_path):
 		push_warning("Missing tile glb: ", glb_path)
 		_tile_mesh_cache[master] = null
@@ -379,7 +384,7 @@ func _load_object_parts(object_name: String) -> Array:
 		return _mesh_parts_cache[object_name]
 	var parts: Array = []
 	var scene: PackedScene = null
-	for ext in ["glb", "gltf"]:
+	for ext in ["scn", "glb", "gltf"]:
 		var model_path: String = MODELS_DIR + object_name + "." + ext
 		if ResourceLoader.exists(model_path):
 			scene = load(model_path)

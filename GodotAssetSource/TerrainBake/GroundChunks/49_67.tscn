@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://GodotAssetSource/TerrainBake/GroundMeshes/cemetry1_00.res" id="1_nncsx"]
+[ext_resource type="Shape3D" path="res://GodotAssetSource/TerrainBake/GroundShapes/cemetry1_00.res" id="2_5y4vx"]
+
+[node name="Ground_49_67" type="Node3D" unique_id=529712346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4900, 0, 6700)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=174495620]
+mesh = ExtResource("1_nncsx")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=568730005]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=10284128]
+shape = ExtResource("2_5y4vx")

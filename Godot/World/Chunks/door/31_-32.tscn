@@ -5,7 +5,7 @@
 
 [node name="Chunk_door_31_-32" type="Node3D" unique_id=1318598910]
 
-[node name="DoorExit_6F26_3060_4518_3114_28454_28454" type="Node3D" parent="." unique_id=1874180208 instance=ExtResource("1_xmgks")]
+[node name="DoorExit_6F26_3060_4518_3114_28454" type="Node3D" parent="." unique_id=1874180208 instance=ExtResource("1_xmgks")]
 transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, 3110.1782, -4467.453, -3122.6592)
 script = ExtResource("2_wa02r")
 DoorID = 32767
@@ -18,7 +18,7 @@ ID = 28454
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorExit_6F25_3061_4521_3099_28453_28453" type="Node3D" parent="." unique_id=944564315 instance=ExtResource("1_xmgks")]
+[node name="DoorExit_6F25_3061_4521_3099_28453" type="Node3D" parent="." unique_id=944564315 instance=ExtResource("1_xmgks")]
 transform = Transform3D(-0.09801692, 0, -0.9951846, 0, 1, 0, 0.9951846, 0, -0.09801692, 3100.1985, -4472.141, -3119.2285)
 script = ExtResource("2_wa02r")
 DoorID = 32767

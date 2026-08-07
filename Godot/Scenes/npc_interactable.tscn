@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://6qegskoxrqr4"]
 
 [ext_resource type="Script" uid="uid://c0uct10qujbaj" path="res://Sphere.Game/WorldObject/NpcInteractable.cs" id="1_lxa1o"]
-[ext_resource type="PackedScene" uid="uid://cvqdyc0chig7" path="res://Godot/Models/char04.glb" id="2_py3o3"]
+[ext_resource type="PackedScene" path="res://Godot/Models/char04.scn" id="2_py3o3"]
 
 [node name="NpcInteractable" type="Node3D" unique_id=953722983]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.6, -152.93, -1280.73)
@@ -15,5 +15,5 @@ ObjectType = 213
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0241134, 0)
 metadata/_world_object_glb = true
-metadata/_world_object_glb_path = "res://Godot/Models/char04.glb"
+metadata/_world_object_glb_path = "res://Godot/Models/char04.scn"
 metadata/_world_object_glb_grounded = true

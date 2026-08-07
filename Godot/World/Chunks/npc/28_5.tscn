@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_28_5" type="Node3D" unique_id=1331138898]
 
-[node name="NPC_4978_Рейнольд_Рейган_4978_4978_4978_4978_4978_4978_4978_4978_4978" type="Node3D" parent="." unique_id=1754709181 instance=ExtResource("1_52n7s")]
+[node name="NPC_4978_Рейнольд_Рейган_4978" type="Node3D" parent="." unique_id=1754709181 instance=ExtResource("1_52n7s")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 2812.2468, -159.67592, 539.9316)
 script = ExtResource("2_agywg")
 NameID = 4504
@@ -18,7 +18,7 @@ ID = 4978
 ObjectType = 209
 ModelName = "npc59"
 
-[node name="NPC_5183_Майкл_Бинер_5183_5183_5183_5183_5183_5183_5183_5183_5183" type="Node3D" parent="." unique_id=2138220860 instance=ExtResource("1_52n7s")]
+[node name="NPC_5183_Майкл_Бинер_5183" type="Node3D" parent="." unique_id=2138220860 instance=ExtResource("1_52n7s")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2827.137, -159.8225, 502.8922)
 script = ExtResource("2_agywg")
 NameID = 4104
@@ -31,7 +31,7 @@ ID = 5183
 ObjectType = 213
 ModelName = "npc29"
 
-[node name="NPC_5197_Тимоти_Фолаун_5197_5197_5197_5197_5197_5197_5197_5197_5197" type="Node3D" parent="." unique_id=1820556424 instance=ExtResource("1_52n7s")]
+[node name="NPC_5197_Тимоти_Фолаун_5197" type="Node3D" parent="." unique_id=1820556424 instance=ExtResource("1_52n7s")]
 transform = Transform3D(0.55557007, 0, -0.8314697, 0, 1, 0, 0.8314697, 0, 0.55557007, 2819.8948, -159.83755, 514.0241)
 script = ExtResource("2_agywg")
 NameID = 4125
@@ -44,7 +44,7 @@ ID = 5197
 ObjectType = 213
 ModelName = "npc08"
 
-[node name="NPC_5201_Элгар_Паппер_5201_5201_5201_5201_5201_5201_5201_5201_5201" type="Node3D" parent="." unique_id=444522019 instance=ExtResource("1_52n7s")]
+[node name="NPC_5201_Элгар_Паппер_5201" type="Node3D" parent="." unique_id=444522019 instance=ExtResource("1_52n7s")]
 transform = Transform3D(-0.3368898, 0, 0.94154406, 0, 1, 0, -0.94154406, 0, -0.3368898, 2836.8867, -159.90424, 507.9168)
 script = ExtResource("2_agywg")
 NameID = 4157

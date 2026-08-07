@@ -65,7 +65,7 @@ $logsDir = Join-Path $OutRoot "_logs"
 New-Item -ItemType Directory -Force -Path $logsDir | Out-Null
 
 if (-not $NavResDir) {
-    $NavResDir = Join-Path $RepoRoot "TerrainBake/GeneratedIndoorNavMeshes"
+    $NavResDir = Join-Path $RepoRoot "GodotAssetSource/TerrainBake/GeneratedIndoorNavMeshes"
 }
 elseif ($NavResDir -notmatch '^[A-Za-z]:[\\/]' -and -not $NavResDir.StartsWith("/")) {
     $NavResDir = Join-Path $RepoRoot ($NavResDir -replace '\\', '/')
@@ -195,7 +195,7 @@ $exportOne = {
     $walkTag = $WalkPipeline
     $navResPath = Join-Path $NavResDir ("cluster_{0}.res" -f $Id)
     # Godot ResourceSaver prefers res:// for project resources.
-    $navResGodot = ("res://TerrainBake/GeneratedIndoorNavMeshes/cluster_{0}.res" -f $Id)
+    $navResGodot = ("res://GodotAssetSource/TerrainBake/GeneratedIndoorNavMeshes/cluster_{0}.res" -f $Id)
     if ($WriteNavRes) {
         $navAbs = [System.IO.Path]::GetFullPath($navResPath).Replace('\', '/')
         $repoAbs = [System.IO.Path]::GetFullPath($RepoRoot).Replace('\', '/')

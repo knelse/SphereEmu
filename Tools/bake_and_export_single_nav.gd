@@ -7615,7 +7615,12 @@ func _tile_group_key(master_name: String, occurrence: int) -> String:
 	return s[0].to_upper() + s.substr(1) + "_%02d" % occurrence
 
 func _load_tile_mesh(master: String) -> Mesh:
-	var glb_path := TILES_DIR + master + ".glb"
+	var glb_path := ""
+	for ext: String in ["scn", "glb", "gltf"]:
+		var cand: String = TILES_DIR + master + "." + ext
+		if ResourceLoader.exists(cand):
+			glb_path = cand
+			break
 	if not ResourceLoader.exists(glb_path):
 		return null
 	var scene: PackedScene = load(glb_path)
@@ -7643,7 +7648,7 @@ func _load_object_parts(object_name: String) -> Array:
 		return _mesh_parts_cache[object_name]
 	var parts: Array = []
 	var scene: PackedScene = null
-	for ext in ["glb", "gltf"]:
+	for ext in ["scn", "glb", "gltf"]:
 		var model_path: String = MODELS_DIR + object_name + "." + ext
 		if ResourceLoader.exists(model_path):
 			scene = load(model_path)

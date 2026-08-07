@@ -4,12 +4,13 @@ using Godot;
 namespace SphServer.Godot.Scripts.Terrain;
 
 /// <summary>
-///     Bake outputs live under <c>TerrainBake/</c> next to <c>project.godot</c> (git-tracked) with a
-///     <c>.gdignore</c> so Godot does not import/scan them. Runtime loads via absolute paths.
+///     Bake outputs live under <c>GodotAssetSource/TerrainBake/</c> (git-tracked) with a
+///     parent <c>.gdignore</c> so Godot does not import/scan them. Runtime loads via absolute paths.
 /// </summary>
 public static class TerrainBakePaths
 {
 	public const string FolderName = "TerrainBake";
+	public const string AssetSourceFolderName = "GodotAssetSource";
 
 	public static string RootDir
 	{
@@ -24,7 +25,7 @@ public static class TerrainBakePaths
 			}
 
 			// Default write location for bakers (editor / first bake).
-			return Path.GetFullPath(Path.Combine(ProjectDir, FolderName));
+			return Path.GetFullPath(Path.Combine(ProjectDir, AssetSourceFolderName, FolderName));
 		}
 	}
 
@@ -122,10 +123,12 @@ public static class TerrainBakePaths
 	public static void EnsureBakeRoot()
 	{
 		EnsureDirectory(RootDir);
-		var gdignore = Path.Combine(RootDir, ".gdignore");
-		if (!File.Exists(gdignore))
+		var assetSourceRoot = Path.Combine(ProjectDir, AssetSourceFolderName);
+		EnsureDirectory(assetSourceRoot);
+		var assetIgnore = Path.Combine(assetSourceRoot, ".gdignore");
+		if (!File.Exists(assetIgnore))
 		{
-			File.WriteAllText(gdignore, "");
+			File.WriteAllText(assetIgnore, "");
 		}
 	}
 
@@ -137,11 +140,14 @@ public static class TerrainBakePaths
 			yield return Path.GetFullPath(env);
 		}
 
+		yield return Path.GetFullPath(Path.Combine(ProjectDir, AssetSourceFolderName, FolderName));
+		// Legacy location (pre-GodotAssetSource move).
 		yield return Path.GetFullPath(Path.Combine(ProjectDir, FolderName));
 
 		var exeDir = Path.GetDirectoryName(OS.GetExecutablePath());
 		if (!string.IsNullOrEmpty(exeDir))
 		{
+			yield return Path.GetFullPath(Path.Combine(exeDir, AssetSourceFolderName, FolderName));
 			yield return Path.GetFullPath(Path.Combine(exeDir, FolderName));
 		}
 	}

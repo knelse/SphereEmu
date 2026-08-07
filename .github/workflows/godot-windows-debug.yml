@@ -119,18 +119,19 @@ jobs:
           script: |
             const KEEP = 20;
             const prefix = 'SphServer-windows-debug-slim-';
+            // paginate already unwraps { artifacts: [...] } into an item array;
+            // do not use response.data.artifacts in a map fn (that is undefined).
             const artifacts = await github.paginate(
               github.rest.actions.listArtifactsForRepo,
               {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 per_page: 100,
-              },
-              (response) => response.data.artifacts
+              }
             );
 
             const builds = artifacts
-              .filter((a) => a.name.startsWith(prefix) && !a.expired)
+              .filter((a) => a?.name?.startsWith(prefix) && !a.expired)
               .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
 
             const toDelete = builds.slice(KEEP);

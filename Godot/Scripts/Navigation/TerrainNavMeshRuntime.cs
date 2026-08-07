@@ -32,7 +32,7 @@ namespace SphServer.Godot.Scripts.Navigation;
 /// </summary>
 public static class TerrainNavMeshRuntime
 {
-    // Absolute dirs under TerrainBake/ (see TerrainBakePaths); kept as props so call sites can still concatenate.
+    // Absolute dirs under GodotAssetSource/TerrainBake/ (see TerrainBakePaths); kept as props so call sites can still concatenate.
     public static string NavMeshResourcesDirectory => TerrainBakePaths.GeneratedNavMeshesDir.TrimEnd('/') + "/";
     public static string IndoorNavMeshResourcesDirectory =>
         TerrainBakePaths.GeneratedIndoorNavMeshesDir.TrimEnd('/') + "/";

@@ -12,7 +12,7 @@ const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
 
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 
-const MODEL_PATH := "res://Godot/Models/rd_island3.glb"
+const MODEL_PATH := "res://Godot/Models/rd_island3.scn"
 const MODELS_DIR := "res://Godot/Models/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
 var NAV_RES_PATH : String = _TerrainBake.indoor_nav_meshes() + "cluster_131.res"
@@ -566,7 +566,7 @@ func _load_object_parts(object_name: String) -> Array:
 		return _mesh_parts_cache[object_name]
 	var parts: Array = []
 	var scene: PackedScene = null
-	for ext in ["glb", "gltf"]:
+	for ext in ["scn", "glb", "gltf"]:
 		var model_path: String = MODELS_DIR + object_name + "." + ext
 		if ResourceLoader.exists(model_path):
 			scene = load(model_path)

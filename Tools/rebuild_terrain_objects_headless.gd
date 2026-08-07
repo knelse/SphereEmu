@@ -1,7 +1,7 @@
 extends SceneTree
 
 # Regenerate terrain_scene.scn's TerrainObjects subtree (multimesh visuals only) and
-# optionally bake per-tile navigation meshes to TerrainBake/GeneratedNavMeshes/.
+# optionally bake per-tile navigation meshes to GodotAssetSource/TerrainBake/GeneratedNavMeshes/.
 #
 # IMPORTANT: do NOT pass --headless when running this script. Godot's dummy headless renderer
 # silently ignores MultiMesh.set_instance_transform(), so a headless rebuild saves .res files
@@ -25,7 +25,7 @@ func _initialize() -> void:
 
 	# Old MultiMesh .res files (TerrainBake copies) reference deleted Godot/Models/*.png sidecars.
 	# Write dependency-free stubs at the legacy ExtResource paths so PackedScene can load; rebuild
-	# then regenerates real MultiMeshes from GLBs into TerrainBake/.
+	# then regenerates real MultiMeshes from GLBs into GodotAssetSource/TerrainBake/.
 	var stub_count := _ensure_legacy_multimesh_stubs()
 	print("Legacy MultiMesh stubs ready: %s" % stub_count)
 

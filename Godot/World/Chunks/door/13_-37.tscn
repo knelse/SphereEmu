@@ -5,7 +5,7 @@
 
 [node name="Chunk_door_13_-37" type="Node3D" unique_id=1875268749]
 
-[node name="DoorEntrance_07A7_1317_390_3697_1959_1959" type="Node3D" parent="." unique_id=612588662 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_07A7_1317_390_3697_1959" type="Node3D" parent="." unique_id=612588662 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1317.7449, -386.03348, -3699.575)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -17,7 +17,7 @@ ID = 1959
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_07A6_1318_385_3699_1958_1958" type="Node3D" parent="." unique_id=1003930460 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_07A6_1318_385_3699_1958" type="Node3D" parent="." unique_id=1003930460 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1317.7144, -389.43896, -3698.1177)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -29,7 +29,7 @@ ID = 1958
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_079C_1319_390_3698_1948_1948" type="Node3D" parent="." unique_id=937329055 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_079C_1319_390_3698_1948" type="Node3D" parent="." unique_id=937329055 instance=ExtResource("1_t0jew")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1316.1653, -393.78857, -3699.7231)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -42,7 +42,7 @@ ID = 1948
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_079B_1315_395_3684_1947_1947" type="Node3D" parent="." unique_id=38698138 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_079B_1315_395_3684_1947" type="Node3D" parent="." unique_id=38698138 instance=ExtResource("1_t0jew")]
 transform = Transform3D(0.8700871, 0, -0.49289808, 0, 1, 0, 0.49289808, 0, 0.8700871, 1319.3425, -392.18695, -3683.7288)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -55,7 +55,7 @@ ID = 1947
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_079A_1317_391_3681_1946_1946" type="Node3D" parent="." unique_id=1284822325 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_079A_1317_391_3681_1946" type="Node3D" parent="." unique_id=1284822325 instance=ExtResource("1_t0jew")]
 transform = Transform3D(0.4928982, 0, 0.87008697, 0, 1, 0, -0.87008697, 0, 0.4928982, 1315.4941, -393.8651, -3684.173)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -68,7 +68,7 @@ ID = 1946
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_0799_1310_395_3678_1945_1945" type="Node3D" parent="." unique_id=731440853 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_0799_1310_395_3678_1945" type="Node3D" parent="." unique_id=731440853 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1312.5938, -392.21527, -3677.249)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -80,7 +80,7 @@ ID = 1945
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_0798_1312_391_3674_1944_1944" type="Node3D" parent="." unique_id=557919699 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_0798_1312_391_3674_1944" type="Node3D" parent="." unique_id=557919699 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1310.9482, -393.91345, -3677.5364)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -92,7 +92,7 @@ ID = 1944
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_0797_1300_397_3674_1943_1943" type="Node3D" parent="." unique_id=736951252 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_0797_1300_397_3674_1943" type="Node3D" parent="." unique_id=736951252 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1302.2529, -392.36554, -3679.156)
 script = ExtResource("2_wwjee")
 DoorID = 32767
@@ -104,7 +104,7 @@ ID = 1943
 ObjectType = 60
 ModelName = "edoor"
 
-[node name="DoorEntrance_0796_1302_391_3676_1942_1942" type="Node3D" parent="." unique_id=181681966 instance=ExtResource("1_t0jew")]
+[node name="DoorEntrance_0796_1302_391_3676_1942" type="Node3D" parent="." unique_id=181681966 instance=ExtResource("1_t0jew")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1300.0337, -395.89435, -3675.3005)
 script = ExtResource("2_wwjee")
 DoorID = 32767

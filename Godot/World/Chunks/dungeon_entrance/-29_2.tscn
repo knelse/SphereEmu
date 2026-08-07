@@ -5,7 +5,7 @@
 
 [node name="Chunk_dungeon_entrance_-29_2" type="Node3D" unique_id=1381025420]
 
-[node name="DungeonEntrance_11D1_[-2869]_[-95]_[-267]_4561_4561" type="Node3D" parent="." unique_id=1333066852 instance=ExtResource("1_emjr3")]
+[node name="DungeonEntrance_11D1_[-2869]_[-95]_[-267]_4561" type="Node3D" parent="." unique_id=1333066852 instance=ExtResource("1_emjr3")]
 transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0.122410536, -2868.795, 94.074165, 266.17468)
 script = ExtResource("2_uktpk")
 Angle = 187

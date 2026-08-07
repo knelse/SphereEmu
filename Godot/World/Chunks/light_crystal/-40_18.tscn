@@ -5,14 +5,14 @@
 
 [node name="Chunk_light_crystal_-40_18" type="Node3D" unique_id=1430846661]
 
-[node name="LightCrystal_8B57_[-3931]_[1301]_[-1886]_35671_35671_35671_35671_35671_35671_35671_35671_35671" type="Node3D" parent="." unique_id=565629364 instance=ExtResource("1_38gls")]
+[node name="LightCrystal_8B57_[-3931]_[1301]_[-1886]_35671" type="Node3D" parent="." unique_id=565629364 instance=ExtResource("1_38gls")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3930.062, -1301.6141, 1885.6178)
 script = ExtResource("2_fjoqc")
 ID = 35671
 ObjectType = 702
 ModelName = "mn_quartz"
 
-[node name="LightCrystal_D475_[-3971]_[1301]_[-1885]_54389_54389_54389_54389_54389_54389_54389_54389_54389" type="Node3D" parent="." unique_id=1135858159 instance=ExtResource("1_38gls")]
+[node name="LightCrystal_D475_[-3971]_[1301]_[-1885]_54389" type="Node3D" parent="." unique_id=1135858159 instance=ExtResource("1_38gls")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3970.828, -1301.6158, 1884.8262)
 script = ExtResource("2_fjoqc")
 ID = 54389

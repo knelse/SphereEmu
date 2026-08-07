@@ -5,7 +5,7 @@
 
 [node name="Chunk_npc_-26_3" type="Node3D" unique_id=1498371555]
 
-[node name="NPC_5442_Оркус_Мантоблас_5442_5442_5442_5442_5442_5442_5442_5442_5442" type="Node3D" parent="." unique_id=2101517165 instance=ExtResource("1_81ryt")]
+[node name="NPC_5442_Оркус_Мантоблас_5442" type="Node3D" parent="." unique_id=2101517165 instance=ExtResource("1_81ryt")]
 transform = Transform3D(0.85772866, 0, -0.5141027, 0, 1, 0, 0.5141027, 0, 0.85772866, -2589.504, 96.421036, 318.1851)
 script = ExtResource("2_qfj8i")
 NameID = 4329

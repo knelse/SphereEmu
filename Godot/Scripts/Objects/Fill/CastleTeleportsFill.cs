@@ -88,7 +88,7 @@ public partial class CastleTeleportsFill : Node3D
 			CastleTabletLookup.TryGetNearestCastle(this, ToGlobal(localPos), out var castle);
 
 			var instance = scene!.Instantiate<CastleTeleport>();
-			instance.Name = $"CastleTeleport_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Name = $"CastleTeleport_{(int)castle}_{id:X4}";
 			instance.Position = localPos;
 			instance.Castle = castle;
 			instance.Angle = angleEncoded;

@@ -5,7 +5,7 @@
 
 [node name="Chunk_door_-9_32" type="Node3D" unique_id=504767867]
 
-[node name="DoorEntrance_08EF_1116_1097_1120_2287_2287" type="Node3D" parent="." unique_id=845673180 instance=ExtResource("1_yl6jx")]
+[node name="DoorEntrance_08EF_1116_1097_1120_2287" type="Node3D" parent="." unique_id=845673180 instance=ExtResource("1_yl6jx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -899.97076, -1698.4335, 3218.1433)
 script = ExtResource("2_cdjiq")
 DoorID = 32767

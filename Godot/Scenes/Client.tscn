@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dgnwpy1raisjd"]
 
 [ext_resource type="Script" uid="uid://cg6buhiqkg43s" path="res://Client/SphereClient.cs" id="1_dsyj5"]
-[ext_resource type="PackedScene" uid="uid://bxuopw8awub7n" path="res://Godot/Models/pump1.glb" id="2_jc1om"]
+[ext_resource type="PackedScene" path="res://Godot/Models/pump1.scn" id="2_jc1om"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 

@@ -5,7 +5,7 @@
 
 [node name="Chunk_light_crystal_-36_19" type="Node3D" unique_id=164659644]
 
-[node name="LightCrystalYellow_DCE0_[-3544]_[1300]_[-1991]_56544_56544_56544_56544_56544_56544_56544_56544_56544" type="Node3D" parent="." unique_id=467743688 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_DCE0_[-3544]_[1300]_[-1991]_56544" type="Node3D" parent="." unique_id=467743688 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.8819213, 0, 0.4713967, 0, 1, 0, -0.4713967, 0, 0.8819213, -3543.4602, -1300.7428, 1990.6051)
 script = ExtResource("2_imrps")
 Angle = 20
@@ -13,7 +13,7 @@ ID = 56544
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_DCDE_[-3576]_[1300]_[-1991]_56542_56542_56542_56542_56542_56542_56542_56542_56542" type="Node3D" parent="." unique_id=448086828 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_DCDE_[-3576]_[1300]_[-1991]_56542" type="Node3D" parent="." unique_id=448086828 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.35989514, 0, -0.93299276, 0, 1, 0, 0.93299276, 0, 0.35989514, -3575.2188, -1300.8998, 1990.3041)
 script = ExtResource("2_imrps")
 Angle = 207
@@ -21,7 +21,7 @@ ID = 56542
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D80F_[-3545]_[1300]_[-1958]_55311_55311_55311_55311_55311_55311_55311_55311_55311" type="Node3D" parent="." unique_id=1329906627 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D80F_[-3545]_[1300]_[-1958]_55311" type="Node3D" parent="." unique_id=1329906627 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.99728405, 0, -0.07356413, 0, 1, 0, 0.07356413, 0, 0.99728405, -3544.3755, -1300.6156, 1957.8888)
 script = ExtResource("2_imrps")
 Angle = 253
@@ -29,14 +29,14 @@ ID = 55311
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D9FF_[-3576]_[1300]_[-1976]_55807_55807_55807_55807_55807_55807_55807_55807_55807" type="Node3D" parent="." unique_id=279781483 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D9FF_[-3576]_[1300]_[-1976]_55807" type="Node3D" parent="." unique_id=279781483 instance=ExtResource("1_u66p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3575.8066, -1300.6195, 1975.0724)
 script = ExtResource("2_imrps")
 ID = 55807
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D806_[-3560]_[1290]_[-1916]_55302_55302_55302_55302_55302_55302_55302_55302_55302" type="Node3D" parent="." unique_id=96533354 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D806_[-3560]_[1290]_[-1916]_55302" type="Node3D" parent="." unique_id=96533354 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.99247956, 0, 0.12241067, 0, 1, 0, -0.12241067, 0, 0.99247956, -3559.605, -1290.7756, 1915.644)
 script = ExtResource("2_imrps")
 Angle = 5
@@ -44,7 +44,7 @@ ID = 55302
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D807_[-3545]_[1290]_[-1945]_55303_55303_55303_55303_55303_55303_55303_55303_55303" type="Node3D" parent="." unique_id=1433367930 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D807_[-3545]_[1290]_[-1945]_55303" type="Node3D" parent="." unique_id=1433367930 instance=ExtResource("1_u66p4")]
 transform = Transform3D(-0.74095106, 0, 0.67155904, 0, 1, 0, -0.67155904, 0, -0.74095106, -3544.3845, -1290.9333, 1944.3307)
 script = ExtResource("2_imrps")
 Angle = 98
@@ -52,14 +52,14 @@ ID = 55303
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D7FF_[-3545]_[1300]_[-1916]_55295_55295_55295_55295_55295_55295_55295_55295_55295" type="Node3D" parent="." unique_id=1954275780 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D7FF_[-3545]_[1300]_[-1916]_55295" type="Node3D" parent="." unique_id=1954275780 instance=ExtResource("1_u66p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3544.8054, -1300.6208, 1915.6288)
 script = ExtResource("2_imrps")
 ID = 55295
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="_Node3D_47691_55303_55303_55303_55303_55303_55303_55303_55303_55303" type="Node3D" parent="." unique_id=289612185 instance=ExtResource("1_u66p4")]
+[node name="_Node3D_47691_55303" type="Node3D" parent="." unique_id=289612185 instance=ExtResource("1_u66p4")]
 transform = Transform3D(-0.94952804, 0, -0.31368175, 0, 1, 0, 0.31368175, 0, -0.94952804, -3544.2563, -1290.8964, 1944.3285)
 script = ExtResource("2_imrps")
 Angle = 141
@@ -67,14 +67,14 @@ ID = 55303
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D7D1_[-3530]_[1280]_[-1921]_55249_55249_55249_55249_55249_55249_55249_55249_55249" type="Node3D" parent="." unique_id=1712030913 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D7D1_[-3530]_[1280]_[-1921]_55249" type="Node3D" parent="." unique_id=1712030913 instance=ExtResource("1_u66p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3529.686, -1280.5209, 1920.1353)
 script = ExtResource("2_imrps")
 ID = 55249
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D7D2_[-3516]_[1280]_[-1914]_55250_55250_55250_55250_55250_55250_55250_55250_55250" type="Node3D" parent="." unique_id=267432489 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D7D2_[-3516]_[1280]_[-1914]_55250" type="Node3D" parent="." unique_id=267432489 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.99247956, 0, 0.12241067, 0, 1, 0, -0.12241067, 0, 0.99247956, -3515.0603, -1280.527, 1913.2649)
 script = ExtResource("2_imrps")
 Angle = 5
@@ -82,21 +82,21 @@ ID = 55250
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D7C6_[-3512]_[1300]_[-1948]_55238_55238_55238_55238_55238_55238_55238_55238_55238" type="Node3D" parent="." unique_id=1655361457 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D7C6_[-3512]_[1300]_[-1948]_55238" type="Node3D" parent="." unique_id=1655361457 instance=ExtResource("1_u66p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3511.9233, -1300.6202, 1947.1321)
 script = ExtResource("2_imrps")
 ID = 55238
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_D9E6_[-3590]_[1300]_[-1915]_55782_55782_55782_55782_55782_55782_55782_55782_55782" type="Node3D" parent="." unique_id=382633973 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_D9E6_[-3590]_[1300]_[-1915]_55782" type="Node3D" parent="." unique_id=382633973 instance=ExtResource("1_u66p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3589.9238, -1300.6184, 1914.6034)
 script = ExtResource("2_imrps")
 ID = 55782
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_A9DB_[-3576]_[1300]_[-1991]_43483_43483_43483_43483_43483_43483_43483_43483_43483" type="Node3D" parent="." unique_id=390910583 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_A9DB_[-3576]_[1300]_[-1991]_43483" type="Node3D" parent="." unique_id=390910583 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.92387956, 0, -0.38268343, 0, 1, 0, 0.38268343, 0, 0.92387956, -3575.2188, -1300.8993, 1990.3041)
 script = ExtResource("2_imrps")
 Angle = 240
@@ -104,7 +104,7 @@ ID = 43483
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_9FF8_[-3560]_[1290]_[-1916]_40952_40952_40952_40952_40952_40952_40952_40952_40952" type="Node3D" parent="." unique_id=1388964518 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_9FF8_[-3560]_[1290]_[-1916]_40952" type="Node3D" parent="." unique_id=1388964518 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.72424704, 0, -0.6895406, 0, 1, 0, 0.6895406, 0, 0.72424704, -3559.605, -1290.7633, 1915.644)
 script = ExtResource("2_imrps")
 Angle = 225
@@ -112,7 +112,7 @@ ID = 40952
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="_Node3D_47694_40952_40952_40952_40952_40952_40952_40952_40952_40952" type="Node3D" parent="." unique_id=1079214409 instance=ExtResource("1_u66p4")]
+[node name="_Node3D_47694_40952" type="Node3D" parent="." unique_id=1079214409 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.72424704, 0, -0.6895406, 0, 1, 0, 0.6895406, 0, 0.72424704, -3559.5742, -1290.7633, 1915.6588)
 script = ExtResource("2_imrps")
 Angle = 225
@@ -120,7 +120,7 @@ ID = 40952
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_A002_[-3545]_[1290]_[-1945]_40962_40962_40962_40962_40962_40962_40962_40962_40962" type="Node3D" parent="." unique_id=875424048 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_A002_[-3545]_[1290]_[-1945]_40962" type="Node3D" parent="." unique_id=875424048 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.9951847, 0, -0.098017246, 0, 1, 0, 0.098017246, 0, 0.9951847, -3544.5361, -1290.8964, 1944.3732)
 script = ExtResource("2_imrps")
 Angle = 252
@@ -128,7 +128,7 @@ ID = 40962
 ObjectType = 711
 ModelName = "mn_quartz"
 
-[node name="LightCrystalYellow_A165_[-3501]_[1300]_[-1928]_41317_41317_41317_41317_41317_41317_41317_41317_41317" type="Node3D" parent="." unique_id=1892299526 instance=ExtResource("1_u66p4")]
+[node name="LightCrystalYellow_A165_[-3501]_[1300]_[-1928]_41317" type="Node3D" parent="." unique_id=1892299526 instance=ExtResource("1_u66p4")]
 transform = Transform3D(0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, 0.3136817, -3500.099, -1300.6642, 1927.1359)
 script = ExtResource("2_imrps")
 Angle = 205

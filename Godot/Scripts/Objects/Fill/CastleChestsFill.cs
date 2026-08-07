@@ -150,7 +150,7 @@ public partial class CastleChestsFill : Node3D
 			}
 
 			var instance = scene.Instantiate<CastleChest>();
-			instance.Name = $"CastleChest_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Name = $"CastleChest_{(int)castle}_{id:X4}";
 			instance.Position = localPos;
 			instance.Castle = castle;
 

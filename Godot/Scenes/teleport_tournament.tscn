@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://kpjjyx3cg81v"]
 
 [ext_resource type="Script" uid="uid://cb4718r1rstnk" path="res://Sphere.Game/WorldObject/TeleportTournament.cs" id="1_tpt"]
-[ext_resource type="PackedScene" uid="uid://cktw8qd20tbms" path="res://Godot/Models/portal1.glb" id="2_ovwru"]
+[ext_resource type="PackedScene" path="res://Godot/Models/portal1.scn" id="2_ovwru"]
 
 [node name="TeleportTournament" type="Node3D" unique_id=1477176971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 10000, 10000)

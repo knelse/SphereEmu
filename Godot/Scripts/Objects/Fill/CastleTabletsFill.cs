@@ -141,7 +141,7 @@ public partial class CastleTabletsFill : Node3D
 			}
 
 			var instance = scene.Instantiate<CastleTablet>();
-			instance.Name = $"CastleTablet_{(int)castle:00}_{castle} _{id:X4}";
+			instance.Name = $"CastleTablet_{(int)castle}_{id:X4}";
 			instance.Position = new Vector3((float)x, -(float)y, -(float)z);
 
 			instance.ModelName = TabletModelName;
