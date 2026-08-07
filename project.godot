@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="SphServer"
-run/main_scene="res://Godot/Scenes/MainServer.tscn"
+run/main_scene="res://Godot/Scenes/AssetBootstrap.tscn"
 config/features=PackedStringArray("4.7", "C#")
 config/icon="res://icon.png"
 

@@ -1,7 +1,7 @@
 # SphereEmu
-Boilerplate code to tinker with packets for Sphere (old Russian MMORPG) server emulator
+Early WIP Sphere (old Russian MMORPG) server emulator
 
-Currently built with `Godot 4.* Mono`.
+Currently built with `Godot 4.7.1 Mono`.
 
 ## Compatibility
 Running Sphere on latest hardware (notably, RDNA 3 Radeon 7000 series) might turn out into a good old 15 fps in cities experience.
@@ -15,14 +15,16 @@ If that happens to you, dgVoodoo2 might help:
 7. Launch the game. If everything worked correctly, cities should jump from 15 to 150+ fps
 8. If not, try different Output APIs and/or Videocards
 
+NB: client in the repo already has dgVoodoo bundled. If it breaks, try deleting D3D8, D3D9, D3DImm, DDRaw.dll from the repo.
+
 ## Running the server
 
 1. Get and install prerequisities
    1. .NET 9.0 SDK
-   2. Godot (4.6.1 Mono or higher)
+   2. Godot (4.7.1 Mono or higher)
 2. Download the repo
 3. Update appsettings.json for your setup.
-4. Open project in Godot, build and run
+4. Open project in Godot, build and run (editor uses the full `Godot/` tree; exported slim builds download models/terrain/textures packs on first launch from the `asset-bundles` release)
 5. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
 6. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
 7. Next time, use those credentials or create a new user if you like
