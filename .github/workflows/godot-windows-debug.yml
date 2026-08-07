@@ -194,13 +194,13 @@ jobs:
           }
 
           $slimTitle = 'Windows debug slim (playable)'
-          $slimNotes = @"
-Playable slim Godot server build.
-
-Heavy packs download automatically on first launch from the internal ``asset-bundles`` CDN prerelease (not a separate game download).
-
-Per-commit copies also upload as workflow artifacts.
-"@
+          $slimNotes = @(
+            'Playable slim Godot server build.'
+            ''
+            'Heavy packs download automatically on first launch from the internal asset-bundles CDN prerelease (not a separate game download).'
+            ''
+            'Per-commit copies also upload as workflow artifacts.'
+          ) -join "`n"
 
           gh release view $tag 2>$null | Out-Null
           if ($LASTEXITCODE -ne 0) {
