@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SphServer.Packets;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using static SphServer.Shared.BitStream.SphBitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -13,6 +15,35 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 public class PickupItemHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
+    // Offsets in the 0x2E reply, bit 0 = least significant bit of byte 0. Both were recovered from
+    // knelse's own annotated capture pair in SphereTools/itemMove.txt: the client asks to put an
+    // item at a position, and the same three float32 values come back at bits 93/125/157.
+    private const int ObjectTypeBitOffset = 74;
+    private const int PositionBitOffset = 93;
+
+    private static uint FloatBits (double value)
+    {
+        return BitConverter.SingleToUInt32Bits((float) value);
+    }
+
+    // LSB-first, leaving every bit outside [offset, offset+width) untouched — the fields here are
+    // not byte-aligned and share bytes with unrelated data.
+    private static void WriteBits (byte[] frame, int offset, int width, uint value)
+    {
+        for (var i = 0; i < width; i++)
+        {
+            var bit = offset + i;
+            var index = bit / 8;
+            if (index >= frame.Length)
+            {
+                return;
+            }
+
+            var mask = (byte) (1 << (bit % 8));
+            frame[index] = (value >> i & 1) == 1 ? (byte) (frame[index] | mask) : (byte) (frame[index] & ~mask);
+        }
+    }
+
     public async Task Handle (double delta)
     {
     }
@@ -141,10 +172,31 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
         };
 
+        // The literal above is a captured 2022 frame, so its object type and position describe the
+        // item that was captured, not this one. Both are per-item, so overwrite them in place —
+        // as bit ranges, because neither is byte-aligned and the surrounding bits carry other fields.
+        WriteBits(moveResult, ObjectTypeBitOffset, 12, (uint) item.ObjectType);
+        WriteBits(moveResult, PositionBitOffset, 32, FloatBits(item.X));
+        WriteBits(moveResult, PositionBitOffset + 32, 32, FloatBits(-item.Y));
+        WriteBits(moveResult, PositionBitOffset + 64, 32, FloatBits(-item.Z));
+
         character.Items[targetSlot] = globalItemId;
-        SphLogger.Info($"{Enum.GetName((BelongingSlot) targetSlotId)} now has {item.Localization[Locale.Russian]} " +
+        SphLogger.Info($"{Enum.GetName((BelongingSlot) targetSlotId)} now has " +
+                       $"{item.Localization.GetValueOrDefault(Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
         clientConnection.MaybeScheduleNetworkPacketSend(moveResult);
+
+        // The grant above does not fill the slot array, so the cell stays empty without these.
+        var reserve = ItemSlotReserve.Build(localId, targetSlot, item.Id, item.ItemCount);
+        if (reserve is not null)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend(reserve);
+        }
+
+        clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort) item.Id,
+            (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
+
+        clientConnection.SaveSelectedCharacter();
 
         var oldContainer = item.ParentContainerId is null
             ? null

@@ -39,6 +39,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private ISphereClientNetworkingHandler? currentHandler;
     private DamageTargetHandler? damageTargetHandler;
     public BitStream DataStream = null!;
+    private DragItemOnGroundHandler? dragItemOnGroundHandler;
     private DropItemToGroundHandler? dropItemToGroundHandler;
     private GroupActionsHandler? groupActionsHandler;
     private bool interactionWithOtherObjectsInitialized;
@@ -112,6 +113,15 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             var classification = ClientPacketClassifier.ClassifyFrame(frame);
             if (!classification.IsEvent)
             {
+                // Otherwise a frame with no route looks exactly like an idle client.
+                if (ServerConfig.AppConfig.DebugMode && frame.Length >= 16)
+                {
+                    SphLogger.Debug(
+                        $"C->S unrouted {frame.Length}B frame, signature " +
+                        $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
+                        $"{Convert.ToHexString(frame[..Math.Min(24, frame.Length)])}. Client ID: {localId:X4}");
+                }
+
                 return;
             }
 
@@ -206,6 +216,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             case ClientPacketEvent.ItemDrop:
                 await dropItemToGroundHandler!.Handle(delta);
                 break;
+            case ClientPacketEvent.ItemDragOnGround:
+                await dragItemOnGroundHandler!.Handle(delta);
+                break;
             case ClientPacketEvent.NpcInteract:
                 await npcInteractionHandler!.Handle(delta);
                 break;
@@ -234,6 +247,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         openLootContainerHandler ??= new(localId, this);
         clientChatHandler ??= new(this);
         pickupItemHandler ??= new(localId, this);
+        dragItemOnGroundHandler ??= new(localId, this);
         moveItemHandler ??= new(localId, this);
         useItemHandler ??= new(localId, this);
         dropItemToGroundHandler ??= new();

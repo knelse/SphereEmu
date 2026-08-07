@@ -359,6 +359,9 @@ public class CharacterDbEntry
 
         hpMax = WithSatietyMaxHpBonus(hpMax);
 
+        // After the slot loop, so it sees the move that triggered this rather than the one before.
+        CharacterWornLook.Apply(this);
+
         // PAtk/MAtk: armor/accessories only for now (MainHand omitted) — revisit later
         CurrentStrength = str;
         CurrentAgility = agi;
