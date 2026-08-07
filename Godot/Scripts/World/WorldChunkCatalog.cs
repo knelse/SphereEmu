@@ -26,6 +26,9 @@ public static class WorldChunkCatalog
 		Directory.CreateDirectory(absolute);
 	}
 
-	public static bool ChunkExists(WorldContentKind kind, int tileX, int tileZ) =>
-		File.Exists(ChunkScenePathAbsolute(kind, tileX, tileZ));
+	public static bool ChunkExists(WorldContentKind kind, int tileX, int tileZ)
+	{
+		var path = ChunkScenePath(kind, tileX, tileZ);
+		return ResourceLoader.Exists(path);
+	}
 }

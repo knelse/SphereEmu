@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Godot;
+using SphServer.Godot.Scripts.Util;
 using SphServer.Godot.Scripts.Terrain.Fill;
 
 namespace SphServer.Godot.Scripts.Terrain;
@@ -60,14 +61,13 @@ public sealed class TerrainGroundIndex
 	public bool TryLoad(string mapPath)
 	{
 		cells.Clear();
-		var abs = ProjectSettings.GlobalizePath(mapPath);
-		if (!File.Exists(abs))
+		if (!ResPathIO.TryReadAllBytes(mapPath, out var fileContents))
 		{
 			GD.PushError($"TerrainGroundIndex: map not found: {mapPath}");
 			return false;
 		}
 
-		var list = MapFill.ReadFullGrid(abs);
+		var list = MapFill.ReadFullGrid(fileContents);
 		for (var i = 0; i < list.Count; i++)
 		{
 			var cell = list[i];

@@ -1506,13 +1506,12 @@ public partial class TerrainObjectsFill : Node3D
 
         public static TerrainTileGridIndex? TryBuild(string mapBinResourcePath, float tileSize, Vector3 worldOrigin)
         {
-            var abs = ProjectSettings.GlobalizePath(mapBinResourcePath);
-            if (!File.Exists(abs))
+            if (!SphServer.Godot.Scripts.Util.ResPathIO.TryReadAllBytes(mapBinResourcePath, out var fileContents))
             {
                 return null;
             }
 
-            var cells = MapFill.ReadFullGrid(abs);
+            var cells = MapFill.ReadFullGrid(fileContents);
             var cellsByCoord =
                 new global::System.Collections.Generic.Dictionary<(int Gx, int Gz), (string MasterName, int Occurrence)>();
             var nextOccurrenceByMaster = new global::System.Collections.Generic.Dictionary<string, int>();

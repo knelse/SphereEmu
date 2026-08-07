@@ -184,19 +184,37 @@ public static class AdminUiAtlas
             return ResourceLoader.Load<Texture2D>(path);
         }
 
-        // Newly dropped files may not have .import yet — load pixels directly.
-        var globalPath = ProjectSettings.GlobalizePath(path);
-        if (!global::System.IO.File.Exists(globalPath))
+        // Newly dropped files may not have .import yet — load pixels via Godot FileAccess (works for res:// too).
+        if (!global::Godot.FileAccess.FileExists(path))
         {
+            var globalPath = ProjectSettings.GlobalizePath(path);
             GD.PushWarning($"AdminUiAtlas: missing {path} (resolved {globalPath})");
             return null;
         }
 
+        using var file = global::Godot.FileAccess.Open(path, global::Godot.FileAccess.ModeFlags.Read);
+        if (file is null)
+        {
+            GD.PushWarning($"AdminUiAtlas: failed to open {path}");
+            return null;
+        }
+
+        var bytes = file.GetBuffer((long)file.GetLength());
         var image = new Image();
-        var err = image.Load(globalPath);
+        var err = image.LoadPngFromBuffer(bytes);
         if (err != Error.Ok)
         {
-            GD.PushWarning($"AdminUiAtlas: failed to load {path}: {err}");
+            err = image.LoadJpgFromBuffer(bytes);
+        }
+
+        if (err != Error.Ok)
+        {
+            err = image.LoadWebpFromBuffer(bytes);
+        }
+
+        if (err != Error.Ok)
+        {
+            GD.PushWarning($"AdminUiAtlas: failed to decode {path}: {err}");
             return null;
         }
 

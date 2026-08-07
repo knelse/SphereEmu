@@ -135,6 +135,12 @@ public static class ServerConfig
                                 "frames will fail and the world will look empty. Set RepositoryPath in appsettings.json.");
             }
 
+            var logPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log");
+            if (!Path.IsPathRooted(logPath))
+            {
+                logPath = Path.Combine(repositoryPath, logPath);
+            }
+
             return new AppConfig
             {
                 RepositoryPath = repositoryPath,
@@ -144,7 +150,7 @@ public static class ServerConfig
                 LiteDbConnectionString = configDict.GetValueOrDefault("LiteDbConnectionString",
                     @"Filename=sph.db;Connection=shared;"),
                 Port = FileFormatCulture.ParseUShort(configDict.GetValueOrDefault("Port", "25860")),
-                LogPath = configDict.GetValueOrDefault("LogPath", @"logs\server.log"),
+                LogPath = logPath,
                 DebugMode = bool.Parse(configDict.GetValueOrDefault("DebugMode", "true")),
                 ObjectVisibilityDistance =
                     FileFormatCulture.ParseFloat(configDict.GetValueOrDefault("ObjectVisibilityDistance", "100.0")),
@@ -167,11 +173,12 @@ public static class ServerConfig
 
     private static string? FindRepositoryRoot(string configPath)
     {
-        // The config file may sit in the build output (.godot/mono/temp/bin/...), so walk up
-        // from it — and from the assembly directory as a second seed — to the first directory
-        // that contains Sphere.PacketDefinitions.
+        // The config file may sit in the build output (.godot/mono/temp/bin/...) or Godot's
+        // AppData data_* folder when outputs are embedded — walk from the exe install dir first
+        // (slim builds ship Sphere.PacketDefinitions next to SphServer.exe), then config/assembly.
         foreach (var startDir in new[]
                  {
+                     GetExecutableDirectory(),
                      Path.GetDirectoryName(Path.GetFullPath(configPath)),
                      AppContext.BaseDirectory
                  })
@@ -196,13 +203,48 @@ public static class ServerConfig
         return null;
     }
 
+    /// <summary>
+    ///     Directory containing the running process (exported <c>SphServer.exe</c> folder).
+    ///     Prefer this over <see cref="AppContext.BaseDirectory"/>: with embedded .NET outputs Godot
+    ///     extracts assemblies under <c>%LocalAppData%/data_*</c>, which is not where CI places sidecars.
+    /// </summary>
+    private static string? GetExecutableDirectory()
+    {
+        try
+        {
+            var processPath = Environment.ProcessPath;
+            if (!string.IsNullOrWhiteSpace(processPath))
+            {
+                return Path.GetDirectoryName(Path.GetFullPath(processPath));
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+
+        return null;
+    }
+
     private static string FindConfigPath(string fileName)
     {
-        // Godot's working directory may vary (editor/run/export), so search upwards from common roots.
+        // Prefer the install/exe directory (slim sidecars), then walk common roots.
+        // Do not let AppData data_* win when a real appsettings.json sits next to the exe.
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        var exeDir = GetExecutableDirectory();
+        if (!string.IsNullOrWhiteSpace(exeDir))
+        {
+            var nextToExe = Path.Combine(exeDir, fileName);
+            if (File.Exists(nextToExe))
+            {
+                return nextToExe;
+            }
+        }
 
         foreach (var startDir in new[]
                  {
+                     exeDir,
                      AppContext.BaseDirectory,
                      Environment.CurrentDirectory
                  })
@@ -223,6 +265,12 @@ public static class ServerConfig
 
                 dir = dir.Parent;
             }
+        }
+
+        // Fall back to creating/loading next to the exe when possible.
+        if (!string.IsNullOrWhiteSpace(exeDir))
+        {
+            return Path.Combine(exeDir, fileName);
         }
 
         return fileName;

@@ -1,21 +1,25 @@
 using System.IO;
 using Godot;
+using SphServer.Godot.Scripts.Util;
 
 namespace SphServer.Godot.Scripts.Terrain;
 
 /// <summary>
 ///     Bake outputs live under <c>GodotAssetSource/TerrainBake/</c> (git-tracked) with a
-///     parent <c>.gdignore</c> so Godot does not import/scan them. Runtime loads via absolute paths.
+///     parent <c>.gdignore</c> so Godot does not import/scan them.
+///     Editor/dev: absolute disk paths. Slim exports: <c>res://</c> after the terrainbake zip pack is mounted.
 /// </summary>
 public static class TerrainBakePaths
 {
 	public const string FolderName = "TerrainBake";
 	public const string AssetSourceFolderName = "GodotAssetSource";
+	public const string ResRoot = "res://GodotAssetSource/TerrainBake";
 
 	public static string RootDir
 	{
 		get
 		{
+			// Prefer on-disk bake tree (editor / checkout with GodotAssetSource).
 			foreach (var candidate in CandidateRoots())
 			{
 				if (Directory.Exists(candidate))
@@ -24,10 +28,21 @@ public static class TerrainBakePaths
 				}
 			}
 
+			// Slim exports: terrainbake zip mounted as res:// (no disk copy).
+			using (var da = DirAccess.Open(ResRoot))
+			{
+				if (da is not null)
+				{
+					return ResRoot;
+				}
+			}
+
 			// Default write location for bakers (editor / first bake).
 			return Path.GetFullPath(Path.Combine(ProjectDir, AssetSourceFolderName, FolderName));
 		}
 	}
+
+	public static bool UsesVirtualResPaths => ResPathIO.IsVirtualPath(RootDir);
 
 	public static string ProjectDir =>
 		ProjectSettings.GlobalizePath("res://").TrimEnd('/', '\\');
@@ -48,11 +63,19 @@ public static class TerrainBakePaths
 		Path.GetFullPath(Path.Combine(ProjectDir, AssetSourceFolderName, "Terrain", "TerrainMeshLibrary.tres"))
 			.Replace('\\', '/');
 
-	/// <summary>Absolute path with forward slashes for <see cref="ResourceLoader"/> / <see cref="ResourceSaver"/>.</summary>
+	/// <summary>
+	///     Absolute filesystem path, or <c>res://…</c> when the bake tree is pack-mounted.
+	/// </summary>
 	public static string Combine(params string[] relativeParts)
 	{
+		var root = RootDir;
+		if (ResPathIO.IsVirtualPath(root))
+		{
+			return ResPathIO.JoinVirtual(root, relativeParts);
+		}
+
 		var parts = new string[relativeParts.Length + 1];
-		parts[0] = RootDir;
+		parts[0] = root;
 		Array.Copy(relativeParts, 0, parts, 1, relativeParts.Length);
 		return Path.GetFullPath(Path.Combine(parts)).Replace('\\', '/');
 	}
@@ -80,6 +103,11 @@ public static class TerrainBakePaths
 
 	public static void EnsureDirectory(string absDir)
 	{
+		if (ResPathIO.IsVirtualPath(absDir))
+		{
+			throw new InvalidOperationException($"Cannot create virtual path directory: {absDir}");
+		}
+
 		Directory.CreateDirectory(absDir.Replace('/', Path.DirectorySeparatorChar));
 	}
 
@@ -91,6 +119,11 @@ public static class TerrainBakePaths
 	/// </summary>
 	public static void EnsureDirectoryExactCase(string absDir)
 	{
+		if (ResPathIO.IsVirtualPath(absDir))
+		{
+			throw new InvalidOperationException($"Cannot create virtual path directory: {absDir}");
+		}
+
 		var normalized = Path.GetFullPath(absDir.Replace('/', Path.DirectorySeparatorChar));
 		var parent = Path.GetDirectoryName(normalized);
 		var desiredName = Path.GetFileName(normalized);

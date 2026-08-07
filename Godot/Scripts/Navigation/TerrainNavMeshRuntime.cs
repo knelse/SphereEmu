@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Godot.Scripts.Util;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.Terrain.Fill;
@@ -103,13 +104,8 @@ public static class TerrainNavMeshRuntime
         return HasResFiles(NavMeshResourcesDirectory) || HasResFiles(IndoorNavMeshResourcesDirectory);
     }
 
-    private static bool HasResFiles(string directory)
-    {
-        var absoluteDirectory = directory.Contains("://", StringComparison.Ordinal)
-            ? ProjectSettings.GlobalizePath(directory)
-            : directory.Replace('/', Path.DirectorySeparatorChar);
-        return Directory.Exists(absoluteDirectory) && Directory.GetFiles(absoluteDirectory, "*.res").Length > 0;
-    }
+    private static bool HasResFiles(string directory) =>
+        ResPathIO.DirectoryHasFileSuffix(directory, ".res");
 
     /// <summary>Frees every registered region and the navigation map. Call after a full nav rebake.</summary>
     public static void Invalidate()
@@ -662,17 +658,11 @@ public static class TerrainNavMeshRuntime
         _indoorIndexAttempted = true;
         _indoorIndex = new List<IndoorClusterEntry>();
 
-        var indexPath = TerrainBakePaths.IndoorIndexJson.Replace('/', Path.DirectorySeparatorChar);
-        if (File.Exists(indexPath))
+        var indexPath = TerrainBakePaths.IndoorIndexJson;
+        if (ResPathIO.TryReadAllText(indexPath, out var json))
         {
             try
             {
-                var json = File.ReadAllText(indexPath);
-                if (json.Length > 0 && json[0] == '\uFEFF')
-                {
-                    json = json[1..];
-                }
-
                 var file = JsonSerializer.Deserialize<IndoorIndexFile>(json, IndoorIndexJsonOptions);
                 if (file?.Clusters != null)
                 {
@@ -693,18 +683,25 @@ public static class TerrainNavMeshRuntime
             }
         }
 
-        var dir = TerrainBakePaths.GeneratedIndoorNavMeshesDir.Replace('/', Path.DirectorySeparatorChar);
-        if (!Directory.Exists(dir))
+        var dir = TerrainBakePaths.GeneratedIndoorNavMeshesDir;
+        foreach (var name in ResPathIO.EnumerateFileNames(dir, ".nav.json"))
         {
-            return;
-        }
+            if (!name.StartsWith("cluster_", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
 
-        foreach (var sidecar in Directory.GetFiles(dir, "cluster_*.nav.json"))
-        {
+            var sidecarPath = ResPathIO.IsVirtualPath(dir)
+                ? ResPathIO.JoinVirtual(dir.TrimEnd('/'), name)
+                : Path.Combine(dir.Replace('/', Path.DirectorySeparatorChar), name);
             try
             {
-                var json = File.ReadAllText(sidecar);
-                var c = JsonSerializer.Deserialize<IndoorClusterJson>(json, IndoorIndexJsonOptions);
+                if (!ResPathIO.TryReadAllText(sidecarPath, out var sidecarJson))
+                {
+                    continue;
+                }
+
+                var c = JsonSerializer.Deserialize<IndoorClusterJson>(sidecarJson, IndoorIndexJsonOptions);
                 if (c != null && TryParseIndoorEntry(c, out var entry))
                 {
                     _indoorIndex.Add(entry);
@@ -712,7 +709,7 @@ public static class TerrainNavMeshRuntime
             }
             catch (Exception ex)
             {
-                GD.PushWarning($"TerrainNavMeshRuntime: bad indoor nav sidecar {Path.GetFileName(sidecar)} ({ex.Message})");
+                GD.PushWarning($"TerrainNavMeshRuntime: bad indoor nav sidecar {name} ({ex.Message})");
             }
         }
     }

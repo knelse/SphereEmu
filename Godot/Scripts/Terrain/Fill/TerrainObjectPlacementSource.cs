@@ -15,16 +15,10 @@ public static class TerrainObjectPlacementSource
     {
         var results = new List<TerrainObjectPlacement>();
         var dir = objectDataDirectory.TrimEnd('/') + "/";
-        var absoluteDir = ProjectSettings.GlobalizePath(dir);
-        if (!DirAccess.DirExistsAbsolute(absoluteDir))
-        {
-            GD.PushWarning($"TerrainObjectPlacementSource: directory not found: {objectDataDirectory}");
-            return results;
-        }
-
         using var da = DirAccess.Open(dir);
         if (da is null)
         {
+            GD.PushWarning($"TerrainObjectPlacementSource: directory not found: {objectDataDirectory}");
             return results;
         }
 

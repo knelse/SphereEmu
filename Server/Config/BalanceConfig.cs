@@ -20,10 +20,10 @@ public static class BalanceConfig
         ("experience", typeof(ExperienceBalance))
     ];
 
-    private static readonly ConcurrentDictionary<(string Name, Type Type), object> Loaded = new ();
+    private static readonly ConcurrentDictionary<(string Name, Type Type), object> Loaded = new();
 
     // Balance files carry provenance comments and trailing commas; keys match case-insensitively.
-    private static readonly JsonSerializerOptions JsonReadOptions = new ()
+    private static readonly JsonSerializerOptions JsonReadOptions = new()
     {
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
@@ -32,7 +32,7 @@ public static class BalanceConfig
     };
 
     /// <summary>Loads every known config once at startup; a broken file is logged, not thrown, so the rest still load.</summary>
-    public static void PreloadAll ()
+    public static void PreloadAll()
     {
         foreach (var (name, type) in KnownConfigs)
         {
@@ -48,11 +48,11 @@ public static class BalanceConfig
     }
 
     /// <summary>Null when the import failed at startup; callers log and skip rather than throwing per hit.</summary>
-    public static T? Get<T> (string name) where T : class
+    public static T? Get<T>(string name) where T : class
     {
         if (Loaded.TryGetValue((name, typeof(T)), out var config))
         {
-            return (T) config;
+            return (T)config;
         }
 
         SphLogger.Error(
@@ -61,7 +61,7 @@ public static class BalanceConfig
         return null;
     }
 
-    private static object Load (string name, Type type)
+    private static object Load(string name, Type type)
     {
         var fileName = name + ".json";
         var probedPaths = new List<string>();
@@ -107,16 +107,31 @@ public static class BalanceConfig
     }
 
     /// <summary>
-    ///     Walks up from BaseDirectory then CWD probing <c>Config/Balance/<file></c>, then falls
-    ///     back to <c>RepositoryPath</c> — Godot's CWD and build output location vary per run mode.
+    ///     Walks from the exe install dir, then BaseDirectory/CWD, probing <c>Config/Balance/<file></c>,
+    ///     then falls back to <c>RepositoryPath</c> — Godot embeds assemblies under AppData data_*.
     /// </summary>
-    private static string? FindBalanceConfigPath (string fileName, List<string> probedPaths)
+    private static string? FindBalanceConfigPath(string fileName, List<string> probedPaths)
     {
         var relativePath = Path.Combine("Config", "Balance", fileName);
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        string? exeDir = null;
+        try
+        {
+            var processPath = Environment.ProcessPath;
+            if (!string.IsNullOrWhiteSpace(processPath))
+            {
+                exeDir = Path.GetDirectoryName(Path.GetFullPath(processPath));
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+
         foreach (var startDir in new[]
                  {
+                     exeDir,
                      AppContext.BaseDirectory,
                      Environment.CurrentDirectory
                  })

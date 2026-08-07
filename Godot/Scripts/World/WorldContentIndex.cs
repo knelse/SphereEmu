@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Godot;
+using SphServer.Godot.Scripts.Util;
 
 namespace SphServer.Godot.Scripts.World;
 
@@ -129,13 +130,17 @@ public sealed class WorldContentIndex
 	public bool TryLoadFrom(string resPath)
 	{
 		Clear();
-		var absolute = ProjectSettings.GlobalizePath(resPath);
-		if (!File.Exists(absolute))
+		if (!ResPathIO.TryReadAllBytes(resPath, out var bytes))
 		{
+			if (ResPathIO.IsVirtualPath(resPath))
+			{
+				GD.PushWarning($"WorldContentIndex: not found: {resPath}");
+			}
+
 			return false;
 		}
 
-		using var stream = File.OpenRead(absolute);
+		using var stream = new MemoryStream(bytes, writable: false);
 		using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: false);
 		var magicBytes = reader.ReadBytes(8);
 		var magic = Encoding.ASCII.GetString(magicBytes);

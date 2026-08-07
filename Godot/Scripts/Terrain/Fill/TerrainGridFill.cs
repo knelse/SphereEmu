@@ -59,14 +59,13 @@ public partial class TerrainGridFill : Node3D
 	/// <summary>Builds the mesh library and fills the terrain <see cref="GridMap"/> from <see cref="MapBinPath"/>.</summary>
 	public bool RebuildTerrainGrid()
 	{
-		var mapAbs = ProjectSettings.GlobalizePath(MapBinPath);
-		if (!File.Exists(mapAbs))
+		if (!SphServer.Godot.Scripts.Util.ResPathIO.TryReadAllBytes(MapBinPath, out var mapBytes))
 		{
 			GD.PushError($"TerrainGridFill: map not found: {MapBinPath}");
 			return false;
 		}
 
-		var cells = MapFill.ReadFullGrid(mapAbs);
+		var cells = MapFill.ReadFullGrid(mapBytes);
 		var terrain = GetOrCreateTerrainGridMap();
 		// Avoid expensive navigation baking work during load/open; we want terrain to load fast.
 		// Use dynamic property set so this works even if the C# API name differs across Godot versions.
