@@ -84,8 +84,8 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
             {
                 NetworkedStatsUpdater.Update(character);
             }
-            // TODO: character state shouldn't be stored in starting dungeon
-            // DbConnectionProvider.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
+
+            clientConnection.SaveSelectedCharacter();
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend(moveResult);

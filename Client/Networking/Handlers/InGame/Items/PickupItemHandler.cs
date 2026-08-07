@@ -142,13 +142,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             !character.CanUseItem(item))
         {
             SphLogger.Info(
-                $"Item {item.Localization[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+                $"Item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
             return;
         }
 
         var clientSlot = (clientSlot_raw - 0x32) / 2;
         SphLogger.Info(
-            $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
+            $"CLI: Move item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
             $"[{Enum.GetName(typeof (BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
 
         var clientSync_1 = clientConnection.ReceiveBuffer[17];
@@ -196,6 +196,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort) item.Id,
             (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
 
+        // Before the save: the recalculation writes persisted fields, and nothing recalculates
+        // again at login.
+        if (!ItemDbEntry.IsInventorySlot(targetSlot) && character.RecalcCurrentStats())
+        {
+            NetworkedStatsUpdater.Update(character);
+        }
+
         clientConnection.SaveSelectedCharacter();
 
         var oldContainer = item.ParentContainerId is null
@@ -206,14 +213,6 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty(globalItemId) ?? false)
         {
             clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort) oldContainer.Id));
-        }
-
-        if (!ItemDbEntry.IsInventorySlot(targetSlot))
-        {
-            if (character.RecalcCurrentStats())
-            {
-                NetworkedStatsUpdater.Update(character);
-            }
         }
     }
 }

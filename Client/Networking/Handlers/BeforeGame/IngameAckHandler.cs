@@ -75,20 +75,25 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
         foreach (var (slot, itemId) in character.Items)
         {
             var item = DbConnection.Items.FindById(itemId);
-            if (item is null || !declared.Add(itemId))
+            if (item is null)
             {
                 continue;
             }
 
-            // The hand has no wire slot, but its item still has to be declared.
+            // Every occupied slot gets its reserve; the record goes once per item. An item in hand
+            // is also still in its inventory slot, and the hand has no wire slot of its own, so one
+            // token cannot gate both.
             var reserve = ItemSlotReserve.Build(localId, slot, item.Id, item.ItemCount);
             if (reserve is not null)
             {
                 clientConnection.SendPacket(reserve);
             }
 
-            clientConnection.SendPacket(ItemRecordEncoder.Encode((ushort) item.Id, (int) item.ObjectType,
-                item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
+            if (declared.Add(itemId))
+            {
+                clientConnection.SendPacket(ItemRecordEncoder.Encode((ushort) item.Id,
+                    (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
+            }
         }
 
         WaitForClientTimer = new(0.05f, false, clientConnection.MoveToNextBeforeGameStage);

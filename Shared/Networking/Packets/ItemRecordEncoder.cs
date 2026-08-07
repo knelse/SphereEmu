@@ -1,5 +1,6 @@
 using System;
 using SphereHelpers.Extensions;
+using SphServer.Shared.BitStream;
 using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Packets;
@@ -41,10 +42,10 @@ public static class ItemRecordEncoder
         stream.WriteUInt16((ushort) (objectType & 0x3FF), 10);
         stream.WriteByte(0, 1);
         stream.WriteByte(FullSpawn, 8);
-        stream.WriteUInt32(BitConverter.SingleToUInt32Bits(x), 32);
-        stream.WriteUInt32(BitConverter.SingleToUInt32Bits(y), 32);
-        stream.WriteUInt32(BitConverter.SingleToUInt32Bits(z), 32);
-        stream.WriteUInt32(PlacementState, 32);
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(x));
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(y));
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(z));
+        WriteUInt32Full(stream, PlacementState);
         stream.WriteByte(1, 1);
 
         // Masked to their field widths: the writer sizes a value by its own magnitude, so one that
@@ -52,9 +53,8 @@ public static class ItemRecordEncoder
         stream.WriteUInt16((ushort) (gameObjectId & 0x3FFF), 14);
         stream.WriteByte((byte) (suffix & 0x3F), 6);
 
-        // The two messages that go to the item's own script. Their type field is eight bits wide in
-        // this client's modules, where the 2022 build used four.
-        // "You are inside this container" — the only thing that gives an item a parent.
+        // The two messages that go to the item's own script; their type field is eight bits wide in
+        // this client's modules. "You are inside this container" is what gives an item a parent.
         stream.WriteByte((byte) FollowOnRecord, 7);
         stream.WriteByte((byte) PutHereMessage, 8);
         stream.WriteByte(3, 8);
@@ -66,9 +66,20 @@ public static class ItemRecordEncoder
         stream.WriteByte((byte) PropertiesMessage, 8);
         stream.WriteByte(5, 8);
         stream.WriteByte(0, 8);
-        stream.WriteUInt32(uint.MaxValue, 32);
+        WriteUInt32Full(stream, uint.MaxValue);
 
         stream.WriteByte(0, 7);
         return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
+
+    /// <summary>
+    ///     Writes all 32 bits. The shared writer sizes a value through IntToBits(int, ...), whose
+    ///     loop runs while the value is positive, so anything with the top bit set is dropped and the
+    ///     field padded with zeros. Two halves are always positive.
+    /// </summary>
+    private static void WriteUInt32Full (SphWriteStream stream, uint value)
+    {
+        stream.WriteUInt16((ushort) value, 16);
+        stream.WriteUInt16((ushort) (value >> 16), 16);
     }
 }

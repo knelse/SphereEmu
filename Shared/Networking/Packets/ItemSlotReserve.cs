@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -63,7 +64,9 @@ public static class ItemSlotReserve
         PacketPart.UpdateEntityId(parts, ByteSwap(clientIndex));
         PacketPart.UpdateValue(parts, "slot_id", wireSlot, 8);
         PacketPart.UpdateValue(parts, "new_item_id", itemId, 16);
-        PacketPart.UpdateValue(parts, "count_if_present", count < 1 ? 1 : count, 8);
+        // Clamped, not just floored: the writer pads a short value but never trims a
+        // long one, so a count above 255 would lengthen the frame.
+        PacketPart.UpdateValue(parts, "count_if_present", Math.Clamp(count, 1, 255), 8);
         return PacketPart.GetBytesToWrite(parts);
     }
 }

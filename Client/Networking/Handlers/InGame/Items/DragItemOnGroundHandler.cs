@@ -50,7 +50,7 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
         item.Z = -z;
         DbConnection.Items.Update(item);
 
-        SphLogger.Info($"Drag on ground: {item.Localization[Locale.Russian]} [{itemId:X4}] " +
+        SphLogger.Info($"Drag on ground: {item.Localization.GetValueOrDefault(Locale.Russian, "?")} [{itemId:X4}] " +
                        $"to ({x:F2}, {y:F2}, {z:F2}). Client ID: {localId:X4}");
     }
 

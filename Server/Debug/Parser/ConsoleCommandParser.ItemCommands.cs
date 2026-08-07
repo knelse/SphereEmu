@@ -83,22 +83,12 @@ public partial class ConsoleCommandParser
                 // the frame they were captured from, which does not exist on this server.
                 PacketPart.UpdateValue(parts, "container_id", item.ParentContainerId ?? 0xFF00, 16);
 
-                // Item identity only where the definition has somewhere to put it. Otherwise leave
-                // the definition's own object_type alone — which of these two fields decides
-                // whether the client draws the item is exactly what the fourth argument tests.
-                if (objectTypeOverride is { } forcedType)
-                {
-                    PacketPart.UpdateValue(parts, "object_type", forcedType, 10);
-                }
-                else if (parts.Any(x => x.Name == "game_object_id"))
-                {
-                    PacketPart.UpdateValue(parts, "object_type", (int) item.ObjectType, 10);
-                }
-
-                if (parts.Any(x => x.Name == "game_object_id"))
-                {
-                    PacketPart.UpdateValue(parts, "game_object_id", gameObject.GameId, 14);
-                }
+                // Unconditionally: UpdateValue no-ops on a name the definition does not carry, and
+                // the default one has object_type but no game_object_id — so guarding this on the
+                // latter left every spawn wearing the identity of the frame it was captured from.
+                PacketPart.UpdateValue(parts, "object_type",
+                    (objectTypeOverride ?? (int) item.ObjectType) & 0x3FF, 10);
+                PacketPart.UpdateValue(parts, "game_object_id", gameObject.GameId & 0x3FFF, 14);
 
                 // DB world coords -> client coords: Y and Z are negated.
                 PacketPart.UpdateCoordinates(parts, item.X, -item.Y, -item.Z);
@@ -185,6 +175,10 @@ public partial class ConsoleCommandParser
         var occupied = currentCharacterDbEntry.Items.Keys.ToList();
         var cleared = occupied.Count;
         currentCharacterDbEntry.Items.Clear();
+
+        // Clear() empties the hand too, so recalculate before saving — the attack of whatever was
+        // held is a persisted field and has to go with it.
+        currentCharacterDbEntry.RecalcCurrentStats();
         sphereClient.SaveCharacter();
 
         foreach (var slot in occupied)
@@ -197,11 +191,7 @@ public partial class ConsoleCommandParser
             }
         }
 
-        // Clear() empties the hand too, so the attack of whatever was held has to go with it.
-        if (currentCharacterDbEntry.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(currentCharacterDbEntry);
-        }
+        NetworkedStatsUpdater.Update(currentCharacterDbEntry);
 
         SendFeedback($"Cleared {cleared} slot(s).");
     }
