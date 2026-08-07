@@ -17,7 +17,13 @@ public partial class AssetBootstrap : Control
 	private const string DefaultReleaseBaseUrl =
 		"https://github.com/knelse/SphereEmu/releases/download/asset-bundles";
 
-	private static readonly string[] HeavyPackIds = ["models", "terrain", "textures"];
+	private static readonly JsonDocumentOptions AppSettingsJsonOptions = new()
+	{
+		CommentHandling = JsonCommentHandling.Skip,
+		AllowTrailingCommas = true
+	};
+
+	private static readonly string[] HeavyPackIds = ["models", "terrain", "textures", "terrainbake"];
 
 	private Label? statusLabel;
 	private Label? detailLabel;
@@ -116,8 +122,8 @@ public partial class AssetBootstrap : Control
 
 				if (!haveMatching)
 				{
-					// Remove older files for this pack id.
-					foreach (var old in Directory.GetFiles(packsDir, $"{id}-*.pck"))
+					// Remove older files for this pack id (.pck or .zip).
+					foreach (var old in Directory.GetFiles(packsDir, $"{id}-*"))
 					{
 						try { File.Delete(old); } catch { /* ignore */ }
 					}
@@ -221,7 +227,7 @@ public partial class AssetBootstrap : Control
 			var settingsPath = Path.Combine(exeDir, "appsettings.json");
 			if (File.Exists(settingsPath))
 			{
-				using var doc = JsonDocument.Parse(File.ReadAllText(settingsPath));
+				using var doc = JsonDocument.Parse(File.ReadAllText(settingsPath), AppSettingsJsonOptions);
 				if (doc.RootElement.TryGetProperty("AssetPacksReleaseBaseUrl", out var urlEl))
 				{
 					var url = urlEl.GetString();

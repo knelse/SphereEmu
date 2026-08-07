@@ -87,11 +87,13 @@ function Get-AllHeavyPackCrcs {
     $result = [ordered]@{}
     foreach ($pack in $script:HeavyPacks) {
         $crc = Get-PackContentCrc32Hex -RepoRoot $RepoRoot -Roots $pack.Roots
+        $ext = if ($pack.Extension) { [string]$pack.Extension } else { 'pck' }
         $result[$pack.Id] = @{
             crc32 = $crc
-            file  = "$($pack.Id)-$crc.pck"
+            file  = "$($pack.Id)-$crc.$ext"
             roots = $pack.Roots
             preset = $pack.Preset
+            format = if ($pack.Format) { [string]$pack.Format } else { 'pck' }
         }
     }
     # Prevent PowerShell from enumerating the ordered dictionary on return.

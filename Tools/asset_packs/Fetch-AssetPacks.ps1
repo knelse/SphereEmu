@@ -25,7 +25,7 @@ New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 $state = [ordered]@{ packs = [ordered]@{} }
 
-foreach ($id in @('models', 'terrain', 'textures')) {
+foreach ($id in (Get-HeavyPackExportOrder)) {
     $info = $manifest.packs.$id
     if (-not $info) { throw "manifest missing pack '$id'" }
     $file = [string]$info.file
@@ -33,9 +33,7 @@ foreach ($id in @('models', 'terrain', 'textures')) {
     $dest = Join-Path $OutDir $file
     $need = $Force -or -not (Test-Path -LiteralPath $dest)
     if (-not $need -and (Test-Path -LiteralPath $dest)) {
-        $localCrc = Get-FileCrc32Hex -Path $dest
-        # File CRC of the .pck itself is not the content CRC; keep by name match.
-        if ($dest -like "*-$crc.pck" -or [IO.Path]::GetFileName($dest) -eq $file) {
+        if ([IO.Path]::GetFileName($dest) -eq $file) {
             Write-Host "Have $file"
             $need = $false
         }

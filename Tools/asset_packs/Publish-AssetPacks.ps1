@@ -117,7 +117,7 @@ try {
 }
 
 # Smallest packs first so CI validates the pipeline before multi-GB work.
-$exportOrder = @('textures', 'terrain', 'models')
+$exportOrder = Get-HeavyPackExportOrder
 $changed = @()
 foreach ($id in $exportOrder) {
     if (-not $current.Contains($id)) { continue }
@@ -139,27 +139,39 @@ foreach ($id in $changed) {
     $packDef = $script:HeavyPacks | Where-Object { $_.Id -eq $id } | Select-Object -First 1
     if ($null -eq $packDef) { throw "Unknown pack id '$id'" }
 
-    $outPck = Join-Path $PacksOutDir $entry.file
+    $outPack = Join-Path $PacksOutDir $entry.file
     $logPath = Join-Path $PacksOutDir "export-$id.log"
-    if (Test-Path -LiteralPath $outPck) { Remove-Item -LiteralPath $outPck -Force }
+    if (Test-Path -LiteralPath $outPack) { Remove-Item -LiteralPath $outPack -Force }
 
-    Write-Host "Exporting pack preset '$($packDef.Preset)' -> $outPck"
-    $code = Invoke-Godot -Exe $godotExe -GodotArgs @(
-        '--headless',
-        '--path', $repoRoot,
-        '--export-pack', $packDef.Preset,
-        $outPck
-    ) -LogPath $logPath
+    $format = if ($packDef.Format) { [string]$packDef.Format } else { 'pck' }
+    if ($format -eq 'zip') {
+        Write-Host "Zipping pack '$id' ($($packDef.Roots -join ', ')) -> $outPack"
+        New-GodotResZipPack -RepoRoot $repoRoot -Roots $packDef.Roots -OutZip $outPack
+        "zip pack $id -> $outPack" | Set-Content -LiteralPath $logPath -Encoding utf8
+    }
+    else {
+        Write-Host "Exporting pack preset '$($packDef.Preset)' -> $outPack"
+        $code = Invoke-Godot -Exe $godotExe -GodotArgs @(
+            '--headless',
+            '--path', $repoRoot,
+            '--export-pack', $packDef.Preset,
+            $outPack
+        ) -LogPath $logPath
 
-    if ($code -ne 0 -or -not (Test-Path -LiteralPath $outPck)) {
-        $tail = ''
-        if (Test-Path -LiteralPath $logPath) {
-            $tail = (Get-Content -LiteralPath $logPath -Tail 40) -join "`n"
+        if ($code -ne 0 -or -not (Test-Path -LiteralPath $outPack)) {
+            $tail = ''
+            if (Test-Path -LiteralPath $logPath) {
+                $tail = (Get-Content -LiteralPath $logPath -Tail 40) -join "`n"
+            }
+            throw "export-pack failed for $id (exit=$code, exists=$(Test-Path -LiteralPath $outPack)). Log tail:`n$tail"
         }
-        throw "export-pack failed for $id (exit=$code, exists=$(Test-Path -LiteralPath $outPck)). Log tail:`n$tail"
     }
 
-    $bytes = (Get-Item -LiteralPath $outPck).Length
+    if (-not (Test-Path -LiteralPath $outPack)) {
+        throw "Pack output missing for $id : $outPack"
+    }
+
+    $bytes = (Get-Item -LiteralPath $outPack).Length
     Write-Host ("OK {0} size={1:N1} MB" -f $id, ($bytes / 1MB))
     $entry.bytes = $bytes
     $current[$id] = $entry
@@ -204,7 +216,7 @@ if ($SkipUpload) {
 # GitHub cannot truly hide that; mark as prerelease and make the title obviously not a game build.
 $packReleaseTitle = '[internal] Asset pack CDN (not a game build)'
 $packReleaseNotes = @'
-Internal CDN for CRC-versioned Godot heavy packs (models/terrain/textures).
+Internal CDN for CRC-versioned Godot heavy packs (models/terrain/textures/terrainbake).
 
 This is **not** a playable build. Download the server from the **windows-debug-slim** release instead; it pulls these packs on first launch.
 '@
@@ -229,14 +241,14 @@ else {
 
 foreach ($id in $changed) {
     $entry = $current[$id]
-    $outPck = Join-Path $PacksOutDir $entry.file
+    $outPack = Join-Path $PacksOutDir $entry.file
     Write-Host "Uploading $($entry.file)"
-    gh release upload $ReleaseTag $outPck --clobber
+    gh release upload $ReleaseTag $outPack --clobber
 
     $assetsJson = gh release view $ReleaseTag --json assets | ConvertFrom-Json
     foreach ($asset in $assetsJson.assets) {
         $name = [string]$asset.name
-        if ($name -like "$id-*.pck" -and $name -ne $entry.file) {
+        if ($name -like "$id-*" -and $name -ne $entry.file) {
             Write-Host "Deleting old asset $name"
             gh release delete-asset $ReleaseTag $name --yes
         }
