@@ -150,9 +150,12 @@ public static class ClientPacketClassifier
 				return Result(ClientPacketEvent.TradeBuy, 1.0, "handler signature 08 40 03", true);
 
 			case 0x19 or 0x20 or 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3 &&
-										   frame[18] == 0xA1 && frame[19] == 0x41:
-				// Equip and attack share 08 40 A3 at these lengths; only equip carries A1 41 here.
-				return Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "equip signature A1 41", true);
+										   frame[18] is 0xA1 or 0xA3 && frame[19] == 0x41:
+				// Taking something in hand and putting it down are the same message; an attack is not.
+				// Byte 18 straddles the record and its low bits sit ahead of the signature, one of
+				// them set only when the hand is being emptied — so testing the whole byte dropped
+				// that frame onto the damage path, where its 0xFFFF reads as "no target".
+				return Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "hand-change signature 41", true);
 
 			case 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
 				// Attacking with something in hand; the arm above claims taking one by its A1 41.
