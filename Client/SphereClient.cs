@@ -15,8 +15,8 @@ namespace SphServer.Client;
 
 public partial class SphereClient : WorldObject
 {
-	public readonly ClientStateManager ClientStateManager = new (false);
-	private ClientConnection clientConnection;
+	public readonly ClientStateManager ClientStateManager = new(false);
+	private ClientConnection clientConnection = null!;
 	private ClientEvents clientEvents = null!;
 
 	private CharacterBody3D? clientModel;
@@ -30,7 +30,7 @@ public partial class SphereClient : WorldObject
 
 	internal Area3D? BroadcastArea3D { get; private set; }
 
-	public override async void _PhysicsProcess (double delta)
+	public override async void _PhysicsProcess(double delta)
 	{
 		if (streamPeerTcp.GetStatus() != StreamPeerSocket.Status.Connected)
 		{
@@ -52,7 +52,7 @@ public partial class SphereClient : WorldObject
 		await clientEvents.HandleEventsAsync();
 	}
 
-	public override void _Ready ()
+	public override void _Ready()
 	{
 		// TODO: client logs in separate files
 		SphLogger.Info($"New client connected. Client ID: {localId:X4}");
@@ -81,7 +81,7 @@ public partial class SphereClient : WorldObject
 		// });
 	}
 
-	public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
+	public SphereClient Setup(StreamPeerTcp streamPeer, ushort id)
 	{
 		clientEvents = new ClientEvents(this);
 		clientConnection = new ClientConnection(streamPeer, id, this);
@@ -91,22 +91,22 @@ public partial class SphereClient : WorldObject
 		return this;
 	}
 
-	public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
+	public void EnqueueClientEvent(ClientQueuedEvent clientEvent)
 	{
 		clientEvents.Enqueue(clientEvent);
 	}
 
-	public void SetPlayerDbEntry (PlayerDbEntry? entry)
+	public void SetPlayerDbEntry(PlayerDbEntry? entry)
 	{
 		playerDbEntry = entry;
 	}
 
-	public CharacterDbEntry? GetSelecterCharacter ()
+	public CharacterDbEntry? GetSelecterCharacter()
 	{
 		return CurrentCharacter;
 	}
 
-	public void SetSelectedCharacterIndex (int index)
+	public void SetSelectedCharacterIndex(int index)
 	{
 		selectedCharacterIndex = index;
 		try
@@ -121,7 +121,7 @@ public partial class SphereClient : WorldObject
 		}
 	}
 
-	public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
+	public void CreatePlayerCharacter(CharacterDbEntry newCharacter, int index)
 	{
 		try
 		{
@@ -135,7 +135,7 @@ public partial class SphereClient : WorldObject
 		}
 	}
 
-	public void DeletePlayerCharacter (int index)
+	public void DeletePlayerCharacter(int index)
 	{
 		// TODO: move to db entry
 		try
@@ -157,7 +157,7 @@ public partial class SphereClient : WorldObject
 		}
 	}
 
-	public void RemoveClient ()
+	public void RemoveClient()
 	{
 		if (isExiting)
 		{
@@ -180,37 +180,37 @@ public partial class SphereClient : WorldObject
 		QueueFree();
 	}
 
-	public void MaybeQueueNetworkPacketSend (byte[] packet)
+	public void MaybeQueueNetworkPacketSend(byte[] packet)
 	{
 		clientConnection.MaybeScheduleNetworkPacketSend(packet);
 	}
 
-	public ushort GetLocalObjectId (int id)
+	public ushort GetLocalObjectId(int id)
 	{
 		// TODO: implement
-		return (ushort) id;
+		return (ushort)id;
 	}
 
-	public ushort GetGlobalObjectId (int id)
+	public ushort GetGlobalObjectId(int id)
 	{
 		// TODO: implement
-		return (ushort) id;
+		return (ushort)id;
 	}
 
-	public static ushort GetLocalObjectId (ushort clientId, int id)
+	public static ushort GetLocalObjectId(ushort clientId, int id)
 	{
 		// TODO: implement
-		return (ushort) id;
+		return (ushort)id;
 	}
 
-	public void UpdateCoordinatesInWorld ()
+	public void UpdateCoordinatesInWorld()
 	{
 		var transform = Transform;
 		transform.Origin = CurrentCharacter!.Origin;
 		Transform = transform;
 	}
 
-	public void InitializeInteractions ()
+	public void InitializeInteractions()
 	{
 		SphLogger.Info($"Initializing client interactions. Client ID: {localId:X4}");
 
@@ -232,22 +232,22 @@ public partial class SphereClient : WorldObject
 		base._Ready();
 	}
 
-	public string GetIpAddressAndPort ()
+	public string GetIpAddressAndPort()
 	{
 		return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
 	}
 
-	public string GetIpAddressWithoutPort ()
+	public string GetIpAddressWithoutPort()
 	{
 		return streamPeerTcp.GetConnectedHost();
 	}
 
-	public string? GetLogin ()
+	public string? GetLogin()
 	{
 		return playerDbEntry?.Login;
 	}
 
-	protected override void ShowForClient (SphereClient client)
+	protected override void ShowForClient(SphereClient client)
 	{
 		if (client.GetInstanceId() == GetInstanceId())
 		{
@@ -259,7 +259,7 @@ public partial class SphereClient : WorldObject
 		base.ShowForClient(client);
 	}
 
-	private void UpdateCharacterForDebugMode ()
+	private void UpdateCharacterForDebugMode()
 	{
 		// TODO: move to db entry
 		if (!ServerConfig.AppConfig.DebugMode)
@@ -282,12 +282,12 @@ public partial class SphereClient : WorldObject
 	}
 
 	// TODO: find other fields (look, level, hp, gender, etc)
-	protected override List<PacketPart> GetPacketParts ()
+	protected override List<PacketPart> GetPacketParts()
 	{
 		return PacketPart.LoadDefinedWithOverride("entity_character");
 	}
 
-	protected override List<PacketPart> ModifyPacketParts (List<PacketPart> packetParts)
+	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
 	{
 		var nameBytes = SphEncoding.Win1251.GetBytes(CurrentCharacter!.Name);
 		PacketPart.UpdateValue(packetParts, "character_name_length", nameBytes.Length, 8);

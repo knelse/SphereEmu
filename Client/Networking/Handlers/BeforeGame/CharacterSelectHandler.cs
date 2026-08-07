@@ -8,7 +8,7 @@ using SphServer.Shared.Networking.DataModel.Serializers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class CharacterSelectHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class CharacterSelectHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private int selectedCharacterIndex = -1;

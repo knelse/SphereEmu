@@ -2,7 +2,7 @@
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientConnection)
+public class BuyItemFromTargetHandler
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

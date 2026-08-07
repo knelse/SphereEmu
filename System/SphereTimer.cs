@@ -2,23 +2,33 @@
 
 namespace SphServer.System;
 
-public class SphereTimer (double targetTime, bool autoRearm, Action onComplete)
+public class SphereTimer
 {
-    private double remainingTime = targetTime;
-    private Action onComplete = onComplete;
+    private readonly double rearmTargetTime;
+    private readonly bool autoRearm;
+    private double remainingTime;
+    private Action onComplete;
 
-    public void Arm (double targetTime, Action onComplete)
+    public SphereTimer(double targetTime, bool autoRearm, Action onComplete)
+    {
+        rearmTargetTime = targetTime;
+        this.autoRearm = autoRearm;
+        remainingTime = targetTime;
+        this.onComplete = onComplete;
+    }
+
+    public void Arm(double targetTime, Action onComplete)
     {
         remainingTime = targetTime;
         this.onComplete = onComplete;
     }
 
-    public void Rearm (double targetTime)
+    public void Rearm(double targetTime)
     {
         remainingTime = targetTime;
     }
 
-    public bool Tick (double delta)
+    public bool Tick(double delta)
     {
         if (remainingTime <= 0)
         {
@@ -36,7 +46,7 @@ public class SphereTimer (double targetTime, bool autoRearm, Action onComplete)
 
         if (autoRearm && hasFinished)
         {
-            remainingTime = targetTime;
+            remainingTime = rearmTargetTime;
         }
 
         return hasFinished;

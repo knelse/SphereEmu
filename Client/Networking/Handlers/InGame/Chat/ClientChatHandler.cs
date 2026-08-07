@@ -18,7 +18,7 @@ using static SphServer.Helpers.Cities;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Chat;
 
-public class ClientChatHandler(ushort localId, ClientConnection clientConnection)
+public class ClientChatHandler(ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 
 {
@@ -239,10 +239,16 @@ public class ClientChatHandler(ushort localId, ClientConnection clientConnection
 
             else if (message.StartsWith("/fire"))
             {
+                var character = clientConnection.GetSelectedCharacter();
+                if (character is null)
+                {
+                    return;
+                }
+
                 var firework = FireworkScene.Instantiate<WorldObject>();
                 firework.Angle = 0;
                 firework.ObjectType = ObjectType.Firework;
-                var origin = clientConnection.GetSelectedCharacter().Origin;
+                var origin = character.Origin;
                 SphLogger.Info($"Spawning firework at: {origin.X:F1} | {origin.Y:F1} | {origin.Z:F1}");
                 SphereServer.ServerNode.CallDeferred(Node.MethodName.AddChild, firework);
                 firework.Transform = new Transform3D(Basis.Identity, origin);

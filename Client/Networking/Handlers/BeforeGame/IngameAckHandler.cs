@@ -7,7 +7,7 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class IngameAckHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;

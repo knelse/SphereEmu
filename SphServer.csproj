@@ -6,6 +6,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <!-- Slim export output (and packs junction) must not participate in default ** globs;
+             otherwise MSBuild can fail with MSB3552 on EmbeddedResource **/*.resx. -->
+        <DefaultItemExcludes>$(DefaultItemExcludes);build/**</DefaultItemExcludes>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="IndexRange" Version="1.0.2" />
@@ -14,7 +17,6 @@
         <PackageReference Include="System.Runtime" Version="4.3.0" />
         <PackageReference Update="Godot.SourceGenerators" Version="4.7.1" />
         <PackageReference Update="GodotSharp" Version="4.7.1" />
-        <PackageReference Include="GodotSharpEditor" Version="4.7.1" Condition="'$(Configuration)' == 'Debug'" />
         <PackageReference Include="xunit" Version="2.9.3" />
     </ItemGroup>
     <ItemGroup>

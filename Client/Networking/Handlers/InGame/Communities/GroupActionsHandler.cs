@@ -4,7 +4,7 @@ using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySeri
 
 namespace SphServer.Client.Networking.Handlers.InGame.Communities;
 
-public class GroupActionsHandler (ushort localId, ClientConnection clientConnection)
+public class GroupActionsHandler(ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

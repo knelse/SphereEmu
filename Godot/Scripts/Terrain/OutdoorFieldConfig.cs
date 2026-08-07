@@ -43,7 +43,7 @@ public static class OutdoorFieldConfig
     /// <summary>
     ///     When false, monsters do not pathfind or move along nav paths.
     /// </summary>
-    public const bool NavigationMobMovementEnabled = false;
+    public static readonly bool NavigationMobMovementEnabled = false;
 
     public static int ComputeBakedSlotPoolCount(int mobCount, float spawnRadiusMeters)
     {

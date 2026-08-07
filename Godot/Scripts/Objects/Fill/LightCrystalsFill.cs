@@ -30,7 +30,8 @@ public partial class LightCrystalsFill : Node3D
 	{
 		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
 
-		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(LightCrystalScenePath, "LightCrystalsFill", out var scene))
+		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(LightCrystalScenePath, "LightCrystalsFill", out var scene)
+			|| scene is null)
 		{
 			return;
 		}
@@ -41,7 +42,7 @@ public partial class LightCrystalsFill : Node3D
 
 		RebuildFromFile(
 			LightCrystalsDataFilePath,
-			scene!,
+			scene,
 			ObjectType.LightCrystal,
 			LightCrystalTypeValue,
 			"LightCrystal",

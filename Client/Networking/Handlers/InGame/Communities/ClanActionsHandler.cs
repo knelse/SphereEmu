@@ -2,7 +2,7 @@
 
 namespace SphServer.Client.Networking.Handlers.InGame.Communities;
 
-public class ClanActionsHandler (ushort localId, ClientConnection clientConnection)
+public class ClanActionsHandler
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

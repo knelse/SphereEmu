@@ -5,7 +5,7 @@ using SphServer.Shared.Networking;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class HandshakeHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class HandshakeHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     // TODO make reconnect work

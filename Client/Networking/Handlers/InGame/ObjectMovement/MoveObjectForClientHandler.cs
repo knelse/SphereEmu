@@ -3,7 +3,7 @@ using SphServer.Shared.Networking;
 
 namespace SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 
-public class MoveObjectForClientHandler (ushort localId, ClientConnection clientConnection)
+public class MoveObjectForClientHandler(ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

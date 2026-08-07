@@ -226,21 +226,21 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 
     private void InitHandlers()
     {
-        currentHandler ??= new HandshakeHandler(streamPeerTcp, localId, this);
+        currentHandler ??= new HandshakeHandler(localId, this);
         pingHandler ??= new(streamPeerTcp, localId, this);
         npcInteractionHandler ??= new(localId, this);
-        clanActionsHandler ??= new(localId, this);
-        groupActionsHandler ??= new(localId, this);
+        clanActionsHandler ??= new();
+        groupActionsHandler ??= new(this);
         openLootContainerHandler ??= new(localId, this);
-        clientChatHandler ??= new(localId, this);
+        clientChatHandler ??= new(this);
         pickupItemHandler ??= new(localId, this);
         moveItemHandler ??= new(localId, this);
         useItemHandler ??= new(localId, this);
-        dropItemToGroundHandler ??= new(localId, this);
-        mainhandTakeItemHandler ??= new(localId, this);
-        buyItemFromTargetHandler ??= new(localId, this);
+        dropItemToGroundHandler ??= new();
+        mainhandTakeItemHandler ??= new();
+        buyItemFromTargetHandler ??= new();
         damageTargetHandler ??= new(localId, this);
-        moveObjectForClientHandler ??= new(localId, this);
+        moveObjectForClientHandler ??= new(this);
     }
 
     public void MoveToNextBeforeGameStage()
@@ -249,7 +249,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {localId:X4}");
         sphereClient.ClientStateManager.Transition();
         currentHandler =
-            BeforeGameHandlers.GetHandlerForState(sphereClient.ClientStateManager.CurrentState, streamPeerTcp, localId,
+            BeforeGameHandlers.GetHandlerForState(sphereClient.ClientStateManager.CurrentState, localId,
                 this);
         var handlerNameStr = currentHandler?.ToString() ?? "{none}";
         SphLogger.Info(
@@ -310,7 +310,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         }
         catch (Exception ex)
         {
-            var output = (arr?.Length ?? 0) > 0 ? Convert.ToHexString(arr) : "<empty>";
+            var output = arr is { Length: > 0 } ? Convert.ToHexString(arr) : "<empty>";
             SphLogger.Error($"Incorrect packet from client: {output}. Client ID: {localId}", ex);
             ReceiveBuffer[0] = 0;
             return 0;

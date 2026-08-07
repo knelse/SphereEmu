@@ -10,7 +10,7 @@ namespace SphServer.Server.Debug;
 
 public static class DebugConsole
 {
-    public static void SendSpherePacket (string input, Action<byte[]> sendPacketAction, bool generateNewId = true,
+    public static void SendSpherePacket(string input, Action<byte[]> sendPacketAction, bool generateNewId = true,
         Action<List<PacketPart>>? transformPacketPartValueAction = null, bool isPacketPart = true,
         bool coordsForEntityMove = false)
     {
@@ -76,31 +76,35 @@ public static class DebugConsole
         sendPacketAction(packetBytes);
     }
 
-    public static void SendRandomPlayerPacket (Action<byte[]> sendPacketAction)
+    public static void SendRandomPlayerPacket(Action<byte[]> sendPacketAction)
     {
         SendSpherePacket("/packet entity_character onme", sendPacketAction, true, RandomizePlayerPacket);
     }
 
-    public static void MoveEntity (Action<byte[]> sendPacketAction)
+    public static void MoveEntity(Action<byte[]> sendPacketAction)
     {
         SendSpherePacket("/packet server_move_entity", sendPacketAction, false, UpdateMoveEntityPacket, false, true);
     }
 
-    private static void UpdateMoveEntityPacket (List<PacketPart> packetParts)
+    private static void UpdateMoveEntityPacket(List<PacketPart> packetParts)
     {
         var client = ActiveClients.FirstOrDefault();
+        if (client?.CurrentCharacter is not { } character)
+        {
+            return;
+        }
 
         PacketPart.UpdateValue(packetParts, "entity_id", 4502, 16);
-        PacketPart.UpdateValue(packetParts, "x_plus_32768", (int) (client.CurrentCharacter.X + 32768), 16);
-        PacketPart.UpdateValue(packetParts, "y_plus_1200", (int) (-client.CurrentCharacter.Y + 1200), 13);
-        PacketPart.UpdateValue(packetParts, "z_plus_32768", (int) (-client.CurrentCharacter.Z + 32768), 16);
+        PacketPart.UpdateValue(packetParts, "x_plus_32768", (int)(character.X + 32768), 16);
+        PacketPart.UpdateValue(packetParts, "y_plus_1200", (int)(-character.Y + 1200), 13);
+        PacketPart.UpdateValue(packetParts, "z_plus_32768", (int)(-character.Z + 32768), 16);
         PacketPart.UpdateValue(packetParts, "angle", client.Angle, 8);
         // PacketPart.UpdateValue(packetParts, "x_plus_32768", 420 + 32768, 16);
         // PacketPart.UpdateValue(packetParts, "y_plus_1200", 150 + 1200, 13);
         // PacketPart.UpdateValue(packetParts, "z_plus_32768", -1288 + 32768, 16);
     }
 
-    private static void RandomizePlayerPacket (List<PacketPart> packetParts)
+    private static void RandomizePlayerPacket(List<PacketPart> packetParts)
     {
         var randomNameVal = SphRng.Rng.Next(1000);
         var randomClanNameVal = SphRng.Rng.Next(100);
@@ -111,13 +115,12 @@ public static class DebugConsole
         // PacketPart.UpdateValue(packetParts, "clan_name", randomClanName, true, 4);
     }
 
-    private static void ChangeAllCoordsToFirstClient (List<PacketPart> list, bool coordsForEntityMove)
+    private static void ChangeAllCoordsToFirstClient(List<PacketPart> list, bool coordsForEntityMove)
     {
         var client = ActiveClients.FirstOrDefault();
-        if (!coordsForEntityMove)
+        if (!coordsForEntityMove && client?.CurrentCharacter is { } character)
         {
-            PacketPart.UpdateCoordinates(list, client.CurrentCharacter.X, -client.CurrentCharacter.Y,
-                -client.CurrentCharacter.Z);
+            PacketPart.UpdateCoordinates(list, character.X, -character.Y, -character.Z);
         }
     }
 }

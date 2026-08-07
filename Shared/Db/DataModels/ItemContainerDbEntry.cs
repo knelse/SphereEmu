@@ -146,7 +146,6 @@ public class ItemContainerDbEntry
 
     public void ShowItemListForClient (ushort clientId)
     {
-        byte[] itemList;
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
         // we'll figure out weight for 3-4 slot containers later
         // var weight = 1234;

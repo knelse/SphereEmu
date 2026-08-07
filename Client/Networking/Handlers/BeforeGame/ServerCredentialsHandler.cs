@@ -7,7 +7,7 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class ServerCredentialsHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class ServerCredentialsHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;

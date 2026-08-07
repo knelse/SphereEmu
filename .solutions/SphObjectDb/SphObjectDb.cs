@@ -513,6 +513,10 @@ public static class SphObjectDb
 
                         var pref = prefFiles[name];
                         var prefName = Enum.GetName(pref);
+                        if (prefName is null)
+                        {
+                            continue;
+                        }
 
                         if (!ObjectNameToLocalizationMap.ContainsKey(prefName))
                         {
@@ -642,7 +646,14 @@ public static class SphObjectDb
         {
             foreach (var (_, gameObject) in suffixData)
             {
-                var localeEntries = ObjectNameToLocalizationMap[Enum.GetName(objectType)][gameObject.GameId];
+                var objectTypeName = Enum.GetName(objectType);
+                if (objectTypeName is null ||
+                    !ObjectNameToLocalizationMap.TryGetValue(objectTypeName, out var byGameId) ||
+                    !byGameId.TryGetValue(gameObject.GameId, out var localeEntries))
+                {
+                    continue;
+                }
+
                 foreach (var (locale, text) in localeEntries)
                 {
                     gameObject.Localisation[locale] = text;

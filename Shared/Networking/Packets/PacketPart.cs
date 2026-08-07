@@ -2,7 +2,6 @@ using BitStreams;
 using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Helpers.Enums;
-using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.GameData.Enums;

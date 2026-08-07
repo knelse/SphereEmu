@@ -138,7 +138,8 @@ public static class ObjectTypeToModelNameMap
             ObjectType.ArmorHelmetPremium => "st_shlem",
             ObjectType.MantraWhite => "mg_mantra",
             ObjectType.MantraBlack => "mg_mantra",
-            ObjectType.Unknown => string.Empty
+            ObjectType.Unknown => string.Empty,
+            _ => string.Empty
         };
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class MainhandTakeItemHandler (ushort localId, ClientConnection clientConnection)
+public class MainhandTakeItemHandler
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

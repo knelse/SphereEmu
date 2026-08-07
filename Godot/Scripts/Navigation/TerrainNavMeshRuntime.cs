@@ -209,14 +209,15 @@ public static class TerrainNavMeshRuntime
     ///     can await - never from inside a <c>lock</c> (use <see cref="TrySyncImmediate" /> there instead).
     /// </summary>
     /// <remarks>
-    ///     Godot only applies region/map changes at physics-frame sync (or via
-    ///     <see cref="NavigationServer3D.MapForceUpdate" />). A fixed frame wait is not enough: async map
-    ///     iterations can lag, and the editor may barely tick physics - both used to make spawn-slot baking
-    ///     fail intermittently on valid spawners (retry later succeeded once the map had quietly finished
-    ///     syncing). We poll <see cref="NavigationServer3D.MapGetIterationId" /> and a probe query instead.
+    ///     Godot applies region/map changes asynchronously at physics-frame sync.
+    ///     <see cref="NavigationServer3D.MapForceUpdate" /> is obsolete with async iterations, so we never
+    ///     force-update. A fixed frame wait is not enough: async map iterations can lag, and the editor may
+    ///     barely tick physics - both used to make spawn-slot baking fail intermittently on valid spawners
+    ///     (retry later succeeded once the map had quietly finished syncing). We poll
+    ///     <see cref="NavigationServer3D.MapGetIterationId" /> and a probe query instead.
     /// </remarks>
     /// <param name="force">
-    ///     When true, re-flush/probe even if we already marked ourselves synced. Used by bake retries after a
+    ///     When true, re-probe even if we already marked ourselves synced. Used by bake retries after a
     ///     false NotWalkable failure so we do not early-out while the map is still settling.
     /// </param>
     public static async Task SyncAsync(SceneTree tree, bool force = false)
@@ -236,10 +237,8 @@ public static class TerrainNavMeshRuntime
         // synced map may not change the id.
         var requireIterationAdvance = _pendingSync;
 
-        // MapForceUpdate alone leaves iteration_id=1 and MapGetClosestPoint returns Vector3.Zero until the
-        // server has completed a real sync pass. Headless needs one PhysicsFrame; the editor @tool path
-        // must not await PhysicsFrame (it can stop emitting and hang BakeAll / the spawner plugin).
-        TryForceMapUpdate();
+        // Headless needs one PhysicsFrame; the editor @tool path must not await PhysicsFrame (it can stop
+        // emitting and hang BakeAll / the spawner plugin). Probe first in case a prior frame already synced.
         if (TryMarkSynced(iterationBefore, requireIterationAdvance)
             || TryMarkSynced(iterationBefore, requireIterationAdvance: false))
         {
@@ -249,7 +248,6 @@ public static class TerrainNavMeshRuntime
         if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
         {
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            TryForceMapUpdate();
             if (TryMarkSynced(iterationBefore, requireIterationAdvance: false))
             {
                 return;
@@ -259,14 +257,12 @@ public static class TerrainNavMeshRuntime
         for (var i = 0; i < MaxSyncWaitFrames; i++)
         {
             await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
-            TryForceMapUpdate();
             if (TryMarkSynced(iterationBefore, requireIterationAdvance: false))
             {
                 return;
             }
         }
 
-        TryForceMapUpdate();
         if (!TryMarkSynced(iterationBefore, requireIterationAdvance: false))
         {
             GD.PushWarning(
@@ -276,8 +272,9 @@ public static class TerrainNavMeshRuntime
     }
 
     /// <summary>
-    ///     Best-effort synchronous sync for callers that cannot await (e.g. locked runtime respawn). Uses
-    ///     <see cref="NavigationServer3D.MapForceUpdate" />. Returns true when the map is queryable afterward.
+    ///     Best-effort probe for callers that cannot await (e.g. locked runtime respawn). Does not force a
+    ///     map sync; returns true only when the map is already queryable. Callers should retry next frame
+    ///     when this returns false.
     /// </summary>
     public static bool TrySyncImmediate(bool force = false)
     {
@@ -293,26 +290,8 @@ public static class TerrainNavMeshRuntime
 
         var iterationBefore = NavigationServer3D.MapGetIterationId(_map);
         var requireIterationAdvance = _pendingSync;
-        TryForceMapUpdate();
         return TryMarkSynced(iterationBefore, requireIterationAdvance)
                || TryMarkSynced(iterationBefore, requireIterationAdvance: false);
-    }
-
-    private static void TryForceMapUpdate()
-    {
-        if (!_mapCreated)
-        {
-            return;
-        }
-
-        try
-        {
-            NavigationServer3D.MapForceUpdate(_map);
-        }
-        catch (Exception ex)
-        {
-            GD.PushWarning($"TerrainNavMeshRuntime: MapForceUpdate failed ({ex.Message}); waiting on frames instead.");
-        }
     }
 
     private static bool TryMarkSynced(uint iterationBefore, bool requireIterationAdvance)

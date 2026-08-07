@@ -10,7 +10,7 @@ namespace SphServer.Shared.WorldState;
 
 internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, SphereClient>
 {
-    internal static ushort InsertAtFirstEmptyIndex (SphereClient value)
+    internal static ushort InsertAtFirstEmptyIndex(SphereClient value)
     {
         // TODO: this is horribly inefficient
         var index = 0x4F6F;
@@ -28,17 +28,17 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
             throw new ArgumentException("Reached max number of connections");
         }
 
-        Add((ushort) index, value);
+        Add((ushort)index, value);
 
-        return (ushort) index;
+        return (ushort)index;
     }
 
-    internal static SphereClient? FirstOrDefault ()
+    internal static SphereClient? FirstOrDefault()
     {
         return storage.Values.FirstOrDefault();
     }
 
-    internal static ConcurrentDictionary<ushort, SphereClient> GetAll ()
+    internal static ConcurrentDictionary<ushort, SphereClient> GetAll()
     {
         return storage;
     }
@@ -48,23 +48,23 @@ internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
 internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
 
-internal abstract class ActiveObjectCollectionBase<Tk, Tv>
+internal abstract class ActiveObjectCollectionBase<Tk, Tv> where Tk : notnull
 {
-    protected static readonly ConcurrentDictionary<Tk, Tv> storage = new ();
+    protected static readonly ConcurrentDictionary<Tk, Tv> storage = new();
 
-    public static readonly ConcurrentDictionary<string, int> LoggedInClients = new ();
+    public static readonly ConcurrentDictionary<string, int> LoggedInClients = new();
 
-    public static Tv? Get (Tk key)
+    public static Tv? Get(Tk key)
     {
         return storage.GetValueOrDefault(key);
     }
 
-    public static void Add (Tk key, Tv value)
+    public static void Add(Tk key, Tv value)
     {
         storage[key] = value;
     }
 
-    public static Tv? Remove (Tk key)
+    public static Tv? Remove(Tk key)
     {
         storage.TryRemove(key, out var value);
         return value;

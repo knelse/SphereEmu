@@ -2,7 +2,7 @@
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class DropItemToGroundHandler (ushort localId, ClientConnection clientConnection)
+public class DropItemToGroundHandler
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (double delta)

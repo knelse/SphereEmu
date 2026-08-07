@@ -12,7 +12,7 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class LoginDataHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;

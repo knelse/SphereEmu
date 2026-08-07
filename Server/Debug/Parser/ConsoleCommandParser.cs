@@ -166,8 +166,15 @@ public class ConsoleCommandParser
         switch (action)
         {
             case "rank":
+                var clan = currentCharacterDbEntry.Clan;
+                if (clan is null)
+                {
+                    Console.WriteLine("No clan");
+                    return;
+                }
+
                 var responseStream = SphBitStream.GetWriteBitStream();
-                var nameBytes = SphEncoding.Win1251.GetBytes(currentCharacterDbEntry.Clan.Name);
+                var nameBytes = SphEncoding.Win1251.GetBytes(clan.Name);
                 responseStream.WriteBytes([
                     (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
                     MajorByte(currentCharacterDbEntry.ClientIndex),
@@ -218,7 +225,7 @@ public class ConsoleCommandParser
 
     private void SendPacket(string args)
     {
-        DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
+        DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
     }
 
     private void Buff(string args)
@@ -244,7 +251,7 @@ public class ConsoleCommandParser
             ? "mob"
             : "mob_" + split[0];
         DebugConsole.SendSpherePacket($"/packet {mobPacketName} onme",
-            bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes));
+            bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
     }
 
     private void MobById(string args)
@@ -259,7 +266,7 @@ public class ConsoleCommandParser
         else
         {
             DebugConsole.SendSpherePacket("/packet mob_assassin onme",
-                bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes), true,
+                bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes), true,
                 list =>
                 {
                     foreach (var idPart in list.Where(x => x.Name == "mob_type"))

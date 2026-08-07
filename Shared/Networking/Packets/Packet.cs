@@ -121,7 +121,6 @@ public static class Packet
         // var tokenId = 330;
         // var diamondRingId = 569;
 
-        ObjectPacket result;
         var objectType = item.GameObjectType.GetPacketObjectType();
         // Console.WriteLine(Enum.GetName(objectType));
         var suffixMod = item.Suffix == ItemSuffix.None

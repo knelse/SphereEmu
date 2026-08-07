@@ -14,21 +14,21 @@ public partial class MobNode : CharacterBody3D
     private SphereClient? client;
     private const float speed = 5.5f;
     private Vector3 lastKnownClientPosition = Vector3.Zero;
-    private readonly RandomNumberGenerator rng = new ();
+    private readonly RandomNumberGenerator rng = new();
 
     private double networkCoordsUpdateDelay = 0.5f;
     private double attackDelay;
-    private NavigationAgent3D navigationAgent;
+    private NavigationAgent3D navigationAgent = null!;
 
-    public MonsterDbEntry MonsterDbEntry;
+    public MonsterDbEntry MonsterDbEntry = null!;
 
-    public override void _Ready ()
+    public override void _Ready()
     {
         // MonsterDbEntry.ShowForEveryClientInRadius();
         navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
     }
 
-    public override void _PhysicsProcess (double delta)
+    public override void _PhysicsProcess(double delta)
     {
         // TODO: replace with signal later
         clientModel ??= GetNodeOrNull<Node3D>("/root/MainServer/Client/ClientModel");
@@ -95,7 +95,7 @@ public partial class MobNode : CharacterBody3D
         LookAt(clientModel.GlobalTransform.Origin, Vector3.Up);
     }
 
-    public void SetInactive ()
+    public void SetInactive()
     {
         ActiveNodes.Remove(GetInstanceId());
         QueueFree();
