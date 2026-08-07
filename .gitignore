@@ -6,6 +6,7 @@ bin
 Tools/godot.local.ps1
 .import
 .mono
+.godot
 logs
 sph.db
 sph-log.db
