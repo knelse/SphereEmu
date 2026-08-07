@@ -23,8 +23,11 @@ public class CombatBalance : IValidatableBalanceConfig
     /// <summary>Quadratic-branch divisor. Recovered: 7.</summary>
     public double DefenseQuadraticDivisor { get; init; }
 
-    /// <summary>Bare-fist <c>[Amin, Amax]</c> damage band (invented — fists have no weapon row).</summary>
-    public double[] FistAminAmax { get; init; } = [];
+    /// <summary>
+    ///     Melee <c>[Amin, Amax]</c> spread, applied to every swing (invented). Only the ratio matters —
+    ///     the roll is scaled so its mean is H — and no weapon in the game data carries a band of its own.
+    /// </summary>
+    public double[] MeleeAminAmax { get; init; } = [];
 
     /// <summary>"floor" or "round" (case-insensitive); parsed via <see cref="Rounding" />.</summary>
     public string RoundingMode { get; init; } = "floor";
@@ -40,10 +43,7 @@ public class CombatBalance : IValidatableBalanceConfig
     /// <summary>A miss deals 0 but is still replied. Default 0 (off).</summary>
     public double MissChance { get; init; }
 
-    /// <summary>
-    ///     Flat fist damage forming H (invented): PAtk excludes MainHand, so a naked character
-    ///     has PAtk 0 and fists would deal 0 forever without this.
-    /// </summary>
+    /// <summary>Stand-in attack for an empty hand (invented): fists have no game object row to read.</summary>
     public double FistStatSheetDamage { get; init; }
 
     /// <summary>Non-miss melee damage floor, applied after formula + crit (invented).</summary>
@@ -55,9 +55,9 @@ public class CombatBalance : IValidatableBalanceConfig
     /// </summary>
     public double MeleeRangeMeters { get; init; }
 
-    public double FistAmin => FistBandValue(0);
+    public double MeleeAmin => MeleeBandValue(0);
 
-    public double FistAmax => FistBandValue(1);
+    public double MeleeAmax => MeleeBandValue(1);
 
     // Validate() rejects anything else at load time, so the packet path never sees an unknown mode.
     public DamageRounding Rounding =>
@@ -74,10 +74,10 @@ public class CombatBalance : IValidatableBalanceConfig
                 $"{configPath}: unknown roundingMode '{RoundingMode}' — expected \"floor\" or \"round\".");
         }
 
-        if (FistAminAmax is not { Length: 2 })
+        if (MeleeAminAmax is not { Length: 2 } || MeleeAminAmax[0] <= 0 || MeleeAminAmax[1] < MeleeAminAmax[0])
         {
             throw new InvalidDataException(
-                $"{configPath}: fistAminAmax must be a two-element array [Amin, Amax].");
+                $"{configPath}: meleeAminAmax must be [Amin, Amax] with 0 < Amin <= Amax.");
         }
 
         // Bounds the damage path relies on; without them a bad file reaches the wire encoder.
@@ -104,5 +104,5 @@ public class CombatBalance : IValidatableBalanceConfig
         }
     }
 
-    private double FistBandValue (int index) => FistAminAmax[index];
+    private double MeleeBandValue (int index) => MeleeAminAmax[index];
 }

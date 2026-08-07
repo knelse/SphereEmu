@@ -142,8 +142,21 @@ public static class ClientPacketClassifier
 					b15 == 0x83 ? "handler signature 08 40 83" : "handler signature 08 40 A3",
 					true);
 
+			case 0x19 when b13 == 0x08 && b14 == 0x40 && b15 == 0x83:
+				// Switching to bare fists.
+				return Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true);
+
 			case 0x19 or 0x20 when b13 == 0x08 && b14 == 0x40 && b15 == 0x03:
 				return Result(ClientPacketEvent.TradeBuy, 1.0, "handler signature 08 40 03", true);
+
+			case 0x19 or 0x20 or 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3 &&
+										   frame[18] == 0xA1 && frame[19] == 0x41:
+				// Equip and attack share 08 40 A3 at these lengths; only equip carries A1 41 here.
+				return Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "equip signature A1 41", true);
+
+			case 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
+				// Attacking with something in hand; the arm above claims taking one by its A1 41.
+				return Result(ClientPacketEvent.CombatDamageTarget, 1.0, "armed attack 08 40 A3", true);
 
 			case 0x19 or 0x20:
 				return Result(

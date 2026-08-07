@@ -10,11 +10,11 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 
-/// <summary>Classification of an incoming 0x19/0x20 non-buy frame.</summary>
+/// <summary>Classification of an incoming 0x19/0x20/0x2C non-buy frame.</summary>
 public enum AttackFrameKind
 {
-    /// <summary>Bare-hand attack (left click on a live target): 08 40 A3 at bytes 13-15, target id at bits 172-187.</summary>
-    FistAttack = 0,
+    /// <summary>Left click on a live target, with or without something in hand: 08 40 A3 at bytes 13-15.</summary>
+    MeleeAttack = 0,
 
     /// <summary>
     ///     Self-targeted action (Alt modifier: target = the player themselves, hence the player's own
@@ -25,7 +25,7 @@ public enum AttackFrameKind
 
     /// <summary>
     ///     Weapon swing (7E 14 CE at bytes 22-24): weapons attack via the item-use path, so the frame
-    ///     shape differs from <see cref="FistAttack" /> and its target id sits elsewhere.
+    ///     shape differs from <see cref="MeleeAttack" /> and its target id sits elsewhere.
     /// </summary>
     WeaponAttack = 2,
 
@@ -98,13 +98,21 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 return;
         }
 
-        if (ActiveWorldObjects.Get(targetGlobalId) is not Monster monster ||
-            !IsWithinMeleeRange(attackerClient, monster, cfg))
+        var targetObject = ActiveWorldObjects.Get(targetGlobalId);
+        if (targetObject is not Monster monster)
         {
-            // Not a live in-range Monster — echo 0 damage to keep the client's swing visual consistent.
             clientConnection.MaybeScheduleNetworkPacketSend(
                 CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
-            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
+            LogAction(attackerGlobalId, targetGlobalId, frameKind,
+                targetObject is null ? "skip-no-such-object" : $"skip-not-a-monster-{targetObject.GetType().Name}");
+            return;
+        }
+
+        if (!IsWithinMeleeRange(attackerClient, monster, cfg))
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend(
+                CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
+            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip-out-of-range");
             return;
         }
 
@@ -113,11 +121,14 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             // Echo 0 damage with no state change — keeps the swing loop alive until the corpse despawns.
             clientConnection.MaybeScheduleNetworkPacketSend(
                 CommonPackets.FistAttackTargetEcho(targetClientLocalId, character.ClientIndex, 0));
-            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip");
+            LogAction(attackerGlobalId, targetGlobalId, frameKind, "skip-already-dead");
             return;
         }
 
-        var roll = DamageCalc.RollMeleeHit(character.PAtk, monster.BasePDef, combatRng, cfg);
+        // The frame cannot answer this — a powder in hand produces the same shape as a weapon — and
+        // the recalculation already decided it, so asking again by a looser rule would disagree.
+        var roll = DamageCalc.RollMeleeHit(character.MeleePAtk, !character.HoldsItemInHand,
+            monster.BasePDef, combatRng, cfg);
         var damageEvent = new DamageEvent(attackerGlobalId, attackerClient, roll.Damage,
             DamageSchool.Physical, roll.IsCrit);
         var outcome = monster.TakeDamage(in damageEvent);
@@ -135,16 +146,31 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                        $"Action [{action}] - [{result}]");
     }
 
-    /// <summary>Classifies a non-buy 0x19/0x20 frame; the target id = LSB-first u16 after 172 skipped bits.</summary>
+    /// <summary>Where the target id sits: a bare-hand frame carries it here, an armed one later.</summary>
+    private const int FistTargetBit = 172;
+
+    private const int ArmedTargetBit = 233;
+
+    private const int ArmedAttackFrameLength = 0x2C;
+
+    /// <summary>Classifies a non-buy attack frame and reads the target id it addresses.</summary>
     public static AttackFrameKind ParseAttackFrame (byte[] receiveBuffer, out ushort targetClientLocalId)
     {
+        var armed = receiveBuffer[0] == ArmedAttackFrameLength &&
+                    receiveBuffer[13] == 0x08 && receiveBuffer[14] == 0x40 && receiveBuffer[15] == 0xA3;
+
         var receiveStream = new BitStream(receiveBuffer);
-        receiveStream.ReadBits(172);
+        receiveStream.ReadBits(armed ? ArmedTargetBit : FistTargetBit);
         targetClientLocalId = receiveStream.ReadUInt16();
 
         if (receiveBuffer[13] == 0x54 && receiveBuffer[14] == 0x43 && receiveBuffer[15] == 0xC1)
         {
             return AttackFrameKind.SelfTargetedAction;
+        }
+
+        if (armed)
+        {
+            return AttackFrameKind.MeleeAttack;
         }
 
         if (receiveBuffer.Length >= 25 && receiveBuffer[0] >= 25 && receiveBuffer[22] == 0x7E &&
@@ -156,7 +182,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         // 08 40 A3 (left-click melee attack) is the ONLY attack discriminator on this route.
         if (receiveBuffer[13] == 0x08 && receiveBuffer[14] == 0x40 && receiveBuffer[15] == 0xA3)
         {
-            return AttackFrameKind.FistAttack;
+            return AttackFrameKind.MeleeAttack;
         }
 
         return AttackFrameKind.NotAnAttack;

@@ -4,7 +4,7 @@ namespace SphServer.Server.GameplayLogic.Combat;
 
 /// <summary>
 ///     One damage school's inputs: H = stat-sheet damage (PAtk physical / normalized MAtk magic),
-///     the MainHand weapon's [Amin, Amax] band (fist band when empty), the target's PDef/MDef.
+///     the melee [Amin, Amax] spread, the target's PDef/MDef.
 /// </summary>
 public readonly record struct DamageSchoolInput (
     double StatSheetDamage,

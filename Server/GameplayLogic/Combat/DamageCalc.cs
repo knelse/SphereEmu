@@ -12,7 +12,8 @@ public readonly record struct MeleeHitRoll (int Damage, bool IsMiss, bool IsCrit
 public static class DamageCalc
 {
     /// <summary>Fixed rng draw order keeps seeded tests deterministic.</summary>
-    public static MeleeHitRoll RollMeleeHit (int attackerPAtk, double targetPDef, Random rng, CombatBalance cfg)
+    public static MeleeHitRoll RollMeleeHit (int attackerPAtk, bool isBareHanded, double targetPDef, Random rng,
+        CombatBalance cfg)
     {
         if (rng is null || cfg is null)
         {
@@ -26,8 +27,10 @@ public static class DamageCalc
             return new MeleeHitRoll(0, true, false);
         }
 
-        var statSheetDamage = Math.Abs(attackerPAtk) + cfg.FistStatSheetDamage;
-        var schoolInput = new DamageSchoolInput(statSheetDamage, cfg.FistAmin, cfg.FistAmax, targetPDef);
+        // A held item contributes its own attack through PAtk. Fists have no game object to read
+        // one from, so the configured flat stands in for it.
+        var statSheetDamage = Math.Abs(attackerPAtk) + (isBareHanded ? cfg.FistStatSheetDamage : 0);
+        var schoolInput = new DamageSchoolInput(statSheetDamage, cfg.MeleeAmin, cfg.MeleeAmax, targetPDef);
         var damage = DamageFormula.RollSchoolDamage(in schoolInput, rng, cfg);
 
         var critRoll = rng.NextDouble();

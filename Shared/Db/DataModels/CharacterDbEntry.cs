@@ -101,6 +101,12 @@ public class CharacterDbEntry
     public int PAtk { get; set; }
     public int MAtk { get; set; }
 
+    public int MainHandPAtk { get; set; }
+    public bool HoldsItemInHand { get; set; }
+
+    /// <summary>Everything a swing hits with: worn bonuses plus whatever is in the hand.</summary>
+    public int MeleePAtk => PAtk + MainHandPAtk;
+
     /// <summary>
     ///     Puts an item in a slot and releases whatever slot it was already in. An item is in one
     ///     place: a claim left behind is saved with the character and comes back on relog as a cell
@@ -115,6 +121,7 @@ public class CharacterDbEntry
 
         Items[slot] = itemId;
     }
+
     public int KarmaCount { get; set; }
 
     public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
@@ -418,7 +425,21 @@ public class CharacterDbEntry
         // After the slot loop, so it sees the move that triggered this rather than the one before.
         CharacterWornLook.Apply(this);
 
-        // PAtk/MAtk: armor/accessories only for now (MainHand omitted) — revisit later
+        // The client works out the held item's attack itself, so the stat packet must not carry it.
+        // The hand's value sits in the item's own column, not the "+attack" one worn gear uses.
+        var heldPAtk = 0;
+        var holdsItem = false;
+
+        if (Items.TryGetValue(BelongingSlot.MainHand, out var heldItemId))
+        {
+            var heldItem = DbConnection.Items.FindById(heldItemId);
+            if (heldItem is not null && CanUseItem(heldItem))
+            {
+                holdsItem = true;
+                heldPAtk = heldItem.PAtkNegative;
+            }
+        }
+
         CurrentStrength = str;
         CurrentAgility = agi;
         CurrentAccuracy = acc;
@@ -433,8 +454,13 @@ public class CharacterDbEntry
         MaxMP = (ushort)mpMax;
         PDef = (ushort)pdef;
         MDef = (ushort)mdef;
-        PAtk = (ushort)patk;
-        MAtk = (ushort)matk;
+        // Signed, not a ushort cast: the game stores damage as a negative number, so worn gear that
+        // adds attack would otherwise wrap into a huge positive one. The stat packet has its own
+        // sign bit and the damage formula takes the magnitude.
+        PAtk = patk;
+        MAtk = matk;
+        MainHandPAtk = heldPAtk;
+        HoldsItemInHand = holdsItem;
 
         // TODO: character state shouldn't be updated in starting dungeon
         // MainServer.CharacterCollection.Update(Id, this);
@@ -442,7 +468,7 @@ public class CharacterDbEntry
         SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
                        $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
                        $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
-                       $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk}");
+                       $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk}");
 
         return true;
     }
