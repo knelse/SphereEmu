@@ -19,7 +19,8 @@ function Find-GodotExecutable {
             continue
         }
 
-        $candidates += Get-ChildItem -Path $root -Filter "Godot*.exe" -File -ErrorAction SilentlyContinue |
+        # Versioned installs live in subfolders (e.g. D:\Games\Godot\4.7.1\...).
+        $candidates += Get-ChildItem -Path $root -Filter "Godot*.exe" -File -Recurse -Depth 3 -ErrorAction SilentlyContinue |
             Where-Object { $_.Name -notmatch '_console\.exe$' -and $_.Name -match 'mono' }
     }
 
@@ -27,7 +28,8 @@ function Find-GodotExecutable {
         return $null
     }
 
-    $preferred = $candidates | Where-Object { $_.Name -match '4\.6' } | Sort-Object Name -Descending | Select-Object -First 1
+    # Prefer newest 4.7.x, then any 4.x mono build by name descending.
+    $preferred = $candidates | Where-Object { $_.Name -match '4\.7' } | Sort-Object Name -Descending | Select-Object -First 1
     if ($preferred) {
         return $preferred.FullName
     }
@@ -37,11 +39,11 @@ function Find-GodotExecutable {
 
 function Resolve-GodotExecutable {
     if ($env:GODOT_PATH) {
-        if (-not (Test-Path -LiteralPath $env:GODOT_PATH)) {
-            throw "GODOT_PATH is set but file not found: $env:GODOT_PATH"
+        if (Test-Path -LiteralPath $env:GODOT_PATH) {
+            return (Resolve-Path -LiteralPath $env:GODOT_PATH).Path
         }
 
-        return (Resolve-Path -LiteralPath $env:GODOT_PATH).Path
+        Write-Warning "GODOT_PATH is set but file not found (ignoring): $env:GODOT_PATH"
     }
 
     $cmd = Get-Command godot -ErrorAction SilentlyContinue
@@ -59,10 +61,10 @@ function Resolve-GodotExecutable {
 Godot executable not found.
 
 Quick fix (current PowerShell session):
-  `$env:GODOT_PATH = 'D:\Games\Godot\Godot_v4.6.1-stable_mono_win64.exe'
+  `$env:GODOT_PATH = 'D:\Games\Godot\4.7.1\Godot_v4.7.1-stable_mono_win64.exe'
 
 Permanent fix:
-  [System.Environment]::SetEnvironmentVariable('GODOT_PATH', 'D:\Games\Godot\Godot_v4.6.1-stable_mono_win64.exe', 'User')
+  [System.Environment]::SetEnvironmentVariable('GODOT_PATH', 'D:\Games\Godot\4.7.1\Godot_v4.7.1-stable_mono_win64.exe', 'User')
   Then restart the terminal.
 
 Or copy and edit local config:

@@ -1,12 +1,14 @@
 extends SceneTree
 
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
+
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 
 # Exports side-by-side GLBs: terrain+objects (left) and navmesh (right).
 # Usage:
 #   godot --path . -s Tools/export_nav_preview_glbs.gd -- [--all] [--count N] [--only NAME] [--out DIR]
 
-const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
+var NAV_DIR : String = _TerrainBake.nav_meshes()
 const TILES_DIR := "res://Godot/Terrain/Tiles/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
 const MODELS_DIR := "res://Godot/Models/"

@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://TerrainBake/GroundMeshes/canyon_hr03_11.res" id="1_dgjqb"]
+[ext_resource type="Shape3D" path="res://TerrainBake/GroundShapes/canyon_hr03_11.res" id="2_juiad"]
+
+[node name="Ground_67_61" type="Node3D" unique_id=864919624]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6700, 0, 6100)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=594947626]
+mesh = ExtResource("1_dgjqb")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1851313358]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=314049884]
+shape = ExtResource("2_juiad")

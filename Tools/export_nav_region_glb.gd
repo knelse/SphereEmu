@@ -1,4 +1,6 @@
 extends SceneTree
+
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
 ## Export a merged outdoor NavigationMesh preview GLB near a center point.
 ##
 ## --center is Godot / MonsterSpawner.Position / editor space (post-SOURCE_BASIS), matching
@@ -16,7 +18,7 @@ extends SceneTree
 ##   godot ... -- --dump --center 1200 173 1400 --radius 200
 
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
-const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
+var NAV_DIR : String = _TerrainBake.nav_meshes()
 const OBJECT_ORIGIN_SHIFT := Vector3(4000.0, 0.0, 4000.0)
 ## Dump/JSON (x,y,z) → Godot (x,-y,-z). Same as bake_and_export_single_nav.gd.
 const SOURCE_BASIS := Basis(Vector3.RIGHT, Vector3.DOWN, Vector3.FORWARD)

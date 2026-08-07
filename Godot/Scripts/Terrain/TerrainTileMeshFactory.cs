@@ -11,8 +11,9 @@ public static class TerrainTileMeshFactory
 {
 	public const string TilesDirectory = "res://Godot/Terrain/Tiles/";
 	public const string TexturesDirectory = "res://Godot/Terrain/Textures/";
-	public const string SharedMeshDirectory = "res://Godot/Terrain/GroundMeshes/";
-	public const string SharedShapeDirectory = "res://Godot/Terrain/GroundShapes/";
+
+	public static string SharedMeshDirectory => TerrainBakePaths.GroundMeshesDir.TrimEnd('/') + "/";
+	public static string SharedShapeDirectory => TerrainBakePaths.GroundShapesDir.TrimEnd('/') + "/";
 
 	private static readonly Dictionary<string, Mesh> MeshCache = new(StringComparer.Ordinal);
 	private static readonly Dictionary<string, Shape3D> ShapeCache = new(StringComparer.Ordinal);
@@ -24,7 +25,7 @@ public static class TerrainTileMeshFactory
 			return cached;
 		}
 
-		var sharedPath = $"{SharedMeshDirectory}{masterName}.res";
+		var sharedPath = TerrainBakePaths.GroundMeshRes(masterName);
 		if (ResourceLoader.Exists(sharedPath))
 		{
 			var loaded = ResourceLoader.Load<Mesh>(sharedPath);
@@ -52,7 +53,7 @@ public static class TerrainTileMeshFactory
 			return cached;
 		}
 
-		var sharedPath = $"{SharedShapeDirectory}{masterName}.res";
+		var sharedPath = TerrainBakePaths.GroundShapeRes(masterName);
 		if (ResourceLoader.Exists(sharedPath))
 		{
 			var loaded = ResourceLoader.Load<Shape3D>(sharedPath);

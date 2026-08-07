@@ -1,11 +1,9 @@
 {
     "dotnet.defaultSolution": "SphServer.sln",
-    "godot_tools.editor_path": "D:\\Games\\Godot\\Godot_v4.6.1-stable_mono_win64.exe",
+    "godot_tools.editor_path": "D:\\Games\\Godot\\4.7.1\\Godot_v4.7.1-stable_mono_win64.exe",
     "files.exclude": {
         "**/*.uid": true,
-        "**/*.import": true,
-        "Godot/Models/*.png": true,
-        "Godot/Models/**/*.png": true
+        "**/*.import": true
     },
     "git.ignoreLimitWarning": true
 }

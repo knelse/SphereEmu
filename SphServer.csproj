@@ -12,9 +12,9 @@
         <PackageReference Include="System.IO" Version="4.3.0" />
         <PackageReference Include="system.io.filesystem" Version="4.3.0" />
         <PackageReference Include="System.Runtime" Version="4.3.0" />
-        <PackageReference Update="Godot.SourceGenerators" Version="4.6.1" />
-        <PackageReference Update="GodotSharp" Version="4.6.1" />
-        <PackageReference Include="GodotSharpEditor" Version="4.6.1" Condition="'$(Configuration)' == 'Debug'" />
+        <PackageReference Update="Godot.SourceGenerators" Version="4.7.1" />
+        <PackageReference Update="GodotSharp" Version="4.7.1" />
+        <PackageReference Include="GodotSharpEditor" Version="4.7.1" Condition="'$(Configuration)' == 'Debug'" />
         <PackageReference Include="xunit" Version="2.9.3" />
     </ItemGroup>
     <ItemGroup>

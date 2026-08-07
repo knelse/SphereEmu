@@ -1,4 +1,6 @@
 extends SceneTree
+
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
 ## Hand nav for rd_island3 only (indoor cluster 131).
 ## 1) Flat grassy faces in hardcoded local-Y bands + under-higher-deck carve.
 ## 2) Nearby ObjectData props punch holes via the same ADDFACES-style path as outdoor
@@ -13,7 +15,7 @@ const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 const MODEL_PATH := "res://Godot/Models/rd_island3.glb"
 const MODELS_DIR := "res://Godot/Models/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
-const NAV_RES_PATH := "res://Godot/Terrain/GeneratedIndoorNavMeshes/cluster_131.res"
+var NAV_RES_PATH : String = _TerrainBake.indoor_nav_meshes() + "cluster_131.res"
 const CLUSTER_ID := 131
 const ISLAND_NAME := "rd_island3"
 

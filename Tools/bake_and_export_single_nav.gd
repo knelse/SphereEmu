@@ -1,5 +1,7 @@
 extends SceneTree
 
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
+
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 
 # Bakes nav region(s) with object obstructions, then exports side-by-side GLB(s).
@@ -22,7 +24,7 @@ const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 #   - All other towns: baseline carve (no fill). Default allowlist is Town_ph00 only.
 #   - Combined bake writes four GeneratedNavMeshes/{tile}.res clipped from the continuous mesh.
 
-const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
+var NAV_DIR : String = _TerrainBake.nav_meshes()
 const TILES_DIR := "res://Godot/Terrain/Tiles/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
 const MODELS_DIR := "res://Godot/Models/"

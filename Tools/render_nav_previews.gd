@@ -1,9 +1,11 @@
 extends SceneTree
 
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
+
 # Renders side-by-side previews: land tile + objects (left) and navigation mesh (right).
 # Usage: godot --path . -s Tools/render_nav_previews.gd -- [--all] [--count N] [--out DIR]
 
-const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
+var NAV_DIR : String = _TerrainBake.nav_meshes()
 const TILES_DIR := "res://Godot/Terrain/Tiles/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
 const MODELS_DIR := "res://Godot/Models/"
@@ -72,6 +74,7 @@ func _initialize() -> void:
 	var runner := PreviewRunner.new()
 	runner.tree = self
 	runner.out_dir = _out_dir
+	runner.nav_dir = NAV_DIR
 	runner.nav_files = _nav_files
 	runner.cell_lookup = _cell_lookup
 	runner.objects_by_cell = _objects_by_cell
@@ -80,6 +83,7 @@ func _initialize() -> void:
 class PreviewRunner extends Node:
 	var tree: SceneTree
 	var out_dir: String
+	var nav_dir: String
 	var nav_files: PackedStringArray
 	var cell_lookup: Dictionary
 	var objects_by_cell: Dictionary
@@ -132,7 +136,7 @@ class PreviewRunner extends Node:
 		var frame_center := tile_center
 		var frame_radius: float = tile_bounds.get("radius", TILE_SIZE * 0.5)
 
-		var nav_path := NAV_DIR + nav_name + ".res"
+		var nav_path: String = nav_dir + nav_name + ".res"
 		var nav: NavigationMesh = null
 		if ResourceLoader.exists(nav_path):
 			nav = load(nav_path)

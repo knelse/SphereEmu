@@ -5,7 +5,7 @@
 #   - All others → baseline carve (no fill)
 #
 # Each group is baked as one continuous Recast mesh over the four cells, then split into
-# four production .res files under Godot/Terrain/GeneratedNavMeshes/. Optional GLB preview.
+# four production .res files under TerrainBake/GeneratedNavMeshes/. Optional GLB preview.
 #
 # Usage (from repo root):
 #   .\Tools\bake_town_nav.ps1

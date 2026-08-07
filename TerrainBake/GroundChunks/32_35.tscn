@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://TerrainBake/GroundMeshes/river_ph03_00.res" id="1_wrkxt"]
+[ext_resource type="Shape3D" path="res://TerrainBake/GroundShapes/river_ph03_00.res" id="2_tmkl3"]
+
+[node name="Ground_32_35" type="Node3D" unique_id=1546580377]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3200, 0, 3500)
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1606587360]
+mesh = ExtResource("1_wrkxt")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1131269768]
+
+[node name="Collision" type="CollisionShape3D" parent="Body" unique_id=1507187905]
+shape = ExtResource("2_tmkl3")

@@ -17,7 +17,7 @@ namespace SphServer.Godot.Scripts.Terrain;
 public partial class TerrainGroundPackHeadless : Node
 {
 	public const string DefaultTerrainScenePath = "res://Godot/Scenes/terrain_scene.scn";
-	public const string ChunksDirectory = TerrainGroundStreamer.ChunksDirectory;
+	public static string ChunksDirectory => TerrainGroundStreamer.ChunksDirectory;
 
 	private const int ExitSuccess = 0;
 	private const int ExitFailure = 1;
@@ -53,9 +53,10 @@ public partial class TerrainGroundPackHeadless : Node
 	private async Task<int> RunAsync(Options options)
 	{
 		StartupTiming.Mark("TerrainGroundPackHeadless: begin");
-		Directory.CreateDirectory(ProjectSettings.GlobalizePath(TerrainTileMeshFactory.SharedMeshDirectory));
-		Directory.CreateDirectory(ProjectSettings.GlobalizePath(TerrainTileMeshFactory.SharedShapeDirectory));
-		Directory.CreateDirectory(ProjectSettings.GlobalizePath(ChunksDirectory));
+		TerrainBakePaths.EnsureBakeRoot();
+		TerrainBakePaths.EnsureDirectory(TerrainBakePaths.GroundMeshesDir);
+		TerrainBakePaths.EnsureDirectory(TerrainBakePaths.GroundShapesDir);
+		TerrainBakePaths.EnsureDirectory(TerrainBakePaths.GroundChunksDir);
 
 		var index = new TerrainGroundIndex();
 		if (!index.TryLoad(TerrainGroundIndex.DefaultMapPath))
@@ -82,7 +83,7 @@ public partial class TerrainGroundPackHeadless : Node
 				continue;
 			}
 
-			var meshPath = $"{TerrainTileMeshFactory.SharedMeshDirectory}{master}.res";
+			var meshPath = TerrainBakePaths.GroundMeshRes(master);
 			var meshErr = ResourceSaver.Save(mesh, meshPath);
 			if (meshErr != Error.Ok)
 			{
@@ -93,7 +94,7 @@ public partial class TerrainGroundPackHeadless : Node
 			var shape = mesh.CreateTrimeshShape();
 			if (shape is not null)
 			{
-				var shapePath = $"{TerrainTileMeshFactory.SharedShapeDirectory}{master}.res";
+				var shapePath = TerrainBakePaths.GroundShapeRes(master);
 				var shapeErr = ResourceSaver.Save(shape, shapePath);
 				if (shapeErr != Error.Ok)
 				{
@@ -114,7 +115,7 @@ public partial class TerrainGroundPackHeadless : Node
 		var chunksWritten = 0;
 		foreach (var (gx, gz, master) in index.EnumerateCells())
 		{
-			var meshPath = $"{TerrainTileMeshFactory.SharedMeshDirectory}{master}.res";
+			var meshPath = TerrainBakePaths.GroundMeshRes(master);
 			if (!ResourceLoader.Exists(meshPath))
 			{
 				continue;
@@ -135,7 +136,7 @@ public partial class TerrainGroundPackHeadless : Node
 			chunkRoot.AddChild(meshInstance);
 			meshInstance.Owner = chunkRoot;
 
-			var shapePath = $"{TerrainTileMeshFactory.SharedShapeDirectory}{master}.res";
+			var shapePath = TerrainBakePaths.GroundShapeRes(master);
 			if (ResourceLoader.Exists(shapePath))
 			{
 				var body = new StaticBody3D { Name = "Body" };
@@ -160,7 +161,7 @@ public partial class TerrainGroundPackHeadless : Node
 				continue;
 			}
 
-			var chunkPath = $"{ChunksDirectory}/{gx}_{gz}.tscn";
+			var chunkPath = TerrainBakePaths.GroundChunkScene(gx, gz);
 			var saveErr = ResourceSaver.Save(packed, chunkPath);
 			if (saveErr != Error.Ok)
 			{

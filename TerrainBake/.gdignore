@@ -1,0 +1,2 @@
+# Terrain bake outputs (outside Godot import / FileSystem).
+# Runtime loads via absolute paths (TerrainBakePaths). Keep this file empty.

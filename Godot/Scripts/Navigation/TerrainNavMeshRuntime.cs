@@ -32,8 +32,10 @@ namespace SphServer.Godot.Scripts.Navigation;
 /// </summary>
 public static class TerrainNavMeshRuntime
 {
-    public const string NavMeshResourcesDirectory = "res://Godot/Terrain/GeneratedNavMeshes/";
-    public const string IndoorNavMeshResourcesDirectory = "res://Godot/Terrain/GeneratedIndoorNavMeshes/";
+    // Absolute dirs under TerrainBake/ (see TerrainBakePaths); kept as props so call sites can still concatenate.
+    public static string NavMeshResourcesDirectory => TerrainBakePaths.GeneratedNavMeshesDir.TrimEnd('/') + "/";
+    public static string IndoorNavMeshResourcesDirectory =>
+        TerrainBakePaths.GeneratedIndoorNavMeshesDir.TrimEnd('/') + "/";
     public const string MapBinPath = "res://Godot/Terrain/map.txt";
     public const float TileSizeWorld = 100f;
 
@@ -101,9 +103,11 @@ public static class TerrainNavMeshRuntime
         return HasResFiles(NavMeshResourcesDirectory) || HasResFiles(IndoorNavMeshResourcesDirectory);
     }
 
-    private static bool HasResFiles(string resDirectory)
+    private static bool HasResFiles(string directory)
     {
-        var absoluteDirectory = ProjectSettings.GlobalizePath(resDirectory);
+        var absoluteDirectory = directory.Contains("://", StringComparison.Ordinal)
+            ? ProjectSettings.GlobalizePath(directory)
+            : directory.Replace('/', Path.DirectorySeparatorChar);
         return Directory.Exists(absoluteDirectory) && Directory.GetFiles(absoluteDirectory, "*.res").Length > 0;
     }
 
@@ -178,7 +182,7 @@ public static class TerrainNavMeshRuntime
                 }
 
                 var tileKey = TerrainObjectsFill.TerrainTileGridIndex.BuildTileGroupKey(masterName, occurrence);
-                if (LoadAndRegisterNavRes(tileKey, $"{NavMeshResourcesDirectory}{tileKey}.res"))
+                if (LoadAndRegisterNavRes(tileKey, TerrainBakePaths.NavMeshRes(tileKey)))
                 {
                     newlyLoaded = true;
                 }
@@ -614,7 +618,7 @@ public static class TerrainNavMeshRuntime
 
             var key = $"indoor_cluster_{entry.Id}";
             var path = string.IsNullOrWhiteSpace(entry.Path)
-                ? $"{IndoorNavMeshResourcesDirectory}cluster_{entry.Id}.res"
+                ? TerrainBakePaths.IndoorClusterRes(entry.Id)
                 : entry.Path;
             if (LoadAndRegisterNavRes(key, path))
             {
@@ -658,7 +662,7 @@ public static class TerrainNavMeshRuntime
         _indoorIndexAttempted = true;
         _indoorIndex = new List<IndoorClusterEntry>();
 
-        var indexPath = ProjectSettings.GlobalizePath($"{IndoorNavMeshResourcesDirectory}index.json");
+        var indexPath = TerrainBakePaths.IndoorIndexJson.Replace('/', Path.DirectorySeparatorChar);
         if (File.Exists(indexPath))
         {
             try
@@ -689,7 +693,7 @@ public static class TerrainNavMeshRuntime
             }
         }
 
-        var dir = ProjectSettings.GlobalizePath(IndoorNavMeshResourcesDirectory);
+        var dir = TerrainBakePaths.GeneratedIndoorNavMeshesDir.Replace('/', Path.DirectorySeparatorChar);
         if (!Directory.Exists(dir))
         {
             return;
@@ -732,9 +736,16 @@ public static class TerrainNavMeshRuntime
             hasAabb = true;
         }
 
+        var path = string.IsNullOrWhiteSpace(c.Path) ? "" : c.Path.Trim();
+        if (string.IsNullOrEmpty(path) || path.StartsWith("res://", StringComparison.Ordinal)
+            || path.Contains("GeneratedIndoorNavMeshes", StringComparison.OrdinalIgnoreCase))
+        {
+            path = TerrainBakePaths.IndoorClusterRes(c.Id);
+        }
+
         entry = new IndoorClusterEntry(
             c.Id,
-            string.IsNullOrWhiteSpace(c.Path) ? "" : c.Path.Trim(),
+            path,
             center,
             c.Radius > 0 ? c.Radius : 40f,
             hasAabb,

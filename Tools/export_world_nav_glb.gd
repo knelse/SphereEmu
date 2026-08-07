@@ -1,5 +1,7 @@
 extends SceneTree
 
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
+
 const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 
 # Exports one combined preview GLB for the map: ground tiles + object placements (left side) and
@@ -18,7 +20,7 @@ const NavGlbMerge = preload("res://Tools/nav_glb_merge.gd")
 #   godot --path . --headless -s Tools/export_world_nav_glb.gd -- --no-objects --out D:/1/world_nav_ground_only.glb
 #   python Tools/merge_world_nav_glb.py --chunks D:/1/world_nav_chunk_*.glb --out D:/1/world_nav.glb
 
-const NAV_DIR := "res://Godot/Terrain/GeneratedNavMeshes/"
+var NAV_DIR : String = _TerrainBake.nav_meshes()
 const TILES_DIR := "res://Godot/Terrain/Tiles/"
 const OBJECT_DATA_DIR := "res://Godot/Terrain/ObjectDataJson/"
 const MODELS_DIR := "res://Godot/Models/"

@@ -1,5 +1,5 @@
 # Bakes nav for every map occurrence of selected tile families.
-# Default: production .res under Godot/Terrain/GeneratedNavMeshes (no GLB).
+# Default: production .res under TerrainBake/GeneratedNavMeshes (no GLB).
 # 2x2 masters (variant corners 00/01/10/11 on a contiguous block) are combined;
 # everything else is 1x1. Plan is generated from Godot/Terrain/map.txt.
 #
@@ -28,7 +28,7 @@ param(
     # Use an existing PlanJson as-is (do not regenerate from map.txt).
     [switch]$SkipPlan,
     [switch]$PlanOnly,
-    # Write production Godot/Terrain/GeneratedNavMeshes/*.res (default path; no GLB unless -ExportGlb).
+    # Write production TerrainBake/GeneratedNavMeshes/*.res (default path; no GLB unless -ExportGlb).
     [switch]$WriteRes,
     # Also export preview GLBs under -Out (slow; not needed for TerrainNavMeshRuntime).
     [switch]$ExportGlb,
@@ -59,7 +59,7 @@ if (-not $Out) {
     $Out = "D:/1/{0} bulk-nav" -f (Get-Date -Format "yyyy-M-d H-mm-ss")
 }
 New-Item -ItemType Directory -Force -Path $Out | Out-Null
-$navResDir = Join-Path $RepoRoot "Godot\Terrain\GeneratedNavMeshes"
+$navResDir = Join-Path $RepoRoot "TerrainBake\GeneratedNavMeshes"
 
 $planPy = Join-Path $PSScriptRoot "plan_bulk_nav_bakes.py"
 if (-not (Test-Path $planPy)) {

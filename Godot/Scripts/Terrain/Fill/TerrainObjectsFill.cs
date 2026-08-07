@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using SphServer.Sphere.Game.WorldObject;
+using System.IO;
 using FileAccess = Godot.FileAccess;
 
 namespace SphServer.Godot.Scripts.Terrain.Fill;
@@ -66,7 +67,7 @@ public partial class TerrainObjectsFill : Node3D
     ///     Directory where MultiMesh .res files are written when <see cref="SaveMultiMeshesAsExternalResources" /> is enabled.
     /// </summary>
     [Export]
-    public string MultiMeshResourcesDirectory { get; set; } = "res://Godot/Terrain/GeneratedMultiMeshes/";
+    public string MultiMeshResourcesDirectory { get; set; } = "";
 
     [ExportToolButton("Rebuild terrain objects")]
     public Callable RebuildTerrainObjectsButton => Callable.From(RebuildTerrainObjects);
@@ -269,13 +270,22 @@ public partial class TerrainObjectsFill : Node3D
             // instance buffer and crashing the engine (out-of-bounds access) as soon as anything touched it.
             if (SaveMultiMeshesAsExternalResources)
             {
-                var baseDir = MultiMeshResourcesDirectory.TrimEnd('/') + "/";
+                var baseDir = string.IsNullOrWhiteSpace(MultiMeshResourcesDirectory)
+                    ? TerrainBakePaths.GeneratedMultiMeshesDir.TrimEnd('/') + "/"
+                    : MultiMeshResourcesDirectory.TrimEnd('/') + "/";
                 var catDirName = SanitizeGodotNodeName(category.Name.ToString());
                 var outDir = $"{baseDir}{catDirName}/";
-                var abs = ProjectSettings.GlobalizePath(outDir);
-                DirAccess.MakeDirRecursiveAbsolute(abs);
+                var abs = outDir.Contains("://", StringComparison.Ordinal)
+                    ? ProjectSettings.GlobalizePath(outDir)
+                    : outDir.Replace('/', Path.DirectorySeparatorChar);
+                // SanitizeGodotNodeName lowercases; keep on-disk casing in sync (Windows otherwise
+                // preserves older PascalCase dirs and triggers Godot case-mismatch warnings).
+                TerrainBakePaths.EnsureDirectoryExactCase(abs);
 
-                var outPath = $"{outDir}{safeObjectName}_MM_{objectIndex}.res";
+                var outPath = outDir.Contains("://", StringComparison.Ordinal)
+                    ? $"{outDir}{safeObjectName}_MM_{objectIndex}.res"
+                    : TerrainBakePaths.Combine("GeneratedMultiMeshes", catDirName,
+                        $"{safeObjectName}_MM_{objectIndex}.res");
                 var err = ResourceSaver.Save(mm, outPath);
                 if (err != Error.Ok)
                 {

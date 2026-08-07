@@ -1,6 +1,8 @@
 @tool
 extends EditorPlugin
 
+const _TerrainBake := preload("res://Tools/terrain_bake_paths.gd")
+
 ## Editor chunk streaming in GDScript (C# addon scripts are Compile-Remove'd from SphServer
 ## to keep EditorPlugin out of the headless game assembly).
 
@@ -11,7 +13,7 @@ const QUEUE_REFRESH_SEC := 0.25
 ## Spread hitch: at most this many PackedScene instantiates per frame.
 const MAX_INSTANTIATES_PER_FRAME := 1
 const CHUNKS_ROOT := "res://Godot/World/Chunks"
-const GROUND_CHUNKS_ROOT := "res://Godot/Terrain/GroundChunks"
+var GROUND_CHUNKS_ROOT : String = _TerrainBake.ground_chunks()
 const GROUND_KIND := "__ground__"
 const GROUND_STREAMED_NAME := "TerrainGroundStreamed"
 const MAIN_SERVER_PATH := "res://Godot/Scenes/MainServer.tscn"

@@ -52,13 +52,27 @@ function Invoke-Godot {
     Write-Host "Godot: $Exe"
     Write-Host "Args:  $($GodotArgs -join ' ')"
 
-    $stdout = New-TemporaryFile
-    $stderr = New-TemporaryFile
+    # Do not use Start-Process -ArgumentList with a string[]: PowerShell joins elements with
+    # spaces and does not quote, so "Pack Textures" becomes two argv tokens ("Pack", "Textures").
+    $psi = [System.Diagnostics.ProcessStartInfo]::new()
+    $psi.FileName = $Exe
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.CreateNoWindow = $true
+    foreach ($a in $GodotArgs) {
+        [void]$psi.ArgumentList.Add([string]$a)
+    }
+
+    $proc = [System.Diagnostics.Process]::new()
+    $proc.StartInfo = $psi
     try {
-        $proc = Start-Process -FilePath $Exe -ArgumentList $GodotArgs -Wait -PassThru -NoNewWindow `
-            -RedirectStandardOutput $stdout.FullName -RedirectStandardError $stderr.FullName
-        $outText = Get-Content -LiteralPath $stdout.FullName -Raw -ErrorAction SilentlyContinue
-        $errText = Get-Content -LiteralPath $stderr.FullName -Raw -ErrorAction SilentlyContinue
+        [void]$proc.Start()
+        $outTask = $proc.StandardOutput.ReadToEndAsync()
+        $errTask = $proc.StandardError.ReadToEndAsync()
+        $proc.WaitForExit()
+        $outText = $outTask.GetAwaiter().GetResult()
+        $errText = $errTask.GetAwaiter().GetResult()
         if ($LogPath) {
             $combined = @()
             if ($outText) { $combined += $outText }
@@ -70,7 +84,7 @@ function Invoke-Godot {
         return [int]$proc.ExitCode
     }
     finally {
-        Remove-Item -LiteralPath $stdout.FullName, $stderr.FullName -Force -ErrorAction SilentlyContinue
+        $proc.Dispose()
     }
 }
 

@@ -1,1 +1,78 @@
+# Keep Godot/text assets as LF in the working tree so Windows autocrlf does not
+# rewrite them to CRLF on checkout (which can force Godot reimports).
+
+# Default: normalize text to LF; leave unidentified binaries alone.
+* text=auto eol=lf
+
+# Explicit text (Godot + project sources)
+*.cs text eol=lf
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.shader text eol=lf
+*.tscn text eol=lf
+*.scn text eol=lf
+*.import text eol=lf
+*.cfg text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.ps1 text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+*.editorconfig text eol=lf
+*.uid text eol=lf
+*.md5 text eol=lf
+project.godot text eol=lf
+export_presets.cfg text eol=lf
+
+# Binary / opaque (do not touch line endings)
+*.res binary
 *.tres filter=lfs diff=lfs merge=lfs -text
+*.dds binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.bmp binary
+*.tga binary
+*.ktx binary
+*.ctex binary
+*.glb binary
+*.gltf binary
+*.bin binary
+*.fbx binary
+*.obj binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.wav binary
+*.ogg binary
+*.mp3 binary
+*.zip binary
+*.7z binary
+*.dll binary
+*.exe binary
+*.pdb binary
+*.so binary
+*.dylib binary
+*.a binary
+*.lib binary
+*.pyd binary
+*.db binary
+*.sqlite binary
+*.blend binary
+*.ico binary
+*.icns binary
+*.wasm binary

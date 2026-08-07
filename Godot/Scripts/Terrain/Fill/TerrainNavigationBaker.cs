@@ -26,7 +26,7 @@ public partial class TerrainNavigationBaker : Node3D
 
     /// <summary>Directory where baked per-tile NavigationMesh .res files are written (by the bake script).</summary>
     [Export]
-    public string NavMeshResourcesDirectory { get; set; } = "res://Godot/Terrain/GeneratedNavMeshes/";
+    public string NavMeshResourcesDirectory { get; set; } = "";
 
     /// <summary>
     ///     Repo-relative checkpoint JSON (default: CC checkpoint with <c>explicit_env</c> baseline +
@@ -200,7 +200,7 @@ public partial class TerrainNavigationBaker : Node3D
         Directory.CreateDirectory(logOutDir);
 
         var navResAbs = Path.GetFullPath(
-            Path.Combine(repoRoot, "Godot", "Terrain", "GeneratedIndoorNavMeshes"));
+            Path.Combine(repoRoot, "TerrainBake", "GeneratedIndoorNavMeshes"));
         Directory.CreateDirectory(navResAbs);
 
         var args = new StringBuilder();

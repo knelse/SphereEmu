@@ -12,3 +12,5 @@ sph-log.db
 Godot/Terrain/spawn_slot_bake_progress.json
 .solutions/*_tmp*
 Tools/*_tmp*
+build
+*.log

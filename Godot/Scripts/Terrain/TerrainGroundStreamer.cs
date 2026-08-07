@@ -20,7 +20,8 @@ namespace SphServer.Godot.Scripts.Terrain;
 public partial class TerrainGroundStreamer : Node
 {
 	public const string StreamedRootName = "TerrainGroundStreamed";
-	public const string ChunksDirectory = "res://Godot/Terrain/GroundChunks";
+
+	public static string ChunksDirectory => TerrainBakePaths.GroundChunksDir;
 
 	private readonly HashSet<(int Gx, int Gz)> loaded = [];
 	private TerrainGroundIndex? index;
@@ -110,45 +111,32 @@ public partial class TerrainGroundStreamer : Node
 			return;
 		}
 
-		var chunkPath = $"{ChunksDirectory}/{gx}_{gz}.tscn";
-		if (ResourceLoader.Exists(chunkPath))
-		{
-			var packed = ResourceLoader.Load<PackedScene>(chunkPath);
-			if (packed is not null)
-			{
-				var instance = packed.Instantiate<Node3D>();
-				ClearOwnerRecursive(instance);
-				streamedRoot.AddChild(instance);
-				loaded.Add(key);
-				return;
-			}
-		}
-
-		// Runtime fallback: build from tile GLB without a pre-packed chunk.
+		// Prefer TerrainBake shared mesh/shape. Pre-packed GroundChunks/*.tscn may still
+		// reference obsolete res://Godot/Terrain/Ground* paths after the bake-tree move.
 		var mesh = TerrainTileMeshFactory.GetOrBuildMesh(masterName);
 		var shape = TerrainTileMeshFactory.GetOrBuildShape(masterName);
-		if (mesh is null)
+		if (mesh is not null)
 		{
+			var cellNode = new Node3D
+			{
+				Name = $"Ground_{gx}_{gz}",
+				Position = terrainGridMap.MapToLocal(new Vector3I(gx, 0, gz)),
+			};
+			var meshInstance = new MeshInstance3D { Mesh = mesh };
+			cellNode.AddChild(meshInstance);
+			if (shape is not null)
+			{
+				var body = new StaticBody3D();
+				var collision = new CollisionShape3D { Shape = shape };
+				body.AddChild(collision);
+				cellNode.AddChild(body);
+			}
+
+			streamedRoot.AddChild(cellNode);
 			loaded.Add(key);
 			return;
 		}
 
-		var cellNode = new Node3D
-		{
-			Name = $"Ground_{gx}_{gz}",
-			Position = terrainGridMap.MapToLocal(new Vector3I(gx, 0, gz)),
-		};
-		var meshInstance = new MeshInstance3D { Mesh = mesh };
-		cellNode.AddChild(meshInstance);
-		if (shape is not null)
-		{
-			var body = new StaticBody3D();
-			var collision = new CollisionShape3D { Shape = shape };
-			body.AddChild(collision);
-			cellNode.AddChild(body);
-		}
-
-		streamedRoot.AddChild(cellNode);
 		loaded.Add(key);
 	}
 
