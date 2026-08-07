@@ -94,5 +94,6 @@ function Get-AllHeavyPackCrcs {
             preset = $pack.Preset
         }
     }
-    return $result
+    # Prevent PowerShell from enumerating the ordered dictionary on return.
+    return ,$result
 }

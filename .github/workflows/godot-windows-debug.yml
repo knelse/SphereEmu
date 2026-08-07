@@ -61,12 +61,39 @@ jobs:
           dotnet restore SphServer.csproj
           dotnet build SphServer.csproj --configuration Debug --no-restore
 
+      # Editor plugins can hang/crash headless import/export on CI.
+      - name: Disable editor plugins for CI export
+        run: |
+          $path = 'project.godot'
+          $text = Get-Content -LiteralPath $path -Raw
+          $updated = [regex]::Replace(
+            $text,
+            '(?m)^enabled=PackedStringArray\([^\)]*\)',
+            'enabled=PackedStringArray()'
+          )
+          if ($updated -eq $text) {
+            Write-Warning 'editor_plugins enabled= line not found/changed'
+          }
+          Set-Content -LiteralPath $path -Value $updated -NoNewline -Encoding utf8
+
+      - name: Cache Godot import (.godot)
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-import-${{ runner.os }}-${{ env.GODOT_VERSION }}-${{ hashFiles('export_presets.cfg', 'Godot/Textures/**/*.import', 'Godot/Models/**/*.import', 'Godot/Terrain/**/*.import') }}
+          restore-keys: |
+            godot-import-${{ runner.os }}-${{ env.GODOT_VERSION }}-
+
       - name: Publish changed heavy asset packs
         env:
           GH_TOKEN: ${{ github.token }}
+          GODOT: ${{ env.GODOT }}
+          GODOT4: ${{ env.GODOT4 }}
         run: |
+          $godot = if ($env:GODOT4) { $env:GODOT4 } elseif ($env:GODOT) { $env:GODOT } else { 'godot' }
+          Write-Host "Using Godot at: $godot"
           ./Tools/asset_packs/Publish-AssetPacks.ps1 `
-            -Godot godot `
+            -Godot $godot `
             -PacksOutDir $env:PACKS_DIR `
             -ReleaseTag $env:ASSET_BUNDLES_TAG
 
