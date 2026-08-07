@@ -257,7 +257,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         moveItemHandler ??= new(localId, this);
         useItemHandler ??= new(localId, this);
         dropItemToGroundHandler ??= new();
-        mainhandTakeItemHandler ??= new();
+        mainhandTakeItemHandler ??= new(localId, this);
         swapItemHandler ??= new(localId, this);
         buyItemFromTargetHandler ??= new();
         damageTargetHandler ??= new(localId, this);

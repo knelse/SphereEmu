@@ -7,8 +7,9 @@
     // recovered: quadratic divisor (Damage = Roll^2/(Defense*this) when Roll < Defense); keep = 1/(1 - subtractFactor).
     "defenseQuadraticDivisor": 7,
 
-    // invented: bare-fist [Amin, Amax] band — fists have no weapon game-object row.
-    "fistAminAmax": [1, 3],
+    // invented: melee spread applied to every swing. Only the ratio matters — the roll is scaled so
+    // its mean is the attack value — and no weapon in the game data carries a band of its own.
+    "meleeAminAmax": [1, 3],
 
     // invented: "floor" or "round"; floor matches the client's int(...) truncation.
     "roundingMode": "floor",
@@ -21,7 +22,8 @@
     "critMult": 1.5,
     "missChance": 0.0,
 
-    // invented (anchor: original-game fists hit a flat ~2): added to |PAtk| to form H so naked fists aren't 0.
+    // invented (anchor: original-game fists hit a flat ~2): stands in for the attack of an empty
+    // hand, which has no game-object row to read one from. Not added when something is held.
     "fistStatSheetDamage": 2,
 
     // invented: non-miss melee damage floor.
