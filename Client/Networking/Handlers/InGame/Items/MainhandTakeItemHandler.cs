@@ -64,12 +64,14 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
 
         if (state is HandEmpty or HandFists || itemId == NoItem)
         {
-            if (character.Items.Remove(BelongingSlot.MainHand))
+            if (!character.Items.Remove(BelongingSlot.MainHand))
             {
-                SphLogger.Info($"Hand emptied. Client ID: {localId:X4}");
-                Persist(character);
+                SphLogger.Info($"Hand emptied - nothing was held. Client ID: {localId:X4}");
+                return;
             }
 
+            SphLogger.Info($"Hand emptied. Client ID: {localId:X4}");
+            Persist(character);
             return;
         }
 
