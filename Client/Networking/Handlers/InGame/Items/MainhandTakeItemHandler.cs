@@ -83,7 +83,7 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
             return;
         }
 
-        character.Items[BelongingSlot.MainHand] = item.Id;
+        character.PlaceItemInSlot(BelongingSlot.MainHand, item.Id);
         SphLogger.Info($"Took {item.Localization.GetValueOrDefault(Locale.Russian, "?")} [{item.Id}] " +
                        $"in hand. Client ID: {localId:X4}");
         Persist(character);
