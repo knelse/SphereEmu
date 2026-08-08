@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using SphServer.Shared.Db;
+using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -12,6 +14,10 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         // Attack-wedge fix: item use arms the same client use-lock (g_6008) as an attack, so clear it here
         // too. Without this the client wedges permanently after using an item. See CommonPackets.ClearUseToutAck.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
-        return;
+
+        var item = DbConnection.Items.FindById((int) itemId);
+        SphLogger.Info($"UseItem: Source [{localId:X4}] - Target [{itemId:X4}] - " +
+                       $"Item [{item?.Localization.GetValueOrDefault(Locale.Russian, "?") ?? "unknown"}] - " +
+                       "[what use does is not implemented]");
     }
 }

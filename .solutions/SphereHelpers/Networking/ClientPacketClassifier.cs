@@ -106,6 +106,12 @@ public static class ClientPacketClassifier
 			case 0x1A when b13 == 0x5C && b14 == 0x46 && b15 == 0xE1:
 				return Result(ClientPacketEvent.ContainerOpenLoot, 1.0, "handler signature 5C 46 E1", true);
 
+			// Carries the target item's id at bytes 11-12, where UseItemHandler already reads it,
+			// and nothing else varies between captures. Seen when using an item on the ground and
+			// when using one already in a cell; unrouted, the client never gets its use-lock back.
+			case 0x15 when b13 == 0xB8 && b14 == 0x4B && b15 == 0xE1:
+				return Result(ClientPacketEvent.ItemUse, 1.0, "handler signature B8 4B E1", true);
+
 			case 0x25 when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
 				// Shares 08 40 63 with the drop frame; only the length separates them.
 				return Result(ClientPacketEvent.ItemDragOnGround, 1.0, "handler signature 08 40 63", true);
