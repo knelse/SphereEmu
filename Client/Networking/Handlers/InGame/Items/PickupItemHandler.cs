@@ -146,10 +146,9 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             return;
         }
 
-        var clientSlot = (clientSlot_raw - 0x32) / 2;
         SphLogger.Info(
-            $"CLI: Move item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} ({item.ItemCount}) [{clientItemID}] to slot raw [{clientSlot_raw}] " +
-            $"[{Enum.GetName(typeof (BelongingSlot), clientSlot_raw >> 1)}] actual [{clientSlot}]");
+            $"CLI: Move item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} ({item.ItemCount}) " +
+            $"[{clientItemID}] to slot raw [{clientSlot_raw}] [{Enum.GetName(targetSlot)}]");
 
         var clientSync_1 = clientConnection.ReceiveBuffer[17];
         var clientSync_2 = clientConnection.ReceiveBuffer[18];
@@ -180,7 +179,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         WriteBits(moveResult, PositionBitOffset + 32, 32, FloatBits(-item.Y));
         WriteBits(moveResult, PositionBitOffset + 64, 32, FloatBits(-item.Z));
 
-        character.Items[targetSlot] = globalItemId;
+        character.PlaceItemInSlot(targetSlot, globalItemId);
         SphLogger.Info($"{Enum.GetName((BelongingSlot) targetSlotId)} now has " +
                        $"{item.Localization.GetValueOrDefault(Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
