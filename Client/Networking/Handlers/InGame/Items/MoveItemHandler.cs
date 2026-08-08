@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking.Chat.Encoders;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -52,10 +54,22 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        if (!item.IsValidForSlot(targetSlot) || !character.CanUseItem(item))
+        // Requirements gate wearing, not carrying: anything may sit in a cell.
+        if (!item.IsValidForSlot(targetSlot) ||
+            (!ItemDbEntry.IsInventorySlot(targetSlot) && !character.CanUseItem(item)))
         {
             SphLogger.Warning($"Item [{globalOldItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
             returnToOldSlot = true;
+
+            // The client checks requirements when an item is used but not when it is dragged, so it
+            // says nothing here. Word it the way it words its own refusal.
+            if (character.UnmetRequirement(item) is { } unmet)
+            {
+                var name = item.Localization.GetValueOrDefault(Locale.Russian, "?");
+                clientConnection.MaybeScheduleNetworkPacketSend(
+                    MessageEncoder.EncodeToSendFromServer($"Нельзя использовать {name}, {unmet}", "GM",
+                        (int) PublicChatType.GM_Outgoing));
+            }
         }
 
         if (returnToOldSlot)
@@ -85,6 +99,9 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
                 NetworkedStatsUpdater.Update(character);
             }
 
+            // Moving an item is the one way to equip, and it persisted nothing: the slot and the
+            // appearance the recalculation just worked out both lived only in memory, so they
+            // survived a restart only when some later action happened to save.
             clientConnection.SaveSelectedCharacter();
         }
 

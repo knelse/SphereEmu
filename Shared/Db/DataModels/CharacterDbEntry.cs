@@ -318,10 +318,45 @@ public class CharacterDbEntry
         return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
+    /// <summary>
+    ///     Whether this character meets what the item asks for. Against the base stats, not the
+    ///     current ones: the current ones are recalculated from what is worn, and this is called
+    ///     during that, so an item could otherwise satisfy its own requirement.
+    /// </summary>
     public bool CanUseItem(ItemDbEntry itemDbEntry)
     {
-        // TODO: actual check
-        return true;
+        return UnmetRequirement(itemDbEntry) is null;
+    }
+
+    /// <summary>
+    ///     The first requirement this character does not meet, worded the way the client words its
+    ///     own refusal, or null when the item can be used.
+    /// </summary>
+    public string? UnmetRequirement(ItemDbEntry itemDbEntry)
+    {
+        (int have, int need, string name)[] checks =
+        [
+            (BaseStrength, itemDbEntry.StrengthReq, "Сила"),
+            (BaseAgility, itemDbEntry.AgilityReq, "Ловкость"),
+            (BaseAccuracy, itemDbEntry.AccuracyReq, "Меткость"),
+            (BaseEndurance, itemDbEntry.EnduranceReq, "Выносливость"),
+            (BaseEarth, itemDbEntry.EarthReq, "Земля"),
+            (BaseAir, itemDbEntry.AirReq, "Воздух"),
+            (BaseWater, itemDbEntry.WaterReq, "Вода"),
+            (BaseFire, itemDbEntry.FireReq, "Огонь"),
+            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Звание"),
+            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Ступень")
+        ];
+
+        foreach (var (have, need, name) in checks)
+        {
+            if (have < need)
+            {
+                return $"{name} {have}<{need}";
+            }
+        }
+
+        return null;
     }
 
     public bool RecalcCurrentStats()
