@@ -119,7 +119,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                     SphLogger.Debug(
                         $"C->S unrouted {frame.Length}B frame, signature " +
                         $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
-                        $"{Convert.ToHexString(frame[..Math.Min(24, frame.Length)])}. Client ID: {localId:X4}");
+                        // Whole frame: this line exists to capture what we cannot decode yet, and
+                        // the fields that identify an unknown frame are usually past its head.
+                        $"{Convert.ToHexString(frame)}. Client ID: {localId:X4}");
                 }
 
                 return;
