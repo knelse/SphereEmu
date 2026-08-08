@@ -6,7 +6,7 @@ using Godot;
 namespace SphServer.Godot.Scripts.Bootstrap;
 
 /// <summary>
-///     Downloads a slim zip, extracts to staging, and spawns a PowerShell helper that replaces files after exit.
+///     Downloads a slim zip, extracts to staging, and spawns a detached helper that replaces files after exit.
 /// </summary>
 public static class WindowsUpdateApplier
 {
@@ -37,7 +37,7 @@ public static class WindowsUpdateApplier
 		Directory.CreateDirectory(updatesDir);
 		if (Directory.Exists(stagingDir))
 		{
-			Directory.Delete(stagingDir, true);
+			Directory.Delete(stagingDir, recursive: true);
 		}
 
 		Directory.CreateDirectory(stagingDir);
@@ -56,20 +56,32 @@ public static class WindowsUpdateApplier
 
 		var pid = global::System.Environment.ProcessId;
 		var script = BuildApplyScript(installDir, stagingDir, exeName, pid, logPath, PreserveNames);
-		await File.WriteAllTextAsync(applyScript, script, Encoding.UTF8, ct);
+		await File.WriteAllTextAsync(applyScript, script, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false), ct);
 
 		progress?.Report(("Restarting to apply update…", 1));
 
+		// Never shell-execute .cmd/.ps1 (often open in Notepad). Invoke cmd.exe and use `start`
+		// so PowerShell is detached from Godot's process job and survives Quit.
+		var startArgs =
+			"/c start \"SphereEmuUpdate\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"" +
+			applyScript + "\"";
 		var psi = new ProcessStartInfo
 		{
-			FileName = "powershell.exe",
-			Arguments =
-				$"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{applyScript}\"",
+			FileName = "cmd.exe",
+			Arguments = startArgs,
 			UseShellExecute = false,
 			CreateNoWindow = true,
 			WorkingDirectory = updatesDir
 		};
-		Process.Start(psi);
+		if (Process.Start(psi) is null)
+		{
+			throw new InvalidOperationException($"Failed to start update helper via cmd: {applyScript}");
+		}
+
+		GD.Print($"AssetBootstrap: update helper spawned for {exeName} (pid wait {pid})");
+
+		// Give the detached PowerShell a moment to open the log / attach to our PID before we quit.
+		await Task.Delay(750, ct);
 	}
 
 	private static string BuildApplyScript(
@@ -87,11 +99,13 @@ public static class WindowsUpdateApplier
 		var logEsc = logPath.Replace("'", "''");
 
 		return $$"""
-		         $ErrorActionPreference = 'Stop'
+		         $ErrorActionPreference = 'Continue'
 		         $log = '{{logEsc}}'
 		         function Write-Log([string]$msg) {
-		           $line = ("{0:o} {1}" -f [DateTimeOffset]::UtcNow, $msg)
-		           Add-Content -LiteralPath $log -Value $line -Encoding utf8
+		           try {
+		             $line = ("{0:o} {1}" -f [DateTimeOffset]::UtcNow, $msg)
+		             Add-Content -LiteralPath $log -Value $line -Encoding utf8 -ErrorAction SilentlyContinue
+		           } catch {}
 		         }
 		         Write-Log 'apply-update started'
 		         $pidToWait = {{waitPid}}
@@ -99,40 +113,85 @@ public static class WindowsUpdateApplier
 		           $p = Get-Process -Id $pidToWait -ErrorAction SilentlyContinue
 		           if ($p) {
 		             Write-Log "waiting for pid $pidToWait"
-		             Wait-Process -Id $pidToWait -Timeout 120 -ErrorAction SilentlyContinue
+		             Wait-Process -Id $pidToWait -ErrorAction SilentlyContinue
+		           } else {
+		             Write-Log "pid $pidToWait already gone"
 		           }
 		         } catch {
-		           Write-Log "wait error: $_"
+		           Write-Log "wait error: $($_.Exception.Message)"
 		         }
-		         Start-Sleep -Seconds 1
+
+		         # Extra settle time for file locks / AV.
+		         Start-Sleep -Seconds 2
 
 		         $install = '{{installEsc}}'
 		         $staging = '{{stagingEsc}}'
 		         $preserve = @({{preserveList}})
 		         $exeName = '{{exeEsc}}'
 
-		         Get-ChildItem -LiteralPath $staging -Force | ForEach-Object {
-		           $name = $_.Name
-		           if ($preserve -contains $name) {
-		             Write-Log "skip preserve name from staging: $name"
-		             return
-		           }
-		           $dest = Join-Path $install $name
-		           if ($_.PSIsContainer) {
-		             if (Test-Path -LiteralPath $dest) {
-		               Remove-Item -LiteralPath $dest -Recurse -Force
+		         function Copy-WithRetry([string]$src, [string]$dest, [bool]$isDir) {
+		           $attempts = 0
+		           while ($true) {
+		             $attempts++
+		             try {
+		               if ($isDir) {
+		                 if (Test-Path -LiteralPath $dest) {
+		                   Remove-Item -LiteralPath $dest -Recurse -Force -ErrorAction Stop
+		                 }
+		                 Copy-Item -LiteralPath $src -Destination $dest -Recurse -Force -ErrorAction Stop
+		               } else {
+		                 $destDir = Split-Path -Parent $dest
+		                 if ($destDir -and -not (Test-Path -LiteralPath $destDir)) {
+		                   New-Item -ItemType Directory -Force -Path $destDir | Out-Null
+		                 }
+		                 if (Test-Path -LiteralPath $dest) {
+		                   $bak = "$dest.pending-old"
+		                   if (Test-Path -LiteralPath $bak) {
+		                     Remove-Item -LiteralPath $bak -Force -ErrorAction SilentlyContinue
+		                   }
+		                   try {
+		                     Move-Item -LiteralPath $dest -Destination $bak -Force -ErrorAction Stop
+		                   } catch {
+		                     # Fall through to overwrite attempt.
+		                   }
+		                 }
+		                 Copy-Item -LiteralPath $src -Destination $dest -Force -ErrorAction Stop
+		                 if (Test-Path -LiteralPath "$dest.pending-old") {
+		                   Remove-Item -LiteralPath "$dest.pending-old" -Force -ErrorAction SilentlyContinue
+		                 }
+		               }
+		               return
+		             } catch {
+		               Write-Log "copy attempt $attempts failed for $(Split-Path -Leaf $dest): $($_.Exception.Message)"
+		               if ($attempts -ge 15) { throw }
+		               Start-Sleep -Milliseconds 500
 		             }
-		             Copy-Item -LiteralPath $_.FullName -Destination $dest -Recurse -Force
-		           } else {
-		             Copy-Item -LiteralPath $_.FullName -Destination $dest -Force
 		           }
-		           Write-Log "copied $name"
 		         }
 
-		         $exe = Join-Path $install $exeName
-		         Write-Log "starting $exe"
-		         Start-Process -FilePath $exe -WorkingDirectory $install
-		         Write-Log 'apply-update done'
+		         try {
+		           Get-ChildItem -LiteralPath $staging -Force | ForEach-Object {
+		             $name = $_.Name
+		             if ($preserve -contains $name) {
+		               Write-Log "skip preserve: $name"
+		               return
+		             }
+		             $dest = Join-Path $install $name
+		             Copy-WithRetry $_.FullName $dest $_.PSIsContainer
+		             Write-Log "copied $name"
+		           }
+
+		           $exe = Join-Path $install $exeName
+		           if (-not (Test-Path -LiteralPath $exe)) {
+		             throw "Updated exe missing: $exe"
+		           }
+		           Write-Log "starting $exe"
+		           Start-Process -FilePath $exe -WorkingDirectory $install
+		           Write-Log 'apply-update done'
+		         } catch {
+		           Write-Log "FATAL: $($_.Exception.Message)"
+		           exit 1
+		         }
 		         """;
 	}
 
