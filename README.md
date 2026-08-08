@@ -25,7 +25,10 @@ NB: client in the repo already has dgVoodoo bundled. If it breaks, try deleting 
 2. Download the repo
    - Install [Git LFS](https://git-lfs.com/) and run `git lfs pull` (needed for `GodotAssetSource/Terrain/TerrainMeshLibrary.tres`, used only when rebuilding terrain via TerrainGridFill).
 3. Update appsettings.json for your setup.
-4. Open project in Godot, build and run (editor uses the full `Godot/` tree; exported slim builds download models/terrain/textures/terrainbake packs on first launch from the `asset-bundles` release). CI publishes a playable slim zip on the [`windows-debug-slim`](https://github.com/knelse/SphereEmu/releases/tag/windows-debug-slim) release (and as a workflow artifact). Bake outputs live in `GodotAssetSource/TerrainBake/` (git-tracked, `.gdignore` so Godot does not import them; slim builds mount them via a zip resource pack). The full terrain MeshLibrary lives under `GodotAssetSource/Terrain/` for the same reason.
+4. Open project in Godot, build and run (editor uses the full `Godot/` tree). Exported slim builds:
+   - **Code / config / packet definitions**: auto-updater on launch checks the tip release [`windows-debug-slim`](https://github.com/knelse/SphereEmu/releases/tag/windows-debug-slim) (Latest). Historical builds are **prerelease** tags `master-<sha>` (commit subject as title; last 20 kept). UI shows installed vs latest; **Update**, **Continue**, or **Change version…**.
+   - **Heavy packs** (models/terrain/textures/terrainbake): always CRC-synced from the floating [`asset-bundles`](https://github.com/knelse/SphereEmu/releases/tag/asset-bundles) CDN, independent of the chosen code version.
+   Bake outputs live in `GodotAssetSource/TerrainBake/` (git-tracked, `.gdignore`; slim mounts via zip pack). Terrain MeshLibrary is under `GodotAssetSource/Terrain/` for the same reason.
 5. Run `sphereclient_patched.lnk` for the client (it runs `sphereclient_patched.exe` with `/login` command line arg)
 6. Launch the game, enter desired login and password. This should create a `Players` DB entry with your login and pwd hash
 7. Next time, use those credentials or create a new user if you like

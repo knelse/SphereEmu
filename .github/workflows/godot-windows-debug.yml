@@ -154,6 +154,29 @@ jobs:
       - name: Copy runtime_data into build
         run: ./Tools/asset_packs/Copy-RuntimeData.ps1 -ExportDir $env:EXPORT_DIR
 
+      - name: Write build-info.json
+        run: |
+          $sha = $env:GITHUB_SHA
+          $short = $sha.Substring(0, 12)
+          $tag = "master-$sha"
+          $message = (git log -1 --pretty=%s $sha).Trim()
+          if ([string]::IsNullOrWhiteSpace($message)) { $message = "(no commit message)" }
+          $committedAt = (git show -s --format=%cI $sha).Trim()
+          $builtAt = [DateTimeOffset]::UtcNow.ToString('o')
+          $info = [ordered]@{
+            sha           = $sha
+            shortSha      = $short
+            tag           = $tag
+            message       = $message
+            committedAt   = $committedAt
+            builtAt       = $builtAt
+            channelTipTag = $env:SLIM_RELEASE_TAG
+          }
+          $path = Join-Path $env:EXPORT_DIR 'build-info.json'
+          ($info | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath $path -Encoding utf8
+          Write-Host "Wrote $path"
+          Get-Content -LiteralPath $path
+
       - name: Upload slim artifact
         uses: actions/upload-artifact@v4
         with:
@@ -162,13 +185,20 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
 
-      - name: Publish slim build to release
+      - name: Publish slim build to releases
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = $env:SLIM_RELEASE_TAG
+          $tipTag = $env:SLIM_RELEASE_TAG
+          $sha = $env:GITHUB_SHA
+          $masterTag = "master-$sha"
           $zipName = "SphServer-windows-debug-slim.zip"
+          $infoName = "build-info.json"
           $zipPath = Join-Path (Split-Path $env:EXPORT_DIR -Parent) $zipName
+          $infoPath = Join-Path $env:EXPORT_DIR $infoName
+
+          $message = (git log -1 --pretty=%s $sha).Trim()
+          if ([string]::IsNullOrWhiteSpace($message)) { $message = "(no commit message)" }
 
           # Exclude the export log from the playable zip.
           $log = Join-Path $env:EXPORT_DIR "export-slim.log"
@@ -195,26 +225,86 @@ jobs:
 
           $slimTitle = 'Windows debug slim (playable)'
           $slimNotes = @(
-            'Playable slim Godot server build.'
+            'Playable slim Godot server build (tip of master).'
             ''
-            'Heavy packs download automatically on first launch from the internal asset-bundles CDN prerelease (not a separate game download).'
+            "Current commit: $sha"
+            $message
             ''
-            'Per-commit copies also upload as workflow artifacts.'
+            'Heavy packs download automatically on first launch from the asset-bundles CDN.'
+            'Historical builds are published as prerelease tags master-<sha> (last 20 kept).'
           ) -join "`n"
 
-          gh release view $tag 2>$null | Out-Null
+          gh release view $tipTag 2>$null | Out-Null
           if ($LASTEXITCODE -ne 0) {
-            gh release create $tag `
+            gh release create $tipTag `
               --title $slimTitle `
               --notes $slimNotes `
               --latest
           }
           else {
-            gh release edit $tag --title $slimTitle --notes $slimNotes --latest
+            gh release edit $tipTag --title $slimTitle --notes $slimNotes --latest
           }
 
-          Write-Host "Uploading $zipName to release $tag (sha=$env:GITHUB_SHA)"
-          gh release upload $tag $zipPath --clobber
+          Write-Host "Uploading tip assets to $tipTag (sha=$sha)"
+          gh release upload $tipTag $zipPath $infoPath --clobber
+
+          # Per-commit prerelease for version picker / pin (does not become Latest).
+          gh release view $masterTag 2>$null | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $masterTag `
+              --title $message `
+              --notes "Prerelease slim build for $sha`n`n$message" `
+              --prerelease `
+              --target $sha
+          }
+          else {
+            gh release edit $masterTag --title $message --notes "Prerelease slim build for $sha`n`n$message" --prerelease
+          }
+
+          Write-Host "Uploading pin assets to $masterTag"
+          gh release upload $masterTag $zipPath $infoPath --clobber
+
+      - name: Prune old master-* prereleases
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const KEEP = 20;
+            const prefix = 'master-';
+            const releases = await github.paginate(
+              github.rest.repos.listReleases,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              }
+            );
+
+            const builds = releases
+              .filter((r) => r?.prerelease && r?.tag_name?.startsWith(prefix))
+              .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+
+            const toDelete = builds.slice(KEEP);
+            for (const release of toDelete) {
+              core.info(`Deleting release ${release.tag_name} (${release.id})`);
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.id,
+              });
+              try {
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `tags/${release.tag_name}`,
+                });
+              } catch (e) {
+                core.warning(`Tag delete ${release.tag_name}: ${e.message}`);
+              }
+            }
+
+            core.info(
+              `master-* prereleases: kept ${Math.min(builds.length, KEEP)}, deleted ${toDelete.length}`
+            );
 
       - name: Prune old slim artifacts
         uses: actions/github-script@v7

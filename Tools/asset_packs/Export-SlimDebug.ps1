@@ -21,7 +21,7 @@ $godot = Resolve-GodotExecutable
 Write-Host "Godot: $godot"
 
 if (-not $SkipDotnetBuild) {
-    Write-Host 'dotnet restore/build…'
+    Write-Host 'dotnet restore/build...'
     dotnet restore SphServer.csproj
     if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed: $LASTEXITCODE" }
     dotnet build SphServer.csproj --configuration Debug --no-restore
@@ -40,17 +40,23 @@ $psi.UseShellExecute = $false
 $psi.RedirectStandardOutput = $true
 $psi.RedirectStandardError = $true
 $psi.CreateNoWindow = $true
-foreach ($a in @('--headless', '--path', $repoRoot, '--export-debug', $Preset, $outExe)) {
-    [void]$psi.ArgumentList.Add([string]$a)
-}
+# Prefer Arguments string for Windows PowerShell 5.1 (.NET Framework) compatibility.
+$psi.Arguments = @(
+    '--headless',
+    '--path',
+    "`"$repoRoot`"",
+    '--export-debug',
+    "`"$Preset`"",
+    "`"$outExe`""
+) -join ' '
 
 $proc = [System.Diagnostics.Process]::new()
 $proc.StartInfo = $psi
 [void]$proc.Start()
-$outTask = $proc.StandardOutput.ReadToEndAsync()
-$errTask = $proc.StandardError.ReadToEndAsync()
+$stdout = $proc.StandardOutput.ReadToEnd()
+$stderr = $proc.StandardError.ReadToEnd()
 $proc.WaitForExit()
-$combined = @($outTask.GetAwaiter().GetResult(), $errTask.GetAwaiter().GetResult()) -join "`n"
+$combined = @($stdout, $stderr) -join "`n"
 Set-Content -LiteralPath $log -Value $combined -Encoding utf8
 if ($combined) { Write-Host $combined }
 $code = [int]$proc.ExitCode
@@ -64,15 +70,38 @@ if (-not (Test-Path -LiteralPath $outExe)) {
 }
 $size = (Get-Item -LiteralPath $outExe).Length
 if ($size -lt 20MB) {
-    throw "SphServer.exe is only $size bytes — export likely failed. See $log"
+    throw "SphServer.exe is only $size bytes - export likely failed. See $log"
 }
 Write-Host ("OK SphServer.exe size={0:N1} MB" -f ($size / 1MB))
 
 & (Join-Path $PSScriptRoot 'Copy-RuntimeData.ps1') -ExportDir $ExportDir
 
+# Local build-info so the updater UI has something to show (not a published release).
+try {
+    $sha = (git -C $repoRoot rev-parse HEAD).Trim()
+    $message = (git -C $repoRoot log -1 --pretty=%s).Trim()
+    if ([string]::IsNullOrWhiteSpace($message)) { $message = '(local build)' }
+    $committedAt = (git -C $repoRoot show -s --format=%cI HEAD).Trim()
+    $info = [ordered]@{
+        sha           = $sha
+        shortSha      = $sha.Substring(0, [Math]::Min(12, $sha.Length))
+        tag           = "master-$sha"
+        message       = $message
+        committedAt   = $committedAt
+        builtAt       = [DateTimeOffset]::UtcNow.ToString('o')
+        channelTipTag = 'windows-debug-slim'
+    }
+    $infoPath = Join-Path $ExportDir 'build-info.json'
+    ($info | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath $infoPath -Encoding utf8
+    Write-Host "Wrote $infoPath"
+}
+catch {
+    Write-Warning "Could not write build-info.json: $_"
+}
+
 if ($FetchPacks) {
     $packsDir = Join-Path $ExportDir 'packs'
-    Write-Host "Fetching asset packs into $packsDir…"
+    Write-Host "Fetching asset packs into $packsDir..."
     & (Join-Path $PSScriptRoot 'Fetch-AssetPacks.ps1') -OutDir $packsDir
 }
 
