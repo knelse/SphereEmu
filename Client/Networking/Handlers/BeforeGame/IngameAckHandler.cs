@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -79,32 +78,39 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
 
         SphLogger.Info($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
 
-        // Slot first, then the item that goes in it. An item in hand is also still in its inventory
-        // slot, so it would otherwise be declared twice.
+        // Slot first, then the item that goes in it — the order MutatorHandler uses. An item in hand
+        // is also still in its inventory slot, so it would otherwise be declared twice.
         var declared = new HashSet<int>();
 
         foreach (var (slot, itemId) in character.Items)
         {
             var item = DbConnection.Items.FindById(itemId);
-            if (item is null)
+            if (item is null || !declared.Add(itemId))
             {
                 continue;
             }
 
-            // Every occupied slot gets its reserve; the record goes once per item. An item in hand
-            // is also still in its inventory slot, and the hand has no wire slot of its own, so one
-            // token cannot gate both.
+            var record = ItemRecordEncoder.Encode((ushort) item.Id, (int) item.ObjectType,
+                item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId));
+
+            // Slot 0 is the exception: the reserve will not carry it, so the helm cell would stay
+            // empty on every login even though dragging fills it. Bind that one the way a move does
+            // — and after the record, because a move only ever names an item that already exists.
+            if (slot == BelongingSlot.Helmet)
+            {
+                clientConnection.SendPacket(record);
+                clientConnection.SendPacket(ItemSlotReserve.BuildSlotBinding(localId, slot, item.Id));
+                continue;
+            }
+
+            // The hand has no wire slot, but its item still has to be declared.
             var reserve = ItemSlotReserve.Build(localId, slot, item.Id, item.ItemCount);
             if (reserve is not null)
             {
                 clientConnection.SendPacket(reserve);
             }
 
-            if (declared.Add(itemId))
-            {
-                clientConnection.SendPacket(ItemRecordEncoder.Encode((ushort) item.Id,
-                    (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
-            }
+            clientConnection.SendPacket(record);
         }
 
         // The spawn packet carries no attack numbers, so the stat window shows none until this. Last,
