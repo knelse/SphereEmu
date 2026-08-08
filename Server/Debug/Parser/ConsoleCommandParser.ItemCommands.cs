@@ -18,10 +18,13 @@ public partial class ConsoleCommandParser
     private const double GiveGroundDropOffset = 1.0;
 
     /// <summary>
-    ///     The only definition the current client draws on the ground: every other one tried sets
-    ///     __hasGameId and produces no visible item. Override with the third argument.
+    ///     The one capture we have of an item lying in the world, so the only definition shaped the
+    ///     way the client expects there: it carries an angle, container 0xFF00, and a game object id.
+    ///     The definitions that drew nothing are all records of an item inside a container, which is
+    ///     a likelier reason than the game object id they happen to share.
+    ///     Override with the third argument.
     /// </summary>
-    private const string GiveDefaultSpawnDefinition = "weapon_starting_sword";
+    private const string GiveDefaultSpawnDefinition = "alchemy_resource_ground";
 
     private void Give (string args)
     {
