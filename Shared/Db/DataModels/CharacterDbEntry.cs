@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 using LiteDB;
 using SphServer.Shared.Logger;
@@ -94,6 +95,21 @@ public class CharacterDbEntry
     public Dictionary<BelongingSlot, int> Items { get; set; } = new();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
+
+    /// <summary>
+    ///     Puts an item in a slot and releases whatever slot it was already in. An item is in one
+    ///     place: a claim left behind is saved with the character and comes back on relog as a cell
+    ///     pointing at an item the client has already bound elsewhere, which it draws as a blank.
+    /// </summary>
+    public void PlaceItemInSlot (BelongingSlot slot, int itemId)
+    {
+        foreach (var heldIn in Items.Where(x => x.Value == itemId).Select(x => x.Key).ToList())
+        {
+            Items.Remove(heldIn);
+        }
+
+        Items[slot] = itemId;
+    }
     public int KarmaCount { get; set; }
 
     public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
