@@ -138,17 +138,18 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             ? (BelongingSlot) targetSlotId
             : BelongingSlot.Unknown;
 
+        // Requirements gate wearing, not carrying: anything may sit in a cell.
         if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
-            !character.CanUseItem(item))
+            (!ItemDbEntry.IsInventorySlot(targetSlot) && !character.CanUseItem(item)))
         {
             SphLogger.Info(
-                $"Item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+                $"Item {item.Localization[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
             return;
         }
 
         SphLogger.Info(
-            $"CLI: Move item {item.Localization.GetValueOrDefault(Locale.Russian, "?")} ({item.ItemCount}) " +
-            $"[{clientItemID}] to slot raw [{clientSlot_raw}] [{Enum.GetName(targetSlot)}]");
+            $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] " +
+            $"to slot raw [{clientSlot_raw}] [{Enum.GetName(targetSlot)}]");
 
         var clientSync_1 = clientConnection.ReceiveBuffer[17];
         var clientSync_2 = clientConnection.ReceiveBuffer[18];
@@ -195,15 +196,6 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort) item.Id,
             (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
 
-        // Before the save: the recalculation writes persisted fields, and nothing recalculates
-        // again at login.
-        if (!ItemDbEntry.IsInventorySlot(targetSlot) && character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
-
-        clientConnection.SaveSelectedCharacter();
-
         var oldContainer = item.ParentContainerId is null
             ? null
             : DbConnection.ItemContainers.FindById(item.ParentContainerId);
@@ -213,5 +205,17 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         {
             clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort) oldContainer.Id));
         }
+
+        if (!ItemDbEntry.IsInventorySlot(targetSlot))
+        {
+            if (character.RecalcCurrentStats())
+            {
+                NetworkedStatsUpdater.Update(character);
+            }
+        }
+
+        // After the recalculation, not before: it writes the worn appearance and the stats that
+        // come off the item, so saving first stores the character as it was without them.
+        clientConnection.SaveSelectedCharacter();
     }
 }
