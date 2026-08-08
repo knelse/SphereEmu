@@ -33,6 +33,31 @@ public static class ItemRecordEncoder
     /// </summary>
     public const int NoSuffix = 17;
 
+    /// <summary>
+    ///     The shorter shape, carrying no game object id: the item is identified by object type
+    ///     alone, so every item of a type shares one icon.
+    /// </summary>
+    public static byte[] EncodeWithoutGameId (ushort entityId, int objectType, ushort containerObjectId,
+        float x = ContainedX, float y = 0f, float z = 0f)
+    {
+        var stream = GetWriteBitStream();
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort) (objectType & 0x3FF), 10);
+        stream.WriteByte(0, 1);
+        stream.WriteByte(FullSpawn, 8);
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(x));
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(y));
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(z));
+        stream.WriteByte(0, 8);
+        stream.WriteUInt32(0x322C89, 24);
+        stream.WriteByte(0, 1);
+        WriteUInt32Full(stream, 0x05090A89);
+        stream.WriteUInt16(containerObjectId, 16);
+        stream.WriteUInt32(0x7FFFFF, 23);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
+
     public static byte[] Encode (ushort entityId, int objectType, int gameObjectId, int suffix,
         ushort containerObjectId, float x = ContainedX, float y = 0f, float z = 0f)
     {
@@ -53,8 +78,9 @@ public static class ItemRecordEncoder
         stream.WriteUInt16((ushort) (gameObjectId & 0x3FFF), 14);
         stream.WriteByte((byte) (suffix & 0x3F), 6);
 
-        // The two messages that go to the item's own script; their type field is eight bits wide in
-        // this client's modules. "You are inside this container" is what gives an item a parent.
+        // The two messages that go to the item's own script. Their type field is eight bits wide in
+        // this client's modules, where the 2022 build used four.
+        // "You are inside this container" — the only thing that gives an item a parent.
         stream.WriteByte((byte) FollowOnRecord, 7);
         stream.WriteByte((byte) PutHereMessage, 8);
         stream.WriteByte(3, 8);
