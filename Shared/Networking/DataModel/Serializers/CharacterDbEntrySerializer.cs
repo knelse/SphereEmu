@@ -134,17 +134,33 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
                                  ((characterDbEntry.HairStyle & 0b11000000) >> 6));
         var tattoo1 = (byte) (((characterDbEntry.Tattoo & 0b111111) << 2) +
                               ((characterDbEntry.HairColor & 0b11000000) >> 6));
-        var bootsModelId = (byte) (((characterDbEntry.BootModelId & 0b111111) << 2) +
-                                   ((characterDbEntry.Tattoo & 0b11000000) >> 6));
-        var pantsModelId = (byte) (((characterDbEntry.PantsModelId & 0b111111) << 2) +
-                                   ((characterDbEntry.BootModelId & 0b11000000) >> 6));
-        var armorModelId = (byte) (((characterDbEntry.ArmorModelId & 0b111111) << 2) +
-                                   ((characterDbEntry.PantsModelId & 0b11000000) >> 6));
-        var helmetModelId = (byte) (((characterDbEntry.HelmetModelId & 0b111111) << 2) +
-                                    ((characterDbEntry.ArmorModelId & 0b11000000) >> 6));
-        var glovesModelId1 = (byte) (((characterDbEntry.GlovesModelId & 0b111111) << 2) +
-                                     ((characterDbEntry.HelmetModelId & 0b11000000) >> 6));
-        var glovesModelId2 = (byte) ((characterDbEntry.GlovesModelId & 0b11000000) >> 6);
+        // The nine-byte look block, one byte per garment class, in the order the client's own
+        // _player.mbc fills it: boots, pants, physical chest, magical chest, gloves, shield, the two
+        // secondary codes, helmet. The class chooses the byte — a robe written to the physical chest
+        // byte is drawn as physical armour of the same tier.
+        byte[] look =
+        [
+            characterDbEntry.BootModelId,
+            characterDbEntry.PantsModelId,
+            characterDbEntry.ArmorModelId,
+            characterDbEntry.RobeModelId,
+            characterDbEntry.GlovesModelId,
+            characterDbEntry.ShieldModelId,
+            (byte) '0',
+            (byte) '0',
+            characterDbEntry.HelmetModelId
+        ];
+
+        // Each byte carries its own low six bits plus the top two of the one before it.
+        var lookPacked = new byte[look.Length];
+        for (var i = 0; i < look.Length; i++)
+        {
+            var carry = i == 0 ? characterDbEntry.Tattoo : look[i - 1];
+            lookPacked[i] = (byte) (((look[i] & 0b111111) << 2) + ((carry & 0b11000000) >> 6));
+        }
+
+        // The delete marker follows, so the last look byte's top two bits ride in its low two.
+        var notQueuedForDeletion = (byte) (0xFC + ((look[^1] & 0b11000000) >> 6));
         var isNotDeleted1 = (byte) (((characterDbEntry.IsNotQueuedForDeletion ? 1 : 0) << 1) + 1);
 
         var lookType = (byte) (characterDbEntry.IsNotQueuedForDeletion ? 0x79 : 0x19);
@@ -160,17 +176,47 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
             satietyCurrent2, hpCurrent1, hpCurrent2, mpCurrent1, mpCurrent2, titleStats1, titleStats2, degreeStats1,
             degreeStats2, degreeStats3, 0xC0, 0xC8, 0xC8, isFemale1, name1, name2, name3, name4, name5, name6,
             name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19,
-            face1, hairStyle1, hairColor1, tattoo1, bootsModelId, pantsModelId, armorModelId, helmetModelId,
-            glovesModelId1, glovesModelId2, 0xC0, 0xC0, 0x00, 0xFC, 0xFF, 0xFF, 0xFF, isNotDeleted1, 0x00, 0x00,
+            face1, hairStyle1, hairColor1, tattoo1, lookPacked[0], lookPacked[1], lookPacked[2], lookPacked[3],
+            lookPacked[4], lookPacked[5], lookPacked[6], lookPacked[7], lookPacked[8],
+            notQueuedForDeletion, 0xFF, 0xFF, 0xFF, isNotDeleted1, 0x00, 0x00,
             0x00, 0x00
         };
 
         return charDataBytes;
     }
 
+    /// <summary>Forces the two-bit gender field, for finding which value the client acts on.</summary>
+    public static int? GenderOverride;
+
+    /// <summary>
+    ///     Replaces the five bytes carrying the look word and whatever follows it, so the region the
+    ///     body mesh is chosen from can be swept without a rebuild. Five bytes, or null for none.
+    /// </summary>
+    public static byte[]? LookOverride;
+
+    /// <summary>
+    ///     Replaces the name in the world-entry record only, leaving the character list alone. If the
+    ///     in-world nameplate follows it, this record is what describes the player in the world.
+    /// </summary>
+    public static string? WorldNameOverride;
+
+    /// <summary>
+    ///     Replaces the five hardcoded bytes that follow the coordinates in the world record. The
+    ///     character-list serializer calls the third of them the look type and derives it, while this
+    ///     one has always sent a constant.
+    /// </summary>
+    public static byte[]? PostCoordOverride;
+
+    /// <summary>
+    ///     Forces a clan name into the world record, taking the branch a clanless character never
+    ///     takes. The clan pair sits between the name, which the client applies, and gender, which it
+    ///     does not — so it is the candidate for where the applier stops.
+    /// </summary>
+    public static string? WorldClanOverride;
+
     public byte[] ToGameDataByteArray ()
     {
-        var nameEncoded = SphEncoding.Win1251!.GetBytes(characterDbEntry.Name);
+        var nameEncoded = SphEncoding.Win1251!.GetBytes(WorldNameOverride ?? characterDbEntry.Name);
         var x = CoordsHelper.EncodeServerCoordinate(characterDbEntry.X);
         var y = CoordsHelper.EncodeServerCoordinate(-characterDbEntry.Y);
         var z = CoordsHelper.EncodeServerCoordinate(-characterDbEntry.Z);
@@ -200,14 +246,29 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
 
         data.Add((byte) ((nameEncoded[^1] & 0b11111000) >> 3));
 
-        if (characterDbEntry.Clan?.Id == null || characterDbEntry.Clan?.Id == ClanDbEntry.DefaultClanDbEntry.Id)
+        // The look block starts in the top bit of the byte below and runs through the next four, one
+        // bit out of step. Values go on the wire as stored: the client's own numbering starts at 48.
+        // The look field is sign-and-magnitude with a 31-bit magnitude, so the look word has no
+        // 32nd bit: the top two bits of the last byte are the gender field. A negative look word is
+        // not an option — character select treats a value <= 4 as an unusable slot.
+        var gender = GenderOverride ?? (characterDbEntry.IsGenderFemale ? 1 : 0);
+        var face = characterDbEntry.FaceType;
+        var hair = characterDbEntry.HairStyle;
+        var hairColour = characterDbEntry.HairColor;
+        var tattoo = characterDbEntry.Tattoo;
+
+        var hasClan = WorldClanOverride is not null ||
+                      (characterDbEntry.Clan?.Id != null &&
+                       characterDbEntry.Clan?.Id != ClanDbEntry.DefaultClanDbEntry.Id);
+
+        if (!hasClan)
         {
             data.Add(0x00);
-            data.Add(0x6E);
+            data.Add((byte) (0x6E | ((face & 1) << 7)));
         }
         else
         {
-            var clanNameEncoded = SphEncoding.Win1251.GetBytes(characterDbEntry.Clan!.Name);
+            var clanNameEncoded = SphEncoding.Win1251.GetBytes(WorldClanOverride ?? characterDbEntry.Clan!.Name);
             var clanNameLength = clanNameEncoded.Length;
             data.Add((byte) ((clanNameLength & 0b111) << 5));
             data.Add((byte) (((clanNameEncoded[0] & 0b1111111) << 1) + ((clanNameLength & 0b1000) >> 3)));
@@ -219,22 +280,30 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
             }
 
             data.Add((byte) (0b01100000 + ((byte) characterDbEntry.ClanRank << 1) +
-                             ((clanNameEncoded[^1] & 0b10000000) >> 7)));
+                             ((clanNameEncoded[^1] & 0b10000000) >> 7) + ((face & 1) << 7)));
         }
 
-        data.Add(0x1A);
-        data.Add(0x98);
-        data.Add(0x18);
-        data.Add(0x19);
+        data.Add((byte) ((face >> 1) | ((hair & 1) << 7)));
+        data.Add((byte) ((hair >> 1) | ((hairColour & 1) << 7)));
+        data.Add((byte) ((hairColour >> 1) | ((tattoo & 1) << 7)));
+
+        data.Add((byte) (((tattoo & 0x7F) >> 1) | ((gender & 3) << 6)));
+
+        if (LookOverride is { Length: 5 })
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                data[data.Count - 5 + i] = LookOverride[i];
+            }
+        }
         data.AddRange(x);
         data.AddRange(y);
         data.AddRange(z);
         data.AddRange(t);
-        data.Add(0x37);
-        data.Add(0x0D);
-        data.Add(0x79);
-        data.Add(0x00);
-        data.Add(0xF0);
+        var postCoord = PostCoordOverride is { Length: 5 }
+            ? PostCoordOverride
+            : new byte[] { 0x37, 0x0D, 0x79, 0x00, 0xF0 };
+        data.AddRange(postCoord);
         data.Add((byte) (characterDbEntry.IsItemSlotEmpty(BelongingSlot.Helmet) ? 0x00 : 0x04));
         data.Add(0x00);
         data.Add((byte) (characterDbEntry.IsItemSlotEmpty(BelongingSlot.Amulet) ? 0x00 : 0x04));

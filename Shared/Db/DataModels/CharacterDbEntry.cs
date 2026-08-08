@@ -73,6 +73,11 @@ public class CharacterDbEntry
     public byte BootModelId { get; set; }
     public byte PantsModelId { get; set; }
     public byte ArmorModelId { get; set; }
+
+    /// <summary>Magical chest armour has its own byte in the look block; physical armour is ArmorModelId.</summary>
+    public byte RobeModelId { get; set; }
+
+    public byte ShieldModelId { get; set; }
     public byte HelmetModelId { get; set; }
     public byte GlovesModelId { get; set; }
     public bool IsNotQueuedForDeletion { get; set; } = true;

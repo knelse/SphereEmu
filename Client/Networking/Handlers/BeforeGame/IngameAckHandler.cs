@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.System;
+using SphServer.Shared.Networking.DataModel.Serializers;
 using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
@@ -39,13 +41,22 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        SphLogger.Info($"SRV {localId:X4}: Sending game world data");
+        // Nothing between logins keeps the derived stats in step with the item rows they came from,
+        // so they are rebuilt from the slots before anything is sent.
+        character.RecalcCurrentStats();
+
+        SphLogger.Info($"SRV {localId:X4}: Sending game world data for [{character.Name}], " +
+                       $"{(character.IsGenderFemale ? "female" : "male")}, face {character.FaceType}, " +
+                       $"hair {character.HairStyle}/{character.HairColor}");
 
         var worldData = CommonPackets.NewCharacterWorldData(character.ClientIndex);
         clientConnection.SendPacket(worldData[0]);
         clientConnection.SendPacket(Convert.FromHexString(
             $"BA002C01000000{localId:X4}08C002D07911C8BD10445E0C222F08C91685C80B03581CC002011609B05080C5022C1860D1000B07593CC802021611B09080C5042C286051010B0B585CC00213799189BCD0445E6CC08203161DB0F080C5072C406011020B11588CC882441625B03081C5892D506091020B1558AC422C5870D1820B1758CCD082061635B0B0C1C603848F1535B10F2B6391702035D1F643F24F411072A0D901900100000A5290530F0000D0001170AA2A48410E32000000"));
 
+        // After the world-entry messages, not before them: sent earlier the client clears these
+        // fields again before it builds the body.
+        clientConnection.SendPacket(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
         // The window draws from the slot array, not from the item records, so both halves are sent.
         // A slot whose item row is gone still reports itself occupied, giving a cell that can never
         // be filled.
@@ -95,6 +106,10 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
                     (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
             }
         }
+
+        // The spawn packet carries no attack numbers, so the stat window shows none until this. Last,
+        // for the same reason the character record is: the client discards these if they arrive early.
+        NetworkedStatsUpdater.Update(character);
 
         WaitForClientTimer = new(0.05f, false, clientConnection.MoveToNextBeforeGameStage);
     }
