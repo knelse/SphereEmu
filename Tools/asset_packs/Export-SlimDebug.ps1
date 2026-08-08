@@ -94,9 +94,14 @@ try {
     $infoPath = Join-Path $ExportDir 'build-info.json'
     ($info | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath $infoPath -Encoding utf8
     Write-Host "Wrote $infoPath"
+
+    & (Join-Path $PSScriptRoot 'Write-FileManifest.ps1') `
+        -ExportDir $ExportDir `
+        -Sha $sha `
+        -Tag ("master-$sha")
 }
 catch {
-    Write-Warning "Could not write build-info.json: $_"
+    Write-Warning "Could not write build-info/file-manifest: $_"
 }
 
 if ($FetchPacks) {

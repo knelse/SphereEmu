@@ -49,6 +49,7 @@ public partial class AssetBootstrap : Control
 	private IReadOnlyList<VersionListEntry> versionEntries = [];
 	private bool busy;
 	private bool awaitingUserChoice;
+	private bool forceTipOnNextUpdate;
 
 	public override void _Ready()
 	{
@@ -211,6 +212,20 @@ public partial class AssetBootstrap : Control
 			installedInfo = BuildInfo.TryLoad(Path.Combine(installDir, "build-info.json"));
 			SetInstalledLabel(installedInfo);
 
+			SetStatus("Verifying install…");
+			var integrity = await VerifyOrRestoreInstallAsync(installDir);
+			if (integrity == IntegrityResult.Restoring)
+			{
+				// ApplyUpdateAsync quits the process.
+				return;
+			}
+
+			if (integrity == IntegrityResult.Failed)
+			{
+				await WaitForIntegrityFailureChoiceAsync();
+				return;
+			}
+
 			SetStatus("Checking for updates…");
 			tipInfo = await releases.FetchBuildInfoAsync(releases.TipBuildInfoUrl());
 			SetLatestLabel(tipInfo);
@@ -356,7 +371,10 @@ public partial class AssetBootstrap : Control
 		}
 
 		awaitingUserChoice = false;
-		_ = ApplyUpdateAsync(channel.IsPin ? channel.Tag! : releases.TipTag, pin: channel.IsPin);
+		var usePin = channel.IsPin && !forceTipOnNextUpdate;
+		forceTipOnNextUpdate = false;
+		var tag = usePin ? channel.Tag! : releases.TipTag;
+		_ = ApplyUpdateAsync(tag, pin: usePin);
 	}
 
 	private void OnUseTipPressed()
@@ -573,6 +591,130 @@ public partial class AssetBootstrap : Control
 		SetStatus("Starting server…");
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		GoToMainServer();
+	}
+
+	private enum IntegrityResult
+	{
+		Ok,
+		Restoring,
+		Failed
+	}
+
+	private const string RestoreFailedMessage =
+		"Unable to restore missing/modified files, please update to one of the latest builds";
+
+	private async Task<IntegrityResult> VerifyOrRestoreInstallAsync(string installDir)
+	{
+		var restoreTag = ResolveRestoreTag();
+		SetDetail($"Checking files for {restoreTag}…");
+
+		var manifestUrl = string.Equals(restoreTag, releases.TipTag, StringComparison.Ordinal)
+			? releases.TipFileManifestUrl()
+			: releases.TagFileManifestUrl(restoreTag);
+
+		var remoteManifest = await releases.FetchFileManifestAsync(manifestUrl);
+		var localManifestPath = Path.Combine(installDir, "file-manifest.json");
+		var manifest = remoteManifest ?? FileManifest.TryLoad(localManifestPath);
+
+		if (manifest is null)
+		{
+			// Unpublished local export with no remote release yet: skip integrity.
+			if (!channel.IsPin && remoteManifest is null)
+			{
+				GD.PushWarning(
+					$"AssetBootstrap: no file-manifest for '{restoreTag}' (local or unpublished build); skipping integrity check.");
+				SetDetail("Integrity check skipped (build not published on GitHub yet).");
+				return IntegrityResult.Ok;
+			}
+
+			SetStatus("Unable to restore missing/modified files");
+			SetDetail(RestoreFailedMessage);
+			return IntegrityResult.Failed;
+		}
+
+		SetStatus("Scanning install files…");
+		var mismatches = manifest.FindMismatches(installDir);
+		if (mismatches.Count == 0)
+		{
+			SetDetail($"Install OK ({manifest.Files.Count} files).");
+			return IntegrityResult.Ok;
+		}
+
+		GD.Print($"AssetBootstrap: {mismatches.Count} missing/modified file(s), e.g. {mismatches[0]}");
+
+		if (remoteManifest is null)
+		{
+			// Local manifest detected drift but we cannot download the selected version.
+			SetStatus("Unable to restore missing/modified files");
+			SetDetail(
+				$"{RestoreFailedMessage}\n({mismatches.Count} file(s) differ, e.g. {mismatches[0]})");
+			return IntegrityResult.Failed;
+		}
+
+		SetStatus($"Restoring {mismatches.Count} missing/modified file(s)…");
+		SetDetail(string.Join(", ", mismatches.Take(8)) + (mismatches.Count > 8 ? "…" : ""));
+		busy = false;
+		_ = ApplyUpdateAsync(restoreTag, pin: channel.IsPin);
+		return IntegrityResult.Restoring;
+	}
+
+	private string ResolveRestoreTag()
+	{
+		if (channel.IsPin && !string.IsNullOrWhiteSpace(channel.Tag))
+		{
+			return channel.Tag!;
+		}
+
+		if (!string.IsNullOrWhiteSpace(installedInfo?.Tag))
+		{
+			return installedInfo!.Tag;
+		}
+
+		if (!string.IsNullOrWhiteSpace(installedInfo?.Sha))
+		{
+			return $"master-{installedInfo!.Sha}";
+		}
+
+		return releases.TipTag;
+	}
+
+	private async Task WaitForIntegrityFailureChoiceAsync()
+	{
+		awaitingUserChoice = true;
+		SetActionButtonsVisible(false);
+
+		if (continueButton is not null)
+		{
+			continueButton.Visible = false;
+		}
+
+		if (updateButton is not null)
+		{
+			updateButton.Visible = true;
+			updateButton.Text = "Update to latest";
+			forceTipOnNextUpdate = true;
+		}
+
+		if (changeVersionButton is not null)
+		{
+			changeVersionButton.Visible = true;
+		}
+
+		if (useTipButton is not null)
+		{
+			useTipButton.Visible = channel.IsPin;
+		}
+
+		if (retryButton is not null)
+		{
+			retryButton.Visible = true;
+		}
+
+		busy = false;
+		while (awaitingUserChoice)
+		{
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		}
 	}
 
 	private static bool IsBehind(BuildInfo? installed, BuildInfo? target)

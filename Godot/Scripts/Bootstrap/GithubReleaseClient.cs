@@ -26,9 +26,13 @@ public sealed class GithubReleaseClient
 
 	public string TipZipUrl() => $"{_downloadBase}/{_tipTag}/{_zipName}";
 
+	public string TipFileManifestUrl() => $"{_downloadBase}/{_tipTag}/file-manifest.json";
+
 	public string TagBuildInfoUrl(string tag) => $"{_downloadBase}/{tag}/build-info.json";
 
 	public string TagZipUrl(string tag) => $"{_downloadBase}/{tag}/{_zipName}";
+
+	public string TagFileManifestUrl(string tag) => $"{_downloadBase}/{tag}/file-manifest.json";
 
 	public async Task<BuildInfo?> FetchBuildInfoAsync(string url, CancellationToken ct = default)
 	{
@@ -41,6 +45,19 @@ public sealed class GithubReleaseClient
 
 		var json = await response.Content.ReadAsStringAsync(ct);
 		return BuildInfo.TryParse(json);
+	}
+
+	public async Task<FileManifest?> FetchFileManifestAsync(string url, CancellationToken ct = default)
+	{
+		using var client = CreateHttpClient();
+		using var response = await client.GetAsync(url, ct);
+		if (!response.IsSuccessStatusCode)
+		{
+			return null;
+		}
+
+		var json = await response.Content.ReadAsStringAsync(ct);
+		return FileManifest.TryParse(json);
 	}
 
 	public async Task<IReadOnlyList<VersionListEntry>> ListMasterPrereleasesAsync(int keep = 20,
