@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -27,6 +28,21 @@ public static class ItemSlotReserve
         [BelongingSlot.Key_2] = 24,
         [BelongingSlot.Mission] = 25,
     };
+
+    /// <summary>The slot a wire id names, or null when it names none.</summary>
+    public static BelongingSlot? SlotForWireId (int wireSlot)
+    {
+        foreach (var (slot, wire) in WireSlotOverrides)
+        {
+            if (wire == wireSlot)
+            {
+                return slot;
+            }
+        }
+
+        // The enum has no members at the overridden ids, so nothing above can be shadowed here.
+        return Enum.IsDefined(typeof (BelongingSlot), wireSlot) ? (BelongingSlot) wireSlot : null;
+    }
 
     /// <summary>The id this slot has on the wire, or null when we do not know it.</summary>
     public static int? WireSlotId (BelongingSlot slot)
@@ -66,19 +82,27 @@ public static class ItemSlotReserve
     ///     for the bank, key and inkpot slots. Carries no count, so stacked items still need the
     ///     reserve.
     /// </summary>
-    public static byte[] BuildSlotBinding (ushort clientIndex, BelongingSlot slot, int itemId)
+    public static byte[] BuildSlotBinding (ushort clientIndex, BelongingSlot slot, int itemId) =>
+        BuildMove(clientIndex, slot, slot, itemId);
+
+    /// <summary>
+    ///     Moves an item between two slots. The client changes nothing itself when it asks for a move
+    ///     or a swap, so this is what makes the window follow.
+    /// </summary>
+    public static byte[] BuildMove (ushort clientIndex, BelongingSlot from, BelongingSlot to, int itemId)
     {
-        var raw = (byte) ((int) slot << 1);
+        var fromRaw = (byte) ((int) from << 1);
+        var toRaw = (byte) ((int) to << 1);
         var id = (ushort) itemId;
 
         return
         [
             0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(clientIndex), MinorByte(clientIndex),
             0x08, 0x40, 0x41, 0x10,
-            raw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            fromRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x0A, 0x82,
-            (byte) ((raw & 0b11111) << 3),
-            (byte) (((id & 0b1111) << 4) + (raw >> 5)),
+            (byte) ((toRaw & 0b11111) << 3),
+            (byte) (((id & 0b1111) << 4) + (toRaw >> 5)),
             (byte) ((id >> 4) & 0xFF),
             (byte) (id >> 12),
             0xC0, 0x44, 0x00, 0x00, 0x00

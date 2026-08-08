@@ -22,7 +22,8 @@ public enum ClientPacketEvent
 	NpcInteract,
 	ItemTakeMainhand,
 	TradeBuy,
-	CombatDamageTarget
+	CombatDamageTarget,
+	ItemSwap
 }
 
 public readonly record struct ClientPacketClassification(
@@ -63,7 +64,12 @@ public static class ClientPacketClassifier
 			return Result(ClientPacketEvent.InvalidOrTrailing, 0, "frame length is invalid", false);
 		}
 
-		if (declaredLength == 0x26)
+		// Keepalive only when it does not carry the swap signature: the equipment-slot swap is the
+		// same declared length, and returning here on length alone hid it among tens of thousands
+		// of keepalives. The test is the whole signature, because releasing on 08 40 alone drops
+		// every other 0x26 frame into the signature-only fallback, which dispatches it as a drop.
+		if (declaredLength == 0x26 &&
+			!(frame.Length > 15 && frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0xA3))
 		{
 			return Result(ClientPacketEvent.PositionKeepalive, 1.0, "ClientConnection case 0x26", true);
 		}
@@ -122,6 +128,11 @@ public static class ClientPacketClassifier
 
 			case 0x31 or 0x36 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
 				return Result(ClientPacketEvent.NpcInteract, 1.0, "NPC signature 08 40 A3", true);
+
+			case 0x26 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
+				// Dropping an item onto an occupied slot. Shares its length with the position frame,
+				// which is why the keepalive check above reads the signature before claiming it.
+				return Result(ClientPacketEvent.ItemSwap, 1.0, "swap signature 08 40 A3", true);
 
 			case 0x15 or 0x1B or 0x1F or 0x23
 				when b13 == 0x08 && b14 == 0x40 && b15 is 0xA3 or 0x83:
@@ -215,6 +226,7 @@ public static class ClientPacketClassifier
 			ClientPacketEvent.ItemTakeMainhand => "client.item.take_mainhand",
 			ClientPacketEvent.TradeBuy => "client.trade.buy",
 			ClientPacketEvent.CombatDamageTarget => "client.combat.damage_target",
+			ClientPacketEvent.ItemSwap => "client.item.swap",
 			_ => "client.none"
 		};
 

@@ -47,6 +47,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private double timeSinceFirstPositionKeepalive;
     private bool starterMutatorSent;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
+    private SwapItemHandler? swapItemHandler;
     private MoveItemHandler? moveItemHandler;
     private MoveObjectForClientHandler? moveObjectForClientHandler;
     private NpcInteractionHandler? npcInteractionHandler;
@@ -227,6 +228,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             case ClientPacketEvent.ItemTakeMainhand:
                 await mainhandTakeItemHandler!.Handle(delta);
                 break;
+            case ClientPacketEvent.ItemSwap:
+                await swapItemHandler!.Handle(delta);
+                break;
             case ClientPacketEvent.TradeBuy:
                 await buyItemFromTargetHandler!.Handle(delta);
                 break;
@@ -254,6 +258,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         useItemHandler ??= new(localId, this);
         dropItemToGroundHandler ??= new();
         mainhandTakeItemHandler ??= new();
+        swapItemHandler ??= new(localId, this);
         buyItemFromTargetHandler ??= new();
         damageTargetHandler ??= new(localId, this);
         moveObjectForClientHandler ??= new(this);
