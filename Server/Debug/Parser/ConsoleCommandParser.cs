@@ -265,6 +265,7 @@ public partial class ConsoleCommandParser
 
     private void SendPacket(string args)
     {
+        SphLogger.Info($"Sending debug command: /packet {args}");
         DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
     }
 

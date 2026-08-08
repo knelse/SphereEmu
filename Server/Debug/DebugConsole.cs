@@ -20,8 +20,6 @@ public static class DebugConsole
             return;
         }
 
-        SphLogger.Info($"Sending debug command: {input}");
-
         var inputParams = input.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (inputParams.Length < 2 || (inputParams.Length == 3 && inputParams[2] != "onme"))
         {
