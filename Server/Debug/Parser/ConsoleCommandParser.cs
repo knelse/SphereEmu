@@ -5,6 +5,7 @@ using SphServer.Helpers;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
+using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.Chat.Encoders;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
@@ -19,8 +20,11 @@ public enum ConsoleCommandParseResult
     ERROR
 }
 
-public class ConsoleCommandParser
+public partial class ConsoleCommandParser
 {
+    /// <summary>How many values /stats reads, one per indexed assignment below.</summary>
+    private const int StatsArgumentCount = 26;
+
     private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new();
     private readonly CharacterDbEntry currentCharacterDbEntry;
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new();
@@ -52,10 +56,33 @@ public class ConsoleCommandParser
         RegisteredCommands["packethex"] = SendPacketHex;
         RegisteredCommands["packet"] = SendPacket;
         RegisteredCommands["buff"] = Buff;
-        RegisteredCommands["mob"] = Mob;
+        // /clientmob sends the client-only template (no server node); /mob spawns a real one.
+        RegisteredCommands["clientmob"] = Mob;
+        RegisteredCommands["mob"] = SpawnRealMonster;
         RegisteredCommands["mobid"] = MobById;
         RegisteredCommands["loot"] = Loot;
+        RegisteredCommands["give"] = Give;
+        RegisteredCommands["giveinv"] = GiveToInventory;
+        RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
+    }
+
+    // Reports command output to the player in-game (a GM chat line), or to the server console
+    // when no client is attached.
+    private void SendFeedback(string text)
+    {
+        // Also to the log: a command that fails a guard is otherwise invisible server-side.
+        SphLogger.Info($"GM feedback: {text}");
+
+        if (sphereClient is null)
+        {
+            Console.WriteLine(text);
+            return;
+        }
+
+        var response = MessageEncoder.EncodeToSendFromServer("GM: " + text, "GM",
+            (int) PublicChatType.GM_Outgoing);
+        sphereClient.MaybeQueueNetworkPacketSend(response);
     }
 
     public ConsoleCommandParseResult Parse(string? input)
@@ -71,13 +98,13 @@ public class ConsoleCommandParser
         }
 
         var split = input[1..].Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        if (split.Length < 2)
+        if (split.Length == 0)
         {
             return ConsoleCommandParseResult.ERROR;
         }
 
         var command = split[0];
-        var args = split[1];
+        var args = split.Length > 1 ? split[1] : string.Empty;
 
         if (!RegisteredCommands.TryGetValue(command, out var value))
         {
@@ -92,6 +119,12 @@ public class ConsoleCommandParser
     private void UpdateStats(string args)
     {
         var stats = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        if (stats.Length < StatsArgumentCount)
+        {
+            SendFeedback($"Usage: /stats takes {StatsArgumentCount} values, got {stats.Length}.");
+            return;
+        }
 
         currentCharacterDbEntry.MaxHP = ushort.Parse(stats[0]);
         currentCharacterDbEntry.MaxMP = ushort.Parse(stats[1]);
@@ -121,13 +154,21 @@ public class ConsoleCommandParser
         currentCharacterDbEntry.PAtk = int.Parse(stats[24]);
         currentCharacterDbEntry.MAtk = int.Parse(stats[25]);
         NetworkedStatsUpdater.Update(currentCharacterDbEntry);
+        SendFeedback("Stats updated.");
     }
 
     private void UpdateMoney(string args)
     {
         var stats = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        currentCharacterDbEntry.Money = int.Parse(stats[0]);
+        if (stats.Length < 1 || !int.TryParse(stats[0], out var money))
+        {
+            SendFeedback("Usage: /money <amount>");
+            return;
+        }
+
+        currentCharacterDbEntry.Money = money;
         NetworkedStatsUpdater.Update(currentCharacterDbEntry);
+        SendFeedback($"Money set to {money}.");
     }
 
     private void SendMessage(string args)
@@ -135,7 +176,7 @@ public class ConsoleCommandParser
         var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 3)
         {
-            Console.WriteLine("usage: /msg chat_type name message");
+            SendFeedback("Usage: /msg <chat_type> <name> <message>");
             return;
         }
 
@@ -155,14 +196,13 @@ public class ConsoleCommandParser
     private void UpdateClan(string args)
     {
         var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        if (chatData.Length < 1)
+        if (chatData.Length < 2 || !int.TryParse(chatData[1], out var targetRank))
         {
-            Console.WriteLine("usage: /clan action value");
+            SendFeedback("Usage: /clan <action> <value>");
             return;
         }
 
         var action = chatData[0].ToLowerInvariant();
-        var targetRank = int.Parse(chatData[1]);
         switch (action)
         {
             case "rank":
@@ -225,6 +265,7 @@ public class ConsoleCommandParser
 
     private void SendPacket(string args)
     {
+        SphLogger.Info($"Sending debug command: /packet {args}");
         DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
     }
 

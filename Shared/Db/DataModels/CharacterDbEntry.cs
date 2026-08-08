@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 using LiteDB;
 using SphServer.Shared.Logger;
@@ -12,6 +13,8 @@ namespace SphServer.Shared.Db.DataModels;
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry
 {
+    // Deliberately not inserted into the item collection: nothing reads this row, and one per
+    // character load would spend world object ids that are never given back.
     public readonly ItemDbEntry Fists = new()
     {
         ObjectKind = GameObjectKind.Fists,
@@ -30,7 +33,6 @@ public class CharacterDbEntry
         MaxMP = (ushort)MaxMPBase;
         AvailableDegreeStats = AvailableStatsPrimary[0];
         AvailableTitleStats = AvailableStatsPrimary[0];
-        Fists.Id = DbConnection.Items.Insert(Fists);
     }
 
     public int Id { get; set; }
@@ -71,6 +73,11 @@ public class CharacterDbEntry
     public byte BootModelId { get; set; }
     public byte PantsModelId { get; set; }
     public byte ArmorModelId { get; set; }
+
+    /// <summary>Magical chest armour has its own byte in the look block; physical armour is ArmorModelId.</summary>
+    public byte RobeModelId { get; set; }
+
+    public byte ShieldModelId { get; set; }
     public byte HelmetModelId { get; set; }
     public byte GlovesModelId { get; set; }
     public bool IsNotQueuedForDeletion { get; set; } = true;
@@ -93,6 +100,21 @@ public class CharacterDbEntry
     public Dictionary<BelongingSlot, int> Items { get; set; } = new();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
+
+    /// <summary>
+    ///     Puts an item in a slot and releases whatever slot it was already in. An item is in one
+    ///     place: a claim left behind is saved with the character and comes back on relog as a cell
+    ///     pointing at an item the client has already bound elsewhere, which it draws as a blank.
+    /// </summary>
+    public void PlaceItemInSlot (BelongingSlot slot, int itemId)
+    {
+        foreach (var heldIn in Items.Where(x => x.Value == itemId).Select(x => x.Key).ToList())
+        {
+            Items.Remove(heldIn);
+        }
+
+        Items[slot] = itemId;
+    }
     public int KarmaCount { get; set; }
 
     public int MaxHPBase => HealthAtTitle[TitleMinusOne % 60] + HealthAtDegree[DegreeMinusOne % 60] - 100;
@@ -247,7 +269,7 @@ public class CharacterDbEntry
 
     public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
     {
-        return FindEmptyInventorySlot != null;
+        return FindEmptyInventorySlot() != null;
     }
 
     public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
@@ -296,10 +318,45 @@ public class CharacterDbEntry
         return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
+    /// <summary>
+    ///     Whether this character meets what the item asks for. Against the base stats, not the
+    ///     current ones: the current ones are recalculated from what is worn, and this is called
+    ///     during that, so an item could otherwise satisfy its own requirement.
+    /// </summary>
     public bool CanUseItem(ItemDbEntry itemDbEntry)
     {
-        // TODO: actual check
-        return true;
+        return UnmetRequirement(itemDbEntry) is null;
+    }
+
+    /// <summary>
+    ///     The first requirement this character does not meet, worded the way the client words its
+    ///     own refusal, or null when the item can be used.
+    /// </summary>
+    public string? UnmetRequirement(ItemDbEntry itemDbEntry)
+    {
+        (int have, int need, string name)[] checks =
+        [
+            (BaseStrength, itemDbEntry.StrengthReq, "Сила"),
+            (BaseAgility, itemDbEntry.AgilityReq, "Ловкость"),
+            (BaseAccuracy, itemDbEntry.AccuracyReq, "Меткость"),
+            (BaseEndurance, itemDbEntry.EnduranceReq, "Выносливость"),
+            (BaseEarth, itemDbEntry.EarthReq, "Земля"),
+            (BaseAir, itemDbEntry.AirReq, "Воздух"),
+            (BaseWater, itemDbEntry.WaterReq, "Вода"),
+            (BaseFire, itemDbEntry.FireReq, "Огонь"),
+            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Звание"),
+            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Ступень")
+        ];
+
+        foreach (var (have, need, name) in checks)
+        {
+            if (have < need)
+            {
+                return $"{name} {have}<{need}";
+            }
+        }
+
+        return null;
     }
 
     public bool RecalcCurrentStats()
@@ -357,6 +414,9 @@ public class CharacterDbEntry
         }
 
         hpMax = WithSatietyMaxHpBonus(hpMax);
+
+        // After the slot loop, so it sees the move that triggered this rather than the one before.
+        CharacterWornLook.Apply(this);
 
         // PAtk/MAtk: armor/accessories only for now (MainHand omitted) — revisit later
         CurrentStrength = str;

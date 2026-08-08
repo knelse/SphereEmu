@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking.Chat.Encoders;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -33,21 +35,41 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
 
         var returnToOldSlot = false;
 
-        if (targetSlot is BelongingSlot.Unknown || oldSlot is BelongingSlot.Unknown ||
-            !character.Items.ContainsKey(oldSlot))
+        // Only an empty source slot is unanswerable. An unknown target still has somewhere to go
+        // back to, and the slot check below sends it there.
+        if (oldSlot is BelongingSlot.Unknown || !character.Items.ContainsKey(oldSlot))
         {
             SphLogger.Warning($"Item not found in slot [{Enum.GetName(oldSlot)}]");
-            returnToOldSlot = true;
+            return;
         }
 
         var globalOldItemId = character.Items[oldSlot];
 
         var item = DbConnection.Items.FindById(globalOldItemId);
 
-        if (!item.IsValidForSlot(targetSlot) || !character.CanUseItem(item))
+        if (item is null)
+        {
+            SphLogger.Warning($"Move: slot [{Enum.GetName(oldSlot)}] points at item {globalOldItemId}, " +
+                              $"which is not in the database. Client ID: {localId:X4}");
+            return;
+        }
+
+        // Requirements gate wearing, not carrying: anything may sit in a cell.
+        if (!item.IsValidForSlot(targetSlot) ||
+            (!ItemDbEntry.IsInventorySlot(targetSlot) && !character.CanUseItem(item)))
         {
             SphLogger.Warning($"Item [{globalOldItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
             returnToOldSlot = true;
+
+            // The client checks requirements when an item is used but not when it is dragged, so it
+            // says nothing here. Word it the way it words its own refusal.
+            if (character.UnmetRequirement(item) is { } unmet)
+            {
+                var name = item.Localization.GetValueOrDefault(Locale.Russian, "?");
+                clientConnection.MaybeScheduleNetworkPacketSend(
+                    MessageEncoder.EncodeToSendFromServer($"Нельзя использовать {name}, {unmet}", "GM",
+                        (int) PublicChatType.GM_Outgoing));
+            }
         }
 
         if (returnToOldSlot)
@@ -76,8 +98,11 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
             {
                 NetworkedStatsUpdater.Update(character);
             }
-            // TODO: character state shouldn't be stored in starting dungeon
-            // DbConnectionProvider.CharacterCollection.Update(CurrentCharacter.Id, CurrentCharacter);
+
+            // Moving an item is the one way to equip, and it persisted nothing: the slot and the
+            // appearance the recalculation just worked out both lived only in memory, so they
+            // survived a restart only when some later action happened to save.
+            clientConnection.SaveSelectedCharacter();
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend(moveResult);

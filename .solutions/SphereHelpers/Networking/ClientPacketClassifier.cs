@@ -18,10 +18,12 @@ public enum ClientPacketEvent
 	ItemPickupToSlot,
 	ContainerOpenLoot,
 	ItemDrop,
+	ItemDragOnGround,
 	NpcInteract,
 	ItemTakeMainhand,
 	TradeBuy,
-	CombatDamageTarget
+	CombatDamageTarget,
+	ItemSwap
 }
 
 public readonly record struct ClientPacketClassification(
@@ -62,7 +64,12 @@ public static class ClientPacketClassifier
 			return Result(ClientPacketEvent.InvalidOrTrailing, 0, "frame length is invalid", false);
 		}
 
-		if (declaredLength == 0x26)
+		// Keepalive only when it does not carry the swap signature: the equipment-slot swap is the
+		// same declared length, and returning here on length alone hid it among tens of thousands
+		// of keepalives. The test is the whole signature, because releasing on 08 40 alone drops
+		// every other 0x26 frame into the signature-only fallback, which dispatches it as a drop.
+		if (declaredLength == 0x26 &&
+			!(frame.Length > 15 && frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0xA3))
 		{
 			return Result(ClientPacketEvent.PositionKeepalive, 1.0, "ClientConnection case 0x26", true);
 		}
@@ -105,11 +112,27 @@ public static class ClientPacketClassifier
 			case 0x1A when b13 == 0x5C && b14 == 0x46 && b15 == 0xE1:
 				return Result(ClientPacketEvent.ContainerOpenLoot, 1.0, "handler signature 5C 46 E1", true);
 
+			// The opcode is not byte-aligned: it is the 12 bits at 116, always E14, which is byte 15
+			// plus only the HIGH nibble of byte 14. Byte 13 and byte 14's low nibble carry item data
+			// and vary per item, so matching either whole byte drops every item but the one it was
+			// read from. The item's id is at bytes 11-12, where UseItemHandler reads it.
+			case 0x15 when b15 == 0xE1 && (b14 & 0xF0) == 0x40:
+				return Result(ClientPacketEvent.ItemUse, 1.0, "use opcode E14", true);
+
+			case 0x25 when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
+				// Shares 08 40 63 with the drop frame; only the length separates them.
+				return Result(ClientPacketEvent.ItemDragOnGround, 1.0, "handler signature 08 40 63", true);
+
 			case 0x2D when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
 				return Result(ClientPacketEvent.ItemDrop, 1.0, "handler signature 08 40 63", true);
 
 			case 0x31 or 0x36 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
 				return Result(ClientPacketEvent.NpcInteract, 1.0, "NPC signature 08 40 A3", true);
+
+			case 0x26 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
+				// Dropping an item onto an occupied slot. Shares its length with the position frame,
+				// which is why the keepalive check above reads the signature before claiming it.
+				return Result(ClientPacketEvent.ItemSwap, 1.0, "swap signature 08 40 A3", true);
 
 			case 0x15 or 0x1B or 0x1F or 0x23
 				when b13 == 0x08 && b14 == 0x40 && b15 is 0xA3 or 0x83:
@@ -198,10 +221,12 @@ public static class ClientPacketClassifier
 			ClientPacketEvent.ItemPickupToSlot => "client.item.pickup_to_slot",
 			ClientPacketEvent.ContainerOpenLoot => "client.container.open_loot",
 			ClientPacketEvent.ItemDrop => "client.item.drop",
+			ClientPacketEvent.ItemDragOnGround => "client.item.drag_on_ground",
 			ClientPacketEvent.NpcInteract => "client.npc.interact",
 			ClientPacketEvent.ItemTakeMainhand => "client.item.take_mainhand",
 			ClientPacketEvent.TradeBuy => "client.trade.buy",
 			ClientPacketEvent.CombatDamageTarget => "client.combat.damage_target",
+			ClientPacketEvent.ItemSwap => "client.item.swap",
 			_ => "client.none"
 		};
 

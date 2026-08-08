@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Packets;
+using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.System;
+using SphServer.Shared.Networking.DataModel.Serializers;
+using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
@@ -34,14 +40,82 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        SphLogger.Info($"SRV {localId:X4}: Sending game world data");
+        // Nothing between logins keeps the derived stats in step with the item rows they came from,
+        // so they are rebuilt from the slots before anything is sent.
+        character.RecalcCurrentStats();
+
+        SphLogger.Info($"SRV {localId:X4}: Sending game world data for [{character.Name}], " +
+                       $"{(character.IsGenderFemale ? "female" : "male")}, face {character.FaceType}, " +
+                       $"hair {character.HairStyle}/{character.HairColor}");
 
         var worldData = CommonPackets.NewCharacterWorldData(character.ClientIndex);
         clientConnection.SendPacket(worldData[0]);
         clientConnection.SendPacket(Convert.FromHexString(
             $"BA002C01000000{localId:X4}08C002D07911C8BD10445E0C222F08C91685C80B03581CC002011609B05080C5022C1860D1000B07593CC802021611B09080C5042C286051010B0B585CC00213799189BCD0445E6CC08203161DB0F080C5072C406011020B11588CC882441625B03081C5892D506091020B1558AC422C5870D1820B1758CCD082061635B0B0C1C603848F1535B10F2B6391702035D1F643F24F411072A0D901900100000A5290530F0000D0001170AA2A48410E32000000"));
-        clientConnection.SendPacket(Convert.FromHexString(
-            $"83002C01000000{localId:X4}08406102000A824011820E400600005010841C000000000000808220E888A00300000000140461A70B1D0068890920445DE8000005419820480768010000280802402D3B007D0000404110706CD901060000000A120050908089820450142400A720013B0541A0C041072003000068E010280000003436020200"));
+
+        // After the world-entry messages, not before them: sent earlier the client clears these
+        // fields again before it builds the body.
+        clientConnection.SendPacket(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
+        // The window draws from the slot array, not from the item records, so both halves are sent.
+        // A slot whose item row is gone still reports itself occupied, giving a cell that can never
+        // be filled.
+        var missing = character.Items
+            .Where(x => DbConnection.Items.FindById(x.Value) is null)
+            .Select(x => x.Key)
+            .ToList();
+
+        if (missing.Count > 0)
+        {
+            foreach (var slot in missing)
+            {
+                character.Items.Remove(slot);
+            }
+
+            clientConnection.SaveSelectedCharacter();
+            SphLogger.Warning($"SRV {localId:X4}: Cleared {missing.Count} slot(s) whose item is gone: " +
+                              $"{string.Join(", ", missing.Select(x => Enum.GetName(x)))}");
+        }
+
+        SphLogger.Info($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
+
+        // Slot first, then the item that goes in it — the order MutatorHandler uses. An item in hand
+        // is also still in its inventory slot, so it would otherwise be declared twice.
+        var declared = new HashSet<int>();
+
+        foreach (var (slot, itemId) in character.Items)
+        {
+            var item = DbConnection.Items.FindById(itemId);
+            if (item is null || !declared.Add(itemId))
+            {
+                continue;
+            }
+
+            var record = ItemRecordEncoder.Encode((ushort) item.Id, (int) item.ObjectType,
+                item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId));
+
+            // Slot 0 is the exception: the reserve will not carry it, so the helm cell would stay
+            // empty on every login even though dragging fills it. Bind that one the way a move does
+            // — and after the record, because a move only ever names an item that already exists.
+            if (slot == BelongingSlot.Helmet)
+            {
+                clientConnection.SendPacket(record);
+                clientConnection.SendPacket(ItemSlotReserve.BuildSlotBinding(localId, slot, item.Id));
+                continue;
+            }
+
+            // The hand has no wire slot, but its item still has to be declared.
+            var reserve = ItemSlotReserve.Build(localId, slot, item.Id, item.ItemCount);
+            if (reserve is not null)
+            {
+                clientConnection.SendPacket(reserve);
+            }
+
+            clientConnection.SendPacket(record);
+        }
+
+        // The spawn packet carries no attack numbers, so the stat window shows none until this. Last,
+        // for the same reason the character record is: the client discards these if they arrive early.
+        NetworkedStatsUpdater.Update(character);
 
         WaitForClientTimer = new(0.05f, false, clientConnection.MoveToNextBeforeGameStage);
     }

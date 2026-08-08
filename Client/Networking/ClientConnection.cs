@@ -39,6 +39,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private ISphereClientNetworkingHandler? currentHandler;
     private DamageTargetHandler? damageTargetHandler;
     public BitStream DataStream = null!;
+    private DragItemOnGroundHandler? dragItemOnGroundHandler;
     private DropItemToGroundHandler? dropItemToGroundHandler;
     private GroupActionsHandler? groupActionsHandler;
     private bool interactionWithOtherObjectsInitialized;
@@ -46,6 +47,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private double timeSinceFirstPositionKeepalive;
     private bool starterMutatorSent;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
+    private SwapItemHandler? swapItemHandler;
     private MoveItemHandler? moveItemHandler;
     private MoveObjectForClientHandler? moveObjectForClientHandler;
     private NpcInteractionHandler? npcInteractionHandler;
@@ -112,6 +114,17 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             var classification = ClientPacketClassifier.ClassifyFrame(frame);
             if (!classification.IsEvent)
             {
+                // Otherwise a frame with no route looks exactly like an idle client.
+                if (ServerConfig.AppConfig.DebugMode && frame.Length >= 16)
+                {
+                    SphLogger.Debug(
+                        $"C->S unrouted {frame.Length}B frame, signature " +
+                        $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
+                        // Whole frame: this line exists to capture what we cannot decode yet, and
+                        // the fields that identify an unknown frame are usually past its head.
+                        $"{Convert.ToHexString(frame)}. Client ID: {localId:X4}");
+                }
+
                 return;
             }
 
@@ -206,11 +219,17 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             case ClientPacketEvent.ItemDrop:
                 await dropItemToGroundHandler!.Handle(delta);
                 break;
+            case ClientPacketEvent.ItemDragOnGround:
+                await dragItemOnGroundHandler!.Handle(delta);
+                break;
             case ClientPacketEvent.NpcInteract:
                 await npcInteractionHandler!.Handle(delta);
                 break;
             case ClientPacketEvent.ItemTakeMainhand:
                 await mainhandTakeItemHandler!.Handle(delta);
+                break;
+            case ClientPacketEvent.ItemSwap:
+                await swapItemHandler!.Handle(delta);
                 break;
             case ClientPacketEvent.TradeBuy:
                 await buyItemFromTargetHandler!.Handle(delta);
@@ -234,10 +253,12 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         openLootContainerHandler ??= new(localId, this);
         clientChatHandler ??= new(this);
         pickupItemHandler ??= new(localId, this);
+        dragItemOnGroundHandler ??= new(localId, this);
         moveItemHandler ??= new(localId, this);
         useItemHandler ??= new(localId, this);
         dropItemToGroundHandler ??= new();
         mainhandTakeItemHandler ??= new();
+        swapItemHandler ??= new(localId, this);
         buyItemFromTargetHandler ??= new();
         damageTargetHandler ??= new(localId, this);
         moveObjectForClientHandler ??= new(this);
@@ -320,6 +341,11 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     public void SetPlayerDbEntry(PlayerDbEntry? entry)
     {
         sphereClient.SetPlayerDbEntry(entry);
+    }
+
+    public void SaveSelectedCharacter()
+    {
+        sphereClient.SaveCharacter();
     }
 
     public void DeletePlayerCharacter(int index)
