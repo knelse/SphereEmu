@@ -12,7 +12,7 @@ using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySeri
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class PickupItemHandler (ushort localId, ClientConnection clientConnection)
+public class PickupItemHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     // Offsets in the 0x2E reply, bit 0 = least significant bit of byte 0. Both were recovered from
@@ -21,14 +21,14 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
     private const int ObjectTypeBitOffset = 74;
     private const int PositionBitOffset = 93;
 
-    private static uint FloatBits (double value)
+    private static uint FloatBits(double value)
     {
-        return BitConverter.SingleToUInt32Bits((float) value);
+        return BitConverter.SingleToUInt32Bits((float)value);
     }
 
     // LSB-first, leaving every bit outside [offset, offset+width) untouched — the fields here are
     // not byte-aligned and share bytes with unrelated data.
-    private static void WriteBits (byte[] frame, int offset, int width, uint value)
+    private static void WriteBits(byte[] frame, int offset, int width, uint value)
     {
         for (var i = 0; i < width; i++)
         {
@@ -39,16 +39,16 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
                 return;
             }
 
-            var mask = (byte) (1 << (bit % 8));
-            frame[index] = (value >> i & 1) == 1 ? (byte) (frame[index] | mask) : (byte) (frame[index] & ~mask);
+            var mask = (byte)(1 << (bit % 8));
+            frame[index] = (value >> i & 1) == 1 ? (byte)(frame[index] | mask) : (byte)(frame[index] & ~mask);
         }
     }
 
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
     }
 
-    public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
+    public async Task HandlePickupToNextAvailableEmptySlot(byte[] frame, double delta)
     {
         // TODO: remove kaitai
         // var packet = new PickupItemRequest(kaitaiStream);
@@ -114,14 +114,14 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // StreamPeer.PutData(pickupResult);
     }
 
-    public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
+    public async Task HandlePickupToTargetSlot(byte[] frame, double delta)
     {
         var clientItemID_1 = frame[21] >> 1;
         var clientItemID_2 = frame[22];
         var clientItemID_3 = frame[23] % 2;
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
-        var globalItemId = (ushort) clientItemID;
+        var globalItemId = (ushort)clientItemID;
         var item = DbConnection.Items.Find(x => x.Id == globalItemId).FirstOrDefault();
 
         if (item is null)
@@ -134,8 +134,8 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
 
         var clientSlot_raw = frame[24];
         var targetSlotId = clientSlot_raw >> 1;
-        var targetSlot = Enum.IsDefined(typeof (BelongingSlot), targetSlotId)
-            ? (BelongingSlot) targetSlotId
+        var targetSlot = Enum.IsDefined(typeof(BelongingSlot), targetSlotId)
+            ? (BelongingSlot)targetSlotId
             : BelongingSlot.Unknown;
 
         // Requirements gate wearing, not carrying: anything may sit in a cell.
@@ -157,7 +157,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         var clientSyncOther_1 = (frame[10] & 0b11000000) >> 4;
         var clientSyncOther_2 = frame[11];
         var clientSyncOther_3 = frame[12] & 0b111111;
-        var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
+        var clientSyncOther = (ushort)((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
         var serverItemID_1 = (clientItemID & 0b111111) << 2;
         var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
@@ -175,13 +175,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // The literal above is a captured 2022 frame, so its object type and position describe the
         // item that was captured, not this one. Both are per-item, so overwrite them in place —
         // as bit ranges, because neither is byte-aligned and the surrounding bits carry other fields.
-        WriteBits(moveResult, ObjectTypeBitOffset, 12, (uint) item.ObjectType);
+        WriteBits(moveResult, ObjectTypeBitOffset, 12, (uint)item.ObjectType);
         WriteBits(moveResult, PositionBitOffset, 32, FloatBits(item.X));
         WriteBits(moveResult, PositionBitOffset + 32, 32, FloatBits(-item.Y));
         WriteBits(moveResult, PositionBitOffset + 64, 32, FloatBits(-item.Z));
 
         character.PlaceItemInSlot(targetSlot, globalItemId);
-        SphLogger.Info($"{Enum.GetName((BelongingSlot) targetSlotId)} now has " +
+        SphLogger.Info($"{Enum.GetName((BelongingSlot)targetSlotId)} now has " +
                        $"{item.Localization.GetValueOrDefault(Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
         clientConnection.MaybeScheduleNetworkPacketSend(moveResult);
@@ -193,8 +193,8 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             clientConnection.MaybeScheduleNetworkPacketSend(reserve);
         }
 
-        clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort) item.Id,
-            (int) item.ObjectType, item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId)));
+        clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort)item.Id,
+            (int)item.ObjectType, item.GameId, ItemRecordEncoder.SuffixWireFor(item), ByteSwap(localId)));
 
         var oldContainer = item.ParentContainerId is null
             ? null
@@ -203,7 +203,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // TODO: check in next process in node instead of this
         if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty(globalItemId) ?? false)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort) oldContainer.Id));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort)oldContainer.Id));
         }
 
         if (!ItemDbEntry.IsInventorySlot(targetSlot))

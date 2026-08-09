@@ -530,6 +530,21 @@ public static class CoordsHelper
         return sign * (1 + (double)numToEncode / 0b100000000000000000000000) * baseCoord;
     }
 
+    public static double DecodeClientCoordinateWithoutShift(byte[] a, bool shouldReverse = true)
+    {
+        if (a.Length < 4)
+        {
+            return 0;
+        }
+
+        if (shouldReverse)
+        {
+            a = a.Reverse().ToArray();
+        }
+
+        return DecodeClientCoordinateFromBitStream(new BitStream(a));
+    }
+
     public static double DecodeClientCoordinate(byte[] a)
     {
         var x_scale = ((a[4] & 0b11111) << 3) + ((a[3] & 0b11100000) >> 5);

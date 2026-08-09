@@ -3,6 +3,7 @@ using SphServer.Client.Networking;
 using SphServer.Client.State;
 using SphServer.Packets;
 using SphServer.Server.Config;
+using SphServer.Server.Debug.Parser;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Godot.Tools;
@@ -186,6 +187,7 @@ public partial class SphereClient : WorldObject
 		// TODO: sync state
 		clientConnection.Close();
 		ActiveClients.Remove(localId);
+		ConsoleCommandParser.Invalidate(localId);
 		ActiveNodes.Remove(GetInstanceId());
 
 		if (playerDbEntry is not null)

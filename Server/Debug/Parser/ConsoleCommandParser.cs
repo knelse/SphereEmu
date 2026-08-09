@@ -25,27 +25,37 @@ public partial class ConsoleCommandParser
     /// <summary>How many values /stats reads, one per indexed assignment below.</summary>
     private const int StatsArgumentCount = 26;
 
-    private static readonly Dictionary<int, ConsoleCommandParser> ParserCache = new();
-    private readonly CharacterDbEntry currentCharacterDbEntry;
+    private static readonly Dictionary<ushort, ConsoleCommandParser> ParserCache = new();
+    private CharacterDbEntry currentCharacterDbEntry;
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new();
-    private readonly SphereClient? sphereClient;
+
+    // Always resolve live: reconnect reuses ClientIndex but allocates a new SphereClient, and a
+    // cached reference would keep sending GM feedback / packets into the freed connection.
+    private SphereClient? sphereClient => ActiveClients.Get(currentCharacterDbEntry.ClientIndex);
 
     private ConsoleCommandParser(CharacterDbEntry characterDbEntry)
     {
         currentCharacterDbEntry = characterDbEntry;
-        sphereClient = ActiveClients.Get(characterDbEntry.ClientIndex);
     }
 
     public static ConsoleCommandParser Get(CharacterDbEntry characterDbEntry)
     {
-        if (!ParserCache.ContainsKey(characterDbEntry.ClientIndex))
+        if (!ParserCache.TryGetValue(characterDbEntry.ClientIndex, out var parser))
         {
-            ParserCache.Add(characterDbEntry.ClientIndex, new ConsoleCommandParser(characterDbEntry));
-            ParserCache[characterDbEntry.ClientIndex].InitCommands();
+            parser = new ConsoleCommandParser(characterDbEntry);
+            parser.InitCommands();
+            ParserCache[characterDbEntry.ClientIndex] = parser;
+        }
+        else
+        {
+            // Character row is a new instance after reconnect / reselect; keep the cache in sync.
+            parser.currentCharacterDbEntry = characterDbEntry;
         }
 
-        return ParserCache[characterDbEntry.ClientIndex];
+        return parser;
     }
+
+    public static void Invalidate(ushort clientIndex) => ParserCache.Remove(clientIndex);
 
     private void InitCommands()
     {
@@ -63,6 +73,7 @@ public partial class ConsoleCommandParser
         RegisteredCommands["loot"] = Loot;
         RegisteredCommands["give"] = Give;
         RegisteredCommands["giveinv"] = GiveToInventory;
+        RegisteredCommands["giveinvns"] = GiveToInventoryByNameWithSuffix;
         RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
     }
@@ -81,7 +92,7 @@ public partial class ConsoleCommandParser
         }
 
         var response = MessageEncoder.EncodeToSendFromServer("GM: " + text, "GM",
-            (int) PublicChatType.GM_Outgoing);
+            (int)PublicChatType.GM_Outgoing);
         sphereClient.MaybeQueueNetworkPacketSend(response);
     }
 
@@ -111,7 +122,15 @@ public partial class ConsoleCommandParser
             return ConsoleCommandParseResult.ERROR;
         }
 
-        value(args);
+        try
+        {
+            value(args);
+        }
+        catch (Exception ex)
+        {
+            SendFeedback($"/{command} failed: {ex.Message}");
+            SphLogger.Error($"GM command /{command} threw", ex);
+        }
 
         return ConsoleCommandParseResult.OK;
     }

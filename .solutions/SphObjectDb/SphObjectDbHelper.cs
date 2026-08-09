@@ -16,7 +16,9 @@ public static class SphObjectDbHelper
 
         // TODO: if perf is impacted switch to direct field assignment instead of reflection
         var suffixObj = SphGameObject.CreateFromGameObject(value[suffix]);
-        var tierScale = BaseItemStatScale[tier];
+        var tierScale = tier >= 0 && tier < BaseItemStatScale.Length
+            ? BaseItemStatScale[tier]
+            : 0;
 
         suffixObj.Tier = tier;
         suffixObj.StrengthReq *= tierScale;

@@ -6,6 +6,7 @@ using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game;
 
 namespace SphServer.Server.Debug.Parser;
 
@@ -63,7 +64,7 @@ public partial class ConsoleCommandParser
     ///     Only the last two rows of the inventory take arbitrary items; the character window takes
     ///     armour by kind, so a sword is refused there and a helmet is not.
     /// </summary>
-    private void GiveToInventory (string args)
+    private void GiveToInventory(string args)
     {
         if (sphereClient is null)
         {
@@ -96,40 +97,165 @@ public partial class ConsoleCommandParser
         // If it does not, the client is rejecting the record itself and nothing built on it can work.
         if (split.Any(x => x.Equals("ground", StringComparison.OrdinalIgnoreCase)))
         {
-            var frame = ItemRecordEncoder.EncodeWithoutGameId((ushort) item.Id, (int) item.ObjectType,
+            var frame = ItemRecordEncoder.EncodeWithoutGameId((ushort)item.Id, (int)item.ObjectType,
                 GroundContainerId,
-                (float) currentCharacterDbEntry.X,
-                (float) -currentCharacterDbEntry.Y,
-                (float) -(currentCharacterDbEntry.Z + GiveGroundDropOffset));
+                (float)currentCharacterDbEntry.X,
+                (float)-currentCharacterDbEntry.Y,
+                (float)-(currentCharacterDbEntry.Z + GiveGroundDropOffset));
             sphereClient.MaybeQueueNetworkPacketSend(frame);
             SendFeedback($"{name} [item id {item.Id}] sent as a ground record: {Convert.ToHexString(frame)}");
             return;
         }
 
-        // Put it in the character's first inventory slot and save, so the login path declares it on
-        // the next connect. That path — one item record plus the slot batch — is the one built from
-        // the client's own rules, and a relog is the only way to exercise it.
+        var itemFirst = split.Any(x => x.Equals("itemfirst", StringComparison.OrdinalIgnoreCase));
+        PutItemInInventoryAndDeclare(item, name, itemFirst);
+    }
+
+    /// <summary>
+    ///     /giveinvns [suffix] &lt;tier&gt; &lt;item name…&gt; — inventory give by localised name + optional suffix.
+    ///     Suffix is one word (Russian locale string or ItemSuffix enum name). If the first word is
+    ///     digits-only, suffix is omitted. Tier disambiguates shared names (bracelets, robes, …);
+    ///     when several game objects still match, the lowest GameId wins. Item names are matched
+    ///     case-insensitively.
+    /// </summary>
+    private void GiveToInventoryByNameWithSuffix(string args)
+    {
+        if (sphereClient is null)
+        {
+            SendFeedback("/giveinvns needs a connected client.");
+            return;
+        }
+
+        var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (split.Length < 2)
+        {
+            SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...]. Suffix is optional." +
+                         "Use tier = -1 for special items.");
+            return;
+        }
+
+        string? suffixToken = null;
+        int rank;
+        string itemName;
+        // Tier may be negative (catalog sentinel -1). Optional leading '-'.
+        if (IsIntegerToken(split[0]))
+        {
+            rank = int.Parse(split[0]);
+            itemName = string.Join(' ', split.Skip(1));
+        }
+        else
+        {
+            if (split.Length < 3 || !IsIntegerToken(split[1]))
+            {
+                SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...] -- tier must be an integer.");
+                return;
+            }
+
+            suffixToken = split[0];
+            rank = int.Parse(split[1]);
+            itemName = string.Join(' ', split.Skip(2));
+        }
+
+        if (string.IsNullOrWhiteSpace(itemName))
+        {
+            SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...] -- item name is required.");
+            return;
+        }
+
+        EnsureGameObjectNameIndex();
+        if (!gameObjectIdsByExactName!.TryGetValue(itemName, out var candidateIds) || candidateIds.Count == 0)
+        {
+            SendFeedback($"No game object named \"{itemName}\".");
+            return;
+        }
+
+        var candidates = new List<SphGameObject>(candidateIds.Count);
+        foreach (var id in candidateIds)
+        {
+            if (GameObjectDb.Db.TryGetValue(id, out var go) ||
+                (go = DbConnection.GameObjects.FindById(id)) is not null)
+            {
+                candidates.Add(go);
+            }
+        }
+
+        if (candidates.Count == 0)
+        {
+            SendFeedback($"No game object named \"{itemName}\".");
+            return;
+        }
+
+        var atTier = candidates.Where(c => c.Tier == rank).ToList();
+        if (atTier.Count == 0)
+        {
+            var distinctTiers = candidates.Select(c => c.Tier).Distinct().OrderBy(t => t).ToList();
+            if (distinctTiers.Count == 1 && distinctTiers[0] == -1)
+            {
+                var example = string.IsNullOrEmpty(suffixToken)
+                    ? $"/giveinvns -1 {itemName}"
+                    : $"/giveinvns {suffixToken} -1 {itemName}";
+                SendFeedback(
+                    $"\"{itemName}\" is very special and only has tier -1. Use that directly. ({example})");
+                return;
+            }
+
+            var tiers = string.Join(", ", distinctTiers.Where(t => t != -1));
+            SendFeedback($"No \"{itemName}\" at tier {rank}. Available tiers: {tiers}.");
+            return;
+        }
+
+        // Resolve suffix against each candidate's type; keep those that accept it.
+        var matched = new List<(SphGameObject Go, ItemSuffix Suffix, int SuffixWire)>();
+        string? lastSuffixError = null;
+        foreach (var go in atTier)
+        {
+            if (!TryResolveSuffixForType(go.GameObjectType, suffixToken, out var suffix, out var wire, out var error))
+            {
+                lastSuffixError = error;
+                continue;
+            }
+
+            matched.Add((go, suffix, wire));
+        }
+
+        if (matched.Count == 0)
+        {
+            SendFeedback(lastSuffixError ?? $"Suffix \"{suffixToken}\" does not apply to \"{itemName}\" at tier {rank}.");
+            return;
+        }
+
+        var chosen = matched.OrderBy(m => m.Go.GameId).First();
+        var goWithSuffix = SphGameObject.CreateFromGameObject(chosen.Go);
+        goWithSuffix.Suffix = chosen.Suffix;
+        var item = ItemDbEntry.CreateFromGameObject(goWithSuffix);
+        item.ItemCount = 1;
+        item.Id = WorldObjectIndex.New();
+        DbConnection.Items.Insert(item.Id, item);
+
+        var displayName = chosen.Go.Localisation.GetValueOrDefault(Locale.Russian, chosen.Go.SphereType);
+        var suffixLabel = chosen.Suffix == ItemSuffix.None
+            ? "None"
+            : Enum.GetName(chosen.Suffix) ?? chosen.Suffix.ToString();
+        PutItemInInventoryAndDeclare(item, $"{displayName} [{suffixLabel}]", itemFirst: false);
+    }
+
+    private void PutItemInInventoryAndDeclare(ItemDbEntry item, string feedbackName, bool itemFirst)
+    {
         var emptySlot = currentCharacterDbEntry.FindEmptyInventorySlot();
         if (emptySlot is null)
         {
-            // Falling back to the first slot would overwrite it and orphan the item row it named.
             SendFeedback("Inventory is full.");
             return;
         }
 
         var slot = emptySlot.Value;
         currentCharacterDbEntry.Items[slot] = item.Id;
-        sphereClient.SaveCharacter();
+        sphereClient!.SaveCharacter();
 
-        // Declare it straight away rather than waiting for the next login: the same two messages the
-        // login path sends, so what you see now is what you would see after a relog.
+        var suffixWire = ItemRecordEncoder.SuffixWireFor(item);
         var reserve = ItemSlotReserve.Build(currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode((ushort) item.Id, (int) item.ObjectType, item.GameId,
-            ItemRecordEncoder.NoSuffix, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
-
-        // The reserve is addressed to the player and names an item id. Sent first, that id belongs to
-        // nothing yet, so "itemfirst" creates the item before the slot claims it.
-        var itemFirst = split.Any(x => x.Equals("itemfirst", StringComparison.OrdinalIgnoreCase));
+        var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.ObjectType, item.GameId,
+            suffixWire, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
 
         if (itemFirst)
         {
@@ -146,8 +272,135 @@ public partial class ConsoleCommandParser
             sphereClient.MaybeQueueNetworkPacketSend(record);
         }
 
-        SendFeedback($"{name} [item id {item.Id}] put in {Enum.GetName(slot)} and declared" +
+        SendFeedback($"{feedbackName} [game id {item.GameId}, item id {item.Id}] put in {Enum.GetName(slot)} and declared" +
                      (itemFirst ? ", item before slot." : "."));
+    }
+
+    /// <summary>True for digit-only tokens, optionally with a leading minus (e.g. -1).</summary>
+    private static bool IsIntegerToken(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return false;
+        }
+
+        var i = value[0] == '-' ? 1 : 0;
+        if (i >= value.Length)
+        {
+            return false;
+        }
+
+        for (; i < value.Length; i++)
+        {
+            if (!char.IsAsciiDigit(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool TryResolveSuffixForType(GameObjectType objectType, string? suffixToken,
+        out ItemSuffix suffix, out int suffixWire, out string error)
+    {
+        suffix = ItemSuffix.None;
+        suffixWire = ItemRecordEncoder.NoSuffix;
+        error = "";
+
+        if (string.IsNullOrEmpty(suffixToken))
+        {
+            return true;
+        }
+
+        if (!GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue(objectType, out var map))
+        {
+            error =
+                $"Object type {objectType} has no suffix map; only an empty suffix is allowed.";
+            return false;
+        }
+
+        // 1) Russian locale string in ObjectTypeToSuffixLocaleMapActual
+        foreach (var (itemSuffix, entry) in map)
+        {
+            if (entry.localization.TryGetValue(Locale.Russian, out var ru) &&
+                string.Equals(ru, suffixToken, StringComparison.Ordinal))
+            {
+                suffix = itemSuffix;
+                suffixWire = entry.value;
+                return true;
+            }
+        }
+
+        // 2) ItemSuffix enum entry name
+        if (!Enum.TryParse<ItemSuffix>(suffixToken, ignoreCase: false, out suffix) || suffix == ItemSuffix.None)
+        {
+            error =
+                $"Unknown suffix \"{suffixToken}\" for {objectType}. Valid: {FormatValidSuffixes(map)}";
+            suffix = ItemSuffix.None;
+            return false;
+        }
+
+        if (!map.TryGetValue(suffix, out var byEnum))
+        {
+            error =
+                $"Suffix {suffix} is not valid for {objectType}. Valid: {FormatValidSuffixes(map)}";
+            suffix = ItemSuffix.None;
+            return false;
+        }
+
+        suffixWire = byEnum.value;
+        return true;
+    }
+
+    private static string FormatValidSuffixes(Dictionary<ItemSuffix, SuffixValueWithLocale> map)
+    {
+        var parts = map.Select(kv =>
+        {
+            var en = Enum.GetName(kv.Key) ?? kv.Key.ToString();
+            var ru = kv.Value.localization.GetValueOrDefault(Locale.Russian, "");
+            return string.IsNullOrEmpty(ru) ? en : $"{en}/{ru}";
+        }).OrderBy(s => s, StringComparer.Ordinal);
+        return string.Join(", ", parts);
+    }
+
+    private static Dictionary<string, List<int>>? gameObjectIdsByExactName;
+    private static int gameObjectNameIndexCount = -1;
+
+    private static void EnsureGameObjectNameIndex()
+    {
+        // Index the in-memory catalog — LiteDB FindAll() can throw on legacy/bad enum payloads.
+        var count = GameObjectDb.Db.Count;
+        if (gameObjectIdsByExactName is not null && gameObjectNameIndexCount == count)
+        {
+            return;
+        }
+
+        var index = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
+        foreach (var (id, go) in GameObjectDb.Db)
+        {
+            foreach (var name in go.Localisation.Values)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+
+                if (!index.TryGetValue(name, out var list))
+                {
+                    list = [];
+                    index[name] = list;
+                }
+
+                if (!list.Contains(id))
+                {
+                    list.Add(id);
+                }
+            }
+        }
+
+        gameObjectIdsByExactName = index;
+        gameObjectNameIndexCount = count;
     }
 
     /// <summary>
@@ -155,7 +408,7 @@ public partial class ConsoleCommandParser
     ///     pointing at rows that exist but are junk, which the login cleanup cannot catch because it
     ///     only drops slots whose item row is missing entirely.
     /// </summary>
-    private void ClearInventory (string args)
+    private void ClearInventory(string args)
     {
         if (sphereClient is null)
         {
@@ -188,7 +441,7 @@ public partial class ConsoleCommandParser
     }
 
     /// <summary>/give &lt;game_object_id&gt; [count] [definition] — drop an item on the ground next to the player.</summary>
-    private void Give (string args)
+    private void Give(string args)
     {
         var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var count = 1;
@@ -242,7 +495,7 @@ public partial class ConsoleCommandParser
             false,
             parts =>
             {
-                PacketPart.UpdateEntityId(parts, (ushort) item.Id);
+                PacketPart.UpdateEntityId(parts, (ushort)item.Id);
 
                 // 0xFF00 = lying on the ground. The definitions carry whatever container was in
                 // the frame they were captured from, which does not exist on this server.
@@ -257,7 +510,7 @@ public partial class ConsoleCommandParser
                 }
                 else if (parts.Any(x => x.Name == "game_object_id"))
                 {
-                    PacketPart.UpdateValue(parts, "object_type", (int) item.ObjectType, 10);
+                    PacketPart.UpdateValue(parts, "object_type", (int)item.ObjectType, 10);
                 }
 
                 if (parts.Any(x => x.Name == "game_object_id"))
@@ -273,7 +526,7 @@ public partial class ConsoleCommandParser
     }
 
     /// <summary>Names the definition only when one was asked for; the default is the same every time.</summary>
-    private void SendGiveFeedback (SphGameObject gameObject, ItemDbEntry item, int count, string? via,
+    private void SendGiveFeedback(SphGameObject gameObject, ItemDbEntry item, int count, string? via,
         int? objectTypeOverride)
     {
         var name = gameObject.Localisation.GetValueOrDefault(Locale.Russian, gameObject.SphereType);

@@ -90,8 +90,8 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
                 continue;
             }
 
-            var record = ItemRecordEncoder.Encode((ushort) item.Id, (int) item.ObjectType,
-                item.GameId, ItemRecordEncoder.NoSuffix, ByteSwap(localId));
+            var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.ObjectType,
+                item.GameId, ItemRecordEncoder.SuffixWireFor(item), ByteSwap(localId));
 
             // Slot 0 is the exception: the reserve will not carry it, so the helm cell would stay
             // empty on every login even though dragging fills it. Bind that one the way a move does
