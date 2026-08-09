@@ -78,7 +78,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         var len = rcvBuffer[0] - 20 - 5;
         var charDataBytesStart = rcvBuffer[0] - 5;
         var nameCheckBytes = rcvBuffer[20..];
-        var charDataBytes = rcvBuffer[charDataBytesStart..(charDataBytesStart + rcvBuffer[0])];
+        var charDataBytes = rcvBuffer[charDataBytesStart..rcvBuffer[0]];
         var sb = new StringBuilder();
         var firstLetterCharCode = ((nameCheckBytes[1] & 0b11111) << 3) + (nameCheckBytes[0] >> 5);
         var firstLetterShouldBeRussian = false;
