@@ -55,8 +55,14 @@ public partial class MonsterSpawnersFill : Node3D
 	[ExportToolButton("Load all world chunks")]
 	public Callable LoadAllWorldChunksButton => Callable.From(LoadAllWorldChunks);
 
+	[ExportToolButton("Write back selected to chunks")]
+	public Callable WriteBackSelectedToChunksButton => Callable.From(WriteBackSelectedToChunks);
+
 	[ExportToolButton("Repack spawners into world chunks")]
 	public Callable RepackWorldChunksButton => Callable.From(RepackWorldChunks);
+
+	public void WriteBackSelectedToChunks() =>
+		WorldChunkEditorWriteBack.WriteBackEditorSelection("MonsterSpawnersFill");
 
 	public void LoadAllWorldChunks()
 	{

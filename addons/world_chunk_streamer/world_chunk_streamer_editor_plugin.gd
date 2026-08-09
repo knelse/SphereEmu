@@ -10,8 +10,10 @@ const TILE_SIZE := 100.0
 ## Slightly tighter than before to cut work near the camera.
 const LOAD_RADIUS := 180.0
 const QUEUE_REFRESH_SEC := 0.25
-## Spread hitch: at most this many PackedScene instantiates per frame.
-const MAX_INSTANTIATES_PER_FRAME := 1
+## Camera stream: keep hitch small (threaded, one in flight).
+const MAX_INSTANTIATES_PER_FRAME := 2
+## Load All: sync batch per frame (bulk op; hitch is acceptable).
+const MAX_LOAD_ALL_PER_FRAME := 12
 const CHUNKS_ROOT := "res://Godot/World/Chunks"
 var GROUND_CHUNKS_ROOT : String = _TerrainBake.ground_chunks()
 const GROUND_KIND := "__ground__"
@@ -44,8 +46,11 @@ const KIND_PARENTS := {
 	"teleport_point": "TeleportPoints",
 }
 
+const LOAD_ALL_PROGRESS_EVERY := 25
+
 var _queue_refresh_elapsed := 0.0
 var _load_all_button: Button
+var _write_back_button: Button
 var _unload_button: Button
 var _stream_toggle: CheckButton
 var _stream_enabled := true
@@ -66,9 +71,22 @@ var _pending_keys: Dictionary = {} ## key -> true while queued
 ## In-flight threaded PackedScene load.
 var _threaded_path := ""
 var _threaded_job: Dictionary = {} ## {key, kind, tx, tz}
+## Load-all progress (editor "Load All World Chunks").
+var _load_all_active := false
+var _load_all_total := 0
+var _load_all_done := 0
+var _load_all_last_printed := 0
+var _load_all_keys: Dictionary = {} ## key -> true for remaining LoadAll jobs
+## Set when launched with: godot ... -- --load-all-world-chunks
+var _cmdline_load_all := false
+var _cmdline_load_all_started := false
 
 
 func _enter_tree() -> void:
+	_cmdline_load_all = _has_cmdline_flag("--load-all-world-chunks")
+	if _cmdline_load_all:
+		print("World Chunk Streamer: --load-all-world-chunks detected; will LoadAll when MainServer is open.")
+
 	_stream_toggle = CheckButton.new()
 	_stream_toggle.text = "Stream Chunks"
 	_stream_toggle.button_pressed = true
@@ -80,12 +98,38 @@ func _enter_tree() -> void:
 	_load_all_button.pressed.connect(_on_load_all_pressed)
 	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, _load_all_button)
 
+	_write_back_button = Button.new()
+	_write_back_button.text = "Write Back Selected"
+	_write_back_button.tooltip_text = (
+		"Save selected MainServer placements into their tile chunk scenes "
+		+ "(no Load All / full Repack). Works for doors, spawners, etc."
+	)
+	_write_back_button.pressed.connect(_on_write_back_pressed)
+	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, _write_back_button)
+
 	_unload_button = Button.new()
 	_unload_button.text = "Unload Streamed Chunks"
 	_unload_button.pressed.connect(_on_unload_pressed)
 	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, _unload_button)
 
 	set_process(true)
+
+
+func _has_cmdline_flag(flag: String) -> bool:
+	for arg in OS.get_cmdline_user_args():
+		if str(arg) == flag:
+			return true
+	return false
+
+
+func _try_start_cmdline_load_all() -> void:
+	if not _cmdline_load_all or _cmdline_load_all_started:
+		return
+	if _get_main_server() == null:
+		return
+	_cmdline_load_all_started = true
+	print("World Chunk Streamer: --load-all-world-chunks — starting LoadAll on MainServer.")
+	_on_load_all_pressed()
 
 
 func _exit_tree() -> void:
@@ -100,6 +144,10 @@ func _exit_tree() -> void:
 		remove_control_from_container(CONTAINER_SPATIAL_EDITOR_MENU, _load_all_button)
 		_load_all_button.queue_free()
 		_load_all_button = null
+	if _write_back_button != null:
+		remove_control_from_container(CONTAINER_SPATIAL_EDITOR_MENU, _write_back_button)
+		_write_back_button.queue_free()
+		_write_back_button = null
 	if _unload_button != null:
 		remove_control_from_container(CONTAINER_SPATIAL_EDITOR_MENU, _unload_button)
 		_unload_button.queue_free()
@@ -109,6 +157,8 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	_try_start_cmdline_load_all()
+
 	# Drain loads every frame so hitch is spread out.
 	_pump_loads()
 
@@ -129,6 +179,14 @@ func _on_stream_toggled(pressed: bool) -> void:
 		_pending.clear()
 		_pending_keys.clear()
 		_cancel_threaded_load()
+		if _load_all_active:
+			_load_all_active = false
+			_load_all_keys.clear()
+			_update_load_all_button_text()
+			print(
+				"World Chunk Streamer: LoadAll cancelled at %d/%d (streaming paused)."
+				% [_load_all_done, _load_all_total]
+			)
 		print("World Chunk Streamer: camera streaming paused.")
 
 
@@ -143,6 +201,7 @@ func _on_load_all_pressed() -> void:
 	_pending.clear()
 	_pending_keys.clear()
 	_cancel_threaded_load()
+	_load_all_keys.clear()
 	for key in _catalog.keys():
 		if _loaded.has(key):
 			continue
@@ -154,9 +213,35 @@ func _on_load_all_pressed() -> void:
 		if tile_parts.size() != 2:
 			continue
 		_enqueue(kind, int(tile_parts[0]), int(tile_parts[1]), 0.0)
+		_load_all_keys[key] = true
+	_load_all_active = not _load_all_keys.is_empty()
+	_load_all_total = _load_all_keys.size()
+	_load_all_done = 0
+	_load_all_last_printed = 0
+	_update_load_all_button_text()
 	print(
-		"World Chunk Streamer: LoadAll queued %d chunk(s) (loads %d/frame)."
-		% [_pending.size(), MAX_INSTANTIATES_PER_FRAME]
+		"World Chunk Streamer: LoadAll queued %d chunk(s) (loads %d/frame sync)."
+		% [_load_all_total, MAX_LOAD_ALL_PER_FRAME]
+	)
+	if not _load_all_active:
+		print("World Chunk Streamer: LoadAll already complete (nothing queued).")
+
+
+func _on_write_back_pressed() -> void:
+	var root := _get_main_server()
+	if root == null:
+		push_warning("World Chunk Streamer: open MainServer.tscn first.")
+		return
+	var fill := root.get_node_or_null("MonsterSpawners")
+	if fill != null and fill.has_method("WriteBackSelectedToChunks"):
+		fill.WriteBackSelectedToChunks()
+		return
+	var doors := root.get_node_or_null("Doors")
+	if doors != null and doors.has_method("WriteBackSelectedToChunks"):
+		doors.WriteBackSelectedToChunks()
+		return
+	push_warning(
+		"World Chunk Streamer: WriteBackSelectedToChunks not found on MonsterSpawners/Doors."
 	)
 
 
@@ -171,6 +256,12 @@ func _on_unload_pressed() -> void:
 	_pending.clear()
 	_pending_keys.clear()
 	_cancel_threaded_load()
+	_load_all_active = false
+	_load_all_total = 0
+	_load_all_done = 0
+	_load_all_last_printed = 0
+	_load_all_keys.clear()
+	_update_load_all_button_text()
 	var removed := _unload_placement_children(root)
 	removed += _unload_ground_children(root)
 	_loaded.clear()
@@ -259,6 +350,11 @@ func _pump_loads() -> void:
 	if root == null:
 		return
 
+	# Load All: sync batches — much faster than 1 threaded load/frame.
+	if _load_all_active:
+		_pump_load_all_sync(root)
+		return
+
 	# Finish / advance threaded request first.
 	if not _threaded_path.is_empty():
 		var progress: Array = []
@@ -312,11 +408,41 @@ func _pump_loads() -> void:
 		return
 
 
+func _pump_load_all_sync(root: Node) -> void:
+	var started := 0
+	while started < MAX_LOAD_ALL_PER_FRAME and not _pending.is_empty():
+		var job: Dictionary = _pending.pop_front()
+		_pending_keys.erase(job.key)
+		if _loaded.has(job.key):
+			_note_load_all_chunk_finished(job.key)
+			continue
+		var path: String
+		if job.kind == GROUND_KIND:
+			path = "%s/%d_%d.tscn" % [GROUND_CHUNKS_ROOT, job.tx, job.tz]
+		else:
+			path = "%s/%s/%d_%d.tscn" % [CHUNKS_ROOT, job.kind, job.tx, job.tz]
+		var packed: PackedScene = load(path)
+		if packed != null:
+			_instantiate_into_tree(root, job.kind, job.key, packed)
+		else:
+			_loaded[job.key] = true
+			_note_load_all_chunk_finished(job.key)
+		started += 1
+	# If camera streaming queued ground mid-LoadAll, leave them for the normal pump next.
+	if _load_all_keys.is_empty() and _load_all_active:
+		# Finished message is emitted from _note_load_all_chunk_finished.
+		pass
+	elif not _load_all_active and not _pending.is_empty():
+		# Resume camera-style drain next frame via normal path.
+		pass
+
+
 func _instantiate_into_tree(root: Node, kind: String, key: String, packed: PackedScene) -> void:
 	if kind == GROUND_KIND:
 		var ground_parent := _get_or_create_ground_root(root)
 		if ground_parent == null:
 			_loaded[key] = true
+			_note_load_all_chunk_finished(key)
 			return
 		var ground_node: Node = packed.instantiate()
 		_clear_owner_recursive(ground_node)
@@ -325,6 +451,7 @@ func _instantiate_into_tree(root: Node, kind: String, key: String, packed: Packe
 		_set_owner_recursive(ground_node, root)
 		_fold_tree(ground_node)
 		_loaded[key] = true
+		_note_load_all_chunk_finished(key)
 		return
 
 	var parent_path: String = KIND_PARENTS[kind]
@@ -332,6 +459,7 @@ func _instantiate_into_tree(root: Node, kind: String, key: String, packed: Packe
 	if parent == null:
 		push_warning("World Chunk Streamer: parent missing '%s'" % parent_path)
 		_loaded[key] = true
+		_note_load_all_chunk_finished(key)
 		return
 	var chunk_root: Node = packed.instantiate()
 	for child in chunk_root.get_children():
@@ -343,6 +471,41 @@ func _instantiate_into_tree(root: Node, kind: String, key: String, packed: Packe
 		_fold_tree(child)
 	chunk_root.queue_free()
 	_loaded[key] = true
+	_note_load_all_chunk_finished(key)
+
+
+func _note_load_all_chunk_finished(key: String) -> void:
+	if not _load_all_active or not _load_all_keys.has(key):
+		return
+	_load_all_keys.erase(key)
+	_load_all_done += 1
+	_update_load_all_button_text()
+	var should_print := (
+		_load_all_done == 1
+		or _load_all_done - _load_all_last_printed >= LOAD_ALL_PROGRESS_EVERY
+	)
+	if should_print and not _load_all_keys.is_empty():
+		_load_all_last_printed = _load_all_done
+		print(
+			"World Chunk Streamer: LoadAll progress %d/%d (%d remaining)."
+			% [_load_all_done, _load_all_total, _load_all_keys.size()]
+		)
+	if _load_all_keys.is_empty():
+		_load_all_active = false
+		_update_load_all_button_text()
+		print(
+			"World Chunk Streamer: LoadAll finished %d/%d chunk(s)."
+			% [_load_all_done, _load_all_total]
+		)
+
+
+func _update_load_all_button_text() -> void:
+	if _load_all_button == null:
+		return
+	if _load_all_active and _load_all_total > 0:
+		_load_all_button.text = "Load All… %d/%d" % [_load_all_done, _load_all_total]
+	else:
+		_load_all_button.text = "Load All World Chunks"
 
 
 func _compact_duplicated_id_name(node: Node) -> void:
@@ -433,6 +596,12 @@ func _clear_stream_state() -> void:
 	_pending.clear()
 	_pending_keys.clear()
 	_cancel_threaded_load()
+	_load_all_active = false
+	_load_all_total = 0
+	_load_all_done = 0
+	_load_all_last_printed = 0
+	_load_all_keys.clear()
+	_update_load_all_button_text()
 
 
 func _clear_owner_recursive(node: Node) -> void:
@@ -576,7 +745,8 @@ func handle_editor_pre_save() -> void:
 		(
 			"World Chunk Streamer: refusing to keep a MainServer save while %d streamed placement "
 			+ "node(s) are loaded. File will be reverted — click 'Unload Streamed Chunks' first, "
-			+ "then save. Use Repack to persist placement edits."
+			+ "then save. Use «Write Back Selected» (or Repack / split_world_chunks.ps1) to persist "
+			+ "placement edits."
 		)
 		% _placement_count_at_pre_save
 	)
@@ -612,7 +782,8 @@ func _show_blocked_save_dialog(count: int) -> void:
 		"Save was reverted because %d streamed world object(s) are still loaded under MainServer.\n\n"
 		+ "Click «Unload Streamed Chunks» (this also pauses streaming), then save again.\n"
 		+ "Re-enable «Stream Chunks» when you want camera loading again.\n"
-		+ "To persist placement edits, use Repack (or Tools/split_world_chunks.ps1) instead of Save Scene."
+		+ "To persist placement edits, use «Write Back Selected» (or Repack / "
+		+ "Tools/split_world_chunks.ps1) instead of Save Scene."
 	) % count
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)

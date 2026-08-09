@@ -5,7 +5,7 @@
 
 [node name="Chunk_monster_22_23" type="Node3D" unique_id=357229925]
 
-[node name="MonsterSpawner_698B_[2276]_[154]_[-2390]" type="Node3D" parent="." unique_id=2096914880 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_v6k0g")]
+[node name="MonsterSpawner_698B_[2276]_[154]_[-2390]" type="Node3D" parent="." unique_id=2096914880 instance=ExtResource("1_v6k0g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2276.409, -154.33255, 2389.8171)
 script = ExtResource("2_26sjq")
 TargetRegularMonsterCount = 7
@@ -13,5 +13,4 @@ OriginalDisplayName = "MonsterSpawner_698B_[2276]_[154]_[-2390]"
 RegularMonsterMaxLevel = 1
 NamedMonsterMaxLevel = 1
 MobTypeOverrides = Array[int]([87])
-RegularMonsters = [NodePath("Monster_Кошка_1_10083_4180_4180"), NodePath("Monster_Кошка_1_10084_4181_4181"), NodePath("Monster_Кошка_1_10085_4182_4182"), NodePath("Monster_Кошка_1_10086_4183_4183"), NodePath("Monster_Кошка_1_10087_4184_4184"), NodePath("Monster_Кошка_1_10088_4185_4185"), NodePath("Monster_Кошка_1_10089_4186_4186")]
 SpawningEnabled = true

@@ -5,21 +5,19 @@
 
 [node name="Chunk_monster_25_-13" type="Node3D" unique_id=598607630]
 
-[node name="MonsterSpawner_60C3_[2596]_[154]_[1299]" type="Node3D" parent="." unique_id=584780159 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_kjb82")]
+[node name="MonsterSpawner_60C3_[2596]_[154]_[1299]" type="Node3D" parent="." unique_id=584780159 instance=ExtResource("1_kjb82")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2596.6714, -154.37752, -1299.4095)
 script = ExtResource("2_b7ua5")
 OriginalDisplayName = "MonsterSpawner_60C3_[2596]_[154]_[1299]"
 RegularMonsterMaxLevel = 1
 NamedMonsterMaxLevel = 1
 MobTypeOverrides = Array[int]([87])
-RegularMonsters = [NodePath("Monster_Кошка_1_10115_4212_4212"), NodePath("Monster_Кошка_1_10116_4213_4213"), NodePath("Monster_Кошка_1_10117_4214_4214")]
 SpawningEnabled = true
 
-[node name="MonsterSpawner_2009_[2533]_[155]_[1305]" type="Node3D" parent="." unique_id=1355471182 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_kjb82")]
+[node name="MonsterSpawner_2009_[2533]_[155]_[1305]" type="Node3D" parent="." unique_id=1355471182 instance=ExtResource("1_kjb82")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2529.667, -155.90585, -1274.9313)
 script = ExtResource("2_b7ua5")
 OriginalDisplayName = "MonsterSpawner_2009_[2533]_[155]_[1305]"
 RegularMonsterMaxLevel = 4
 NamedMonsterMaxLevel = 4
-RegularMonsters = [NodePath("Monster_Палочник_2_10118_4215_4215"), NodePath("Monster_Вепрь_1_10119_4216_4216"), NodePath("Monster_Псоглавец_степной_4_10120_4217_4217")]
 SpawningEnabled = true

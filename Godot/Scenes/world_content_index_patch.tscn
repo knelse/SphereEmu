@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Godot/Scripts/World/WorldContentIndexPatchHeadless.cs" id="1_patch"]
+
+[node name="WorldContentIndexPatchHeadless" type="Node"]
+script = ExtResource("1_patch")

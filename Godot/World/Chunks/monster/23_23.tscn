@@ -5,13 +5,12 @@
 
 [node name="Chunk_monster_23_23" type="Node3D" unique_id=1028751858]
 
-[node name="MonsterSpawner_3098_[2376]_[155]_[-2369]" type="Node3D" parent="." unique_id=441101329 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_2o1kx")]
+[node name="MonsterSpawner_3098_[2376]_[155]_[-2369]" type="Node3D" parent="." unique_id=441101329 instance=ExtResource("1_2o1kx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2376.8723, -155.59186, 2368.4966)
 script = ExtResource("2_qb75j")
 OriginalDisplayName = "MonsterSpawner_3098_[2376]_[155]_[-2369]"
 RegularMonsterMaxLevel = 4
 NamedMonsterMaxLevel = 4
-RegularMonsters = [NodePath("Monster_Бешеный_вепрь_4_10070_4167_4167"), NodePath("Monster_Трухлявый_рыцарь_4_10071_4168_4168"), NodePath("Monster_Псоглавец_4_10072_4169_4169")]
 SpawningEnabled = true
 
 [node name="MonsterSpawner_0B37_[2311]_[151]_[-2396]" type="Node3D" parent="." unique_id=-1294964425 instance=ExtResource("1_2o1kx")]

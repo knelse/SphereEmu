@@ -12,11 +12,10 @@ OriginalDisplayName = "MonsterSpawner_12F2_[2381]_[157]_[-2434]"
 RegularMonsterMaxLevel = 4
 NamedMonsterMaxLevel = 4
 
-[node name="MonsterSpawner_4036_[2326]_[154]_[-2454]" type="Node3D" parent="." unique_id=1497845006 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_v73ym")]
+[node name="MonsterSpawner_4036_[2326]_[154]_[-2454]" type="Node3D" parent="." unique_id=1497845006 instance=ExtResource("1_v73ym")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2313.1736, -157.63533, 2478.8032)
 script = ExtResource("2_wmv7b")
 OriginalDisplayName = "MonsterSpawner_4036_[2326]_[154]_[-2454]"
 RegularMonsterMaxLevel = 2
 NamedMonsterMaxLevel = 2
-RegularMonsters = [NodePath("Monster_Трухлявый_рыцарь_1_10090_4187_4187"), NodePath("Monster_Скелет_2_10091_4188_4188"), NodePath("Monster_Палочник_2_10092_4189_4189")]
 SpawningEnabled = true

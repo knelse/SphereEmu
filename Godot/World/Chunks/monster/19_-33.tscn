@@ -5,7 +5,7 @@
 
 [node name="Chunk_monster_19_-33" type="Node3D" unique_id=1548431551]
 
-[node name="MonsterSpawner_7CD3_[1909]_[403]_[3223]" type="Node3D" parent="." unique_id=974189368 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_wi1vd")]
+[node name="MonsterSpawner_7CD3_[1909]_[403]_[3223]" type="Node3D" parent="." unique_id=974189368 instance=ExtResource("1_wi1vd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1909.4635, -403.04654, -3223.7844)
 script = ExtResource("2_e4odp")
 OriginalDisplayName = "MonsterSpawner_7CD3_[1909]_[403]_[3223]"
@@ -13,5 +13,4 @@ RegularMonsterMinLevel = 21
 RegularMonsterMaxLevel = 23
 NamedMonsterMinLevel = 21
 NamedMonsterMaxLevel = 23
-RegularMonsters = [NodePath("Monster_Ледяной_волк_22_10160_4257_4257"), NodePath("Monster_Ледяной_волк_21_10161_4258_4258"), NodePath("Monster_Воздушный_вепрь_21_10162_4259_4259")]
 SpawningEnabled = true

@@ -1,4 +1,5 @@
 using Godot;
+using SphServer.Godot.Scripts.World;
 using SphServer.Helpers;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -34,6 +35,12 @@ public partial class DoorsFill : Node3D
 
 	[ExportToolButton("Rebuild doors")]
 	public Callable RebuildDoorsButton => Callable.From(RebuildDoors);
+
+	[ExportToolButton("Write back selected to chunks")]
+	public Callable WriteBackSelectedToChunksButton => Callable.From(WriteBackSelectedToChunks);
+
+	public void WriteBackSelectedToChunks() =>
+		WorldChunkEditorWriteBack.WriteBackEditorSelection("DoorsFill");
 
 	public void RebuildDoors()
 	{

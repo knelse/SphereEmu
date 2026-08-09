@@ -97,10 +97,13 @@ public partial class MonsterSpawner : Node3D
 	[Export]
 	public string MonsterScenePath = "res://Godot/Scenes/Monster.tscn";
 
-	[Export]
+	/// <summary>
+	///     Runtime/editor working lists — not exported. Persisting <see cref="Array{Node3D}"/> via
+	///     scene <c>node_paths</c> makes Godot Get() fail on C# ("Failed to get property 'RegularMonsters'").
+	/// </summary>
 	public Array<Node3D> RegularMonsters { get; set; } = [];
 
-	[Export]
+	/// <inheritdoc cref="RegularMonsters" />
 	public Array<Node3D> NamedMonsters { get; set; } = [];
 
 	[ExportToolButton("Delete and respawn all mobs")]

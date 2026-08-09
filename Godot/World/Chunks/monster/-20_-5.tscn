@@ -5,7 +5,7 @@
 
 [node name="Chunk_monster_-20_-5" type="Node3D" unique_id=1338676487]
 
-[node name="MonsterSpawner_AAF7_[-1998]_[-108]_[453]" type="Node3D" parent="." unique_id=1966251854 node_paths=PackedStringArray("RegularMonsters") instance=ExtResource("1_ujoy4")]
+[node name="MonsterSpawner_AAF7_[-1998]_[-108]_[453]" type="Node3D" parent="." unique_id=1966251854 instance=ExtResource("1_ujoy4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1997.3789, 107.01972, -453.74643)
 script = ExtResource("2_rwl2w")
 TargetRegularMonsterCount = 10
@@ -16,5 +16,4 @@ RegularMonsterMaxLevel = 31
 NamedMonsterMinLevel = 31
 NamedMonsterMaxLevel = 31
 MobTypeOverrides = Array[int]([87])
-RegularMonsters = [NodePath("Monster_Кошка_31_10010_4173_4173_4173_4173_4173_4173_4173_4173_4173"), NodePath("Monster_Кошка_31_10011_4174_4174_4174_4174_4174_4174_4174_4174_4174"), NodePath("Monster_Кошка_31_10012_4175_4175_4175_4175_4175_4175_4175_4175_4175"), NodePath("Monster_Кошка_31_10013_4176_4176_4176_4176_4176_4176_4176_4176_4176"), NodePath("Monster_Кошка_31_10014_4177_4177_4177_4177_4177_4177_4177_4177_4177"), NodePath("Monster_Кошка_31_10015_4178_4178_4178_4178_4178_4178_4178_4178_4178"), NodePath("Monster_Кошка_31_10016_4179_4179_4179_4179_4179_4179_4179_4179_4179"), NodePath("Monster_Кошка_31_10017_4180_4180_4180_4180_4180_4180_4180_4180_4180"), NodePath("Monster_Кошка_31_10018_4181_4181_4181_4181_4181_4181_4181_4181_4181"), NodePath("Monster_Кошка_31_10019_4182_4182_4182_4182_4182_4182_4182_4182_4182")]
 SpawningEnabled = true

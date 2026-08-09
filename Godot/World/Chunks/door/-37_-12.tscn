@@ -31,3 +31,16 @@ Angle = 213
 ID = 991
 ObjectType = 60
 ModelName = "edoor"
+
+[node name="DoorEntrance_041A_0_0_0" type="Node3D" parent="." instance=ExtResource("1_qplsm")]
+transform = Transform3D(0.49289819222978387, 0.0, 0.8700869911087115, 0.0, 1.0, 0.0, -0.8700869911087115, 0.0, 0.49289819222978387, -3683.29345703125, -1092.7208251953125, -1125.4884033203125)
+script = ExtResource("2_ao3sk")
+DoorID = 32767
+HasTarget = true
+TargetX = 0
+TargetY = 0
+TargetZ = 0
+Angle = 213
+ID = 1050
+ObjectType = 60
+ModelName = "edoor"

@@ -46,6 +46,40 @@
             "problemMatcher": []
         },
         {
+            "label": "godot-run-load-all-chunks",
+            "type": "process",
+            "command": "${config:godot_tools.editor_path}",
+            "args": [
+                "--path",
+                "${workspaceFolder}",
+                "--",
+                "--load-all-world-chunks"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "build"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "godot-editor-load-all-chunks",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/Tools/open_editor_load_all_chunks.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "godot-run-background",
             "type": "shell",
             "command": "powershell",

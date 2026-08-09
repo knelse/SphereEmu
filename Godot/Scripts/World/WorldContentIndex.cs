@@ -73,13 +73,60 @@ public sealed class WorldContentIndex
 	public bool TryGetSlots(WorldContentKind kind, string nodeName, out Vector3[] slots)
 	{
 		slots = [];
+		if (!TryGetEntry(kind, nodeName, out var entry))
+		{
+			return false;
+		}
+
+		slots = entry.Slots;
+		return slots.Length > 0;
+	}
+
+	public bool TryGetEntry(WorldContentKind kind, string nodeName, out WorldContentEntry entry)
+	{
+		entry = default;
 		if (!byName.TryGetValue((kind, nodeName), out var index))
 		{
 			return false;
 		}
 
-		slots = entries[index].Slots;
-		return slots.Length > 0;
+		entry = entries[index];
+		return true;
+	}
+
+	public bool RemoveEntry(WorldContentKind kind, string nodeName)
+	{
+		var key = (kind, nodeName);
+		if (!byName.TryGetValue(key, out var index))
+		{
+			return false;
+		}
+
+		var old = entries[index];
+		RemoveFromTileIndex(index, old);
+		byName.Remove(key);
+
+		var last = entries.Count - 1;
+		if (index != last)
+		{
+			var moved = entries[last];
+			entries[index] = moved;
+			byName[(moved.Kind, moved.NodeName)] = index;
+			RemoveFromTileIndex(last, moved);
+			AddToTileIndex(index, moved);
+		}
+
+		entries.RemoveAt(last);
+		return true;
+	}
+
+	public void UnmarkChunkTile(WorldContentKind kind, int tileX, int tileZ) =>
+		chunkTiles.Remove((kind, tileX, tileZ));
+
+	public bool HasEntriesOnTile(WorldContentKind kind, int tileX, int tileZ)
+	{
+		var tileKey = (kind, tileX, tileZ);
+		return byTile.TryGetValue(tileKey, out var list) && list.Count > 0;
 	}
 
 	public void Clear()

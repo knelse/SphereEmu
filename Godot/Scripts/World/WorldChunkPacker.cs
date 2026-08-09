@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.World;
 
@@ -10,7 +11,7 @@ namespace SphServer.Godot.Scripts.World;
 ///     Packs placement children under MainServer parents into per-tile chunk scenes + content index.
 ///     Used by headless split and editor "Repack chunks" tools.
 /// </summary>
-public static class WorldChunkPacker
+public static partial class WorldChunkPacker
 {
 	public static WorldChunkPackResult PackFromMainServer(Node mainServer, bool clearParents = true, bool extractSlots = true)
 	{
@@ -60,6 +61,8 @@ public static class WorldChunkPacker
 
 				foreach (var node in nodes)
 				{
+					SanitizePlacementForChunkPack(node);
+
 					var slots = Array.Empty<Vector3>();
 					if (extractSlots)
 					{
@@ -120,6 +123,30 @@ public static class WorldChunkPacker
 			watch.ElapsedMilliseconds);
 
 		return new WorldChunkPackResult(chunksWritten, nodesPacked, slotsExtracted, index.Entries.Count);
+	}
+
+	/// <summary>
+	///     Chunk scenes must not embed live/preview monsters or NodePath arrays to them.
+	/// </summary>
+	internal static void SanitizePlacementForChunkPack(Node node)
+	{
+		if (node is not MonsterSpawner spawner)
+		{
+			return;
+		}
+
+		spawner.RegularMonsters.Clear();
+		spawner.NamedMonsters.Clear();
+
+		for (var i = spawner.GetChildCount() - 1; i >= 0; i--)
+		{
+			var child = spawner.GetChild(i);
+			if (child is Monster)
+			{
+				spawner.RemoveChild(child);
+				child.Free();
+			}
+		}
 	}
 
 	private static Vector3[] ExtractAndClearSlots(WorldContentKind kind, Node node, ref int slotsExtracted)

@@ -50,6 +50,12 @@ public partial class WorldChunkStreamer : Node
 		StartupTiming.MarkSpan("WorldContentIndex.Load", watch.ElapsedMilliseconds);
 		mainServerRoot = FindMainServerRoot();
 		StartupTiming.Mark($"WorldChunkStreamer._Ready (index entries={index.Entries.Count}, tiles={CountTiles()})");
+
+		if (!Engine.IsEditorHint() && WorldChunkLaunchArgs.WantsLoadAllWorldChunks())
+		{
+			GD.Print("WorldChunkStreamer: --load-all-world-chunks — loading all placement chunks at startup.");
+			LoadAll();
+		}
 	}
 
 	public void EnsureAroundWorldPosition(Vector3 worldPosition)
