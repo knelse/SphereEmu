@@ -33,9 +33,9 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     private byte[]? previousCoordPayload;
     private bool pingShouldXorTopBit;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
-        var buffer = clientConnection.ReceiveBuffer;
+        var buffer = frame;
         if (buffer.Length < PingFrameLength || buffer[0] != PingFrameLength)
         {
             return;

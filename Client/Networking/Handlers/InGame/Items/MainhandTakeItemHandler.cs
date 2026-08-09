@@ -32,7 +32,7 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
 
     private const ushort NoItem = 0xFFFF;
 
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // Taking an item in hand arms the same client use-lock as an attack; without the ack the
         // client wedges.
@@ -44,7 +44,7 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
             return;
         }
 
-        var buffer = clientConnection.ReceiveBuffer;
+        var buffer = frame;
         var frameLength = buffer[0] | (buffer[1] << 8);
 
         if (!ItemIdBitOffsetByFrameLength.TryGetValue(frameLength, out var itemIdBit))

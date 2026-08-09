@@ -32,6 +32,12 @@ public class ClientChatHandler(ClientConnection clientConnection)
     /// <summary>Live median client→ACK is ~176ms; local RTT is ~0 so we pace the reply.</summary>
     private static readonly TimeSpan ChatReplyDelay = TimeSpan.FromMilliseconds(150);
 
+    /// <summary>Parts of the send being assembled; cleared when it completes or is abandoned.</summary>
+    private readonly List<byte> pendingChatBytes = [];
+
+    /// <summary>Far above any real chat send without being unbounded.</summary>
+    private const int MaxPendingChatSendBytes = 4096;
+
     private string? lastHandledChatMessage;
     private DateTime lastHandledChatAt;
     private PendingChatReply? pendingReply;
@@ -79,15 +85,50 @@ public class ClientChatHandler(ClientConnection clientConnection)
         }
     }
 
-    public async Task Handle(double delta)
+    /// <summary>
+    ///     One frame of a send, trigger or part. Retail replies only after the full send is in —
+    ///     answering early causes lost/duped lines.
+    /// </summary>
+    public async Task Accept(byte[] frame, double delta)
+    {
+        if (IsChatHeaderFrame(frame))
+        {
+            pendingChatBytes.Clear();
+        }
+        else if (pendingChatBytes.Count == 0)
+        {
+            SphLogger.Debug($"Chat: {frame.Length}B part with no open send. Skipped.");
+            return;
+        }
+
+        pendingChatBytes.AddRange(frame);
+
+        // A send that never completes would grow without limit.
+        if (pendingChatBytes.Count > MaxPendingChatSendBytes)
+        {
+            SphLogger.Warning(
+                $"Chat: send reached {pendingChatBytes.Count} bytes without completing; abandoning it.");
+            pendingChatBytes.Clear();
+            return;
+        }
+
+        if (IsChatSendComplete(pendingChatBytes))
+        {
+            var complete = pendingChatBytes.ToArray();
+            pendingChatBytes.Clear();
+            await Handle(complete, delta);
+        }
+    }
+
+    public async Task Handle(byte[] frame, double delta)
     {
         try
         {
-            if (!TryParseChatSend(clientConnection.ReceiveBuffer, out var firstPacket, out var decodeList,
+            if (!TryParseChatSend(frame, out var firstPacket, out var decodeList,
                     out var totalLength))
             {
                 SphLogger.Warning(
-                    $"Chat: incomplete/broken client chat packet {Convert.ToHexString(clientConnection.ReceiveBuffer)}");
+                    $"Chat: incomplete/broken client chat packet {Convert.ToHexString(frame)}");
                 return;
             }
 
@@ -353,15 +394,8 @@ public class ClientChatHandler(ClientConnection clientConnection)
         return (ushort)Interlocked.Increment(ref nextChatServerSeq);
     }
 
-    public static bool BufferStartsWithChatHeader(byte[] buffer, int length) =>
-        length >= 26 && IsChatHeaderFrame(buffer.AsSpan(0, 26).ToArray());
-
     public static bool IsChatHeaderFrame(byte[] frame) =>
         frame.Length == 0x1A && frame.Length >= 16 &&
-        frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x43;
-
-    public static bool IsChatContinuationFrame(byte[] frame) =>
-        frame.Length >= 16 && frame.Length != 0x1A &&
         frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x43;
 
     public static bool IsChatSendComplete(IReadOnlyList<byte> buffer)

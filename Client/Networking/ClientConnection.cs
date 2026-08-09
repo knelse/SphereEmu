@@ -31,14 +31,12 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 {
     public ushort LocalId => localId;
 
-    public readonly byte[] ReceiveBuffer = new byte[ServerConfig.AppConfig.ReceiveBufferSize];
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
     private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
     private ClanActionsHandler? clanActionsHandler;
     private ClientChatHandler? clientChatHandler;
     private ISphereClientNetworkingHandler? currentHandler;
     private DamageTargetHandler? damageTargetHandler;
-    public BitStream DataStream = null!;
     private DragItemOnGroundHandler? dragItemOnGroundHandler;
     private DropItemToGroundHandler? dropItemToGroundHandler;
     private GroupActionsHandler? groupActionsHandler;
@@ -56,11 +54,15 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private PingHandler? pingHandler;
     private UseItemHandler? useItemHandler;
 
+    /// <summary>Holds the byte stream between reads, so a frame split across two of them survives.</summary>
+    private readonly ClientFrameReader frameReader = new();
+
     /// <summary>
-    ///     Chat arrives as a 0x1A header plus continuation frames that often land in later TCP reads.
-    ///     Retail only replies after the full send is in; answering early causes lost/duped lines.
+    ///     Whole frames off the wire that no handler has taken yet. In game every frame of a tick
+    ///     is dispatched; before it, handlers get one per tick, because each of those states waits
+    ///     for one particular frame and anything arriving with it belongs to the next state.
     /// </summary>
-    private readonly List<byte> pendingChatBytes = [];
+    private readonly Queue<byte[]> pendingFrames = new();
 
     public async Task Process(double delta)
     {
@@ -92,150 +94,94 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive(delta);
             clientChatHandler?.FlushPendingReply();
-            var incomingDataLength = GetIncomingData();
+            ReadFrames();
 
-            if (incomingDataLength == 0)
+            while (pendingFrames.Count > 0)
             {
-                // client hasn't sent anything
-                return;
+                await DispatchFrame(pendingFrames.Dequeue(), delta);
             }
-
-            if (pendingChatBytes.Count > 0 || ClientChatHandler.BufferStartsWithChatHeader(ReceiveBuffer, incomingDataLength))
-            {
-                await ProcessPossiblyFragmentedChat(incomingDataLength, delta);
-                return;
-            }
-
-            // Classify the leading frame (ushort length — high byte matters for frames > 255).
-            var frameLength = ReceiveBuffer[0] | (ReceiveBuffer[1] << 8);
-            var frame = frameLength >= 2 && frameLength <= incomingDataLength
-                ? ReceiveBuffer.AsSpan(0, frameLength)
-                : ReceiveBuffer.AsSpan(0, incomingDataLength);
-            var classification = ClientPacketClassifier.ClassifyFrame(frame);
-            if (!classification.IsEvent)
-            {
-                // Otherwise a frame with no route looks exactly like an idle client.
-                if (ServerConfig.AppConfig.DebugMode && frame.Length >= 16)
-                {
-                    SphLogger.Debug(
-                        $"C->S unrouted {frame.Length}B frame, signature " +
-                        $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
-                        // Whole frame: this line exists to capture what we cannot decode yet, and
-                        // the fields that identify an unknown frame are usually past its head.
-                        $"{Convert.ToHexString(frame)}. Client ID: {localId:X4}");
-                }
-
-                return;
-            }
-
-            await DispatchClientPacketEvent(classification.Event, delta);
         }
 
         else
         {
-            await currentHandler!.Handle(delta);
+            ReadFrames();
+            await currentHandler!.Handle(pendingFrames.Count > 0 ? pendingFrames.Dequeue() : [], delta);
         }
     }
 
-    private async Task ProcessPossiblyFragmentedChat(int incomingDataLength, double delta)
+    /// <summary>One whole frame: classified by what it says it is, then routed.</summary>
+    private async Task DispatchFrame(byte[] frame, double delta)
     {
-        var offset = 0;
-        while (offset + 2 <= incomingDataLength)
+        var classification = ClientPacketClassifier.ClassifyFrame(frame);
+        if (!classification.IsEvent)
         {
-            var frameLength = ReceiveBuffer[offset] | (ReceiveBuffer[offset + 1] << 8);
-            if (frameLength < 2 || offset + frameLength > incomingDataLength)
+            // Otherwise a frame with no route looks exactly like an idle client.
+            if (ServerConfig.AppConfig.DebugMode && frame.Length >= 16)
             {
-                break;
+                SphLogger.Debug(
+                    $"C->S unrouted {frame.Length}B frame, signature " +
+                    $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
+                    // Whole frame: this line exists to capture what we cannot decode yet, and
+                    // the fields that identify an unknown frame are usually past its head.
+                    $"{Convert.ToHexString(frame)}. Client ID: {localId:X4}");
             }
 
-            var frame = ReceiveBuffer.AsSpan(offset, frameLength).ToArray();
-            offset += frameLength;
-
-            if (ClientChatHandler.IsChatHeaderFrame(frame) ||
-                (pendingChatBytes.Count > 0 && ClientChatHandler.IsChatContinuationFrame(frame)))
-            {
-                if (ClientChatHandler.IsChatHeaderFrame(frame))
-                {
-                    pendingChatBytes.Clear();
-                }
-
-                pendingChatBytes.AddRange(frame);
-
-                if (ClientChatHandler.IsChatSendComplete(pendingChatBytes))
-                {
-                    var complete = pendingChatBytes.ToArray();
-                    pendingChatBytes.Clear();
-                    complete.CopyTo(ReceiveBuffer, 0);
-                    DataStream = new BitStream(ReceiveBuffer);
-                    DataStream.CutStream(0, complete.Length);
-                    await clientChatHandler!.Handle(delta);
-                }
-
-                continue;
-            }
-
-            // Interleaved non-chat (e.g. 0x26 ping) while assembling — dispatch immediately.
-            frame.CopyTo(ReceiveBuffer, 0);
-            DataStream = new BitStream(ReceiveBuffer);
-            DataStream.CutStream(0, frame.Length);
-            var classification = ClientPacketClassifier.ClassifyFrame(frame);
-            if (classification.IsEvent && classification.Event != ClientPacketEvent.ChatSend)
-            {
-                await DispatchClientPacketEvent(classification.Event, delta);
-            }
+            return;
         }
+
+        await DispatchClientPacketEvent(classification.Event, frame, delta);
     }
 
-    private async Task DispatchClientPacketEvent(ClientPacketEvent packetEvent, double delta)
+    private async Task DispatchClientPacketEvent(ClientPacketEvent packetEvent, byte[] frame, double delta)
     {
         switch (packetEvent)
         {
             case ClientPacketEvent.PositionKeepalive:
                 seenFirstPositionKeepalive = true;
-                await pingHandler!.Handle(delta);
+                await pingHandler!.Handle(frame, delta);
                 sphereClient.UpdateCoordinatesInWorld();
                 break;
             case ClientPacketEvent.GroupAction:
-                await groupActionsHandler!.Handle(delta);
+                await groupActionsHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemPickup:
-                await pickupItemHandler!.HandlePickupToNextAvailableEmptySlot(delta);
+                await pickupItemHandler!.HandlePickupToNextAvailableEmptySlot(frame, delta);
                 break;
             case ClientPacketEvent.ItemMove:
-                await moveItemHandler!.Handle(delta);
+                await moveItemHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemUse:
-                await useItemHandler!.Handle(delta);
+                await useItemHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ChatSend:
-                await clientChatHandler!.Handle(delta);
+                await clientChatHandler!.Accept(frame, delta);
                 break;
             case ClientPacketEvent.ItemPickupToSlot:
-                await pickupItemHandler!.HandlePickupToTargetSlot(delta);
+                await pickupItemHandler!.HandlePickupToTargetSlot(frame, delta);
                 break;
             case ClientPacketEvent.ContainerOpenLoot:
-                await openLootContainerHandler!.Handle(delta);
+                await openLootContainerHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemDrop:
-                await dropItemToGroundHandler!.Handle(delta);
+                await dropItemToGroundHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemDragOnGround:
-                await dragItemOnGroundHandler!.Handle(delta);
+                await dragItemOnGroundHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.NpcInteract:
-                await npcInteractionHandler!.Handle(delta);
+                await npcInteractionHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemTakeMainhand:
-                await mainhandTakeItemHandler!.Handle(delta);
+                await mainhandTakeItemHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemSwap:
-                await swapItemHandler!.Handle(delta);
+                await swapItemHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.TradeBuy:
-                await buyItemFromTargetHandler!.Handle(delta);
+                await buyItemFromTargetHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.CombatDamageTarget:
-                await damageTargetHandler!.Handle(delta);
+                await damageTargetHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ProtocolControl:
                 // Short control frames — no gameplay handler.
@@ -282,59 +228,46 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         sphereClient.RemoveClient();
     }
 
-    public int GetIncomingData()
+    /// <summary>
+    ///     Takes what the socket has and turns it into whole frames: TCP has no message
+    ///     boundaries, so a read can end mid-frame and can carry several.
+    /// </summary>
+    private void ReadFrames()
     {
-        // var packetInput = Convert.FromHexString(
-        //     "1A005AF0ED022C0100710AA7A364B027B4169B8DC8CD936E98DE1101E2F8EE022C0100710AA7A364B02754E82B8DEFE04EEC1B8BCF942F204093A1EC017FD2261C5BCBE1BBE9E3A61EC33B0995652349C9C3E7D27472A93DE82886C6CB3691752B3C8E772644B1588B32184D916A21A0F4B2FB165FC1247B4937E74F838FA1A0188EB3C2F741BE76B6D40D6B7D778A70095847D3C8FDC2801D16E37B5BAF4E459C4860A52E74C7B1D487AB8DF7231C917CBA4702286FB9E211B385E786BEF4EC7B0EF00EFB8B064545B1972D73074C17A586369CB1CAE9FE162CA2EBB39B42F3CC30DF01F4A1E0B6DB64437413B1259CBD2ABE4BC1D51E5DDDFBEFB0D46FC0D09883CAF811368FB54515914B4A879DFE33E2049CAE93833E682229B8A6074C87FA96B750619ABD7EF48FDB5D0022F3F0022C0100710AA7A364B027D47E7B0D6FC0E1BA98FE9B4B0695B561A79DB357FC4795E6D60C81DA1AA9D3A8A12C965EBCF466694B61B789D0F585B0817AC0CEC7C1B3F1C25A34D74BBD2952745DF3122E2C18D20A0B5B2DAF");
         var temp = streamPeerTcp.GetPartialData(ServerConfig.AppConfig.ReceiveBufferSize);
-        var arr = (byte[]?)temp[1];
-        try
+        var incoming = (byte[]?)temp[1];
+        if (incoming is { Length: > 0 })
         {
-            var resultLength = 0;
-
-            if (arr is not null && arr.Length > 0)
-            {
-                var subpackets = new List<byte[]>();
-                var decodedSubpackets = new List<byte>();
-                for (var i = 0; i < arr.Length;)
-                {
-                    var packetLength = arr[i + 1] * 256 + arr[i];
-                    subpackets.Add(arr[i..(i + packetLength)]);
-                    i += packetLength;
-                }
-
-                foreach (var subpacket in subpackets)
-                {
-                    SphPacketLogger.LogIncoming(localId, subpacket);
-
-                    var shouldDecode = ShouldDecodeClientSubpacket(subpacket, localId);
-                    var currentDecode = shouldDecode ? Packet.DecodeClientPacket(subpacket) : subpacket;
-                    decodedSubpackets.AddRange(currentDecode);
-                }
-
-                var decoded = decodedSubpackets.ToArray();
-
-                for (; resultLength < decoded.Length; resultLength++)
-                {
-                    ReceiveBuffer[resultLength] = decoded[resultLength];
-                }
-
-                DataStream = new BitStream(ReceiveBuffer);
-                DataStream.CutStream(0, decoded.Length);
-            }
-            else
-            {
-                ReceiveBuffer[0] = 0;
-            }
-
-            return resultLength;
+            frameReader.Append(incoming);
         }
-        catch (Exception ex)
+
+        while (true)
         {
-            var output = arr is { Length: > 0 } ? Convert.ToHexString(arr) : "<empty>";
-            SphLogger.Error($"Incorrect packet from client: {output}. Client ID: {localId}", ex);
-            ReceiveBuffer[0] = 0;
-            return 0;
+            var result = frameReader.TryTake(out var frame);
+
+            if (result == FrameReadResult.Incomplete)
+            {
+                return;
+            }
+
+            if (result == FrameReadResult.Desynced)
+            {
+                SphLogger.Error(
+                    $"Lost the frame boundary: {frameReader.DesyncReason}. " +
+                    $"{frameReader.Pending} bytes held, {pendingFrames.Count} frames read first. " +
+                    $"Closing. Client ID: {localId:X4}");
+                Close();
+
+                // The frames already read are valid, but dispatching into a connection being torn
+                // down is not worth them.
+                pendingFrames.Clear();
+                return;
+            }
+
+            SphPacketLogger.LogIncoming(localId, frame);
+            pendingFrames.Enqueue(ShouldDecodeClientSubpacket(frame, localId)
+                ? Packet.DecodeClientPacket(frame)
+                : frame);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using BitStreams;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Server.Config;
@@ -17,7 +18,7 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         if (WaitForClientTimer is not null)
         {
@@ -25,16 +26,13 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        var incomingDataLength = clientConnection.GetIncomingData();
-
-        if (incomingDataLength <= 12)
+        if (frame.Length <= 12)
         {
             return;
         }
 
         SphLogger.Info($"CLI {localId:X4}: Login data sent");
-        var (login, password) = LoginDecoder.DecodeFromBuffer(clientConnection.ReceiveBuffer[..incomingDataLength],
-            clientConnection.DataStream);
+        var (login, password) = LoginDecoder.DecodeFromBuffer(frame, new BitStream(frame));
         if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
         {
             SphLogger.Error($"SRV {localId:X4}: Invalid login.");

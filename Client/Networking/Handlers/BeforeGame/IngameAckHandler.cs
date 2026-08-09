@@ -18,7 +18,7 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         if (WaitForClientTimer is not null)
         {
@@ -26,7 +26,7 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        if (clientConnection.GetIncomingData() != 0x13)
+        if (frame.Length != 0x13)
         {
             return;
         }

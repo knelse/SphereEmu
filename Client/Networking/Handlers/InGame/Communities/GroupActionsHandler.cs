@@ -7,10 +7,10 @@ namespace SphServer.Client.Networking.Handlers.InGame.Communities;
 public class GroupActionsHandler(ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
-        var clientlocalId = (ushort) ((clientConnection.ReceiveBuffer[11] << 8) + clientConnection.ReceiveBuffer[12]);
-        var action = clientConnection.ReceiveBuffer[17];
+        var clientlocalId = (ushort) ((frame[11] << 8) + frame[12]);
+        var action = frame[17];
         switch (action)
         {
             case 0x00:

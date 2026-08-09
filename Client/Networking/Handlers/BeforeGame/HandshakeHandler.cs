@@ -11,7 +11,7 @@ public class HandshakeHandler(ushort localId, ClientConnection clientConnection)
     // TODO make reconnect work
     private readonly bool reconnect = false;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         SphLogger.Info($"CLI {localId:X4}: Ready to load initial data");
 

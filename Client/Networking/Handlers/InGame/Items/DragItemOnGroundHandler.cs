@@ -20,13 +20,13 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
     private const int ItemIdBitOffset = 141;
     private const int PositionBitOffset = 165;
 
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // Dragging arms the same client use-lock as an attack or an item use; without the ack the
         // client stays wedged. See CommonPackets.ClearUseToutAck.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
 
-        var buffer = clientConnection.ReceiveBuffer;
+        var buffer = frame;
         var stream = new BitStream(buffer);
         stream.ReadBits(ItemIdBitOffset);
         var itemId = stream.ReadUInt16(16);
