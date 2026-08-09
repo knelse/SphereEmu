@@ -285,8 +285,6 @@ public static class ClientPacketClassifier
 		}
 
 		// Signature-only fallbacks when the length byte is unexpected but payload matches.
-		// ChatSend is intentionally NOT in this list: continuations also contain 08 40 43 at
-		// bytes 13–15 and must not be dispatched as a new client.chat.send.
 		if (b13 == 0x08 && b14 == 0x40)
 		{
 			return b15 switch
@@ -310,33 +308,6 @@ public static class ClientPacketClassifier
 		}
 
 		return Result(ClientPacketEvent.Unknown, 0, "no known handler signature", false);
-	}
-
-	/// <summary>
-	///     Walks length-prefixed frames in a decoded client payload.
-	///     Chat continuations may follow a 0x1A chat header outside that frame's declared length —
-	///     callers that dispatch chat should keep the full buffer available to the handler.
-	/// </summary>
-	public static List<(int Offset, int Length, ClientPacketClassification Classification)> EnumerateFrames(
-		ReadOnlySpan<byte> content)
-	{
-		var frames = new List<(int Offset, int Length, ClientPacketClassification Classification)>();
-		var offset = 0;
-		while (offset < content.Length)
-		{
-			var declaredLength = content[offset];
-			if (declaredLength >= 1 && offset + declaredLength <= content.Length)
-			{
-				frames.Add((offset, declaredLength, ClassifyFrame(content.Slice(offset, declaredLength))));
-				offset += declaredLength;
-				continue;
-			}
-
-			frames.Add((offset, content.Length - offset, ClassifyFrame(content.Slice(offset))));
-			break;
-		}
-
-		return frames;
 	}
 
 	public static string ToEventName(ClientPacketEvent packetEvent) =>
