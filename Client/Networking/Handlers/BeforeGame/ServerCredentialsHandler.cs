@@ -12,14 +12,14 @@ public class ServerCredentialsHandler(ushort localId, ClientConnection clientCon
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         if (WaitForClientTimer is not null)
         {
             WaitForClientTimer.Tick(delta);
         }
 
-        if (clientConnection.GetIncomingData() == 0)
+        if (frame.Length == 0)
         {
             return;
         }

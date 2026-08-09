@@ -41,7 +41,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
     // Per-connection RNG: handlers run on the Godot main thread and Random is not thread-safe.
     private readonly Random combatRng = new ();
 
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // Attack-wedge fix (#11): ack the use first — before any parse or early return — so the
         // client's use-lock (g_6008) is always cleared. See CommonPackets.ClearUseToutAck.
@@ -65,7 +65,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             return;
         }
 
-        var frameKind = ParseAttackFrame(clientConnection.ReceiveBuffer, out var targetClientLocalId);
+        var frameKind = ParseAttackFrame(frame, out var targetClientLocalId);
 
         // 0 = no id in the frame, 0xFFFF = the client's no-target sentinel (target despawned mid-click).
     

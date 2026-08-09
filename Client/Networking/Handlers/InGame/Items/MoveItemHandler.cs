@@ -12,15 +12,15 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // ideally we'd support swapping items but client simply doesn't send anything if slot is occupied
         // var clientID_1 = ReceiveBuffer[11];
         // var clientID_2 = ReceiveBuffer[12];
-        var newSlotRaw = clientConnection.ReceiveBuffer[21];
-        var oldSlotRaw = clientConnection.ReceiveBuffer[22];
-        var oldSlotId = clientConnection.ReceiveBuffer[22] >> 1;
-        var newSlotId = clientConnection.ReceiveBuffer[21] >> 1;
+        var newSlotRaw = frame[21];
+        var oldSlotRaw = frame[22];
+        var oldSlotId = frame[22] >> 1;
+        var newSlotId = frame[21] >> 1;
 
         var character = clientConnection.GetSelectedCharacter()!;
         SphLogger.Info(

@@ -46,7 +46,8 @@ public static class ClientPacketClassifier
 			return Result(ClientPacketEvent.InvalidOrTrailing, 0, "empty frame", false);
 		}
 
-		var declaredLength = frame[0];
+		// 16-bit: chat text parts run past 255 bytes, and a one-byte read calls them invalid.
+		var declaredLength = frame[0] | (frame[1] << 8);
 		if (declaredLength != frame.Length)
 		{
 			// Some NPC frames are accepted with a non-canonical first-byte length.
@@ -170,12 +171,12 @@ public static class ClientPacketClassifier
 		}
 
 		// Signature-only fallbacks when the length byte is unexpected but payload matches.
-		// ChatSend is intentionally NOT in this list: continuations also contain 08 40 43 at
-		// bytes 13–15 and must not be dispatched as a new client.chat.send.
 		if (b13 == 0x08 && b14 == 0x40)
 		{
 			return b15 switch
 			{
+				// Trigger and text parts alike: the chat handler tells them apart and assembles.
+				0x43 => Result(ClientPacketEvent.ChatSend, 1.0, "handler signature 08 40 43", true),
 				0x83 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true),
 				0xA3 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
 				0x63 => Result(ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
@@ -193,33 +194,6 @@ public static class ClientPacketClassifier
 		}
 
 		return Result(ClientPacketEvent.Unknown, 0, "no known handler signature", false);
-	}
-
-	/// <summary>
-	///     Walks length-prefixed frames in a decoded client payload.
-	///     Chat continuations may follow a 0x1A chat header outside that frame's declared length —
-	///     callers that dispatch chat should keep the full buffer available to the handler.
-	/// </summary>
-	public static List<(int Offset, int Length, ClientPacketClassification Classification)> EnumerateFrames(
-		ReadOnlySpan<byte> content)
-	{
-		var frames = new List<(int Offset, int Length, ClientPacketClassification Classification)>();
-		var offset = 0;
-		while (offset < content.Length)
-		{
-			var declaredLength = content[offset];
-			if (declaredLength >= 1 && offset + declaredLength <= content.Length)
-			{
-				frames.Add((offset, declaredLength, ClassifyFrame(content.Slice(offset, declaredLength))));
-				offset += declaredLength;
-				continue;
-			}
-
-			frames.Add((offset, content.Length - offset, ClassifyFrame(content.Slice(offset))));
-			break;
-		}
-
-		return frames;
 	}
 
 	public static string ToEventName(ClientPacketEvent packetEvent) =>

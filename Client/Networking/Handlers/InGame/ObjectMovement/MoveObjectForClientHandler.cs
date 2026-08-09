@@ -6,7 +6,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 public class MoveObjectForClientHandler(ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
     }
 

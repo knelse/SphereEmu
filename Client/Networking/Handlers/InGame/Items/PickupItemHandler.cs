@@ -44,11 +44,11 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         }
     }
 
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
     }
 
-    public async Task HandlePickupToNextAvailableEmptySlot (double delta)
+    public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
     {
         // TODO: remove kaitai
         // var packet = new PickupItemRequest(kaitaiStream);
@@ -114,11 +114,11 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // StreamPeer.PutData(pickupResult);
     }
 
-    public async Task HandlePickupToTargetSlot (double delta)
+    public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
     {
-        var clientItemID_1 = clientConnection.ReceiveBuffer[21] >> 1;
-        var clientItemID_2 = clientConnection.ReceiveBuffer[22];
-        var clientItemID_3 = clientConnection.ReceiveBuffer[23] % 2;
+        var clientItemID_1 = frame[21] >> 1;
+        var clientItemID_2 = frame[22];
+        var clientItemID_3 = frame[23] % 2;
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
         var globalItemId = (ushort) clientItemID;
@@ -132,7 +132,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
 
         var character = clientConnection.GetSelectedCharacter()!;
 
-        var clientSlot_raw = clientConnection.ReceiveBuffer[24];
+        var clientSlot_raw = frame[24];
         var targetSlotId = clientSlot_raw >> 1;
         var targetSlot = Enum.IsDefined(typeof (BelongingSlot), targetSlotId)
             ? (BelongingSlot) targetSlotId
@@ -151,12 +151,12 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] " +
             $"to slot raw [{clientSlot_raw}] [{Enum.GetName(targetSlot)}]");
 
-        var clientSync_1 = clientConnection.ReceiveBuffer[17];
-        var clientSync_2 = clientConnection.ReceiveBuffer[18];
+        var clientSync_1 = frame[17];
+        var clientSync_2 = frame[18];
 
-        var clientSyncOther_1 = (clientConnection.ReceiveBuffer[10] & 0b11000000) >> 4;
-        var clientSyncOther_2 = clientConnection.ReceiveBuffer[11];
-        var clientSyncOther_3 = clientConnection.ReceiveBuffer[12] & 0b111111;
+        var clientSyncOther_1 = (frame[10] & 0b11000000) >> 4;
+        var clientSyncOther_2 = frame[11];
+        var clientSyncOther_3 = frame[12] & 0b111111;
         var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
         var serverItemID_1 = (clientItemID & 0b111111) << 2;

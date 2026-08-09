@@ -5,7 +5,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 public class BuyItemFromTargetHandler
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // TODO: remove kaitai
         // var packet = new BuyItemRequest(kaitaiStream);

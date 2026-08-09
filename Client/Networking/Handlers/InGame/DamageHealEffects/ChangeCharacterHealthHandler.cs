@@ -8,7 +8,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 public class ChangeCharacterHealthHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
     }
 

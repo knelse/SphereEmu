@@ -5,7 +5,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.Communities;
 public class ClanActionsHandler
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         //     // clan
         //     var clientLocalId = (ushort) ((rcvBuffer[11] << 8) + rcvBuffer[12]);

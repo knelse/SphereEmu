@@ -6,9 +6,9 @@ namespace SphServer.Client.Networking.Handlers.InGame.Containers;
 public class OpenLootContainerHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
-        var containerId = clientConnection.ReceiveBuffer[11] + clientConnection.ReceiveBuffer[12] * 0x100;
+        var containerId = frame[11] + frame[12] * 0x100;
         var bag = DbConnection.ItemContainers.Include(x => x.Contents).FindById(containerId);
         if (bag is not null)
         {

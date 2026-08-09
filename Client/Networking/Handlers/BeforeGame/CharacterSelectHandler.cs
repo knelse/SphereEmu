@@ -13,36 +13,41 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
 {
     private int selectedCharacterIndex = -1;
 
-    public async Task Handle(double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         if (selectedCharacterIndex == -1)
         {
-            // select existing
-            if (clientConnection.GetIncomingData() == 0x15)
+            if (frame.Length == 0)
             {
-                selectedCharacterIndex = clientConnection.ReceiveBuffer[17] / 4 - 1;
+                return;
+            }
+
+            // select existing
+            if (frame.Length == 0x15)
+            {
+                selectedCharacterIndex = frame[17] / 4 - 1;
                 return;
             }
 
             // delete
-            if (clientConnection.ReceiveBuffer[0] == 0x2A)
+            if (frame[0] == 0x2A)
             {
-                var index = clientConnection.ReceiveBuffer[17] / 4 - 1;
+                var index = frame[17] / 4 - 1;
                 clientConnection.DeletePlayerCharacter(index);
                 return;
             }
 
             // create
-            if (clientConnection.ReceiveBuffer[0] < 0x1b ||
-                clientConnection.ReceiveBuffer[13] != 0x08 ||
-                clientConnection.ReceiveBuffer[14] != 0x40 ||
-                clientConnection.ReceiveBuffer[15] != 0x80 ||
-                clientConnection.ReceiveBuffer[16] != 0x05)
+            if (frame[0] < 0x1b ||
+                frame[13] != 0x08 ||
+                frame[14] != 0x40 ||
+                frame[15] != 0x80 ||
+                frame[16] != 0x05)
             {
                 return;
             }
 
-            selectedCharacterIndex = CreateNewCharacter();
+            selectedCharacterIndex = CreateNewCharacter(frame);
         }
 
         if (selectedCharacterIndex == -1)
@@ -67,10 +72,9 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         clientConnection.MoveToNextBeforeGameStage();
     }
 
-    private int CreateNewCharacter()
+    private int CreateNewCharacter(byte[] rcvBuffer)
     {
         SphLogger.Info($"SRV {localId:X4}: Creating new character");
-        var rcvBuffer = clientConnection.ReceiveBuffer;
         var len = rcvBuffer[0] - 20 - 5;
         var charDataBytesStart = rcvBuffer[0] - 5;
         var nameCheckBytes = rcvBuffer[20..];

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BitStreams;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -9,10 +10,11 @@ namespace SphServer.Client.Networking.Handlers.InGame.NPC;
 public class NpcInteractionHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
-        clientConnection.DataStream.ReadBits(364);
-        var vendorLocalId = clientConnection.DataStream.ReadUInt16();
+        var stream = new BitStream(frame);
+        stream.ReadBits(364);
+        var vendorLocalId = stream.ReadUInt16();
         if (vendorLocalId == 0)
         {
             // first vendor open is 0x31, then client sends another 0x31 request to close the trade window,

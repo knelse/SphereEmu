@@ -24,7 +24,7 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
     private const uint NoFurtherItems = 0xFFFFFFFF;
 
-    public async Task Handle (double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         // Shares its signature with taking an item in hand, which arms the client's use-lock.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
@@ -35,7 +35,7 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        var stream = new BitStream(clientConnection.ReceiveBuffer);
+        var stream = new BitStream(frame);
         stream.ReadBits(FirstFieldBit);
         var firstItemId = stream.ReadUInt32(FieldBits);
         var secondItemId = stream.ReadUInt32(FieldBits);
