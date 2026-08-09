@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SphServer.Helpers.Networking;
@@ -41,11 +41,125 @@ public static class ClientPacketClassifier
 {
 	public static ClientPacketClassification ClassifyFrame(ReadOnlySpan<byte> frame)
 	{
-		if (frame.Length == 0)
+		if (frame.Length < ClientFrame.HeaderLength)
 		{
-			return Result(ClientPacketEvent.InvalidOrTrailing, 0, "empty frame", false);
+			return Result(ClientPacketEvent.InvalidOrTrailing, 0, "shorter than a header", false);
 		}
 
+		// The channel word is in the plaintext part of the header, so it reads the same whether or
+		// not the body was de-obfuscated, and it separates transport from gameplay before anything
+		// else has to be interpreted.
+		switch ((WireChannel) (frame[6] | (frame[7] << 8)))
+		{
+			case WireChannel.Keepalive:
+			case WireChannel.SentCount:
+			case WireChannel.Handshake:
+			case WireChannel.HandshakeReply:
+				return Result(ClientPacketEvent.ProtocolControl, 1.0, "transport channel", true);
+			case WireChannel.Gameplay:
+				break;
+			default:
+				return Result(ClientPacketEvent.Unknown, 0, "unrecognised channel", false);
+		}
+
+		// A gameplay frame states what it is in its own record, and that reading holds at every
+		// frame length. The byte signature below only lands on the message type when the position
+		// block is absent; when it is present everything after it shifts by 45 bits, which is why
+		// the signature names item drops as position updates.
+		if (frame.Length >= RecordHeaderMinimumLength)
+		{
+			var identity = GameplayRecord.ReadIdentity(frame);
+			var byRecord = ClassifyByRecord(identity, frame);
+			if (byRecord.HasValue)
+			{
+				return byRecord.Value;
+			}
+		}
+
+		return ClassifyBySignature(frame);
+	}
+
+	/// <summary>
+	///     Smallest gameplay frame that still contains a whole record header.
+	/// </summary>
+	private const int RecordHeaderMinimumLength = 16;
+
+	/// <summary>
+	///     What the record itself says, or null when it does not distinguish the frame and the byte
+	///     signature has to decide.
+	/// </summary>
+	private static ClientPacketClassification? ClassifyByRecord(
+		in GameplayRecord.Identity identity,
+		ReadOnlySpan<byte> frame)
+	{
+		var frameLength = frame.Length;
+		if (identity.Tag == GameplayRecord.TagObjectInteract)
+		{
+			// The 12-bit field names the target's ObjectType. Only the loot sack is routed by it:
+			// NpcTrade and NpcQuestTitle interactions reach a handler that reads about 47 bytes
+			// while those frames are 24 and 32, and the fallback they would be taken from sends
+			// the use-lock acknowledgement the client waits for.
+			// The length is checked as well because only that one is confirmed: a capture labelled
+			// at the moment of opening a bag holds this shape, and the other length carrying the
+			// same subject type is unlabelled and interleaves with it, so it is a different step
+			// the signature table already names.
+			return identity.SubjectType == GameplayRecord.SubjectTypeSackMobLoot &&
+			       frameLength == ConfirmedLootContainerLength
+				? Result(ClientPacketEvent.ContainerOpenLoot, 1.0, "record: loot sack interaction", true)
+				: null;
+		}
+
+		switch (GameplayRecord.ActionOf(identity))
+		{
+			case GameplayAction.PositionUpdate:
+				return Result(ClientPacketEvent.PositionKeepalive, 1.0, "record: position", true);
+
+			case GameplayAction.ChatSend:
+				// The trigger opens a send, the rest carry its text; the handler assembles them.
+				return Result(ClientPacketEvent.ChatSend, 1.0,
+					frameLength == ChatTriggerLength ? "record: chat trigger" : "record: chat part", true);
+
+			case GameplayAction.ChatPeriodic:
+				// Same action code as chat with the flag set, carries no text, has no handler.
+				return Result(ClientPacketEvent.Unknown, 0, "record: periodic, no text", false);
+
+			case GameplayAction.Attack:
+				// Taking something in hand shares this record action with an attack and is told
+				// apart deeper in the frame; that signature keeps its route.
+				return frameLength >= 20 && frame[13] == 0x08 && frame[14] == 0x40 &&
+				       frame[15] == 0xA3 && frame[18] is 0xA1 or 0xA3 && frame[19] == 0x41
+					? null
+					: Result(ClientPacketEvent.CombatDamageTarget, 1.0, "record: attack", true);
+
+			case GameplayAction.Buy:
+				return Result(ClientPacketEvent.TradeBuy, 1.0, "record: buy request", true);
+
+			// Action 3 is not named here: its frames arrive at several lengths that the signature
+			// table routes as different messages, and which is which is not established.
+
+			case GameplayAction.Telemetry:
+				// The client's own periodic reports. No handler has ever run for these.
+				return Result(ClientPacketEvent.Unknown, 0, "record: client telemetry", false);
+
+			case GameplayAction.Unknown when identity.Tag == GameplayRecord.TagPlayerAction
+			                                 && identity.ActionCode == 0:
+				// Shares the trade-buy byte signature and is not a purchase — a purchase carries
+				// action 8. What action 0 means is not established, so it is not routed.
+				return Result(ClientPacketEvent.Unknown, 0, "record: action 0, not understood", false);
+
+			default:
+				// GroupActionOrPickup and the rest carry no record-level discriminator yet.
+				return null;
+		}
+	}
+
+	private const int ChatTriggerLength = 26;
+
+	/// <summary>The open-loot shape confirmed by a labelled capture.</summary>
+	private const int ConfirmedLootContainerLength = 0x1B;
+
+	private static ClientPacketClassification ClassifyBySignature(ReadOnlySpan<byte> frame)
+	{
 		// 16-bit: chat text parts run past 255 bytes, and a one-byte read calls them invalid.
 		var declaredLength = frame[0] | (frame[1] << 8);
 		if (declaredLength != frame.Length)
