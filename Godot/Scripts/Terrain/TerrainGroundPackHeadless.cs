@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Godot;
@@ -52,7 +51,6 @@ public partial class TerrainGroundPackHeadless : Node
 
 	private async Task<int> RunAsync(Options options)
 	{
-		StartupTiming.Mark("TerrainGroundPackHeadless: begin");
 		TerrainBakePaths.EnsureBakeRoot();
 		TerrainBakePaths.EnsureDirectory(TerrainBakePaths.GroundMeshesDir);
 		TerrainBakePaths.EnsureDirectory(TerrainBakePaths.GroundShapesDir);
@@ -72,7 +70,6 @@ public partial class TerrainGroundPackHeadless : Node
 			uniqueMasters.Add(master);
 		}
 
-		var meshWatch = Stopwatch.StartNew();
 		var meshesOk = 0;
 		foreach (var master in uniqueMasters)
 		{
@@ -105,13 +102,8 @@ public partial class TerrainGroundPackHeadless : Node
 			meshesOk++;
 		}
 
-		StartupTiming.MarkSpan(
-			$"TerrainGroundPackHeadless: shared meshes ({meshesOk}/{uniqueMasters.Count})",
-			meshWatch.ElapsedMilliseconds);
-
 		// Cell size / origin for MapToLocal-equivalent placement (GridMap at identity local origin).
 		const float tileSize = TerrainGroundIndex.DefaultTileSize;
-		var chunkWatch = Stopwatch.StartNew();
 		var chunksWritten = 0;
 		foreach (var (gx, gz, master) in index.EnumerateCells())
 		{
@@ -176,10 +168,6 @@ public partial class TerrainGroundPackHeadless : Node
 				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			}
 		}
-
-		StartupTiming.MarkSpan(
-			$"TerrainGroundPackHeadless: chunks ({chunksWritten})",
-			chunkWatch.ElapsedMilliseconds);
 
 		if (options.StripMeshLibrary)
 		{

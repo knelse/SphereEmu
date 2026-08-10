@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Godot;
 
@@ -53,8 +52,6 @@ public partial class WorldChunkSplitHeadless : Node
 			return ExitFailure;
 		}
 
-		StartupTiming.Mark("WorldChunkSplitHeadless: begin load");
-		var watch = Stopwatch.StartNew();
 		var packed = ResourceLoader.Load<PackedScene>(options.ScenePath, cacheMode: ResourceLoader.CacheMode.Ignore);
 		if (packed is null)
 		{
@@ -62,13 +59,9 @@ public partial class WorldChunkSplitHeadless : Node
 			return ExitFailure;
 		}
 
-		StartupTiming.MarkSpan("WorldChunkSplitHeadless: PackedScene.Load", watch.ElapsedMilliseconds);
-
-		watch.Restart();
 		var root = packed.Instantiate<Node>();
 		AddChild(root);
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		StartupTiming.MarkSpan("WorldChunkSplitHeadless: Instantiate+frame", watch.ElapsedMilliseconds);
 
 		// Re-pack path: hydrate existing chunks into thin MainServer, then rewrite.
 		if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath)
@@ -88,7 +81,6 @@ public partial class WorldChunkSplitHeadless : Node
 
 		if (options.SaveMainServer)
 		{
-			watch.Restart();
 			var thin = new PackedScene();
 			var packError = thin.Pack(root);
 			if (packError != Error.Ok)
@@ -104,7 +96,6 @@ public partial class WorldChunkSplitHeadless : Node
 				return ExitFailure;
 			}
 
-			StartupTiming.MarkSpan("WorldChunkSplitHeadless: save thin MainServer", watch.ElapsedMilliseconds);
 			GD.Print($"WorldChunkSplitHeadless: saved thin MainServer to {options.ScenePath}");
 		}
 

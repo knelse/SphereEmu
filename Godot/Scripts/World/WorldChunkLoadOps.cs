@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Godot;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -71,7 +70,6 @@ public static class WorldChunkLoadOps
 			return;
 		}
 
-		var watch = Stopwatch.StartNew();
 		var packed = ResourceLoader.Load<PackedScene>(path);
 		if (packed is null)
 		{
@@ -109,9 +107,6 @@ public static class WorldChunkLoadOps
 
 		chunkRoot.QueueFree();
 		loaded.Add(key);
-		StartupTiming.MarkSpan(
-			$"LoadChunk {WorldContentKindPaths.FolderName(kind)}/{WorldTileKeys.FormatKey(tileX, tileZ)}",
-			watch.ElapsedMilliseconds);
 	}
 
 	public static void ClearOwnerRecursive(Node node)

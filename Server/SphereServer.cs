@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net.Sockets;
 using Godot;
 using SphereHelpers.Extensions;
@@ -30,8 +29,6 @@ public partial class SphereServer : Node
 
 	public override void _Ready()
 	{
-		StartupTiming.Mark("SphereServer._Ready enter");
-
 		// Headless tools instantiate MainServer for terrain + placements only.
 		if (MonsterSpawnSlotHeadlessBake.IsActive
 			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
@@ -46,13 +43,8 @@ public partial class SphereServer : Node
 		SphPacketLogger.Initialize();
 		SphLogger.Info("Starting SphServer...");
 
-		var watch = Stopwatch.StartNew();
 		BalanceConfig.PreloadAll();
-		StartupTiming.MarkSpan("BalanceConfig.PreloadAll", watch.ElapsedMilliseconds);
-
-		watch.Restart();
 		InitializeCollections();
-		StartupTiming.MarkSpan("DbConnection.Initialize", watch.ElapsedMilliseconds);
 
 		SetupTcpServer();
 		ServerNode = this;
@@ -64,8 +56,6 @@ public partial class SphereServer : Node
 			AddChild(worldChunkStreamer);
 		}
 
-		StartupTiming.Mark("WorldChunkStreamer ready");
-
 		terrainGroundStreamer = FindTerrainGroundStreamer();
 		if (terrainGroundStreamer is null)
 		{
@@ -73,14 +63,11 @@ public partial class SphereServer : Node
 			AddChild(terrainGroundStreamer);
 		}
 
-		StartupTiming.Mark("TerrainGroundStreamer ready");
-
 		AddChild(new MonsterSpawnerActivationManagerNode());
 
 		connectionHandler = new ConnectionHandler(ClientScene, this);
 
 		SphLogger.Info("Server up, waiting for connections...");
-		StartupTiming.Mark("SphereServer._Ready complete");
 	}
 
 	public override void _Process(double delta)

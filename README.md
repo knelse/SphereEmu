@@ -20,7 +20,7 @@ NB: client in the repo already has dgVoodoo bundled. If it breaks, try deleting 
 ## Running the server
 
 1. Get and install prerequisities
-   1. .NET 9.0 SDK
+   1. .NET 9 SDK — version pinned in repo-root `global.json` (CI uses the same file). Install that exact SDK (or a later patch in the same band) from https://dotnet.microsoft.com/download/dotnet/9.0 into the machine-wide location (`C:\Program Files\dotnet`), then confirm with `dotnet --version`.
    2. Godot (4.7.1 Mono or higher)
 2. Download the repo
    - Install [Git LFS](https://git-lfs.com/) and run `git lfs pull` (needed for `GodotAssetSource/Terrain/TerrainMeshLibrary.tres`, used only when rebuilding terrain via TerrainGridFill).

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
@@ -17,7 +16,6 @@ public static partial class WorldChunkPacker
 		Node mainServer,
 		IReadOnlyList<Node3D> placements)
 	{
-		var watch = Stopwatch.StartNew();
 		var index = WorldContentIndex.GetOrLoad();
 		var tilesByKind = new Dictionary<WorldContentKind, HashSet<(int TileX, int TileZ)>>();
 		var excludeFromTile = new Dictionary<(WorldContentKind Kind, int TileX, int TileZ), HashSet<string>>();
@@ -66,9 +64,6 @@ public static partial class WorldChunkPacker
 		}
 
 		index.SaveTo(WorldChunkCatalog.IndexPath);
-		StartupTiming.MarkSpan(
-			$"WorldChunkPacker.WriteBack ({chunksWritten} written, {chunksDeleted} deleted, {nodesPacked} nodes)",
-			watch.ElapsedMilliseconds);
 
 		return new WorldChunkWriteBackResult(resolved, chunksWritten, chunksDeleted, nodesPacked);
 	}

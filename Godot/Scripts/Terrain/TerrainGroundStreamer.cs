@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Godot;
 using SphServer.Client;
 using SphServer.Godot.Scripts.Terrain.Fill;
@@ -54,13 +53,9 @@ public partial class TerrainGroundStreamer : Node
 			}
 		}
 
-		var watch = Stopwatch.StartNew();
 		index = TerrainGroundIndex.GetOrLoad();
 		ResolveTerrainGridMap();
 		EnsureStreamedRoot();
-		StartupTiming.MarkSpan(
-			$"TerrainGroundStreamer._Ready (cells={index.Count})",
-			watch.ElapsedMilliseconds);
 	}
 
 	public void EnsureAroundWorldPosition(Vector3 worldPosition)

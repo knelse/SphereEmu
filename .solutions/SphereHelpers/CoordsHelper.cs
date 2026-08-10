@@ -539,7 +539,8 @@ public static class CoordsHelper
 
         if (shouldReverse)
         {
-            a = a.Reverse().ToArray();
+            // Prefer LINQ Reverse: byte[].Reverse() binds to Span.Reverse (void) on modern SDKs.
+            a = a.AsEnumerable().Reverse().ToArray();
         }
 
         return DecodeClientCoordinateFromBitStream(new BitStream(a));

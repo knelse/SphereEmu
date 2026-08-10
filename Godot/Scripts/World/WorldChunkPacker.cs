@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Godot;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Sphere.Game.WorldObject;
@@ -15,7 +14,6 @@ public static partial class WorldChunkPacker
 {
 	public static WorldChunkPackResult PackFromMainServer(Node mainServer, bool clearParents = true, bool extractSlots = true)
 	{
-		var watch = Stopwatch.StartNew();
 		var previous = WorldContentIndex.GetOrLoad();
 		var index = new WorldContentIndex();
 		var chunksWritten = 0;
@@ -118,9 +116,6 @@ public static partial class WorldChunkPacker
 
 		index.SaveTo(WorldChunkCatalog.IndexPath);
 		WorldContentIndex.ReplaceLoaded(index);
-		StartupTiming.MarkSpan(
-			$"WorldChunkPacker ({chunksWritten} chunks, {nodesPacked} nodes, {slotsExtracted} slot arrays)",
-			watch.ElapsedMilliseconds);
 
 		return new WorldChunkPackResult(chunksWritten, nodesPacked, slotsExtracted, index.Entries.Count);
 	}

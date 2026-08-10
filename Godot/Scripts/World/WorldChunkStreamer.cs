@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Godot;
 using SphServer.Client;
 using SphServer.Server.Config;
@@ -45,11 +44,8 @@ public partial class WorldChunkStreamer : Node
 			}
 		}
 
-		var watch = Stopwatch.StartNew();
 		index = WorldContentIndex.GetOrLoad();
-		StartupTiming.MarkSpan("WorldContentIndex.Load", watch.ElapsedMilliseconds);
 		mainServerRoot = FindMainServerRoot();
-		StartupTiming.Mark($"WorldChunkStreamer._Ready (index entries={index.Entries.Count}, tiles={CountTiles()})");
 
 		if (!Engine.IsEditorHint() && WorldChunkLaunchArgs.WantsLoadAllWorldChunks())
 		{
@@ -137,21 +133,5 @@ public partial class WorldChunkStreamer : Node
 	private Node? FindMainServerRoot()
 	{
 		return GetParent() ?? GetTree()?.CurrentScene;
-	}
-
-	private int CountTiles()
-	{
-		var n = 0;
-		if (index is null)
-		{
-			return 0;
-		}
-
-		foreach (var _ in index.EnumerateChunkTiles())
-		{
-			n++;
-		}
-
-		return n;
 	}
 }

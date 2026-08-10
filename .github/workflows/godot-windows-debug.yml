@@ -11,7 +11,6 @@ concurrency:
 
 env:
   GODOT_VERSION: "4.7.1"
-  DOTNET_VERSION: "9.0.x"
   EXPORT_PRESET: "Windows Desktop Slim"
   EXPORT_DIR: build/windows-debug
   PACKS_DIR: build/packs
@@ -37,10 +36,11 @@ jobs:
         with:
           lfs: true
 
+      # SDK version comes from repo-root global.json (same pin as local `dotnet`).
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: global.json
 
       - name: Setup Godot (.NET + templates)
         uses: chickensoft-games/setup-godot@v2

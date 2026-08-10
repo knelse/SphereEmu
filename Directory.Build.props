@@ -1,0 +1,7 @@
+<Project>
+  <!-- Keep C# language version identical for every project (local + CI).
+       Pin to C# 13 (.NET 9); avoid latest/latestmajor which track the installed SDK. -->
+  <PropertyGroup>
+    <LangVersion>13.0</LangVersion>
+  </PropertyGroup>
+</Project>

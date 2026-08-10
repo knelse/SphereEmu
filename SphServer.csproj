@@ -1,7 +1,6 @@
 <Project Sdk="Godot.NET.Sdk/4.7.1">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <LangVersion>latestmajor</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
