@@ -25,6 +25,8 @@ public partial class SphereClient : WorldObject
 	private ClientState currentState = ClientState.I_AM_BREAD;
 	private bool isExiting;
 	public ushort localId;
+	/// <summary>Admin UI only — no TCP; skip network/disconnect. See <c>AdminDebugDummyClient</c>.</summary>
+	public bool IsAdminDebugDummy { get; private set; }
 	private PlayerDbEntry? playerDbEntry;
 	private int selectedCharacterIndex;
 	private StreamPeerTcp streamPeerTcp = null!;
@@ -33,6 +35,11 @@ public partial class SphereClient : WorldObject
 
 	public override async void _PhysicsProcess(double delta)
 	{
+		if (IsAdminDebugDummy)
+		{
+			return;
+		}
+
 		if (streamPeerTcp.GetStatus() != StreamPeerSocket.Status.Connected)
 		{
 			RemoveClient();
@@ -92,6 +99,15 @@ public partial class SphereClient : WorldObject
 		return this;
 	}
 
+	/// <summary>No-TCP client for admin UI debugging. Pair with <c>AdminDebugDummyClient</c>.</summary>
+	public SphereClient SetupAdminDebugDummy(ushort id)
+	{
+		IsAdminDebugDummy = true;
+		localId = id;
+		clientEvents = new ClientEvents(this);
+		return this;
+	}
+
 	public void EnqueueClientEvent(ClientQueuedEvent clientEvent)
 	{
 		clientEvents.Enqueue(clientEvent);
@@ -131,6 +147,7 @@ public partial class SphereClient : WorldObject
 			CurrentCharacter = playerDbEntry!.Characters[index];
 			CurrentCharacter.ClientIndex = localId;
 			UpdateCharacterForDebugMode();
+			ClientStateEvents.RaiseCharacterChanged(localId);
 		}
 		catch (Exception ex)
 		{
@@ -185,7 +202,11 @@ public partial class SphereClient : WorldObject
 
 		isExiting = true;
 		// TODO: sync state
-		clientConnection.Close();
+		if (!IsAdminDebugDummy)
+		{
+			clientConnection.Close();
+		}
+
 		ActiveClients.Remove(localId);
 		ConsoleCommandParser.Invalidate(localId);
 		ActiveNodes.Remove(GetInstanceId());
@@ -200,6 +221,11 @@ public partial class SphereClient : WorldObject
 
 	public void MaybeQueueNetworkPacketSend(byte[] packet)
 	{
+		if (IsAdminDebugDummy)
+		{
+			return;
+		}
+
 		clientConnection.MaybeScheduleNetworkPacketSend(packet);
 	}
 
@@ -252,11 +278,21 @@ public partial class SphereClient : WorldObject
 
 	public string GetIpAddressAndPort()
 	{
+		if (IsAdminDebugDummy)
+		{
+			return "debug:0";
+		}
+
 		return streamPeerTcp.GetConnectedHost() + ':' + streamPeerTcp.GetConnectedPort();
 	}
 
 	public string GetIpAddressWithoutPort()
 	{
+		if (IsAdminDebugDummy)
+		{
+			return "debug";
+		}
+
 		return streamPeerTcp.GetConnectedHost();
 	}
 

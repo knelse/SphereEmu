@@ -130,6 +130,12 @@ public static class CharacterLocaleText
         return character.Guild.ToString();
     }
 
+    public static string KarmaTypeName(KarmaTypes karma, Locale locale)
+    {
+        // KarmaTypes 1..5 → _sys 0090..0094
+        return SysLocalization.Get(89 + (int)karma, locale);
+    }
+
     public static string KarmaLine(CharacterDbEntry? character, Locale locale)
     {
         if (character is null)

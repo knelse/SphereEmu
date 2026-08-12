@@ -672,7 +672,10 @@ public partial class AssetBootstrap : Control
 
 		if (!string.IsNullOrWhiteSpace(installedInfo?.Sha))
 		{
-			return $"master-{installedInfo!.Sha}";
+			var shortSha = !string.IsNullOrWhiteSpace(installedInfo!.ShortSha)
+				? installedInfo.ShortSha
+				: (installedInfo.Sha.Length >= 12 ? installedInfo.Sha[..12] : installedInfo.Sha);
+			return $"master-{shortSha}";
 		}
 
 		return releases.TipTag;

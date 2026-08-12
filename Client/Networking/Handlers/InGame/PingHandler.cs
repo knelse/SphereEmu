@@ -5,6 +5,7 @@ using SphServer.Packets;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Shared.WorldState;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame;
@@ -58,6 +59,7 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
                     currentCharacter.Y = -coords.y;
                     currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
+                    ClientStateEvents.RaiseCharacterChanged(localId);
 
                     if (moved)
                     {

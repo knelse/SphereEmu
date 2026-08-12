@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Godot;
 using SphServer.Client;
 using SphServer.Shared.Logger;
@@ -13,15 +12,13 @@ public partial class ConnectedClientsUI : Tree
     [Signal]
     public delegate void ClientSelectedEventHandler(ushort clientId);
 
-    // Godot signals can't be nullable ushort easily — use 0 for clear; AdminUiRoot treats missing character separately.
-    // Prefer a companion clear via metadata when selection lost.
-
     private static readonly Dictionary<ushort, SphereClient> clients = new();
     private static TreeItem RootInstance = null!;
     private static Tree TreeInstance = null!;
     private const string DefaultEmptyValue = "<empty>";
     private const int ColumnCount = 3;
     private bool setupSuccessful = true;
+    private bool refreshPending;
     private ConnectedClientsPopupUI? popupMenu;
     private ushort? selectedClientId;
 
@@ -43,7 +40,6 @@ public partial class ConnectedClientsUI : Tree
         popupMenu = FindChild("ConnectedClientPopup", recursive: true) as ConnectedClientsPopupUI
                     ?? GetNodeOrNull<ConnectedClientsPopupUI>("ConnectedClientPopup");
 
-        // Fixed widths for ID (ushort hex) and IP so Name stays under its title
         SetColumnTitle(0, ColumnNames[0]);
         SetColumnTitleAlignment(0, HorizontalAlignment.Center);
         SetColumnCustomMinimumWidth(0, 48);
@@ -66,16 +62,37 @@ public partial class ConnectedClientsUI : Tree
         TreeInstance = this;
         ItemSelected += OnItemSelected;
         NothingSelected += OnNothingSelected;
+
+        ClientStateEvents.RosterChanged += OnClientStateChanged;
+        ClientStateEvents.CharacterChanged += OnCharacterChanged;
+        RequestRefresh();
     }
 
-    public override async void _Process(double delta)
+    public override void _ExitTree()
     {
-        if (!setupSuccessful)
+        ClientStateEvents.RosterChanged -= OnClientStateChanged;
+        ClientStateEvents.CharacterChanged -= OnCharacterChanged;
+    }
+
+    private void OnClientStateChanged() => RequestRefresh();
+
+    private void OnCharacterChanged(ushort _) => RequestRefresh();
+
+    private void RequestRefresh()
+    {
+        if (!setupSuccessful || refreshPending)
         {
             return;
         }
 
-        await UpdateClientList();
+        refreshPending = true;
+        CallDeferred(nameof(DeferredRefresh));
+    }
+
+    private void DeferredRefresh()
+    {
+        refreshPending = false;
+        UpdateClientList();
     }
 
     public override void _GuiInput(InputEvent inputEvent)
@@ -130,7 +147,7 @@ public partial class ConnectedClientsUI : Tree
         EmitSignal(SignalName.ClientSelected, (ushort)0);
     }
 
-    private static async Task UpdateClientList()
+    private static void UpdateClientList()
     {
         var actualClients = ActiveClients.GetAll();
 
@@ -138,23 +155,23 @@ public partial class ConnectedClientsUI : Tree
         foreach (var disconnectedClientData in disconnectedClients)
         {
             clients.Remove(disconnectedClientData.Key);
-            await DeleteClientRow(disconnectedClientData.Key);
+            DeleteClientRow(disconnectedClientData.Key);
         }
 
         foreach (var clientData in actualClients)
         {
             if (clients.ContainsKey(clientData.Key))
             {
-                await UpdateClientRow(clientData.Key, clientData.Value);
+                UpdateClientRow(clientData.Key, clientData.Value);
                 continue;
             }
 
             clients.Add(clientData.Key, clientData.Value);
-            await AddClientRow(clientData.Key, clientData.Value);
+            AddClientRow(clientData.Key, clientData.Value);
         }
     }
 
-    private static async Task AddClientRow(ushort id, SphereClient client)
+    private static void AddClientRow(ushort id, SphereClient client)
     {
         var clientItem = TreeInstance.CreateItem(RootInstance);
         for (var i = 0; i < ColumnCount; i++)
@@ -183,7 +200,7 @@ public partial class ConnectedClientsUI : Tree
 
     private static string FormatClientId(ushort id) => id.ToString("X4");
 
-    private static async Task DeleteClientRow(ushort id)
+    private static void DeleteClientRow(ushort id)
     {
         var rowToRemove = FindRowByClientId(id);
         if (rowToRemove is null)
@@ -195,7 +212,7 @@ public partial class ConnectedClientsUI : Tree
         RootInstance.RemoveChild(rowToRemove);
     }
 
-    private static async Task UpdateClientRow(ushort id, SphereClient client)
+    private static void UpdateClientRow(ushort id, SphereClient client)
     {
         var rowToUpdate = FindRowByClientId(id);
         if (rowToUpdate is null)

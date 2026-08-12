@@ -25,6 +25,7 @@ public partial class AdminUiRoot : Control
     private Button? banButton;
     private Button? teleportButton;
     private TeleportDestinationWindow? teleportWindow;
+    private ItemDetailsPopupHost? itemDetailsHost;
 
     public override void _Ready()
     {
@@ -113,6 +114,12 @@ public partial class AdminUiRoot : Control
         panels.AddChild(personaPanel);
         playerMenu.AddChild(panels);
 
+        // Popup layer above UI content (same scale), ignores empty space so clicks pass through.
+        itemDetailsHost = new ItemDetailsPopupHost { Name = "ItemDetailsPopupHost" };
+        scaleRoot.AddChild(itemDetailsHost);
+        itemDetailsHost.SetLocale(locale);
+        personaPanel.SetPopupHost(itemDetailsHost);
+
         // Right of PlayerMenu: admin actions
         var adminActions = new VBoxContainer
         {
@@ -149,6 +156,38 @@ public partial class AdminUiRoot : Control
         statsPanel.SetSelectedClient(null);
         personaPanel.SetSelectedClient(null);
         UpdateActionButtons();
+
+        ClientStateEvents.CharacterChanged += OnClientStateCharacterChanged;
+        ClientStateEvents.RosterChanged += OnClientStateRosterChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        ClientStateEvents.CharacterChanged -= OnClientStateCharacterChanged;
+        ClientStateEvents.RosterChanged -= OnClientStateRosterChanged;
+    }
+
+    private void OnClientStateCharacterChanged(ushort clientId)
+    {
+        if (selectedClientId == clientId)
+        {
+            CallDeferred(nameof(UpdateActionButtons));
+        }
+    }
+
+    private void OnClientStateRosterChanged()
+    {
+        if (selectedClientId is not null && ActiveClients.Get(selectedClientId.Value) is null)
+        {
+            selectedClientId = null;
+        }
+
+        CallDeferred(nameof(UpdateActionButtons));
+        if (changeGenderButton is not null)
+        {
+            changeGenderButton.Disabled = selectedClientId is null
+                                          || ActiveClients.Get(selectedClientId.Value)?.CurrentCharacter is null;
+        }
     }
 
     private void ApplyUiScale()
@@ -188,6 +227,7 @@ public partial class AdminUiRoot : Control
         }
 
         statsPanel?.SetLocale(locale);
+        itemDetailsHost?.SetLocale(locale);
     }
 
     private void OnClientSelected(ushort clientId)

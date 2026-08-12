@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using Godot;
+using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.WorldState;
 
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Persona sketch: custom gender background + slot overlay + transparent item panels,
-///     plus a mutator column (<see cref="BelongingSlot.Mutator_1"/>…<c>10</c>) on the right.
-///     Art is 256×370 under <c>ui_custom/</c>. Slot panels are 33×32 centered on overlay icons.
+///     Persona sketch: custom gender background + slot overlay + item icons from
+///     <see cref="CharacterDbEntry.Items"/>, mutator column, and inventory panel on the right.
+///     Art is 256×370 under <c>ui_custom/</c>. Slot hit targets match overlay frame rects.
 /// </summary>
 public partial class PersonaPanel : PanelContainer
 {
     private const float DesignWidth = 256f;
     private const float DesignHeight = 370f;
     private const float MaxWidth = 500f;
-    private const float SlotWidth = 33f;
-    private const float SlotHeight = 32f;
     private const float MutatorSize = 32f;
     private const float MutatorSeparation = 2f;
 
@@ -33,61 +33,76 @@ public partial class PersonaPanel : PanelContainer
         BelongingSlot.Mutator_1
     ];
 
-    /// <summary>Overlay-space center → <see cref="BelongingSlot"/>.</summary>
-    private static readonly (Vector2 Center, BelongingSlot Slot)[] SlotLayout =
+    /// <summary>Exact outer slot-frame rects on slot_overlay.png (left, top, width, height).</summary>
+    private static readonly (Rect2I Rect, BelongingSlot Slot)[] SlotLayout =
     [
         // Far left — special
-        (new(31, 56), BelongingSlot.Special_1),
-        (new(31, 91), BelongingSlot.Special_2),
-        (new(31, 126), BelongingSlot.Special_3),
-        (new(31, 161), BelongingSlot.Special_4),
-        (new(31, 196), BelongingSlot.Special_5),
-        (new(31, 231), BelongingSlot.Special_6),
-        (new(31, 266), BelongingSlot.Special_7),
-        (new(31, 301), BelongingSlot.Special_8),
-        (new(31, 336), BelongingSlot.Special_9),
+        (new(15, 40, 33, 32), BelongingSlot.Special_1),
+        (new(15, 75, 33, 32), BelongingSlot.Special_2),
+        (new(15, 110, 33, 32), BelongingSlot.Special_3),
+        (new(15, 145, 33, 32), BelongingSlot.Special_4),
+        (new(15, 180, 33, 32), BelongingSlot.Special_5),
+        (new(15, 215, 33, 32), BelongingSlot.Special_6),
+        (new(15, 250, 33, 32), BelongingSlot.Special_7),
+        (new(15, 285, 33, 32), BelongingSlot.Special_8),
+        (new(15, 320, 33, 32), BelongingSlot.Special_9),
 
         // Inner left
-        (new(80, 56), BelongingSlot.Helmet),
-        (new(80, 91), BelongingSlot.Amulet),
-        (new(79, 161), BelongingSlot.Shield),
-        (new(79, 196), BelongingSlot.BraceletLeft),
-        (new(79, 231), BelongingSlot.Ring_1),
-        (new(79, 266), BelongingSlot.Ring_2),
+        (new(64, 40, 33, 32), BelongingSlot.Helmet),
+        (new(64, 75, 33, 32), BelongingSlot.Amulet),
+        (new(63, 145, 33, 32), BelongingSlot.Shield),
+        (new(63, 180, 33, 32), BelongingSlot.BraceletLeft),
+        (new(63, 215, 33, 32), BelongingSlot.Ring_1),
+        (new(63, 250, 33, 32), BelongingSlot.Ring_2),
 
         // Center (armor)
-        (new(123, 129), BelongingSlot.Chestplate),
-        (new(123, 164), BelongingSlot.Belt),
-        (new(123, 198), BelongingSlot.Pants),
-        (new(123, 300), BelongingSlot.Boots),
+        (new(107, 113, 33, 32), BelongingSlot.Chestplate),
+        (new(107, 148, 33, 32), BelongingSlot.Belt),
+        (new(107, 182, 33, 32), BelongingSlot.Pants),
+        (new(107, 284, 33, 32), BelongingSlot.Boots),
 
         // Inner right
-        (new(169, 89), BelongingSlot.Guild),
-        (new(168, 164), BelongingSlot.Gloves),
-        (new(168, 198), BelongingSlot.BraceletRight),
-        (new(168, 232), BelongingSlot.Ring_3),
-        (new(168, 266), BelongingSlot.Ring_4),
+        (new(153, 73, 33, 32), BelongingSlot.Guild),
+        (new(152, 148, 33, 32), BelongingSlot.Gloves),
+        (new(152, 182, 33, 32), BelongingSlot.BraceletRight),
+        (new(152, 216, 33, 32), BelongingSlot.Ring_3),
+        (new(152, 250, 33, 32), BelongingSlot.Ring_4),
 
         // Far right
-        (new(215, 74), BelongingSlot.MainHand),
-        (new(215, 108), BelongingSlot.Ammo),
-        (new(215, 164), BelongingSlot.MapBook),
-        (new(215, 198), BelongingSlot.RecipeBook),
-        (new(215, 232), BelongingSlot.MantraBook),
-        (new(215, 266), BelongingSlot.Inkpot),
-        (new(215, 300), BelongingSlot.TokenIsland),
-        (new(215, 334), BelongingSlot.SpeedhackMantra),
+        (new(199, 58, 33, 32), BelongingSlot.MainHand),
+        (new(199, 92, 33, 32), BelongingSlot.Ammo),
+        (new(199, 148, 33, 32), BelongingSlot.MapBook),
+        (new(199, 182, 33, 32), BelongingSlot.RecipeBook),
+        (new(199, 216, 33, 32), BelongingSlot.MantraBook),
+        (new(199, 250, 33, 32), BelongingSlot.Inkpot),
+        (new(199, 284, 33, 32), BelongingSlot.TokenIsland),
+        (new(199, 318, 33, 32), BelongingSlot.SpeedhackMantra),
     ];
 
     private ushort? selectedClientId;
     private TextureRect? background;
-    private readonly Dictionary<BelongingSlot, Panel> slotPanels = new();
-    private readonly Dictionary<BelongingSlot, TextureRect> mutatorIcons = new();
+    private ItemDetailsPopupHost? popupHost;
+    private InventoryPanel? inventoryPanel;
+    private readonly Dictionary<BelongingSlot, Control> slotPanels = new();
+    private readonly Dictionary<BelongingSlot, TextureRect> slotIcons = new();
+    private readonly Dictionary<BelongingSlot, ColorRect> slotUnmetBgs = new();
+    private readonly Dictionary<BelongingSlot, int?> lastItemIds = new();
+    private readonly Dictionary<BelongingSlot, bool> lastUnmet = new();
+
+    private static readonly Color UnmetSlotBg = new(0.72f, 0.08f, 0.08f, 0.55f);
+
+    public void SetPopupHost(ItemDetailsPopupHost host)
+    {
+        popupHost = host;
+        inventoryPanel?.SetPopupHost(host);
+    }
 
     public override void _Ready()
     {
         var maxHeight = MaxWidth * DesignHeight / DesignWidth;
-        CustomMinimumSize = new Vector2(MaxWidth + MutatorSize + 8f, maxHeight);
+        // Persona + mutators + inventory panel (design 215 scaled to MaxWidth-equivalent).
+        var inventoryWidth = MaxWidth * (215f / 256f);
+        CustomMinimumSize = new Vector2(MaxWidth + MutatorSize + 8f + inventoryWidth + 8f, maxHeight);
         SizeFlagsHorizontal = SizeFlags.ShrinkBegin;
         SizeFlagsVertical = SizeFlags.ShrinkBegin;
         ClipContents = true;
@@ -152,11 +167,13 @@ public partial class PersonaPanel : PanelContainer
         slotOverlay.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         frame.AddChild(slotOverlay);
 
-        foreach (var (center, slot) in SlotLayout)
+        foreach (var (rect, slot) in SlotLayout)
         {
-            var panel = CreateSlotPanel(center, slot);
-            frame.AddChild(panel);
-            slotPanels[slot] = panel;
+            var (hit, icon, unmetBg) = CreateOverlaySlot(rect, slot);
+            frame.AddChild(hit);
+            slotPanels[slot] = hit;
+            slotIcons[slot] = icon;
+            slotUnmetBgs[slot] = unmetBg;
         }
 
         var mutatorColumn = new VBoxContainer
@@ -170,69 +187,220 @@ public partial class PersonaPanel : PanelContainer
 
         foreach (var slot in MutatorSlotsTopToBottom)
         {
-            var (panel, icon) = CreateMutatorSlot(slot);
-            mutatorColumn.AddChild(panel);
-            slotPanels[slot] = panel;
-            mutatorIcons[slot] = icon;
+            var (hit, icon, unmetBg) = CreateMutatorSlot(slot);
+            mutatorColumn.AddChild(hit);
+            slotPanels[slot] = hit;
+            slotIcons[slot] = icon;
+            slotUnmetBgs[slot] = unmetBg;
+        }
+
+        // Inventory sits immediately right of mutators; drop its own outer chrome so we keep one frame.
+        inventoryPanel = new InventoryPanel { Embedded = true };
+        row.AddChild(inventoryPanel);
+        if (popupHost is not null)
+        {
+            inventoryPanel.SetPopupHost(popupHost);
+        }
+
+        ClientStateEvents.CharacterChanged += OnCharacterChanged;
+        ClientStateEvents.RosterChanged += OnRosterChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        ClientStateEvents.CharacterChanged -= OnCharacterChanged;
+        ClientStateEvents.RosterChanged -= OnRosterChanged;
+    }
+
+    private void OnCharacterChanged(ushort clientId)
+    {
+        if (selectedClientId == clientId)
+        {
+            RequestRefresh();
         }
     }
 
-    private static Panel CreateSlotPanel(Vector2 center, BelongingSlot slot)
+    private void OnRosterChanged()
     {
-        var halfW = SlotWidth * 0.5f;
-        var halfH = SlotHeight * 0.5f;
-        var panel = new Panel
+        if (selectedClientId is not null && ActiveClients.Get(selectedClientId.Value) is null)
         {
-            Name = $"Slot_{slot}",
-            MouseFilter = MouseFilterEnum.Ignore
-        };
-        panel.SetMeta("BelongingSlot", (int)slot);
-        panel.AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
-        panel.AnchorLeft = (center.X - halfW) / DesignWidth;
-        panel.AnchorTop = (center.Y - halfH) / DesignHeight;
-        panel.AnchorRight = (center.X + halfW) / DesignWidth;
-        panel.AnchorBottom = (center.Y + halfH) / DesignHeight;
-        panel.OffsetLeft = 0;
-        panel.OffsetTop = 0;
-        panel.OffsetRight = 0;
-        panel.OffsetBottom = 0;
-        return panel;
+            selectedClientId = null;
+            lastItemIds.Clear();
+            lastUnmet.Clear();
+            RequestRefresh();
+        }
     }
 
-    private static (Panel Panel, TextureRect Icon) CreateMutatorSlot(BelongingSlot slot)
+    private bool refreshPending;
+
+    private void RequestRefresh()
     {
-        var panel = new Panel
+        if (refreshPending)
+        {
+            return;
+        }
+
+        refreshPending = true;
+        CallDeferred(nameof(DeferredRefresh));
+    }
+
+    private void DeferredRefresh()
+    {
+        refreshPending = false;
+        Refresh();
+    }
+
+    private (Control Hit, TextureRect Icon, ColorRect UnmetBg) CreateOverlaySlot(Rect2I rect, BelongingSlot slot)
+    {
+        var hit = new Control
+        {
+            Name = $"Slot_{slot}",
+            MouseFilter = MouseFilterEnum.Stop,
+            FocusMode = FocusModeEnum.None
+        };
+        hit.SetMeta("BelongingSlot", (int)slot);
+        hit.AnchorLeft = rect.Position.X / DesignWidth;
+        hit.AnchorTop = rect.Position.Y / DesignHeight;
+        hit.AnchorRight = (rect.Position.X + rect.Size.X) / DesignWidth;
+        hit.AnchorBottom = (rect.Position.Y + rect.Size.Y) / DesignHeight;
+        hit.OffsetLeft = 0;
+        hit.OffsetTop = 0;
+        hit.OffsetRight = 0;
+        hit.OffsetBottom = 0;
+
+        var unmetBg = CreateUnmetBackground();
+        hit.AddChild(unmetBg);
+        var icon = CreateSlotIcon(null);
+        hit.AddChild(icon);
+        WireSlotInput(hit, slot);
+        return (hit, icon, unmetBg);
+    }
+
+    private (Control Hit, TextureRect Icon, ColorRect UnmetBg) CreateMutatorSlot(BelongingSlot slot)
+    {
+        var hit = new Control
         {
             Name = $"Slot_{slot}",
             CustomMinimumSize = new Vector2(MutatorSize, MutatorSize),
-            MouseFilter = MouseFilterEnum.Ignore
+            MouseFilter = MouseFilterEnum.Stop,
+            FocusMode = FocusModeEnum.None
         };
-        panel.SetMeta("BelongingSlot", (int)slot);
-        panel.AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
+        hit.SetMeta("BelongingSlot", (int)slot);
 
-        var icon = new TextureRect
+        var unmetBg = CreateUnmetBackground();
+        hit.AddChild(unmetBg);
+        var icon = CreateSlotIcon(AdminUiAtlas.MutatorPlaceholder);
+        hit.AddChild(icon);
+        WireSlotInput(hit, slot);
+        return (hit, icon, unmetBg);
+    }
+
+    private static ColorRect CreateUnmetBackground() =>
+        new()
         {
-            Texture = AdminUiAtlas.MutatorPlaceholder,
+            Color = UnmetSlotBg,
+            Visible = false,
+            MouseFilter = MouseFilterEnum.Ignore,
+            AnchorsPreset = (int)LayoutPreset.FullRect,
+            AnchorRight = 1,
+            AnchorBottom = 1,
+            OffsetLeft = 1,
+            OffsetTop = 1,
+            OffsetRight = -1,
+            OffsetBottom = -1
+        };
+
+    private void WireSlotInput(Control hit, BelongingSlot slot)
+    {
+        hit.MouseEntered += () => OnSlotMouseEntered(hit, slot);
+        hit.MouseExited += () => OnSlotMouseExited(slot);
+        hit.GuiInput += inputEvent => OnSlotGuiInput(hit, slot, inputEvent);
+    }
+
+    private void OnSlotMouseEntered(Control hit, BelongingSlot slot)
+    {
+        if (popupHost is null || !TryGetSlotItemId(slot, out var itemId))
+        {
+            return;
+        }
+
+        var character = selectedClientId is null
+            ? null
+            : ActiveClients.Get(selectedClientId.Value)?.CurrentCharacter;
+        popupHost.ShowHover(hit.GetGlobalRect().Position, itemId, slot, character);
+    }
+
+    private void OnSlotMouseExited(BelongingSlot slot)
+    {
+        popupHost?.HideHover(slot);
+    }
+
+    private void OnSlotGuiInput(Control hit, BelongingSlot slot, InputEvent inputEvent)
+    {
+        if (popupHost is null)
+        {
+            return;
+        }
+
+        if (inputEvent is not InputEventMouseButton
+            {
+                Pressed: true,
+                ButtonIndex: MouseButton.Left,
+                ShiftPressed: true
+            })
+        {
+            return;
+        }
+
+        if (!TryGetSlotItemId(slot, out var itemId))
+        {
+            return;
+        }
+
+        var character = selectedClientId is null
+            ? null
+            : ActiveClients.Get(selectedClientId.Value)?.CurrentCharacter;
+        popupHost.Pin(hit.GetGlobalRect().Position, itemId, slot, character);
+        hit.AcceptEvent();
+    }
+
+    private bool TryGetSlotItemId(BelongingSlot slot, out int itemId)
+    {
+        itemId = 0;
+        var character = selectedClientId is null
+            ? null
+            : ActiveClients.Get(selectedClientId.Value)?.CurrentCharacter;
+        return character is not null && character.Items.TryGetValue(slot, out itemId);
+    }
+
+    private static TextureRect CreateSlotIcon(Texture2D? texture) =>
+        new()
+        {
+            Texture = texture,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.Scale,
             TextureFilter = TextureFilterEnum.Nearest,
-            MouseFilter = MouseFilterEnum.Ignore
+            MouseFilter = MouseFilterEnum.Ignore,
+            AnchorsPreset = (int)LayoutPreset.FullRect,
+            AnchorRight = 1,
+            AnchorBottom = 1,
+            OffsetLeft = 1,
+            OffsetTop = 1,
+            OffsetRight = -1,
+            OffsetBottom = -1
         };
-        icon.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        panel.AddChild(icon);
-        return (panel, icon);
-    }
 
-    public Panel? GetSlotPanel(BelongingSlot slot) =>
+    public Control? GetSlotPanel(BelongingSlot slot) =>
         slotPanels.TryGetValue(slot, out var panel) ? panel : null;
 
     public void SetSelectedClient(ushort? clientId)
     {
         selectedClientId = clientId;
-        Refresh();
+        lastItemIds.Clear();
+        lastUnmet.Clear();
+        RequestRefresh();
+        inventoryPanel?.SetSelectedClient(clientId);
     }
-
-    public override void _Process(double delta) => Refresh();
 
     private void Refresh()
     {
@@ -249,11 +417,68 @@ public partial class PersonaPanel : PanelContainer
             ? AdminUiAtlas.PersonaFemaleBackground
             : AdminUiAtlas.PersonaMaleBackground;
 
-        var placeholder = AdminUiAtlas.MutatorPlaceholder;
-        foreach (var (slot, icon) in mutatorIcons)
+        RefreshSlotIcons(character);
+    }
+
+    private void RefreshSlotIcons(CharacterDbEntry? character)
+    {
+        foreach (var (slot, icon) in slotIcons)
         {
-            var empty = character is null || character.IsItemSlotEmpty(slot);
-            icon.Texture = empty ? placeholder : null;
+            int? itemId = null;
+            if (character is not null && character.Items.TryGetValue(slot, out var id))
+            {
+                itemId = id;
+            }
+
+            var unmet = false;
+            Texture2D? texture;
+            if (itemId is null)
+            {
+                texture = ResolveSlotTexture(slot, null);
+            }
+            else
+            {
+                var item = DbConnection.Items.FindById(itemId.Value);
+                texture = item is null
+                    ? ResolveSlotTexture(slot, null)
+                    : AdminUiAtlas.ItemIcon(item.ModelNameInventory)
+                      ?? ResolveSlotTexture(slot, null);
+                unmet = item is not null && character is not null && !character.CanUseItem(item);
+            }
+
+            if (lastItemIds.TryGetValue(slot, out var previous)
+                && previous == itemId
+                && lastUnmet.TryGetValue(slot, out var prevUnmet)
+                && prevUnmet == unmet)
+            {
+                continue;
+            }
+
+            lastItemIds[slot] = itemId;
+            lastUnmet[slot] = unmet;
+            icon.Texture = texture;
+            if (slotUnmetBgs.TryGetValue(slot, out var bg))
+            {
+                bg.Visible = unmet;
+            }
         }
+    }
+
+    private static Texture2D? ResolveSlotTexture(BelongingSlot slot, int? itemId)
+    {
+        var isMutator = slot is >= BelongingSlot.Mutator_1 and <= BelongingSlot.Mutator_10;
+        if (itemId is null)
+        {
+            return isMutator ? AdminUiAtlas.MutatorPlaceholder : null;
+        }
+
+        var item = DbConnection.Items.FindById(itemId.Value);
+        if (item is null)
+        {
+            return isMutator ? AdminUiAtlas.MutatorPlaceholder : null;
+        }
+
+        return AdminUiAtlas.ItemIcon(item.ModelNameInventory)
+               ?? (isMutator ? AdminUiAtlas.MutatorPlaceholder : null);
     }
 }

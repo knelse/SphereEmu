@@ -2,6 +2,7 @@ using System.Linq;
 using Godot;
 using LiteDB;
 using SphServer.Shared.Logger;
+using SphServer.Shared.WorldState;
 using static SphServer.Helpers.CharacterDataHelper;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -120,6 +121,7 @@ public class CharacterDbEntry
         }
 
         Items[slot] = itemId;
+        ClientStateEvents.RaiseCharacterChanged(ClientIndex);
     }
 
     public int KarmaCount { get; set; }
@@ -341,6 +343,8 @@ public class CharacterDbEntry
     /// </summary>
     public string? UnmetRequirement(ItemDbEntry itemDbEntry)
     {
+        itemDbEntry.RecalculateStatReqsFromBase();
+
         (int have, int need, string name)[] checks =
         [
             (CurrentStrength, itemDbEntry.StrengthReq, "Сила"),
@@ -351,8 +355,8 @@ public class CharacterDbEntry
             (CurrentAir, itemDbEntry.AirReq, "Воздух"),
             (CurrentWater, itemDbEntry.WaterReq, "Вода"),
             (CurrentFire, itemDbEntry.FireReq, "Огонь"),
-            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Звание"),
-            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Ступень")
+            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Титул"),
+            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Степень")
         ];
 
         foreach (var (have, need, name) in checks)
@@ -416,8 +420,9 @@ public class CharacterDbEntry
             mpMax += item.MaxMpUp;
             pdef += item.PDefUp;
             mdef += item.MDefUp;
-            patk += item.PAtkUpNegative;
-            matk += item.MAtkUpNegative;
+            // *UpNegative: negative means attack-up; some items were double-negated by old suffix apply.
+            patk += item.PAtkUpNegative > 0 ? -item.PAtkUpNegative : item.PAtkUpNegative;
+            matk += item.MAtkUpNegative > 0 ? -item.MAtkUpNegative : item.MAtkUpNegative;
         }
 
         hpMax = WithSatietyMaxHpBonus(hpMax);
@@ -470,6 +475,7 @@ public class CharacterDbEntry
                        $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
                        $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk}");
 
+        ClientStateEvents.RaiseCharacterChanged(ClientIndex);
         return true;
     }
 }

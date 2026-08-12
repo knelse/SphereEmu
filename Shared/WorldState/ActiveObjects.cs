@@ -29,6 +29,7 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
         }
 
         Add((ushort)index, value);
+        ClientStateEvents.RaiseRosterChanged();
 
         return (ushort)index;
     }
@@ -41,6 +42,17 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
     internal static ConcurrentDictionary<ushort, SphereClient> GetAll()
     {
         return storage;
+    }
+
+    public new static SphereClient? Remove(ushort key)
+    {
+        var removed = ActiveObjectCollectionBase<ushort, SphereClient>.Remove(key);
+        if (removed is not null)
+        {
+            ClientStateEvents.RaiseRosterChanged();
+        }
+
+        return removed;
     }
 }
 

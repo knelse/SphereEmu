@@ -5,6 +5,7 @@ using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.World;
 using SphServer.Server.Config;
+using SphServer.Server.Debug;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
@@ -66,6 +67,9 @@ public partial class SphereServer : Node
 		AddChild(new MonsterSpawnerActivationManagerNode());
 
 		connectionHandler = new ConnectionHandler(ClientScene, this);
+
+		// TEMP: admin UI dummy — delete AdminDebugDummyClient.cs + this call to remove.
+		AdminDebugDummyClient.TrySpawn(this, ClientScene);
 
 		SphLogger.Info("Server up, waiting for connections...");
 	}

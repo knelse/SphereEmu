@@ -82,10 +82,12 @@ try {
     $message = (git -C $repoRoot log -1 --pretty=%s).Trim()
     if ([string]::IsNullOrWhiteSpace($message)) { $message = '(local build)' }
     $committedAt = (git -C $repoRoot show -s --format=%cI HEAD).Trim()
+    $short = $sha.Substring(0, [Math]::Min(12, $sha.Length))
+    $tag = "master-$short"
     $info = [ordered]@{
         sha           = $sha
-        shortSha      = $sha.Substring(0, [Math]::Min(12, $sha.Length))
-        tag           = "master-$sha"
+        shortSha      = $short
+        tag           = $tag
         message       = $message
         committedAt   = $committedAt
         builtAt       = [DateTimeOffset]::UtcNow.ToString('o')
@@ -98,7 +100,7 @@ try {
     & (Join-Path $PSScriptRoot 'Write-FileManifest.ps1') `
         -ExportDir $ExportDir `
         -Sha $sha `
-        -Tag ("master-$sha")
+        -Tag $tag
 }
 catch {
     Write-Warning "Could not write build-info/file-manifest: $_"

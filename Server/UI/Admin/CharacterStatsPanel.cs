@@ -186,12 +186,15 @@ public partial class CharacterStatsPanel : PanelContainer
         zLabel = AddLabeledValue(posRow, "Z");
         angleLabel = AddLabeledValue(posRow, "Angle");
         outer.AddChild(posRow);
+
+        ClientStateEvents.CharacterChanged += OnCharacterChanged;
+        ClientStateEvents.RosterChanged += OnRosterChanged;
     }
 
     public void SetLocale(Locale newLocale)
     {
         locale = newLocale;
-        Refresh();
+        RequestRefresh();
     }
 
     public void SetSelectedClient(ushort? clientId)
@@ -202,10 +205,50 @@ public partial class CharacterStatsPanel : PanelContainer
             ActiveClients.Get(selectedClientId.Value)?.CurrentCharacter?.RecalcCurrentStats();
         }
 
-        Refresh();
+        RequestRefresh();
     }
 
-    public override void _Process(double delta) => Refresh();
+    public override void _ExitTree()
+    {
+        ClientStateEvents.CharacterChanged -= OnCharacterChanged;
+        ClientStateEvents.RosterChanged -= OnRosterChanged;
+    }
+
+    private void OnCharacterChanged(ushort clientId)
+    {
+        if (selectedClientId == clientId)
+        {
+            RequestRefresh();
+        }
+    }
+
+    private void OnRosterChanged()
+    {
+        if (selectedClientId is not null && ActiveClients.Get(selectedClientId.Value) is null)
+        {
+            selectedClientId = null;
+            RequestRefresh();
+        }
+    }
+
+    private bool refreshPending;
+
+    private void RequestRefresh()
+    {
+        if (refreshPending)
+        {
+            return;
+        }
+
+        refreshPending = true;
+        CallDeferred(nameof(DeferredRefresh));
+    }
+
+    private void DeferredRefresh()
+    {
+        refreshPending = false;
+        Refresh();
+    }
 
     private void Refresh()
     {

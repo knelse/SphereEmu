@@ -158,7 +158,7 @@ jobs:
         run: |
           $sha = $env:GITHUB_SHA
           $short = $sha.Substring(0, 12)
-          $tag = "master-$sha"
+          $tag = "master-$short"
           $message = (git log -1 --pretty=%s $sha).Trim()
           if ([string]::IsNullOrWhiteSpace($message)) { $message = "(no commit message)" }
           $committedAt = (git show -s --format=%cI $sha).Trim()
@@ -196,7 +196,8 @@ jobs:
         run: |
           $tipTag = $env:SLIM_RELEASE_TAG
           $sha = $env:GITHUB_SHA
-          $masterTag = "master-$sha"
+          $short = $sha.Substring(0, 12)
+          $masterTag = "master-$short"
           $zipName = "SphServer-windows-debug-slim.zip"
           $infoName = "build-info.json"
           $manifestName = "file-manifest.json"
@@ -238,7 +239,7 @@ jobs:
             $message
             ''
             'Heavy packs download automatically on first launch from the asset-bundles CDN.'
-            'Historical builds are published as prerelease tags master-<sha> (last 20 kept).'
+            'Historical builds are published as prerelease tags master-<shortSha> (last 20 kept).'
           ) -join "`n"
 
           gh release view $tipTag 2>$null | Out-Null

@@ -183,6 +183,40 @@ public class ItemDbEntry
                    or GameObjectType.Shield_Unique && slot is BelongingSlot.Shield);
     }
 
+    /// <summary>
+    ///     Rebuild title/degree reqs from the base game object + suffix rules.
+    ///     Fixes items created before uniform 4-stat suffixes were filtered to existing reqs.
+    /// </summary>
+    public void RecalculateStatReqsFromBase()
+    {
+        if (!SphObjectDb.GameObjectDataDb.TryGetValue(GameId, out var go))
+        {
+            return;
+        }
+
+        StrengthReq = go.StrengthReq;
+        AgilityReq = go.AgilityReq;
+        AccuracyReq = go.AccuracyReq;
+        EnduranceReq = go.EnduranceReq;
+        EarthReq = go.EarthReq;
+        AirReq = go.AirReq;
+        WaterReq = go.WaterReq;
+        FireReq = go.FireReq;
+
+        if (Suffix == ItemSuffix.None)
+        {
+            return;
+        }
+
+        var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
+        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs(
+            suffixObj.StrengthReq, suffixObj.AgilityReq, suffixObj.AccuracyReq, suffixObj.EnduranceReq,
+            StrengthReq, AgilityReq, AccuracyReq, EnduranceReq);
+        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs(
+            suffixObj.EarthReq, suffixObj.AirReq, suffixObj.WaterReq, suffixObj.FireReq,
+            EarthReq, AirReq, WaterReq, FireReq);
+    }
+
     private void UpdateStatsForSuffix()
     {
         var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
@@ -190,14 +224,16 @@ public class ItemDbEntry
         Weight *= (100 + suffixObj.Weight) / 100;
         UseTime = UseTime * (100 + suffixObj.UseTime) / 100;
         VendorCost = VendorCost * (100 + suffixObj.VendorCost) / 100;
-        StrengthReq += suffixObj.StrengthReq;
-        AgilityReq += suffixObj.AgilityReq;
-        AccuracyReq += suffixObj.AccuracyReq;
-        EnduranceReq += suffixObj.EnduranceReq;
-        EarthReq += suffixObj.EarthReq;
-        WaterReq += suffixObj.WaterReq;
-        AirReq += suffixObj.AirReq;
-        FireReq += suffixObj.FireReq;
+
+        // Integrity / Dragon / Elements / etc. set all 4 title or degree reqs to the same
+        // value — those only apply to stats the base item already requires.
+        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs(
+            suffixObj.StrengthReq, suffixObj.AgilityReq, suffixObj.AccuracyReq, suffixObj.EnduranceReq,
+            StrengthReq, AgilityReq, AccuracyReq, EnduranceReq);
+        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs(
+            suffixObj.EarthReq, suffixObj.AirReq, suffixObj.WaterReq, suffixObj.FireReq,
+            EarthReq, AirReq, WaterReq, FireReq);
+
         StrengthUp += suffixObj.StrengthUp;
         AgilityUp += suffixObj.AgilityUp;
         AccuracyUp += suffixObj.AccuracyUp;
@@ -210,11 +246,35 @@ public class ItemDbEntry
         MaxMpUp += suffixObj.MaxMpUp;
         PDefUp += suffixObj.PDefUp;
         MDefUp += suffixObj.MDefUp;
-        PAtkUpNegative -= suffixObj.PAtkUpNegative;
-        PAtkNegative -= suffixObj.PAtkNegative;
-        MAtkUpNegative -= suffixObj.MAtkUpNegative;
-        MAtkNegativeOrHeal -= suffixObj.MAtkNegativeOrHeal;
+        // *UpNegative DB values are often positive meaning attack-up — normalize to negative.
+        // PAtkNegative / MAtkNegativeOrHeal already use negative=up, positive=down in the suffix DB.
+        PAtkUpNegative += NegateIfPositive(suffixObj.PAtkUpNegative);
+        PAtkNegative += suffixObj.PAtkNegative;
+        MAtkUpNegative += NegateIfPositive(suffixObj.MAtkUpNegative);
+        MAtkNegativeOrHeal += suffixObj.MAtkNegativeOrHeal;
     }
+
+    /// <summary>
+    ///     When suffix sets all four stats to the same positive req, only stack onto
+    ///     stats the base item already has; otherwise add each req normally.
+    /// </summary>
+    private static (int, int, int, int) ApplyTitleOrDegreeReqs(
+        int s0, int s1, int s2, int s3,
+        int r0, int r1, int r2, int r3)
+    {
+        if (s0 > 0 && s0 == s1 && s1 == s2 && s2 == s3)
+        {
+            return (
+                r0 > 0 ? r0 + s0 : r0,
+                r1 > 0 ? r1 + s1 : r1,
+                r2 > 0 ? r2 + s2 : r2,
+                r3 > 0 ? r3 + s3 : r3);
+        }
+
+        return (r0 + s0, r1 + s1, r2 + s2, r3 + s3);
+    }
+
+    private static int NegateIfPositive(int value) => value > 0 ? -value : value;
 
     public string ToDebugString()
     {
