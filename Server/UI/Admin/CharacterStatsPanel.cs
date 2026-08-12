@@ -248,8 +248,9 @@ public partial class CharacterStatsPanel : PanelContainer
         SetBar(mpBar!, mpLabel!, character.CurrentMP, character.MaxMP);
         SetBar(satietyBar!, satietyLabel!, character.CurrentSatiety, character.MaxSatiety);
 
-        pAtkLabel!.Text = character.PAtk.ToString(CultureInfo.InvariantCulture);
-        mAtkLabel!.Text = character.MAtk.ToString(CultureInfo.InvariantCulture);
+        // Stored atk is negative (client convention); show magnitude for the admin UI.
+        pAtkLabel!.Text = (-character.PAtk).ToString(CultureInfo.InvariantCulture);
+        mAtkLabel!.Text = (-character.MAtk).ToString(CultureInfo.InvariantCulture);
         pDefLabel!.Text = character.PDef.ToString(CultureInfo.InvariantCulture);
         mDefLabel!.Text = character.MDef.ToString(CultureInfo.InvariantCulture);
 

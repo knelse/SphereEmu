@@ -112,7 +112,7 @@ public class CharacterDbEntry
     ///     place: a claim left behind is saved with the character and comes back on relog as a cell
     ///     pointing at an item the client has already bound elsewhere, which it draws as a blank.
     /// </summary>
-    public void PlaceItemInSlot (BelongingSlot slot, int itemId)
+    public void PlaceItemInSlot(BelongingSlot slot, int itemId)
     {
         foreach (var heldIn in Items.Where(x => x.Value == itemId).Select(x => x.Key).ToList())
         {
@@ -343,14 +343,14 @@ public class CharacterDbEntry
     {
         (int have, int need, string name)[] checks =
         [
-            (BaseStrength, itemDbEntry.StrengthReq, "Сила"),
-            (BaseAgility, itemDbEntry.AgilityReq, "Ловкость"),
-            (BaseAccuracy, itemDbEntry.AccuracyReq, "Меткость"),
-            (BaseEndurance, itemDbEntry.EnduranceReq, "Выносливость"),
-            (BaseEarth, itemDbEntry.EarthReq, "Земля"),
-            (BaseAir, itemDbEntry.AirReq, "Воздух"),
-            (BaseWater, itemDbEntry.WaterReq, "Вода"),
-            (BaseFire, itemDbEntry.FireReq, "Огонь"),
+            (CurrentStrength, itemDbEntry.StrengthReq, "Сила"),
+            (CurrentAgility, itemDbEntry.AgilityReq, "Ловкость"),
+            (CurrentAccuracy, itemDbEntry.AccuracyReq, "Меткость"),
+            (CurrentEndurance, itemDbEntry.EnduranceReq, "Выносливость"),
+            (CurrentEarth, itemDbEntry.EarthReq, "Земля"),
+            (CurrentAir, itemDbEntry.AirReq, "Воздух"),
+            (CurrentWater, itemDbEntry.WaterReq, "Вода"),
+            (CurrentFire, itemDbEntry.FireReq, "Огонь"),
             (TitleMinusOne, itemDbEntry.TitleMinusOne, "Звание"),
             (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Ступень")
         ];
