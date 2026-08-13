@@ -169,8 +169,10 @@ public class CharacterDbEntry
     /// <summary>
     ///     Set title or degree XP and consume it into levels while it covers the next cost.
     ///     Recalc runs once after all level-ups. Does not persist or push to the client.
+    ///     Kill awards pass <paramref name="allowRebirth"/> false: stop at display 60 and clamp
+    ///     XP to the next cost (1 at 60/60). Admin keeps the default and overflows into rebirth.
     /// </summary>
-    public bool ApplyExperience(bool isTitle, uint newXp)
+    public bool ApplyExperience(bool isTitle, uint newXp, bool allowRebirth = true)
     {
         var oldXp = isTitle ? TitleXP : DegreeXP;
         var oldTitle = TitleMinusOne;
@@ -187,14 +189,26 @@ public class CharacterDbEntry
         while (true)
         {
             var level = isTitle ? TitleMinusOne : DegreeMinusOne;
-            if (level >= MaxLevelMinusOne)
+            var atCycleCap = level % LevelsPerCycle == LevelsPerCycle - 1;
+            var cost = XpToLevelUp;
+            var xp = isTitle ? TitleXP : DegreeXP;
+
+            if (!allowRebirth && atCycleCap)
             {
+                var clamped = cost >= uint.MaxValue ? xp : Math.Min(xp, (uint)cost);
+                if (isTitle)
+                {
+                    TitleXP = clamped;
+                }
+                else
+                {
+                    DegreeXP = clamped;
+                }
+
                 break;
             }
 
-            var cost = XpToLevelUp;
-            var xp = isTitle ? TitleXP : DegreeXP;
-            if (cost > xp)
+            if (level >= MaxLevelMinusOne || cost > xp)
             {
                 break;
             }
@@ -242,7 +256,7 @@ public class CharacterDbEntry
         }
 
         var titleXp = TitleXP > uint.MaxValue - amount ? uint.MaxValue : TitleXP + amount;
-        return ApplyExperience(true, titleXp);
+        return ApplyExperience(true, titleXp, allowRebirth: false);
     }
 
     /// <summary>
