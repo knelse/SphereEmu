@@ -58,6 +58,8 @@ public class SphGameObject
     public int t5 { get; set; }
     public string TierRaw { get; set; } = null!;
     public string SuffixSetName { get; set; } = null!;
+    public Guild RequiredGuild { get; set; }
+    public int RequiredGuildRankMinusOne { get; set; }
     public int Tier { get; set; }
     public int Range { get; set; }
     public int Radius { get; set; }
@@ -119,5 +121,14 @@ public class SphGameObject
         newObj.GameObjectDbId = old.GameObjectDbId;
 
         return newObj;
+    }
+
+    public void ApplyGuildRequirementFromSuffixSet()
+    {
+        if (GuildCatalog.TryParseRequirement(SuffixSetName, out var guild, out var rank))
+        {
+            RequiredGuild = guild;
+            RequiredGuildRankMinusOne = rank;
+        }
     }
 }

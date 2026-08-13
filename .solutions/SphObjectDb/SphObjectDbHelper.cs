@@ -178,7 +178,7 @@ public static class SphObjectDbHelper
         [Castle_Stone] = Unknown,
         [Guild_Bag] = Unknown,
         [Flag] = Unknown,
-        [Guild] = Unknown,
+        [GameObjectType.Guild] = Unknown,
         [Letter] = Unknown,
         [Lottery] = Unknown,
         [MantraBlack] = Unknown,

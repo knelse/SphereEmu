@@ -1,44 +1,81 @@
 using System;
+using System.Collections.Generic;
 using SphServer.Shared.Db.DataModels;
 
 namespace SphServer.Server.UI.Localization;
 
 /// <summary>
-///     Item lore and display names. Suffix text comes from
-///     <see cref="SphObjectDb.SuffixDataDb"/> localisation entries (language prefs).
+///     Item lore and display names. Russian suffix text prefers the Actual suffix map.
 /// </summary>
 public static class ItemLocaleText
 {
     public static string DisplayName(ItemDbEntry item, Locale locale)
     {
-        var name = item.Localization.GetValueOrDefault(locale)
-                   ?? item.Localization.GetValueOrDefault(Locale.Russian)
-                   ?? item.SphereType
-                   ?? "?";
-
-        var suffix = SuffixName(item, locale);
-        return string.IsNullOrEmpty(suffix) ? name : $"{name} {suffix}";
+        var name = CatalogName(item.Localization, item.SphereType, locale);
+        var suffix = SuffixName(item.GameObjectType, item.Suffix, locale);
+        return suffix is null ? name : $"{name} {suffix}";
     }
 
-    public static string? SuffixName(ItemDbEntry item, Locale locale)
+    public static string CatalogName(SphGameObject go, Locale locale) =>
+        CatalogName(go.Localisation, go.SphereType, locale);
+
+    public static string CatalogName(Dictionary<Locale, string> localization, string? sphereType, Locale locale)
     {
-        if (item.Suffix == ItemSuffix.None)
+        return localization.GetValueOrDefault(locale)
+               ?? localization.GetValueOrDefault(Locale.Russian)
+               ?? sphereType
+               ?? "?";
+    }
+
+    public static string GameObjectTypeName(GameObjectType type, Locale locale)
+    {
+        _ = locale;
+        return type.ToString().Replace('_', ' ');
+    }
+
+    public static string? SuffixName(ItemDbEntry item, Locale locale) =>
+        SuffixName(item.GameObjectType, item.Suffix, locale);
+
+    public static string? SuffixName(GameObjectType type, ItemSuffix suffix, Locale locale)
+    {
+        if (suffix == ItemSuffix.None)
         {
             return null;
         }
 
-        var prefType = SphObjectDbHelper.GameObjectToPrefTypeMap.GetValueOrDefault(
-            item.GameObjectType, GameObjectType.Unknown);
-        if (prefType is GameObjectType.Unknown
-            || !SphObjectDb.SuffixDataDb.TryGetValue(prefType, out var bySuffix)
-            || !bySuffix.TryGetValue(item.Suffix, out var suffixGo))
+        if (locale is Locale.Russian && TryActualSuffixName(type, suffix, locale, out var actual))
         {
-            return item.Suffix.ToString();
+            return actual;
         }
 
-        return suffixGo.Localisation.GetValueOrDefault(locale)
-               ?? suffixGo.Localisation.GetValueOrDefault(Locale.Russian)
-               ?? item.Suffix.ToString();
+        var prefType = SphObjectDbHelper.GameObjectToPrefTypeMap.GetValueOrDefault(
+            type, GameObjectType.Unknown);
+        if (prefType is not GameObjectType.Unknown
+            && SphObjectDb.SuffixDataDb.TryGetValue(prefType, out var bySuffix)
+            && bySuffix.TryGetValue(suffix, out var suffixGo))
+        {
+            return suffixGo.Localisation.GetValueOrDefault(locale)
+                   ?? suffixGo.Localisation.GetValueOrDefault(Locale.Russian)
+                   ?? suffix.ToString();
+        }
+
+        return TryActualSuffixName(type, suffix, locale, out actual) ? actual : suffix.ToString();
+    }
+
+    private static bool TryActualSuffixName(GameObjectType type, ItemSuffix suffix, Locale locale,
+        out string name)
+    {
+        name = string.Empty;
+        if (!GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue(type, out var map)
+            || !map.TryGetValue(suffix, out var entry))
+        {
+            return false;
+        }
+
+        name = entry.localization.GetValueOrDefault(locale)
+               ?? entry.localization.GetValueOrDefault(Locale.Russian)
+               ?? string.Empty;
+        return name.Length > 0;
     }
 
     public static string? Description(ItemDbEntry item, Locale locale)

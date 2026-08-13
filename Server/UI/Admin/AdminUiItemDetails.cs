@@ -16,6 +16,7 @@ public static class AdminUiItemDetails
     public const float PreferredFrameWidth = 293f;
     public const float ItemIconPx = 32f;
     public const float RowIconPx = 18f;
+    public const float GuildIconPx = 24f;
     public const float BonusIconW = 27f;
     public const float BonusIconH = 19f;
     public const float RowEstimate = 20f;
@@ -328,6 +329,11 @@ public static class AdminUiItemDetails
                 AdminUiAtlas.DegreeIcon, item.DegreeMinusOne, character?.DegreeMinusOne ?? 0, true);
         }
 
+        if (item.RequiredGuild is not Guild.None)
+        {
+            yield return GuildReqRow(item, character, locale);
+        }
+
         if (item.MinKarmaLevel > 0 || item.MaxKarmaLevel > 0)
         {
             yield return KarmaReqRow(item, character, locale);
@@ -580,6 +586,22 @@ public static class AdminUiItemDetails
         }
 
         return BuildIconTextRow(AdminUiAtlas.KarmaIcon, text, color, ReqFontSize);
+    }
+
+    private static Control GuildReqRow(ItemDbEntry item, CharacterDbEntry? character, Locale locale)
+    {
+        var guildName = CharacterLocaleText.GuildName(item.RequiredGuild, locale);
+        var rankName = CharacterLocaleText.GuildRankName(item.RequiredGuildRankMinusOne, false, locale);
+        var text = string.IsNullOrWhiteSpace(rankName) ? guildName : $"{guildName} - {rankName}";
+        var met = character is not null
+                  && character.Guild == item.RequiredGuild
+                  && character.GuildLevelMinusOne >= item.RequiredGuildRankMinusOne
+                  && GuildCatalog.MeetsRankRequirements(
+                      item.RequiredGuild, item.RequiredGuildRankMinusOne,
+                      character.TitleMinusOne, character.DegreeMinusOne);
+        var color = character is null || met ? TextWhite : TextUnmet;
+        return BuildIconTextRow(
+            AdminUiAtlas.GuildIcon(item.RequiredGuild), text, color, ReqFontSize, GuildIconPx, GuildIconPx);
     }
 
     private static string ToRomanTier(ItemDbEntry item)

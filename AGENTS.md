@@ -2,11 +2,15 @@
 
 These rules apply to every AI agent working in this repository.
 
+## Punctuation
+
+- NEVER USE A FUCKING EM DASH YOU MORON (U+2014, `—`) ANYWHERE: UI strings, comments, commit messages, docs, or chat. Use a comma, colon, parentheses, or a regular hyphen-minus (`-`) instead.
+
 ## Comments
 
 - Keep comments succinct and to the point.
 - Aggressively prune redundant comments where the code already describes itself.
-- Prefer explaining non-obvious intent, constraints, or tradeoffs — not restating the next few lines.
+- Prefer explaining non-obvious intent, constraints, or tradeoffs, not restating the next few lines.
 
 ## Commits
 

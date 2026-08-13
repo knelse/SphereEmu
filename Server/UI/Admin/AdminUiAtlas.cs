@@ -20,7 +20,7 @@ public static class AdminUiAtlas
     [
         Guild.Assasin, Guild.Crusader, Guild.Inquisitor, Guild.Hunter, Guild.Archmage,
         Guild.Barbarian, Guild.Druid, Guild.Thief, Guild.MasterOfSteel, Guild.Armorer,
-        Guild.Blacksmith, Guild.Warlock, Guild.Necromancer, Guild.Bandier
+        Guild.Blacksmith, Guild.Warlock, Guild.Bandier, Guild.Necromancer
     ];
 
     // Icon crops from composed client panels (i_stat1 / i_stat3) — stats UI (with panel bg).
@@ -62,6 +62,8 @@ public static class AdminUiAtlas
     private static readonly Rect2I DurabilityIconRegion = new(47, 49, 16, 15);
     private static readonly Rect2I CostIconRegion = new(73, 51, 17, 19);
     private static readonly Rect2I CloseButtonRegion = new(15, 76, 14, 14);
+    private static readonly Rect2I SubmitButtonRegion = new(97, 0, 31, 24);
+    private static readonly Rect2I CancelButtonRegion = new(97, 26, 29, 22);
 
     private static Texture2D? icons02Src;
     private static Texture2D? stat1Src;
@@ -107,6 +109,8 @@ public static class AdminUiAtlas
     private static Texture2D? popupMid;
     private static Texture2D? popupBottom;
     private static Texture2D? closeButton;
+    private static Texture2D? submitButton;
+    private static Texture2D? cancelButton;
     private static Texture2D? rankIcon;
     private static Texture2D? gameIdIcon;
     private static Texture2D? weightIcon;
@@ -115,6 +119,7 @@ public static class AdminUiAtlas
     private static Texture2D? costIcon;
     private static readonly Dictionary<string, Texture2D?> itemIconCache = new();
     private static readonly Dictionary<string, Texture2D?> bonusIcons = new();
+    private static readonly Dictionary<Guild, Texture2D?> guildIcons = new();
     private static bool loaded;
 
     public static Texture2D? TitleIcon => Ensure() ? titleIcon : null;
@@ -155,6 +160,8 @@ public static class AdminUiAtlas
     public static Texture2D? PopupMid => Ensure() ? popupMid : null;
     public static Texture2D? PopupBottom => Ensure() ? popupBottom : null;
     public static Texture2D? CloseButton => Ensure() ? closeButton : null;
+    public static Texture2D? SubmitButton => Ensure() ? submitButton : null;
+    public static Texture2D? CancelButton => Ensure() ? cancelButton : null;
     public static Texture2D? RankIcon => Ensure() ? rankIcon : null;
     public static Texture2D? GameIdIcon => Ensure() ? gameIdIcon : null;
     public static Texture2D? WeightIcon => Ensure() ? weightIcon : null;
@@ -196,7 +203,12 @@ public static class AdminUiAtlas
             return null;
         }
 
-        var index = AtlasIndexForGuild(guild);
+        if (guildIcons.TryGetValue(guild, out var cached))
+        {
+            return cached;
+        }
+
+        var index = Array.IndexOf(GuildIconOrder, guild);
         if (index < 0)
         {
             return null;
@@ -204,27 +216,22 @@ public static class AdminUiAtlas
 
         var col = index % 5;
         var row = index / 5;
-        return Slice(icons02Src, new Rect2I(col * GuildCell, row * GuildCell, GuildCell, GuildCell));
-    }
-
-    private static int AtlasIndexForGuild(Guild guild)
-    {
-        for (var i = 0; i < GuildIconOrder.Length; i++)
+        var x = col * GuildCell;
+        var y = row * GuildCell;
+        if (guild == Guild.Bandier)
         {
-            if (GuildIconOrder[i] != guild)
-            {
-                continue;
-            }
-
-            return guild switch
-            {
-                Guild.Necromancer => 13,
-                Guild.Bandier => 12,
-                _ => i
-            };
+            x = 52;
+            y = 52;
+        }
+        else if (guild == Guild.Necromancer)
+        {
+            x = 78;
+            y = 52;
         }
 
-        return -1;
+        var tex = SliceRaw(icons02Src, new Rect2I(x, y, GuildCell, GuildCell));
+        guildIcons[guild] = tex;
+        return tex;
     }
 
     private static bool Ensure()
@@ -322,6 +329,8 @@ public static class AdminUiAtlas
         popupMid = LoadPath(UiCustom + "popup_mid.png");
         popupBottom = LoadPath(UiCustom + "popup_bottom.png");
         closeButton = SliceRaw(ctrlsSrc, CloseButtonRegion);
+        submitButton = SliceRaw(ctrlsSrc, SubmitButtonRegion);
+        cancelButton = SliceRaw(ctrlsSrc, CancelButtonRegion);
         slotBorder = SliceRaw(pup3Src, SlotBorderRegion);
         return stat1Src is not null;
     }

@@ -7,12 +7,7 @@ namespace SphServer.Server.UI.Localization;
 
 public static class CharacterLocaleText
 {
-    private static readonly Guild[] GuildNameOrder =
-    [
-        Guild.Assasin, Guild.Crusader, Guild.Inquisitor, Guild.Hunter, Guild.Archmage,
-        Guild.Barbarian, Guild.Druid, Guild.Thief, Guild.MasterOfSteel, Guild.Armorer,
-        Guild.Blacksmith, Guild.Warlock, Guild.Necromancer, Guild.Bandier
-    ];
+    private static readonly Guild[] GuildNameOrder = GuildCatalog.LetterOrder;
 
     public static int DisplayLevel(int minusOne) => minusOne % 60 + 1;
 
@@ -28,12 +23,37 @@ public static class CharacterLocaleText
         return TierName(character.DegreeMinusOne, character.IsGenderFemale, 500, locale);
     }
 
-    public static string GuildRankName(CharacterDbEntry character, Locale locale)
+    public static string GuildName(Guild guild, Locale locale)
     {
-        var genderOffset = character.IsGenderFemale ? 1 : 0;
-        var id = 222 + character.GuildLevelMinusOne * 2 + genderOffset;
-        return SysLocalization.Get(id, locale);
+        if (guild == Guild.None)
+        {
+            return EmptyGuildName(locale);
+        }
+
+        for (var i = 0; i < GuildNameOrder.Length; i++)
+        {
+            if (GuildNameOrder[i] != guild)
+            {
+                continue;
+            }
+
+            return SysLocalization.Get(900 + i, locale);
+        }
+
+        return guild.ToString();
     }
+
+    public static string GuildName(CharacterDbEntry character, Locale locale) =>
+        GuildName(character.Guild, locale);
+
+    public static string GuildRankName(int rankMinusOne, bool female, Locale locale)
+    {
+        var genderOffset = female ? 1 : 0;
+        return SysLocalization.Get(222 + rankMinusOne * 2 + genderOffset, locale);
+    }
+
+    public static string GuildRankName(CharacterDbEntry character, Locale locale) =>
+        GuildRankName(character.GuildLevelMinusOne, character.IsGenderFemale, locale);
 
     public static string ClanLine(CharacterDbEntry? character, Locale locale)
     {
@@ -65,6 +85,8 @@ public static class CharacterLocaleText
 
     private static readonly Dictionary<Locale, string> EmptyGuildLabelCache = new();
 
+    public static string GuildHeading(Locale locale) => $"{EmptyGuildName(locale)}:";
+
     public static string EmptyGuildName(Locale locale)
     {
         if (locale == Locale.English)
@@ -83,7 +105,7 @@ public static class CharacterLocaleText
         {
             foreach (var line in lines)
             {
-                // Prefer short form lines ("03 гилд ...") — first word is the guild noun.
+                // Prefer short form lines ("03 гилд ..."); first word is the guild noun.
                 if (!line.StartsWith("03 ", StringComparison.Ordinal))
                 {
                     continue;
@@ -108,26 +130,6 @@ public static class CharacterLocaleText
         }
 
         return char.ToUpper(value[0], CultureInfo.InvariantCulture) + value[1..];
-    }
-
-    public static string GuildName(CharacterDbEntry character, Locale locale)
-    {
-        if (character.Guild == Guild.None)
-        {
-            return EmptyGuildName(locale);
-        }
-
-        for (var i = 0; i < GuildNameOrder.Length; i++)
-        {
-            if (GuildNameOrder[i] != character.Guild)
-            {
-                continue;
-            }
-
-            return SysLocalization.Get(900 + i, locale);
-        }
-
-        return character.Guild.ToString();
     }
 
     public static string KarmaTypeName(KarmaTypes karma, Locale locale)

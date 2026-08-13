@@ -2,6 +2,9 @@ namespace SphServer.Helpers;
 
 public static class CharacterDataHelper
 {
+    public const int LevelsPerCycle = 60;
+    public const int MaxRebirths = 3;
+    public const int MaxLevelMinusOne = MaxRebirths * LevelsPerCycle + LevelsPerCycle - 1;
     public static readonly int[] HealthAtTitle =
     {
         100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100,

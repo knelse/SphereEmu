@@ -144,19 +144,144 @@ public class CharacterDbEntry
     public ulong XpToLevelUp => GetXpToLevelUp();
     public Vector3 Origin => new((float)X, (float)Y, (float)Z);
 
-    public void LevelUp(int newTitleLevel, int newDegreeLevel)
+    /// <summary>
+    ///     Move title and/or degree to the given 0-based levels (any delta, up or down).
+    ///     Rebuilds available stats from the current rebirth cycle, then recalculates max HP/MP
+    ///     from the title/degree tables (plus gear and satiety). Does not persist or push
+    ///     to the client.
+    /// </summary>
+    public bool LevelUp(int newTitleLevel, int newDegreeLevel)
     {
-        if (newTitleLevel > TitleMinusOne)
+        newTitleLevel = Math.Clamp(newTitleLevel, 0, MaxLevelMinusOne);
+        newDegreeLevel = Math.Clamp(newDegreeLevel, 0, MaxLevelMinusOne);
+        if (newTitleLevel == TitleMinusOne && newDegreeLevel == DegreeMinusOne)
         {
-            var bonusStatsFromReset = TitleMinusOne / 60 * StatBonusForResets[TitleMinusOne];
-            AvailableTitleStats += AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset;
-            AvailableDegreeStats += AvailableStatsSecondary[newTitleLevel];
+            return false;
         }
-        else if (newDegreeLevel > DegreeMinusOne)
+
+        TitleMinusOne = newTitleLevel;
+        DegreeMinusOne = newDegreeLevel;
+        RecalcAvailableStats();
+        RecalcCurrentStats();
+        return true;
+    }
+
+    /// <summary>
+    ///     Set title or degree XP and consume it into levels while it covers the next cost.
+    ///     Recalc runs once after all level-ups. Does not persist or push to the client.
+    /// </summary>
+    public bool ApplyExperience(bool isTitle, uint newXp)
+    {
+        var oldXp = isTitle ? TitleXP : DegreeXP;
+        var oldTitle = TitleMinusOne;
+        var oldDegree = DegreeMinusOne;
+        if (isTitle)
         {
-            var bonusStatsFromReset = DegreeMinusOne / 60 * StatBonusForResets[DegreeMinusOne];
-            AvailableDegreeStats += AvailableStatsPrimary[newTitleLevel] + bonusStatsFromReset;
-            AvailableTitleStats += AvailableStatsSecondary[newTitleLevel];
+            TitleXP = newXp;
+        }
+        else
+        {
+            DegreeXP = newXp;
+        }
+
+        while (true)
+        {
+            var level = isTitle ? TitleMinusOne : DegreeMinusOne;
+            if (level >= MaxLevelMinusOne)
+            {
+                break;
+            }
+
+            var cost = XpToLevelUp;
+            var xp = isTitle ? TitleXP : DegreeXP;
+            if (cost > xp)
+            {
+                break;
+            }
+
+            if (isTitle)
+            {
+                TitleXP -= (uint)cost;
+                TitleMinusOne++;
+            }
+            else
+            {
+                DegreeXP -= (uint)cost;
+                DegreeMinusOne++;
+            }
+        }
+
+        if (TitleMinusOne == oldTitle && DegreeMinusOne == oldDegree
+            && (isTitle ? TitleXP : DegreeXP) == oldXp)
+        {
+            return false;
+        }
+
+        if (TitleMinusOne != oldTitle || DegreeMinusOne != oldDegree)
+        {
+            RecalcAvailableStats();
+            RecalcCurrentStats();
+        }
+        else
+        {
+            ClientStateEvents.RaiseCharacterChanged(ClientIndex);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    ///     Add XP to title and consume it into levels via <see cref="ApplyExperience"/>.
+    ///     Does not persist or push to the client.
+    /// </summary>
+    public bool AwardExperience(uint amount)
+    {
+        if (amount == 0)
+        {
+            return false;
+        }
+
+        var titleXp = TitleXP > uint.MaxValue - amount ? uint.MaxValue : TitleXP + amount;
+        return ApplyExperience(true, titleXp);
+    }
+
+    /// <summary>
+    ///     Rebuild available pools from the current rebirth cycle only (tables start at 0),
+    ///     plus rebirths × StatBonusForResets, minus spent <c>Base*</c> stats.
+    ///     Previous cycles' primary grants are not kept. Does not persist or push to the client.
+    /// </summary>
+    public void RecalcAvailableStats()
+    {
+        var title = 0;
+        var degree = 0;
+        AddCurrentCycleGrants(TitleMinusOne, titleIsPrimary: true, ref title, ref degree);
+        AddCurrentCycleGrants(DegreeMinusOne, titleIsPrimary: false, ref title, ref degree);
+        AvailableTitleStats = title - (BaseStrength + BaseAgility + BaseAccuracy + BaseEndurance);
+        AvailableDegreeStats = degree - (BaseEarth + BaseAir + BaseWater + BaseFire);
+    }
+
+    /// <summary>
+    ///     Title-ups feed the title pool as primary; degree-ups feed the degree pool.
+    ///     Bonus is rebirths × StatBonusForResets for each level in this cycle.
+    /// </summary>
+    private static void AddCurrentCycleGrants(int minusOne, bool titleIsPrimary, ref int title, ref int degree)
+    {
+        var within = minusOne % 60;
+        var rebirths = minusOne / 60;
+        for (var i = 0; i <= within; i++)
+        {
+            var primary = AvailableStatsPrimary[i] + rebirths * StatBonusForResets[i];
+            var secondary = AvailableStatsSecondary[i];
+            if (titleIsPrimary)
+            {
+                title += primary;
+                degree += secondary;
+            }
+            else
+            {
+                degree += primary;
+                title += secondary;
+            }
         }
     }
 
@@ -276,6 +401,70 @@ public class CharacterDbEntry
         };
     }
 
+    /// <summary>
+    ///     Restore gameplay to a newly created character: empty slots, money 0, levels/XP 1/1 0/50,
+    ///     base stats. Keeps id, name, clan, visuals, and world position. Deletes carried item rows.
+    ///     Does not persist or push to the client.
+    /// </summary>
+    public void ResetToNewCharacterDefaults()
+    {
+        foreach (var itemId in Items.Values.Distinct())
+        {
+            DbConnection.Items.Delete(itemId);
+        }
+
+        Items.Clear();
+
+        var fresh = CreateNewCharacter(ClientIndex, Name, IsGenderFemale, FaceType, HairStyle, HairColor, Tattoo);
+        Money = fresh.Money;
+        TitleMinusOne = fresh.TitleMinusOne;
+        DegreeMinusOne = fresh.DegreeMinusOne;
+        TitleXP = fresh.TitleXP;
+        DegreeXP = fresh.DegreeXP;
+        BaseStrength = fresh.BaseStrength;
+        BaseAgility = fresh.BaseAgility;
+        BaseAccuracy = fresh.BaseAccuracy;
+        BaseEndurance = fresh.BaseEndurance;
+        BaseEarth = fresh.BaseEarth;
+        BaseAir = fresh.BaseAir;
+        BaseWater = fresh.BaseWater;
+        BaseFire = fresh.BaseFire;
+        CurrentStrength = fresh.CurrentStrength;
+        CurrentAgility = fresh.CurrentAgility;
+        CurrentAccuracy = fresh.CurrentAccuracy;
+        CurrentEndurance = fresh.CurrentEndurance;
+        CurrentEarth = fresh.CurrentEarth;
+        CurrentAir = fresh.CurrentAir;
+        CurrentWater = fresh.CurrentWater;
+        CurrentFire = fresh.CurrentFire;
+        AvailableTitleStats = fresh.AvailableTitleStats;
+        AvailableDegreeStats = fresh.AvailableDegreeStats;
+        CurrentSatiety = fresh.CurrentSatiety;
+        MaxSatiety = fresh.MaxSatiety;
+        Guild = fresh.Guild;
+        GuildLevelMinusOne = fresh.GuildLevelMinusOne;
+        Karma = fresh.Karma;
+        KarmaCount = fresh.KarmaCount;
+        PDef = fresh.PDef;
+        MDef = fresh.MDef;
+        PAtk = fresh.PAtk;
+        MAtk = fresh.MAtk;
+        MainHandPAtk = fresh.MainHandPAtk;
+        HoldsItemInHand = fresh.HoldsItemInHand;
+        BootModelId = fresh.BootModelId;
+        PantsModelId = fresh.PantsModelId;
+        ArmorModelId = fresh.ArmorModelId;
+        RobeModelId = fresh.RobeModelId;
+        ShieldModelId = fresh.ShieldModelId;
+        HelmetModelId = fresh.HelmetModelId;
+        GlovesModelId = fresh.GlovesModelId;
+
+        RecalcAvailableStats();
+        RecalcCurrentStats();
+        CurrentHP = MaxHP;
+        CurrentMP = MaxMP;
+    }
+
     public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         return FindEmptyInventorySlot() != null;
@@ -316,14 +505,15 @@ public class CharacterDbEntry
 
     private ulong GetXpToLevelUp()
     {
-        if (TitleMinusOne % 60 == 59 && DegreeMinusOne % 60 == 59)
+        var title = TitleMinusOne % 60;
+        var degree = DegreeMinusOne % 60;
+        if (title == 59 && degree == 59)
         {
             return 1;
         }
 
-        var minLevel = Math.Min(TitleMinusOne, DegreeMinusOne);
-        var maxLevel = Math.Max(TitleMinusOne, DegreeMinusOne);
-
+        var minLevel = Math.Min(title, degree);
+        var maxLevel = Math.Max(title, degree);
         return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
@@ -344,6 +534,26 @@ public class CharacterDbEntry
     public string? UnmetRequirement(ItemDbEntry itemDbEntry)
     {
         itemDbEntry.RecalculateStatReqsFromBase();
+
+        if (itemDbEntry.RequiredGuild is not Guild.None)
+        {
+            if (Guild != itemDbEntry.RequiredGuild)
+            {
+                return "Гильдия";
+            }
+
+            if (GuildLevelMinusOne < itemDbEntry.RequiredGuildRankMinusOne)
+            {
+                return $"Ранг гильдии {GuildLevelMinusOne}<{itemDbEntry.RequiredGuildRankMinusOne}";
+            }
+
+            if (!GuildCatalog.MeetsRankRequirements(
+                    itemDbEntry.RequiredGuild, itemDbEntry.RequiredGuildRankMinusOne,
+                    TitleMinusOne, DegreeMinusOne))
+            {
+                return "Гильдия";
+            }
+        }
 
         (int have, int need, string name)[] checks =
         [
@@ -377,7 +587,8 @@ public class CharacterDbEntry
             BelongingSlot.Amulet, BelongingSlot.Belt, BelongingSlot.Boots, BelongingSlot.Chestplate,
             BelongingSlot.Gloves, BelongingSlot.Guild, BelongingSlot.Helmet, BelongingSlot.Pants,
             BelongingSlot.Ring_1, BelongingSlot.Ring_2, BelongingSlot.Ring_3, BelongingSlot.Ring_4,
-            BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight
+            BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight,
+            BelongingSlot.Special_1, BelongingSlot.Special_2, BelongingSlot.Special_3, BelongingSlot.Special_4
         };
 
         var str = BaseStrength;

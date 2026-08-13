@@ -177,6 +177,10 @@ public static class SphObjectDb
                         suffixReader.ReadToEnd(), JsonOptions)
                     ?? throw new InvalidOperationException();
             }
+
+            ApplyGuildRequirements();
+            InferMissingTiers();
+            AliasChestplateElementsPref();
         }
         catch (Exception ex)
         {
@@ -440,6 +444,70 @@ public static class SphObjectDb
                 }
             }
         }
+    }
+
+    private static void ApplyGuildRequirements()
+    {
+        foreach (var go in GameObjectDataDb.Values)
+        {
+            go.ApplyGuildRequirementFromSuffixSet();
+        }
+    }
+
+    /// <summary>
+    ///     Pre-expansion rows (group_armor.cfg, group_swords.cfg, …) have `-` instead of
+    ///     TE00a / TR03a / … so <see cref="SphGameObject.Tier"/> stays -1 and suffix prefs
+    ///     scale to zero. Copy the tier from the matching post-expansion twin when one exists.
+    /// </summary>
+    private static void InferMissingTiers()
+    {
+        var byFingerprint = new Dictionary<(GameObjectType Type, int PDef, int MDef, int PAtk, int Cost), int>();
+        foreach (var go in GameObjectDataDb.Values)
+        {
+            if (go.Tier is < 1 or > 15)
+            {
+                continue;
+            }
+
+            byFingerprint[(go.GameObjectType, go.PDefUp, go.MDefUp, go.PAtkNegative, go.VendorCost)] = go.Tier;
+        }
+
+        foreach (var go in GameObjectDataDb.Values)
+        {
+            if (!NeedsInferredTier(go))
+            {
+                continue;
+            }
+
+            go.Tier = byFingerprint.GetValueOrDefault(
+                (go.GameObjectType, go.PDefUp, go.MDefUp, go.PAtkNegative, go.VendorCost), 1);
+        }
+    }
+
+    private static bool NeedsInferredTier(SphGameObject go)
+    {
+        if (go.Tier >= 1 || go.ObjectKind is GameObjectKind.Monster or GameObjectKind.Pref)
+        {
+            return false;
+        }
+
+        var set = go.SuffixSetName;
+        return !string.IsNullOrWhiteSpace(set) && set.Length == 1 && set != "-";
+    }
+
+    /// <summary>
+    ///     Armor pref 18 is stored as <see cref="ItemSuffix.Elements"/>. The shared
+    ///     chestplate/shield locale map also names that slot Elements_Old.
+    /// </summary>
+    private static void AliasChestplateElementsPref()
+    {
+        if (!SuffixDataDb.TryGetValue(Pref_Chestplate, out var prefs)
+            || !prefs.TryGetValue(ItemSuffix.Elements, out var elements))
+        {
+            return;
+        }
+
+        prefs.TryAdd(ItemSuffix.Elements_Old, elements);
     }
 
     private static void LoadLocalisationData()

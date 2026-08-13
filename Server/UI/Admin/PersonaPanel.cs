@@ -83,6 +83,7 @@ public partial class PersonaPanel : PanelContainer
     private TextureRect? background;
     private ItemDetailsPopupHost? popupHost;
     private InventoryPanel? inventoryPanel;
+    private AdminSlotItemTools? itemTools;
     private readonly Dictionary<BelongingSlot, Control> slotPanels = new();
     private readonly Dictionary<BelongingSlot, TextureRect> slotIcons = new();
     private readonly Dictionary<BelongingSlot, ColorRect> slotUnmetBgs = new();
@@ -95,6 +96,19 @@ public partial class PersonaPanel : PanelContainer
     {
         popupHost = host;
         inventoryPanel?.SetPopupHost(host);
+        foreach (var hit in slotPanels.Values)
+        {
+            if (hit is AdminItemSlot slot)
+            {
+                slot.PopupHost = host;
+            }
+        }
+    }
+
+    public void SetItemTools(AdminSlotItemTools tools)
+    {
+        itemTools = tools;
+        inventoryPanel?.SetItemTools(tools);
     }
 
     public override void _Ready()
@@ -252,9 +266,12 @@ public partial class PersonaPanel : PanelContainer
 
     private (Control Hit, TextureRect Icon, ColorRect UnmetBg) CreateOverlaySlot(Rect2I rect, BelongingSlot slot)
     {
-        var hit = new Control
+        var hit = new AdminItemSlot
         {
             Name = $"Slot_{slot}",
+            Slot = slot,
+            GetClientId = () => selectedClientId,
+            PopupHost = popupHost,
             MouseFilter = MouseFilterEnum.Stop,
             FocusMode = FocusModeEnum.None
         };
@@ -272,15 +289,19 @@ public partial class PersonaPanel : PanelContainer
         hit.AddChild(unmetBg);
         var icon = CreateSlotIcon(null);
         hit.AddChild(icon);
+        hit.Icon = icon;
         WireSlotInput(hit, slot);
         return (hit, icon, unmetBg);
     }
 
     private (Control Hit, TextureRect Icon, ColorRect UnmetBg) CreateMutatorSlot(BelongingSlot slot)
     {
-        var hit = new Control
+        var hit = new AdminItemSlot
         {
             Name = $"Slot_{slot}",
+            Slot = slot,
+            GetClientId = () => selectedClientId,
+            PopupHost = popupHost,
             CustomMinimumSize = new Vector2(MutatorSize, MutatorSize),
             MouseFilter = MouseFilterEnum.Stop,
             FocusMode = FocusModeEnum.None
@@ -291,6 +312,7 @@ public partial class PersonaPanel : PanelContainer
         hit.AddChild(unmetBg);
         var icon = CreateSlotIcon(AdminUiAtlas.MutatorPlaceholder);
         hit.AddChild(icon);
+        hit.Icon = icon;
         WireSlotInput(hit, slot);
         return (hit, icon, unmetBg);
     }
@@ -315,11 +337,27 @@ public partial class PersonaPanel : PanelContainer
         hit.MouseEntered += () => OnSlotMouseEntered(hit, slot);
         hit.MouseExited += () => OnSlotMouseExited(slot);
         hit.GuiInput += inputEvent => OnSlotGuiInput(hit, slot, inputEvent);
+        if (hit is AdminItemSlot adminSlot)
+        {
+            adminSlot.ContextRequested += OnSlotContextRequested;
+        }
+    }
+
+    private void OnSlotContextRequested(BelongingSlot slot, Vector2 globalPos)
+    {
+        if (selectedClientId is null || itemTools is null)
+        {
+            return;
+        }
+
+        itemTools.OpenMenu(selectedClientId.Value, slot, globalPos);
     }
 
     private void OnSlotMouseEntered(Control hit, BelongingSlot slot)
     {
-        if (popupHost is null || !TryGetSlotItemId(slot, out var itemId))
+        if (GetViewport().GuiIsDragging()
+            || popupHost is null
+            || !TryGetSlotItemId(slot, out var itemId))
         {
             return;
         }

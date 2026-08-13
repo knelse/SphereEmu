@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Godot;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -54,8 +56,10 @@ public partial class InventoryPanel : PanelContainer
 
     private ushort? selectedClientId;
     private ItemDetailsPopupHost? popupHost;
-    private Label? moneyLabel;
+    private AdminSlotItemTools? itemTools;
+    private LineEdit? moneyEdit;
     private int? lastMoney;
+    private bool suppressMoneyCallbacks;
     private readonly Dictionary<BelongingSlot, Control> slotPanels = new();
     private readonly Dictionary<BelongingSlot, TextureRect> slotIcons = new();
     private readonly Dictionary<BelongingSlot, ColorRect> slotUnmetBgs = new();
@@ -64,7 +68,19 @@ public partial class InventoryPanel : PanelContainer
 
     private static readonly Color UnmetSlotBg = new(0.72f, 0.08f, 0.08f, 0.55f);
 
-    public void SetPopupHost(ItemDetailsPopupHost host) => popupHost = host;
+    public void SetPopupHost(ItemDetailsPopupHost host)
+    {
+        popupHost = host;
+        foreach (var hit in slotPanels.Values)
+        {
+            if (hit is AdminItemSlot slot)
+            {
+                slot.PopupHost = host;
+            }
+        }
+    }
+
+    public void SetItemTools(AdminSlotItemTools tools) => itemTools = tools;
 
     public override void _Ready()
     {
@@ -129,25 +145,34 @@ public partial class InventoryPanel : PanelContainer
             slotUnmetBgs[slot] = unmetBg;
         }
 
-        moneyLabel = new Label
+        moneyEdit = new LineEdit
         {
-            Text = string.Empty,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            MouseFilter = MouseFilterEnum.Ignore,
-            ClipText = true
+            Alignment = HorizontalAlignment.Center,
+            ContextMenuEnabled = false,
+            SelectAllOnFocus = true,
+            CaretBlink = true,
+            MouseFilter = MouseFilterEnum.Stop,
+            Editable = false
         };
-        moneyLabel.AnchorLeft = MoneyFieldLeft / DesignWidth;
-        moneyLabel.AnchorTop = MoneyFieldTop / DesignHeight;
-        moneyLabel.AnchorRight = MoneyFieldRight / DesignWidth;
-        moneyLabel.AnchorBottom = MoneyFieldBottom / DesignHeight;
-        moneyLabel.OffsetLeft = 0;
-        moneyLabel.OffsetTop = 0;
-        moneyLabel.OffsetRight = 0;
-        moneyLabel.OffsetBottom = 0;
-        moneyLabel.AddThemeColorOverride("font_color", MoneyTextColor);
-        moneyLabel.AddThemeFontSizeOverride("font_size", 14);
-        frame.AddChild(moneyLabel);
+        moneyEdit.AnchorLeft = MoneyFieldLeft / DesignWidth;
+        moneyEdit.AnchorTop = MoneyFieldTop / DesignHeight;
+        moneyEdit.AnchorRight = MoneyFieldRight / DesignWidth;
+        moneyEdit.AnchorBottom = MoneyFieldBottom / DesignHeight;
+        moneyEdit.OffsetLeft = 0;
+        moneyEdit.OffsetTop = 0;
+        moneyEdit.OffsetRight = 0;
+        moneyEdit.OffsetBottom = 0;
+        moneyEdit.AddThemeColorOverride("font_color", MoneyTextColor);
+        moneyEdit.AddThemeColorOverride("font_placeholder_color", MoneyTextColor);
+        moneyEdit.AddThemeColorOverride("caret_color", MoneyTextColor);
+        moneyEdit.AddThemeFontSizeOverride("font_size", 14);
+        var moneyStyle = new StyleBoxEmpty();
+        moneyEdit.AddThemeStyleboxOverride("normal", moneyStyle);
+        moneyEdit.AddThemeStyleboxOverride("focus", moneyStyle);
+        moneyEdit.AddThemeStyleboxOverride("read_only", moneyStyle);
+        moneyEdit.TextSubmitted += _ => CommitMoney();
+        moneyEdit.FocusExited += CommitMoney;
+        frame.AddChild(moneyEdit);
 
         ClientStateEvents.CharacterChanged += OnCharacterChanged;
         ClientStateEvents.RosterChanged += OnRosterChanged;
@@ -201,9 +226,12 @@ public partial class InventoryPanel : PanelContainer
     private (Control Hit, TextureRect Icon, ColorRect UnmetBg) CreateOverlaySlot(Rect2I rect, BelongingSlot slot)
     {
         // Invisible hit target — Panel themes can draw unwanted chrome on hover/focus.
-        var hit = new Control
+        var hit = new AdminItemSlot
         {
             Name = $"Slot_{slot}",
+            Slot = slot,
+            GetClientId = () => selectedClientId,
+            PopupHost = popupHost,
             MouseFilter = MouseFilterEnum.Stop,
             FocusMode = FocusModeEnum.None
         };
@@ -233,6 +261,7 @@ public partial class InventoryPanel : PanelContainer
         hit.AddChild(unmetBg);
         var icon = CreateSlotIcon(null);
         hit.AddChild(icon);
+        hit.Icon = icon;
         WireSlotInput(hit, slot);
         return (hit, icon, unmetBg);
     }
@@ -242,11 +271,27 @@ public partial class InventoryPanel : PanelContainer
         hit.MouseEntered += () => OnSlotMouseEntered(hit, slot);
         hit.MouseExited += () => OnSlotMouseExited(slot);
         hit.GuiInput += inputEvent => OnSlotGuiInput(hit, slot, inputEvent);
+        if (hit is AdminItemSlot adminSlot)
+        {
+            adminSlot.ContextRequested += OnSlotContextRequested;
+        }
+    }
+
+    private void OnSlotContextRequested(BelongingSlot slot, Vector2 globalPos)
+    {
+        if (selectedClientId is null || itemTools is null)
+        {
+            return;
+        }
+
+        itemTools.OpenMenu(selectedClientId.Value, slot, globalPos);
     }
 
     private void OnSlotMouseEntered(Control hit, BelongingSlot slot)
     {
-        if (popupHost is null || !TryGetSlotItemId(slot, out var itemId))
+        if (GetViewport().GuiIsDragging()
+            || popupHost is null
+            || !TryGetSlotItemId(slot, out var itemId))
         {
             return;
         }
@@ -338,11 +383,12 @@ public partial class InventoryPanel : PanelContainer
 
     private void RefreshMoney(CharacterDbEntry? character)
     {
-        if (moneyLabel is null)
+        if (moneyEdit is null)
         {
             return;
         }
 
+        moneyEdit.Editable = character is not null;
         int? money = character?.Money;
         if (lastMoney == money)
         {
@@ -350,7 +396,62 @@ public partial class InventoryPanel : PanelContainer
         }
 
         lastMoney = money;
-        moneyLabel.Text = money is null ? string.Empty : $"{FormatMoney(money.Value)} t";
+        if (moneyEdit.HasFocus())
+        {
+            return;
+        }
+
+        suppressMoneyCallbacks = true;
+        moneyEdit.Text = money is null ? string.Empty : FormatMoney(money.Value);
+        suppressMoneyCallbacks = false;
+    }
+
+    private void CommitMoney()
+    {
+        if (suppressMoneyCallbacks || moneyEdit is null)
+        {
+            return;
+        }
+
+        if (selectedClientId is null)
+        {
+            moneyEdit.Text = string.Empty;
+            return;
+        }
+
+        if (!TryParseMoney(moneyEdit.Text, out var money))
+        {
+            moneyEdit.Text = lastMoney is null ? string.Empty : FormatMoney(lastMoney.Value);
+            return;
+        }
+
+        if (lastMoney == money)
+        {
+            moneyEdit.Text = FormatMoney(money);
+            return;
+        }
+
+        if (!AdminClientActions.SetMoney(selectedClientId.Value, money))
+        {
+            moneyEdit.Text = lastMoney is null ? string.Empty : FormatMoney(lastMoney.Value);
+            return;
+        }
+
+        lastMoney = money;
+        moneyEdit.Text = FormatMoney(money);
+    }
+
+    private static bool TryParseMoney(string text, out int money)
+    {
+        var cleaned = text.Trim();
+        if (cleaned.EndsWith("t", StringComparison.OrdinalIgnoreCase))
+        {
+            cleaned = cleaned[..^1].Trim();
+        }
+
+        cleaned = cleaned.Replace(" ", string.Empty).Replace(",", string.Empty);
+        return int.TryParse(cleaned, NumberStyles.Integer, CultureInfo.InvariantCulture, out money)
+               && money >= 0;
     }
 
     private static string FormatMoney(int amount)
@@ -378,7 +479,7 @@ public partial class InventoryPanel : PanelContainer
             result[0] = '-';
         }
 
-        return new string(result);
+        return $"{new string(result)} t";
     }
 
     private void RefreshSlotIcons(CharacterDbEntry? character)

@@ -2,7 +2,7 @@ using SuffixToLocaleMap = System.Collections.Generic.Dictionary<ItemSuffix, Suff
 
 public static class GameObjectDataHelper
 {
-    public static readonly HashSet<GameObjectType> MaterialsPowdersElixirs = new ()
+    public static readonly HashSet<GameObjectType> MaterialsPowdersElixirs = new()
     {
         GameObjectType.Flower,
         GameObjectType.Metal,
@@ -13,7 +13,7 @@ public static class GameObjectDataHelper
         GameObjectType.Elixir_Trap
     };
 
-    public static readonly HashSet<GameObjectType> RegularWeaponsAndArmor = new ()
+    public static readonly HashSet<GameObjectType> RegularWeaponsAndArmor = new()
     {
         GameObjectType.Crossbow, GameObjectType.Axe, GameObjectType.Sword, GameObjectType.Amulet,
         GameObjectType.Chestplate,
@@ -21,7 +21,7 @@ public static class GameObjectDataHelper
         GameObjectType.Pants, GameObjectType.Shield, GameObjectType.Boots, GameObjectType.Robe
     };
 
-    public static readonly HashSet<GameObjectType> WeaponsAndArmor = new ()
+    public static readonly HashSet<GameObjectType> WeaponsAndArmor = new()
     {
         GameObjectType.Amulet,
         GameObjectType.Chestplate,
@@ -50,20 +50,20 @@ public static class GameObjectDataHelper
         GameObjectType.Sword_Unique
     };
 
-    public static readonly HashSet<GameObjectType> Mantras = new ()
+    public static readonly HashSet<GameObjectType> Mantras = new()
     {
         GameObjectType.MantraBlack,
         GameObjectType.MantraWhite
     };
 
-    public static readonly HashSet<GameObjectType> AlchemyMaterials = new ()
+    public static readonly HashSet<GameObjectType> AlchemyMaterials = new()
     {
         GameObjectType.Metal,
         GameObjectType.Flower,
         GameObjectType.Mineral
     };
 
-    public static readonly HashSet<GameObjectType> Powders = new ()
+    public static readonly HashSet<GameObjectType> Powders = new()
     {
         GameObjectType.Powder,
         GameObjectType.Powder_Area,
@@ -74,7 +74,7 @@ public static class GameObjectDataHelper
     };
 
     // public static bool firstTypeRolled = false;
-    public static HashSet<ItemSuffix> RingSuffixes = new ()
+    public static HashSet<ItemSuffix> RingSuffixes = new()
     {
         ItemSuffix.Health,
         ItemSuffix.Ether,
@@ -96,7 +96,7 @@ public static class GameObjectDataHelper
         ItemSuffix.Water
     };
 
-    public static GameObjectKind GetKindBySphereName (string sphName)
+    public static GameObjectKind GetKindBySphereName(string sphName)
     {
         switch (sphName)
         {
@@ -127,7 +127,7 @@ public static class GameObjectDataHelper
         }
     }
 
-    public static GameObjectType GetTypeBySphereName (string sphName)
+    public static GameObjectType GetTypeBySphereName(string sphName)
     {
         switch (sphName)
         {
@@ -236,7 +236,7 @@ public static class GameObjectDataHelper
         }
     }
 
-    public static readonly SuffixToLocaleMap SuffixesAmuletBracelet = new ()
+    public static readonly SuffixToLocaleMap SuffixesAmuletBracelet = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -262,7 +262,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesSwordAxes = new ()
+    public static readonly SuffixToLocaleMap SuffixesSwordAxes = new()
     {
         [ItemSuffix.Exhaustion] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
@@ -314,7 +314,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(1178, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCrossbows = new ()
+    public static readonly SuffixToLocaleMap SuffixesCrossbows = new()
     {
         [ItemSuffix.Exhaustion] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
@@ -364,7 +364,7 @@ public static class GameObjectDataHelper
         //     new SuffixValueWithLocale(152, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
     };
 
-    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPants = new ()
+    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPants = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -384,7 +384,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesChestplatesShields = new ()
+    public static readonly SuffixToLocaleMap SuffixesChestplatesShields = new()
     {
         [ItemSuffix.Valor] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
@@ -462,7 +462,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(1226, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRobes = new ()
+    public static readonly SuffixToLocaleMap SuffixesRobes = new()
     {
         [ItemSuffix.Value] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
@@ -532,7 +532,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(1214, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRings = new ()
+    public static readonly SuffixToLocaleMap SuffixesRings = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -578,7 +578,7 @@ public static class GameObjectDataHelper
 
     // ---------- CORRECT MAPPING (legacy left for compatibility)
 
-    public static readonly SuffixToLocaleMap SuffixesAmuletBraceletActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesAmuletBraceletActual = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -604,7 +604,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "урона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesSwordAxesActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesSwordAxesActual = new()
     {
         [ItemSuffix.Exhaustion] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
@@ -648,7 +648,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCrossbowsActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesCrossbowsActual = new()
     {
         [ItemSuffix.Exhaustion] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
@@ -690,7 +690,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPantsActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPantsActual = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -710,7 +710,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesChestplatesShieldsActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesChestplatesShieldsActual = new()
     {
         [ItemSuffix.Valor] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
@@ -768,7 +768,23 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(26, new Dictionary<Locale, string> { [Locale.Russian] = "стихий (нов.)" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRobesActual = new ()
+    /// <summary>
+    ///     Chestplate prefs only go 0–24; id 18 is стихий. Shields add 25/26 as extra
+    ///     element variants, so they keep <see cref="SuffixesChestplatesShieldsActual"/>.
+    /// </summary>
+    public static readonly SuffixToLocaleMap SuffixesChestplatesActual = CreateChestplateSuffixMap();
+
+    private static SuffixToLocaleMap CreateChestplateSuffixMap()
+    {
+        var map = new SuffixToLocaleMap(SuffixesChestplatesShieldsActual);
+        map.Remove(ItemSuffix.Elements_Old);
+        map.Remove(ItemSuffix.Elements_New);
+        map[ItemSuffix.Elements] =
+            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" });
+        return map;
+    }
+
+    public static readonly SuffixToLocaleMap SuffixesRobesActual = new()
     {
         [ItemSuffix.Value] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
@@ -820,7 +836,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(23, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRingsActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesRingsActual = new()
     {
         [ItemSuffix.Durability] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
@@ -860,7 +876,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesQuestActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesQuestActual = new()
     {
         [ItemSuffix.Adventure] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "Приключения" }),
@@ -884,7 +900,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "Мира" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCastleActual = new ()
+    public static readonly SuffixToLocaleMap SuffixesCastleActual = new()
     {
         [ItemSuffix.Eradication_Old] =
             new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "искоренения (ст.)" }),
@@ -928,7 +944,7 @@ public static class GameObjectDataHelper
             new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "проклятия" })
     };
 
-    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMap = new ()
+    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMap = new()
     {
         [GameObjectType.Amulet] = SuffixesAmuletBracelet,
         [GameObjectType.Bracelet] = SuffixesAmuletBracelet,
@@ -946,7 +962,7 @@ public static class GameObjectDataHelper
         [GameObjectType.Ring] = SuffixesRings
     };
 
-    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMapActual = new ()
+    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMapActual = new()
     {
         [GameObjectType.Amulet] = SuffixesAmuletBraceletActual,
         [GameObjectType.Bracelet] = SuffixesAmuletBraceletActual,
@@ -958,7 +974,7 @@ public static class GameObjectDataHelper
         [GameObjectType.Belt] = SuffixesBootsGlovesBeltsHelmetsPantsActual,
         [GameObjectType.Helmet] = SuffixesBootsGlovesBeltsHelmetsPantsActual,
         [GameObjectType.Pants] = SuffixesBootsGlovesBeltsHelmetsPantsActual,
-        [GameObjectType.Chestplate] = SuffixesChestplatesShieldsActual,
+        [GameObjectType.Chestplate] = SuffixesChestplatesActual,
         [GameObjectType.Shield] = SuffixesChestplatesShieldsActual,
         [GameObjectType.Robe] = SuffixesRobesActual,
         [GameObjectType.Ring] = SuffixesRingsActual,
@@ -987,14 +1003,14 @@ public static class GameObjectDataHelper
         [GameObjectType.Sword_Unique] = SuffixesCastleActual
     };
 
-    public static ItemSuffix GetSuffixById (this SuffixToLocaleMap map, int val)
+    public static ItemSuffix GetSuffixById(this SuffixToLocaleMap map, int val)
     {
         return map.All(x => x.Value.value != val)
             ? ItemSuffix.None
             : map.First(x => x.Value.value == val).Key;
     }
 
-    public static string ToRomanTierLiteral (this SphGameObject gameObject)
+    public static string ToRomanTierLiteral(this SphGameObject gameObject)
     {
         if (!gameObject.IsTierVisible())
         {

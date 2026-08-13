@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LiteDB;
 using SphServer.Sphere.Game;
 
@@ -76,6 +77,8 @@ public class ItemDbEntry
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
     public Dictionary<string, object> ContentsData { get; set; } = new();
+    public Guild RequiredGuild { get; set; }
+    public int RequiredGuildRankMinusOne { get; set; }
 
     public bool IsTierVisible()
     {
@@ -146,42 +149,150 @@ public class ItemDbEntry
             or BelongingSlot.Inventory_10;
     }
 
-    public bool IsValidForSlot(BelongingSlot slot)
+    private static readonly BelongingSlot[] RingSlots =
+        [BelongingSlot.Ring_1, BelongingSlot.Ring_2, BelongingSlot.Ring_3, BelongingSlot.Ring_4];
+
+    private static readonly BelongingSlot[] BraceletSlots =
+        [BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight];
+
+    private static readonly BelongingSlot[] SpecialSlots =
+    [
+        BelongingSlot.Special_5, BelongingSlot.Special_6,
+        BelongingSlot.Special_7, BelongingSlot.Special_8, BelongingSlot.Special_9
+    ];
+
+    private static readonly BelongingSlot[] CrystalSlots =
+    [
+        BelongingSlot.Special_1, BelongingSlot.Special_2,
+        BelongingSlot.Special_3, BelongingSlot.Special_4
+    ];
+
+    private static readonly BelongingSlot[] KeySlots = [BelongingSlot.Key_1, BelongingSlot.Key_2];
+
+    private static readonly BelongingSlot[] WeaponSlots = [BelongingSlot.MainHand];
+
+    private static readonly HashSet<GameObjectType> InventoryOnlyTypes =
+    [
+        GameObjectType.Flag,
+        GameObjectType.Castle_Stone,
+        GameObjectType.Letter,
+        GameObjectType.Lottery
+    ];
+
+    /// <summary>
+    ///     Wear / persona slots each item type may occupy. Inventory cells accept everything
+    ///     and are not listed here. Guild-kind catalog items also use <see cref="BelongingSlot.Guild"/>.
+    /// </summary>
+    private static readonly Dictionary<GameObjectType, BelongingSlot[]> TypeToSlots = new()
     {
-        if (slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
-            or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
-            or BelongingSlot.Inventory_7 or BelongingSlot.Inventory_8 or BelongingSlot.Inventory_9
-            or BelongingSlot.Inventory_10)
+        [GameObjectType.Helmet] = [BelongingSlot.Helmet],
+        [GameObjectType.Helmet_Premium] = [BelongingSlot.Helmet],
+        [GameObjectType.Helmet_Quest] = [BelongingSlot.Helmet],
+        [GameObjectType.Helmet_Unique] = [BelongingSlot.Helmet],
+        [GameObjectType.Amulet] = [BelongingSlot.Amulet],
+        [GameObjectType.Amulet_Unique] = [BelongingSlot.Amulet],
+        [GameObjectType.Shield] = [BelongingSlot.Shield],
+        [GameObjectType.Shield_Quest] = [BelongingSlot.Shield],
+        [GameObjectType.Shield_Unique] = [BelongingSlot.Shield],
+        [GameObjectType.Chestplate] = [BelongingSlot.Chestplate],
+        [GameObjectType.Chestplate_Quest] = [BelongingSlot.Chestplate],
+        [GameObjectType.Chestplate_Unique] = [BelongingSlot.Chestplate],
+        [GameObjectType.Robe] = [BelongingSlot.Chestplate],
+        [GameObjectType.Robe_Quest] = [BelongingSlot.Chestplate],
+        [GameObjectType.Robe_Unique] = [BelongingSlot.Chestplate],
+        [GameObjectType.Gloves] = [BelongingSlot.Gloves],
+        [GameObjectType.Gloves_Quest] = [BelongingSlot.Gloves],
+        [GameObjectType.Gloves_Unique] = [BelongingSlot.Gloves],
+        [GameObjectType.Belt] = [BelongingSlot.Belt],
+        [GameObjectType.Belt_Quest] = [BelongingSlot.Belt],
+        [GameObjectType.Belt_Unique] = [BelongingSlot.Belt],
+        [GameObjectType.Bracelet] = BraceletSlots,
+        [GameObjectType.Bracelet_Unique] = BraceletSlots,
+        [GameObjectType.Ring] = RingSlots,
+        [GameObjectType.Ring_Special] = RingSlots,
+        [GameObjectType.Ring_Unique] = RingSlots,
+        [GameObjectType.Pants] = [BelongingSlot.Pants],
+        [GameObjectType.Pants_Quest] = [BelongingSlot.Pants],
+        [GameObjectType.Pants_Unique] = [BelongingSlot.Pants],
+        [GameObjectType.Boots] = [BelongingSlot.Boots],
+        [GameObjectType.Boots_Quest] = [BelongingSlot.Boots],
+        [GameObjectType.Boots_Unique] = [BelongingSlot.Boots],
+        [GameObjectType.Guild] = [BelongingSlot.Guild],
+        [GameObjectType.Guild_Bag] = [BelongingSlot.Guild, BelongingSlot.Backpack],
+        [GameObjectType.Sword] = WeaponSlots,
+        [GameObjectType.Sword_Quest] = WeaponSlots,
+        [GameObjectType.Sword_Unique] = WeaponSlots,
+        [GameObjectType.Axe] = WeaponSlots,
+        [GameObjectType.Axe_Quest] = WeaponSlots,
+        [GameObjectType.Crossbow] = WeaponSlots,
+        [GameObjectType.Crossbow_Quest] = WeaponSlots,
+        [GameObjectType.Fists] = WeaponSlots,
+        [GameObjectType.Map] = [BelongingSlot.MapBook],
+        [GameObjectType.Scroll] = [BelongingSlot.RecipeBook],
+        [GameObjectType.MantraBlack] = [BelongingSlot.MantraBook],
+        [GameObjectType.MantraWhite] = [BelongingSlot.MantraBook],
+        [GameObjectType.Key] = KeySlots,
+        [GameObjectType.Castle_Crystal] = CrystalSlots,
+        [GameObjectType.Crystal] = CrystalSlots,
+        [GameObjectType.Special] = SpecialSlots,
+        [GameObjectType.Special_Crusader_Gapclose] = SpecialSlots,
+        [GameObjectType.Special_Inquisitor_Teleport] = SpecialSlots,
+        [GameObjectType.Special_Archmage_Teleport] = SpecialSlots,
+        [GameObjectType.Special_MasterOfSteel_Whirlwind] = SpecialSlots,
+        [GameObjectType.Special_Druid_Wolf] = SpecialSlots,
+        [GameObjectType.Special_Thief_Steal] = SpecialSlots,
+        [GameObjectType.Special_MasterOfSteel_Suicide] = SpecialSlots,
+        [GameObjectType.Special_Necromancer_Flyer] = SpecialSlots,
+        [GameObjectType.Special_Necromancer_Resurrection] = SpecialSlots,
+        [GameObjectType.Special_Necromancer_Zombie] = SpecialSlots,
+        [GameObjectType.Special_Bandier_Flag] = SpecialSlots,
+        [GameObjectType.Special_Bandier_DispelControl] = SpecialSlots,
+        [GameObjectType.Special_Bandier_Fortify] = SpecialSlots
+    };
+
+    /// <summary>
+    ///     Whether the admin picker should hide types that cannot go in this slot.
+    ///     Inventory cells stay unfiltered; any other slot with no mapped types shows nothing.
+    /// </summary>
+    public static bool HasSlotTypeFilter(BelongingSlot slot) => !IsInventorySlot(slot);
+
+    public static bool IsTypeValidForSlot(GameObjectType type, BelongingSlot slot)
+    {
+        if (IsInventorySlot(slot))
         {
             return true;
         }
 
-        return (GameObjectType is GameObjectType.Amulet or GameObjectType.Amulet_Unique && slot is BelongingSlot.Amulet)
-               || (GameObjectType is GameObjectType.Belt or GameObjectType.Belt_Quest or GameObjectType.Belt_Unique &&
-                   slot is BelongingSlot.Belt)
-               || (GameObjectType is GameObjectType.Boots or GameObjectType.Boots_Quest
-                       or GameObjectType.Boots_Unique &&
-                   slot is BelongingSlot.Boots)
-               || (GameObjectType is GameObjectType.Bracelet or GameObjectType.Bracelet_Unique &&
-                   slot is BelongingSlot.BraceletLeft or BelongingSlot.BraceletRight)
-               || (GameObjectType is GameObjectType.Chestplate or GameObjectType.Chestplate_Quest
-                   or GameObjectType.Chestplate_Unique && slot is BelongingSlot.Chestplate)
-               || (GameObjectType is GameObjectType.Helmet or GameObjectType.Helmet_Premium
-                   or GameObjectType.Helmet_Quest
-                   or GameObjectType.Helmet_Unique && slot is BelongingSlot.Helmet)
-               || (GameObjectType is GameObjectType.Gloves or GameObjectType.Gloves_Quest
-                   or GameObjectType.Gloves_Unique && slot is BelongingSlot.Gloves)
-               || (GameObjectType is GameObjectType.Pants or GameObjectType.Pants_Quest
-                       or GameObjectType.Pants_Unique &&
-                   slot is BelongingSlot.Pants)
-               || (GameObjectType is GameObjectType.Ring or GameObjectType.Ring_Special or GameObjectType.Ring_Unique &&
-                   slot is BelongingSlot.Ring_1 or BelongingSlot.Ring_2 or BelongingSlot.Ring_3
-                       or BelongingSlot.Ring_4)
-               || (GameObjectType is GameObjectType.Robe or GameObjectType.Robe_Quest or GameObjectType.Robe_Unique &&
-                   slot is BelongingSlot.Chestplate)
-               || (GameObjectType is GameObjectType.Shield or GameObjectType.Shield_Quest
-                   or GameObjectType.Shield_Unique && slot is BelongingSlot.Shield);
+        if (InventoryOnlyTypes.Contains(type))
+        {
+            return false;
+        }
+
+        return TypeToSlots.TryGetValue(type, out var slots) && slots.Contains(slot);
     }
+
+    public static bool IsAllowedInSlot(GameObjectType type, GameObjectKind kind, BelongingSlot slot)
+    {
+        if (IsInventorySlot(slot))
+        {
+            return true;
+        }
+
+        if (InventoryOnlyTypes.Contains(type))
+        {
+            return false;
+        }
+
+        if (TypeToSlots.TryGetValue(type, out var slots))
+        {
+            return slots.Contains(slot);
+        }
+
+        return slot is BelongingSlot.Guild && kind is GameObjectKind.Guild;
+    }
+
+    public bool IsValidForSlot(BelongingSlot slot) =>
+        IsAllowedInSlot(GameObjectType, ObjectKind, slot);
 
     /// <summary>
     ///     Rebuild title/degree reqs from the base game object + suffix rules.

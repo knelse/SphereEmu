@@ -1,0 +1,10 @@
+---
+description: Never use an em dash anywhere
+alwaysApply: true
+---
+
+# No em dash
+
+Never use an em dash (U+2014, `—`) anywhere: UI strings, comments, commit messages, docs, or chat.
+
+Use a comma, colon, parentheses, or a regular hyphen-minus (`-`) instead.

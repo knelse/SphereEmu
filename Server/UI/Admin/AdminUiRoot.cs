@@ -24,8 +24,11 @@ public partial class AdminUiRoot : Control
     private Button? kickButton;
     private Button? banButton;
     private Button? teleportButton;
+    private Button? resetCharacterButton;
     private TeleportDestinationWindow? teleportWindow;
+    private ConfirmationDialog? resetCharacterDialog;
     private ItemDetailsPopupHost? itemDetailsHost;
+    private AdminSlotItemTools? slotItemTools;
 
     public override void _Ready()
     {
@@ -120,6 +123,11 @@ public partial class AdminUiRoot : Control
         itemDetailsHost.SetLocale(locale);
         personaPanel.SetPopupHost(itemDetailsHost);
 
+        slotItemTools = new AdminSlotItemTools { Name = "AdminSlotItemTools" };
+        AddChild(slotItemTools);
+        slotItemTools.SetLocale(locale);
+        personaPanel.SetItemTools(slotItemTools);
+
         // Right of PlayerMenu: admin actions
         var adminActions = new VBoxContainer
         {
@@ -147,10 +155,29 @@ public partial class AdminUiRoot : Control
         teleportButton.Pressed += OnTeleportPressed;
         adminActions.AddChild(teleportButton);
 
+        resetCharacterButton = new Button { Text = "⚠️ Reset Character ⚠️", Disabled = true };
+        ApplyYellowTint(resetCharacterButton);
+        resetCharacterButton.Pressed += OnResetCharacterPressed;
+        adminActions.AddChild(resetCharacterButton);
+
         layout.AddChild(adminActions);
 
         teleportWindow = new TeleportDestinationWindow { Name = "TeleportDestinationWindow" };
         AddChild(teleportWindow);
+
+        resetCharacterDialog = new ConfirmationDialog
+        {
+            Name = "ResetCharacterDialog",
+            Title = "Reset Character",
+            MinSize = new Vector2I(460, 180),
+            Exclusive = true,
+            Unresizable = true,
+            OkButtonText = "Confirm",
+            CancelButtonText = "Cancel"
+        };
+        resetCharacterDialog.Confirmed += OnResetCharacterConfirmed;
+        AddChild(resetCharacterDialog);
+        resetCharacterDialog.GetLabel().AutowrapMode = TextServer.AutowrapMode.WordSmart;
 
         statsPanel.SetLocale(locale);
         statsPanel.SetSelectedClient(null);
@@ -159,6 +186,27 @@ public partial class AdminUiRoot : Control
 
         ClientStateEvents.CharacterChanged += OnClientStateCharacterChanged;
         ClientStateEvents.RosterChanged += OnClientStateRosterChanged;
+    }
+
+    public override void _Input(InputEvent inputEvent)
+    {
+        if (inputEvent is not InputEventMouseButton { Pressed: true })
+        {
+            return;
+        }
+
+        var focused = GetViewport()?.GuiGetFocusOwner();
+        if (focused is not LineEdit edit)
+        {
+            return;
+        }
+
+        if (edit.GetGlobalRect().HasPoint(edit.GetGlobalMousePosition()))
+        {
+            return;
+        }
+
+        edit.ReleaseFocus();
     }
 
     public override void _ExitTree()
@@ -228,6 +276,7 @@ public partial class AdminUiRoot : Control
 
         statsPanel?.SetLocale(locale);
         itemDetailsHost?.SetLocale(locale);
+        slotItemTools?.SetLocale(locale);
     }
 
     private void OnClientSelected(ushort clientId)
@@ -265,6 +314,11 @@ public partial class AdminUiRoot : Control
         {
             teleportButton.Disabled = !hasCharacter;
         }
+
+        if (resetCharacterButton is not null)
+        {
+            resetCharacterButton.Disabled = !hasCharacter;
+        }
     }
 
     private void OnKickPressed()
@@ -300,6 +354,69 @@ public partial class AdminUiRoot : Control
         }
 
         teleportWindow.OpenForClient(selectedClientId.Value);
+    }
+
+    private void OnResetCharacterPressed()
+    {
+        if (selectedClientId is null || resetCharacterDialog is null)
+        {
+            return;
+        }
+
+        var client = ActiveClients.Get(selectedClientId.Value);
+        var character = client?.CurrentCharacter;
+        if (client is null || character is null)
+        {
+            return;
+        }
+
+        var login = client.GetLogin() ?? "?";
+        resetCharacterDialog.DialogText =
+            $"Reset character {character.Name} (player {login})?\n" +
+            "This will clear all inventory and all persona slots, put money to 0, " +
+            "reset levels and xp to 1/1 0/50, reset all stats to base, etc.";
+        resetCharacterDialog.PopupCentered();
+    }
+
+    private void OnResetCharacterConfirmed()
+    {
+        if (selectedClientId is null)
+        {
+            return;
+        }
+
+        statsPanel?.DiscardPendingStatEdits();
+        AdminClientActions.ResetCharacter(selectedClientId.Value);
+    }
+
+    private static void ApplyYellowTint(Button button)
+    {
+        button.AddThemeStyleboxOverride("normal", YellowButtonStyle(new Color(0.95f, 0.82f, 0.18f, 0.9f)));
+        button.AddThemeStyleboxOverride("hover", YellowButtonStyle(new Color(1f, 0.9f, 0.28f, 0.95f)));
+        button.AddThemeStyleboxOverride("pressed", YellowButtonStyle(new Color(0.82f, 0.68f, 0.1f, 0.95f)));
+        button.AddThemeStyleboxOverride("disabled", YellowButtonStyle(new Color(0.55f, 0.5f, 0.28f, 0.45f)));
+        button.AddThemeStyleboxOverride("focus", YellowButtonStyle(new Color(0.95f, 0.82f, 0.18f, 0.9f)));
+        button.AddThemeColorOverride("font_color", Colors.Black);
+        button.AddThemeColorOverride("font_hover_color", Colors.Black);
+        button.AddThemeColorOverride("font_pressed_color", Colors.Black);
+        button.AddThemeColorOverride("font_focus_color", Colors.Black);
+        button.AddThemeColorOverride("font_disabled_color", new Color(0f, 0f, 0f, 0.45f));
+    }
+
+    private static StyleBoxFlat YellowButtonStyle(Color bg)
+    {
+        return new StyleBoxFlat
+        {
+            BgColor = bg,
+            ContentMarginLeft = 8,
+            ContentMarginRight = 8,
+            ContentMarginTop = 6,
+            ContentMarginBottom = 6,
+            CornerRadiusTopLeft = 4,
+            CornerRadiusTopRight = 4,
+            CornerRadiusBottomLeft = 4,
+            CornerRadiusBottomRight = 4
+        };
     }
 
     private void ToggleGender()

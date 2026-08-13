@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\SphEntities\SphEntities.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <Reference Include="LiteDB">
             <HintPath>..\..\.references\LiteDB.dll</HintPath>
         </Reference>

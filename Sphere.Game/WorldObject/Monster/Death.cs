@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using SphServer.Client;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Logger;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -19,6 +20,14 @@ public partial class Monster
 		var xpAwarded = GetExperienceForKill();
 		SphLogger.Info(
 			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} XP.");
+
+		var client = hit.AttackerClient;
+		if (client is { CurrentCharacter: { } character } && xpAwarded > 0
+			&& character.AwardExperience((uint)xpAwarded))
+		{
+			NetworkedStatsUpdater.Update(character);
+			client.SaveCharacter();
+		}
 
 		MonsterKilled?.Invoke(this, hit, outcome);
 		PerformDeath(hit.AttackerId);
