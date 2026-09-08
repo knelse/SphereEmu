@@ -129,6 +129,7 @@ public enum ObjectType : ushort
     SpecialGuild = 976, // sometimes different
     SpecialAbility = 977, // same type for specialization itself
     SpecialAbilitySteal = 979, // same type for specialization itself
+    GuildSpecialization = 982, // full item_guild layout (first granted ability)
     ArmorHelmetPremium = 990,
     MantraWhite = 1000,
     MantraBlack = 1001,

@@ -51,6 +51,42 @@ internal static class PacketEventClassifier
             true);
     }
 
+    public static PacketEventClassification ClassifyServerCharacterSelectInit()
+    {
+        return new PacketEventClassification(
+            "server.character_select.init",
+            1.0,
+            "CommonPackets.CharacterSelectStartData",
+            true);
+    }
+
+    public static PacketEventClassification ClassifyServerCharacterListEntry()
+    {
+        return new PacketEventClassification(
+            "server.character_select.entry",
+            1.0,
+            "0x6C charlist slot (ToCharacterListByteArray / CreateNewCharacterData)",
+            true);
+    }
+
+    public static PacketEventClassification ClassifyServerStatUpdate()
+    {
+        return new PacketEventClassification(
+            "server.stats.update",
+            1.0,
+            "08C0 stat field stream (NetworkedStatsUpdater)",
+            true);
+    }
+
+    public static PacketEventClassification ClassifyServerMoveEntity()
+    {
+        return new PacketEventClassification(
+            "server.entity.position",
+            1.0,
+            "server_move_entity (coords then entity_id)",
+            true);
+    }
+
     public static PacketEventClassification ClassifyFalseBoundary(int reservedLow, bool reservedBit28)
     {
         var reservedBit = reservedBit28 ? 1 : 0;
@@ -146,6 +182,9 @@ internal static class PacketEventClassifier
             "server.protocol.keepalive_pong" => PacketTypes.SERVER_PING_6_SEC,
             "server.protocol.ping_6s" => PacketTypes.SERVER_PING_6_SEC,
             "server.protocol.ping_15s" => PacketTypes.SERVER_PING_15_SEC,
+            "server.character_select.init" => PacketTypes.SERVER_CHARACTER_SELECT_SCREEN_INIT,
+            "server.character_select.entry" => PacketTypes.SERVER_CHARACTER_SELECT_SCREEN_CONTENTS,
+            "server.stats.update" => PacketTypes.SERVER_STAT_UPDATE,
             "server.entity.despawn" => PacketTypes.SERVER_DESPAWN_ENTITY,
             "server.entity.position" => PacketTypes.SERVER_MOVE_ENTITY,
             _ when eventName.StartsWith("server.entity.spawn.", StringComparison.Ordinal)

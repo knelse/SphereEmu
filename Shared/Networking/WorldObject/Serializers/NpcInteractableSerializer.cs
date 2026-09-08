@@ -121,9 +121,7 @@ public class NpcInteractableSerializer(NpcInteractable npcInteractable)
 
     private void WriteItemPacketToStream(ushort clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
     {
-        var actualObjectType = itemDbEntry.ObjectType == ObjectType.Unknown
-            ? itemDbEntry.GameObjectType.GetPacketObjectType()
-            : itemDbEntry.ObjectType;
+        var actualObjectType = itemDbEntry.WireObjectType;
         var packetParts = PacketPart.LoadDefinedPartsFromFile(actualObjectType);
         PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0);
         var localId = SphereClient.GetLocalObjectId(clientId, itemDbEntry.Id);

@@ -53,7 +53,7 @@ public partial class AdminItemSelectWindow : Window
     {
         targetClientId = clientId;
         targetSlot = slot;
-        Title = $"Change item — {slot}";
+        Title = $"Change item - {slot}";
         CapturePreselect(clientId, slot);
         if (!Visible)
         {
@@ -104,6 +104,7 @@ public partial class AdminItemSelectWindow : Window
         typeList.ItemSelected += OnTypeSelected;
         guildList.ItemSelected += OnGuildSelected;
         nameList.ItemSelected += OnNameSelected;
+        nameList.ItemActivated += OnNameActivated;
         suffixList.ItemSelected += OnSuffixSelected;
 
         var buttons = new HBoxContainer
@@ -142,7 +143,7 @@ public partial class AdminItemSelectWindow : Window
         buttons.AddChild(toastPanel);
 
         applyButton = new Button { Text = "Apply", Disabled = true };
-        applyButton.Pressed += TryApply;
+        applyButton.Pressed += () => TryApply();
         buttons.AddChild(applyButton);
 
         var closeButton = new Button { Text = "Close" };
@@ -274,9 +275,9 @@ public partial class AdminItemSelectWindow : Window
             return;
         }
 
-        if (SelectedGroup() is { IsGuilds: true } && go.RequiredGuild is not Guild.None)
+        if (SelectedGroup() is { IsGuilds: true } && TryCatalogGuild(go, out var preselectGuild))
         {
-            var guildIndex = guildFilters.IndexOf(go.RequiredGuild);
+            var guildIndex = guildFilters.IndexOf(preselectGuild);
             if (guildIndex >= 0 && guildList is not null)
             {
                 guildList.Select(guildIndex);
@@ -336,10 +337,16 @@ public partial class AdminItemSelectWindow : Window
         if (group is { } selected && catalogByGroup!.TryGetValue(selected, out var gos))
         {
             var allowed = gos.Where(AllowedInTargetSlot);
-            if (selected.IsGuilds && SelectedFilterGuild() is { } guild)
+            if (selected.IsGuilds)
             {
-                allowed = allowed.Where(go =>
-                    go.RequiredGuild == guild || go.RequiredGuild is Guild.None);
+                allowed = targetSlot is BelongingSlot.Guild
+                    ? allowed.Where(IsMembershipEmblem)
+                    : allowed.Where(go => !IsMembershipEmblem(go));
+                if (SelectedFilterGuild() is { } guild)
+                {
+                    allowed = allowed.Where(go =>
+                        TryCatalogGuild(go, out var itemGuild) && itemGuild == guild);
+                }
             }
 
             var labeled = allowed
@@ -471,21 +478,30 @@ public partial class AdminItemSelectWindow : Window
         return ItemDbEntry.CreateFromGameObject(clone);
     }
 
-    private void TryApply()
+    private void OnNameActivated(long _)
+    {
+        if (TryApply())
+        {
+            Hide();
+        }
+    }
+
+    private bool TryApply()
     {
         if (targetClientId is null || SelectedGameObject() is not { } go)
         {
-            return;
+            return false;
         }
 
         if (!SelectionCanBeEquipped())
         {
             ShowToast("Requirements unmet");
-            return;
+            return false;
         }
 
         HideToast();
         AdminClientActions.ReplaceSlotItem(targetClientId.Value, targetSlot, go.GameId, SelectedSuffix());
+        return true;
     }
 
     private void UpdateApplyEnabled()
@@ -597,9 +613,9 @@ public partial class AdminItemSelectWindow : Window
         guildFilters.Clear();
         guildList.Clear();
         var present = GuildsPresentForSlot();
-        var characterGuild = targetClientId is null
-            ? Guild.None
-            : ActiveClients.Get(targetClientId.Value)?.CurrentCharacter?.Guild ?? Guild.None;
+        var character = targetClientId is null
+            ? null
+            : ActiveClients.Get(targetClientId.Value)?.CurrentCharacter;
         foreach (var guild in GuildCatalog.LetterOrder)
         {
             if (!present.Contains(guild))
@@ -607,9 +623,16 @@ public partial class AdminItemSelectWindow : Window
                 continue;
             }
 
+            var canJoin = character is null
+                          || GuildCatalog.CanJoin(guild, character.TitleMinusOne, character.DegreeMinusOne);
+            if (character is not null && !canJoin && character.Guild != guild)
+            {
+                continue;
+            }
+
             guildFilters.Add(guild);
             guildList.AddItem(CharacterLocaleText.GuildName(guild, locale));
-            if (characterGuild != guild)
+            if (!canJoin)
             {
                 guildList.SetItemCustomFgColor(guildFilters.Count - 1, UnmetText);
             }
@@ -637,16 +660,49 @@ public partial class AdminItemSelectWindow : Window
 
         foreach (var go in gos)
         {
-            if (go.RequiredGuild is Guild.None || !AllowedInTargetSlot(go))
+            if (!AllowedInTargetSlot(go) || !TryCatalogGuild(go, out var guild))
             {
                 continue;
             }
 
-            present.Add(go.RequiredGuild);
+            if (targetSlot is BelongingSlot.Guild)
+            {
+                if (!IsMembershipEmblem(go))
+                {
+                    continue;
+                }
+            }
+            else if (IsMembershipEmblem(go))
+            {
+                continue;
+            }
+
+            present.Add(guild);
         }
 
         return present;
     }
+
+    private static bool TryCatalogGuild(SphGameObject go, out Guild guild)
+    {
+        if (go.RequiredGuild is not Guild.None)
+        {
+            guild = go.RequiredGuild;
+            return true;
+        }
+
+        if (go.GameObjectType is GameObjectType.Guild)
+        {
+            return GuildCatalog.TryParseMembershipGameId(go.GameId, out guild, out _);
+        }
+
+        guild = Guild.None;
+        return false;
+    }
+
+    private static bool IsMembershipEmblem(SphGameObject go) =>
+        go.GameObjectType is GameObjectType.Guild
+        && GuildCatalog.TryParseMembershipGameId(go.GameId, out _, out _);
 
     private Guild? SelectedFilterGuild()
     {

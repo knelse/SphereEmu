@@ -17,12 +17,13 @@ public partial class Monster
 	/// <summary>Overrides must call base to keep subscribers and the despawn working.</summary>
 	protected virtual void OnMonsterKilled(in DamageEvent hit, in DamageOutcome outcome)
 	{
-		var xpAwarded = GetExperienceForKill();
+		var client = hit.AttackerClient;
+		var character = client?.CurrentCharacter;
+		var xpAwarded = GetExperienceForKill(character);
 		SphLogger.Info(
 			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} XP.");
 
-		var client = hit.AttackerClient;
-		if (client is { CurrentCharacter: { } character } && xpAwarded > 0
+		if (client is not null && character is not null && xpAwarded > 0
 			&& character.AwardExperience((uint)xpAwarded))
 		{
 			NetworkedStatsUpdater.Update(character);

@@ -135,6 +135,7 @@ public static class ObjectTypeToModelNameMap
             ObjectType.SpecialGuild => string.Empty,
             ObjectType.SpecialAbility => string.Empty,
             ObjectType.SpecialAbilitySteal => string.Empty,
+            ObjectType.GuildSpecialization => string.Empty,
             ObjectType.ArmorHelmetPremium => "st_shlem",
             ObjectType.MantraWhite => "mg_mantra",
             ObjectType.MantraBlack => "mg_mantra",

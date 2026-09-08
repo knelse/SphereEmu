@@ -428,6 +428,10 @@ public partial class EntityRadarControl
                 x = i.X;
                 z = i.Z;
                 return true;
+            case EntityMovePacket move:
+                x = move.X;
+                z = move.Z;
+                return true;
             case CastleChest cc:
                 if (cc.ActionType is not (EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN))
                 {

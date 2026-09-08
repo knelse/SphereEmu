@@ -702,6 +702,8 @@ public static class ObjectPacketTools
             ObjectType.SeedCastle => "Замковое семя",
             ObjectType.SpecialGuild => "Гильдия",
             ObjectType.SpecialAbility => "Спецспособность",
+            ObjectType.SpecialAbilitySteal => "Спецспособность",
+            ObjectType.GuildSpecialization => "Специализация",
             ObjectType.TokenIsland => "Жетон телепортации на ЛО",
             ObjectType.TokenMultiuse => "Жетон телепортации",
             ObjectType.TradeLicense => "Торговая лицензия",

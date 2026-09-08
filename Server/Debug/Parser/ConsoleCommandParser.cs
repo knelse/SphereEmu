@@ -96,28 +96,15 @@ public partial class ConsoleCommandParser
         sphereClient.MaybeQueueNetworkPacketSend(response);
     }
 
+    public bool IsRegistered(string? input)
+    {
+        return TrySplitCommand(input, out var command, out _) && RegisteredCommands.ContainsKey(command);
+    }
+
     public ConsoleCommandParseResult Parse(string? input)
     {
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            return ConsoleCommandParseResult.ERROR;
-        }
-
-        if (!input.StartsWith('/'))
-        {
-            return ConsoleCommandParseResult.ERROR;
-        }
-
-        var split = input[1..].Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        if (split.Length == 0)
-        {
-            return ConsoleCommandParseResult.ERROR;
-        }
-
-        var command = split[0];
-        var args = split.Length > 1 ? split[1] : string.Empty;
-
-        if (!RegisteredCommands.TryGetValue(command, out var value))
+        if (!TrySplitCommand(input, out var command, out var args) ||
+            !RegisteredCommands.TryGetValue(command, out var value))
         {
             return ConsoleCommandParseResult.ERROR;
         }
@@ -133,6 +120,26 @@ public partial class ConsoleCommandParser
         }
 
         return ConsoleCommandParseResult.OK;
+    }
+
+    private static bool TrySplitCommand(string? input, out string command, out string args)
+    {
+        command = string.Empty;
+        args = string.Empty;
+        if (string.IsNullOrWhiteSpace(input) || !input.StartsWith('/'))
+        {
+            return false;
+        }
+
+        var split = input[1..].Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        if (split.Length == 0)
+        {
+            return false;
+        }
+
+        command = split[0].ToLowerInvariant();
+        args = split.Length > 1 ? split[1] : string.Empty;
+        return true;
     }
 
     private void UpdateStats(string args)

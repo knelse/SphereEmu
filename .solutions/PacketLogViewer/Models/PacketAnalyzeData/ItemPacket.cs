@@ -31,14 +31,14 @@ public class ItemPacket : PacketAnalyzeData
 
     public override string DisplayValue => GetDisplayValue();
 
-    public ItemPacket (List<PacketPart> parts) : base(parts)
+    public ItemPacket(List<PacketPart> parts) : base(parts)
     {
         var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof (EntityActionType), actionTypeVal)
-                ? (EntityActionType) actionTypeVal
+            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
+                ? (EntityActionType)actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
@@ -116,13 +116,14 @@ public class ItemPacket : PacketAnalyzeData
         }
     }
 
-    private string GetDisplayValue ()
+    private string GetDisplayValue()
     {
         var typeName = $"({Enum.GetName(ObjectType)!})";
         string tier;
-        var displayName =
-            HasGameId
-                ? SphObjectDb.GameObjectDataDb[GameObjectId].Localisation[Locale.Russian]
+        var displayName = HasGameId && GameObject is not null
+            ? GameObject.Localisation[Locale.Russian]
+            : HasGameId
+                ? $"#{GameObjectId}"
                 : string.IsNullOrEmpty(OverrideType)
                     ? ObjectPacketTools.GetFriendlyNameByObjectType(ObjectType)
                     : OverrideType;
@@ -181,6 +182,6 @@ public class ItemPacket : PacketAnalyzeData
         }
 
         return $"{name,-44}ID: {Id:X4}  GMID: {GameObjectId.ToString(),5}  " +
-               $"Type: {(int) ObjectType,4} {typeName,-24} Suff: N/A  Bag: {ContainerId:X4}{pa}";
+               $"Type: {(int)ObjectType,4} {typeName,-24} Suff: N/A  Bag: {ContainerId:X4}{pa}";
     }
 }

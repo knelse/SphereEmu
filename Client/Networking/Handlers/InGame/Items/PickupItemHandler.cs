@@ -194,7 +194,7 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode((ushort)item.Id,
-            (int)item.ObjectType, item.GameId, ItemRecordEncoder.SuffixWireFor(item), ByteSwap(localId)));
+            (int)item.WireObjectType, item.GameId, ItemRecordEncoder.SuffixWireFor(item), ByteSwap(localId)));
 
         var oldContainer = item.ParentContainerId is null
             ? null

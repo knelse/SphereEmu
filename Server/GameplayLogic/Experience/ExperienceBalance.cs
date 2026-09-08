@@ -50,6 +50,28 @@ public class ExperienceBalance : IValidatableBalanceConfig
         return MultiplierPerMissionType.TryGetValue(missionType, out var mult) ? mult : 0.0;
     }
 
+    /// <summary>
+    ///     New-player overlevel kill bonus. Active while
+    ///     <c>max(degree-1, title-1) &lt;= 6</c>. Same-or-lower mobs stay at 1.0;
+    ///     each level above the displayed player level adds 10%, capped at +55%.
+    /// </summary>
+    public static double GetNewPlayerKillXpMultiplier(int titleMinusOne, int degreeMinusOne, int mobLevel)
+    {
+        if (Math.Max(titleMinusOne, degreeMinusOne) > 6)
+        {
+            return 1.0;
+        }
+
+        var playerLevel = Math.Max(titleMinusOne, degreeMinusOne) + 1;
+        var levelDiff = mobLevel - playerLevel;
+        if (levelDiff <= 0)
+        {
+            return 1.0;
+        }
+
+        return 1.0 + Math.Min(0.55, 0.10 * levelDiff);
+    }
+
     public void Validate(string configPath)
     {
         if (GlobalXpMultiplier < 0)

@@ -4,15 +4,16 @@ using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
+public class MoveItemHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         // ideally we'd support swapping items but client simply doesn't send anything if slot is occupied
         // var clientID_1 = ReceiveBuffer[11];
@@ -24,13 +25,13 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
 
         var character = clientConnection.GetSelectedCharacter()!;
         SphLogger.Info(
-            $"Move to another slot request: from [{Enum.GetName(typeof (BelongingSlot), oldSlotId)}] " +
-            $"to [{Enum.GetName(typeof (BelongingSlot), newSlotId)}]");
-        var targetSlot = Enum.IsDefined(typeof (BelongingSlot), newSlotId)
-            ? (BelongingSlot) newSlotId
+            $"Move to another slot request: from [{Enum.GetName(typeof(BelongingSlot), oldSlotId)}] " +
+            $"to [{Enum.GetName(typeof(BelongingSlot), newSlotId)}]");
+        var targetSlot = Enum.IsDefined(typeof(BelongingSlot), newSlotId)
+            ? (BelongingSlot)newSlotId
             : BelongingSlot.Unknown;
-        var oldSlot = Enum.IsDefined(typeof (BelongingSlot), oldSlotId)
-            ? (BelongingSlot) oldSlotId
+        var oldSlot = Enum.IsDefined(typeof(BelongingSlot), oldSlotId)
+            ? (BelongingSlot)oldSlotId
             : BelongingSlot.Unknown;
 
         var returnToOldSlot = false;
@@ -68,7 +69,7 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
                 var name = item.Localization.GetValueOrDefault(Locale.Russian, "?");
                 clientConnection.MaybeScheduleNetworkPacketSend(
                     MessageEncoder.EncodeToSendFromServer($"Нельзя использовать {name}, {unmet}", "GM",
-                        (int) PublicChatType.GM_Outgoing));
+                        (int)PublicChatType.GM_Outgoing));
             }
         }
 
@@ -78,10 +79,10 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
         }
 
         SphLogger.Info($"Item found: {globalOldItemId}");
-        var newSlot_1 = (byte) ((newSlotRaw & 0b11111) << 3);
-        var newSlot_2 = (byte) (((globalOldItemId & 0b1111) << 4) + (newSlotRaw >> 5));
-        var oldItem_1 = (byte) ((globalOldItemId >> 4) & 0b11111111);
-        var oldItem_2 = (byte) (globalOldItemId >> 12);
+        var newSlot_1 = (byte)((newSlotRaw & 0b11111) << 3);
+        var newSlot_2 = (byte)(((globalOldItemId & 0b1111) << 4) + (newSlotRaw >> 5));
+        var oldItem_1 = (byte)((globalOldItemId >> 4) & 0b11111111);
+        var oldItem_2 = (byte)(globalOldItemId >> 12);
 
         var moveResult = new byte[]
         {
@@ -93,6 +94,11 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
         {
             character.Items[targetSlot] = globalOldItemId;
             character.Items.Remove(oldSlot);
+            if (oldSlot == BelongingSlot.Guild || targetSlot == BelongingSlot.Guild)
+            {
+                character.SyncGuildFromWornEmblem();
+                GuildAbilityLoadout.Sync(character, clientConnection.MaybeScheduleNetworkPacketSend);
+            }
 
             if (character.RecalcCurrentStats())
             {

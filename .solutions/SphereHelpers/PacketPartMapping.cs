@@ -123,6 +123,7 @@ public static class PacketPartMapping
         ObjectType.SpecialGuild,
         ObjectType.SpecialAbility,
         ObjectType.SpecialAbilitySteal,
+        ObjectType.GuildSpecialization,
         ObjectType.ArmorHelmetPremium,
         ObjectType.MantraWhite,
         ObjectType.MantraBlack
@@ -256,6 +257,7 @@ public static class PacketPartMapping
         ObjectType.SpecialGuild,
         ObjectType.SpecialAbility,
         ObjectType.SpecialAbilitySteal,
+        ObjectType.GuildSpecialization,
         ObjectType.ArmorHelmetPremium,
         ObjectType.MantraWhite,
         ObjectType.MantraBlack,
@@ -548,6 +550,14 @@ public static class PacketPartMapping
                         case ObjectType.Mutator:
                             packetName = "item_mutator_special";
                             break;
+                        case ObjectType.SpecialGuild:
+                        case ObjectType.GuildSpecialization:
+                            packetName = "item_guild";
+                            break;
+                        case ObjectType.SpecialAbility:
+                        case ObjectType.SpecialAbilitySteal:
+                            packetName = "item_guild_ability";
+                            break;
                         case ObjectType.Other:
                             packetName = "entity_character";
                             comment = $"NEW PLAYER -- [{entId:X4}]";
@@ -756,9 +766,10 @@ public static class ObjectTypeToPacketNameMap
         [ObjectType.QuestWeaponSword] = "", // generic item packet
         [ObjectType.QuestWeaponAxe] = "", // generic item packet
         [ObjectType.QuestWeaponCrossbow] = "item_quest_crossbow", // generic item packet
-        [ObjectType.SpecialGuild] = "", // item_guild
-        [ObjectType.SpecialAbility] = "",
-        [ObjectType.SpecialAbilitySteal] = "",
+        [ObjectType.SpecialGuild] = "item_guild",
+        [ObjectType.SpecialAbility] = "item_guild_ability",
+        [ObjectType.SpecialAbilitySteal] = "item_guild_ability",
+        [ObjectType.GuildSpecialization] = "item_guild",
         [ObjectType.ArmorHelmetPremium] = "", // generic item packet
         [ObjectType.MantraWhite] = "", //item_mantra_counted
         [ObjectType.MantraBlack] = "" //item_mantra_counted

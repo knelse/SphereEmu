@@ -126,25 +126,11 @@ public static class SphObjectDb
                 GenerateGameObjectLocale();
                 LoadGameObjectLocalization();
 
-                using var gameDataFile = File.OpenWrite(gameDataJsonPath);
-                using var gameDataWriter = new StreamWriter(gameDataFile, Win1251Encoding);
-                var gameDataJson = JsonSerializer.Serialize(GameObjectDataDb, JsonOptions);
-                gameDataWriter.Write(gameDataJson);
-
-                using var localeContentFile = File.OpenWrite(localizationContentJsonPath);
-                using var localeContentWriter = new StreamWriter(localeContentFile, Win1251Encoding);
-                var localeContentJson = JsonSerializer.Serialize(LocalisationContent, JsonOptions);
-                localeContentWriter.Write(localeContentJson);
-
-                using var objectLocaleFile = File.OpenWrite(objectLocalizationJsonPath);
-                using var objectLocaleWriter = new StreamWriter(objectLocaleFile, Win1251Encoding);
-                var objectLocaleJson = JsonSerializer.Serialize(ObjectNameToLocalizationMap, JsonOptions);
-                objectLocaleWriter.Write(objectLocaleJson);
-
-                using var suffixFile = File.OpenWrite(suffixDataJsonPath);
-                using var suffixWriter = new StreamWriter(suffixFile, Win1251Encoding);
-                var suffixJson = JsonSerializer.Serialize(SuffixDataDb, JsonOptions);
-                suffixWriter.Write(suffixJson);
+                // File.OpenWrite does not truncate; a shorter rewrite leaves leftover JSON and breaks parse.
+                WriteJson(gameDataJsonPath, GameObjectDataDb);
+                WriteJson(localizationContentJsonPath, LocalisationContent);
+                WriteJson(objectLocalizationJsonPath, ObjectNameToLocalizationMap);
+                WriteJson(suffixDataJsonPath, SuffixDataDb);
             }
 
             else
@@ -190,6 +176,11 @@ public static class SphObjectDb
             Console.WriteLine($"InnerException StackTrace: {ex.InnerException?.StackTrace}");
             throw;
         }
+    }
+
+    private static void WriteJson<T>(string path, T value)
+    {
+        File.WriteAllText(path, JsonSerializer.Serialize(value, JsonOptions), Win1251Encoding);
     }
 
     private static string GetConfigDirectory(string configPath)

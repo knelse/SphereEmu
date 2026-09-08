@@ -6,7 +6,7 @@ public static class GameObjectDb
 {
     public static readonly Dictionary<int, SphGameObject> Db = SphObjectDb.GameObjectDataDb;
 
-    public static ObjectType GetPacketObjectType (this GameObjectType gameObjectType)
+    public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
     {
         return gameObjectType switch
         {
@@ -65,7 +65,7 @@ public static class GameObjectDb
             GameObjectType.Castle_Stone => ObjectType.SeedCastle,
             GameObjectType.Guild_Bag => ObjectType.Sack,
             GameObjectType.Flag => ObjectType.Unknown,
-            GameObjectType.Guild => ObjectType.Unknown,
+            GameObjectType.Guild => ObjectType.SpecialGuild,
             GameObjectType.Letter => ObjectType.Unknown,
             GameObjectType.Lottery => ObjectType.Unknown,
             GameObjectType.MantraBlack => ObjectType.MantraBlack,
@@ -84,20 +84,20 @@ public static class GameObjectDb
             GameObjectType.Powder_Event => ObjectType.PowderSingleTarget,
             GameObjectType.Powder_Guild => ObjectType.PowderSingleTarget,
             GameObjectType.Scroll => ObjectType.ScrollLegend,
-            GameObjectType.Special => ObjectType.Unknown,
-            GameObjectType.Special_Crusader_Gapclose => ObjectType.Unknown,
-            GameObjectType.Special_Inquisitor_Teleport => ObjectType.Unknown,
-            GameObjectType.Special_Archmage_Teleport => ObjectType.Unknown,
-            GameObjectType.Special_MasterOfSteel_Whirlwind => ObjectType.Unknown,
-            GameObjectType.Special_Druid_Wolf => ObjectType.Unknown,
-            GameObjectType.Special_Thief_Steal => ObjectType.Unknown,
-            GameObjectType.Special_MasterOfSteel_Suicide => ObjectType.Unknown,
-            GameObjectType.Special_Necromancer_Flyer => ObjectType.Unknown,
-            GameObjectType.Special_Necromancer_Resurrection => ObjectType.Unknown,
-            GameObjectType.Special_Necromancer_Zombie => ObjectType.Unknown,
-            GameObjectType.Special_Bandier_Flag => ObjectType.Unknown,
-            GameObjectType.Special_Bandier_DispelControl => ObjectType.Unknown,
-            GameObjectType.Special_Bandier_Fortify => ObjectType.Unknown,
+            GameObjectType.Special => ObjectType.SpecialAbility,
+            GameObjectType.Special_Crusader_Gapclose => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Inquisitor_Teleport => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Archmage_Teleport => ObjectType.GuildSpecialization,
+            GameObjectType.Special_MasterOfSteel_Whirlwind => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Druid_Wolf => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Thief_Steal => ObjectType.SpecialAbilitySteal,
+            GameObjectType.Special_MasterOfSteel_Suicide => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Necromancer_Flyer => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Necromancer_Resurrection => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Necromancer_Zombie => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Bandier_Flag => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Bandier_DispelControl => ObjectType.GuildSpecialization,
+            GameObjectType.Special_Bandier_Fortify => ObjectType.GuildSpecialization,
             GameObjectType.Key => ObjectType.Key,
             GameObjectType.Map => ObjectType.Map,
             GameObjectType.Ear_String => ObjectType.EarString,

@@ -43,6 +43,7 @@ public partial class PacketLogViewerMainWindow
     internal static IConfigurationRoot AppConfig;
 
     public static readonly LiteDatabase PacketDatabase;
+    public static readonly string PacketDatabasePath;
 
     public static readonly ILiteCollection<StoredPacket> PacketCollection;
 
@@ -83,16 +84,41 @@ public partial class PacketLogViewerMainWindow
     static PacketLogViewerMainWindow()
     {
         AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
-        PacketDatabase = new LiteDatabase(AppConfig.GetConnectionString("LiteDbPacketCollection"));
+        PacketDatabasePath = ResolvePacketDatabasePath();
+        PacketDatabase = new LiteDatabase($"Filename={PacketDatabasePath};Connection=shared;");
         PacketDefinitionPath = Path.Combine(AppConfig.GetSection("Settings").GetValue<string>("ClonedRepoPath"), "Sphere.PacketDefinitions");
         Directory.CreateDirectory(PacketDefinitionPath);
         PacketCollection = PacketDatabase.GetCollection<StoredPacket>("Packets");
+    }
+
+    private static string ResolvePacketDatabasePath()
+    {
+        var fromArgs = App.ParseDatabasePath(Environment.GetCommandLineArgs().Skip(1).ToArray());
+        if (!string.IsNullOrWhiteSpace(fromArgs))
+        {
+            App.PacketDatabaseOverride = Path.GetFullPath(fromArgs);
+            return App.PacketDatabaseOverride;
+        }
+
+        var connection = AppConfig.GetConnectionString("LiteDbPacketCollection") ?? string.Empty;
+        const string filenameKey = "Filename=";
+        var start = connection.IndexOf(filenameKey, StringComparison.OrdinalIgnoreCase);
+        if (start >= 0)
+        {
+            start += filenameKey.Length;
+            var end = connection.IndexOf(';', start);
+            var file = end >= 0 ? connection[start..end] : connection[start..];
+            return Path.GetFullPath(file.Trim());
+        }
+
+        return Path.GetFullPath(connection);
     }
 
     public PacketLogViewerMainWindow()
     {
         InitializeComponent();
         RegisterBsonMapperForBrush();
+        Title = $"PacketLogViewer - {Path.GetFileName(PacketDatabasePath)}";
         ApplyStartWindowDimensionsFromConfig();
         ApplyStartWindowPosition();
 
@@ -668,23 +694,25 @@ public partial class PacketLogViewerMainWindow
         // might not be great
         PacketCollection.EnsureIndex(x => x.Timestamp);
 
-        var packets = PacketCollection.Query().Where(x => x.Favorite).OrderByDescending(x => x.Timestamp)
-            .Limit(100).ToList();
-        if (packets is null)
+        List<StoredPacket> packets;
+        if (App.PacketDatabaseOverride is not null)
         {
-            MessageBox.Show("Packets to load (full) are null");
-            return;
+            packets = PacketCollection.Query().OrderBy(x => x.Timestamp).ToList();
         }
-
-        packets.AddRange(PacketCollection.Query().OrderByDescending(x => x.Timestamp)
-            .Limit(100).ToList());
+        else
+        {
+            packets = PacketCollection.Query().Where(x => x.Favorite).OrderByDescending(x => x.Timestamp)
+                .Limit(100).ToList();
+            packets.AddRange(PacketCollection.Query().OrderByDescending(x => x.Timestamp)
+                .Limit(100).ToList());
+            packets.Sort((a, b) => a.Timestamp.CompareTo(b.Timestamp));
+        }
 
         if (!packets.Any())
         {
             MessageBox.Show("No full packets to load");
+            return;
         }
-
-        packets.Sort((a, b) => a.Timestamp.CompareTo(b.Timestamp));
 
         for (var i = 0; i < packets.Count; i++)
         {
@@ -732,8 +760,17 @@ public partial class PacketLogViewerMainWindow
                     "\n----------------------------------------------------------------------------------";
             }
 
-            MainView.ClientStatePanel.ContentPreview.Text = packetContents + "\n" + PacketAnalyzer.GetTextOutputForPacket(bytes) +
-                                  "----------------------------------------------------------------------------------\n";
+            var extraPreview = PacketAnalyzer.GetTextOutputForPacket(bytes);
+            if (string.IsNullOrWhiteSpace(extraPreview) ||
+                knownAnalyzedParts.Any(x => x.DisplayValue == extraPreview.Trim()))
+            {
+                MainView.ClientStatePanel.ContentPreview.Text = packetContents;
+            }
+            else
+            {
+                MainView.ClientStatePanel.ContentPreview.Text = packetContents + "\n" + extraPreview +
+                                      "----------------------------------------------------------------------------------\n";
+            }
             var sphObjects = ObjectPacketTools.GetObjectsFromPacket(bytes);
             MainView.ClientStatePanel.ContentPreview.Text += sphObjects.Count > 0 ? ObjectPacketTools.GetTextOutput(sphObjects) : "";
         }

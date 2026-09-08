@@ -17,6 +17,7 @@
 18: pa
 19: ma
 20: is_invisible
+21: block_equip
 37: title_level
 38: degree_level
 39: karma_type
@@ -25,5 +26,8 @@
 42: degree_xp
 44: title_stats_available
 45: degree_stats_available
+46: gender
 47: clan_rank_type
+52: title_rebirth
+53: degree_rebirth
 57: money

@@ -50,6 +50,7 @@ public enum PacketTypes
     SERVER_DESPAWN_ENTITY,
     SERVER_NEW_INSTANCED_ZONE,
     SERVER_TELEPORT_PLAYER,
+    SERVER_STAT_UPDATE,
 
     UNKNOWN
 }
@@ -102,6 +103,10 @@ public static class PacketPartNames
     public const string TargetY = "target_y";
     public const string TargetZ = "target_z";
     public const string CharacterName = "character_name";
+    public const string CharListName = "name";
+    public const string LookType = "look_type";
+    public const string Title = "title";
+    public const string Degree = "degree";
     public const string ClanName = "clan_name";
     public const string ClanNameLength = "clan_name_length";
     public const string ExitX = "exit_x";
@@ -109,6 +114,9 @@ public static class PacketPartNames
     public const string ExitZ = "exit_z";
     public const string ExitAngle = "exit_angle";
     public const string CastleId = "castle_id";
+    public const string Opcode = "opcode";
+    public const string ClientIndex = "client_index";
+    public const string StatUpdate = "stat_update";
 }
 
 internal class SubpacketBytesWithOffset
@@ -239,6 +247,38 @@ internal static class PacketAnalyzer
                && content[18] == 0x07;
     }
 
+    /// <summary>
+    /// Character-select screen prelude (<c>CommonPackets.CharacterSelectStartData</c>).
+    /// Layout: len=0x52 | 2C 01 | ... | 08 40 80 ...
+    /// </summary>
+    internal static bool IsCharacterSelectInit(byte[] content)
+    {
+        return content.Length >= 13
+               && content[0] == 0x52
+               && content[1] == 0x00
+               && content.HasEqualElementsAs(ok_mark, 2)
+               && content[9] == 0x08
+               && content[10] == 0x40
+               && content[11] == 0x80;
+    }
+
+    /// <summary>
+    /// One character-select slot: existing char (<c>ToCharacterListByteArray</c>) or empty
+    /// (<c>CreateNewCharacterData</c>). Three of these are concatenated as the charlist payload.
+    /// Layout: len=0x6C | 2C 01 | ... | 08 40 60 | look 0x79/0x19.
+    /// </summary>
+    internal static bool IsCharacterListEntry(byte[] content)
+    {
+        return content.Length >= 13
+               && content[0] == 0x6C
+               && content[1] == 0x00
+               && content.HasEqualElementsAs(ok_mark, 2)
+               && content[9] == 0x08
+               && content[10] == 0x40
+               && content[11] == 0x60
+               && content[12] is 0x79 or 0x19;
+    }
+
     /// <summary>Matches <c>CommonPackets.FifteenSecondPing</c> (player index at bytes 7-8 varies).</summary>
     internal static bool IsServerFifteenSecondPing(byte[] content)
     {
@@ -313,10 +353,21 @@ internal static class PacketAnalyzer
             return string.Empty;
         }
 
+        // server_move_entity / 08C0 are already shown via AnalyzeResult DisplayValue.
+        if (EntityMoveParser.LooksLikeServerMoveEntity(contents, 0))
+        {
+            return string.Empty;
+        }
+
         if (contents.HasEqualElementsAs(ok_mark, 2))
         {
             // len_1 len_2 2c 01 00 sync_1 sync_2
             contents = contents[7..];
+        }
+
+        if (StatUpdateParser.LooksLikeStatUpdate(contents, 0))
+        {
+            return string.Empty;
         }
 
         var stream = new BitStream(contents);
@@ -435,6 +486,22 @@ internal static class PacketAnalyzer
                 PacketEventClassifier.ClassifyServerFifteenSecondPing());
         }
 
+        if (IsCharacterSelectInit(storedPacket.ContentBytes))
+        {
+            return FinalizeKnownProtocolPacket(storedPacket, "CHAR SELECT INIT",
+                PacketEventClassifier.ClassifyServerCharacterSelectInit(), hide: false);
+        }
+
+        if (IsCharacterListEntry(storedPacket.ContentBytes))
+        {
+            return FinalizeCharacterListEntry(storedPacket);
+        }
+
+        if (EntityMoveParser.LooksLikeServerMoveEntity(storedPacket.ContentBytes, 0))
+        {
+            return FinalizeServerMoveEntity(storedPacket);
+        }
+
         var allParts = new List<PacketPart>();
         var undefTypes = false;
         var sawResolvedEntity = false;
@@ -481,7 +548,33 @@ internal static class PacketAnalyzer
 
             fullStream.SeekBitOffset(initialBitOffset);
 
-            // Entity header: id(16) + reserved(2) + object_type(10) + reserved(1) + action_type(8) = 37 bits
+            if (StatUpdateParser.LooksLikeStatUpdate(storedPacket.ContentBytes, initialBitOffset))
+            {
+                var statParts = StatUpdateParser.Consume(fullStream, subPacketIndex, totalBits);
+                allParts.AddRange(statParts);
+                ConsiderClassification(ref bestClassification, PacketEventClassifier.ClassifyServerStatUpdate());
+                shouldHidePacket = false;
+                sawResolvedEntity = true;
+                falseBoundaryScanBudget = 0;
+                continue;
+            }
+
+            if (EntityMoveParser.LooksLikeEntityMove(storedPacket.ContentBytes, initialBitOffset, totalBits))
+            {
+                var moveId = EntityMoveParser.Read(storedPacket.ContentBytes, initialBitOffset, 16);
+                var moveParts = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(fullStream,
+                    "entity_move", subPacketIndex, $"ENTITY MOVES [{moveId:X4}]");
+                allParts.AddRange(moveParts);
+                ConsiderClassification(ref bestClassification,
+                    PacketEventClassifier.ClassifyServerEntity(ObjectType.Unknown, 0,
+                        EntityActionType.SET_POSITION, (byte)EntityActionType.SET_POSITION, true, false));
+                sawResolvedEntity = true;
+                falseBoundaryScanBudget = 0;
+                continue;
+            }
+
+            // Entity header: id(16) + reserved(2) + object_type(10) + bit28(1) + action_type(8) = 37 bits.
+            // Bit 28 is 0 for most types but 1 for SpecialGuild, Token, and a few others.
             if (fullStream.BitOffsetFromStart + 37 > totalBits)
             {
                 break;
@@ -492,11 +585,14 @@ internal static class PacketAnalyzer
             var objectTypeVal = fullStream.ReadUInt16(10);
             var reservedBit28 = fullStream.ReadBit().AsBool();
             var actionTypeVal = fullStream.ReadByte();
-            var headerValid = reservedLow == 0 && !reservedBit28;
-
             var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
                 ? (ObjectType)objectTypeVal
                 : ObjectType.Unknown;
+            var headerValid = reservedLow == 0
+                              && (!reservedBit28 || objectType != ObjectType.Unknown)
+                              && (objectType == ObjectType.Despawn
+                                  || EntityMoveParser.IsKnownEntityAction(actionTypeVal));
+
             var actionType = Enum.IsDefined(typeof(EntityActionType), (int)actionTypeVal)
                 ? (EntityActionType)actionTypeVal
                 : EntityActionType.UNDEF;
@@ -536,7 +632,8 @@ internal static class PacketAnalyzer
                     PacketEventClassifier.ClassifyServerEntity(objectType, objectTypeVal, actionType, actionTypeVal,
                         true, false));
             }
-            else if (EntityObjectTypes.Contains(objectType) || IsRecoverableEntityAction(actionType))
+            else if ((EntityObjectTypes.Contains(objectType) && actionType != EntityActionType.UNDEF)
+                     || IsRecoverableEntityAction(actionType))
             {
                 // Re-read past the validated header fields for optional spawn payload probing.
                 fullStream.ReadUInt16();
@@ -807,7 +904,7 @@ internal static class PacketAnalyzer
     }
 
     private static StoredPacket FinalizeKnownProtocolPacket(StoredPacket storedPacket, string headerComment,
-        PacketEventClassification classification)
+        PacketEventClassification classification, bool hide = true)
     {
         var allParts = new List<PacketPart>();
         var stream = new BitStream(storedPacket.ContentBytes);
@@ -820,8 +917,59 @@ internal static class PacketAnalyzer
         storedPacket.PacketParts = allParts;
         storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
         ApplyClassification(storedPacket, classification);
-        storedPacket.HiddenByDefaultServer = true;
-        storedPacket.HiddenByDefault = true;
+        storedPacket.HiddenByDefaultServer = hide;
+        storedPacket.HiddenByDefault = hide || storedPacket.HiddenByDefaultClient;
+        return storedPacket;
+    }
+
+    private static StoredPacket FinalizeServerMoveEntity(StoredPacket storedPacket)
+    {
+        var stream = new BitStream(storedPacket.ContentBytes);
+        var allParts = new List<PacketPart>();
+        var subPacketIndex = 1;
+        while (EntityMoveParser.LooksLikeServerMoveEntity(storedPacket.ContentBytes, (int)stream.BitOffsetFromStart))
+        {
+            var startOffset = stream.BitOffsetFromStart;
+            var entityId = EntityMoveParser.Read(storedPacket.ContentBytes,
+                (int)startOffset + 101, 16);
+            var parts = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(
+                stream, EntityMoveParser.ServerMoveEntityDefinition, subPacketIndex,
+                $"ENTITY MOVES [{entityId:X4}]", isSubpacket: false);
+            if (!parts.Any() || stream.BitOffsetFromStart <= startOffset)
+            {
+                break;
+            }
+
+            allParts.AddRange(parts);
+            subPacketIndex++;
+        }
+
+        storedPacket.PacketParts = allParts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        ApplyClassification(storedPacket, PacketEventClassifier.ClassifyServerMoveEntity());
+        RefreshHiddenByDefaultFlags(storedPacket);
+        AddPacketPartAnalyzeData(storedPacket);
+        return storedPacket;
+    }
+
+    private static StoredPacket FinalizeCharacterListEntry(StoredPacket storedPacket)
+    {
+        var stream = new BitStream(storedPacket.ContentBytes);
+        var parts = FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(
+            stream, "charlist_entry", 1, "CHAR LIST ENTRY", isSubpacket: false);
+        if (!parts.Any())
+        {
+            return FinalizeKnownProtocolPacket(storedPacket, "CHAR LIST ENTRY",
+                PacketEventClassifier.ClassifyServerCharacterListEntry(), hide: false);
+        }
+
+        storedPacket.PacketParts = parts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        storedPacket.ObjectType = ObjectType.Other;
+        ApplyClassification(storedPacket, PacketEventClassifier.ClassifyServerCharacterListEntry());
+        storedPacket.HiddenByDefaultServer = false;
+        storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient;
+        AddPacketPartAnalyzeData(storedPacket);
         return storedPacket;
     }
 
@@ -1042,6 +1190,16 @@ internal static class PacketAnalyzer
 
     private static PacketAnalyzeData GetAnalyzeDataForSubpacket(List<PacketPart> subpacket)
     {
+        if (StatUpdateParser.IsStatUpdateParts(subpacket))
+        {
+            return new StatUpdatePacket(subpacket);
+        }
+
+        if (EntityMoveParser.IsServerMoveParts(subpacket))
+        {
+            return new EntityMovePacket(subpacket);
+        }
+
         var result = new PacketAnalyzeData(subpacket);
         var outputPath = PacketLogViewerMainWindow.AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
         if (result.ObjectType is ObjectType.Monster or ObjectType.MonsterFlyer)
@@ -1321,8 +1479,9 @@ internal static class PacketAnalyzer
 
         else if (result.ObjectType is ObjectType.Other)
         {
-            // assume it's new character for now. This is likely very wrong
-            result = new CharacterPacket(subpacket);
+            result = subpacket.Any(x => x.Name == PacketPartNames.LookType)
+                ? new CharListEntryPacket(subpacket)
+                : new CharacterPacket(subpacket);
         }
 
         return result;

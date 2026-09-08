@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using BitStreams;
 using SphereHelpers.Extensions;
+using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
@@ -17,7 +18,7 @@ using static Stat;
 
 public static class NetworkedStatsUpdater
 {
-    public static void Update (CharacterDbEntry characterDbEntry)
+    public static void Update(CharacterDbEntry characterDbEntry)
     {
         var divider = 0b0001011;
         var fieldMarker7Bit = 0b01;
@@ -55,10 +56,13 @@ public static class NetworkedStatsUpdater
             [DegreeXp] = 0b101010,
             [TitleStatsAvailable] = 0b101100,
             [DegreeStatsAvailable] = 0b101101,
+            [Gender] = 0b101110,
+            [TitleRebirth] = 0b110100,
+            [DegreeRebirth] = 0b110101,
             [ClanRankType] = 0b101111,
             [Money] = 0b111001,
             [PA] = 0b010010,
-            [MA] = 0b010011
+            [MA] = 0b010011,
         };
 
         var characterFieldMap = new Dictionary<Stat, int>
@@ -79,15 +83,18 @@ public static class NetworkedStatsUpdater
             [Fire] = characterDbEntry.CurrentFire,
             [PD] = characterDbEntry.PDef,
             [MD] = characterDbEntry.MDef,
-            [TitleLevel] = characterDbEntry.TitleMinusOne,
-            [DegreeLevel] = characterDbEntry.DegreeMinusOne,
-            [KarmaType] = (int) characterDbEntry.Karma,
+            [TitleLevel] = characterDbEntry.TitleMinusOne % CharacterDataHelper.LevelsPerCycle,
+            [DegreeLevel] = characterDbEntry.DegreeMinusOne % CharacterDataHelper.LevelsPerCycle,
+            [KarmaType] = (int)characterDbEntry.Karma,
             [Karma] = characterDbEntry.KarmaCount,
-            [TitleXp] = (int) characterDbEntry.TitleXP,
-            [DegreeXp] = (int) characterDbEntry.DegreeXP,
+            [TitleXp] = (int)characterDbEntry.TitleXP,
+            [DegreeXp] = (int)characterDbEntry.DegreeXP,
             [TitleStatsAvailable] = characterDbEntry.AvailableTitleStats,
             [DegreeStatsAvailable] = characterDbEntry.AvailableDegreeStats,
-            [ClanRankType] = (int) characterDbEntry.ClanRank,
+            [Gender] = characterDbEntry.IsGenderFemale ? 1 : 0,
+            [TitleRebirth] = characterDbEntry.TitleMinusOne / CharacterDataHelper.LevelsPerCycle,
+            [DegreeRebirth] = characterDbEntry.DegreeMinusOne / CharacterDataHelper.LevelsPerCycle,
+            [ClanRankType] = (int)characterDbEntry.ClanRank,
             [Money] = characterDbEntry.Money,
             [PA] = characterDbEntry.PAtk,
             [MA] = characterDbEntry.MAtk
@@ -97,7 +104,7 @@ public static class NetworkedStatsUpdater
 
         stream.WriteBytes(
             [MajorByte(characterDbEntry.ClientIndex), MinorByte(characterDbEntry.ClientIndex), 0x08, 0xC0], 4, true);
-        stream.WriteUInt16((ushort) hpMaxMarker, 14);
+        stream.WriteUInt16((ushort)hpMaxMarker, 14);
         stream.WriteUInt16(characterDbEntry.MaxHP, 14);
 
         foreach (var (field, marker) in fieldMarkers)
@@ -113,9 +120,9 @@ public static class NetworkedStatsUpdater
                 _ => fieldMarker31Bit
             };
             var negativeBit = statValue < 0 ? 1 : 0;
-            var fieldSeparator = (ushort) ((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
+            var fieldSeparator = (ushort)((fieldLengthMarker << 14) + (negativeBit << 13) + (marker << 7) + divider);
             stream.WriteUInt16(fieldSeparator);
-            var valueBits = ObjectPacketTools.IntToBits((uint) statValueAbs, fieldLength);
+            var valueBits = ObjectPacketTools.IntToBits((uint)statValueAbs, fieldLength);
             stream.WriteBits(valueBits, fieldLength);
         }
 
@@ -128,7 +135,7 @@ public static class NetworkedStatsUpdater
         }
 
         client.MaybeQueueNetworkPacketSend(Packet.ToByteArray(stream.GetStreamData(), 3));
-        var updatedStats = string.Join (", ", characterFieldMap.Select (kv => $"{kv.Key}={kv.Value}"));
+        var updatedStats = string.Join(", ", characterFieldMap.Select(kv => $"{kv.Key}={kv.Value}"));
         SphLogger.Info($"Stat update for client ID: {characterDbEntry.ClientIndex}. New stat values: {updatedStats}");
     }
 }

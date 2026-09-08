@@ -51,7 +51,8 @@ public class ClientChatHandler(ClientConnection clientConnection)
         string message,
         string name,
         int chatTypeVal,
-        bool skipBroadcast)
+        bool skipBroadcast,
+        string? gmCommand)
     {
         public DateTime SendAfterUtc { get; } = sendAfterUtc;
         public byte[] Ack { get; } = ack;
@@ -62,6 +63,7 @@ public class ClientChatHandler(ClientConnection clientConnection)
         public string Name { get; } = name;
         public int ChatTypeVal { get; } = chatTypeVal;
         public bool SkipBroadcast { get; } = skipBroadcast;
+        public string? GmCommand { get; } = gmCommand;
     }
 
     public void FlushPendingReply()
@@ -77,6 +79,12 @@ public class ClientChatHandler(ClientConnection clientConnection)
         clientConnection.MaybeScheduleNetworkPacketSend(reply.Ack);
         clientConnection.MaybeScheduleNetworkPacketSend(reply.NameBlock);
         clientConnection.MaybeScheduleNetworkPacketSend(reply.Body);
+
+        if (reply.GmCommand is not null &&
+            clientConnection.GetSelectedCharacter() is { } gmCharacter)
+        {
+            ConsoleCommandParser.Get(gmCharacter).Parse(reply.GmCommand);
+        }
 
         if (!reply.SkipBroadcast)
         {
@@ -166,6 +174,13 @@ public class ClientChatHandler(ClientConnection clientConnection)
                 lastHandledChatAt = DateTime.UtcNow;
             }
 
+            // GM commands must wait for the chat ACK; 08C0 in the middle of an open send is dropped.
+            var gmCharacter = clientConnection.GetSelectedCharacter();
+            var gmCommand = ServerConfig.AppConfig.DebugMode && gmCharacter is not null &&
+                            ConsoleCommandParser.Get(gmCharacter).IsRegistered(message)
+                ? message
+                : null;
+
             // Defer reply onto the next Process ticks (don't block the Godot main thread).
             pendingReply = new PendingChatReply(
                 DateTime.UtcNow + ChatReplyDelay,
@@ -176,16 +191,12 @@ public class ClientChatHandler(ClientConnection clientConnection)
                 message,
                 name,
                 chatTypeVal,
-                skipBroadcast: isDuplicate);
+                skipBroadcast: isDuplicate || gmCommand is not null,
+                gmCommand);
 
             SphLogger.Info($"CLI: [{chatTypeVal}] {name}: {message}");
 
-            // GM command intercept (DebugMode-gated): route '/'-prefixed chat to the command
-            // parser. A recognised command is handled here (return); anything else falls through
-            // to the legacy inline commands below.
-            if (ServerConfig.AppConfig.DebugMode && message.StartsWith('/') &&
-                clientConnection.GetSelectedCharacter() is { } gmCharacter &&
-                ConsoleCommandParser.Get(gmCharacter).Parse(message) == ConsoleCommandParseResult.OK)
+            if (gmCommand is not null)
             {
                 return;
             }

@@ -97,7 +97,7 @@ public partial class ConsoleCommandParser
         // If it does not, the client is rejecting the record itself and nothing built on it can work.
         if (split.Any(x => x.Equals("ground", StringComparison.OrdinalIgnoreCase)))
         {
-            var frame = ItemRecordEncoder.EncodeWithoutGameId((ushort)item.Id, (int)item.ObjectType,
+            var frame = ItemRecordEncoder.EncodeWithoutGameId((ushort)item.Id, (int)item.WireObjectType,
                 GroundContainerId,
                 (float)currentCharacterDbEntry.X,
                 (float)-currentCharacterDbEntry.Y,
@@ -254,7 +254,7 @@ public partial class ConsoleCommandParser
 
         var suffixWire = ItemRecordEncoder.SuffixWireFor(item);
         var reserve = ItemSlotReserve.Build(currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.ObjectType, item.GameId,
+        var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.WireObjectType, item.GameId,
             suffixWire, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
 
         if (itemFirst)
@@ -510,7 +510,7 @@ public partial class ConsoleCommandParser
                 }
                 else if (parts.Any(x => x.Name == "game_object_id"))
                 {
-                    PacketPart.UpdateValue(parts, "object_type", (int)item.ObjectType, 10);
+                    PacketPart.UpdateValue(parts, "object_type", (int)item.WireObjectType, 10);
                 }
 
                 if (parts.Any(x => x.Name == "game_object_id"))

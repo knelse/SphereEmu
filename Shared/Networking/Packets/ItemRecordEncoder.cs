@@ -47,11 +47,7 @@ public static class ItemRecordEncoder
         float x = ContainedX, float y = 0f, float z = 0f)
     {
         var stream = GetWriteBitStream();
-        stream.WriteUInt16(entityId, 16);
-        stream.WriteByte(0, 2);
-        stream.WriteUInt16((ushort)(objectType & 0x3FF), 10);
-        stream.WriteByte(0, 1);
-        stream.WriteByte(FullSpawn, 8);
+        WriteItemHeader(stream, entityId, objectType);
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(x));
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(y));
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(z));
@@ -68,11 +64,7 @@ public static class ItemRecordEncoder
         ushort containerObjectId, float x = ContainedX, float y = 0f, float z = 0f)
     {
         var stream = GetWriteBitStream();
-        stream.WriteUInt16(entityId, 16);
-        stream.WriteByte(0, 2);
-        stream.WriteUInt16((ushort)(objectType & 0x3FF), 10);
-        stream.WriteByte(0, 1);
-        stream.WriteByte(FullSpawn, 8);
+        WriteItemHeader(stream, entityId, objectType);
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(x));
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(y));
         WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(z));
@@ -84,12 +76,19 @@ public static class ItemRecordEncoder
         stream.WriteUInt16((ushort)(gameObjectId & 0x3FFF), 14);
         WriteSuffix(stream, suffix);
 
-        // The two messages that go to the item's own script. Their type field is eight bits wide in
-        // this client's modules, where the 2022 build used four.
         // "You are inside this container" — the only thing that gives an item a parent.
         stream.WriteByte((byte)FollowOnRecord, 7);
         stream.WriteByte((byte)PutHereMessage, 8);
         stream.WriteByte(3, 8);
+
+        if (UsesShortAbilityRecord(objectType))
+        {
+            // item_guild_ability: 16-bit container, then 7 pad bits. No properties / 31-ones tail.
+            stream.WriteUInt16(containerObjectId, 16);
+            stream.WriteByte(0, 7);
+            return Packet.ToByteArray(stream.GetStreamData(), 3);
+        }
+
         stream.WriteUInt32(containerObjectId, 24);
 
         // The item's own properties. Property 0 stays -1: any other value that is not the player's
@@ -103,6 +102,29 @@ public static class ItemRecordEncoder
         stream.WriteByte(0, 7);
         return Packet.ToByteArray(stream.GetStreamData(), 3);
     }
+
+    /// <summary>
+    ///     id(16) + reserved(2) + object_type(10) + bit28(1) + FULL_SPAWN(8).
+    ///     Bit 28 is 1 for guild items, guild abilities, and Token.
+    /// </summary>
+    private static void WriteItemHeader(SphWriteStream stream, ushort entityId, int objectType)
+    {
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2);
+        stream.WriteUInt16((ushort)(objectType & 0x3FF), 10);
+        stream.WriteByte(HeaderBit28(objectType), 1);
+        stream.WriteByte(FullSpawn, 8);
+    }
+
+    private static bool UsesShortAbilityRecord(int objectType) =>
+        (ObjectType)objectType is ObjectType.SpecialAbility or ObjectType.SpecialAbilitySteal;
+
+    private static byte HeaderBit28(int objectType) =>
+        (ObjectType)objectType is ObjectType.SpecialGuild or ObjectType.GuildSpecialization
+            or ObjectType.SpecialAbility or ObjectType.SpecialAbilitySteal
+            or ObjectType.Token
+            ? (byte)1
+            : (byte)0;
 
     /// <summary>
     ///     Map an item's stored <see cref="ItemSuffix"/> to the wire id Encode expects

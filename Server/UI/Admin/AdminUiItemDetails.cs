@@ -266,6 +266,11 @@ public static class AdminUiItemDetails
             n++;
         }
 
+        if (item.RequiredGuild is not Guild.None)
+        {
+            n++;
+        }
+
         if (item.MinKarmaLevel > 0 || item.MaxKarmaLevel > 0)
         {
             n++;
@@ -593,12 +598,7 @@ public static class AdminUiItemDetails
         var guildName = CharacterLocaleText.GuildName(item.RequiredGuild, locale);
         var rankName = CharacterLocaleText.GuildRankName(item.RequiredGuildRankMinusOne, false, locale);
         var text = string.IsNullOrWhiteSpace(rankName) ? guildName : $"{guildName} - {rankName}";
-        var met = character is not null
-                  && character.Guild == item.RequiredGuild
-                  && character.GuildLevelMinusOne >= item.RequiredGuildRankMinusOne
-                  && GuildCatalog.MeetsRankRequirements(
-                      item.RequiredGuild, item.RequiredGuildRankMinusOne,
-                      character.TitleMinusOne, character.DegreeMinusOne);
+        var met = character is null || character.MeetsItemGuildRequirement(item);
         var color = character is null || met ? TextWhite : TextUnmet;
         return BuildIconTextRow(
             AdminUiAtlas.GuildIcon(item.RequiredGuild), text, color, ReqFontSize, GuildIconPx, GuildIconPx);

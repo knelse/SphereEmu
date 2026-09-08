@@ -27,6 +27,15 @@ public static class ItemSlotReserve
         [BelongingSlot.Key_1] = 23,
         [BelongingSlot.Key_2] = 24,
         [BelongingSlot.Mission] = 25,
+        [BelongingSlot.Special_1] = 46,
+        [BelongingSlot.Special_2] = 47,
+        [BelongingSlot.Special_3] = 48,
+        [BelongingSlot.Special_4] = 49,
+        [BelongingSlot.Special_5] = 50,
+        [BelongingSlot.Special_6] = 51,
+        [BelongingSlot.Special_7] = 52,
+        [BelongingSlot.Special_8] = 53,
+        [BelongingSlot.Special_9] = 54,
     };
 
     /// <summary>The slot a wire id names, or null when it names none.</summary>

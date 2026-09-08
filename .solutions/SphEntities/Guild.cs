@@ -40,6 +40,84 @@ public static class GuildCatalog
         Guild.Blacksmith, Guild.Warlock, Guild.Necromancer, Guild.Bandier
     ];
 
+    // group_guilds.cfg: Assassin rank 0 is 5500, then +1 per rank and +100 per letter.
+    private const int MembershipGameIdBase = 5500;
+    private const int MembershipGameIdStride = 100;
+    // Same rank digit as the emblem: 6104 (druid 5) -> 6114, 6124, 6134.
+    private const int AbilityGameIdStride = 10;
+
+    public static bool TryGetMembershipGameId(Guild guild, int rankMinusOne, out int gameId)
+    {
+        gameId = 0;
+        if (guild == Guild.None || rankMinusOne is < 0 or > (int)GuildRank.Expert)
+        {
+            return false;
+        }
+
+        var index = Array.IndexOf(LetterOrder, guild);
+        if (index < 0)
+        {
+            return false;
+        }
+
+        gameId = MembershipGameIdBase + index * MembershipGameIdStride + rankMinusOne;
+        return true;
+    }
+
+    public static bool TryParseMembershipGameId(int gameId, out Guild guild, out int rankMinusOne)
+    {
+        guild = Guild.None;
+        rankMinusOne = 0;
+        var offset = gameId - MembershipGameIdBase;
+        if (offset < 0)
+        {
+            return false;
+        }
+
+        var index = offset / MembershipGameIdStride;
+        var rank = offset % MembershipGameIdStride;
+        if (index < 0 || index >= LetterOrder.Length || rank is < 0 or > (int)GuildRank.Expert)
+        {
+            return false;
+        }
+
+        guild = LetterOrder[index];
+        rankMinusOne = rank;
+        return true;
+    }
+
+    /// <summary>
+    ///     Candidate ability game ids for a membership emblem (+10, +20, +30). Missing catalog
+    ///     entries are skipped by the caller; those slots stay empty.
+    /// </summary>
+    public static int[] AbilityGameIds(int membershipGameId) =>
+    [
+        membershipGameId + AbilityGameIdStride,
+        membershipGameId + AbilityGameIdStride * 2,
+        membershipGameId + AbilityGameIdStride * 3
+    ];
+
+    public static bool CanJoin(Guild guild, int titleMinusOne, int degreeMinusOne) =>
+        MeetsRankRequirements(guild, 0, titleMinusOne, degreeMinusOne);
+
+    public static int HighestQualifyingRank(Guild guild, int titleMinusOne, int degreeMinusOne)
+    {
+        if (guild == Guild.None)
+        {
+            return 0;
+        }
+
+        for (var rank = (int)GuildRank.Expert; rank >= 0; rank--)
+        {
+            if (MeetsRankRequirements(guild, rank, titleMinusOne, degreeMinusOne))
+            {
+                return rank;
+            }
+        }
+
+        return -1;
+    }
+
     public static bool TryParseRequirement(string? token, out Guild guild, out int rankMinusOne)
     {
         guild = Guild.None;

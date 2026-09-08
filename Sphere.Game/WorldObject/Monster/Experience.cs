@@ -1,6 +1,7 @@
 using System;
 using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Experience;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 
@@ -11,9 +12,9 @@ public partial class Monster
 	/// <summary>
 	///     Kill XP before pill/server/mission modifiers:
 	///     <c>base_xp(level) * type_multiplier</c>, then × <see cref="ExperienceBalance.RareXpMultiplier" />
-	///     when <see cref="IsNamed" />, then ±10% variance.
+	///     when <see cref="IsNamed" />, then new-player overlevel bonus, then ±10% variance.
 	/// </summary>
-	public int GetExperienceForKill()
+	public int GetExperienceForKill(CharacterDbEntry? killer = null)
 	{
 		var level = MonsterInstance?.Level ?? Level;
 		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue(MonsterType, out var monsterTypeId))
@@ -35,6 +36,12 @@ public partial class Monster
 		if (IsNamed)
 		{
 			xp *= cfg.RareXpMultiplier;
+		}
+
+		if (killer is not null)
+		{
+			xp *= ExperienceBalance.GetNewPlayerKillXpMultiplier(
+				killer.TitleMinusOne, killer.DegreeMinusOne, level);
 		}
 
 		// Uniform ±10% on the final award.

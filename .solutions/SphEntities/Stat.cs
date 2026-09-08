@@ -26,7 +26,11 @@ public enum Stat
     DegreeXp,
     TitleStatsAvailable,
     DegreeStatsAvailable,
+    TitleRebirth,
+    DegreeRebirth,
     ClanRankType,
     Money,
-    IsInvisible
+    IsInvisible,
+    Gender,
+    BlockAnythingFromEquipping // 21
 }

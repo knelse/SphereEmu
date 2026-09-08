@@ -15,6 +15,13 @@ public class ItemDbEntry
     public string SphereType { get; set; } = string.Empty;
     public GameObjectType GameObjectType { get; set; }
     public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
+
+    /// <summary>
+    ///     Type written on the wire. Rows created before a mapping existed may still store Unknown.
+    /// </summary>
+    public ObjectType WireObjectType =>
+        ObjectType is ObjectType.Unknown ? GameObjectType.GetPacketObjectType() : ObjectType;
+
     public string ModelNameGround { get; set; } = string.Empty;
     public string ModelNameInventory { get; set; } = string.Empty;
     public int HpCost { get; set; }
@@ -140,6 +147,10 @@ public class ItemDbEntry
 
         return item;
     }
+
+    public bool IsGuildMembershipEmblem =>
+        GameObjectType is GameObjectType.Guild
+        && GuildCatalog.TryParseMembershipGameId(GameId, out _, out _);
 
     public static bool IsInventorySlot(BelongingSlot slot)
     {
@@ -304,6 +315,12 @@ public class ItemDbEntry
         {
             return;
         }
+
+        go.ApplyGuildRequirementFromSuffixSet();
+        RequiredGuild = go.RequiredGuild;
+        RequiredGuildRankMinusOne = go.RequiredGuildRankMinusOne;
+        MinKarmaLevel = go.MinKarmaLevel;
+        MaxKarmaLevel = go.MaxKarmaLevel;
 
         StrengthReq = go.StrengthReq;
         AgilityReq = go.AgilityReq;

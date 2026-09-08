@@ -6,6 +6,7 @@ using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
 
@@ -146,33 +147,33 @@ public static class AdminClientActions
             return false;
         }
 
+        bool ok;
         if (guild == Guild.None)
         {
             rankMinusOne = 0;
+            ok = character.Items.ContainsKey(BelongingSlot.Guild)
+                ? ClearSlotItem(clientId, BelongingSlot.Guild)
+                : ApplyGuildFields(client, character, Guild.None, 0);
         }
         else
         {
             rankMinusOne = Math.Clamp(rankMinusOne, 0, (int)GuildRank.Expert);
+            if (!GuildCatalog.TryGetMembershipGameId(guild, rankMinusOne, out var gameId))
+            {
+                return false;
+            }
+
+            if (WornMembershipGameId(character) != gameId
+                && !ReplaceSlotItem(clientId, BelongingSlot.Guild, gameId, ItemSuffix.None))
+            {
+                return false;
+            }
+
+            ok = ApplyGuildFields(client, character, guild, rankMinusOne);
         }
 
-        var oldGuild = character.Guild;
-        var oldRank = character.GuildLevelMinusOne;
-        if (oldGuild == guild && oldRank == rankMinusOne)
-        {
-            return true;
-        }
-
-        character.Guild = guild;
-        character.GuildLevelMinusOne = rankMinusOne;
-        if (character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
-
-        client.SaveCharacter();
-        AdminActionLog.Info(client,
-            $"set guild from {oldGuild} rank {oldRank} to {guild} rank {character.GuildLevelMinusOne}");
-        return true;
+        SyncGuildAbilities(client, character, persist: true);
+        return ok;
     }
 
     public static bool ClearSlotItem(ushort clientId, BelongingSlot slot)
@@ -187,6 +188,7 @@ public static class AdminClientActions
         character.Items.Remove(slot);
         DbConnection.Items.Delete(itemId);
         SendSlotBinding(client, character.ClientIndex, slot, item: null);
+        MaybeSyncGuildFromSlot(client, character, slot);
         if (character.RecalcCurrentStats())
         {
             NetworkedStatsUpdater.Update(character);
@@ -229,10 +231,11 @@ public static class AdminClientActions
         }
 
         client.MaybeQueueNetworkPacketSend(ItemRecordEncoder.Encode(
-            (ushort)item.Id, (int)item.ObjectType, item.GameId,
+            (ushort)item.Id, (int)item.WireObjectType, item.GameId,
             ItemRecordEncoder.SuffixWireFor(item),
             SphBitStream.ByteSwap(character.ClientIndex)));
 
+        MaybeSyncGuildFromSlot(client, character, slot);
         if (character.RecalcCurrentStats())
         {
             NetworkedStatsUpdater.Update(character);
@@ -305,6 +308,7 @@ public static class AdminClientActions
             AdminActionLog.Info(client, $"moved [{from}] -> [{to}]");
         }
 
+        MaybeSyncGuildFromSlot(client, character, from, to);
         if (character.RecalcCurrentStats())
         {
             NetworkedStatsUpdater.Update(character);
@@ -364,6 +368,75 @@ public static class AdminClientActions
         }
 
         return ItemDbEntry.IsInventorySlot(slot) || character.CanUseItem(item);
+    }
+
+    private static bool ApplyGuildFields(SphereClient client, CharacterDbEntry character,
+        Guild guild, int rankMinusOne)
+    {
+        var oldGuild = character.Guild;
+        var oldRank = character.GuildLevelMinusOne;
+        if (oldGuild == guild && oldRank == rankMinusOne)
+        {
+            return true;
+        }
+
+        character.Guild = guild;
+        character.GuildLevelMinusOne = rankMinusOne;
+        if (character.RecalcCurrentStats())
+        {
+            NetworkedStatsUpdater.Update(character);
+        }
+
+        client.SaveCharacter();
+        AdminActionLog.Info(client,
+            $"set guild from {oldGuild} rank {oldRank} to {guild} rank {character.GuildLevelMinusOne}");
+        return true;
+    }
+
+    private static int? WornMembershipGameId(CharacterDbEntry character)
+    {
+        if (!character.Items.TryGetValue(BelongingSlot.Guild, out var itemId)
+            || DbConnection.Items.FindById(itemId) is not { GameObjectType: GameObjectType.Guild } item)
+        {
+            return null;
+        }
+
+        return item.GameId;
+    }
+
+    private static void MaybeSyncGuildFromSlot(SphereClient client, CharacterDbEntry character,
+        params BelongingSlot[] slots)
+    {
+        if (!slots.Contains(BelongingSlot.Guild))
+        {
+            return;
+        }
+
+        if (character.SyncGuildFromWornEmblem())
+        {
+            AdminActionLog.Info(client,
+                $"set guild to {character.Guild} rank {character.GuildLevelMinusOne} from [{BelongingSlot.Guild}]");
+        }
+
+        SyncGuildAbilities(client, character, persist: false);
+    }
+
+    private static void SyncGuildAbilities(SphereClient client, CharacterDbEntry character, bool persist)
+    {
+        if (!GuildAbilityLoadout.Sync(character, client.MaybeQueueNetworkPacketSend))
+        {
+            return;
+        }
+
+        if (character.RecalcCurrentStats())
+        {
+            NetworkedStatsUpdater.Update(character);
+        }
+
+        if (persist)
+        {
+            client.SaveCharacter();
+        }
     }
 
     private static void SendSlotBinding(SphereClient client, ushort clientIndex,

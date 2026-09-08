@@ -14,7 +14,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
 // Dropping an item onto an occupied slot. The client asks and then waits: it moves nothing itself,
 // so an unanswered swap simply does not happen and the same request arrives again byte for byte.
-public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
+public class SwapItemHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     /// <summary>Both item ids, then both of their slots, then a terminator — 32 bits each.</summary>
@@ -24,7 +24,7 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
     private const uint NoFurtherItems = 0xFFFFFFFF;
 
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         // Shares its signature with taking an item in hand, which arms the client's use-lock.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
@@ -51,8 +51,8 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
         // The frame carries the client's own slot numbering, which is not the enum's for the five
         // slots BelongingSlot numbers from 1000.
-        if (ItemSlotReserve.SlotForWireId((int) firstSlotId) is not { } firstSlot ||
-            ItemSlotReserve.SlotForWireId((int) secondSlotId) is not { } secondSlot)
+        if (ItemSlotReserve.SlotForWireId((int)firstSlotId) is not { } firstSlot ||
+            ItemSlotReserve.SlotForWireId((int)secondSlotId) is not { } secondSlot)
         {
             Log($"slots [{firstSlotId}] and [{secondSlotId}], one of which is not a slot - [skip]");
             return;
@@ -67,8 +67,8 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        var firstItem = DbConnection.Items.FindById((int) firstItemId);
-        var secondItem = DbConnection.Items.FindById((int) secondItemId);
+        var firstItem = DbConnection.Items.FindById((int)firstItemId);
+        var secondItem = DbConnection.Items.FindById((int)secondItemId);
 
         if (firstItem is null || secondItem is null)
         {
@@ -87,6 +87,11 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
         character.Items[firstSlot] = secondItem.Id;
         character.Items[secondSlot] = firstItem.Id;
+        if (firstSlot == BelongingSlot.Guild || secondSlot == BelongingSlot.Guild)
+        {
+            character.SyncGuildFromWornEmblem();
+            GuildAbilityLoadout.Sync(character, clientConnection.MaybeScheduleNetworkPacketSend);
+        }
 
         if (character.RecalcCurrentStats())
         {
@@ -106,7 +111,7 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
         Log($"[{firstSlot}] {Name(firstItem)} <-> [{secondSlot}] {Name(secondItem)}");
     }
 
-    private bool MayGoIn (CharacterDbEntry character, ItemDbEntry item, BelongingSlot slot)
+    private bool MayGoIn(CharacterDbEntry character, ItemDbEntry item, BelongingSlot slot)
     {
         if (!item.IsValidForSlot(slot))
         {
@@ -125,20 +130,20 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
         {
             clientConnection.MaybeScheduleNetworkPacketSend(
                 MessageEncoder.EncodeToSendFromServer($"Нельзя использовать {Name(item)}, {unmet}", "GM",
-                    (int) PublicChatType.GM_Outgoing));
+                    (int)PublicChatType.GM_Outgoing));
         }
 
         return false;
     }
 
     /// <summary>Tells the client the slot still holds what it held, so its picture matches ours.</summary>
-    private void RestateSlot (BelongingSlot slot, int itemId) =>
+    private void RestateSlot(BelongingSlot slot, int itemId) =>
         clientConnection.MaybeScheduleNetworkPacketSend(
             ItemSlotReserve.BuildSlotBinding(localId, slot, itemId));
 
-    private static string Name (ItemDbEntry item) =>
+    private static string Name(ItemDbEntry item) =>
         item.Localization.GetValueOrDefault(Locale.Russian, "?");
 
-    private void Log (string what) =>
+    private void Log(string what) =>
         SphLogger.Info($"Swap: Source [{localId:X4}] - {what}");
 }

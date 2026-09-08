@@ -127,6 +127,7 @@
 976: guild
 977: guild_ability
 979: guild_ability_steal
+982: guild_specialization
 990: armor_helmet_premium
 1000: mantra_white
 1001: mantra_black

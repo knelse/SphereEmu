@@ -708,8 +708,9 @@ public partial class CharacterStatsPanel : PanelContainer
         {
             var guild = (Guild)guildSelect.GetItemId(i);
             var met = guild == Guild.None
-                      || GuildCatalog.MeetsRankRequirements(guild, selectedRank, title, degree);
-            guildSelect.SetItemDisabled(i, character is not null && !met);
+                      || GuildCatalog.CanJoin(guild, title, degree);
+            // Keep the current choice enabled so a red/unmet pick can still be changed.
+            guildSelect.SetItemDisabled(i, character is not null && !met && guild != selectedGuild);
         }
 
         for (var i = 0; i < rankSelect.ItemCount; i++)
@@ -717,7 +718,7 @@ public partial class CharacterStatsPanel : PanelContainer
             var rank = rankSelect.GetItemId(i);
             var met = selectedGuild == Guild.None
                       || GuildCatalog.MeetsRankRequirements(selectedGuild, rank, title, degree);
-            rankSelect.SetItemDisabled(i, character is not null && !met);
+            rankSelect.SetItemDisabled(i, character is not null && !met && rank != selectedRank);
         }
 
         SetOptionFontColor(guildSelect, currentUnmet);
@@ -756,15 +757,6 @@ public partial class CharacterStatsPanel : PanelContainer
         }
 
         var rank = rankSelect is null || guild == Guild.None ? 0 : rankSelect.GetSelectedId();
-        if (guild != Guild.None
-            && !GuildCatalog.MeetsRankRequirements(
-                guild, rank, character.TitleMinusOne, character.DegreeMinusOne))
-        {
-            SelectGuildDropdowns(character.Guild, character.GuildLevelMinusOne, enabled: true);
-            ColorGuildDropdowns(character);
-            return;
-        }
-
         AdminClientActions.SetGuild(selectedClientId.Value, guild, rank);
     }
 
@@ -783,14 +775,6 @@ public partial class CharacterStatsPanel : PanelContainer
         }
 
         var rank = rankSelect.GetItemId((int)index);
-        if (!GuildCatalog.MeetsRankRequirements(
-                guild, rank, character.TitleMinusOne, character.DegreeMinusOne))
-        {
-            SelectGuildDropdowns(character.Guild, character.GuildLevelMinusOne, enabled: true);
-            ColorGuildDropdowns(character);
-            return;
-        }
-
         AdminClientActions.SetGuild(selectedClientId.Value, guild, rank);
     }
 

@@ -115,13 +115,44 @@ public class CharacterDbEntry
     /// </summary>
     public void PlaceItemInSlot(BelongingSlot slot, int itemId)
     {
+        var touchedGuild = slot == BelongingSlot.Guild;
         foreach (var heldIn in Items.Where(x => x.Value == itemId).Select(x => x.Key).ToList())
         {
+            touchedGuild |= heldIn == BelongingSlot.Guild;
             Items.Remove(heldIn);
         }
 
         Items[slot] = itemId;
+        if (touchedGuild)
+        {
+            SyncGuildFromWornEmblem();
+        }
+
         ClientStateEvents.RaiseCharacterChanged(ClientIndex);
+    }
+
+    /// <summary>
+    ///     Membership follows the emblem in <see cref="BelongingSlot.Guild"/>: a type-Guild catalog
+    ///     item sets guild and rank from its game id, anything else (or empty) means none.
+    /// </summary>
+    public bool SyncGuildFromWornEmblem()
+    {
+        var guild = Guild.None;
+        var rankMinusOne = 0;
+        if (Items.TryGetValue(BelongingSlot.Guild, out var itemId)
+            && DbConnection.Items.FindById(itemId) is { GameObjectType: GameObjectType.Guild } item)
+        {
+            GuildCatalog.TryParseMembershipGameId(item.GameId, out guild, out rankMinusOne);
+        }
+
+        if (Guild == guild && GuildLevelMinusOne == rankMinusOne)
+        {
+            return false;
+        }
+
+        Guild = guild;
+        GuildLevelMinusOne = rankMinusOne;
+        return true;
     }
 
     public int KarmaCount { get; set; }
@@ -549,24 +580,26 @@ public class CharacterDbEntry
     {
         itemDbEntry.RecalculateStatReqsFromBase();
 
-        if (itemDbEntry.RequiredGuild is not Guild.None)
+        if (itemDbEntry.IsGuildMembershipEmblem)
         {
-            if (Guild != itemDbEntry.RequiredGuild)
+            if (TitleMinusOne < itemDbEntry.TitleMinusOne)
             {
-                return "Гильдия";
+                return $"Титул {TitleMinusOne}<{itemDbEntry.TitleMinusOne}";
             }
 
-            if (GuildLevelMinusOne < itemDbEntry.RequiredGuildRankMinusOne)
+            if (DegreeMinusOne < itemDbEntry.DegreeMinusOne)
             {
-                return $"Ранг гильдии {GuildLevelMinusOne}<{itemDbEntry.RequiredGuildRankMinusOne}";
+                return $"Степень {DegreeMinusOne}<{itemDbEntry.DegreeMinusOne}";
             }
 
-            if (!GuildCatalog.MeetsRankRequirements(
-                    itemDbEntry.RequiredGuild, itemDbEntry.RequiredGuildRankMinusOne,
-                    TitleMinusOne, DegreeMinusOne))
-            {
-                return "Гильдия";
-            }
+            return null;
+        }
+
+        if (!MeetsItemGuildRequirement(itemDbEntry))
+        {
+            return Guild != itemDbEntry.RequiredGuild
+                ? "Гильдия"
+                : $"Ранг гильдии {GuildLevelMinusOne}<{itemDbEntry.RequiredGuildRankMinusOne}";
         }
 
         (int have, int need, string name)[] checks =
@@ -585,13 +618,23 @@ public class CharacterDbEntry
 
         foreach (var (have, need, name) in checks)
         {
-            if (have < need)
+            if (need > 0 && have < need)
             {
                 return $"{name} {have}<{need}";
             }
         }
 
         return null;
+    }
+
+    public bool MeetsItemGuildRequirement(ItemDbEntry item)
+    {
+        if (item.RequiredGuild is Guild.None)
+        {
+            return true;
+        }
+
+        return Guild == item.RequiredGuild && GuildLevelMinusOne >= item.RequiredGuildRankMinusOne;
     }
 
     public bool RecalcCurrentStats()
@@ -602,7 +645,8 @@ public class CharacterDbEntry
             BelongingSlot.Gloves, BelongingSlot.Guild, BelongingSlot.Helmet, BelongingSlot.Pants,
             BelongingSlot.Ring_1, BelongingSlot.Ring_2, BelongingSlot.Ring_3, BelongingSlot.Ring_4,
             BelongingSlot.Shield, BelongingSlot.BraceletLeft, BelongingSlot.BraceletRight,
-            BelongingSlot.Special_1, BelongingSlot.Special_2, BelongingSlot.Special_3, BelongingSlot.Special_4
+            BelongingSlot.Special_1, BelongingSlot.Special_2, BelongingSlot.Special_3, BelongingSlot.Special_4,
+            BelongingSlot.Special_5, BelongingSlot.Special_6, BelongingSlot.Special_7
         };
 
         var str = BaseStrength;
