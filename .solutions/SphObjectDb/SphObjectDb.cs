@@ -109,14 +109,22 @@ public static class SphObjectDb
             var localizationContentJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["LocalizationContentFileName"]);
             var suffixDataJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["SuffixDataFileName"]);
             var objectLocalizationJsonPath = Path.Combine(gameDataJsonFolder, AppSettings["ObjectLocalizationFileName"]);
-            if (!Directory.Exists(gameDataJsonFolder)
-                || !File.Exists(localizationContentJsonPath)
-                || !File.Exists(objectLocalizationJsonPath)
-                || !File.Exists(suffixDataJsonPath)
-                || File.GetLastWriteTimeUtc(gameDataJsonPath) < DateTime.UtcNow.AddHours(-72)
-                || File.GetLastWriteTimeUtc(localizationContentJsonPath) < DateTime.UtcNow.AddHours(-72)
-                || File.GetLastWriteTimeUtc(suffixDataJsonPath) < DateTime.UtcNow.AddHours(-72)
-                || File.GetLastWriteTimeUtc(objectLocalizationJsonPath) < DateTime.UtcNow.AddHours(-72))
+            var decodedParamsPath = Path.Combine(AppSettings["DecodedGameDataPath"], AppSettings["DecodedParamsFolderName"]);
+            var decodedLocalePath = Path.Combine(AppSettings["DecodedGameDataPath"], AppSettings["DecodedLocaleFolderName"]);
+            var canRegenerate = Directory.Exists(decodedParamsPath) && Directory.Exists(decodedLocalePath);
+            var hasCompleteJson = File.Exists(gameDataJsonPath)
+                && File.Exists(localizationContentJsonPath)
+                && File.Exists(objectLocalizationJsonPath)
+                && File.Exists(suffixDataJsonPath);
+            var jsonIsStale = hasCompleteJson
+                && (File.GetLastWriteTimeUtc(gameDataJsonPath) < DateTime.UtcNow.AddHours(-72)
+                    || File.GetLastWriteTimeUtc(localizationContentJsonPath) < DateTime.UtcNow.AddHours(-72)
+                    || File.GetLastWriteTimeUtc(suffixDataJsonPath) < DateTime.UtcNow.AddHours(-72)
+                    || File.GetLastWriteTimeUtc(objectLocalizationJsonPath) < DateTime.UtcNow.AddHours(-72));
+
+            // Slim/exported builds ship .generated JSON but not Sphere.GameDataDecode.
+            // Only rebuild from decode files when that tree is present.
+            if (canRegenerate && (!hasCompleteJson || jsonIsStale))
             {
                 // regenerate json every 3 days to be safe
                 Directory.CreateDirectory(gameDataJsonFolder);
@@ -132,9 +140,13 @@ public static class SphObjectDb
                 WriteJson(objectLocalizationJsonPath, ObjectNameToLocalizationMap);
                 WriteJson(suffixDataJsonPath, SuffixDataDb);
             }
-
-            else
+            else if (hasCompleteJson)
             {
+                if (jsonIsStale)
+                {
+                    Console.WriteLine("Generated JSON is older than 72 hours, but decoded game data is not present; using existing JSON");
+                }
+
                 Console.WriteLine("Loading game data from preexisting json");
                 using var gameDataFile = File.OpenRead(gameDataJsonPath);
                 using var gameDataReader = new StreamReader(gameDataFile, Win1251Encoding, detectEncodingFromByteOrderMarks: true);
@@ -162,6 +174,12 @@ public static class SphObjectDb
                     JsonSerializer.Deserialize<Dictionary<GameObjectType, Dictionary<ItemSuffix, SphGameObject>>>(
                         suffixReader.ReadToEnd(), JsonOptions)
                     ?? throw new InvalidOperationException();
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "Game data JSON is missing and decoded game data was not found. "
+                    + $"Expected JSON under {gameDataJsonFolder} or decode files under {decodedParamsPath}.");
             }
 
             ApplyGuildRequirements();
