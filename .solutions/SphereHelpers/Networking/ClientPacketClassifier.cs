@@ -49,7 +49,7 @@ public static class ClientPacketClassifier
 		// The channel word is in the plaintext part of the header, so it reads the same whether or
 		// not the body was de-obfuscated, and it separates transport from gameplay before anything
 		// else has to be interpreted.
-		switch ((WireChannel) (frame[6] | (frame[7] << 8)))
+		switch ((WireChannel)(frame[6] | (frame[7] << 8)))
 		{
 			case WireChannel.Keepalive:
 			case WireChannel.SentCount:
@@ -104,7 +104,7 @@ public static class ClientPacketClassifier
 			// same subject type is unlabelled and interleaves with it, so it is a different step
 			// the signature table already names.
 			return identity.SubjectType == GameplayRecord.SubjectTypeSackMobLoot &&
-			       frameLength == ConfirmedLootContainerLength
+				   frameLength == ConfirmedLootContainerLength
 				? Result(ClientPacketEvent.ContainerOpenLoot, 1.0, "record: loot sack interaction", true)
 				: null;
 		}
@@ -124,10 +124,9 @@ public static class ClientPacketClassifier
 				return Result(ClientPacketEvent.Unknown, 0, "record: periodic, no text", false);
 
 			case GameplayAction.Attack:
-				// Taking something in hand shares this record action with an attack and is told
-				// apart deeper in the frame; that signature keeps its route.
-				return frameLength >= 20 && frame[13] == 0x08 && frame[14] == 0x40 &&
-				       frame[15] == 0xA3 && frame[18] is 0xA1 or 0xA3 && frame[19] == 0x41
+				// Taking something in hand shares this record action with a swing. Defer those
+				// shapes to the signature table so they do not get a damage echo.
+				return LooksLikeTakeMainhand(frame)
 					? null
 					: Result(ClientPacketEvent.CombatDamageTarget, 1.0, "record: attack", true);
 
@@ -142,7 +141,7 @@ public static class ClientPacketClassifier
 				return Result(ClientPacketEvent.Unknown, 0, "record: client telemetry", false);
 
 			case GameplayAction.Unknown when identity.Tag == GameplayRecord.TagPlayerAction
-			                                 && identity.ActionCode == 0:
+											 && identity.ActionCode == 0:
 				// Shares the trade-buy byte signature and is not a purchase — a purchase carries
 				// action 8. What action 0 means is not established, so it is not routed.
 				return Result(ClientPacketEvent.Unknown, 0, "record: action 0, not understood", false);
@@ -151,6 +150,38 @@ public static class ClientPacketClassifier
 				// GroupActionOrPickup and the rest carry no record-level discriminator yet.
 				return null;
 		}
+	}
+
+	/// <summary>
+	///     Byte 19 is 0x41 on take / put-down. Byte 18 is A1 (empty), A2 (take into hand), or A3
+	///     (the other empty/put-down form). A real swing does not carry 41 here.
+	/// </summary>
+	public static bool IsHandChangeSignature(ReadOnlySpan<byte> frame) =>
+		frame.Length >= 20 && frame[18] is 0xA1 or 0xA2 or 0xA3 && frame[19] == 0x41;
+
+	/// <summary>
+	///     Take-mainhand / put-down frames that share GameplayAction.Attack with a real swing.
+	/// </summary>
+	private static bool LooksLikeTakeMainhand(ReadOnlySpan<byte> frame)
+	{
+		if (frame.Length < 16)
+		{
+			return false;
+		}
+
+		if (IsHandChangeSignature(frame))
+		{
+			return true;
+		}
+
+		if (frame[13] != 0x08 || frame[14] != 0x40 || frame[15] is not (0xA3 or 0x83))
+		{
+			return false;
+		}
+
+		var declaredLength = frame[0] | (frame[1] << 8);
+		return MainhandFrame.IsExclusiveTakeLength(declaredLength)
+			   || declaredLength == 0x19 && frame[15] == 0x83;
 	}
 
 	private const int ChatTriggerLength = 26;
@@ -265,7 +296,7 @@ public static class ClientPacketClassifier
 				return Result(ClientPacketEvent.TradeBuy, 1.0, "handler signature 08 40 03", true);
 
 			case 0x19 or 0x20 or 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3 &&
-										   frame[18] is 0xA1 or 0xA3 && frame[19] == 0x41:
+										   IsHandChangeSignature(frame):
 				// Taking something in hand and putting it down are the same message; an attack is not.
 				// Byte 18 straddles the record and its low bits sit ahead of the signature, one of
 				// them set only when the hand is being emptied — so testing the whole byte dropped

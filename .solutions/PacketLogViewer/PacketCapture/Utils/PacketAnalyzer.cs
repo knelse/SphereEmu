@@ -642,8 +642,8 @@ internal static class PacketAnalyzer
                 fullStream.ReadBit();
                 fullStream.ReadByte();
 
-                if (actionType is EntityActionType.INTERACT or EntityActionType.FULL_SPAWN
-                    or EntityActionType.FULL_SPAWN_2)
+                if (actionType is EntityActionType.INTERACT or EntityActionType.ATTACK
+                    or EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
                 {
                     shouldHidePacket = false;
                 }
@@ -749,7 +749,7 @@ internal static class PacketAnalyzer
                 if (success && parts.Any())
                 {
                     if (actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2
-                        or EntityActionType.INTERACT)
+                        or EntityActionType.INTERACT or EntityActionType.ATTACK)
                     {
                         shouldHidePacket = false;
                     }
@@ -774,7 +774,7 @@ internal static class PacketAnalyzer
 
                 ConsiderClassification(ref bestClassification,
                     PacketEventClassifier.ClassifyServerEntity(objectType, objectTypeVal, actionType, actionTypeVal,
-                        success && parts.Any() && !actionRecovered, actionRecovered));
+                        success && parts.Any() && !actionRecovered, actionRecovered, interactionType));
             }
             else if (actionType == EntityActionType.UNDEF)
             {
@@ -886,6 +886,13 @@ internal static class PacketAnalyzer
         {
             storedPacket.HiddenByDefaultServer = true;
             storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient || storedPacket.HiddenByDefaultServer;
+        }
+        else
+        {
+            // Hide-by-length rules run before analyze and must not keep a resolved combat/interact
+            // frame marked junk (0x17 ATTACK used to stay hidden after INTERACT unhide).
+            storedPacket.HiddenByDefaultServer = false;
+            storedPacket.HiddenByDefault = storedPacket.HiddenByDefaultClient;
         }
 
         AddPacketPartAnalyzeData(storedPacket);

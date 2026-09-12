@@ -28,10 +28,14 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
             throw new ArgumentException("Reached max number of connections");
         }
 
-        Add((ushort)index, value);
-        ClientStateEvents.RaiseRosterChanged();
-
+        InsertAt((ushort)index, value);
         return (ushort)index;
+    }
+
+    internal static void InsertAt(ushort id, SphereClient value)
+    {
+        Add(id, value);
+        ClientStateEvents.RaiseRosterChanged();
     }
 
     internal static SphereClient? FirstOrDefault()
@@ -58,7 +62,13 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 
 internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
-internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>;
+internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>
+{
+    internal static ConcurrentDictionary<ushort, WorldObject> GetAll()
+    {
+        return storage;
+    }
+}
 
 internal abstract class ActiveObjectCollectionBase<Tk, Tv> where Tk : notnull
 {

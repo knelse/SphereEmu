@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using BitStreams;
-using SphereHelpers.Extensions;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Helpers.Networking;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -12,27 +10,10 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
 // Taking an item into the hand and letting go of it. Weapons are bound to a hotkey rather than worn
 // in a slot, and this is what the key press produces.
-public class MainhandTakeItemHandler (ushort localId, ClientConnection clientConnection)
+public class MainhandTakeItemHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    /// <summary>Frame length to the bit offset of the item id. The state follows immediately.</summary>
-    private static readonly Dictionary<int, int> ItemIdBitOffsetByFrameLength = new()
-    {
-        [0x15] = 141, // hand was empty, a powder-class item goes in
-        [0x19] = 172, // hand was empty, a sword-class item goes in
-        [0x1B] = 188, // powder replaced by powder
-        [0x1F] = 219, // powder and sword swapped, either direction
-        [0x23] = 250, // sword replaced by sword
-    };
-
-    /// <summary>The state the hand ends in.</summary>
-    private const int HandEmpty = 255;
-
-    private const int HandFists = 22;
-
-    private const ushort NoItem = 0xFFFF;
-
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
         // Taking an item in hand arms the same client use-lock as an attack; without the ack the
         // client wedges.
@@ -44,25 +25,15 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
             return;
         }
 
-        var buffer = frame;
-        var frameLength = buffer[0] | (buffer[1] << 8);
-
-        if (!ItemIdBitOffsetByFrameLength.TryGetValue(frameLength, out var itemIdBit))
+        if (!MainhandFrame.TryRead(frame, out var take))
         {
-            // A known offset read out of an unknown frame yields whatever happens to be there.
+            var frameLength = frame[0] | (frame[1] << 8);
             SphLogger.Debug($"Main hand: no grammar for a {frameLength}B frame, signature " +
-                            $"{buffer[13]:X2} {buffer[14]:X2} {buffer[15]:X2}. Client ID: {localId:X4}");
+                            $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2}. Client ID: {localId:X4}");
             return;
         }
 
-        var stream = new BitStream(buffer);
-        stream.ReadBits(itemIdBit);
-        var itemId = stream.ReadUInt16(16);
-
-        // 11 bits in the powder form and 12 in the rest; the extra bit is padding.
-        var state = stream.ReadUInt16(11);
-
-        if (state is HandEmpty or HandFists || itemId == NoItem)
+        if (take.IsUnequip)
         {
             if (!character.Items.Remove(BelongingSlot.MainHand))
             {
@@ -70,15 +41,15 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
                 return;
             }
 
-            SphLogger.Info($"Hand emptied. Client ID: {localId:X4}");
+            SphLogger.Info($"Hand emptied ({take.State}). Client ID: {localId:X4}");
             Persist(character);
             return;
         }
 
-        var item = DbConnection.Items.FindById((int) itemId);
+        var item = DbConnection.Items.FindById((int)take.ItemId);
         if (item is null)
         {
-            SphLogger.Warning($"Hand: no item {itemId:X4} in a {frameLength}B frame. " +
+            SphLogger.Warning($"Hand: no item {take.ItemId:X4} in a {take.FrameLength}B frame. " +
                               $"Client ID: {localId:X4}");
             return;
         }
@@ -89,7 +60,7 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
         Persist(character);
     }
 
-    private void Persist (CharacterDbEntry character)
+    private void Persist(CharacterDbEntry character)
     {
         if (character.RecalcCurrentStats())
         {

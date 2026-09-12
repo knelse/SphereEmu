@@ -5,5 +5,6 @@
         "**/*.uid": true,
         "**/*.import": true
     },
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "godotTools.editorPath.godot4": "d:\\Games\\Godot\\4.7.1\\Godot_v4.7.1-stable_mono_win64.exe"
 }

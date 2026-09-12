@@ -19,12 +19,16 @@ public partial class Monster
 	{
 		var client = hit.AttackerClient;
 		var character = client?.CurrentCharacter;
+		var credit = GetKillCredit();
+		var awardTitle = credit.MajoritySchool == DamageSchool.Physical;
 		var xpAwarded = GetExperienceForKill(character);
+		var xpKind = awardTitle ? "title" : "degree";
 		SphLogger.Info(
-			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} XP.");
+			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} {xpKind} XP " +
+			$"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}).");
 
 		if (client is not null && character is not null && xpAwarded > 0
-			&& character.AwardExperience((uint)xpAwarded))
+			&& character.AwardExperience((uint)xpAwarded, awardTitle))
 		{
 			NetworkedStatsUpdater.Update(character);
 			client.SaveCharacter();

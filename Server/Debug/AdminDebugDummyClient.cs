@@ -17,6 +17,9 @@ public static class AdminDebugDummyClient
     /// <summary>Flip to false (or delete this type) to disable without hunting call sites.</summary>
     public const bool Enabled = true;
 
+    /// <summary>Out of the live-client range so the first real player still gets 0x4F6F.</summary>
+    public const ushort ClientId = 0xCDEF;
+
     private const string Login = "knelse1";
     private const string CharacterName = "Test";
 
@@ -61,8 +64,8 @@ public static class AdminDebugDummyClient
         player.Characters[characterIndex] = character;
 
         var client = clientScene.Instantiate<SphereClient>();
-        var id = ActiveClients.InsertAtFirstEmptyIndex(client);
-        client.SetupAdminDebugDummy(id);
+        ActiveClients.InsertAt(ClientId, client);
+        client.SetupAdminDebugDummy(ClientId);
         client.SetPlayerDbEntry(player);
         client.SetSelectedCharacterIndex(characterIndex);
         client.CurrentCharacter?.RecalcAvailableStats();
@@ -73,7 +76,7 @@ public static class AdminDebugDummyClient
         parent.AddChild(client);
 
         SphLogger.Info(
-            $"AdminDebugDummyClient: spawned {id:X4} as {Login}/{CharacterName} " +
+            $"AdminDebugDummyClient: spawned {ClientId:X4} as {Login}/{CharacterName} " +
             $"with {character.Items.Count} item slot(s) (debug only)");
     }
 }

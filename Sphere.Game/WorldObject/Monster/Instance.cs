@@ -114,6 +114,41 @@ public partial class Monster
 	public int BaseMDef { get; private set; }
 
 	[Export]
+	public int CurrentMaxHp
+	{
+		get => MaxHp;
+		private set => MaxHp = value;
+	}
+
+	[Export]
+	public int CurrentPAtk
+	{
+		get => BasePAtk;
+		private set => BasePAtk = value;
+	}
+
+	[Export]
+	public int CurrentMAtk
+	{
+		get => BaseMAtk;
+		private set => BaseMAtk = value;
+	}
+
+	[Export]
+	public int CurrentPDef
+	{
+		get => BasePDef;
+		private set => BasePDef = value;
+	}
+
+	[Export]
+	public int CurrentMDef
+	{
+		get => BaseMDef;
+		private set => BaseMDef = value;
+	}
+
+	[Export]
 	public KarmaTypes InstanceKarmaType { get; private set; }
 
 	[field: ExportGroup("Monster Data")]

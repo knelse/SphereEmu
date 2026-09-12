@@ -11,7 +11,7 @@ public enum DamageSchool
 }
 
 /// <summary>One damage application request; Amount is post-mitigation, >= 0 (0 == miss, still an event).</summary>
-public readonly record struct DamageEvent (
+public readonly record struct DamageEvent(
 	ushort AttackerId,
 	SphereClient? AttackerClient,
 	int Amount,
@@ -19,7 +19,7 @@ public readonly record struct DamageEvent (
 	bool IsCrit);
 
 /// <summary>Result of a damage application; BecameDead is true exactly once, on the transition to 0 HP.</summary>
-public readonly record struct DamageOutcome (
+public readonly record struct DamageOutcome(
 	int Applied,
 	int RemainingHp,
 	bool BecameDead);
@@ -28,7 +28,7 @@ public readonly record struct DamageOutcome (
 public static class MonsterCombat
 {
 	/// <summary>HP clamps at 0; an already-dead monster (HP &lt;= 0) yields the no-op outcome.</summary>
-	public static DamageOutcome ComputeOutcome (int currentHp, int amount)
+	public static DamageOutcome ComputeOutcome(int currentHp, int amount)
 	{
 		// Clamped, not rejected: a negative amount would otherwise raise HP, and throwing here
 		// would reach the client packet path where nothing catches it.
@@ -54,7 +54,7 @@ public partial class Monster
 	///     MAIN THREAD ONLY (packet handlers run inside the physics tick, so this seam is unlocked).
 	///     Never sends packets — replies are the calling handler's job. No-op on an already-dead monster.
 	/// </summary>
-	public DamageOutcome TakeDamage (in DamageEvent hit)
+	public DamageOutcome TakeDamage(in DamageEvent hit)
 	{
 		var outcome = MonsterCombat.ComputeOutcome(CurrentHp, hit.Amount);
 		if (IsDead)
@@ -73,9 +73,15 @@ public partial class Monster
 		return outcome;
 	}
 
-	/// <summary>Overrides must call base to keep <see cref="Damaged" /> subscribers working.</summary>
-	protected virtual void OnDamaged (in DamageEvent hit, in DamageOutcome outcome)
+	/// <summary>Overrides must call base to keep hit history and <see cref="Damaged" /> subscribers working.</summary>
+	protected virtual void OnDamaged(in DamageEvent hit, in DamageOutcome outcome)
 	{
+		var clientId = hit.AttackerClient?.localId ?? hit.AttackerId;
+		if (clientId != 0)
+		{
+			hitHistory.Record(clientId, hit.School, DateTime.UtcNow);
+		}
+
 		Damaged?.Invoke(this, hit, outcome);
 	}
 }

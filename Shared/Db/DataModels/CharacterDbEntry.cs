@@ -1,6 +1,7 @@
 using System.Linq;
 using Godot;
 using LiteDB;
+using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using static SphServer.Helpers.CharacterDataHelper;
@@ -19,7 +20,8 @@ public class CharacterDbEntry
     public readonly ItemDbEntry Fists = new()
     {
         ObjectKind = GameObjectKind.Fists,
-        GameObjectType = GameObjectType.Fists
+        GameObjectType = GameObjectType.Fists,
+        Radius = 0
     };
 
     public CharacterDbEntry()
@@ -103,23 +105,44 @@ public class CharacterDbEntry
     public int MAtk { get; set; }
 
     public int MainHandPAtk { get; set; }
+    public int MainHandMAtk { get; set; }
     public bool HoldsItemInHand { get; set; }
 
+    /// <summary>
+    ///     Whatever is in <see cref="BelongingSlot.MainHand"/>. Empty hand is <see cref="Fists"/>
+    ///     (radius is always 0).
+    /// </summary>
+    public ItemDbEntry GetHeldItem()
+    {
+        if (!Items.TryGetValue(BelongingSlot.MainHand, out var heldItemId))
+        {
+            return Fists;
+        }
+
+        return DbConnection.Items.FindById(heldItemId) ?? Fists;
+    }
+
     /// <summary>Everything a swing hits with: worn bonuses plus whatever is in the hand.</summary>
-    public int MeleePAtk => PAtk + MainHandPAtk;
+    public int MeleePAtk => HoldsItemInHand && MainHandPAtk == 0 ? 0 : PAtk + MainHandPAtk;
+    // Stuff that has no inherent magic attack doesn't roll magic damage
+    public int MagicMAtk => MainHandMAtk == 0 ? 0 : MainHandMAtk + MAtk;
 
     /// <summary>
-    ///     Puts an item in a slot and releases whatever slot it was already in. An item is in one
-    ///     place: a claim left behind is saved with the character and comes back on relog as a cell
-    ///     pointing at an item the client has already bound elsewhere, which it draws as a blank.
+    ///     Puts an item in a slot and releases whatever bag/wear slot it was already in. MainHand is
+    ///     a second claim, not a bag cell: the item stays in inventory so a relog can declare both
+    ///     (see IngameAckHandler). A leftover bag claim for a moved item comes back as a blank cell.
     /// </summary>
     public void PlaceItemInSlot(BelongingSlot slot, int itemId)
     {
         var touchedGuild = slot == BelongingSlot.Guild;
-        foreach (var heldIn in Items.Where(x => x.Value == itemId).Select(x => x.Key).ToList())
+        if (slot != BelongingSlot.MainHand)
         {
-            touchedGuild |= heldIn == BelongingSlot.Guild;
-            Items.Remove(heldIn);
+            foreach (var heldIn in Items.Where(x => x.Value == itemId && x.Key != BelongingSlot.MainHand)
+                         .Select(x => x.Key).ToList())
+            {
+                touchedGuild |= heldIn == BelongingSlot.Guild;
+                Items.Remove(heldIn);
+            }
         }
 
         Items[slot] = itemId;
@@ -276,18 +299,24 @@ public class CharacterDbEntry
     }
 
     /// <summary>
-    ///     Add XP to title and consume it into levels via <see cref="ApplyExperience"/>.
+    ///     Add XP to title or degree and consume it into levels via <see cref="ApplyExperience"/>.
     ///     Does not persist or push to the client.
     /// </summary>
-    public bool AwardExperience(uint amount)
+    public bool AwardExperience(uint amount, bool isTitle = true)
     {
         if (amount == 0)
         {
             return false;
         }
 
-        var titleXp = TitleXP > uint.MaxValue - amount ? uint.MaxValue : TitleXP + amount;
-        return ApplyExperience(true, titleXp, allowRebirth: false);
+        if (isTitle)
+        {
+            var titleXp = TitleXP > uint.MaxValue - amount ? uint.MaxValue : TitleXP + amount;
+            return ApplyExperience(true, titleXp, allowRebirth: false);
+        }
+
+        var degreeXp = DegreeXP > uint.MaxValue - amount ? uint.MaxValue : DegreeXP + amount;
+        return ApplyExperience(false, degreeXp, allowRebirth: false);
     }
 
     /// <summary>
@@ -495,6 +524,7 @@ public class CharacterDbEntry
         PAtk = fresh.PAtk;
         MAtk = fresh.MAtk;
         MainHandPAtk = fresh.MainHandPAtk;
+        MainHandMAtk = fresh.MainHandMAtk;
         HoldsItemInHand = fresh.HoldsItemInHand;
         BootModelId = fresh.BootModelId;
         PantsModelId = fresh.PantsModelId;
@@ -702,6 +732,7 @@ public class CharacterDbEntry
         // The client works out the held item's attack itself, so the stat packet must not carry it.
         // The hand's value sits in the item's own column, not the "+attack" one worn gear uses.
         var heldPAtk = 0;
+        var heldMAtk = 0;
         var holdsItem = false;
 
         if (Items.TryGetValue(BelongingSlot.MainHand, out var heldItemId))
@@ -711,6 +742,7 @@ public class CharacterDbEntry
             {
                 holdsItem = true;
                 heldPAtk = heldItem.PAtkNegative;
+                heldMAtk = heldItem.MAtkNegativeOrHeal;
             }
         }
 
@@ -734,6 +766,7 @@ public class CharacterDbEntry
         PAtk = patk;
         MAtk = matk;
         MainHandPAtk = heldPAtk;
+        MainHandMAtk = heldMAtk;
         HoldsItemInHand = holdsItem;
 
         // TODO: character state shouldn't be updated in starting dungeon
@@ -742,7 +775,7 @@ public class CharacterDbEntry
         SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
                        $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
                        $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
-                       $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk}");
+                       $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk} hand MA {MainHandMAtk}");
 
         ClientStateEvents.RaiseCharacterChanged(ClientIndex);
         return true;

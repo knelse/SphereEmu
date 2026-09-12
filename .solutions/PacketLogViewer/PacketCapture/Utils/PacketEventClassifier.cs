@@ -112,16 +112,22 @@ internal static class PacketEventClassifier
         EntityActionType actionType,
         byte actionTypeVal,
         bool parseSuccess,
-        bool actionRecovered)
+        bool actionRecovered,
+        EntityInteractionType interactionType = EntityInteractionType.UNDEF)
     {
         if (objectType == ObjectType.Despawn)
         {
             return new PacketEventClassification("server.entity.despawn", 1.0, "despawn definition", true);
         }
 
-        if (actionType == EntityActionType.ATTACK)
+        if (actionType == EntityActionType.ATTACK
+            || (actionType == EntityActionType.INTERACT && interactionType == EntityInteractionType.DEAL_DAMAGE))
         {
-            return new PacketEventClassification("server.combat.damage", 1.0, "EntityActionType.ATTACK", true);
+            return new PacketEventClassification("server.combat.damage", 1.0,
+                actionType == EntityActionType.ATTACK
+                    ? "EntityActionType.ATTACK"
+                    : "INTERACT + 0x050D deal-damage",
+                true);
         }
 
         if (actionType == EntityActionType.SET_POSITION)

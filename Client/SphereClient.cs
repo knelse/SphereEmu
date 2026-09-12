@@ -201,7 +201,8 @@ public partial class SphereClient : WorldObject
 		SphLogger.Info($"Client disconnected. Client ID: {localId:X4}");
 
 		isExiting = true;
-		// TODO: sync state
+		SaveCharacter();
+		DbConnection.Checkpoint();
 		if (!IsAdminDebugDummy)
 		{
 			clientConnection.Close();

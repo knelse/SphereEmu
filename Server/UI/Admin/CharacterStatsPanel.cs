@@ -950,6 +950,16 @@ public partial class CharacterStatsPanel : PanelContainer
             return;
         }
 
+        if (newTitle != oldTitle)
+        {
+            character.TitleXP = 0;
+        }
+
+        if (newDegree != oldDegree)
+        {
+            character.DegreeXP = 0;
+        }
+
         NetworkedStatsUpdater.Update(character);
         client.SaveCharacter();
         var oldMinusOne = isTitle ? oldTitle : oldDegree;

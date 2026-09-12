@@ -160,7 +160,7 @@ public static class DbConnection
         }
 
         // The counter lives in memory, so move it past the stored ids before anything allocates one.
-        WorldObjectIndex.SeedFrom(Items.Count() == 0 ? 0u : (uint) Items.Max(x => x.Id));
+        WorldObjectIndex.SeedFrom(Items.Count() == 0 ? 0u : (uint)Items.Max(x => x.Id));
         Monsters.DeleteAll();
         // ItemContainers.DeleteAll();
         // Vendors.DeleteAll();
@@ -197,5 +197,30 @@ public static class DbConnection
         GameObjects.EnsureIndex(x => x.GameObjectType);
         GameObjects.EnsureIndex(x => x.ObjectKind);
         Players.EnsureIndex(x => x.Login);
+    }
+
+    /// <summary>Flush the WAL into the data file. Call on disconnect so a later crash does not drop the last writes.</summary>
+    public static void Checkpoint()
+    {
+        Db?.Checkpoint();
+    }
+
+    /// <summary>Checkpoint and release the database. Safe to call more than once.</summary>
+    public static void Close()
+    {
+        if (Db is null)
+        {
+            return;
+        }
+
+        try
+        {
+            Db.Checkpoint();
+        }
+        finally
+        {
+            Db.Dispose();
+            Db = null!;
+        }
     }
 }

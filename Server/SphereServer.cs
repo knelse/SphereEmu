@@ -9,6 +9,7 @@ using SphServer.Server.Debug;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Server;
 
@@ -116,6 +117,42 @@ public partial class SphereServer : Node
 	private static void InitializeCollections()
 	{
 		DbConnection.Initialize(ServerConfig.AppConfig);
+	}
+
+	public override void _ExitTree()
+	{
+		PersistConnectedClientsAndCloseDb();
+		base._ExitTree();
+	}
+
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMCloseRequest || what == NotificationCrash)
+		{
+			PersistConnectedClientsAndCloseDb();
+		}
+
+		base._Notification(what);
+	}
+
+	private static bool databaseClosed;
+
+	private static void PersistConnectedClientsAndCloseDb()
+	{
+		if (databaseClosed || DbConnection.Db is null)
+		{
+			databaseClosed = true;
+			return;
+		}
+
+		databaseClosed = true;
+		foreach (var client in ActiveClients.GetAll().Values)
+		{
+			client.SaveCharacter();
+		}
+
+		DbConnection.Close();
+		SphLogger.Info("Saved connected characters and closed the database");
 	}
 
 	private static void SetupTcpServer()

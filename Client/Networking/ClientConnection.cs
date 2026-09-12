@@ -172,7 +172,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 await npcInteractionHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ItemTakeMainhand:
-                await mainhandTakeItemHandler!.Handle(frame, delta);
+                await HandleTakeMainhand(frame, delta);
                 break;
             case ClientPacketEvent.ItemSwap:
                 await swapItemHandler!.Handle(frame, delta);
@@ -328,6 +328,12 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     public void EnqueueClientEvent(ClientQueuedEvent clientEvent)
     {
         sphereClient.EnqueueClientEvent(clientEvent);
+    }
+
+    public Task HandleTakeMainhand(byte[] frame, double delta)
+    {
+        mainhandTakeItemHandler ??= new(localId, this);
+        return mainhandTakeItemHandler.Handle(frame, delta);
     }
 
     private static bool ShouldDecodeClientSubpacket(byte[] subpacket, ushort localId)

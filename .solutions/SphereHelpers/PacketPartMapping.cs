@@ -16,6 +16,8 @@ public enum EntityActionType
 public enum EntityInteractionType
 {
     DEATH = 0x040D,
+    // FistAttackTargetEcho / live swing reply: action INTERACT (0x0A) + this 16-bit tag.
+    DEAL_DAMAGE = 0x050D,
     OPEN_CONTAINER = 0x0103,
     UNDEF
 }
@@ -365,6 +367,10 @@ public static class PacketPartMapping
                     case EntityInteractionType.DEATH:
                         packetName = "entity_killed";
                         comment = $"ENTITY KILLED [{entId:X4}]";
+                        break;
+                    case EntityInteractionType.DEAL_DAMAGE:
+                        packetName = "entity_takes_damage";
+                        comment = $"ENTITY TAKES DAMAGE [{entId:X4}]";
                         break;
                     case EntityInteractionType.OPEN_CONTAINER:
                         success = false;
