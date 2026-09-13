@@ -77,7 +77,6 @@ public partial class ConsoleCommandParser
         RegisteredCommands["giveinvns"] = GiveToInventoryByNameWithSuffix;
         RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
-        RegisteredCommands["upd"] = UpdTest;
     }
 
     // Reports command output to the player in-game (a GM chat line), or to the server console
@@ -142,13 +141,6 @@ public partial class ConsoleCommandParser
         command = split[0].ToLowerInvariant();
         args = split.Length > 1 ? split[1] : string.Empty;
         return true;
-    }
-    private void UpdTest(string args)
-    {
-        var parts = PacketPart.LoadDefinedWithOverride("alpanic_stats_update");
-        PacketPart.UpdateEntityId(parts, 0x6F4F);
-        sphereClient?.MaybeQueueNetworkPacketSend(PacketPart.GetBytesToWrite(parts));
-        SendFeedback("Sent alpanic_stats_update.");
     }
 
     private void UpdateStats(string args)
