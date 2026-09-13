@@ -413,6 +413,43 @@ public class CharacterDbEntry
         return true;
     }
 
+    /// <summary>
+    ///     Spend title/degree points. Negatives become 0. Returns false (and does not mutate)
+    ///     when either pool cannot cover its total.
+    /// </summary>
+    public bool TrySpendStatPoints(int strength, int agility, int accuracy, int endurance,
+        int earth, int air, int water, int fire)
+    {
+        strength = Math.Max(0, strength);
+        agility = Math.Max(0, agility);
+        accuracy = Math.Max(0, accuracy);
+        endurance = Math.Max(0, endurance);
+        earth = Math.Max(0, earth);
+        air = Math.Max(0, air);
+        water = Math.Max(0, water);
+        fire = Math.Max(0, fire);
+
+        var title = strength + agility + accuracy + endurance;
+        var degree = earth + air + water + fire;
+        if (title > AvailableTitleStats || degree > AvailableDegreeStats)
+        {
+            return false;
+        }
+
+        BaseStrength += strength;
+        BaseAgility += agility;
+        BaseAccuracy += accuracy;
+        BaseEndurance += endurance;
+        BaseEarth += earth;
+        BaseAir += air;
+        BaseWater += water;
+        BaseFire += fire;
+        AvailableTitleStats -= title;
+        AvailableDegreeStats -= degree;
+        RecalcCurrentStats();
+        return true;
+    }
+
     public static bool IsTitleStat(Stat stat) =>
         stat is Stat.Strength or Stat.Agility or Stat.Accuracy or Stat.Endurance;
 

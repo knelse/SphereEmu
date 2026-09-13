@@ -27,7 +27,7 @@ public class ServerCredentialsHandler(ushort localId, ClientConnection clientCon
         WaitForClientTimer = new(0.1, false, () =>
         {
             SphLogger.Info($"CLI {localId:X4}: Connection initialized");
-            clientConnection.SendPacket(CommonPackets.ServerCredentials(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ServerCredentials(localId));
             Console.WriteLine($"SRV {localId:X4}: Credentials sent");
             clientConnection.MoveToNextBeforeGameStage();
         });

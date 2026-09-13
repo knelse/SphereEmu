@@ -33,12 +33,12 @@ internal static class PacketEventClassifier
             true);
     }
 
-    public static PacketEventClassification ClassifyServerSixSecondPing()
+    public static PacketEventClassification ClassifyServerCurrentMpUpdatePing()
     {
         return new PacketEventClassification(
-            "server.protocol.ping_6s",
+            "server.protocol.ping_current_mp_update",
             1.0,
-            "CommonPackets.SixSecondPing",
+            "0x13 08 C0 42, mp_current at bit 102",
             true);
     }
 
@@ -181,12 +181,15 @@ internal static class PacketEventClassifier
         return eventName switch
         {
             "client.position_keepalive" => PacketTypes.CLIENT_PING,
+            "client.character_select" => PacketTypes.CLIENT_SELECT_CHARACTER,
             "client.chat.send" => PacketTypes.CLIENT_SEND_CHAT_MESSAGE,
             "client.combat.damage_target" => PacketTypes.CLIENT_ATTACK_TARGET,
             "client.item.move" => PacketTypes.CLIENT_MOVE_ITEM,
+            "client.stats.update.request" => PacketTypes.CLIENT_STATS_UPDATE_REQUEST,
             "server.protocol.ack" => PacketTypes.SERVER_CONNECTION_ACCEPTED,
-            "server.protocol.keepalive_pong" => PacketTypes.SERVER_PING_6_SEC,
+            "server.protocol.keepalive_pong" => PacketTypes.SERVER_KEEPALIVE_PONG,
             "server.protocol.ping_6s" => PacketTypes.SERVER_PING_6_SEC,
+            "server.protocol.ping_current_mp_update" => PacketTypes.SERVER_CURRENT_MP_UPDATE_PING,
             "server.protocol.ping_15s" => PacketTypes.SERVER_PING_15_SEC,
             "server.character_select.init" => PacketTypes.SERVER_CHARACTER_SELECT_SCREEN_INIT,
             "server.character_select.entry" => PacketTypes.SERVER_CHARACTER_SELECT_SCREEN_CONTENTS,

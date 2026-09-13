@@ -11,6 +11,7 @@ using PacketLogViewer.Models.PacketAnalyzeData;
 using SphereHelpers.Extensions;
 using SpherePacketVisualEditor;
 using SphServer.Helpers;
+using SphServer.Helpers.Enums;
 using static SphServer.Helpers.PacketPartMapping;
 
 namespace PacketLogViewer;
@@ -26,6 +27,7 @@ public enum PacketTypes
     CLIENT_ATTACK_TARGET,
     CLIENT_SEND_CHAT_MESSAGE,
     CLIENT_MOVE_ITEM,
+    CLIENT_STATS_UPDATE_REQUEST,
 
     /*Originating from server*/
     SERVER_CONNECTION_ACCEPTED,
@@ -45,6 +47,8 @@ public enum PacketTypes
     SERVER_NEW_OBJECT,
     SERVER_SET_PLAYER_INVULNERABLE,
     SERVER_PING_6_SEC,
+    SERVER_KEEPALIVE_PONG,
+    SERVER_CURRENT_MP_UPDATE_PING = SERVER_PING_6_SEC,
     SERVER_PING_15_SEC,
     SERVER_MOVE_ENTITY,
     SERVER_DESPAWN_ENTITY,
@@ -117,6 +121,7 @@ public static class PacketPartNames
     public const string Opcode = "opcode";
     public const string ClientIndex = "client_index";
     public const string StatUpdate = "stat_update";
+    public const string CurrentMP = "mp_current";
 }
 
 internal class SubpacketBytesWithOffset
@@ -151,7 +156,7 @@ internal static class PacketAnalyzer
         c => c[0] == 0x0C && (c.Length < 12 || (c[10] == 0x0D && c[11] == 0xE2)),
         // PingHandler keepalive pong + CommonPackets timer pings
         c => IsServerKeepalivePong(c),
-        c => IsServerSixSecondPing(c),
+        c => IsServerCurrentMpUpdatePing(c),
         c => IsServerFifteenSecondPing(c),
         c => c[0] == 0x10 && (c.Length < 16 || (c[14] == 0x52 && c[15] == 0x09)),
         c => c[0] == 0x17 || c[0] == 0x1D || c[0] == 0x2D || c[0] == 0x22 || c[0] == 0x12 || c[0] == 0x0D,
@@ -223,24 +228,20 @@ internal static class PacketAnalyzer
                && content[17] == 0x00;
     }
 
-    /// <summary>Matches <c>CommonPackets.SixSecondPing</c> (player index at bytes 7-8 varies).</summary>
-    internal static bool IsServerSixSecondPing(byte[] content)
+    /// <summary>
+    ///     0x13 08 C0 42, 14-bit <c>mp_current</c> at bit 102. Bytes 12-14 vary with MP;
+    ///     the tail after it is <c>90 08 B0 07</c> on every real 6s ping in captures.
+    /// </summary>
+    internal static bool IsServerCurrentMpUpdatePing(byte[] content)
     {
-        // 13 00 2C 01 00 00 04 <PI_hi> <PI_lo> 08 C0 42 A0 FF D3 90 08 B0 07
-        return content.Length >= 19
+        return content.Length == 0x13
                && content[0] == 0x13
                && content[1] == 0x00
                && content[2] == 0x2C
                && content[3] == 0x01
-               && content[4] == 0x00
-               && content[5] == 0x00
-               && content[6] == 0x04
                && content[9] == 0x08
                && content[10] == 0xC0
                && content[11] == 0x42
-               && content[12] == 0xA0
-               && content[13] == 0xFF
-               && content[14] == 0xD3
                && content[15] == 0x90
                && content[16] == 0x08
                && content[17] == 0xB0
@@ -474,10 +475,9 @@ internal static class PacketAnalyzer
                 PacketEventClassifier.ClassifyServerKeepalivePong());
         }
 
-        if (IsServerSixSecondPing(storedPacket.ContentBytes))
+        if (IsServerCurrentMpUpdatePing(storedPacket.ContentBytes))
         {
-            return FinalizeKnownProtocolPacket(storedPacket, "PING 6S",
-                PacketEventClassifier.ClassifyServerSixSecondPing());
+            return FinalizeServerCurrentMpUpdatePing(storedPacket);
         }
 
         if (IsServerFifteenSecondPing(storedPacket.ContentBytes))
@@ -927,6 +927,50 @@ internal static class PacketAnalyzer
         storedPacket.HiddenByDefaultServer = hide;
         storedPacket.HiddenByDefault = hide || storedPacket.HiddenByDefaultClient;
         return storedPacket;
+    }
+
+    private static StoredPacket FinalizeServerCurrentMpUpdatePing(StoredPacket storedPacket)
+    {
+        var allParts = new List<PacketPart>();
+        var stream = new BitStream(storedPacket.ContentBytes);
+        if (storedPacket.ContentBytes.HasEqualElementsAs(ok_mark, 2))
+        {
+            allParts.AddRange(FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(
+                stream, "server_packet_header", 0, "CURRENT MP UPDATE"));
+        }
+
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.ID, 16, PacketPartType.UINT64, 255, 255, 0);
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Opcode, 16, PacketPartType.BYTES, 4, 255, 23);
+        AddCurrentMpUpdatePingPart(allParts, stream, "__undef", 14, PacketPartType.BITS, 100, 100, 100);
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.CurrentMP, 14, PacketPartType.UINT64, 7, 150, 210);
+        AddCurrentMpUpdatePingPart(allParts, stream, "__undef", 36, PacketPartType.BITS, 100, 100, 100);
+
+        storedPacket.PacketParts = allParts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        ApplyClassification(storedPacket, PacketEventClassifier.ClassifyServerCurrentMpUpdatePing());
+        storedPacket.HiddenByDefaultServer = true;
+        storedPacket.HiddenByDefault = true;
+        return storedPacket;
+    }
+
+    private static void AddCurrentMpUpdatePingPart(List<PacketPart> parts, BitStream stream, string name, int bitLength,
+        PacketPartType type, byte r, byte g, byte b)
+    {
+        var offset = (int)stream.BitOffsetFromStart;
+        long? actual = null;
+        if (type is PacketPartType.INT64 or PacketPartType.UINT64)
+        {
+            actual = stream.ReadInt64(bitLength);
+            stream.SeekBitOffset(offset);
+        }
+
+        var value = stream.ReadBits(bitLength).Reverse().ToArray();
+        var part = new PacketPart(bitLength, name, null, false, type, offset, value, r, g, b, 255)
+        {
+            ActualLongValue = actual
+        };
+        part.UpdateValueDisplayText();
+        parts.Add(part);
     }
 
     private static StoredPacket FinalizeServerMoveEntity(StoredPacket storedPacket)

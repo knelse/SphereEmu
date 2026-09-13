@@ -1,0 +1,17 @@
+---
+description: Use Python for one-off packet/DB/log analytics, not extra C# projects
+alwaysApply: true
+---
+
+# Python for quick analytics
+
+For throwaway scans, decodes, histogram/tail compares, and LiteDB/packet-log analytics, write a short **Python** script under `Tools/_tmp/...`.
+
+Do **not** spin up a new `dotnet` project (`*.csproj`, `Program.cs`, obj/bin) just to read captures or dump fields.
+
+Use C# only when the check must call existing game/parser types that Python cannot reach cheaply.
+
+```python
+# Tools/_tmp/scan_whatever.py
+# one file, stdlib + litedb/pymongo/etc if already available
+```

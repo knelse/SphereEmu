@@ -1,0 +1,15 @@
+---
+description: Prefer literal packet bytes or SphBitStream; no one-off WriteBits helpers
+alwaysApply: true
+---
+
+# Packet bytes vs BitStream
+
+When building a server packet:
+
+- If every field sits on a byte boundary, write a **literal `byte[]`** like `AccountAlreadyInUse` / `ClearUseToutAck` (`0x0E, 0x00, 0x2C, 0x01, …`).
+- If you need bit offsets, mixed widths, or other non-byte layout, use **`SphBitStream.GetWriteBitStream()`**, then `Packet.ToByteArray`.
+- Constant byte runs go in one `WriteBytes([0x08, 0xC0])` (constants only, never computed fields).
+- A `ushort` that needs swapped wire order is `stream.WriteUInt16(SphBitStream.ByteSwap(val))`, not two `MajorByte`/`MinorByte` writes.
+
+Do **not** add helper methods that poke individual bits on a `byte[]` (`WriteBits`, `SetBit`, and the like). That logic belongs on the stream.

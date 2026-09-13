@@ -15,6 +15,7 @@ using SphServer.Client.Networking.Handlers.InGame.Items;
 using SphServer.Client.Networking.Handlers.InGame.Mutator;
 using SphServer.Client.Networking.Handlers.InGame.NPC;
 using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
+using SphServer.Client.Networking.Handlers.InGame.PlayerCharacter;
 using SphServer.Helpers.Networking;
 using SphServer.Packets;
 using SphServer.Server.Config;
@@ -33,6 +34,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
 
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
     private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
+    private ChangeStatsHandler? changeStatsHandler;
     private ClanActionsHandler? clanActionsHandler;
     private ClientChatHandler? clientChatHandler;
     private ISphereClientNetworkingHandler? currentHandler;
@@ -186,6 +188,13 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             case ClientPacketEvent.ProtocolControl:
                 // Short control frames — no gameplay handler.
                 break;
+            case ClientPacketEvent.CharacterSelect:
+                // Before-game only. CharacterSelectHandler reads this while
+                // INIT_WAITING_FOR_CHARACTER_SELECT; the in-game path never sees it.
+                break;
+            case ClientPacketEvent.StatsUpdateRequest:
+                await changeStatsHandler!.Handle(frame, delta);
+                break;
         }
     }
 
@@ -208,6 +217,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         buyItemFromTargetHandler ??= new();
         damageTargetHandler ??= new(localId, this);
         moveObjectForClientHandler ??= new(this);
+        changeStatsHandler ??= new(localId, this);
     }
 
     public void MoveToNextBeforeGameStage()

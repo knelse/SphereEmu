@@ -84,10 +84,9 @@ internal static class StatUpdateParser
             return false;
         }
 
-        // Six-second ping is also CI + 08 C0, then 42 A0.
-        return byteOffset + 5 >= packetBytes.Length
-               || packetBytes[byteOffset + 4] != 0x42
-               || packetBytes[byteOffset + 5] != 0xA0;
+        // 6s ping / other short 08 C0 42 forms. Byte after 42 holds MP low bits (20/60/A0/E0).
+        return byteOffset + 4 >= packetBytes.Length
+               || packetBytes[byteOffset + 4] != 0x42;
     }
 
     public static List<PacketPart> Consume(BitStream stream, int subpacketIndex, long totalBits)

@@ -83,6 +83,7 @@ public partial class PacketLogViewerMainWindow
 
     static PacketLogViewerMainWindow()
     {
+        RegisterBsonMapperForPacketTypes();
         AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
         PacketDatabasePath = ResolvePacketDatabasePath();
         PacketDatabase = new LiteDatabase($"Filename={PacketDatabasePath};Connection=shared;");
@@ -234,7 +235,8 @@ public partial class PacketLogViewerMainWindow
                     return false;
                 }
 
-                if (HideServerJunk && p.Source == PacketSource.SERVER && p.HiddenByDefaultServer)
+                if (HideServerJunk && p.Source == PacketSource.SERVER && p.HiddenByDefaultServer
+                    && p.IsClassifiedEvent)
                 {
                     return false;
                 }
@@ -2526,6 +2528,26 @@ public partial class PacketLogViewerMainWindow
         }
 
         return false;
+    }
+
+    public static void RegisterBsonMapperForPacketTypes()
+    {
+        BsonMapper.Global.RegisterType<PacketTypes>(
+            type => type.ToString(),
+            bson => ParseStoredPacketType(bson.AsString));
+        BsonMapper.Global.RegisterType<PacketTypes?>(
+            type => type.HasValue ? type.Value.ToString() : BsonValue.Null,
+            bson => bson.IsNull ? null : ParseStoredPacketType(bson.AsString));
+    }
+
+    private static PacketTypes ParseStoredPacketType(string? name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return PacketTypes.UNKNOWN;
+        }
+
+        return Enum.TryParse<PacketTypes>(name, out var parsed) ? parsed : PacketTypes.UNKNOWN;
     }
 
     public static void RegisterBsonMapperForBrush()

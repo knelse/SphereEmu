@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using Godot;
+using SphServer.Helpers.Networking;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
@@ -23,7 +24,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
             }
 
             // select existing
-            if (frame.Length == 0x15)
+            if (ClientPacketClassifier.IsCharacterSelect(frame))
             {
                 selectedCharacterIndex = frame[17] / 4 - 1;
                 return;
@@ -68,7 +69,8 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         }
 
         // TODO serializer field on object instead of creating them all the time
-        clientConnection.SendPacket(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
+        // client wants game data here before it sends an ack, otherwise it will hang
+        clientConnection.MaybeScheduleNetworkPacketSend(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
         clientConnection.MoveToNextBeforeGameStage();
     }
 
@@ -129,7 +131,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         if (!isNameValid)
         {
             SphLogger.Error($"SRV {localId:X4}: Name [{name}] already exists!");
-            clientConnection.SendPacket(CommonPackets.NameAlreadyExists(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.NameAlreadyExists(localId));
             return -1;
         }
 
@@ -156,7 +158,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
 
         clientConnection.CreatePlayerCharacter(newCharacterData, charIndex);
 
-        clientConnection.SendPacket(CommonPackets.NameCheckPassed(localId));
+        clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.NameCheckPassed(localId));
 
         SphLogger.Info($"SRV {localId:X4}: Successfully created character [{name}]");
 

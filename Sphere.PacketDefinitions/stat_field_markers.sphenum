@@ -17,7 +17,8 @@
 18: pa
 19: ma
 20: is_invisible
-21: block_equip
+21: guild_plus_64
+22: guild_rank
 37: title_level
 38: degree_level
 39: karma_type

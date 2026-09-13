@@ -36,7 +36,7 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
         if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
         {
             SphLogger.Error($"SRV {localId:X4}: Invalid login.");
-            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -44,7 +44,7 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
         if (BannedClients.IsLoginBanned(login))
         {
             SphLogger.Error($"SRV {localId:X4}: Login is banned. Login: {login}");
-            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -55,7 +55,7 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
         if (player is null)
         {
             SphLogger.Error($"SRV {localId:X4}: Incorrect password");
-            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -63,7 +63,7 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
         if (!ActiveWorldObjects.LoggedInClients.TryAdd(login, 1))
         {
             SphLogger.Error($"SRV {localId:X4}: Already logged in. Login: {login}");
-            clientConnection.SendPacket(CommonPackets.CannotConnect(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CannotConnect(localId));
             clientConnection.Close();
             return;
         }
@@ -76,14 +76,14 @@ public class LoginDataHandler(ushort localId, ClientConnection clientConnection)
 
         WaitForClientTimer = new(0.05, false, () =>
         {
-            clientConnection.SendPacket(CommonPackets.CharacterSelectStartData(localId));
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CharacterSelectStartData(localId));
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - initial");
 
             // WaitForClientTimer.Arm(0.05, () =>
             // {
             var playerInitialData = new PlayerDbEntrySerializer(player).ToInitialDataByteArray();
 
-            clientConnection.SendPacket(playerInitialData);
+            clientConnection.MaybeScheduleNetworkPacketSend(playerInitialData);
             SphLogger.Info($"SRV {localId:X4}: Character select screen data - player characters");
             clientConnection.MoveToNextBeforeGameStage();
             // });

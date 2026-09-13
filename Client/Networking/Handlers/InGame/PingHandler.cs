@@ -22,13 +22,17 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     private const int PongEchoLength = 21;
 
     private readonly SphereTimer fifteenSecondPing = new(15, true,
-        () => clientConnection.SendPacket(CommonPackets.FifteenSecondPing(localId)));
+        () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.FifteenSecondPing(localId)));
 
-    private readonly SphereTimer sixSecondPing =
-        new(6, true, () => clientConnection.SendPacket(CommonPackets.SixSecondPing(localId)));
+    private readonly SphereTimer currentMpUpdatePing =
+        new(6, true, () =>
+        {
+            var mp = clientConnection.GetSelectedCharacter()?.CurrentMP ?? 0;
+            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CurrentMpUpdatePing(localId, mp));
+        });
 
     private readonly SphereTimer threeSecondPing =
-        new(3, true, () => clientConnection.SendPacket(CommonPackets.TransmissionEndPacket));
+        new(3, true, () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.TransmissionEndPacket));
 
     private ushort counter;
     private byte[]? previousCoordPayload;
@@ -92,7 +96,7 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
         pong[7] = SphereDbEntrySerializerBase.MajorByte(counter);
         pongEcho.Slice(8, 4).CopyTo(pong.AsSpan(8));
 
-        clientConnection.SendPacket(Packet.ToByteArray(pong, 1));
+        clientConnection.MaybeScheduleNetworkPacketSend(Packet.ToByteArray(pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
         counter++;
 
@@ -106,7 +110,7 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     public async Task Keepalive(double delta)
     {
         fifteenSecondPing.Tick(delta);
-        sixSecondPing.Tick(delta);
+        currentMpUpdatePing.Tick(delta);
         threeSecondPing.Tick(delta);
     }
 

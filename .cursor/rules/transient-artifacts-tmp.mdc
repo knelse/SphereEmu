@@ -10,7 +10,7 @@ All **transient** scripts, one-off tools, reports, DBs, calib images, and other 
 `Tools/_tmp/...`
 
 Examples of what belongs there:
-- Ad-hoc Python/C# helpers (`FindOrphanDoors`, packet scanners, map calib)
+- Ad-hoc Python helpers (`FindOrphanDoors`, packet scanners, map calib). Prefer one `.py` file over a throwaway C# project.
 - Generated reports/maps/JSON from analysis
 - Copied DBs, temp extracts, scratch notes
 

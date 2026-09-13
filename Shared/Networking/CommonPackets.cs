@@ -36,8 +36,7 @@ public static class CommonPackets
         stream.WriteUInt16(SphBitStream.ByteSwap(sourceId), 16);
         stream.WriteByte(0, 8);
         stream.WriteUInt16((ushort)damagePlus30000, 16);
-        stream.WriteByte(0, 8);
-        stream.WriteByte(0, 8);
+        stream.WriteBytes([0, 0]);
         stream.WriteByte(0b111, 3);
 
         return Packet.ToByteArray(stream.GetStreamData(), 3);
@@ -168,13 +167,17 @@ public static class CommonPackets
         ];
     }
 
-    public static byte[] SixSecondPing(ushort playerIndex)
+    public static byte[] CurrentMpUpdatePing(ushort playerIndex, int currentMp)
     {
-        return
-        [
-            0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(playerIndex),
-            MinorByte(playerIndex), 0x08, 0xC0, 0x42, 0xA0, 0xFF, 0xD3, 0x90, 0x08, 0xB0, 0x07
-        ];
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0x04);
+        stream.WriteUInt16(SphBitStream.ByteSwap(playerIndex));
+        stream.WriteBytes([0x08, 0xC0, 0x42]);
+        stream.WriteByte(0b100000, 6);
+        stream.WriteUInt16((ushort)Math.Clamp(currentMp, 0, 16383), 14);
+        stream.WriteByte(0b1101, 4);
+        stream.WriteBytes([0x90, 0x08, 0xB0, 0x07]);
+        return Packet.ToByteArray(stream.GetStreamData(), 2);
     }
 
     public static byte[] FifteenSecondPing(ushort playerIndex)

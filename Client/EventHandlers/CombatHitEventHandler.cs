@@ -45,8 +45,6 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
 
         if (targetObject is not Monster monster)
         {
-            sphereClient.MaybeQueueNetworkPacketSend(
-                CommonPackets.AttackTargetEcho(clientEvent.TargetLocalId, character.ClientIndex, 0, 0));
             LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
                 targetObject is null ? "skip-no-such-object" : $"skip-not-a-monster-{targetObject.GetType().Name}");
             return Task.CompletedTask;
@@ -57,9 +55,6 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
 
         if (monster.IsDead)
         {
-            sphereClient.MaybeQueueNetworkPacketSend(
-                CommonPackets.AttackTargetEcho(clientEvent.TargetLocalId, character.ClientIndex, 0, 0,
-                    targetObjectType));
             LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
                 "skip-already-dead");
             return Task.CompletedTask;

@@ -29,7 +29,8 @@
                   Margin="0 2 12 2"
                   Background="White"
                   VerticalAlignment="Center"
-                  IsChecked="True">
+                  IsChecked="True"
+                  ToolTip="Hides known server noise (acks, pings, file checks). Unclassified packets stay visible. Uncheck for the raw server stream, including classified junk.">
             Hide junk
         </CheckBox>
 

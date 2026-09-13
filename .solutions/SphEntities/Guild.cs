@@ -1,30 +1,30 @@
 public enum Guild : byte
 {
-    None = 0x0,
-    Assasin = 0x1,
-    Crusader = 0x2,
-    Inquisitor = 0x3,
-    Hunter = 0x4,
-    Archmage = 0x5,
-    Barbarian = 0x6,
-    Druid = 0x7,
-    Thief = 0x8,
-    MasterOfSteel = 0x9,
-    Armorer = 0x10,
-    Blacksmith = 0x11,
-    Warlock = 0x12,
-    Necromancer = 0x13,
-    Bandier = 0x14
+    None = 0,
+    Assasin = 1,
+    Crusader = 2,
+    Inquisitor = 3,
+    Hunter = 4,
+    Archmage = 5,
+    Barbarian = 6,
+    Druid = 7,
+    Thief = 8,
+    MasterOfSteel = 9,
+    Armorer = 10,
+    Blacksmith = 11,
+    Warlock = 12,
+    Necromancer = 13,
+    Bandier = 14
 }
 
 public enum GuildRank : byte
 {
-    Candidate = 0x0,
-    Scholar = 0x1,
-    Apprentice = 0x2,
-    Master = 0x3,
-    Elder = 0x4,
-    Expert = 0x5,
+    Candidate = 0,
+    Scholar = 1,
+    Apprentice = 2,
+    Master = 3,
+    Elder = 4,
+    Expert = 5,
 }
 
 /// <summary>

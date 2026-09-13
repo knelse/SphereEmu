@@ -15,7 +15,7 @@ public class HandshakeHandler(ushort localId, ClientConnection clientConnection)
     {
         SphLogger.Info($"CLI {localId:X4}: Ready to load initial data");
 
-        clientConnection.SendPacket(reconnect
+        clientConnection.MaybeScheduleNetworkPacketSend(reconnect
             ? CommonPackets.ReadyToLoadInitialDataReconnect
             : CommonPackets.ReadyToLoadInitialData);
 

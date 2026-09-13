@@ -2,6 +2,7 @@ using SphereHelpers.Extensions;
 using SphServer.Client;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
+using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
@@ -76,6 +77,7 @@ public partial class ConsoleCommandParser
         RegisteredCommands["giveinvns"] = GiveToInventoryByNameWithSuffix;
         RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
+        RegisteredCommands["upd"] = UpdTest;
     }
 
     // Reports command output to the player in-game (a GM chat line), or to the server console
@@ -140,6 +142,13 @@ public partial class ConsoleCommandParser
         command = split[0].ToLowerInvariant();
         args = split.Length > 1 ? split[1] : string.Empty;
         return true;
+    }
+    private void UpdTest(string args)
+    {
+        var parts = PacketPart.LoadDefinedWithOverride("alpanic_stats_update");
+        PacketPart.UpdateEntityId(parts, 0x6F4F);
+        sphereClient?.MaybeQueueNetworkPacketSend(PacketPart.GetBytesToWrite(parts));
+        SendFeedback("Sent alpanic_stats_update.");
     }
 
     private void UpdateStats(string args)
@@ -239,33 +248,34 @@ public partial class ConsoleCommandParser
                     return;
                 }
 
-                var responseStream = SphBitStream.GetWriteBitStream();
-                var nameBytes = SphEncoding.Win1251.GetBytes(clan.Name);
-                responseStream.WriteBytes([
-                    (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-                    MajorByte(currentCharacterDbEntry.ClientIndex),
-                    MinorByte(currentCharacterDbEntry.ClientIndex), 0x08,
-                    0x40, 0xE3, 0xA2, 0xA0, (byte) (targetRank << 5)
-                ]);
-
-                // 0x3E, 0x1B, 0xA0, 0x61, 0xD1, 0x20}, 1, true);
-                responseStream.WriteByte(0x0, 5);
-                responseStream.WriteByte(MajorByte(currentCharacterDbEntry.ClientIndex));
-                responseStream.WriteByte(MinorByte(currentCharacterDbEntry.ClientIndex));
-                responseStream.WriteByte(0x0, 7);
-                responseStream.WriteByte(0x1A);
-                responseStream.WriteByte(0x16);
-                responseStream.WriteByte((byte)(nameBytes.Length + 2));
-                responseStream.WriteByte((byte)targetRank);
-                responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
-                responseStream.WriteByte(0x0, 4);
-                responseStream.WriteByte(0x0);
-
-                var response = responseStream.GetStreamData();
+                var response = BuildClanRankPacket(currentCharacterDbEntry.ClientIndex, clan.Name, targetRank);
                 Console.WriteLine(Convert.ToHexString(response));
                 sphereClient?.MaybeQueueNetworkPacketSend(response);
                 break;
         }
+    }
+
+    public static byte[] BuildClanRankPacket(ushort clientIndex, string clanName, int targetRank)
+    {
+        var responseStream = SphBitStream.GetWriteBitStream();
+        var nameBytes = SphEncoding.Win1251.GetBytes(clanName);
+        responseStream.WriteBytes([
+            (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00
+        ]);
+        responseStream.WriteUInt16(SphBitStream.ByteSwap(clientIndex));
+        responseStream.WriteBytes([0x08, 0x40, 0xE3, 0xA2, 0xA0]);
+        responseStream.WriteByte((byte)(targetRank << 5));
+
+        responseStream.WriteByte(0x0, 5);
+        responseStream.WriteUInt16(SphBitStream.ByteSwap(clientIndex));
+        responseStream.WriteByte(0x0, 7);
+        responseStream.WriteBytes([0x1A, 0x16]);
+        responseStream.WriteByte((byte)(nameBytes.Length + 2));
+        responseStream.WriteByte((byte)targetRank);
+        responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
+        responseStream.WriteByte(0x0, 4);
+        responseStream.WriteByte(0x0);
+        return responseStream.GetStreamData();
     }
 
     private void SendPacketHex(string args)

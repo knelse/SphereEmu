@@ -23,7 +23,9 @@ public enum ClientPacketEvent
 	ItemTakeMainhand,
 	TradeBuy,
 	CombatDamageTarget,
-	ItemSwap
+	ItemSwap,
+	CharacterSelect,
+	StatsUpdateRequest
 }
 
 public readonly record struct ClientPacketClassification(
@@ -93,6 +95,11 @@ public static class ClientPacketClassifier
 		ReadOnlySpan<byte> frame)
 	{
 		var frameLength = frame.Length;
+		if (IsStatsUpdateRequest(frame))
+		{
+			return Result(ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true);
+		}
+
 		if (identity.Tag == GameplayRecord.TagObjectInteract)
 		{
 			// The 12-bit field names the target's ObjectType. Only the loot sack is routed by it:
@@ -137,8 +144,12 @@ public static class ClientPacketClassifier
 			// table routes as different messages, and which is which is not established.
 
 			case GameplayAction.Telemetry:
-				// The client's own periodic reports. No handler has ever run for these.
-				return Result(ClientPacketEvent.Unknown, 0, "record: client telemetry", false);
+				// Character select is a 21-byte telemetry-tagged record: 08 40 80 05 and
+				// the slot in byte 17. Retail logins send this, then get ToGameDataByteArray.
+				// The other telemetry lengths are periodic reports with no handler.
+				return IsCharacterSelect(frame)
+					? Result(ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason(frame), true)
+					: Result(ClientPacketEvent.Unknown, 0, "record: client telemetry", false);
 
 			case GameplayAction.Unknown when identity.Tag == GameplayRecord.TagPlayerAction
 											 && identity.ActionCode == 0:
@@ -151,6 +162,40 @@ public static class ClientPacketClassifier
 				return null;
 		}
 	}
+
+	/// <summary>
+	///     Spending title/degree points. Length 0x32, 08 40 23 02, record action 17,
+	///     eight signed 32-bit deltas from bit 141: str agi acc end earth air water fire.
+	/// </summary>
+	public static bool IsStatsUpdateRequest(ReadOnlySpan<byte> frame)
+	{
+		if (frame.Length != StatsUpdateRequestLength
+			|| (frame[0] | (frame[1] << 8)) != StatsUpdateRequestLength
+			|| frame[13] != 0x08 || frame[14] != 0x40 || frame[15] != 0x23 || frame[16] != 0x02)
+		{
+			return false;
+		}
+
+		var identity = GameplayRecord.ReadIdentity(frame);
+		return !identity.PositionFlag
+			   && identity.Tag == GameplayRecord.TagPlayerAction
+			   && identity.ActionCode == 17
+			   && !identity.ActionFlag;
+	}
+
+	/// <summary>
+	///     Enter-world click on the character list. Length 0x15, signature 08 40 80 05,
+	///     slot in byte 17 (04/08/0C → 0/1/2), tail 04 08 00.
+	/// </summary>
+	public static bool IsCharacterSelect(ReadOnlySpan<byte> frame) =>
+		frame.Length == CharacterSelectLength
+		&& (frame[0] | (frame[1] << 8)) == CharacterSelectLength
+		&& frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x80 && frame[16] == 0x05
+		&& frame[17] is 0x04 or 0x08 or 0x0C
+		&& frame[18] == 0x04 && frame[19] == 0x08 && frame[20] == 0x00;
+
+	private static string CharacterSelectReason(ReadOnlySpan<byte> frame) =>
+		$"0x15 08 40 80 05 slot {frame[17] / 4 - 1}";
 
 	/// <summary>
 	///     Byte 19 is 0x41 on take / put-down. Byte 18 is A1 (empty), A2 (take into hand), or A3
@@ -185,6 +230,8 @@ public static class ClientPacketClassifier
 	}
 
 	private const int ChatTriggerLength = 26;
+	private const int CharacterSelectLength = 0x15;
+	private const int StatsUpdateRequestLength = 0x32;
 
 	/// <summary>The open-loot shape confirmed by a labelled capture.</summary>
 	private const int ConfirmedLootContainerLength = 0x1B;
@@ -243,6 +290,9 @@ public static class ClientPacketClassifier
 			case 0x16 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23:
 				return Result(ClientPacketEvent.ItemPickup, 1.0, "handler signature 08 40 23", true);
 
+			case 0x32 when IsStatsUpdateRequest(frame):
+				return Result(ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true);
+
 			case 0x18 when b13 == 0x08 && b14 == 0x40 && b15 == 0x81:
 				return Result(ClientPacketEvent.ItemMove, 1.0, "handler signature 08 40 81", true);
 
@@ -264,6 +314,9 @@ public static class ClientPacketClassifier
 			// read from. The item's id is at bytes 11-12, where UseItemHandler reads it.
 			case 0x15 when b15 == 0xE1 && (b14 & 0xF0) == 0x40:
 				return Result(ClientPacketEvent.ItemUse, 1.0, "use opcode E14", true);
+
+			case 0x15 when IsCharacterSelect(frame):
+				return Result(ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason(frame), true);
 
 			case 0x25 when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
 				// Shares 08 40 63 with the drop frame; only the length separates them.
@@ -325,7 +378,9 @@ public static class ClientPacketClassifier
 				0x83 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true),
 				0xA3 => Result(ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
 				0x63 => Result(ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
-				0x23 => Result(ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23", true),
+				0x23 => IsStatsUpdateRequest(frame)
+					? Result(ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true)
+					: Result(ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23", true),
 				0x81 => Result(ClientPacketEvent.ItemMove, 0.9, "handler signature 08 40 81", true),
 				0xC1 => Result(ClientPacketEvent.ItemPickupToSlot, 0.9, "handler signature 08 40 C1", true),
 				0x03 => Result(ClientPacketEvent.TradeBuy, 0.9, "handler signature 08 40 03", true),
@@ -362,6 +417,8 @@ public static class ClientPacketClassifier
 			ClientPacketEvent.TradeBuy => "client.trade.buy",
 			ClientPacketEvent.CombatDamageTarget => "client.combat.damage_target",
 			ClientPacketEvent.ItemSwap => "client.item.swap",
+			ClientPacketEvent.CharacterSelect => "client.character_select",
+			ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",
 			_ => "client.none"
 		};
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BitStreams;
+using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Shared.Db;
@@ -28,20 +30,40 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
 
     // LSB-first, leaving every bit outside [offset, offset+width) untouched — the fields here are
     // not byte-aligned and share bytes with unrelated data.
-    private static void WriteBits(byte[] frame, int offset, int width, uint value)
+    public static byte[] BuildPickupMoveResult(int clientItemID, ushort clientSyncOther, byte clientSync1,
+        byte clientSync2, byte clientSlotRaw, int objectType, double x, double y, double z)
     {
-        for (var i = 0; i < width; i++)
-        {
-            var bit = offset + i;
-            var index = bit / 8;
-            if (index >= frame.Length)
-            {
-                return;
-            }
+        var serverItemID_1 = (clientItemID & 0b111111) << 2;
+        var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
+        var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
 
-            var mask = (byte)(1 << (bit % 8));
-            frame[index] = (value >> i & 1) == 1 ? (byte)(frame[index] | mask) : (byte)(frame[index] & ~mask);
-        }
+        var moveResult = new byte[]
+        {
+            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) clientItemID),
+            MajorByte((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
+            0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte(clientSyncOther), MajorByte(clientSyncOther), 0x01, 0xFC,
+            clientSync1, clientSync2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlotRaw << 1), (byte) serverItemID_1,
+            (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
+        };
+
+        // The literal above is a captured 2022 frame, so its object type and position describe the
+        // item that was captured, not this one. Both are per-item, so overwrite them in place —
+        // as bit ranges, because neither is byte-aligned and the surrounding bits carry other fields.
+        var stream = new BitStream(moveResult);
+        stream.SeekBitOffset(ObjectTypeBitOffset);
+        stream.WriteUInt16((ushort)objectType, 12);
+        stream.SeekBitOffset(PositionBitOffset);
+        WriteFloatBits(stream, x);
+        WriteFloatBits(stream, -y);
+        WriteFloatBits(stream, -z);
+        return stream.GetStreamData();
+    }
+
+    private static void WriteFloatBits(BitStream stream, double value)
+    {
+        var bits = FloatBits(value);
+        stream.WriteUInt16((ushort)bits, 16);
+        stream.WriteUInt16((ushort)(bits >> 16), 16);
     }
 
     public async Task Handle(byte[] frame, double delta)
@@ -159,26 +181,8 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
         var clientSyncOther_3 = frame[12] & 0b111111;
         var clientSyncOther = (ushort)((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
-        var serverItemID_1 = (clientItemID & 0b111111) << 2;
-        var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
-        var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
-
-        var moveResult = new byte[]
-        {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) clientItemID),
-            MajorByte((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
-            0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte(clientSyncOther), MajorByte(clientSyncOther), 0x01, 0xFC,
-            clientSync_1, clientSync_2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlot_raw << 1), (byte) serverItemID_1,
-            (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
-        };
-
-        // The literal above is a captured 2022 frame, so its object type and position describe the
-        // item that was captured, not this one. Both are per-item, so overwrite them in place —
-        // as bit ranges, because neither is byte-aligned and the surrounding bits carry other fields.
-        WriteBits(moveResult, ObjectTypeBitOffset, 12, (uint)item.ObjectType);
-        WriteBits(moveResult, PositionBitOffset, 32, FloatBits(item.X));
-        WriteBits(moveResult, PositionBitOffset + 32, 32, FloatBits(-item.Y));
-        WriteBits(moveResult, PositionBitOffset + 64, 32, FloatBits(-item.Z));
+        var moveResult = BuildPickupMoveResult(clientItemID, clientSyncOther, clientSync_1, clientSync_2,
+            clientSlot_raw, (int)item.ObjectType, item.X, item.Y, item.Z);
 
         character.PlaceItemInSlot(targetSlot, globalItemId);
         SphLogger.Info($"{Enum.GetName((BelongingSlot)targetSlotId)} now has " +

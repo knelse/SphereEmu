@@ -254,8 +254,7 @@ public class CharacterDbEntrySerializer(CharacterDbEntry characterDbEntry) : Sph
                 0x00, 0x04
             ], 7, true);
         stream.WriteUInt16(ByteSwap(characterDbEntry.ClientIndex), 16);
-        stream.WriteByte(0x08);
-        stream.WriteByte(0x00);
+        stream.WriteBytes([0x08, 0x00]);
 
         stream.WriteByte(2, 5);
         stream.WriteByte((byte)nameLen, 8);
