@@ -232,7 +232,7 @@ public partial class EntityRadarControl
             return MarkerVisualKind.Npc;
         }
 
-        if (ot is ObjectType.Monster or ObjectType.MonsterFlyer)
+        if (ot is ObjectType.Monster or ObjectType.Monster_Flyer)
         {
             return MarkerVisualKind.Monster;
         }
@@ -281,7 +281,7 @@ public partial class EntityRadarControl
             return TriangleMarker(Brushes.LimeGreen, Brushes.DarkGreen, 12);
         }
 
-        if (ot is ObjectType.Monster or ObjectType.MonsterFlyer)
+        if (ot is ObjectType.Monster or ObjectType.Monster_Flyer)
         {
             return EllipseMarker(Brushes.OrangeRed, 10);
         }
@@ -358,23 +358,23 @@ public partial class EntityRadarControl
     }
 
     private static bool IsChest(ObjectType o) =>
-        o is ObjectType.Chest or ObjectType.ChestInDungeon or ObjectType.CastleChest;
+        o is ObjectType.Chest2 or ObjectType.Chest5 or ObjectType.Castle_Chest;
 
     private static bool IsNpc(ObjectType o) => o switch
     {
-        ObjectType.NpcTradeRandomName or ObjectType.NpcQuestTitle or ObjectType.NpcQuestKarma
-            or ObjectType.NpcQuestDegree or ObjectType.NpcGuide or ObjectType.NpcTrade
-            or ObjectType.NpcGuilder or ObjectType.NpcBanker or ObjectType.NpcTournament => true,
+        ObjectType.Npc_Trade_Random_Name or ObjectType.Npc_Quest_Title or ObjectType.Npc_Quest_Karma
+            or ObjectType.Npc_Quest_Degree or ObjectType.Npc_Guide or ObjectType.Npc_Trade
+            or ObjectType.Npc_Guilder or ObjectType.Npc_Banker or ObjectType.Npc_Tournament => true,
         _ => false
     };
 
     private static bool IsDoorOrTeleport(ObjectType o) => o switch
     {
-        ObjectType.DoorEntrance or ObjectType.DoorEntranceWithKey or ObjectType.DoorExit
-            or ObjectType.TeleportWithTarget or ObjectType.TeleportInDungeon
-            or ObjectType.Teleport or ObjectType.TeleportBroken or ObjectType.DungeonEntrance
-            or ObjectType.TeleportWild or ObjectType.TokenMultiuse or ObjectType.CastleTeleport
-            or ObjectType.TournamentTeleport or ObjectType.TokenIsland or ObjectType.TokenIslandGuest => true,
+        ObjectType.Door_Entrance or ObjectType.Door_Entrance_With_Key or ObjectType.Door_Exit
+            or ObjectType.Teleport_With_Target or ObjectType.Teleport_In_Dungeon
+            or ObjectType.Teleport or ObjectType.Teleport_Broken or ObjectType.Dungeon_Entrance
+            or ObjectType.Teleport_Wild or ObjectType.Token_Multiuse or ObjectType.Castle_Teleport
+            or ObjectType.Tournament_Teleport or ObjectType.Token_Island or ObjectType.Token_Island_Guest => true,
         _ => false
     };
 

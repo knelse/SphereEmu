@@ -99,8 +99,8 @@ public class NpcInteractableSerializer(NpcInteractable npcInteractable)
             // {
             //     var delimiter =
             //         GameObjectDataHelper.WeaponsAndArmor.Contains(item.GameObjectType) ||
-            //         item.ObjectType is ObjectType.MantraBookSmall or ObjectType.MantraBookLarge
-            //             or ObjectType.MantraBookGreat
+            //         item.ObjectType is ObjectType.Mantra_Book_Small or ObjectType.Mantra_Book_Large
+            //             or ObjectType.Mantra_Book_Great
             //             ? 0x7F
             //             : 0x7E;
             //     stream.WriteByte((byte) delimiter);

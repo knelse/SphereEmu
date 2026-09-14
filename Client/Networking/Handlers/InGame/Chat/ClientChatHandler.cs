@@ -299,7 +299,7 @@ public class ClientChatHandler(ClientConnection clientConnection)
 
                 var firework = FireworkScene.Instantiate<WorldObject>();
                 firework.Angle = 0;
-                firework.ObjectType = ObjectType.Firework;
+                firework.ObjectType = ObjectType.Firework_Celebration;
                 var origin = character.Origin;
                 SphLogger.Info($"Spawning firework at: {origin.X:F1} | {origin.Y:F1} | {origin.Z:F1}");
                 SphereServer.ServerNode.CallDeferred(Node.MethodName.AddChild, firework);

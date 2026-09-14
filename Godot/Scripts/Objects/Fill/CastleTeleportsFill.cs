@@ -97,7 +97,7 @@ public partial class CastleTeleportsFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.CastleTeleport;
+			instance.ObjectType = ObjectType.Castle_Teleport;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

@@ -40,13 +40,13 @@ public partial class NpcInteractable : WorldObject
 
 		ObjectType = NpcType switch
 		{
-			NpcType.Banker => ObjectType.NpcBanker,
-			NpcType.Guilder => ObjectType.NpcGuilder,
-			NpcType.QuestTitle => ObjectType.NpcQuestTitle,
-			NpcType.QuestKarma => ObjectType.NpcQuestKarma,
-			NpcType.QuestDegree => ObjectType.NpcQuestDegree,
-			NpcType.Tournament => ObjectType.NpcGuilder,
-			_ => ObjectType.NpcTrade
+			NpcType.Banker => ObjectType.Npc_Banker,
+			NpcType.Guilder => ObjectType.Npc_Guilder,
+			NpcType.QuestTitle => ObjectType.Npc_Quest_Title,
+			NpcType.QuestKarma => ObjectType.Npc_Quest_Karma,
+			NpcType.QuestDegree => ObjectType.Npc_Quest_Degree,
+			NpcType.Tournament => ObjectType.Npc_Guilder,
+			_ => ObjectType.Npc_Trade
 		};
 
 		if (VendorItemTierMax == 0 || VendorItemTierMin == 0)

@@ -93,7 +93,7 @@ public partial class TeleportInDungeonFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.TeleportInDungeon;
+			instance.ObjectType = ObjectType.Teleport_In_Dungeon;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

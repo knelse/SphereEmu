@@ -101,7 +101,7 @@ public partial class DoorsWithKeyFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.DoorEntranceWithKey;
+			instance.ObjectType = ObjectType.Door_Entrance_With_Key;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

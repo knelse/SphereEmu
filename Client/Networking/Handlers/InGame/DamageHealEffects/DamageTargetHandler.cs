@@ -257,7 +257,7 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
     ///     Single-target powder is a 0x2C item-use and uses <see cref="ArmedTargetBit"/> instead.
     /// </summary>
     private static bool IsAoePowderLayout(ItemDbEntry? heldItem, ushort typeAtItemSlot) =>
-        typeAtItemSlot == (ushort)ObjectType.PowderAoE ||
+        typeAtItemSlot == (ushort)ObjectType.Powder_Ao_E ||
         heldItem is { Radius: > 0, GameObjectType: GameObjectType.Powder_Area };
 
     private static IEnumerable<(ushort GlobalId, ushort LocalId)> CollectTargets(SphereClient attacker,

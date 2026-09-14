@@ -8,6 +8,6 @@ public partial class TeleportTournament : WorldObject
 {
 	public TeleportTournament()
 	{
-		ObjectType = ObjectType.TournamentTeleport;
+		ObjectType = ObjectType.Tournament_Teleport;
 	}
 }

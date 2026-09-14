@@ -13,7 +13,7 @@ public partial class Door
 			return;
 		}
 
-		if (ObjectType is not (ObjectType.DoorEntrance or ObjectType.DoorExit))
+		if (ObjectType is not (ObjectType.Door_Entrance or ObjectType.Door_Exit))
 		{
 			GD.PushWarning($"{Name}: Jump to target is only for door entrance/exit.");
 			return;

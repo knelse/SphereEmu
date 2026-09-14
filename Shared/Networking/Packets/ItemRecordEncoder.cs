@@ -117,11 +117,11 @@ public static class ItemRecordEncoder
     }
 
     private static bool UsesShortAbilityRecord(int objectType) =>
-        (ObjectType)objectType is ObjectType.SpecialAbility or ObjectType.SpecialAbilitySteal;
+        (ObjectType)objectType is ObjectType.Special_Ability or ObjectType.Special_Ability_Steal;
 
     private static byte HeaderBit28(int objectType) =>
-        (ObjectType)objectType is ObjectType.SpecialGuild or ObjectType.GuildSpecialization
-            or ObjectType.SpecialAbility or ObjectType.SpecialAbilitySteal
+        (ObjectType)objectType is ObjectType.Special_Guild or ObjectType.Guild_Specialization
+            or ObjectType.Special_Ability or ObjectType.Special_Ability_Steal
             or ObjectType.Token
             ? (byte)1
             : (byte)0;

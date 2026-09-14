@@ -37,7 +37,7 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
         {
             sphereClient.MaybeQueueNetworkPacketSend(
                 CommonPackets.AttackTargetEcho(clientEvent.TargetLocalId, character.ClientIndex, 0, 0,
-                    ObjectType.Player));
+                    ObjectType.Stats));
             LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
                 "player-stub");
             return Task.CompletedTask;
@@ -99,7 +99,7 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
     {
         return monster.DataObjectType is GameObjectType.Monster_Flying or GameObjectType.Monster_Event_Flying
             or GameObjectType.Special_Necromancer_Flyer
-            ? ObjectType.MonsterFlyer
+            ? ObjectType.Monster_Flyer
             : ObjectType.Monster;
     }
 

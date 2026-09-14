@@ -8,6 +8,6 @@ public partial class TeleportWild : WorldObject
 {
 	public TeleportWild()
 	{
-		ObjectType = ObjectType.TeleportWild;
+		ObjectType = ObjectType.Teleport_Wild;
 	}
 }

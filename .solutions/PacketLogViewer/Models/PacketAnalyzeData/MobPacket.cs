@@ -51,7 +51,7 @@ public class MobPacket : PacketAnalyzeData
             Angle = GetIntValue(PacketPartNames.Angle);
         }
 
-        if (ActionType is EntityActionType.FULL_SPAWN && ObjectType != ObjectType.MobSpawner)
+        if (ActionType is EntityActionType.FULL_SPAWN && ObjectType != ObjectType.Mob_Spawner)
         {
             Type = GetIntValue(PacketPartNames.MobType);
             CurrentHP = GetIntValue(PacketPartNames.CurrentHP);

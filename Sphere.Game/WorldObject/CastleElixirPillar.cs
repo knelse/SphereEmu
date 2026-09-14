@@ -10,7 +10,7 @@ public partial class CastleElixirPillar : WorldObject
 
 	public CastleElixirPillar()
 	{
-		ObjectType = ObjectType.CastleElixirPillar;
+		ObjectType = ObjectType.Castle_Elixir_Pillar;
 		ModelName = "cs_knot";
 	}
 }

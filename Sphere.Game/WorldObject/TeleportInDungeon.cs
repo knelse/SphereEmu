@@ -8,6 +8,6 @@ public partial class TeleportInDungeon : WorldObject
 {
 	public TeleportInDungeon()
 	{
-		ObjectType = ObjectType.TeleportInDungeon;
+		ObjectType = ObjectType.Teleport_In_Dungeon;
 	}
 }

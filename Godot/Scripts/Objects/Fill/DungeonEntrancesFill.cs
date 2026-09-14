@@ -93,7 +93,7 @@ public partial class DungeonEntrancesFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.DungeonEntrance;
+			instance.ObjectType = ObjectType.Dungeon_Entrance;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

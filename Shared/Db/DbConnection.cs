@@ -23,6 +23,7 @@ public static class DbConnection
     public static void Initialize(AppConfig config)
     {
         SphLogger.Info("Initializing database connection...");
+        ObjectTypeBson.Register();
         var connectionString = NormalizeLiteDbConnectionString(config.LiteDbConnectionString);
         EnsureLiteDbFileExists(connectionString);
         Db = new LiteDatabase(connectionString);

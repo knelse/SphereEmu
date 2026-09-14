@@ -71,7 +71,7 @@ public static class ItemsOnSaleGenerator
 
         itemsOnSale.Add(new ItemDbEntry
         {
-            ObjectType = ObjectType.Arrows,
+            ObjectType = ObjectType.Arrow,
             Weight = 75,
             VendorCost = 4,
             ItemCount = 1000
@@ -134,13 +134,13 @@ public static class ItemsOnSaleGenerator
         {
             new ()
             {
-                ObjectType = ObjectType.BackpackSmall,
+                ObjectType = ObjectType.Backpack_Small,
                 Weight = 200,
                 VendorCost = 120
             },
             new ()
             {
-                ObjectType = ObjectType.BackpackLarge,
+                ObjectType = ObjectType.Backpack_Large,
                 Weight = 200,
                 VendorCost = 240
             }
@@ -170,13 +170,13 @@ public static class ItemsOnSaleGenerator
         {
             itemsOnSale.Add(new ItemDbEntry
             {
-                ObjectType = ObjectType.AlchemyPot,
+                ObjectType = ObjectType.Alchemy_Pot,
                 Weight = 500,
                 VendorCost = 330
             });
             itemsOnSale.Add(new ItemDbEntry
             {
-                ObjectType = ObjectType.RecipeBook,
+                ObjectType = ObjectType.Recipe_Book,
                 Weight = 200,
                 VendorCost = 120
             });
@@ -191,14 +191,14 @@ public static class ItemsOnSaleGenerator
 
             itemsOnSale.Add(new ItemDbEntry
             {
-                ObjectType = ObjectType.PowderAmilus,
+                ObjectType = ObjectType.Powder_Amilus,
                 Weight = 1,
                 VendorCost = 5,
                 ItemCount = 1000
             });
             itemsOnSale.Add(new ItemDbEntry
             {
-                ObjectType = ObjectType.PowderFinale,
+                ObjectType = ObjectType.Powder_Finale,
                 Weight = 1,
                 VendorCost = 3,
                 ItemCount = 1000
@@ -222,7 +222,7 @@ public static class ItemsOnSaleGenerator
         {
             new ()
             {
-                ObjectType = ObjectType.MantraBookSmall,
+                ObjectType = ObjectType.Mantra_Book_Small,
                 Weight = 200,
                 VendorCost = 350
             }
@@ -241,16 +241,16 @@ public static class ItemsOnSaleGenerator
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], i, true));
+            itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
             if (i == minTier && i != 1)
             {
                 continue;
             }
 
-            itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], i, true));
+            itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier([ObjectType.ArmorAmulet, ObjectType.ArmorBracelet], maxTier,
+        itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], maxTier,
             true));
         if (minTier == 1)
         {
@@ -258,7 +258,7 @@ public static class ItemsOnSaleGenerator
             {
                 var scroll = new ItemDbEntry
                 {
-                    ObjectType = ObjectType.ScrollLegend,
+                    ObjectType = ObjectType.Scroll_Legend,
                     Weight = 25,
                     VendorCost = 50,
                     ItemCount = 1000,
@@ -273,11 +273,11 @@ public static class ItemsOnSaleGenerator
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, i, true));
-            itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, i, true));
+            itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier(ObjectType.ArmorRobe, maxTier, true));
+        itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, maxTier, true));
 
         if (minTier != 1)
         {

@@ -10,6 +10,6 @@ public partial class CastleTeleport : WorldObject
 	[Export] public Castles Castle { get; set; }
 	public CastleTeleport()
 	{
-		ObjectType = ObjectType.CastleTeleport;
+		ObjectType = ObjectType.Castle_Teleport;
 	}
 }

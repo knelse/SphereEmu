@@ -93,7 +93,7 @@ public partial class TeleportBrokenFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.TeleportBroken;
+			instance.ObjectType = ObjectType.Teleport_Broken;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

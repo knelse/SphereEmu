@@ -174,7 +174,7 @@ public static class Packet
         // }
         //
         // result.Id = client.GetLocalObjectId(item.Id);
-        // if (objectType is not ObjectType.FoodApple)
+        // if (objectType is not ObjectType.Food_Apple)
         // {
         //     result.GameId = (ushort) item.GameId;
         //     result.SuffixMod = suffixMod;
@@ -185,7 +185,7 @@ public static class Packet
         // result.Count = (ushort) item.ItemCount;
         //
         // result.GameObject = MainServer.GameObjectCollection.FindById(item.GameObjectDbId);
-        // if (objectType is not ObjectType.FoodApple)
+        // if (objectType is not ObjectType.Food_Apple)
         // {
         //     result.FriendlyName =
         //         MainServer.GameObjectCollection.FindById((int) result.GameId)!.Localisation[Locale.Russian];

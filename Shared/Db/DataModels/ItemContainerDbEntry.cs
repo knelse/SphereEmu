@@ -135,7 +135,7 @@ public class ItemContainerDbEntry
 
     public void ShowForClient (SphereClient client)
     {
-        // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.SackMobLoot);
+        // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.Sack_Mob_Loot);
         // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
         // var localId = client.GetLocalObjectId(Id);
         // PacketPart.UpdateEntityId(packetParts, localId);

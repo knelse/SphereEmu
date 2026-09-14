@@ -82,10 +82,10 @@ public static class AlchemyMaterialCatalog
     public static ObjectType ToNetworkObjectType(GameObjectType type)
         => type switch
         {
-            GameObjectType.Flower => ObjectType.AlchemyPlant,
-            GameObjectType.Metal => ObjectType.AlchemyMetal,
-            GameObjectType.Mineral => ObjectType.AlchemyMineral,
-            _ => ObjectType.AlchemyPlant,
+            GameObjectType.Flower => ObjectType.Alchemy_Plant,
+            GameObjectType.Metal => ObjectType.Alchemy_Metal,
+            GameObjectType.Mineral => ObjectType.Alchemy_Mineral,
+            _ => ObjectType.Alchemy_Plant,
         };
 
     public static void Invalidate()

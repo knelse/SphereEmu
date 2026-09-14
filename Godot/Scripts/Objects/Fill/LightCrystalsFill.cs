@@ -5,8 +5,8 @@ namespace SphServer.Godot.Scripts.Objects.Fill;
 
 /// <summary>
 /// Editor tool: rebuilds light crystal objects from dump files:
-/// - <see cref="LightCrystalsDataFilePath"/> (ObjectType.LightCrystal)
-/// - <see cref="LightCrystalsYellowDataFilePath"/> (ObjectType.LightCrystalYellow)
+/// - <see cref="LightCrystalsDataFilePath"/> (ObjectType.Light_Crystal)
+/// - <see cref="LightCrystalsYellowDataFilePath"/> (ObjectType.Light_Crystal_Yellow)
 /// </summary>
 [Tool]
 public partial class LightCrystalsFill : Node3D
@@ -43,7 +43,7 @@ public partial class LightCrystalsFill : Node3D
 		RebuildFromFile(
 			LightCrystalsDataFilePath,
 			scene,
-			ObjectType.LightCrystal,
+			ObjectType.Light_Crystal,
 			LightCrystalTypeValue,
 			"LightCrystal",
 			seenSourcePositions,
@@ -52,7 +52,7 @@ public partial class LightCrystalsFill : Node3D
 		RebuildFromFile(
 			LightCrystalsYellowDataFilePath,
 			scene,
-			ObjectType.LightCrystalYellow,
+			ObjectType.Light_Crystal_Yellow,
 			LightCrystalYellowTypeValue,
 			"LightCrystalYellow",
 			seenSourcePositions,

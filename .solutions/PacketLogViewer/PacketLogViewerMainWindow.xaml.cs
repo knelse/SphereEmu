@@ -84,6 +84,7 @@ public partial class PacketLogViewerMainWindow
     static PacketLogViewerMainWindow()
     {
         RegisterBsonMapperForPacketTypes();
+        RegisterBsonMapperForObjectType();
         AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
         PacketDatabasePath = ResolvePacketDatabasePath();
         PacketDatabase = new LiteDatabase($"Filename={PacketDatabasePath};Connection=shared;");
@@ -395,6 +396,7 @@ public partial class PacketLogViewerMainWindow
             OnPacketProcessed = OnPacketProcessed,
             CaptureLocalTraffic = LocalCaptureEnabled
         };
+        PacketAnalyzer.ResetMbcSession();
     }
 
     private static void ReloadAppConfig()
@@ -470,7 +472,7 @@ public partial class PacketLogViewerMainWindow
             var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
                 ? (ObjectType)objectTypeVal
                 : ObjectType.Unknown;
-            if (objectType is ObjectType.Other)
+            if (objectType is ObjectType.Stats)
             {
                 continue;
             }
@@ -716,6 +718,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
+        PacketAnalyzer.ResetMbcSession();
         for (var i = 0; i < packets.Count; i++)
         {
             var packet = packets[i];
@@ -2540,6 +2543,16 @@ public partial class PacketLogViewerMainWindow
             bson => bson.IsNull ? null : ParseStoredPacketType(bson.AsString));
     }
 
+    public static void RegisterBsonMapperForObjectType()
+    {
+        BsonMapper.Global.RegisterType<ObjectType>(
+            type => type.ToString(),
+            ParseStoredObjectType);
+        BsonMapper.Global.RegisterType<ObjectType?>(
+            type => type.HasValue ? type.Value.ToString() : BsonValue.Null,
+            bson => bson.IsNull ? null : ParseStoredObjectType(bson));
+    }
+
     private static PacketTypes ParseStoredPacketType(string? name)
     {
         if (string.IsNullOrEmpty(name))
@@ -2548,6 +2561,29 @@ public partial class PacketLogViewerMainWindow
         }
 
         return Enum.TryParse<PacketTypes>(name, out var parsed) ? parsed : PacketTypes.UNKNOWN;
+    }
+
+    private static ObjectType ParseStoredObjectType(BsonValue bson)
+    {
+        if (bson is null || bson.IsNull)
+        {
+            return ObjectType.Unknown;
+        }
+
+        if (bson.IsString)
+        {
+            return ObjectTypeParse.TryParse(bson.AsString, out var parsed) ? parsed : ObjectType.Unknown;
+        }
+
+        if (bson.IsNumber)
+        {
+            var n = bson.AsInt32;
+            return n is >= 0 and <= ushort.MaxValue && Enum.IsDefined(typeof(ObjectType), (ushort)n)
+                ? (ObjectType)n
+                : ObjectType.Unknown;
+        }
+
+        return ObjectType.Unknown;
     }
 
     public static void RegisterBsonMapperForBrush()

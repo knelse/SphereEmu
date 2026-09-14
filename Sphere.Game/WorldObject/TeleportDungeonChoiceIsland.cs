@@ -8,6 +8,6 @@ public partial class TeleportDungeonChoiceIsland : WorldObject
 {
 	public TeleportDungeonChoiceIsland()
 	{
-		ObjectType = ObjectType.TeleportDungeonChoiceIsland;
+		ObjectType = ObjectType.Teleport_Dungeon_Choice_Island;
 	}
 }

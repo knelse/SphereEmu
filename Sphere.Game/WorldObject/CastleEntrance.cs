@@ -9,7 +9,7 @@ public partial class CastleEntrance : WorldObject
 {
 	public CastleEntrance()
 	{
-		ObjectType = ObjectType.CastleEntrance;
+		ObjectType = ObjectType.Castle_Entrance;
 		ModelName = "edoor";
 	}
 

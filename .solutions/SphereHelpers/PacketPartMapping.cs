@@ -37,98 +37,98 @@ public static class PacketPartMapping
     [
         ObjectType.Token,
         ObjectType.Mutator,
-        ObjectType.SeedCastle,
-        ObjectType.XpPillDegree,
-        ObjectType.TokenMultiuse,
-        ObjectType.TradeLicense,
-        ObjectType.ScrollLegend,
-        ObjectType.ScrollRecipe,
+        ObjectType.Seed_Castle,
+        ObjectType.Xp_X2_Pill_Degree,
+        ObjectType.Token_Multiuse,
+        ObjectType.Trade_License,
+        ObjectType.Scroll_Legend,
+        ObjectType.Scroll_Recipe,
         ObjectType.Mission,
-        ObjectType.TokenIsland,
-        ObjectType.TokenIslandGuest,
-        ObjectType.TokenTutorialTorweal,
+        ObjectType.Token_Island,
+        ObjectType.Token_Island_Guest,
+        ObjectType.Token_Tutorial_Torweal,
         ObjectType.Bead,
-        ObjectType.BackpackLarge,
-        ObjectType.BackpackSmall,
+        ObjectType.Backpack_Large,
+        ObjectType.Backpack_Small,
         ObjectType.Sack,
-        ObjectType.MantraBookSmall,
-        ObjectType.RecipeBook,
-        ObjectType.MantraBookLarge,
-        ObjectType.MantraBookGreat,
-        ObjectType.MapBook,
-        ObjectType.KeyBarn,
-        ObjectType.PowderFinale,
-        ObjectType.PowderSingleTarget,
-        ObjectType.PowderAmilus,
-        ObjectType.PowderAoE,
-        ObjectType.ElixirCastle,
-        ObjectType.ElixirTrap,
-        ObjectType.WeaponSword,
-        ObjectType.WeaponStartingSword,
-        ObjectType.WeaponAxe,
-        ObjectType.WeaponCrossbow,
-        ObjectType.Arrows,
-        ObjectType.RingDiamond,
-        ObjectType.RingRuby,
+        ObjectType.Mantra_Book_Small,
+        ObjectType.Recipe_Book,
+        ObjectType.Mantra_Book_Large,
+        ObjectType.Mantra_Book_Great,
+        ObjectType.Map_Book,
+        ObjectType.Key_Barn,
+        ObjectType.Powder_Finale,
+        ObjectType.Powder_Single_Target,
+        ObjectType.Powder_Amilus,
+        ObjectType.Powder_Ao_E,
+        ObjectType.Elixir_Castle,
+        ObjectType.Elixir_Trap,
+        ObjectType.Weapon_Sword,
+        ObjectType.Weapon_Starting_Sword,
+        ObjectType.Weapon_Axe,
+        ObjectType.Weapon_Crossbow,
+        ObjectType.Arrow,
+        ObjectType.Ring_Diamond,
+        ObjectType.Ring_Ruby,
         ObjectType.Ruby,
-        ObjectType.RingGold,
-        ObjectType.AlchemyMineral,
-        ObjectType.AlchemyPlant,
-        ObjectType.AlchemyMetal,
-        ObjectType.FoodApple,
-        ObjectType.FoodPear,
-        ObjectType.FoodMeat,
-        ObjectType.FoodBread,
-        ObjectType.FoodFish,
-        ObjectType.AlchemyBrushwood,
+        ObjectType.Ring_Gold,
+        ObjectType.Alchemy_Mineral,
+        ObjectType.Alchemy_Plant,
+        ObjectType.Alchemy_Metal,
+        ObjectType.Food_Apple,
+        ObjectType.Food_Pear,
+        ObjectType.Food_Meat,
+        ObjectType.Food_Bread,
+        ObjectType.Food_Fish2,
+        ObjectType.Alchemy_Brushwood,
         ObjectType.Key,
-        ObjectType.KeySingleUse,
-        ObjectType.LightCrystal,
-        ObjectType.LightCrystalYellow,
+        ObjectType.Key_Single_Use,
+        ObjectType.Light_Crystal,
+        ObjectType.Light_Crystal_Yellow,
         ObjectType.Map,
         ObjectType.Inkpot,
         ObjectType.Firecracker,
         ObjectType.Ear,
-        ObjectType.EarString,
-        ObjectType.MonsterPart,
-        ObjectType.Firework,
-        ObjectType.InkpotBroken,
-        ObjectType.ArmorChest,
-        ObjectType.ArmorAmulet,
-        ObjectType.ArmorBoots,
-        ObjectType.ArmorGloves,
-        ObjectType.ArmorBelt,
-        ObjectType.ArmorShield,
-        ObjectType.ArmorHelmet,
-        ObjectType.ArmorPants,
-        ObjectType.ArmorBracelet,
+        ObjectType.Ear_String,
+        ObjectType.Monster_Part,
+        ObjectType.Firework_Celebration,
+        ObjectType.Item_Expired,
+        ObjectType.Armor_Chest,
+        ObjectType.Armor_Amulet,
+        ObjectType.Armor_Boots,
+        ObjectType.Armor_Gloves,
+        ObjectType.Armor_Belt,
+        ObjectType.Armor_Shield,
+        ObjectType.Armor_Helmet,
+        ObjectType.Armor_Pants,
+        ObjectType.Armor_Bracelet,
         ObjectType.Ring,
-        ObjectType.ArmorRobe,
-        ObjectType.RingGolem,
-        ObjectType.AlchemyPot,
-        ObjectType.AlchemyFurnace,
+        ObjectType.Armor_Robe,
+        ObjectType.Ring_Golem,
+        ObjectType.Alchemy_Pot,
+        ObjectType.Alchemy_Furnace,
         ObjectType.Blueprint,
-        ObjectType.QuestArmorChest,
-        ObjectType.QuestArmorChest2,
-        ObjectType.QuestArmorBoots,
-        ObjectType.QuestArmorGloves,
-        ObjectType.QuestArmorBelt,
-        ObjectType.QuestArmorShield,
-        ObjectType.QuestArmorHelmet,
-        ObjectType.QuestArmorPants,
-        ObjectType.QuestArmorBracelet,
-        ObjectType.QuestArmorRing,
-        ObjectType.QuestArmorRobe,
-        ObjectType.QuestWeaponSword,
-        ObjectType.QuestWeaponAxe,
-        ObjectType.QuestWeaponCrossbow,
-        ObjectType.SpecialGuild,
-        ObjectType.SpecialAbility,
-        ObjectType.SpecialAbilitySteal,
-        ObjectType.GuildSpecialization,
-        ObjectType.ArmorHelmetPremium,
-        ObjectType.MantraWhite,
-        ObjectType.MantraBlack
+        ObjectType.Quest_Armor_Chest,
+        ObjectType.Quest_Armor_Chest2,
+        ObjectType.Quest_Armor_Boots,
+        ObjectType.Quest_Armor_Gloves,
+        ObjectType.Quest_Armor_Belt,
+        ObjectType.Quest_Armor_Shield,
+        ObjectType.Quest_Armor_Helmet,
+        ObjectType.Quest_Armor_Pants,
+        ObjectType.Quest_Armor_Bracelet,
+        ObjectType.Quest_Armor_Ring,
+        ObjectType.Quest_Armor_Robe,
+        ObjectType.Quest_Weapon_Sword,
+        ObjectType.Quest_Weapon_Axe,
+        ObjectType.Quest_Weapon_Crossbow,
+        ObjectType.Special_Guild,
+        ObjectType.Special_Ability,
+        ObjectType.Special_Ability_Steal,
+        ObjectType.Guild_Specialization,
+        ObjectType.Armor_Helmet_Premium,
+        ObjectType.Mantra_White,
+        ObjectType.Mantra_Black
     ];
 
     public static readonly HashSet<ObjectType> EntityObjectTypes =
@@ -136,210 +136,210 @@ public static class PacketPartMapping
         ObjectType.Token,
         ObjectType.Mutator,
         ObjectType.Dungeon,
-        ObjectType.SeedCastle,
-        ObjectType.XpPillDegree,
-        ObjectType.DoorEntrance,
-        ObjectType.DoorExit,
+        ObjectType.Seed_Castle,
+        ObjectType.Xp_X2_Pill_Degree,
+        ObjectType.Door_Entrance,
+        ObjectType.Door_Exit,
         ObjectType.Teleport,
-        ObjectType.TeleportBroken,
-        ObjectType.TeleportWithTarget,
-        ObjectType.DungeonEntrance,
-        ObjectType.TutorialMessage,
-        ObjectType.TeleportWild,
-        ObjectType.TokenMultiuse,
-        ObjectType.TokenIsland,
-        ObjectType.TokenTutorialTorweal,
-        ObjectType.TradeLicense,
-        ObjectType.MobSpawner,
-        ObjectType.TournamentTeleport,
-        ObjectType.CastleTeleport,
-        ObjectType.CastleTablet,
-        ObjectType.CastleGate,
-        ObjectType.CastleChest,
-        ObjectType.CastleElixirPillar,
-        ObjectType.CastleEntrance,
-        ObjectType.TeleportInDungeon,
-        ObjectType.DoorEntranceWithKey,
-        ObjectType.TeleportDungeonChoiceIsland,
+        ObjectType.Teleport_Broken,
+        ObjectType.Teleport_With_Target,
+        ObjectType.Dungeon_Entrance,
+        ObjectType.Tutorial_Message,
+        ObjectType.Teleport_Wild,
+        ObjectType.Token_Multiuse,
+        ObjectType.Token_Island,
+        ObjectType.Token_Tutorial_Torweal,
+        ObjectType.Trade_License,
+        ObjectType.Mob_Spawner,
+        ObjectType.Tournament_Teleport,
+        ObjectType.Castle_Teleport,
+        ObjectType.Castle_Tablet,
+        ObjectType.Castle_Gate,
+        ObjectType.Castle_Chest,
+        ObjectType.Castle_Elixir_Pillar,
+        ObjectType.Castle_Entrance,
+        ObjectType.Teleport_In_Dungeon,
+        ObjectType.Door_Entrance_With_Key,
+        ObjectType.Teleport_Dungeon_Choice_Island,
         ObjectType.Monster,
-        ObjectType.MonsterFlyer,
-        ObjectType.NpcBanker,
-        ObjectType.NpcTrade,
-        ObjectType.NpcQuestDegree,
-        ObjectType.NpcQuestKarma,
-        ObjectType.NpcQuestTitle,
-        ObjectType.NpcGuilder,
-        ObjectType.NpcGuide,
-        ObjectType.NpcTournament,
-        ObjectType.NpcTradeRandomName,
-        ObjectType.SackMobLoot,
-        ObjectType.ChestInDungeon,
-        ObjectType.ContainerChest,
-        ObjectType.Chest,
-        ObjectType.ScrollLegend,
-        ObjectType.ScrollRecipe,
+        ObjectType.Monster_Flyer,
+        ObjectType.Npc_Banker,
+        ObjectType.Npc_Trade,
+        ObjectType.Npc_Quest_Degree,
+        ObjectType.Npc_Quest_Karma,
+        ObjectType.Npc_Quest_Title,
+        ObjectType.Npc_Guilder,
+        ObjectType.Npc_Guide,
+        ObjectType.Npc_Tournament,
+        ObjectType.Npc_Trade_Random_Name,
+        ObjectType.Sack_Mob_Loot,
+        ObjectType.Chest5,
+        ObjectType.Container_Chest,
+        ObjectType.Chest2,
+        ObjectType.Scroll_Legend,
+        ObjectType.Scroll_Recipe,
         ObjectType.Mission,
-        ObjectType.TokenIslandGuest,
+        ObjectType.Token_Island_Guest,
         ObjectType.Bead,
-        ObjectType.BackpackLarge,
-        ObjectType.BackpackSmall,
+        ObjectType.Backpack_Large,
+        ObjectType.Backpack_Small,
         ObjectType.Sack,
-        ObjectType.MantraBookSmall,
-        ObjectType.RecipeBook,
-        ObjectType.MantraBookLarge,
-        ObjectType.MantraBookGreat,
-        ObjectType.MapBook,
-        ObjectType.KeyBarn,
-        ObjectType.PowderFinale,
-        ObjectType.PowderSingleTarget,
-        ObjectType.PowderAmilus,
-        ObjectType.PowderAoE,
-        ObjectType.ElixirCastle,
-        ObjectType.ElixirTrap,
-        ObjectType.WeaponSword,
-        ObjectType.WeaponStartingSword,
-        ObjectType.WeaponAxe,
-        ObjectType.WeaponCrossbow,
-        ObjectType.Arrows,
-        ObjectType.RingDiamond,
-        ObjectType.RingRuby,
+        ObjectType.Mantra_Book_Small,
+        ObjectType.Recipe_Book,
+        ObjectType.Mantra_Book_Large,
+        ObjectType.Mantra_Book_Great,
+        ObjectType.Map_Book,
+        ObjectType.Key_Barn,
+        ObjectType.Powder_Finale,
+        ObjectType.Powder_Single_Target,
+        ObjectType.Powder_Amilus,
+        ObjectType.Powder_Ao_E,
+        ObjectType.Elixir_Castle,
+        ObjectType.Elixir_Trap,
+        ObjectType.Weapon_Sword,
+        ObjectType.Weapon_Starting_Sword,
+        ObjectType.Weapon_Axe,
+        ObjectType.Weapon_Crossbow,
+        ObjectType.Arrow,
+        ObjectType.Ring_Diamond,
+        ObjectType.Ring_Ruby,
         ObjectType.Ruby,
-        ObjectType.RingGold,
-        ObjectType.AlchemyMineral,
-        ObjectType.AlchemyPlant,
-        ObjectType.AlchemyMetal,
-        ObjectType.FoodApple,
-        ObjectType.FoodPear,
-        ObjectType.FoodMeat,
-        ObjectType.FoodBread,
-        ObjectType.FoodFish,
-        ObjectType.AlchemyBrushwood,
+        ObjectType.Ring_Gold,
+        ObjectType.Alchemy_Mineral,
+        ObjectType.Alchemy_Plant,
+        ObjectType.Alchemy_Metal,
+        ObjectType.Food_Apple,
+        ObjectType.Food_Pear,
+        ObjectType.Food_Meat,
+        ObjectType.Food_Bread,
+        ObjectType.Food_Fish2,
+        ObjectType.Alchemy_Brushwood,
         ObjectType.Key,
-        ObjectType.KeySingleUse,
-        ObjectType.LightCrystal,
+        ObjectType.Key_Single_Use,
+        ObjectType.Light_Crystal,
         ObjectType.Map,
         ObjectType.Inkpot,
-        ObjectType.LightCrystalYellow,
+        ObjectType.Light_Crystal_Yellow,
         ObjectType.Firecracker,
         ObjectType.Ear,
-        ObjectType.EarString,
-        ObjectType.MonsterPart,
-        ObjectType.Firework,
-        ObjectType.InkpotBroken,
-        ObjectType.ArmorChest,
-        ObjectType.ArmorAmulet,
-        ObjectType.ArmorBoots,
-        ObjectType.ArmorGloves,
-        ObjectType.ArmorBelt,
-        ObjectType.ArmorShield,
-        ObjectType.ArmorHelmet,
-        ObjectType.ArmorPants,
-        ObjectType.ArmorBracelet,
+        ObjectType.Ear_String,
+        ObjectType.Monster_Part,
+        ObjectType.Firework_Celebration,
+        ObjectType.Item_Expired,
+        ObjectType.Armor_Chest,
+        ObjectType.Armor_Amulet,
+        ObjectType.Armor_Boots,
+        ObjectType.Armor_Gloves,
+        ObjectType.Armor_Belt,
+        ObjectType.Armor_Shield,
+        ObjectType.Armor_Helmet,
+        ObjectType.Armor_Pants,
+        ObjectType.Armor_Bracelet,
         ObjectType.Ring,
-        ObjectType.ArmorRobe,
-        ObjectType.RingGolem,
-        ObjectType.AlchemyPot,
-        ObjectType.AlchemyFurnace,
+        ObjectType.Armor_Robe,
+        ObjectType.Ring_Golem,
+        ObjectType.Alchemy_Pot,
+        ObjectType.Alchemy_Furnace,
         ObjectType.Blueprint,
         ObjectType.Workshop,
-        ObjectType.QuestArmorChest,
-        ObjectType.QuestArmorChest2,
-        ObjectType.QuestArmorBoots,
-        ObjectType.QuestArmorGloves,
-        ObjectType.QuestArmorBelt,
-        ObjectType.QuestArmorShield,
-        ObjectType.QuestArmorHelmet,
-        ObjectType.QuestArmorPants,
-        ObjectType.QuestArmorBracelet,
-        ObjectType.QuestArmorRing,
-        ObjectType.QuestArmorRobe,
-        ObjectType.QuestWeaponSword,
-        ObjectType.QuestWeaponAxe,
-        ObjectType.QuestWeaponCrossbow,
-        ObjectType.SpecialGuild,
-        ObjectType.SpecialAbility,
-        ObjectType.SpecialAbilitySteal,
-        ObjectType.GuildSpecialization,
-        ObjectType.ArmorHelmetPremium,
-        ObjectType.MantraWhite,
-        ObjectType.MantraBlack,
-        ObjectType.Other
+        ObjectType.Quest_Armor_Chest,
+        ObjectType.Quest_Armor_Chest2,
+        ObjectType.Quest_Armor_Boots,
+        ObjectType.Quest_Armor_Gloves,
+        ObjectType.Quest_Armor_Belt,
+        ObjectType.Quest_Armor_Shield,
+        ObjectType.Quest_Armor_Helmet,
+        ObjectType.Quest_Armor_Pants,
+        ObjectType.Quest_Armor_Bracelet,
+        ObjectType.Quest_Armor_Ring,
+        ObjectType.Quest_Armor_Robe,
+        ObjectType.Quest_Weapon_Sword,
+        ObjectType.Quest_Weapon_Axe,
+        ObjectType.Quest_Weapon_Crossbow,
+        ObjectType.Special_Guild,
+        ObjectType.Special_Ability,
+        ObjectType.Special_Ability_Steal,
+        ObjectType.Guild_Specialization,
+        ObjectType.Armor_Helmet_Premium,
+        ObjectType.Mantra_White,
+        ObjectType.Mantra_Black,
+        ObjectType.Player
     ];
 
     public static readonly HashSet<ObjectType> ItemBagObjectTypes =
     [
-        ObjectType.BackpackLarge,
-        ObjectType.BackpackSmall,
-        ObjectType.MantraBookSmall,
-        ObjectType.MantraBookLarge,
-        ObjectType.MantraBookGreat,
-        ObjectType.MapBook,
-        ObjectType.AlchemyPot,
+        ObjectType.Backpack_Large,
+        ObjectType.Backpack_Small,
+        ObjectType.Mantra_Book_Small,
+        ObjectType.Mantra_Book_Large,
+        ObjectType.Mantra_Book_Great,
+        ObjectType.Map_Book,
+        ObjectType.Alchemy_Pot,
         ObjectType.Sack
     ];
 
     public static readonly HashSet<ObjectType> ItemRecipeBagObjectTypes =
     [
-        ObjectType.RecipeBook
+        ObjectType.Recipe_Book
     ];
 
     public static readonly HashSet<ObjectType> EquippableItemTypes =
     [
-        ObjectType.WeaponSword,
-        ObjectType.WeaponStartingSword,
-        ObjectType.WeaponAxe,
-        ObjectType.WeaponCrossbow,
-        ObjectType.ArmorChest,
-        ObjectType.ArmorAmulet,
-        ObjectType.ArmorBoots,
-        ObjectType.ArmorGloves,
-        ObjectType.ArmorBelt,
-        ObjectType.ArmorShield,
-        ObjectType.ArmorHelmet,
-        ObjectType.ArmorPants,
-        ObjectType.ArmorBracelet,
+        ObjectType.Weapon_Sword,
+        ObjectType.Weapon_Starting_Sword,
+        ObjectType.Weapon_Axe,
+        ObjectType.Weapon_Crossbow,
+        ObjectType.Armor_Chest,
+        ObjectType.Armor_Amulet,
+        ObjectType.Armor_Boots,
+        ObjectType.Armor_Gloves,
+        ObjectType.Armor_Belt,
+        ObjectType.Armor_Shield,
+        ObjectType.Armor_Helmet,
+        ObjectType.Armor_Pants,
+        ObjectType.Armor_Bracelet,
         ObjectType.Ring,
-        ObjectType.ArmorRobe,
-        ObjectType.QuestArmorChest,
-        ObjectType.QuestArmorChest2,
-        ObjectType.QuestArmorBoots,
-        ObjectType.QuestArmorGloves,
-        ObjectType.QuestArmorBelt,
-        ObjectType.QuestArmorShield,
-        ObjectType.QuestArmorHelmet,
-        ObjectType.QuestArmorPants,
-        ObjectType.QuestArmorBracelet,
-        ObjectType.QuestArmorRing,
-        ObjectType.QuestArmorRobe,
-        ObjectType.QuestWeaponSword,
-        ObjectType.QuestWeaponAxe,
-        ObjectType.QuestWeaponCrossbow
+        ObjectType.Armor_Robe,
+        ObjectType.Quest_Armor_Chest,
+        ObjectType.Quest_Armor_Chest2,
+        ObjectType.Quest_Armor_Boots,
+        ObjectType.Quest_Armor_Gloves,
+        ObjectType.Quest_Armor_Belt,
+        ObjectType.Quest_Armor_Shield,
+        ObjectType.Quest_Armor_Helmet,
+        ObjectType.Quest_Armor_Pants,
+        ObjectType.Quest_Armor_Bracelet,
+        ObjectType.Quest_Armor_Ring,
+        ObjectType.Quest_Armor_Robe,
+        ObjectType.Quest_Weapon_Sword,
+        ObjectType.Quest_Weapon_Axe,
+        ObjectType.Quest_Weapon_Crossbow
     ];
 
     public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new()
     {
         [ObjectType.Teleport] = "teleports",
-        [ObjectType.CastleTeleport] = "castle_teleports",
-        [ObjectType.CastleTablet] = "castle_tablets",
-        [ObjectType.CastleGate] = "castle_gates",
-        [ObjectType.CastleChest] = "castle_chests",
-        [ObjectType.CastleElixirPillar] = "castle_elixir_pillars",
-        [ObjectType.CastleEntrance] = "castle_entrances",
-        [ObjectType.DoorEntranceWithKey] = "door_entrances_with_key",
-        [ObjectType.TeleportInDungeon] = "teleport_in_dungeon",
-        [ObjectType.TeleportDungeonChoiceIsland] = "teleport_dungeon_choice_island",
-        [ObjectType.TeleportWithTarget] = "teleports_with_target",
-        [ObjectType.TeleportWild] = "teleport_wild",
-        [ObjectType.TeleportBroken] = "teleport_broken",
-        [ObjectType.TournamentTeleport] = "teleport_tournament",
-        [ObjectType.AlchemyMineral] = "alchemy_minerals",
-        [ObjectType.AlchemyPlant] = "alchemy_plants",
-        [ObjectType.AlchemyMetal] = "alchemy_metals",
-        [ObjectType.LightCrystal] = "light_crystals",
-        [ObjectType.LightCrystalYellow] = "light_crystals_yellow",
-        [ObjectType.DungeonEntrance] = "dungeon_entrance",
+        [ObjectType.Castle_Teleport] = "castle_teleports",
+        [ObjectType.Castle_Tablet] = "castle_tablets",
+        [ObjectType.Castle_Gate] = "castle_gates",
+        [ObjectType.Castle_Chest] = "castle_chests",
+        [ObjectType.Castle_Elixir_Pillar] = "castle_elixir_pillars",
+        [ObjectType.Castle_Entrance] = "castle_entrances",
+        [ObjectType.Door_Entrance_With_Key] = "door_entrances_with_key",
+        [ObjectType.Teleport_In_Dungeon] = "teleport_in_dungeon",
+        [ObjectType.Teleport_Dungeon_Choice_Island] = "teleport_dungeon_choice_island",
+        [ObjectType.Teleport_With_Target] = "teleports_with_target",
+        [ObjectType.Teleport_Wild] = "teleport_wild",
+        [ObjectType.Teleport_Broken] = "teleport_broken",
+        [ObjectType.Tournament_Teleport] = "teleport_tournament",
+        [ObjectType.Alchemy_Mineral] = "alchemy_minerals",
+        [ObjectType.Alchemy_Plant] = "alchemy_plants",
+        [ObjectType.Alchemy_Metal] = "alchemy_metals",
+        [ObjectType.Light_Crystal] = "light_crystals",
+        [ObjectType.Light_Crystal_Yellow] = "light_crystals_yellow",
+        [ObjectType.Dungeon_Entrance] = "dungeon_entrance",
         [ObjectType.Workshop] = "workshop",
-        [ObjectType.MobSpawner] = "mob_spawner"
+        [ObjectType.Mob_Spawner] = "mob_spawner"
     };
 
     public static Tuple<string, string, bool> GetPacketPartName(ObjectType objectType, EntityActionType actionType,
@@ -397,148 +397,148 @@ public static class PacketPartMapping
                     switch (objectType)
                     {
                         case ObjectType.Monster:
-                        case ObjectType.MonsterFlyer:
+                        case ObjectType.Monster_Flyer:
                             packetName = "entity_monster";
                             break;
-                        case ObjectType.MobSpawner:
+                        case ObjectType.Mob_Spawner:
                             packetName = "mob_spawner";
                             break;
-                        case ObjectType.NpcTrade:
+                        case ObjectType.Npc_Trade:
                             packetName = "npc_trade";
                             break;
-                        case ObjectType.NpcBanker:
+                        case ObjectType.Npc_Banker:
                             packetName = "npc_banker";
                             break;
-                        case ObjectType.NpcQuestTitle:
-                        case ObjectType.NpcQuestDegree:
-                        case ObjectType.NpcQuestKarma:
+                        case ObjectType.Npc_Quest_Title:
+                        case ObjectType.Npc_Quest_Degree:
+                        case ObjectType.Npc_Quest_Karma:
                             packetName = "npc_quest_title";
                             break;
-                        case ObjectType.NpcGuilder:
+                        case ObjectType.Npc_Guilder:
                             packetName = "npc_guilder";
                             break;
-                        case ObjectType.NpcGuide:
+                        case ObjectType.Npc_Guide:
                             packetName = "npc_guide";
                             break;
-                        case ObjectType.NpcTournament:
+                        case ObjectType.Npc_Tournament:
                             packetName = "npc_tournament";
                             break;
-                        case ObjectType.NpcTradeRandomName:
+                        case ObjectType.Npc_Trade_Random_Name:
                             packetName = "npc_trade_random_name";
                             break;
-                        case ObjectType.ChestInDungeon:
+                        case ObjectType.Chest5:
                             packetName = "chest_in_dungeon";
                             break;
-                        case ObjectType.SackMobLoot:
+                        case ObjectType.Sack_Mob_Loot:
                             packetName = "sack_mob_loot";
                             break;
-                        case ObjectType.TutorialMessage:
+                        case ObjectType.Tutorial_Message:
                             packetName = "tutorial_message";
                             break;
                         case ObjectType.Teleport:
-                        case ObjectType.TeleportWild:
-                        case ObjectType.TeleportBroken:
+                        case ObjectType.Teleport_Wild:
+                        case ObjectType.Teleport_Broken:
                             packetName = "teleport";
                             break;
-                        case ObjectType.CastleTeleport:
+                        case ObjectType.Castle_Teleport:
                             packetName = "castle_teleport";
                             break;
-                        case ObjectType.CastleTablet:
+                        case ObjectType.Castle_Tablet:
                             packetName = "castle_tablet";
                             break;
-                        case ObjectType.CastleGate:
+                        case ObjectType.Castle_Gate:
                             packetName = "castle_gates";
                             break;
-                        case ObjectType.CastleChest:
+                        case ObjectType.Castle_Chest:
                             packetName = "castle_chest";
                             break;
-                        case ObjectType.CastleElixirPillar:
+                        case ObjectType.Castle_Elixir_Pillar:
                             packetName = "castle_elixir_pillar";
                             break;
-                        case ObjectType.CastleEntrance:
+                        case ObjectType.Castle_Entrance:
                             packetName = "castle_entrance";
                             break;
-                        case ObjectType.DoorEntranceWithKey:
+                        case ObjectType.Door_Entrance_With_Key:
                             packetName = "door_entrance_with_key";
                             break;
-                        case ObjectType.TeleportInDungeon:
-                        case ObjectType.TeleportDungeonChoiceIsland:
+                        case ObjectType.Teleport_In_Dungeon:
+                        case ObjectType.Teleport_Dungeon_Choice_Island:
                             packetName = "teleport_in_dungeon";
                             break;
                         case ObjectType.Key:
-                        case ObjectType.KeyBarn:
+                        case ObjectType.Key_Barn:
                             packetName = "item_key";
                             break;
-                        case ObjectType.KeySingleUse:
+                        case ObjectType.Key_Single_Use:
                             packetName = "item_key_single_use";
                             break;
-                        case ObjectType.LightCrystal:
-                        case ObjectType.LightCrystalYellow:
+                        case ObjectType.Light_Crystal:
+                        case ObjectType.Light_Crystal_Yellow:
                             packetName = "item_light_crystal";
                             break;
                         case ObjectType.Ring:
                             packetName = "item_ring";
                             shouldHaveOptionalFields = true;
                             break;
-                        case ObjectType.AlchemyPot:
+                        case ObjectType.Alchemy_Pot:
                             packetName = "item_alchemypot";
                             break;
                         case ObjectType.Firecracker:
-                        case ObjectType.Firework:
+                        case ObjectType.Firework_Celebration:
                             packetName = "item_firework";
                             break;
-                        case ObjectType.MantraBlack:
-                        case ObjectType.MantraWhite:
+                        case ObjectType.Mantra_Black:
+                        case ObjectType.Mantra_White:
                             packetName = "item_mantra_counted";
                             break;
-                        case ObjectType.ScrollLegend:
-                        case ObjectType.ScrollRecipe:
+                        case ObjectType.Scroll_Legend:
+                        case ObjectType.Scroll_Recipe:
                             packetName = "item_scroll";
                             shouldHaveOptionalFields = true;
                             break;
                         case ObjectType.Sack:
                             packetName = "item_sack";
                             break;
-                        case ObjectType.EarString:
+                        case ObjectType.Ear_String:
                             packetName = "item_earstring";
                             break;
                         case ObjectType.Token:
                             packetName = "item_token";
                             break;
-                        case ObjectType.TokenTutorialTorweal:
+                        case ObjectType.Token_Tutorial_Torweal:
                             packetName = "item_token_tutorial";
                             break;
-                        case ObjectType.TokenMultiuse:
+                        case ObjectType.Token_Multiuse:
                             packetName = "item_token_multiuse";
                             break;
-                        case ObjectType.MantraBookGreat:
+                        case ObjectType.Mantra_Book_Great:
                             packetName = "item_mantrabook_great";
                             break;
-                        case ObjectType.TokenIsland:
+                        case ObjectType.Token_Island:
                             packetName = "item_token_island";
                             break;
-                        case ObjectType.TokenIslandGuest:
+                        case ObjectType.Token_Island_Guest:
                             packetName = "item_token_island_guest";
                             break;
-                        case ObjectType.TradeLicense:
+                        case ObjectType.Trade_License:
                             packetName = "item_license_trade";
                             break;
-                        case ObjectType.AlchemyFurnace:
+                        case ObjectType.Alchemy_Furnace:
                             packetName = "entity_alchemyfurnace";
                             break;
-                        case ObjectType.DoorEntrance:
+                        case ObjectType.Door_Entrance:
                             packetName = "door_entrance";
                             break;
-                        case ObjectType.DoorExit:
+                        case ObjectType.Door_Exit:
                             packetName = "door_exit";
                             break;
-                        case ObjectType.DungeonEntrance:
+                        case ObjectType.Dungeon_Entrance:
                             packetName = "dungeon_entrance";
                             break;
-                        case ObjectType.TeleportWithTarget:
+                        case ObjectType.Teleport_With_Target:
                             packetName = "teleport_with_target";
                             break;
-                        case ObjectType.TournamentTeleport:
+                        case ObjectType.Tournament_Teleport:
                             packetName = "tournament_teleport";
                             break;
                         case ObjectType.Workshop:
@@ -547,24 +547,25 @@ public static class PacketPartMapping
                         case ObjectType.Dungeon:
                             packetName = "dungeon";
                             break;
-                        case ObjectType.WeaponStartingSword:
+                        case ObjectType.Weapon_Starting_Sword:
                             packetName = "weapon_starting_sword";
                             break;
-                        case ObjectType.ContainerChest:
+                        case ObjectType.Container_Chest:
                             packetName = "container_chest";
                             break;
                         case ObjectType.Mutator:
                             packetName = "item_mutator_special";
                             break;
-                        case ObjectType.SpecialGuild:
-                        case ObjectType.GuildSpecialization:
+                        case ObjectType.Special_Guild:
+                        case ObjectType.Guild_Specialization:
                             packetName = "item_guild";
                             break;
-                        case ObjectType.SpecialAbility:
-                        case ObjectType.SpecialAbilitySteal:
+                        case ObjectType.Special_Ability:
+                        case ObjectType.Special_Ability_Steal:
                             packetName = "item_guild_ability";
                             break;
-                        case ObjectType.Other:
+                        case ObjectType.Player:
+                        case ObjectType.Stats:
                             packetName = "entity_character";
                             comment = $"NEW PLAYER -- [{entId:X4}]";
                             break;
@@ -653,132 +654,132 @@ public static class ObjectTypeToPacketNameMap
     public static Dictionary<ObjectType, string> Mapping = new()
     {
         [ObjectType.Despawn] = "despawn",
-        [ObjectType.Other] = "",
         [ObjectType.Player] = "",
+        [ObjectType.Stats] = "",
         [ObjectType.Token] = "item_token",
         [ObjectType.Mutator] = "item_mutator_special",
-        [ObjectType.SeedCastle] = "",
-        [ObjectType.XpPillDegree] = "",
-        [ObjectType.DoorEntrance] = "door_entrance",
-        [ObjectType.DoorExit] = "door_entrance",
-        [ObjectType.DungeonEntrance] = "dungeon_entrance",
+        [ObjectType.Seed_Castle] = "",
+        [ObjectType.Xp_X2_Pill_Degree] = "",
+        [ObjectType.Door_Entrance] = "door_entrance",
+        [ObjectType.Door_Exit] = "door_entrance",
+        [ObjectType.Dungeon_Entrance] = "dungeon_entrance",
         [ObjectType.Teleport] = "teleport",
-        [ObjectType.TeleportBroken] = "teleport",
-        [ObjectType.TeleportWild] = "teleport",
-        [ObjectType.CastleTeleport] = "castle_teleport",
-        [ObjectType.CastleTablet] = "castle_tablet",
-        [ObjectType.CastleGate] = "castle_gates",
-        [ObjectType.CastleChest] = "castle_chest",
-        [ObjectType.CastleElixirPillar] = "castle_elixir_pillar",
-        [ObjectType.CastleEntrance] = "castle_entrance",
-        [ObjectType.DoorEntranceWithKey] = "door_entrance_with_key",
-        [ObjectType.TeleportInDungeon] = "teleport_in_dungeon",
-        [ObjectType.TeleportDungeonChoiceIsland] = "teleport_in_dungeon",
-        [ObjectType.TeleportWithTarget] = "teleport_with_target",
-        [ObjectType.TokenMultiuse] = "item_token_multiuse",
-        [ObjectType.TradeLicense] = "item_license_trade",
-        [ObjectType.MobSpawner] = "mob_spawner",
-        [ObjectType.TournamentTeleport] = "tournament_teleport",
-        [ObjectType.TutorialMessage] = "tutorial_message",
-        [ObjectType.ScrollLegend] = "item_scroll_counted", // item_scroll or item_scroll_counted
-        [ObjectType.ScrollRecipe] = "item_scroll_counted", // item_scroll or item_scroll_counted
+        [ObjectType.Teleport_Broken] = "teleport",
+        [ObjectType.Teleport_Wild] = "teleport",
+        [ObjectType.Castle_Teleport] = "castle_teleport",
+        [ObjectType.Castle_Tablet] = "castle_tablet",
+        [ObjectType.Castle_Gate] = "castle_gates",
+        [ObjectType.Castle_Chest] = "castle_chest",
+        [ObjectType.Castle_Elixir_Pillar] = "castle_elixir_pillar",
+        [ObjectType.Castle_Entrance] = "castle_entrance",
+        [ObjectType.Door_Entrance_With_Key] = "door_entrance_with_key",
+        [ObjectType.Teleport_In_Dungeon] = "teleport_in_dungeon",
+        [ObjectType.Teleport_Dungeon_Choice_Island] = "teleport_in_dungeon",
+        [ObjectType.Teleport_With_Target] = "teleport_with_target",
+        [ObjectType.Token_Multiuse] = "item_token_multiuse",
+        [ObjectType.Trade_License] = "item_license_trade",
+        [ObjectType.Mob_Spawner] = "mob_spawner",
+        [ObjectType.Tournament_Teleport] = "tournament_teleport",
+        [ObjectType.Tutorial_Message] = "tutorial_message",
+        [ObjectType.Scroll_Legend] = "item_scroll_counted", // item_scroll or item_scroll_counted
+        [ObjectType.Scroll_Recipe] = "item_scroll_counted", // item_scroll or item_scroll_counted
         [ObjectType.Mission] = "",
-        [ObjectType.TokenIsland] = "item_token_island",
-        [ObjectType.TokenIslandGuest] = "item_token_island_guest",
-        [ObjectType.NpcQuestTitle] = "npc_quest_title",
-        [ObjectType.NpcQuestDegree] = "",
-        [ObjectType.NpcQuestKarma] = "npc_quest_karma",
+        [ObjectType.Token_Island] = "item_token_island",
+        [ObjectType.Token_Island_Guest] = "item_token_island_guest",
+        [ObjectType.Npc_Quest_Title] = "npc_quest_title",
+        [ObjectType.Npc_Quest_Degree] = "",
+        [ObjectType.Npc_Quest_Karma] = "npc_quest_karma",
         [ObjectType.Monster] = "monster_full",
-        [ObjectType.MonsterFlyer] = "",
-        [ObjectType.NpcTrade] = "npc_trade",
-        [ObjectType.NpcBanker] = "npc_banker",
-        [ObjectType.NpcGuilder] = "npc_guilder",
+        [ObjectType.Monster_Flyer] = "",
+        [ObjectType.Npc_Trade] = "npc_trade",
+        [ObjectType.Npc_Banker] = "npc_banker",
+        [ObjectType.Npc_Guilder] = "npc_guilder",
         [ObjectType.Bead] = "",
-        [ObjectType.NpcTournament] = "npc_tournament",
-        [ObjectType.BackpackLarge] = "item_backpack",
-        [ObjectType.BackpackSmall] = "item_backpack",
+        [ObjectType.Npc_Tournament] = "npc_tournament",
+        [ObjectType.Backpack_Large] = "item_backpack",
+        [ObjectType.Backpack_Small] = "item_backpack",
         [ObjectType.Sack] = "item_sack",
-        [ObjectType.Chest] = "",
-        [ObjectType.SackMobLoot] = "sack_mob_loot",
-        [ObjectType.MantraBookSmall] = "item_mantrabook",
-        [ObjectType.RecipeBook] = "item_recipebook",
-        [ObjectType.MantraBookLarge] = "item_mantrabook",
-        [ObjectType.MantraBookGreat] = "item_mantrabook_great",
-        [ObjectType.MapBook] = "",
-        [ObjectType.ChestInDungeon] = "chest_in_dungeon",
-        [ObjectType.KeyBarn] = "item_key",
-        [ObjectType.PowderFinale] = "item_powder_counted", //item_powder_counted
-        [ObjectType.PowderSingleTarget] = "item_powder_counted", //item_powder_counted
-        [ObjectType.PowderAmilus] = "item_powder_counted", //item_powder_counted
-        [ObjectType.PowderAoE] = "item_powder_counted", //item_powder_counted
-        [ObjectType.ElixirCastle] = "item_elixir_counted", // item_elixir_counted
-        [ObjectType.ElixirTrap] = "item_elixir_counted", // item_elixir_counted
-        [ObjectType.WeaponSword] = "item_amulet",
-        [ObjectType.WeaponAxe] = "item_amulet",
-        [ObjectType.WeaponCrossbow] = "item_amulet",
-        [ObjectType.Arrows] = "item_arrows_counted",
-        [ObjectType.RingDiamond] = "item_ring_diamond_counted", //item_ring_diamond_counted
-        [ObjectType.RingRuby] = "",
+        [ObjectType.Chest2] = "",
+        [ObjectType.Sack_Mob_Loot] = "sack_mob_loot",
+        [ObjectType.Mantra_Book_Small] = "item_mantrabook",
+        [ObjectType.Recipe_Book] = "item_recipebook",
+        [ObjectType.Mantra_Book_Large] = "item_mantrabook",
+        [ObjectType.Mantra_Book_Great] = "item_mantrabook_great",
+        [ObjectType.Map_Book] = "",
+        [ObjectType.Chest5] = "chest_in_dungeon",
+        [ObjectType.Key_Barn] = "item_key",
+        [ObjectType.Powder_Finale] = "item_powder_counted", //item_powder_counted
+        [ObjectType.Powder_Single_Target] = "item_powder_counted", //item_powder_counted
+        [ObjectType.Powder_Amilus] = "item_powder_counted", //item_powder_counted
+        [ObjectType.Powder_Ao_E] = "item_powder_counted", //item_powder_counted
+        [ObjectType.Elixir_Castle] = "item_elixir_counted", // item_elixir_counted
+        [ObjectType.Elixir_Trap] = "item_elixir_counted", // item_elixir_counted
+        [ObjectType.Weapon_Sword] = "item_amulet",
+        [ObjectType.Weapon_Axe] = "item_amulet",
+        [ObjectType.Weapon_Crossbow] = "item_amulet",
+        [ObjectType.Arrow] = "item_arrows_counted",
+        [ObjectType.Ring_Diamond] = "item_ring_diamond_counted", //item_ring_diamond_counted
+        [ObjectType.Ring_Ruby] = "",
         [ObjectType.Ruby] = "",
-        [ObjectType.RingGold] = "", //item_ring_gold_counted
-        [ObjectType.AlchemyMineral] = "alchemy_resource_ground", // item_alchemy_counted
-        [ObjectType.AlchemyPlant] = "alchemy_resource_ground", // item_alchemy_counted
-        [ObjectType.AlchemyMetal] = "alchemy_resource_ground", // item_alchemy_counted
-        [ObjectType.FoodApple] = "item_food_counted", // item_food_counted
-        [ObjectType.FoodPear] = "item_food_counted", // item_food_counted
-        [ObjectType.FoodMeat] = "item_food_counted", // item_food_counted
-        [ObjectType.FoodBread] = "item_food_counted", // item_food_counted
-        [ObjectType.FoodFish] = "item_food_counted", // item_food_counted
-        [ObjectType.AlchemyBrushwood] = "",
+        [ObjectType.Ring_Gold] = "", //item_ring_gold_counted
+        [ObjectType.Alchemy_Mineral] = "alchemy_resource_ground", // item_alchemy_counted
+        [ObjectType.Alchemy_Plant] = "alchemy_resource_ground", // item_alchemy_counted
+        [ObjectType.Alchemy_Metal] = "alchemy_resource_ground", // item_alchemy_counted
+        [ObjectType.Food_Apple] = "item_food_counted", // item_food_counted
+        [ObjectType.Food_Pear] = "item_food_counted", // item_food_counted
+        [ObjectType.Food_Meat] = "item_food_counted", // item_food_counted
+        [ObjectType.Food_Bread] = "item_food_counted", // item_food_counted
+        [ObjectType.Food_Fish2] = "item_food_counted", // item_food_counted
+        [ObjectType.Alchemy_Brushwood] = "",
         [ObjectType.Key] = "item_key",
-        [ObjectType.KeySingleUse] = "item_key_single_use",
-        [ObjectType.LightCrystal] = "item_light_crystal",
-        [ObjectType.LightCrystalYellow] = "item_light_crystal",
+        [ObjectType.Key_Single_Use] = "item_key_single_use",
+        [ObjectType.Light_Crystal] = "item_light_crystal",
+        [ObjectType.Light_Crystal_Yellow] = "item_light_crystal",
         [ObjectType.Map] = "item_map",
         [ObjectType.Inkpot] = "item_inkpot",
         [ObjectType.Firecracker] = "alchemy_resource_ground",
         [ObjectType.Ear] = "",
-        [ObjectType.EarString] = "item_earstring",
-        [ObjectType.MonsterPart] = "",
-        [ObjectType.Firework] = "alchemy_resource_ground",
-        [ObjectType.InkpotBroken] = "",
-        [ObjectType.ArmorChest] = "item_amulet", // generic item packet
-        [ObjectType.ArmorAmulet] = "item_amulet", // generic item packet
-        [ObjectType.ArmorBoots] = "item_amulet", // generic item packet
-        [ObjectType.ArmorGloves] = "item_amulet", // generic item packet
-        [ObjectType.ArmorBelt] = "item_amulet", // generic item packet
-        [ObjectType.ArmorShield] = "item_amulet", // generic item packet
-        [ObjectType.ArmorHelmet] = "item_amulet", // generic item packet
-        [ObjectType.ArmorPants] = "item_amulet",
-        [ObjectType.ArmorBracelet] = "item_amulet", // generic item packet
+        [ObjectType.Ear_String] = "item_earstring",
+        [ObjectType.Monster_Part] = "",
+        [ObjectType.Firework_Celebration] = "alchemy_resource_ground",
+        [ObjectType.Item_Expired] = "",
+        [ObjectType.Armor_Chest] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Amulet] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Boots] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Gloves] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Belt] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Shield] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Helmet] = "item_amulet", // generic item packet
+        [ObjectType.Armor_Pants] = "item_amulet",
+        [ObjectType.Armor_Bracelet] = "item_amulet", // generic item packet
         [ObjectType.Ring] = "item_ring_half",
-        [ObjectType.ArmorRobe] = "item_amulet", // item_robe_dragon_pa
-        [ObjectType.RingGolem] = "",
-        [ObjectType.AlchemyPot] = "item_alchemypot",
-        [ObjectType.AlchemyFurnace] = "",
+        [ObjectType.Armor_Robe] = "item_amulet", // item_robe_dragon_pa
+        [ObjectType.Ring_Golem] = "",
+        [ObjectType.Alchemy_Pot] = "item_alchemypot",
+        [ObjectType.Alchemy_Furnace] = "",
         [ObjectType.Blueprint] = "",
         [ObjectType.Workshop] = "workshop",
-        [ObjectType.QuestArmorChest] = "", // generic item packet
-        [ObjectType.QuestArmorChest2] = "", // generic item packet
-        [ObjectType.QuestArmorBoots] = "item_quest_boots", // generic item packet
-        [ObjectType.QuestArmorGloves] = "", // generic item packet
-        [ObjectType.QuestArmorBelt] = "", // generic item packet
-        [ObjectType.QuestArmorShield] = "item_quest_shield", // generic item packet
-        [ObjectType.QuestArmorHelmet] = "item_quest_helmet", // generic item packet
-        [ObjectType.QuestArmorPants] = "", // generic item packet
-        [ObjectType.QuestArmorBracelet] = "", // generic item packet
-        [ObjectType.QuestArmorRing] = "", // generic item packet
-        [ObjectType.QuestArmorRobe] = "item_quest_robe", // generic item packet
-        [ObjectType.QuestWeaponSword] = "", // generic item packet
-        [ObjectType.QuestWeaponAxe] = "", // generic item packet
-        [ObjectType.QuestWeaponCrossbow] = "item_quest_crossbow", // generic item packet
-        [ObjectType.SpecialGuild] = "item_guild",
-        [ObjectType.SpecialAbility] = "item_guild_ability",
-        [ObjectType.SpecialAbilitySteal] = "item_guild_ability",
-        [ObjectType.GuildSpecialization] = "item_guild",
-        [ObjectType.ArmorHelmetPremium] = "", // generic item packet
-        [ObjectType.MantraWhite] = "", //item_mantra_counted
-        [ObjectType.MantraBlack] = "" //item_mantra_counted
+        [ObjectType.Quest_Armor_Chest] = "", // generic item packet
+        [ObjectType.Quest_Armor_Chest2] = "", // generic item packet
+        [ObjectType.Quest_Armor_Boots] = "item_quest_boots", // generic item packet
+        [ObjectType.Quest_Armor_Gloves] = "", // generic item packet
+        [ObjectType.Quest_Armor_Belt] = "", // generic item packet
+        [ObjectType.Quest_Armor_Shield] = "item_quest_shield", // generic item packet
+        [ObjectType.Quest_Armor_Helmet] = "item_quest_helmet", // generic item packet
+        [ObjectType.Quest_Armor_Pants] = "", // generic item packet
+        [ObjectType.Quest_Armor_Bracelet] = "", // generic item packet
+        [ObjectType.Quest_Armor_Ring] = "", // generic item packet
+        [ObjectType.Quest_Armor_Robe] = "item_quest_robe", // generic item packet
+        [ObjectType.Quest_Weapon_Sword] = "", // generic item packet
+        [ObjectType.Quest_Weapon_Axe] = "", // generic item packet
+        [ObjectType.Quest_Weapon_Crossbow] = "item_quest_crossbow", // generic item packet
+        [ObjectType.Special_Guild] = "item_guild",
+        [ObjectType.Special_Ability] = "item_guild_ability",
+        [ObjectType.Special_Ability_Steal] = "item_guild_ability",
+        [ObjectType.Guild_Specialization] = "item_guild",
+        [ObjectType.Armor_Helmet_Premium] = "", // generic item packet
+        [ObjectType.Mantra_White] = "", //item_mantra_counted
+        [ObjectType.Mantra_Black] = "" //item_mantra_counted
         //Unknown
     };
 }

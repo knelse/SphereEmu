@@ -93,7 +93,7 @@ public partial class TeleportWildFill : Node3D
 				instance.ID = (ushort)id;
 			}
 
-			instance.ObjectType = ObjectType.TeleportWild;
+			instance.ObjectType = ObjectType.Teleport_Wild;
 
 			AddChild(instance);
 			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

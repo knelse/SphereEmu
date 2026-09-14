@@ -553,7 +553,7 @@ internal static class Program
         public static NpcSpawnRow Parse(string[] p)
         {
             var id = ParseHexInt32(p[0]);
-            var objectType = Enum.Parse<ObjectType>(p[1].Trim(), ignoreCase: true);
+            var objectType = ObjectTypeParse.Parse(p[1].Trim());
             var x = FileFormatCulture.ParseFloat(p[3]);
             var y = FileFormatCulture.ParseFloat(p[4]);
             var z = FileFormatCulture.ParseFloat(p[5]);
@@ -595,14 +595,14 @@ internal static class Program
                 iconName = iconNameTrimmed;
             }
 
-            if (objectType == ObjectType.NpcBanker)
+            if (objectType == ObjectType.Npc_Banker)
             {
                 iconName = "npc_banker";
             }
 
             switch (objectType)
             {
-                case ObjectType.NpcQuestTitle:
+                case ObjectType.Npc_Quest_Title:
                     modelName = Random.Shared.Next(3) switch
                     {
                         0 => "npc06",
@@ -610,25 +610,25 @@ internal static class Program
                         _ => "npc08"
                     };
                     break;
-                case ObjectType.NpcBanker:
+                case ObjectType.Npc_Banker:
                     modelName = "npc29d";
                     break;
-                case ObjectType.NpcQuestKarma:
+                case ObjectType.Npc_Quest_Karma:
                     modelName = "npc58";
                     break;
-                case ObjectType.NpcQuestDegree:
+                case ObjectType.Npc_Quest_Degree:
                     modelName = "npc59";
                     break;
             }
 
             var npcType = objectType switch
             {
-                ObjectType.NpcBanker => NpcType.Banker,
-                ObjectType.NpcTournament => NpcType.Tournament,
-                ObjectType.NpcGuilder => NpcType.Guilder,
-                ObjectType.NpcQuestDegree => NpcType.QuestDegree,
-                ObjectType.NpcQuestTitle => NpcType.QuestTitle,
-                ObjectType.NpcQuestKarma => NpcType.QuestKarma,
+                ObjectType.Npc_Banker => NpcType.Banker,
+                ObjectType.Npc_Tournament => NpcType.Tournament,
+                ObjectType.Npc_Guilder => NpcType.Guilder,
+                ObjectType.Npc_Quest_Degree => NpcType.QuestDegree,
+                ObjectType.Npc_Quest_Title => NpcType.QuestTitle,
+                ObjectType.Npc_Quest_Karma => NpcType.QuestKarma,
                 _ => (NpcType)npcTypeRaw
             };
 

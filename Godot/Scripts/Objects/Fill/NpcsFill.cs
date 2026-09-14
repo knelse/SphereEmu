@@ -74,7 +74,7 @@ public partial class NpcsFill : Node3D
 				continue;
 			}
 
-			if (!Enum.TryParse<ObjectType>(parts[1].Trim(), ignoreCase: true, out var objectType))
+			if (!ObjectTypeParse.TryParse(parts[1].Trim(), out var objectType))
 			{
 				stats.ParseErrors++;
 				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad ObjectType '{parts[1]}'. Skipping.");
@@ -162,14 +162,14 @@ public partial class NpcsFill : Node3D
 		var iconNameTrimmed = iconName.Trim();
 		iconName = iconNameTrimmed.StartsWith("npc_", StringComparison.OrdinalIgnoreCase) ? iconNameTrimmed : string.Empty;
 
-		if (objectType == ObjectType.NpcBanker)
+		if (objectType == ObjectType.Npc_Banker)
 		{
 			iconName = "npc_banker";
 		}
 
 		switch (objectType)
 		{
-			case ObjectType.NpcQuestTitle:
+			case ObjectType.Npc_Quest_Title:
 				modelName = Random.Shared.Next(3) switch
 				{
 					0 => "npc06",
@@ -177,25 +177,25 @@ public partial class NpcsFill : Node3D
 					_ => "npc08"
 				};
 				break;
-			case ObjectType.NpcBanker:
+			case ObjectType.Npc_Banker:
 				modelName = "npc29d";
 				break;
-			case ObjectType.NpcQuestKarma:
+			case ObjectType.Npc_Quest_Karma:
 				modelName = "npc58";
 				break;
-			case ObjectType.NpcQuestDegree:
+			case ObjectType.Npc_Quest_Degree:
 				modelName = "npc59";
 				break;
 		}
 
 		npcType = objectType switch
 		{
-			ObjectType.NpcBanker => NpcType.Banker,
-			ObjectType.NpcTournament => NpcType.Tournament,
-			ObjectType.NpcGuilder => NpcType.Guilder,
-			ObjectType.NpcQuestDegree => NpcType.QuestDegree,
-			ObjectType.NpcQuestTitle => NpcType.QuestTitle,
-			ObjectType.NpcQuestKarma => NpcType.QuestKarma,
+			ObjectType.Npc_Banker => NpcType.Banker,
+			ObjectType.Npc_Tournament => NpcType.Tournament,
+			ObjectType.Npc_Guilder => NpcType.Guilder,
+			ObjectType.Npc_Quest_Degree => NpcType.QuestDegree,
+			ObjectType.Npc_Quest_Title => NpcType.QuestTitle,
+			ObjectType.Npc_Quest_Karma => NpcType.QuestKarma,
 			_ => npcType
 		};
 	}

@@ -415,7 +415,7 @@ public static class ClientPacketClassifier
 			ClientPacketEvent.NpcInteract => "client.npc.interact",
 			ClientPacketEvent.ItemTakeMainhand => "client.item.take_mainhand",
 			ClientPacketEvent.TradeBuy => "client.trade.buy",
-			ClientPacketEvent.CombatDamageTarget => "client.combat.damage_target",
+			ClientPacketEvent.CombatDamageTarget => "client.combat.damage_and_send_animation",
 			ClientPacketEvent.ItemSwap => "client.item.swap",
 			ClientPacketEvent.CharacterSelect => "client.character_select",
 			ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",

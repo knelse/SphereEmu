@@ -9,7 +9,7 @@ public partial class CastleChest : WorldObject
 	[Export] public Castles Castle { get; set; }
 	public CastleChest()
 	{
-		ObjectType = ObjectType.CastleChest;
+		ObjectType = ObjectType.Castle_Chest;
 		ModelName = "cs_chest";
 	}
 }

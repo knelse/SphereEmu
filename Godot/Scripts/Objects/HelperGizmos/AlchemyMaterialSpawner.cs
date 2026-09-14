@@ -458,7 +458,7 @@ public partial class AlchemyMaterialSpawner : Node3D
 	private bool TryPickRandomGameObjectId(out int gameObjectId, out ObjectType objectType)
 	{
 		gameObjectId = 0;
-		objectType = ObjectType.AlchemyPlant;
+		objectType = ObjectType.Alchemy_Plant;
 		var pool = CollectConfiguredIds();
 		if (pool.Count == 0)
 		{

@@ -20,4 +20,9 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="Networking\Mbc\Data\sfera_protocol_schema.json" />
+        <EmbeddedResource Include="Networking\Mbc\Data\sfera_event_names.json" />
+    </ItemGroup>
+
 </Project>

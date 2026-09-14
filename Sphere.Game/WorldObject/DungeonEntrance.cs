@@ -7,7 +7,7 @@ public partial class DungeonEntrance : WorldObject
 {
 	public DungeonEntrance()
 	{
-		ObjectType = ObjectType.DungeonEntrance;
+		ObjectType = ObjectType.Dungeon_Entrance;
 		ModelName = "edoor";
 	}
 }

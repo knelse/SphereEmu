@@ -30,6 +30,18 @@ public static class AdminDebugDummyClient
             return;
         }
 
+        try
+        {
+            Spawn(parent, clientScene);
+        }
+        catch (Exception ex)
+        {
+            SphLogger.Error("AdminDebugDummyClient: spawn failed, continuing without debug character", ex);
+        }
+    }
+
+    private static void Spawn(Node parent, PackedScene clientScene)
+    {
         var player = DbConnection.Players.Query()
             .Include(["$.Characters[*]", "$.Characters[*].Clan"])
             .Where(x => x.Login == Login)

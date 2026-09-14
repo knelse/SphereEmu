@@ -6,8 +6,8 @@ namespace SphServer.Godot.Scripts.Objects.Fill;
 /// <summary>
 /// Editor tool: rebuilds teleport-related objects from dump files:
 /// - <see cref="TeleportsDataFilePath"/> (ObjectType.Teleport)
-/// - <see cref="TargetTeleportsDataFilePath"/> (ObjectType.TeleportWithTarget; expects optional SubtypeID as column 8)
-/// - <see cref="TournamentTeleportsDataFilePath"/> (ObjectType.TournamentTeleport)
+/// - <see cref="TargetTeleportsDataFilePath"/> (ObjectType.Teleport_With_Target; expects optional SubtypeID as column 8)
+/// - <see cref="TournamentTeleportsDataFilePath"/> (ObjectType.Tournament_Teleport)
 /// </summary>
 [Tool]
 public partial class TeleportsFill : Node3D
@@ -53,7 +53,7 @@ public partial class TeleportsFill : Node3D
 		var stats = new Stats();
 
 		RebuildSimple(TeleportsDataFilePath, teleportScene!, ObjectType.Teleport, expectedTypeValue: TeleportTypeValue, objectTypeNameForNaming: "Teleport", seenSourcePositions, ref stats);
-		RebuildSimple(TournamentTeleportsDataFilePath, tournamentTeleportScene!, ObjectType.TournamentTeleport, expectedTypeValue: TournamentTeleportTypeValue, objectTypeNameForNaming: "TournamentTeleport", seenSourcePositions, ref stats);
+		RebuildSimple(TournamentTeleportsDataFilePath, tournamentTeleportScene!, ObjectType.Tournament_Teleport, expectedTypeValue: TournamentTeleportTypeValue, objectTypeNameForNaming: "TournamentTeleport", seenSourcePositions, ref stats);
 		RebuildTargetTeleports(TargetTeleportsDataFilePath, targetTeleportScene!, seenSourcePositions, ref stats);
 
 		GD.Print(
@@ -208,7 +208,7 @@ public partial class TeleportsFill : Node3D
 				wo.ID = (ushort)id;
 			}
 
-			wo.ObjectType = ObjectType.TeleportWithTarget;
+			wo.ObjectType = ObjectType.Teleport_With_Target;
 			if (wo is TeleportWithTarget tpt)
 			{
 				tpt.SubtypeID = subtypeId;

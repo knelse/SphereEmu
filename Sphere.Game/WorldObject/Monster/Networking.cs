@@ -107,7 +107,7 @@ public partial class Monster
 		if (objectType is GameObjectType.Monster_Flying or GameObjectType.Monster_Event_Flying
 			or GameObjectType.Special_Necromancer_Flyer)
 		{
-			PacketPart.UpdateValue(packetParts, "entity_type", (int)ObjectType.MonsterFlyer, 10);
+			PacketPart.UpdateValue(packetParts, "entity_type", (int)ObjectType.Monster_Flyer, 10);
 		}
 		else
 		{

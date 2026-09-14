@@ -11,7 +11,7 @@ public partial class CastleGate : WorldObject
 
 	public CastleGate()
 	{
-		ObjectType = ObjectType.CastleGate;
+		ObjectType = ObjectType.Castle_Gate;
 		ModelName = "cc103";
 		ClanName = "Зеленый Слоник";
 	}

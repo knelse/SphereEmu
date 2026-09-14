@@ -73,7 +73,7 @@ public class ItemPacket : PacketAnalyzeData
 
             var subtypeId = GetIntValue(PacketPartNames.SubtypeId);
 
-            if (ObjectType is ObjectType.ScrollLegend or ObjectType.ScrollRecipe)
+            if (ObjectType is ObjectType.Scroll_Legend or ObjectType.Scroll_Recipe)
             {
                 var scrollName = $"scroll{subtypeId:000}";
                 if (SphObjectDb.LocalisationContent.ContainsKey(scrollName))
@@ -85,7 +85,7 @@ public class ItemPacket : PacketAnalyzeData
                     }
                 }
             }
-            else if (ObjectType is ObjectType.Key or ObjectType.KeyBarn or ObjectType.DoorEntrance)
+            else if (ObjectType is ObjectType.Key or ObjectType.Key_Barn or ObjectType.Door_Entrance)
             {
                 var keyLocales = SphObjectDb.LocalisationContent["st_key"][Locale.Russian];
                 var subtypeStr = $"{subtypeId}";
@@ -95,20 +95,20 @@ public class ItemPacket : PacketAnalyzeData
                     OverrideType = text[(subtypeStr.Length + 1)..];
                 }
             }
-            else if (ObjectType is ObjectType.Token or ObjectType.TokenMultiuse)
+            else if (ObjectType is ObjectType.Token or ObjectType.Token_Multiuse)
             {
                 var keyLocales = SphObjectDb.LocalisationContent["_tokens"][Locale.Russian];
                 var subtypeStr = $"{subtypeId}";
                 var text = keyLocales.FirstOrDefault(x => x.StartsWith(subtypeStr));
                 if (!string.IsNullOrEmpty(text))
                 {
-                    var remainingStr = ObjectType is ObjectType.TokenMultiuse && RemainingUses > 0
+                    var remainingStr = ObjectType is ObjectType.Token_Multiuse && RemainingUses > 0
                         ? $" ({RemainingUses})"
                         : string.Empty;
                     OverrideType = "Жетон ТП, " + text[(subtypeStr.Length + 1)..] + remainingStr;
                 }
             }
-            else if (ObjectType is ObjectType.TokenIslandGuest)
+            else if (ObjectType is ObjectType.Token_Island_Guest)
             {
                 var ownerStr = string.IsNullOrEmpty(OwnerName) ? string.Empty : $" ({OwnerName})";
                 OverrideType = "Гостевой жетон на ЛО" + ownerStr;

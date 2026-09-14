@@ -8,6 +8,6 @@ public partial class TeleportBroken : WorldObject
 {
 	public TeleportBroken()
 	{
-		ObjectType = ObjectType.TeleportBroken;
+		ObjectType = ObjectType.Teleport_Broken;
 	}
 }

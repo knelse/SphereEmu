@@ -98,7 +98,7 @@ public partial class TeleportDungeonChoiceIslandFill : Node3D
                 instance.ID = (ushort)id;
             }
 
-            instance.ObjectType = ObjectType.TeleportDungeonChoiceIsland;
+            instance.ObjectType = ObjectType.Teleport_Dungeon_Choice_Island;
 
             AddChild(instance);
             WorldObjectDumpFillCommon.SetOwnerIfEditor(this, instance);

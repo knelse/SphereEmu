@@ -183,6 +183,7 @@ internal static class PacketEventClassifier
             "client.position_keepalive" => PacketTypes.CLIENT_PING,
             "client.character_select" => PacketTypes.CLIENT_SELECT_CHARACTER,
             "client.chat.send" => PacketTypes.CLIENT_SEND_CHAT_MESSAGE,
+            "client.combat.damage_and_send_animation" => PacketTypes.CLIENT_ATTACK_TARGET,
             "client.combat.damage_target" => PacketTypes.CLIENT_ATTACK_TARGET,
             "client.item.move" => PacketTypes.CLIENT_MOVE_ITEM,
             "client.stats.update.request" => PacketTypes.CLIENT_STATS_UPDATE_REQUEST,

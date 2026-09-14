@@ -57,7 +57,7 @@ public static class XpExtractor
             var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
                 ? (ObjectType)objectTypeVal
                 : ObjectType.Unknown;
-            if (objectType is not (ObjectType.Monster or ObjectType.MonsterFlyer))
+            if (objectType is not (ObjectType.Monster or ObjectType.Monster_Flyer))
             {
                 continue;
             }
