@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\SphEntities\SphEntities.csproj"/>
         <ProjectReference Include="..\SphGameObject\SphGameObject.csproj"/>
     </ItemGroup>
@@ -23,6 +27,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Networking\Mbc\Data\sfera_protocol_schema.json" />
         <EmbeddedResource Include="Networking\Mbc\Data\sfera_event_names.json" />
+        <EmbeddedResource Include="Networking\Mbc\Data\mbc_recovered_commands.json" />
     </ItemGroup>
 
 </Project>

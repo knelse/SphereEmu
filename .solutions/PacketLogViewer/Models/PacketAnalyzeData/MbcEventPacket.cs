@@ -14,7 +14,7 @@ public class MbcEventPacket : PacketAnalyzeData
         get
         {
             var id = Id == 0 ? "" : $"{Id:X} ";
-            return string.IsNullOrEmpty(Schema) ? $"{id}{EventName}" : $"{id}{EventName} ({Schema})";
+            return $"{id}{EventName}";
         }
     }
 

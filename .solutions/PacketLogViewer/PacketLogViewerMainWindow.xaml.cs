@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -61,7 +60,7 @@ public partial class PacketLogViewerMainWindow
     private SphereMitmProxy? _mitmProxy;
     public static readonly ObservableCollection<PacketDefinition> PacketDefinitions = new();
 
-    public static readonly ObservableCollection<PacketPart> PacketParts = new();
+    public static readonly ResettableObservableCollection<PacketPart> PacketParts = new();
     public DispatcherTimer? SphereTimeUpdateTimer;
     private DispatcherTimer? _entityRadarRefreshTimer;
     public static readonly ObservableCollection<Subpacket> Subpackets = new();
@@ -73,11 +72,11 @@ public partial class PacketLogViewerMainWindow
     private double _radarClientTurn;
     private bool _radarHasClientPosition;
 
-    private TextPointer? EndTextPointer;
-    private int? LastCaretOffset;
+    private int? SelectionEndBit;
+    private int CaretBit;
     private double LastVerticalOffset;
     private ScrollViewer? PacketDisplayScrollViewer;
-    private TextPointer? StartTextPointer;
+    private int? SelectionStartBit;
 
     private bool _initialized;
 
@@ -124,15 +123,10 @@ public partial class PacketLogViewerMainWindow
         ApplyStartWindowDimensionsFromConfig();
         ApplyStartWindowPosition();
 
-        var scrollViewerProperty =
-            typeof(RichTextBox).GetProperty("ScrollViewer", BindingFlags.NonPublic | BindingFlags.Instance)!;
-
         Loaded += (_, _) =>
         {
-            // Resolve internal RichTextBox ScrollViewer after visual tree is ready.
-            PacketDisplayScrollViewer = (ScrollViewer)scrollViewerProperty.GetValue(MainView.PacketVisualizerPanel.PacketVisualizerControl)!;
-
-            PacketDisplayScrollViewer!.ScrollChanged += (sender, _) => { SynchronizeScrollValues(sender); };
+            PacketDisplayScrollViewer = MainView.PacketVisualizerPanel.PacketVisualizerControlScrollViewer;
+            PacketDisplayScrollViewer.ScrollChanged += (sender, _) => { SynchronizeScrollValues(sender); };
             MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollChanged += (sender, _) =>
             {
                 SynchronizeScrollValues(sender);
@@ -250,13 +244,11 @@ public partial class PacketLogViewerMainWindow
             MainView.PacketVisualizerPanel.PacketVisualizerControl.KeyDown += PacketVisualizerControlHandlePartSelection;
             MainView.PacketVisualizerPanel.PacketVisualizerControl.AddHandler(Keyboard.PreviewKeyDownEvent,
                 new KeyEventHandler(PacketVisualizerControlShiftSelectionOnArrowKeys), true);
-            SelectionBrush = new SolidColorBrush
-            {
-                Color = ((SolidColorBrush)MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionBrush).Color,
-                Opacity = MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionOpacity
-            };
-            MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionBrush = Brushes.Transparent;
-            MainView.PacketVisualizerPanel.PacketVisualizerControl.PreviewMouseWheel += (_, _) => { };
+            MainView.PacketVisualizerPanel.PacketVisualizerControl.BitSelectionChanged +=
+                PacketVisualizerControl_OnBitSelectionChanged;
+            SelectionBrush = new SolidColorBrush(Color.FromArgb(140, 51, 153, 255));
+            SelectionBrush.Freeze();
+            MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionOverlayBrush = SelectionBrush;
 
             KeyUp += (_, e) =>
             {
@@ -276,6 +268,7 @@ public partial class PacketLogViewerMainWindow
             CreateFlowDocumentWithHighlights(false, true);
 
             MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.ItemsSource = PacketParts;
+            MainView.PacketVisualizerPanel.DefinedPacketPartsControl.ItemsSource = PacketParts;
 
             // Wire UI events (moved into UserControls)
             MainView.FilterToggles.ShowBookmarkedOnly.Checked += ShowFavoritesOnlyToggleButton_OnChecked;
@@ -313,7 +306,6 @@ public partial class PacketLogViewerMainWindow
             MainView.PacketVisualizerPanel.DefinitionsPanel.ImportFromSubpacketButton.Click += ImportFromSubpacket_OnClick;
             MainView.PacketVisualizerPanel.DefinitionsPanel.ExportSubpacketButton.Click += ExportSubpacket_OnClick;
 
-            MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionChanged += PacketVisualizerControl_OnSelectionChanged;
             MainView.ClientStatePanel.ClearClientStateButton.Click += ClearClientState_OnClick;
             MainView.ClientStatePanel.FilterClientStateButton.Click += FilterClientState_OnClick;
             MainView.GameState.TrackXpButton.Click += TrackXpButton_OnClick;
@@ -745,14 +737,21 @@ public partial class PacketLogViewerMainWindow
             var bytes = selected.ContentBytes;
             CurrentContentBytes = bytes;
             CurrentContentBitStream = new BitStream(CurrentContentBytes);
-            // TODO: remove
-            selected.UpdatePacketPartsForContent();
-            PacketParts.Clear();
-            selected.PacketParts.ForEach(x => PacketParts.Add(x));
+            if (selected.PacketParts.Count == 0)
+            {
+                selected.UpdatePacketPartsForContent();
+            }
+            else if (selected.PacketParts.Exists(x => x.Value is null || x.Value.Length == 0))
+            {
+                PacketPart.RestoreDisplayFromBytes(selected.PacketParts, bytes);
+            }
 
+            PacketParts.ReplaceAll(selected.PacketParts);
+
+            LastVerticalOffset = 0;
+            ClearSelection();
             CreateFlowDocumentWithHighlights(false, true);
             UpdateDefinedPackets();
-            ClearSelection();
             var packetContents = string.Empty;
             var knownAnalyzedParts = selected.AnalyzeResult
                 .Where(x => x.GetType() != typeof(DespawnPacket)
@@ -987,7 +986,6 @@ public partial class PacketLogViewerMainWindow
 
             MainView.PacketActionsBar.IsFavorite.IsChecked = selected.Favorite;
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = null;
-            PacketParts.Clear();
             MainView.PacketLogList.LogListFullPackets.ScrollIntoView(selected);
             UpdateContentPreview(selected);
         }
@@ -1231,33 +1229,40 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
+        var visualizer = MainView.PacketVisualizerPanel.PacketVisualizerControl;
+        CaretBit = visualizer.CaretBit;
+        LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
+
         if (e.Key == Key.Escape)
         {
             ClearSelection();
-        }
-
-        var caretPosition = MainView.PacketVisualizerPanel.PacketVisualizerControl.CaretPosition;
-        if (caretPosition is null)
-        {
-            ClearSelection();
-            LastVerticalOffset = 0;
+            ApplyBitSelection();
+            e.Handled = true;
             return;
         }
 
-        LastCaretOffset = MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart.GetOffsetToPosition(caretPosition);
-        LastVerticalOffset = MainView.PacketVisualizerPanel.PacketVisualizerControl.VerticalOffset;
-
         if (e.Key == Key.S)
         {
-            StartTextPointer = caretPosition;
+            SelectionStartBit = CaretBit;
         }
 
         if (e.Key == Key.E)
         {
-            EndTextPointer = caretPosition;
+            SelectionEndBit = CaretBit;
         }
 
-        CreateFlowDocumentWithHighlights();
+        ApplyBitSelection();
+        e.Handled = true;
+    }
+
+    private void PacketVisualizerControl_OnBitSelectionChanged(object? sender, EventArgs e)
+    {
+        var visualizer = MainView.PacketVisualizerPanel.PacketVisualizerControl;
+        SelectionStartBit = visualizer.SelectionStart;
+        SelectionEndBit = visualizer.SelectionEnd;
+        CaretBit = visualizer.CaretBit;
+        LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
+        UpdateSelectedValueDisplayFromSelection();
     }
 
     private void PacketVisualizerControlShiftSelectionOnArrowKeys(object sender, KeyEventArgs e)
@@ -1273,7 +1278,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        if (StartTextPointer is null || EndTextPointer is null)
+        if (SelectionStartBit is null || SelectionEndBit is null)
         {
             return;
         }
@@ -1297,13 +1302,9 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var startOffset = StartTextPointer.GetCharOffset();
-        var endOffset = EndTextPointer.GetCharOffset();
+        var newStart = SelectionStartBit.Value + deltaBits;
+        var newEnd = SelectionEndBit.Value + deltaBits;
 
-        var newStart = startOffset + deltaBits;
-        var newEnd = endOffset + deltaBits;
-
-        // Keep selection size; clamp shift at boundaries.
         var min = Math.Min(newStart, newEnd);
         if (min < 0)
         {
@@ -1319,38 +1320,48 @@ public partial class PacketLogViewerMainWindow
             newEnd -= overshoot;
         }
 
-        newStart = Math.Clamp(newStart, 0, maxOffset);
-        newEnd = Math.Clamp(newEnd, 0, maxOffset);
-
-        var docStart = MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart;
-        StartTextPointer = MoveByCharOffset(docStart, newStart);
-        EndTextPointer = MoveByCharOffset(docStart, newEnd);
+        SelectionStartBit = Math.Clamp(newStart, 0, maxOffset);
+        SelectionEndBit = Math.Clamp(newEnd, 0, maxOffset);
+        CaretBit = SelectionEndBit.Value;
 
         e.Handled = true;
-        CreateFlowDocumentWithHighlights();
+        ApplyBitSelection();
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(CaretBit);
     }
 
     private void ClearSelection()
     {
-        StartTextPointer = null;
-        EndTextPointer = null;
-        LastCaretOffset = null;
+        SelectionStartBit = null;
+        SelectionEndBit = null;
+        CaretBit = 0;
+    }
+
+    private void ApplyBitSelection()
+    {
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.SetSelection(SelectionStartBit, SelectionEndBit, CaretBit);
+        UpdateSelectedValueDisplayFromSelection();
+    }
+
+    private void UpdateSelectedValueDisplayFromSelection()
+    {
+        var bits = new List<Bit>();
+        if (SelectionStartBit is int start && SelectionEndBit is int end && PacketContentBits is { Length: > 0 })
+        {
+            var min = Math.Clamp(Math.Min(start, end), 0, PacketContentBits.Length);
+            var max = Math.Clamp(Math.Max(start, end), 0, PacketContentBits.Length);
+            for (var i = min; i < max; i++)
+            {
+                bits.Add(PacketContentBits[i]);
+            }
+        }
+
+        UpdateSelectedValueDisplay(bits);
     }
 
     private void UpdateScrolling()
     {
-        if (LastCaretOffset.HasValue)
-        {
-            var newCaretPosition = LastCaretOffset.Value <= 2
-                ? MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart.GetLineStartPosition(0)
-                : MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart.GetPositionAtOffset(LastCaretOffset.Value);
-            if (newCaretPosition is not null)
-            {
-                MainView.PacketVisualizerPanel.PacketVisualizerControl.CaretPosition = newCaretPosition;
-            }
-        }
-
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.ScrollToVerticalOffset(LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(CaretBit);
+        PacketDisplayScrollViewer?.ScrollToVerticalOffset(LastVerticalOffset);
         MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
         MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
     }
@@ -1362,7 +1373,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        if (StartTextPointer is null || EndTextPointer is null)
+        if (SelectionStartBit is null || SelectionEndBit is null)
         {
             return;
         }
@@ -1384,8 +1395,8 @@ public partial class PacketLogViewerMainWindow
             var name = dialog.Name;
             color = dialog.Color;
             var type = dialog.PacketPartType ?? PacketPartType.BITS;
-            var start = StartTextPointer;
-            var end = EndTextPointer;
+            var start = SelectionStartBit.Value;
+            var end = SelectionEndBit.Value;
             var enumName = dialog.EnumName;
             var lengthFromPrevious = dialog.PacketPartType == PacketPartType.STRING && dialog.LengthFromPreviousField;
             AddNewDefinedPacketPart(CreatePacketPart(name, enumName, type, lengthFromPrevious, start, end,
@@ -1395,111 +1406,25 @@ public partial class PacketLogViewerMainWindow
 
     public void CreateFlowDocumentWithHighlights(bool keepSelection = true, bool firstUpdateOnLoad = false)
     {
-        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValues.Inlines.Clear();
-        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.Inlines.Clear();
         if (CurrentContentBytes is null)
         {
             return;
         }
 
         CurrentContentBitStream = new BitStream(CurrentContentBytes);
-        var document = new FlowDocument
-        {
-            FontFamily = new FontFamily("Hack"),
-            FontSize = 14,
-            LineHeight = 16,
-            LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
-            PageWidth = 80,
-            TextAlignment = TextAlignment.Right,
-            PagePadding = new Thickness(10, 4, 0, 4)
-        };
-        var paragraph = new Paragraph
-        {
-            Margin = new Thickness(0)
-        };
-        var selectionBits = new List<Bit>();
-        var sb = new StringBuilder();
-        var selectionStartOffset = StartTextPointer?.GetCharOffset();
-        var selectionEndOffset = EndTextPointer?.GetCharOffset();
-
-        var actualStart = selectionStartOffset;
-        var actualEnd = selectionEndOffset;
-        if (actualStart > actualEnd)
-        {
-            actualEnd = selectionStartOffset;
-            actualStart = selectionEndOffset;
-        }
-
         PacketContentBits = CurrentContentBitStream.ReadBits(int.MaxValue);
-        var wasInSelection = false;
-        PacketPart? previousPacketPart = null;
-        Brush? textBrush = null;
+        CurrentContentBitStream.Seek(0, 0);
 
-        var linesSb = new StringBuilder();
-        var valueDisplayDict = new Dictionary<int, PacketPart>();
+        var linesSb = new StringBuilder(PacketContentBits.Length / 2);
         var lineByte = 0;
-
         for (var i = 0; i < PacketContentBits.Length; i++)
         {
-            var currentPacketPart = PacketParts.FirstOrDefault(x => x.BitOffset <= i && x.BitOffsetEnd > i);
-            var inSelection = keepSelection && actualStart <= i && actualEnd > i;
-
-            var textBlockChanged = (inSelection && !wasInSelection) || (wasInSelection && !inSelection) ||
-                                   (currentPacketPart != null && currentPacketPart != previousPacketPart) ||
-                                   (currentPacketPart == null && previousPacketPart != null);
-            if (inSelection)
-            {
-                selectionBits.Add(PacketContentBits[i]);
-            }
-
-            if (textBlockChanged)
-            {
-                var newTextBrush = inSelection ? SelectionBrush :
-                    currentPacketPart is null ? null : new SolidColorBrush
-                    {
-                        Color = new Color
-                        {
-                            R = currentPacketPart.HighlightColorR,
-                            G = currentPacketPart.HighlightColorG,
-                            B = currentPacketPart.HighlightColorB,
-                            A = currentPacketPart.HighlightColorA
-                        }
-                    };
-                if (textBrush is null)
-                {
-                    if (sb.Length > 0)
-                    {
-                        paragraph.Inlines.Add(sb.ToString());
-                    }
-                }
-                else
-                {
-                    paragraph.Inlines.Add(new Run(sb.ToString())
-                    {
-                        Background = textBrush
-                    });
-                }
-
-                sb.Clear();
-                textBrush = newTextBrush;
-
-                if (currentPacketPart is not null && previousPacketPart != currentPacketPart)
-                {
-                    valueDisplayDict.Add(i, currentPacketPart);
-                }
-
-                previousPacketPart = currentPacketPart;
-            }
-
-            wasInSelection = inSelection;
             var bit = PacketContentBits[i].AsInt();
-            sb.Append(bit);
             lineByte <<= 1;
             lineByte += bit;
 
             if (i % 8 == 7)
             {
-                // flip bits
                 lineByte = (int)((((ulong)lineByte * 0x0202020202UL) & 0x010884422010UL) % 1023);
                 linesSb.Append($"[{lineByte:X2} ")
                     .Append($"{lineByte}".PadLeft(3, ' ')).Append("] ");
@@ -1516,55 +1441,19 @@ public partial class PacketLogViewerMainWindow
             }
         }
 
-        if (sb.Length > 0)
-        {
-            if (textBrush is null)
-            {
-                paragraph.Inlines.Add(sb.ToString());
-            }
-            else
-            {
-                paragraph.Inlines.Add(new Run(sb.ToString())
-                {
-                    Background = textBrush
-                });
-            }
-        }
-
         MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValues.Text = linesSb.ToString();
-        var previousLineBreakLineIndex = 0;
 
-        for (var i = 0; i < PacketContentBits.Length; i++)
+        if (!keepSelection)
         {
-            if (!valueDisplayDict.TryGetValue(i, out var part))
-            {
-                continue;
-            }
-
-            var lineToReach = part.BitOffset / 8;
-
-            if (lineToReach > previousLineBreakLineIndex)
-            {
-                MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.Inlines.Add(new string('\n',
-                    lineToReach - previousLineBreakLineIndex));
-            }
-
-            previousLineBreakLineIndex = lineToReach;
-
-            AddPacketPartInlines(MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.Inlines, part);
+            SelectionStartBit = null;
+            SelectionEndBit = null;
         }
 
-        CurrentContentBitStream.Seek(0, 0);
-        if (previousLineBreakLineIndex < PacketContentBits.Length / 8 - 1)
-        {
-            var remainingNewlines = PacketContentBits.Length / 8 - previousLineBreakLineIndex - 2;
-            if (remainingNewlines > 0)
-            {
-                MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.Inlines.Add(new string('\n', remainingNewlines));
-            }
-        }
-
-        document.Blocks.Add(paragraph);
+        var visualizer = MainView.PacketVisualizerPanel.PacketVisualizerControl;
+        visualizer.SetContent(PacketContentBits, PacketParts);
+        visualizer.SetSelection(SelectionStartBit, SelectionEndBit, CaretBit);
+        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.SetContent(PacketContentBits.Length,
+            PacketParts);
 
         if (firstUpdateOnLoad)
         {
@@ -1585,24 +1474,15 @@ public partial class PacketLogViewerMainWindow
             }
         }
 
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.Document = document;
-        UpdateSelectedValueDisplay(selectionBits);
+        UpdateSelectedValueDisplayFromSelection();
         UpdateScrolling();
     }
 
-    private void PacketVisualizerControl_OnSelectionChanged(object o, RoutedEventArgs e)
-    {
-        e.Handled = true;
-    }
-
     private PacketPart CreatePacketPart(string name, string? enumName, PacketPartType packetPartType,
-        bool lengthFromPrevious, TextPointer start, TextPointer end, Brush highlightColor)
+        bool lengthFromPrevious, int startBit, int endBit, Brush highlightColor)
     {
-        var bitOffsetStart = start.GetCharOffset();
-        var bitOffsetEnd = end.GetCharOffset();
-        var actualStart = Math.Min(bitOffsetStart, bitOffsetEnd);
-
-        var bitLength = Math.Abs(bitOffsetEnd - bitOffsetStart);
+        var actualStart = Math.Min(startBit, endBit);
+        var bitLength = Math.Abs(endBit - startBit);
         var color = ((SolidColorBrush)highlightColor).Color;
         var part = new PacketPart(bitLength, name, enumName, lengthFromPrevious, packetPartType,
             actualStart, Array.Empty<Bit>(), color.R, color.G, color.B, color.A);
@@ -1612,107 +1492,9 @@ public partial class PacketLogViewerMainWindow
 
     private void UpdateDefinedPackets()
     {
-        MainView.PacketVisualizerPanel.DefinedPacketPartsControl.Document.Blocks.Clear();
         var toSort = PacketParts.ToList();
         toSort.Sort((a, b) => a.BitOffset.CompareTo(b.BitOffset));
-        PacketParts.Clear();
-        toSort.ForEach(x => PacketParts.Add(x));
-        foreach (var part in PacketParts)
-        {
-            var paragraph = new Paragraph
-            {
-                BreakPageBefore = false,
-                Margin = new Thickness(4)
-            };
-            if (!string.IsNullOrEmpty(part.Comment) && part.Comment != PacketPart.UndefinedFieldValue)
-            {
-                var lineWidth = MainView.PacketVisualizerPanel.DefinedPacketPartsControl.ActualWidth < 50
-                    ? 120
-                    : (int)(MainView.PacketVisualizerPanel.DefinedPacketPartsControl.ActualWidth / 9);
-                var comment = $" {part.Comment} ";
-                var paddingLength = Math.Max(0, (lineWidth - comment.Length) / 2);
-                var padding = paddingLength == 0 ? string.Empty : new string('=', paddingLength);
-                var commentColor = part.Comment == "NEXT PACKET" ? Brushes.SlateGray : Brushes.Honeydew;
-                paragraph.Inlines.Add(new Run(
-                    $"{padding}{comment}{padding}\n\n")
-                {
-                    Background = commentColor
-                });
-            }
-
-            AddPacketPartInlines(paragraph.Inlines, part);
-
-            MainView.PacketVisualizerPanel.DefinedPacketPartsControl.Document.Blocks.Add(paragraph);
-        }
-    }
-
-    private void AddPacketPartInlines(InlineCollection inlineCollection, PacketPart part)
-    {
-        var color = new Color
-        {
-            R = part.HighlightColorR,
-            G = part.HighlightColorG,
-            B = part.HighlightColorB,
-            A = part.HighlightColorA
-        };
-        inlineCollection.Add(new Run($"{part.Name}")
-        {
-            Background = new SolidColorBrush { Color = color }
-        });
-        inlineCollection.Add(": ");
-        var valueStr = part.GetDisplayTextForValueType();
-
-        if (part.EnumName is not null)
-        {
-            var enumValue = part.DisplayText.EnumValue?.ToUpper() ?? string.Empty;
-            inlineCollection.Add(new Run(enumValue) { FontWeight = FontWeights.Bold });
-            var enumName = SnakeCaseToCamelCase(part.EnumName);
-            inlineCollection.Add(new Run($" ({enumName}::{enumValue} = {valueStr})")
-            { Foreground = Brushes.Gray, FontSize = 12 });
-        }
-        else
-        {
-            var valueStrSplit = valueStr
-                .Split('=', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-            if (part.ActualLongValue is not null)
-            {
-                if (part.Name is PacketPartNames.Level or PacketPartNames.CurrentHP or PacketPartNames.MaxHP)
-                {
-                    inlineCollection.Add(new Run($"{part.ActualLongValue.ToString()}")
-                    { FontWeight = FontWeights.Bold });
-                }
-                else
-                {
-                    var actualValueStr = part.ActualLongValue.ToString();
-                    var actualValueStrHex = $"{part.ActualLongValue:X}";
-                    var hexPaddingLength = actualValueStrHex.Length + actualValueStrHex.Length % 2;
-                    inlineCollection.Add(new Run($"0x{actualValueStrHex.PadLeft(hexPaddingLength, '0')}")
-                    { FontWeight = FontWeights.Bold });
-                    inlineCollection.Add(new Run($" = {actualValueStr}") { Foreground = Brushes.Gray, FontSize = 12 });
-                }
-            }
-            else if (valueStrSplit.Count > 1)
-            {
-                // hex = dec, like 0x17B0 = 6064
-                inlineCollection.Add(new Run(valueStrSplit[0]) { FontWeight = FontWeights.Bold });
-                inlineCollection.Add(new Run($" = {valueStrSplit[1]}") { Foreground = Brushes.Gray, FontSize = 12 });
-            }
-
-            else
-            {
-                var valueTypeStr = part.PacketPartType == PacketPartType.BITS ? "0b" :
-                    part.PacketPartType == PacketPartType.BYTES ? "0x" : string.Empty;
-                inlineCollection.Add(new Run(valueTypeStr + valueStr) { FontWeight = FontWeights.Bold });
-            }
-        }
-
-        inlineCollection.Add(
-            new Run(
-                $" [{Enum.GetName(part.PacketPartType) ?? string.Empty}] [({part.BitOffset / 8}, {part.BitOffset % 8}) to ({part.BitOffsetEnd / 8}, {part.BitOffsetEnd % 8}), {part.BitLength} bits] ")
-            {
-                Foreground = Brushes.Gray,
-                FontSize = 12
-            });
+        PacketParts.ReplaceAll(toSort);
     }
 
     private void AddNewDefinedPacketPartBulk(List<PacketPart> packetParts, bool updateLayout = true)
@@ -1778,8 +1560,7 @@ public partial class PacketLogViewerMainWindow
 
         newPacketParts.Add(packetPart);
         newPacketParts.Sort((a, b) => a.BitOffset.CompareTo(b.BitOffset));
-        PacketParts.Clear();
-        newPacketParts.ForEach(x => PacketParts.Add(x));
+        PacketParts.ReplaceAll(newPacketParts);
         if (!isBulk)
         {
             UpdateDefinedPackets();
@@ -1994,8 +1775,7 @@ public partial class PacketLogViewerMainWindow
         }
 
         var parts = packetDefinition.LoadFromFile(CurrentContentBitStream, 0);
-        PacketParts.Clear();
-        parts.ForEach(x => PacketParts.Add(x));
+        PacketParts.ReplaceAll(parts);
         LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
         UpdateDefinedPackets();
         CreateFlowDocumentWithHighlights();
@@ -2104,14 +1884,6 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    public static string SnakeCaseToCamelCase(string input)
-    {
-        return input
-            .Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
-            .Aggregate(string.Empty, (s1, s2) => s1 + s2);
-    }
-
     private void PacketPartsInDefinitionListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
     }
@@ -2122,44 +1894,43 @@ public partial class PacketLogViewerMainWindow
 
     private void SearchInPacketTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        StartTextPointer = null;
-        EndTextPointer = null;
+        SelectionStartBit = null;
+        SelectionEndBit = null;
         SearchText();
     }
 
-    private static TextPointer MoveByCharOffset(TextPointer textPointer, int countChars)
+    private int GetSearchContinueBit()
     {
-        var targetOffset = textPointer.GetCharOffset() + countChars;
-        while (textPointer.GetCharOffset() != targetOffset)
+        if (SelectionStartBit is int start && SelectionEndBit is int end)
         {
-            if (countChars > 0)
-            {
-                textPointer = textPointer.GetPositionAtOffset(1);
-            }
-            else if (countChars < 0)
-            {
-                textPointer = textPointer.GetPositionAtOffset(-1);
-            }
-            else
-            {
-                return textPointer;
-            }
+            return Math.Max(start, end);
         }
 
-        return textPointer;
+        return 0;
+    }
+
+    private void ApplySearchHit(int startBit, int length)
+    {
+        SelectionStartBit = startBit;
+        SelectionEndBit = startBit + length;
+        CaretBit = SelectionEndBit.Value;
+        ApplyBitSelection();
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(startBit);
+        LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
+        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
     }
 
     private void SearchText()
     {
         var text = MainView.PacketActionsBar.SearchInPacketTextBox.Text;
-        if (text.Length == 0)
+        if (text.Length == 0 || CurrentContentBitStream is null)
         {
             return;
         }
 
         if (text.StartsWith("0"))
         {
-            // integers, 0x 0d 0b
             if (text.Length < 3)
             {
                 return;
@@ -2174,11 +1945,7 @@ public partial class PacketLogViewerMainWindow
             try
             {
                 var value = Convert.ToInt64(text[2..], intBase);
-                var charPosition = 0;
-                if (EndTextPointer is not null)
-                {
-                    charPosition = EndTextPointer.GetCharOffset() + 1;
-                }
+                var charPosition = GetSearchContinueBit();
 
                 CurrentContentBitStream.Seek(charPosition / 8, charPosition % 8);
                 var bitsToRead = GetMinimumBitsToEncodeValue(value);
@@ -2206,23 +1973,13 @@ public partial class PacketLogViewerMainWindow
 
                 if (startOffset != -1)
                 {
-                    // found something
-                    var range = new TextRange(MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart,
-                        MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentEnd);
-
-                    var startOffsetPointer = MoveByCharOffset(range.Start, startOffset * 8 + startBit);
-
-                    var endOffsetPointer = MoveByCharOffset(startOffsetPointer, bitsToRead);
-                    StartTextPointer = endOffsetPointer;
-                    EndTextPointer = startOffsetPointer;
-
-                    CreateFlowDocumentWithHighlights();
+                    ApplySearchHit(startOffset * 8 + startBit, bitsToRead);
                 }
                 else
                 {
-                    StartTextPointer = null;
-                    EndTextPointer = null;
-                    CreateFlowDocumentWithHighlights();
+                    SelectionStartBit = null;
+                    SelectionEndBit = null;
+                    ApplyBitSelection();
                 }
             }
             catch (Exception ex)
@@ -2232,16 +1989,11 @@ public partial class PacketLogViewerMainWindow
         }
         else
         {
-            // assuming win1251 string
             var bytesToFind = Win1251.GetBytes(text);
             var bitLength = bytesToFind.Length * 8;
             try
             {
-                var charPosition = 0;
-                if (EndTextPointer is not null)
-                {
-                    charPosition = EndTextPointer.GetCharOffset() + 1;
-                }
+                var charPosition = GetSearchContinueBit();
 
                 CurrentContentBitStream.Seek(charPosition / 8, charPosition % 8);
                 var startOffset = -1;
@@ -2268,26 +2020,13 @@ public partial class PacketLogViewerMainWindow
 
                 if (startOffset != -1)
                 {
-                    // found something
-                    var range = new TextRange(MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentStart,
-                        MainView.PacketVisualizerPanel.PacketVisualizerControl.Document.ContentEnd);
-                    var endOffset = startOffset + bytesToFind.Length;
-                    var endBit = startBit;
-
-                    var startOffsetPointer = MoveByCharOffset(range.Start, startOffset * 8 + startBit);
-
-                    var endOffsetPointer = MoveByCharOffset(startOffsetPointer, bitLength);
-                    StartTextPointer = endOffsetPointer;
-                    EndTextPointer = startOffsetPointer;
-
-                    CreateFlowDocumentWithHighlights();
-                    MainView.PacketVisualizerPanel.PacketVisualizerControl.ScrollToVerticalOffset(16 * startOffset);
+                    ApplySearchHit(startOffset * 8 + startBit, bitLength);
                 }
                 else
                 {
-                    StartTextPointer = null;
-                    EndTextPointer = null;
-                    CreateFlowDocumentWithHighlights();
+                    SelectionStartBit = null;
+                    SelectionEndBit = null;
+                    ApplyBitSelection();
                 }
             }
             catch (Exception ex)
@@ -2344,12 +2083,12 @@ public partial class PacketLogViewerMainWindow
         {
             if (resetToStart)
             {
-                StartTextPointer = null;
-                EndTextPointer = null;
+                SelectionStartBit = null;
+                SelectionEndBit = null;
             }
 
             SearchText();
-            return StartTextPointer is not null && EndTextPointer is not null;
+            return SelectionStartBit is not null && SelectionEndBit is not null;
         }
 
         // 1) Continue search within the currently selected (visible) packet first

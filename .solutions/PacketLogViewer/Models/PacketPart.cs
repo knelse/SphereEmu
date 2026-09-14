@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Media;
 using BitStreams;
 using LiteDB;
 using PacketLogViewer;
@@ -51,7 +52,16 @@ public class PacketPart
     public int BitOffset { get; set; }
     public long BitLength { get; set; }
     [BsonIgnore] public PacketPartDisplayText DisplayText;
-    [BsonIgnore] public Bit[] Value { get; set; }
+    [BsonIgnore] public Bit[] Value { get; set; } = [];
+    [BsonIgnore] public string ListValuePrimary { get; set; } = string.Empty;
+    [BsonIgnore] public string ListValueSecondary { get; set; } = string.Empty;
+    [BsonIgnore] public string ListRangeDisplay { get; set; } = string.Empty;
+    [BsonIgnore] public bool HasCommentBanner { get; set; }
+    [BsonIgnore]
+    public SolidColorBrush HighlightBrush =>
+        PacketPartBrushes.Get(HighlightColorR, HighlightColorG, HighlightColorB, HighlightColorA);
+    [BsonIgnore]
+    public Brush CommentBannerBrush => Comment == "NEXT PACKET" ? Brushes.SlateGray : Brushes.Honeydew;
     public string Comment { get; set; }
     public long? ActualLongValue { get; set; }
     public int SubpacketIndex { get; set; }
@@ -135,11 +145,104 @@ public class PacketPart
 
     public void UpdateValueDisplayText()
     {
-        var bits = new List<Bit>(Value);
+        var bits = new List<Bit>(Value ?? []);
         bits.Reverse();
         DisplayText = GetValueDisplayText(bits, EnumName);
         PartListDisplayText =
             $"{Name} ({BitOffset / 8}, {BitOffset % 8}) to ({BitOffsetEnd / 8}, {BitOffsetEnd % 8})";
+        UpdateListDisplayFields();
+    }
+
+    public static void RestoreDisplayFromBytes(IEnumerable<PacketPart> parts, byte[] bytes)
+    {
+        if (bytes.Length == 0)
+        {
+            return;
+        }
+
+        var stream = new BitStream(bytes);
+        var totalBits = bytes.Length * 8L;
+        foreach (var part in parts)
+        {
+            if (part.BitOffset < 0 || part.BitOffset >= totalBits)
+            {
+                continue;
+            }
+
+            var length = (int)part.BitLength;
+            if (part.BitOffset + length > totalBits)
+            {
+                length = (int)(totalBits - part.BitOffset);
+            }
+
+            if (length <= 0)
+            {
+                continue;
+            }
+
+            stream.SeekBitOffset(part.BitOffset);
+            part.Value = stream.ReadBits(length).Reverse().ToArray();
+            part.UpdateValueDisplayText();
+        }
+    }
+
+    private void UpdateListDisplayFields()
+    {
+        HasCommentBanner = !string.IsNullOrEmpty(Comment) && Comment != UndefinedFieldValue;
+        ListRangeDisplay =
+            $" [{Enum.GetName(PacketPartType) ?? string.Empty}] [({BitOffset / 8}, {BitOffset % 8}) to ({BitOffsetEnd / 8}, {BitOffsetEnd % 8}), {BitLength} bits] ";
+        var valueStr = GetDisplayTextForValueType();
+        if (EnumName is not null)
+        {
+            var enumValue = DisplayText.EnumValue?.ToUpper() ?? string.Empty;
+            ListValuePrimary = enumValue;
+            var enumName = SnakeCaseToCamelCase(EnumName);
+            ListValueSecondary = $" ({enumName}::{enumValue} = {valueStr})";
+            return;
+        }
+
+        var valueStrSplit = valueStr
+            .Split('=', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
+        if (ActualLongValue is not null)
+        {
+            if (Name is PacketPartNames.Level or PacketPartNames.CurrentHP or PacketPartNames.MaxHP)
+            {
+                ListValuePrimary = ActualLongValue.ToString() ?? string.Empty;
+                ListValueSecondary = string.Empty;
+            }
+            else
+            {
+                var actualValueStrHex = $"{ActualLongValue:X}";
+                var hexPaddingLength = actualValueStrHex.Length + actualValueStrHex.Length % 2;
+                ListValuePrimary = $"0x{actualValueStrHex.PadLeft(hexPaddingLength, '0')}";
+                ListValueSecondary = $" = {ActualLongValue}";
+            }
+
+            return;
+        }
+
+        if (valueStrSplit.Count > 1)
+        {
+            ListValuePrimary = valueStrSplit[0];
+            ListValueSecondary = $" = {valueStrSplit[1]}";
+            return;
+        }
+
+        var valueTypeStr = PacketPartType == PacketPartType.BITS ? "0b" :
+            PacketPartType == PacketPartType.BYTES ? "0x" : string.Empty;
+        ListValuePrimary = valueTypeStr + valueStr;
+        ListValueSecondary = string.Empty;
+    }
+
+    private static string SnakeCaseToCamelCase(string? name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return string.Empty;
+        }
+
+        return string.Concat(name.Split('_', StringSplitOptions.RemoveEmptyEntries)
+            .Select(s => s.Length == 0 ? s : char.ToUpperInvariant(s[0]) + s[1..]));
     }
 
     public static PacketPartDisplayText GetValueDisplayText(List<Bit> bits, string? enumName)

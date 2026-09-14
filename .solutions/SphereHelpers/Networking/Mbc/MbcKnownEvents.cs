@@ -53,6 +53,11 @@ public static class MbcKnownEvents
 
     public static string DisplayName(MbcDecodedEvent decoded)
     {
+        if (!string.IsNullOrEmpty(decoded.RecoveredName))
+        {
+            return decoded.EventName;
+        }
+
         if (!Choice.TryGetValue(decoded.EventId, out var choice) || choice != KeepOurs)
         {
             return decoded.EventName;

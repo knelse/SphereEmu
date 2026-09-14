@@ -34,12 +34,14 @@ public sealed class MbcDecodedField
 {
     public int Descriptor { get; init; }
     public required string Kind { get; init; }
+    public string Name { get; set; } = "";
     public long? IntValue { get; init; }
     public double? DoubleValue { get; init; }
     public long[]? ArrayValue { get; init; }
+    public string? StringValue { get; set; }
     public int BitOffset { get; init; }
     public int BitLength { get; init; }
-    public required string Display { get; init; }
+    public required string Display { get; set; }
 }
 
 public sealed class MbcDecodedEvent
@@ -61,6 +63,8 @@ public sealed class MbcDecodedEvent
     public string? WireSchemaOverride { get; set; }
     public int StartBit { get; set; }
     public int EndBit { get; set; }
+    public string RecoveredName { get; set; } = "";
+    public string Summary { get; set; } = "";
     public List<MbcDecodedField> Fields { get; } = [];
 }
 

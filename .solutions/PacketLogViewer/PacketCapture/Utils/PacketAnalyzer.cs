@@ -153,6 +153,7 @@ internal static class PacketAnalyzer
     public static readonly byte[] packet_04_00_4F_01 = { 0x04, 0x00, 0xF4, 0x01 };
     public static readonly byte[] ok_mark = { 0x2c, 0x01, 0x00 };
     private static MbcProtocolDecoder? mbcDecoder;
+    internal static bool ClassifyNamesOnly;
 
     internal static void ResetMbcSession() => GetMbcDecoder()?.ResetProcessBindings();
 
@@ -935,14 +936,17 @@ internal static class PacketAnalyzer
 
         AddPacketPartAnalyzeData(storedPacket);
 
-        foreach (var mobPacket in storedPacket.AnalyzeResult.Where(x => x is MobPacket))
+        if (!ClassifyNamesOnly)
         {
-            MobCollection.Upsert(mobPacket as MobPacket);
-        }
+            foreach (var mobPacket in storedPacket.AnalyzeResult.Where(x => x is MobPacket))
+            {
+                MobCollection.Upsert(mobPacket as MobPacket);
+            }
 
-        foreach (var npcTradePacket in storedPacket.AnalyzeResult.Where(x => x is NpcTradePacket))
-        {
-            NpcTradeCollection.Upsert(npcTradePacket as NpcTradePacket);
+            foreach (var npcTradePacket in storedPacket.AnalyzeResult.Where(x => x is NpcTradePacket))
+            {
+                NpcTradeCollection.Upsert(npcTradePacket as NpcTradePacket);
+            }
         }
 
         return storedPacket;
@@ -1159,10 +1163,13 @@ internal static class PacketAnalyzer
             }
 
             sawUseful = true;
-            var headerBytes = direction == MbcDirection.Client ? 9 : 5;
-            var bodyBit = (frame.Offset + headerBytes) * 8;
-            allParts.AddRange(MbcPacketParts.Build(storedPacket.ContentBytes, bodyBit, decoded, ref sub));
-            sub++;
+            if (!ClassifyNamesOnly)
+            {
+                var headerBytes = direction == MbcDirection.Client ? 9 : 5;
+                var bodyBit = (frame.Offset + headerBytes) * 8;
+                allParts.AddRange(MbcPacketParts.Build(storedPacket.ContentBytes, bodyBit, decoded, ref sub));
+                sub++;
+            }
 
             foreach (var ev in decoded.Events)
             {
@@ -1213,7 +1220,10 @@ internal static class PacketAnalyzer
         }
 
         RefreshHiddenByDefaultFlags(storedPacket);
-        AddPacketPartAnalyzeData(storedPacket);
+        if (!ClassifyNamesOnly)
+        {
+            AddPacketPartAnalyzeData(storedPacket);
+        }
         return true;
     }
 
@@ -1318,6 +1328,7 @@ internal static class PacketAnalyzer
         storedPacket.EventReason = null;
         storedPacket.EventConfidence = 0;
         storedPacket.IsClassifiedEvent = false;
+        storedPacket.PacketType = null;
     }
 
     private static void ApplyClassification(StoredPacket storedPacket, PacketEventClassification classification)

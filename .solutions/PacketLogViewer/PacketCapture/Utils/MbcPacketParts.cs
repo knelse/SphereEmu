@@ -95,11 +95,14 @@ internal static class MbcPacketParts
                 var (r, g, b) = FieldColors[i % FieldColors.Length];
                 var type = field.Kind is "relX" or "relY" or "relZ" or "angle"
                     ? PacketPartType.INT64
-                    : field.ArrayValue is not null
+                    : field.ArrayValue is not null && field.StringValue is null
                         ? PacketPartType.BYTES
-                        : PacketPartType.INT64;
+                        : field.Kind is "text"
+                            ? PacketPartType.STRING
+                            : PacketPartType.INT64;
+                var partName = string.IsNullOrEmpty(field.Name) ? $"{field.Kind}_{i}" : field.Name;
                 Add(parts, stream, totalBits, bodyBitOffset + field.BitOffset, field.BitLength,
-                    $"{field.Kind}_{i}", type, r, g, b, eventIndex, field.Display);
+                    partName, type, r, g, b, eventIndex, field.Display);
             }
         }
 

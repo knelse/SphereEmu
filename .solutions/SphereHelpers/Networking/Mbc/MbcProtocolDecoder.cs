@@ -53,14 +53,17 @@ public sealed class MbcProtocolDecoder
     private static readonly int[] VarintWidths = [3, 7, 14, 31];
 
     private readonly MbcCatalog catalog;
+    private readonly MbcRecoveredCatalog recovered;
     private readonly Dictionary<int, int> processModules = new();
 
-    public MbcProtocolDecoder(MbcCatalog catalog)
+    public MbcProtocolDecoder(MbcCatalog catalog, MbcRecoveredCatalog? recovered = null)
     {
         this.catalog = catalog;
+        this.recovered = recovered ?? new MbcRecoveredCatalog();
     }
 
-    public static MbcProtocolDecoder CreateDefault() => new(MbcCatalog.LoadEmbedded());
+    public static MbcProtocolDecoder CreateDefault() =>
+        new(MbcCatalog.LoadEmbedded(), MbcRecoveredCatalog.LoadEmbedded());
 
     public void ResetProcessBindings() => processModules.Clear();
 
@@ -254,6 +257,7 @@ public sealed class MbcProtocolDecoder
                     decoded.EventId = $"{(direction == MbcDirection.Client ? "C2S" : "S2C")}:{moduleTag.Value}:{region}:{(command is null ? "*" : command.ToString())}";
                 }
 
+                MbcPayloadDecoder.Apply(decoded, recovered);
                 result.Events.Add(decoded);
             }
         }
