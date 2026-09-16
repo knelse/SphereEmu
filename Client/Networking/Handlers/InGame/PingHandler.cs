@@ -15,6 +15,7 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
 {
     public StreamPeerTcp _ { get; } = streamPeerTcp;
     private const double MovementBroadcastDelta = 0.1;
+    // msg300 keepalive with _player PositionStream (region 11): array4 count + 4 IEEE floats.
     private const int PingFrameLength = 0x26;
     private const int CoordPayloadOffset = 21;
     private const int CoordPayloadLength = 17;

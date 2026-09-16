@@ -87,7 +87,9 @@ public partial class PacketLogViewerMainWindow
         AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
         PacketDatabasePath = ResolvePacketDatabasePath();
         PacketDatabase = new LiteDatabase($"Filename={PacketDatabasePath};Connection=shared;");
-        PacketDefinitionPath = Path.Combine(AppConfig.GetSection("Settings").GetValue<string>("ClonedRepoPath"), "Sphere.PacketDefinitions");
+        var clonedRepoPath = AppConfig.GetSection("Settings").GetValue<string>("ClonedRepoPath")
+                             ?? throw new InvalidOperationException("appconfig.json Settings:ClonedRepoPath is missing");
+        PacketDefinitionPath = Path.Combine(clonedRepoPath, "Sphere.PacketDefinitions");
         Directory.CreateDirectory(PacketDefinitionPath);
         PacketCollection = PacketDatabase.GetCollection<StoredPacket>("Packets");
     }
@@ -230,8 +232,17 @@ public partial class PacketLogViewerMainWindow
                     return false;
                 }
 
-                if (HideServerJunk && p.Source == PacketSource.SERVER && p.HiddenByDefaultServer
-                    && p.IsClassifiedEvent)
+                if (HideProtocolPackets && IsProtocolNoise(p))
+                {
+                    return false;
+                }
+
+                if (HideMovePackets && IsMovePacket(p))
+                {
+                    return false;
+                }
+
+                if (HideUnknownPackets && !p.IsClassifiedEvent)
                 {
                     return false;
                 }
@@ -275,8 +286,12 @@ public partial class PacketLogViewerMainWindow
             MainView.FilterToggles.ShowBookmarkedOnly.Unchecked += ShowFavoritesOnlyToggleButton_OnUnchecked;
             MainView.FilterToggles.HideClientPackets.Checked += HideClientPackets_OnChecked;
             MainView.FilterToggles.HideClientPackets.Unchecked += HideClientPackets_OnUnchecked;
-            MainView.FilterToggles.HideServerJunk.Checked += HideServerJunk_OnChecked;
-            MainView.FilterToggles.HideServerJunk.Unchecked += HideServerJunk_OnUnchecked;
+            MainView.FilterToggles.HideProtocolPackets.Checked += HideProtocolPackets_OnChecked;
+            MainView.FilterToggles.HideProtocolPackets.Unchecked += HideProtocolPackets_OnUnchecked;
+            MainView.FilterToggles.HideMovePackets.Checked += HideMovePackets_OnChecked;
+            MainView.FilterToggles.HideMovePackets.Unchecked += HideMovePackets_OnUnchecked;
+            MainView.FilterToggles.HideUnknownPackets.Checked += HideUnknownPackets_OnChecked;
+            MainView.FilterToggles.HideUnknownPackets.Unchecked += HideUnknownPackets_OnUnchecked;
             MainView.FilterToggles.EnableListener.Checked += ListenerEnabled_OnChecked;
             MainView.FilterToggles.EnableListener.Unchecked += ListenerEnabled_OnUnchecked;
             MainView.FilterToggles.EnableLocalCapture.Checked += LocalCapture_OnChecked;
@@ -435,7 +450,9 @@ public partial class PacketLogViewerMainWindow
     public bool ListenerEnabled { get; set; } = true;
     public bool LocalCaptureEnabled { get; set; }
     public bool HideClientPackets { get; set; } = true;
-    public bool HideServerJunk { get; set; } = true;
+    public bool HideProtocolPackets { get; set; } = true;
+    public bool HideMovePackets { get; set; } = true;
+    public bool HideUnknownPackets { get; set; }
     public bool ShowNewInUI { get; set; } = true;
 
     private TrackXpSnapshot? _trackXpSnapshot;
@@ -714,16 +731,8 @@ public partial class PacketLogViewerMainWindow
         for (var i = 0; i < packets.Count; i++)
         {
             var packet = packets[i];
-            if (packet.AnalyzeState != PacketAnalyzeState.FULL)
-            {
-                packet = packet.UpdatePacketPartsForContent();
-                UpdateStoredPacket(packet);
-            }
-            else
-            {
-                PacketAnalyzer.RefreshHiddenByDefaultFlags(packet);
-            }
-
+            packet = packet.UpdatePacketPartsForContent();
+            UpdateStoredPacket(packet);
             LogRecords.Add(packet);
         }
 
@@ -737,14 +746,7 @@ public partial class PacketLogViewerMainWindow
             var bytes = selected.ContentBytes;
             CurrentContentBytes = bytes;
             CurrentContentBitStream = new BitStream(CurrentContentBytes);
-            if (selected.PacketParts.Count == 0)
-            {
-                selected.UpdatePacketPartsForContent();
-            }
-            else if (selected.PacketParts.Exists(x => x.Value is null || x.Value.Length == 0))
-            {
-                PacketPart.RestoreDisplayFromBytes(selected.PacketParts, bytes);
-            }
+            selected.UpdatePacketPartsForContent();
 
             PacketParts.ReplaceAll(selected.PacketParts);
 
@@ -789,7 +791,7 @@ public partial class PacketLogViewerMainWindow
     {
         foreach (var result in storedPacket.AnalyzeResult)
         {
-            if (result.GetType() == typeof(DespawnPacket))
+            if (result is DespawnPacket)
             {
                 var entsToDespawn = CurrentClientState.Where(x => x.Id == result.Id).ToList();
                 foreach (var ent in entsToDespawn)
@@ -797,9 +799,8 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Remove(ent);
                 }
             }
-            else if (result.GetType() == typeof(MobPacket))
+            else if (result is MobPacket mob)
             {
-                var mob = result as MobPacket;
                 if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is MobPacket previousState)
                 {
                     var previousIndex = CurrentClientState.IndexOf(previousState);
@@ -829,9 +830,8 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Insert(0, result);
                 }
             }
-            else if (result.GetType() == typeof(NpcTradePacket))
+            else if (result is NpcTradePacket npc)
             {
-                var npc = result as NpcTradePacket;
                 if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is NpcTradePacket previousState)
                 {
                     var previousIndex = CurrentClientState.IndexOf(previousState);
@@ -861,9 +861,8 @@ public partial class PacketLogViewerMainWindow
                     CurrentClientState.Insert(0, result);
                 }
             }
-            else if (result.GetType() == typeof(CharacterPacket))
+            else if (result is CharacterPacket character)
             {
-                var character = result as CharacterPacket;
 
                 if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is CharacterPacket previousState)
                 {
@@ -895,81 +894,91 @@ public partial class PacketLogViewerMainWindow
                 }
 
             }
-            else if (result.GetType() == typeof(DoorEntrancePacket))
+            else if (result is EntityMovePacket move)
             {
-                var door = result as DoorEntrancePacket;
-                if (door.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, result);
-                }
+                ApplyEntityPosition(move.Id, move.X, move.Y, move.Z, move.Angle);
             }
-            else if (result.GetType() == typeof(DoorExitPacket))
+            else if (result is WorldObject { ActionType: EntityActionType.FULL_SPAWN }
+                     or CastleTablet { ActionType: EntityActionType.FULL_SPAWN }
+                     or CastleEntrance { ActionType: EntityActionType.FULL_SPAWN }
+                     or CastleGate { ActionType: EntityActionType.FULL_SPAWN }
+                     or CastleChest { ActionType: EntityActionType.FULL_SPAWN })
             {
-                var door = result as DoorExitPacket;
-                if (door.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, result);
-                }
-            }
-            else if (result.GetType() == typeof(DoorEntranceWithKey))
-            {
-                var door = result as DoorEntranceWithKey;
-                if (door.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, result);
-                }
-            }
-            else if (result.GetType() == typeof(TeleportWithTargetPacket))
-            {
-                var teleportWithTarget = result as TeleportWithTargetPacket;
-                if (teleportWithTarget.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, teleportWithTarget);
-                }
-            }
-            else if (result.GetType() == typeof(CastleTablet))
-            {
-                var castleTablet = result as CastleTablet;
-                if (castleTablet.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, castleTablet);
-                }
-            }
-            else if (result.GetType() == typeof(CastleEntrance))
-            {
-                var castleEntrance = result as CastleEntrance;
-                if (castleEntrance.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, castleEntrance);
-                }
-            }
-            else if (result.GetType() == typeof(CastleGate))
-            {
-                var castleGates = result as CastleGate;
-                if (castleGates.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, castleGates);
-                }
-            }
-            else if (result.GetType() == typeof(CastleChest))
-            {
-                var castleChest = result as CastleChest;
-                if (castleChest.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, castleChest);
-                }
-            }
-            else if (result.GetType() == typeof(WorldObject))
-            {
-                var worldObject = result as WorldObject;
-                if (worldObject.ActionType == EntityActionType.FULL_SPAWN)
-                {
-                    CurrentClientState.Insert(0, worldObject);
-                }
+                CurrentClientState.Insert(0, result);
             }
         }
 
         MainView.ClientStatePanel.CurrentEntityStateForClient.UpdateLayout();
+        RefreshEntityRadar();
+    }
+
+    private static void ApplyEntityPosition(int id, double x, double y, double z, int angle)
+    {
+        if (id == 0)
+        {
+            return;
+        }
+
+        foreach (var ent in CurrentClientState.Where(e => e.Id == id))
+        {
+            switch (ent)
+            {
+                case MobPacket mob:
+                    mob.X = x;
+                    mob.Y = y;
+                    mob.Z = z;
+                    mob.Angle = angle;
+                    break;
+                case CharacterPacket character:
+                    character.X = x;
+                    character.Y = y;
+                    character.Z = z;
+                    character.Angle = angle;
+                    break;
+                case NpcTradePacket npc:
+                    npc.X = x;
+                    npc.Y = y;
+                    npc.Z = z;
+                    npc.Angle = angle;
+                    break;
+                case WorldObject world:
+                    world.X = x;
+                    world.Y = y;
+                    world.Z = z;
+                    world.Angle = angle;
+                    break;
+                case ItemPacket item:
+                    item.X = x;
+                    item.Y = y;
+                    item.Z = z;
+                    item.Angle = angle;
+                    break;
+                case CastleChest chest:
+                    chest.X = x;
+                    chest.Y = y;
+                    chest.Z = z;
+                    chest.Angle = angle;
+                    break;
+                case CastleGate gate:
+                    gate.X = x;
+                    gate.Y = y;
+                    gate.Z = z;
+                    gate.Angle = angle;
+                    break;
+                case CastleEntrance entrance:
+                    entrance.X = x;
+                    entrance.Y = y;
+                    entrance.Z = z;
+                    entrance.Angle = angle;
+                    break;
+                case CastleTablet tablet:
+                    tablet.X = x;
+                    tablet.Y = y;
+                    tablet.Z = z;
+                    tablet.Angle = angle;
+                    break;
+            }
+        }
     }
 
     private void LogListOnSelectionChanged(object sender, SelectionChangedEventArgs args)
@@ -981,7 +990,11 @@ public partial class PacketLogViewerMainWindow
                 return;
             }
 
-            var selected = args.AddedItems[0] as StoredPacket;
+            if (args.AddedItems[0] is not StoredPacket selected)
+            {
+                return;
+            }
+
             CurrentContentBytes = selected.ContentBytes;
 
             MainView.PacketActionsBar.IsFavorite.IsChecked = selected.Favorite;
@@ -1073,21 +1086,85 @@ public partial class PacketLogViewerMainWindow
         ScrollIntoViewIfSelectionExists();
     }
 
-    private void HideServerJunk_OnChecked(object sender, RoutedEventArgs e)
+    private void HideProtocolPackets_OnChecked(object sender, RoutedEventArgs e)
     {
-        if (HideServerJunk)
+        if (HideProtocolPackets)
         {
             return;
         }
 
-        HideServerJunk = true;
+        HideProtocolPackets = true;
         ScrollIntoViewIfSelectionExists();
     }
 
-    private void HideServerJunk_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideProtocolPackets_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        HideServerJunk = false;
+        HideProtocolPackets = false;
         ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideMovePackets_OnChecked(object sender, RoutedEventArgs e)
+    {
+        if (HideMovePackets)
+        {
+            return;
+        }
+
+        HideMovePackets = true;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideMovePackets_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        HideMovePackets = false;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideUnknownPackets_OnChecked(object sender, RoutedEventArgs e)
+    {
+        if (HideUnknownPackets)
+        {
+            return;
+        }
+
+        HideUnknownPackets = true;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private void HideUnknownPackets_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        HideUnknownPackets = false;
+        ScrollIntoViewIfSelectionExists();
+    }
+
+    private static bool IsProtocolNoise(StoredPacket packet)
+    {
+        var name = packet.EventName;
+        if (string.IsNullOrEmpty(name))
+        {
+            return false;
+        }
+
+        if (name.Equals("client.position_keepalive", StringComparison.Ordinal)
+            || name.Contains("keepalive", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return name.StartsWith("client.protocol.", StringComparison.Ordinal)
+               || name.StartsWith("server.protocol.", StringComparison.Ordinal);
+    }
+
+    private static bool IsMovePacket(StoredPacket packet)
+    {
+        if (packet.PacketType == PacketTypes.SERVER_MOVE_ENTITY)
+        {
+            return true;
+        }
+
+        var name = packet.EventName;
+        return !string.IsNullOrEmpty(name)
+               && name.StartsWith("server.entity.position", StringComparison.Ordinal);
     }
 
     private void ListenerEnabled_OnChecked(object sender, RoutedEventArgs e)
@@ -1392,7 +1469,7 @@ public partial class PacketLogViewerMainWindow
         };
         if (dialog.ShowDialog() == true)
         {
-            var name = dialog.Name;
+            var name = dialog.PartName;
             color = dialog.Color;
             var type = dialog.PacketPartType ?? PacketPartType.BITS;
             var start = SelectionStartBit.Value;
@@ -1486,7 +1563,10 @@ public partial class PacketLogViewerMainWindow
         var color = ((SolidColorBrush)highlightColor).Color;
         var part = new PacketPart(bitLength, name, enumName, lengthFromPrevious, packetPartType,
             actualStart, Array.Empty<Bit>(), color.R, color.G, color.B, color.A);
-        PacketPart.UpdatePacketPartValues(new List<PacketPart> { part }, CurrentContentBitStream, actualStart);
+        if (CurrentContentBitStream is not null)
+        {
+            PacketPart.UpdatePacketPartValues(new List<PacketPart> { part }, CurrentContentBitStream, actualStart);
+        }
         return part;
     }
 
@@ -1621,15 +1701,15 @@ public partial class PacketLogViewerMainWindow
         };
         if (dialog.ShowDialog() == true)
         {
-            var path = Path.Combine(PacketDefinitionPath, dialog.Name + PacketDefinitionExtension);
+            var path = Path.Combine(PacketDefinitionPath, dialog.DefinitionName + PacketDefinitionExtension);
             var definition = new PacketDefinition
             {
-                Name = dialog.Name,
+                Name = dialog.DefinitionName,
                 FilePath = path
             };
 
             PacketDefinitions.Add(definition);
-            SavePacketDefinition(dialog.Name, 0, 0);
+            SavePacketDefinition(dialog.DefinitionName, 0, 0);
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = definition;
         }
     }
@@ -1641,10 +1721,13 @@ public partial class PacketLogViewerMainWindow
 
     private void SaveSelectedPacketDefinition()
     {
-        if (MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem is not PacketDefinition selectedDefinition)
+        PacketDefinition? selectedDefinition =
+            MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem as PacketDefinition;
+        if (selectedDefinition is null)
         {
             CreatePacketDefinition();
-            selectedDefinition = (PacketDefinition?)MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem;
+            selectedDefinition =
+                MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem as PacketDefinition;
         }
 
         if (selectedDefinition is null)
@@ -1774,6 +1857,11 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
+        if (CurrentContentBitStream is null)
+        {
+            return;
+        }
+
         var parts = packetDefinition.LoadFromFile(CurrentContentBitStream, 0);
         PacketParts.ReplaceAll(parts);
         LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
@@ -1792,7 +1880,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var name = dialog.Name;
+        var name = dialog.ExportName;
         var startOffset = dialog.StartOffset;
         var startBit = dialog.StartBit;
         var endOffset = dialog.EndOffset;
@@ -1853,6 +1941,11 @@ public partial class PacketLogViewerMainWindow
 
         var startOffset = dialog.StartOffset;
         var startBit = dialog.StartBit;
+
+        if (CurrentContentBitStream is null)
+        {
+            return;
+        }
 
         var parts = subpacket.LoadFromFile(CurrentContentBitStream, startOffset * 8 + startBit);
 

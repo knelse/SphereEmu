@@ -1,6 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.World;
+using SphServer.Server.Config;
 using SphServer.Shared.ClientEvents;
+using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.EventHandlers;
@@ -29,24 +33,32 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
             return Task.CompletedTask;
         }
 
-        var area3D = sphereClient.BroadcastArea3D;
-        if (area3D is null)
-        {
-            return Task.CompletedTask;
-        }
+        sphereClient.UpdateCoordinatesInWorld();
 
-        foreach (var body in area3D.GetOverlappingBodies())
+        var visibilityRadius = ServerConfig.AppConfig.ObjectVisibilityDistance;
+        var visibilityRadiusSq = visibilityRadius * visibilityRadius;
+        var moverGodot = ClientWorldPosition.GetGodotWorldPosition(sphereClient);
+
+        foreach (var recipient in ActiveClients.GetAll().Values)
         {
-            var clientNode = body.GetParent();
-            if (clientNode is not SphereClient recipient || recipient == sphereClient)
+            if (recipient == sphereClient || recipient.IsAdminDebugDummy || recipient.CurrentCharacter is null)
+            {
+                continue;
+            }
+
+            if (!recipient.ClientStateManager.IsInGameState())
+            {
+                continue;
+            }
+
+            var recipientPos = ClientWorldPosition.GetGodotWorldPosition(recipient);
+            if (moverGodot.DistanceSquaredTo(recipientPos) > visibilityRadiusSq)
             {
                 continue;
             }
 
             var entityId = recipient.GetLocalObjectId(sphereClient.ID);
-            // this is a hack. Client couldn't do the full movement within a single tick, so objects won't be where they
-            // actually are if we send only 1 packet. They'd be stuck somewhere in the middle, and only be updated when
-            // the next event is raised (which looks dumb and breaks interactability)
+            // Client lerps movement across ticks; one packet leaves them mid-path until the next update.
             for (var i = 0; i < 4; i++)
             {
                 recipient.EnqueueClientEvent(

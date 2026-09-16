@@ -667,18 +667,21 @@
       "handler": "TradeMan"
     },
     "C2S:2:10:*": {
-      "name": "_player.CheckPing",
+      "name": "_player.SetStat",
       "confidence": "low",
       "evidence": "schema",
-      "aliases": [],
+      "aliases": [
+        "CheckPing"
+      ],
       "handler": ""
     },
     "S2C:2:10:*": {
-      "name": "_player.CheckPing",
+      "name": "_player.SetStat",
       "confidence": "high",
       "evidence": "handler",
       "aliases": [
-        "CheckPing"
+        "CheckPing",
+        "SetStat"
       ],
       "handler": ""
     },

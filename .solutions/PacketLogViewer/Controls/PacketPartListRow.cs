@@ -1,23 +1,19 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using SpherePacketVisualEditor;
 
 namespace PacketLogViewer.Controls;
 
-public class PacketPartListRow : TextBlock
+public class PacketPartListRow : StackPanel
 {
     private double lastWidth = -1;
 
     public PacketPartListRow()
     {
-        FontFamily = new FontFamily("Hack");
-        FontSize = 14;
-        LineHeight = 16;
-        LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-        TextWrapping = TextWrapping.NoWrap;
-        Margin = new Thickness(2);
+        Orientation = Orientation.Vertical;
         DataContextChanged += (_, _) => Rebuild();
         SizeChanged += (_, _) =>
         {
@@ -33,7 +29,7 @@ public class PacketPartListRow : TextBlock
 
     private void Rebuild()
     {
-        Inlines.Clear();
+        Children.Clear();
         if (DataContext is not PacketPart part)
         {
             return;
@@ -42,9 +38,30 @@ public class PacketPartListRow : TextBlock
         var comment = PacketPartInlineBuilder.CreateCommentBanner(part, ActualWidth);
         if (comment is not null)
         {
-            Inlines.Add(comment);
+            Children.Add(CreateLine(comment));
         }
 
-        PacketPartInlineBuilder.Add(Inlines, part);
+        var valueLine = CreateLine();
+        PacketPartInlineBuilder.Add(valueLine.Inlines, part);
+        Children.Add(valueLine);
+    }
+
+    private static TextBlock CreateLine(Inline? leading = null)
+    {
+        var block = new TextBlock
+        {
+            FontFamily = new FontFamily("Hack"),
+            FontSize = 14,
+            LineHeight = 16,
+            LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
+            TextWrapping = TextWrapping.NoWrap,
+            Margin = new Thickness(2)
+        };
+        if (leading is not null)
+        {
+            block.Inlines.Add(leading);
+        }
+
+        return block;
     }
 }

@@ -15,7 +15,7 @@
 
     <ItemGroup>
         <PackageReference Include="AvalonEdit" Version="6.3.0.90"/>
-        <PackageReference Include="ColorPickerWPF" Version="1.0.9"/>
+        <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2.3"/>
         <PackageReference Include="KaitaiStruct.Runtime.CSharp" Version="0.10.0"/>
         <PackageReference Include="LiteDB" Version="5.0.17"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>

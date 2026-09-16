@@ -467,7 +467,7 @@ public struct ObjectPacket
         }
         catch
         {
-            Console.WriteLine($"No suffix for {GameObject.GameObjectType} and ID {GameObject?.Suffix}");
+            Console.WriteLine($"No suffix for {GameObject?.GameObjectType} and ID {GameObject?.Suffix}");
         }
 
         var count = Count > 1 ? $" ({Count})" : string.Empty;

@@ -14,11 +14,11 @@ public partial class CreatePacketPartDefinitionDialog
     public string? EnumName;
     public PacketPartType? PacketPartType;
 
-    public CreatePacketPartDefinitionDialog (Color color, List<string> definedEnums)
+    public CreatePacketPartDefinitionDialog(Color color, List<string> definedEnums)
     {
         InitializeComponent();
-        ColorPicker.SetColor(color);
-        var partTypeNames = Enum.GetNames(typeof (PacketPartType)).Select(x => new ComboBoxItemWithName
+        ColorPicker.SelectedColor = color;
+        var partTypeNames = Enum.GetNames(typeof(PacketPartType)).Select(x => new ComboBoxItemWithName
         {
             Name = x
         });
@@ -38,10 +38,10 @@ public partial class CreatePacketPartDefinitionDialog
 
     public bool LengthFromPreviousField => LengthFromPreviousFieldCheckBox.IsChecked ?? false;
 
-    public string Name => PacketPartName.Text;
-    public Color Color => ColorPicker.Color;
+    public string PartName => PacketPartName.Text;
+    public Color Color => ColorPicker.SelectedColor;
 
-    private void DialogOkButton_OnClick (object sender, RoutedEventArgs e)
+    private void DialogOkButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(PacketPartName.Text))
         {
@@ -52,9 +52,9 @@ public partial class CreatePacketPartDefinitionDialog
         DialogResult = true;
     }
 
-    private void PacketPartTypeComboBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
+    private void PacketPartTypeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selected = (ComboBoxItemWithName) PacketPartTypeComboBox.SelectedItem;
+        var selected = (ComboBoxItemWithName)PacketPartTypeComboBox.SelectedItem;
         if (selected is null)
         {
             return;
@@ -63,9 +63,9 @@ public partial class CreatePacketPartDefinitionDialog
         PacketPartType = Enum.Parse<PacketPartType>(selected.Name);
     }
 
-    private void EnumNameComboBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
+    private void EnumNameComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selected = (ComboBoxItemWithName) EnumNameComboBox.SelectedItem;
+        var selected = (ComboBoxItemWithName)EnumNameComboBox.SelectedItem;
         if (selected is null)
         {
             return;
@@ -77,5 +77,5 @@ public partial class CreatePacketPartDefinitionDialog
 
 public class ComboBoxItemWithName
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

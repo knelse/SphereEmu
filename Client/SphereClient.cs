@@ -2,6 +2,7 @@ using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.State;
 using SphServer.Packets;
+using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Server.Debug.Parser;
 using SphServer.Shared.Db;
@@ -217,6 +218,8 @@ public partial class SphereClient : WorldObject
 			ActiveWorldObjects.LoggedInClients.Remove(playerDbEntry.Login, out _);
 		}
 
+		PlayerCountBroadcast.OnClientLeftWorld();
+
 		QueueFree();
 	}
 
@@ -253,6 +256,7 @@ public partial class SphereClient : WorldObject
 		var transform = Transform;
 		transform.Origin = CurrentCharacter!.Origin;
 		Transform = transform;
+		WorldObjectVisibilityManager.RefreshRegistration(this);
 	}
 
 	public void InitializeInteractions()

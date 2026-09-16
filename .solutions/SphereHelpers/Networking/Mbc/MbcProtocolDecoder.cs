@@ -14,6 +14,16 @@ internal sealed class MbcBitReader
 
     public int Left => Limit - Pos;
 
+    public void Seek(int pos)
+    {
+        if (pos < 0 || pos > Limit)
+        {
+            throw new MbcDecodeException($"seek {pos} out of range 0..{Limit}");
+        }
+
+        Pos = pos;
+    }
+
     public int Read(int width)
     {
         if (width < 0 || Pos + width > Limit)
@@ -62,8 +72,21 @@ public sealed class MbcProtocolDecoder
         this.recovered = recovered ?? new MbcRecoveredCatalog();
     }
 
-    public static MbcProtocolDecoder CreateDefault() =>
-        new(MbcCatalog.LoadEmbedded(), MbcRecoveredCatalog.LoadEmbedded());
+    public static MbcProtocolDecoder CreateDefault()
+    {
+        MbcRecoveredCatalog recovered;
+        try
+        {
+            recovered = MbcRecoveredCatalog.LoadEmbedded();
+        }
+        catch
+        {
+            // Prefer a working decoder over a silent null from PacketLogViewer.GetMbcDecoder.
+            recovered = new MbcRecoveredCatalog();
+        }
+
+        return new MbcProtocolDecoder(MbcCatalog.LoadEmbedded(), recovered);
+    }
 
     public void ResetProcessBindings() => processModules.Clear();
 
@@ -112,6 +135,7 @@ public sealed class MbcProtocolDecoder
             result.Control = payload[0];
             var body = payload.Length == 1 ? [] : payload[1..];
             originalBits = body.Length * 8;
+            result.WireBitLength = originalBits;
             var padded = new byte[body.Length + 1];
             body.CopyTo(padded, 0);
             bits = new MbcBitReader(padded);
@@ -133,7 +157,6 @@ public sealed class MbcProtocolDecoder
             result.ModuleTag = wireModuleTag;
             result.EffectiveModuleTag = moduleTag;
             result.Module = catalog.ModuleName(moduleTag);
-            result.WireBitLength = originalBits;
             if (moduleTag is null)
             {
                 result.Status = contextState;
@@ -143,6 +166,12 @@ public sealed class MbcProtocolDecoder
             while (true)
             {
                 var wireStart = bits.Pos;
+                if (bits.Left < 7)
+                {
+                    result.Status = result.Events.Count > 0 ? "full" : result.Status;
+                    break;
+                }
+
                 var wire = bits.Read(7);
                 if (wire == 0)
                 {
@@ -153,10 +182,17 @@ public sealed class MbcProtocolDecoder
 
                 if (wire == 0x3F)
                 {
+                    if (bits.Left < 30)
+                    {
+                        result.Status = result.Events.Count > 0 ? "full" : result.Status;
+                        break;
+                    }
+
                     processId = bits.Read(18);
                     wireModuleTag = bits.Read(12);
                     moduleTag = EnterContext(processId, wireModuleTag, result, out contextState);
                     result.ContextSwitches++;
+                    result.Switches.Add(new MbcContextSwitch(wireStart, processId, wireModuleTag));
                     if (moduleTag is null)
                     {
                         result.Status = contextState;
@@ -203,15 +239,9 @@ public sealed class MbcProtocolDecoder
                 }
 
                 var start = bits.Pos;
-                var desc = spec.Desc.ToArray();
-                string? wireOverride = null;
-                if (direction == MbcDirection.Client && spec.Handler == "ContMan" && desc.Length > 0 && desc[0] == 4)
-                {
-                    desc[0] = 8;
-                    wireOverride = "ContMan command is u8 on client wire (MBC descriptor declares u4)";
-                }
-
-                var fields = DecodeFields(bits, desc, basePos);
+                // ContMan/TradeMan widths come from .mbc region formats + client skipRegion.
+                // Do not probe alternate command widths against the capture.
+                var fields = DecodeFields(bits, spec.Desc, basePos);
                 var decoded = new MbcDecodedEvent
                 {
                     ProcessId = processId,
@@ -223,8 +253,7 @@ public sealed class MbcProtocolDecoder
                     Flags = spec.Flags,
                     Schema = spec.Schema,
                     StartBit = start - 7,
-                    EndBit = bits.Pos,
-                    WireSchemaOverride = wireOverride
+                    EndBit = bits.Pos
                 };
                 decoded.Fields.AddRange(fields);
 
@@ -250,9 +279,9 @@ public sealed class MbcProtocolDecoder
                 }
                 else
                 {
-                    var suffix = command is not null ? $".cmd{command}" : "";
-                    var handler = string.IsNullOrEmpty(decoded.Handler) ? $"region{region}" : decoded.Handler;
-                    decoded.EventName = $"{decoded.Module}.{handler}{suffix}";
+                    // Never put MBC routine names (ContMan, CheckPing, …) in EventName; inferred names win in Apply.
+                    var suffix = command is not null ? $".cmd{command}" : $".r{region}";
+                    decoded.EventName = $"{decoded.Module}{suffix}";
                     decoded.Confidence = "fallback";
                     decoded.EventId = $"{(direction == MbcDirection.Client ? "C2S" : "S2C")}:{moduleTag.Value}:{region}:{(command is null ? "*" : command.ToString())}";
                 }
@@ -413,30 +442,33 @@ public sealed class MbcProtocolDecoder
                 var coordRaw = bits.Read(12);
                 var (delta, value) = RelCoord(coordRaw, basePosition is null ? null : basePosition[axis]);
                 var kind = axis == 0 ? "relX" : axis == 1 ? "relY" : "relZ";
+                var name = axis == 0 ? "x" : axis == 1 ? "y" : "z";
                 fields.Add(new MbcDecodedField
                 {
                     Descriptor = raw,
                     Kind = kind,
+                    Name = name,
                     IntValue = coordRaw,
                     DoubleValue = value,
                     BitOffset = start,
                     BitLength = bits.Pos - start,
-                    Display = value is null ? $"raw={coordRaw} delta={delta:0.###}" : $"{value:0.###}"
+                    Display = value is null
+                        ? $"{name} delta={delta:0.###} raw={coordRaw}"
+                        : $"{name}={value:0.###} (delta={delta:0.###})"
                 });
             }
             else if (raw == 0x6C)
             {
                 var angleRaw = bits.Read(8);
-                var degrees = angleRaw * 1.40625;
                 fields.Add(new MbcDecodedField
                 {
                     Descriptor = 0x6C,
                     Kind = "angle",
+                    Name = "angle",
                     IntValue = angleRaw,
-                    DoubleValue = degrees,
                     BitOffset = start,
                     BitLength = bits.Pos - start,
-                    Display = $"{degrees:0.##} deg"
+                    Display = $"angle={angleRaw}"
                 });
             }
             else

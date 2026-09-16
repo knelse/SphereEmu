@@ -12,7 +12,7 @@ public class PacketAnalyzeData
 {
     public int Id { get; set; }
     public ObjectType ObjectType { get; set; }
-    [BsonIgnore] protected readonly List<PacketPart> Parts;
+    [BsonIgnore] protected readonly List<PacketPart> Parts = [];
     public virtual string DisplayValue => $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty})";
     public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public EntityInteractionType InteractionType { get; set; } = EntityInteractionType.UNDEF;

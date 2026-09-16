@@ -132,6 +132,20 @@ public static class PacketPartNames
     public const string ObjectTypesEnum = "object_types";
     public const string WireRegion = "wire_region";
     public const string Command = "command";
+    public const string Length = "length";
+    public const string Checksum = "checksum";
+    public const string Sequence = "seq";
+    public const string Channel = "channel";
+    public const string Pad = "pad";
+    public const string Slot = "slot";
+    public const string ActionCode = "action_code";
+    public const string ActionFlag = "action_flag";
+    public const string TargetId = "target_id";
+    public const string EchoPrefix = "echo_prefix";
+    public const string XorByte = "xor_byte";
+    public const string Counter = "counter";
+    public const string EchoTail = "echo_tail";
+    public const string Trailer = "trailer";
 }
 
 internal class SubpacketBytesWithOffset
@@ -504,8 +518,7 @@ internal static class PacketAnalyzer
 
         if (IsServerKeepalivePong(storedPacket.ContentBytes))
         {
-            return FinalizeKnownProtocolPacket(storedPacket, "KEEPALIVE PONG",
-                PacketEventClassifier.ClassifyServerKeepalivePong());
+            return FinalizeServerKeepalivePong(storedPacket);
         }
 
         if (IsServerCurrentMpUpdatePing(storedPacket.ContentBytes))
@@ -530,8 +543,14 @@ internal static class PacketAnalyzer
             return FinalizeCharacterListEntry(storedPacket);
         }
 
-        // 08 C0 stat field stream uses the same 7-bit divider as MBC region 10 (CheckPing).
-        if (!LooksLikeServerStatUpdate(storedPacket.ContentBytes) && TryApplyMbc(storedPacket))
+        // Prefer MBC for msg300. Region 10 CheckPing (u6+varint stats) often has bytes at
+        // bit 56 that look like classic 08 C0; that must not block the real decoder.
+        if (TryApplyMbc(storedPacket))
+        {
+            return storedPacket;
+        }
+
+        if (TryApplyMbcIdentityFallback(storedPacket))
         {
             return storedPacket;
         }
@@ -638,6 +657,13 @@ internal static class PacketAnalyzer
 
             if (!headerValid)
             {
+                // MBC 0x012C body is not a bit-shifted entity header. Scanning it finds a
+                // different phantom SET_POSITION in every packet.
+                if (!sawResolvedEntity && storedPacket.ContentBytes.HasEqualElementsAs(ok_mark, 2))
+                {
+                    break;
+                }
+
                 // Reject mid-payload false entity starts; keep scanning one bit forward.
                 falseBoundaryScanBudget++;
                 if (falseBoundaryScanBudget > maxFalseBoundaryScanBits)
@@ -938,14 +964,14 @@ internal static class PacketAnalyzer
 
         if (!ClassifyNamesOnly)
         {
-            foreach (var mobPacket in storedPacket.AnalyzeResult.Where(x => x is MobPacket))
+            foreach (var mobPacket in storedPacket.AnalyzeResult.OfType<MobPacket>())
             {
-                MobCollection.Upsert(mobPacket as MobPacket);
+                MobCollection.Upsert(mobPacket);
             }
 
-            foreach (var npcTradePacket in storedPacket.AnalyzeResult.Where(x => x is NpcTradePacket))
+            foreach (var npcTradePacket in storedPacket.AnalyzeResult.OfType<NpcTradePacket>())
             {
-                NpcTradeCollection.Upsert(npcTradePacket as NpcTradePacket);
+                NpcTradeCollection.Upsert(npcTradePacket);
             }
         }
 
@@ -962,12 +988,70 @@ internal static class PacketAnalyzer
             allParts.AddRange(FindPartsByNameSkipLastUndefSetCommentUpdateBitOffset(
                 stream, "server_packet_header", 0, headerComment));
         }
+        else if (storedPacket.ContentBytes.Length >= 2)
+        {
+            AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Length, 16, PacketPartType.UINT64, 120, 120, 120);
+            if (storedPacket.ContentBytes.Length >= 4)
+            {
+                AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Channel, 16, PacketPartType.UINT64, 149, 57, 199);
+            }
+        }
 
         storedPacket.PacketParts = allParts;
         storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
         ApplyClassification(storedPacket, classification);
         storedPacket.HiddenByDefaultServer = hide;
         storedPacket.HiddenByDefault = hide || storedPacket.HiddenByDefaultClient;
+        return storedPacket;
+    }
+
+    /// <summary>
+    ///     <c>Packet.ToByteArray(pong, padZeros: 1)</c> from <c>PingHandler</c>:
+    ///     length | 2C01 | pad | echo[0..4] | xor_byte | counter u16 LE | echo[8..11] | 00.
+    /// </summary>
+    private static StoredPacket FinalizeServerKeepalivePong(StoredPacket storedPacket)
+    {
+        var allParts = new List<PacketPart>();
+        var stream = new BitStream(storedPacket.ContentBytes);
+        var content = storedPacket.ContentBytes;
+
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Length, 16, PacketPartType.UINT64, 120, 120, 120);
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Channel, 16, PacketPartType.UINT64, 149, 57, 199);
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Pad, 8, PacketPartType.BITS, 160, 160, 160);
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.EchoPrefix, 40, PacketPartType.BYTES, 94, 148, 171);
+
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.XorByte, 8, PacketPartType.UINT64, 220, 120, 40);
+        if (content.Length > 10)
+        {
+            var xorByte = content[10];
+            allParts[^1].Comment = (xorByte & 0x80) != 0 ? "top bit set (odd pong)" : "top bit clear (even pong)";
+            allParts[^1].UpdateValueDisplayText();
+        }
+
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Counter, 16, PacketPartType.UINT64, 255, 200, 50);
+        if (allParts[^1].ActualLongValue is { } counter)
+        {
+            allParts[^1].Comment = $"0x{counter:X4}";
+            allParts[^1].UpdateValueDisplayText();
+        }
+
+        AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.EchoTail, 32, PacketPartType.BYTES, 94, 148, 171);
+        if (content.Length >= 17 && content[15] == 0x01 && content[16] == 0x60)
+        {
+            allParts[^1].Comment = "01 60 marker";
+            allParts[^1].UpdateValueDisplayText();
+        }
+
+        if (stream.BitOffsetFromStart + 8 <= content.Length * 8)
+        {
+            AddCurrentMpUpdatePingPart(allParts, stream, PacketPartNames.Trailer, 8, PacketPartType.BITS, 160, 160, 160);
+        }
+
+        storedPacket.PacketParts = allParts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        ApplyClassification(storedPacket, PacketEventClassifier.ClassifyServerKeepalivePong());
+        storedPacket.HiddenByDefaultServer = true;
+        storedPacket.HiddenByDefault = true;
         return storedPacket;
     }
 
@@ -1104,20 +1188,66 @@ internal static class PacketAnalyzer
         return ItemObjectTypes.Contains((ObjectType)objectTypeVal);
     }
 
+    private static List<PacketPart> TryCollectMbcVisualParts(StoredPacket storedPacket)
+    {
+        var decoder = GetMbcDecoder();
+        if (decoder is null || storedPacket.ContentBytes.Length < 4)
+        {
+            return [];
+        }
+
+        var frames = MbcProtocolDecoder.SplitTcpFrames(storedPacket.ContentBytes, MbcDirection.Client);
+        if (frames.Count == 0)
+        {
+            return [];
+        }
+
+        var allParts = new List<PacketPart>();
+        var sub = 0;
+        var sawEvents = false;
+        foreach (var frame in frames)
+        {
+            if (frame.Message != (ushort)WireChannel.Gameplay)
+            {
+                continue;
+            }
+
+            MbcDecodeResult decoded;
+            try
+            {
+                decoded = decoder.DecodeGame(frame.Payload, MbcDirection.Client);
+            }
+            catch
+            {
+                continue;
+            }
+
+            if (decoded.Events.Count == 0 && decoded.Lifecycle.Count == 0)
+            {
+                continue;
+            }
+
+            sawEvents = true;
+            var bodyBit = (frame.Offset + ClientFrame.BodyOffset) * 8;
+            allParts.AddRange(MbcPacketParts.Build(storedPacket.ContentBytes, bodyBit, decoded, ref sub));
+            sub++;
+        }
+
+        return sawEvents ? allParts : [];
+    }
+
     private static bool TryApplyMbc(StoredPacket storedPacket)
     {
         var decoder = GetMbcDecoder();
         if (decoder is null || storedPacket.ContentBytes.Length < 4)
         {
-            return false;
+            return TryApplyMbcIdentityFallback(storedPacket);
         }
 
-        if (storedPacket.Source != PacketSource.CLIENT &&
-            (LooksLikeServerStatUpdate(storedPacket.ContentBytes) ||
-             LooksLikeClassicServerItemSpawn(storedPacket.ContentBytes)))
-        {
-            return false;
-        }
+        // Do not gate on LooksLikeClassicServerItemSpawn: MBC guild/map spawn
+        // snapshots often share coincidental FULL_SPAWN + ObjectType bits at offset 56
+        // (e.g. Special_Guild). Prefer real region events; classic items fall through
+        // when Events/Lifecycle are empty.
 
         var direction = storedPacket.Source == PacketSource.CLIENT ? MbcDirection.Client : MbcDirection.Server;
         var frames = MbcProtocolDecoder.SplitTcpFrames(storedPacket.ContentBytes, direction);
@@ -1157,7 +1287,8 @@ internal static class PacketAnalyzer
                 continue;
             }
 
-            if (!decoded.HasUsefulDecode)
+            // WireBitLength alone is not enough: classic 2C01 item frames parse as empty MBC.
+            if (decoded.Events.Count == 0 && decoded.Lifecycle.Count == 0)
             {
                 continue;
             }
@@ -1202,6 +1333,11 @@ internal static class PacketAnalyzer
             return false;
         }
 
+        if (!ClassifyNamesOnly && allParts.Count == 0)
+        {
+            return false;
+        }
+
         storedPacket.PacketParts = allParts;
         storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
         var eventName = names.Count == 0 ? "mbc.decode" : string.Join("; ", names.Distinct());
@@ -1227,6 +1363,47 @@ internal static class PacketAnalyzer
         return true;
     }
 
+    private static bool TryApplyMbcIdentityFallback(StoredPacket storedPacket)
+    {
+        if (ClassifyNamesOnly || storedPacket.Source == PacketSource.CLIENT)
+        {
+            return false;
+        }
+
+        var content = storedPacket.ContentBytes;
+        if (content.Length < 16 || !content.HasEqualElementsAs(ok_mark, 2))
+        {
+            return false;
+        }
+
+        // Real classic item FULL_SPAWN must reach the entity parser, not identity skip.
+        if (LooksLikeClassicServerItemSpawn(content))
+        {
+            return false;
+        }
+
+        var totalBits = content.Length * 8L;
+        if (EntityMoveParser.LooksLikeEntityMove(content, 56, totalBits))
+        {
+            return false;
+        }
+
+        var sub = 0;
+        var parts = MbcPacketParts.BuildIdentity(content, 40, MbcDirection.Server, ref sub);
+        if (parts.Count == 0)
+        {
+            return false;
+        }
+
+        storedPacket.PacketParts = parts;
+        storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+        ApplyClassification(storedPacket, new PacketEventClassification(
+            "mbc.decode", 0.4, "MBC identity only (no region events)", true));
+        RefreshHiddenByDefaultFlags(storedPacket);
+        AddPacketPartAnalyzeData(storedPacket);
+        return true;
+    }
+
     private static StoredPacket UpdateClientPacketClassification(StoredPacket storedPacket)
     {
         ClearClassification(storedPacket);
@@ -1238,11 +1415,6 @@ internal static class PacketAnalyzer
             ApplyClassification(storedPacket,
                 new PacketEventClassification("client.invalid_or_trailing", 0, "empty packet", false));
             RefreshHiddenByDefaultFlags(storedPacket);
-            return storedPacket;
-        }
-
-        if (TryApplyMbc(storedPacket))
-        {
             return storedPacket;
         }
 
@@ -1287,6 +1459,18 @@ internal static class PacketAnalyzer
         {
             ApplyClassification(storedPacket, chosen);
             storedPacket.AnalyzeState = chosen.IsEvent ? PacketAnalyzeState.PARTIAL : PacketAnalyzeState.UNDEF;
+        }
+
+        if (!ClassifyNamesOnly)
+        {
+            var mbcParts = TryCollectMbcVisualParts(storedPacket);
+            storedPacket.PacketParts = mbcParts.Count > 0
+                ? mbcParts
+                : GameplayRecordPacketParts.Build(content);
+            if (storedPacket.PacketParts.Count > 0 && storedPacket.AnalyzeState == PacketAnalyzeState.NONE)
+            {
+                storedPacket.AnalyzeState = PacketAnalyzeState.PARTIAL;
+            }
         }
 
         RefreshHiddenByDefaultFlags(storedPacket);
@@ -1435,14 +1619,34 @@ internal static class PacketAnalyzer
             partsBySubpacket[part.SubpacketIndex].Add(part);
         });
 
-        foreach (var key in partsBySubpacket.Keys)
+        var currentProcessId = 0;
+        foreach (var key in partsBySubpacket.Keys.OrderBy(k => k))
         {
-            if (partsBySubpacket[key].Count == 1 && partsBySubpacket[key].First().Name == PacketPartNames.Delimiter)
+            var subpacket = partsBySubpacket[key];
+            if (subpacket.Count == 1 && subpacket.First().Name == PacketPartNames.Delimiter)
             {
                 continue;
             }
 
-            storedPacket.AnalyzeResult.Add(GetAnalyzeDataForSubpacket(partsBySubpacket[key]));
+            var processPart = subpacket.FirstOrDefault(x => x.Name == PacketPartNames.ProcessId);
+            if (processPart?.ActualLongValue is { } pid)
+            {
+                currentProcessId = (int)pid;
+            }
+
+            if (EntityMovePacket.HasMbcWorldCoords(subpacket))
+            {
+                var move = new EntityMovePacket(subpacket);
+                if (move.Id == 0 && currentProcessId != 0)
+                {
+                    move.Id = currentProcessId;
+                }
+
+                storedPacket.AnalyzeResult.Add(move);
+                continue;
+            }
+
+            storedPacket.AnalyzeResult.Add(GetAnalyzeDataForSubpacket(subpacket));
         }
 
         return storedPacket;

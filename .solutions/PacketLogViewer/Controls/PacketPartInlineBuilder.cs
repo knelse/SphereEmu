@@ -41,9 +41,10 @@ internal static class PacketPartInlineBuilder
 
         var lineWidth = actualWidth < 50 ? 120 : (int)(actualWidth / 9);
         var comment = $" {part.Comment} ";
-        var paddingLength = Math.Max(0, (lineWidth - comment.Length) / 2);
-        var padding = paddingLength == 0 ? string.Empty : new string('=', paddingLength);
-        return new Run($"{padding}{comment}{padding}\n\n")
+        // Always at least "==" on each side, even when the line is short or the comment is long.
+        var paddingLength = Math.Max(2, (lineWidth - comment.Length) / 2);
+        var padding = new string('=', paddingLength);
+        return new Run($"{padding}{comment}{padding}")
         {
             Background = part.CommentBannerBrush
         };

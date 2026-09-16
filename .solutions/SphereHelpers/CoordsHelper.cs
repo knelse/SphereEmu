@@ -581,16 +581,24 @@ public static class CoordsHelper
         return (1 + (float)fraction / 0b100000000000000000000000) * baseCoord * sign;
     }
 
+    /// <summary>
+    /// Heuristic for client keepalive with _player PositionStream (region 11):
+    /// bytes 19..20 are the usual pre-payload marker before array4&lt;u32&gt;.
+    /// </summary>
     public static bool HasPingCoordMarker(byte[] rcvBuffer) =>
         rcvBuffer.Length >= 21 && rcvBuffer[19] == 0x01 && rcvBuffer[20] == 0x60;
 
-    public static bool ArePingCoordsInWorldBounds(WorldCoords coords, double maxAbs = 5000.0) =>
+    /// <summary>
+    /// Matches _player WorldSnapshot / Owner clamp: |xyz| &gt; 16000 is treated as corrupt.
+    /// </summary>
+    public static bool ArePingCoordsInWorldBounds(WorldCoords coords, double maxAbs = 16000.0) =>
         Math.Abs(coords.x) <= maxAbs
         && Math.Abs(coords.y) <= maxAbs
         && Math.Abs(coords.z) <= maxAbs;
 
     /// <summary>
-    /// Ping coords start 6 bits into byte 21; four consecutive 32-bit client floats (x,y,z,turn).
+    /// _player PositionStream on keepalive: after marker, 2 alignment bits + array4 count (4),
+    /// then 4×u32 IEEE floats (x, y, z, angle/yaw). Same wire as CycleSend / MbcPayloadDecoder.
     /// </summary>
     public static WorldCoords GetCoordsFromPingBytes(byte[] rcvBuffer)
     {
@@ -599,13 +607,29 @@ public static class CoordsHelper
             return new WorldCoords(0, 0, 0);
         }
 
+        // Byte 21: 2 bits align, 4-bit word_count, then floats at bit 21*8+6.
         var stream = new BitStream(rcvBuffer);
-        stream.SeekBitOffset(21 * 8 + 6);
-        var x = DecodeClientCoordinateFromBitStream(stream);
-        var y = DecodeClientCoordinateFromBitStream(stream);
-        var z = DecodeClientCoordinateFromBitStream(stream);
-        var turn = DecodeClientCoordinateFromBitStream(stream);
+        stream.SeekBitOffset(21 * 8 + 2);
+        var wordCount = (int)stream.ReadUInt16(4);
+        if (wordCount < 4)
+        {
+            return new WorldCoords(0, 0, 0);
+        }
+
+        var x = ReadIeeeFloat32(stream);
+        var y = ReadIeeeFloat32(stream);
+        var z = ReadIeeeFloat32(stream);
+        var turn = ReadIeeeFloat32(stream);
         return new WorldCoords(x, y, z, turn);
+    }
+
+    /// <summary>
+    /// 32-bit IEEE float at the current BitStream position (LE bit order, same as array4&lt;u32&gt;).
+    /// </summary>
+    public static double ReadIeeeFloat32(BitStream stream)
+    {
+        var bits = unchecked((uint)stream.ReadInt64(32));
+        return BitConverter.Int32BitsToSingle(unchecked((int)bits));
     }
 
     private static byte[] GetArrayWithoutBitShift(byte[] input, int shift = 0)

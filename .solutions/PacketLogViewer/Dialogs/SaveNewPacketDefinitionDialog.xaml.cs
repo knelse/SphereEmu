@@ -4,15 +4,15 @@ namespace SpherePacketVisualEditor;
 
 public partial class SaveNewPacketDefinitionDialog
 {
-    public SaveNewPacketDefinitionDialog ()
+    public SaveNewPacketDefinitionDialog()
     {
         InitializeComponent();
         NewPacketDefinitionName.Focus();
     }
 
-    public string Name => NewPacketDefinitionName.Text;
+    public string DefinitionName => NewPacketDefinitionName.Text;
 
-    private void SaveButton_OnClick (object sender, RoutedEventArgs e)
+    private void SaveButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(NewPacketDefinitionName.Text))
         {

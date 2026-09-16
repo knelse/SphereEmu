@@ -9,15 +9,15 @@ public partial class ExportSubpacketDialog
     public int StartBit;
     public int StartOffset;
 
-    public ExportSubpacketDialog ()
+    public ExportSubpacketDialog()
     {
         InitializeComponent();
         SubpacketName.Focus();
     }
 
-    public string Name => SubpacketName.Text;
+    public string ExportName => SubpacketName.Text;
 
-    private void ButtonBase_OnClick (object sender, RoutedEventArgs e)
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(SubpacketName.Text) || string.IsNullOrWhiteSpace(StartOffsetText.Text) ||
             string.IsNullOrWhiteSpace(StartBitText.Text) || string.IsNullOrWhiteSpace(EndOffsetText.Text) ||

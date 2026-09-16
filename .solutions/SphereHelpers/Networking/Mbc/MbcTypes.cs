@@ -33,10 +33,12 @@ public sealed class MbcEventInfo
 public sealed class MbcDecodedField
 {
     public int Descriptor { get; init; }
-    public required string Kind { get; init; }
+    public required string Kind { get; set; }
     public string Name { get; set; } = "";
-    public long? IntValue { get; init; }
-    public double? DoubleValue { get; init; }
+    public long? IntValue { get; set; }
+    /// <summary>Wire bits before SignedMinus30000 (raw-30000) or other transforms.</summary>
+    public long? RawWireValue { get; set; }
+    public double? DoubleValue { get; set; }
     public long[]? ArrayValue { get; init; }
     public string? StringValue { get; set; }
     public int BitOffset { get; init; }
@@ -97,12 +99,14 @@ public sealed class MbcDecodeResult
     public int? StopBit { get; set; }
     public int TerminatorBit { get; set; } = -1;
     public int ContextSwitches { get; set; }
+    public List<MbcContextSwitch> Switches { get; } = [];
     public List<MbcDecodedEvent> Events { get; } = [];
     public List<MbcLifecycleEvent> Lifecycle { get; } = [];
 
     public bool HasUsefulDecode =>
         Events.Count > 0
         || Lifecycle.Count > 0
+        || WireBitLength > 0
         || Status is "full"
             or "client_stop_invalid_wire"
             or "client_stop_undeclared_region"
@@ -110,5 +114,7 @@ public sealed class MbcDecodeResult
             or "ignored_unknown_module"
             or "ignored_ekill_target";
 }
+
+public readonly record struct MbcContextSwitch(int StartBit, int ProcessId, int ModuleTag);
 
 public readonly record struct MbcTcpFrame(int Offset, int Size, ushort Message, byte[] Payload);

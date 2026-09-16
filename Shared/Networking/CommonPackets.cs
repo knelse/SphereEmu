@@ -4,6 +4,7 @@ using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking.Mbc;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
@@ -189,6 +190,30 @@ public static class CommonPackets
         ];
     }
 
+    /// <summary>
+    ///     _stat PublishPlayerCount (module tag 4). Schema u10 online count.
+    ///     Region 61 = EInit (unblocks client <c>Client()</c>); region 0 = ongoing updates from <c>Server()</c>.
+    ///     process_id is a server-owned _stat singleton (live band ~0xC00), not the recipient's player id.
+    /// </summary>
+    public static byte[] PublishPlayerCount(int playerCount, bool eInit = false)
+    {
+        const ushort statProcessId = 0xC00;
+        const ushort statModuleTag = 4;
+        var region = eInit ? 61 : 0;
+        var count = (ushort)Math.Clamp(playerCount, 0, 1023);
+
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(statProcessId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16(statModuleTag, 12);
+        stream.WriteByte((byte)(region + 1), 7); // wire = region + 1
+        stream.WriteUInt16(count, 10);
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
     public static byte[] DespawnEntity(ushort ID)
     {
         return
@@ -197,45 +222,34 @@ public static class CommonPackets
         ];
     }
 
-    public static byte[] BuildMoveObjectPacket(double x0, double y0, double z0, double t0, ushort entityId)
+    /// <summary>
+    ///     msg300 TransformUpdate (region 1): has_position origins (trunc+bias), then
+    ///     relX/Y/Z via client encodeCoordinate, angle as raw u8.
+    /// </summary>
+    public static byte[] BuildMoveObjectPacket(double x0, double y0, double z0, double t0, ushort entityId,
+        ushort moduleTag = (ushort)ObjectType.Monster)
     {
-        // best guess for X and Z: decimal value in packet = 4095 - coord_value, where coord_value is in 0..63 range
-        // for Y max value becomes 2047 with the same formula
-        // technically, it's not even decimal, as it's possible to move by ~50 units if 0 is sent instead of 4095 
-        var xDec = 4095 - (1 - (int)Math.Truncate(x0 - Math.Truncate(x0)) * 64);
-        var yDec = 2047 - (int)Math.Truncate((y0 - Math.Truncate(y0)) * 64);
-        var zDec = 4095 - (1 - (int)Math.Truncate(z0 - Math.Truncate(z0)) * 64);
-        var x = 32768 + (int)x0;
-        var y = 1200 + (int)y0;
-        var z = 32768 + (int)z0;
-        var x_1 = (byte)(((x & 0b1111111) << 1) + 1);
-        var x_2 = (byte)((x & 0b111111110000000) >> 7);
-        var y_1 = (byte)(((y & 0b1111111) << 1) + ((x & 0b1000000000000000) >> 15));
-        var z_1 = (byte)(((z & 0b11) << 6) + ((y & 0b1111110000000) >> 7));
-        var z_2 = (byte)((z & 0b1111111100) >> 2);
-        var z_3 = (byte)((z & 0b1111110000000000) >> 10);
-        var id_1 = (byte)(((entityId & 0b111) << 5) + 0b10001);
-        var id_2 = (byte)((entityId & 0b11111111000) >> 3);
-        var id_3 = (byte)((entityId & 0b1111100000000000) >> 11);
-        var xdec_1 = (byte)((xDec & 0b111111) << 2);
-        var ydec_1 = (byte)(((yDec & 0b11) << 6) + ((xDec & 0b111111000000) >> 6));
-        var ydec_2 = (byte)((yDec & 0b1111111100) >> 2);
-        var zdec_1 = (byte)(((zDec & 0b111111) << 2) + ((yDec & 0b110000000000) >> 10));
-        var twoPi = 2 * Math.PI;
-        while (Math.Abs(t0) > twoPi)
-        {
-            t0 -= Math.Sign(t0) * twoPi;
-        }
+        var ox = (int)Math.Truncate(x0);
+        var oy = (int)Math.Truncate(y0);
+        var oz = (int)Math.Truncate(z0);
 
-        var angle = (int)(t0 * 256 / 2 / Math.PI);
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(1, 1); // has_position
+        stream.WriteUInt16((ushort)(ox + 32768), 16);
+        stream.WriteUInt16((ushort)(oy + 1200), 13);
+        stream.WriteUInt16((ushort)(oz + 32768), 16);
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high (local ids fit in 16)
+        stream.WriteUInt16((ushort)(moduleTag & 0xFFF), 12);
+        stream.WriteByte(2, 7); // wire = region + 1 → TransformUpdate
+        stream.WriteUInt16(MbcCoordEncoding.EncodeCoordinate(ox, (float)x0), 12);
+        stream.WriteUInt16(MbcCoordEncoding.EncodeCoordinate(oy, (float)y0), 12);
+        stream.WriteUInt16(MbcCoordEncoding.EncodeCoordinate(oz, (float)z0), 12);
+        stream.WriteByte(MbcCoordEncoding.EncodeAngle(t0), 8);
 
-        var angle_1 = (byte)(((angle & 0b11) << 6) + ((zDec & 0b111111000000) >> 6));
-        var angle_2 = (byte)((angle & 0b11111100) >> 2);
-        return
-        [
-            0x17, 0x00, 0x2c, 0x01, 0x00, x_1, x_2, y_1, z_1, z_2, z_3, 0x2D, id_1, id_2, id_3, 0x6A, 0x10, xdec_1,
-            ydec_1, ydec_2, zdec_1, angle_1, angle_2
-        ];
+        // padZeros=1 → control byte 0 before body (same as live msg300 S2C)
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
 
     public static byte[] LoadNewPlayerDungeon =>

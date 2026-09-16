@@ -1,0 +1,22 @@
+---
+description: Always load sphere-networking-live; MBC/client ground truth; inferred names over routines
+alwaysApply: true
+---
+
+# sphere-networking-live
+
+At the start of every conversation, read `.cursor/skills/sphere-networking-live/SKILL.md` and follow it.
+
+This is the default for this repository. Do not wait for the user to mention packets, MBC, or PacketLogViewer.
+
+## Ground truth before hypotheses
+
+If you ever need to analyze a behavior for the network protocol, first look into MBC decompile (`d:\Download\MBCdecompiler-main\`) and client recompile (`d:\Download\SferaClientRecompiled-main\`) before making hypotheses.
+
+- Region `formats`, handler bytecode, and client `skipRegion`/`receiveRegion`/`readField`/`send` are authoritative.
+- Do not invent adaptive width probes or dual-layout guessers when those sources already define the wire.
+- If a capture disagrees, debug framing (region, start bit, module tag, origin). Do not override the catalog by guessing.
+
+## Inferred names over MBC routines
+
+Always use inferred semantic names (`mbc_commands.jsonl` `n`, recovered overrides) for PLV labels. Never use MBC routines (`CheckPing`, `ContMan`, `Manager`, `Owner`, …) as the primary event name; those are receive/send sites only.

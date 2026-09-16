@@ -27,9 +27,9 @@ internal static class PacketEventClassifier
     public static PacketEventClassification ClassifyServerKeepalivePong()
     {
         return new PacketEventClassification(
-            "server.protocol.keepalive_pong",
+            "server.protocol.keepalive.pong",
             1.0,
-            "PingHandler response to client 0x26 keepalive",
+            "PingHandler response to client 0x26 PositionStream keepalive",
             true);
     }
 
@@ -188,6 +188,7 @@ internal static class PacketEventClassifier
             "client.item.move" => PacketTypes.CLIENT_MOVE_ITEM,
             "client.stats.update.request" => PacketTypes.CLIENT_STATS_UPDATE_REQUEST,
             "server.protocol.ack" => PacketTypes.SERVER_CONNECTION_ACCEPTED,
+            "server.protocol.keepalive.pong" => PacketTypes.SERVER_KEEPALIVE_PONG,
             "server.protocol.keepalive_pong" => PacketTypes.SERVER_KEEPALIVE_PONG,
             "server.protocol.ping_6s" => PacketTypes.SERVER_PING_6_SEC,
             "server.protocol.ping_current_mp_update" => PacketTypes.SERVER_CURRENT_MP_UPDATE_PING,

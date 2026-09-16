@@ -4,62 +4,93 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <!-- WrapPanel keeps the top toggles visible on smaller window sizes by allowing wrapping -->
-    <WrapPanel VerticalAlignment="Center" Margin="2 2 2 2">
-        <CheckBox x:Name="ShowBookmarkedOnly"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="False">
-            Bookmarked Only
-        </CheckBox>
+    <StackPanel Margin="2">
+        <WrapPanel VerticalAlignment="Center" Margin="0 0 0 2">
+            <CheckBox x:Name="EnableListener"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="True">
+                Listener
+            </CheckBox>
 
-        <CheckBox x:Name="HideClientPackets"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="True">
-            Hide client
-        </CheckBox>
+            <CheckBox x:Name="EnableLocalCapture"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="False"
+                      ToolTip="Capture traffic to localhost / private LAN servers (Npcap loopback). Off by default.">
+                Localhost
+            </CheckBox>
 
-        <CheckBox x:Name="HideServerJunk"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="True"
-                  ToolTip="Hides known server noise (acks, pings, file checks). Unclassified packets stay visible. Uncheck for the raw server stream, including classified junk.">
-            Hide junk
-        </CheckBox>
+            <CheckBox x:Name="ShowNewInUi"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="True">
+                Update UI
+            </CheckBox>
+        </WrapPanel>
 
-        <CheckBox x:Name="ShowNewInUi"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="True">
-            Update UI
-        </CheckBox>
+        <WrapPanel VerticalAlignment="Center" Margin="0 0 0 2">
+            <CheckBox x:Name="ShowBookmarkedOnly"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="False">
+                Bookmarked Only
+            </CheckBox>
+        </WrapPanel>
 
-        <CheckBox x:Name="EnableListener"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="True">
-            Listener
-        </CheckBox>
+        <WrapPanel VerticalAlignment="Center">
+            <TextBlock Text="Hide:"
+                       VerticalAlignment="Center"
+                       Margin="0 0 8 0"
+                       FontWeight="SemiBold" />
 
-        <CheckBox x:Name="EnableLocalCapture"
-                  x:FieldModifier="public"
-                  Margin="0 2 12 2"
-                  Background="White"
-                  VerticalAlignment="Center"
-                  IsChecked="False"
-                  ToolTip="Capture traffic to localhost / private LAN servers (Npcap loopback). Off by default.">
-            Local
-        </CheckBox>
-    </WrapPanel>
+            <CheckBox x:Name="HideClientPackets"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="True"
+                      ToolTip="Hide all client-sourced packets.">
+                Client
+            </CheckBox>
+
+            <CheckBox x:Name="HideProtocolPackets"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="True"
+                      ToolTip="Hide keepalives and client.protocol.* / server.protocol.* (including client.position_keepalive).">
+                Control
+            </CheckBox>
+
+            <CheckBox x:Name="HideMovePackets"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="True"
+                      ToolTip="Hide server.entity.position">
+                Move
+            </CheckBox>
+
+            <CheckBox x:Name="HideUnknownPackets"
+                      x:FieldModifier="public"
+                      Margin="0 0 12 0"
+                      Background="White"
+                      VerticalAlignment="Center"
+                      IsChecked="False"
+                      ToolTip="Hide packets that are not classified events.">
+                Unknown
+            </CheckBox>
+        </WrapPanel>
+    </StackPanel>
 </UserControl>

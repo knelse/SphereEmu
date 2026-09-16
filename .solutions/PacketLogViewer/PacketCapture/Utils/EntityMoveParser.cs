@@ -30,22 +30,18 @@ internal static class EntityMoveParser
                 return false;
             }
 
-            // 08C0 lives at the same wrapper offset; do not steal those.
             if (StatUpdateParser.LooksLikeStatUpdate(packetBytes, 56))
             {
                 return false;
             }
 
-            // Real entity_move / spawn starts with id+type+action after the 56-bit wrapper.
-            if (HasStrongEntityHeader(packetBytes, 56, totalBits))
-            {
-                return false;
-            }
+            // 0x012C wrappers are MBC or classic entity-at-56, not this 184-bit overlay.
+            return false;
         }
 
         var x = Read(packetBytes, bitOffset + 41, 16) - 32768;
-        var y = 1200 - Read(packetBytes, bitOffset + 57, 13);
-        var z = 32768 - Read(packetBytes, bitOffset + 70, 16);
+        var y = Read(packetBytes, bitOffset + 57, 13) - 1200;
+        var z = Read(packetBytes, bitOffset + 70, 16) - 32768;
         var entityId = Read(packetBytes, bitOffset + 101, 16);
         return entityId != 0
                && Math.Abs(x) <= 10000

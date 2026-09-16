@@ -9,7 +9,6 @@ namespace PacketLogViewer.Models.PacketAnalyzeData;
 
 public class ItemPacket : PacketAnalyzeData
 {
-    public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public bool HasGameId { get; set; }
     public int GameObjectId { get; set; }
     public int ContainerId { get; set; }
@@ -128,13 +127,13 @@ public class ItemPacket : PacketAnalyzeData
                     ? ObjectPacketTools.GetFriendlyNameByObjectType(ObjectType)
                     : OverrideType;
 
-        if (GameObject?.GameObjectType == GameObjectType.Ring)
+        if (GameObject is { GameObjectType: GameObjectType.Ring } ring)
         {
-            tier = GameObject.TitleMinusOne > 0
-                ? $"{GameObject.TitleMinusOne + 1}т"
-                : GameObject.DegreeMinusOne > 0
-                    ? $"{GameObject.DegreeMinusOne + 1}с"
-                    : GameObject.ToRomanTierLiteral();
+            tier = ring.TitleMinusOne > 0
+                ? $"{ring.TitleMinusOne + 1}т"
+                : ring.DegreeMinusOne > 0
+                    ? $"{ring.DegreeMinusOne + 1}с"
+                    : ring.ToRomanTierLiteral();
         }
         else
         {

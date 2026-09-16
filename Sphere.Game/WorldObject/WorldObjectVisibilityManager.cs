@@ -41,6 +41,20 @@ public static class WorldObjectVisibilityManager
 		}
 	}
 
+	/// <summary>
+	///     Move a registered object to the cell for its current <see cref="Node3D.GlobalPosition" />.
+	/// </summary>
+	public static void RefreshRegistration(WorldObject worldObject)
+	{
+		if (Engine.IsEditorHint())
+		{
+			return;
+		}
+
+		Unregister(worldObject);
+		Register(worldObject);
+	}
+
 	public static void Unregister(WorldObject worldObject)
 	{
 		if (Engine.IsEditorHint())
@@ -121,6 +135,13 @@ public static class WorldObjectVisibilityManager
 
 					worldObject.EnsureVisibilityArea();
 					worldObject.EnsureVisibleToClient(client);
+
+					// Reciprocal: show the moving client to other players already in range.
+					if (worldObject is SphereClient other && other != client)
+					{
+						client.EnsureVisibilityArea();
+						client.EnsureVisibleToClient(other);
+					}
 				}
 			}
 		}

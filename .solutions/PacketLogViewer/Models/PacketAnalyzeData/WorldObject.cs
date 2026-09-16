@@ -10,7 +10,6 @@ namespace PacketLogViewer.Models.PacketAnalyzeData;
 public class WorldObject : PacketAnalyzeData
 {
     [BsonId] public int DbId { get; set; }
-    public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public double X { get; set; }
     public double Y { get; set; }
     public double Z { get; set; }
@@ -19,14 +18,14 @@ public class WorldObject : PacketAnalyzeData
     public override string DisplayValue =>
         $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) at [{X:F2}, {Y:F2}, {Z:F2}]";
 
-    public WorldObject (List<PacketPart> parts) : base(parts)
+    public WorldObject(List<PacketPart> parts) : base(parts)
     {
         var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof (EntityActionType), actionTypeVal)
-                ? (EntityActionType) actionTypeVal
+            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
+                ? (EntityActionType)actionTypeVal
                 : EntityActionType.UNDEF;
         }
 

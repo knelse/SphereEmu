@@ -9,7 +9,7 @@ namespace PacketLogViewer.Models.PacketAnalyzeData;
 public class DoorEntrancePacket : WorldObject
 {
     public int SubtypeID { get; set; }
-    public string OverrideType { get; set; }
+    public string OverrideType { get; set; } = string.Empty;
     public double TargetX { get; set; }
     public double TargetY { get; set; }
     public double TargetZ { get; set; }

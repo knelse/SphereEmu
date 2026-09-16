@@ -14,11 +14,11 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [],
           "receive_callers": []
         },
@@ -67,7 +67,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -102,11 +102,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -138,7 +138,7 @@
         "12": {
           "flags": 1,
           "handler": "Manager",
-          "program": 104,
+          "program": 108,
           "desc": [
             5,
             102,
@@ -208,7 +208,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -287,7 +287,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -325,7 +325,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -464,7 +464,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -604,7 +604,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -744,7 +744,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -776,7 +776,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -824,7 +824,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -987,7 +987,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -1034,7 +1034,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -1193,7 +1193,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -1243,7 +1243,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [
             "Resstop"
           ],
@@ -1301,7 +1301,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -1312,7 +1312,7 @@
         "6": {
           "flags": 1,
           "handler": "Image",
-          "program": 270,
+          "program": 274,
           "desc": [
             101,
             7,
@@ -1345,7 +1345,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             2,
             32,
@@ -1361,7 +1361,7 @@
             103,
             3,
             103,
-            250,
+            -6,
             103,
             4,
             32
@@ -1375,7 +1375,7 @@
         "8": {
           "flags": 5,
           "handler": "RcvInfo",
-          "program": 264,
+          "program": 268,
           "desc": [
             16,
             103,
@@ -1445,7 +1445,7 @@
         "12": {
           "flags": 5,
           "handler": "Manager",
-          "program": 239,
+          "program": 243,
           "desc": [
             8,
             102,
@@ -1502,7 +1502,7 @@
         "13": {
           "flags": 5,
           "handler": "NManager",
-          "program": 297,
+          "program": 301,
           "desc": [
             5,
             102,
@@ -1520,7 +1520,7 @@
         "14": {
           "flags": 1,
           "handler": "NAManager",
-          "program": 298,
+          "program": 302,
           "desc": [
             5,
             102,
@@ -1538,7 +1538,7 @@
         "31": {
           "flags": 1,
           "handler": "receiveArtisanMonitor",
-          "program": 324,
+          "program": 328,
           "desc": [
             4,
             32
@@ -1555,7 +1555,7 @@
         "32": {
           "flags": 5,
           "handler": "receiveOwnerArtisanMonitor",
-          "program": 338,
+          "program": 342,
           "desc": [
             4,
             32
@@ -1588,7 +1588,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -1736,7 +1736,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -1933,7 +1933,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -2073,7 +2073,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -2211,7 +2211,7 @@
             8,
             101,
             8,
-            253,
+            -3,
             103,
             103,
             2,
@@ -2243,7 +2243,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2278,11 +2278,11 @@
           "handler": "ContMan",
           "program": 65,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -2362,7 +2362,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2397,11 +2397,11 @@
           "handler": "ContMan",
           "program": 65,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -2481,7 +2481,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2516,11 +2516,11 @@
           "handler": "ContMan",
           "program": 65,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -2600,7 +2600,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2635,11 +2635,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -2718,7 +2718,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2753,11 +2753,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -2836,7 +2836,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2871,11 +2871,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -2954,7 +2954,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -2989,11 +2989,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3072,7 +3072,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3107,11 +3107,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3190,7 +3190,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3225,11 +3225,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3308,7 +3308,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3343,11 +3343,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3426,7 +3426,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3461,11 +3461,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3544,7 +3544,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3579,11 +3579,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3662,7 +3662,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3697,11 +3697,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3780,7 +3780,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3815,11 +3815,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -3898,7 +3898,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -3933,11 +3933,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4016,7 +4016,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4051,11 +4051,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4134,7 +4134,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4169,11 +4169,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4252,7 +4252,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4287,11 +4287,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4370,7 +4370,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4405,11 +4405,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4488,7 +4488,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4523,11 +4523,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4606,7 +4606,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4641,11 +4641,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4724,7 +4724,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4759,11 +4759,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4842,7 +4842,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4877,11 +4877,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -4960,7 +4960,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -4995,11 +4995,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5078,7 +5078,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5113,11 +5113,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5196,7 +5196,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5231,11 +5231,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5314,7 +5314,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5349,11 +5349,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5432,7 +5432,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5467,11 +5467,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5550,7 +5550,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5585,11 +5585,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5668,7 +5668,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5703,11 +5703,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5786,7 +5786,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5821,11 +5821,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -5904,7 +5904,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -5939,11 +5939,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6022,7 +6022,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6057,11 +6057,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6140,7 +6140,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6175,11 +6175,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6258,7 +6258,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6293,11 +6293,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6376,7 +6376,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6411,11 +6411,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6494,7 +6494,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6529,11 +6529,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6612,7 +6612,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6647,11 +6647,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6730,7 +6730,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6765,11 +6765,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6848,7 +6848,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -6883,11 +6883,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -6966,7 +6966,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7001,11 +7001,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -7084,7 +7084,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7119,11 +7119,11 @@
           "handler": "ContMan",
           "program": 65,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -7203,7 +7203,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7238,11 +7238,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -7321,7 +7321,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7356,11 +7356,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -7452,7 +7452,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7487,11 +7487,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -7583,7 +7583,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7618,11 +7618,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -7714,7 +7714,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7749,11 +7749,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -7832,7 +7832,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7867,11 +7867,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -7950,7 +7950,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -7985,11 +7985,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8068,7 +8068,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8103,11 +8103,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8186,7 +8186,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8221,11 +8221,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8304,7 +8304,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8339,11 +8339,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8422,7 +8422,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8457,11 +8457,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8540,7 +8540,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8575,11 +8575,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -8658,7 +8658,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8693,11 +8693,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SelfHeal",
             "SetParent",
@@ -8779,7 +8779,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8814,11 +8814,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -8863,7 +8863,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -8911,7 +8911,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -8946,11 +8946,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -9030,7 +9030,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9065,11 +9065,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "BankOper",
             "EInit",
@@ -9143,7 +9143,7 @@
         "20": {
           "flags": 1,
           "handler": "Capture_Progress_on_client",
-          "program": 99,
+          "program": 103,
           "desc": [
             5,
             102,
@@ -9191,7 +9191,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9226,11 +9226,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -9310,7 +9310,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9345,11 +9345,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -9429,7 +9429,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9464,11 +9464,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -9548,7 +9548,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9583,11 +9583,11 @@
           "handler": "ContMan",
           "program": 56,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "CheckUseDist",
             "EInit",
@@ -9668,7 +9668,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9703,11 +9703,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -9786,7 +9786,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9821,11 +9821,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "MainCBook",
@@ -9905,7 +9905,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -9940,11 +9940,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "MainCBook",
@@ -10024,7 +10024,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10059,11 +10059,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10142,7 +10142,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10177,11 +10177,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10260,7 +10260,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10295,11 +10295,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10378,7 +10378,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10413,11 +10413,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10496,7 +10496,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10531,11 +10531,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10614,7 +10614,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10649,11 +10649,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10732,7 +10732,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10767,11 +10767,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10850,7 +10850,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -10885,11 +10885,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -10903,7 +10903,7 @@
         "6": {
           "flags": 1,
           "handler": "RG",
-          "program": 90,
+          "program": 94,
           "desc": [
             1
           ],
@@ -10981,7 +10981,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11016,11 +11016,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11100,7 +11100,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11135,11 +11135,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11219,7 +11219,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11254,11 +11254,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11338,7 +11338,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11373,11 +11373,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "OBZVR",
@@ -11457,7 +11457,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11492,11 +11492,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11576,7 +11576,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11611,11 +11611,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11694,7 +11694,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11729,11 +11729,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11813,7 +11813,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11848,11 +11848,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -11931,7 +11931,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -11966,11 +11966,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12049,7 +12049,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12084,11 +12084,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12167,7 +12167,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12202,11 +12202,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12285,7 +12285,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12320,11 +12320,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12403,7 +12403,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12438,11 +12438,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12522,7 +12522,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12557,11 +12557,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12641,7 +12641,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12676,11 +12676,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12759,7 +12759,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12794,11 +12794,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12878,7 +12878,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -12913,11 +12913,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -12997,7 +12997,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13032,11 +13032,11 @@
           "handler": "ContMan",
           "program": 49,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -13117,7 +13117,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13152,11 +13152,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -13235,7 +13235,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13270,11 +13270,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "AppKey",
             "EInit",
@@ -13353,7 +13353,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13388,11 +13388,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -13470,7 +13470,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13505,11 +13505,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -13639,7 +13639,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13674,11 +13674,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -13758,7 +13758,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13793,11 +13793,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -13876,7 +13876,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -13911,11 +13911,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -13995,7 +13995,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14030,11 +14030,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -14114,7 +14114,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14149,11 +14149,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -14233,7 +14233,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14268,11 +14268,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -14352,7 +14352,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14387,11 +14387,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -14469,7 +14469,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14504,11 +14504,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -14586,7 +14586,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14621,11 +14621,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -14704,7 +14704,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14739,11 +14739,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -14822,7 +14822,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14857,11 +14857,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -14955,7 +14955,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -14990,11 +14990,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15088,7 +15088,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15123,11 +15123,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -15207,7 +15207,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15242,11 +15242,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15325,7 +15325,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15360,11 +15360,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15442,7 +15442,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15477,11 +15477,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15559,7 +15559,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15594,11 +15594,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15677,7 +15677,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15712,11 +15712,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -15796,7 +15796,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15831,11 +15831,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -15914,7 +15914,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -15949,11 +15949,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16033,7 +16033,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16068,11 +16068,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16152,7 +16152,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16187,11 +16187,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16271,7 +16271,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16306,11 +16306,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16390,7 +16390,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16425,11 +16425,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16509,7 +16509,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16544,11 +16544,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -16628,7 +16628,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16663,11 +16663,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -16745,7 +16745,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16780,11 +16780,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "Qquit",
@@ -16864,7 +16864,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -16899,11 +16899,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -16983,7 +16983,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17018,11 +17018,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17102,7 +17102,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17137,11 +17137,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17221,7 +17221,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17256,11 +17256,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17340,7 +17340,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17375,11 +17375,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -17459,7 +17459,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17494,11 +17494,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17577,7 +17577,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17612,11 +17612,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17695,7 +17695,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17730,11 +17730,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17814,7 +17814,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17849,11 +17849,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -17933,7 +17933,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -17968,11 +17968,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -18051,7 +18051,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18086,11 +18086,11 @@
           "handler": "ContMan",
           "program": 56,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -18106,7 +18106,7 @@
           "handler": "RecvRegG",
           "program": 102,
           "desc": [
-            252
+            -4
           ],
           "schema": "s4",
           "send_callers": [],
@@ -18182,7 +18182,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18217,11 +18217,11 @@
           "handler": "ContMan",
           "program": 56,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -18237,7 +18237,7 @@
           "handler": "RecvRegG",
           "program": 102,
           "desc": [
-            252
+            -4
           ],
           "schema": "s4",
           "send_callers": [],
@@ -18313,7 +18313,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18348,11 +18348,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -18431,7 +18431,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18466,11 +18466,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -18579,7 +18579,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18614,11 +18614,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -18663,7 +18663,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -18711,7 +18711,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18746,11 +18746,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -18763,7 +18763,7 @@
         "6": {
           "flags": 1,
           "handler": "receiveRegG",
-          "program": 120,
+          "program": 124,
           "desc": [
             101,
             8
@@ -18812,7 +18812,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 111,
+          "program": 115,
           "desc": [
             32,
             102,
@@ -18860,7 +18860,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -18895,11 +18895,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -18977,7 +18977,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19012,11 +19012,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19061,7 +19061,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -19109,7 +19109,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19144,11 +19144,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19193,7 +19193,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -19241,7 +19241,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19276,11 +19276,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -19372,7 +19372,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19407,11 +19407,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19456,7 +19456,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -19504,7 +19504,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19539,11 +19539,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19588,7 +19588,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -19636,7 +19636,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19671,11 +19671,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19688,7 +19688,7 @@
         "6": {
           "flags": 1,
           "handler": "RG",
-          "program": 118,
+          "program": 122,
           "desc": [
             101,
             8
@@ -19736,7 +19736,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 111,
+          "program": 115,
           "desc": [
             32,
             102,
@@ -19784,7 +19784,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19819,11 +19819,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -19836,7 +19836,7 @@
         "6": {
           "flags": 1,
           "handler": "RG",
-          "program": 120,
+          "program": 124,
           "desc": [
             101,
             8
@@ -19884,7 +19884,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 111,
+          "program": 115,
           "desc": [
             32,
             102,
@@ -19932,7 +19932,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -19967,11 +19967,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -20016,7 +20016,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 110,
+          "program": 114,
           "desc": [
             32,
             102,
@@ -20064,7 +20064,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20099,11 +20099,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -20182,7 +20182,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20217,11 +20217,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20253,7 +20253,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 96,
+          "program": 100,
           "desc": [
             8,
             102,
@@ -20318,7 +20318,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20353,11 +20353,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20389,7 +20389,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 96,
+          "program": 100,
           "desc": [
             8,
             102,
@@ -20454,7 +20454,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20489,11 +20489,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20573,7 +20573,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20608,11 +20608,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20692,7 +20692,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20727,11 +20727,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20823,7 +20823,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20858,11 +20858,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -20954,7 +20954,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -20989,11 +20989,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -21085,7 +21085,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21120,11 +21120,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -21156,7 +21156,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 96,
+          "program": 100,
           "desc": [
             8,
             102,
@@ -21221,7 +21221,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21256,11 +21256,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -21292,7 +21292,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 96,
+          "program": 100,
           "desc": [
             8,
             102,
@@ -21357,7 +21357,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21392,11 +21392,11 @@
           "handler": "ContMan",
           "program": 50,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -21490,7 +21490,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21525,11 +21525,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -21607,7 +21607,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21642,11 +21642,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -21724,7 +21724,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21759,11 +21759,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -21841,7 +21841,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -21876,11 +21876,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -21912,7 +21912,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 100,
+          "program": 104,
           "desc": [
             8,
             102,
@@ -21977,7 +21977,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22012,11 +22012,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -22093,7 +22093,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22128,11 +22128,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SendPress",
             "SetParent",
@@ -22164,7 +22164,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 107,
+          "program": 111,
           "desc": [
             8,
             102,
@@ -22229,7 +22229,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22264,11 +22264,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -22346,7 +22346,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22381,11 +22381,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -22479,7 +22479,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22514,11 +22514,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -22634,7 +22634,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22669,11 +22669,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -22705,7 +22705,7 @@
         "12": {
           "flags": 1,
           "handler": "RegMReceiver",
-          "program": 100,
+          "program": 104,
           "desc": [
             8,
             102,
@@ -22770,7 +22770,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22805,11 +22805,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "CheckExit",
             "SetParent",
@@ -22902,7 +22902,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -22937,11 +22937,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -23021,7 +23021,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23056,11 +23056,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23140,7 +23140,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23175,11 +23175,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23259,7 +23259,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23294,11 +23294,11 @@
           "handler": "ContMan",
           "program": 63,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23378,7 +23378,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23413,11 +23413,11 @@
           "handler": "ContMan",
           "program": 64,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23497,7 +23497,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23532,11 +23532,11 @@
           "handler": "ContMan",
           "program": 64,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23616,7 +23616,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23651,11 +23651,11 @@
           "handler": "ContMan",
           "program": 64,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23735,7 +23735,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23770,11 +23770,11 @@
           "handler": "ContMan",
           "program": 64,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23854,7 +23854,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -23889,11 +23889,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -23973,7 +23973,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24008,11 +24008,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24092,7 +24092,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24127,11 +24127,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24211,7 +24211,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24246,11 +24246,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24330,7 +24330,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24365,11 +24365,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24449,7 +24449,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24484,11 +24484,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24568,7 +24568,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24603,11 +24603,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24687,7 +24687,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24722,11 +24722,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24820,7 +24820,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24855,11 +24855,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -24939,7 +24939,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -24974,11 +24974,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -25058,7 +25058,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25093,11 +25093,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -25177,7 +25177,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25212,11 +25212,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -25296,7 +25296,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25331,11 +25331,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -25415,7 +25415,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25450,11 +25450,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -25534,7 +25534,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25569,11 +25569,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -25655,7 +25655,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25690,11 +25690,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -25776,7 +25776,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25811,11 +25811,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -25895,7 +25895,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -25930,11 +25930,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26014,7 +26014,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26049,11 +26049,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26133,7 +26133,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26168,11 +26168,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26251,7 +26251,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26286,11 +26286,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26370,7 +26370,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26405,11 +26405,11 @@
           "handler": "ContMan",
           "program": 51,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26487,7 +26487,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26522,11 +26522,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26604,7 +26604,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26639,11 +26639,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26723,7 +26723,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26758,11 +26758,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -26842,7 +26842,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -26877,11 +26877,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -26898,7 +26898,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -26974,7 +26974,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27009,11 +27009,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27029,7 +27029,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            224,
+            -32,
             102,
             8
           ],
@@ -27105,7 +27105,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27140,11 +27140,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27223,7 +27223,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27258,11 +27258,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "use_send_cuse_to_server"
@@ -27342,7 +27342,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27377,11 +27377,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27396,7 +27396,7 @@
           "handler": "",
           "program": 65535,
           "desc": [
-            252
+            -4
           ],
           "schema": "s4",
           "send_callers": [],
@@ -27471,7 +27471,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27506,11 +27506,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27590,7 +27590,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27625,11 +27625,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27709,7 +27709,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27744,11 +27744,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27828,7 +27828,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27863,11 +27863,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -27947,7 +27947,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -27982,11 +27982,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28080,7 +28080,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28115,11 +28115,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28199,7 +28199,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28234,11 +28234,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28318,7 +28318,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28353,11 +28353,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28451,7 +28451,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28486,11 +28486,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28570,7 +28570,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28605,11 +28605,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28689,7 +28689,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28724,11 +28724,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28808,7 +28808,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28843,11 +28843,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -28927,7 +28927,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -28962,11 +28962,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29046,7 +29046,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29081,11 +29081,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29165,7 +29165,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29200,11 +29200,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -29284,7 +29284,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29319,11 +29319,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29402,7 +29402,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29437,11 +29437,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29521,7 +29521,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29556,11 +29556,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29665,7 +29665,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29700,11 +29700,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29783,7 +29783,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29818,11 +29818,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -29901,7 +29901,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -29936,11 +29936,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30019,7 +30019,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30054,11 +30054,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30137,7 +30137,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30172,11 +30172,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30255,7 +30255,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30290,11 +30290,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30373,7 +30373,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30408,11 +30408,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30491,7 +30491,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30526,11 +30526,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -30610,7 +30610,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30645,11 +30645,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "RcvUser",
@@ -30731,7 +30731,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30766,11 +30766,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30849,7 +30849,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -30884,11 +30884,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -30984,7 +30984,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31019,11 +31019,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31101,7 +31101,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31136,11 +31136,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31218,7 +31218,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31253,11 +31253,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31335,7 +31335,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31370,11 +31370,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31452,7 +31452,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31487,11 +31487,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31569,7 +31569,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31604,11 +31604,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetMaxLvl",
@@ -31687,7 +31687,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31722,11 +31722,11 @@
           "handler": "ContMan",
           "program": 55,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31804,7 +31804,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31839,11 +31839,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -31921,7 +31921,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -31956,11 +31956,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32038,7 +32038,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32073,11 +32073,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32155,7 +32155,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32190,11 +32190,11 @@
           "handler": "ContMan",
           "program": 54,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "SetParent",
             "sendslot",
@@ -32207,7 +32207,7 @@
         "6": {
           "flags": 1,
           "handler": "receiveRegG",
-          "program": 118,
+          "program": 122,
           "desc": [
             101,
             8
@@ -32256,7 +32256,7 @@
         "20": {
           "flags": 1,
           "handler": "RegionManager",
-          "program": 111,
+          "program": 115,
           "desc": [
             32,
             102,
@@ -32304,7 +32304,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32339,11 +32339,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32423,7 +32423,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32458,11 +32458,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32542,7 +32542,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32577,11 +32577,11 @@
           "handler": "ContMan",
           "program": 58,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32678,7 +32678,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32713,11 +32713,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -32798,7 +32798,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32833,11 +32833,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -32917,7 +32917,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -32952,11 +32952,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -33034,7 +33034,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33069,11 +33069,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "RcvUser",
@@ -33179,7 +33179,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33214,11 +33214,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -33508,7 +33508,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33543,11 +33543,11 @@
           "handler": "ContMan",
           "program": 53,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -33656,7 +33656,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33691,11 +33691,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -33774,7 +33774,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33809,11 +33809,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -33891,7 +33891,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -33926,11 +33926,11 @@
           "handler": "ContMan",
           "program": 52,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34008,7 +34008,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34043,11 +34043,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34126,7 +34126,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34161,11 +34161,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34245,7 +34245,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34280,11 +34280,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34364,7 +34364,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34399,11 +34399,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34482,7 +34482,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34517,11 +34517,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -34601,7 +34601,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34636,11 +34636,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34719,7 +34719,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34754,11 +34754,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34837,7 +34837,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34872,11 +34872,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -34955,7 +34955,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -34990,11 +34990,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35073,7 +35073,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35108,11 +35108,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35191,7 +35191,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35226,11 +35226,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35310,7 +35310,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35345,11 +35345,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35428,7 +35428,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35463,11 +35463,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35546,7 +35546,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35581,11 +35581,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35664,7 +35664,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35699,11 +35699,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35782,7 +35782,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35817,11 +35817,11 @@
           "handler": "ContMan",
           "program": 57,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -35901,7 +35901,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -35936,11 +35936,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36020,7 +36020,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36055,11 +36055,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36139,7 +36139,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36174,11 +36174,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36258,7 +36258,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36293,11 +36293,11 @@
           "handler": "ContMan",
           "program": 61,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36376,7 +36376,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36411,11 +36411,11 @@
           "handler": "ContMan",
           "program": 62,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "ChangeAmount",
             "EInit",
@@ -36495,7 +36495,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36530,11 +36530,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36613,7 +36613,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36648,11 +36648,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36731,7 +36731,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36766,11 +36766,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36849,7 +36849,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -36884,11 +36884,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -36967,7 +36967,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37002,11 +37002,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -37085,7 +37085,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37120,11 +37120,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -37203,7 +37203,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37238,11 +37238,11 @@
           "handler": "ContMan",
           "program": 59,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -37321,7 +37321,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37356,11 +37356,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -37439,7 +37439,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37474,11 +37474,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",
@@ -37557,7 +37557,7 @@
             107,
             108
           ],
-          "schema": "relX12, relY12, relZ12, angle8",
+          "schema": "rel0, rel1, rel2, angle8",
           "send_callers": [],
           "receive_callers": []
         },
@@ -37592,11 +37592,11 @@
           "handler": "ContMan",
           "program": 60,
           "desc": [
-            4,
+            8,
             102,
             8
           ],
-          "schema": "u4, array8<u8>",
+          "schema": "u8, array8<u8>",
           "send_callers": [
             "EInit",
             "SetParent",

@@ -2,6 +2,10 @@
 
 These rules apply to every AI agent working in this repository.
 
+## Networking
+
+- At the start of every conversation, read `.cursor/skills/sphere-networking-live/SKILL.md` and follow it.
+
 ## Punctuation
 
 - NEVER USE A FUCKING EM DASH YOU MORON (U+2014, `—`) ANYWHERE: UI strings, comments, commit messages, docs, or chat. Use a comma, colon, parentheses, or a regular hyphen-minus (`-`) instead.

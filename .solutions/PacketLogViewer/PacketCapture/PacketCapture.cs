@@ -61,7 +61,7 @@ public class PacketCapture : IDisposable
         }
     }
 
-    public Action<List<StoredPacket>, bool> OnPacketProcessed;
+    public Action<List<StoredPacket>, bool>? OnPacketProcessed;
 
     public PacketCapture()
     {
@@ -470,7 +470,7 @@ public class PacketCapture : IDisposable
             storedPackets.Add(storedPacket);
         }
 
-        OnPacketProcessed(storedPackets, forceProcess);
+        OnPacketProcessed?.Invoke(storedPackets, forceProcess);
     }
 
     public void Stop()

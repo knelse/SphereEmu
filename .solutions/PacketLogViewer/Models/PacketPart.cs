@@ -51,7 +51,7 @@ public class PacketPart
     public PacketPartType PacketPartType { get; set; }
     public int BitOffset { get; set; }
     public long BitLength { get; set; }
-    [BsonIgnore] public PacketPartDisplayText DisplayText;
+    [BsonIgnore] public PacketPartDisplayText DisplayText = new("", "", "", "", "", null, null, null);
     [BsonIgnore] public Bit[] Value { get; set; } = [];
     [BsonIgnore] public string ListValuePrimary { get; set; } = string.Empty;
     [BsonIgnore] public string ListValueSecondary { get; set; } = string.Empty;
@@ -62,7 +62,7 @@ public class PacketPart
         PacketPartBrushes.Get(HighlightColorR, HighlightColorG, HighlightColorB, HighlightColorA);
     [BsonIgnore]
     public Brush CommentBannerBrush => Comment == "NEXT PACKET" ? Brushes.SlateGray : Brushes.Honeydew;
-    public string Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
     public long? ActualLongValue { get; set; }
     public int SubpacketIndex { get; set; }
     public int BitOffsetEnd => (int)(BitOffset + BitLength);
@@ -90,9 +90,9 @@ public class PacketPart
         // required for litedb
     }
 
-    [BsonIgnore] public string PartListDisplayText { get; set; }
+    [BsonIgnore] public string PartListDisplayText { get; set; } = string.Empty;
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public bool Overlaps(PacketPart other)
     {

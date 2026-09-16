@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ColorPickerWPF="clr-namespace:ColorPickerWPF;assembly=ColorPickerWPF"
+        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="New packet part" Width="600" Height="640">
     <Grid Margin="8" VerticalAlignment="Top">
@@ -50,7 +50,7 @@
                   Name="LengthFromPreviousFieldCheckBox">
             Previous field is length (string only)
         </CheckBox>
-        <ColorPickerWPF:ColorPickerControl Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" x:Name="ColorPicker"
+        <colorpicker:StandardColorPicker Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" x:Name="ColorPicker"
                                            HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" />
         <WrapPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="4" HorizontalAlignment="Center" Margin="0,0,0,0"
                    VerticalAlignment="Top">

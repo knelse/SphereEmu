@@ -18,6 +18,7 @@ using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 using SphServer.Client.Networking.Handlers.InGame.PlayerCharacter;
 using SphServer.Helpers.Networking;
 using SphServer.Packets;
+using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -46,6 +47,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private bool seenFirstPositionKeepalive;
     private double timeSinceFirstPositionKeepalive;
     private bool starterMutatorSent;
+    private bool playerCountPublished;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
     private SwapItemHandler? swapItemHandler;
     private MoveItemHandler? moveItemHandler;
@@ -75,10 +77,19 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
         // which handler they should be routed to
         if (sphereClient.ClientStateManager.IsInGameState())
         {
+            if (!playerCountPublished)
+            {
+                playerCountPublished = true;
+                PlayerCountBroadcast.OnClientEnteredWorld(sphereClient);
+            }
+
             if (!interactionWithOtherObjectsInitialized)
             {
+                // Pose must be correct before base._Ready registers this client in the visibility grid.
+                sphereClient.UpdateCoordinatesInWorld();
                 sphereClient.InitializeInteractions();
                 interactionWithOtherObjectsInitialized = true;
+                // Re-register after Ready in case _Ready ran before Origin was applied.
                 sphereClient.UpdateCoordinatesInWorld();
                 MonsterSpawnerActivationManager.NotifyClientPosition(sphereClient);
                 AlchemyMaterialSpawnerActivationManager.NotifyClientPosition(sphereClient);

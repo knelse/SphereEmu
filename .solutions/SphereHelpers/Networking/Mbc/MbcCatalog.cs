@@ -168,7 +168,10 @@ public sealed class MbcCatalog
                 Aliases = aliases
             };
             events[(side, tag, region.Value, command)] = info;
-            if (command is not null)
+            // Numbered cmds, or _player region 10 (u6+varint stats; receive-site is CheckPing).
+            if (command is not null ||
+                info.Name.Contains("CheckPing", StringComparison.OrdinalIgnoreCase) ||
+                info.Name.Contains("SetStat", StringComparison.OrdinalIgnoreCase))
             {
                 commandRegions.Add((side, tag, region.Value));
             }

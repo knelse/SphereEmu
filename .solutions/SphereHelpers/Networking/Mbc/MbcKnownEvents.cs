@@ -23,6 +23,7 @@ public static class MbcKnownEvents
         ["C2S:2:12:17"] = KeepOurs,
         ["C2S:2:4:7"] = KeepOurs,
         ["S2C:2:1:*"] = KeepOurs,
+        ["S2C:210:1:*"] = KeepOurs,
         ["S2C:0:*:EKill"] = KeepOurs,
         ["C2S:2:12:10"] = KeepOurs,
     };
@@ -47,23 +48,23 @@ public static class MbcKnownEvents
             "Weak overlap. Take-mainhand also hits other ContMan/Manager shapes."),
         ["S2C:2:1:*"] = new("server.entity.position", "_player.TransformUpdate",
             "What EntityMoveParser was matching as server_move_entity."),
+        ["S2C:210:1:*"] = new("server.entity.position", "monster.TransformUpdate",
+            "Same TransformUpdate layout as _player region 1, with 0x3F process switches."),
         ["S2C:0:*:EKill"] = new("server.entity.despawn", "MBC.EKill",
             "EKill is process destruction. Not always a world despawn packet."),
     };
 
     public static string DisplayName(MbcDecodedEvent decoded)
     {
-        if (!string.IsNullOrEmpty(decoded.RecoveredName))
+        if (Choice.TryGetValue(decoded.EventId, out var choice) && choice == KeepOurs
+            && Overlaps.TryGetValue(decoded.EventId, out var overlap))
         {
-            return decoded.EventName;
+            return string.IsNullOrEmpty(decoded.Summary)
+                ? overlap.Ours
+                : $"{overlap.Ours} {decoded.Summary}";
         }
 
-        if (!Choice.TryGetValue(decoded.EventId, out var choice) || choice != KeepOurs)
-        {
-            return decoded.EventName;
-        }
-
-        return Overlaps.TryGetValue(decoded.EventId, out var overlap) ? overlap.Ours : decoded.EventName;
+        return decoded.EventName;
     }
 
     public static string? OursName(string eventId) =>

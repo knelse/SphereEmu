@@ -8,7 +8,6 @@ namespace PacketLogViewer.Models.PacketAnalyzeData;
 
 public class CastleTablet : PacketAnalyzeData
 {
-    public EntityActionType ActionType { get; set; } = EntityActionType.UNDEF;
     public double X { get; set; }
     public double Y { get; set; }
     public double Z { get; set; }

@@ -104,5 +104,9 @@ internal static class PacketReclassifier
             Log(ex.ToString());
             return 1;
         }
+        finally
+        {
+            PacketAnalyzer.ClassifyNamesOnly = false;
+        }
     }
 }
