@@ -7,21 +7,22 @@ using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class UseItemHandler (ushort localId, ClientConnection clientConnection)
+public class UseItemHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
-        var itemId = (ushort) (frame[11] + frame[12] * 0x100);
+        var itemId = (ushort)(frame[11] + frame[12] * 0x100);
         // Attack-wedge fix: item use arms the same client use-lock (g_6008) as an attack, so clear it here
         // too. Without this the client wedges permanently after using an item. See CommonPackets.ClearUseToutAck.
         clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
 
         var character = clientConnection.GetSelectedCharacter();
-        var item = DbConnection.Items.FindById((int) itemId);
+        var item = DbConnection.Items.FindById((int)itemId);
         if (character is null || item is null)
         {
             Log(itemId, "?", "no character or no such item");
@@ -47,8 +48,9 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
 
         // Whatever is already in that slot takes the place this item is leaving, so the two trade
         // squares rather than the displaced one landing in the first free cell it can find.
-        var displaced = character.Items.TryGetValue(to.Value, out var occupant) ? occupant : (int?) null;
+        var displaced = character.Items.TryGetValue(to.Value, out var occupant) ? occupant : (int?)null;
 
+        var lookBefore = CharacterWornLook.Capture(character);
         character.PlaceItemInSlot(to.Value, item.Id);
 
         // The square it came from still holds a handle to it either way: filled by the swap, or
@@ -81,13 +83,19 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         }
 
         clientConnection.SaveSelectedCharacter();
+
+        if (lookBefore != CharacterWornLook.Capture(character))
+        {
+            ActiveClients.Get(localId)?.BroadcastAppearanceRefreshToVisibleClients();
+        }
+
         Log(itemId, name, displaced is null
             ? $"{Enum.GetName(from)} -> {Enum.GetName(to.Value)}"
             : $"{Enum.GetName(from)} <-> {Enum.GetName(to.Value)}");
     }
 
     /// <summary>The first free slot this item may be worn in, or null when there is none.</summary>
-    private static BelongingSlot? WearSlotFor (CharacterDbEntry character, ItemDbEntry item)
+    private static BelongingSlot? WearSlotFor(CharacterDbEntry character, ItemDbEntry item)
     {
         BelongingSlot? fallback = null;
 
@@ -110,7 +118,7 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         return fallback;
     }
 
-    private void Log (ushort itemId, string name, string outcome)
+    private void Log(ushort itemId, string name, string outcome)
     {
         SphLogger.Info($"UseItem: Source [{localId:X4}] - Target [{itemId:X4}] - Item [{name}] - [{outcome}]");
     }

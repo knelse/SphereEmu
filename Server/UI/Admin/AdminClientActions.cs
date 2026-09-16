@@ -138,6 +138,82 @@ public static class AdminClientActions
         return true;
     }
 
+    public static bool SetCurrentHp(ushort clientId, int currentHp)
+    {
+        var client = ActiveClients.Get(clientId);
+        var character = client?.CurrentCharacter;
+        if (client is null || character is null)
+        {
+            return false;
+        }
+
+        var clamped = (ushort)Math.Clamp(currentHp, 0, character.MaxHP);
+        if (character.CurrentHP == clamped)
+        {
+            return true;
+        }
+
+        var old = character.CurrentHP;
+        var delta = clamped - old;
+        character.CurrentHP = clamped;
+        // ContMan ApplyHp (source=target=self) for floating number + bar; peers get the same.
+        client.BroadcastApplyHpDelta(delta);
+        client.SaveCharacter();
+        AdminActionLog.Info(client, $"set current HP from {old} to {clamped} (max {character.MaxHP}, delta {delta})");
+        return true;
+    }
+
+    public static bool SetCurrentMp(ushort clientId, int currentMp)
+    {
+        var client = ActiveClients.Get(clientId);
+        var character = client?.CurrentCharacter;
+        if (client is null || character is null)
+        {
+            return false;
+        }
+
+        var clamped = (ushort)Math.Clamp(currentMp, 0, character.MaxMP);
+        if (character.CurrentMP == clamped)
+        {
+            return true;
+        }
+
+        var old = character.CurrentMP;
+        character.CurrentMP = clamped;
+        NetworkedStatsUpdater.Update(character);
+        client.SaveCharacter();
+        AdminActionLog.Info(client, $"set current MP from {old} to {clamped} (max {character.MaxMP})");
+        return true;
+    }
+
+    public static bool SetClanRank(ushort clientId, ClanRank rank)
+    {
+        var client = ActiveClients.Get(clientId);
+        var character = client?.CurrentCharacter;
+        if (client is null || character is null)
+        {
+            return false;
+        }
+
+        if (character.Clan is null || character.Clan.Id == ClanDbEntry.DefaultClanDbEntry.Id)
+        {
+            return false;
+        }
+
+        if (character.ClanRank == rank)
+        {
+            return true;
+        }
+
+        var old = character.ClanRank;
+        character.ClanRank = rank;
+        NetworkedStatsUpdater.Update(character);
+        client.BroadcastClanRefreshToVisibleClients();
+        client.SaveCharacter();
+        AdminActionLog.Info(client, $"set clan rank from {old} to {rank}");
+        return true;
+    }
+
     public static bool SetGuild(ushort clientId, Guild guild, int rankMinusOne)
     {
         var client = ActiveClients.Get(clientId);
@@ -185,16 +261,12 @@ public static class AdminClientActions
             return false;
         }
 
+        var lookBefore = CharacterWornLook.Capture(character);
         character.Items.Remove(slot);
         DbConnection.Items.Delete(itemId);
         SendSlotBinding(client, character.ClientIndex, slot, item: null);
         MaybeSyncGuildFromSlot(client, character, slot);
-        if (character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
-
-        client.SaveCharacter();
+        FinishItemMutation(client, character, lookBefore);
         AdminActionLog.Info(client, $"cleared [{slot}] (item {itemId})");
         return true;
     }
@@ -209,6 +281,7 @@ public static class AdminClientActions
             return false;
         }
 
+        var lookBefore = CharacterWornLook.Capture(character);
         if (character.Items.TryGetValue(slot, out var oldId))
         {
             character.Items.Remove(slot);
@@ -236,12 +309,7 @@ public static class AdminClientActions
             SphBitStream.ByteSwap(character.ClientIndex)));
 
         MaybeSyncGuildFromSlot(client, character, slot);
-        if (character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
-
-        client.SaveCharacter();
+        FinishItemMutation(client, character, lookBefore);
         AdminActionLog.Info(client, $"set [{slot}] to game id {gameId} suffix {suffix}");
         return true;
     }
@@ -290,6 +358,7 @@ public static class AdminClientActions
             return false;
         }
 
+        var lookBefore = CharacterWornLook.Capture(character);
         if (character.Items.TryGetValue(to, out var toId)
             && DbConnection.Items.FindById(toId) is { } toItem)
         {
@@ -309,12 +378,7 @@ public static class AdminClientActions
         }
 
         MaybeSyncGuildFromSlot(client, character, from, to);
-        if (character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
-
-        client.SaveCharacter();
+        FinishItemMutation(client, character, lookBefore);
         return true;
     }
 
@@ -382,10 +446,9 @@ public static class AdminClientActions
 
         character.Guild = guild;
         character.GuildLevelMinusOne = rankMinusOne;
-        if (character.RecalcCurrentStats())
-        {
-            NetworkedStatsUpdater.Update(character);
-        }
+        character.RecalcCurrentStats();
+        // Always push: guild/rank are nameplate fields even when combat stats did not change.
+        NetworkedStatsUpdater.Update(character);
 
         client.SaveCharacter();
         AdminActionLog.Info(client,
@@ -436,6 +499,20 @@ public static class AdminClientActions
         if (persist)
         {
             client.SaveCharacter();
+        }
+    }
+
+    private static void FinishItemMutation(SphereClient client, CharacterDbEntry character,
+        CharacterWornLook.Snapshot lookBefore)
+    {
+        character.RecalcCurrentStats();
+        // Always push: guild emblem / max HP / nameplate fields may change without a "stats changed" flag.
+        NetworkedStatsUpdater.Update(character);
+        client.SaveCharacter();
+
+        if (lookBefore != CharacterWornLook.Capture(character))
+        {
+            client.BroadcastAppearanceRefreshToVisibleClients();
         }
     }
 

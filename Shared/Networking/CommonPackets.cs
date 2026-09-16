@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.Mbc;
+using SphServer.System;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 // ReSharper disable UnusedMember.Global
@@ -220,6 +222,281 @@ public static class CommonPackets
         [
             0x0B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(ID), MajorByte(ID), 0x00, 0x00
         ];
+    }
+
+    /// <summary>
+    ///     _player SetWornGear (region 6 / Image): three empty array4&lt;u7&gt; weapon link names, then
+    ///     nine u7 wear-pattern bytes (boots…helmet). In-place look update; no despawn.
+    /// </summary>
+    public static byte[] BuildSetWornGearPacket(ushort entityId, ReadOnlySpan<byte> wearPattern9,
+        string linkSword = "", string linkAxe = "", string linkArb = "")
+    {
+        if (wearPattern9.Length != 9)
+        {
+            throw new ArgumentException("SetWornGear wear pattern must be 9 bytes (b00..b08).", nameof(wearPattern9));
+        }
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(7, 7); // wire = region 6 + 1
+
+        WriteArray4U7String(stream, linkSword);
+        WriteArray4U7String(stream, linkAxe);
+        WriteArray4U7String(stream, linkArb);
+        for (var i = 0; i < 9; i++)
+        {
+            stream.WriteByte((byte)(wearPattern9[i] & 0x7F), 7);
+        }
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    /// <summary>
+    ///     _player ContMan (region 4): u4 command + array8&lt;u8&gt; payload.
+    /// </summary>
+    public static byte[] BuildPlayerContManCommand(ushort entityId, byte command, ReadOnlySpan<byte> payload)
+    {
+        if (command > 15)
+        {
+            throw new ArgumentOutOfRangeException(nameof(command), "ContMan command is u4.");
+        }
+
+        if (payload.Length > 255)
+        {
+            throw new ArgumentException("ContMan array8 payload max length is 255.", nameof(payload));
+        }
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(5, 7); // wire = region 4 + 1 (ContMan)
+        stream.WriteByte(command, 4);
+        stream.WriteByte((byte)payload.Length, 8);
+        foreach (var b in payload)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    /// <summary>
+    ///     _player ContMan QueryNameOrApplyHp (cmd 9) len5: killer_id u24 + hp_delta (raw-30000).
+    ///     Applies delta to current_hp and queues ShowKill. Self-change uses sourceId == entityId.
+    /// </summary>
+    public static byte[] BuildPlayerApplyHpDelta(ushort entityId, ushort sourceId, int hpDelta)
+    {
+        var wireDelta = unchecked((ushort)(hpDelta + 30000));
+        byte[] payload =
+        [
+            (byte)(sourceId & 0xFF),
+            (byte)((sourceId >> 8) & 0xFF),
+            0,
+            (byte)(wireDelta & 0xFF),
+            (byte)((wireDelta >> 8) & 0xFF)
+        ];
+        return BuildPlayerContManCommand(entityId, command: 9, payload);
+    }
+
+    /// <summary>
+    ///     _player Manager SystemMessage (region 12 / cmd 9) mode 2: sprintf gMsg(id) with one
+    ///     u16 arg, then sendSysTextToChat. Same pack as client SendSys2 (len 9).
+    /// </summary>
+    public static byte[] BuildPlayerSystemChatSprintf(ushort entityId, ushort gmsgId, short formatArg,
+        uint rgbColor)
+    {
+        byte[] payload =
+        [
+            2, // mode 2 = sprintf gMsg + chat
+            (byte)(gmsgId & 0xFF),
+            (byte)((gmsgId >> 8) & 0xFF),
+            (byte)(rgbColor & 0xFF),
+            (byte)((rgbColor >> 8) & 0xFF),
+            (byte)((rgbColor >> 16) & 0xFF),
+            (byte)((rgbColor >> 24) & 0xFF),
+            (byte)(formatArg & 0xFF),
+            (byte)((formatArg >> 8) & 0xFF)
+        ];
+        return BuildPlayerManagerCommand(entityId, command: 9, payload);
+    }
+
+    /// <summary>
+    ///     _player Manager (region 12): u8 command + array8&lt;u8&gt; payload.
+    /// </summary>
+    public static byte[] BuildPlayerManagerCommand(ushort entityId, byte command, ReadOnlySpan<byte> payload)
+    {
+        if (payload.Length > 255)
+        {
+            throw new ArgumentException("Manager array8 payload max length is 255.", nameof(payload));
+        }
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(13, 7); // wire = region 12 + 1 (Manager)
+        stream.WriteByte(command, 8);
+        stream.WriteByte((byte)payload.Length, 8);
+        foreach (var b in payload)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    /// <summary>
+    ///     MBC descriptor 0x67 / client format 'g': 1 sign + 2 tier + magnitude (3/7/14/31).
+    /// </summary>
+    public static void WriteMbcVarint(SphWriteStream stream, int value)
+    {
+        var negative = value < 0;
+        var magnitude = unchecked((uint)(negative ? -value : value));
+        var selector = magnitude < 8 ? 0u : magnitude < 128 ? 1u : magnitude < 16384 ? 2u : 3u;
+        ReadOnlySpan<int> widths = [3, 7, 14, 31];
+        stream.WriteByte(negative ? (byte)1 : (byte)0, 1);
+        stream.WriteByte((byte)selector, 2);
+        stream.WriteUInt32(magnitude, widths[(int)selector]);
+    }
+
+    /// <summary>
+    ///     _player TradeMan WriteIndexedStat (region 9 / cmd 15): write one g_rec_0C44 field.
+    ///     len3 = u8 index + u16 value; len5 = u8 index + u32 value.
+    /// </summary>
+    public static byte[] BuildPlayerWriteIndexedStat(ushort entityId, byte statIndex, int value)
+    {
+        var useU32 = value is < short.MinValue or > ushort.MaxValue;
+        byte[] payload;
+        if (useU32)
+        {
+            var u = unchecked((uint)value);
+            payload =
+            [
+                statIndex,
+                (byte)(u & 0xFF),
+                (byte)((u >> 8) & 0xFF),
+                (byte)((u >> 16) & 0xFF),
+                (byte)((u >> 24) & 0xFF)
+            ];
+        }
+        else
+        {
+            var u = unchecked((ushort)value);
+            payload = [statIndex, (byte)(u & 0xFF), (byte)((u >> 8) & 0xFF)];
+        }
+
+        return BuildPlayerTradeManCommand(entityId, command: 15, payload);
+    }
+
+    /// <summary>
+    ///     Peer nameplate fields via WriteIndexedStat (FULL_SPAWN re-show is ignored once spawned).
+    ///     Karma count is local-only; peers get karma type/rank only.
+    ///     <paramref name="guild"/> is the raw Guild enum. Wire i21 is 0 when None,
+    ///     otherwise guild+64 (65..90 for in_specNN). Never send 64 for no guild.
+    /// </summary>
+    public static void AppendPlayerNameplateStatPackets(List<byte[]> dest, ushort entityId,
+        ushort currentHp, ushort maxHp, int karmaType, int titleLevel, int degreeLevel,
+        int titleRebirth, int degreeRebirth, int guild, int guildRank)
+    {
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.HpCurrent, currentHp));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.HpMax, maxHp));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.KarmaType, karmaType));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.TitleLevel, titleLevel));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.DegreeLevel, degreeLevel));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.TitleRebirth, titleRebirth));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.DegreeRebirth, degreeRebirth));
+        // Same encoding as NetworkedStatsUpdater: no guild -> 0; else guild+64 (65..90).
+        var guildWire = guild == 0 ? 0 : guild + 64;
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.GuildPlus64, guildWire));
+        dest.Add(BuildPlayerWriteIndexedStat(entityId, (byte)Stat.GuildRank, guild == 0 ? 0 : guildRank));
+    }
+
+    /// <summary>
+    ///     _player TradeMan (region 9): u4 command + array4&lt;u8&gt; payload.
+    /// </summary>
+    public static byte[] BuildPlayerTradeManCommand(ushort entityId, byte command, ReadOnlySpan<byte> payload)
+    {
+        if (command > 15)
+        {
+            throw new ArgumentOutOfRangeException(nameof(command), "TradeMan command is u4.");
+        }
+
+        if (payload.Length > 15)
+        {
+            throw new ArgumentException("TradeMan array4 payload max length is 15.", nameof(payload));
+        }
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(10, 7); // wire = region 9 + 1 (TradeMan)
+        stream.WriteByte(command, 4);
+        stream.WriteByte((byte)payload.Length, 4);
+        foreach (var b in payload)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    /// <summary>
+    ///     Classic Manager SetClan-style frame: clan rank + name for the given entity id.
+    /// </summary>
+    public static byte[] BuildClanRankPacket(ushort entityId, string clanName, int targetRank)
+    {
+        var responseStream = SphBitStream.GetWriteBitStream();
+        var nameBytes = SphEncoding.Win1251.GetBytes(clanName);
+        responseStream.WriteBytes([
+            (byte)(24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00
+        ]);
+        responseStream.WriteUInt16(SphBitStream.ByteSwap(entityId));
+        responseStream.WriteBytes([0x08, 0x40, 0xE3, 0xA2, 0xA0]);
+        responseStream.WriteByte((byte)(targetRank << 5));
+
+        responseStream.WriteByte(0x0, 5);
+        responseStream.WriteUInt16(SphBitStream.ByteSwap(entityId));
+        responseStream.WriteByte(0x0, 7);
+        responseStream.WriteBytes([0x1A, 0x16]);
+        responseStream.WriteByte((byte)(nameBytes.Length + 2));
+        responseStream.WriteByte((byte)targetRank);
+        responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
+        responseStream.WriteByte(0x0, 4);
+        responseStream.WriteByte(0x0);
+        return responseStream.GetStreamData();
+    }
+
+    private static void WriteArray4U7String(SphWriteStream stream, string value)
+    {
+        var bytes = string.IsNullOrEmpty(value)
+            ? []
+            : SphEncoding.Win1251.GetBytes(value);
+        if (bytes.Length > 15)
+        {
+            bytes = bytes.AsSpan(0, 15).ToArray();
+        }
+
+        stream.WriteByte((byte)bytes.Length, 4);
+        foreach (var b in bytes)
+        {
+            stream.WriteByte((byte)(b & 0x7F), 7);
+        }
     }
 
     /// <summary>

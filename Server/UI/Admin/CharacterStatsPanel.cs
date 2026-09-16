@@ -40,9 +40,11 @@ public partial class CharacterStatsPanel : PanelContainer
     private LineEdit? karmaEdit;
     private bool karmaEditing;
     private ProgressBar? hpBar;
-    private Label? hpLabel;
+    private LineEdit? hpEdit;
+    private Label? hpMaxLabel;
     private ProgressBar? mpBar;
-    private Label? mpLabel;
+    private LineEdit? mpEdit;
+    private Label? mpMaxLabel;
     private ProgressBar? satietyBar;
     private Label? satietyLabel;
     private Label? pAtkLabel;
@@ -184,8 +186,10 @@ public partial class CharacterStatsPanel : PanelContainer
         root.AddChild(karmaEdit);
         root.AddChild(MakeDivider());
 
-        AddVitalRow(root, AdminUiAtlas.HpIcon, new Color(0.25f, 0.75f, 0.2f), out hpBar, out hpLabel);
-        AddVitalRow(root, AdminUiAtlas.MpIcon, new Color(0.25f, 0.55f, 0.95f), out mpBar, out mpLabel);
+        AddEditableVitalRow(root, AdminUiAtlas.HpIcon, new Color(0.25f, 0.75f, 0.2f),
+            out hpBar, out hpEdit, out hpMaxLabel, CommitHpEdit);
+        AddEditableVitalRow(root, AdminUiAtlas.MpIcon, new Color(0.25f, 0.55f, 0.95f),
+            out mpBar, out mpEdit, out mpMaxLabel, CommitMpEdit);
         AddVitalRow(root, AdminUiAtlas.SatietyIcon, new Color(0.9f, 0.75f, 0.2f), out satietyBar, out satietyLabel);
         root.AddChild(MakeDivider());
 
@@ -361,8 +365,8 @@ public partial class CharacterStatsPanel : PanelContainer
             karmaLabel!.Text = CharacterLocaleText.KarmaLine(character, locale);
         }
 
-        SetBar(hpBar!, hpLabel!, character.CurrentHP, character.MaxHP);
-        SetBar(mpBar!, mpLabel!, character.CurrentMP, character.MaxMP);
+        SetEditableVital(hpBar!, hpEdit!, hpMaxLabel!, character.CurrentHP, character.MaxHP);
+        SetEditableVital(mpBar!, mpEdit!, mpMaxLabel!, character.CurrentMP, character.MaxMP);
         SetBar(satietyBar!, satietyLabel!, character.CurrentSatiety, character.MaxSatiety);
 
         // Stored atk is negative (client convention); show magnitude for the admin UI.
@@ -408,8 +412,8 @@ public partial class CharacterStatsPanel : PanelContainer
         clanLabel!.Text = CharacterLocaleText.ClanLine(null, locale);
         EndKarmaEditDisplay();
         karmaLabel!.Text = CharacterLocaleText.KarmaLine(null, locale);
-        SetBar(hpBar!, hpLabel!, 0, 1);
-        SetBar(mpBar!, mpLabel!, 0, 1);
+        SetEditableVital(hpBar!, hpEdit!, hpMaxLabel!, 0, 1);
+        SetEditableVital(mpBar!, mpEdit!, mpMaxLabel!, 0, 1);
         SetBar(satietyBar!, satietyLabel!, 0, 1);
         pAtkLabel!.Text = string.Empty;
         mAtkLabel!.Text = string.Empty;
@@ -533,6 +537,74 @@ public partial class CharacterStatsPanel : PanelContainer
         row.AddChild(bar);
         row.AddChild(text);
         parent.AddChild(row);
+    }
+
+    private void AddEditableVitalRow(Control parent, Texture2D? icon, Color fill,
+        out ProgressBar bar, out LineEdit edit, out Label maxLabel, Action commit)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", 6);
+        row.AddChild(MakeIconRect(icon));
+        bar = new ProgressBar
+        {
+            SizeFlagsHorizontal = SizeFlags.ExpandFill,
+            CustomMinimumSize = new Vector2(0, 14),
+            ShowPercentage = false,
+            MouseFilter = MouseFilterEnum.Ignore
+        };
+        bar.AddThemeStyleboxOverride("fill", new StyleBoxFlat { BgColor = fill });
+        edit = new LineEdit
+        {
+            CustomMinimumSize = new Vector2(52, 0),
+            Alignment = HorizontalAlignment.Right,
+            SelectAllOnFocus = true
+        };
+        edit.TextSubmitted += _ => commit();
+        edit.FocusExited += commit;
+        maxLabel = new Label
+        {
+            CustomMinimumSize = new Vector2(48, 0),
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
+        row.AddChild(bar);
+        row.AddChild(edit);
+        row.AddChild(maxLabel);
+        parent.AddChild(row);
+    }
+
+    private void CommitHpEdit()
+    {
+        CommitVitalEdit(hpEdit, isHp: true);
+    }
+
+    private void CommitMpEdit()
+    {
+        CommitVitalEdit(mpEdit, isHp: false);
+    }
+
+    private void CommitVitalEdit(LineEdit? edit, bool isHp)
+    {
+        if (suppressStatCallbacks || edit is null || selectedClientId is null)
+        {
+            return;
+        }
+
+        if (!int.TryParse(edit.Text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+        {
+            Refresh();
+            return;
+        }
+
+        if (isHp)
+        {
+            AdminClientActions.SetCurrentHp(selectedClientId.Value, value);
+        }
+        else
+        {
+            AdminClientActions.SetCurrentMp(selectedClientId.Value, value);
+        }
+
+        Refresh();
     }
 
     private static Label AddCenteredIconValue(Control parent, Texture2D? icon)
@@ -1137,6 +1209,19 @@ public partial class CharacterStatsPanel : PanelContainer
         selectedClientId is null ? null : ActiveClients.Get(selectedClientId.Value);
 
     private static void SetXpRow(ProgressBar bar, LineEdit edit, Label maxLabel, double current, double max)
+    {
+        var safeMax = Math.Max(1.0, max);
+        bar.MaxValue = safeMax;
+        bar.Value = Math.Clamp(current, 0, safeMax);
+        maxLabel.Text = $"/ {max}";
+        edit.Editable = true;
+        if (!edit.HasFocus())
+        {
+            edit.Text = current.ToString(CultureInfo.InvariantCulture);
+        }
+    }
+
+    private static void SetEditableVital(ProgressBar bar, LineEdit edit, Label maxLabel, double current, double max)
     {
         var safeMax = Math.Max(1.0, max);
         bar.MaxValue = safeMax;

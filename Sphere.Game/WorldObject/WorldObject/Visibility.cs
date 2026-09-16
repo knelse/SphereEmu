@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
 using SphServer.Server.Config;
@@ -126,6 +128,42 @@ public partial class WorldObject
 			{
 				OnVisibilityBodyEntered(node3D);
 			}
+		}
+	}
+
+	/// <summary>
+	///     Pushes an in-place look update to every viewer. Override for entity-specific packets
+	///     (players: SetWornGear). Default is no-op.
+	/// </summary>
+	public virtual void BroadcastAppearanceRefreshToVisibleClients()
+	{
+	}
+
+	/// <summary>
+	///     Runs <paramref name="send" /> for each client that currently has this entity spawned.
+	/// </summary>
+	protected void ForEachVisibleClient(Action<SphereClient> send)
+	{
+		if (_visibleClients.Count == 0)
+		{
+			return;
+		}
+
+		var staleClients = new List<SphereClient>();
+		foreach (var client in _visibleClients)
+		{
+			if (!GodotObject.IsInstanceValid(client))
+			{
+				staleClients.Add(client);
+				continue;
+			}
+
+			send(client);
+		}
+
+		foreach (var client in staleClients)
+		{
+			_visibleClients.Remove(client);
 		}
 	}
 

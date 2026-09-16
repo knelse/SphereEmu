@@ -6,6 +6,7 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
+using SphServer.Shared.WorldState;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -92,6 +93,7 @@ public class MoveItemHandler(ushort localId, ClientConnection clientConnection)
         };
         if (!returnToOldSlot)
         {
+            var lookBefore = CharacterWornLook.Capture(character);
             character.Items[targetSlot] = globalOldItemId;
             character.Items.Remove(oldSlot);
             if (oldSlot == BelongingSlot.Guild || targetSlot == BelongingSlot.Guild)
@@ -109,6 +111,11 @@ public class MoveItemHandler(ushort localId, ClientConnection clientConnection)
             // appearance the recalculation just worked out both lived only in memory, so they
             // survived a restart only when some later action happened to save.
             clientConnection.SaveSelectedCharacter();
+
+            if (lookBefore != CharacterWornLook.Capture(character))
+            {
+                ActiveClients.Get(localId)?.BroadcastAppearanceRefreshToVisibleClients();
+            }
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend(moveResult);

@@ -1,5 +1,6 @@
 using Godot;
 using SphServer.Client.Networking;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Client.State;
 using SphServer.Packets;
 using SphServer.Server.Broadcast;
@@ -9,9 +10,11 @@ using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
+using static Stat;
 
 namespace SphServer.Client;
 
@@ -131,13 +134,27 @@ public partial class SphereClient : WorldObject
 		// holds references — updating the player alone leaves the character document untouched.
 		if (CurrentCharacter is not null)
 		{
-			DbConnection.Characters.Update(CurrentCharacter);
+			if (CurrentCharacter.Id == 0)
+			{
+				SphLogger.Error($"SaveCharacter: character Id is 0, Insert instead. Client ID: {localId:X4}");
+				CurrentCharacter.Id = DbConnection.Characters.Insert(CurrentCharacter);
+			}
+			else if (!DbConnection.Characters.Update(CurrentCharacter))
+			{
+				// Update returns false when the row is missing (common after a thin BsonRef stub).
+				SphLogger.Warning(
+					$"SaveCharacter: Characters.Update({CurrentCharacter.Id}) missed, Upsert. " +
+					$"Client ID: {localId:X4}");
+				DbConnection.Characters.Upsert(CurrentCharacter);
+			}
 		}
 
 		if (playerDbEntry is not null)
 		{
 			DbConnection.Players.Update(playerDbEntry);
 		}
+
+		DbConnection.Checkpoint();
 	}
 
 	public void SetSelectedCharacterIndex(int index)
@@ -145,8 +162,30 @@ public partial class SphereClient : WorldObject
 		selectedCharacterIndex = index;
 		try
 		{
-			CurrentCharacter = playerDbEntry!.Characters[index];
+			var listed = playerDbEntry!.Characters[index];
+			// BsonRef Include can hand back a thin stub; reload the Characters row so Base*/Items
+			// match LiteDB (same fix as AdminDebugDummyClient).
+			var character = listed.Id != 0
+				? DbConnection.Characters.Query()
+					.Include(["$.Clan"])
+					.Where(c => c.Id == listed.Id)
+					.FirstOrDefault()
+				: null;
+			if (character is null)
+			{
+				character = listed;
+				SphLogger.Warning(
+					$"SetSelectedCharacterIndex: no Characters row for id {listed.Id}, using list stub. " +
+					$"Client ID: {localId:X4}");
+			}
+			else
+			{
+				playerDbEntry.Characters[index] = character;
+			}
+
+			CurrentCharacter = character;
 			CurrentCharacter.ClientIndex = localId;
+			CurrentCharacter.ClientLocalId = localId;
 			UpdateCharacterForDebugMode();
 			ClientStateEvents.RaiseCharacterChanged(localId);
 		}
@@ -318,6 +357,124 @@ public partial class SphereClient : WorldObject
 		base.ShowForClient(client);
 	}
 
+	/// <summary>
+	///     In-place gear look via _player SetWornGear (region 6), plus classic entity_character
+	///     re-show (no despawn) so peers that never started Image still refresh.
+	/// </summary>
+	public override void BroadcastAppearanceRefreshToVisibleClients()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var wear = CharacterWornLook.ToWearPattern(CurrentCharacter);
+		ForEachVisibleClient(viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId(ID);
+			viewer.MaybeQueueNetworkPacketSend(CommonPackets.BuildSetWornGearPacket(entityId, wear));
+			ShowForClient(viewer);
+		});
+	}
+
+	/// <summary>
+	///     Self: classic 08C0 HP bar + Manager SystemMessage mode2 (gMsg 120 chat).
+	///     Viewers: ContMan ApplyHp (ShowKill float) then WriteIndexedStat absolute HP
+	///     so the nameplate bar is correct even if ContMan is ignored.
+	/// </summary>
+	public void BroadcastApplyHpDelta(int hpDelta)
+	{
+		if (CurrentCharacter is null || hpDelta == 0)
+		{
+			return;
+		}
+
+		var selfId = CurrentCharacter.ClientIndex;
+		var character = CurrentCharacter;
+		NetworkedStatsUpdater.Update(character, refreshPeers: false);
+
+		// SendSys2-compatible: mode2 sprintf gMsg(120) with signed delta.
+		var chatColor = hpDelta > 0
+			? 0x32B496u // pack_rgb24(50, 180, 150) heal
+			: 0xB46432u; // pack_rgb24(180, 100, 50) damage
+		MaybeQueueNetworkPacketSend(
+			CommonPackets.BuildPlayerSystemChatSprintf(selfId, gmsgId: 120, (short)hpDelta, chatColor));
+
+		ForEachVisibleClient(viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId(ID);
+			// ContMan first (popup + optional delta), then absolute WriteIndexedStat wins for bar.
+			viewer.MaybeQueueNetworkPacketSend(
+				CommonPackets.BuildPlayerApplyHpDelta(entityId, entityId, hpDelta));
+			viewer.MaybeQueueNetworkPacketSend(
+				CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpCurrent, character.CurrentHP));
+			viewer.MaybeQueueNetworkPacketSend(
+				CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpMax, character.MaxHP));
+		});
+	}
+
+	/// <summary>
+	///     Pushes nameplate fields to viewers via TradeMan WriteIndexedStat.
+	///     FULL_SPAWN re-show does not update an already-spawned peer entity.
+	///     Clan name is separate: <see cref="BroadcastClanRefreshToVisibleClients"/>.
+	/// </summary>
+	public void BroadcastNameplateRefreshToVisibleClients()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var character = CurrentCharacter;
+		var titleLevel = character.TitleMinusOne % 60;
+		var degreeLevel = character.DegreeMinusOne % 60;
+		var titleRebirth = character.TitleMinusOne / 60;
+		var degreeRebirth = character.DegreeMinusOne / 60;
+
+		ForEachVisibleClient(viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId(ID);
+			var packets = new List<byte[]>(9);
+			CommonPackets.AppendPlayerNameplateStatPackets(packets, entityId,
+				character.CurrentHP, character.MaxHP, (int)character.Karma,
+				titleLevel, degreeLevel, titleRebirth, degreeRebirth,
+				(int)character.Guild, character.GuildLevelMinusOne);
+			foreach (var packet in packets)
+			{
+				viewer.MaybeQueueNetworkPacketSend(packet);
+			}
+		});
+	}
+
+	/// <summary>
+	///     Pushes clan name + rank to self and every viewer (Manager SetClan-style classic frame).
+	/// </summary>
+	public void BroadcastClanRefreshToVisibleClients()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var clanName = CurrentCharacter.Clan?.Name;
+		if (string.IsNullOrEmpty(clanName)
+			|| CurrentCharacter.Clan?.Id == ClanDbEntry.DefaultClanDbEntry.Id)
+		{
+			return;
+		}
+
+		var rank = (int)CurrentCharacter.ClanRank;
+		MaybeQueueNetworkPacketSend(
+			CommonPackets.BuildClanRankPacket(CurrentCharacter.ClientIndex, clanName, rank));
+
+		ForEachVisibleClient(viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId(ID);
+			viewer.MaybeQueueNetworkPacketSend(
+				CommonPackets.BuildClanRankPacket(entityId, clanName, rank));
+		});
+	}
+
 	private void UpdateCharacterForDebugMode()
 	{
 		// TODO: move to db entry
@@ -340,7 +497,6 @@ public partial class SphereClient : WorldObject
 		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
 	}
 
-	// TODO: find other fields (look, level, hp, gender, etc)
 	protected override List<PacketPart> GetPacketParts()
 	{
 		return PacketPart.LoadDefinedWithOverride("entity_character");
@@ -348,15 +504,43 @@ public partial class SphereClient : WorldObject
 
 	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
 	{
-		var nameBytes = SphEncoding.Win1251.GetBytes(CurrentCharacter!.Name);
+		var character = CurrentCharacter!;
+		// Same nine-byte look block as character-list / CheckWeapon (boots…helmet).
+		CharacterWornLook.Apply(character);
+
+		var nameBytes = SphEncoding.Win1251.GetBytes(character.Name);
 		PacketPart.UpdateValue(packetParts, "character_name_length", nameBytes.Length, 8);
-		PacketPart.UpdateValue(packetParts, "character_name", CurrentCharacter!.Name);
+		PacketPart.UpdateValue(packetParts, "character_name", character.Name);
 
-		var clanName = "test";
-		var clanNameBytes = SphEncoding.Win1251.GetBytes(clanName);
+		PacketPart.UpdateValue(packetParts, "face_model", character.FaceType, 8);
+		PacketPart.UpdateValue(packetParts, "hair_model", character.HairStyle, 8);
+		PacketPart.UpdateValue(packetParts, "hair_color_model", character.HairColor, 8);
+		PacketPart.UpdateValue(packetParts, "tattoo_model", character.Tattoo, 8);
 
-		// PacketPart.UpdateValue(packetParts, "clan_name_length", clanNameBytes.Length, 4);
-		// PacketPart.UpdateValue(packetParts, "clan_name", clanName);
+		PacketPart.UpdateValue(packetParts, "current_hp", character.CurrentHP, 14);
+		PacketPart.UpdateValue(packetParts, "max_hp", character.MaxHP, 14);
+		PacketPart.UpdateValue(packetParts, "is_female", character.IsGenderFemale ? 1 : 0, 1);
+		PacketPart.UpdateValue(packetParts, "karma", (int)character.Karma, 3);
+		PacketPart.UpdateValue(packetParts, "title_level", character.TitleMinusOne % 60, 6);
+		PacketPart.UpdateValue(packetParts, "degree_level", character.DegreeMinusOne % 60, 6);
+		PacketPart.UpdateValue(packetParts, "guild", (int)character.Guild, 4);
+		PacketPart.UpdateValue(packetParts, "guild_level", character.GuildLevelMinusOne, 4);
+		PacketPart.UpdateValue(packetParts, "rebirth_title", character.TitleMinusOne / 60, 2);
+		PacketPart.UpdateValue(packetParts, "rebirth_degree", character.DegreeMinusOne / 60, 2);
+
+		// 7-bit look codes; empty slots are ASCII '0' (retail), not zero.
+		const byte emptyLook = (byte)'0';
+		PacketPart.UpdateValue(packetParts, "weapon_model", 0, 7);
+		PacketPart.UpdateValue(packetParts, "look_pad_0", 0, 7);
+		PacketPart.UpdateValue(packetParts, "shoes_model", character.BootModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "pants_model", character.PantsModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "armor_model", character.ArmorModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "robe_model", character.RobeModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "gloves_model", character.GlovesModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "shield_model", character.ShieldModelId & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "look_extra_1", emptyLook & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "look_extra_2", emptyLook & 0x7F, 7);
+		PacketPart.UpdateValue(packetParts, "helmet_model", character.HelmetModelId & 0x7F, 7);
 
 		return packetParts;
 	}

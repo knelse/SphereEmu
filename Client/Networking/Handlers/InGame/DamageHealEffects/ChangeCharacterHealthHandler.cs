@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using static SphServer.Shared.BitStream.SphBitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 
-public class ChangeCharacterHealthHandler (ushort localId, ClientConnection clientConnection)
+public class ChangeCharacterHealthHandler(ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle (byte[] frame, double delta)
+    public async Task Handle(byte[] frame, double delta)
     {
     }
 
-    public async Task HandleHealthChange (ushort entityId, int healthDiff)
+    public async Task HandleHealthChange(ushort entityId, int healthDiff)
     {
         var currentPlayerId = ByteSwap(localId);
         var character = clientConnection.GetSelectedCharacter()!;
-        var playerId_1 = (byte) (((currentPlayerId & 0b1111) << 4) + 0b0111);
-        var playerId_2 = (byte) ((currentPlayerId & 0b111111110000) >> 4);
-        var mobId_1 = (byte) ((entityId & 0b1111111) << 1);
-        var mobId_2 = (byte) ((entityId & 0b111111110000000) >> 7);
+        var playerId_1 = (byte)(((currentPlayerId & 0b1111) << 4) + 0b0111);
+        var playerId_2 = (byte)((currentPlayerId & 0b111111110000) >> 4);
+        var mobId_1 = (byte)((entityId & 0b1111111) << 1);
+        var mobId_2 = (byte)((entityId & 0b111111110000000) >> 7);
         var hpMod = healthDiff < 0 ? 0b1110 : 0b1100;
         healthDiff = Math.Abs(healthDiff);
-        var dmg_1 = (byte) (((healthDiff & 0b1111) << 4) + hpMod + ((entityId & 0b1000000000000000) >> 15));
-        var dmg_2 = (byte) ((healthDiff & 0b111111110000) >> 4);
-        var dmg_3 = (byte) ((healthDiff & 0b11111111000000000000) >> 12);
-        var playerId_3 = (byte) (0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
+        var dmg_1 = (byte)(((healthDiff & 0b1111) << 4) + hpMod + ((entityId & 0b1000000000000000) >> 15));
+        var dmg_2 = (byte)((healthDiff & 0b111111110000) >> 4);
+        var dmg_3 = (byte)((healthDiff & 0b11111111000000000000) >> 12);
+        var playerId_3 = (byte)(0b10000000 + ((currentPlayerId & 0b1111000000000000) >> 12));
         var dmgPacket = new byte[]
         {
             0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x48, 0x43, 0x65, 0x00,
@@ -43,7 +44,9 @@ public class ChangeCharacterHealthHandler (ushort localId, ClientConnection clie
             resultHp = 0;
         }
 
-        character.CurrentHP = (ushort) resultHp;
+        character.CurrentHP = (ushort)resultHp;
         clientConnection.MaybeScheduleNetworkPacketSend(dmgPacket);
+        // Self 08C0 + peer entity_character HP (mobs only stamp HP on spawn; peers need re-show).
+        NetworkedStatsUpdater.Update(character);
     }
 }

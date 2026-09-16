@@ -7,6 +7,7 @@ using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
 using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
@@ -240,35 +241,15 @@ public partial class ConsoleCommandParser
                     return;
                 }
 
-                var response = BuildClanRankPacket(currentCharacterDbEntry.ClientIndex, clan.Name, targetRank);
-                Console.WriteLine(Convert.ToHexString(response));
-                sphereClient?.MaybeQueueNetworkPacketSend(response);
+                currentCharacterDbEntry.ClanRank = (ClanRank)targetRank;
+                NetworkedStatsUpdater.Update(currentCharacterDbEntry);
+                sphereClient?.BroadcastClanRefreshToVisibleClients();
                 break;
         }
     }
 
-    public static byte[] BuildClanRankPacket(ushort clientIndex, string clanName, int targetRank)
-    {
-        var responseStream = SphBitStream.GetWriteBitStream();
-        var nameBytes = SphEncoding.Win1251.GetBytes(clanName);
-        responseStream.WriteBytes([
-            (byte) (24 + nameBytes.Length), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00
-        ]);
-        responseStream.WriteUInt16(SphBitStream.ByteSwap(clientIndex));
-        responseStream.WriteBytes([0x08, 0x40, 0xE3, 0xA2, 0xA0]);
-        responseStream.WriteByte((byte)(targetRank << 5));
-
-        responseStream.WriteByte(0x0, 5);
-        responseStream.WriteUInt16(SphBitStream.ByteSwap(clientIndex));
-        responseStream.WriteByte(0x0, 7);
-        responseStream.WriteBytes([0x1A, 0x16]);
-        responseStream.WriteByte((byte)(nameBytes.Length + 2));
-        responseStream.WriteByte((byte)targetRank);
-        responseStream.WriteBytes(nameBytes, nameBytes.Length, true);
-        responseStream.WriteByte(0x0, 4);
-        responseStream.WriteByte(0x0);
-        return responseStream.GetStreamData();
-    }
+    public static byte[] BuildClanRankPacket(ushort clientIndex, string clanName, int targetRank) =>
+        CommonPackets.BuildClanRankPacket(clientIndex, clanName, targetRank);
 
     private void SendPacketHex(string args)
     {

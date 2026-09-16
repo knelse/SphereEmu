@@ -9,6 +9,7 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
@@ -85,6 +86,7 @@ public class SwapItemHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
+        var lookBefore = CharacterWornLook.Capture(character);
         character.Items[firstSlot] = secondItem.Id;
         character.Items[secondSlot] = firstItem.Id;
         if (firstSlot == BelongingSlot.Guild || secondSlot == BelongingSlot.Guild)
@@ -99,6 +101,11 @@ public class SwapItemHandler(ushort localId, ClientConnection clientConnection)
         }
 
         clientConnection.SaveSelectedCharacter();
+
+        if (lookBefore != CharacterWornLook.Capture(character))
+        {
+            ActiveClients.Get(localId)?.BroadcastAppearanceRefreshToVisibleClients();
+        }
 
         // A move fills its destination and clears its source, so a second move back would empty the
         // slot the first one just filled. Only the first leg may be a move; the slot it vacated is

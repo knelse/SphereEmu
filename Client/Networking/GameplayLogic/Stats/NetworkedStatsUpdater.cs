@@ -17,7 +17,12 @@ using static Stat;
 
 public static class NetworkedStatsUpdater
 {
-    public static void Update(CharacterDbEntry characterDbEntry, Action<byte[]>? send = null)
+    /// <param name="refreshPeers">
+    ///     When true, also pushes nameplate WriteIndexedStat to viewers.
+    ///     Set false when the caller already sends peer HP another way (e.g. ContMan ApplyHp).
+    /// </param>
+    public static void Update(CharacterDbEntry characterDbEntry, Action<byte[]>? send = null,
+        bool refreshPeers = true)
     {
         var divider = 0b0001011;
         var fieldMarker7Bit = 0b01;
@@ -83,8 +88,14 @@ public static class NetworkedStatsUpdater
             [PD] = characterDbEntry.PDef,
             [MD] = characterDbEntry.MDef,
             [IsInvisible] = 0, // static for now
-            [GuildPlus64] = (int)characterDbEntry.Guild + 64,
-            [GuildRank] = characterDbEntry.GuildLevelMinusOne,
+            // MBC: no guild is i21=0 (reset defaults). Membership is guild+64 in 65..90 (in_specNN).
+            // Sending 64 for Guild.None breaks ability checks that index buf[(i21-65)].
+            [GuildPlus64] = characterDbEntry.Guild == Guild.None
+                ? 0
+                : (int)characterDbEntry.Guild + 64,
+            [GuildRank] = characterDbEntry.Guild == Guild.None
+                ? 0
+                : characterDbEntry.GuildLevelMinusOne,
             [TitleLevel] = characterDbEntry.TitleMinusOne % CharacterDataHelper.LevelsPerCycle,
             [DegreeLevel] = characterDbEntry.DegreeMinusOne % CharacterDataHelper.LevelsPerCycle,
             [KarmaType] = (int)characterDbEntry.Karma,
@@ -129,20 +140,26 @@ public static class NetworkedStatsUpdater
         }
 
         var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
+        var client = ActiveClients.Get(characterDbEntry.ClientIndex);
         if (send is not null)
         {
             send(packet);
         }
+        else if (client is null)
+        {
+            SphLogger.Warning($"No client found by ID: {characterDbEntry.ClientIndex}");
+            return;
+        }
         else
         {
-            var client = ActiveClients.Get(characterDbEntry.ClientIndex);
-            if (client is null)
-            {
-                SphLogger.Warning($"No client found by ID: {characterDbEntry.ClientIndex}");
-                return;
-            }
-
             client.MaybeQueueNetworkPacketSend(packet);
+        }
+
+        // Peers read nameplate fields from entity_character (HP, karma type, levels,
+        // rebirth, guild). Re-show keeps those in sync; karma count stays local-only.
+        if (refreshPeers)
+        {
+            client?.BroadcastNameplateRefreshToVisibleClients();
         }
 
         var updatedStats = string.Join(", ", characterFieldMap.Select(kv => $"{kv.Key}={kv.Value}"));
