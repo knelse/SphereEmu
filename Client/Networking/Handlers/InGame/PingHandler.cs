@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.Db.DataModels;
@@ -10,10 +11,9 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame;
 
-public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
-    : ISphereClientNetworkingHandler
+public class PingHandler : ISphereClientNetworkingHandler
 {
-    public StreamPeerTcp _ { get; } = streamPeerTcp;
+    public StreamPeerTcp _ { get; }
     private const double MovementBroadcastDelta = 0.1;
     // msg300 keepalive with _player PositionStream (region 11): array4 count + 4 IEEE floats.
     private const int PingFrameLength = 0x26;
@@ -22,19 +22,26 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     private const int PongEchoOffset = 9;
     private const int PongEchoLength = 21;
 
-    private readonly SphereTimer fifteenSecondPing = new(15, true,
-        () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.FifteenSecondPing(localId)));
-
-    private readonly SphereTimer currentMpUpdatePing =
-        new(6, true, () =>
-        {
-            var mp = clientConnection.GetSelectedCharacter()?.CurrentMP ?? 0;
-            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CurrentMpUpdatePing(localId, mp));
-        });
+    private readonly ushort localId;
+    private readonly ClientConnection clientConnection;
+    private readonly CharacterVitalRegen vitalRegen = new();
+    private readonly SphereTimer fifteenSecondPing;
+    // One 6s tick: Recalc once, MP keepalive, HP SetStat if needed.
+    private readonly SphereTimer vitalRegenTick;
 
     private ushort counter;
     private byte[]? previousCoordPayload;
     private bool pingShouldXorTopBit;
+
+    public PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+    {
+        _ = streamPeerTcp;
+        this.localId = localId;
+        this.clientConnection = clientConnection;
+        fifteenSecondPing = new(15, true,
+            () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.FifteenSecondPing(localId)));
+        vitalRegenTick = new(6, true, SyncVitalsAfterRegen);
+    }
 
     public async Task Handle(byte[] frame, double delta)
     {
@@ -108,7 +115,44 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     public async Task Keepalive(double delta)
     {
         fifteenSecondPing.Tick(delta);
-        currentMpUpdatePing.Tick(delta);
+
+        // Do not regen during load: wait until the client is sending in-world positions.
+        if (!clientConnection.HasSeenFirstPositionKeepalive)
+        {
+            return;
+        }
+
+        vitalRegenTick.Tick(delta);
+    }
+
+    private void SyncVitalsAfterRegen()
+    {
+        var character = clientConnection.GetSelectedCharacter();
+        if (character is null)
+        {
+            return;
+        }
+
+        var hpBefore = character.CurrentHP;
+        var changed = vitalRegen.ApplyOnce(character);
+
+        // MP keepalive carries the (possibly regenerated) MP value.
+        clientConnection.MaybeScheduleNetworkPacketSend(
+            CommonPackets.CurrentMpUpdatePing(localId, character.CurrentMP));
+        NetworkedStatsUpdater.MarkSent(character, Stat.MpCurrent);
+
+        if (character.CurrentHP != hpBefore)
+        {
+            NetworkedStatsUpdater.Update(character);
+        }
+
+        if (changed)
+        {
+            ClientStateEvents.RaiseCharacterChanged(localId);
+        }
+
+        // Always flush vitals on the 6s tick so disk matches server memory (not only when changed).
+        character.PersistVitals();
     }
 
     private static bool MovementDeltaExceedsThreshold(WorldCoords coords, CharacterDbEntry character)

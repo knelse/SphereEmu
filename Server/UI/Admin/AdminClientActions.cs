@@ -155,10 +155,8 @@ public static class AdminClientActions
 
         var old = character.CurrentHP;
         var delta = clamped - old;
-        character.CurrentHP = clamped;
-        // ContMan ApplyHp (source=target=self) for floating number + bar; peers get the same.
+        // Handler applies HP from the queued delta; do not pre-set CurrentHP.
         client.BroadcastApplyHpDelta(delta);
-        client.SaveCharacter();
         AdminActionLog.Info(client, $"set current HP from {old} to {clamped} (max {character.MaxHP}, delta {delta})");
         return true;
     }

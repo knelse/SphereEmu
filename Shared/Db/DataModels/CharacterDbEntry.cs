@@ -17,6 +17,7 @@ public class CharacterDbEntry
 {
     // Deliberately not inserted into the item collection: nothing reads this row, and one per
     // character load would spend world object ids that are never given back.
+    [BsonIgnore]
     public readonly ItemDbEntry Fists = new()
     {
         ObjectKind = GameObjectKind.Fists,
@@ -393,6 +394,17 @@ public class CharacterDbEntry
         return KarmaCount != oldCount;
     }
 
+    /// <summary>Self-kill karma penalty (−300). Clamped to [-5000, 5000]. Does not persist or push.</summary>
+    public bool ApplySelfKillKarma(out bool tierChanged)
+    {
+        const int selfKillKarmaDelta = -300;
+        var oldTier = Karma;
+        var oldCount = KarmaCount;
+        SetKarmaCount(KarmaCount + selfKillKarmaDelta);
+        tierChanged = Karma != oldTier;
+        return KarmaCount != oldCount;
+    }
+
     /// <summary>
     ///     Clamp <see cref="KarmaCount"/> to [-5000, 5000] and set <see cref="Karma"/> from thresholds.
     /// </summary>
@@ -492,6 +504,40 @@ public class CharacterDbEntry
             DbConnection.Characters.Upsert(this);
         }
 
+        DbConnection.Checkpoint();
+    }
+
+    /// <summary>
+    ///     Patch HP/MP/satiety onto the Characters document by field name.
+    ///     Used by regen so vitals persist even if a full entity Update is flaky.
+    /// </summary>
+    public void PersistVitals()
+    {
+        if (Id == 0)
+        {
+            return;
+        }
+
+        var col = DbConnection.Db.GetCollection("Characters");
+        var doc = col.FindById(Id);
+        if (doc is null)
+        {
+            if (!DbConnection.Characters.Update(this))
+            {
+                DbConnection.Characters.Upsert(this);
+            }
+
+            DbConnection.Checkpoint();
+            return;
+        }
+
+        doc["CurrentHP"] = (int)CurrentHP;
+        doc["CurrentMP"] = (int)CurrentMP;
+        doc["MaxHP"] = (int)MaxHP;
+        doc["MaxMP"] = (int)MaxMP;
+        doc["CurrentSatiety"] = (int)CurrentSatiety;
+        doc["MaxSatiety"] = (int)MaxSatiety;
+        col.Update(doc);
         DbConnection.Checkpoint();
     }
 

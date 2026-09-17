@@ -72,7 +72,7 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
 
         character.RecalcCurrentStats();
 
-        NetworkedStatsUpdater.Update(character, clientConnection.MaybeScheduleNetworkPacketSend);
+        NetworkedStatsUpdater.Update(character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);
 
         SphLogger.Info($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
 

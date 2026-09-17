@@ -147,6 +147,9 @@ public partial class SphereClient : WorldObject
 					$"Client ID: {localId:X4}");
 				DbConnection.Characters.Upsert(CurrentCharacter);
 			}
+
+			// Vitals via field patch so regen HP/MP cannot be dropped by a partial entity write.
+			CurrentCharacter.PersistVitals();
 		}
 
 		if (playerDbEntry is not null)
@@ -249,6 +252,7 @@ public partial class SphereClient : WorldObject
 		}
 
 		ActiveClients.Remove(localId);
+		NetworkedStatsUpdater.Clear(localId);
 		ConsoleCommandParser.Invalidate(localId);
 		ActiveNodes.Remove(GetInstanceId());
 
@@ -378,9 +382,8 @@ public partial class SphereClient : WorldObject
 	}
 
 	/// <summary>
-	///     Self: classic 08C0 HP bar + Manager SystemMessage mode2 (gMsg 120 chat).
-	///     Viewers: ContMan ApplyHp (ShowKill float) then WriteIndexedStat absolute HP
-	///     so the nameplate bar is correct even if ContMan is ignored.
+	///     Queue a signed self HP delta. Does not mutate HP or send packets; that is owned by
+	///     <see cref="ChangeCharacterHealthHandler"/> via <see cref="CharacterHealthChangeEvent"/>.
 	/// </summary>
 	public void BroadcastApplyHpDelta(int hpDelta)
 	{
@@ -389,27 +392,70 @@ public partial class SphereClient : WorldObject
 			return;
 		}
 
+		EnqueueClientEvent(new CharacterHealthChangeEvent(CurrentCharacter.ClientIndex, hpDelta));
+	}
+
+	/// <summary>
+	///     After WaitReinc starts, clear g_08AA via ReceiveHit (hit_type=0, flags=6) and force
+	///     absolute MBC HP via SetStat (region 10). ContMan delta alone can miss if client HP drifted.
+	///     Delay is a stand-in until city placement exists.
+	/// </summary>
+	public void SchedulePlayerRespawn(float delaySeconds = 5f)
+	{
+		if (IsAdminDebugDummy || GetTree() is null)
+		{
+			return;
+		}
+
+		var timer = GetTree().CreateTimer(delaySeconds);
+		timer.Timeout += OnPlayerRespawnTimeout;
+	}
+
+	private void OnPlayerRespawnTimeout()
+	{
+		if (CurrentCharacter is null || CurrentCharacter.CurrentHP > 0)
+		{
+			return;
+		}
+
+		var respawnHp = (ushort)Math.Min(100, (int)CurrentCharacter.MaxHP);
+		if (respawnHp == 0)
+		{
+			return;
+		}
+
 		var selfId = CurrentCharacter.ClientIndex;
-		var character = CurrentCharacter;
-		NetworkedStatsUpdater.Update(character, refreshPeers: false);
+		CurrentCharacter.CurrentHP = respawnHp;
 
-		// SendSys2-compatible: mode2 sprintf gMsg(120) with signed delta.
-		var chatColor = hpDelta > 0
-			? 0x32B496u // pack_rgb24(50, 180, 150) heal
-			: 0xB46432u; // pack_rgb24(180, 100, 50) damage
+		// Absolute MBC write (unsticks CycleSend; no ContMan delta — that would stack on absolute).
+		MaybeQueueNetworkPacketSend(CommonPackets.BuildPlayerSetStat(selfId, (byte)HpCurrent, respawnHp));
+		// RcvInfo: hit_type==0 && flags==6 clears WaitReinc (g_08AA).
 		MaybeQueueNetworkPacketSend(
-			CommonPackets.BuildPlayerSystemChatSprintf(selfId, gmsgId: 120, (short)hpDelta, chatColor));
+			CommonPackets.BuildPlayerReceiveHit(selfId, hitType: 0, hpDelta: 0, secondDelta: 0, flags: 6));
+		NetworkedStatsUpdater.Update(CurrentCharacter, refreshPeers: false);
+		BroadcastHpToVisibleClients(respawnHp, respawnHp, includeMax: true);
+		SaveCharacter();
 
+		SphLogger.Info(
+			$"Player respawn after death. Client ID: {localId:X4}, SetStat HP={respawnHp}, WaitReinc clear.");
+	}
+
+	/// <summary>Peer ContMan ApplyHp + absolute HpCurrent (and optional HpMax) for visible clients.</summary>
+	public void BroadcastHpToVisibleClients(int healthDiff, int absoluteHp, bool includeMax = false)
+	{
+		var maxHp = CurrentCharacter?.MaxHP ?? 0;
 		ForEachVisibleClient(viewer =>
 		{
 			var entityId = viewer.GetLocalObjectId(ID);
-			// ContMan first (popup + optional delta), then absolute WriteIndexedStat wins for bar.
 			viewer.MaybeQueueNetworkPacketSend(
-				CommonPackets.BuildPlayerApplyHpDelta(entityId, entityId, hpDelta));
+				CommonPackets.BuildPlayerApplyHpDelta(entityId, entityId, healthDiff));
 			viewer.MaybeQueueNetworkPacketSend(
-				CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpCurrent, character.CurrentHP));
-			viewer.MaybeQueueNetworkPacketSend(
-				CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpMax, character.MaxHP));
+				CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpCurrent, absoluteHp));
+			if (includeMax)
+			{
+				viewer.MaybeQueueNetworkPacketSend(
+					CommonPackets.BuildPlayerWriteIndexedStat(entityId, (byte)HpMax, maxHp));
+			}
 		});
 	}
 

@@ -52,8 +52,8 @@ public partial class Monster
 	}
 
 	/// <summary>
-	///     Death pipeline: stop physics, death signal, then (one frame later) despawn + registry
-	///     unwind + free. The client plays its full death animation from the signal.
+	///     Death pipeline: stop physics, entity_killed (client applies the killing blow itself),
+	///     then soft despawn next frame so the anim can start before remove.
 	/// </summary>
 	private void PerformDeath(ushort killerGlobalId)
 	{
@@ -68,10 +68,6 @@ public partial class Monster
 		SetPhysicsProcess(false);
 
 		BroadcastDeathSignalToVisibleClients(killerGlobalId);
-
-		// Deferred: the killing-blow damage echo is enqueued by the handler after TakeDamage returns,
-		// and the despawn must reach the client after that echo — a damage delta for an already
-		// removed entity crashes the client's script VM (BoundCheckArray in _player, observed live).
 		Callable.From(FinishDespawn).CallDeferred();
 	}
 

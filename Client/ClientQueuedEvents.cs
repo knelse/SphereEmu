@@ -15,3 +15,9 @@ public sealed record CombatHitEvent(
     ushort TargetGlobalId,
     ushort TargetLocalId,
     AttackFrameKind FrameKind) : ClientQueuedEvent;
+
+/// <summary>
+///     Signed self HP delta. Negative = damage, positive = heal.
+///     Only <see cref="ChangeCharacterHealthHandler"/> applies HP and sends hit/death wire.
+/// </summary>
+public sealed record CharacterHealthChangeEvent(ushort EntityId, int HealthDiff) : ClientQueuedEvent;

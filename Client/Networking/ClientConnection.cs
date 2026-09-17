@@ -35,7 +35,6 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     public ushort LocalId => localId;
 
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
-    private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
     private ChangeStatsHandler? changeStatsHandler;
     private ClanActionsHandler? clanActionsHandler;
     private ClientChatHandler? clientChatHandler;
@@ -49,6 +48,9 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     private double timeSinceFirstPositionKeepalive;
     private bool starterMutatorSent;
     private bool playerCountPublished;
+
+    /// <summary>True after the client has sent its first in-world position keepalive.</summary>
+    public bool HasSeenFirstPositionKeepalive => seenFirstPositionKeepalive;
     private MainhandTakeItemHandler? mainhandTakeItemHandler;
     private SwapItemHandler? swapItemHandler;
     private MoveItemHandler? moveItemHandler;
@@ -72,7 +74,6 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     public async Task Process(double delta)
     {
         InitHandlers();
-        changeCharacterHealthHandler ??= new(localId, this);
 
         // handlers before game do their own data fetch. For ingame handlers, we need packet info here to figure out
         // which handler they should be routed to

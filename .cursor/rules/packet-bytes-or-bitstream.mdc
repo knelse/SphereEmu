@@ -13,3 +13,20 @@ When building a server packet:
 - A `ushort` that needs swapped wire order is `stream.WriteUInt16(SphBitStream.ByteSwap(val))`, not two `MajorByte`/`MinorByte` writes.
 
 Do **not** add helper methods that poke individual bits on a `byte[]` (`WriteBits`, `SetBit`, and the like). That logic belongs on the stream.
+
+## Collapse nibble / shift packing on rewrite
+
+When asked to rewrite packet or bitstream code, **always** collapse manual bit manipulation (masks, shifts, nibble splits across bytes) into the widest matching `WriteByte` / `WriteUInt16` / `WriteUInt32` (or reads) that preserve the same wire bits. Do not leave "byte0 = low nibble, byte1 = next 8 bits" style packing if one wider write is equivalent.
+
+```csharp
+// BAD: keep nibble/shift soup after a rewrite
+stream.WriteByte(0, 1);
+stream.WriteByte((byte)(id & 0x7F), 7);
+stream.WriteByte((byte)((id >> 7) & 0xFF), 8);
+
+// GOOD: same wire, one field
+stream.WriteByte(0, 1);
+stream.WriteUInt16(id, 15);
+```
+
+Same for player ids, magnitudes, hpMod+flags, etc.: verify bit-equivalence, then use the collapsed form.

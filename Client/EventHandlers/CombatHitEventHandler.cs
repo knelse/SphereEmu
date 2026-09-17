@@ -5,6 +5,7 @@ using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Combat;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.ClientEvents;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
@@ -33,13 +34,9 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
             return Task.CompletedTask;
         }
 
-        if (clientEvent.TargetGlobalId == clientEvent.AttackerGlobalId ||
-            clientEvent.TargetGlobalId == sphereClient.ID ||
-            clientEvent.TargetGlobalId == SphBitStream.ByteSwap(clientEvent.AttackerGlobalId))
+        if (IsSelfHit(clientEvent, sphereClient))
         {
-            LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
-                "skip-self");
-            return Task.CompletedTask;
+            return ApplySelfHit(clientEvent, character, cfg);
         }
 
         var targetObject = ActiveWorldObjects.Get(clientEvent.TargetGlobalId);
@@ -60,7 +57,6 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
             return Task.CompletedTask;
         }
 
-        var currentHealth = monster.CurrentHp;
         var targetObjectType = WireObjectType(monster);
 
         if (monster.IsDead)
@@ -78,6 +74,8 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
         var damageSchool = magicRoll.Damage <= meleeRoll.Damage ? DamageSchool.Physical : DamageSchool.Magical;
         var damageEvent = new DamageEvent(clientEvent.AttackerGlobalId, sphereClient,
             meleeRoll.Damage + magicRoll.Damage, damageSchool, meleeRoll.IsCrit || magicRoll.IsCrit);
+        // TakeDamage on 0-HP broadcasts entity_killed; client applies the killing blow from that.
+        // Non-lethal hits still need AttackTargetEcho so the swing unlocks.
         var outcome = monster.TakeDamage(in damageEvent);
         if (outcome.BecameDead)
         {
@@ -93,13 +91,61 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
         }
 
         var damageToTarget = 30000 - damageApplied;
-        currentHealth -= damageApplied;
         sphereClient.MaybeQueueNetworkPacketSend(
             CommonPackets.AttackTargetEcho(clientEvent.TargetLocalId, character.ClientIndex, damageToTarget,
-                currentHealth, targetObjectType));
+                outcome.RemainingHp, targetObjectType));
         LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
             meleeRoll.IsMiss && magicRoll.IsMiss ? "miss" : outcome.Applied.ToString());
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    ///     Alt-self hit: roll damage/karma, then enqueue <see cref="CharacterHealthChangeEvent"/>.
+    ///     Does not apply HP or send hit packets.
+    /// </summary>
+    private Task ApplySelfHit(CombatHitEvent clientEvent, CharacterDbEntry character, CombatBalance cfg)
+    {
+        if (character.CurrentHP <= 0)
+        {
+            LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+                "skip-already-dead");
+            return Task.CompletedTask;
+        }
+
+        var meleeRoll = DamageCalc.RollMeleeHit(character.MeleePAtk, !character.HoldsItemInHand,
+            character.PDef, combatRng, cfg);
+        var magicRoll = DamageCalc.RollMagicHit(character.MagicMAtk, !character.HoldsItemInHand,
+            character.MDef, combatRng, cfg);
+
+        var totalDamage = meleeRoll.Damage + magicRoll.Damage;
+        var outcome = MonsterCombat.ComputeOutcome(character.CurrentHP, totalDamage);
+        if (outcome.Applied == 0)
+        {
+            LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+                meleeRoll.IsMiss && magicRoll.IsMiss ? "miss" : "0");
+            return Task.CompletedTask;
+        }
+
+        if (outcome.BecameDead)
+        {
+            character.ApplySelfKillKarma(out _);
+        }
+
+        // Killing blow: enqueue exact remainder to 0, not the uncapped roll.
+        var healthDiff = outcome.BecameDead ? -character.CurrentHP : -outcome.Applied;
+        sphereClient.EnqueueClientEvent(new CharacterHealthChangeEvent(character.ClientIndex, healthDiff));
+        LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            outcome.BecameDead
+                ? $"self-kill karma={character.KarmaCount} dmg={-healthDiff}"
+                : outcome.Applied.ToString());
+        return Task.CompletedTask;
+    }
+
+    private static bool IsSelfHit(CombatHitEvent clientEvent, SphereClient attacker)
+    {
+        return clientEvent.TargetGlobalId == clientEvent.AttackerGlobalId
+               || clientEvent.TargetGlobalId == attacker.ID
+               || clientEvent.TargetGlobalId == SphBitStream.ByteSwap(clientEvent.AttackerGlobalId);
     }
 
     Task IClientEventHandler.HandleAsync(ClientQueuedEvent clientEvent) =>

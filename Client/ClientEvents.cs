@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SphServer.Client.EventHandlers;
+using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 
 namespace SphServer.Client;
 
@@ -11,6 +12,7 @@ public class ClientEvents(SphereClient sphereClient)
     private CurrentClientPositionChangedEventHandler? currentClientPositionChangedEventHandler;
     private EntityPositionUpdateEventHandler? entityPositionUpdateEventHandler;
     private CombatHitEventHandler? combatHitEventHandler;
+    private ChangeCharacterHealthHandler? changeCharacterHealthHandler;
 
     public void Enqueue(ClientQueuedEvent clientEvent)
     {
@@ -22,6 +24,7 @@ public class ClientEvents(SphereClient sphereClient)
         currentClientPositionChangedEventHandler ??= new CurrentClientPositionChangedEventHandler(sphereClient);
         entityPositionUpdateEventHandler ??= new EntityPositionUpdateEventHandler(sphereClient);
         combatHitEventHandler ??= new CombatHitEventHandler(sphereClient);
+        changeCharacterHealthHandler ??= new ChangeCharacterHealthHandler(sphereClient);
     }
 
     public async Task HandleEventsAsync()
@@ -45,6 +48,9 @@ public class ClientEvents(SphereClient sphereClient)
                 break;
             case CombatHitEvent e:
                 await combatHitEventHandler!.HandleAsync(e).ConfigureAwait(false);
+                break;
+            case CharacterHealthChangeEvent e:
+                await changeCharacterHealthHandler!.HandleAsync(e).ConfigureAwait(false);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(

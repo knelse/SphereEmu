@@ -45,8 +45,9 @@ public static class CommonPackets
         return Packet.ToByteArray(stream.GetStreamData(), 3);
     }
 
-    // Kills an entity on the client (entity_killed): plays the death program (stop AI, death animation,
-    // fade). Fixed frame; only the two ids vary.
+    // Classic INTERACT+DEATH (0x040D): client plays death program (stop AI, anim, fade).
+    // Do not follow this with MBC moduleTag-0 EKill in the same tick: EKill with g_063C==0
+    // halt_interpreters and the mob vanishes with no anim.
     public static byte[] EntityKilled(ushort clientLocalEntityId, ushort clientLocalKillerId)
     {
         var stream = SphBitStream.GetWriteBitStream();
@@ -218,6 +219,8 @@ public static class CommonPackets
         return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
 
+    // Soft remove. Not MBC moduleTag-0 EKill: that halt_interpreters unless ContMan set g_063C,
+    // and aborts an in-progress classic death anim from EntityKilled.
     public static byte[] DespawnEntity(ushort ID)
     {
         return
@@ -371,6 +374,55 @@ public static class CommonPackets
         stream.WriteByte(negative ? (byte)1 : (byte)0, 1);
         stream.WriteByte((byte)selector, 2);
         stream.WriteUInt32(magnitude, widths[(int)selector]);
+    }
+
+    /// <summary>
+    ///     _player RcvInfo / ReceiveHit (region 8): hit_type u16, hp_delta varint, second_delta
+    ///     varint, flags u3. HP&lt;=0 or flags==7 → Anim(6)+WaitReinc. hit_type==0 && flags==6
+    ///     clears WaitReinc (g_08AA=0). Do not use hit_type==0 for damage: RcvInfo sends process
+    ///     msg 49 to hit_type before applying HP, and process 0 never replies. CycleSend stays
+    ///     stuck while current_hp&lt;=0, so revive clear must also restore HP&gt;0.
+    /// </summary>
+    public static byte[] BuildPlayerReceiveHit(ushort entityId, ushort hitType, int hpDelta, int secondDelta,
+        byte flags)
+    {
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(9, 7); // wire = region 8 + 1 (RcvInfo)
+        stream.WriteUInt16(hitType, 16);
+        WriteMbcVarint(stream, hpDelta);
+        WriteMbcVarint(stream, secondDelta);
+        stream.WriteByte((byte)(flags & 0b111), 3);
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    /// <summary>
+    ///     _player SetStat (region 10 / CheckPing): u6 index + varint value → g_rec_0C48[index].
+    ///     Absolute write. Use for self HP/MP so client Recalc cannot drift past server.
+    /// </summary>
+    public static byte[] BuildPlayerSetStat(ushort entityId, byte statIndex, int value)
+    {
+        if (statIndex > 63)
+        {
+            throw new ArgumentOutOfRangeException(nameof(statIndex), "SetStat index is u6.");
+        }
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(11, 7); // wire = region 10 + 1 (SetStat)
+        stream.WriteByte((byte)(statIndex & 0x3F), 6);
+        WriteMbcVarint(stream, value);
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
 
     /// <summary>

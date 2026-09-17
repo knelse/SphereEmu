@@ -23,8 +23,8 @@ public enum AttackFrameKind
 
     /// <summary>
     ///     Self-targeted action (Alt modifier: target = the player themselves, hence the player's own
-    ///     id at bits 172-187; 54 43 C1 at bytes 13-15). Self-hit is still a no-op; AoE Radius
-    ///     still splashes nearby combatants, same as using AoE on an NPC.
+    ///     id at bits 172-187; 54 43 C1 at bytes 13-15). Self is a real hit target (same PA/MA vs
+    ///     PD/MD path as monsters). AoE Radius also splashes nearby combatants.
     /// </summary>
     SelfTargetedAction = 1,
 
@@ -90,20 +90,15 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
         var globalTargetId = broadcastTarget.GetGlobalObjectId(localTargetId);
         // Fists never splash. Only a real held item can carry a Radius.
         var aoeRadius = heldItem.GameObjectType is GameObjectType.Fists ? 0 : heldItem.Radius;
-        if (frameKind is AttackFrameKind.SelfTargetedAction && aoeRadius <= 0)
-        {
-            LogAction(broadcastTargetGlobalId, localTargetId, frameKind, "skip");
-            return;
-        }
-
-        // Never apply to the attacker. Self-hit (heal / self-damage) is later; splash around
-        // self still runs, same as AoE centered on an NPC. Self-aimed AoE wires ByteSwap(playerId)
-        // at the target slot (704F for client 4F70), not the live client / WorldObject id.
-        var targets = CollectTargets(broadcastTarget, globalTargetId, aoeRadius)
-            .Where(t => !IsAttackerTargetId(broadcastTarget, t.GlobalId))
+        // Alt-self (54 43 C1) OR AoE/use aimed at self (wire often ByteSwap(clientId),
+        // e.g. 704F for 4F70) — both must hit the attacker. Regular swings at NPCs do not.
+        var includeSelf = frameKind is AttackFrameKind.SelfTargetedAction
+                          || IsAttackerTargetId(broadcastTarget, globalTargetId);
+        var targets = CollectTargets(broadcastTarget, globalTargetId, aoeRadius, includeSelf)
+            .Where(t => includeSelf || !IsAttackerTargetId(broadcastTarget, t.GlobalId))
             .ToList();
         LogAction(broadcastTargetGlobalId, globalTargetId, frameKind,
-            $"held={heldItem.GameId} radius={aoeRadius} targets={targets.Count}");
+            $"held={heldItem.GameId} radius={aoeRadius} includeSelf={includeSelf} targets={targets.Count}");
         foreach (var (targetGlobalId, targetLocalId) in targets)
         {
             clientConnection.EnqueueClientEvent(new CombatHitEvent(
@@ -285,11 +280,17 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
         heldItem is { Radius: > 0, GameObjectType: GameObjectType.Powder_Area };
 
     private static IEnumerable<(ushort GlobalId, ushort LocalId)> CollectTargets(SphereClient attacker,
-        ushort mainGlobalId, int aoeRadius)
+        ushort mainGlobalId, int aoeRadius, bool includeSelf)
     {
-        if (!IsAttackerTargetId(attacker, mainGlobalId))
+        var mainIsSelf = IsAttackerTargetId(attacker, mainGlobalId);
+        if (includeSelf || !mainIsSelf)
         {
-            yield return (mainGlobalId, attacker.GetLocalObjectId(mainGlobalId));
+            // Self-aimed frames may wire ByteSwap(clientId); normalize so the hit handler
+            // sees a stable self id (live client global id).
+            var yieldGlobalId = mainIsSelf
+                ? attacker.GetGlobalObjectId(attacker.localId)
+                : mainGlobalId;
+            yield return (yieldGlobalId, attacker.GetLocalObjectId(yieldGlobalId));
         }
 
         if (aoeRadius <= 0)
