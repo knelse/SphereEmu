@@ -5,6 +5,7 @@ using BitStreams;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Helpers.Networking;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -22,8 +23,8 @@ public enum AttackFrameKind
 
     /// <summary>
     ///     Self-targeted action (Alt modifier: target = the player themselves, hence the player's own
-    ///     id at bits 172-187; 54 43 C1 at bytes 13-15). Meant for self-casts like heal mantras;
-    ///     a self-targeted fist attack is meaningless, so it is dropped in v1.
+    ///     id at bits 172-187; 54 43 C1 at bytes 13-15). Self-hit is still a no-op; AoE Radius
+    ///     still splashes nearby combatants, same as using AoE on an NPC.
     /// </summary>
     SelfTargetedAction = 1,
 
@@ -73,7 +74,7 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
             return;
         }
 
-        if (frameKind is AttackFrameKind.SelfTargetedAction or AttackFrameKind.NotAnAttack)
+        if (frameKind is AttackFrameKind.NotAnAttack)
         {
             LogAction(broadcastTargetGlobalId, localTargetId, frameKind, "skip");
             return;
@@ -89,7 +90,18 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
         var globalTargetId = broadcastTarget.GetGlobalObjectId(localTargetId);
         // Fists never splash. Only a real held item can carry a Radius.
         var aoeRadius = heldItem.GameObjectType is GameObjectType.Fists ? 0 : heldItem.Radius;
-        var targets = CollectTargets(broadcastTarget, globalTargetId, aoeRadius).ToList();
+        if (frameKind is AttackFrameKind.SelfTargetedAction && aoeRadius <= 0)
+        {
+            LogAction(broadcastTargetGlobalId, localTargetId, frameKind, "skip");
+            return;
+        }
+
+        // Never apply to the attacker. Self-hit (heal / self-damage) is later; splash around
+        // self still runs, same as AoE centered on an NPC. Self-aimed AoE wires ByteSwap(playerId)
+        // at the target slot (704F for client 4F70), not the live client / WorldObject id.
+        var targets = CollectTargets(broadcastTarget, globalTargetId, aoeRadius)
+            .Where(t => !IsAttackerTargetId(broadcastTarget, t.GlobalId))
+            .ToList();
         LogAction(broadcastTargetGlobalId, globalTargetId, frameKind,
             $"held={heldItem.GameId} radius={aoeRadius} targets={targets.Count}");
         foreach (var (targetGlobalId, targetLocalId) in targets)
@@ -97,6 +109,18 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
             clientConnection.EnqueueClientEvent(new CombatHitEvent(
                 broadcastTargetGlobalId, targetGlobalId, targetLocalId, frameKind));
         }
+    }
+
+    /// <summary>
+    ///     True when <paramref name="globalId" /> names the attacker: live client id, WorldObject.ID
+    ///     (can differ after id reassignment), or the byte-swapped client id used on self-aimed AoE.
+    /// </summary>
+    private static bool IsAttackerTargetId(SphereClient attacker, ushort globalId)
+    {
+        var clientId = attacker.GetGlobalObjectId(attacker.localId);
+        return globalId == clientId
+               || globalId == attacker.ID
+               || globalId == SphBitStream.ByteSwap(clientId);
     }
 
     private static bool IsTakeMainhand(CharacterDbEntry character, byte[] frame, ushort combatTargetId)
@@ -263,22 +287,30 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
     private static IEnumerable<(ushort GlobalId, ushort LocalId)> CollectTargets(SphereClient attacker,
         ushort mainGlobalId, int aoeRadius)
     {
-        yield return (mainGlobalId, attacker.GetLocalObjectId(mainGlobalId));
+        if (!IsAttackerTargetId(attacker, mainGlobalId))
+        {
+            yield return (mainGlobalId, attacker.GetLocalObjectId(mainGlobalId));
+        }
 
         if (aoeRadius <= 0)
         {
             yield break;
         }
 
-        var mainObject = ActiveWorldObjects.Get(mainGlobalId);
-        if (mainObject is null || !GodotObject.IsInstanceValid(mainObject) ||
-            !TryGetCombatWorldPosition(mainObject, out var center))
+        if (!TryResolveAoeCenter(attacker, mainGlobalId, out var center))
         {
             yield break;
         }
 
         var radiusSquared = aoeRadius * (float)aoeRadius;
-        var seen = new HashSet<ushort> { mainGlobalId, attacker.GetGlobalObjectId(attacker.localId) };
+        var clientId = attacker.GetGlobalObjectId(attacker.localId);
+        var seen = new HashSet<ushort>
+        {
+            mainGlobalId,
+            clientId,
+            attacker.ID,
+            SphBitStream.ByteSwap(clientId)
+        };
 
         foreach (var worldObject in ActiveWorldObjects.GetAll().Values)
         {
@@ -288,6 +320,11 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
             }
 
             if (!GodotObject.IsInstanceValid(worldObject) || !seen.Add(worldObject.ID))
+            {
+                continue;
+            }
+
+            if (IsAttackerTargetId(attacker, worldObject.ID))
             {
                 continue;
             }
@@ -312,7 +349,8 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
 
         foreach (var otherClient in ActiveClients.GetAll().Values)
         {
-            if (otherClient is null || !seen.Add(otherClient.ID))
+            if (otherClient is null || IsAttackerTargetId(attacker, otherClient.localId) ||
+                IsAttackerTargetId(attacker, otherClient.ID) || !seen.Add(otherClient.ID))
             {
                 continue;
             }
@@ -329,6 +367,27 @@ public class DamageTargetHandler(ushort localId, ClientConnection clientConnecti
 
             yield return (otherClient.ID, attacker.GetLocalObjectId(otherClient.ID));
         }
+    }
+
+    /// <summary>
+    ///     Splash origin: aimed world object when present; attacker pose for self (plain or
+    ///     byte-swapped client id). Missing non-self aims still abort splash.
+    /// </summary>
+    private static bool TryResolveAoeCenter(SphereClient attacker, ushort mainGlobalId, out Vector3 center)
+    {
+        if (IsAttackerTargetId(attacker, mainGlobalId))
+        {
+            return TryGetCombatWorldPosition(attacker, out center);
+        }
+
+        var mainObject = ActiveWorldObjects.Get(mainGlobalId);
+        if (mainObject is null || !GodotObject.IsInstanceValid(mainObject))
+        {
+            center = Vector3.Zero;
+            return false;
+        }
+
+        return TryGetCombatWorldPosition(mainObject, out center);
     }
 
     private static bool TryGetCombatWorldPosition(WorldObject worldObject, out Vector3 position)

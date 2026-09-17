@@ -5,7 +5,6 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking.WorldObject.Serializers;
-using SphServer.Sphere.Game.NpcTrade.ItemsOnSale;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
@@ -28,6 +27,9 @@ public partial class NpcInteractable : WorldObject
 	[Export] public VendorLocation VendorLocation { get; set; }
 	public readonly List<ItemDbEntry> ItemsOnSale = [];
 
+	/// <summary>Client vendor UI only shows this many slots.</summary>
+	public const int MaxDisplayedShopItems = 74;
+
 	private NpcInteractableSerializer? serializer;
 
 	public override void _Ready()
@@ -49,13 +51,9 @@ public partial class NpcInteractable : WorldObject
 			_ => ObjectType.Npc_Trade
 		};
 
-		if (VendorItemTierMax == 0 || VendorItemTierMin == 0)
+		if (IsTradeNpc() && (VendorItemTierMax == 0 || VendorItemTierMin == 0))
 		{
 			SphLogger.Warning($"Vendor [{ID}] ({NpcType}) has no item tiers set");
-		}
-		else
-		{
-			GenerateItemsForSale();
 		}
 
 		serializer = new NpcInteractableSerializer(this);
@@ -65,5 +63,17 @@ public partial class NpcInteractable : WorldObject
 		ClientInteractionType interactionType = ClientInteractionType.Unknown)
 	{
 		ClientInteract(clientID, interactionType);
+	}
+
+	private static bool IsTradeNpc(NpcType npcType)
+	{
+		return npcType is NpcType.TradeJewelry or NpcType.TradeTravelGeneric or NpcType.TradeWeapon
+			or NpcType.TradeArmor or NpcType.TradeAlchemy or NpcType.TradeMagic or NpcType.TradeTravelTokens
+			or NpcType.TradeTavernkeeper;
+	}
+
+	private bool IsTradeNpc()
+	{
+		return IsTradeNpc(NpcType);
 	}
 }

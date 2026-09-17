@@ -1,40 +1,110 @@
 namespace SphServer.Helpers;
 
+/// <summary>
+///     Sphere calendar matching client <c>SferaGameCalendar::fromUnixTime</c>.
+///     Credentials wire after <c>20 10</c> is five bytes (not a raw LE calendar u32):
+///     minute/quarter, day-lsb/hour/minute-hi, month/day-hi, year-lo, year-hi2.
+///     Display year = wire year + 7800.
+/// </summary>
 public static class TimeHelper
 {
-    public static readonly DateTime RealtimeOrigin = new (1998, 8, 21, 10, 00, 00);
+    // (unix + offset) * 48 / 60 → quarter-minute ticks; 5760 ticks/day, 365-day years.
+    private const long UnixOffset = 0x4900FAE80;
+    private const int TicksPerDay = 5760;
+    private const int TicksPerYear = 365 * TicksPerDay;
 
-    public static DateTime GetCurrentSphereDateTime ()
+    /// <summary>
+    ///     Components with year = wire year (add 7800 for HUD). Same source as encode.
+    /// </summary>
+    public static DateTime GetCurrentSphereDateTime()
     {
-        var sphereTimeOffset = (DateTime.UtcNow - RealtimeOrigin).TotalSeconds * 12;
-        var sphereDateTime = new DateTime().AddSeconds(sphereTimeOffset);
-
-        return sphereDateTime;
+        var c = CurrentComponents();
+        return new DateTime(Math.Max(1, c.Year), c.Month, c.Day, c.Hour, c.Minute, 0);
     }
 
-    public static byte[] EncodeCurrentSphereDateTime ()
+    /// <summary>
+    ///     Five bytes after credentials <c>20 10</c>, matching live
+    ///     <c>…20 10 C4 5C C2 51 01</c> field layout (year-hi is plain 2 bits, not 0x34+).
+    /// </summary>
+    public static byte[] EncodeCurrentSphereDateTime()
     {
-        var currentSphereTime = GetCurrentSphereDateTime();
-        var seconds = currentSphereTime.Second / 12 + 1;
-        var minutes_last4 = (byte) ((currentSphereTime.Minute & 0b1111) << 4);
-        // 1-4 minutes 5-8 seconds 
-        var firstDateByte = (byte) (minutes_last4 + (seconds & 0b1111));
-        var minutes_first2 = (byte) ((currentSphereTime.Minute & 0b110000) >> 4);
-        var hours = (byte) (currentSphereTime.Hour << 2);
-        var days_last1 = (byte) ((currentSphereTime.Day % 2) << 7);
-        // 1 days 2-6 hours 7-8 minutes
-        var secondDateByte = (byte) (days_last1 + hours + minutes_first2);
-        var days_first4 = (byte) ((currentSphereTime.Day & 0b11110) >> 1);
-        var month = (byte) (currentSphereTime.Month << 4);
-        // 1-4 months 5-8 days
-        var thirdDateByte = (byte) (month + days_first4);
-        var years_last8 = (byte) (currentSphereTime.Year & 0b11111111);
-        var years_first2 = (byte) ((currentSphereTime.Year & 0b1100000000) >> 8);
-        var fourthDateByte = (byte) (0b00110100 + years_first2);
+        var c = CurrentComponents();
+        var minuteLo = (byte)((c.Minute & 0b1111) << 4);
+        var quarter = (byte)(c.Quarter & 0b1111);
+        var first = (byte)(minuteLo | quarter);
 
-        return new[]
+        var dayLsb = (byte)((c.Day & 1) << 7);
+        var hours = (byte)(c.Hour << 2);
+        var minuteHi = (byte)((c.Minute & 0b110000) >> 4);
+        var second = (byte)(dayLsb | hours | minuteHi);
+
+        var dayHi = (byte)((c.Day & 0b11110) >> 1);
+        var month = (byte)(c.Month << 4);
+        var third = (byte)(month | dayHi);
+
+        var yearLo = (byte)(c.Year & 0xFF);
+        var yearHi = (byte)((c.Year >> 8) & 0b11);
+
+        return [first, second, third, yearLo, yearHi];
+    }
+
+    private static SphereCalendarComponents CurrentComponents()
+    {
+        return FromUnixTime(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+    }
+
+    /// <summary>Client <c>SferaGameCalendar::fromUnixTime</c> components (wire year, not HUD year).</summary>
+    public static SphereCalendarComponents FromUnixTime(long unixSeconds)
+    {
+        var ticks = (unixSeconds + UnixOffset) * 48 / 60;
+        var yearTicks = (int)(ticks / TicksPerYear);
+        var dayOfYear = (int)(ticks % TicksPerYear / TicksPerDay);
+        var timeOfDay = (int)(ticks % TicksPerDay);
+
+        // Wire year10 = (yearTicks + 392) truncated to 10 bits; HUD = that + 7800.
+        var year = (yearTicks + 392) & 0x3FF;
+
+        var month = 1;
+        while (month < 12 && dayOfYear >= DaysBeforeMonth(month + 1))
         {
-            firstDateByte, secondDateByte, thirdDateByte, years_last8, fourthDateByte
-        };
+            month++;
+        }
+
+        var day = dayOfYear - DaysBeforeMonth(month) + 1;
+        var hour = timeOfDay / 240;
+        var minute = timeOfDay % 240 / 4;
+        var quarter = timeOfDay % 4;
+
+        return new SphereCalendarComponents(year, month, day, hour, minute, quarter);
+    }
+
+    public readonly record struct SphereCalendarComponents(
+        int Year, int Month, int Day, int Hour, int Minute, int Quarter);
+
+    // Client sfera_calendar_days_in_month: no leap days.
+    private static int DaysInMonth(int month)
+    {
+        if (month is < 1 or > 12)
+        {
+            return 0;
+        }
+
+        return 30 + ((month + (month > 7 ? 1 : 0)) & 1) - (month == 2 ? 2 : 0);
+    }
+
+    private static int DaysBeforeMonth(int month)
+    {
+        if (month is < 1 or > 13)
+        {
+            return 0;
+        }
+
+        var days = 0;
+        for (var current = 1; current < month; current++)
+        {
+            days += DaysInMonth(current);
+        }
+
+        return days;
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Sphere.Game.Missions;
 
@@ -71,6 +72,52 @@ public class ExperienceBalance : IValidatableBalanceConfig
 
         return 1.0 + Math.Min(0.55, 0.10 * levelDiff);
     }
+
+    /// <summary>
+    ///     Underlevel penalty vs <c>max(title, degree)</c> (rebirths included).
+    ///     Full XP while the mob is at most 5 levels below the player; each extra level
+    ///     below cuts 5%, reaching 0 after 20 extra levels (mob 25+ below).
+    /// </summary>
+    public static double GetUnderlevelKillXpMultiplier(int titleMinusOne, int degreeMinusOne, int mobLevel)
+    {
+        var playerLevel = Math.Max(titleMinusOne, degreeMinusOne) + 1;
+        var levelsBelow = playerLevel - mobLevel;
+        if (levelsBelow <= 5)
+        {
+            return 1.0;
+        }
+
+        return Math.Max(0.0, 1.0 - 0.05 * (levelsBelow - 5));
+    }
+
+    /// <summary>
+    ///     Kill XP for <paramref name="isTitle"/> is blocked at display 60 in the current
+    ///     rebirth cycle for that track. Either track at 60 plus a guild blocks both.
+    /// </summary>
+    public static bool CanReceiveKillExperience(int titleMinusOne, int degreeMinusOne, bool hasGuild, bool isTitle)
+    {
+        var titleAtCap = titleMinusOne % CharacterDataHelper.LevelsPerCycle == CharacterDataHelper.LevelsPerCycle - 1;
+        var degreeAtCap = degreeMinusOne % CharacterDataHelper.LevelsPerCycle == CharacterDataHelper.LevelsPerCycle - 1;
+        if (hasGuild && (titleAtCap || degreeAtCap))
+        {
+            return false;
+        }
+
+        return isTitle ? !titleAtCap : !degreeAtCap;
+    }
+
+    /// <summary>
+    ///     Title guilds (Crusader, Hunter, Master of Steel, Armorer, Bandier) take all kill XP
+    ///     as title. Degree guilds (Inquisitor, Archmage, Druid, Warlock, Necromancer) take it
+    ///     as degree. Everyone else follows physical → title, magic → degree.
+    /// </summary>
+    public static bool AwardKillExperienceToTitle(Guild guild, bool physicalMajority) =>
+        GuildCatalog.LevelTrack(guild) switch
+        {
+            GuildLevelTrack.Title => true,
+            GuildLevelTrack.Degree => false,
+            _ => physicalMajority
+        };
 
     public void Validate(string configPath)
     {

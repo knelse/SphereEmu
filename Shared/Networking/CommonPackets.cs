@@ -72,6 +72,8 @@ public static class CommonPackets
     public static readonly byte[]
         ReadyToLoadInitialDataReconnect = [0x0A, 0x00, 0xC8, 0x00, 0x94, 0x05, 0x00, 0x00, 0x2F, 0x64];
 
+    // S2C TCP keepalive: length 4, channel 0x01F4. Reply to the client's keepalive on receipt;
+    // that is what the Echo HUD measures.
     public static readonly byte[]
         TransmissionEndPacket = [0x04, 0x00, 0xF4, 0x01];
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiteDB;
+using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game;
 
 namespace SphServer.Shared.Db.DataModels;
@@ -108,7 +109,18 @@ public class ItemDbEntry
 
         foreach (var prop in go.GetType().GetProperties())
         {
-            item.GetType().GetProperty(prop.Name)?.SetValue(item, prop.GetValue(go));
+            if (prop.GetIndexParameters().Length > 0)
+            {
+                continue;
+            }
+
+            var dest = item.GetType().GetProperty(prop.Name);
+            if (dest?.SetMethod is null)
+            {
+                continue;
+            }
+
+            dest.SetValue(item, prop.GetValue(go));
         }
 
         item.GameObjectDbId = go.GameObjectDbId;
@@ -136,13 +148,24 @@ public class ItemDbEntry
 
         foreach (var prop in source.GetType().GetProperties())
         {
-            item.GetType().GetProperty(prop.Name)?.SetValue(item, prop.GetValue(source));
+            if (prop.GetIndexParameters().Length > 0)
+            {
+                continue;
+            }
+
+            var dest = item.GetType().GetProperty(prop.Name);
+            if (dest?.SetMethod is null)
+            {
+                continue;
+            }
+
+            dest.SetValue(item, prop.GetValue(source));
         }
 
         if (insertIntoItemCollection)
         {
-            item.Id = 0;
-            item.Id = DbConnection.Items.Insert(item);
+            item.Id = WorldObjectIndex.NewItem();
+            DbConnection.Items.Insert(item.Id, item);
         }
 
         return item;

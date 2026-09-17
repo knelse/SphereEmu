@@ -1,30 +1,138 @@
-﻿namespace SphServer.Shared.WorldState;
+﻿using System;
+using System.Collections.Generic;
+
+namespace SphServer.Shared.WorldState;
 
 public static class WorldObjectIndex
 {
-    private static uint worldObjectIndex = 0x1000;
+    public const ushort FirstUsableId = 0x1000;
+    public const ushort FirstItemId = 20000;
 
-    public static uint GetCurrentIndex => worldObjectIndex;
+    private static readonly object Gate = new();
+    private static readonly HashSet<ushort> Taken = [];
+    private static ushort lastAllocated;
+
+    /// <summary>Last id <see cref="New"/> handed out, or 0 before the first call.</summary>
+    public static uint GetCurrentIndex => lastAllocated;
 
     /// <summary>
-    ///     Move the counter past ids that already exist. It lives in memory only, so without this a
-    ///     restart begins at 0x1000 again and hands out ids that persisted rows already use.
+    ///     Persistence occupancy (items, containers). Set from <c>DbConnection</c> so this type
+    ///     does not take a database dependency at compile time.
     /// </summary>
-    public static void SeedFrom (uint highestExistingId)
+    public static Func<ushort, bool>? IsPersistedInUse { get; set; }
+
+    public static bool IsTaken(ushort id)
     {
-        if (highestExistingId >= worldObjectIndex)
+        if (id == 0)
         {
-            Interlocked.Exchange(ref worldObjectIndex, highestExistingId);
+            return false;
+        }
+
+        lock (Gate)
+        {
+            return Taken.Contains(id);
         }
     }
 
-    public static ushort New ()
+    public static bool IsInUse(ushort id)
     {
-        if (worldObjectIndex > 65535)
+        if (id == 0)
         {
-            throw new ArgumentException("Reached max number of connections");
+            return false;
         }
 
-        return (ushort) Interlocked.Increment(ref worldObjectIndex);
+        if (IsTaken(id))
+        {
+            return true;
+        }
+
+        if (ActiveWorldObjects.Get(id) is not null || ActiveClients.Get(id) is not null)
+        {
+            return true;
+        }
+
+        return IsPersistedInUse?.Invoke(id) == true;
+    }
+
+    /// <summary>Marks <paramref name="id"/> as taken. Returns false when it was already reserved.</summary>
+    public static bool TryReserve(ushort id)
+    {
+        if (id == 0)
+        {
+            return false;
+        }
+
+        lock (Gate)
+        {
+            return Taken.Add(id);
+        }
+    }
+
+    public static void Reserve(ushort id) => TryReserve(id);
+
+    public static void Release(ushort id)
+    {
+        if (id == 0)
+        {
+            return;
+        }
+
+        lock (Gate)
+        {
+            Taken.Remove(id);
+        }
+    }
+
+    public static void Seed(IEnumerable<ushort> ids)
+    {
+        lock (Gate)
+        {
+            foreach (var id in ids)
+            {
+                if (id != 0)
+                {
+                    Taken.Add(id);
+                }
+            }
+        }
+    }
+
+    /// <summary>Lowest unused wire id from <see cref="FirstUsableId"/>, skipping reserved and live occupants.</summary>
+    public static ushort New() => AllocateFrom(FirstUsableId);
+
+    /// <summary>Same as <see cref="New"/> but starts at <see cref="FirstItemId"/> so items stay above baked world ids.</summary>
+    public static ushort NewItem() => AllocateFrom(FirstItemId);
+
+    private static ushort AllocateFrom(ushort minId)
+    {
+        lock (Gate)
+        {
+            for (var raw = (uint)minId; raw <= ushort.MaxValue; raw++)
+            {
+                var id = (ushort)raw;
+                if (Taken.Contains(id))
+                {
+                    continue;
+                }
+
+                if (ActiveWorldObjects.Get(id) is not null || ActiveClients.Get(id) is not null)
+                {
+                    Taken.Add(id);
+                    continue;
+                }
+
+                if (IsPersistedInUse?.Invoke(id) == true)
+                {
+                    Taken.Add(id);
+                    continue;
+                }
+
+                Taken.Add(id);
+                lastAllocated = id;
+                return id;
+            }
+        }
+
+        throw new InvalidOperationException("Reached max number of world object ids");
     }
 }

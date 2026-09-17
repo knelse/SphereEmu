@@ -32,9 +32,6 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
             clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.CurrentMpUpdatePing(localId, mp));
         });
 
-    private readonly SphereTimer threeSecondPing =
-        new(3, true, () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.TransmissionEndPacket));
-
     private ushort counter;
     private byte[]? previousCoordPayload;
     private bool pingShouldXorTopBit;
@@ -112,7 +109,6 @@ public class PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConn
     {
         fifteenSecondPing.Tick(delta);
         currentMpUpdatePing.Tick(delta);
-        threeSecondPing.Tick(delta);
     }
 
     private static bool MovementDeltaExceedsThreshold(WorldCoords coords, CharacterDbEntry character)

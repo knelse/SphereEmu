@@ -22,6 +22,7 @@ using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.World;
@@ -197,7 +198,7 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
                 await damageTargetHandler!.Handle(frame, delta);
                 break;
             case ClientPacketEvent.ProtocolControl:
-                // Short control frames — no gameplay handler.
+                // Keepalive is echoed in ReadFrames. Remaining transport frames have no gameplay handler.
                 break;
             case ClientPacketEvent.CharacterSelect:
                 // Before-game only. CharacterSelectHandler reads this while
@@ -286,6 +287,11 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
             }
 
             SphPacketLogger.LogIncoming(localId, frame);
+            if (TryHandleTransportFrame(frame))
+            {
+                continue;
+            }
+
             pendingFrames.Enqueue(ShouldDecodeClientSubpacket(frame, localId)
                 ? Packet.DecodeClientPacket(frame)
                 : frame);
@@ -332,6 +338,29 @@ public class ClientConnection(StreamPeerTcp streamPeerTcp, ushort localId, Spher
     {
         // TODO: might need an actual queue. For now, just send
         SendPacket(packet);
+    }
+
+    /// <summary>
+    ///     TCP keepalive (0x01F4) drives the client's Echo HUD: it stamps send time, then on any
+    ///     incoming keepalive sets RTT = elapsed/3. Extra keepalives between client sends overwrite
+    ///     that with the time since the last send, so reply immediately and do not emit our own timer.
+    ///     Sent-count frames are bookkeeping only; drop them so they do not steal before-game ticks.
+    /// </summary>
+    private bool TryHandleTransportFrame(byte[] frame)
+    {
+        if (frame.Length < ClientFrame.HeaderLength)
+        {
+            return false;
+        }
+
+        var channel = (WireChannel)(frame[6] | (frame[7] << 8));
+        if (channel == WireChannel.Keepalive)
+        {
+            SendPacket(CommonPackets.TransmissionEndPacket);
+            return true;
+        }
+
+        return channel == WireChannel.SentCount;
     }
 
     private void MaybeSendStarterMutator()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +12,31 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 {
     internal static ushort InsertAtFirstEmptyIndex(SphereClient value)
     {
-        // TODO: this is horribly inefficient
-        var index = 0x4F6F;
-        for (ushort i = 0x4F6F; i < ushort.MaxValue; i++)
+        ushort? index = null;
+        for (var i = (int)0x4F6F; i <= ushort.MaxValue; i++)
         {
-            if (!storage.ContainsKey(i))
+            var id = (ushort)i;
+            if (storage.ContainsKey(id) || WorldObjectIndex.IsInUse(id))
             {
-                index = i;
-                break;
+                continue;
             }
+
+            index = id;
+            break;
         }
 
-        if (index == -1)
+        if (index is null)
         {
             throw new ArgumentException("Reached max number of connections");
         }
 
-        InsertAt((ushort)index, value);
-        return (ushort)index;
+        InsertAt(index.Value, value);
+        return index.Value;
     }
 
     internal static void InsertAt(ushort id, SphereClient value)
     {
+        WorldObjectIndex.Reserve(id);
         Add(id, value);
         ClientStateEvents.RaiseRosterChanged();
     }

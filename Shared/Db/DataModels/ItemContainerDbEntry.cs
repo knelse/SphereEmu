@@ -28,12 +28,12 @@ public class ItemContainerDbEntry
 
     [BsonIgnore]
     private static readonly PackedScene LootBagScene =
-        (PackedScene) ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
+        (PackedScene)ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
 
     public Dictionary<int, int> Contents { get; set; } = [];
     public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
+    public static ItemContainerDbEntry CreateHierarchyWithContents(double x, double y, double z,
         int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
@@ -42,7 +42,7 @@ public class ItemContainerDbEntry
         var levelOverride = SphRng.Rng.Next(0, 61);
         bag.ItemContainerDbEntry = new ItemContainerDbEntry
         {
-            TitleMinusOne = (byte) level,
+            TitleMinusOne = (byte)level,
             X = x,
             Y = y,
             Z = z,
@@ -57,11 +57,12 @@ public class ItemContainerDbEntry
             var randomObj = LootRandomizer.GetRandomLootObject(levelOverride > 0 ? levelOverride : level);
             var item = ItemDbEntry.CreateFromGameObject(randomObj);
             item.ParentContainerId = bag.ItemContainerDbEntry.Id;
-            DbConnection.Items.Insert(item);
+            item.Id = WorldObjectIndex.NewItem();
+            DbConnection.Items.Insert(item.Id, item);
             bag.ItemContainerDbEntry.Contents[i] = item.Id;
         }
 
-        bag.Transform = bag.Transform.Translated(new Vector3((float) x, (float) y, (float) z));
+        bag.Transform = bag.Transform.Translated(new Vector3((float)x, (float)y, (float)z));
         SphereServer.ServerNode.CallDeferred("add_child", bag);
         DbConnection.ItemContainers.Update(bag.ItemContainerDbEntry);
 
@@ -70,7 +71,7 @@ public class ItemContainerDbEntry
         return bag.ItemContainerDbEntry;
     }
 
-    private bool RemoveIfEmpty ()
+    private bool RemoveIfEmpty()
     {
         if (Contents.Count != 0)
         {
@@ -85,7 +86,7 @@ public class ItemContainerDbEntry
         return true;
     }
 
-    public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty(int itemGlobalId)
     {
         if (Contents.ContainsValue(itemGlobalId))
         {
@@ -99,7 +100,7 @@ public class ItemContainerDbEntry
         return RemoveIfEmpty();
     }
 
-    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty (int slotId)
+    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty(int slotId)
     {
         if (Contents.TryGetValue(slotId, out var value))
         {
@@ -112,7 +113,7 @@ public class ItemContainerDbEntry
         return RemoveIfEmpty();
     }
 
-    public void ShowForEveryClientInRadius ()
+    public void ShowForEveryClientInRadius()
     {
         // foreach (var client in SphereServer.ActiveClients.Values)
         // {
@@ -122,7 +123,7 @@ public class ItemContainerDbEntry
         // }
     }
 
-    public void UpdatePositionForEveryClientInRadius ()
+    public void UpdatePositionForEveryClientInRadius()
     {
         // foreach (var client in SphereServer.ActiveClients.Values)
         // {
@@ -133,7 +134,7 @@ public class ItemContainerDbEntry
         // }
     }
 
-    public void ShowForClient (SphereClient client)
+    public void ShowForClient(SphereClient client)
     {
         // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.Sack_Mob_Loot);
         // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
@@ -144,7 +145,7 @@ public class ItemContainerDbEntry
         // client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowItemListForClient (ushort clientId)
+    public void ShowItemListForClient(ushort clientId)
     {
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
         // we'll figure out weight for 3-4 slot containers later
@@ -231,7 +232,7 @@ public class ItemContainerDbEntry
         // global::Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    public byte[] GetContentsPacket (ushort clientId)
+    public byte[] GetContentsPacket(ushort clientId)
     {
         var items = Contents.Select(x => DbConnection.Items.FindById(x.Value)).ToList();
         return Packet.ItemsToPacket(clientId, Id, items);

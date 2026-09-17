@@ -86,7 +86,7 @@ public partial class ConsoleCommandParser
 
         var item = ItemDbEntry.CreateFromGameObject(gameObject);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.New();
+        item.Id = WorldObjectIndex.NewItem();
         DbConnection.Items.Insert(item.Id, item);
 
         var name = gameObject.Localisation.GetValueOrDefault(Locale.Russian, gameObject.SphereType);
@@ -229,7 +229,7 @@ public partial class ConsoleCommandParser
         goWithSuffix.Suffix = chosen.Suffix;
         var item = ItemDbEntry.CreateFromGameObject(goWithSuffix);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.New();
+        item.Id = WorldObjectIndex.NewItem();
         DbConnection.Items.Insert(item.Id, item);
 
         var displayName = chosen.Go.Localisation.GetValueOrDefault(Locale.Russian, chosen.Go.SphereType);
@@ -487,7 +487,7 @@ public partial class ConsoleCommandParser
         // The entity id sent to the client must equal the row id so a later pickup request
         // resolves, and it must come from the world index: LiteDB's auto-id counts from 1 and
         // would collide with the ids of entities already on screen.
-        item.Id = WorldObjectIndex.New();
+        item.Id = WorldObjectIndex.NewItem();
         DbConnection.Items.Insert(item.Id, item);
 
         DebugConsole.SendSpherePacket($"/packet {definition}",

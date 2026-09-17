@@ -160,9 +160,8 @@ public static class DbConnection
             SphLogger.Info($"Cleared {staleFists} unused fists row(s) from the item collection");
         }
 
-        // The counter lives in memory, so move it past the stored ids before anything allocates one.
-        WorldObjectIndex.SeedFrom(Items.Count() == 0 ? 0u : (uint)Items.Max(x => x.Id));
         Monsters.DeleteAll();
+        WorldObjectIdCleanup.SeedAndRepair();
         // ItemContainers.DeleteAll();
         // Vendors.DeleteAll();
 
@@ -187,6 +186,8 @@ public static class DbConnection
         {
             Items.Insert(2825, ItemDbEntry.CreateFromGameObject(GameObjects.FindById(1)));
         }
+
+        WorldObjectIndex.Reserve(2825);
     }
 
     private static void CreateIndexes()

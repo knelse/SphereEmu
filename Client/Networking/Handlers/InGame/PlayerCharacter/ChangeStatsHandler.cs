@@ -41,8 +41,8 @@ public class ChangeStatsHandler(ushort localId, ClientConnection clientConnectio
             return;
         }
 
-        clientConnection.SaveSelectedCharacter();
         NetworkedStatsUpdater.Update(character);
+        clientConnection.SaveSelectedCharacter();
         SphLogger.Info(
             $"ChangeStats STR+{strength} AGI+{agility} ACC+{accuracy} END+{endurance} " +
             $"EAR+{earth} AIR+{air} WAT+{water} FIR+{fire}. Client ID: {localId:X4}");

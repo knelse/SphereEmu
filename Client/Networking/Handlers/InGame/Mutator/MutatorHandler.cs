@@ -98,7 +98,7 @@ public static class MutatorHandler
         BelongingSlot slot)
     {
         var mutatorId = (ushort)mutator;
-        var itemId = WorldObjectIndex.New();
+        var itemId = WorldObjectIndex.NewItem();
         var playerId = ByteSwap(localId);
 
         var reserveParts = PacketPart.LoadDefinedWithOverride("new_item_reserve_slot_full");

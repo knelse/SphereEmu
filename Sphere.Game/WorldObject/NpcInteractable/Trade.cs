@@ -16,6 +16,7 @@ public partial class NpcInteractable
 		switch (interactionType)
 		{
 			case ClientInteractionType.OpenTrade:
+				EnsureShopStock();
 				ShowItemList(clientID);
 				ShowItemContents(clientID);
 				break;
@@ -24,55 +25,53 @@ public partial class NpcInteractable
 		}
 	}
 
+	private void EnsureShopStock()
+	{
+		if (ItemsOnSale.Count > 0 || !IsTradeNpc())
+		{
+			return;
+		}
+
+		if (VendorItemTierMax == 0 || VendorItemTierMin == 0)
+		{
+			return;
+		}
+
+		GenerateItemsForSale();
+	}
+
 	private void GenerateItemsForSale()
 	{
-		List<ItemDbEntry> itemsOnSale;
-
-		switch (NpcType)
+		List<ItemDbEntry> itemsOnSale = NpcType switch
 		{
-			case NpcType.TradeJewelry:
-				itemsOnSale = ItemsOnSaleGenerator.Jewelry(VendorItemTierMin, VendorItemTierMax);
-				break;
-			case NpcType.TradeTravelGeneric:
-				itemsOnSale = ItemsOnSaleGenerator.TravelGeneric(VendorItemTierMin, VendorItemTierMax);
-				break;
-			case NpcType.TradeWeapon:
-				itemsOnSale = ItemsOnSaleGenerator.Weapons(VendorItemTierMin, VendorItemTierMax);
-				break;
-			case NpcType.TradeArmor:
-				itemsOnSale = ItemsOnSaleGenerator.Armor(VendorItemTierMin, VendorItemTierMax);
-				break;
-			case NpcType.TradeAlchemy:
-				itemsOnSale = ItemsOnSaleGenerator.Alchemy(VendorItemTierMin, VendorItemTierMax);
-				break;
-			case NpcType.TradeMagic:
-				itemsOnSale = ItemsOnSaleGenerator.Magic(VendorItemTierMin, VendorItemTierMax);
-				break;
-			default:
-				itemsOnSale = [];
-				break;
-		}
+			NpcType.TradeJewelry => ItemsOnSaleGenerator.Jewelry(VendorItemTierMin, VendorItemTierMax),
+			NpcType.TradeTravelGeneric => ItemsOnSaleGenerator.TravelGeneric(VendorItemTierMin, VendorItemTierMax),
+			NpcType.TradeWeapon => ItemsOnSaleGenerator.Weapons(VendorItemTierMin, VendorItemTierMax),
+			NpcType.TradeArmor => ItemsOnSaleGenerator.Armor(VendorItemTierMin, VendorItemTierMax),
+			NpcType.TradeAlchemy => ItemsOnSaleGenerator.Alchemy(VendorItemTierMin, VendorItemTierMax),
+			NpcType.TradeMagic => ItemsOnSaleGenerator.Magic(VendorItemTierMin, VendorItemTierMax),
+			_ => []
+		};
 
 		if (itemsOnSale.Count == 0)
 		{
 			for (var i = 0; i < 20; i++)
 			{
-				var item = ItemDbEntry.CreateFromGameObject(SphObjectDb.GameObjectDataDb[3400 + i]);
-				ItemsOnSale.Add(item);
+				itemsOnSale.Add(ItemDbEntry.CreateFromGameObject(SphObjectDb.GameObjectDataDb[3400 + i]));
 			}
 		}
 
-		foreach (var item in itemsOnSale)
+		foreach (var item in itemsOnSale.Take(MaxDisplayedShopItems))
 		{
 			item.ParentContainerId = ID;
-			item.Id = WorldObjectIndex.New();
+			item.Id = WorldObjectIndex.NewItem();
 			ItemsOnSale.Add(item);
 		}
 	}
 
 	public int GetMaxItemsOnSale()
 	{
-		return Math.Min(ItemsOnSale.Count, 74);
+		return Math.Min(ItemsOnSale.Count, MaxDisplayedShopItems);
 	}
 
 	private void ShowItemList(ushort clientId)

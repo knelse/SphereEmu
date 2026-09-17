@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Combat;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
@@ -29,6 +30,15 @@ public sealed class CombatHitEventHandler(SphereClient sphereClient) : IClientEv
         if (cfg is null)
         {
             LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind, "skip");
+            return Task.CompletedTask;
+        }
+
+        if (clientEvent.TargetGlobalId == clientEvent.AttackerGlobalId ||
+            clientEvent.TargetGlobalId == sphereClient.ID ||
+            clientEvent.TargetGlobalId == SphBitStream.ByteSwap(clientEvent.AttackerGlobalId))
+        {
+            LogAction(clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+                "skip-self");
             return Task.CompletedTask;
         }
 

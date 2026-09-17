@@ -102,6 +102,8 @@ public static class AdminUiItemDetails
             AdminUiAtlas.CostIcon,
             ResolveVendorCost(item).ToString(CultureInfo.InvariantCulture),
             TextWhite));
+        box.AddChild(MakeDivider());
+        box.AddChild(BuildObjectIdLabel(item.Id));
     }
 
     /// <summary>Approximate content height used to size popup mid tiles.</summary>
@@ -110,7 +112,7 @@ public static class AdminUiItemDetails
     {
         item.RecalculateStatReqsFromBase();
 
-        var rows = 1 + 1 + 1 + 2 + 1; // header ~2, weight, footer divider, game id, cost
+        var rows = 1 + 1 + 1 + 2 + 1 + 2; // header ~2, weight, footer divider, game id, cost, object id divider + line
         if (item.IsTierVisible() && item.Tier is >= 1 and <= 15)
         {
             rows++;
@@ -161,6 +163,19 @@ public static class AdminUiItemDetails
         }
 
         return Math.Max(0, cost);
+    }
+
+    private static Control BuildObjectIdLabel(int id)
+    {
+        var label = new Label
+        {
+            Text = $"ObjectID: {id} [{id:X4}]",
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            MouseFilter = Control.MouseFilterEnum.Ignore
+        };
+        label.AddThemeColorOverride("font_color", TextWhite);
+        label.AddThemeFontSizeOverride("font_size", MetaFontSize);
+        return label;
     }
 
     private static Control BuildDescriptionLabel(string text)

@@ -1,5 +1,6 @@
 using Godot;
 using SphServer.Shared.GameData.Enums;
+using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -157,8 +158,15 @@ public partial class WorldObject : Node3D
 			{
 				ID = WorldObjectIndex.New();
 			}
+			else if (!WorldObjectIndex.TryReserve(ID))
+			{
+				var previous = ID;
+				ID = WorldObjectIndex.New();
+				SphLogger.Warning(
+					$"World object {Name} baked id {previous:X4} already in use, reassigned to {ID:X4}");
+			}
 
-			// Append once only — re-entering the tree (chunk stream / repack) used to stack
+			// Append once only - re-entering the tree (chunk stream / repack) used to stack
 			// _{ID}_{ID}_{ID}… onto names already baked into World/Chunks/*.tscn.
 			CompactDuplicatedIdNameSuffix();
 

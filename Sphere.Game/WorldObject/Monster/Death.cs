@@ -2,6 +2,7 @@ using System;
 using Godot;
 using SphServer.Client;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Server.GameplayLogic.Experience;
 using SphServer.Shared.Logger;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -20,17 +21,29 @@ public partial class Monster
 		var client = hit.AttackerClient;
 		var character = client?.CurrentCharacter;
 		var credit = GetKillCredit();
-		var awardTitle = credit.MajoritySchool == DamageSchool.Physical;
-		var xpAwarded = GetExperienceForKill(character);
+		var awardTitle = ExperienceBalance.AwardKillExperienceToTitle(
+			character?.Guild ?? Guild.None, credit.MajoritySchool == DamageSchool.Physical);
+		var xpAwarded = GetExperienceForKill(character, awardTitle);
 		var xpKind = awardTitle ? "title" : "degree";
+
+		var xpApplied = false;
+		var karmaApplied = false;
+		var karmaTierChanged = false;
+		if (character is not null)
+		{
+			var mobKarma = InstanceKarmaType != default ? InstanceKarmaType : DataKarmaType;
+			karmaApplied = character.ApplyKillKarma(mobKarma, out karmaTierChanged);
+			xpApplied = xpAwarded > 0 && character.AwardExperience((uint)xpAwarded, awardTitle);
+		}
+
 		SphLogger.Info(
 			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} {xpKind} XP " +
-			$"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}).");
+			$"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}" +
+			(character is null ? ")" : $", karma {character.KarmaCount} {character.Karma})."));
 
-		if (client is not null && character is not null && xpAwarded > 0
-			&& character.AwardExperience((uint)xpAwarded, awardTitle))
+		if (client is not null && character is not null && (xpApplied || karmaApplied))
 		{
-			NetworkedStatsUpdater.Update(character);
+			NetworkedStatsUpdater.Update(character, refreshPeers: xpApplied || karmaTierChanged);
 			client.SaveCharacter();
 		}
 

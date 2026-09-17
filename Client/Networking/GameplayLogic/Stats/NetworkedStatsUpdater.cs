@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using BitStreams;
 using SphereHelpers.Extensions;
+using SphServer.Client;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
@@ -24,14 +25,6 @@ public static class NetworkedStatsUpdater
     public static void Update(CharacterDbEntry characterDbEntry, Action<byte[]>? send = null,
         bool refreshPeers = true)
     {
-        var divider = 0b0001011;
-        var fieldMarker7Bit = 0b01;
-        var fieldMarker14Bit = 0b10;
-        var fieldMarker31Bit = 0b11;
-
-        // to write 0x08 0xC0 instead
-        var hpMaxMarker = 0b10000000100010;
-
         var fieldMarkers = new List<Stat>
         {
             HpCurrent,
@@ -52,6 +45,7 @@ public static class NetworkedStatsUpdater
             IsInvisible,
             GuildPlus64,
             GuildRank,
+            // Local CheckPing region 10. TradeMan WriteIndexedStat does not write self i37/i38.
             TitleLevel,
             DegreeLevel,
             KarmaType,
@@ -69,7 +63,28 @@ public static class NetworkedStatsUpdater
             MA,
         };
 
-        var characterFieldMap = new SortedDictionary<Stat, int>
+        var characterFieldMap = BuildFieldMap(characterDbEntry);
+        var packet = BuildClassicSetStatPacket(characterDbEntry, fieldMarkers, characterFieldMap);
+        var client = ActiveClients.Get(characterDbEntry.ClientIndex);
+        if (!TrySend(characterDbEntry, packet, send, client))
+        {
+            return;
+        }
+
+        // Peers read nameplate fields from entity_character (HP, karma type, levels,
+        // rebirth, guild). Re-show keeps those in sync; karma count stays local-only.
+        if (refreshPeers)
+        {
+            client?.BroadcastNameplateRefreshToVisibleClients();
+        }
+
+        var updatedStats = string.Join(", ", characterFieldMap.Select(kv => $"{kv.Key}={kv.Value}"));
+        SphLogger.Info($"Stat update for client ID: {characterDbEntry.ClientIndex}. New stat values: {updatedStats}");
+    }
+
+    private static SortedDictionary<Stat, int> BuildFieldMap(CharacterDbEntry characterDbEntry)
+    {
+        return new SortedDictionary<Stat, int>
         {
             [HpCurrent] = characterDbEntry.CurrentHP,
             [HpMax] = characterDbEntry.MaxHP,
@@ -112,6 +127,16 @@ public static class NetworkedStatsUpdater
             [PA] = characterDbEntry.PAtk,
             [MA] = characterDbEntry.MAtk
         };
+    }
+
+    private static byte[] BuildClassicSetStatPacket(CharacterDbEntry characterDbEntry, List<Stat> fieldMarkers,
+        SortedDictionary<Stat, int> characterFieldMap)
+    {
+        var divider = 0b0001011;
+        var fieldMarker7Bit = 0b01;
+        var fieldMarker14Bit = 0b10;
+        var fieldMarker31Bit = 0b11;
+        var hpMaxMarker = 0b10000000100010;
 
         var stream = SphBitStream.GetWriteBitStream();
 
@@ -139,30 +164,25 @@ public static class NetworkedStatsUpdater
             stream.WriteBits(valueBits, fieldLength);
         }
 
-        var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
-        var client = ActiveClients.Get(characterDbEntry.ClientIndex);
+        return Packet.ToByteArray(stream.GetStreamData(), 3);
+    }
+
+    private static bool TrySend(CharacterDbEntry characterDbEntry, byte[] packet, Action<byte[]>? send,
+        SphereClient? client)
+    {
         if (send is not null)
         {
             send(packet);
+            return true;
         }
-        else if (client is null)
+
+        if (client is null)
         {
             SphLogger.Warning($"No client found by ID: {characterDbEntry.ClientIndex}");
-            return;
-        }
-        else
-        {
-            client.MaybeQueueNetworkPacketSend(packet);
+            return false;
         }
 
-        // Peers read nameplate fields from entity_character (HP, karma type, levels,
-        // rebirth, guild). Re-show keeps those in sync; karma count stays local-only.
-        if (refreshPeers)
-        {
-            client?.BroadcastNameplateRefreshToVisibleClients();
-        }
-
-        var updatedStats = string.Join(", ", characterFieldMap.Select(kv => $"{kv.Key}={kv.Value}"));
-        SphLogger.Info($"Stat update for client ID: {characterDbEntry.ClientIndex}. New stat values: {updatedStats}");
+        client.MaybeQueueNetworkPacketSend(packet);
+        return true;
     }
 }

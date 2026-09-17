@@ -40,8 +40,7 @@ public class NpcInteractableSerializer(NpcInteractable npcInteractable)
             stream.WriteUInt16(itemLocalId);
             stream.WriteBytes([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
             stream.WriteUInt32((uint)item.VendorCost, 32);
-            // 74 seems to be max amount vendor can display
-            if (slotId % 28 != 0 && slotId != 74)
+            if (slotId % 28 != 0 && slotId != NpcInteractable.MaxDisplayedShopItems)
             {
                 continue;
             }

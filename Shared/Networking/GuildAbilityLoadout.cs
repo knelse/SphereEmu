@@ -109,7 +109,7 @@ public static class GuildAbilityLoadout
         go.Suffix = ItemSuffix.None;
         var item = ItemDbEntry.CreateFromGameObject(go);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.New();
+        item.Id = WorldObjectIndex.NewItem();
         DbConnection.Items.Insert(item.Id, item);
         character.PlaceItemInSlot(slot, item.Id);
 

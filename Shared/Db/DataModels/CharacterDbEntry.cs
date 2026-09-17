@@ -366,6 +366,34 @@ public class CharacterDbEntry
     }
 
     /// <summary>
+    ///     Shift karma from killing a mob: very bad +1, bad 0, neutral -10, good -20, benign -40.
+    ///     Clamped to [-5000, 5000]. Does not persist or push.
+    /// </summary>
+    public bool ApplyKillKarma(KarmaTypes mobKarma, out bool tierChanged)
+    {
+        tierChanged = false;
+        var delta = mobKarma switch
+        {
+            KarmaTypes.Очень_Плохая => 1,
+            KarmaTypes.Плохая => 0,
+            KarmaTypes.Нейтральная => -10,
+            KarmaTypes.Хорошая => -20,
+            KarmaTypes.Благая => -40,
+            _ => 0
+        };
+        if (delta == 0)
+        {
+            return false;
+        }
+
+        var oldTier = Karma;
+        var oldCount = KarmaCount;
+        SetKarmaCount(KarmaCount + delta);
+        tierChanged = Karma != oldTier;
+        return KarmaCount != oldCount;
+    }
+
+    /// <summary>
     ///     Clamp <see cref="KarmaCount"/> to [-5000, 5000] and set <see cref="Karma"/> from thresholds.
     /// </summary>
     public void SyncKarmaFromCount()
@@ -447,7 +475,24 @@ public class CharacterDbEntry
         AvailableTitleStats -= title;
         AvailableDegreeStats -= degree;
         RecalcCurrentStats();
+        PersistRow();
         return true;
+    }
+
+    /// <summary>Write this row through now. Recalc used to skip this in the starting dungeon.</summary>
+    private void PersistRow()
+    {
+        if (Id == 0)
+        {
+            return;
+        }
+
+        if (!DbConnection.Characters.Update(this))
+        {
+            DbConnection.Characters.Upsert(this);
+        }
+
+        DbConnection.Checkpoint();
     }
 
     public static bool IsTitleStat(Stat stat) =>
@@ -805,9 +850,6 @@ public class CharacterDbEntry
         MainHandPAtk = heldPAtk;
         MainHandMAtk = heldMAtk;
         HoldsItemInHand = holdsItem;
-
-        // TODO: character state shouldn't be updated in starting dungeon
-        // MainServer.CharacterCollection.Update(Id, this);
 
         SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
                        $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +

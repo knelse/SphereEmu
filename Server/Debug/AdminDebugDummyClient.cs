@@ -80,9 +80,7 @@ public static class AdminDebugDummyClient
         client.SetupAdminDebugDummy(ClientId);
         client.SetPlayerDbEntry(player);
         client.SetSelectedCharacterIndex(characterIndex);
-        client.CurrentCharacter?.RecalcAvailableStats();
         client.CurrentCharacter?.RecalcCurrentStats();
-        client.SaveCharacter();
 
         ActiveNodes.Add(client.GetInstanceId(), client);
         parent.AddChild(client);
