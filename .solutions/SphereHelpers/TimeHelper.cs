@@ -2,9 +2,9 @@ namespace SphServer.Helpers;
 
 /// <summary>
 ///     Sphere calendar matching client <c>SferaGameCalendar::fromUnixTime</c>.
-///     Credentials wire after <c>20 10</c> is five bytes (not a raw LE calendar u32):
-///     minute/quarter, day-lsb/hour/minute-hi, month/day-hi, year-lo, year-hi2.
-///     Display year = wire year + 7800.
+///     Packed fields: minute/quarter, day-lsb/hour/minute-hi, month/day-hi, year-lo, year-hi2.
+///     Display year = wire year + 7800. Credentials writes the first four bytes as Owner
+///     array8 payload (bitstream), not as five aligned bytes after <c>20 10</c>.
 /// </summary>
 public static class TimeHelper
 {
@@ -23,8 +23,7 @@ public static class TimeHelper
     }
 
     /// <summary>
-    ///     Five bytes after credentials <c>20 10</c>, matching live
-    ///     <c>…20 10 C4 5C C2 51 01</c> field layout (year-hi is plain 2 bits, not 0x34+).
+    ///     Five packed calendar bytes. Year-hi is the low 2 bits of byte 4 (not 0x34+).
     /// </summary>
     public static byte[] EncodeCurrentSphereDateTime()
     {

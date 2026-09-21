@@ -207,6 +207,13 @@ public static class DbConnection
         Db?.Checkpoint();
     }
 
+    /// <summary>Write an item row and flush so a restart can FindById it from character slots.</summary>
+    public static void SaveItem(ItemDbEntry item)
+    {
+        Items.Upsert(item.Id, item);
+        Checkpoint();
+    }
+
     /// <summary>Checkpoint and release the database. Safe to call more than once.</summary>
     public static void Close()
     {

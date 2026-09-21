@@ -72,8 +72,6 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
 
         character.RecalcCurrentStats();
 
-        NetworkedStatsUpdater.Update(character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);
-
         SphLogger.Info($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
 
         var declared = new HashSet<int>();
@@ -86,8 +84,7 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
                 continue;
             }
 
-            var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.WireObjectType,
-                item.GameId, ItemRecordEncoder.SuffixWireFor(item), ByteSwap(localId));
+            var record = ItemRecordEncoder.Encode(item, ByteSwap(localId));
 
             if (slot == BelongingSlot.Helmet)
             {
@@ -104,6 +101,9 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
 
             clientConnection.MaybeScheduleNetworkPacketSend(record);
         }
+
+        // After items: GuildPlus64/rank and worn bonuses need the emblem process to exist first.
+        NetworkedStatsUpdater.Update(character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);
 
         WaitForClientTimer = new(0.05f, false, clientConnection.MoveToNextBeforeGameStage);
     }

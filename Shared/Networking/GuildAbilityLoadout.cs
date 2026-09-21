@@ -110,14 +110,11 @@ public static class GuildAbilityLoadout
         var item = ItemDbEntry.CreateFromGameObject(go);
         item.ItemCount = 1;
         item.Id = WorldObjectIndex.NewItem();
-        DbConnection.Items.Insert(item.Id, item);
+        DbConnection.SaveItem(item);
         character.PlaceItemInSlot(slot, item.Id);
 
         Send(send, ItemSlotReserve.Build(character.ClientIndex, slot, item.Id, item.ItemCount));
-        send?.Invoke(ItemRecordEncoder.Encode(
-            (ushort)item.Id, (int)item.WireObjectType, item.GameId,
-            ItemRecordEncoder.SuffixWireFor(item),
-            SphBitStream.ByteSwap(character.ClientIndex)));
+        send?.Invoke(ItemRecordEncoder.Encode(item, SphBitStream.ByteSwap(character.ClientIndex)));
         return true;
     }
 

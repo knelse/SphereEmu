@@ -98,6 +98,11 @@ public partial class WorldObject : Node3D
 	/// </summary>
 	protected virtual bool AutoGroundGlbVisual => false;
 
+	/// <summary>
+	///     MBC module tag for region 1 TransformUpdate. Must match the tag used at spawn.
+	/// </summary>
+	protected virtual ushort GetMoveModuleTag() => (ushort)ObjectType;
+
 	internal bool HasVisibilityArea => _visibilityArea is not null;
 
 	public override void _ExitTree()

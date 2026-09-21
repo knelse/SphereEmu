@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using SphServer.Client;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Server.GameplayLogic.Experience;
 using SphServer.Shared.Logger;
@@ -81,19 +80,5 @@ public partial class Monster
 		BroadcastDespawnToVisibleClients();
 		RemoveFromWorldRegistry();
 		QueueFree();
-	}
-
-	/// <summary>
-	///     Don't spawn a dying mob to a client entering range after the killing blow — it would get
-	///     a live spawn and never see the death. The pending despawn broadcast is harmless for it.
-	/// </summary>
-	protected override void ShowForClient(SphereClient client)
-	{
-		if (_deathStarted)
-		{
-			return;
-		}
-
-		base.ShowForClient(client);
 	}
 }

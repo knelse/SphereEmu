@@ -88,6 +88,7 @@ public static class WorldObjectIdCleanup
         RepairMissingAndDuplicateSlots(conflicts);
         RemapItemsCollidingWithContainers(conflicts);
         RemapItemsCollidingWithClientIndex(conflicts);
+        DbConnection.Checkpoint();
         return conflicts;
     }
 

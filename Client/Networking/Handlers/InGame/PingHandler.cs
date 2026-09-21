@@ -143,7 +143,7 @@ public class PingHandler : ISphereClientNetworkingHandler
 
         if (character.CurrentHP != hpBefore)
         {
-            NetworkedStatsUpdater.Update(character);
+            NetworkedStatsUpdater.Update(character, log: false);
         }
 
         if (changed)

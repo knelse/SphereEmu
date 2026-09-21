@@ -252,10 +252,8 @@ public partial class ConsoleCommandParser
         currentCharacterDbEntry.Items[slot] = item.Id;
         sphereClient!.SaveCharacter();
 
-        var suffixWire = ItemRecordEncoder.SuffixWireFor(item);
         var reserve = ItemSlotReserve.Build(currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode((ushort)item.Id, (int)item.WireObjectType, item.GameId,
-            suffixWire, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
+        var record = ItemRecordEncoder.Encode(item, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
 
         if (itemFirst)
         {

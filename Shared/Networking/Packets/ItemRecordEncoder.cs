@@ -2,14 +2,18 @@ using System;
 using SphereHelpers.Extensions;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Networking;
+using SphServer.Shared.Networking.Mbc;
 using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Packets;
 
 /// <summary>
-///     The server->client item record: this item exists, and it belongs to that container.
-///     containerObjectId is the id the client itself knows the container by — a character is on the
-///     wire as ByteSwap(ClientIndex), so a caller naming the player has to swap it.
+///     S2C item record. Regular items use classic FULL_SPAWN. Guild emblem/abilities use live
+///     MBC tags (guild=2000, specab=2001, specab_* = 2002..2015): classic types 976/977/979/982
+///     are not modules the client loads.
+///     containerObjectId is the id the client knows the container by: ByteSwap(ClientIndex)
+///     for a player.
 /// </summary>
 public static class ItemRecordEncoder
 {
@@ -27,8 +31,11 @@ public static class ItemRecordEncoder
     private const uint PutHereMessage = 0;
     private const uint PropertiesMessage = 9;
 
+    /// <summary>Classic ground-container sentinel. Not a process id; skip SetParent on MBC guild.</summary>
+    private const ushort GroundContainerSentinel = 0xFF00;
+
     /// <summary>
-    ///     Sentinel for Encode/SuffixWireFor: item has no suffix. Not an on-wire magnitude —
+    ///     Sentinel for Encode/SuffixWireFor: item has no suffix. Not an on-wire magnitude.
     ///     Actual locale ids are 0..N and include 17, so the packed none pattern lives in
     ///     <see cref="PackedNoSuffix"/>.
     /// </summary>
@@ -38,6 +45,13 @@ public static class ItemRecordEncoder
     ///     On-wire none: __hasSuffix(1) + suffix_length(0) + suffix(2) = six bits.
     /// </summary>
     private const int PackedNoSuffix = 17;
+
+    public static byte[] Encode(ItemDbEntry item, ushort containerObjectId,
+        float x = ContainedX, float y = 0f, float z = 0f)
+    {
+        return Encode((ushort)item.Id, (int)item.WireObjectType, item.GameId, SuffixWireFor(item),
+            containerObjectId, x, y, z, item.CurrentDurability, item.Durability, item.GameObjectType);
+    }
 
     /// <summary>
     ///     The shorter shape, carrying no game object id: the item is identified by object type
@@ -61,7 +75,21 @@ public static class ItemRecordEncoder
     }
 
     public static byte[] Encode(ushort entityId, int objectType, int gameObjectId, int suffix,
-        ushort containerObjectId, float x = ContainedX, float y = 0f, float z = 0f)
+        ushort containerObjectId, float x = ContainedX, float y = 0f, float z = 0f,
+        int currentDurability = 0, int maxDurability = 0,
+        GameObjectType gameObjectType = GameObjectType.Unknown)
+    {
+        if (IsGuildFamily((ObjectType)objectType))
+        {
+            return EncodeLiveGuild(entityId, objectType, gameObjectId, suffix, containerObjectId,
+                x, y, z, currentDurability, maxDurability, gameObjectType);
+        }
+
+        return EncodeClassic(entityId, objectType, gameObjectId, suffix, containerObjectId, x, y, z);
+    }
+
+    private static byte[] EncodeClassic(ushort entityId, int objectType, int gameObjectId, int suffix,
+        ushort containerObjectId, float x, float y, float z)
     {
         var stream = GetWriteBitStream();
         WriteItemHeader(stream, entityId, objectType);
@@ -76,19 +104,10 @@ public static class ItemRecordEncoder
         stream.WriteUInt16((ushort)(gameObjectId & 0x3FFF), 14);
         WriteSuffix(stream, suffix);
 
-        // "You are inside this container" — the only thing that gives an item a parent.
+        // "You are inside this container": the only thing that gives an item a parent.
         stream.WriteByte((byte)FollowOnRecord, 7);
         stream.WriteByte((byte)PutHereMessage, 8);
         stream.WriteByte(3, 8);
-
-        if (UsesShortAbilityRecord(objectType))
-        {
-            // item_guild_ability: 16-bit container, then 7 pad bits. No properties / 31-ones tail.
-            stream.WriteUInt16(containerObjectId, 16);
-            stream.WriteByte(0, 7);
-            return Packet.ToByteArray(stream.GetStreamData(), 3);
-        }
-
         stream.WriteUInt32(containerObjectId, 24);
 
         // The item's own properties. Property 0 stays -1: any other value that is not the player's
@@ -116,15 +135,8 @@ public static class ItemRecordEncoder
         stream.WriteByte(FullSpawn, 8);
     }
 
-    private static bool UsesShortAbilityRecord(int objectType) =>
-        (ObjectType)objectType is ObjectType.Special_Ability or ObjectType.Special_Ability_Steal;
-
     private static byte HeaderBit28(int objectType) =>
-        (ObjectType)objectType is ObjectType.Special_Guild or ObjectType.Guild_Specialization
-            or ObjectType.Special_Ability or ObjectType.Special_Ability_Steal
-            or ObjectType.Token
-            ? (byte)1
-            : (byte)0;
+        (ObjectType)objectType is ObjectType.Token ? (byte)1 : (byte)0;
 
     /// <summary>
     ///     Map an item's stored <see cref="ItemSuffix"/> to the wire id Encode expects
@@ -181,5 +193,141 @@ public static class ItemRecordEncoder
     {
         stream.WriteUInt16((ushort)value, 16);
         stream.WriteUInt16((ushort)(value >> 16), 16);
+    }
+
+    private static bool IsGuildFamily(ObjectType objectType) =>
+        objectType is ObjectType.Special_Guild or ObjectType.Special_Ability
+            or ObjectType.Special_Ability_Steal or ObjectType.Guild_Specialization;
+
+    private static bool IsParentContainer(ushort containerObjectId) =>
+        containerObjectId != 0 && containerObjectId != GroundContainerSentinel;
+
+    /// <summary>
+    ///     Classic PacketPart types 976/977/979/982 are not MBC modules. Live tags:
+    ///     guild=2000, specab=2001, specab_ha=2003, specab_* by GameObjectType for 982.
+    /// </summary>
+    private static ushort ToLiveGuildTag(ObjectType objectType, GameObjectType gameObjectType)
+    {
+        return objectType switch
+        {
+            ObjectType.Special_Guild => (ushort)ObjectType.Guild_Assasin_Rank1,
+            ObjectType.Special_Ability => (ushort)ObjectType.Invisibility,
+            ObjectType.Special_Ability_Steal => (ushort)ObjectType.Thievery,
+            ObjectType.Guild_Specialization => ModuleTagForGuildSpec(gameObjectType),
+            _ => (ushort)objectType
+        };
+    }
+
+    private static ushort ModuleTagForGuildSpec(GameObjectType gameObjectType) => gameObjectType switch
+    {
+        GameObjectType.Special_Druid_Wolf => (ushort)ObjectType.Steel_Whirlwind,
+        GameObjectType.Special_Crusader_Gapclose => (ushort)ObjectType.Divine_Transport,
+        GameObjectType.Special_Inquisitor_Teleport => (ushort)ObjectType.Revival,
+        GameObjectType.Special_Archmage_Teleport => (ushort)ObjectType.Monastery,
+        GameObjectType.Special_Thief_Steal => (ushort)ObjectType.Thievery,
+        GameObjectType.Special_MasterOfSteel_Suicide => (ushort)ObjectType.Divine_Wind,
+        GameObjectType.Special_Necromancer_Flyer => (ushort)ObjectType.Death_Call,
+        GameObjectType.Special_Necromancer_Resurrection => (ushort)ObjectType.Resurrection,
+        GameObjectType.Special_Necromancer_Zombie => (ushort)ObjectType.Zombie,
+        GameObjectType.Special_Bandier_Flag => (ushort)ObjectType.Raise_Flag,
+        GameObjectType.Special_Bandier_DispelControl => (ushort)ObjectType.Unshakable,
+        GameObjectType.Special_Bandier_Fortify => (ushort)ObjectType.Fort,
+        _ => (ushort)ObjectType.Invisibility
+    };
+
+    private static byte[] EncodeLiveGuild(ushort entityId, int objectType, int gameObjectId, int suffix,
+        ushort containerObjectId, float x, float y, float z,
+        int currentDurability, int maxDurability, GameObjectType gameObjectType)
+    {
+        var moduleTag = ToLiveGuildTag((ObjectType)objectType, gameObjectType);
+        var inContainer = IsParentContainer(containerObjectId);
+        var combined = BuildGuildSpawnSnapshot(entityId, moduleTag, x, y, z,
+            containState: (byte)(inContainer ? 2 : 0),
+            currentDurability, maxDurability, gameObjectId,
+            suffix == NoSuffix ? -1 : suffix);
+
+        if (inContainer)
+        {
+            combined = Concat(combined, BuildGuildSetParent(entityId, moduleTag, containerObjectId));
+        }
+
+        return Concat(combined, BuildGuildProperty0None(entityId, moduleTag));
+    }
+
+    private static byte[] BuildGuildSpawnSnapshot(ushort entityId, ushort moduleTag,
+        float x, float y, float z, byte containState,
+        int currentDurability, int maxDurability, int gameId, int suffixId)
+    {
+        var stream = GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(moduleTag & 0xFFF), 12);
+        stream.WriteByte(62, 7); // wire = region 61 + 1
+        WriteIeeeFloat(stream, x);
+        WriteIeeeFloat(stream, y);
+        WriteIeeeFloat(stream, z);
+        stream.WriteByte(MbcCoordEncoding.EncodeAngle(0), 8);
+        stream.WriteByte((byte)(containState & 3), 2);
+        CommonPackets.WriteMbcVarint(stream, currentDurability);
+        CommonPackets.WriteMbcVarint(stream, maxDurability);
+        CommonPackets.WriteMbcVarint(stream, gameId);
+        CommonPackets.WriteMbcVarint(stream, suffixId);
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    private static byte[] BuildGuildSetParent(ushort entityId, ushort moduleTag, ushort containerObjectId)
+    {
+        return BuildGuildContMan(entityId, moduleTag, command: 11,
+        [
+            (byte)containerObjectId,
+            (byte)(containerObjectId >> 8),
+            0
+        ]);
+    }
+
+    private static byte[] BuildGuildProperty0None(ushort entityId, ushort moduleTag)
+    {
+        return BuildGuildContMan(entityId, moduleTag, command: 9,
+        [
+            0,
+            0xFF, 0xFF, 0xFF, 0xFF
+        ]);
+    }
+
+    private static byte[] BuildGuildContMan(ushort entityId, ushort moduleTag, byte command,
+        ReadOnlySpan<byte> payload)
+    {
+        var stream = GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(moduleTag & 0xFFF), 12);
+        stream.WriteByte(5, 7); // wire = region 4 + 1 (ContMan)
+        stream.WriteByte(command, 8);
+        stream.WriteByte((byte)payload.Length, 8);
+        foreach (var b in payload)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
+    private static byte[] Concat(byte[] first, byte[] second)
+    {
+        var combined = new byte[first.Length + second.Length];
+        Buffer.BlockCopy(first, 0, combined, 0, first.Length);
+        Buffer.BlockCopy(second, 0, combined, first.Length, second.Length);
+        return combined;
+    }
+
+    private static void WriteIeeeFloat(SphWriteStream stream, float value)
+    {
+        var bits = BitConverter.SingleToUInt32Bits(value);
+        stream.WriteUInt16((ushort)bits, 16);
+        stream.WriteUInt16((ushort)(bits >> 16), 16);
     }
 }

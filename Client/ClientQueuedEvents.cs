@@ -6,7 +6,8 @@ public abstract record ClientQueuedEvent;
 
 public sealed record CurrentClientPositionChangedEvent : ClientQueuedEvent;
 
-public sealed record EntityPositionUpdateEvent(ushort EntityId, double X, double Y, double Z, double Angle)
+public sealed record EntityPositionUpdateEvent(
+    ushort EntityId, ushort ModuleTag, double X, double Y, double Z, double Angle)
     : ClientQueuedEvent;
 
 /// <summary>One damage application against a single resolved target (main hit or AoE splash).</summary>

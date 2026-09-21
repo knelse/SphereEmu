@@ -237,16 +237,25 @@ public static class AdminClientActions
                 return false;
             }
 
+            // Guild enum first so Recalc/CanUseItem accept the emblem. SetStat is after the item
+            // packets: the sheet reads in_spec from i21 and shows "?" if the emblem is not there yet.
+            if (!ApplyGuildFields(client, character, guild, rankMinusOne))
+            {
+                return false;
+            }
+
             if (WornMembershipGameId(character) != gameId
                 && !ReplaceSlotItem(clientId, BelongingSlot.Guild, gameId, ItemSuffix.None))
             {
                 return false;
             }
 
-            ok = ApplyGuildFields(client, character, guild, rankMinusOne);
+            ok = true;
         }
 
         SyncGuildAbilities(client, character, persist: true);
+        character.RecalcCurrentStats();
+        NetworkedStatsUpdater.Update(character);
         return ok;
     }
 
@@ -292,7 +301,7 @@ public static class AdminClientActions
         var item = ItemDbEntry.CreateFromGameObject(go);
         item.ItemCount = 1;
         item.Id = WorldObjectIndex.NewItem();
-        DbConnection.Items.Insert(item.Id, item);
+        DbConnection.SaveItem(item);
         character.PlaceItemInSlot(slot, item.Id);
 
         var reserve = ItemSlotReserve.Build(character.ClientIndex, slot, item.Id, item.ItemCount);
@@ -301,9 +310,7 @@ public static class AdminClientActions
             client.MaybeQueueNetworkPacketSend(reserve);
         }
 
-        client.MaybeQueueNetworkPacketSend(ItemRecordEncoder.Encode(
-            (ushort)item.Id, (int)item.WireObjectType, item.GameId,
-            ItemRecordEncoder.SuffixWireFor(item),
+        client.MaybeQueueNetworkPacketSend(ItemRecordEncoder.Encode(item,
             SphBitStream.ByteSwap(character.ClientIndex)));
 
         MaybeSyncGuildFromSlot(client, character, slot);
@@ -445,9 +452,6 @@ public static class AdminClientActions
         character.Guild = guild;
         character.GuildLevelMinusOne = rankMinusOne;
         character.RecalcCurrentStats();
-        // Always push: guild/rank are nameplate fields even when combat stats did not change.
-        NetworkedStatsUpdater.Update(character);
-
         client.SaveCharacter();
         AdminActionLog.Info(client,
             $"set guild from {oldGuild} rank {oldRank} to {guild} rank {character.GuildLevelMinusOne}");

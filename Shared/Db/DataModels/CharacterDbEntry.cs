@@ -491,20 +491,32 @@ public class CharacterDbEntry
         return true;
     }
 
+    private static readonly object PersistGate = new();
+
+    /// <summary>Insert or replace this character, then patch vitals and the slot map under one lock.</summary>
+    public void PersistAll()
+    {
+        lock (PersistGate)
+        {
+            if (Id == 0)
+            {
+                Id = DbConnection.Characters.Insert(this);
+            }
+            else if (!DbConnection.Characters.Update(this))
+            {
+                DbConnection.Characters.Upsert(this);
+            }
+
+            PatchVitalsUnlocked();
+            PatchSlotMapUnlocked();
+            DbConnection.Checkpoint();
+        }
+    }
+
     /// <summary>Write this row through now. Recalc used to skip this in the starting dungeon.</summary>
     private void PersistRow()
     {
-        if (Id == 0)
-        {
-            return;
-        }
-
-        if (!DbConnection.Characters.Update(this))
-        {
-            DbConnection.Characters.Upsert(this);
-        }
-
-        DbConnection.Checkpoint();
+        PersistAll();
     }
 
     /// <summary>
@@ -518,17 +530,27 @@ public class CharacterDbEntry
             return;
         }
 
+        lock (PersistGate)
+        {
+            if (!PatchVitalsUnlocked())
+            {
+                if (!DbConnection.Characters.Update(this))
+                {
+                    DbConnection.Characters.Upsert(this);
+                }
+            }
+
+            DbConnection.Checkpoint();
+        }
+    }
+
+    private bool PatchVitalsUnlocked()
+    {
         var col = DbConnection.Db.GetCollection("Characters");
         var doc = col.FindById(Id);
         if (doc is null)
         {
-            if (!DbConnection.Characters.Update(this))
-            {
-                DbConnection.Characters.Upsert(this);
-            }
-
-            DbConnection.Checkpoint();
-            return;
+            return false;
         }
 
         doc["CurrentHP"] = (int)CurrentHP;
@@ -538,7 +560,26 @@ public class CharacterDbEntry
         doc["CurrentSatiety"] = (int)CurrentSatiety;
         doc["MaxSatiety"] = (int)MaxSatiety;
         col.Update(doc);
-        DbConnection.Checkpoint();
+        return true;
+    }
+
+    private void PatchSlotMapUnlocked()
+    {
+        var col = DbConnection.Db.GetCollection("Characters");
+        var doc = col.FindById(Id);
+        if (doc is null)
+        {
+            return;
+        }
+
+        var items = new BsonDocument();
+        foreach (var (slot, itemId) in Items)
+        {
+            items[slot.ToString()] = itemId;
+        }
+
+        doc["Items"] = items;
+        col.Update(doc);
     }
 
     public static bool IsTitleStat(Stat stat) =>

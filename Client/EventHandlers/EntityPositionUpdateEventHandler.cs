@@ -9,22 +9,23 @@ public sealed class EntityPositionUpdateEventHandler : IClientEventHandler
 {
     private readonly SphereClient sphereClient;
 
-    public EntityPositionUpdateEventHandler (SphereClient sphereClient)
+    public EntityPositionUpdateEventHandler(SphereClient sphereClient)
     {
         this.sphereClient = sphereClient;
     }
 
-    public async Task HandleAsync (EntityPositionUpdateEvent clientEvent)
+    public async Task HandleAsync(EntityPositionUpdateEvent clientEvent)
     {
-        var packet = CommonPackets.BuildMoveObjectPacket (
+        var packet = CommonPackets.BuildMoveObjectPacket(
             clientEvent.X,
             clientEvent.Y,
             clientEvent.Z,
             clientEvent.Angle,
-            clientEvent.EntityId);
-        sphereClient.MaybeQueueNetworkPacketSend (packet);
+            clientEvent.EntityId,
+            clientEvent.ModuleTag);
+        sphereClient.MaybeQueueNetworkPacketSend(packet);
     }
 
-    Task IClientEventHandler.HandleAsync (ClientQueuedEvent clientEvent) =>
-        HandleAsync ((EntityPositionUpdateEvent) clientEvent);
+    Task IClientEventHandler.HandleAsync(ClientQueuedEvent clientEvent) =>
+        HandleAsync((EntityPositionUpdateEvent)clientEvent);
 }

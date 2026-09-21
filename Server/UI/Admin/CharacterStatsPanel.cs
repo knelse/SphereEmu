@@ -1003,7 +1003,7 @@ public partial class CharacterStatsPanel : PanelContainer
         edit.Text = newXp.ToString(CultureInfo.InvariantCulture);
         suppressStatCallbacks = false;
 
-        NetworkedStatsUpdater.Update(character);
+        NetworkedStatsUpdater.Update(character, full: true);
         client.SaveCharacter();
         var kind = isTitle ? "title" : "degree";
         var oldLevel = isTitle ? oldTitle : oldDegree;
@@ -1032,7 +1032,7 @@ public partial class CharacterStatsPanel : PanelContainer
             character.DegreeXP = 0;
         }
 
-        NetworkedStatsUpdater.Update(character);
+        NetworkedStatsUpdater.Update(character, full: true);
         client.SaveCharacter();
         var oldMinusOne = isTitle ? oldTitle : oldDegree;
         var newMinusOne = isTitle ? character.TitleMinusOne : character.DegreeMinusOne;
@@ -1080,7 +1080,7 @@ public partial class CharacterStatsPanel : PanelContainer
             return;
         }
 
-        NetworkedStatsUpdater.Update(character);
+        NetworkedStatsUpdater.Update(character, full: true);
         client.SaveCharacter();
         AdminActionLog.Info(client, "submitted stat edits");
         ClearStatEditSession();

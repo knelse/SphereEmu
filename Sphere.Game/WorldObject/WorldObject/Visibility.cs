@@ -195,7 +195,8 @@ public partial class WorldObject
 			var entityId = client.GetLocalObjectId(ID);
 			for (var i = 0; i < sendCount; i++)
 			{
-				client.EnqueueClientEvent(new EntityPositionUpdateEvent(entityId, gameX, gameY, gameZ, angleRadians));
+				client.EnqueueClientEvent(
+					new EntityPositionUpdateEvent(entityId, GetMoveModuleTag(), gameX, gameY, gameZ, angleRadians));
 			}
 		}
 

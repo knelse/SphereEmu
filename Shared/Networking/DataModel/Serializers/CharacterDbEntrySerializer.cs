@@ -1,7 +1,10 @@
 ﻿using SphereHelpers.Extensions;
 using SphServer.Helpers;
+using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Networking;
+using SphServer.Shared.Networking.Mbc;
 using SphServer.System;
 using static SphServer.Shared.BitStream.SphBitStream;
 
@@ -139,7 +142,7 @@ public class CharacterDbEntrySerializer(CharacterDbEntry characterDbEntry) : Sph
                               ((characterDbEntry.HairColor & 0b11000000) >> 6));
         // The nine-byte look block, one byte per garment class, in the order the client's own
         // _player.mbc fills it: boots, pants, physical chest, magical chest, gloves, shield, the two
-        // secondary codes, helmet. The class chooses the byte — a robe written to the physical chest
+        // secondary codes, helmet. The class chooses the byte: a robe written to the physical chest
         // byte is drawn as physical armour of the same tier.
         byte[] look =
         [
@@ -213,7 +216,7 @@ public class CharacterDbEntrySerializer(CharacterDbEntry characterDbEntry) : Sph
     /// <summary>
     ///     Forces a clan name into the world record, taking the branch a clanless character never
     ///     takes. The clan pair sits between the name, which the client applies, and gender, which it
-    ///     does not — so it is the candidate for where the applier stops.
+    ///     does not, so it is the candidate for where the applier stops.
     /// </summary>
     public static string? WorldClanOverride;
 
@@ -384,6 +387,93 @@ public class CharacterDbEntrySerializer(CharacterDbEntry characterDbEntry) : Sph
         return arr;
     }
 
+    /// <summary>
+    ///     _player region 61 SpawnSnapshot (User). IEEE xyz, angle8, packed model, name,
+    ///     clan, nameplate fields. Look is SetWornGear after this; User restarts Image which
+    ///     waits on region 6.
+    /// </summary>
+    public byte[] ToSpawnSnapshotByteArray(ushort entityId, float x, float y, float z, double angleRadians)
+    {
+        var nameBytes = SphEncoding.Win1251.GetBytes(characterDbEntry.Name ?? string.Empty);
+        if (nameBytes.Length > 255)
+        {
+            nameBytes = nameBytes.AsSpan(0, 255).ToArray();
+        }
+
+        string? clanName;
+        if (WorldClanOverride is not null)
+        {
+            clanName = WorldClanOverride;
+        }
+        else
+        {
+            var clan = characterDbEntry.Clan;
+            clanName = clan is not null && clan.Id != ClanDbEntry.DefaultClanDbEntry.Id
+                ? clan.Name
+                : null;
+        }
+
+        var clanBytes = string.IsNullOrEmpty(clanName)
+            ? []
+            : SphEncoding.Win1251.GetBytes(clanName);
+        if (clanBytes.Length > 15)
+        {
+            clanBytes = clanBytes.AsSpan(0, 15).ToArray();
+        }
+
+        var clanRank = string.IsNullOrEmpty(clanName) ? 0 : (int)characterDbEntry.ClanRank;
+        var gender = GenderOverride ?? (characterDbEntry.IsGenderFemale ? 1 : 0);
+        var modelPacked = (uint)(characterDbEntry.FaceType
+                                 | (characterDbEntry.HairStyle << 8)
+                                 | (characterDbEntry.HairColor << 16)
+                                 | (characterDbEntry.Tattoo << 24));
+        var guild = (int)characterDbEntry.Guild;
+        var guildWire = guild == 0 ? 0 : guild + 64;
+        var guildRank = guild == 0 ? 0 : characterDbEntry.GuildLevelMinusOne & 0xF;
+
+        const ushort playerModuleTag = (ushort)ObjectType.Player;
+        var stream = GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(0, 15); // tick
+        stream.WriteUInt16(entityId, 16);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)(playerModuleTag & 0xFFF), 12);
+        stream.WriteByte(62, 7); // wire = region 61 + 1 (SpawnSnapshot)
+
+        WriteIeeeFloat(stream, x);
+        WriteIeeeFloat(stream, y);
+        WriteIeeeFloat(stream, z);
+        stream.WriteByte(MbcCoordEncoding.EncodeAngle(angleRadians), 8);
+        WriteUInt32Full(stream, modelPacked);
+
+        stream.WriteByte((byte)nameBytes.Length, 8);
+        foreach (var b in nameBytes)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        stream.WriteByte((byte)clanBytes.Length, 4);
+        foreach (var b in clanBytes)
+        {
+            stream.WriteByte(b, 8);
+        }
+
+        stream.WriteByte((byte)(clanRank & 7), 3);
+        CommonPackets.WriteMbcVarint(stream, characterDbEntry.CurrentHP);
+        CommonPackets.WriteMbcVarint(stream, characterDbEntry.MaxHP);
+        stream.WriteByte((byte)(gender & 3), 2);
+        stream.WriteByte((byte)((int)characterDbEntry.Karma & 7), 3);
+        stream.WriteByte((byte)(characterDbEntry.TitleMinusOne % 60), 6);
+        stream.WriteByte((byte)(characterDbEntry.DegreeMinusOne % 60), 6);
+        CommonPackets.WriteMbcVarint(stream, guildWire);
+        stream.WriteByte((byte)guildRank, 4);
+        stream.WriteByte((byte)(characterDbEntry.TitleMinusOne / 60), 2);
+        stream.WriteByte((byte)(characterDbEntry.DegreeMinusOne / 60), 2);
+        stream.WriteByte(0, 1); // overhead_mark
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
+    }
+
     private static void WriteGameDataSlotFlag(SphWriteStream stream, CharacterDbEntry character, BelongingSlot? slot)
     {
         var occupied = slot is { } belongingSlot && !character.IsItemSlotEmpty(belongingSlot);
@@ -399,6 +489,11 @@ public class CharacterDbEntrySerializer(CharacterDbEntry characterDbEntry) : Sph
     {
         stream.WriteUInt16((ushort)value, 16);
         stream.WriteUInt16((ushort)(value >> 16), 16);
+    }
+
+    private static void WriteIeeeFloat(SphWriteStream stream, float value)
+    {
+        WriteUInt32Full(stream, BitConverter.SingleToUInt32Bits(value));
     }
 
     public byte[] GetTeleportByteArray(WorldCoords coords)

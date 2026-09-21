@@ -78,18 +78,35 @@ public static class CommonPackets
     public static readonly byte[]
         TransmissionEndPacket = [0x04, 0x00, 0xF4, 0x01];
 
+    /// <summary>
+    ///     First msg300 after TCP hello: Owner region 0 (cmd 1, 4-byte calendar) plus three
+    ///     Manager region 12 blobs from the working capture. Must be bitstream-packed: the old
+    ///     byte-array poke after <c>20 10</c> overlapped format-'f' count bit 6 (0x04 vs 0x44)
+    ///     and the following region-12 tags, so skipRegion failed on some Sphere quarters.
+    /// </summary>
     public static byte[] ServerCredentials(ushort playerIndex)
     {
         var currentSphereTime = TimeHelper.EncodeCurrentSphereDateTime();
+        var stream = SphBitStream.GetWriteBitStream();
+        stream.WriteByte(0, 1); // has_position
+        stream.WriteUInt16(512, 15); // tick: captured 00 04 header
+        // Same high-then-low id bytes as CharacterSelectStartData.
+        stream.WriteByte(MajorByte(playerIndex), 8);
+        stream.WriteByte(MinorByte(playerIndex), 8);
+        stream.WriteByte(0, 2); // process_id high
+        stream.WriteUInt16((ushort)ObjectType.Player, 12);
 
-        return
-        [
-            0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte(playerIndex), MinorByte(playerIndex), 0x08, 0x40,
-            0x20, 0x10, currentSphereTime[0], currentSphereTime[1], currentSphereTime[2], currentSphereTime[3],
-            currentSphereTime[4], 0x7C, 0x12, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1A, 0x3B,
-            0x12, 0x01, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-            0x00, 0x00, 0x8D, 0x9D, 0x01, 0x00, 0x00, 0x00
-        ];
+        stream.WriteByte(1, 7); // wire = region 0 + 1 (Owner)
+        stream.WriteByte(1, 5);
+        stream.WriteByte(4, 8);
+        stream.WriteBytes(currentSphereTime, 4, true);
+
+        WriteCredentialsManagerRegion(stream, 62, [0x01, 0, 0, 0, 0, 0, 0, 0, 0]);
+        WriteCredentialsManagerRegion(stream, 59,
+            [0x01, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0]);
+        WriteCredentialsManagerRegion(stream, 59, [0, 0, 0]);
+
+        return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
 
     public static byte[] CharacterSelectStartData(ushort playerIndex)
@@ -286,10 +303,7 @@ public static class CommonPackets
         stream.WriteByte(5, 7); // wire = region 4 + 1 (ContMan)
         stream.WriteByte(command, 4);
         stream.WriteByte((byte)payload.Length, 8);
-        foreach (var b in payload)
-        {
-            stream.WriteByte(b, 8);
-        }
+        stream.WriteBytes(payload.ToArray(), payload.Length, true);
 
         return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
@@ -354,10 +368,7 @@ public static class CommonPackets
         stream.WriteByte(13, 7); // wire = region 12 + 1 (Manager)
         stream.WriteByte(command, 8);
         stream.WriteByte((byte)payload.Length, 8);
-        foreach (var b in payload)
-        {
-            stream.WriteByte(b, 8);
-        }
+        stream.WriteBytes(payload.ToArray(), payload.Length, true);
 
         return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
@@ -502,10 +513,7 @@ public static class CommonPackets
         stream.WriteByte(10, 7); // wire = region 9 + 1 (TradeMan)
         stream.WriteByte(command, 4);
         stream.WriteByte((byte)payload.Length, 4);
-        foreach (var b in payload)
-        {
-            stream.WriteByte(b, 8);
-        }
+        stream.WriteBytes(payload.ToArray(), payload.Length, true);
 
         return Packet.ToByteArray(stream.GetStreamData(), 1);
     }
@@ -536,6 +544,15 @@ public static class CommonPackets
         return responseStream.GetStreamData();
     }
 
+    private static void WriteCredentialsManagerRegion(SphWriteStream stream, byte command,
+        ReadOnlySpan<byte> payload)
+    {
+        stream.WriteByte(13, 7); // wire = region 12 + 1 (Manager)
+        stream.WriteByte(command, 8);
+        stream.WriteByte((byte)payload.Length, 8);
+        stream.WriteBytes(payload.ToArray(), payload.Length, true);
+    }
+
     private static void WriteArray4U7String(SphWriteStream stream, string value)
     {
         var bytes = string.IsNullOrEmpty(value)
@@ -554,11 +571,12 @@ public static class CommonPackets
     }
 
     /// <summary>
-    ///     msg300 TransformUpdate (region 1): has_position origins (trunc+bias), then
+    ///     msg300 region 1 TransformUpdate: has_position origins (trunc+bias), then
     ///     relX/Y/Z via client encodeCoordinate, angle as raw u8.
+    ///     moduleTag is that entity's ObjectType (_player=2, door1=60, monster=210, monsterf=211).
     /// </summary>
     public static byte[] BuildMoveObjectPacket(double x0, double y0, double z0, double t0, ushort entityId,
-        ushort moduleTag = (ushort)ObjectType.Monster)
+        ushort moduleTag)
     {
         var ox = (int)Math.Truncate(x0);
         var oy = (int)Math.Truncate(y0);

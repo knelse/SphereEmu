@@ -2,7 +2,6 @@ using Godot;
 using SphServer.Client.Networking;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Client.State;
-using SphServer.Packets;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Server.Debug.Parser;
@@ -11,9 +10,9 @@ using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
-using SphServer.System;
 using static Stat;
 
 namespace SphServer.Client;
@@ -137,19 +136,9 @@ public partial class SphereClient : WorldObject
 			if (CurrentCharacter.Id == 0)
 			{
 				SphLogger.Error($"SaveCharacter: character Id is 0, Insert instead. Client ID: {localId:X4}");
-				CurrentCharacter.Id = DbConnection.Characters.Insert(CurrentCharacter);
-			}
-			else if (!DbConnection.Characters.Update(CurrentCharacter))
-			{
-				// Update returns false when the row is missing (common after a thin BsonRef stub).
-				SphLogger.Warning(
-					$"SaveCharacter: Characters.Update({CurrentCharacter.Id}) missed, Upsert. " +
-					$"Client ID: {localId:X4}");
-				DbConnection.Characters.Upsert(CurrentCharacter);
 			}
 
-			// Vitals via field patch so regen HP/MP cannot be dropped by a partial entity write.
-			CurrentCharacter.PersistVitals();
+			CurrentCharacter.PersistAll();
 		}
 
 		if (playerDbEntry is not null)
@@ -353,17 +342,27 @@ public partial class SphereClient : WorldObject
 	{
 		if (client.GetInstanceId() == GetInstanceId())
 		{
-			// do not show for itself
+			return;
+		}
+
+		if (CurrentCharacter is null)
+		{
 			return;
 		}
 
 		SphLogger.Info($"Showing for other client: {client.localId:X4}. Client ID: {localId:X4}");
-		base.ShowForClient(client);
+		var entityId = client.GetLocalObjectId(ID);
+		var origin = GlobalTransform.Origin;
+		client.MaybeQueueNetworkPacketSend(
+			new CharacterDbEntrySerializer(CurrentCharacter).ToSpawnSnapshotByteArray(
+				entityId, origin.X, -origin.Y, -origin.Z, CurrentCharacter.Angle));
+		client.MaybeQueueNetworkPacketSend(
+			CommonPackets.BuildSetWornGearPacket(entityId, CharacterWornLook.ToWearPattern(CurrentCharacter)));
 	}
 
 	/// <summary>
-	///     In-place gear look via _player SetWornGear (region 6), plus classic entity_character
-	///     re-show (no despawn) so peers that never started Image still refresh.
+	///     In-place gear look via _player SetWornGear (region 6). Do not re-send SpawnSnapshot:
+	///     User already finished after the first region 61, and Image is what waits on region 6.
 	/// </summary>
 	public override void BroadcastAppearanceRefreshToVisibleClients()
 	{
@@ -377,7 +376,6 @@ public partial class SphereClient : WorldObject
 		{
 			var entityId = viewer.GetLocalObjectId(ID);
 			viewer.MaybeQueueNetworkPacketSend(CommonPackets.BuildSetWornGearPacket(entityId, wear));
-			ShowForClient(viewer);
 		});
 	}
 
@@ -541,53 +539,5 @@ public partial class SphereClient : WorldObject
 		CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
 		CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
 		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
-	}
-
-	protected override List<PacketPart> GetPacketParts()
-	{
-		return PacketPart.LoadDefinedWithOverride("entity_character");
-	}
-
-	protected override List<PacketPart> ModifyPacketParts(List<PacketPart> packetParts)
-	{
-		var character = CurrentCharacter!;
-		// Same nine-byte look block as character-list / CheckWeapon (boots…helmet).
-		CharacterWornLook.Apply(character);
-
-		var nameBytes = SphEncoding.Win1251.GetBytes(character.Name);
-		PacketPart.UpdateValue(packetParts, "character_name_length", nameBytes.Length, 8);
-		PacketPart.UpdateValue(packetParts, "character_name", character.Name);
-
-		PacketPart.UpdateValue(packetParts, "face_model", character.FaceType, 8);
-		PacketPart.UpdateValue(packetParts, "hair_model", character.HairStyle, 8);
-		PacketPart.UpdateValue(packetParts, "hair_color_model", character.HairColor, 8);
-		PacketPart.UpdateValue(packetParts, "tattoo_model", character.Tattoo, 8);
-
-		PacketPart.UpdateValue(packetParts, "current_hp", character.CurrentHP, 14);
-		PacketPart.UpdateValue(packetParts, "max_hp", character.MaxHP, 14);
-		PacketPart.UpdateValue(packetParts, "is_female", character.IsGenderFemale ? 1 : 0, 1);
-		PacketPart.UpdateValue(packetParts, "karma", (int)character.Karma, 3);
-		PacketPart.UpdateValue(packetParts, "title_level", character.TitleMinusOne % 60, 6);
-		PacketPart.UpdateValue(packetParts, "degree_level", character.DegreeMinusOne % 60, 6);
-		PacketPart.UpdateValue(packetParts, "guild", (int)character.Guild, 4);
-		PacketPart.UpdateValue(packetParts, "guild_level", character.GuildLevelMinusOne, 4);
-		PacketPart.UpdateValue(packetParts, "rebirth_title", character.TitleMinusOne / 60, 2);
-		PacketPart.UpdateValue(packetParts, "rebirth_degree", character.DegreeMinusOne / 60, 2);
-
-		// 7-bit look codes; empty slots are ASCII '0' (retail), not zero.
-		const byte emptyLook = (byte)'0';
-		PacketPart.UpdateValue(packetParts, "weapon_model", 0, 7);
-		PacketPart.UpdateValue(packetParts, "look_pad_0", 0, 7);
-		PacketPart.UpdateValue(packetParts, "shoes_model", character.BootModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "pants_model", character.PantsModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "armor_model", character.ArmorModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "robe_model", character.RobeModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "gloves_model", character.GlovesModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "shield_model", character.ShieldModelId & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "look_extra_1", emptyLook & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "look_extra_2", emptyLook & 0x7F, 7);
-		PacketPart.UpdateValue(packetParts, "helmet_model", character.HelmetModelId & 0x7F, 7);
-
-		return packetParts;
 	}
 }
