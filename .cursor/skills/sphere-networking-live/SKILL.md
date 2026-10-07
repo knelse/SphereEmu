@@ -32,7 +32,7 @@ If you ever need to analyze a behavior for the network protocol, **first** look 
 Use:
 
 1. MBC decompiler toolkit at `d:\Download\MBCdecompiler-main\`
-2. Client recompile at `d:\Download\SferaClientRecompiled-main\`
+2. Client recompile at `d:\SphereDev\SferaClientRecompiled\`
 3. Inferred commands for all mbc modules with descriptions:
    - `Sphere.NetworkProtocol/mbc_commands.jsonl` (one command per line)
    - `Sphere.NetworkProtocol/mbc_commands_index.txt` (tag, module, jsonl line, count)

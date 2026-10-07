@@ -169,9 +169,27 @@ public static class DbConnection
         if (GameObjects.Count() == 0)
         {
             SphLogger.Info("Filling object collection");
-            foreach (var dbEntry in GameObjectDb.Db)
+            var started = Db.BeginTrans();
+            try
             {
-                GameObjects.Insert(dbEntry.Key, dbEntry.Value);
+                foreach (var dbEntry in GameObjectDb.Db)
+                {
+                    GameObjects.Insert(dbEntry.Key, dbEntry.Value);
+                }
+
+                if (started)
+                {
+                    Db.Commit();
+                }
+            }
+            catch
+            {
+                if (started)
+                {
+                    Db.Rollback();
+                }
+
+                throw;
             }
 
             SphLogger.Info($"Object collection filled. Time elapsed: {(DateTime.Now - time).TotalMilliseconds} ms");
@@ -184,7 +202,21 @@ public static class DbConnection
 
         if (Items.FindById(2825) is null)
         {
-            Items.Insert(2825, ItemDbEntry.CreateFromGameObject(GameObjects.FindById(1)));
+            var template = GameObjects.FindById(1);
+            if (template is null && SphObjectDb.GameObjectDataDb.TryGetValue(1, out var catalog))
+            {
+                template = catalog;
+                GameObjects.Upsert(1, catalog);
+            }
+
+            if (template is null)
+            {
+                SphLogger.Warning("Item 2825 was not seeded: game object 1 is not in the database");
+            }
+            else
+            {
+                Items.Insert(2825, ItemDbEntry.CreateFromGameObject(template));
+            }
         }
 
         WorldObjectIndex.Reserve(2825);

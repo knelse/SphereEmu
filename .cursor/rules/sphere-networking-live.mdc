@@ -11,7 +11,7 @@ This is the default for this repository. Do not wait for the user to mention pac
 
 ## Ground truth before hypotheses
 
-If you ever need to analyze a behavior for the network protocol, first look into MBC decompile (`d:\Download\MBCdecompiler-main\`) and client recompile (`d:\Download\SferaClientRecompiled-main\`) before making hypotheses.
+If you ever need to analyze a behavior for the network protocol, first look into MBC decompile (`d:\Download\MBCdecompiler-main\`) and client recompile (`d:\SphereDev\SferaClientRecompiled\`) before making hypotheses.
 
 - Region `formats`, handler bytecode, and client `skipRegion`/`receiveRegion`/`readField`/`send` are authoritative.
 - Do not invent adaptive width probes or dual-layout guessers when those sources already define the wire.
