@@ -26,6 +26,7 @@ public partial class AdminUiRoot : Control
     private Button? teleportButton;
     private Button? resetCharacterButton;
     private TeleportDestinationWindow? teleportWindow;
+    private MobDataWindow? mobDataWindow;
     private ConfirmationDialog? resetCharacterDialog;
     private ItemDetailsPopupHost? itemDetailsHost;
     private AdminSlotItemTools? slotItemTools;
@@ -160,10 +161,18 @@ public partial class AdminUiRoot : Control
         resetCharacterButton.Pressed += OnResetCharacterPressed;
         adminActions.AddChild(resetCharacterButton);
 
+        adminActions.AddChild(new HSeparator());
+        var mobDataButton = new Button { Text = "Mob Data" };
+        mobDataButton.Pressed += () => mobDataWindow?.Open(locale);
+        adminActions.AddChild(mobDataButton);
+
         layout.AddChild(adminActions);
 
         teleportWindow = new TeleportDestinationWindow { Name = "TeleportDestinationWindow" };
         AddChild(teleportWindow);
+
+        mobDataWindow = new MobDataWindow { Name = "MobDataWindow" };
+        AddChild(mobDataWindow);
 
         resetCharacterDialog = new ConfirmationDialog
         {
@@ -277,6 +286,7 @@ public partial class AdminUiRoot : Control
         statsPanel?.SetLocale(locale);
         itemDetailsHost?.SetLocale(locale);
         slotItemTools?.SetLocale(locale);
+        mobDataWindow?.SetLocale(locale);
     }
 
     private void OnClientSelected(ushort clientId)
