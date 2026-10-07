@@ -3,6 +3,7 @@ using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
 using SphServer.Packets;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
@@ -28,10 +29,15 @@ public class PingHandler : ISphereClientNetworkingHandler
     private readonly SphereTimer fifteenSecondPing;
     // One 6s tick: Recalc once, MP keepalive, HP SetStat if needed.
     private readonly SphereTimer vitalRegenTick;
+    // CheckPing resets on region 11. WaitReinc stops client 0x26s, so this pong keeps going
+    private readonly SphereTimer deadPositionStreamTimer;
 
     private ushort counter;
     private byte[]? previousCoordPayload;
+    private byte[]? lastPongEcho;
     private bool pingShouldXorTopBit;
+    private bool wasDead;
+    private double deadSeconds;
 
     public PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     {
@@ -41,6 +47,7 @@ public class PingHandler : ISphereClientNetworkingHandler
         fifteenSecondPing = new (15, true,
             () => clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.FifteenSecondPing (localId)));
         vitalRegenTick = new (6, true, SyncVitalsAfterRegen);
+        deadPositionStreamTimer = new (2, true, SendDeadPositionStream);
     }
 
     public async Task Handle (byte[] frame, double delta)
@@ -81,6 +88,72 @@ public class PingHandler : ISphereClientNetworkingHandler
         }
 
         var pongEcho = buffer.AsSpan (PongEchoOffset, PongEchoLength);
+        lastPongEcho = pongEcho.ToArray ();
+        SendPositionStreamPong (lastPongEcho);
+    }
+
+    public async Task Keepalive (double delta)
+    {
+        fifteenSecondPing.Tick (delta);
+        TickDeadPositionStream (delta);
+
+        // Regen waits until the client is sending in-world positions
+        if (!clientConnection.HasSeenFirstPositionKeepalive)
+        {
+            return;
+        }
+
+        vitalRegenTick.Tick (delta);
+    }
+
+    private void TickDeadPositionStream (double delta)
+    {
+        var character = clientConnection.GetSelectedCharacter ();
+        var dead = character is not null && character.CurrentHP == 0;
+        if (dead && !wasDead)
+        {
+            SendDeadPositionStream ();
+            deadPositionStreamTimer.Rearm (2);
+            deadSeconds = 0;
+        }
+
+        wasDead = dead;
+        if (!dead)
+        {
+            return;
+        }
+
+        deadPositionStreamTimer.Tick (delta);
+        deadSeconds += delta;
+        // CycleSend yields while current HP is 0
+        if (deadSeconds >= 5)
+        {
+            deadSeconds = 0;
+            clientConnection.ReviveAfterDeath ();
+        }
+    }
+
+    private void SendDeadPositionStream ()
+    {
+        var character = clientConnection.GetSelectedCharacter ();
+        if (character is null || character.CurrentHP > 0)
+        {
+            return;
+        }
+
+        if (lastPongEcho is not null)
+        {
+            SendPositionStreamPong (lastPongEcho);
+            return;
+        }
+
+        clientConnection.MaybeScheduleNetworkPacketSend (
+            CommonPackets.BuildPlayerEmptyPositionStream (SphBitStream.ByteSwap (localId), character.X,
+                -character.Y, -character.Z));
+    }
+
+    private void SendPositionStreamPong (byte[] pongEcho)
+    {
         var xored = pongEcho[5];
         if (pingShouldXorTopBit)
         {
@@ -95,11 +168,11 @@ public class PingHandler : ISphereClientNetworkingHandler
         }
 
         var pong = new byte[13];
-        pongEcho[..5].CopyTo (pong);
+        pongEcho.AsSpan (0, 5).CopyTo (pong);
         pong[5] = xored;
         pong[6] = SphereDbEntrySerializerBase.MinorByte (counter);
         pong[7] = SphereDbEntrySerializerBase.MajorByte (counter);
-        pongEcho.Slice (8, 4).CopyTo (pong.AsSpan (8));
+        pongEcho.AsSpan (8, 4).CopyTo (pong.AsSpan (8));
 
         clientConnection.MaybeScheduleNetworkPacketSend (Packet.ToByteArray (pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
@@ -110,19 +183,6 @@ public class PingHandler : ISphereClientNetworkingHandler
         {
             counter = 0xE001;
         }
-    }
-
-    public async Task Keepalive (double delta)
-    {
-        fifteenSecondPing.Tick (delta);
-
-        // Regen waits until the client is sending in-world positions
-        if (!clientConnection.HasSeenFirstPositionKeepalive)
-        {
-            return;
-        }
-
-        vitalRegenTick.Tick (delta);
     }
 
     private void SyncVitalsAfterRegen ()

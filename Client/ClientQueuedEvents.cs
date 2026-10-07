@@ -1,4 +1,5 @@
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
+using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Client;
 
@@ -20,6 +21,12 @@ public sealed record CombatHitEvent (
     AttackFrameKind FrameKind) : ClientQueuedEvent;
 
 /// <summary>
-/// Signed self HP delta, negative for damage and positive for heal
+/// Signed self HP delta, negative for damage and positive for heal. KillerProcessId
+/// above 3 is the attacker's process; 0 keeps the nameless death line
 /// </summary>
-public sealed record CharacterHealthChangeEvent (ushort EntityId, int HealthDiff) : ClientQueuedEvent;
+public sealed record CharacterHealthChangeEvent (
+    ushort EntityId,
+    int HealthDiff,
+    ushort KillerProcessId = 0,
+    DamageOriginSpecial? Origin = null)
+    : ClientQueuedEvent;

@@ -4,6 +4,7 @@ using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Combat;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Networking;
 using static Stat;
@@ -122,16 +123,26 @@ public partial class Monster
 
         var hpAfter = character.CurrentHP - applied;
         character.CurrentHP = (ushort) hpAfter;
-        // MarkSent so SetStat stays off; the HP bar is ContMan cmd 9 (killer + 30000 + delta)
         NetworkedStatsUpdater.MarkSent (character, HpCurrent);
-        target.MaybeQueueNetworkPacketSend (
-            ChangeCharacterHealthHandler.BuildHealthChangePacket (
-                character.ClientIndex, character.ClientIndex, -applied, ID));
-        target.MaybeQueueNetworkPacketSend (
-            CommonPackets.BuildPlayerApplyHpDelta (character.ClientIndex, ID, -applied));
+        // Position stream process is the swapped client index
+        var playerProcess = SphBitStream.ByteSwap (character.ClientIndex);
         if (hpAfter <= 0)
         {
+            var killer = target.GetLocalObjectId (ID);
+            // hit_type above 3 is this monster's process on that client
+            var hitType = killer > 3 ? killer : (ushort) 0;
+            target.MaybeQueueNetworkPacketSend (
+                CommonPackets.BuildPlayerReceiveHit (playerProcess, hitType, hpDelta: -100000,
+                    secondDelta: 0, flags: 7));
             target.SchedulePlayerRespawn ();
+        }
+        else
+        {
+            target.MaybeQueueNetworkPacketSend (
+                ChangeCharacterHealthHandler.BuildHealthChangePacket (
+                    character.ClientIndex, character.ClientIndex, -applied, ID));
+            target.MaybeQueueNetworkPacketSend (
+                CommonPackets.BuildPlayerApplyHpDelta (playerProcess, ID, -applied));
         }
 
         target.SaveCharacter ();

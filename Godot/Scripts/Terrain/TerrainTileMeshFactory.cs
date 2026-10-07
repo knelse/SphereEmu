@@ -124,7 +124,7 @@ public static class TerrainTileMeshFactory
         return mesh;
     }
 
-    private static Basis TileMeshBasisAfterImport ()
+    internal static Basis TileMeshBasisAfterImport ()
     {
         var dr = MapFill.DefaultRotation;
         var euler = new Vector3 (dr.X, dr.Y, dr.Z);

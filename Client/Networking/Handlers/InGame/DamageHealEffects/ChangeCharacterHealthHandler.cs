@@ -5,6 +5,7 @@ using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Networking;
 using SphServer.System;
@@ -25,6 +26,8 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
         }
 
         var selfId = character.ClientIndex;
+        // Position stream process is the swapped client index
+        var playerProcess = SphBitStream.ByteSwap (selfId);
         var entityId = clientEvent.EntityId == 0 ? selfId : clientEvent.EntityId;
         var hpBefore = character.CurrentHP;
         // Killing blow: apply/send exactly the remainder to 0 (never overshoot current HP).
@@ -48,17 +51,49 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
 
         character.CurrentHP = (ushort) hpAfter;
         var becameDead = hpBefore > 0 && hpAfter <= 0;
+        var air = clientEvent.Origin == DamageOriginSpecial.НехваткаВоздуха;
+        if (air && character.CurrentMP > 0)
+        {
+            character.CurrentMP--;
+        }
 
-        // ATTACK echo is the UI hit; the ContMan delta keeps g_rec_0C48 aligned
-        sphereClient.MaybeQueueNetworkPacketSend (BuildHealthChangePacket (selfId, entityId, healthDiff));
-        sphereClient.MaybeQueueNetworkPacketSend (
-            CommonPackets.BuildPlayerApplyHpDelta (selfId, selfId, healthDiff));
+        if (becameDead)
+        {
+            // hit_type above 3 is the killer process; the client asks it for the name
+            var hitType = clientEvent.KillerProcessId > 3 ? clientEvent.KillerProcessId : (ushort) 0;
+            var hpDelta = -100000;
+            var secondDelta = 0;
+            if (air)
+            {
+                // hit_type 2, second -1: gMsg 752, death gMsg 753, and that second is the MP delta
+                hitType = 2;
+                hpDelta = healthDiff;
+                secondDelta = -1;
+            }
+
+            sphereClient.MaybeQueueNetworkPacketSend (
+                CommonPackets.BuildPlayerReceiveHit (playerProcess, hitType, hpDelta, secondDelta, flags: 7));
+        }
+        else if (air)
+        {
+            sphereClient.MaybeQueueNetworkPacketSend (
+                CommonPackets.BuildPlayerReceiveHit (playerProcess, 2, healthDiff, -1, 0));
+        }
+        else
+        {
+            // ATTACK echo is the UI hit; the ContMan delta keeps g_rec_0C48 aligned
+            sphereClient.MaybeQueueNetworkPacketSend (BuildHealthChangePacket (selfId, entityId, healthDiff));
+            sphereClient.MaybeQueueNetworkPacketSend (
+                CommonPackets.BuildPlayerApplyHpDelta (playerProcess, selfId, healthDiff));
+        }
+
         NetworkedStatsUpdater.Update (character, refreshPeers: false);
         sphereClient.BroadcastHpToVisibleClients (healthDiff, character.CurrentHP,
             includeMax: hpBefore <= 0 && hpAfter > 0);
 
         if (becameDead)
         {
+            sphereClient.DisarmUnderwaterBreath ();
             sphereClient.SchedulePlayerRespawn ();
         }
 

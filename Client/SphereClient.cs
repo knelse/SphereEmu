@@ -6,8 +6,11 @@ using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Server.Debug.Parser;
 using SphServer.Shared.Db;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Godot.Scripts.Terrain;
 using SphServer.Shared.Godot.Tools;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
@@ -19,522 +22,632 @@ namespace SphServer.Client;
 
 public partial class SphereClient : WorldObject
 {
-    public readonly ClientStateManager ClientStateManager = new (false);
-    private ClientConnection clientConnection = null!;
-    private ClientEvents clientEvents = null!;
-
-    private CharacterBody3D? clientModel;
-    public CharacterDbEntry? CurrentCharacter;
-    private ClientState currentState = ClientState.I_AM_BREAD;
-    private bool isExiting;
-    public ushort localId;
-    /// <summary>
-    /// Admin UI stand-in with no TCP
-    /// </summary>
-    public bool IsAdminDebugDummy { get; private set; }
-    private PlayerDbEntry? playerDbEntry;
-    private int selectedCharacterIndex;
-    private StreamPeerTcp streamPeerTcp = null!;
-
-    internal Area3D? BroadcastArea3D { get; private set; }
-
-    public override async void _PhysicsProcess (double delta)
-    {
-        if (IsAdminDebugDummy)
-        {
-            return;
-        }
-
-        if (streamPeerTcp.GetStatus () != StreamPeerSocket.Status.Connected)
-        {
-            RemoveClient ();
-            return;
-        }
-
-        clientModel ??= NodeChildTools.FindFirstChildOfType<CharacterBody3D> (this, "ClientModel");
-        if (BroadcastArea3D is null)
-        {
-            var area = NodeChildTools.FindFirstChildOfType<Area3D> (this);
-            if (area is not null && NodeChildTools.FindFirstChildOfType<CollisionShape3D> (area) is not null)
-            {
-                BroadcastArea3D = area;
-            }
-        }
-
-        await clientConnection.Process (delta);
-        await clientEvents.HandleEventsAsync ();
-    }
-
-    public override void _Ready ()
-    {
-        // TODO: client logs in separate files
-        SphLogger.Info ($"New client connected. Client ID: {localId:X4}");
-
-        // Task.Run(() =>
-        // {
-        //     while (true)
-        //     {
-        //         var input = Console.ReadLine();
-        //         try
-        //         {
-        //             if (CurrentCharacter is null)
-        //             {
-        //                 Console.WriteLine("Character is null");
-        //                 continue;
-        //             }
-        //
-        //             var parser = ConsoleCommandParser.Get(CurrentCharacter);
-        //             var result = parser.Parse(input);
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             Console.WriteLine(ex.Message);
-        //         }
-        //     }
-        // });
-    }
-
-    public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
-    {
-        clientEvents = new ClientEvents (this);
-        clientConnection = new ClientConnection (streamPeer, id, this);
-        localId = id;
-        streamPeerTcp = streamPeer;
-
-        return this;
-    }
-
-    /// <summary>
-    /// No-TCP client for admin UI debugging. Pair with <c>AdminDebugDummyClient</c>.
-    /// </summary>
-    public SphereClient SetupAdminDebugDummy (ushort id)
-    {
-        IsAdminDebugDummy = true;
-        localId = id;
-        clientEvents = new ClientEvents (this);
-        return this;
-    }
-
-    public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
-    {
-        clientEvents.Enqueue (clientEvent);
-    }
-
-    public void SetPlayerDbEntry (PlayerDbEntry? entry)
-    {
-        playerDbEntry = entry;
-    }
-
-    public CharacterDbEntry? GetSelecterCharacter ()
-    {
-        return CurrentCharacter;
-    }
-
-    public void SaveCharacter ()
-    {
-        // [BsonRef] character documents are a separate collection, so the player-row update leaves
-        // them untouched
-        if (CurrentCharacter is not null)
-        {
-            if (CurrentCharacter.Id == 0)
-            {
-                SphLogger.Error ($"SaveCharacter: character Id is 0, Insert instead. Client ID: {localId:X4}");
-            }
-
-            CurrentCharacter.PersistAll ();
-        }
-
-        if (playerDbEntry is not null)
-        {
-            DbConnection.Players.Update (playerDbEntry);
-        }
-
-        DbConnection.Checkpoint ();
-    }
-
-    public void SetSelectedCharacterIndex (int index)
-    {
-        selectedCharacterIndex = index;
-        try
-        {
-            var listed = playerDbEntry!.Characters[index];
-            // BsonRef Include can return a stub, so reload the Characters row for Base* and Items
-            var character = listed.Id != 0
-                ? DbConnection.Characters.Query ()
-                    .Include (["$.Clan"])
-                    .Where (c => c.Id == listed.Id)
-                    .FirstOrDefault ()
-                : null;
-            if (character is null)
-            {
-                character = listed;
-                SphLogger.Warning (
-                    $"SetSelectedCharacterIndex: no Characters row for id {listed.Id}, using list stub. " +
-                    $"Client ID: {localId:X4}");
-            }
-            else
-            {
-                playerDbEntry.Characters[index] = character;
-            }
-
-            CurrentCharacter = character;
-            CurrentCharacter.ClientIndex = localId;
-            CurrentCharacter.ClientLocalId = localId;
-            UpdateCharacterForDebugMode ();
-            ClientStateEvents.RaiseCharacterChanged (localId);
-        }
-        catch (Exception ex)
-        {
-            SphLogger.Error ($"Unable to select character at index: {index}. Client ID: {localId:X4}.", ex);
-        }
-    }
-
-    public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
-    {
-        try
-        {
-            DbConnection.Characters.Insert (newCharacter);
-            playerDbEntry!.Characters.Insert (index, newCharacter);
-            DbConnection.Players.Update (playerDbEntry!);
-        }
-        catch (Exception ex)
-        {
-            SphLogger.Error ($"Unable to create character at index: {index}. Client ID: {localId:X4}.", ex);
-        }
-    }
-
-    public void DeletePlayerCharacter (int index)
-    {
-        // TODO: move to db entry
-        try
-        {
-            var characterToDelete = playerDbEntry!.Characters[index];
-            var id = characterToDelete.Id;
-            var name = characterToDelete.Name;
-            SphLogger.Info ($"Delete character [{index}] - [{name}]. Client ID: {localId:X4}");
-            playerDbEntry!.Characters.RemoveAt (index);
-            DbConnection.Players.Update (playerDbEntry);
-            DbConnection.Characters.Delete (id);
-
-            // TODO: reinit session after delete
-            RemoveClient ();
-        }
-        catch (Exception ex)
-        {
-            SphLogger.Error ($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
-        }
-    }
-
-    public void RemoveClient ()
-    {
-        if (isExiting)
-        {
-            return;
-        }
-
-        SphLogger.Info ($"Client disconnected. Client ID: {localId:X4}");
-
-        isExiting = true;
-        SaveCharacter ();
-        DbConnection.Checkpoint ();
-        if (!IsAdminDebugDummy)
-        {
-            clientConnection.Close ();
-        }
-
-        ActiveClients.Remove (localId);
-        NetworkedStatsUpdater.Clear (localId);
-        ConsoleCommandParser.Invalidate (localId);
-        ActiveNodes.Remove (GetInstanceId ());
-
-        if (playerDbEntry is not null)
-        {
-            ActiveWorldObjects.LoggedInClients.Remove (playerDbEntry.Login, out _);
-        }
-
-        PlayerCountBroadcast.OnClientLeftWorld ();
-
-        QueueFree ();
-    }
-
-    public void MaybeQueueNetworkPacketSend (byte[] packet)
-    {
-        if (IsAdminDebugDummy)
-        {
-            return;
-        }
-
-        clientConnection.MaybeScheduleNetworkPacketSend (packet);
-    }
-
-    public ushort GetLocalObjectId (int id)
-    {
-        // TODO: implement
-        return (ushort) id;
-    }
-
-    public ushort GetGlobalObjectId (int id)
-    {
-        // TODO: implement
-        return (ushort) id;
-    }
-
-    public static ushort GetLocalObjectId (ushort clientId, int id)
-    {
-        // TODO: implement
-        return (ushort) id;
-    }
-
-    public void UpdateCoordinatesInWorld ()
-    {
-        var transform = Transform;
-        transform.Origin = CurrentCharacter!.Origin;
-        Transform = transform;
-        WorldObjectVisibilityManager.RefreshRegistration (this);
-    }
-
-    public void InitializeInteractions ()
-    {
-        SphLogger.Info ($"Initializing client interactions. Client ID: {localId:X4}");
-
-        if (clientModel is null)
-        {
-            SphLogger.Error ($"Cannot initialize client interactions: client model is null. Client ID: {localId:X4}");
-            return;
-        }
-
-        clientModel.ProcessMode = ProcessModeEnum.Inherit;
-        clientModel.CollisionLayer = 2;
-        clientModel.CollisionMask = 0b11;
-
-        // WorldObject.ID
-        ID = localId;
-
-        // Collision comes from base._Ready, which waits until the client is in game
-        base._Ready ();
-    }
-
-    public string GetIpAddressAndPort ()
-    {
-        if (IsAdminDebugDummy)
-        {
-            return "debug:0";
-        }
-
-        return streamPeerTcp.GetConnectedHost () + ':' + streamPeerTcp.GetConnectedPort ();
-    }
-
-    public string GetIpAddressWithoutPort ()
-    {
-        if (IsAdminDebugDummy)
-        {
-            return "debug";
-        }
-
-        return streamPeerTcp.GetConnectedHost ();
-    }
-
-    public string? GetLogin ()
-    {
-        return playerDbEntry?.Login;
-    }
-
-    protected override void ShowForClient (SphereClient client)
-    {
-        if (client.GetInstanceId () == GetInstanceId ())
-        {
-            return;
-        }
-
-        if (CurrentCharacter is null)
-        {
-            return;
-        }
-
-        SphLogger.Info ($"Showing for other client: {client.localId:X4}. Client ID: {localId:X4}");
-        var entityId = client.GetLocalObjectId (ID);
-        var origin = GlobalTransform.Origin;
-        client.MaybeQueueNetworkPacketSend (
-            new CharacterDbEntrySerializer (CurrentCharacter).ToSpawnSnapshotByteArray (
-                entityId, origin.X, -origin.Y, -origin.Z, CurrentCharacter.Angle));
-        client.MaybeQueueNetworkPacketSend (
-            CommonPackets.BuildSetWornGearPacket (entityId, CharacterWornLook.ToWearPattern (CurrentCharacter)));
-    }
-
-    /// <summary>
-    /// SetWornGear (region 6) is what Image waits on after the first region 61
-    /// </summary>
-    public override void BroadcastAppearanceRefreshToVisibleClients ()
-    {
-        if (CurrentCharacter is null)
-        {
-            return;
-        }
-
-        var wear = CharacterWornLook.ToWearPattern (CurrentCharacter);
-        ForEachVisibleClient (viewer =>
-        {
-            var entityId = viewer.GetLocalObjectId (ID);
-            viewer.MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (entityId, wear));
-        });
-    }
-
-    /// <summary>
-    /// Enqueue only, so HP and the health packets stay in one place
-    /// </summary>
-    public void BroadcastApplyHpDelta (int hpDelta)
-    {
-        if (CurrentCharacter is null || hpDelta == 0)
-        {
-            return;
-        }
-
-        EnqueueClientEvent (new CharacterHealthChangeEvent (CurrentCharacter.ClientIndex, hpDelta));
-    }
-
-    /// <summary>
-    /// Delay stands in for city placement
-    /// </summary>
-    public void SchedulePlayerRespawn (float delaySeconds = 5f)
-    {
-        if (IsAdminDebugDummy || GetTree () is null)
-        {
-            return;
-        }
-
-        var timer = GetTree ().CreateTimer (delaySeconds);
-        timer.Timeout += OnPlayerRespawnTimeout;
-    }
-
-    private void OnPlayerRespawnTimeout ()
-    {
-        if (CurrentCharacter is null || CurrentCharacter.CurrentHP > 0)
-        {
-            return;
-        }
-
-        var respawnHp = (ushort) Math.Min (100, (int) CurrentCharacter.MaxHP);
-        if (respawnHp == 0)
-        {
-            return;
-        }
-
-        var selfId = CurrentCharacter.ClientIndex;
-        CurrentCharacter.CurrentHP = respawnHp;
-
-        // Absolute SetStat; a ContMan delta would stack on top of it
-        MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (selfId, (byte) HpCurrent, respawnHp));
-        // RcvInfo: hit_type==0 && flags==6 clears WaitReinc (g_08AA).
-        MaybeQueueNetworkPacketSend (
-            CommonPackets.BuildPlayerReceiveHit (selfId, hitType: 0, hpDelta: 0, secondDelta: 0, flags: 6));
-        NetworkedStatsUpdater.Update (CurrentCharacter, refreshPeers: false);
-        BroadcastHpToVisibleClients (respawnHp, respawnHp, includeMax: true);
-        SaveCharacter ();
-
-        SphLogger.Info (
-            $"Player respawn after death. Client ID: {localId:X4}, SetStat HP={respawnHp}, WaitReinc clear.");
-    }
-
-    /// <summary>
-    /// Peer ContMan ApplyHp + absolute HpCurrent (and optional HpMax) for visible clients.
-    /// </summary>
-    public void BroadcastHpToVisibleClients (int healthDiff, int absoluteHp, bool includeMax = false)
-    {
-        var maxHp = CurrentCharacter?.MaxHP ?? 0;
-        ForEachVisibleClient (viewer =>
-        {
-            var entityId = viewer.GetLocalObjectId (ID);
-            viewer.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerApplyHpDelta (entityId, entityId, healthDiff));
-            viewer.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerWriteIndexedStat (entityId, (byte) HpCurrent, absoluteHp));
-            if (includeMax)
-            {
-                viewer.MaybeQueueNetworkPacketSend (
-                    CommonPackets.BuildPlayerWriteIndexedStat (entityId, (byte) HpMax, maxHp));
-            }
-        });
-    }
-
-    /// <summary>
-    /// WriteIndexedStat, because FULL_SPAWN does not refresh an already-spawned peer
-    /// </summary>
-    public void BroadcastNameplateRefreshToVisibleClients ()
-    {
-        if (CurrentCharacter is null)
-        {
-            return;
-        }
-
-        var character = CurrentCharacter;
-        var titleLevel = character.TitleMinusOne % 60;
-        var degreeLevel = character.DegreeMinusOne % 60;
-        var titleRebirth = character.TitleMinusOne / 60;
-        var degreeRebirth = character.DegreeMinusOne / 60;
-
-        ForEachVisibleClient (viewer =>
-        {
-            var entityId = viewer.GetLocalObjectId (ID);
-            var packets = new List<byte[]> (9);
-            CommonPackets.AppendPlayerNameplateStatPackets (packets, entityId,
-                character.CurrentHP, character.MaxHP, (int) character.Karma,
-                titleLevel, degreeLevel, titleRebirth, degreeRebirth,
-                (int) character.Guild, character.GuildLevelMinusOne);
-            foreach (var packet in packets)
-            {
-                viewer.MaybeQueueNetworkPacketSend (packet);
-            }
-        });
-    }
-
-    /// <summary>
-    /// Classic Manager SetClan frame for the name and rank
-    /// </summary>
-    public void BroadcastClanRefreshToVisibleClients ()
-    {
-        if (CurrentCharacter is null)
-        {
-            return;
-        }
-
-        var clanName = CurrentCharacter.Clan?.Name;
-        if (string.IsNullOrEmpty (clanName)
-            || CurrentCharacter.Clan?.Id == ClanDbEntry.DefaultClanDbEntry.Id)
-        {
-            return;
-        }
-
-        var rank = (int) CurrentCharacter.ClanRank;
-        MaybeQueueNetworkPacketSend (
-            CommonPackets.BuildClanRankPacket (CurrentCharacter.ClientIndex, clanName, rank));
-
-        ForEachVisibleClient (viewer =>
-        {
-            var entityId = viewer.GetLocalObjectId (ID);
-            viewer.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildClanRankPacket (entityId, clanName, rank));
-        });
-    }
-
-    private void UpdateCharacterForDebugMode ()
-    {
-        // TODO: move to db entry
-        if (!ServerConfig.AppConfig.DebugMode)
-        {
-            SphLogger.Info ($"Skipping debug mode update (debug mode off). Client ID: {localId:X4}");
-            return;
-        }
-
-        if (CurrentCharacter is null)
-        {
-            SphLogger.Info ($"Skipping debug mode update (character is null). Client ID: {localId:X4}");
-            return;
-        }
-
-        CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
-        CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
-        CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
-        CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
-        CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
-    }
+	public readonly ClientStateManager ClientStateManager = new (false);
+	private ClientConnection clientConnection = null!;
+	private ClientEvents clientEvents = null!;
+
+	private CharacterBody3D? clientModel;
+	public CharacterDbEntry? CurrentCharacter;
+	private ClientState currentState = ClientState.I_AM_BREAD;
+	private bool isExiting;
+	public ushort localId;
+	/// <summary>
+	/// Admin UI stand-in with no TCP
+	/// </summary>
+	public bool IsAdminDebugDummy { get; private set; }
+
+	/// <summary>
+	/// g_ground code 5: the water plane is at or below the feet, and within 30 units
+	/// </summary>
+	public bool IsUnderwater { get; private set; }
+
+	// Breath from the IsUnderwater rising edge; a tick starts another while it stays set
+	private const double UnderwaterBreathSeconds = 6;
+	private int underwaterTickGeneration;
+	private bool underwaterTickArmed;
+	private SceneTreeTimer? underwaterTickTimer;
+
+	private PlayerDbEntry? playerDbEntry;
+	private int selectedCharacterIndex;
+	private StreamPeerTcp streamPeerTcp = null!;
+	// SceneTreeTimer is refcounted; a local dies before Timeout
+	private SceneTreeTimer? playerRespawnTimer;
+
+	internal Area3D? BroadcastArea3D { get; private set; }
+
+	public override async void _PhysicsProcess (double delta)
+	{
+		if (IsAdminDebugDummy)
+		{
+			return;
+		}
+
+		if (streamPeerTcp.GetStatus () != StreamPeerSocket.Status.Connected)
+		{
+			RemoveClient ();
+			return;
+		}
+
+		clientModel ??= NodeChildTools.FindFirstChildOfType<CharacterBody3D> (this, "ClientModel");
+		if (BroadcastArea3D is null)
+		{
+			var area = NodeChildTools.FindFirstChildOfType<Area3D> (this);
+			if (area is not null && NodeChildTools.FindFirstChildOfType<CollisionShape3D> (area) is not null)
+			{
+				BroadcastArea3D = area;
+			}
+		}
+
+		await clientConnection.Process (delta);
+		await clientEvents.HandleEventsAsync ();
+	}
+
+	public override void _Ready ()
+	{
+		// TODO: client logs in separate files
+		SphLogger.Info ($"New client connected. Client ID: {localId:X4}");
+
+		// Task.Run(() =>
+		// {
+		//     while (true)
+		//     {
+		//         var input = Console.ReadLine();
+		//         try
+		//         {
+		//             if (CurrentCharacter is null)
+		//             {
+		//                 Console.WriteLine("Character is null");
+		//                 continue;
+		//             }
+		//
+		//             var parser = ConsoleCommandParser.Get(CurrentCharacter);
+		//             var result = parser.Parse(input);
+		//         }
+		//         catch (Exception ex)
+		//         {
+		//             Console.WriteLine(ex.Message);
+		//         }
+		//     }
+		// });
+	}
+
+	public SphereClient Setup (StreamPeerTcp streamPeer, ushort id)
+	{
+		clientEvents = new ClientEvents (this);
+		clientConnection = new ClientConnection (streamPeer, id, this);
+		localId = id;
+		streamPeerTcp = streamPeer;
+
+		return this;
+	}
+
+	/// <summary>
+	/// No-TCP client for admin UI debugging. Pair with <c>AdminDebugDummyClient</c>.
+	/// </summary>
+	public SphereClient SetupAdminDebugDummy (ushort id)
+	{
+		IsAdminDebugDummy = true;
+		localId = id;
+		clientEvents = new ClientEvents (this);
+		return this;
+	}
+
+	public void EnqueueClientEvent (ClientQueuedEvent clientEvent)
+	{
+		clientEvents.Enqueue (clientEvent);
+	}
+
+	public void SetPlayerDbEntry (PlayerDbEntry? entry)
+	{
+		playerDbEntry = entry;
+	}
+
+	public CharacterDbEntry? GetSelecterCharacter ()
+	{
+		return CurrentCharacter;
+	}
+
+	public void SaveCharacter ()
+	{
+		// [BsonRef] character documents are a separate collection, so the player-row update leaves
+		// them untouched
+		if (CurrentCharacter is not null)
+		{
+			if (CurrentCharacter.Id == 0)
+			{
+				SphLogger.Error ($"SaveCharacter: character Id is 0, Insert instead. Client ID: {localId:X4}");
+			}
+
+			CurrentCharacter.PersistAll ();
+		}
+
+		if (playerDbEntry is not null)
+		{
+			DbConnection.Players.Update (playerDbEntry);
+		}
+
+		DbConnection.Checkpoint ();
+	}
+
+	public void SetSelectedCharacterIndex (int index)
+	{
+		selectedCharacterIndex = index;
+		try
+		{
+			var listed = playerDbEntry!.Characters[index];
+			// BsonRef Include can return a stub, so reload the Characters row for Base* and Items
+			var character = listed.Id != 0
+				? DbConnection.Characters.Query ()
+					.Include (["$.Clan"])
+					.Where (c => c.Id == listed.Id)
+					.FirstOrDefault ()
+				: null;
+			if (character is null)
+			{
+				character = listed;
+				SphLogger.Warning (
+					$"SetSelectedCharacterIndex: no Characters row for id {listed.Id}, using list stub. " +
+					$"Client ID: {localId:X4}");
+			}
+			else
+			{
+				playerDbEntry.Characters[index] = character;
+			}
+
+			CurrentCharacter = character;
+			CurrentCharacter.ClientIndex = localId;
+			CurrentCharacter.ClientLocalId = localId;
+			UpdateCharacterForDebugMode ();
+			UpdateUnderwater ();
+			ClientStateEvents.RaiseCharacterChanged (localId);
+		}
+		catch (Exception ex)
+		{
+			SphLogger.Error ($"Unable to select character at index: {index}. Client ID: {localId:X4}.", ex);
+		}
+	}
+
+	public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
+	{
+		try
+		{
+			DbConnection.Characters.Insert (newCharacter);
+			playerDbEntry!.Characters.Insert (index, newCharacter);
+			DbConnection.Players.Update (playerDbEntry!);
+		}
+		catch (Exception ex)
+		{
+			SphLogger.Error ($"Unable to create character at index: {index}. Client ID: {localId:X4}.", ex);
+		}
+	}
+
+	public void DeletePlayerCharacter (int index)
+	{
+		// TODO: move to db entry
+		try
+		{
+			var characterToDelete = playerDbEntry!.Characters[index];
+			var id = characterToDelete.Id;
+			var name = characterToDelete.Name;
+			SphLogger.Info ($"Delete character [{index}] - [{name}]. Client ID: {localId:X4}");
+			playerDbEntry!.Characters.RemoveAt (index);
+			DbConnection.Players.Update (playerDbEntry);
+			DbConnection.Characters.Delete (id);
+
+			// TODO: reinit session after delete
+			RemoveClient ();
+		}
+		catch (Exception ex)
+		{
+			SphLogger.Error ($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
+		}
+	}
+
+	public void RemoveClient ()
+	{
+		if (isExiting)
+		{
+			return;
+		}
+
+		SphLogger.Info ($"Client disconnected. Client ID: {localId:X4}");
+
+		isExiting = true;
+		SaveCharacter ();
+		DbConnection.Checkpoint ();
+		if (!IsAdminDebugDummy)
+		{
+			clientConnection.Close ();
+		}
+
+		ActiveClients.Remove (localId);
+		NetworkedStatsUpdater.Clear (localId);
+		ConsoleCommandParser.Invalidate (localId);
+		ActiveNodes.Remove (GetInstanceId ());
+
+		if (playerDbEntry is not null)
+		{
+			ActiveWorldObjects.LoggedInClients.Remove (playerDbEntry.Login, out _);
+		}
+
+		PlayerCountBroadcast.OnClientLeftWorld ();
+
+		QueueFree ();
+	}
+
+	public void MaybeQueueNetworkPacketSend (byte[] packet)
+	{
+		if (IsAdminDebugDummy)
+		{
+			return;
+		}
+
+		clientConnection.MaybeScheduleNetworkPacketSend (packet);
+	}
+
+	public ushort GetLocalObjectId (int id)
+	{
+		// TODO: implement
+		return (ushort) id;
+	}
+
+	public ushort GetGlobalObjectId (int id)
+	{
+		// TODO: implement
+		return (ushort) id;
+	}
+
+	public static ushort GetLocalObjectId (ushort clientId, int id)
+	{
+		// TODO: implement
+		return (ushort) id;
+	}
+
+	public void UpdateCoordinatesInWorld ()
+	{
+		var transform = Transform;
+		transform.Origin = CurrentCharacter!.Origin;
+		Transform = transform;
+		UpdateUnderwater ();
+		WorldObjectVisibilityManager.RefreshRegistration (this);
+	}
+
+	/// <summary>
+	/// Stored Y and Z are negated client axes, same as the ping write
+	/// </summary>
+	public void UpdateUnderwater ()
+	{
+		var character = CurrentCharacter;
+		IsUnderwater = character is not null
+					   && TerrainWater.IsUnderwater (character.X, -character.Y, -character.Z);
+		SyncUnderwaterBreath ();
+	}
+
+	public void DisarmUnderwaterBreath ()
+	{
+		if (!underwaterTickArmed && underwaterTickTimer is null)
+		{
+			return;
+		}
+
+		underwaterTickArmed = false;
+		underwaterTickTimer = null;
+		underwaterTickGeneration++;
+	}
+
+	private void SyncUnderwaterBreath ()
+	{
+		var character = CurrentCharacter;
+		if (!IsUnderwater || character is null || character.CurrentHP <= 0)
+		{
+			DisarmUnderwaterBreath ();
+			return;
+		}
+
+		if (underwaterTickArmed)
+		{
+			return;
+		}
+
+		ArmUnderwaterBreath ();
+	}
+
+	private void ArmUnderwaterBreath ()
+	{
+		if (GetTree () is null)
+		{
+			return;
+		}
+
+		underwaterTickGeneration++;
+		var generation = underwaterTickGeneration;
+		underwaterTickArmed = true;
+		underwaterTickTimer = GetTree ().CreateTimer (UnderwaterBreathSeconds);
+		underwaterTickTimer.Timeout += () => OnUnderwaterBreath (generation);
+	}
+
+	private void OnUnderwaterBreath (int generation)
+	{
+		if (!GodotObject.IsInstanceValid (this) || generation != underwaterTickGeneration)
+		{
+			return;
+		}
+
+		underwaterTickArmed = false;
+		underwaterTickTimer = null;
+		var character = CurrentCharacter;
+		if (!IsUnderwater || character is null || character.CurrentHP <= 0)
+		{
+			return;
+		}
+
+		var damage = (character.MaxHP + 5) / 6;
+		if (damage <= 0)
+		{
+			return;
+		}
+
+		EnqueueClientEvent (new CharacterHealthChangeEvent (character.ClientIndex, -damage,
+			Origin: DamageOriginSpecial.НехваткаВоздуха));
+		if (character.CurrentHP > damage)
+		{
+			ArmUnderwaterBreath ();
+		}
+	}
+
+	public void InitializeInteractions ()
+	{
+		SphLogger.Info ($"Initializing client interactions. Client ID: {localId:X4}");
+
+		if (clientModel is null)
+		{
+			SphLogger.Error ($"Cannot initialize client interactions: client model is null. Client ID: {localId:X4}");
+			return;
+		}
+
+		clientModel.ProcessMode = ProcessModeEnum.Inherit;
+		clientModel.CollisionLayer = 2;
+		clientModel.CollisionMask = 0b11;
+
+		// WorldObject.ID
+		ID = localId;
+
+		// Collision comes from base._Ready, which waits until the client is in game
+		base._Ready ();
+	}
+
+	public string GetIpAddressAndPort ()
+	{
+		if (IsAdminDebugDummy)
+		{
+			return "debug:0";
+		}
+
+		return streamPeerTcp.GetConnectedHost () + ':' + streamPeerTcp.GetConnectedPort ();
+	}
+
+	public string GetIpAddressWithoutPort ()
+	{
+		if (IsAdminDebugDummy)
+		{
+			return "debug";
+		}
+
+		return streamPeerTcp.GetConnectedHost ();
+	}
+
+	public string? GetLogin ()
+	{
+		return playerDbEntry?.Login;
+	}
+
+	protected override void ShowForClient (SphereClient client)
+	{
+		if (client.GetInstanceId () == GetInstanceId ())
+		{
+			return;
+		}
+
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		SphLogger.Info ($"Showing for other client: {client.localId:X4}. Client ID: {localId:X4}");
+		var entityId = client.GetLocalObjectId (ID);
+		var origin = GlobalTransform.Origin;
+		client.MaybeQueueNetworkPacketSend (
+			new CharacterDbEntrySerializer (CurrentCharacter).ToSpawnSnapshotByteArray (
+				entityId, origin.X, -origin.Y, -origin.Z, CurrentCharacter.Angle));
+		client.MaybeQueueNetworkPacketSend (
+			CommonPackets.BuildSetWornGearPacket (entityId, CharacterWornLook.ToWearPattern (CurrentCharacter)));
+	}
+
+	/// <summary>
+	/// SetWornGear (region 6) is what Image waits on after the first region 61
+	/// </summary>
+	public override void BroadcastAppearanceRefreshToVisibleClients ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var wear = CharacterWornLook.ToWearPattern (CurrentCharacter);
+		ForEachVisibleClient (viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId (ID);
+			viewer.MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (entityId, wear));
+		});
+	}
+
+	/// <summary>
+	/// Enqueue only, so HP and the health packets stay in one place
+	/// </summary>
+	public void BroadcastApplyHpDelta (int hpDelta)
+	{
+		if (CurrentCharacter is null || hpDelta == 0)
+		{
+			return;
+		}
+
+		EnqueueClientEvent (new CharacterHealthChangeEvent (CurrentCharacter.ClientIndex, hpDelta));
+	}
+
+	/// <summary>
+	/// Delay stands in for city placement
+	/// </summary>
+	public void SchedulePlayerRespawn (float delaySeconds = 5f)
+	{
+		if (IsAdminDebugDummy || GetTree () is null)
+		{
+			return;
+		}
+
+		playerRespawnTimer = GetTree ().CreateTimer (delaySeconds);
+		playerRespawnTimer.Timeout += ReviveAfterDeath;
+	}
+
+	public void ReviveAfterDeath ()
+	{
+		if (CurrentCharacter is null || CurrentCharacter.CurrentHP > 0)
+		{
+			return;
+		}
+
+		var respawnHp = (ushort) Math.Min (100, (int) CurrentCharacter.MaxHP);
+		if (respawnHp == 0)
+		{
+			return;
+		}
+
+		// Same process id as the client position stream
+		var selfId = SphBitStream.ByteSwap (CurrentCharacter.ClientIndex);
+		CurrentCharacter.CurrentHP = respawnHp;
+
+		var x = (float) CurrentCharacter.X;
+		var y = (float) -CurrentCharacter.Y;
+		var z = (float) -CurrentCharacter.Z;
+		var yaw = (float) CurrentCharacter.Angle;
+
+		// hit_type 0 flags 6 clears the WaitReinc latch
+		MaybeQueueNetworkPacketSend (
+			CommonPackets.BuildPlayerReceiveHit (selfId, hitType: 0, hpDelta: 0, secondDelta: 0, flags: 6));
+		// cmd 15 restarts PrgMove at this pose
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetCoordinates (selfId, x, y, z, yaw));
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetCurrentHp (selfId, respawnHp));
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (selfId, (byte) HpCurrent, respawnHp));
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (selfId, (byte) MpCurrent, CurrentCharacter.CurrentMP));
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerPlayEffect (selfId, 758));
+		NetworkedStatsUpdater.Update (CurrentCharacter, refreshPeers: false);
+		BroadcastHpToVisibleClients (respawnHp, respawnHp, includeMax: true);
+		SaveCharacter ();
+		SyncUnderwaterBreath ();
+
+		SphLogger.Info (
+			$"Player respawn after death. Client ID: {localId:X4}, SetCoordinates, effect 758, HP={respawnHp}.");
+	}
+
+	/// <summary>
+	/// Peer ContMan ApplyHp + absolute HpCurrent (and optional HpMax) for visible clients.
+	/// </summary>
+	public void BroadcastHpToVisibleClients (int healthDiff, int absoluteHp, bool includeMax = false)
+	{
+		var maxHp = CurrentCharacter?.MaxHP ?? 0;
+		ForEachVisibleClient (viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId (ID);
+			viewer.MaybeQueueNetworkPacketSend (
+				CommonPackets.BuildPlayerApplyHpDelta (entityId, entityId, healthDiff));
+			viewer.MaybeQueueNetworkPacketSend (
+				CommonPackets.BuildPlayerWriteIndexedStat (entityId, (byte) HpCurrent, absoluteHp));
+			if (includeMax)
+			{
+				viewer.MaybeQueueNetworkPacketSend (
+					CommonPackets.BuildPlayerWriteIndexedStat (entityId, (byte) HpMax, maxHp));
+			}
+		});
+	}
+
+	/// <summary>
+	/// WriteIndexedStat, because FULL_SPAWN does not refresh an already-spawned peer
+	/// </summary>
+	public void BroadcastNameplateRefreshToVisibleClients ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var character = CurrentCharacter;
+		var titleLevel = character.TitleMinusOne % 60;
+		var degreeLevel = character.DegreeMinusOne % 60;
+		var titleRebirth = character.TitleMinusOne / 60;
+		var degreeRebirth = character.DegreeMinusOne / 60;
+
+		ForEachVisibleClient (viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId (ID);
+			var packets = new List<byte[]> (9);
+			CommonPackets.AppendPlayerNameplateStatPackets (packets, entityId,
+				character.CurrentHP, character.MaxHP, (int) character.Karma,
+				titleLevel, degreeLevel, titleRebirth, degreeRebirth,
+				(int) character.Guild, character.GuildLevelMinusOne);
+			foreach (var packet in packets)
+			{
+				viewer.MaybeQueueNetworkPacketSend (packet);
+			}
+		});
+	}
+
+	/// <summary>
+	/// Classic Manager SetClan frame for the name and rank
+	/// </summary>
+	public void BroadcastClanRefreshToVisibleClients ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		var clanName = CurrentCharacter.Clan?.Name;
+		if (string.IsNullOrEmpty (clanName)
+			|| CurrentCharacter.Clan?.Id == ClanDbEntry.DefaultClanDbEntry.Id)
+		{
+			return;
+		}
+
+		var rank = (int) CurrentCharacter.ClanRank;
+		MaybeQueueNetworkPacketSend (
+			CommonPackets.BuildClanRankPacket (CurrentCharacter.ClientIndex, clanName, rank));
+
+		ForEachVisibleClient (viewer =>
+		{
+			var entityId = viewer.GetLocalObjectId (ID);
+			viewer.MaybeQueueNetworkPacketSend (
+				CommonPackets.BuildClanRankPacket (entityId, clanName, rank));
+		});
+	}
+
+	private void UpdateCharacterForDebugMode ()
+	{
+		// TODO: move to db entry
+		if (!ServerConfig.AppConfig.DebugMode)
+		{
+			SphLogger.Info ($"Skipping debug mode update (debug mode off). Client ID: {localId:X4}");
+			return;
+		}
+
+		if (CurrentCharacter is null)
+		{
+			SphLogger.Info ($"Skipping debug mode update (character is null). Client ID: {localId:X4}");
+			return;
+		}
+
+		CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
+		CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
+		CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
+		CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
+		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
+	}
 }

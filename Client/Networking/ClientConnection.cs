@@ -328,6 +328,11 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         return sphereClient.GetSelecterCharacter ();
     }
 
+    public void ReviveAfterDeath ()
+    {
+        sphereClient.ReviveAfterDeath ();
+    }
+
     public void SendPacket (byte[] packet)
     {
         SphPacketLogger.LogOutgoing (localId, packet);

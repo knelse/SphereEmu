@@ -309,7 +309,7 @@ public static class CommonPackets
     /// </summary>
     public static byte[] BuildPlayerApplyHpDelta (ushort entityId, ushort sourceId, int hpDelta)
     {
-        var wireDelta = unchecked ((ushort) (hpDelta + 30000));
+        var wireDelta = unchecked((ushort) (hpDelta + 30000));
         byte[] payload =
         [
             (byte) (sourceId & 0xFF),
@@ -319,6 +319,45 @@ public static class CommonPackets
             (byte) ((wireDelta >> 8) & 0xFF)
         ];
         return BuildPlayerContManCommand (entityId, command: 9, payload);
+    }
+
+    /// <summary>
+    /// ContMan cmd 9 len 2: u16 current HP. CycleSend leaves its HP&lt;=0 yield once this is above 0
+    /// </summary>
+    public static byte[] BuildPlayerSetCurrentHp (ushort entityId, ushort currentHp)
+    {
+        byte[] payload =
+        [
+            (byte) (currentHp & 0xFF),
+            (byte) ((currentHp >> 8) & 0xFF)
+        ];
+        return BuildPlayerContManCommand (entityId, command: 9, payload);
+    }
+
+    /// <summary>
+    /// Manager cmd 15 len 16: x, y, z, yaw. Restarts PrgMove
+    /// </summary>
+    public static byte[] BuildPlayerSetCoordinates (ushort entityId, float x, float y, float z, float yaw)
+    {
+        var payload = new byte[16];
+        BitConverter.GetBytes (x).CopyTo (payload, 0);
+        BitConverter.GetBytes (y).CopyTo (payload, 4);
+        BitConverter.GetBytes (z).CopyTo (payload, 8);
+        BitConverter.GetBytes (yaw).CopyTo (payload, 12);
+        return BuildPlayerManagerCommand (entityId, command: 15, payload);
+    }
+
+    /// <summary>
+    /// Manager cmd 18 len 2: effect id attached to the character object
+    /// </summary>
+    public static byte[] BuildPlayerPlayEffect (ushort entityId, ushort effectId)
+    {
+        byte[] payload =
+        [
+            (byte) (effectId & 0xFF),
+            (byte) ((effectId >> 8) & 0xFF)
+        ];
+        return BuildPlayerManagerCommand (entityId, command: 18, payload);
     }
 
     /// <summary>
@@ -373,7 +412,7 @@ public static class CommonPackets
     public static void WriteMbcVarint (SphWriteStream stream, int value)
     {
         var negative = value < 0;
-        var magnitude = unchecked ((uint) (negative ? -value : value));
+        var magnitude = unchecked((uint) (negative ? -value : value));
         var selector = magnitude < 8 ? 0u : magnitude < 128 ? 1u : magnitude < 16384 ? 2u : 3u;
         ReadOnlySpan<int> widths = [3, 7, 14, 31];
         stream.WriteByte (negative ? (byte) 1 : (byte) 0, 1);
@@ -428,6 +467,29 @@ public static class CommonPackets
     }
 
     /// <summary>
+    /// Region 11 array count 0. CheckPing resets its loss counter on any PositionStream
+    /// </summary>
+    public static byte[] BuildPlayerEmptyPositionStream (ushort entityId, double x, double y, double z)
+    {
+        var ox = (int) Math.Truncate (x);
+        var oy = (int) Math.Truncate (y);
+        var oz = (int) Math.Truncate (z);
+        const ushort playerModuleTag = (ushort) ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (1, 1); // has_position
+        stream.WriteUInt16 ((ushort) (ox + 32768), 16);
+        stream.WriteUInt16 ((ushort) (oy + 1200), 13);
+        stream.WriteUInt16 ((ushort) (oz + 32768), 16);
+        stream.WriteUInt16 (0, 15); // tick
+        stream.WriteUInt16 (entityId, 16);
+        stream.WriteByte (0, 2); // process_id high
+        stream.WriteUInt16 ((ushort) (playerModuleTag & 0xFFF), 12);
+        stream.WriteByte (12, 7); // wire = region 11 + 1 (PositionStream)
+        stream.WriteByte (0, 4); // array4 count 0
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
+    /// <summary>
     /// TradeMan region 9 cmd 15: len3 is u8 index + u16, len5 is u8 index + u32, one g_rec_0C44
     /// field
     /// </summary>
@@ -437,7 +499,7 @@ public static class CommonPackets
         byte[] payload;
         if (useU32)
         {
-            var u = unchecked ((uint) value);
+            var u = unchecked((uint) value);
             payload =
             [
                 statIndex,
@@ -449,7 +511,7 @@ public static class CommonPackets
         }
         else
         {
-            var u = unchecked ((ushort) value);
+            var u = unchecked((ushort) value);
             payload = [statIndex, (byte) (u & 0xFF), (byte) ((u >> 8) & 0xFF)];
         }
 

@@ -124,7 +124,9 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
 
         // Killing blow: enqueue exact remainder to 0, not the uncapped roll.
         var healthDiff = outcome.BecameDead ? -character.CurrentHP : -outcome.Applied;
-        sphereClient.EnqueueClientEvent (new CharacterHealthChangeEvent (character.ClientIndex, healthDiff));
+        var killerProcess = SphBitStream.ByteSwap (character.ClientIndex);
+        sphereClient.EnqueueClientEvent (new CharacterHealthChangeEvent (character.ClientIndex, healthDiff,
+            killerProcess));
         LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
             outcome.BecameDead
                 ? $"self-kill karma={character.KarmaCount} dmg={-healthDiff}"
