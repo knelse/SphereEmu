@@ -6,7 +6,7 @@ public static class GameObjectDb
 {
     public static readonly Dictionary<int, SphGameObject> Db = SphObjectDb.GameObjectDataDb;
 
-    public static ObjectType GetPacketObjectType(this GameObjectType gameObjectType)
+    public static ObjectType GetPacketObjectType (this GameObjectType gameObjectType)
     {
         return gameObjectType switch
         {

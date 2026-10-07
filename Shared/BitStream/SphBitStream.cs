@@ -4,7 +4,7 @@ public static class SphBitStream
 {
     public static SphWriteStream GetWriteBitStream ()
     {
-        return new SphWriteStream();
+        return new SphWriteStream ();
     }
 
     public static ushort ByteSwap (ushort u)

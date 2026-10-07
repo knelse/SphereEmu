@@ -10,29 +10,26 @@ using System.Threading.Tasks;
 
 namespace PacketLogViewer;
 
-/// <summary>
-/// Listens for the game client and forwards TCP to the real Sphere server, allowing injection of extra server→client payloads (e.g. teleport).
-/// Point the game at <see cref="ListenEndPoint"/> instead of the upstream host.
-/// </summary>
+/// Client connects here so extra server-to-client payloads can be injected
 public sealed class SphereMitmProxy : IDisposable
 {
     private readonly string _upstreamHost;
     private readonly int _upstreamPort;
-    private readonly List<ProxySession> _sessions = new();
-    private readonly object _sessionsLock = new();
+    private readonly List<ProxySession> _sessions = new ();
+    private readonly object _sessionsLock = new ();
 
     private TcpListener? _listener;
     private CancellationTokenSource? _cts;
     private Task? _acceptLoop;
     private bool _disposed;
 
-    public SphereMitmProxy(string listenAddress, int listenPort, string upstreamHost, int upstreamPort)
+    public SphereMitmProxy (string listenAddress, int listenPort, string upstreamHost, int upstreamPort)
     {
         ListenAddress = listenAddress;
         ListenPort = listenPort;
         _upstreamHost = upstreamHost;
         _upstreamPort = upstreamPort;
-        ListenEndPoint = new IPEndPoint(ResolveListenAddress(listenAddress), listenPort);
+        ListenEndPoint = new IPEndPoint (ResolveListenAddress (listenAddress), listenPort);
     }
 
     public string ListenAddress { get; }
@@ -43,22 +40,21 @@ public sealed class SphereMitmProxy : IDisposable
 
     public bool IsRunning => _listener is not null && !_disposed;
 
-    public void Start()
+    public void Start ()
     {
-        ObjectDisposedException.ThrowIf(_disposed, this);
+        ObjectDisposedException.ThrowIf (_disposed, this);
 
-        _cts = new CancellationTokenSource();
-        _listener = new TcpListener(ListenEndPoint.Address, ListenEndPoint.Port);
+        _cts = new CancellationTokenSource ();
+        _listener = new TcpListener (ListenEndPoint.Address, ListenEndPoint.Port);
         _listener.Server.NoDelay = true;
-        _listener.Start();
+        _listener.Start ();
 
         var token = _cts.Token;
-        _acceptLoop = Task.Run(() => AcceptLoopAsync(token), token);
-        Debug.WriteLine($"[SphereMitmProxy] Listening on {ListenEndPoint}, upstream {_upstreamHost}:{_upstreamPort}");
+        _acceptLoop = Task.Run (() => AcceptLoopAsync (token), token);
+        Debug.WriteLine ($"[SphereMitmProxy] Listening on {ListenEndPoint}, upstream {_upstreamHost}:{_upstreamPort}");
     }
 
-    /// <summary>Injects raw bytes on the server→game direction for every active proxied connection.</summary>
-    public bool TryInjectTowardClient(byte[] payload)
+    public bool TryInjectTowardClient (byte[] payload)
     {
         lock (_sessionsLock)
         {
@@ -67,16 +63,16 @@ public sealed class SphereMitmProxy : IDisposable
                 return false;
             }
 
-            foreach (var session in _sessions.ToArray())
+            foreach (var session in _sessions.ToArray ())
             {
-                session.InjectTowardGame(payload);
+                session.InjectTowardGame (payload);
             }
 
             return true;
         }
     }
 
-    public void Dispose()
+    public void Dispose ()
     {
         if (_disposed)
         {
@@ -87,7 +83,7 @@ public sealed class SphereMitmProxy : IDisposable
 
         try
         {
-            _cts?.Cancel();
+            _cts?.Cancel ();
         }
         catch
         {
@@ -96,7 +92,7 @@ public sealed class SphereMitmProxy : IDisposable
 
         try
         {
-            _listener?.Stop();
+            _listener?.Stop ();
         }
         catch
         {
@@ -105,27 +101,27 @@ public sealed class SphereMitmProxy : IDisposable
 
         try
         {
-            _acceptLoop?.Wait(TimeSpan.FromSeconds(3));
+            _acceptLoop?.Wait (TimeSpan.FromSeconds (3));
         }
         catch
         {
             // ignored
         }
 
-        _cts?.Dispose();
+        _cts?.Dispose ();
         _cts = null;
         _listener = null;
         _acceptLoop = null;
     }
 
-    private async Task AcceptLoopAsync(CancellationToken ct)
+    private async Task AcceptLoopAsync (CancellationToken ct)
     {
         while (!ct.IsCancellationRequested && _listener is not null)
         {
             TcpClient? gameClient = null;
             try
             {
-                gameClient = await _listener.AcceptTcpClientAsync(ct).ConfigureAwait(false);
+                gameClient = await _listener.AcceptTcpClientAsync (ct).ConfigureAwait (false);
             }
             catch (OperationCanceledException)
             {
@@ -142,7 +138,7 @@ public sealed class SphereMitmProxy : IDisposable
                     break;
                 }
 
-                await Task.Delay(50, ct).ConfigureAwait(false);
+                await Task.Delay (50, ct).ConfigureAwait (false);
                 continue;
             }
 
@@ -153,35 +149,35 @@ public sealed class SphereMitmProxy : IDisposable
 
             gameClient.NoDelay = true;
             var clientCopy = gameClient;
-            _ = Task.Run(() => HandleIncomingConnection(clientCopy, ct), CancellationToken.None);
+            _ = Task.Run (() => HandleIncomingConnection (clientCopy, ct), CancellationToken.None);
         }
     }
 
-    private void HandleIncomingConnection(TcpClient gameClient, CancellationToken proxyCt)
+    private void HandleIncomingConnection (TcpClient gameClient, CancellationToken proxyCt)
     {
         ProxySession? session = null;
         try
         {
-            using var upstream = new TcpClient();
+            using var upstream = new TcpClient ();
             upstream.NoDelay = true;
 
-            if (!TryConnectUpstream(upstream, _upstreamHost, _upstreamPort, proxyCt))
+            if (!TryConnectUpstream (upstream, _upstreamHost, _upstreamPort, proxyCt))
             {
-                Debug.WriteLine($"[SphereMitmProxy] Upstream connect failed for {_upstreamHost}:{_upstreamPort}");
+                Debug.WriteLine ($"[SphereMitmProxy] Upstream connect failed for {_upstreamHost}:{_upstreamPort}");
                 return;
             }
 
-            session = new ProxySession(gameClient, upstream);
+            session = new ProxySession (gameClient, upstream);
             lock (_sessionsLock)
             {
-                _sessions.Add(session);
+                _sessions.Add (session);
             }
 
-            session.Run(proxyCt);
+            session.Run (proxyCt);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[SphereMitmProxy] Session error: {ex.Message}");
+            Debug.WriteLine ($"[SphereMitmProxy] Session error: {ex.Message}");
         }
         finally
         {
@@ -189,13 +185,13 @@ public sealed class SphereMitmProxy : IDisposable
             {
                 lock (_sessionsLock)
                 {
-                    _sessions.Remove(session);
+                    _sessions.Remove (session);
                 }
             }
 
             try
             {
-                gameClient.Dispose();
+                gameClient.Dispose ();
             }
             catch
             {
@@ -204,27 +200,27 @@ public sealed class SphereMitmProxy : IDisposable
         }
     }
 
-    private static bool TryConnectUpstream(TcpClient client, string host, int port, CancellationToken ct)
+    private static bool TryConnectUpstream (TcpClient client, string host, int port, CancellationToken ct)
     {
         try
         {
-            if (IPAddress.TryParse(host, out var ip))
+            if (IPAddress.TryParse (host, out var ip))
             {
-                client.Connect(ip, port);
+                client.Connect (ip, port);
                 return true;
             }
 
-            foreach (var addr in Dns.GetHostAddresses(host))
+            foreach (var addr in Dns.GetHostAddresses (host))
             {
                 if (addr.AddressFamily is not (AddressFamily.InterNetwork or AddressFamily.InterNetworkV6))
                 {
                     continue;
                 }
 
-                ct.ThrowIfCancellationRequested();
+                ct.ThrowIfCancellationRequested ();
                 try
                 {
-                    client.Connect(addr, port);
+                    client.Connect (addr, port);
                     return true;
                 }
                 catch (SocketException)
@@ -239,43 +235,43 @@ public sealed class SphereMitmProxy : IDisposable
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[SphereMitmProxy] Upstream resolution/connect: {ex.Message}");
+            Debug.WriteLine ($"[SphereMitmProxy] Upstream resolution/connect: {ex.Message}");
         }
 
         return false;
     }
 
-    private static IPAddress ResolveListenAddress(string listenAddress)
+    private static IPAddress ResolveListenAddress (string listenAddress)
     {
-        if (IPAddress.TryParse(listenAddress, out var ip))
+        if (IPAddress.TryParse (listenAddress, out var ip))
         {
             return ip;
         }
 
-        var first = Dns.GetHostAddresses(listenAddress)
-            .FirstOrDefault(a => a.AddressFamily is AddressFamily.InterNetwork or AddressFamily.InterNetworkV6);
-        return first ?? throw new InvalidOperationException($"Could not resolve listen address: {listenAddress}");
+        var first = Dns.GetHostAddresses (listenAddress)
+            .FirstOrDefault (a => a.AddressFamily is AddressFamily.InterNetwork or AddressFamily.InterNetworkV6);
+        return first ?? throw new InvalidOperationException ($"Could not resolve listen address: {listenAddress}");
     }
 
     private sealed class ProxySession
     {
         private readonly TcpClient _game;
         private readonly TcpClient _upstream;
-        private readonly object _clientWriteLock = new();
+        private readonly object _clientWriteLock = new ();
 
-        public ProxySession(TcpClient game, TcpClient upstream)
+        public ProxySession (TcpClient game, TcpClient upstream)
         {
             _game = game;
             _upstream = upstream;
         }
 
-        public void Run(CancellationToken ct)
+        public void Run (CancellationToken ct)
         {
-            using var registration = ct.Register(static state =>
+            using var registration = ct.Register (static state =>
             {
                 try
                 {
-                    ((ProxySession)state!).ShutdownSockets();
+                    ((ProxySession) state!).ShutdownSockets ();
                 }
                 catch
                 {
@@ -283,37 +279,37 @@ public sealed class SphereMitmProxy : IDisposable
                 }
             }, this);
 
-            var gameStream = _game.GetStream();
-            var upstreamStream = _upstream.GetStream();
+            var gameStream = _game.GetStream ();
+            var upstreamStream = _upstream.GetStream ();
 
-            var gameToServer = Task.Run(() => Pump(gameStream, upstreamStream, ct), ct);
-            var serverToGame = Task.Run(() => PumpFromServer(upstreamStream, gameStream, _clientWriteLock, ct), ct);
+            var gameToServer = Task.Run (() => Pump (gameStream, upstreamStream, ct), ct);
+            var serverToGame = Task.Run (() => PumpFromServer (upstreamStream, gameStream, _clientWriteLock, ct), ct);
 
-            Task.WaitAll(gameToServer, serverToGame);
+            Task.WaitAll (gameToServer, serverToGame);
         }
 
-        public void InjectTowardGame(byte[] payload)
+        public void InjectTowardGame (byte[] payload)
         {
             try
             {
                 lock (_clientWriteLock)
                 {
-                    var stream = _game.GetStream();
-                    stream.Write(payload, 0, payload.Length);
-                    stream.Flush();
+                    var stream = _game.GetStream ();
+                    stream.Write (payload, 0, payload.Length);
+                    stream.Flush ();
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[SphereMitmProxy] Inject failed: {ex.Message}");
+                Debug.WriteLine ($"[SphereMitmProxy] Inject failed: {ex.Message}");
             }
         }
 
-        private void ShutdownSockets()
+        private void ShutdownSockets ()
         {
             try
             {
-                _game.Close();
+                _game.Close ();
             }
             catch
             {
@@ -322,7 +318,7 @@ public sealed class SphereMitmProxy : IDisposable
 
             try
             {
-                _upstream.Close();
+                _upstream.Close ();
             }
             catch
             {
@@ -330,21 +326,21 @@ public sealed class SphereMitmProxy : IDisposable
             }
         }
 
-        private static void Pump(Stream read, Stream write, CancellationToken ct)
+        private static void Pump (Stream read, Stream write, CancellationToken ct)
         {
             var buffer = new byte[65536];
             try
             {
                 while (!ct.IsCancellationRequested)
                 {
-                    var n = read.Read(buffer, 0, buffer.Length);
+                    var n = read.Read (buffer, 0, buffer.Length);
                     if (n <= 0)
                     {
                         break;
                     }
 
-                    write.Write(buffer, 0, n);
-                    write.Flush();
+                    write.Write (buffer, 0, n);
+                    write.Flush ();
                 }
             }
             catch (ObjectDisposedException)
@@ -361,18 +357,18 @@ public sealed class SphereMitmProxy : IDisposable
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[SphereMitmProxy] Pump: {ex.Message}");
+                Debug.WriteLine ($"[SphereMitmProxy] Pump: {ex.Message}");
             }
         }
 
-        private static void PumpFromServer(Stream read, Stream write, object writeLock, CancellationToken ct)
+        private static void PumpFromServer (Stream read, Stream write, object writeLock, CancellationToken ct)
         {
             var buffer = new byte[65536];
             try
             {
                 while (!ct.IsCancellationRequested)
                 {
-                    var n = read.Read(buffer, 0, buffer.Length);
+                    var n = read.Read (buffer, 0, buffer.Length);
                     if (n <= 0)
                     {
                         break;
@@ -380,8 +376,8 @@ public sealed class SphereMitmProxy : IDisposable
 
                     lock (writeLock)
                     {
-                        write.Write(buffer, 0, n);
-                        write.Flush();
+                        write.Write (buffer, 0, n);
+                        write.Flush ();
                     }
                 }
             }
@@ -399,7 +395,7 @@ public sealed class SphereMitmProxy : IDisposable
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[SphereMitmProxy] PumpFromServer: {ex.Message}");
+                Debug.WriteLine ($"[SphereMitmProxy] PumpFromServer: {ex.Message}");
             }
         }
     }

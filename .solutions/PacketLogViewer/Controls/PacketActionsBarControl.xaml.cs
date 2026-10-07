@@ -4,9 +4,9 @@ namespace PacketLogViewer.Controls;
 
 public partial class PacketActionsBarControl : UserControl
 {
-    public PacketActionsBarControl()
+    public PacketActionsBarControl ()
     {
-        InitializeComponent();
+        InitializeComponent ();
     }
 }
 

@@ -63,10 +63,10 @@ public class SphGameObject
     public int Tier { get; set; }
     public int Range { get; set; }
     public int Radius { get; set; }
+    public float WalkSpeed { get; set; }
+    public float RunSpeed { get; set; }
 
-    /// <summary>
     /// Seconds
-    /// </summary>
     public int Duration { get; set; }
 
     public ItemSuffix Suffix { get; set; } = ItemSuffix.None;
@@ -77,15 +77,17 @@ public class SphGameObject
     public string ToDebugString ()
     {
         var itemCountStr = ItemCount > 1 ? $" ({ItemCount})" : "";
-        return $"GO: {Enum.GetName(typeof (GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
+        return $"GO: {Enum.GetName (typeof (GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
                " Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost}\n" +
                $"Str: {StrengthReq} Agi: {AgilityReq} Acc: {AccuracyReq} End: {EnduranceReq} Ear: {EarthReq} Air: {AirReq} Wat: {WaterReq} Fir: {FireReq}\n" +
                $"Str+: {StrengthUp} Agi+: {AgilityUp} Acc+: {AccuracyUp} End+: {EnduranceUp} Ear+: {EarthUp} Air+: {AirUp} Wat+: {WaterUp} Fir+: {FireUp}\n" +
                $"MaxHP+: {MaxHpUp} MaxMP+: {MaxMpUp} PD+: {PDefUp} MD+: {MDefUp} PA: {PAtkNegative} PA+: {PAtkUpNegative} MA: {MAtkNegativeOrHeal} MA+: {MAtkUpNegative} MP+: {MPHeal}";
         // $" T1: {t1} " +
         // $" Weight: {Weight} Durability: {Durability} Range: {Range} Radius: {Radius} " +
-        // $"UseTime: {UseTime} VendorCost: {VendorCost} MutatorId: {MutatorId} Duration: {Duration} " +
-        // $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7: {t7}" +
+        // $"UseTime: {UseTime} VendorCost: {VendorCost} MutatorId: {MutatorId} Duration: {Duration}
+        // " +
+        // $"ReuseDelayHours: {ReuseDelayHours} T2: {t2} T3: {t3} T4: {t4} T5: {t5} T6: {t6} T7:
+        // {t7}" +
         // $"Suffix: {Enum.GetName(typeof(ItemSuffix), Suffix)} {itemCountStr}";
         // Kind: {Enum.GetName(typeof(GameObjectKind), ObjectKind)} 
         //Ground: {ModelNameGround} 
@@ -107,15 +109,15 @@ public class SphGameObject
 
     public static SphGameObject CreateFromGameObject (SphGameObject old)
     {
-        var newObj = new SphGameObject();
-        foreach (var prop in old.GetType().GetFields())
+        var newObj = new SphGameObject ();
+        foreach (var prop in old.GetType ().GetFields ())
         {
-            newObj.GetType().GetField(prop.Name)?.SetValue(newObj, prop.GetValue(old));
+            newObj.GetType ().GetField (prop.Name)?.SetValue (newObj, prop.GetValue (old));
         }
 
-        foreach (var prop in old.GetType().GetProperties())
+        foreach (var prop in old.GetType ().GetProperties ())
         {
-            newObj.GetType().GetProperty(prop.Name)?.SetValue(newObj, prop.GetValue(old));
+            newObj.GetType ().GetProperty (prop.Name)?.SetValue (newObj, prop.GetValue (old));
         }
 
         newObj.GameObjectDbId = old.GameObjectDbId;
@@ -123,9 +125,9 @@ public class SphGameObject
         return newObj;
     }
 
-    public void ApplyGuildRequirementFromSuffixSet()
+    public void ApplyGuildRequirementFromSuffixSet ()
     {
-        if (GuildCatalog.TryParseRequirement(SuffixSetName, out var guild, out var rank))
+        if (GuildCatalog.TryParseRequirement (SuffixSetName, out var guild, out var rank))
         {
             RequiredGuild = guild;
             RequiredGuildRankMinusOne = rank;

@@ -14,16 +14,20 @@ namespace SphServer.Server.Debug;
 /// </summary>
 public static class AdminDebugDummyClient
 {
-    /// <summary>Flip to false (or delete this type) to disable without hunting call sites.</summary>
-    public const bool Enabled = true;
+    /// <summary>
+    /// Flip to false (or delete this type) to disable without hunting call sites.
+    /// </summary>
+    public static bool Enabled = true;
 
-    /// <summary>Out of the live-client range so the first real player still gets 0x4F6F.</summary>
+    /// <summary>
+    /// Out of the live-client range so the first real player still gets 0x4F6F.
+    /// </summary>
     public const ushort ClientId = 0xCDEF;
 
     private const string Login = "knelse1";
     private const string CharacterName = "Test";
 
-    public static void TrySpawn(Node parent, PackedScene clientScene)
+    public static void TrySpawn (Node parent, PackedScene clientScene)
     {
         if (!Enabled)
         {
@@ -32,60 +36,61 @@ public static class AdminDebugDummyClient
 
         try
         {
-            Spawn(parent, clientScene);
+            Spawn (parent, clientScene);
         }
         catch (Exception ex)
         {
-            SphLogger.Error("AdminDebugDummyClient: spawn failed, continuing without debug character", ex);
+            SphLogger.Error ("AdminDebugDummyClient: spawn failed, continuing without debug character", ex);
         }
     }
 
-    private static void Spawn(Node parent, PackedScene clientScene)
+    private static void Spawn (Node parent, PackedScene clientScene)
     {
-        var player = DbConnection.Players.Query()
-            .Include(["$.Characters[*]", "$.Characters[*].Clan"])
-            .Where(x => x.Login == Login)
-            .FirstOrDefault();
+        var player = DbConnection.Players.Query ()
+            .Include (["$.Characters[*]", "$.Characters[*].Clan"])
+            .Where (x => x.Login == Login)
+            .FirstOrDefault ();
         if (player is null)
         {
-            SphLogger.Warning($"AdminDebugDummyClient: player login \"{Login}\" not found — skip");
+            SphLogger.Warning ($"AdminDebugDummyClient: player login \"{Login}\" not found — skip");
             return;
         }
 
-        var characterIndex = player.Characters.FindIndex(c => c.Name == CharacterName);
+        var characterIndex = player.Characters.FindIndex (c => c.Name == CharacterName);
         if (characterIndex < 0)
         {
-            SphLogger.Warning(
+            SphLogger.Warning (
                 $"AdminDebugDummyClient: character \"{CharacterName}\" not on \"{Login}\" — skip");
             return;
         }
 
-        // BsonRef can hand back a thin stub; reload the Characters row so Items/stats match LiteDB.
+        // BsonRef can return a thin stub; the Characters row is reloaded so Items and stats match
+        // LiteDB
         var characterId = player.Characters[characterIndex].Id;
-        var character = DbConnection.Characters.Query()
-            .Include(["$.Clan"])
-            .Where(c => c.Id == characterId)
-            .FirstOrDefault();
+        var character = DbConnection.Characters.Query ()
+            .Include (["$.Clan"])
+            .Where (c => c.Id == characterId)
+            .FirstOrDefault ();
         if (character is null)
         {
-            SphLogger.Warning(
+            SphLogger.Warning (
                 $"AdminDebugDummyClient: Characters id {characterId} missing — skip");
             return;
         }
 
         player.Characters[characterIndex] = character;
 
-        var client = clientScene.Instantiate<SphereClient>();
-        ActiveClients.InsertAt(ClientId, client);
-        client.SetupAdminDebugDummy(ClientId);
-        client.SetPlayerDbEntry(player);
-        client.SetSelectedCharacterIndex(characterIndex);
-        client.CurrentCharacter?.RecalcCurrentStats();
+        var client = clientScene.Instantiate<SphereClient> ();
+        ActiveClients.InsertAt (ClientId, client);
+        client.SetupAdminDebugDummy (ClientId);
+        client.SetPlayerDbEntry (player);
+        client.SetSelectedCharacterIndex (characterIndex);
+        client.CurrentCharacter?.RecalcCurrentStats ();
 
-        ActiveNodes.Add(client.GetInstanceId(), client);
-        parent.AddChild(client);
+        ActiveNodes.Add (client.GetInstanceId (), client);
+        parent.AddChild (client);
 
-        SphLogger.Info(
+        SphLogger.Info (
             $"AdminDebugDummyClient: spawned {ClientId:X4} as {Login}/{CharacterName} " +
             $"with {character.Items.Count} item slot(s) (debug only)");
     }

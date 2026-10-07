@@ -24,7 +24,7 @@ public class PingHandler : ISphereClientNetworkingHandler
 
     private readonly ushort localId;
     private readonly ClientConnection clientConnection;
-    private readonly CharacterVitalRegen vitalRegen = new();
+    private readonly CharacterVitalRegen vitalRegen = new ();
     private readonly SphereTimer fifteenSecondPing;
     // One 6s tick: Recalc once, MP keepalive, HP SetStat if needed.
     private readonly SphereTimer vitalRegenTick;
@@ -33,17 +33,17 @@ public class PingHandler : ISphereClientNetworkingHandler
     private byte[]? previousCoordPayload;
     private bool pingShouldXorTopBit;
 
-    public PingHandler(StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+    public PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
     {
         _ = streamPeerTcp;
         this.localId = localId;
         this.clientConnection = clientConnection;
-        fifteenSecondPing = new(15, true,
-            () => clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.FifteenSecondPing(localId)));
-        vitalRegenTick = new(6, true, SyncVitalsAfterRegen);
+        fifteenSecondPing = new (15, true,
+            () => clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.FifteenSecondPing (localId)));
+        vitalRegenTick = new (6, true, SyncVitalsAfterRegen);
     }
 
-    public async Task Handle(byte[] frame, double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         var buffer = frame;
         if (buffer.Length < PingFrameLength || buffer[0] != PingFrameLength)
@@ -51,28 +51,28 @@ public class PingHandler : ISphereClientNetworkingHandler
             return;
         }
 
-        var coordPayload = buffer.AsSpan(CoordPayloadOffset, CoordPayloadLength);
+        var coordPayload = buffer.AsSpan (CoordPayloadOffset, CoordPayloadLength);
         var coordsChanged = previousCoordPayload is null
-                            || !coordPayload.SequenceEqual(previousCoordPayload);
+                            || !coordPayload.SequenceEqual (previousCoordPayload);
 
         if (coordsChanged)
         {
-            if (CoordsHelper.HasPingCoordMarker(buffer))
+            if (CoordsHelper.HasPingCoordMarker (buffer))
             {
-                var coords = CoordsHelper.GetCoordsFromPingBytes(buffer);
-                var currentCharacter = clientConnection.GetSelectedCharacter();
-                if (currentCharacter is not null && CoordsHelper.ArePingCoordsInWorldBounds(coords))
+                var coords = CoordsHelper.GetCoordsFromPingBytes (buffer);
+                var currentCharacter = clientConnection.GetSelectedCharacter ();
+                if (currentCharacter is not null && CoordsHelper.ArePingCoordsInWorldBounds (coords))
                 {
-                    var moved = MovementDeltaExceedsThreshold(coords, currentCharacter);
+                    var moved = MovementDeltaExceedsThreshold (coords, currentCharacter);
                     currentCharacter.X = coords.x;
                     currentCharacter.Y = -coords.y;
                     currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
-                    ClientStateEvents.RaiseCharacterChanged(localId);
+                    ClientStateEvents.RaiseCharacterChanged (localId);
 
                     if (moved)
                     {
-                        clientConnection.EnqueueClientEvent(new CurrentClientPositionChangedEvent());
+                        clientConnection.EnqueueClientEvent (new CurrentClientPositionChangedEvent ());
                     }
                 }
             }
@@ -80,7 +80,7 @@ public class PingHandler : ISphereClientNetworkingHandler
             previousCoordPayload = [.. coordPayload];
         }
 
-        var pongEcho = buffer.AsSpan(PongEchoOffset, PongEchoLength);
+        var pongEcho = buffer.AsSpan (PongEchoOffset, PongEchoLength);
         var xored = pongEcho[5];
         if (pingShouldXorTopBit)
         {
@@ -89,19 +89,19 @@ public class PingHandler : ISphereClientNetworkingHandler
 
         if (counter == 0)
         {
-            var first = (ushort)((pongEcho[7] << 8) + pongEcho[6]);
+            var first = (ushort) ((pongEcho[7] << 8) + pongEcho[6]);
             first -= 0xE001;
-            counter = (ushort)(0xE001 + first / 12);
+            counter = (ushort) (0xE001 + first / 12);
         }
 
         var pong = new byte[13];
-        pongEcho[..5].CopyTo(pong);
+        pongEcho[..5].CopyTo (pong);
         pong[5] = xored;
-        pong[6] = SphereDbEntrySerializerBase.MinorByte(counter);
-        pong[7] = SphereDbEntrySerializerBase.MajorByte(counter);
-        pongEcho.Slice(8, 4).CopyTo(pong.AsSpan(8));
+        pong[6] = SphereDbEntrySerializerBase.MinorByte (counter);
+        pong[7] = SphereDbEntrySerializerBase.MajorByte (counter);
+        pongEcho.Slice (8, 4).CopyTo (pong.AsSpan (8));
 
-        clientConnection.MaybeScheduleNetworkPacketSend(Packet.ToByteArray(pong, 1));
+        clientConnection.MaybeScheduleNetworkPacketSend (Packet.ToByteArray (pong, 1));
         pingShouldXorTopBit = !pingShouldXorTopBit;
         counter++;
 
@@ -112,55 +112,55 @@ public class PingHandler : ISphereClientNetworkingHandler
         }
     }
 
-    public async Task Keepalive(double delta)
+    public async Task Keepalive (double delta)
     {
-        fifteenSecondPing.Tick(delta);
+        fifteenSecondPing.Tick (delta);
 
-        // Do not regen during load: wait until the client is sending in-world positions.
+        // Regen waits until the client is sending in-world positions
         if (!clientConnection.HasSeenFirstPositionKeepalive)
         {
             return;
         }
 
-        vitalRegenTick.Tick(delta);
+        vitalRegenTick.Tick (delta);
     }
 
-    private void SyncVitalsAfterRegen()
+    private void SyncVitalsAfterRegen ()
     {
-        var character = clientConnection.GetSelectedCharacter();
+        var character = clientConnection.GetSelectedCharacter ();
         if (character is null)
         {
             return;
         }
 
         var hpBefore = character.CurrentHP;
-        var changed = vitalRegen.ApplyOnce(character);
+        var changed = vitalRegen.ApplyOnce (character);
 
         // MP keepalive carries the (possibly regenerated) MP value.
-        clientConnection.MaybeScheduleNetworkPacketSend(
-            CommonPackets.CurrentMpUpdatePing(localId, character.CurrentMP));
-        NetworkedStatsUpdater.MarkSent(character, Stat.MpCurrent);
+        clientConnection.MaybeScheduleNetworkPacketSend (
+            CommonPackets.CurrentMpUpdatePing (localId, character.CurrentMP));
+        NetworkedStatsUpdater.MarkSent (character, Stat.MpCurrent);
 
         if (character.CurrentHP != hpBefore)
         {
-            NetworkedStatsUpdater.Update(character, log: false);
+            NetworkedStatsUpdater.Update (character, log: false);
         }
 
         if (changed)
         {
-            ClientStateEvents.RaiseCharacterChanged(localId);
+            ClientStateEvents.RaiseCharacterChanged (localId);
         }
 
-        // Always flush vitals on the 6s tick so disk matches server memory (not only when changed).
-        character.PersistVitals();
+        // The 6s tick writes vitals even when they did not change
+        character.PersistVitals ();
     }
 
-    private static bool MovementDeltaExceedsThreshold(WorldCoords coords, CharacterDbEntry character)
+    private static bool MovementDeltaExceedsThreshold (WorldCoords coords, CharacterDbEntry character)
     {
         // Y and Z coords are negated for Godot
-        return Math.Abs(coords.x - character.X) > MovementBroadcastDelta
-               || Math.Abs(coords.y + character.Y) > MovementBroadcastDelta
-               || Math.Abs(coords.z + character.Z) > MovementBroadcastDelta
-               || Math.Abs(coords.turn - character.Angle) > MovementBroadcastDelta;
+        return Math.Abs (coords.x - character.X) > MovementBroadcastDelta
+               || Math.Abs (coords.y + character.Y) > MovementBroadcastDelta
+               || Math.Abs (coords.z + character.Z) > MovementBroadcastDelta
+               || Math.Abs (coords.turn - character.Angle) > MovementBroadcastDelta;
     }
 }

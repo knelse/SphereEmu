@@ -5,8 +5,7 @@ using SphServer.Shared.WorldState;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Inventory / persona cell. Drag copies the icon; the original stays until a valid drop
-///     moves or swaps. Equip rules match the client: slot type plus requirements when wearing.
+/// The icon stays until a valid drop; wearing checks slot type and requirements
 /// </summary>
 public partial class AdminItemSlot : Control
 {
@@ -16,7 +15,7 @@ public partial class AdminItemSlot : Control
     public TextureRect? Icon { get; set; }
     public event Action<BelongingSlot, Vector2>? ContextRequested;
 
-    public override void _GuiInput(InputEvent inputEvent)
+    public override void _GuiInput (InputEvent inputEvent)
     {
         if (inputEvent is InputEventMouseButton
             {
@@ -26,13 +25,13 @@ public partial class AdminItemSlot : Control
                 ShiftPressed: false
             })
         {
-            if (GetClientId?.Invoke() is { } clientId)
+            if (GetClientId?.Invoke () is { } clientId)
             {
-                PopupHost?.HideHover();
-                AdminClientActions.TryDoubleClickSlot(clientId, Slot);
+                PopupHost?.HideHover ();
+                AdminClientActions.TryDoubleClickSlot (clientId, Slot);
             }
 
-            AcceptEvent();
+            AcceptEvent ();
             return;
         }
 
@@ -45,62 +44,62 @@ public partial class AdminItemSlot : Control
             return;
         }
 
-        PopupHost?.HideHover();
-        ContextRequested?.Invoke(Slot, button.GlobalPosition);
-        AcceptEvent();
+        PopupHost?.HideHover ();
+        ContextRequested?.Invoke (Slot, button.GlobalPosition);
+        AcceptEvent ();
     }
 
-    public override Variant _GetDragData(Vector2 atPosition)
+    public override Variant _GetDragData (Vector2 atPosition)
     {
-        if (Input.IsKeyPressed(Key.Shift))
+        if (Input.IsKeyPressed (Key.Shift))
         {
             return default;
         }
 
-        if (GetClientId?.Invoke() is not { } clientId
-            || ActiveClients.Get(clientId)?.CurrentCharacter is not { } character
-            || !character.Items.TryGetValue(Slot, out var itemId)
-            || DbConnection.Items.FindById(itemId) is null)
+        if (GetClientId?.Invoke () is not { } clientId
+            || ActiveClients.Get (clientId)?.CurrentCharacter is not { } character
+            || !character.Items.TryGetValue (Slot, out var itemId)
+            || DbConnection.Items.FindById (itemId) is null)
         {
             return default;
         }
 
-        PopupHost?.HideHover();
-        var uiScale = GetGlobalTransform().Scale;
-        var preview = MakeDragCopy();
-        SetDragPreview(preview);
+        PopupHost?.HideHover ();
+        var uiScale = GetGlobalTransform ().Scale;
+        var preview = MakeDragCopy ();
+        SetDragPreview (preview);
         preview.Scale = uiScale;
         preview.Position = -atPosition * uiScale;
 
         return new global::Godot.Collections.Dictionary
         {
-            { "clientId", (int)clientId },
-            { "fromSlot", (int)Slot },
+            { "clientId", (int) clientId },
+            { "fromSlot", (int) Slot },
             { "itemId", itemId }
         };
     }
 
-    public override bool _CanDropData(Vector2 atPosition, Variant data)
+    public override bool _CanDropData (Vector2 atPosition, Variant data)
     {
-        return TryReadPayload(data, out var clientId, out var from)
-               && GetClientId?.Invoke() is { } mine
+        return TryReadPayload (data, out var clientId, out var from)
+               && GetClientId?.Invoke () is { } mine
                && mine == clientId
-               && AdminClientActions.CanMoveOrSwapItem(clientId, from, Slot);
+               && AdminClientActions.CanMoveOrSwapItem (clientId, from, Slot);
     }
 
-    public override void _DropData(Vector2 atPosition, Variant data)
+    public override void _DropData (Vector2 atPosition, Variant data)
     {
-        if (!TryReadPayload(data, out var clientId, out var from)
-            || GetClientId?.Invoke() is not { } mine
+        if (!TryReadPayload (data, out var clientId, out var from)
+            || GetClientId?.Invoke () is not { } mine
             || mine != clientId)
         {
             return;
         }
 
-        AdminClientActions.TryMoveOrSwapItem(clientId, from, Slot);
+        AdminClientActions.TryMoveOrSwapItem (clientId, from, Slot);
     }
 
-    private static bool TryReadPayload(Variant data, out ushort clientId, out BelongingSlot from)
+    private static bool TryReadPayload (Variant data, out ushort clientId, out BelongingSlot from)
     {
         clientId = 0;
         from = BelongingSlot.Unknown;
@@ -109,20 +108,20 @@ public partial class AdminItemSlot : Control
             return false;
         }
 
-        var dict = data.AsGodotDictionary();
-        if (!dict.ContainsKey("clientId") || !dict.ContainsKey("fromSlot"))
+        var dict = data.AsGodotDictionary ();
+        if (!dict.ContainsKey ("clientId") || !dict.ContainsKey ("fromSlot"))
         {
             return false;
         }
 
-        clientId = (ushort)dict["clientId"].AsInt32();
-        from = (BelongingSlot)dict["fromSlot"].AsInt32();
+        clientId = (ushort) dict["clientId"].AsInt32 ();
+        from = (BelongingSlot) dict["fromSlot"].AsInt32 ();
         return true;
     }
 
-    private Control MakeDragCopy()
+    private Control MakeDragCopy ()
     {
-        var size = Size.X > 1 && Size.Y > 1 ? Size : new Vector2(32, 32);
+        var size = Size.X > 1 && Size.Y > 1 ? Size : new Vector2 (32, 32);
         if (Icon?.Texture is { } texture)
         {
             return new TextureRect
@@ -139,7 +138,7 @@ public partial class AdminItemSlot : Control
 
         return new ColorRect
         {
-            Color = new Color(0.9f, 0.85f, 0.55f, 0.85f),
+            Color = new Color (0.9f, 0.85f, 0.55f, 0.85f),
             MouseFilter = MouseFilterEnum.Ignore,
             CustomMinimumSize = size,
             Size = size

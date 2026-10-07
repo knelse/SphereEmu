@@ -11,35 +11,35 @@ public partial class AddPacketManuallyDialog
 
     public AddPacketManuallyDialog ()
     {
-        InitializeComponent();
-        PacketsTextBox.Document = new FlowDocument();
-        PacketsTextBox.Focus();
+        InitializeComponent ();
+        PacketsTextBox.Document = new FlowDocument ();
+        PacketsTextBox.Focus ();
     }
 
     private void ButtonBase_OnClick (object sender, RoutedEventArgs e)
     {
-        var range = new TextRange(PacketsTextBox.Document.ContentStart,
+        var range = new TextRange (PacketsTextBox.Document.ContentStart,
             PacketsTextBox.Document.ContentEnd);
         var text = range.Text ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(text))
+        if (string.IsNullOrWhiteSpace (text))
         {
-            MessageBox.Show("Please input packets text (hex)");
+            MessageBox.Show ("Please input packets text (hex)");
             return;
         }
 
-        var split = text.Split(Environment.NewLine,
+        var split = text.Split (Environment.NewLine,
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         foreach (var packetCandidate in split)
         {
             try
             {
-                var packetBytes = Convert.FromHexString(packetCandidate);
-                ProcessedPackets.Add(packetBytes);
+                var packetBytes = Convert.FromHexString (packetCandidate);
+                ProcessedPackets.Add (packetBytes);
             }
             catch
             {
-                MessageBox.Show("Packets should be in hex format, 1 per line");
+                MessageBox.Show ("Packets should be in hex format, 1 per line");
                 return;
             }
         }

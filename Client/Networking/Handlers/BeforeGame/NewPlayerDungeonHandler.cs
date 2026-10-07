@@ -23,13 +23,14 @@ public class NewPlayerDungeonHandler
 
     public async Task Teleport (double delta)
     {
-        var newDungeonCoords = new WorldCoords(-1098, -4501.62158203125, 1900);
-        var playerCoords = new WorldCoords(-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
+        var newDungeonCoords = new WorldCoords (-1098, -4501.62158203125, 1900);
+        var playerCoords = new WorldCoords (-1098.69506835937500, -4501.61474609375000, 1900.05493164062500,
             1.57079637050629);
         // var playerCoords = new WorldCoords(0, 150, 0);
         // clientConnection.MaybeQueueNetworkPacketSend(CurrentCharacter.GetTeleportByteArray(playerCoords));
         // clientConnection.MaybeQueueNetworkPacketSend(selectedCharacter.GetNewPlayerDungeonTeleportAndUpdateStatsByteArray(playerCoords));
-        // here some stats are updated because satiety gets applied. We'll figure that out later, for now just flat
+        // here some stats are updated because satiety gets applied. We'll figure that out later,
+        // for now just flat
 
         // currentState = ClientState.INIT_NEW_DUNGEON_TELEPORT_INITIATED;
         // await ToSignal(GetTree().CreateTimer(0.5f), "timeout");

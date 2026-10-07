@@ -15,26 +15,26 @@ namespace SphServer.Shared.Db.DataModels;
 // TODO: skip unnecessary fields for serialization
 public class CharacterDbEntry
 {
-    // Deliberately not inserted into the item collection: nothing reads this row, and one per
-    // character load would spend world object ids that are never given back.
+    // Not stored: nothing reads it, and one per load spends a world object id that is never
+    // returned
     [BsonIgnore]
-    public readonly ItemDbEntry Fists = new()
+    public readonly ItemDbEntry Fists = new ()
     {
         ObjectKind = GameObjectKind.Fists,
         GameObjectType = GameObjectType.Fists,
         Radius = 0
     };
 
-    public CharacterDbEntry()
+    public CharacterDbEntry ()
     {
         LookType = 0x7;
         IsTurnedOff = 0x9;
         CurrentSatiety = 50;
         MaxSatiety = 100;
-        MaxHP = (ushort)WithSatietyMaxHpBonus(MaxHPBase);
+        MaxHP = (ushort) WithSatietyMaxHpBonus (MaxHPBase);
         CurrentHP = MaxHP;
-        CurrentMP = (ushort)MaxMPBase;
-        MaxMP = (ushort)MaxMPBase;
+        CurrentMP = (ushort) MaxMPBase;
+        MaxMP = (ushort) MaxMPBase;
         AvailableDegreeStats = AvailableStatsPrimary[0];
         AvailableTitleStats = AvailableStatsPrimary[0];
     }
@@ -69,7 +69,7 @@ public class CharacterDbEntry
     public int AvailableDegreeStats { get; set; }
     public bool IsGenderFemale { get; set; }
     public string Name { get; set; } = "Test";
-    [BsonRef("Clans")] public ClanDbEntry? Clan { get; set; } = ClanDbEntry.DefaultClanDbEntry;
+    [BsonRef ("Clans")] public ClanDbEntry? Clan { get; set; } = ClanDbEntry.DefaultClanDbEntry;
     public byte FaceType { get; set; }
     public byte HairStyle { get; set; }
     public byte HairColor { get; set; }
@@ -78,7 +78,9 @@ public class CharacterDbEntry
     public byte PantsModelId { get; set; }
     public byte ArmorModelId { get; set; }
 
-    /// <summary>Magical chest armour has its own byte in the look block; physical armour is ArmorModelId.</summary>
+    /// <summary>
+    /// Magical chest armour has its own byte in the look block; physical armour is ArmorModelId.
+    /// </summary>
     public byte RobeModelId { get; set; }
 
     public byte ShieldModelId { get; set; }
@@ -101,7 +103,7 @@ public class CharacterDbEntry
     public ushort PDef { get; set; }
     public ushort MDef { get; set; }
     public KarmaTypes Karma { get; set; } = KarmaTypes.Нейтральная;
-    public Dictionary<BelongingSlot, int> Items { get; set; } = new();
+    public Dictionary<BelongingSlot, int> Items { get; set; } = new ();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
 
@@ -110,63 +112,62 @@ public class CharacterDbEntry
     public bool HoldsItemInHand { get; set; }
 
     /// <summary>
-    ///     Whatever is in <see cref="BelongingSlot.MainHand"/>. Empty hand is <see cref="Fists"/>
-    ///     (radius is always 0).
+    /// Empty hand is Fists, and radius stays 0
     /// </summary>
-    public ItemDbEntry GetHeldItem()
+    public ItemDbEntry GetHeldItem ()
     {
-        if (!Items.TryGetValue(BelongingSlot.MainHand, out var heldItemId))
+        if (!Items.TryGetValue (BelongingSlot.MainHand, out var heldItemId))
         {
             return Fists;
         }
 
-        return DbConnection.Items.FindById(heldItemId) ?? Fists;
+        return DbConnection.Items.FindById (heldItemId) ?? Fists;
     }
 
-    /// <summary>Everything a swing hits with: worn bonuses plus whatever is in the hand.</summary>
+    /// <summary>
+    /// Everything a swing hits with: worn bonuses plus whatever is in the hand.
+    /// </summary>
     public int MeleePAtk => HoldsItemInHand && MainHandPAtk == 0 ? 0 : PAtk + MainHandPAtk;
     // Stuff that has no inherent magic attack doesn't roll magic damage
     public int MagicMAtk => MainHandMAtk == 0 ? 0 : MainHandMAtk + MAtk;
 
     /// <summary>
-    ///     Puts an item in a slot and releases whatever bag/wear slot it was already in. MainHand is
-    ///     a second claim, not a bag cell: the item stays in inventory so a relog can declare both
-    ///     (see IngameAckHandler). A leftover bag claim for a moved item comes back as a blank cell.
+    /// MainHand is a second claim, so the item stays in a bag cell; a leftover bag claim comes back
+    /// blank
     /// </summary>
-    public void PlaceItemInSlot(BelongingSlot slot, int itemId)
+    public void PlaceItemInSlot (BelongingSlot slot, int itemId)
     {
         var touchedGuild = slot == BelongingSlot.Guild;
         if (slot != BelongingSlot.MainHand)
         {
-            foreach (var heldIn in Items.Where(x => x.Value == itemId && x.Key != BelongingSlot.MainHand)
-                         .Select(x => x.Key).ToList())
+            foreach (var heldIn in Items.Where (x => x.Value == itemId && x.Key != BelongingSlot.MainHand)
+                         .Select (x => x.Key).ToList ())
             {
                 touchedGuild |= heldIn == BelongingSlot.Guild;
-                Items.Remove(heldIn);
+                Items.Remove (heldIn);
             }
         }
 
         Items[slot] = itemId;
         if (touchedGuild)
         {
-            SyncGuildFromWornEmblem();
+            SyncGuildFromWornEmblem ();
         }
 
-        ClientStateEvents.RaiseCharacterChanged(ClientIndex);
+        ClientStateEvents.RaiseCharacterChanged (ClientIndex);
     }
 
     /// <summary>
-    ///     Membership follows the emblem in <see cref="BelongingSlot.Guild"/>: a type-Guild catalog
-    ///     item sets guild and rank from its game id, anything else (or empty) means none.
+    /// Guild and rank come from a type-Guild emblem's game id; anything else, or empty, means none
     /// </summary>
-    public bool SyncGuildFromWornEmblem()
+    public bool SyncGuildFromWornEmblem ()
     {
         var guild = Guild.None;
         var rankMinusOne = 0;
-        if (Items.TryGetValue(BelongingSlot.Guild, out var itemId)
-            && DbConnection.Items.FindById(itemId) is { GameObjectType: GameObjectType.Guild } item)
+        if (Items.TryGetValue (BelongingSlot.Guild, out var itemId)
+            && DbConnection.Items.FindById (itemId) is { GameObjectType: GameObjectType.Guild } item)
         {
-            GuildCatalog.TryParseMembershipGameId(item.GameId, out guild, out rankMinusOne);
+            GuildCatalog.TryParseMembershipGameId (item.GameId, out guild, out rankMinusOne);
         }
 
         if (Guild == guild && GuildLevelMinusOne == rankMinusOne)
@@ -185,7 +186,7 @@ public class CharacterDbEntry
     public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
 
     /// <summary>
-    ///     Satiety tiers: 0–33 → +5% max HP, 34–66 → +10%, 67+ → +15%.
+    /// 0-33 is +5% max HP, 34-66 is +10%, 67+ is +15%
     /// </summary>
     public int SatietyMaxHpBonusPercent => CurrentSatiety switch
     {
@@ -194,21 +195,18 @@ public class CharacterDbEntry
         _ => 15
     };
 
-    public int WithSatietyMaxHpBonus(int hpMax) =>
+    public int WithSatietyMaxHpBonus (int hpMax) =>
         hpMax + hpMax * SatietyMaxHpBonusPercent / 100;
-    public ulong XpToLevelUp => GetXpToLevelUp();
-    public Vector3 Origin => new((float)X, (float)Y, (float)Z);
+    public ulong XpToLevelUp => GetXpToLevelUp ();
+    public Vector3 Origin => new ((float) X, (float) Y, (float) Z);
 
     /// <summary>
-    ///     Move title and/or degree to the given 0-based levels (any delta, up or down).
-    ///     Rebuilds available stats from the current rebirth cycle, then recalculates max HP/MP
-    ///     from the title/degree tables (plus gear and satiety). Does not persist or push
-    ///     to the client.
+    /// Any title or degree delta. Does not persist or push
     /// </summary>
-    public bool LevelUp(int newTitleLevel, int newDegreeLevel)
+    public bool LevelUp (int newTitleLevel, int newDegreeLevel)
     {
-        newTitleLevel = Math.Clamp(newTitleLevel, 0, MaxLevelMinusOne);
-        newDegreeLevel = Math.Clamp(newDegreeLevel, 0, MaxLevelMinusOne);
+        newTitleLevel = Math.Clamp (newTitleLevel, 0, MaxLevelMinusOne);
+        newDegreeLevel = Math.Clamp (newDegreeLevel, 0, MaxLevelMinusOne);
         if (newTitleLevel == TitleMinusOne && newDegreeLevel == DegreeMinusOne)
         {
             return false;
@@ -216,18 +214,15 @@ public class CharacterDbEntry
 
         TitleMinusOne = newTitleLevel;
         DegreeMinusOne = newDegreeLevel;
-        RecalcAvailableStats();
-        RecalcCurrentStats();
+        RecalcAvailableStats ();
+        RecalcCurrentStats ();
         return true;
     }
 
     /// <summary>
-    ///     Set title or degree XP and consume it into levels while it covers the next cost.
-    ///     Recalc runs once after all level-ups. Does not persist or push to the client.
-    ///     Kill awards pass <paramref name="allowRebirth"/> false: stop at display 60 and clamp
-    ///     XP to the next cost (1 at 60/60). Admin keeps the default and overflows into rebirth.
+    /// Kill awards stop at display 60; admin overflow goes into rebirth. Does not persist or push
     /// </summary>
-    public bool ApplyExperience(bool isTitle, uint newXp, bool allowRebirth = true)
+    public bool ApplyExperience (bool isTitle, uint newXp, bool allowRebirth = true)
     {
         var oldXp = isTitle ? TitleXP : DegreeXP;
         var oldTitle = TitleMinusOne;
@@ -250,7 +245,7 @@ public class CharacterDbEntry
 
             if (!allowRebirth && atCycleCap)
             {
-                var clamped = cost >= uint.MaxValue ? xp : Math.Min(xp, (uint)cost);
+                var clamped = cost >= uint.MaxValue ? xp : Math.Min (xp, (uint) cost);
                 if (isTitle)
                 {
                     TitleXP = clamped;
@@ -270,12 +265,12 @@ public class CharacterDbEntry
 
             if (isTitle)
             {
-                TitleXP -= (uint)cost;
+                TitleXP -= (uint) cost;
                 TitleMinusOne++;
             }
             else
             {
-                DegreeXP -= (uint)cost;
+                DegreeXP -= (uint) cost;
                 DegreeMinusOne++;
             }
         }
@@ -288,22 +283,21 @@ public class CharacterDbEntry
 
         if (TitleMinusOne != oldTitle || DegreeMinusOne != oldDegree)
         {
-            RecalcAvailableStats();
-            RecalcCurrentStats();
+            RecalcAvailableStats ();
+            RecalcCurrentStats ();
         }
         else
         {
-            ClientStateEvents.RaiseCharacterChanged(ClientIndex);
+            ClientStateEvents.RaiseCharacterChanged (ClientIndex);
         }
 
         return true;
     }
 
     /// <summary>
-    ///     Add XP to title or degree and consume it into levels via <see cref="ApplyExperience"/>.
-    ///     Does not persist or push to the client.
+    /// Rebirth stays off. Does not persist or push
     /// </summary>
-    public bool AwardExperience(uint amount, bool isTitle = true)
+    public bool AwardExperience (uint amount, bool isTitle = true)
     {
         if (amount == 0)
         {
@@ -313,33 +307,32 @@ public class CharacterDbEntry
         if (isTitle)
         {
             var titleXp = TitleXP > uint.MaxValue - amount ? uint.MaxValue : TitleXP + amount;
-            return ApplyExperience(true, titleXp, allowRebirth: false);
+            return ApplyExperience (true, titleXp, allowRebirth: false);
         }
 
         var degreeXp = DegreeXP > uint.MaxValue - amount ? uint.MaxValue : DegreeXP + amount;
-        return ApplyExperience(false, degreeXp, allowRebirth: false);
+        return ApplyExperience (false, degreeXp, allowRebirth: false);
     }
 
     /// <summary>
-    ///     Rebuild available pools from the current rebirth cycle only (tables start at 0),
-    ///     plus rebirths × StatBonusForResets, minus spent <c>Base*</c> stats.
-    ///     Previous cycles' primary grants are not kept. Does not persist or push to the client.
+    /// Only this cycle's grants (tables start at 0) plus rebirths times StatBonusForResets. Does
+    /// not persist or push
     /// </summary>
-    public void RecalcAvailableStats()
+    public void RecalcAvailableStats ()
     {
         var title = 0;
         var degree = 0;
-        AddCurrentCycleGrants(TitleMinusOne, titleIsPrimary: true, ref title, ref degree);
-        AddCurrentCycleGrants(DegreeMinusOne, titleIsPrimary: false, ref title, ref degree);
+        AddCurrentCycleGrants (TitleMinusOne, titleIsPrimary: true, ref title, ref degree);
+        AddCurrentCycleGrants (DegreeMinusOne, titleIsPrimary: false, ref title, ref degree);
         AvailableTitleStats = title - (BaseStrength + BaseAgility + BaseAccuracy + BaseEndurance);
         AvailableDegreeStats = degree - (BaseEarth + BaseAir + BaseWater + BaseFire);
     }
 
     /// <summary>
-    ///     Title-ups feed the title pool as primary; degree-ups feed the degree pool.
-    ///     Bonus is rebirths × StatBonusForResets for each level in this cycle.
+    /// The leveling track is primary; bonus is rebirths times StatBonusForResets per level in this
+    /// cycle
     /// </summary>
-    private static void AddCurrentCycleGrants(int minusOne, bool titleIsPrimary, ref int title, ref int degree)
+    private static void AddCurrentCycleGrants (int minusOne, bool titleIsPrimary, ref int title, ref int degree)
     {
         var within = minusOne % 60;
         var rebirths = minusOne / 60;
@@ -360,17 +353,17 @@ public class CharacterDbEntry
         }
     }
 
-    public void SetKarmaCount(int value)
+    public void SetKarmaCount (int value)
     {
         KarmaCount = value;
-        SyncKarmaFromCount();
+        SyncKarmaFromCount ();
     }
 
     /// <summary>
-    ///     Shift karma from killing a mob: very bad +1, bad 0, neutral -10, good -20, benign -40.
-    ///     Clamped to [-5000, 5000]. Does not persist or push.
+    /// Very bad +1, bad 0, neutral -10, good -20, benign -40, clamped to [-5000, 5000]. Does not
+    /// persist or push
     /// </summary>
-    public bool ApplyKillKarma(KarmaTypes mobKarma, out bool tierChanged)
+    public bool ApplyKillKarma (KarmaTypes mobKarma, out bool tierChanged)
     {
         tierChanged = false;
         var delta = mobKarma switch
@@ -389,28 +382,30 @@ public class CharacterDbEntry
 
         var oldTier = Karma;
         var oldCount = KarmaCount;
-        SetKarmaCount(KarmaCount + delta);
-        tierChanged = Karma != oldTier;
-        return KarmaCount != oldCount;
-    }
-
-    /// <summary>Self-kill karma penalty (−300). Clamped to [-5000, 5000]. Does not persist or push.</summary>
-    public bool ApplySelfKillKarma(out bool tierChanged)
-    {
-        const int selfKillKarmaDelta = -300;
-        var oldTier = Karma;
-        var oldCount = KarmaCount;
-        SetKarmaCount(KarmaCount + selfKillKarmaDelta);
+        SetKarmaCount (KarmaCount + delta);
         tierChanged = Karma != oldTier;
         return KarmaCount != oldCount;
     }
 
     /// <summary>
-    ///     Clamp <see cref="KarmaCount"/> to [-5000, 5000] and set <see cref="Karma"/> from thresholds.
+    /// Self-kill penalty is -300, clamped to [-5000, 5000]. Does not persist or push
     /// </summary>
-    public void SyncKarmaFromCount()
+    public bool ApplySelfKillKarma (out bool tierChanged)
     {
-        KarmaCount = Math.Clamp(KarmaCount, -5000, 5000);
+        const int selfKillKarmaDelta = -300;
+        var oldTier = Karma;
+        var oldCount = KarmaCount;
+        SetKarmaCount (KarmaCount + selfKillKarmaDelta);
+        tierChanged = Karma != oldTier;
+        return KarmaCount != oldCount;
+    }
+
+    /// <summary>
+    /// KarmaCount clamps to [-5000, 5000]; tiers at -1000, -100, 100, 1000
+    /// </summary>
+    public void SyncKarmaFromCount ()
+    {
+        KarmaCount = Math.Clamp (KarmaCount, -5000, 5000);
         Karma = KarmaCount switch
         {
             < -1000 => KarmaTypes.Очень_Плохая,
@@ -422,25 +417,24 @@ public class CharacterDbEntry
     }
 
     /// <summary>
-    ///     Admin edit of a displayed <c>Current*</c> stat. Applies the same delta to <c>Base*</c>
-    ///     (so gear bonuses are preserved) and adjusts the matching available pool by -delta.
-    ///     No remaining-points check; values may go negative. Does not persist or push to client.
+    /// The same delta hits Base so gear bonuses stay; no remaining-points check. Does not persist
+    /// or push
     /// </summary>
-    public bool ApplyCurrentStatEdit(Stat stat, int newCurrentValue)
+    public bool ApplyCurrentStatEdit (Stat stat, int newCurrentValue)
     {
-        var oldCurrent = GetCurrentStat(stat);
+        var oldCurrent = GetCurrentStat (stat);
         var delta = newCurrentValue - oldCurrent;
         if (delta == 0)
         {
             return false;
         }
 
-        SetBaseStat(stat, GetBaseStat(stat) + delta);
-        if (IsTitleStat(stat))
+        SetBaseStat (stat, GetBaseStat (stat) + delta);
+        if (IsTitleStat (stat))
         {
             AvailableTitleStats -= delta;
         }
-        else if (IsDegreeStat(stat))
+        else if (IsDegreeStat (stat))
         {
             AvailableDegreeStats -= delta;
         }
@@ -449,25 +443,24 @@ public class CharacterDbEntry
             return false;
         }
 
-        RecalcCurrentStats();
+        RecalcCurrentStats ();
         return true;
     }
 
     /// <summary>
-    ///     Spend title/degree points. Negatives become 0. Returns false (and does not mutate)
-    ///     when either pool cannot cover its total.
+    /// Negatives become 0; false and no change when either pool cannot cover its total
     /// </summary>
-    public bool TrySpendStatPoints(int strength, int agility, int accuracy, int endurance,
+    public bool TrySpendStatPoints (int strength, int agility, int accuracy, int endurance,
         int earth, int air, int water, int fire)
     {
-        strength = Math.Max(0, strength);
-        agility = Math.Max(0, agility);
-        accuracy = Math.Max(0, accuracy);
-        endurance = Math.Max(0, endurance);
-        earth = Math.Max(0, earth);
-        air = Math.Max(0, air);
-        water = Math.Max(0, water);
-        fire = Math.Max(0, fire);
+        strength = Math.Max (0, strength);
+        agility = Math.Max (0, agility);
+        accuracy = Math.Max (0, accuracy);
+        endurance = Math.Max (0, endurance);
+        earth = Math.Max (0, earth);
+        air = Math.Max (0, air);
+        water = Math.Max (0, water);
+        fire = Math.Max (0, fire);
 
         var title = strength + agility + accuracy + endurance;
         var degree = earth + air + water + fire;
@@ -486,44 +479,47 @@ public class CharacterDbEntry
         BaseFire += fire;
         AvailableTitleStats -= title;
         AvailableDegreeStats -= degree;
-        RecalcCurrentStats();
-        PersistRow();
+        RecalcCurrentStats ();
+        PersistRow ();
         return true;
     }
 
-    private static readonly object PersistGate = new();
+    private static readonly object PersistGate = new ();
 
-    /// <summary>Insert or replace this character, then patch vitals and the slot map under one lock.</summary>
-    public void PersistAll()
+    /// <summary>
+    /// Insert or replace this character, then patch vitals and the slot map under one lock.
+    /// </summary>
+    public void PersistAll ()
     {
         lock (PersistGate)
         {
             if (Id == 0)
             {
-                Id = DbConnection.Characters.Insert(this);
+                Id = DbConnection.Characters.Insert (this);
             }
-            else if (!DbConnection.Characters.Update(this))
+            else if (!DbConnection.Characters.Update (this))
             {
-                DbConnection.Characters.Upsert(this);
+                DbConnection.Characters.Upsert (this);
             }
 
-            PatchVitalsUnlocked();
-            PatchSlotMapUnlocked();
-            DbConnection.Checkpoint();
+            PatchVitalsUnlocked ();
+            PatchSlotMapUnlocked ();
+            DbConnection.Checkpoint ();
         }
     }
 
-    /// <summary>Write this row through now. Recalc used to skip this in the starting dungeon.</summary>
-    private void PersistRow()
+    /// <summary>
+    /// Writes the row even in the starting dungeon
+    /// </summary>
+    private void PersistRow ()
     {
-        PersistAll();
+        PersistAll ();
     }
 
     /// <summary>
-    ///     Patch HP/MP/satiety onto the Characters document by field name.
-    ///     Used by regen so vitals persist even if a full entity Update is flaky.
+    /// HP, MP, and satiety by field name, because a full entity Update is flaky for regen
     /// </summary>
-    public void PersistVitals()
+    public void PersistVitals ()
     {
         if (Id == 0)
         {
@@ -532,63 +528,63 @@ public class CharacterDbEntry
 
         lock (PersistGate)
         {
-            if (!PatchVitalsUnlocked())
+            if (!PatchVitalsUnlocked ())
             {
-                if (!DbConnection.Characters.Update(this))
+                if (!DbConnection.Characters.Update (this))
                 {
-                    DbConnection.Characters.Upsert(this);
+                    DbConnection.Characters.Upsert (this);
                 }
             }
 
-            DbConnection.Checkpoint();
+            DbConnection.Checkpoint ();
         }
     }
 
-    private bool PatchVitalsUnlocked()
+    private bool PatchVitalsUnlocked ()
     {
-        var col = DbConnection.Db.GetCollection("Characters");
-        var doc = col.FindById(Id);
+        var col = DbConnection.Db.GetCollection ("Characters");
+        var doc = col.FindById (Id);
         if (doc is null)
         {
             return false;
         }
 
-        doc["CurrentHP"] = (int)CurrentHP;
-        doc["CurrentMP"] = (int)CurrentMP;
-        doc["MaxHP"] = (int)MaxHP;
-        doc["MaxMP"] = (int)MaxMP;
-        doc["CurrentSatiety"] = (int)CurrentSatiety;
-        doc["MaxSatiety"] = (int)MaxSatiety;
-        col.Update(doc);
+        doc["CurrentHP"] = (int) CurrentHP;
+        doc["CurrentMP"] = (int) CurrentMP;
+        doc["MaxHP"] = (int) MaxHP;
+        doc["MaxMP"] = (int) MaxMP;
+        doc["CurrentSatiety"] = (int) CurrentSatiety;
+        doc["MaxSatiety"] = (int) MaxSatiety;
+        col.Update (doc);
         return true;
     }
 
-    private void PatchSlotMapUnlocked()
+    private void PatchSlotMapUnlocked ()
     {
-        var col = DbConnection.Db.GetCollection("Characters");
-        var doc = col.FindById(Id);
+        var col = DbConnection.Db.GetCollection ("Characters");
+        var doc = col.FindById (Id);
         if (doc is null)
         {
             return;
         }
 
-        var items = new BsonDocument();
+        var items = new BsonDocument ();
         foreach (var (slot, itemId) in Items)
         {
-            items[slot.ToString()] = itemId;
+            items[slot.ToString ()] = itemId;
         }
 
         doc["Items"] = items;
-        col.Update(doc);
+        col.Update (doc);
     }
 
-    public static bool IsTitleStat(Stat stat) =>
+    public static bool IsTitleStat (Stat stat) =>
         stat is Stat.Strength or Stat.Agility or Stat.Accuracy or Stat.Endurance;
 
-    public static bool IsDegreeStat(Stat stat) =>
+    public static bool IsDegreeStat (Stat stat) =>
         stat is Stat.Earth or Stat.Air or Stat.Water or Stat.Fire;
 
-    public int GetCurrentStat(Stat stat) => stat switch
+    public int GetCurrentStat (Stat stat) => stat switch
     {
         Stat.Strength => CurrentStrength,
         Stat.Agility => CurrentAgility,
@@ -601,7 +597,7 @@ public class CharacterDbEntry
         _ => 0
     };
 
-    public int GetBaseStat(Stat stat) => stat switch
+    public int GetBaseStat (Stat stat) => stat switch
     {
         Stat.Strength => BaseStrength,
         Stat.Agility => BaseAgility,
@@ -614,7 +610,7 @@ public class CharacterDbEntry
         _ => 0
     };
 
-    private void SetBaseStat(Stat stat, int value)
+    private void SetBaseStat (Stat stat, int value)
     {
         switch (stat)
         {
@@ -629,36 +625,34 @@ public class CharacterDbEntry
         }
     }
 
-    public static CharacterDbEntry CreateNewCharacter(ushort clientIndex, string name, bool isFemale, int face,
+    public static CharacterDbEntry CreateNewCharacter (ushort clientIndex, string name, bool isFemale, int face,
         int hairStyle, int hairColor, int tattoo)
     {
         return new CharacterDbEntry
         {
             Name = name,
             IsGenderFemale = isFemale,
-            FaceType = (byte)face,
-            HairStyle = (byte)hairStyle,
-            HairColor = (byte)hairColor,
-            Tattoo = (byte)tattoo,
+            FaceType = (byte) face,
+            HairStyle = (byte) hairStyle,
+            HairColor = (byte) hairColor,
+            Tattoo = (byte) tattoo,
             ClientIndex = clientIndex
         };
     }
 
     /// <summary>
-    ///     Restore gameplay to a newly created character: empty slots, money 0, levels/XP 1/1 0/50,
-    ///     base stats. Keeps id, name, clan, visuals, and world position. Deletes carried item rows.
-    ///     Does not persist or push to the client.
+    /// Keeps id, name, clan, visuals, and position. Does not persist or push
     /// </summary>
-    public void ResetToNewCharacterDefaults()
+    public void ResetToNewCharacterDefaults ()
     {
-        foreach (var itemId in Items.Values.Distinct())
+        foreach (var itemId in Items.Values.Distinct ())
         {
-            DbConnection.Items.Delete(itemId);
+            DbConnection.Items.Delete (itemId);
         }
 
-        Items.Clear();
+        Items.Clear ();
 
-        var fresh = CreateNewCharacter(ClientIndex, Name, IsGenderFemale, FaceType, HairStyle, HairColor, Tattoo);
+        var fresh = CreateNewCharacter (ClientIndex, Name, IsGenderFemale, FaceType, HairStyle, HairColor, Tattoo);
         Money = fresh.Money;
         TitleMinusOne = fresh.TitleMinusOne;
         DegreeMinusOne = fresh.DegreeMinusOne;
@@ -703,18 +697,18 @@ public class CharacterDbEntry
         HelmetModelId = fresh.HelmetModelId;
         GlovesModelId = fresh.GlovesModelId;
 
-        RecalcAvailableStats();
-        RecalcCurrentStats();
+        RecalcAvailableStats ();
+        RecalcCurrentStats ();
         CurrentHP = MaxHP;
         CurrentMP = MaxMP;
     }
 
-    public bool HasEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+    public bool HasEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
     {
-        return FindEmptyInventorySlot() != null;
+        return FindEmptyInventorySlot () != null;
     }
 
-    public BelongingSlot? FindEmptyInventorySlot(GameObjectType gameObjectType = GameObjectType.Unknown)
+    public BelongingSlot? FindEmptyInventorySlot (GameObjectType gameObjectType = GameObjectType.Unknown)
     {
         // TODO: equipped slots, bags, etc
         var lookup = new List<BelongingSlot>
@@ -733,7 +727,7 @@ public class CharacterDbEntry
 
         foreach (var slot in lookup)
         {
-            if (IsItemSlotEmpty(slot))
+            if (IsItemSlotEmpty (slot))
             {
                 return slot;
             }
@@ -742,12 +736,12 @@ public class CharacterDbEntry
         return null;
     }
 
-    public bool IsItemSlotEmpty(BelongingSlot belongingSlot)
+    public bool IsItemSlotEmpty (BelongingSlot belongingSlot)
     {
-        return !Items.ContainsKey(belongingSlot);
+        return !Items.ContainsKey (belongingSlot);
     }
 
-    private ulong GetXpToLevelUp()
+    private ulong GetXpToLevelUp ()
     {
         var title = TitleMinusOne % 60;
         var degree = DegreeMinusOne % 60;
@@ -756,28 +750,25 @@ public class CharacterDbEntry
             return 1;
         }
 
-        var minLevel = Math.Min(title, degree);
-        var maxLevel = Math.Max(title, degree);
-        return (ulong)(XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
+        var minLevel = Math.Min (title, degree);
+        var maxLevel = Math.Max (title, degree);
+        return (ulong) (XpPerLevelBase[maxLevel] + XpPerLevelDelta[maxLevel] * minLevel);
     }
 
     /// <summary>
-    ///     Whether this character meets what the item asks for. Against the base stats, not the
-    ///     current ones: the current ones are recalculated from what is worn, and this is called
-    ///     during that, so an item could otherwise satisfy its own requirement.
+    /// Checked against base stats, because current stats are rebuilt from worn gear during this
     /// </summary>
-    public bool CanUseItem(ItemDbEntry itemDbEntry)
+    public bool CanUseItem (ItemDbEntry itemDbEntry)
     {
-        return UnmetRequirement(itemDbEntry) is null;
+        return UnmetRequirement (itemDbEntry) is null;
     }
 
     /// <summary>
-    ///     The first requirement this character does not meet, worded the way the client words its
-    ///     own refusal, or null when the item can be used.
+    /// First failed requirement in the client's refusal wording, or null when the item can be used
     /// </summary>
-    public string? UnmetRequirement(ItemDbEntry itemDbEntry)
+    public string? UnmetRequirement (ItemDbEntry itemDbEntry)
     {
-        itemDbEntry.RecalculateStatReqsFromBase();
+        itemDbEntry.RecalculateStatReqsFromBase ();
 
         if (itemDbEntry.IsGuildMembershipEmblem)
         {
@@ -794,7 +785,7 @@ public class CharacterDbEntry
             return null;
         }
 
-        if (!MeetsItemGuildRequirement(itemDbEntry))
+        if (!MeetsItemGuildRequirement (itemDbEntry))
         {
             return Guild != itemDbEntry.RequiredGuild
                 ? "Гильдия"
@@ -826,7 +817,7 @@ public class CharacterDbEntry
         return null;
     }
 
-    public bool MeetsItemGuildRequirement(ItemDbEntry item)
+    public bool MeetsItemGuildRequirement (ItemDbEntry item)
     {
         if (item.RequiredGuild is Guild.None)
         {
@@ -836,7 +827,7 @@ public class CharacterDbEntry
         return Guild == item.RequiredGuild && GuildLevelMinusOne >= item.RequiredGuildRankMinusOne;
     }
 
-    public bool RecalcCurrentStats()
+    public bool RecalcCurrentStats ()
     {
         var slotsToUpdate = new HashSet<BelongingSlot>
         {
@@ -865,13 +856,13 @@ public class CharacterDbEntry
 
         foreach (var slot in slotsToUpdate)
         {
-            if (!Items.ContainsKey(slot))
+            if (!Items.ContainsKey (slot))
             {
                 continue;
             }
 
-            var item = DbConnection.Items.FindById(Items[slot]);
-            if (item is null || !CanUseItem(item))
+            var item = DbConnection.Items.FindById (Items[slot]);
+            if (item is null || !CanUseItem (item))
             {
                 continue;
             }
@@ -888,26 +879,26 @@ public class CharacterDbEntry
             mpMax += item.MaxMpUp;
             pdef += item.PDefUp;
             mdef += item.MDefUp;
-            // *UpNegative: negative means attack-up; some items were double-negated by old suffix apply.
+            // Positive *UpNegative is attack-up and is stored flipped
             patk += item.PAtkUpNegative > 0 ? -item.PAtkUpNegative : item.PAtkUpNegative;
             matk += item.MAtkUpNegative > 0 ? -item.MAtkUpNegative : item.MAtkUpNegative;
         }
 
-        hpMax = WithSatietyMaxHpBonus(hpMax);
+        hpMax = WithSatietyMaxHpBonus (hpMax);
 
-        // After the slot loop, so it sees the move that triggered this rather than the one before.
-        CharacterWornLook.Apply(this);
+        // Sits after the slot loop so the look matches this move, not the previous one
+        CharacterWornLook.Apply (this);
 
-        // The client works out the held item's attack itself, so the stat packet must not carry it.
-        // The hand's value sits in the item's own column, not the "+attack" one worn gear uses.
+        // The stat packet omits held-item attack: the client reads the item column, not the worn
+        // +attack column
         var heldPAtk = 0;
         var heldMAtk = 0;
         var holdsItem = false;
 
-        if (Items.TryGetValue(BelongingSlot.MainHand, out var heldItemId))
+        if (Items.TryGetValue (BelongingSlot.MainHand, out var heldItemId))
         {
-            var heldItem = DbConnection.Items.FindById(heldItemId);
-            if (heldItem is not null && CanUseItem(heldItem))
+            var heldItem = DbConnection.Items.FindById (heldItemId);
+            if (heldItem is not null && CanUseItem (heldItem))
             {
                 holdsItem = true;
                 heldPAtk = heldItem.PAtkNegative;
@@ -923,27 +914,26 @@ public class CharacterDbEntry
         CurrentWater = wat;
         CurrentAir = air;
         CurrentFire = fir;
-        CurrentHP = (ushort)Math.Min(CurrentHP, hpMax);
-        CurrentMP = (ushort)Math.Min(CurrentMP, mpMax);
-        MaxHP = (ushort)hpMax;
-        MaxMP = (ushort)mpMax;
-        PDef = (ushort)pdef;
-        MDef = (ushort)mdef;
-        // Signed, not a ushort cast: the game stores damage as a negative number, so worn gear that
-        // adds attack would otherwise wrap into a huge positive one. The stat packet has its own
-        // sign bit and the damage formula takes the magnitude.
+        CurrentHP = (ushort) Math.Min (CurrentHP, hpMax);
+        CurrentMP = (ushort) Math.Min (CurrentMP, mpMax);
+        MaxHP = (ushort) hpMax;
+        MaxMP = (ushort) mpMax;
+        PDef = (ushort) pdef;
+        MDef = (ushort) mdef;
+        // Signed: damage is stored negative, and a ushort cast wraps added attack into a huge
+        // positive
         PAtk = patk;
         MAtk = matk;
         MainHandPAtk = heldPAtk;
         MainHandMAtk = heldMAtk;
         HoldsItemInHand = holdsItem;
 
-        SphLogger.Info($"Client {ClientLocalId} new stats after recalc: " +
+        SphLogger.Info ($"Client {ClientLocalId} new stats after recalc: " +
                        $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
                        $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
                        $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk} hand MA {MainHandMAtk}");
 
-        ClientStateEvents.RaiseCharacterChanged(ClientIndex);
+        ClientStateEvents.RaiseCharacterChanged (ClientIndex);
         return true;
     }
 }

@@ -11,55 +11,55 @@ public class PacketPartListRow : StackPanel
 {
     private double lastWidth = -1;
 
-    public PacketPartListRow()
+    public PacketPartListRow ()
     {
         Orientation = Orientation.Vertical;
-        DataContextChanged += (_, _) => Rebuild();
+        DataContextChanged += (_, _) => Rebuild ();
         SizeChanged += (_, _) =>
         {
-            if (Math.Abs(ActualWidth - lastWidth) < 1)
+            if (Math.Abs (ActualWidth - lastWidth) < 1)
             {
                 return;
             }
 
             lastWidth = ActualWidth;
-            Rebuild();
+            Rebuild ();
         };
     }
 
-    private void Rebuild()
+    private void Rebuild ()
     {
-        Children.Clear();
+        Children.Clear ();
         if (DataContext is not PacketPart part)
         {
             return;
         }
 
-        var comment = PacketPartInlineBuilder.CreateCommentBanner(part, ActualWidth);
+        var comment = PacketPartInlineBuilder.CreateCommentBanner (part, ActualWidth);
         if (comment is not null)
         {
-            Children.Add(CreateLine(comment));
+            Children.Add (CreateLine (comment));
         }
 
-        var valueLine = CreateLine();
-        PacketPartInlineBuilder.Add(valueLine.Inlines, part);
-        Children.Add(valueLine);
+        var valueLine = CreateLine ();
+        PacketPartInlineBuilder.Add (valueLine.Inlines, part);
+        Children.Add (valueLine);
     }
 
-    private static TextBlock CreateLine(Inline? leading = null)
+    private static TextBlock CreateLine (Inline? leading = null)
     {
         var block = new TextBlock
         {
-            FontFamily = new FontFamily("Hack"),
+            FontFamily = new FontFamily ("Hack"),
             FontSize = 14,
             LineHeight = 16,
             LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
             TextWrapping = TextWrapping.NoWrap,
-            Margin = new Thickness(2)
+            Margin = new Thickness (2)
         };
         if (leading is not null)
         {
-            block.Inlines.Add(leading);
+            block.Inlines.Add (leading);
         }
 
         return block;

@@ -9,36 +9,36 @@ namespace PacketLogViewer.Controls;
 
 public class PacketPartValuesVisualizer : FrameworkElement
 {
-    private static readonly Typeface Typeface = new("Hack");
-    private static readonly Typeface BoldTypeface = new(new FontFamily("Hack"), FontStyles.Normal, FontWeights.Bold,
+    private static readonly Typeface Typeface = new ("Hack");
+    private static readonly Typeface BoldTypeface = new (new FontFamily ("Hack"), FontStyles.Normal, FontWeights.Bold,
         FontStretches.Normal);
-    private static readonly Brush TextBrush = CreateFrozenBrush(Colors.Black);
-    private static readonly Brush GrayBrush = CreateFrozenBrush(Colors.Gray);
+    private static readonly Brush TextBrush = CreateFrozenBrush (Colors.Black);
+    private static readonly Brush GrayBrush = CreateFrozenBrush (Colors.Gray);
 
     private PacketPart[] parts = [];
     private int totalBits;
     private ScrollViewerInvalidateHook? scrollHook;
 
-    public PacketPartValuesVisualizer()
+    public PacketPartValuesVisualizer ()
     {
         SnapsToDevicePixels = true;
         UseLayoutRounding = true;
         ClipToBounds = true;
         Loaded += (_, _) =>
         {
-            scrollHook?.Detach();
-            scrollHook = ScrollViewerInvalidateHook.Attach(this, () => InvalidateVisual());
+            scrollHook?.Detach ();
+            scrollHook = ScrollViewerInvalidateHook.Attach (this, () => InvalidateVisual ());
         };
         Unloaded += (_, _) =>
         {
-            scrollHook?.Detach();
+            scrollHook?.Detach ();
             scrollHook = null;
         };
     }
 
-    public void SetContent(int bitCount, IEnumerable<PacketPart> packetParts)
+    public void SetContent (int bitCount, IEnumerable<PacketPart> packetParts)
     {
-        totalBits = Math.Max(0, bitCount);
+        totalBits = Math.Max (0, bitCount);
         if (packetParts is PacketPart[] array)
         {
             parts = array;
@@ -48,33 +48,33 @@ public class PacketPartValuesVisualizer : FrameworkElement
             parts = [.. packetParts];
         }
 
-        Array.Sort(parts, (a, b) => a.BitOffset.CompareTo(b.BitOffset));
-        InvalidateMeasure();
-        InvalidateVisual();
+        Array.Sort (parts, (a, b) => a.BitOffset.CompareTo (b.BitOffset));
+        InvalidateMeasure ();
+        InvalidateVisual ();
     }
 
-    protected override Size MeasureOverride(Size availableSize)
+    protected override Size MeasureOverride (Size availableSize)
     {
         var lines = totalBits == 0
             ? 0
             : (totalBits + PacketVisualizerLayout.BitsPerLine - 1) / PacketVisualizerLayout.BitsPerLine;
-        var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-        var width = Math.Max(200, MeasureContentWidth(dpi) + 8);
-        return new Size(width, lines * PacketVisualizerLayout.LineHeight);
+        var dpi = VisualTreeHelper.GetDpi (this).PixelsPerDip;
+        var width = Math.Max (200, MeasureContentWidth (dpi) + 8);
+        return new Size (width, lines * PacketVisualizerLayout.LineHeight);
     }
 
-    protected override void OnRender(DrawingContext drawingContext)
+    protected override void OnRender (DrawingContext drawingContext)
     {
         if (parts.Length == 0 || totalBits == 0)
         {
             return;
         }
 
-        var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-        GetVisibleLines(out var firstLine, out var lastLine);
+        var dpi = VisualTreeHelper.GetDpi (this).PixelsPerDip;
+        GetVisibleLines (out var firstLine, out var lastLine);
         var firstBit = firstLine * PacketVisualizerLayout.BitsPerLine;
         var lastBit = lastLine * PacketVisualizerLayout.BitsPerLine;
-        var xByLine = new Dictionary<int, double>();
+        var xByLine = new Dictionary<int, double> ();
 
         foreach (var part in parts)
         {
@@ -95,28 +95,28 @@ public class PacketPartValuesVisualizer : FrameworkElement
             }
 
             var y = line * PacketVisualizerLayout.LineHeight;
-            if (!xByLine.TryGetValue(line, out var x))
+            if (!xByLine.TryGetValue (line, out var x))
             {
                 x = 0;
             }
 
-            xByLine[line] = DrawPart(drawingContext, part, x, y, dpi);
+            xByLine[line] = DrawPart (drawingContext, part, x, y, dpi);
         }
     }
 
-    private double MeasureContentWidth(double dpi)
+    private double MeasureContentWidth (double dpi)
     {
-        var xByLine = new Dictionary<int, double>();
+        var xByLine = new Dictionary<int, double> ();
         var maxX = 0.0;
         foreach (var part in parts)
         {
             var line = part.BitOffset / PacketVisualizerLayout.BitsPerLine;
-            if (!xByLine.TryGetValue(line, out var x))
+            if (!xByLine.TryGetValue (line, out var x))
             {
                 x = 0;
             }
 
-            x = MeasurePart(part, x, dpi);
+            x = MeasurePart (part, x, dpi);
             xByLine[line] = x;
             if (x > maxX)
             {
@@ -127,7 +127,7 @@ public class PacketPartValuesVisualizer : FrameworkElement
         return maxX;
     }
 
-    private void GetVisibleLines(out int firstLine, out int lastLine)
+    private void GetVisibleLines (out int firstLine, out int lastLine)
     {
         var lineCount = totalBits == 0
             ? 0
@@ -140,82 +140,82 @@ public class PacketPartValuesVisualizer : FrameworkElement
             return;
         }
 
-        firstLine = Math.Max(0, (int)(scrollViewer.VerticalOffset / PacketVisualizerLayout.LineHeight) - 1);
-        lastLine = Math.Min(lineCount,
-            (int)Math.Ceiling((scrollViewer.VerticalOffset + scrollViewer.ViewportHeight) /
+        firstLine = Math.Max (0, (int) (scrollViewer.VerticalOffset / PacketVisualizerLayout.LineHeight) - 1);
+        lastLine = Math.Min (lineCount,
+            (int) Math.Ceiling ((scrollViewer.VerticalOffset + scrollViewer.ViewportHeight) /
                               PacketVisualizerLayout.LineHeight) + 1);
     }
 
-    private static double DrawPart(DrawingContext drawingContext, PacketPart part, double x, double y, double dpi)
+    private static double DrawPart (DrawingContext drawingContext, PacketPart part, double x, double y, double dpi)
     {
-        var nameBrush = PacketPartBrushes.Get(part.HighlightColorR, part.HighlightColorG, part.HighlightColorB,
+        var nameBrush = PacketPartBrushes.Get (part.HighlightColorR, part.HighlightColorG, part.HighlightColorB,
             part.HighlightColorA);
-        var nameText = CreateText(part.Name, Typeface, TextBrush, dpi);
-        drawingContext.DrawRectangle(nameBrush, null,
-            new Rect(x, y, nameText.WidthIncludingTrailingWhitespace, PacketVisualizerLayout.LineHeight));
-        drawingContext.DrawText(nameText, new Point(x, y));
+        var nameText = CreateText (part.Name, Typeface, TextBrush, dpi);
+        drawingContext.DrawRectangle (nameBrush, null,
+            new Rect (x, y, nameText.WidthIncludingTrailingWhitespace, PacketVisualizerLayout.LineHeight));
+        drawingContext.DrawText (nameText, new Point (x, y));
         x += nameText.WidthIncludingTrailingWhitespace;
 
-        var colon = CreateText(": ", Typeface, TextBrush, dpi);
-        drawingContext.DrawText(colon, new Point(x, y));
+        var colon = CreateText (": ", Typeface, TextBrush, dpi);
+        drawingContext.DrawText (colon, new Point (x, y));
         x += colon.WidthIncludingTrailingWhitespace;
 
-        if (!string.IsNullOrEmpty(part.ListValuePrimary))
+        if (!string.IsNullOrEmpty (part.ListValuePrimary))
         {
-            var primary = CreateText(part.ListValuePrimary, BoldTypeface, TextBrush, dpi);
-            drawingContext.DrawText(primary, new Point(x, y));
+            var primary = CreateText (part.ListValuePrimary, BoldTypeface, TextBrush, dpi);
+            drawingContext.DrawText (primary, new Point (x, y));
             x += primary.WidthIncludingTrailingWhitespace;
         }
 
-        if (!string.IsNullOrEmpty(part.ListValueSecondary))
+        if (!string.IsNullOrEmpty (part.ListValueSecondary))
         {
-            var secondary = CreateText(part.ListValueSecondary, Typeface, GrayBrush, dpi);
-            drawingContext.DrawText(secondary, new Point(x, y));
+            var secondary = CreateText (part.ListValueSecondary, Typeface, GrayBrush, dpi);
+            drawingContext.DrawText (secondary, new Point (x, y));
             x += secondary.WidthIncludingTrailingWhitespace;
         }
 
-        if (!string.IsNullOrEmpty(part.ListRangeDisplay))
+        if (!string.IsNullOrEmpty (part.ListRangeDisplay))
         {
-            var range = CreateText(part.ListRangeDisplay, Typeface, GrayBrush, dpi);
-            drawingContext.DrawText(range, new Point(x, y));
+            var range = CreateText (part.ListRangeDisplay, Typeface, GrayBrush, dpi);
+            drawingContext.DrawText (range, new Point (x, y));
             x += range.WidthIncludingTrailingWhitespace;
         }
 
         return x;
     }
 
-    private static double MeasurePart(PacketPart part, double x, double dpi)
+    private static double MeasurePart (PacketPart part, double x, double dpi)
     {
-        x += CreateText(part.Name, Typeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
-        x += CreateText(": ", Typeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
-        if (!string.IsNullOrEmpty(part.ListValuePrimary))
+        x += CreateText (part.Name, Typeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
+        x += CreateText (": ", Typeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
+        if (!string.IsNullOrEmpty (part.ListValuePrimary))
         {
-            x += CreateText(part.ListValuePrimary, BoldTypeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
+            x += CreateText (part.ListValuePrimary, BoldTypeface, TextBrush, dpi).WidthIncludingTrailingWhitespace;
         }
 
-        if (!string.IsNullOrEmpty(part.ListValueSecondary))
+        if (!string.IsNullOrEmpty (part.ListValueSecondary))
         {
-            x += CreateText(part.ListValueSecondary, Typeface, GrayBrush, dpi).WidthIncludingTrailingWhitespace;
+            x += CreateText (part.ListValueSecondary, Typeface, GrayBrush, dpi).WidthIncludingTrailingWhitespace;
         }
 
-        if (!string.IsNullOrEmpty(part.ListRangeDisplay))
+        if (!string.IsNullOrEmpty (part.ListRangeDisplay))
         {
-            x += CreateText(part.ListRangeDisplay, Typeface, GrayBrush, dpi).WidthIncludingTrailingWhitespace;
+            x += CreateText (part.ListRangeDisplay, Typeface, GrayBrush, dpi).WidthIncludingTrailingWhitespace;
         }
 
         return x;
     }
 
-    private static FormattedText CreateText(string text, Typeface typeface, Brush brush, double dpi)
+    private static FormattedText CreateText (string text, Typeface typeface, Brush brush, double dpi)
     {
-        return new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface,
+        return new FormattedText (text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface,
             PacketVisualizerLayout.ValueFontSize, brush, dpi);
     }
 
-    private static SolidColorBrush CreateFrozenBrush(Color color)
+    private static SolidColorBrush CreateFrozenBrush (Color color)
     {
-        var brush = new SolidColorBrush(color);
-        brush.Freeze();
+        var brush = new SolidColorBrush (color);
+        brush.Freeze ();
         return brush;
     }
 }

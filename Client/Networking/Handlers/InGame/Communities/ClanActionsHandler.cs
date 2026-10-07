@@ -33,7 +33,8 @@ public class ClanActionsHandler
         //         responseStream.WriteBytes(new byte[]
         //         {
         //             (byte) (characterNameBytes.Length + 27), 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00,
-        //             MajorByte(clientLocalId), MinorByte(clientLocalId), 0x08, 0x40, 0xC3, 0x22, 0x20, 0xA0, 0x71
+        // MajorByte(clientLocalId), MinorByte(clientLocalId), 0x08, 0x40, 0xC3, 0x22, 0x20, 0xA0,
+        // 0x71
         //         }, 16, true);
         //         responseStream.WriteByte(0x1, 4);
         //         responseStream.WriteByte((byte) (characterNameBytes.Length + 5));

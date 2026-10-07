@@ -4,19 +4,19 @@ namespace SpherePacketVisualEditor;
 
 public partial class SaveNewPacketDefinitionDialog
 {
-    public SaveNewPacketDefinitionDialog()
+    public SaveNewPacketDefinitionDialog ()
     {
-        InitializeComponent();
-        NewPacketDefinitionName.Focus();
+        InitializeComponent ();
+        NewPacketDefinitionName.Focus ();
     }
 
     public string DefinitionName => NewPacketDefinitionName.Text;
 
-    private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+    private void SaveButton_OnClick (object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(NewPacketDefinitionName.Text))
+        if (string.IsNullOrWhiteSpace (NewPacketDefinitionName.Text))
         {
-            MessageBox.Show("Please input name");
+            MessageBox.Show ("Please input name");
             return;
         }
 

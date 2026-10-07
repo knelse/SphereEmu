@@ -6,19 +6,20 @@ public abstract record ClientQueuedEvent;
 
 public sealed record CurrentClientPositionChangedEvent : ClientQueuedEvent;
 
-public sealed record EntityPositionUpdateEvent(
+public sealed record EntityPositionUpdateEvent (
     ushort EntityId, ushort ModuleTag, double X, double Y, double Z, double Angle)
     : ClientQueuedEvent;
 
-/// <summary>One damage application against a single resolved target (main hit or AoE splash).</summary>
-public sealed record CombatHitEvent(
+/// <summary>
+/// One damage application against a single resolved target (main hit or AoE splash).
+/// </summary>
+public sealed record CombatHitEvent (
     ushort AttackerGlobalId,
     ushort TargetGlobalId,
     ushort TargetLocalId,
     AttackFrameKind FrameKind) : ClientQueuedEvent;
 
 /// <summary>
-///     Signed self HP delta. Negative = damage, positive = heal.
-///     Only <see cref="ChangeCharacterHealthHandler"/> applies HP and sends hit/death wire.
+/// Signed self HP delta, negative for damage and positive for heal
 /// </summary>
-public sealed record CharacterHealthChangeEvent(ushort EntityId, int HealthDiff) : ClientQueuedEvent;
+public sealed record CharacterHealthChangeEvent (ushort EntityId, int HealthDiff) : ClientQueuedEvent;

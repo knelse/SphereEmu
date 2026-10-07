@@ -1,10 +1,6 @@
 namespace SphServer.Helpers.Networking;
 
-/// <summary>
-///     g_rec_0C44 field index names. Same markers as the 08 C0 stat stream
-///     (stat_field_markers.sphenum / NetworkedStatsUpdater).
-///     Edit here when a marker is identified.
-/// </summary>
+/// g_rec_0C44 index names, same markers as the 08 C0 stat stream
 public static class MbcStatFields
 {
     public static readonly IReadOnlyDictionary<int, string> Names = new Dictionary<int, string>
@@ -52,6 +48,6 @@ public static class MbcStatFields
         "earth+", "air+", "water+", "fire+"
     ];
 
-    public static string Name(int index) =>
-        Names.TryGetValue(index, out var name) ? name : $"stat.i{index}";
+    public static string Name (int index) =>
+        Names.TryGetValue (index, out var name) ? name : $"stat.i{index}";
 }

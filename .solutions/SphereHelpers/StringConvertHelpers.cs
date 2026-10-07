@@ -6,24 +6,24 @@ public static class StringConvertHelpers
 {
     public static string ByteArrayToBinaryString (byte[] ba, bool noPadding = false, bool addSpaces = false)
     {
-        var hex = new StringBuilder(ba.Length * 2);
+        var hex = new StringBuilder (ba.Length * 2);
 
         foreach (var val in ba)
         {
-            var str = Convert.ToString(val, 2);
+            var str = Convert.ToString (val, 2);
             if (!noPadding)
             {
-                str = str.PadLeft(8, '0');
+                str = str.PadLeft (8, '0');
             }
 
-            hex.Append(str);
+            hex.Append (str);
 
             if (addSpaces)
             {
-                hex.Append(' ');
+                hex.Append (' ');
             }
         }
 
-        return hex.ToString();
+        return hex.ToString ();
     }
 }

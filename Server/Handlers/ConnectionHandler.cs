@@ -8,11 +8,11 @@ public class ConnectionHandler (PackedScene clientScene, Node parentNode)
 {
     public void Handle (StreamPeerTcp streamPeer)
     {
-        streamPeer.SetNoDelay(true);
-        var client = clientScene.Instantiate<SphereClient>();
-        client.Setup(streamPeer, ActiveClients.InsertAtFirstEmptyIndex(client));
-        ActiveNodes.Add(client.GetInstanceId(), client);
+        streamPeer.SetNoDelay (true);
+        var client = clientScene.Instantiate<SphereClient> ();
+        client.Setup (streamPeer, ActiveClients.InsertAtFirstEmptyIndex (client));
+        ActiveNodes.Add (client.GetInstanceId (), client);
 
-        parentNode.AddChild(client);
+        parentNode.AddChild (client);
     }
 }

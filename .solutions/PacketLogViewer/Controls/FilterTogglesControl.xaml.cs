@@ -4,9 +4,9 @@ namespace PacketLogViewer.Controls;
 
 public partial class FilterTogglesControl : UserControl
 {
-    public FilterTogglesControl()
+    public FilterTogglesControl ()
     {
-        InitializeComponent();
+        InitializeComponent ();
     }
 }
 

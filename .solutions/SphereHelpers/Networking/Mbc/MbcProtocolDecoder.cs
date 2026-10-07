@@ -6,7 +6,7 @@ internal sealed class MbcBitReader
     public int Pos { get; private set; }
     public int Limit { get; }
 
-    public MbcBitReader(byte[] data)
+    public MbcBitReader (byte[] data)
     {
         this.data = data;
         Limit = data.Length * 8;
@@ -14,21 +14,21 @@ internal sealed class MbcBitReader
 
     public int Left => Limit - Pos;
 
-    public void Seek(int pos)
+    public void Seek (int pos)
     {
         if (pos < 0 || pos > Limit)
         {
-            throw new MbcDecodeException($"seek {pos} out of range 0..{Limit}");
+            throw new MbcDecodeException ($"seek {pos} out of range 0..{Limit}");
         }
 
         Pos = pos;
     }
 
-    public int Read(int width)
+    public int Read (int width)
     {
         if (width < 0 || Pos + width > Limit)
         {
-            throw new MbcDecodeException($"need {width} bits at {Pos}, left {Left}");
+            throw new MbcDecodeException ($"need {width} bits at {Pos}, left {Left}");
         }
 
         var value = 0;
@@ -42,9 +42,9 @@ internal sealed class MbcBitReader
         return value;
     }
 
-    public int Signed(int width)
+    public int Signed (int width)
     {
-        var value = Read(width);
+        var value = Read (width);
         var sign = 1 << (width - 1);
         return (value & sign) != 0 ? value - (1 << width) : value;
     }
@@ -52,7 +52,7 @@ internal sealed class MbcBitReader
 
 internal sealed class MbcDecodeException : Exception
 {
-    public MbcDecodeException(string message) : base(message)
+    public MbcDecodeException (string message) : base (message)
     {
     }
 }
@@ -64,59 +64,59 @@ public sealed class MbcProtocolDecoder
 
     private readonly MbcCatalog catalog;
     private readonly MbcRecoveredCatalog recovered;
-    private readonly Dictionary<int, int> processModules = new();
+    private readonly Dictionary<int, int> processModules = new ();
 
-    public MbcProtocolDecoder(MbcCatalog catalog, MbcRecoveredCatalog? recovered = null)
+    public MbcProtocolDecoder (MbcCatalog catalog, MbcRecoveredCatalog? recovered = null)
     {
         this.catalog = catalog;
-        this.recovered = recovered ?? new MbcRecoveredCatalog();
+        this.recovered = recovered ?? new MbcRecoveredCatalog ();
     }
 
-    public static MbcProtocolDecoder CreateDefault()
+    public static MbcProtocolDecoder CreateDefault ()
     {
         MbcRecoveredCatalog recovered;
         try
         {
-            recovered = MbcRecoveredCatalog.LoadEmbedded();
+            recovered = MbcRecoveredCatalog.LoadEmbedded ();
         }
         catch
         {
             // Prefer a working decoder over a silent null from PacketLogViewer.GetMbcDecoder.
-            recovered = new MbcRecoveredCatalog();
+            recovered = new MbcRecoveredCatalog ();
         }
 
-        return new MbcProtocolDecoder(MbcCatalog.LoadEmbedded(), recovered);
+        return new MbcProtocolDecoder (MbcCatalog.LoadEmbedded (), recovered);
     }
 
-    public void ResetProcessBindings() => processModules.Clear();
+    public void ResetProcessBindings () => processModules.Clear ();
 
-    public string ModuleName(int? tag) => catalog.ModuleName(tag);
+    public string ModuleName (int? tag) => catalog.ModuleName (tag);
 
-    public static List<MbcTcpFrame> SplitTcpFrames(byte[] content, MbcDirection direction)
+    public static List<MbcTcpFrame> SplitTcpFrames (byte[] content, MbcDirection direction)
     {
         var headerSize = direction == MbcDirection.Client ? 8 : 4;
         var offset = 0;
-        var frames = new List<MbcTcpFrame>();
+        var frames = new List<MbcTcpFrame> ();
         while (offset + headerSize <= content.Length)
         {
             var size = content[offset] | (content[offset + 1] << 8);
             var messageOffset = offset + (direction == MbcDirection.Client ? 6 : 2);
-            var message = (ushort)(content[messageOffset] | (content[messageOffset + 1] << 8));
-            if (size < headerSize || size > content.Length - offset || Array.IndexOf(KnownMessages, message) < 0)
+            var message = (ushort) (content[messageOffset] | (content[messageOffset + 1] << 8));
+            if (size < headerSize || size > content.Length - offset || Array.IndexOf (KnownMessages, message) < 0)
             {
                 break;
             }
 
-            var raw = content.AsSpan(offset, size);
-            var payload = direction == MbcDirection.Client ? raw[8..].ToArray() : raw[4..].ToArray();
-            frames.Add(new MbcTcpFrame(offset, size, message, payload));
+            var raw = content.AsSpan (offset, size);
+            var payload = direction == MbcDirection.Client ? raw[8..].ToArray () : raw[4..].ToArray ();
+            frames.Add (new MbcTcpFrame (offset, size, message, payload));
             offset += size;
         }
 
         return frames;
     }
 
-    public MbcDecodeResult DecodeGame(byte[] payload, MbcDirection direction)
+    public MbcDecodeResult DecodeGame (byte[] payload, MbcDirection direction)
     {
         var result = new MbcDecodeResult
         {
@@ -129,7 +129,7 @@ public sealed class MbcProtocolDecoder
         {
             if (payload.Length == 0)
             {
-                throw new MbcDecodeException("empty msg300 payload");
+                throw new MbcDecodeException ("empty msg300 payload");
             }
 
             result.Control = payload[0];
@@ -137,30 +137,30 @@ public sealed class MbcProtocolDecoder
             originalBits = body.Length * 8;
             result.WireBitLength = originalBits;
             var padded = new byte[body.Length + 1];
-            body.CopyTo(padded, 0);
-            bits = new MbcBitReader(padded);
-            var hasPosition = bits.Read(1) == 1;
+            body.CopyTo (padded, 0);
+            bits = new MbcBitReader (padded);
+            var hasPosition = bits.Read (1) == 1;
             int[]? basePos = null;
             if (hasPosition)
             {
-                basePos = [bits.Read(16) - 0x8000, bits.Read(13) - 0x4B0, bits.Read(16) - 0x8000];
+                basePos = [bits.Read (16) - 0x8000, bits.Read (13) - 0x4B0, bits.Read (16) - 0x8000];
             }
 
-            var tick = bits.Read(15);
-            var processId = bits.Read(18);
-            var wireModuleTag = bits.Read(12);
-            var moduleTag = EnterContext(processId, wireModuleTag, result, out var contextState);
+            var tick = bits.Read (15);
+            var processId = bits.Read (18);
+            var wireModuleTag = bits.Read (12);
+            var moduleTag = EnterContext (processId, wireModuleTag, result, out var contextState);
             result.HasPosition = hasPosition;
             result.BasePosition = basePos;
             result.Tick = tick;
             result.ProcessId = processId;
             result.ModuleTag = wireModuleTag;
             result.EffectiveModuleTag = moduleTag;
-            result.Module = catalog.ModuleName(moduleTag);
+            result.Module = catalog.ModuleName (moduleTag);
             if (moduleTag is null)
             {
                 result.Status = contextState;
-                return Finish(result, bits, originalBits);
+                return Finish (result, bits, originalBits);
             }
 
             while (true)
@@ -172,7 +172,7 @@ public sealed class MbcProtocolDecoder
                     break;
                 }
 
-                var wire = bits.Read(7);
+                var wire = bits.Read (7);
                 if (wire == 0)
                 {
                     result.Status = "full";
@@ -188,11 +188,11 @@ public sealed class MbcProtocolDecoder
                         break;
                     }
 
-                    processId = bits.Read(18);
-                    wireModuleTag = bits.Read(12);
-                    moduleTag = EnterContext(processId, wireModuleTag, result, out contextState);
+                    processId = bits.Read (18);
+                    wireModuleTag = bits.Read (12);
+                    moduleTag = EnterContext (processId, wireModuleTag, result, out contextState);
                     result.ContextSwitches++;
-                    result.Switches.Add(new MbcContextSwitch(wireStart, processId, wireModuleTag));
+                    result.Switches.Add (new MbcContextSwitch (wireStart, processId, wireModuleTag));
                     if (moduleTag is null)
                     {
                         result.Status = contextState;
@@ -213,7 +213,7 @@ public sealed class MbcProtocolDecoder
                 var region = wire - 1;
                 if (region is 0 or 61 && wireModuleTag != 0)
                 {
-                    var recreated = RecreateForRegion(processId, wireModuleTag);
+                    var recreated = RecreateForRegion (processId, wireModuleTag);
                     if (recreated is null)
                     {
                         result.Status = "ignored_unknown_module";
@@ -223,13 +223,13 @@ public sealed class MbcProtocolDecoder
                     moduleTag = recreated;
                 }
 
-                if (!catalog.Modules.TryGetValue(moduleTag.Value, out var module))
+                if (!catalog.Modules.TryGetValue (moduleTag.Value, out var module))
                 {
                     result.Status = "ignored_unknown_module";
                     break;
                 }
 
-                if (!module.Regions.TryGetValue(region, out var spec))
+                if (!module.Regions.TryGetValue (region, out var spec))
                 {
                     result.Status = "client_stop_undeclared_region";
                     result.StopWire = wire;
@@ -239,9 +239,8 @@ public sealed class MbcProtocolDecoder
                 }
 
                 var start = bits.Pos;
-                // ContMan/TradeMan widths come from .mbc region formats + client skipRegion.
-                // Do not probe alternate command widths against the capture.
-                var fields = DecodeFields(bits, spec.Desc, basePos);
+                // Command width is the module region format
+                var fields = DecodeFields (bits, spec.Desc, basePos);
                 var decoded = new MbcDecodedEvent
                 {
                     ProcessId = processId,
@@ -255,20 +254,20 @@ public sealed class MbcProtocolDecoder
                     StartBit = start - 7,
                     EndBit = bits.Pos
                 };
-                decoded.Fields.AddRange(fields);
+                decoded.Fields.AddRange (fields);
 
                 int? command = null;
                 if (fields.Count > 0 && fields[0].IntValue is { } candidate)
                 {
                     var side = direction == MbcDirection.Client ? "C2S" : "S2C";
-                    if (catalog.CommandRegions.Contains((side, moduleTag.Value, region)))
+                    if (catalog.CommandRegions.Contains ((side, moduleTag.Value, region)))
                     {
-                        command = (int)candidate;
+                        command = (int) candidate;
                         decoded.Command = command;
                     }
                 }
 
-                var semantic = catalog.SemanticEvent(direction, moduleTag.Value, region, command);
+                var semantic = catalog.SemanticEvent (direction, moduleTag.Value, region, command);
                 if (semantic is not null)
                 {
                     decoded.EventId = semantic.EventId;
@@ -279,15 +278,16 @@ public sealed class MbcProtocolDecoder
                 }
                 else
                 {
-                    // Never put MBC routine names (ContMan, CheckPing, …) in EventName; inferred names win in Apply.
+                    // Never put MBC routine names (ContMan, CheckPing, …) in EventName; inferred
+                    // names win in Apply.
                     var suffix = command is not null ? $".cmd{command}" : $".r{region}";
                     decoded.EventName = $"{decoded.Module}{suffix}";
                     decoded.Confidence = "fallback";
-                    decoded.EventId = $"{(direction == MbcDirection.Client ? "C2S" : "S2C")}:{moduleTag.Value}:{region}:{(command is null ? "*" : command.ToString())}";
+                    decoded.EventId = $"{(direction == MbcDirection.Client ? "C2S" : "S2C")}:{moduleTag.Value}:{region}:{(command is null ? "*" : command.ToString ())}";
                 }
 
-                MbcPayloadDecoder.Apply(decoded, recovered);
-                result.Events.Add(decoded);
+                MbcPayloadDecoder.Apply (decoded, recovered);
+                result.Events.Add (decoded);
             }
         }
         catch (Exception ex)
@@ -296,20 +296,20 @@ public sealed class MbcProtocolDecoder
             result.Status = result.Events.Count > 0 ? "partial_truncated" : "truncated";
         }
 
-        return Finish(result, bits, originalBits);
+        return Finish (result, bits, originalBits);
     }
 
-    private int? EnterContext(int processId, int wireModuleTag, MbcDecodeResult result, out string contextState)
+    private int? EnterContext (int processId, int wireModuleTag, MbcDecodeResult result, out string contextState)
     {
         if (wireModuleTag == 0)
         {
-            int? previousOrNull = processModules.TryGetValue(processId, out var previous) ? previous : null;
-            result.Lifecycle.Add(new MbcLifecycleEvent
+            int? previousOrNull = processModules.TryGetValue (processId, out var previous) ? previous : null;
+            result.Lifecycle.Add (new MbcLifecycleEvent
             {
                 Type = "EKill",
                 ProcessId = processId,
                 ResolvedModuleTag = previousOrNull,
-                ResolvedModule = catalog.ModuleName(previousOrNull)
+                ResolvedModule = catalog.ModuleName (previousOrNull)
             });
             if (processId > 0xFFFF || previousOrNull is null)
             {
@@ -327,13 +327,13 @@ public sealed class MbcProtocolDecoder
             return null;
         }
 
-        if (processModules.TryGetValue(processId, out var bound))
+        if (processModules.TryGetValue (processId, out var bound))
         {
             contextState = "existing";
             return bound;
         }
 
-        if (!catalog.Modules.ContainsKey(wireModuleTag))
+        if (!catalog.Modules.ContainsKey (wireModuleTag))
         {
             contextState = "ignored_unknown_module";
             return null;
@@ -344,9 +344,9 @@ public sealed class MbcProtocolDecoder
         return wireModuleTag;
     }
 
-    private int? RecreateForRegion(int processId, int wireModuleTag)
+    private int? RecreateForRegion (int processId, int wireModuleTag)
     {
-        if (wireModuleTag == 0 || processId > 0xFFFF || !catalog.Modules.ContainsKey(wireModuleTag))
+        if (wireModuleTag == 0 || processId > 0xFFFF || !catalog.Modules.ContainsKey (wireModuleTag))
         {
             return null;
         }
@@ -355,9 +355,9 @@ public sealed class MbcProtocolDecoder
         return wireModuleTag;
     }
 
-    private static List<MbcDecodedField> DecodeFields(MbcBitReader bits, int[] desc, int[]? basePosition)
+    private static List<MbcDecodedField> DecodeFields (MbcBitReader bits, int[] desc, int[]? basePosition)
     {
-        var fields = new List<MbcDecodedField>();
+        var fields = new List<MbcDecodedField> ();
         var i = 0;
         while (i < desc.Length)
         {
@@ -367,67 +367,67 @@ public sealed class MbcProtocolDecoder
             if (raw is 0x65 or 0x66)
             {
                 var countWidth = raw == 0x65 ? 4 : 8;
-                var count = bits.Read(countWidth);
+                var count = bits.Read (countWidth);
                 if (i + 1 >= desc.Length)
                 {
-                    throw new MbcDecodeException("array descriptor has no element descriptor");
+                    throw new MbcDecodeException ("array descriptor has no element descriptor");
                 }
 
                 var elemRaw = desc[i + 1];
                 var elem = elemRaw >= 128 ? elemRaw - 256 : elemRaw;
-                if (Math.Abs(elem) is < 1 or > 32)
+                if (Math.Abs (elem) is < 1 or > 32)
                 {
-                    throw new MbcDecodeException($"unsupported array element descriptor 0x{elemRaw:X2}");
+                    throw new MbcDecodeException ($"unsupported array element descriptor 0x{elemRaw:X2}");
                 }
 
                 var values = new long[count];
                 for (var n = 0; n < count; n++)
                 {
-                    values[n] = elem < 0 ? bits.Signed(Math.Abs(elem)) : bits.Read(elem);
+                    values[n] = elem < 0 ? bits.Signed (Math.Abs (elem)) : bits.Read (elem);
                 }
 
-                fields.Add(new MbcDecodedField
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = raw,
                     Kind = "array",
                     ArrayValue = values,
                     BitOffset = start,
                     BitLength = bits.Pos - start,
-                    Display = FormatArray(values, elem)
+                    Display = FormatArray (values, elem)
                 });
                 i += 2;
                 continue;
             }
 
-            if (Math.Abs(signedDesc) is >= 1 and <= 32)
+            if (Math.Abs (signedDesc) is >= 1 and <= 32)
             {
-                var value = signedDesc < 0 ? bits.Signed(Math.Abs(signedDesc)) : bits.Read(signedDesc);
-                fields.Add(new MbcDecodedField
+                var value = signedDesc < 0 ? bits.Signed (Math.Abs (signedDesc)) : bits.Read (signedDesc);
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = signedDesc,
                     Kind = "int",
                     IntValue = value,
                     BitOffset = start,
                     BitLength = bits.Pos - start,
-                    Display = value.ToString()
+                    Display = value.ToString ()
                 });
             }
             else if (raw == 0x67)
             {
-                var value = DecodeVarint(bits);
-                fields.Add(new MbcDecodedField
+                var value = DecodeVarint (bits);
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = 0x67,
                     Kind = "varint",
                     IntValue = value,
                     BitOffset = start,
                     BitLength = bits.Pos - start,
-                    Display = value.ToString()
+                    Display = value.ToString ()
                 });
             }
             else if (raw == 0x68)
             {
-                fields.Add(new MbcDecodedField
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = 0x68,
                     Kind = "pseudo",
@@ -439,11 +439,11 @@ public sealed class MbcProtocolDecoder
             else if (raw is 0x69 or 0x6A or 0x6B)
             {
                 var axis = raw - 0x69;
-                var coordRaw = bits.Read(12);
-                var (delta, value) = RelCoord(coordRaw, basePosition is null ? null : basePosition[axis]);
+                var coordRaw = bits.Read (12);
+                var (delta, value) = RelCoord (coordRaw, basePosition is null ? null : basePosition[axis]);
                 var kind = axis == 0 ? "relX" : axis == 1 ? "relY" : "relZ";
                 var name = axis == 0 ? "x" : axis == 1 ? "y" : "z";
-                fields.Add(new MbcDecodedField
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = raw,
                     Kind = kind,
@@ -459,8 +459,8 @@ public sealed class MbcProtocolDecoder
             }
             else if (raw == 0x6C)
             {
-                var angleRaw = bits.Read(8);
-                fields.Add(new MbcDecodedField
+                var angleRaw = bits.Read (8);
+                fields.Add (new MbcDecodedField
                 {
                     Descriptor = 0x6C,
                     Kind = "angle",
@@ -473,7 +473,7 @@ public sealed class MbcProtocolDecoder
             }
             else
             {
-                throw new MbcDecodeException($"unsupported descriptor 0x{raw:X2}");
+                throw new MbcDecodeException ($"unsupported descriptor 0x{raw:X2}");
             }
 
             i++;
@@ -482,15 +482,15 @@ public sealed class MbcProtocolDecoder
         return fields;
     }
 
-    private static int DecodeVarint(MbcBitReader bits)
+    private static int DecodeVarint (MbcBitReader bits)
     {
-        var negative = bits.Read(1) == 1;
-        var tier = bits.Read(2);
-        var magnitude = bits.Read(VarintWidths[tier]);
+        var negative = bits.Read (1) == 1;
+        var tier = bits.Read (2);
+        var magnitude = bits.Read (VarintWidths[tier]);
         return negative ? -magnitude : magnitude;
     }
 
-    private static (double Delta, double? Value) RelCoord(int raw, int? baseValue)
+    private static (double Delta, double? Value) RelCoord (int raw, int? baseValue)
     {
         var magnitude = raw & 0x7FF;
         var denominator = (1.0 / 40.0 - 1.0 / 160.0) * (magnitude / 2047.0) + 1.0 / 160.0;
@@ -503,24 +503,24 @@ public sealed class MbcProtocolDecoder
         return (delta, baseValue is null ? null : baseValue.Value + delta);
     }
 
-    private static string FormatArray(long[] values, int element)
+    private static string FormatArray (long[] values, int element)
     {
-        if (Math.Abs(element) == 8)
+        if (Math.Abs (element) == 8)
         {
-            var data = values.Select(v => (byte)(v & 0xFF)).ToArray();
-            var text = new string(data.Select(v => v is >= 32 and < 127 ? (char)v : '.').ToArray());
-            return $"hex={Convert.ToHexString(data)} text={text}";
+            var data = values.Select (v => (byte) (v & 0xFF)).ToArray ();
+            var text = new string (data.Select (v => v is >= 32 and < 127 ? (char) v : '.').ToArray ());
+            return $"hex={Convert.ToHexString (data)} text={text}";
         }
 
-        return string.Join(",", values);
+        return string.Join (",", values);
     }
 
-    private static MbcDecodeResult Finish(MbcDecodeResult result, MbcBitReader? bits, int originalBits)
+    private static MbcDecodeResult Finish (MbcDecodeResult result, MbcBitReader? bits, int originalBits)
     {
         if (bits is not null)
         {
             result.ParseBit = bits.Pos;
-            result.OverreadBits = Math.Max(0, bits.Pos - originalBits);
+            result.OverreadBits = Math.Max (0, bits.Pos - originalBits);
         }
 
         return result;

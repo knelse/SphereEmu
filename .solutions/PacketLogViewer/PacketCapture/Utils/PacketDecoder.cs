@@ -22,7 +22,7 @@ internal static class PacketDecoder
             mask3 = (byte) (current * i + 2 * mask3);
         }
 
-        Array.Copy(input, result, start);
+        Array.Copy (input, result, start);
         return result;
     }
 }

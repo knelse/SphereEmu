@@ -9,12 +9,12 @@ using SphServer.Shared.Networking.DataModel.Serializers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class CharacterSelectHandler(ushort localId, ClientConnection clientConnection)
+public class CharacterSelectHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private int selectedCharacterIndex = -1;
 
-    public async Task Handle(byte[] frame, double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         if (selectedCharacterIndex == -1)
         {
@@ -24,7 +24,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
             }
 
             // select existing
-            if (ClientPacketClassifier.IsCharacterSelect(frame))
+            if (ClientPacketClassifier.IsCharacterSelect (frame))
             {
                 selectedCharacterIndex = frame[17] / 4 - 1;
                 return;
@@ -34,7 +34,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
             if (frame[0] == 0x2A)
             {
                 var index = frame[17] / 4 - 1;
-                clientConnection.DeletePlayerCharacter(index);
+                clientConnection.DeletePlayerCharacter (index);
                 return;
             }
 
@@ -48,7 +48,7 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
                 return;
             }
 
-            selectedCharacterIndex = CreateNewCharacter(frame);
+            selectedCharacterIndex = CreateNewCharacter (frame);
         }
 
         if (selectedCharacterIndex == -1)
@@ -57,31 +57,31 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
             return;
         }
 
-        clientConnection.SetSelectedCharacterIndex(selectedCharacterIndex);
+        clientConnection.SetSelectedCharacterIndex (selectedCharacterIndex);
 
-        var character = clientConnection.GetSelectedCharacter();
+        var character = clientConnection.GetSelectedCharacter ();
 
         if (character is null)
         {
             // should never happen
-            SphLogger.Error($"SRV {localId:X4}: Selected character is null");
+            SphLogger.Error ($"SRV {localId:X4}: Selected character is null");
             return;
         }
 
         // TODO serializer field on object instead of creating them all the time
         // client wants game data here before it sends an ack, otherwise it will hang
-        clientConnection.MaybeScheduleNetworkPacketSend(new CharacterDbEntrySerializer(character).ToGameDataByteArray());
-        clientConnection.MoveToNextBeforeGameStage();
+        clientConnection.MaybeScheduleNetworkPacketSend (new CharacterDbEntrySerializer (character).ToGameDataByteArray ());
+        clientConnection.MoveToNextBeforeGameStage ();
     }
 
-    private int CreateNewCharacter(byte[] rcvBuffer)
+    private int CreateNewCharacter (byte[] rcvBuffer)
     {
-        SphLogger.Info($"SRV {localId:X4}: Creating new character");
+        SphLogger.Info ($"SRV {localId:X4}: Creating new character");
         var len = rcvBuffer[0] - 20 - 5;
         var charDataBytesStart = rcvBuffer[0] - 5;
         var nameCheckBytes = rcvBuffer[20..];
         var charDataBytes = rcvBuffer[charDataBytesStart..rcvBuffer[0]];
-        var sb = new StringBuilder();
+        var sb = new StringBuilder ();
         var firstLetterCharCode = ((nameCheckBytes[1] & 0b11111) << 3) + (nameCheckBytes[0] >> 5);
         var firstLetterShouldBeRussian = false;
 
@@ -92,16 +92,16 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
             if (currentCharCode % 2 == 0)
             {
                 // English
-                var currentLetter = (char)(currentCharCode / 2);
-                sb.Append(currentLetter);
+                var currentLetter = (char) (currentCharCode / 2);
+                sb.Append (currentLetter);
             }
             else
             {
                 // Russian
                 var currentLetter = currentCharCode >= 193
-                    ? (char)((currentCharCode - 192) / 2 + 'а')
-                    : (char)((currentCharCode - 129) / 2 + 'А');
-                sb.Append(currentLetter);
+                    ? (char) ((currentCharCode - 192) / 2 + 'а')
+                    : (char) ((currentCharCode - 129) / 2 + 'А');
+                sb.Append (currentLetter);
 
                 if (i == 2)
                 {
@@ -117,25 +117,25 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         {
             firstLetterCharCode += 1;
             var firstLetter = firstLetterCharCode >= 193
-                ? (char)((firstLetterCharCode - 192) / 2 + 'а')
-                : (char)((firstLetterCharCode - 129) / 2 + 'А');
-            name = firstLetter + sb.ToString()[1..];
+                ? (char) ((firstLetterCharCode - 192) / 2 + 'а')
+                : (char) ((firstLetterCharCode - 129) / 2 + 'А');
+            name = firstLetter + sb.ToString ()[1..];
         }
         else
         {
-            name = sb.ToString();
+            name = sb.ToString ();
         }
 
         var isNameValid = true; // Login.IsNameValid(name);
 
         if (!isNameValid)
         {
-            SphLogger.Error($"SRV {localId:X4}: Name [{name}] already exists!");
-            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.NameAlreadyExists(localId));
+            SphLogger.Error ($"SRV {localId:X4}: Name [{name}] already exists!");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameAlreadyExists (localId));
             return -1;
         }
 
-        SphLogger.Info($"SRV {localId:X4}: Name [{name}] OK");
+        SphLogger.Info ($"SRV {localId:X4}: Name [{name}] OK");
 
         var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
         var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
@@ -154,13 +154,13 @@ public class CharacterSelectHandler(ushort localId, ClientConnection clientConne
         var charIndex = rcvBuffer[17] / 4 - 1;
 
         var newCharacterData =
-            CharacterDbEntry.CreateNewCharacter(localId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+            CharacterDbEntry.CreateNewCharacter (localId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
-        clientConnection.CreatePlayerCharacter(newCharacterData, charIndex);
+        clientConnection.CreatePlayerCharacter (newCharacterData, charIndex);
 
-        clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.NameCheckPassed(localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameCheckPassed (localId));
 
-        SphLogger.Info($"SRV {localId:X4}: Successfully created character [{name}]");
+        SphLogger.Info ($"SRV {localId:X4}: Successfully created character [{name}]");
 
         return charIndex;
     }

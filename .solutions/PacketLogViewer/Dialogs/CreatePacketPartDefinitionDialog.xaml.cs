@@ -14,26 +14,26 @@ public partial class CreatePacketPartDefinitionDialog
     public string? EnumName;
     public PacketPartType? PacketPartType;
 
-    public CreatePacketPartDefinitionDialog(Color color, List<string> definedEnums)
+    public CreatePacketPartDefinitionDialog (Color color, List<string> definedEnums)
     {
-        InitializeComponent();
+        InitializeComponent ();
         ColorPicker.SelectedColor = color;
-        var partTypeNames = Enum.GetNames(typeof(PacketPartType)).Select(x => new ComboBoxItemWithName
+        var partTypeNames = Enum.GetNames (typeof (PacketPartType)).Select (x => new ComboBoxItemWithName
         {
             Name = x
         });
-        if (definedEnums.All(x => x != NoEnumSelected))
+        if (definedEnums.All (x => x != NoEnumSelected))
         {
-            definedEnums.Insert(0, NoEnumSelected);
+            definedEnums.Insert (0, NoEnumSelected);
         }
 
-        var enumNames = definedEnums.Select(x => new ComboBoxItemWithName { Name = x });
+        var enumNames = definedEnums.Select (x => new ComboBoxItemWithName { Name = x });
         EnumNameComboBox.ItemsSource = enumNames;
         EnumNameComboBox.SelectedIndex = 0;
         PacketPartTypeComboBox.ItemsSource = partTypeNames;
         PacketPartTypeComboBox.SelectedIndex = 3;
 
-        PacketPartName.Focus();
+        PacketPartName.Focus ();
     }
 
     public bool LengthFromPreviousField => LengthFromPreviousFieldCheckBox.IsChecked ?? false;
@@ -41,31 +41,31 @@ public partial class CreatePacketPartDefinitionDialog
     public string PartName => PacketPartName.Text;
     public Color Color => ColorPicker.SelectedColor;
 
-    private void DialogOkButton_OnClick(object sender, RoutedEventArgs e)
+    private void DialogOkButton_OnClick (object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(PacketPartName.Text))
+        if (string.IsNullOrWhiteSpace (PacketPartName.Text))
         {
-            MessageBox.Show("Please input name");
+            MessageBox.Show ("Please input name");
             return;
         }
 
         DialogResult = true;
     }
 
-    private void PacketPartTypeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void PacketPartTypeComboBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
     {
-        var selected = (ComboBoxItemWithName)PacketPartTypeComboBox.SelectedItem;
+        var selected = (ComboBoxItemWithName) PacketPartTypeComboBox.SelectedItem;
         if (selected is null)
         {
             return;
         }
 
-        PacketPartType = Enum.Parse<PacketPartType>(selected.Name);
+        PacketPartType = Enum.Parse<PacketPartType> (selected.Name);
     }
 
-    private void EnumNameComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void EnumNameComboBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
     {
-        var selected = (ComboBoxItemWithName)EnumNameComboBox.SelectedItem;
+        var selected = (ComboBoxItemWithName) EnumNameComboBox.SelectedItem;
         if (selected is null)
         {
             return;

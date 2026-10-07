@@ -1,6 +1,10 @@
+using System;
 using Godot;
 using SphServer.Helpers;
+using SphServer.Server.Config;
+using SphServer.Server.GameplayLogic.Combat;
 using SphServer.Shared.GameData.Enums;
+using SphServer.Shared.Logger;
 using SphServer.Sphere.Game;
 
 namespace SphServer.Sphere.Game.WorldObject;
@@ -21,12 +25,12 @@ public partial class Monster
 			}
 
 			monsterType = value;
-			RefreshMonsterInstanceFromType();
-			ScheduleModelVisualRefreshIfNeeded();
+			RefreshMonsterInstanceFromType ();
+			ScheduleModelVisualRefreshIfNeeded ();
 		}
 	}
 
-	[ExportGroup("Monster Instance")]
+	[ExportGroup ("Monster Instance")]
 	private int level = 1;
 
 	[Export]
@@ -44,35 +48,61 @@ public partial class Monster
 			if (MonsterInstance is not null)
 			{
 				MonsterInstance.Level = value;
-				RecalculateMonsterInstanceStatsFromLevel();
-				SyncExportedMonsterFields();
+				RecalculateMonsterInstanceStatsFromLevel ();
+				SyncExportedMonsterFields ();
 			}
 
-			NotifyInspector();
+			NotifyInspector ();
 		}
 	}
 
-	private bool isNamed;
+	private NamedBossRank namedBossRank = NamedBossRank.None;
 
+	/// <summary>
+	/// Any rank but None rolls a syllable name and applies that rank's coefficient from combat.json
+	/// </summary>
 	[Export]
-	public bool IsNamed
+	public NamedBossRank NamedBossRank
 	{
-		get => isNamed;
+		get => namedBossRank;
 		set
 		{
-			if (isNamed == value)
+			if (namedBossRank == value)
 			{
 				return;
 			}
 
-			isNamed = value;
-			if (MonsterInstance is not null)
+			namedBossRank = value;
+			if (value == NamedBossRank.None)
 			{
-				MonsterInstance.IsNamed = value;
+				nameCode = -1;
+			}
+			else if (nameCode == -1)
+			{
+				nameCode = MonsterNameCode.Roll (out _);
 			}
 
-			NotifyInspector();
+			if (MonsterInstance is not null)
+			{
+				MonsterInstance.NamedBossRank = value;
+				RecalculateMonsterInstanceStatsFromLevel ();
+				SyncExportedMonsterFields ();
+			}
+
+			NotifyInspector ();
 		}
+	}
+
+	private int nameCode = -1;
+
+	/// <summary>
+	/// Packed MNS1/MNS2/MNS3 syllable code (TradeMan cmd 3); -1 omits the region
+	/// </summary>
+	[Export]
+	public int NameCode
+	{
+		get => nameCode;
+		set => nameCode = value;
 	}
 
 	private int currentHp;
@@ -94,7 +124,7 @@ public partial class Monster
 				MonsterInstance.CurrentHp = value;
 			}
 
-			NotifyInspector();
+			NotifyInspector ();
 		}
 	}
 
@@ -151,7 +181,7 @@ public partial class Monster
 	[Export]
 	public KarmaTypes InstanceKarmaType { get; private set; }
 
-	[field: ExportGroup("Monster Data")]
+	[field: ExportGroup ("Monster Data")]
 	[Export]
 	public int DataGameId { get; private set; }
 
@@ -201,7 +231,10 @@ public partial class Monster
 	public string DataMutatorName { get; private set; } = string.Empty;
 
 	[Export]
-	public float DataSpeed { get; private set; }
+	public float DataWalkSpeed { get; private set; }
+
+	[Export]
+	public float DataRunSpeed { get; private set; }
 
 	[Export]
 	public int DataRange { get; private set; }
@@ -209,24 +242,25 @@ public partial class Monster
 	[Export]
 	public float DataAttackDelay { get; private set; }
 
-	private void RefreshMonsterInstanceFromType()
+	private void RefreshMonsterInstanceFromType ()
 	{
-		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue(monsterType, out var monsterDbId))
+		if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue (monsterType, out var monsterDbId))
 		{
 			return;
 		}
 
-		if (!GameObjectDb.Db.TryGetValue(monsterDbId, out var gameObject))
+		if (!GameObjectDb.Db.TryGetValue (monsterDbId, out var gameObject))
 		{
 			return;
 		}
 
-		MonsterInstance = new SphMonsterInstance(new SphMonsterData(gameObject), level, isNamed);
-		SyncExportedMonsterFields();
-		NotifyInspector();
+		MonsterInstance = new SphMonsterInstance (new SphMonsterData (gameObject), level, namedBossRank);
+		RecalculateMonsterInstanceStatsFromLevel ();
+		SyncExportedMonsterFields ();
+		NotifyInspector ();
 	}
 
-	private void RecalculateMonsterInstanceStatsFromLevel()
+	private void RecalculateMonsterInstanceStatsFromLevel ()
 	{
 		if (MonsterInstance is null)
 		{
@@ -235,16 +269,56 @@ public partial class Monster
 
 		var data = MonsterInstance.MonsterDataOrigin;
 		var mobLevel = MonsterInstance.Level;
-		MonsterInstance.MaxHp = mobLevel * data.HpPerLevel;
-		MonsterInstance.CurrentHp = mobLevel * data.HpPerLevel;
-		MonsterInstance.BasePAtk = mobLevel * data.PAtkPerLevel;
-		MonsterInstance.BaseMAtk = mobLevel * data.MAtkPerLevel;
-		MonsterInstance.BasePDef = mobLevel * data.PDefPerLevel;
-		MonsterInstance.BaseMDef = mobLevel * data.MDefPerLevel;
+		var coefficient = NamedBossStatCoefficient (MonsterInstance.NamedBossRank);
+		MonsterInstance.MaxHp = ApplyNamedBossCoefficient (mobLevel * data.HpPerLevel, coefficient);
+		MonsterInstance.CurrentHp = MonsterInstance.MaxHp;
+		MonsterInstance.BasePAtk = ApplyNamedBossCoefficient (mobLevel * data.PAtkPerLevel, coefficient);
+		MonsterInstance.BaseMAtk = ApplyNamedBossCoefficient (mobLevel * data.MAtkPerLevel, coefficient);
+		MonsterInstance.BasePDef = ApplyNamedBossCoefficient (mobLevel * data.PDefPerLevel, coefficient);
+		MonsterInstance.BaseMDef = ApplyNamedBossCoefficient (mobLevel * data.MDefPerLevel, coefficient);
 		MonsterInstance.KarmaType = data.KarmaType;
 	}
 
-	private void SyncExportedMonsterFields()
+	private static double NamedBossStatCoefficient (NamedBossRank rank)
+	{
+		if (Engine.IsEditorHint ())
+		{
+			return 1d;
+		}
+
+		var combat = BalanceConfig.Get<CombatBalance> ("combat");
+		if (combat is null)
+		{
+			SphLogger.Error (
+				$"Named boss stat coefficient unavailable for {rank}; leaving hp and combat stats unbuffed.");
+			return 1d;
+		}
+
+		return combat.StatMultiplier (rank);
+	}
+
+	private static int ApplyNamedBossCoefficient (int value, double coefficient)
+	{
+		if (coefficient == 1d)
+		{
+			return value;
+		}
+
+		var scaled = Math.Round (value * coefficient, MidpointRounding.AwayFromZero);
+		if (scaled >= int.MaxValue)
+		{
+			return int.MaxValue;
+		}
+
+		if (scaled <= int.MinValue)
+		{
+			return int.MinValue;
+		}
+
+		return (int) scaled;
+	}
+
+	private void SyncExportedMonsterFields ()
 	{
 		if (MonsterInstance is null)
 		{
@@ -255,7 +329,7 @@ public partial class Monster
 		var data = instance.MonsterDataOrigin;
 
 		level = instance.Level;
-		isNamed = instance.IsNamed;
+		namedBossRank = instance.NamedBossRank;
 		currentHp = instance.CurrentHp;
 
 		MaxHp = instance.MaxHp;
@@ -281,16 +355,17 @@ public partial class Monster
 		DataMAtkPerLevel = data.MAtkPerLevel;
 		DataMutatorId = data.MutatorId;
 		DataMutatorName = data.MutatorName;
-		DataSpeed = data.Speed;
+		DataWalkSpeed = data.WalkSpeed;
+		DataRunSpeed = data.RunSpeed;
 		DataRange = data.Range;
 		DataAttackDelay = data.AttackDelay;
 	}
 
-	private void NotifyInspector()
+	private void NotifyInspector ()
 	{
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint ())
 		{
-			NotifyPropertyListChanged();
+			NotifyPropertyListChanged ();
 		}
 	}
 }

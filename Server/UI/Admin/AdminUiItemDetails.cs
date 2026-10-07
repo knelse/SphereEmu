@@ -9,7 +9,7 @@ using SphServer.Shared.Db.DataModels;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Shared item detail content (header, reqs, bonuses, lore) without popup chrome.
+/// Header, requirements, bonuses, and lore, with no popup chrome
 /// </summary>
 public static class AdminUiItemDetails
 {
@@ -24,96 +24,100 @@ public static class AdminUiItemDetails
     public const int MetaFontSize = 11;
     public const int DescFontSize = 10;
 
-    private static readonly Color TextWhite = new(0.92f, 0.92f, 0.9f);
-    private static readonly Color TextUnmet = new(0.95f, 0.28f, 0.28f);
-    private static readonly Color TextBonus = new(0.45f, 0.85f, 0.4f);
-    private static readonly Color TextMalus = new(0.4f, 0.65f, 0.95f);
-    private static readonly Color DividerColor = new(0.55f, 0.5f, 0.42f, 0.85f);
+    private static readonly Color TextWhite = new (0.92f, 0.92f, 0.9f);
+    private static readonly Color TextUnmet = new (0.95f, 0.28f, 0.28f);
+    private static readonly Color TextBonus = new (0.45f, 0.85f, 0.4f);
+    private static readonly Color TextMalus = new (0.4f, 0.65f, 0.95f);
+    private static readonly Color DividerColor = new (0.55f, 0.5f, 0.42f, 0.85f);
 
-    /// <summary>Clears <paramref name="box"/> and fills it with item detail rows.</summary>
-    public static void Fill(
+    /// <summary>
+    /// Item detail rows, replacing whatever was already in the box
+    /// </summary>
+    public static void Fill (
         VBoxContainer box, ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
-        foreach (var child in box.GetChildren())
+        foreach (var child in box.GetChildren ())
         {
-            child.QueueFree();
+            child.QueueFree ();
         }
 
-        box.AddChild(BuildHeader(item, locale));
+        box.AddChild (BuildHeader (item, locale));
 
-        var roman = ToRomanTier(item);
-        if (!string.IsNullOrEmpty(roman))
+        var roman = ToRomanTier (item);
+        if (!string.IsNullOrEmpty (roman))
         {
-            box.AddChild(BuildIconTextRow(AdminUiAtlas.RankIcon, roman, TextWhite));
+            box.AddChild (BuildIconTextRow (AdminUiAtlas.RankIcon, roman, TextWhite));
         }
 
         if (item.Durability > 0)
         {
             var currentDura = item.CurrentDurability > 0 ? item.CurrentDurability : item.Durability;
-            box.AddChild(BuildIconTextRow(
+            box.AddChild (BuildIconTextRow (
                 AdminUiAtlas.DurabilityIcon,
                 $"{currentDura} / [{item.Durability}]",
                 TextWhite));
         }
 
-        box.AddChild(BuildIconTextRow(
+        box.AddChild (BuildIconTextRow (
             AdminUiAtlas.WeightIcon,
-            (item.Weight / 1000.0).ToString("0.000", CultureInfo.InvariantCulture),
+            (item.Weight / 1000.0).ToString ("0.000", CultureInfo.InvariantCulture),
             TextWhite));
 
-        item.RecalculateStatReqsFromBase();
+        item.RecalculateStatReqsFromBase ();
 
         var hasReqs = false;
-        foreach (var row in EnumerateRequirementRows(item, character, locale))
+        foreach (var row in EnumerateRequirementRows (item, character, locale))
         {
             if (!hasReqs)
             {
-                box.AddChild(MakeDivider());
+                box.AddChild (MakeDivider ());
                 hasReqs = true;
             }
 
-            box.AddChild(row);
+            box.AddChild (row);
         }
 
         var hasBonuses = false;
-        foreach (var row in EnumerateBonusRows(item))
+        foreach (var row in EnumerateBonusRows (item))
         {
             if (!hasBonuses)
             {
-                box.AddChild(MakeDivider());
+                box.AddChild (MakeDivider ());
                 hasBonuses = true;
             }
 
-            box.AddChild(row);
+            box.AddChild (row);
         }
 
-        var description = ItemLocaleText.Description(item, locale);
-        if (!string.IsNullOrWhiteSpace(description))
+        var description = ItemLocaleText.Description (item, locale);
+        if (!string.IsNullOrWhiteSpace (description))
         {
-            box.AddChild(BuildDescriptionLabel(description));
+            box.AddChild (BuildDescriptionLabel (description));
         }
 
-        box.AddChild(MakeDivider());
-        box.AddChild(BuildIconTextRow(
+        box.AddChild (MakeDivider ());
+        box.AddChild (BuildIconTextRow (
             AdminUiAtlas.GameIdIcon,
-            item.GameId.ToString(CultureInfo.InvariantCulture),
+            item.GameId.ToString (CultureInfo.InvariantCulture),
             TextWhite));
-        box.AddChild(BuildIconTextRow(
+        box.AddChild (BuildIconTextRow (
             AdminUiAtlas.CostIcon,
-            ResolveVendorCost(item).ToString(CultureInfo.InvariantCulture),
+            ResolveVendorCost (item).ToString (CultureInfo.InvariantCulture),
             TextWhite));
-        box.AddChild(MakeDivider());
-        box.AddChild(BuildObjectIdLabel(item.Id));
+        box.AddChild (MakeDivider ());
+        box.AddChild (BuildObjectIdLabel (item.Id));
     }
 
-    /// <summary>Approximate content height used to size popup mid tiles.</summary>
-    public static float EstimateContentHeight(
+    /// <summary>
+    /// Approximate content height used to size popup mid tiles.
+    /// </summary>
+    public static float EstimateContentHeight (
         ItemDbEntry item, Locale locale, float contentWidth, float marginTop = 0f, float marginBottom = 0f)
     {
-        item.RecalculateStatReqsFromBase();
+        item.RecalculateStatReqsFromBase ();
 
         var rows = 1 + 1 + 1 + 2 + 1 + 2; // header ~2, weight, footer divider, game id, cost, object id divider + line
-        if (item.IsTierVisible() && item.Tier is >= 1 and <= 15)
+        if (item.IsTierVisible () && item.Tier is >= 1 and <= 15)
         {
             rows++;
         }
@@ -123,8 +127,8 @@ public static class AdminUiItemDetails
             rows++;
         }
 
-        var reqCount = CountRequirementRows(item);
-        var bonusCount = CountBonusRows(item);
+        var reqCount = CountRequirementRows (item);
+        var bonusCount = CountBonusRows (item);
         rows += reqCount;
         rows += bonusCount;
         if (reqCount > 0)
@@ -137,35 +141,37 @@ public static class AdminUiItemDetails
             rows++;
         }
 
-        var description = ItemLocaleText.Description(item, locale);
-        if (!string.IsNullOrWhiteSpace(description))
+        var description = ItemLocaleText.Description (item, locale);
+        if (!string.IsNullOrWhiteSpace (description))
         {
-            var charsPerLine = Mathf.Max(12, (int)(contentWidth / 7f));
-            rows += Mathf.Max(1, Mathf.CeilToInt(description.Length / (float)charsPerLine));
+            var charsPerLine = Mathf.Max (12, (int) (contentWidth / 7f));
+            rows += Mathf.Max (1, Mathf.CeilToInt (description.Length / (float) charsPerLine));
         }
 
         return ItemIconPx + rows * RowEstimate + marginTop + marginBottom;
     }
 
-    /// <summary>Base vendor cost with suffix % applied (suffix is the item prefix/affix).</summary>
-    private static int ResolveVendorCost(ItemDbEntry item)
+    /// <summary>
+    /// Base vendor cost with suffix % applied (suffix is the item prefix/affix).
+    /// </summary>
+    private static int ResolveVendorCost (ItemDbEntry item)
     {
-        if (!SphObjectDb.GameObjectDataDb.TryGetValue(item.GameId, out var go))
+        if (!SphObjectDb.GameObjectDataDb.TryGetValue (item.GameId, out var go))
         {
-            return Math.Max(0, item.VendorCost);
+            return Math.Max (0, item.VendorCost);
         }
 
         var cost = go.VendorCost;
         if (item.Suffix != ItemSuffix.None)
         {
-            var suffixObj = SphObjectDbHelper.GetSuffixObject(item.GameObjectType, item.Suffix, item.Tier);
+            var suffixObj = SphObjectDbHelper.GetSuffixObject (item.GameObjectType, item.Suffix, item.Tier);
             cost = cost * (100 + suffixObj.VendorCost) / 100;
         }
 
-        return Math.Max(0, cost);
+        return Math.Max (0, cost);
     }
 
-    private static Control BuildObjectIdLabel(int id)
+    private static Control BuildObjectIdLabel (int id)
     {
         var label = new Label
         {
@@ -173,12 +179,12 @@ public static class AdminUiItemDetails
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        label.AddThemeColorOverride("font_color", TextWhite);
-        label.AddThemeFontSizeOverride("font_size", MetaFontSize);
+        label.AddThemeColorOverride ("font_color", TextWhite);
+        label.AddThemeFontSizeOverride ("font_size", MetaFontSize);
         return label;
     }
 
-    private static Control BuildDescriptionLabel(string text)
+    private static Control BuildDescriptionLabel (string text)
     {
         var label = new Label
         {
@@ -187,55 +193,55 @@ public static class AdminUiItemDetails
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        label.AddThemeColorOverride("font_color", TextWhite);
-        label.AddThemeFontSizeOverride("font_size", DescFontSize);
+        label.AddThemeColorOverride ("font_color", TextWhite);
+        label.AddThemeFontSizeOverride ("font_size", DescFontSize);
         return label;
     }
 
-    private static Control BuildHeader(ItemDbEntry item, Locale locale)
+    private static Control BuildHeader (ItemDbEntry item, Locale locale)
     {
-        var row = new HBoxContainer();
-        row.AddThemeConstantOverride("separation", 6);
+        var row = new HBoxContainer ();
+        row.AddThemeConstantOverride ("separation", 6);
 
-        row.AddChild(new TextureRect
+        row.AddChild (new TextureRect
         {
-            Texture = AdminUiAtlas.ItemIcon(item.ModelNameInventory),
+            Texture = AdminUiAtlas.ItemIcon (item.ModelNameInventory),
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.Scale,
             TextureFilter = CanvasItem.TextureFilterEnum.Nearest,
-            CustomMinimumSize = new Vector2(ItemIconPx, ItemIconPx),
+            CustomMinimumSize = new Vector2 (ItemIconPx, ItemIconPx),
             MouseFilter = Control.MouseFilterEnum.Ignore
         });
 
         var nameLabel = new Label
         {
-            Text = ItemLocaleText.DisplayName(item, locale),
+            Text = ItemLocaleText.DisplayName (item, locale),
             VerticalAlignment = VerticalAlignment.Center,
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
             AutowrapMode = TextServer.AutowrapMode.WordSmart,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        nameLabel.AddThemeColorOverride("font_color", TextWhite);
-        nameLabel.AddThemeFontSizeOverride("font_size", 12);
-        row.AddChild(nameLabel);
+        nameLabel.AddThemeColorOverride ("font_color", TextWhite);
+        nameLabel.AddThemeFontSizeOverride ("font_size", 12);
+        row.AddChild (nameLabel);
         return row;
     }
 
-    private static Control BuildIconTextRow(
+    private static Control BuildIconTextRow (
         Texture2D? iconTex, string text, Color color, int fontSize = MetaFontSize,
         float iconW = RowIconPx, float iconH = RowIconPx)
     {
-        var row = new HBoxContainer();
-        row.AddThemeConstantOverride("separation", 4);
+        var row = new HBoxContainer ();
+        row.AddThemeConstantOverride ("separation", 4);
 
-        row.AddChild(new TextureRect
+        row.AddChild (new TextureRect
         {
             Texture = iconTex,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
             TextureFilter = CanvasItem.TextureFilterEnum.Nearest,
-            CustomMinimumSize = new Vector2(iconW, iconH),
+            CustomMinimumSize = new Vector2 (iconW, iconH),
             SizeFlagsVertical = Control.SizeFlags.ShrinkCenter,
             MouseFilter = Control.MouseFilterEnum.Ignore
         });
@@ -247,28 +253,28 @@ public static class AdminUiItemDetails
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        label.AddThemeColorOverride("font_color", color);
-        label.AddThemeFontSizeOverride("font_size", fontSize);
-        row.AddChild(label);
+        label.AddThemeColorOverride ("font_color", color);
+        label.AddThemeFontSizeOverride ("font_size", fontSize);
+        row.AddChild (label);
         return row;
     }
 
-    private static Control MakeDivider()
+    private static Control MakeDivider ()
     {
         var pad = new MarginContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
-        pad.AddThemeConstantOverride("margin_top", 3);
-        pad.AddThemeConstantOverride("margin_bottom", 3);
-        pad.AddChild(new ColorRect
+        pad.AddThemeConstantOverride ("margin_top", 3);
+        pad.AddThemeConstantOverride ("margin_bottom", 3);
+        pad.AddChild (new ColorRect
         {
             Color = DividerColor,
-            CustomMinimumSize = new Vector2(0, 1),
+            CustomMinimumSize = new Vector2 (0, 1),
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         });
         return pad;
     }
 
-    private static int CountRequirementRows(ItemDbEntry item)
+    private static int CountRequirementRows (ItemDbEntry item)
     {
         var n = 0;
         if (item.TitleMinusOne > 0)
@@ -334,76 +340,76 @@ public static class AdminUiItemDetails
         return n;
     }
 
-    private static IEnumerable<Control> EnumerateRequirementRows(
+    private static IEnumerable<Control> EnumerateRequirementRows (
         ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
         if (item.TitleMinusOne > 0)
         {
-            yield return StatReqRow(
+            yield return StatReqRow (
                 AdminUiAtlas.ReqTitleIcon, item.TitleMinusOne, character?.TitleMinusOne ?? 0, true);
         }
 
         if (item.DegreeMinusOne > 0)
         {
-            yield return StatReqRow(
+            yield return StatReqRow (
                 AdminUiAtlas.DegreeIcon, item.DegreeMinusOne, character?.DegreeMinusOne ?? 0, true);
         }
 
         if (item.RequiredGuild is not Guild.None)
         {
-            yield return GuildReqRow(item, character, locale);
+            yield return GuildReqRow (item, character, locale);
         }
 
         if (item.MinKarmaLevel > 0 || item.MaxKarmaLevel > 0)
         {
-            yield return KarmaReqRow(item, character, locale);
+            yield return KarmaReqRow (item, character, locale);
         }
 
         if (item.StrengthReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqStrengthIcon, item.StrengthReq, character?.CurrentStrength ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqStrengthIcon, item.StrengthReq, character?.CurrentStrength ?? 0);
         }
 
         if (item.AgilityReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqAgilityIcon, item.AgilityReq, character?.CurrentAgility ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqAgilityIcon, item.AgilityReq, character?.CurrentAgility ?? 0);
         }
 
         if (item.AccuracyReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqAccuracyIcon, item.AccuracyReq, character?.CurrentAccuracy ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqAccuracyIcon, item.AccuracyReq, character?.CurrentAccuracy ?? 0);
         }
 
         if (item.EnduranceReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqEnduranceIcon, item.EnduranceReq, character?.CurrentEndurance ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqEnduranceIcon, item.EnduranceReq, character?.CurrentEndurance ?? 0);
         }
 
         if (item.EarthReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqEarthIcon, item.EarthReq, character?.CurrentEarth ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqEarthIcon, item.EarthReq, character?.CurrentEarth ?? 0);
         }
 
         if (item.AirReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqAirIcon, item.AirReq, character?.CurrentAir ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqAirIcon, item.AirReq, character?.CurrentAir ?? 0);
         }
 
         if (item.WaterReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqWaterIcon, item.WaterReq, character?.CurrentWater ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqWaterIcon, item.WaterReq, character?.CurrentWater ?? 0);
         }
 
         if (item.FireReq > 0)
         {
-            yield return StatReqRow(AdminUiAtlas.ReqFireIcon, item.FireReq, character?.CurrentFire ?? 0);
+            yield return StatReqRow (AdminUiAtlas.ReqFireIcon, item.FireReq, character?.CurrentFire ?? 0);
         }
     }
 
-    private static int CountBonusRows(ItemDbEntry item)
+    private static int CountBonusRows (ItemDbEntry item)
     {
         var n = 0;
-        foreach (var _ in EnumerateBonusValues(item))
+        foreach (var _ in EnumerateBonusValues (item))
         {
             n++;
         }
@@ -411,18 +417,18 @@ public static class AdminUiItemDetails
         return n;
     }
 
-    private static IEnumerable<Control> EnumerateBonusRows(ItemDbEntry item)
+    private static IEnumerable<Control> EnumerateBonusRows (ItemDbEntry item)
     {
-        foreach (var (key, value, inverted, forceBonus) in EnumerateBonusValues(item))
+        foreach (var (key, value, inverted, forceBonus) in EnumerateBonusValues (item))
         {
-            yield return BonusRow(key, value, inverted, forceBonus);
+            yield return BonusRow (key, value, inverted, forceBonus);
         }
     }
 
-    private static IEnumerable<(string Key, int Value, bool Inverted, bool ForceBonus)> EnumerateBonusValues(
+    private static IEnumerable<(string Key, int Value, bool Inverted, bool ForceBonus)> EnumerateBonusValues (
         ItemDbEntry item)
     {
-        ResolveAttackStats(item, out var pAtk, out var pAtkUp, out var mAtk, out var mAtkUp);
+        ResolveAttackStats (item, out var pAtk, out var pAtkUp, out var mAtk, out var mAtkUp);
 
         if (item.MaxHpUp != 0)
         {
@@ -504,13 +510,13 @@ public static class AdminUiItemDetails
     }
 
     /// <summary>
-    ///     Rebuild weapon/gear attack columns from base GO + suffix so display is not
-    ///     poisoned by legacy double-negated values in the item row.
+    /// Attack columns come from the base game object plus suffix, not a double-negated value stored
+    /// on the row
     /// </summary>
-    private static void ResolveAttackStats(
+    private static void ResolveAttackStats (
         ItemDbEntry item, out int pAtk, out int pAtkUp, out int mAtk, out int mAtkUp)
     {
-        if (!SphObjectDb.GameObjectDataDb.TryGetValue(item.GameId, out var go))
+        if (!SphObjectDb.GameObjectDataDb.TryGetValue (item.GameId, out var go))
         {
             pAtk = item.PAtkNegative;
             pAtkUp = item.PAtkUpNegative;
@@ -529,15 +535,15 @@ public static class AdminUiItemDetails
             return;
         }
 
-        var suffixObj = SphObjectDbHelper.GetSuffixObject(item.GameObjectType, item.Suffix, item.Tier);
-        // Suffix PA/MA keep file signs (neg=up, pos=down). *UpNegative positives mean up.
+        var suffixObj = SphObjectDbHelper.GetSuffixObject (item.GameObjectType, item.Suffix, item.Tier);
+        // Suffix PA and MA keep file signs (negative is up); a positive *UpNegative means up
         pAtk += suffixObj.PAtkNegative;
         mAtk += suffixObj.MAtkNegativeOrHeal;
         pAtkUp += suffixObj.PAtkUpNegative > 0 ? -suffixObj.PAtkUpNegative : suffixObj.PAtkUpNegative;
         mAtkUp += suffixObj.MAtkUpNegative > 0 ? -suffixObj.MAtkUpNegative : suffixObj.MAtkUpNegative;
     }
 
-    private static Control BonusRow(string key, int stored, bool inverted, bool forceBonus)
+    private static Control BonusRow (string key, int stored, bool inverted, bool forceBonus)
     {
         bool beneficial;
         if (forceBonus)
@@ -564,35 +570,35 @@ public static class AdminUiItemDetails
         }
 
         var color = beneficial ? TextBonus : TextMalus;
-        var shown = Math.Abs(stored).ToString(CultureInfo.InvariantCulture);
-        return BuildIconTextRow(
-            AdminUiAtlas.BonusIcon(iconKey), shown, color, ReqFontSize, BonusIconW, BonusIconH);
+        var shown = Math.Abs (stored).ToString (CultureInfo.InvariantCulture);
+        return BuildIconTextRow (
+            AdminUiAtlas.BonusIcon (iconKey), shown, color, ReqFontSize, BonusIconW, BonusIconH);
     }
 
-    private static Control StatReqRow(Texture2D? icon, int need, int have, bool asDisplayLevel = false)
+    private static Control StatReqRow (Texture2D? icon, int need, int have, bool asDisplayLevel = false)
     {
-        var needShown = asDisplayLevel ? CharacterLocaleText.DisplayLevel(need) : need;
-        var haveShown = asDisplayLevel ? CharacterLocaleText.DisplayLevel(have) : have;
+        var needShown = asDisplayLevel ? CharacterLocaleText.DisplayLevel (need) : need;
+        var haveShown = asDisplayLevel ? CharacterLocaleText.DisplayLevel (have) : have;
         var met = have >= need;
-        return BuildIconTextRow(icon, $"{needShown} : [{haveShown}]", met ? TextWhite : TextUnmet, ReqFontSize);
+        return BuildIconTextRow (icon, $"{needShown} : [{haveShown}]", met ? TextWhite : TextUnmet, ReqFontSize);
     }
 
-    private static Control KarmaReqRow(ItemDbEntry item, CharacterDbEntry? character, Locale locale)
+    private static Control KarmaReqRow (ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
         var min = item.MinKarmaLevel <= 0 ? KarmaTypes.Очень_Плохая : item.MinKarmaLevel;
         var max = item.MaxKarmaLevel <= 0 ? KarmaTypes.Благая : item.MaxKarmaLevel;
-        if ((byte)min > (byte)max)
+        if ((byte) min > (byte) max)
         {
             (min, max) = (max, min);
         }
 
-        var names = new List<string>();
-        for (var k = (byte)min; k <= (byte)max; k++)
+        var names = new List<string> ();
+        for (var k = (byte) min; k <= (byte) max; k++)
         {
-            names.Add(CharacterLocaleText.KarmaTypeName((KarmaTypes)k, locale).Trim());
+            names.Add (CharacterLocaleText.KarmaTypeName ((KarmaTypes) k, locale).Trim ());
         }
 
-        var text = string.Join(", ", names);
+        var text = string.Join (", ", names);
         Color color;
         if (character is null)
         {
@@ -600,28 +606,28 @@ public static class AdminUiItemDetails
         }
         else
         {
-            var karma = (byte)character.Karma;
-            var met = karma >= (byte)min && karma <= (byte)max;
+            var karma = (byte) character.Karma;
+            var met = karma >= (byte) min && karma <= (byte) max;
             color = met ? TextWhite : TextUnmet;
         }
 
-        return BuildIconTextRow(AdminUiAtlas.KarmaIcon, text, color, ReqFontSize);
+        return BuildIconTextRow (AdminUiAtlas.KarmaIcon, text, color, ReqFontSize);
     }
 
-    private static Control GuildReqRow(ItemDbEntry item, CharacterDbEntry? character, Locale locale)
+    private static Control GuildReqRow (ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
-        var guildName = CharacterLocaleText.GuildName(item.RequiredGuild, locale);
-        var rankName = CharacterLocaleText.GuildRankName(item.RequiredGuildRankMinusOne, false, locale);
-        var text = string.IsNullOrWhiteSpace(rankName) ? guildName : $"{guildName} - {rankName}";
-        var met = character is null || character.MeetsItemGuildRequirement(item);
+        var guildName = CharacterLocaleText.GuildName (item.RequiredGuild, locale);
+        var rankName = CharacterLocaleText.GuildRankName (item.RequiredGuildRankMinusOne, false, locale);
+        var text = string.IsNullOrWhiteSpace (rankName) ? guildName : $"{guildName} - {rankName}";
+        var met = character is null || character.MeetsItemGuildRequirement (item);
         var color = character is null || met ? TextWhite : TextUnmet;
-        return BuildIconTextRow(
-            AdminUiAtlas.GuildIcon(item.RequiredGuild), text, color, ReqFontSize, GuildIconPx, GuildIconPx);
+        return BuildIconTextRow (
+            AdminUiAtlas.GuildIcon (item.RequiredGuild), text, color, ReqFontSize, GuildIconPx, GuildIconPx);
     }
 
-    private static string ToRomanTier(ItemDbEntry item)
+    private static string ToRomanTier (ItemDbEntry item)
     {
-        if (!item.IsTierVisible())
+        if (!item.IsTierVisible ())
         {
             return string.Empty;
         }

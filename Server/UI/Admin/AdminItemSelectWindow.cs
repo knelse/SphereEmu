@@ -9,8 +9,7 @@ using SphServer.Shared.WorldState;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Pick a catalog item (type → name → suffix) and apply it to an admin slot.
-///     Column 4 is the same item description used by hover/pin popups.
+/// Column 4 is the same description as the hover and pin popups
 /// </summary>
 public partial class AdminItemSelectWindow : Window
 {
@@ -36,55 +35,55 @@ public partial class AdminItemSelectWindow : Window
     private readonly List<SphGameObject> names = [];
     private readonly List<ItemSuffix> suffixes = [];
 
-    private static readonly Color UnmetText = new(0.95f, 0.28f, 0.28f);
+    private static readonly Color UnmetText = new (0.95f, 0.28f, 0.28f);
 
     private static Dictionary<CatalogGroup, List<SphGameObject>>? catalogByGroup;
 
-    public void SetLocale(Locale newLocale)
+    public void SetLocale (Locale newLocale)
     {
         locale = newLocale;
         if (Visible)
         {
-            RefreshTypes(keepSelection: true);
+            RefreshTypes (keepSelection: true);
         }
     }
 
-    public void OpenFor(ushort clientId, BelongingSlot slot)
+    public void OpenFor (ushort clientId, BelongingSlot slot)
     {
         targetClientId = clientId;
         targetSlot = slot;
         Title = $"Change item - {slot}";
-        CapturePreselect(clientId, slot);
+        CapturePreselect (clientId, slot);
         if (!Visible)
         {
-            PopupCentered();
+            PopupCentered ();
         }
 
-        RefreshTypes(keepSelection: false);
-        ApplyPreselect();
+        RefreshTypes (keepSelection: false);
+        ApplyPreselect ();
     }
 
-    public override void _Ready()
+    public override void _Ready ()
     {
         Title = "Change item";
-        Size = new Vector2I(1180, 560);
+        Size = new Vector2I (1180, 560);
         Unresizable = false;
         Exclusive = false;
         Transient = true;
         Visible = false;
         CloseRequested += Hide;
 
-        var root = new MarginContainer();
-        root.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
-        root.AddThemeConstantOverride("margin_left", 10);
-        root.AddThemeConstantOverride("margin_top", 10);
-        root.AddThemeConstantOverride("margin_right", 10);
-        root.AddThemeConstantOverride("margin_bottom", 10);
-        AddChild(root);
+        var root = new MarginContainer ();
+        root.SetAnchorsAndOffsetsPreset (Control.LayoutPreset.FullRect);
+        root.AddThemeConstantOverride ("margin_left", 10);
+        root.AddThemeConstantOverride ("margin_top", 10);
+        root.AddThemeConstantOverride ("margin_right", 10);
+        root.AddThemeConstantOverride ("margin_bottom", 10);
+        AddChild (root);
 
-        var body = new VBoxContainer();
-        body.AddThemeConstantOverride("separation", 8);
-        root.AddChild(body);
+        var body = new VBoxContainer ();
+        body.AddThemeConstantOverride ("separation", 8);
+        root.AddChild (body);
 
         var splits = new HSplitContainer
         {
@@ -92,13 +91,13 @@ public partial class AdminItemSelectWindow : Window
             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
             DraggerVisibility = SplitContainer.DraggerVisibilityEnum.Visible
         };
-        body.AddChild(splits);
+        body.AddChild (splits);
 
-        typeList = MakeLabeledList(splits, "Type", stretch: 1f, out _);
-        guildList = MakeLabeledList(splits, "Guild", stretch: 1f, out guildColumn);
-        nameList = MakeLabeledList(splits, "Item", stretch: 1.2f, out _);
-        suffixList = MakeLabeledList(splits, "Suffix", stretch: 1f, out suffixColumn);
-        previewBox = MakePreviewColumn(splits);
+        typeList = MakeLabeledList (splits, "Type", stretch: 1f, out _);
+        guildList = MakeLabeledList (splits, "Guild", stretch: 1f, out guildColumn);
+        nameList = MakeLabeledList (splits, "Item", stretch: 1.2f, out _);
+        suffixList = MakeLabeledList (splits, "Suffix", stretch: 1f, out suffixColumn);
+        previewBox = MakePreviewColumn (splits);
         guildColumn.Visible = false;
 
         typeList.ItemSelected += OnTypeSelected;
@@ -112,18 +111,18 @@ public partial class AdminItemSelectWindow : Window
             Alignment = BoxContainer.AlignmentMode.End,
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
         };
-        buttons.AddThemeConstantOverride("separation", 8);
-        body.AddChild(buttons);
+        buttons.AddThemeConstantOverride ("separation", 8);
+        body.AddChild (buttons);
 
         toastPanel = new PanelContainer
         {
             Visible = false,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        toastPanel.AddThemeStyleboxOverride("panel", new StyleBoxFlat
+        toastPanel.AddThemeStyleboxOverride ("panel", new StyleBoxFlat
         {
-            BgColor = new Color(0.14f, 0.11f, 0.09f, 0.96f),
-            BorderColor = new Color(0.55f, 0.42f, 0.25f),
+            BgColor = new Color (0.14f, 0.11f, 0.09f, 0.96f),
+            BorderColor = new Color (0.55f, 0.42f, 0.25f),
             BorderWidthLeft = 2,
             BorderWidthTop = 2,
             BorderWidthRight = 2,
@@ -138,31 +137,31 @@ public partial class AdminItemSelectWindow : Window
             VerticalAlignment = VerticalAlignment.Center,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        toastLabel.AddThemeColorOverride("font_color", UnmetText);
-        toastPanel.AddChild(toastLabel);
-        buttons.AddChild(toastPanel);
+        toastLabel.AddThemeColorOverride ("font_color", UnmetText);
+        toastPanel.AddChild (toastLabel);
+        buttons.AddChild (toastPanel);
 
         applyButton = new Button { Text = "Apply", Disabled = true };
-        applyButton.Pressed += () => TryApply();
-        buttons.AddChild(applyButton);
+        applyButton.Pressed += () => TryApply ();
+        buttons.AddChild (applyButton);
 
         var closeButton = new Button { Text = "Close" };
         closeButton.Pressed += Hide;
-        buttons.AddChild(closeButton);
+        buttons.AddChild (closeButton);
     }
 
-    private static ItemList MakeLabeledList(Control parent, string title, float stretch, out Control column)
+    private static ItemList MakeLabeledList (Control parent, string title, float stretch, out Control column)
     {
         column = new VBoxContainer
         {
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
             SizeFlagsStretchRatio = stretch,
-            CustomMinimumSize = new Vector2(80, 0)
+            CustomMinimumSize = new Vector2 (80, 0)
         };
-        column.AddThemeConstantOverride("separation", 4);
-        parent.AddChild(column);
-        column.AddChild(new Label { Text = title });
+        column.AddThemeConstantOverride ("separation", 4);
+        parent.AddChild (column);
+        column.AddChild (new Label { Text = title });
         var list = new ItemList
         {
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
@@ -170,49 +169,49 @@ public partial class AdminItemSelectWindow : Window
             SelectMode = ItemList.SelectModeEnum.Single,
             AllowReselect = true
         };
-        column.AddChild(list);
+        column.AddChild (list);
         return list;
     }
 
-    private static VBoxContainer MakePreviewColumn(Control parent)
+    private static VBoxContainer MakePreviewColumn (Control parent)
     {
         var column = new VBoxContainer
         {
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
-            CustomMinimumSize = new Vector2(80, 0),
+            CustomMinimumSize = new Vector2 (80, 0),
             SizeFlagsStretchRatio = 1.35f
         };
-        column.AddThemeConstantOverride("separation", 4);
-        parent.AddChild(column);
-        column.AddChild(new Label { Text = "Preview" });
+        column.AddThemeConstantOverride ("separation", 4);
+        parent.AddChild (column);
+        column.AddChild (new Label { Text = "Preview" });
         var scroll = new ScrollContainer
         {
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             SizeFlagsVertical = Control.SizeFlags.ExpandFill
         };
-        column.AddChild(scroll);
+        column.AddChild (scroll);
         var box = new VBoxContainer
         {
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };
-        box.AddThemeConstantOverride("separation", 2);
-        scroll.AddChild(box);
+        box.AddThemeConstantOverride ("separation", 2);
+        scroll.AddChild (box);
         return box;
     }
 
-    private void CapturePreselect(ushort clientId, BelongingSlot slot)
+    private void CapturePreselect (ushort clientId, BelongingSlot slot)
     {
         preselectGameId = null;
         preselectSuffix = ItemSuffix.None;
-        var character = ActiveClients.Get(clientId)?.CurrentCharacter;
-        if (character is null || !character.Items.TryGetValue(slot, out var itemId))
+        var character = ActiveClients.Get (clientId)?.CurrentCharacter;
+        if (character is null || !character.Items.TryGetValue (slot, out var itemId))
         {
             return;
         }
 
-        var item = SphServer.Shared.Db.DbConnection.Items.FindById(itemId);
+        var item = SphServer.Shared.Db.DbConnection.Items.FindById (itemId);
         if (item is null)
         {
             return;
@@ -222,320 +221,320 @@ public partial class AdminItemSelectWindow : Window
         preselectSuffix = item.Suffix;
     }
 
-    private void RefreshTypes(bool keepSelection)
+    private void RefreshTypes (bool keepSelection)
     {
         if (typeList is null)
         {
             return;
         }
 
-        var selectedGroup = keepSelection ? SelectedGroup() : null;
-        EnsureCatalog();
-        types.Clear();
-        typeList.Clear();
-        foreach (var group in catalogByGroup!.Keys.OrderBy(g => g.Label(locale),
+        var selectedGroup = keepSelection ? SelectedGroup () : null;
+        EnsureCatalog ();
+        types.Clear ();
+        typeList.Clear ();
+        foreach (var group in catalogByGroup!.Keys.OrderBy (g => g.Label (locale),
                      StringComparer.CurrentCultureIgnoreCase))
         {
-            if (!GroupAllowedForTarget(group))
+            if (!GroupAllowedForTarget (group))
             {
                 continue;
             }
 
-            types.Add(group);
-            typeList.AddItem(group.Label(locale));
+            types.Add (group);
+            typeList.AddItem (group.Label (locale));
         }
 
         if (selectedGroup is { } previous)
         {
-            var index = types.IndexOf(previous);
+            var index = types.IndexOf (previous);
             if (index >= 0)
             {
-                typeList.Select(index);
+                typeList.Select (index);
             }
             else if (types.Count > 0)
             {
-                typeList.Select(0);
+                typeList.Select (0);
             }
         }
         else if (types.Count > 0)
         {
-            typeList.Select(0);
+            typeList.Select (0);
         }
 
-        UpdateGuildSuffixColumns();
-        RefreshNames();
+        UpdateGuildSuffixColumns ();
+        RefreshNames ();
     }
 
-    private void ApplyPreselect()
+    private void ApplyPreselect ()
     {
         if (typeList is null || preselectGameId is not { } gameId
-            || !SphObjectDb.GameObjectDataDb.TryGetValue(gameId, out var go))
+            || !SphObjectDb.GameObjectDataDb.TryGetValue (gameId, out var go))
         {
-            RefreshNames();
+            RefreshNames ();
             return;
         }
 
-        if (SelectedGroup() is { IsGuilds: true } && TryCatalogGuild(go, out var preselectGuild))
+        if (SelectedGroup () is { IsGuilds: true } && TryCatalogGuild (go, out var preselectGuild))
         {
-            var guildIndex = guildFilters.IndexOf(preselectGuild);
+            var guildIndex = guildFilters.IndexOf (preselectGuild);
             if (guildIndex >= 0 && guildList is not null)
             {
-                guildList.Select(guildIndex);
+                guildList.Select (guildIndex);
             }
         }
 
-        RefreshNames();
-        var nameIndex = names.FindIndex(n => n.GameId == gameId);
+        RefreshNames ();
+        var nameIndex = names.FindIndex (n => n.GameId == gameId);
         if (nameIndex >= 0 && nameList is not null)
         {
-            nameList.Select(nameIndex);
+            nameList.Select (nameIndex);
         }
 
-        RefreshSuffixes();
-        var suffixIndex = suffixes.IndexOf(preselectSuffix);
+        RefreshSuffixes ();
+        var suffixIndex = suffixes.IndexOf (preselectSuffix);
         if (suffixIndex >= 0 && suffixList is not null)
         {
-            suffixList.Select(suffixIndex);
+            suffixList.Select (suffixIndex);
         }
 
-        RefreshPreview();
+        RefreshPreview ();
     }
 
-    private void OnTypeSelected(long _)
+    private void OnTypeSelected (long _)
     {
-        UpdateGuildSuffixColumns();
-        RefreshNames();
+        UpdateGuildSuffixColumns ();
+        RefreshNames ();
     }
 
-    private void OnGuildSelected(long _)
+    private void OnGuildSelected (long _)
     {
-        RefreshNames();
+        RefreshNames ();
     }
 
-    private void OnNameSelected(long _)
+    private void OnNameSelected (long _)
     {
-        RefreshSuffixes();
-        RefreshPreview();
+        RefreshSuffixes ();
+        RefreshPreview ();
     }
 
-    private void OnSuffixSelected(long _)
+    private void OnSuffixSelected (long _)
     {
-        RefreshPreview();
+        RefreshPreview ();
     }
 
-    private void RefreshNames()
+    private void RefreshNames ()
     {
         if (nameList is null)
         {
             return;
         }
 
-        EnsureCatalog();
-        names.Clear();
-        nameList.Clear();
-        var group = SelectedGroup();
-        if (group is { } selected && catalogByGroup!.TryGetValue(selected, out var gos))
+        EnsureCatalog ();
+        names.Clear ();
+        nameList.Clear ();
+        var group = SelectedGroup ();
+        if (group is { } selected && catalogByGroup!.TryGetValue (selected, out var gos))
         {
-            var allowed = gos.Where(AllowedInTargetSlot);
+            var allowed = gos.Where (AllowedInTargetSlot);
             if (selected.IsGuilds)
             {
                 allowed = targetSlot is BelongingSlot.Guild
-                    ? allowed.Where(IsMembershipEmblem)
-                    : allowed.Where(go => !IsMembershipEmblem(go));
-                if (SelectedFilterGuild() is { } guild)
+                    ? allowed.Where (IsMembershipEmblem)
+                    : allowed.Where (go => !IsMembershipEmblem (go));
+                if (SelectedFilterGuild () is { } guild)
                 {
-                    allowed = allowed.Where(go =>
-                        TryCatalogGuild(go, out var itemGuild) && itemGuild == guild);
+                    allowed = allowed.Where (go =>
+                        TryCatalogGuild (go, out var itemGuild) && itemGuild == guild);
                 }
             }
 
             var labeled = allowed
-                .OrderBy(go => MissesReqs(go, ItemSuffix.None))
-                .ThenBy(go => go.GameId)
-                .Select(go => (Label: ItemLabel(go), Go: go))
-                .ToList();
+                .OrderBy (go => MissesReqs (go, ItemSuffix.None))
+                .ThenBy (go => go.GameId)
+                .Select (go => (Label: ItemLabel (go), Go: go))
+                .ToList ();
             foreach (var (label, go) in labeled)
             {
-                names.Add(go);
-                nameList.AddItem(label);
-                if (MissesReqs(go, ItemSuffix.None))
+                names.Add (go);
+                nameList.AddItem (label);
+                if (MissesReqs (go, ItemSuffix.None))
                 {
-                    nameList.SetItemCustomFgColor(names.Count - 1, UnmetText);
+                    nameList.SetItemCustomFgColor (names.Count - 1, UnmetText);
                 }
             }
         }
 
-        RefreshSuffixes();
-        RefreshPreview();
+        RefreshSuffixes ();
+        RefreshPreview ();
     }
 
-    private void RefreshSuffixes()
+    private void RefreshSuffixes ()
     {
         if (suffixList is null)
         {
             return;
         }
 
-        suffixes.Clear();
-        suffixList.Clear();
-        suffixes.Add(ItemSuffix.None);
-        suffixList.AddItem("-");
-        var go = SelectedGameObject();
-        if (go is not null && MissesReqs(go, ItemSuffix.None))
+        suffixes.Clear ();
+        suffixList.Clear ();
+        suffixes.Add (ItemSuffix.None);
+        suffixList.AddItem ("-");
+        var go = SelectedGameObject ();
+        if (go is not null && MissesReqs (go, ItemSuffix.None))
         {
-            suffixList.SetItemCustomFgColor(0, UnmetText);
+            suffixList.SetItemCustomFgColor (0, UnmetText);
         }
 
-        var group = SelectedGroup();
+        var group = SelectedGroup ();
         if (group is not { IsGuilds: true }
             && go is { } selectedGo
-            && selectedGo.IsTierVisible()
-            && HasSuffixSet(selectedGo)
-            && GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue(
+            && selectedGo.IsTierVisible ()
+            && HasSuffixSet (selectedGo)
+            && GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue (
                 selectedGo.GameObjectType, out var map))
         {
-            var prefType = SphObjectDbHelper.GameObjectToPrefTypeMap.GetValueOrDefault(
+            var prefType = SphObjectDbHelper.GameObjectToPrefTypeMap.GetValueOrDefault (
                 selectedGo.GameObjectType, GameObjectType.Unknown);
-            foreach (var (suffix, entry) in map.OrderBy(kv => kv.Value.value))
+            foreach (var (suffix, entry) in map.OrderBy (kv => kv.Value.value))
             {
                 if (prefType is GameObjectType.Unknown
-                    || !SphObjectDb.SuffixDataDb.TryGetValue(prefType, out var prefs)
-                    || !prefs.ContainsKey(suffix))
+                    || !SphObjectDb.SuffixDataDb.TryGetValue (prefType, out var prefs)
+                    || !prefs.ContainsKey (suffix))
                 {
                     continue;
                 }
 
-                suffixes.Add(suffix);
-                var name = ItemLocaleText.SuffixName(selectedGo.GameObjectType, suffix, locale)
-                           ?? suffix.ToString();
-                suffixList.AddItem($"{name} [{entry.value}]");
-                if (MissesReqs(selectedGo, suffix))
+                suffixes.Add (suffix);
+                var name = ItemLocaleText.SuffixName (selectedGo.GameObjectType, suffix, locale)
+                           ?? suffix.ToString ();
+                suffixList.AddItem ($"{name} [{entry.value}]");
+                if (MissesReqs (selectedGo, suffix))
                 {
-                    suffixList.SetItemCustomFgColor(suffixes.Count - 1, UnmetText);
+                    suffixList.SetItemCustomFgColor (suffixes.Count - 1, UnmetText);
                 }
             }
         }
 
-        suffixList.Select(0);
-        UpdateApplyEnabled();
+        suffixList.Select (0);
+        UpdateApplyEnabled ();
     }
 
-    private void RefreshPreview()
+    private void RefreshPreview ()
     {
         if (previewBox is null)
         {
             return;
         }
 
-        foreach (var child in previewBox.GetChildren())
+        foreach (var child in previewBox.GetChildren ())
         {
-            child.QueueFree();
+            child.QueueFree ();
         }
 
-        var item = BuildPreviewItem();
+        var item = BuildPreviewItem ();
         if (item is null)
         {
-            UpdateApplyEnabled();
+            UpdateApplyEnabled ();
             return;
         }
 
         var character = targetClientId is null
             ? null
-            : ActiveClients.Get(targetClientId.Value)?.CurrentCharacter;
-        AdminUiItemDetails.Fill(previewBox, item, character, locale);
-        UpdateApplyEnabled();
+            : ActiveClients.Get (targetClientId.Value)?.CurrentCharacter;
+        AdminUiItemDetails.Fill (previewBox, item, character, locale);
+        UpdateApplyEnabled ();
     }
 
-    private ItemDbEntry? BuildPreviewItem()
+    private ItemDbEntry? BuildPreviewItem ()
     {
-        var go = SelectedGameObject();
+        var go = SelectedGameObject ();
         if (go is null)
         {
             return null;
         }
 
-        return BuildItem(go, SelectedSuffix());
+        return BuildItem (go, SelectedSuffix ());
     }
 
-    private bool MissesReqs(SphGameObject go, ItemSuffix suffix)
+    private bool MissesReqs (SphGameObject go, ItemSuffix suffix)
     {
         var character = targetClientId is null
             ? null
-            : ActiveClients.Get(targetClientId.Value)?.CurrentCharacter;
+            : ActiveClients.Get (targetClientId.Value)?.CurrentCharacter;
         if (character is null)
         {
             return false;
         }
 
-        var item = BuildItem(go, suffix);
-        return item is not null && !character.CanUseItem(item);
+        var item = BuildItem (go, suffix);
+        return item is not null && !character.CanUseItem (item);
     }
 
-    private static ItemDbEntry? BuildItem(SphGameObject go, ItemSuffix suffix)
+    private static ItemDbEntry? BuildItem (SphGameObject go, ItemSuffix suffix)
     {
-        var clone = SphGameObject.CreateFromGameObject(go);
+        var clone = SphGameObject.CreateFromGameObject (go);
         clone.Suffix = suffix;
-        return ItemDbEntry.CreateFromGameObject(clone);
+        return ItemDbEntry.CreateFromGameObject (clone);
     }
 
-    private void OnNameActivated(long _)
+    private void OnNameActivated (long _)
     {
-        if (TryApply())
+        if (TryApply ())
         {
-            Hide();
+            Hide ();
         }
     }
 
-    private bool TryApply()
+    private bool TryApply ()
     {
-        if (targetClientId is null || SelectedGameObject() is not { } go)
+        if (targetClientId is null || SelectedGameObject () is not { } go)
         {
             return false;
         }
 
-        if (!SelectionCanBeEquipped())
+        if (!SelectionCanBeEquipped ())
         {
-            ShowToast("Requirements unmet");
+            ShowToast ("Requirements unmet");
             return false;
         }
 
-        HideToast();
-        AdminClientActions.ReplaceSlotItem(targetClientId.Value, targetSlot, go.GameId, SelectedSuffix());
+        HideToast ();
+        AdminClientActions.ReplaceSlotItem (targetClientId.Value, targetSlot, go.GameId, SelectedSuffix ());
         return true;
     }
 
-    private void UpdateApplyEnabled()
+    private void UpdateApplyEnabled ()
     {
-        HideToast();
+        HideToast ();
         if (applyButton is not null)
         {
-            applyButton.Disabled = targetClientId is null || SelectedGameObject() is null;
+            applyButton.Disabled = targetClientId is null || SelectedGameObject () is null;
         }
     }
 
-    private bool SelectionCanBeEquipped()
+    private bool SelectionCanBeEquipped ()
     {
-        if (targetClientId is null || SelectedGameObject() is not { } go)
+        if (targetClientId is null || SelectedGameObject () is not { } go)
         {
             return false;
         }
 
-        var character = ActiveClients.Get(targetClientId.Value)?.CurrentCharacter;
+        var character = ActiveClients.Get (targetClientId.Value)?.CurrentCharacter;
         if (character is null)
         {
             return false;
         }
 
-        var item = BuildItem(go, SelectedSuffix());
-        if (item is null || !ItemDbEntry.IsAllowedInSlot(go.GameObjectType, go.ObjectKind, targetSlot))
+        var item = BuildItem (go, SelectedSuffix ());
+        if (item is null || !ItemDbEntry.IsAllowedInSlot (go.GameObjectType, go.ObjectKind, targetSlot))
         {
             return false;
         }
 
-        return ItemDbEntry.IsInventorySlot(targetSlot) || character.CanUseItem(item);
+        return ItemDbEntry.IsInventorySlot (targetSlot) || character.CanUseItem (item);
     }
 
-    private void ShowToast(string text)
+    private void ShowToast (string text)
     {
         if (toastPanel is null || toastLabel is null)
         {
@@ -545,16 +544,16 @@ public partial class AdminItemSelectWindow : Window
         toastLabel.Text = text;
         toastPanel.Modulate = Colors.White;
         toastPanel.Visible = true;
-        toastTween?.Kill();
-        toastTween = CreateTween();
-        toastTween.TweenInterval(1.6);
-        toastTween.TweenProperty(toastPanel, "modulate:a", 0f, 0.35);
-        toastTween.TweenCallback(Callable.From(HideToast));
+        toastTween?.Kill ();
+        toastTween = CreateTween ();
+        toastTween.TweenInterval (1.6);
+        toastTween.TweenProperty (toastPanel, "modulate:a", 0f, 0.35);
+        toastTween.TweenCallback (Callable.From (HideToast));
     }
 
-    private void HideToast()
+    private void HideToast ()
     {
-        toastTween?.Kill();
+        toastTween?.Kill ();
         toastTween = null;
         if (toastPanel is not null)
         {
@@ -563,29 +562,29 @@ public partial class AdminItemSelectWindow : Window
         }
     }
 
-    private bool GroupAllowedForTarget(CatalogGroup group)
+    private bool GroupAllowedForTarget (CatalogGroup group)
     {
-        if (!ItemDbEntry.HasSlotTypeFilter(targetSlot))
+        if (!ItemDbEntry.HasSlotTypeFilter (targetSlot))
         {
             return true;
         }
 
-        return catalogByGroup!.TryGetValue(group, out var gos) && gos.Any(AllowedInTargetSlot);
+        return catalogByGroup!.TryGetValue (group, out var gos) && gos.Any (AllowedInTargetSlot);
     }
 
-    private bool AllowedInTargetSlot(SphGameObject go)
+    private bool AllowedInTargetSlot (SphGameObject go)
     {
-        if (!ItemDbEntry.HasSlotTypeFilter(targetSlot))
+        if (!ItemDbEntry.HasSlotTypeFilter (targetSlot))
         {
             return true;
         }
 
-        return ItemDbEntry.IsAllowedInSlot(go.GameObjectType, go.ObjectKind, targetSlot);
+        return ItemDbEntry.IsAllowedInSlot (go.GameObjectType, go.ObjectKind, targetSlot);
     }
 
-    private void UpdateGuildSuffixColumns()
+    private void UpdateGuildSuffixColumns ()
     {
-        var guildsMode = SelectedGroup() is { IsGuilds: true };
+        var guildsMode = SelectedGroup () is { IsGuilds: true };
         if (guildColumn is not null)
         {
             guildColumn.Visible = guildsMode;
@@ -598,92 +597,92 @@ public partial class AdminItemSelectWindow : Window
 
         if (guildsMode)
         {
-            RefreshGuildFilters();
+            RefreshGuildFilters ();
         }
     }
 
-    private void RefreshGuildFilters()
+    private void RefreshGuildFilters ()
     {
         if (guildList is null)
         {
             return;
         }
 
-        var previous = SelectedFilterGuild();
-        guildFilters.Clear();
-        guildList.Clear();
-        var present = GuildsPresentForSlot();
+        var previous = SelectedFilterGuild ();
+        guildFilters.Clear ();
+        guildList.Clear ();
+        var present = GuildsPresentForSlot ();
         var character = targetClientId is null
             ? null
-            : ActiveClients.Get(targetClientId.Value)?.CurrentCharacter;
+            : ActiveClients.Get (targetClientId.Value)?.CurrentCharacter;
         foreach (var guild in GuildCatalog.LetterOrder)
         {
-            if (!present.Contains(guild))
+            if (!present.Contains (guild))
             {
                 continue;
             }
 
             var canJoin = character is null
-                          || GuildCatalog.CanJoin(guild, character.TitleMinusOne, character.DegreeMinusOne);
+                          || GuildCatalog.CanJoin (guild, character.TitleMinusOne, character.DegreeMinusOne);
             if (character is not null && !canJoin && character.Guild != guild)
             {
                 continue;
             }
 
-            guildFilters.Add(guild);
-            guildList.AddItem(CharacterLocaleText.GuildName(guild, locale));
+            guildFilters.Add (guild);
+            guildList.AddItem (CharacterLocaleText.GuildName (guild, locale));
             if (!canJoin)
             {
-                guildList.SetItemCustomFgColor(guildFilters.Count - 1, UnmetText);
+                guildList.SetItemCustomFgColor (guildFilters.Count - 1, UnmetText);
             }
         }
 
         if (previous is { } keep)
         {
-            var index = guildFilters.IndexOf(keep);
-            guildList.Select(index >= 0 ? index : 0);
+            var index = guildFilters.IndexOf (keep);
+            guildList.Select (index >= 0 ? index : 0);
         }
         else if (guildFilters.Count > 0)
         {
-            guildList.Select(0);
+            guildList.Select (0);
         }
     }
 
-    private HashSet<Guild> GuildsPresentForSlot()
+    private HashSet<Guild> GuildsPresentForSlot ()
     {
-        EnsureCatalog();
-        var present = new HashSet<Guild>();
-        if (catalogByGroup is null || !catalogByGroup.TryGetValue(CatalogGroup.Guilds, out var gos))
+        EnsureCatalog ();
+        var present = new HashSet<Guild> ();
+        if (catalogByGroup is null || !catalogByGroup.TryGetValue (CatalogGroup.Guilds, out var gos))
         {
             return present;
         }
 
         foreach (var go in gos)
         {
-            if (!AllowedInTargetSlot(go) || !TryCatalogGuild(go, out var guild))
+            if (!AllowedInTargetSlot (go) || !TryCatalogGuild (go, out var guild))
             {
                 continue;
             }
 
             if (targetSlot is BelongingSlot.Guild)
             {
-                if (!IsMembershipEmblem(go))
+                if (!IsMembershipEmblem (go))
                 {
                     continue;
                 }
             }
-            else if (IsMembershipEmblem(go))
+            else if (IsMembershipEmblem (go))
             {
                 continue;
             }
 
-            present.Add(guild);
+            present.Add (guild);
         }
 
         return present;
     }
 
-    private static bool TryCatalogGuild(SphGameObject go, out Guild guild)
+    private static bool TryCatalogGuild (SphGameObject go, out Guild guild)
     {
         if (go.RequiredGuild is not Guild.None)
         {
@@ -693,81 +692,81 @@ public partial class AdminItemSelectWindow : Window
 
         if (go.GameObjectType is GameObjectType.Guild)
         {
-            return GuildCatalog.TryParseMembershipGameId(go.GameId, out guild, out _);
+            return GuildCatalog.TryParseMembershipGameId (go.GameId, out guild, out _);
         }
 
         guild = Guild.None;
         return false;
     }
 
-    private static bool IsMembershipEmblem(SphGameObject go) =>
+    private static bool IsMembershipEmblem (SphGameObject go) =>
         go.GameObjectType is GameObjectType.Guild
-        && GuildCatalog.TryParseMembershipGameId(go.GameId, out _, out _);
+        && GuildCatalog.TryParseMembershipGameId (go.GameId, out _, out _);
 
-    private Guild? SelectedFilterGuild()
+    private Guild? SelectedFilterGuild ()
     {
-        if (guildList is null || SelectedGroup() is not { IsGuilds: true })
+        if (guildList is null || SelectedGroup () is not { IsGuilds: true })
         {
             return null;
         }
 
-        var index = SelectedIndex(guildList);
+        var index = SelectedIndex (guildList);
         return index >= 0 && index < guildFilters.Count ? guildFilters[index] : null;
     }
 
-    private static bool HasSuffixSet(SphGameObject go)
+    private static bool HasSuffixSet (SphGameObject go)
     {
         var set = go.SuffixSetName;
-        return !string.IsNullOrWhiteSpace(set) && set.Length == 1 && set != "-";
+        return !string.IsNullOrWhiteSpace (set) && set.Length == 1 && set != "-";
     }
 
-    private CatalogGroup? SelectedGroup()
+    private CatalogGroup? SelectedGroup ()
     {
         if (typeList is null)
         {
             return null;
         }
 
-        var index = SelectedIndex(typeList);
+        var index = SelectedIndex (typeList);
         return index >= 0 && index < types.Count ? types[index] : null;
     }
 
-    private SphGameObject? SelectedGameObject()
+    private SphGameObject? SelectedGameObject ()
     {
         if (nameList is null)
         {
             return null;
         }
 
-        var index = SelectedIndex(nameList);
+        var index = SelectedIndex (nameList);
         return index >= 0 && index < names.Count ? names[index] : null;
     }
 
-    private ItemSuffix SelectedSuffix()
+    private ItemSuffix SelectedSuffix ()
     {
         if (suffixList is null)
         {
             return ItemSuffix.None;
         }
 
-        var index = SelectedIndex(suffixList);
+        var index = SelectedIndex (suffixList);
         return index >= 0 && index < suffixes.Count ? suffixes[index] : ItemSuffix.None;
     }
 
-    private static int SelectedIndex(ItemList list)
+    private static int SelectedIndex (ItemList list)
     {
-        var selected = list.GetSelectedItems();
+        var selected = list.GetSelectedItems ();
         return selected.Length > 0 ? selected[0] : -1;
     }
 
-    private string ItemLabel(SphGameObject go)
+    private string ItemLabel (SphGameObject go)
     {
-        var name = ItemLocaleText.CatalogName(go, locale);
-        var roman = RomanTier(go.Tier);
-        return string.IsNullOrEmpty(roman) ? name : $"{name}  {roman}";
+        var name = ItemLocaleText.CatalogName (go, locale);
+        var roman = RomanTier (go.Tier);
+        return string.IsNullOrEmpty (roman) ? name : $"{name}  {roman}";
     }
 
-    private static string RomanTier(int tier) => tier switch
+    private static string RomanTier (int tier) => tier switch
     {
         1 => "I",
         2 => "II",
@@ -787,41 +786,41 @@ public partial class AdminItemSelectWindow : Window
         _ => string.Empty
     };
 
-    private static void EnsureCatalog()
+    private static void EnsureCatalog ()
     {
         if (catalogByGroup is not null)
         {
             return;
         }
 
-        catalogByGroup = new Dictionary<CatalogGroup, List<SphGameObject>>();
+        catalogByGroup = new Dictionary<CatalogGroup, List<SphGameObject>> ();
         foreach (var go in SphObjectDb.GameObjectDataDb.Values)
         {
-            var typeName = Enum.GetName(go.GameObjectType);
-            if (typeName is null || typeName.StartsWith("Pref_", StringComparison.Ordinal))
+            var typeName = Enum.GetName (go.GameObjectType);
+            if (typeName is null || typeName.StartsWith ("Pref_", StringComparison.Ordinal))
             {
                 continue;
             }
 
-            var group = CatalogGroup.For(go);
-            if (!catalogByGroup.TryGetValue(group, out var list))
+            var group = CatalogGroup.For (go);
+            if (!catalogByGroup.TryGetValue (group, out var list))
             {
                 list = [];
                 catalogByGroup[group] = list;
             }
 
-            list.Add(go);
+            list.Add (go);
         }
     }
 
-    private readonly record struct CatalogGroup(bool IsGuilds, GameObjectType Type)
+    private readonly record struct CatalogGroup (bool IsGuilds, GameObjectType Type)
     {
-        public static CatalogGroup Guilds { get; } = new(true, default);
+        public static CatalogGroup Guilds { get; } = new (true, default);
 
-        public static CatalogGroup For(SphGameObject go) =>
-            go.ObjectKind == GameObjectKind.Guild ? Guilds : new(false, go.GameObjectType);
+        public static CatalogGroup For (SphGameObject go) =>
+            go.ObjectKind == GameObjectKind.Guild ? Guilds : new (false, go.GameObjectType);
 
-        public string Label(Locale locale) =>
-            IsGuilds ? "Guilds" : ItemLocaleText.GameObjectTypeName(Type, locale);
+        public string Label (Locale locale) =>
+            IsGuilds ? "Guilds" : ItemLocaleText.GameObjectTypeName (Type, locale);
     }
 }

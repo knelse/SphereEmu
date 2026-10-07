@@ -4,11 +4,11 @@ using Godot;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Spawn positions planned off the main thread; node instantiation applies this on the Godot thread.
+/// Built off the Godot thread. Instantiation applies it on the Godot thread
 /// </summary>
 public sealed class MonsterSpawnPlan
 {
-    public MonsterSpawnPlan(List<Vector3> regularPositions, List<Vector3> namedPositions)
+    public MonsterSpawnPlan (List<Vector3> regularPositions, List<Vector3> namedPositions)
     {
         RegularPositions = regularPositions;
         NamedPositions = namedPositions;

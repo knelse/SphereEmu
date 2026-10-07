@@ -11,125 +11,108 @@ using SphServer.Sphere.Game;
 namespace SphServer.Server.Debug.Parser;
 
 /// <summary>
-///     Item GM commands, registered in InitCommands (main parser file).
+/// Registered from InitCommands in the main parser file
 /// </summary>
 public partial class ConsoleCommandParser
 {
-    /// <summary>How far in front of the character (world Z units) /give drops the item.</summary>
+    /// <summary>
+    /// How far in front of the character (world Z units) /give drops the item.
+    /// </summary>
     private const double GiveGroundDropOffset = 1.0;
 
     /// <summary>
-    ///     The parent an item lying in the world carries. A 2022 retail capture of a ground item
-    ///     sends exactly this: Sphere.PacketDefinitions/alchemy_resource_ground.spdp, container_id
-    ///     at bit 209, 16 bits, value 1111111100000000.
+    /// Ground container_id is 16 bits at bit 209, value 0xFF00, from alchemy_resource_ground.spdp
     /// </summary>
     private const ushort GroundContainerId = 0xFF00;
 
     /// <summary>
-    ///     The one capture we have of an item lying in the world, so the only definition shaped like
-    ///     what the client expects there: it carries an angle, container 0xFF00, and a game object id.
-    ///     The definitions tried on 2026-07-31 that drew nothing — item_sword, item_with_gameid,
-    ///     item_with_gameid_pa, item_amulet — are all records of an item inside a container, which is
-    ///     the likelier reason they failed than the game id they have in common.
-    ///     Override with the third argument to try another definition.
+    /// Ground shape is angle, container 0xFF00, and a game object id; container records such as
+    /// item_sword and item_with_gameid draw nothing
     /// </summary>
     private const string GiveDefaultSpawnDefinition = "alchemy_resource_ground";
 
     /// <summary>
-    ///     A real retail item record, captured live in 2022 (SphereTools/itemInHand.txt line 24):
-    ///     Кривой меч, entity 50B4, game object 3251, suffix 81, held by character C9F1. Decodes
-    ///     exactly under the item grammar — every field matches knelse's own labels and the record
-    ///     consumes all 288 body bits with nothing left over.
+    /// In-hand capture from SphereTools/itemInHand.txt: entity 50B4, game object 3251, suffix 81,
+    /// 288 body bits
     /// </summary>
     private const string RetailInventoryItemRecord =
         "2B002C0100280AB450D0870F80842E090000000000000000409145E62C131560203E19A0900500FFFFFFFF";
 
-    // Record-local bit offsets, from the start of the frame. The record body begins at wire byte 7.
+    // Offsets are from the start of the frame; the record body begins at wire byte 7
     private const int RecordStartBit = 56;
     private const int RecordEntityIdBit = RecordStartBit;
     private const int RecordContainerIdBit = RecordStartBit + 205;
 
-    /// <summary>The sword from the retail capture, used when /giveinv is given no game object.</summary>
+    /// <summary>
+    /// The sword from the retail capture, used when /giveinv is given no game object.
+    /// </summary>
     private const int DefaultInventoryGameObjectId = 3251;
 
     /// <summary>
-    ///     /giveinv [game object id] [ground] — put an item straight into the character's inventory
-    ///     and declare it, or drop it at their feet with "ground".
-    ///
-    ///     Some useful ids: 1 sword, 2745 jacket, 2790 helmet, 2760 shield, 2835 gloves, 2775 pants,
-    ///     2820 boots. Pick armour whose ground model name starts with an "@xy@" wear code, or it
-    ///     equips invisibly: the twelve low ids per kind (301, 313, 325, …) have no code and sit at
-    ///     tier -1, so no vendor stocks them either.
-    ///
-    ///     Only the last two rows of the inventory take arbitrary items; the character window takes
-    ///     armour by kind, so a sword is refused there and a helmet is not.
+    /// Armour without an @xy@ wear code equips invisibly; only the last two inventory rows take an
+    /// arbitrary item
     /// </summary>
-    private void GiveToInventory(string args)
+    private void GiveToInventory (string args)
     {
         if (sphereClient is null)
         {
-            SendFeedback("/giveinv needs a connected client.");
+            SendFeedback ("/giveinv needs a connected client.");
             return;
         }
 
-        var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        var gameObjectId = split.Length >= 1 && int.TryParse(split[0], out var requested)
+        var split = args.Split (' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var gameObjectId = split.Length >= 1 && int.TryParse (split[0], out var requested)
             ? requested
             : DefaultInventoryGameObjectId;
 
-        var gameObject = DbConnection.GameObjects.FindById(gameObjectId);
+        var gameObject = DbConnection.GameObjects.FindById (gameObjectId);
         if (gameObject is null)
         {
-            SendFeedback($"Game object {gameObjectId} is missing from the database.");
+            SendFeedback ($"Game object {gameObjectId} is missing from the database.");
             return;
         }
 
-        var item = ItemDbEntry.CreateFromGameObject(gameObject);
+        var item = ItemDbEntry.CreateFromGameObject (gameObject);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem();
-        DbConnection.Items.Insert(item.Id, item);
+        item.Id = WorldObjectIndex.NewItem ();
+        DbConnection.Items.Insert (item.Id, item);
 
-        var name = gameObject.Localisation.GetValueOrDefault(Locale.Russian, gameObject.SphereType);
+        var name = gameObject.Localisation.GetValueOrDefault (Locale.Russian, gameObject.SphereType);
 
-        // "ground" drops the encoder's own record at the player's feet instead of declaring it as
-        // carried. Same encoder, same fields, only the owner and position differ — so if the sword
-        // appears the record does build a client object, and the inventory problem is the slot link.
-        // If it does not, the client is rejecting the record itself and nothing built on it can work.
-        if (split.Any(x => x.Equals("ground", StringComparison.OrdinalIgnoreCase)))
+        // Same record as carried, with owner and position changed; a missing object means the
+        // client rejected the record
+        if (split.Any (x => x.Equals ("ground", StringComparison.OrdinalIgnoreCase)))
         {
-            var frame = ItemRecordEncoder.EncodeWithoutGameId((ushort)item.Id, (int)item.WireObjectType,
+            var frame = ItemRecordEncoder.EncodeWithoutGameId ((ushort) item.Id, (int) item.WireObjectType,
                 GroundContainerId,
-                (float)currentCharacterDbEntry.X,
-                (float)-currentCharacterDbEntry.Y,
-                (float)-(currentCharacterDbEntry.Z + GiveGroundDropOffset));
-            sphereClient.MaybeQueueNetworkPacketSend(frame);
-            SendFeedback($"{name} [item id {item.Id}] sent as a ground record: {Convert.ToHexString(frame)}");
+                (float) currentCharacterDbEntry.X,
+                (float) -currentCharacterDbEntry.Y,
+                (float) -(currentCharacterDbEntry.Z + GiveGroundDropOffset));
+            sphereClient.MaybeQueueNetworkPacketSend (frame);
+            SendFeedback ($"{name} [item id {item.Id}] sent as a ground record: {Convert.ToHexString (frame)}");
             return;
         }
 
-        var itemFirst = split.Any(x => x.Equals("itemfirst", StringComparison.OrdinalIgnoreCase));
-        PutItemInInventoryAndDeclare(item, name, itemFirst);
+        var itemFirst = split.Any (x => x.Equals ("itemfirst", StringComparison.OrdinalIgnoreCase));
+        PutItemInInventoryAndDeclare (item, name, itemFirst);
     }
 
     /// <summary>
-    ///     /giveinvns [suffix] &lt;tier&gt; &lt;item name…&gt; — inventory give by localised name + optional suffix.
-    ///     Suffix is one word (Russian locale string or ItemSuffix enum name). If the first word is
-    ///     digits-only, suffix is omitted. Tier disambiguates shared names (bracelets, robes, …);
-    ///     when several game objects still match, the lowest GameId wins. Item names are matched
-    ///     case-insensitively.
+    /// Suffix is one word, or omitted when the first word is digits; tier breaks shared names, and
+    /// the lowest GameId wins
     /// </summary>
-    private void GiveToInventoryByNameWithSuffix(string args)
+    private void GiveToInventoryByNameWithSuffix (string args)
     {
         if (sphereClient is null)
         {
-            SendFeedback("/giveinvns needs a connected client.");
+            SendFeedback ("/giveinvns needs a connected client.");
             return;
         }
 
-        var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var split = args.Split (' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (split.Length < 2)
         {
-            SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...]. Suffix is optional." +
+            SendFeedback ("Usage: /giveinvns [suffix] [tier] [item name...]. Suffix is optional." +
                          "Use tier = -1 for special items.");
             return;
         }
@@ -137,147 +120,149 @@ public partial class ConsoleCommandParser
         string? suffixToken = null;
         int rank;
         string itemName;
-        // Tier may be negative (catalog sentinel -1). Optional leading '-'.
-        if (IsIntegerToken(split[0]))
+        // Tier may be the catalog sentinel -1, with an optional leading '-'
+        if (IsIntegerToken (split[0]))
         {
-            rank = int.Parse(split[0]);
-            itemName = string.Join(' ', split.Skip(1));
+            rank = int.Parse (split[0]);
+            itemName = string.Join (' ', split.Skip (1));
         }
         else
         {
-            if (split.Length < 3 || !IsIntegerToken(split[1]))
+            if (split.Length < 3 || !IsIntegerToken (split[1]))
             {
-                SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...] -- tier must be an integer.");
+                SendFeedback ("Usage: /giveinvns [suffix] [tier] [item name...] -- tier must be an integer.");
                 return;
             }
 
             suffixToken = split[0];
-            rank = int.Parse(split[1]);
-            itemName = string.Join(' ', split.Skip(2));
+            rank = int.Parse (split[1]);
+            itemName = string.Join (' ', split.Skip (2));
         }
 
-        if (string.IsNullOrWhiteSpace(itemName))
+        if (string.IsNullOrWhiteSpace (itemName))
         {
-            SendFeedback("Usage: /giveinvns [suffix] [tier] [item name...] -- item name is required.");
+            SendFeedback ("Usage: /giveinvns [suffix] [tier] [item name...] -- item name is required.");
             return;
         }
 
-        EnsureGameObjectNameIndex();
-        if (!gameObjectIdsByExactName!.TryGetValue(itemName, out var candidateIds) || candidateIds.Count == 0)
+        EnsureGameObjectNameIndex ();
+        if (!gameObjectIdsByExactName!.TryGetValue (itemName, out var candidateIds) || candidateIds.Count == 0)
         {
-            SendFeedback($"No game object named \"{itemName}\".");
+            SendFeedback ($"No game object named \"{itemName}\".");
             return;
         }
 
-        var candidates = new List<SphGameObject>(candidateIds.Count);
+        var candidates = new List<SphGameObject> (candidateIds.Count);
         foreach (var id in candidateIds)
         {
-            if (GameObjectDb.Db.TryGetValue(id, out var go) ||
-                (go = DbConnection.GameObjects.FindById(id)) is not null)
+            if (GameObjectDb.Db.TryGetValue (id, out var go) ||
+                (go = DbConnection.GameObjects.FindById (id)) is not null)
             {
-                candidates.Add(go);
+                candidates.Add (go);
             }
         }
 
         if (candidates.Count == 0)
         {
-            SendFeedback($"No game object named \"{itemName}\".");
+            SendFeedback ($"No game object named \"{itemName}\".");
             return;
         }
 
-        var atTier = candidates.Where(c => c.Tier == rank).ToList();
+        var atTier = candidates.Where (c => c.Tier == rank).ToList ();
         if (atTier.Count == 0)
         {
-            var distinctTiers = candidates.Select(c => c.Tier).Distinct().OrderBy(t => t).ToList();
+            var distinctTiers = candidates.Select (c => c.Tier).Distinct ().OrderBy (t => t).ToList ();
             if (distinctTiers.Count == 1 && distinctTiers[0] == -1)
             {
-                var example = string.IsNullOrEmpty(suffixToken)
+                var example = string.IsNullOrEmpty (suffixToken)
                     ? $"/giveinvns -1 {itemName}"
                     : $"/giveinvns {suffixToken} -1 {itemName}";
-                SendFeedback(
+                SendFeedback (
                     $"\"{itemName}\" is very special and only has tier -1. Use that directly. ({example})");
                 return;
             }
 
-            var tiers = string.Join(", ", distinctTiers.Where(t => t != -1));
-            SendFeedback($"No \"{itemName}\" at tier {rank}. Available tiers: {tiers}.");
+            var tiers = string.Join (", ", distinctTiers.Where (t => t != -1));
+            SendFeedback ($"No \"{itemName}\" at tier {rank}. Available tiers: {tiers}.");
             return;
         }
 
-        // Resolve suffix against each candidate's type; keep those that accept it.
-        var matched = new List<(SphGameObject Go, ItemSuffix Suffix, int SuffixWire)>();
+        // Kept only when that candidate's type accepts the suffix
+        var matched = new List<(SphGameObject Go, ItemSuffix Suffix, int SuffixWire)> ();
         string? lastSuffixError = null;
         foreach (var go in atTier)
         {
-            if (!TryResolveSuffixForType(go.GameObjectType, suffixToken, out var suffix, out var wire, out var error))
+            if (!TryResolveSuffixForType (go.GameObjectType, suffixToken, out var suffix, out var wire, out var error))
             {
                 lastSuffixError = error;
                 continue;
             }
 
-            matched.Add((go, suffix, wire));
+            matched.Add ((go, suffix, wire));
         }
 
         if (matched.Count == 0)
         {
-            SendFeedback(lastSuffixError ?? $"Suffix \"{suffixToken}\" does not apply to \"{itemName}\" at tier {rank}.");
+            SendFeedback (lastSuffixError ?? $"Suffix \"{suffixToken}\" does not apply to \"{itemName}\" at tier {rank}.");
             return;
         }
 
-        var chosen = matched.OrderBy(m => m.Go.GameId).First();
-        var goWithSuffix = SphGameObject.CreateFromGameObject(chosen.Go);
+        var chosen = matched.OrderBy (m => m.Go.GameId).First ();
+        var goWithSuffix = SphGameObject.CreateFromGameObject (chosen.Go);
         goWithSuffix.Suffix = chosen.Suffix;
-        var item = ItemDbEntry.CreateFromGameObject(goWithSuffix);
+        var item = ItemDbEntry.CreateFromGameObject (goWithSuffix);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem();
-        DbConnection.Items.Insert(item.Id, item);
+        item.Id = WorldObjectIndex.NewItem ();
+        DbConnection.Items.Insert (item.Id, item);
 
-        var displayName = chosen.Go.Localisation.GetValueOrDefault(Locale.Russian, chosen.Go.SphereType);
+        var displayName = chosen.Go.Localisation.GetValueOrDefault (Locale.Russian, chosen.Go.SphereType);
         var suffixLabel = chosen.Suffix == ItemSuffix.None
             ? "None"
-            : Enum.GetName(chosen.Suffix) ?? chosen.Suffix.ToString();
-        PutItemInInventoryAndDeclare(item, $"{displayName} [{suffixLabel}]", itemFirst: false);
+            : Enum.GetName (chosen.Suffix) ?? chosen.Suffix.ToString ();
+        PutItemInInventoryAndDeclare (item, $"{displayName} [{suffixLabel}]", itemFirst: false);
     }
 
-    private void PutItemInInventoryAndDeclare(ItemDbEntry item, string feedbackName, bool itemFirst)
+    private void PutItemInInventoryAndDeclare (ItemDbEntry item, string feedbackName, bool itemFirst)
     {
-        var emptySlot = currentCharacterDbEntry.FindEmptyInventorySlot();
+        var emptySlot = currentCharacterDbEntry.FindEmptyInventorySlot ();
         if (emptySlot is null)
         {
-            SendFeedback("Inventory is full.");
+            SendFeedback ("Inventory is full.");
             return;
         }
 
         var slot = emptySlot.Value;
         currentCharacterDbEntry.Items[slot] = item.Id;
-        sphereClient!.SaveCharacter();
+        sphereClient!.SaveCharacter ();
 
-        var reserve = ItemSlotReserve.Build(currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode(item, SphBitStream.ByteSwap(currentCharacterDbEntry.ClientIndex));
+        var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
+        var record = ItemRecordEncoder.Encode (item, SphBitStream.ByteSwap (currentCharacterDbEntry.ClientIndex));
 
         if (itemFirst)
         {
-            sphereClient.MaybeQueueNetworkPacketSend(record);
+            sphereClient.MaybeQueueNetworkPacketSend (record);
         }
 
         if (reserve is not null)
         {
-            sphereClient.MaybeQueueNetworkPacketSend(reserve);
+            sphereClient.MaybeQueueNetworkPacketSend (reserve);
         }
 
         if (!itemFirst)
         {
-            sphereClient.MaybeQueueNetworkPacketSend(record);
+            sphereClient.MaybeQueueNetworkPacketSend (record);
         }
 
-        SendFeedback($"{feedbackName} [game id {item.GameId}, item id {item.Id}] put in {Enum.GetName(slot)} and declared" +
+        SendFeedback ($"{feedbackName} [game id {item.GameId}, item id {item.Id}] put in {Enum.GetName (slot)} and declared" +
                      (itemFirst ? ", item before slot." : "."));
     }
 
-    /// <summary>True for digit-only tokens, optionally with a leading minus (e.g. -1).</summary>
-    private static bool IsIntegerToken(string value)
+    /// <summary>
+    /// True for digit-only tokens, optionally with a leading minus (e.g. -1).
+    /// </summary>
+    private static bool IsIntegerToken (string value)
     {
-        if (string.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty (value))
         {
             return false;
         }
@@ -290,7 +275,7 @@ public partial class ConsoleCommandParser
 
         for (; i < value.Length; i++)
         {
-            if (!char.IsAsciiDigit(value[i]))
+            if (!char.IsAsciiDigit (value[i]))
             {
                 return false;
             }
@@ -299,19 +284,19 @@ public partial class ConsoleCommandParser
         return true;
     }
 
-    private static bool TryResolveSuffixForType(GameObjectType objectType, string? suffixToken,
+    private static bool TryResolveSuffixForType (GameObjectType objectType, string? suffixToken,
         out ItemSuffix suffix, out int suffixWire, out string error)
     {
         suffix = ItemSuffix.None;
         suffixWire = ItemRecordEncoder.NoSuffix;
         error = "";
 
-        if (string.IsNullOrEmpty(suffixToken))
+        if (string.IsNullOrEmpty (suffixToken))
         {
             return true;
         }
 
-        if (!GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue(objectType, out var map))
+        if (!GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.TryGetValue (objectType, out var map))
         {
             error =
                 $"Object type {objectType} has no suffix map; only an empty suffix is allowed.";
@@ -321,8 +306,8 @@ public partial class ConsoleCommandParser
         // 1) Russian locale string in ObjectTypeToSuffixLocaleMapActual
         foreach (var (itemSuffix, entry) in map)
         {
-            if (entry.localization.TryGetValue(Locale.Russian, out var ru) &&
-                string.Equals(ru, suffixToken, StringComparison.Ordinal))
+            if (entry.localization.TryGetValue (Locale.Russian, out var ru) &&
+                string.Equals (ru, suffixToken, StringComparison.Ordinal))
             {
                 suffix = itemSuffix;
                 suffixWire = entry.value;
@@ -331,18 +316,18 @@ public partial class ConsoleCommandParser
         }
 
         // 2) ItemSuffix enum entry name
-        if (!Enum.TryParse<ItemSuffix>(suffixToken, ignoreCase: false, out suffix) || suffix == ItemSuffix.None)
+        if (!Enum.TryParse<ItemSuffix> (suffixToken, ignoreCase: false, out suffix) || suffix == ItemSuffix.None)
         {
             error =
-                $"Unknown suffix \"{suffixToken}\" for {objectType}. Valid: {FormatValidSuffixes(map)}";
+                $"Unknown suffix \"{suffixToken}\" for {objectType}. Valid: {FormatValidSuffixes (map)}";
             suffix = ItemSuffix.None;
             return false;
         }
 
-        if (!map.TryGetValue(suffix, out var byEnum))
+        if (!map.TryGetValue (suffix, out var byEnum))
         {
             error =
-                $"Suffix {suffix} is not valid for {objectType}. Valid: {FormatValidSuffixes(map)}";
+                $"Suffix {suffix} is not valid for {objectType}. Valid: {FormatValidSuffixes (map)}";
             suffix = ItemSuffix.None;
             return false;
         }
@@ -351,48 +336,48 @@ public partial class ConsoleCommandParser
         return true;
     }
 
-    private static string FormatValidSuffixes(Dictionary<ItemSuffix, SuffixValueWithLocale> map)
+    private static string FormatValidSuffixes (Dictionary<ItemSuffix, SuffixValueWithLocale> map)
     {
-        var parts = map.Select(kv =>
+        var parts = map.Select (kv =>
         {
-            var en = Enum.GetName(kv.Key) ?? kv.Key.ToString();
-            var ru = kv.Value.localization.GetValueOrDefault(Locale.Russian, "");
-            return string.IsNullOrEmpty(ru) ? en : $"{en}/{ru}";
-        }).OrderBy(s => s, StringComparer.Ordinal);
-        return string.Join(", ", parts);
+            var en = Enum.GetName (kv.Key) ?? kv.Key.ToString ();
+            var ru = kv.Value.localization.GetValueOrDefault (Locale.Russian, "");
+            return string.IsNullOrEmpty (ru) ? en : $"{en}/{ru}";
+        }).OrderBy (s => s, StringComparer.Ordinal);
+        return string.Join (", ", parts);
     }
 
     private static Dictionary<string, List<int>>? gameObjectIdsByExactName;
     private static int gameObjectNameIndexCount = -1;
 
-    private static void EnsureGameObjectNameIndex()
+    private static void EnsureGameObjectNameIndex ()
     {
-        // Index the in-memory catalog — LiteDB FindAll() can throw on legacy/bad enum payloads.
+        // In-memory catalog: LiteDB FindAll throws on a bad enum payload
         var count = GameObjectDb.Db.Count;
         if (gameObjectIdsByExactName is not null && gameObjectNameIndexCount == count)
         {
             return;
         }
 
-        var index = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
+        var index = new Dictionary<string, List<int>> (StringComparer.OrdinalIgnoreCase);
         foreach (var (id, go) in GameObjectDb.Db)
         {
             foreach (var name in go.Localisation.Values)
             {
-                if (string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty (name))
                 {
                     continue;
                 }
 
-                if (!index.TryGetValue(name, out var list))
+                if (!index.TryGetValue (name, out var list))
                 {
                     list = [];
                     index[name] = list;
                 }
 
-                if (!list.Contains(id))
+                if (!list.Contains (id))
                 {
-                    list.Add(id);
+                    list.Add (id);
                 }
             }
         }
@@ -402,53 +387,53 @@ public partial class ConsoleCommandParser
     }
 
     /// <summary>
-    ///     /clearinv — empty the character's slots and tell the client so. Testing leaves slots
-    ///     pointing at rows that exist but are junk, which the login cleanup cannot catch because it
-    ///     only drops slots whose item row is missing entirely.
+    /// Login cleanup only drops a slot whose item row is missing, so a junk row stays until this
     /// </summary>
-    private void ClearInventory(string args)
+    private void ClearInventory (string args)
     {
         if (sphereClient is null)
         {
-            SendFeedback("/clearinv needs a connected client.");
+            SendFeedback ("/clearinv needs a connected client.");
             return;
         }
 
-        var occupied = currentCharacterDbEntry.Items.Keys.ToList();
+        var occupied = currentCharacterDbEntry.Items.Keys.ToList ();
         var cleared = occupied.Count;
-        currentCharacterDbEntry.Items.Clear();
-        sphereClient.SaveCharacter();
+        currentCharacterDbEntry.Items.Clear ();
+        sphereClient.SaveCharacter ();
 
         foreach (var slot in occupied)
         {
-            var reserve = ItemSlotReserve.Build(currentCharacterDbEntry.ClientIndex, slot,
+            var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.ClientIndex, slot,
                 ItemSlotReserve.NoItem);
             if (reserve is not null)
             {
-                sphereClient.MaybeQueueNetworkPacketSend(reserve);
+                sphereClient.MaybeQueueNetworkPacketSend (reserve);
             }
         }
 
-        // Clear() empties the hand too, so the attack of whatever was held has to go with it.
-        if (currentCharacterDbEntry.RecalcCurrentStats())
+        // Clear empties the hand too, so the held attack goes with it
+        if (currentCharacterDbEntry.RecalcCurrentStats ())
         {
-            NetworkedStatsUpdater.Update(currentCharacterDbEntry);
+            NetworkedStatsUpdater.Update (currentCharacterDbEntry);
         }
 
-        SendFeedback($"Cleared {cleared} slot(s). Log out and back in to see the empty grid.");
+        SendFeedback ($"Cleared {cleared} slot(s). Log out and back in to see the empty grid.");
     }
 
-    /// <summary>/give &lt;game_object_id&gt; [count] [definition] — drop an item on the ground next to the player.</summary>
-    private void Give(string args)
+    /// <summary>
+    /// Drops game_object_id on the ground next to the player
+    /// </summary>
+    private void Give (string args)
     {
-        var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var split = args.Split (' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var count = 1;
         int? objectTypeOverride = null;
-        if (split.Length is < 1 or > 4 || !int.TryParse(split[0], out var gameId) ||
-            (split.Length >= 2 && (!int.TryParse(split[1], out count) || count < 1)) ||
-            (split.Length == 4 && (!int.TryParse(split[3], out var typeArg) || (objectTypeOverride = typeArg) < 0)))
+        if (split.Length is < 1 or > 4 || !int.TryParse (split[0], out var gameId) ||
+            (split.Length >= 2 && (!int.TryParse (split[1], out count) || count < 1)) ||
+            (split.Length == 4 && (!int.TryParse (split[3], out var typeArg) || (objectTypeOverride = typeArg) < 0)))
         {
-            SendFeedback("Usage: /give <game_object_id> [count] [packet definition] [object_type]");
+            SendFeedback ("Usage: /give <game_object_id> [count] [packet definition] [object_type]");
             return;
         }
 
@@ -456,7 +441,7 @@ public partial class ConsoleCommandParser
 
         if (sphereClient is null)
         {
-            SendFeedback("/give needs a connected client.");
+            SendFeedback ("/give needs a connected client.");
             return;
         }
 
@@ -464,74 +449,74 @@ public partial class ConsoleCommandParser
         {
             // The spawn goes through the packet definition pipeline, which is gated by DebugMode;
             // refuse instead of silently inserting a DB row the client never hears about.
-            SendFeedback("/give requires DebugMode=true in appsettings.json.");
+            SendFeedback ("/give requires DebugMode=true in appsettings.json.");
             return;
         }
 
-        var gameObject = DbConnection.GameObjects.FindById(gameId);
+        var gameObject = DbConnection.GameObjects.FindById (gameId);
         if (gameObject is null)
         {
-            SendFeedback($"Unknown game object id: {gameId}");
+            SendFeedback ($"Unknown game object id: {gameId}");
             return;
         }
 
-        var item = ItemDbEntry.CreateFromGameObject(gameObject);
+        var item = ItemDbEntry.CreateFromGameObject (gameObject);
         item.ItemCount = count;
         item.X = currentCharacterDbEntry.X;
         item.Y = currentCharacterDbEntry.Y;
         item.Z = currentCharacterDbEntry.Z + GiveGroundDropOffset;
         item.ParentContainerId = null;
 
-        // The entity id sent to the client must equal the row id so a later pickup request
-        // resolves, and it must come from the world index: LiteDB's auto-id counts from 1 and
-        // would collide with the ids of entities already on screen.
-        item.Id = WorldObjectIndex.NewItem();
-        DbConnection.Items.Insert(item.Id, item);
+        // The client id is the row id, from the world index: LiteDB auto-id starts at 1 and
+        // collides with entities already on screen
+        item.Id = WorldObjectIndex.NewItem ();
+        DbConnection.Items.Insert (item.Id, item);
 
-        DebugConsole.SendSpherePacket($"/packet {definition}",
-            bytes => sphereClient.MaybeQueueNetworkPacketSend(bytes),
+        DebugConsole.SendSpherePacket ($"/packet {definition}",
+            bytes => sphereClient.MaybeQueueNetworkPacketSend (bytes),
             false,
             parts =>
             {
-                PacketPart.UpdateEntityId(parts, (ushort)item.Id);
+                PacketPart.UpdateEntityId (parts, (ushort) item.Id);
 
-                // 0xFF00 = lying on the ground. The definitions carry whatever container was in
-                // the frame they were captured from, which does not exist on this server.
-                PacketPart.UpdateValue(parts, "container_id", item.ParentContainerId ?? 0xFF00, 16);
+                // 0xFF00 is on the ground; captured definitions name a container that does not
+                // exist here
+                PacketPart.UpdateValue (parts, "container_id", item.ParentContainerId ?? 0xFF00, 16);
 
-                // Item identity only where the definition has somewhere to put it. Otherwise leave
-                // the definition's own object_type alone — which of these two fields decides
-                // whether the client draws the item is exactly what the fourth argument tests.
+                // Object type is written only where the definition has a field for it; the fourth
+                // argument is which field the client draws from
                 if (objectTypeOverride is { } forcedType)
                 {
-                    PacketPart.UpdateValue(parts, "object_type", forcedType, 10);
+                    PacketPart.UpdateValue (parts, "object_type", forcedType, 10);
                 }
-                else if (parts.Any(x => x.Name == "game_object_id"))
+                else if (parts.Any (x => x.Name == "game_object_id"))
                 {
-                    PacketPart.UpdateValue(parts, "object_type", (int)item.WireObjectType, 10);
+                    PacketPart.UpdateValue (parts, "object_type", (int) item.WireObjectType, 10);
                 }
 
-                if (parts.Any(x => x.Name == "game_object_id"))
+                if (parts.Any (x => x.Name == "game_object_id"))
                 {
-                    PacketPart.UpdateValue(parts, "game_object_id", gameObject.GameId, 14);
+                    PacketPart.UpdateValue (parts, "game_object_id", gameObject.GameId, 14);
                 }
 
-                // DB world coords -> client coords: Y and Z are negated.
-                PacketPart.UpdateCoordinates(parts, item.X, -item.Y, -item.Z);
+                // World Y and Z are negated for the client
+                PacketPart.UpdateCoordinates (parts, item.X, -item.Y, -item.Z);
             });
 
-        SendGiveFeedback(gameObject, item, count, split.Length >= 3 ? definition : null, objectTypeOverride);
+        SendGiveFeedback (gameObject, item, count, split.Length >= 3 ? definition : null, objectTypeOverride);
     }
 
-    /// <summary>Names the definition only when one was asked for; the default is the same every time.</summary>
-    private void SendGiveFeedback(SphGameObject gameObject, ItemDbEntry item, int count, string? via,
+    /// <summary>
+    /// Names the definition only when one was asked for; the default is the same every time.
+    /// </summary>
+    private void SendGiveFeedback (SphGameObject gameObject, ItemDbEntry item, int count, string? via,
         int? objectTypeOverride)
     {
-        var name = gameObject.Localisation.GetValueOrDefault(Locale.Russian, gameObject.SphereType);
+        var name = gameObject.Localisation.GetValueOrDefault (Locale.Russian, gameObject.SphereType);
         var countSuffix = count > 1 ? $" x{count} (count is server-side only; the ground shows one item)" : "";
         var typeSuffix = objectTypeOverride is { } t ? $", object_type forced to {t}" : "";
         var viaSuffix = via is null ? "" : $" via {via}";
-        SendFeedback($"Spawned {name} [game id {gameObject.GameId}, item id {item.Id}]{countSuffix} " +
+        SendFeedback ($"Spawned {name} [game id {gameObject.GameId}, item id {item.Id}]{countSuffix} " +
                      $"on the ground{viaSuffix}{typeSuffix}.");
     }
 }

@@ -4,9 +4,9 @@ namespace PacketLogViewer.Controls;
 
 public partial class DefinitionsPanelControl : UserControl
 {
-    public DefinitionsPanelControl()
+    public DefinitionsPanelControl ()
     {
-        InitializeComponent();
+        InitializeComponent ();
     }
 }
 

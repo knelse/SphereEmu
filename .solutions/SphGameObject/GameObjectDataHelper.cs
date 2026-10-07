@@ -2,7 +2,7 @@ using SuffixToLocaleMap = System.Collections.Generic.Dictionary<ItemSuffix, Suff
 
 public static class GameObjectDataHelper
 {
-    public static readonly HashSet<GameObjectType> MaterialsPowdersElixirs = new()
+    public static readonly HashSet<GameObjectType> MaterialsPowdersElixirs = new ()
     {
         GameObjectType.Flower,
         GameObjectType.Metal,
@@ -13,7 +13,7 @@ public static class GameObjectDataHelper
         GameObjectType.Elixir_Trap
     };
 
-    public static readonly HashSet<GameObjectType> RegularWeaponsAndArmor = new()
+    public static readonly HashSet<GameObjectType> RegularWeaponsAndArmor = new ()
     {
         GameObjectType.Crossbow, GameObjectType.Axe, GameObjectType.Sword, GameObjectType.Amulet,
         GameObjectType.Chestplate,
@@ -21,7 +21,7 @@ public static class GameObjectDataHelper
         GameObjectType.Pants, GameObjectType.Shield, GameObjectType.Boots, GameObjectType.Robe
     };
 
-    public static readonly HashSet<GameObjectType> WeaponsAndArmor = new()
+    public static readonly HashSet<GameObjectType> WeaponsAndArmor = new ()
     {
         GameObjectType.Amulet,
         GameObjectType.Chestplate,
@@ -50,20 +50,20 @@ public static class GameObjectDataHelper
         GameObjectType.Sword_Unique
     };
 
-    public static readonly HashSet<GameObjectType> Mantras = new()
+    public static readonly HashSet<GameObjectType> Mantras = new ()
     {
         GameObjectType.MantraBlack,
         GameObjectType.MantraWhite
     };
 
-    public static readonly HashSet<GameObjectType> AlchemyMaterials = new()
+    public static readonly HashSet<GameObjectType> AlchemyMaterials = new ()
     {
         GameObjectType.Metal,
         GameObjectType.Flower,
         GameObjectType.Mineral
     };
 
-    public static readonly HashSet<GameObjectType> Powders = new()
+    public static readonly HashSet<GameObjectType> Powders = new ()
     {
         GameObjectType.Powder,
         GameObjectType.Powder_Area,
@@ -74,7 +74,7 @@ public static class GameObjectDataHelper
     };
 
     // public static bool firstTypeRolled = false;
-    public static HashSet<ItemSuffix> RingSuffixes = new()
+    public static HashSet<ItemSuffix> RingSuffixes = new ()
     {
         ItemSuffix.Health,
         ItemSuffix.Ether,
@@ -96,7 +96,7 @@ public static class GameObjectDataHelper
         ItemSuffix.Water
     };
 
-    public static GameObjectKind GetKindBySphereName(string sphName)
+    public static GameObjectKind GetKindBySphereName (string sphName)
     {
         switch (sphName)
         {
@@ -122,12 +122,12 @@ public static class GameObjectDataHelper
             case "unique": return GameObjectKind.Unique;
             case "pref": return GameObjectKind.Pref;
             default:
-                Console.WriteLine($"Unknown game object type: {sphName}");
+                Console.WriteLine ($"Unknown game object type: {sphName}");
                 return GameObjectKind.Unknown;
         }
     }
 
-    public static GameObjectType GetTypeBySphereName(string sphName)
+    public static GameObjectType GetTypeBySphereName (string sphName)
     {
         switch (sphName)
         {
@@ -231,209 +231,209 @@ public static class GameObjectDataHelper
             case "item_bead": return GameObjectType.Bead;
             case "packet": return GameObjectType.Packet;
             default:
-                Console.WriteLine($"Unknown GameObjectType: {sphName}");
+                Console.WriteLine ($"Unknown GameObjectType: {sphName}");
                 return GameObjectType.Unknown;
         }
     }
 
-    public static readonly SuffixToLocaleMap SuffixesAmuletBracelet = new()
+    public static readonly SuffixToLocaleMap SuffixesAmuletBracelet = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Radiance] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" })
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesSwordAxes = new()
+    public static readonly SuffixToLocaleMap SuffixesSwordAxes = new ()
     {
         [ItemSuffix.Exhaustion] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Fatigue] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Disease] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
         [ItemSuffix.Cruelty] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
         [ItemSuffix.Instability] =
-            new SuffixValueWithLocale(1114, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
+            new SuffixValueWithLocale (1114, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
         [ItemSuffix.Haste] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
         [ItemSuffix.Range] =
-            new SuffixValueWithLocale(1122, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
+            new SuffixValueWithLocale (1122, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
         [ItemSuffix.Speed] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
         [ItemSuffix.Distance] =
-            new SuffixValueWithLocale(1130, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
+            new SuffixValueWithLocale (1130, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
         [ItemSuffix.Disorder] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
         [ItemSuffix.Decay] =
-            new SuffixValueWithLocale(1138, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
+            new SuffixValueWithLocale (1138, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
         [ItemSuffix.Chaos] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
         [ItemSuffix.Devastation] =
-            new SuffixValueWithLocale(1146, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
+            new SuffixValueWithLocale (1146, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
         // [ItemSuffix.Exhaustion] =
         //     new SuffixValueWithLocale(128, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Weakness] =
-            new SuffixValueWithLocale(1154, new Dictionary<Locale, string> { [Locale.Russian] = "слабости" }),
+            new SuffixValueWithLocale (1154, new Dictionary<Locale, string> { [Locale.Russian] = "слабости" }),
         // [ItemSuffix.Valor] =
         //     new SuffixValueWithLocale(136, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Penetration] =
-            new SuffixValueWithLocale(1162, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
+            new SuffixValueWithLocale (1162, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
         // [ItemSuffix.Damage] =
         //     new SuffixValueWithLocale(144, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Interdict] =
-            new SuffixValueWithLocale(1170, new Dictionary<Locale, string> { [Locale.Russian] = "эапрета" }),
+            new SuffixValueWithLocale (1170, new Dictionary<Locale, string> { [Locale.Russian] = "эапрета" }),
         // [ItemSuffix.Cruelty] =
         //     new SuffixValueWithLocale(152, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(1178, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (1178, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCrossbows = new()
+    public static readonly SuffixToLocaleMap SuffixesCrossbows = new ()
     {
         [ItemSuffix.Exhaustion] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Penetration] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Instability] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Decay] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
         [ItemSuffix.Cruelty] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
         [ItemSuffix.Range] =
-            new SuffixValueWithLocale(1114, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
+            new SuffixValueWithLocale (1114, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
         [ItemSuffix.Haste] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
         [ItemSuffix.Distance] =
-            new SuffixValueWithLocale(1122, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
+            new SuffixValueWithLocale (1122, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
         [ItemSuffix.Speed] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
         [ItemSuffix.Mastery] =
-            new SuffixValueWithLocale(1130, new Dictionary<Locale, string> { [Locale.Russian] = "мастерства" }),
+            new SuffixValueWithLocale (1130, new Dictionary<Locale, string> { [Locale.Russian] = "мастерства" }),
         [ItemSuffix.Disorder] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
         [ItemSuffix.Fatigue] =
-            new SuffixValueWithLocale(1138, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
+            new SuffixValueWithLocale (1138, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
         [ItemSuffix.Chaos] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(1146, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (1146, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         // [ItemSuffix.Exhaustion] =
         //     new SuffixValueWithLocale(128, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Radiance] =
-            new SuffixValueWithLocale(1154, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
+            new SuffixValueWithLocale (1154, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
         // [ItemSuffix.Valor] =
         //     new SuffixValueWithLocale(136, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Disease] =
-            new SuffixValueWithLocale(1162, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
+            new SuffixValueWithLocale (1162, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
         // [ItemSuffix.Damage] =
         //     new SuffixValueWithLocale(144, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(1170, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (1170, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
         // [ItemSuffix.Cruelty] =
         //     new SuffixValueWithLocale(152, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
     };
 
-    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPants = new()
+    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPants = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesChestplatesShields = new()
+    public static readonly SuffixToLocaleMap SuffixesChestplatesShields = new ()
     {
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Strength] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Agility] =
-            new SuffixValueWithLocale(1114, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
+            new SuffixValueWithLocale (1114, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         // [ItemSuffix.Majesty] =
         //     new SuffixValueWithLocale(1122, new Dictionary<Locale, string> { [Locale.Russian] = "величия" }),
         [ItemSuffix.Invincibility] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
         [ItemSuffix.Concentration] =
-            new SuffixValueWithLocale(1130, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации" }),
+            new SuffixValueWithLocale (1130, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(1138, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (1138, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(1146, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (1146, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         // [ItemSuffix.Valor] =
         //     new SuffixValueWithLocale(128, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(1154, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (1154, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         // [ItemSuffix.Durability] =
         //     new SuffixValueWithLocale(136, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(1162, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (1162, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         // [ItemSuffix.Absorption] =
         //     new SuffixValueWithLocale(144, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Elements] =
-            new SuffixValueWithLocale(1170, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" }),
+            new SuffixValueWithLocale (1170, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" }),
         // [ItemSuffix.Deflection] =
         //     new SuffixValueWithLocale(152, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(1178, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (1178, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         // [ItemSuffix.Safety] =
         //     new SuffixValueWithLocale(160, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         // [ItemSuffix.Strength] =
@@ -445,7 +445,7 @@ public static class GameObjectDataHelper
         // [ItemSuffix.Health] =
         //     new SuffixValueWithLocale(176, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Majesty] =
-            new SuffixValueWithLocale(1202, new Dictionary<Locale, string> { [Locale.Russian] = "величия" }),
+            new SuffixValueWithLocale (1202, new Dictionary<Locale, string> { [Locale.Russian] = "величия" }),
         // [ItemSuffix.Life] =
         //     new SuffixValueWithLocale(184, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         // [ItemSuffix.Concentration] =
@@ -453,45 +453,45 @@ public static class GameObjectDataHelper
         // [ItemSuffix.Valor] =
         //     new SuffixValueWithLocale(192, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Integrity] =
-            new SuffixValueWithLocale(1218, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
+            new SuffixValueWithLocale (1218, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
         [ItemSuffix.IntegrityOther] =
-            new SuffixValueWithLocale(1213, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
+            new SuffixValueWithLocale (1213, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
         // [ItemSuffix.Durability] =
         //     new SuffixValueWithLocale(200, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Elements_New] =
-            new SuffixValueWithLocale(1226, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" })
+            new SuffixValueWithLocale (1226, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRobes = new()
+    public static readonly SuffixToLocaleMap SuffixesRobes = new ()
     {
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(1114, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (1114, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(1122, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (1122, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Eclipse] =
-            new SuffixValueWithLocale(1130, new Dictionary<Locale, string> { [Locale.Russian] = "затмения" }),
+            new SuffixValueWithLocale (1130, new Dictionary<Locale, string> { [Locale.Russian] = "затмения" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Archmage] =
-            new SuffixValueWithLocale(1138, new Dictionary<Locale, string> { [Locale.Russian] = "архимага" }),
+            new SuffixValueWithLocale (1138, new Dictionary<Locale, string> { [Locale.Russian] = "архимага" }),
         // [ItemSuffix.Prana] =
         //     new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         // [ItemSuffix.Durability] =
@@ -501,7 +501,7 @@ public static class GameObjectDataHelper
         // [ItemSuffix.Deflection] =
         //     new SuffixValueWithLocale(1154, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(136, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (136, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         // [ItemSuffix.Safety] =
         //     new SuffixValueWithLocale(1162, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         // [ItemSuffix.Deflection] =
@@ -519,7 +519,7 @@ public static class GameObjectDataHelper
         // [ItemSuffix.Life] =
         //     new SuffixValueWithLocale(168, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(1194, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (1194, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         // [ItemSuffix.Meditation] =
         //     new SuffixValueWithLocale(176, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         // [ItemSuffix.Ether] =
@@ -527,424 +527,421 @@ public static class GameObjectDataHelper
         // [ItemSuffix.Prana] =
         //     new SuffixValueWithLocale(184, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Dragon] =
-            new SuffixValueWithLocale(1210, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" }),
+            new SuffixValueWithLocale (1210, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" }),
         [ItemSuffix.DragonOther] =
-            new SuffixValueWithLocale(1214, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
+            new SuffixValueWithLocale (1214, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRings = new()
+    public static readonly SuffixToLocaleMap SuffixesRings = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (64, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(1090, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (1090, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (72, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Strength] =
-            new SuffixValueWithLocale(1098, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
+            new SuffixValueWithLocale (1098, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(80, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (80, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Agility] =
-            new SuffixValueWithLocale(1106, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
+            new SuffixValueWithLocale (1106, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(88, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (88, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Accuracy] =
-            new SuffixValueWithLocale(1114, new Dictionary<Locale, string> { [Locale.Russian] = "меткости" }),
+            new SuffixValueWithLocale (1114, new Dictionary<Locale, string> { [Locale.Russian] = "меткости" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(96, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (96, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Endurance] =
-            new SuffixValueWithLocale(1122, new Dictionary<Locale, string> { [Locale.Russian] = "выносливости" }),
+            new SuffixValueWithLocale (1122, new Dictionary<Locale, string> { [Locale.Russian] = "выносливости" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(104, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (104, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(1130, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (1130, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(112, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (112, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(1138, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (1138, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(120, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (120, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(1146, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (1146, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         // [ItemSuffix.Absorption] =
         //     new SuffixValueWithLocale(128, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(1154, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (1154, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         // [ItemSuffix.Durability] =
         //     new SuffixValueWithLocale(136, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(1162, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (1162, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
     // ---------- CORRECT MAPPING (legacy left for compatibility)
 
-    public static readonly SuffixToLocaleMap SuffixesAmuletBraceletActual = new()
+    public static readonly SuffixToLocaleMap SuffixesAmuletBraceletActual = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "отражения" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "отражения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Radiance] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "урона" })
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "урона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesSwordAxesActual = new()
+    public static readonly SuffixToLocaleMap SuffixesSwordAxesActual = new ()
     {
         [ItemSuffix.Exhaustion] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Cruelty] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
         [ItemSuffix.Haste] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
         [ItemSuffix.Speed] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
         [ItemSuffix.Disorder] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
         [ItemSuffix.Chaos] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Fatigue] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
         [ItemSuffix.Disease] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
         [ItemSuffix.Instability] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
         [ItemSuffix.Range] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
         [ItemSuffix.Distance] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
         [ItemSuffix.Decay] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
         [ItemSuffix.Devastation] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
         [ItemSuffix.Weakness] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "слабости" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "слабости" }),
         [ItemSuffix.Penetration] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
         [ItemSuffix.Interdict] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "эапрета" }),
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "эапрета" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (19, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCrossbowsActual = new()
+    public static readonly SuffixToLocaleMap SuffixesCrossbowsActual = new ()
     {
         [ItemSuffix.Exhaustion] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "истощения" }),
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Damage] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "урона" }),
         [ItemSuffix.Cruelty] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "жестокости" }),
         [ItemSuffix.Haste] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "спешки" }),
         [ItemSuffix.Speed] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "скорости" }),
         [ItemSuffix.Disorder] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "беспорядка" }),
         [ItemSuffix.Chaos] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "хаоса" }),
         [ItemSuffix.Penetration] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "проникновения" }),
         [ItemSuffix.Instability] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "неустойчивости" }),
         [ItemSuffix.Decay] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "разложения" }),
         [ItemSuffix.Range] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "расстояния" }),
         [ItemSuffix.Distance] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "дистанции" }),
         [ItemSuffix.Mastery] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "мастерства" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "мастерства" }),
         [ItemSuffix.Fatigue] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "усталости" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Radiance] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "сияния" }),
         [ItemSuffix.Disease] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "болезни" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPantsActual = new()
+    public static readonly SuffixToLocaleMap SuffixesBootsGlovesBeltsHelmetsPantsActual = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesChestplatesShieldsActual = new()
+    public static readonly SuffixToLocaleMap SuffixesChestplatesShieldsActual = new ()
     {
         [ItemSuffix.Valor] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "доблести" }),
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Invincibility] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Strength_Old] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "силы (ст.)" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "силы (ст.)" }),
         [ItemSuffix.Agility_Old] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости (ст.)" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости (ст.)" }),
         [ItemSuffix.Majesty_Old] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "величия (ст.)" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "величия (ст.)" }),
         [ItemSuffix.Concentration_Old] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации (ст.)" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации (ст.)" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         [ItemSuffix.Elements_Old] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "стихий (ст.)" }),
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "стихий (ст.)" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (19, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         [ItemSuffix.Strength] =
-            new SuffixValueWithLocale(20, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
+            new SuffixValueWithLocale (20, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
         [ItemSuffix.Agility] =
-            new SuffixValueWithLocale(21, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
+            new SuffixValueWithLocale (21, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
         [ItemSuffix.Majesty] =
-            new SuffixValueWithLocale(22, new Dictionary<Locale, string> { [Locale.Russian] = "величия" }),
+            new SuffixValueWithLocale (22, new Dictionary<Locale, string> { [Locale.Russian] = "величия" }),
         [ItemSuffix.Concentration] =
-            new SuffixValueWithLocale(23, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации" }),
+            new SuffixValueWithLocale (23, new Dictionary<Locale, string> { [Locale.Russian] = "концентрации" }),
         [ItemSuffix.Integrity] =
-            new SuffixValueWithLocale(24, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
+            new SuffixValueWithLocale (24, new Dictionary<Locale, string> { [Locale.Russian] = "цельности" }),
         [ItemSuffix.Elements] =
-            new SuffixValueWithLocale(25, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" }),
+            new SuffixValueWithLocale (25, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" }),
         [ItemSuffix.Elements_New] =
-            new SuffixValueWithLocale(26, new Dictionary<Locale, string> { [Locale.Russian] = "стихий (нов.)" })
+            new SuffixValueWithLocale (26, new Dictionary<Locale, string> { [Locale.Russian] = "стихий (нов.)" })
     };
 
-    /// <summary>
-    ///     Chestplate prefs only go 0–24; id 18 is стихий. Shields add 25/26 as extra
-    ///     element variants, so they keep <see cref="SuffixesChestplatesShieldsActual"/>.
-    /// </summary>
-    public static readonly SuffixToLocaleMap SuffixesChestplatesActual = CreateChestplateSuffixMap();
+    /// Pref ids 0-24; id 18 is elements
+    public static readonly SuffixToLocaleMap SuffixesChestplatesActual = CreateChestplateSuffixMap ();
 
-    private static SuffixToLocaleMap CreateChestplateSuffixMap()
+    private static SuffixToLocaleMap CreateChestplateSuffixMap ()
     {
-        var map = new SuffixToLocaleMap(SuffixesChestplatesShieldsActual);
-        map.Remove(ItemSuffix.Elements_Old);
-        map.Remove(ItemSuffix.Elements_New);
+        var map = new SuffixToLocaleMap (SuffixesChestplatesShieldsActual);
+        map.Remove (ItemSuffix.Elements_Old);
+        map.Remove (ItemSuffix.Elements_New);
         map[ItemSuffix.Elements] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" });
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "стихий" });
         return map;
     }
 
-    public static readonly SuffixToLocaleMap SuffixesRobesActual = new()
+    public static readonly SuffixToLocaleMap SuffixesRobesActual = new ()
     {
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" }),
         [ItemSuffix.Durability_Old] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "прочности (ст.)" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "прочности (ст.)" }),
         [ItemSuffix.Deflection_Old] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения (ст.)" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения (ст.)" }),
         [ItemSuffix.Safety_Old] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности (ст.)" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности (ст.)" }),
         [ItemSuffix.Health_Old] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья (ст.)" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья (ст.)" }),
         [ItemSuffix.Life_Old] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "жизни (ст.)" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "жизни (ст.)" }),
         [ItemSuffix.Meditation_Old] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "медитации (ст.)" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "медитации (ст.)" }),
         [ItemSuffix.Prana_Old] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "праны (ст.)" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "праны (ст.)" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         [ItemSuffix.Ether_Old] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "эфира (ст.)" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "эфира (ст.)" }),
         [ItemSuffix.Eclipse] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "затмения" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "затмения" }),
         [ItemSuffix.Archmage] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "архимага" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "архимага" }),
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Deflection] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "отклонения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (19, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(20, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (20, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(21, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (21, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(22, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (22, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Dragon] =
-            new SuffixValueWithLocale(23, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
+            new SuffixValueWithLocale (23, new Dictionary<Locale, string> { [Locale.Russian] = "дракона" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesRingsActual = new()
+    public static readonly SuffixToLocaleMap SuffixesRingsActual = new ()
     {
         [ItemSuffix.Durability] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "прочности" }),
         [ItemSuffix.Absorption] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "поглощения" }),
         [ItemSuffix.Safety] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "безопасности" }),
         [ItemSuffix.Health] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "здоровья" }),
         [ItemSuffix.Life] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Meditation] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "медитации" }),
         [ItemSuffix.Prana] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "праны" }),
         [ItemSuffix.Ether] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "эфира" }),
         [ItemSuffix.Precision] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "точности" }),
         [ItemSuffix.Strength] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "силы" }),
         [ItemSuffix.Agility] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "ловкости" }),
         [ItemSuffix.Accuracy] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "меткости" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "меткости" }),
         [ItemSuffix.Endurance] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "выносливости" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "выносливости" }),
         [ItemSuffix.Earth] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "земли" }),
         [ItemSuffix.Water] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "воды" }),
         [ItemSuffix.Air] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "воздуха" }),
         [ItemSuffix.Fire] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "огня" }),
         [ItemSuffix.Value] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "ценности" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesQuestActual = new()
+    public static readonly SuffixToLocaleMap SuffixesQuestActual = new ()
     {
         [ItemSuffix.Adventure] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "Приключения" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "Приключения" }),
         [ItemSuffix.Silence] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "Безмолвия" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "Безмолвия" }),
         [ItemSuffix.Prophecy] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "Пророчества" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "Пророчества" }),
         [ItemSuffix.Secret] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "Тайны" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "Тайны" }),
         [ItemSuffix.Myth] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "Мифов" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "Мифов" }),
         [ItemSuffix.Being] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "Бытия" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "Бытия" }),
         [ItemSuffix.Hike] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "Походов" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "Походов" }),
         [ItemSuffix.Existence] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "Существования" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "Существования" }),
         [ItemSuffix.Legend] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "Легенды" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "Легенды" }),
         [ItemSuffix.Peace] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "Мира" })
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "Мира" })
     };
 
-    public static readonly SuffixToLocaleMap SuffixesCastleActual = new()
+    public static readonly SuffixToLocaleMap SuffixesCastleActual = new ()
     {
         [ItemSuffix.Eradication_Old] =
-            new SuffixValueWithLocale(0, new Dictionary<Locale, string> { [Locale.Russian] = "искоренения (ст.)" }),
+            new SuffixValueWithLocale (0, new Dictionary<Locale, string> { [Locale.Russian] = "искоренения (ст.)" }),
         [ItemSuffix.Devastation_Castle_Old] =
-            new SuffixValueWithLocale(1, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения (ст.)" }),
+            new SuffixValueWithLocale (1, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения (ст.)" }),
         [ItemSuffix.Reliability_Old] =
-            new SuffixValueWithLocale(2, new Dictionary<Locale, string> { [Locale.Russian] = "надёжности (ст.)" }),
+            new SuffixValueWithLocale (2, new Dictionary<Locale, string> { [Locale.Russian] = "надёжности (ст.)" }),
         [ItemSuffix.Invincibility_Castle_Old] =
-            new SuffixValueWithLocale(3, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости (ст.)" }),
+            new SuffixValueWithLocale (3, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости (ст.)" }),
         [ItemSuffix.Life_Castle_Old] =
-            new SuffixValueWithLocale(4, new Dictionary<Locale, string> { [Locale.Russian] = "жизни (ст.)" }),
+            new SuffixValueWithLocale (4, new Dictionary<Locale, string> { [Locale.Russian] = "жизни (ст.)" }),
         [ItemSuffix.Eradication] =
-            new SuffixValueWithLocale(5, new Dictionary<Locale, string> { [Locale.Russian] = "искоренения" }),
+            new SuffixValueWithLocale (5, new Dictionary<Locale, string> { [Locale.Russian] = "искоренения" }),
         [ItemSuffix.Devastation_Castle] =
-            new SuffixValueWithLocale(6, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
+            new SuffixValueWithLocale (6, new Dictionary<Locale, string> { [Locale.Russian] = "опустошения" }),
         [ItemSuffix.Reliability] =
-            new SuffixValueWithLocale(7, new Dictionary<Locale, string> { [Locale.Russian] = "надёжности" }),
+            new SuffixValueWithLocale (7, new Dictionary<Locale, string> { [Locale.Russian] = "надёжности" }),
         [ItemSuffix.Invincibility_Castle] =
-            new SuffixValueWithLocale(8, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
+            new SuffixValueWithLocale (8, new Dictionary<Locale, string> { [Locale.Russian] = "неуязвимости" }),
         [ItemSuffix.Life_Castle] =
-            new SuffixValueWithLocale(9, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
+            new SuffixValueWithLocale (9, new Dictionary<Locale, string> { [Locale.Russian] = "жизни" }),
         [ItemSuffix.Rule] =
-            new SuffixValueWithLocale(10, new Dictionary<Locale, string> { [Locale.Russian] = "правления" }),
+            new SuffixValueWithLocale (10, new Dictionary<Locale, string> { [Locale.Russian] = "правления" }),
         [ItemSuffix.Blinding] =
-            new SuffixValueWithLocale(11, new Dictionary<Locale, string> { [Locale.Russian] = "ослепления" }),
+            new SuffixValueWithLocale (11, new Dictionary<Locale, string> { [Locale.Russian] = "ослепления" }),
         [ItemSuffix.Fright] =
-            new SuffixValueWithLocale(12, new Dictionary<Locale, string> { [Locale.Russian] = "испуга" }),
+            new SuffixValueWithLocale (12, new Dictionary<Locale, string> { [Locale.Russian] = "испуга" }),
         [ItemSuffix.Halt] =
-            new SuffixValueWithLocale(13, new Dictionary<Locale, string> { [Locale.Russian] = "остановки" }),
+            new SuffixValueWithLocale (13, new Dictionary<Locale, string> { [Locale.Russian] = "остановки" }),
         [ItemSuffix.Deliverance] =
-            new SuffixValueWithLocale(14, new Dictionary<Locale, string> { [Locale.Russian] = "избавления" }),
+            new SuffixValueWithLocale (14, new Dictionary<Locale, string> { [Locale.Russian] = "избавления" }),
         [ItemSuffix.Purification] =
-            new SuffixValueWithLocale(15, new Dictionary<Locale, string> { [Locale.Russian] = "очищения" }),
+            new SuffixValueWithLocale (15, new Dictionary<Locale, string> { [Locale.Russian] = "очищения" }),
         [ItemSuffix.Punishment] =
-            new SuffixValueWithLocale(16, new Dictionary<Locale, string> { [Locale.Russian] = "наказания" }),
+            new SuffixValueWithLocale (16, new Dictionary<Locale, string> { [Locale.Russian] = "наказания" }),
         [ItemSuffix.Shackle] =
-            new SuffixValueWithLocale(17, new Dictionary<Locale, string> { [Locale.Russian] = "оков" }),
+            new SuffixValueWithLocale (17, new Dictionary<Locale, string> { [Locale.Russian] = "оков" }),
         [ItemSuffix.Whirl] =
-            new SuffixValueWithLocale(18, new Dictionary<Locale, string> { [Locale.Russian] = "вихря" }),
+            new SuffixValueWithLocale (18, new Dictionary<Locale, string> { [Locale.Russian] = "вихря" }),
         [ItemSuffix.Curse] =
-            new SuffixValueWithLocale(19, new Dictionary<Locale, string> { [Locale.Russian] = "проклятия" })
+            new SuffixValueWithLocale (19, new Dictionary<Locale, string> { [Locale.Russian] = "проклятия" })
     };
 
-    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMap = new()
+    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMap = new ()
     {
         [GameObjectType.Amulet] = SuffixesAmuletBracelet,
         [GameObjectType.Bracelet] = SuffixesAmuletBracelet,
@@ -962,7 +959,7 @@ public static class GameObjectDataHelper
         [GameObjectType.Ring] = SuffixesRings
     };
 
-    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMapActual = new()
+    public static readonly Dictionary<GameObjectType, SuffixToLocaleMap> ObjectTypeToSuffixLocaleMapActual = new ()
     {
         [GameObjectType.Amulet] = SuffixesAmuletBraceletActual,
         [GameObjectType.Bracelet] = SuffixesAmuletBraceletActual,
@@ -1003,16 +1000,16 @@ public static class GameObjectDataHelper
         [GameObjectType.Sword_Unique] = SuffixesCastleActual
     };
 
-    public static ItemSuffix GetSuffixById(this SuffixToLocaleMap map, int val)
+    public static ItemSuffix GetSuffixById (this SuffixToLocaleMap map, int val)
     {
-        return map.All(x => x.Value.value != val)
+        return map.All (x => x.Value.value != val)
             ? ItemSuffix.None
-            : map.First(x => x.Value.value == val).Key;
+            : map.First (x => x.Value.value == val).Key;
     }
 
-    public static string ToRomanTierLiteral(this SphGameObject gameObject)
+    public static string ToRomanTierLiteral (this SphGameObject gameObject)
     {
-        if (!gameObject.IsTierVisible())
+        if (!gameObject.IsTierVisible ())
         {
             return string.Empty;
         }

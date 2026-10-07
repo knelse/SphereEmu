@@ -28,50 +28,50 @@ public class ItemContainerDbEntry
 
     [BsonIgnore]
     private static readonly PackedScene LootBagScene =
-        (PackedScene)ResourceLoader.Load("res://Godot/Scenes/LootBag.tscn");
+        (PackedScene) ResourceLoader.Load ("res://Godot/Scenes/LootBag.tscn");
 
     public Dictionary<int, int> Contents { get; set; } = [];
     public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainerDbEntry CreateHierarchyWithContents(double x, double y, double z,
+    public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
         int level, //int sourceTypeId,
         LootRatity ratity, int count = -1)
     {
-        var bag = LootBagScene.Instantiate<SphServer.Godot.Nodes.LootBagNode>();
-        ActiveNodes.Add(bag.GetInstanceId(), bag);
-        var levelOverride = SphRng.Rng.Next(0, 61);
+        var bag = LootBagScene.Instantiate<SphServer.Godot.Nodes.LootBagNode> ();
+        ActiveNodes.Add (bag.GetInstanceId (), bag);
+        var levelOverride = SphRng.Rng.Next (0, 61);
         bag.ItemContainerDbEntry = new ItemContainerDbEntry
         {
-            TitleMinusOne = (byte)level,
+            TitleMinusOne = (byte) level,
             X = x,
             Y = y,
             Z = z,
-            ParentNodeId = bag.GetInstanceId()
+            ParentNodeId = bag.GetInstanceId ()
         };
-        bag.ItemContainerDbEntry.Id = DbConnection.ItemContainers.Insert(bag.ItemContainerDbEntry);
+        bag.ItemContainerDbEntry.Id = DbConnection.ItemContainers.Insert (bag.ItemContainerDbEntry);
 
-        var itemCount = count == -1 ? SphRng.Rng.Next(1, 5) : count;
+        var itemCount = count == -1 ? SphRng.Rng.Next (1, 5) : count;
 
         for (var i = 0; i < itemCount; i++)
         {
-            var randomObj = LootRandomizer.GetRandomLootObject(levelOverride > 0 ? levelOverride : level);
-            var item = ItemDbEntry.CreateFromGameObject(randomObj);
+            var randomObj = LootRandomizer.GetRandomLootObject (levelOverride > 0 ? levelOverride : level);
+            var item = ItemDbEntry.CreateFromGameObject (randomObj);
             item.ParentContainerId = bag.ItemContainerDbEntry.Id;
-            item.Id = WorldObjectIndex.NewItem();
-            DbConnection.Items.Insert(item.Id, item);
+            item.Id = WorldObjectIndex.NewItem ();
+            DbConnection.Items.Insert (item.Id, item);
             bag.ItemContainerDbEntry.Contents[i] = item.Id;
         }
 
-        bag.Transform = bag.Transform.Translated(new Vector3((float)x, (float)y, (float)z));
-        SphereServer.ServerNode.CallDeferred("add_child", bag);
-        DbConnection.ItemContainers.Update(bag.ItemContainerDbEntry);
+        bag.Transform = bag.Transform.Translated (new Vector3 ((float) x, (float) y, (float) z));
+        SphereServer.ServerNode.CallDeferred ("add_child", bag);
+        DbConnection.ItemContainers.Update (bag.ItemContainerDbEntry);
 
-        SphLogger.Info($"Added item container ID: {bag.ItemContainerDbEntry.Id} at: ({x:F2}, {y: F2}, {z: F2})");
+        SphLogger.Info ($"Added item container ID: {bag.ItemContainerDbEntry.Id} at: ({x:F2}, {y: F2}, {z: F2})");
 
         return bag.ItemContainerDbEntry;
     }
 
-    private bool RemoveIfEmpty()
+    private bool RemoveIfEmpty ()
     {
         if (Contents.Count != 0)
         {
@@ -80,40 +80,40 @@ public class ItemContainerDbEntry
 
         if (ParentNodeId != null)
         {
-            ActiveNodes.Get(ParentNodeId.Value)?.QueueFree();
+            ActiveNodes.Get (ParentNodeId.Value)?.QueueFree ();
         }
 
         return true;
     }
 
-    public bool RemoveItemByIdAndDestroyContainerIfEmpty(int itemGlobalId)
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
     {
-        if (Contents.ContainsValue(itemGlobalId))
+        if (Contents.ContainsValue (itemGlobalId))
         {
-            var key = Contents.First(x => x.Value == itemGlobalId).Key;
-            Contents.Remove(key);
-            Console.WriteLine($"Removed at {key} ID {itemGlobalId} from container {Id}");
+            var key = Contents.First (x => x.Value == itemGlobalId).Key;
+            Contents.Remove (key);
+            Console.WriteLine ($"Removed at {key} ID {itemGlobalId} from container {Id}");
         }
 
-        DbConnection.ItemContainers.Update(Id, this);
+        DbConnection.ItemContainers.Update (Id, this);
 
-        return RemoveIfEmpty();
+        return RemoveIfEmpty ();
     }
 
-    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty(int slotId)
+    public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty (int slotId)
     {
-        if (Contents.TryGetValue(slotId, out var value))
+        if (Contents.TryGetValue (slotId, out var value))
         {
-            Console.WriteLine($"Removed at {slotId} ID {value} from container {Id}");
-            Contents.Remove(slotId);
+            Console.WriteLine ($"Removed at {slotId} ID {value} from container {Id}");
+            Contents.Remove (slotId);
         }
 
-        DbConnection.ItemContainers.Update(Id, this);
+        DbConnection.ItemContainers.Update (Id, this);
 
-        return RemoveIfEmpty();
+        return RemoveIfEmpty ();
     }
 
-    public void ShowForEveryClientInRadius()
+    public void ShowForEveryClientInRadius ()
     {
         // foreach (var client in SphereServer.ActiveClients.Values)
         // {
@@ -123,7 +123,7 @@ public class ItemContainerDbEntry
         // }
     }
 
-    public void UpdatePositionForEveryClientInRadius()
+    public void UpdatePositionForEveryClientInRadius ()
     {
         // foreach (var client in SphereServer.ActiveClients.Values)
         // {
@@ -134,7 +134,7 @@ public class ItemContainerDbEntry
         // }
     }
 
-    public void ShowForClient(SphereClient client)
+    public void ShowForClient (SphereClient client)
     {
         // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.Sack_Mob_Loot);
         // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
@@ -145,7 +145,7 @@ public class ItemContainerDbEntry
         // client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowItemListForClient(ushort clientId)
+    public void ShowItemListForClient (ushort clientId)
     {
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
         // we'll figure out weight for 3-4 slot containers later
@@ -189,7 +189,8 @@ public class ItemContainerDbEntry
         //         itemList =
         //         [
         //             0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00, 0x00, 0x00
+        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00,
+        // 0x00, 0x00
         //         ];
         //
         //         break;
@@ -197,8 +198,10 @@ public class ItemContainerDbEntry
         //         itemList =
         //         [
         //             0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0, 0x00, 0x00,
-        //             0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00, 0x00
+        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0,
+        // 0x00, 0x00,
+        // 0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00,
+        // 0x00
         //         ];
         //
         //         break;
@@ -206,8 +209,10 @@ public class ItemContainerDbEntry
         //         itemList =
         //         [
         //             0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
-        //             0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
+        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
+        // 0x00, 0x50,
+        // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
+        // item2_1,
         //             item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x00
         //         ];
         //
@@ -216,9 +221,12 @@ public class ItemContainerDbEntry
         //         itemList =
         //         [
         //             0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        //             0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00, 0x00, 0x50,
-        //             0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08, item2_1,
-        //             item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3, 0x80, 0x19,
+        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
+        // 0x00, 0x50,
+        // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
+        // item2_1,
+        // item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3,
+        // 0x80, 0x19,
         //             0x00, 0x00, 0x00
         //         ];
         //
@@ -232,9 +240,9 @@ public class ItemContainerDbEntry
         // global::Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    public byte[] GetContentsPacket(ushort clientId)
+    public byte[] GetContentsPacket (ushort clientId)
     {
-        var items = Contents.Select(x => DbConnection.Items.FindById(x.Value)).ToList();
-        return Packet.ItemsToPacket(clientId, Id, items);
+        var items = Contents.Select (x => DbConnection.Items.FindById (x.Value)).ToList ();
+        return Packet.ItemsToPacket (clientId, Id, items);
     }
 }

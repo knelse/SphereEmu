@@ -2,7 +2,7 @@ namespace SphServer.Sphere.Game.Converters;
 
 public static class ObjectTypeToModelNameMap
 {
-    public static string Get(ObjectType objectType)
+    public static string Get (ObjectType objectType)
     {
         return objectType switch
         {

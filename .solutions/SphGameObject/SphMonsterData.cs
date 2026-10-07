@@ -16,12 +16,22 @@
     public int MAtkPerLevel { get; set; } = sphGameObject.MAtkNegativeOrHeal;
     public int MutatorId { get; set; } = sphGameObject.MutatorId;
     public string MutatorName { get; set; } = sphGameObject.TierRaw;
-    public float Speed { get; set; } = 0; // TODO
+    public float WalkSpeed { get; set; } = sphGameObject.WalkSpeed;
+    public float RunSpeed { get; set; } = sphGameObject.RunSpeed;
     public int Range { get; set; } = sphGameObject.Range;
     public float AttackDelay { get; set; } = sphGameObject.UseTime;
 }
 
-public class SphMonsterInstance (SphMonsterData monsterData, int level, bool isNamed)
+public enum NamedBossRank
+{
+    None,
+    RandomSpawn,
+    FixedSpawnLootable,
+    FixedSpawnHobo,
+    Event
+}
+
+public class SphMonsterInstance (SphMonsterData monsterData, int level, NamedBossRank namedBossRank = NamedBossRank.None)
 {
     public SphMonsterData MonsterDataOrigin { get; set; } = monsterData;
     public int Level { get; set; } = level; // explicit, not - 1
@@ -31,6 +41,6 @@ public class SphMonsterInstance (SphMonsterData monsterData, int level, bool isN
     public int BaseMAtk { get; set; } = level * monsterData.MAtkPerLevel;
     public int BasePDef { get; set; } = level * monsterData.PDefPerLevel;
     public int BaseMDef { get; set; } = level * monsterData.MDefPerLevel;
-    public bool IsNamed { get; set; } = isNamed;
+    public NamedBossRank NamedBossRank { get; set; } = namedBossRank;
     public KarmaTypes KarmaType = monsterData.KarmaType;
 }

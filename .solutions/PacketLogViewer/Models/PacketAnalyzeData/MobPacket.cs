@@ -20,42 +20,42 @@ public class MobPacket : PacketAnalyzeData
     public int Type { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) {TypenameDisplayValue} {LevelAndHpDisplayValue}at [{X:F2}, {Y:F2}, {Z:F2}]";
+        $"{Id:X4} ({Enum.GetName (ObjectType) ?? string.Empty}) {TypenameDisplayValue} {LevelAndHpDisplayValue}at [{X:F2}, {Y:F2}, {Z:F2}]";
 
     private string LevelAndHpDisplayValue => Level == 0 ? string.Empty : $"lvl {Level} {CurrentHP}/{MaxHP} ";
 
     private string TypenameDisplayValue =>
         Type == 0
             ? string.Empty
-            : SphObjectDb.GameObjectDataDb.ContainsKey(Type)
+            : SphObjectDb.GameObjectDataDb.ContainsKey (Type)
                 ? SphObjectDb.GameObjectDataDb[Type].Localisation[Locale.Russian]
                 : string.Empty;
 
-    public MobPacket(List<PacketPart> parts) : base(parts)
+    public MobPacket (List<PacketPart> parts) : base (parts)
     {
-        var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
+        var actionTypePart = Parts.FirstOrDefault (x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
         if (ActionType is EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN)
         {
-            X = GetClientCoordValue(PacketPartNames.CoordX);
-            Y = GetClientCoordValue(PacketPartNames.CoordY);
-            Z = GetClientCoordValue(PacketPartNames.CoordZ);
-            Angle = GetIntValue(PacketPartNames.Angle);
+            X = GetClientCoordValue (PacketPartNames.CoordX);
+            Y = GetClientCoordValue (PacketPartNames.CoordY);
+            Z = GetClientCoordValue (PacketPartNames.CoordZ);
+            Angle = GetIntValue (PacketPartNames.Angle);
         }
 
         if (ActionType is EntityActionType.FULL_SPAWN && ObjectType != ObjectType.Mob_Spawner)
         {
-            Type = GetIntValue(PacketPartNames.MobType);
-            CurrentHP = GetIntValue(PacketPartNames.CurrentHP);
-            MaxHP = GetIntValue(PacketPartNames.MaxHP);
-            Level = GetIntValue(PacketPartNames.Level);
+            Type = GetIntValue (PacketPartNames.MobType);
+            CurrentHP = GetIntValue (PacketPartNames.CurrentHP);
+            MaxHP = GetIntValue (PacketPartNames.MaxHP);
+            Level = GetIntValue (PacketPartNames.Level);
         }
     }
 }

@@ -6,8 +6,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class TeleportInDungeon : WorldObject
 {
-	public TeleportInDungeon()
-	{
-		ObjectType = ObjectType.Teleport_In_Dungeon;
-	}
+    public TeleportInDungeon ()
+    {
+        ObjectType = ObjectType.Teleport_In_Dungeon;
+    }
 }

@@ -5,100 +5,97 @@ using Godot;
 
 namespace SphServer.Godot.Scripts.Bootstrap;
 
-/// <summary>
-///     Downloads a slim zip, extracts to staging, and spawns a detached helper that replaces files after exit.
-/// </summary>
 public static class WindowsUpdateApplier
 {
-	private static readonly string[] PreserveNames =
-	[
-		"packs",
-		"logs",
-		"updates",
-		"appsettings.json",
-		"sph.db",
-		"sph.db-lock",
-		"sph-log.db",
-		"sph-log.db-lock"
-	];
+    private static readonly string[] PreserveNames =
+    [
+        "packs",
+        "logs",
+        "updates",
+        "appsettings.json",
+        "sph.db",
+        "sph.db-lock",
+        "sph-log.db",
+        "sph-log.db-lock"
+    ];
 
-	public static async Task ApplyAndRestartAsync(
-		string zipUrl,
-		string installDir,
-		IProgress<(string status, double? fraction)>? progress = null,
-		CancellationToken ct = default)
-	{
-		var updatesDir = Path.Combine(installDir, "updates");
-		var stagingDir = Path.Combine(updatesDir, "staging");
-		var zipPath = Path.Combine(updatesDir, "pending.zip");
-		var applyScript = Path.Combine(updatesDir, "apply-update.ps1");
-		var logPath = Path.Combine(updatesDir, "apply-update.log");
+    public static async Task ApplyAndRestartAsync (
+        string zipUrl,
+        string installDir,
+        IProgress<(string status, double? fraction)>? progress = null,
+        CancellationToken ct = default)
+    {
+        var updatesDir = Path.Combine (installDir, "updates");
+        var stagingDir = Path.Combine (updatesDir, "staging");
+        var zipPath = Path.Combine (updatesDir, "pending.zip");
+        var applyScript = Path.Combine (updatesDir, "apply-update.ps1");
+        var logPath = Path.Combine (updatesDir, "apply-update.log");
 
-		Directory.CreateDirectory(updatesDir);
-		if (Directory.Exists(stagingDir))
-		{
-			Directory.Delete(stagingDir, recursive: true);
-		}
+        Directory.CreateDirectory (updatesDir);
+        if (Directory.Exists (stagingDir))
+        {
+            Directory.Delete (stagingDir, recursive: true);
+        }
 
-		Directory.CreateDirectory(stagingDir);
+        Directory.CreateDirectory (stagingDir);
 
-		progress?.Report(("Downloading build…", 0));
-		await DownloadFileAsync(zipUrl, zipPath, progress, ct);
+        progress?.Report (("Downloading build…", 0));
+        await DownloadFileAsync (zipUrl, zipPath, progress, ct);
 
-		progress?.Report(("Extracting…", null));
-		ZipFile.ExtractToDirectory(zipPath, stagingDir, overwriteFiles: true);
+        progress?.Report (("Extracting…", null));
+        ZipFile.ExtractToDirectory (zipPath, stagingDir, overwriteFiles: true);
 
-		var exeName = Path.GetFileName(OS.GetExecutablePath());
-		if (string.IsNullOrWhiteSpace(exeName))
-		{
-			exeName = "SphServer.exe";
-		}
+        var exeName = Path.GetFileName (OS.GetExecutablePath ());
+        if (string.IsNullOrWhiteSpace (exeName))
+        {
+            exeName = "SphServer.exe";
+        }
 
-		var pid = global::System.Environment.ProcessId;
-		var script = BuildApplyScript(installDir, stagingDir, exeName, pid, logPath, PreserveNames);
-		await File.WriteAllTextAsync(applyScript, script, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false), ct);
+        var pid = global::System.Environment.ProcessId;
+        var script = BuildApplyScript (installDir, stagingDir, exeName, pid, logPath, PreserveNames);
+        await File.WriteAllTextAsync (applyScript, script, new UTF8Encoding (encoderShouldEmitUTF8Identifier: false), ct);
 
-		progress?.Report(("Restarting to apply update…", 1));
+        progress?.Report (("Restarting to apply update…", 1));
 
-		// Never shell-execute .cmd/.ps1 (often open in Notepad). Invoke cmd.exe and use `start`
-		// so PowerShell is detached from Godot's process job and survives Quit.
-		var startArgs =
-			"/c start \"SphereEmuUpdate\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"" +
-			applyScript + "\"";
-		var psi = new ProcessStartInfo
-		{
-			FileName = "cmd.exe",
-			Arguments = startArgs,
-			UseShellExecute = false,
-			CreateNoWindow = true,
-			WorkingDirectory = updatesDir
-		};
-		if (Process.Start(psi) is null)
-		{
-			throw new InvalidOperationException($"Failed to start update helper via cmd: {applyScript}");
-		}
+        // Shell-executing .cmd/.ps1 often opens Notepad. cmd.exe `start` detaches PowerShell from
+        // Godot's job so it survives Quit
+        var startArgs =
+            "/c start \"SphereEmuUpdate\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"" +
+            applyScript + "\"";
+        var psi = new ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            Arguments = startArgs,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            WorkingDirectory = updatesDir
+        };
+        if (Process.Start (psi) is null)
+        {
+            throw new InvalidOperationException ($"Failed to start update helper via cmd: {applyScript}");
+        }
 
-		GD.Print($"AssetBootstrap: update helper spawned for {exeName} (pid wait {pid})");
+        GD.Print ($"AssetBootstrap: update helper spawned for {exeName} (pid wait {pid})");
 
-		// Give the detached PowerShell a moment to open the log / attach to our PID before we quit.
-		await Task.Delay(750, ct);
-	}
+        // Detached PowerShell needs a moment to attach to our PID before Quit
+        await Task.Delay (750, ct);
+    }
 
-	private static string BuildApplyScript(
-		string installDir,
-		string stagingDir,
-		string exeName,
-		int waitPid,
-		string logPath,
-		string[] preserveNames)
-	{
-		var preserveList = string.Join(", ", preserveNames.Select(n => $"'{n.Replace("'", "''")}'"));
-		var installEsc = installDir.Replace("'", "''");
-		var stagingEsc = stagingDir.Replace("'", "''");
-		var exeEsc = exeName.Replace("'", "''");
-		var logEsc = logPath.Replace("'", "''");
+    private static string BuildApplyScript (
+        string installDir,
+        string stagingDir,
+        string exeName,
+        int waitPid,
+        string logPath,
+        string[] preserveNames)
+    {
+        var preserveList = string.Join (", ", preserveNames.Select (n => $"'{n.Replace ("'", "''")}'"));
+        var installEsc = installDir.Replace ("'", "''");
+        var stagingEsc = stagingDir.Replace ("'", "''");
+        var exeEsc = exeName.Replace ("'", "''");
+        var logEsc = logPath.Replace ("'", "''");
 
-		return $$"""
+        return $$"""
 		         $ErrorActionPreference = 'Continue'
 		         $log = '{{logEsc}}'
 		         function Write-Log([string]$msg) {
@@ -193,52 +190,52 @@ public static class WindowsUpdateApplier
 		           exit 1
 		         }
 		         """;
-	}
+    }
 
-	private static async Task DownloadFileAsync(
-		string url,
-		string destPath,
-		IProgress<(string status, double? fraction)>? progress,
-		CancellationToken ct)
-	{
-		var tempPath = destPath + ".partial";
-		if (File.Exists(tempPath))
-		{
-			File.Delete(tempPath);
-		}
+    private static async Task DownloadFileAsync (
+        string url,
+        string destPath,
+        IProgress<(string status, double? fraction)>? progress,
+        CancellationToken ct)
+    {
+        var tempPath = destPath + ".partial";
+        if (File.Exists (tempPath))
+        {
+            File.Delete (tempPath);
+        }
 
-		using var client = GithubReleaseClient.CreateHttpClient();
-		using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
-		response.EnsureSuccessStatusCode();
-		var total = response.Content.Headers.ContentLength ?? -1;
-		await using (var input = await response.Content.ReadAsStreamAsync(ct))
-		await using (var output = new FileStream(tempPath, FileMode.Create, global::System.IO.FileAccess.Write,
-					   FileShare.None, 1024 * 128, true))
-		{
-			var buffer = new byte[1024 * 128];
-			long readTotal = 0;
-			int read;
-			while ((read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), ct)) > 0)
-			{
-				await output.WriteAsync(buffer.AsMemory(0, read), ct);
-				readTotal += read;
-				if (total > 0)
-				{
-					progress?.Report(($"Downloading build… {readTotal / (1024 * 1024)} / {total / (1024 * 1024)} MB",
-						(double)readTotal / total));
-				}
-				else
-				{
-					progress?.Report(($"Downloading build… {readTotal / (1024 * 1024)} MB", null));
-				}
-			}
-		}
+        using var client = GithubReleaseClient.CreateHttpClient ();
+        using var response = await client.GetAsync (url, HttpCompletionOption.ResponseHeadersRead, ct);
+        response.EnsureSuccessStatusCode ();
+        var total = response.Content.Headers.ContentLength ?? -1;
+        await using (var input = await response.Content.ReadAsStreamAsync (ct))
+        await using (var output = new FileStream (tempPath, FileMode.Create, global::System.IO.FileAccess.Write,
+                       FileShare.None, 1024 * 128, true))
+        {
+            var buffer = new byte[1024 * 128];
+            long readTotal = 0;
+            int read;
+            while ((read = await input.ReadAsync (buffer.AsMemory (0, buffer.Length), ct)) > 0)
+            {
+                await output.WriteAsync (buffer.AsMemory (0, read), ct);
+                readTotal += read;
+                if (total > 0)
+                {
+                    progress?.Report (($"Downloading build… {readTotal / (1024 * 1024)} / {total / (1024 * 1024)} MB",
+                        (double) readTotal / total));
+                }
+                else
+                {
+                    progress?.Report (($"Downloading build… {readTotal / (1024 * 1024)} MB", null));
+                }
+            }
+        }
 
-		if (File.Exists(destPath))
-		{
-			File.Delete(destPath);
-		}
+        if (File.Exists (destPath))
+        {
+            File.Delete (destPath);
+        }
 
-		File.Move(tempPath, destPath);
-	}
+        File.Move (tempPath, destPath);
+    }
 }

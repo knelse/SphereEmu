@@ -20,23 +20,23 @@ public class DoorEntrancePacket : WorldObject
     public string SubtypeStr => HasTeleportTarget ? "" : $" #{SubtypeID}";
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}){OverrideType}{SubtypeStr} at [{X:F2}, {Y:F2}, {Z:F2}]{TeleportTarget}";
+        $"{Id:X4} ({Enum.GetName (ObjectType) ?? string.Empty}){OverrideType}{SubtypeStr} at [{X:F2}, {Y:F2}, {Z:F2}]{TeleportTarget}";
 
-    public DoorEntrancePacket(List<PacketPart> parts) : base(parts)
+    public DoorEntrancePacket (List<PacketPart> parts) : base (parts)
     {
         if (ActionType is not (EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN))
         {
             return;
         }
 
-        SubtypeID = GetIntValue(PacketPartNames.SubtypeId);
+        SubtypeID = GetIntValue (PacketPartNames.SubtypeId);
 
         if (SubtypeID != 0x7FFF)
         {
             var keyLocales = SphObjectDb.LocalisationContent["st_key"][Locale.Russian];
             var subtypeStr = $"{SubtypeID}";
-            var text = keyLocales.FirstOrDefault(x => x.StartsWith(subtypeStr));
-            if (!string.IsNullOrEmpty(text))
+            var text = keyLocales.FirstOrDefault (x => x.StartsWith (subtypeStr));
+            if (!string.IsNullOrEmpty (text))
             {
                 OverrideType = " " + text[(subtypeStr.Length + 1)..];
             }
@@ -44,9 +44,9 @@ public class DoorEntrancePacket : WorldObject
         else
         {
             HasTeleportTarget = true;
-            TargetX = GetClientCoordValue(PacketPartNames.TargetX);
-            TargetY = GetClientCoordValue(PacketPartNames.TargetY);
-            TargetZ = GetClientCoordValue(PacketPartNames.TargetZ);
+            TargetX = GetClientCoordValue (PacketPartNames.TargetX);
+            TargetY = GetClientCoordValue (PacketPartNames.TargetY);
+            TargetZ = GetClientCoordValue (PacketPartNames.TargetZ);
         }
     }
 }

@@ -5,9 +5,8 @@ using SphServer.Godot.Scripts.Terrain;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Bake-time filters for spawn slots. Walkability is a single navmesh disc check against
-///     <see cref="TerrainNavMeshRuntime" /> — outdoor <c>GeneratedNavMeshes</c> plus indoor
-///     <c>GeneratedIndoorNavMeshes</c> (dungeon probes map SOURCE_BASIS → nav frame inside the runtime).
+/// Walkability is one navmesh disc: outdoor GeneratedNavMeshes plus indoor
+/// GeneratedIndoorNavMeshes. Dungeon probes map SOURCE_BASIS into the nav frame inside the runtime
 /// </summary>
 public static class OutdoorSpawnSlotValidator
 {
@@ -20,13 +19,13 @@ public static class OutdoorSpawnSlotValidator
         WrongLevel,
     }
 
-    public static bool TryValidateCandidate(
+    public static bool TryValidateCandidate (
         MonsterSpawner spawner,
         Vector3 candidate,
         Vector3 spawnerOrigin,
         out Vector3 refinedCandidate,
         out FailReason reason)
-        => TryValidateCandidate(
+        => TryValidateCandidate (
             spawnerOrigin,
             spawner.SpawnRadiusMeters,
             spawner.LeashRadiusMeters,
@@ -36,21 +35,17 @@ public static class OutdoorSpawnSlotValidator
             out reason);
 
     /// <summary>
-    ///     <paramref name="candidate" />'s Y is only a coarse seed. Probing at <paramref name="spawnerOrigin" />'s
-    ///     Y is far more reliable; <paramref name="refinedCandidate" /> comes back with the navmesh's own
-    ///     snapped ground Y, which is authoritative.
+    /// candidate.Y is only a seed. The probe uses spawnerOrigin.Y. refinedCandidate.Y is navmesh
+    /// ground. fastBake rejects on one point, then a 4-point disc
     /// </summary>
-    /// <param name="fastBake">
-    ///     Batch rebake path: single-point reject first, then a cheaper 4-point disc query.
-    /// </param>
-    public static bool TryValidateCandidate(
+    public static bool TryValidateCandidate (
         Vector3 spawnerOrigin,
         float spawnRadiusMeters,
         float leashRadiusMeters,
         Vector3 candidate,
         out Vector3 refinedCandidate,
         out FailReason reason)
-        => TryValidateCandidate(
+        => TryValidateCandidate (
             spawnerOrigin,
             spawnRadiusMeters,
             leashRadiusMeters,
@@ -59,7 +54,7 @@ public static class OutdoorSpawnSlotValidator
             out refinedCandidate,
             out reason);
 
-    public static bool TryValidateCandidate(
+    public static bool TryValidateCandidate (
         Vector3 spawnerOrigin,
         float spawnRadiusMeters,
         float leashRadiusMeters,
@@ -71,11 +66,11 @@ public static class OutdoorSpawnSlotValidator
         reason = FailReason.None;
         refinedCandidate = candidate;
 
-        var probePoint = new Vector3(candidate.X, spawnerOrigin.Y, candidate.Z);
+        var probePoint = new Vector3 (candidate.X, spawnerOrigin.Y, candidate.Z);
 
-        // Cheap reject before the multi-point disc (batch bake especially). Must allow Y-refine:
-        // outdoor markers often float above nav, and refineY:false falsely rejects those probes.
-        if (fastBake && !TerrainNavMeshRuntime.IsPointOnNavMesh(probePoint, out _, refineY: true))
+        // Outdoor markers often float above nav. refineY:false rejects those probes before the disc
+        // check
+        if (fastBake && !TerrainNavMeshRuntime.IsPointOnNavMesh (probePoint, out _, refineY: true))
         {
             reason = FailReason.NotWalkable;
             return false;
@@ -84,7 +79,7 @@ public static class OutdoorSpawnSlotValidator
         var discMode = fastBake
             ? TerrainNavMeshRuntime.DiscQueryMode.BakeFast
             : TerrainNavMeshRuntime.DiscQueryMode.Full;
-        if (!TerrainNavMeshRuntime.IsDiscWalkable(
+        if (!TerrainNavMeshRuntime.IsDiscWalkable (
                 probePoint,
                 OutdoorFieldConfig.MobBodyRadiusMeters,
                 discMode,
@@ -94,28 +89,26 @@ public static class OutdoorSpawnSlotValidator
             return false;
         }
 
-        // The disc check only validates horizontal (XZ) navmesh containment, so near multi-level geometry it
-        // can snap onto a polygon on a totally different floor/roof that happens to be closest in 3D. Guard
-        // against that here, where we actually have a stable anchor (the spawner's own placement) to compare
-        // against.
-        var maxVerticalDrift = Mathf.Max(
+        // The disc check is XZ only, so a closer polygon on another floor can win. The spawner's
+        // own Y is the anchor
+        var maxVerticalDrift = Mathf.Max (
             OutdoorFieldConfig.MinSpawnSlotVerticalDriftMeters,
             spawnRadiusMeters * OutdoorFieldConfig.MaxSpawnSlotVerticalDriftRadiusMultiplier);
-        if (Mathf.Abs(snapped.Y - spawnerOrigin.Y) > maxVerticalDrift)
+        if (Mathf.Abs (snapped.Y - spawnerOrigin.Y) > maxVerticalDrift)
         {
             reason = FailReason.WrongLevel;
             return false;
         }
 
-        refinedCandidate = new Vector3(candidate.X, snapped.Y, candidate.Z);
+        refinedCandidate = new Vector3 (candidate.X, snapped.Y, candidate.Z);
 
-        if (!NavPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, spawnRadiusMeters))
+        if (!NavPathQuery.IsInsideLeash (refinedCandidate, spawnerOrigin, spawnRadiusMeters))
         {
             reason = FailReason.OutsideSpawnRadius;
             return false;
         }
 
-        if (!NavPathQuery.IsInsideLeash(refinedCandidate, spawnerOrigin, leashRadiusMeters))
+        if (!NavPathQuery.IsInsideLeash (refinedCandidate, spawnerOrigin, leashRadiusMeters))
         {
             reason = FailReason.OutsideLeash;
             return false;

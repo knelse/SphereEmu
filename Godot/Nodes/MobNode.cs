@@ -14,7 +14,7 @@ public partial class MobNode : CharacterBody3D
     private SphereClient? client;
     private const float speed = 5.5f;
     private Vector3 lastKnownClientPosition = Vector3.Zero;
-    private readonly RandomNumberGenerator rng = new();
+    private readonly RandomNumberGenerator rng = new ();
 
     private double networkCoordsUpdateDelay = 0.5f;
     private double attackDelay;
@@ -22,17 +22,17 @@ public partial class MobNode : CharacterBody3D
 
     public MonsterDbEntry MonsterDbEntry = null!;
 
-    public override void _Ready()
+    public override void _Ready ()
     {
         // MonsterDbEntry.ShowForEveryClientInRadius();
-        navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        navigationAgent = GetNode<NavigationAgent3D> ("NavigationAgent3D");
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _PhysicsProcess (double delta)
     {
         // TODO: replace with signal later
-        clientModel ??= GetNodeOrNull<Node3D>("/root/MainServer/Client/ClientModel");
-        client ??= GetNodeOrNull<SphereClient>("/root/MainServer/Client");
+        clientModel ??= GetNodeOrNull<Node3D> ("/root/MainServer/Client/ClientModel");
+        client ??= GetNodeOrNull<SphereClient> ("/root/MainServer/Client");
         // if ((client?.StreamPeer.GetStatus() ?? StreamPeerTcp.Status.None) != StreamPeerTcp.Status.Connected)
         // {
         //     clientModel = null;
@@ -46,7 +46,7 @@ public partial class MobNode : CharacterBody3D
             return;
         }
 
-        if (!followActive && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 10)
+        if (!followActive && GlobalTransform.Origin.DistanceTo (clientModel.GlobalTransform.Origin) <= 10)
         {
             followActive = true;
             lastKnownClientPosition = clientModel.GlobalTransform.Origin;
@@ -70,34 +70,34 @@ public partial class MobNode : CharacterBody3D
 
         attackDelay -= delta;
 
-        if (attackDelay <= 0 && GlobalTransform.Origin.DistanceTo(clientModel.GlobalTransform.Origin) <= 2)
+        if (attackDelay <= 0 && GlobalTransform.Origin.DistanceTo (clientModel.GlobalTransform.Origin) <= 2)
         {
             // client?.ChangeHealth(client.GetLocalObjectId(MonsterDbEntry.Id), -rng.RandiRange(5, 8));
             attackDelay = 3.5f;
         }
 
-        if (clientModel.GlobalTransform.Origin.DistanceTo(lastKnownClientPosition) >= 0.2)
+        if (clientModel.GlobalTransform.Origin.DistanceTo (lastKnownClientPosition) >= 0.2)
         {
             lastKnownClientPosition = clientModel.GlobalTransform.Origin;
             navigationAgent.TargetPosition = lastKnownClientPosition;
         }
 
-        if (!followActive || navigationAgent.GetFinalPosition().DistanceTo(GlobalTransform.Origin) < 0.2)
+        if (!followActive || navigationAgent.GetFinalPosition ().DistanceTo (GlobalTransform.Origin) < 0.2)
         {
             return;
         }
 
-        var next = navigationAgent.GetNextPathPosition();
-        var direction = GlobalTransform.Origin.DirectionTo(next);
+        var next = navigationAgent.GetNextPathPosition ();
+        var direction = GlobalTransform.Origin.DirectionTo (next);
 
-        Velocity = direction.Normalized() * speed;
-        MoveAndSlide();
-        LookAt(clientModel.GlobalTransform.Origin, Vector3.Up);
+        Velocity = direction.Normalized () * speed;
+        MoveAndSlide ();
+        LookAt (clientModel.GlobalTransform.Origin, Vector3.Up);
     }
 
-    public void SetInactive()
+    public void SetInactive ()
     {
-        ActiveNodes.Remove(GetInstanceId());
-        QueueFree();
+        ActiveNodes.Remove (GetInstanceId ());
+        QueueFree ();
     }
 }

@@ -14,23 +14,20 @@ using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySeri
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class PickupItemHandler(ushort localId, ClientConnection clientConnection)
+public class PickupItemHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    // Offsets in the 0x2E reply, bit 0 = least significant bit of byte 0. Both were recovered from
-    // knelse's own annotated capture pair in SphereTools/itemMove.txt: the client asks to put an
-    // item at a position, and the same three float32 values come back at bits 93/125/157.
+    // 0x2E reply: object type at bit 74, the three position floats at bits 93/125/157
     private const int ObjectTypeBitOffset = 74;
     private const int PositionBitOffset = 93;
 
-    private static uint FloatBits(double value)
+    private static uint FloatBits (double value)
     {
-        return BitConverter.SingleToUInt32Bits((float)value);
+        return BitConverter.SingleToUInt32Bits ((float) value);
     }
 
-    // LSB-first, leaving every bit outside [offset, offset+width) untouched — the fields here are
-    // not byte-aligned and share bytes with unrelated data.
-    public static byte[] BuildPickupMoveResult(int clientItemID, ushort clientSyncOther, byte clientSync1,
+    // LSB-first, and bits outside the field stay put because the fields share bytes
+    public static byte[] BuildPickupMoveResult (int clientItemID, ushort clientSyncOther, byte clientSync1,
         byte clientSync2, byte clientSlotRaw, int objectType, double x, double y, double z)
     {
         var serverItemID_1 = (clientItemID & 0b111111) << 2;
@@ -39,38 +36,36 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
 
         var moveResult = new byte[]
         {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) clientItemID),
-            MajorByte((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
-            0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte(clientSyncOther), MajorByte(clientSyncOther), 0x01, 0xFC,
+            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte ((ushort) clientItemID),
+            MajorByte ((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
+            0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte (clientSyncOther), MajorByte (clientSyncOther), 0x01, 0xFC,
             clientSync1, clientSync2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlotRaw << 1), (byte) serverItemID_1,
             (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
         };
 
-        // The literal above is a captured 2022 frame, so its object type and position describe the
-        // item that was captured, not this one. Both are per-item, so overwrite them in place —
-        // as bit ranges, because neither is byte-aligned and the surrounding bits carry other fields.
-        var stream = new BitStream(moveResult);
-        stream.SeekBitOffset(ObjectTypeBitOffset);
-        stream.WriteUInt16((ushort)objectType, 12);
-        stream.SeekBitOffset(PositionBitOffset);
-        WriteFloatBits(stream, x);
-        WriteFloatBits(stream, -y);
-        WriteFloatBits(stream, -z);
-        return stream.GetStreamData();
+        // The template is one captured item, so type and position are overwritten in place
+        var stream = new BitStream (moveResult);
+        stream.SeekBitOffset (ObjectTypeBitOffset);
+        stream.WriteUInt16 ((ushort) objectType, 12);
+        stream.SeekBitOffset (PositionBitOffset);
+        WriteFloatBits (stream, x);
+        WriteFloatBits (stream, -y);
+        WriteFloatBits (stream, -z);
+        return stream.GetStreamData ();
     }
 
-    private static void WriteFloatBits(BitStream stream, double value)
+    private static void WriteFloatBits (BitStream stream, double value)
     {
-        var bits = FloatBits(value);
-        stream.WriteUInt16((ushort)bits, 16);
-        stream.WriteUInt16((ushort)(bits >> 16), 16);
+        var bits = FloatBits (value);
+        stream.WriteUInt16 ((ushort) bits, 16);
+        stream.WriteUInt16 ((ushort) (bits >> 16), 16);
     }
 
-    public async Task Handle(byte[] frame, double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
     }
 
-    public async Task HandlePickupToNextAvailableEmptySlot(byte[] frame, double delta)
+    public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
     {
         // TODO: remove kaitai
         // var packet = new PickupItemRequest(kaitaiStream);
@@ -117,11 +112,15 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
         //
         // var pickupResult = new byte[]
         // {
-        //     0x36, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) parentId), MajorByte((ushort) parentId), 0x5c,
-        //     0x46, 0x41, 0x02, (byte) slotId, 0x7e, MinorByte(clientItemID), MajorByte(clientItemID), type_1, type_2,
-        //     0x00, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x02, 0x0C, bagId_1,
+        // 0x36, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) parentId),
+        // MajorByte((ushort) parentId), 0x5c,
+        // 0x46, 0x41, 0x02, (byte) slotId, 0x7e, MinorByte(clientItemID), MajorByte(clientItemID),
+        // type_1, type_2,
+        // 0x00, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x02,
+        // 0x0C, bagId_1,
         //     bagId_2,
-        //     bagId_3, 0xFC, clientId_1, clientId_2, clientId_3, 0x80, 0x82, 0x20, targetSlot_1, targetSlot_2, itemId_1,
+        // bagId_3, 0xFC, clientId_1, clientId_2, clientId_3, 0x80, 0x82, 0x20, targetSlot_1,
+        // targetSlot_2, itemId_1,
         //     itemId_2, 0xC8, 0x00,
         //     0x00, 0x00, 0x00
         // };
@@ -136,42 +135,42 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
         // StreamPeer.PutData(pickupResult);
     }
 
-    public async Task HandlePickupToTargetSlot(byte[] frame, double delta)
+    public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
     {
         var clientItemID_1 = frame[21] >> 1;
         var clientItemID_2 = frame[22];
         var clientItemID_3 = frame[23] % 2;
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
-        var globalItemId = (ushort)clientItemID;
-        var item = DbConnection.Items.Find(x => x.Id == globalItemId).FirstOrDefault();
+        var globalItemId = (ushort) clientItemID;
+        var item = DbConnection.Items.Find (x => x.Id == globalItemId).FirstOrDefault ();
 
         if (item is null)
         {
-            SphLogger.Warning($"Unable to pickup item. Missing ID: {globalItemId:X4}. Client ID: {localId:X4}");
+            SphLogger.Warning ($"Unable to pickup item. Missing ID: {globalItemId:X4}. Client ID: {localId:X4}");
             return;
         }
 
-        var character = clientConnection.GetSelectedCharacter()!;
+        var character = clientConnection.GetSelectedCharacter ()!;
 
         var clientSlot_raw = frame[24];
         var targetSlotId = clientSlot_raw >> 1;
-        var targetSlot = Enum.IsDefined(typeof(BelongingSlot), targetSlotId)
-            ? (BelongingSlot)targetSlotId
+        var targetSlot = Enum.IsDefined (typeof (BelongingSlot), targetSlotId)
+            ? (BelongingSlot) targetSlotId
             : BelongingSlot.Unknown;
 
         // Requirements gate wearing, not carrying: anything may sit in a cell.
-        if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot(targetSlot) ||
-            (!ItemDbEntry.IsInventorySlot(targetSlot) && !character.CanUseItem(item)))
+        if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot (targetSlot) ||
+            (!ItemDbEntry.IsInventorySlot (targetSlot) && !character.CanUseItem (item)))
         {
-            SphLogger.Info(
-                $"Item {item.Localization[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName(targetSlot)}]");
+            SphLogger.Info (
+                $"Item {item.Localization[Locale.Russian]} [{globalItemId}] couldn't be used in slot [{Enum.GetName (targetSlot)}]");
             return;
         }
 
-        SphLogger.Info(
+        SphLogger.Info (
             $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] " +
-            $"to slot raw [{clientSlot_raw}] [{Enum.GetName(targetSlot)}]");
+            $"to slot raw [{clientSlot_raw}] [{Enum.GetName (targetSlot)}]");
 
         var clientSync_1 = frame[17];
         var clientSync_2 = frame[18];
@@ -179,46 +178,45 @@ public class PickupItemHandler(ushort localId, ClientConnection clientConnection
         var clientSyncOther_1 = (frame[10] & 0b11000000) >> 4;
         var clientSyncOther_2 = frame[11];
         var clientSyncOther_3 = frame[12] & 0b111111;
-        var clientSyncOther = (ushort)((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
+        var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
-        var moveResult = BuildPickupMoveResult(clientItemID, clientSyncOther, clientSync_1, clientSync_2,
-            clientSlot_raw, (int)item.ObjectType, item.X, item.Y, item.Z);
+        var moveResult = BuildPickupMoveResult (clientItemID, clientSyncOther, clientSync_1, clientSync_2,
+            clientSlot_raw, (int) item.ObjectType, item.X, item.Y, item.Z);
 
-        character.PlaceItemInSlot(targetSlot, globalItemId);
-        SphLogger.Info($"{Enum.GetName((BelongingSlot)targetSlotId)} now has " +
-                       $"{item.Localization.GetValueOrDefault(Locale.Russian, "?")} " +
+        character.PlaceItemInSlot (targetSlot, globalItemId);
+        SphLogger.Info ($"{Enum.GetName ((BelongingSlot) targetSlotId)} now has " +
+                       $"{item.Localization.GetValueOrDefault (Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
-        clientConnection.MaybeScheduleNetworkPacketSend(moveResult);
+        clientConnection.MaybeScheduleNetworkPacketSend (moveResult);
 
         // The grant above does not fill the slot array, so the cell stays empty without these.
-        var reserve = ItemSlotReserve.Build(localId, targetSlot, item.Id, item.ItemCount);
+        var reserve = ItemSlotReserve.Build (localId, targetSlot, item.Id, item.ItemCount);
         if (reserve is not null)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend(reserve);
+            clientConnection.MaybeScheduleNetworkPacketSend (reserve);
         }
 
-        clientConnection.MaybeScheduleNetworkPacketSend(ItemRecordEncoder.Encode(item, ByteSwap(localId)));
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.Encode (item, ByteSwap (localId)));
 
         var oldContainer = item.ParentContainerId is null
             ? null
-            : DbConnection.ItemContainers.FindById(item.ParentContainerId);
+            : DbConnection.ItemContainers.FindById (item.ParentContainerId);
 
         // TODO: check in next process in node instead of this
-        if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty(globalItemId) ?? false)
+        if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId) ?? false)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.DespawnEntity((ushort)oldContainer.Id));
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.DespawnEntity ((ushort) oldContainer.Id));
         }
 
-        if (!ItemDbEntry.IsInventorySlot(targetSlot))
+        if (!ItemDbEntry.IsInventorySlot (targetSlot))
         {
-            if (character.RecalcCurrentStats())
+            if (character.RecalcCurrentStats ())
             {
-                NetworkedStatsUpdater.Update(character);
+                NetworkedStatsUpdater.Update (character);
             }
         }
 
-        // After the recalculation, not before: it writes the worn appearance and the stats that
-        // come off the item, so saving first stores the character as it was without them.
-        clientConnection.SaveSelectedCharacter();
+        // Recalc writes worn look and item stats, so a save before it would miss them
+        clientConnection.SaveSelectedCharacter ();
     }
 }

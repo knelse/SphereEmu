@@ -12,16 +12,16 @@ public static class LoginDecoder
     {
         try
         {
-            SphLogger.Info($"Login decode input: {Convert.ToHexString(rcvBuffer)}");
-            dataStream.SeekBitOffset(0);
-            dataStream.ReadBytes(18, true);
-            dataStream.ReadBits(2);
+            SphLogger.Info ($"Login decode input: {Convert.ToHexString (rcvBuffer)}");
+            dataStream.SeekBitOffset (0);
+            dataStream.ReadBytes (18, true);
+            dataStream.ReadBits (2);
 
-            var login = dataStream.ReadZeroTerminatedString(SphEncoding.Win1251);
-            dataStream.ReadByte();
-            var password = dataStream.ReadZeroTerminatedString(SphEncoding.Win1251);
+            var login = dataStream.ReadZeroTerminatedString (SphEncoding.Win1251);
+            dataStream.ReadByte ();
+            var password = dataStream.ReadZeroTerminatedString (SphEncoding.Win1251);
 
-            return new Tuple<string, string>(new string(login), new string(password));
+            return new Tuple<string, string> (new string (login), new string (password));
 
             // var loginEnd = 18;
             //
@@ -80,8 +80,8 @@ public static class LoginDecoder
         }
         catch (Exception ex)
         {
-            SphLogger.Error("Unable to decode login and password.", ex);
-            return new Tuple<string, string>(string.Empty, string.Empty);
+            SphLogger.Error ("Unable to decode login and password.", ex);
+            return new Tuple<string, string> (string.Empty, string.Empty);
         }
     }
 }

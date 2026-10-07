@@ -23,34 +23,34 @@ public class PacketCapture : IDisposable
 {
     private const int DuplicateSuppressionWindowMs = 750;
 
-    private readonly List<ILiveDevice> captureDevices = new();
-    /// <summary>TCP payload reassembly queues keyed by flow (direction + ports).</summary>
-    private readonly Dictionary<long, List<byte>> packetDataQueuesByFlow = new();
-    private readonly List<CapturedPacketRawData> rawCapturedPackets = new();
-    private readonly object captureStateLock = new();
-    private readonly ManualResetEventSlim _packetsPending = new(false);
-    private readonly CancellationTokenSource _cts = new();
+    private readonly List<ILiveDevice> captureDevices = new ();
+    /// TCP reassembly, keyed by direction and ports
+    private readonly Dictionary<long, List<byte>> packetDataQueuesByFlow = new ();
+    private readonly List<CapturedPacketRawData> rawCapturedPackets = new ();
+    private readonly object captureStateLock = new ();
+    private readonly ManualResetEventSlim _packetsPending = new (false);
+    private readonly CancellationTokenSource _cts = new ();
     private readonly Task _processingLoopTask;
     private readonly SphereClientConnectionDiscovery _connectionDiscovery;
-    private readonly Queue<(long hash, long ticks)> recentPayloadHashes = new();
-    private readonly HashSet<long> recentPayloadHashSet = new();
+    private readonly Queue<(long hash, long ticks)> recentPayloadHashes = new ();
+    private readonly HashSet<long> recentPayloadHashSet = new ();
 
-    private readonly HashSet<IPAddress> sphereLiveServers = new()
+    private readonly HashSet<IPAddress> sphereLiveServers = new ()
     {
-        IPAddress.Parse("77.223.107.68"),
-        IPAddress.Parse("77.223.107.69")
+        IPAddress.Parse ("77.223.107.68"),
+        IPAddress.Parse ("77.223.107.69")
     };
 
-    private static readonly HashSet<int> KnownSphereServerPorts = new() { 25860, 25861 };
+    private static readonly HashSet<int> KnownSphereServerPorts = new () { 25860, 25861 };
 
     private volatile bool captureLocalTraffic;
 
     internal short ClientId;
 
-    /// <summary>0 until sphereclient connection ports are discovered.</summary>
+    /// 0 until sphereclient ports are known
     internal int ObservedLocalClientTcpPort => _connectionDiscovery.ClientLocalPort;
 
-    /// <summary>When true, capture localhost/private-LAN Sphere traffic (off by default).</summary>
+    /// Localhost and private-LAN Sphere traffic
     public bool CaptureLocalTraffic
     {
         get => captureLocalTraffic;
@@ -63,60 +63,60 @@ public class PacketCapture : IDisposable
 
     public Action<List<StoredPacket>, bool>? OnPacketProcessed;
 
-    public PacketCapture()
+    public PacketCapture ()
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        _connectionDiscovery = new SphereClientConnectionDiscovery(TimeSpan.FromSeconds(5));
+        Encoding.RegisterProvider (CodePagesEncodingProvider.Instance);
+        _connectionDiscovery = new SphereClientConnectionDiscovery (TimeSpan.FromSeconds (5));
 
         foreach (var device in CaptureDeviceList.Instance)
         {
             device.OnPacketArrival += CaptureDeviceOnPacketArrival;
-            captureDevices.Add(device);
+            captureDevices.Add (device);
         }
 
         if (captureDevices.Count == 0)
         {
-            throw new InvalidOperationException("No network capture adapters were found.");
+            throw new InvalidOperationException ("No network capture adapters were found.");
         }
 
         var time = DateTime.Now;
         _ = SphObjectDb.GameObjectDataDb;
-        BitStreamExtensions.RegisterBsonMapperForBit();
+        BitStreamExtensions.RegisterBsonMapperForBit ();
         var timeAfterLoad = DateTime.Now;
-        ConsoleExtensions.WriteLineColored(
+        ConsoleExtensions.WriteLineColored (
             $"Ready for packets on {captureDevices.Count} adapter(s). Load time: {(timeAfterLoad - time).TotalMilliseconds} msec",
             ConsoleColor.Yellow);
 
-        _processingLoopTask = Task.Run(PacketQueueProcessingLoop, _cts.Token);
+        _processingLoopTask = Task.Run (PacketQueueProcessingLoop, _cts.Token);
     }
 
     internal int CaptureDeviceCount => captureDevices.Count;
 
-    internal string GetCaptureStatusSummary() => _connectionDiscovery.GetStatusSummary(captureDevices.Count);
+    internal string GetCaptureStatusSummary () => _connectionDiscovery.GetStatusSummary (captureDevices.Count);
 
-    public void SetClientId(short clientId)
+    public void SetClientId (short clientId)
     {
         ClientId = clientId;
     }
 
-    private void CaptureDeviceOnPacketArrival(object _, SharpPcap.PacketCapture capture)
+    private void CaptureDeviceOnPacketArrival (object _, SharpPcap.PacketCapture capture)
     {
         try
         {
-            var rawCapture = capture.GetPacket();
-            var packet = Packet.ParsePacket(rawCapture.LinkLayerType, rawCapture.Data);
-            var ipPacket = packet.Extract<IPPacket>();
+            var rawCapture = capture.GetPacket ();
+            var packet = Packet.ParsePacket (rawCapture.LinkLayerType, rawCapture.Data);
+            var ipPacket = packet.Extract<IPPacket> ();
             if (ipPacket is null)
             {
                 return;
             }
 
-            if (!IsSphereCaptureScopeIp(ipPacket))
+            if (!IsSphereCaptureScopeIp (ipPacket))
             {
                 return;
             }
 
-            var tcpPacket = packet.Extract<TcpPacket>();
+            var tcpPacket = packet.Extract<TcpPacket> ();
             if (tcpPacket is null)
             {
                 return;
@@ -127,13 +127,13 @@ public class PacketCapture : IDisposable
             PacketSource source;
 
             if (clientLocalPort != 0 && serverRemotePort != 0 &&
-                IsTrackedSphereClientConnection(tcpPacket, clientLocalPort, serverRemotePort))
+                IsTrackedSphereClientConnection (tcpPacket, clientLocalPort, serverRemotePort))
             {
                 source = tcpPacket.DestinationPort == serverRemotePort
                     ? PacketSource.CLIENT
                     : PacketSource.SERVER;
             }
-            else if (captureLocalTraffic && TryGetLocalSpherePacketSource(ipPacket, tcpPacket, out source))
+            else if (captureLocalTraffic && TryGetLocalSpherePacketSource (ipPacket, tcpPacket, out source))
             {
                 // Port discovery can lag; still accept clearly local Sphere traffic.
             }
@@ -148,64 +148,63 @@ public class PacketCapture : IDisposable
                 return;
             }
 
-            // Multi-adapter capture (especially Local + Npcap loopback) often delivers the same
-            // TCP segment more than once. Suppress exact duplicates within a short window.
+            // The same TCP segment can arrive on more than one adapter within a short window
             var tcpSequence = tcpPacket.SequenceNumber;
-            if (IsDuplicateTcpSegment(source, tcpPacket.SourcePort, tcpPacket.DestinationPort, tcpSequence,
+            if (IsDuplicateTcpSegment (source, tcpPacket.SourcePort, tcpPacket.DestinationPort, tcpSequence,
                     payload))
             {
                 return;
             }
 
-            var flowKey = GetFlowKey(source, tcpPacket.SourcePort, tcpPacket.DestinationPort);
+            var flowKey = GetFlowKey (source, tcpPacket.SourcePort, tcpPacket.DestinationPort);
 
             lock (captureStateLock)
             {
-                if (!packetDataQueuesByFlow.TryGetValue(flowKey, out var queue))
+                if (!packetDataQueuesByFlow.TryGetValue (flowKey, out var queue))
                 {
-                    queue = new List<byte>();
+                    queue = new List<byte> ();
                     packetDataQueuesByFlow[flowKey] = queue;
                 }
 
-                queue.AddRange(payload);
+                queue.AddRange (payload);
                 if (!tcpPacket.Push)
                 {
                     return;
                 }
 
-                var combinedPacket = queue.ToArray();
-                queue.Clear();
-                SchedulePacketProcessing(combinedPacket, source, rawCapture.Timeval.Date);
+                var combinedPacket = queue.ToArray ();
+                queue.Clear ();
+                SchedulePacketProcessing (combinedPacket, source, rawCapture.Timeval.Date);
             }
         }
         catch (Exception ex)
         {
-            ConsoleExtensions.WriteException(ex);
+            ConsoleExtensions.WriteException (ex);
         }
     }
 
-    private static long GetFlowKey(PacketSource source, int sourcePort, int destinationPort)
+    private static long GetFlowKey (PacketSource source, int sourcePort, int destinationPort)
     {
-        return ((long)(byte)source << 32) | ((uint)sourcePort << 16) | (ushort)destinationPort;
+        return ((long) (byte) source << 32) | ((uint) sourcePort << 16) | (ushort) destinationPort;
     }
 
-    private bool IsDuplicateTcpSegment(PacketSource source, int sourcePort, int destinationPort,
+    private bool IsDuplicateTcpSegment (PacketSource source, int sourcePort, int destinationPort,
         uint tcpSequence, byte[] payload)
     {
         // Mix direction, ports, TCP seq, and a cheap payload fingerprint.
-        long hash = (long)(byte)source << 56;
-        hash ^= (long)(ushort)sourcePort << 40;
-        hash ^= (long)(ushort)destinationPort << 24;
+        long hash = (long) (byte) source << 56;
+        hash ^= (long) (ushort) sourcePort << 40;
+        hash ^= (long) (ushort) destinationPort << 24;
         hash ^= tcpSequence;
         hash ^= payload.Length * 397L;
         if (payload.Length > 0)
         {
             hash ^= payload[0];
-            hash ^= (long)payload[^1] << 8;
-            hash ^= (long)payload[payload.Length / 2] << 16;
+            hash ^= (long) payload[^1] << 8;
+            hash ^= (long) payload[payload.Length / 2] << 16;
         }
 
-        for (var i = 0; i < Math.Min(payload.Length, 16); i++)
+        for (var i = 0; i < Math.Min (payload.Length, 16); i++)
         {
             hash = (hash * 31) ^ payload[i];
         }
@@ -214,32 +213,32 @@ public class PacketCapture : IDisposable
         lock (captureStateLock)
         {
             while (recentPayloadHashes.Count > 0 &&
-                   now - recentPayloadHashes.Peek().ticks > DuplicateSuppressionWindowMs)
+                   now - recentPayloadHashes.Peek ().ticks > DuplicateSuppressionWindowMs)
             {
-                var expired = recentPayloadHashes.Dequeue();
-                recentPayloadHashSet.Remove(expired.hash);
+                var expired = recentPayloadHashes.Dequeue ();
+                recentPayloadHashSet.Remove (expired.hash);
             }
 
-            if (!recentPayloadHashSet.Add(hash))
+            if (!recentPayloadHashSet.Add (hash))
             {
                 return true;
             }
 
-            recentPayloadHashes.Enqueue((hash, now));
+            recentPayloadHashes.Enqueue ((hash, now));
             return false;
         }
     }
 
-    private static bool IsTrackedSphereClientConnection(TcpPacket tcpPacket, int clientLocalPort, int serverRemotePort)
+    private static bool IsTrackedSphereClientConnection (TcpPacket tcpPacket, int clientLocalPort, int serverRemotePort)
     {
         return (tcpPacket.SourcePort == clientLocalPort && tcpPacket.DestinationPort == serverRemotePort) ||
                (tcpPacket.SourcePort == serverRemotePort && tcpPacket.DestinationPort == clientLocalPort);
     }
 
-    private bool IsSphereCaptureScopeIp(IPPacket ipPacket)
+    private bool IsSphereCaptureScopeIp (IPPacket ipPacket)
     {
-        if (sphereLiveServers.Contains(ipPacket.DestinationAddress) ||
-            sphereLiveServers.Contains(ipPacket.SourceAddress))
+        if (sphereLiveServers.Contains (ipPacket.DestinationAddress) ||
+            sphereLiveServers.Contains (ipPacket.SourceAddress))
         {
             return true;
         }
@@ -249,29 +248,29 @@ public class PacketCapture : IDisposable
             return false;
         }
 
-        return SphereClientConnectionDiscovery.IsLocalCaptureAddress(ipPacket.SourceAddress) ||
-               SphereClientConnectionDiscovery.IsLocalCaptureAddress(ipPacket.DestinationAddress);
+        return SphereClientConnectionDiscovery.IsLocalCaptureAddress (ipPacket.SourceAddress) ||
+               SphereClientConnectionDiscovery.IsLocalCaptureAddress (ipPacket.DestinationAddress);
     }
 
-    private static bool TryGetLocalSpherePacketSource(IPPacket ipPacket, TcpPacket tcpPacket, out PacketSource source)
+    private static bool TryGetLocalSpherePacketSource (IPPacket ipPacket, TcpPacket tcpPacket, out PacketSource source)
     {
         source = PacketSource.SERVER;
 
         var localEndpoint =
-            SphereClientConnectionDiscovery.IsLocalCaptureAddress(ipPacket.SourceAddress) ||
-            SphereClientConnectionDiscovery.IsLocalCaptureAddress(ipPacket.DestinationAddress);
+            SphereClientConnectionDiscovery.IsLocalCaptureAddress (ipPacket.SourceAddress) ||
+            SphereClientConnectionDiscovery.IsLocalCaptureAddress (ipPacket.DestinationAddress);
         if (!localEndpoint)
         {
             return false;
         }
 
-        if (KnownSphereServerPorts.Contains(tcpPacket.DestinationPort))
+        if (KnownSphereServerPorts.Contains (tcpPacket.DestinationPort))
         {
             source = PacketSource.CLIENT;
             return true;
         }
 
-        if (KnownSphereServerPorts.Contains(tcpPacket.SourcePort))
+        if (KnownSphereServerPorts.Contains (tcpPacket.SourcePort))
         {
             source = PacketSource.SERVER;
             return true;
@@ -280,21 +279,21 @@ public class PacketCapture : IDisposable
         return false;
     }
 
-    private void SchedulePacketProcessing(byte[] data, PacketSource source, DateTime arrivalTime,
+    private void SchedulePacketProcessing (byte[] data, PacketSource source, DateTime arrivalTime,
         bool shouldDecode = true)
     {
         // Caller must already hold captureStateLock when invoked from the capture path.
         byte[] decodedData;
         if (shouldDecode && source == PacketSource.CLIENT)
         {
-            decodedData = PacketDecoder.DecodeClientPacket(data);
+            decodedData = PacketDecoder.DecodeClientPacket (data);
         }
         else
         {
             decodedData = data;
         }
 
-        rawCapturedPackets.Add(new CapturedPacketRawData
+        rawCapturedPackets.Add (new CapturedPacketRawData
         {
             ArrivalTime = arrivalTime,
             Buffer = data,
@@ -302,42 +301,42 @@ public class PacketCapture : IDisposable
             Source = source
         });
 
-        _packetsPending.Set();
+        _packetsPending.Set ();
     }
 
-    private void PacketQueueProcessingLoop()
+    private void PacketQueueProcessingLoop ()
     {
         foreach (var device in captureDevices)
         {
-            device.Open();
-            device.StartCapture();
+            device.Open ();
+            device.StartCapture ();
         }
 
         while (!_cts.IsCancellationRequested)
         {
             try
             {
-                var hasDeferredServerPackets = ProcessPacketQueue();
+                var hasDeferredServerPackets = ProcessPacketQueue ();
                 if (hasDeferredServerPackets)
                 {
-                    _packetsPending.Wait(TimeSpan.FromMilliseconds(50), _cts.Token);
+                    _packetsPending.Wait (TimeSpan.FromMilliseconds (50), _cts.Token);
                     continue;
                 }
             }
             catch (Exception ex)
             {
-                ConsoleExtensions.WriteException(ex);
+                ConsoleExtensions.WriteException (ex);
             }
 
-            _packetsPending.Reset();
-            _packetsPending.Wait(TimeSpan.FromMilliseconds(100), _cts.Token);
+            _packetsPending.Reset ();
+            _packetsPending.Wait (TimeSpan.FromMilliseconds (100), _cts.Token);
         }
 
         foreach (var device in captureDevices)
         {
             try
             {
-                device.StopCapture();
+                device.StopCapture ();
             }
             catch
             {
@@ -346,7 +345,7 @@ public class PacketCapture : IDisposable
 
             try
             {
-                device.Close();
+                device.Close ();
             }
             catch
             {
@@ -355,21 +354,21 @@ public class PacketCapture : IDisposable
         }
     }
 
-    private bool ProcessPacketQueue()
+    private bool ProcessPacketQueue ()
     {
         List<CapturedPacketRawData> snapshot;
         lock (captureStateLock)
         {
-            snapshot = rawCapturedPackets.ToList();
+            snapshot = rawCapturedPackets.ToList ();
         }
 
         var packetsToProcess = new Dictionary<PacketSource, List<CapturedPacketRawData>>
         {
-            [PacketSource.CLIENT] = new(),
-            [PacketSource.SERVER] = new()
+            [PacketSource.CLIENT] = new (),
+            [PacketSource.SERVER] = new ()
         };
         // Brief hold for server packets so fragments sharing a sequence number can be combined.
-        var serverReorderCutoff = DateTime.Now.AddMilliseconds(-100);
+        var serverReorderCutoff = DateTime.Now.AddMilliseconds (-100);
         var hasDeferredServerPackets = false;
 
         for (var index = 0; index < snapshot.Count; index++)
@@ -388,43 +387,43 @@ public class PacketCapture : IDisposable
             }
 
             rawCapturedPacket.WasProcessed = true;
-            packetsToProcess[rawCapturedPacket.Source].Add(rawCapturedPacket);
+            packetsToProcess[rawCapturedPacket.Source].Add (rawCapturedPacket);
         }
 
-        packetsToProcess[PacketSource.CLIENT].Sort(CapturedPacketRawData.Compare);
-        packetsToProcess[PacketSource.SERVER].Sort(CapturedPacketRawData.Compare);
+        packetsToProcess[PacketSource.CLIENT].Sort (CapturedPacketRawData.Compare);
+        packetsToProcess[PacketSource.SERVER].Sort (CapturedPacketRawData.Compare);
 
-        var combinedList = CapturedPacketRawData.CombinePacketsInSequence(packetsToProcess[PacketSource.SERVER]);
+        var combinedList = CapturedPacketRawData.CombinePacketsInSequence (packetsToProcess[PacketSource.SERVER]);
 
-        combinedList.ForEach(ProcessPacketRawData);
-        packetsToProcess[PacketSource.CLIENT].ForEach(ProcessPacketRawData);
+        combinedList.ForEach (ProcessPacketRawData);
+        packetsToProcess[PacketSource.CLIENT].ForEach (ProcessPacketRawData);
 
         return hasDeferredServerPackets;
     }
 
-    public static List<byte[]> SplitContentIntoPackets(byte[] content)
+    public static List<byte[]> SplitContentIntoPackets (byte[] content)
     {
         var offset = 0;
-        var result = new List<byte[]>();
+        var result = new List<byte[]> ();
         var tries = 0;
         while (offset < content.Length && tries < 1000)
         {
             tries++;
-            if (content.HasEqualElementsAs(PacketAnalyzer.packet_04_00_4F_01, offset))
+            if (content.HasEqualElementsAs (PacketAnalyzer.packet_04_00_4F_01, offset))
             {
-                result.Add(PacketAnalyzer.packet_04_00_4F_01);
+                result.Add (PacketAnalyzer.packet_04_00_4F_01);
 
                 offset += 4;
                 continue;
             }
 
-            if (!content.HasEqualElementsAs(PacketAnalyzer.ok_mark, 2))
+            if (!content.HasEqualElementsAs (PacketAnalyzer.ok_mark, 2))
             {
-                result.Add(content[offset..]);
+                result.Add (content[offset..]);
                 break;
             }
 
-            var subspanTotalLength = BitConverter.ToInt16(content, offset);
+            var subspanTotalLength = BitConverter.ToInt16 (content, offset);
             var end = offset + subspanTotalLength;
 
             if (end > content.Length)
@@ -434,11 +433,11 @@ public class PacketCapture : IDisposable
 
             try
             {
-                result.Add(content[offset..end]);
+                result.Add (content[offset..end]);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine (ex.Message);
             }
 
             offset = end;
@@ -447,15 +446,15 @@ public class PacketCapture : IDisposable
         return result;
     }
 
-    internal void ProcessPacketRawData(CapturedPacketRawData packetRawData)
+    internal void ProcessPacketRawData (CapturedPacketRawData packetRawData)
     {
-        ProcessPacketRawDataForce(packetRawData);
+        ProcessPacketRawDataForce (packetRawData);
     }
 
-    internal void ProcessPacketRawDataForce(CapturedPacketRawData packetRawData, bool forceProcess = false)
+    internal void ProcessPacketRawDataForce (CapturedPacketRawData packetRawData, bool forceProcess = false)
     {
-        var subpackets = SplitContentIntoPackets(packetRawData.DecodedBuffer);
-        var storedPackets = new List<StoredPacket>();
+        var subpackets = SplitContentIntoPackets (packetRawData.DecodedBuffer);
+        var storedPackets = new List<StoredPacket> ();
         for (var index = 0; index < subpackets.Count; index++)
         {
             var subpacket = subpackets[index];
@@ -466,24 +465,24 @@ public class PacketCapture : IDisposable
                 Timestamp = packetRawData.ArrivalTime,
                 NumberInSequence = index
             };
-            PacketAnalyzer.RefreshHiddenByDefaultFlags(storedPacket);
-            storedPackets.Add(storedPacket);
+            PacketAnalyzer.RefreshHiddenByDefaultFlags (storedPacket);
+            storedPackets.Add (storedPacket);
         }
 
-        OnPacketProcessed?.Invoke(storedPackets, forceProcess);
+        OnPacketProcessed?.Invoke (storedPackets, forceProcess);
     }
 
-    public void Stop()
+    public void Stop ()
     {
         if (_cts.IsCancellationRequested)
         {
             return;
         }
 
-        _cts.Cancel();
+        _cts.Cancel ();
         try
         {
-            _processingLoopTask.Wait(TimeSpan.FromSeconds(2));
+            _processingLoopTask.Wait (TimeSpan.FromSeconds (2));
         }
         catch
         {
@@ -491,16 +490,16 @@ public class PacketCapture : IDisposable
         }
     }
 
-    public void Dispose()
+    public void Dispose ()
     {
-        Stop();
+        Stop ();
         foreach (var device in captureDevices)
         {
             device.OnPacketArrival -= CaptureDeviceOnPacketArrival;
         }
 
-        _connectionDiscovery.Dispose();
-        _packetsPending.Dispose();
-        _cts.Dispose();
+        _connectionDiscovery.Dispose ();
+        _packetsPending.Dispose ();
+        _cts.Dispose ();
     }
 }

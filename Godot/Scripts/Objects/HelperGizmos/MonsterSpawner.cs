@@ -16,16 +16,18 @@ public partial class MonsterSpawner : Node3D
 {
 	private const int FirstMonsterId = 10000;
 	private const string ErrorNamePrefix = "ERROR - ";
+	private const int BonusNamedChancePercent = 3;
 
 	private static readonly List<RespawnTimer> GlobalRespawnTimers = [];
-	private static readonly object TimerLock = new();
-	private static readonly object MonsterIdLock = new();
+	private static readonly object TimerLock = new ();
+	private static readonly object MonsterIdLock = new ();
 	private static ulong LastProcessedFrame;
 	private static int _globalNextMonsterId = FirstMonsterId;
 
 	private readonly List<int> _regularMonsterIds = [];
 	private readonly List<int> _namedMonsterIds = [];
-	private readonly object _spawnPlacementLock = new();
+	private readonly List<NamedBossRank> _namedMonsterRanks = [];
+	private readonly object _spawnPlacementLock = new ();
 	private int _cachedRegularMinLevel = int.MinValue;
 	private int _cachedRegularMaxLevel = int.MinValue;
 	private global::System.Collections.Generic.Dictionary<int, IReadOnlyList<MonsterType>>? _regularMonsterTypesByLevel;
@@ -37,10 +39,8 @@ public partial class MonsterSpawner : Node3D
 	public int TargetRegularMonsterCount = 3;
 
 	/// <summary>
-	///     Field default is outdoor (<see cref="OutdoorFieldConfig.DefaultSpawnRadiusMeters" />).
-	///     Indoor-depth spawners (Y &lt; -500) should use
-	///     <see cref="IndoorFieldConfig.DefaultSpawnRadiusMeters" /> via
-	///     <see cref="IndoorFieldConfig.ResolveDefaultSpawnRadiusMeters" /> at placement time.
+	/// Field default is outdoor. Indoor Y below -500 takes
+	/// IndoorFieldConfig.DefaultSpawnRadiusMeters at placement
 	/// </summary>
 	[Export]
 	public float SpawnRadiusMeters = OutdoorFieldConfig.DefaultSpawnRadiusMeters;
@@ -79,11 +79,8 @@ public partial class MonsterSpawner : Node3D
 	public int NamedMonsterMaxLevel = 3;
 
 	/// <summary>
-	///     When non-empty, regular-monster spawns pick their type from this list instead of the level-based
-	///     lookup (<see cref="MonsterSpawnerMonsterTypeLookup" />) - a rolled level is still used for the
-	///     monster's stats/respawn, but doesn't gate or filter which of these types can spawn (i.e. a type
-	///     normally invalid for that level will still spawn if it's in this list). Multiple entries are
-	///     picked from with the same weighting as the normal level-based pool (e.g. Курганник stays rare).
+	/// Non-empty: types come from this list. Rolled level still sets stats and does not filter the
+	/// list. Weighting matches the level pool (Курганник stays rare)
 	/// </summary>
 	[Export]
 	public Array<MonsterType> MobTypeOverrides { get; set; } = [];
@@ -98,216 +95,215 @@ public partial class MonsterSpawner : Node3D
 	public string MonsterScenePath = "res://Godot/Scenes/Monster.tscn";
 
 	/// <summary>
-	///     Runtime/editor working lists — not exported. Persisting <see cref="Array{Node3D}"/> via
-	///     scene <c>node_paths</c> makes Godot Get() fail on C# ("Failed to get property 'RegularMonsters'").
+	/// Not exported. Scene node_paths for Array of Node3D make Godot Get() fail ("Failed to get
+	/// property 'RegularMonsters'")
 	/// </summary>
 	public Array<Node3D> RegularMonsters { get; set; } = [];
 
 	/// <inheritdoc cref="RegularMonsters" />
 	public Array<Node3D> NamedMonsters { get; set; } = [];
 
-	[ExportToolButton("Delete and respawn all mobs")]
-	public Callable DeleteAndRespawnAllMobsButton => Callable.From(DeleteAndRespawnAllMobs);
+	[ExportToolButton ("Delete and respawn all mobs")]
+	public Callable DeleteAndRespawnAllMobsButton => Callable.From (DeleteAndRespawnAllMobs);
 
-	[ExportToolButton("Bake spawn slots")]
-	public Callable BakeSpawnSlotsButton => Callable.From(BakeSpawnSlots);
+	[ExportToolButton ("Bake spawn slots")]
+	public Callable BakeSpawnSlotsButton => Callable.From (BakeSpawnSlots);
 
 	/// <summary>
-	///     When set in the scene, this spawner activates and spawns on server load (debug / town presets).
+	/// Scene-set spawners activate on server load (debug / town presets)
 	/// </summary>
 	[Export]
 	public bool SpawningEnabled { get; set; }
 
 	private bool _spawningEnabled;
-	private readonly Queue<PendingDeathRespawn> _pendingDeathRespawns = new();
+	private readonly Queue<PendingDeathRespawn> _pendingDeathRespawns = new ();
 	private int _nextBindSlotIndex;
+	private bool _bonusNamedResolved;
+	private bool _bonusNamedSpawn;
 	public Vector3 LeashCenterWorld => GlobalPosition;
 
 	internal int DesiredBakedSlotPoolCount =>
-		OutdoorFieldConfig.ComputeBakedSlotPoolCount(
+		OutdoorFieldConfig.ComputeBakedSlotPoolCount (
 			TargetRegularMonsterCount + TargetNamedMonsterCount,
 			SpawnRadiusMeters);
 
 	private struct PendingDeathRespawn
 	{
 		public int MonsterId;
-		public bool IsNamed;
+		public NamedBossRank Rank;
 	}
 
 	private struct RespawnTimer
 	{
 		public double RemainingSeconds;
-		public bool IsNamed;
+		public NamedBossRank Rank;
 		public int MonsterId;
 		public MonsterSpawner Spawner;
 	}
 
-	internal void RefreshEditorGizmo()
+	internal void RefreshEditorGizmo ()
 	{
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint ())
 		{
-			UpdateGizmos();
+			UpdateGizmos ();
 		}
 	}
 
 	/// <summary>
-	///     Used by the editor gizmo plugin; Godot Get() does not reliably return exported arrays on C# nodes.
+	/// Godot Get() does not reliably return exported arrays on C# nodes
 	/// </summary>
-	public Array<Vector3> GetEditorBakedSpawnSlots() => BakedSpawnSlots;
+	public Array<Vector3> GetEditorBakedSpawnSlots () => BakedSpawnSlots;
 
-	public override void _Notification(int what)
+	public override void _Notification (int what)
 	{
-		if (Engine.IsEditorHint() && what == NotificationTransformChanged)
+		if (Engine.IsEditorHint () && what == NotificationTransformChanged)
 		{
-			UpdateGizmos();
+			UpdateGizmos ();
 		}
 	}
 
-	public override bool _Set(StringName property, Variant value)
+	public override bool _Set (StringName property, Variant value)
 	{
-		if (!base._Set(property, value))
+		if (!base._Set (property, value))
 		{
 			return false;
 		}
 
-		RefreshEditorGizmo();
+		RefreshEditorGizmo ();
 		return true;
 	}
 
-	public override void _Ready()
+	public override void _Ready ()
 	{
 		_spawningEnabled = false;
-		WorldChunkSlotHydration.HydrateIfNeeded(WorldContentKind.Monster, this);
+		WorldChunkSlotHydration.HydrateIfNeeded (WorldContentKind.Monster, this);
 
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint ())
 		{
-			AdoptPersistedMonstersInEditor();
-			RefreshEditorGizmo();
+			AdoptPersistedMonstersInEditor ();
+			RefreshEditorGizmo ();
 			return;
 		}
 
-		// Headless spawn-slot bake loads MainServer without wanting runtime spawn/activation.
+		// Headless spawn-slot bake loads MainServer without runtime spawn
 		if (MonsterSpawnSlotHeadlessBake.IsActive || AlchemyMaterialSpawnSlotHeadlessBake.IsActive)
 		{
 			return;
 		}
 
-		MonsterSpawnerActivationManager.Register(this);
+		MonsterSpawnerActivationManager.Register (this);
 
-		// Town/debug presets keep hierarchy mobs (e.g. cats). Apply spawn Y offset here — strip/respawn
-		// used to drop the correction for those already-placed instances.
-		if (SpawningEnabled && TryAdoptPersistedMonstersAtRuntime())
+		// Town/debug presets keep hierarchy mobs (cats). Spawn Y offset still applies to those
+		// already-placed instances
+		if (SpawningEnabled && TryAdoptPersistedMonstersAtRuntime ())
 		{
 			_spawningEnabled = true;
-			FillMissingMonstersAfterAdopt();
+			FillMissingMonstersAfterAdopt ();
 			return;
 		}
 
-		StripPersistedMonsters();
+		StripPersistedMonsters ();
 		if (SpawningEnabled)
 		{
-			ActivateFromProximity();
+			ActivateFromProximity ();
 		}
 	}
 
-	public override void _ExitTree()
+	public override void _ExitTree ()
 	{
-		if (!Engine.IsEditorHint())
+		if (!Engine.IsEditorHint ())
 		{
-			MonsterSpawnerActivationManager.Unregister(this);
+			MonsterSpawnerActivationManager.Unregister (this);
 		}
 	}
 
 	internal bool IsActivated => _spawningEnabled;
 
-	/// <summary>
-	///     Enables spawning and fills missing mobs. Safe to call repeatedly; no-op once activated.
-	/// </summary>
-	internal void ActivateFromProximity()
+	internal void ActivateFromProximity ()
 	{
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint ())
 		{
 			return;
 		}
 
 		lock (_spawnPlacementLock)
 		{
-			// SpawnPlacementInvalid means a prior activate already proved slots are unusable — retrying
-			// every proximity tick just spams warnings and never succeeds without a rebake.
+			// SpawnPlacementInvalid means a prior activate already proved the slots unusable.
+			// Proximity retries only spam warnings until a rebake
 			if (_spawningEnabled || HasSpawnError || SpawnPlacementInvalid)
 			{
 				return;
 			}
 
-			BeginBulkSpawnPlan(enableSpawningOnApply: true);
+			BeginBulkSpawnPlan (enableSpawningOnApply: true);
 		}
 	}
 
-	public void BakeSpawnSlots()
+	public void BakeSpawnSlots ()
 	{
-		_ = MonsterSpawnSlotBaker.BakeForSpawnerAsync(this);
+		_ = MonsterSpawnSlotBaker.BakeForSpawnerAsync (this);
 	}
 
-	internal void MarkSpawnError()
+	internal void MarkSpawnError ()
 	{
-		if (string.IsNullOrEmpty(OriginalDisplayName))
+		if (string.IsNullOrEmpty (OriginalDisplayName))
 		{
 			OriginalDisplayName = Name;
 		}
 
-		if (!Name.ToString().StartsWith(ErrorNamePrefix, StringComparison.Ordinal))
+		if (!Name.ToString ().StartsWith (ErrorNamePrefix, StringComparison.Ordinal))
 		{
 			Name = ErrorNamePrefix + OriginalDisplayName;
 		}
 
 		HasSpawnError = true;
 		SpawnPlacementInvalid = true;
-		NotifyPropertyListChanged();
-		RefreshEditorGizmo();
+		NotifyPropertyListChanged ();
+		RefreshEditorGizmo ();
 	}
 
-	internal void ClearSpawnError()
+	internal void ClearSpawnError ()
 	{
 		HasSpawnError = false;
 		SpawnPlacementInvalid = false;
-		if (!string.IsNullOrEmpty(OriginalDisplayName)
-			&& Name.ToString().StartsWith(ErrorNamePrefix, StringComparison.Ordinal))
+		if (!string.IsNullOrEmpty (OriginalDisplayName)
+			&& Name.ToString ().StartsWith (ErrorNamePrefix, StringComparison.Ordinal))
 		{
 			Name = OriginalDisplayName;
 		}
 
-		NotifyPropertyListChanged();
-		RefreshEditorGizmo();
+		NotifyPropertyListChanged ();
+		RefreshEditorGizmo ();
 	}
 
-	internal void SetBakedSpawnSlots(IReadOnlyList<Vector3> slots, bool syncIndex = true)
+	internal void SetBakedSpawnSlots (IReadOnlyList<Vector3> slots, bool syncIndex = true)
 	{
-		BakedSpawnSlots.Clear();
+		BakedSpawnSlots.Clear ();
 		foreach (var slot in slots)
 		{
-			BakedSpawnSlots.Add(slot);
+			BakedSpawnSlots.Add (slot);
 		}
 
 		if (syncIndex)
 		{
-			WorldChunkSlotHydration.UpdateIndexSlots(WorldContentKind.Monster, this, slots);
+			WorldChunkSlotHydration.UpdateIndexSlots (WorldContentKind.Monster, this, slots);
 		}
 
-		NotifyPropertyListChanged();
-		RefreshEditorGizmo();
+		NotifyPropertyListChanged ();
+		RefreshEditorGizmo ();
 	}
 
 	/// <summary>
-	///     Clears any monsters saved under this spawner. Used after Fill rebuild.
+	/// Fill rebuild drops monsters saved under this spawner
 	/// </summary>
-	public void EnsureEditorPreviewMonsters()
+	public void EnsureEditorPreviewMonsters ()
 	{
-		StripPersistedMonsters();
+		StripPersistedMonsters ();
 	}
 
-	public override void _Process(double delta)
+	public override void _Process (double delta)
 	{
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint ())
 		{
 			return;
 		}
@@ -317,38 +313,38 @@ public partial class MonsterSpawner : Node3D
 			return;
 		}
 
-		TryStartNextDeathRespawnPlan();
+		TryStartNextDeathRespawnPlan ();
 
-		ScheduleRespawnsForDeadMonsters(RegularMonsters, _regularMonsterIds, RegularMonsterRespawnDelaySeconds, isNamed: false);
-		ScheduleRespawnsForDeadMonsters(NamedMonsters, _namedMonsterIds, NamedMonsterRespawnDelaySeconds, isNamed: true);
+		ScheduleRespawnsForDeadMonsters (RegularMonsters, _regularMonsterIds, null, RegularMonsterRespawnDelaySeconds);
+		ScheduleRespawnsForDeadMonsters (NamedMonsters, _namedMonsterIds, _namedMonsterRanks, NamedMonsterRespawnDelaySeconds);
 
-		var frame = Engine.GetProcessFrames();
+		var frame = Engine.GetProcessFrames ();
 		if (LastProcessedFrame == frame)
 		{
 			return;
 		}
 
 		LastProcessedFrame = frame;
-		ProcessGlobalRespawnTimers(delta);
+		ProcessGlobalRespawnTimers (delta);
 	}
 
-	public void DeleteAndRespawnAllMobs()
+	public void DeleteAndRespawnAllMobs ()
 	{
 		lock (_spawnPlacementLock)
 		{
-			ClearPendingRespawnTimersForThisSpawner();
-			_pendingDeathRespawns.Clear();
-			DeleteAllSpawnedMonsters();
+			ClearPendingRespawnTimersForThisSpawner ();
+			_pendingDeathRespawns.Clear ();
+			DeleteAllSpawnedMonsters ();
 			SpawnPlacementInvalid = false;
 
 			if (BakedSpawnSlots.Count < DesiredBakedSlotPoolCount)
 			{
-				MonsterSpawnSlotBaker.BakeForSpawner(this);
+				MonsterSpawnSlotBaker.BakeForSpawner (this);
 			}
 
-			if (!TryApplyInstantBulkRespawn())
+			if (!TryApplyInstantBulkRespawn ())
 			{
-				MarkSpawnPlacementInvalid();
+				MarkSpawnPlacementInvalid ();
 				return;
 			}
 
@@ -357,112 +353,109 @@ public partial class MonsterSpawner : Node3D
 		}
 	}
 
-	internal void DeleteAllSpawnedMonstersForBatch()
+	internal void DeleteAllSpawnedMonstersForBatch ()
 	{
 		lock (_spawnPlacementLock)
 		{
-			ClearPendingRespawnTimersForThisSpawner();
-			_pendingDeathRespawns.Clear();
-			DeleteAllSpawnedMonsters();
+			ClearPendingRespawnTimersForThisSpawner ();
+			_pendingDeathRespawns.Clear ();
+			DeleteAllSpawnedMonsters ();
 			SpawnPlacementInvalid = false;
 		}
 	}
 
-	internal bool TryApplyInstantBulkRespawn()
+	internal bool TryApplyInstantBulkRespawn ()
 	{
 		lock (_spawnPlacementLock)
 		{
-			if (!TryBuildPlanFromBakedSlots(
-					TargetRegularMonsterCount,
-					TargetNamedMonsterCount,
-					CaptureOccupiedWorldPositions(),
-					out var plan))
+			if (!TryPlanPopulation (CaptureOccupiedWorldPositions (), out var plan))
 			{
 				return false;
 			}
 
 			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(plan);
+			ApplySpawnPlan (plan);
 			return true;
 		}
 	}
 
-	internal void ApplyPreplannedSpawnPlan(MonsterSpawnPlan plan)
+	internal void ApplyPreplannedSpawnPlan (MonsterSpawnPlan plan)
 	{
 		lock (_spawnPlacementLock)
 		{
 			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(plan);
+			ApplySpawnPlan (plan);
 		}
 	}
 
-	private void AdoptPersistedMonstersInEditor()
+	private void AdoptPersistedMonstersInEditor ()
 	{
-		RegularMonsters.Clear();
-		NamedMonsters.Clear();
+		RegularMonsters.Clear ();
+		NamedMonsters.Clear ();
 
-		foreach (var child in GetChildren())
+		foreach (var child in GetChildren ())
 		{
 			if (child is not Monster monster)
 			{
 				continue;
 			}
 
-			SetMonsterOwnerForPersistence(monster);
+			SetMonsterOwnerForPersistence (monster);
 
-			if (monster.IsNamed)
+			if (monster.NamedBossRank != NamedBossRank.None)
 			{
-				NamedMonsters.Add(monster);
+				NamedMonsters.Add (monster);
 			}
 			else
 			{
-				RegularMonsters.Add(monster);
+				RegularMonsters.Add (monster);
 			}
 		}
 
-		RebuildMonsterIdLists();
+		RebuildMonsterIdLists ();
 	}
 
 	/// <summary>
-	///     Keeps scene-hierarchy monsters and applies signed spawn Y (scene slots are navmesh height).
+	/// Scene slots are navmesh height, so signed spawn Y still applies to hierarchy mobs
 	/// </summary>
-	private bool TryAdoptPersistedMonstersAtRuntime()
+	private bool TryAdoptPersistedMonstersAtRuntime ()
 	{
-		RegularMonsters.Clear();
-		NamedMonsters.Clear();
-		_regularMonsterIds.Clear();
-		_namedMonsterIds.Clear();
-		ResetBindSlotCounter();
+		RegularMonsters.Clear ();
+		NamedMonsters.Clear ();
+		_regularMonsterIds.Clear ();
+		_namedMonsterIds.Clear ();
+		_namedMonsterRanks.Clear ();
+		ResetBindSlotCounter ();
 
 		var adopted = 0;
-		foreach (var child in GetChildren())
+		foreach (var child in GetChildren ())
 		{
-			if (child is not Monster monster || !IsInstanceValid(monster))
+			if (child is not Monster monster || !IsInstanceValid (monster))
 			{
 				continue;
 			}
 
 			var slotWorld = monster.GlobalPosition;
-			monster.BindHome(
-				new MonsterHomeBinding(
-					ResolveSlotIndex(slotWorld),
+			monster.BindHome (
+				new MonsterHomeBinding (
+					ResolveSlotIndex (slotWorld),
 					slotWorld,
 					GlobalPosition,
 					LeashRadiusMeters,
-					GetPath(),
-					GetInstanceId(),
+					GetPath (),
+					GetInstanceId (),
 					atlasVerticalDelta: 0f),
 				this);
-			ApplySpawnTransform(monster, slotWorld, randomizeAngle: false);
-			SetMonsterOwnerForPersistence(monster);
+			ApplySpawnTransform (monster, slotWorld, randomizeAngle: false);
+			SetMonsterOwnerForPersistence (monster);
 
-			if (monster.IsNamed)
+			if (monster.NamedBossRank != NamedBossRank.None)
 			{
-				NamedMonsters.Add(monster);
+				NamedMonsters.Add (monster);
 			}
 			else
 			{
-				RegularMonsters.Add(monster);
+				RegularMonsters.Add (monster);
 			}
 
 			adopted++;
@@ -473,14 +466,14 @@ public partial class MonsterSpawner : Node3D
 			return false;
 		}
 
-		RebuildMonsterIdLists();
+		RebuildMonsterIdLists ();
 		return true;
 	}
 
-	private void FillMissingMonstersAfterAdopt()
+	private void FillMissingMonstersAfterAdopt ()
 	{
-		var needRegular = Math.Max(0, TargetRegularMonsterCount - CountAlive(RegularMonsters));
-		var needNamed = Math.Max(0, TargetNamedMonsterCount - CountAlive(NamedMonsters));
+		var needRegular = Math.Max (0, TargetRegularMonsterCount - CountAlive (RegularMonsters));
+		var needNamed = Math.Max (0, EffectiveNamedTarget () - CountAlive (NamedMonsters));
 		if (needRegular == 0 && needNamed == 0)
 		{
 			return;
@@ -488,52 +481,67 @@ public partial class MonsterSpawner : Node3D
 
 		lock (_spawnPlacementLock)
 		{
-			var occupied = CaptureOccupiedWorldPositions();
-			if (!TryBuildPlanFromBakedSlots(needRegular, needNamed, occupied, out var plan))
+			var occupied = CaptureOccupiedWorldPositions ();
+			if (!TryBuildPlanFromBakedSlots (needRegular, needNamed, occupied, out var plan))
 			{
-				MarkSpawnPlacementInvalid();
+				// The extra named roll must not fail a camp that already fits its regulars
+				if (needRegular == 0 && _bonusNamedSpawn)
+				{
+					return;
+				}
+
+				if (_bonusNamedSpawn && needNamed > 0
+					&& TryBuildPlanFromBakedSlots (needRegular, 0, occupied, out plan))
+				{
+					SpawnPlacementInvalid = false;
+					ApplySpawnPlan (plan);
+					return;
+				}
+
+				MarkSpawnPlacementInvalid ();
 				return;
 			}
 
 			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(plan);
+			ApplySpawnPlan (plan);
 		}
 	}
 
-	private void StripPersistedMonsters()
+	private void StripPersistedMonsters ()
 	{
-		foreach (var child in GetChildren())
+		foreach (var child in GetChildren ())
 		{
-			if (child is not Monster && !child.Name.ToString().StartsWith("Monster_", StringComparison.Ordinal))
+			if (child is not Monster && !child.Name.ToString ().StartsWith ("Monster_", StringComparison.Ordinal))
 			{
 				continue;
 			}
 
-			if (Engine.IsEditorHint())
+			if (Engine.IsEditorHint ())
 			{
-				child.Free();
+				child.Free ();
 			}
 			else
 			{
-				child.QueueFree();
+				child.QueueFree ();
 			}
 		}
 
-		RegularMonsters.Clear();
-		NamedMonsters.Clear();
-		_regularMonsterIds.Clear();
-		_namedMonsterIds.Clear();
+		RegularMonsters.Clear ();
+		NamedMonsters.Clear ();
+		_regularMonsterIds.Clear ();
+		_namedMonsterIds.Clear ();
+		_namedMonsterRanks.Clear ();
 	}
 
-	private void BeginBulkSpawnPlan(bool enableSpawningOnApply)
+	private void BeginBulkSpawnPlan (bool enableSpawningOnApply)
 	{
-		var occupied = CaptureOccupiedWorldPositions();
-		if (TryBuildPlanFromBakedSlots(TargetRegularMonsterCount, TargetNamedMonsterCount, occupied, out var plan))
+		var occupied = CaptureOccupiedWorldPositions ();
+		if (TryPlanPopulation (occupied, out var plan))
 		{
 			SpawnPlacementInvalid = false;
-			ApplySpawnPlan(plan);
-			// Only mark activated after a successful plan apply — otherwise proximity would treat a
-			// failed first spawn as done and never retry.
+			ApplySpawnPlan (plan);
+			// Proximity treats the spawner as done once activated, so a failed first spawn stays
+			// inactive
 			if (enableSpawningOnApply && !SpawnPlacementInvalid)
 			{
 				_spawningEnabled = true;
@@ -542,20 +550,20 @@ public partial class MonsterSpawner : Node3D
 			return;
 		}
 
-		MarkSpawnPlacementInvalid();
+		MarkSpawnPlacementInvalid ();
 	}
 
-	private void BeginDeathRespawnPlan(int monsterId, bool isNamed)
+	private void BeginDeathRespawnPlan (int monsterId, NamedBossRank rank)
 	{
-		if (TryApplyDeathRespawnFromBakedSlot(monsterId, isNamed))
+		if (TryApplyDeathRespawnFromBakedSlot (monsterId, rank))
 		{
 			return;
 		}
 
-		MarkSpawnPlacementInvalid();
+		MarkSpawnPlacementInvalid ();
 	}
 
-	private bool TryBuildPlanFromBakedSlots(
+	private bool TryBuildPlanFromBakedSlots (
 		int targetRegular,
 		int targetNamed,
 		Vector3[] occupied,
@@ -568,40 +576,40 @@ public partial class MonsterSpawner : Node3D
 			return false;
 		}
 
-		var candidates = new List<Vector3>(BakedSpawnSlots.Count);
+		var candidates = new List<Vector3> (BakedSpawnSlots.Count);
 		foreach (var slot in BakedSpawnSlots)
 		{
-			candidates.Add(slot);
+			candidates.Add (slot);
 		}
 
-		ShuffleSlots(candidates);
+		ShuffleSlots (candidates);
 
-		var regularPositions = new List<Vector3>(targetRegular);
-		var namedPositions = new List<Vector3>(targetNamed);
-		var picked = new List<Vector3>(occupied.Length + totalNeeded);
+		var regularPositions = new List<Vector3> (targetRegular);
+		var namedPositions = new List<Vector3> (targetNamed);
+		var picked = new List<Vector3> (occupied.Length + totalNeeded);
 		foreach (var position in occupied)
 		{
-			picked.Add(position);
+			picked.Add (position);
 		}
 
 		foreach (var candidate in candidates)
 		{
-			if (!IsBakedSlotStillValid(candidate, picked))
+			if (!IsBakedSlotStillValid (candidate, picked))
 			{
 				continue;
 			}
 
 			if (regularPositions.Count < targetRegular)
 			{
-				regularPositions.Add(candidate);
-				picked.Add(candidate);
+				regularPositions.Add (candidate);
+				picked.Add (candidate);
 				continue;
 			}
 
 			if (namedPositions.Count < targetNamed)
 			{
-				namedPositions.Add(candidate);
-				picked.Add(candidate);
+				namedPositions.Add (candidate);
+				picked.Add (candidate);
 			}
 
 			if (regularPositions.Count >= targetRegular && namedPositions.Count >= targetNamed)
@@ -615,11 +623,11 @@ public partial class MonsterSpawner : Node3D
 			return false;
 		}
 
-		plan = new MonsterSpawnPlan(regularPositions, namedPositions);
+		plan = new MonsterSpawnPlan (regularPositions, namedPositions);
 		return true;
 	}
 
-	private bool TryApplyDeathRespawnFromBakedSlot(int monsterId, bool isNamed)
+	private bool TryApplyDeathRespawnFromBakedSlot (int monsterId, NamedBossRank rank)
 	{
 		if (BakedSpawnSlots.Count == 0)
 		{
@@ -628,29 +636,29 @@ public partial class MonsterSpawner : Node3D
 
 		lock (_spawnPlacementLock)
 		{
-			var occupied = CaptureOccupiedWorldPositions();
-			var candidates = new List<Vector3>(BakedSpawnSlots.Count);
+			var occupied = CaptureOccupiedWorldPositions ();
+			var candidates = new List<Vector3> (BakedSpawnSlots.Count);
 			foreach (var slot in BakedSpawnSlots)
 			{
-				candidates.Add(slot);
+				candidates.Add (slot);
 			}
 
-			ShuffleSlots(candidates);
+			ShuffleSlots (candidates);
 			foreach (var candidate in candidates)
 			{
-				if (!IsBakedSlotStillValid(candidate, occupied))
+				if (!IsBakedSlotStillValid (candidate, occupied))
 				{
 					continue;
 				}
 
-				if (isNamed)
+				if (rank != NamedBossRank.None)
 				{
-					if (TrySpawnNamedMonsterAt(monsterId, candidate))
+					if (TrySpawnNamedMonsterAt (monsterId, candidate, ResolveSlotIndex (candidate), rank))
 					{
 						return true;
 					}
 				}
-				else if (SpawnRegularMonsterAt(monsterId, candidate, ResolveSlotIndex(candidate)))
+				else if (SpawnRegularMonsterAt (monsterId, candidate, ResolveSlotIndex (candidate)))
 				{
 					return true;
 				}
@@ -661,15 +669,12 @@ public partial class MonsterSpawner : Node3D
 	}
 
 	/// <summary>
-	///     Re-checks a previously baked spawn slot right before actually using it to spawn a monster. Only
-	///     re-checks things that can legitimately change without a rebake (the spawner moving, another
-	///     monster already occupying/being planned for a nearby slot) - walkability itself is intentionally
-	///     *not* re-checked here: <see cref="BakedSpawnSlots" /> were already validated against the baked
-	///     navmesh (see <see cref="MonsterSpawnSlotBaker" />), which is the sole outdoor walkability authority.
+	/// Walkability is not re-checked (slots were validated on the navmesh). A moved spawner or an
+	/// occupied nearby slot still rejects the slot
 	/// </summary>
-	private bool IsBakedSlotStillValid(Vector3 candidate, IReadOnlyList<Vector3> occupied)
+	private bool IsBakedSlotStillValid (Vector3 candidate, IReadOnlyList<Vector3> occupied)
 	{
-		if (!NavPathQuery.IsInsideLeash(candidate, GlobalPosition, SpawnRadiusMeters))
+		if (!NavPathQuery.IsInsideLeash (candidate, GlobalPosition, SpawnRadiusMeters))
 		{
 			return false;
 		}
@@ -688,16 +693,16 @@ public partial class MonsterSpawner : Node3D
 		return true;
 	}
 
-	private static void ShuffleSlots(List<Vector3> candidates)
+	private static void ShuffleSlots (List<Vector3> candidates)
 	{
 		for (var i = candidates.Count - 1; i > 0; i--)
 		{
-			var j = Random.Shared.Next(i + 1);
+			var j = Random.Shared.Next (i + 1);
 			(candidates[i], candidates[j]) = (candidates[j], candidates[i]);
 		}
 	}
 
-	private void EnqueueDeathRespawn(int monsterId, bool isNamed)
+	private void EnqueueDeathRespawn (int monsterId, NamedBossRank rank)
 	{
 		lock (_spawnPlacementLock)
 		{
@@ -706,25 +711,25 @@ public partial class MonsterSpawner : Node3D
 				return;
 			}
 
-			_pendingDeathRespawns.Enqueue(new PendingDeathRespawn
+			_pendingDeathRespawns.Enqueue (new PendingDeathRespawn
 			{
 				MonsterId = monsterId,
-				IsNamed = isNamed,
+				Rank = rank,
 			});
 		}
 
-		TryStartNextDeathRespawnPlan();
+		TryStartNextDeathRespawnPlan ();
 	}
 
-	private void TryStartNextDeathRespawnPlan()
+	private void TryStartNextDeathRespawnPlan ()
 	{
 		lock (_spawnPlacementLock)
 		{
-			TryStartNextDeathRespawnPlanCore();
+			TryStartNextDeathRespawnPlanCore ();
 		}
 	}
 
-	private void TryStartNextDeathRespawnPlanCore()
+	private void TryStartNextDeathRespawnPlanCore ()
 	{
 		if (!_spawningEnabled || SpawnPlacementInvalid || HasSpawnError)
 		{
@@ -736,55 +741,113 @@ public partial class MonsterSpawner : Node3D
 			return;
 		}
 
-		var next = _pendingDeathRespawns.Dequeue();
-		BeginDeathRespawnPlan(next.MonsterId, next.IsNamed);
+		var next = _pendingDeathRespawns.Dequeue ();
+		BeginDeathRespawnPlan (next.MonsterId, next.Rank);
 	}
 
-	private void ApplySpawnPlan(MonsterSpawnPlan plan)
+	private void ApplySpawnPlan (MonsterSpawnPlan plan)
 	{
 		SpawnPlacementInvalid = false;
-		ResetBindSlotCounter();
+		ResetBindSlotCounter ();
 
 		foreach (var position in plan.RegularPositions)
 		{
-			if (!SpawnRegularMonsterAt(TakeMonsterId(), position, ResolveSlotIndex(position)))
+			if (!SpawnRegularMonsterAt (TakeMonsterId (), position, ResolveSlotIndex (position)))
 			{
-				MarkSpawnPlacementInvalid();
+				MarkSpawnPlacementInvalid ();
 				return;
 			}
 		}
 
 		foreach (var position in plan.NamedPositions)
 		{
-			TrySpawnNamedMonsterAt(TakeMonsterId(), position);
+			if (!TrySpawnNamedMonsterAt (TakeMonsterId (), position, ResolveSlotIndex (position), NamedBossRank.RandomSpawn))
+			{
+				MarkSpawnPlacementInvalid ();
+				return;
+			}
 		}
 	}
 
-	private void MarkSpawnPlacementInvalid()
+	/// <summary>
+	/// Camps with no named target and no cat override roll one extra named mob. If slots cannot fit
+	/// it, regulars still spawn
+	/// </summary>
+	private bool TryPlanPopulation (Vector3[] occupied, out MonsterSpawnPlan plan)
+	{
+		var named = EffectiveNamedTarget ();
+		if (TryBuildPlanFromBakedSlots (TargetRegularMonsterCount, named, occupied, out plan))
+		{
+			return true;
+		}
+
+		if (_bonusNamedSpawn && named > TargetNamedMonsterCount)
+		{
+			return TryBuildPlanFromBakedSlots (TargetRegularMonsterCount, TargetNamedMonsterCount, occupied, out plan);
+		}
+
+		return false;
+	}
+
+	private int EffectiveNamedTarget ()
+	{
+		if (TargetNamedMonsterCount > 0 || IsFixedToCats ())
+		{
+			return TargetNamedMonsterCount;
+		}
+
+		if (!_bonusNamedResolved)
+		{
+			_bonusNamedResolved = true;
+			_bonusNamedSpawn = Random.Shared.Next (100) < BonusNamedChancePercent;
+		}
+
+		return _bonusNamedSpawn ? 1 : TargetNamedMonsterCount;
+	}
+
+	private bool IsFixedToCats ()
+	{
+		if (MobTypeOverrides.Count == 0)
+		{
+			return false;
+		}
+
+		foreach (var type in MobTypeOverrides)
+		{
+			if (type != MonsterType.Кошка)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void MarkSpawnPlacementInvalid ()
 	{
 		SpawnPlacementInvalid = true;
-		NotifyPropertyListChanged();
-		GD.PushWarning(
+		NotifyPropertyListChanged ();
+		GD.PushWarning (
 			$"MonsterSpawner '{Name}': insufficient baked spawn slots (have {BakedSpawnSlots.Count}, "
-			+ $"need {TargetRegularMonsterCount + TargetNamedMonsterCount}). Run Bake spawn slots.");
+			+ $"need {TargetRegularMonsterCount + EffectiveNamedTarget ()}). Run Bake spawn slots.");
 	}
 
-	private Vector3[] CaptureOccupiedWorldPositions()
+	private Vector3[] CaptureOccupiedWorldPositions ()
 	{
-		var occupied = new List<Vector3>();
-		foreach (var position in CollectOccupiedWorldPositions())
+		var occupied = new List<Vector3> ();
+		foreach (var position in CollectOccupiedWorldPositions ())
 		{
-			occupied.Add(position);
+			occupied.Add (position);
 		}
 
-		return occupied.ToArray();
+		return occupied.ToArray ();
 	}
 
-	private IEnumerable<Vector3> CollectOccupiedWorldPositions()
+	private IEnumerable<Vector3> CollectOccupiedWorldPositions ()
 	{
 		foreach (var node in RegularMonsters)
 		{
-			if (IsInstanceValid(node))
+			if (IsInstanceValid (node))
 			{
 				yield return node.GlobalPosition;
 			}
@@ -792,67 +855,68 @@ public partial class MonsterSpawner : Node3D
 
 		foreach (var node in NamedMonsters)
 		{
-			if (IsInstanceValid(node))
+			if (IsInstanceValid (node))
 			{
 				yield return node.GlobalPosition;
 			}
 		}
 	}
 
-	private void ClearPendingRespawnTimersForThisSpawner()
+	private void ClearPendingRespawnTimersForThisSpawner ()
 	{
 		lock (TimerLock)
 		{
-			GlobalRespawnTimers.RemoveAll(timer => timer.Spawner == this);
+			GlobalRespawnTimers.RemoveAll (timer => timer.Spawner == this);
 		}
 
-		_pendingDeathRespawns.Clear();
+		_pendingDeathRespawns.Clear ();
 	}
 
-	private void DeleteAllSpawnedMonsters()
+	private void DeleteAllSpawnedMonsters ()
 	{
 		foreach (var node in RegularMonsters)
 		{
-			if (IsInstanceValid(node))
+			if (IsInstanceValid (node))
 			{
-				if (Engine.IsEditorHint())
+				if (Engine.IsEditorHint ())
 				{
-					node.Free();
+					node.Free ();
 				}
 				else
 				{
-					node.QueueFree();
+					node.QueueFree ();
 				}
 			}
 		}
 
 		foreach (var node in NamedMonsters)
 		{
-			if (IsInstanceValid(node))
+			if (IsInstanceValid (node))
 			{
-				if (Engine.IsEditorHint())
+				if (Engine.IsEditorHint ())
 				{
-					node.Free();
+					node.Free ();
 				}
 				else
 				{
-					node.QueueFree();
+					node.QueueFree ();
 				}
 			}
 		}
 
-		RegularMonsters.Clear();
-		NamedMonsters.Clear();
-		_regularMonsterIds.Clear();
-		_namedMonsterIds.Clear();
+		RegularMonsters.Clear ();
+		NamedMonsters.Clear ();
+		_regularMonsterIds.Clear ();
+		_namedMonsterIds.Clear ();
+		_namedMonsterRanks.Clear ();
 	}
 
-	private static int CountAlive(Array<Node3D> spawnedMonsters)
+	private static int CountAlive (Array<Node3D> spawnedMonsters)
 	{
 		var alive = 0;
 		foreach (var node in spawnedMonsters)
 		{
-			if (IsInstanceValid(node))
+			if (IsInstanceValid (node))
 			{
 				alive++;
 			}
@@ -861,32 +925,42 @@ public partial class MonsterSpawner : Node3D
 		return alive;
 	}
 
-	private void ScheduleRespawnsForDeadMonsters(
+	private void ScheduleRespawnsForDeadMonsters (
 		Array<Node3D> spawnedMonsters,
 		List<int> monsterIds,
-		int respawnDelaySeconds,
-		bool isNamed)
+		List<NamedBossRank>? ranks,
+		int respawnDelaySeconds)
 	{
 		for (var i = spawnedMonsters.Count - 1; i >= 0; i--)
 		{
-			if (IsInstanceValid(spawnedMonsters[i]))
+			if (IsInstanceValid (spawnedMonsters[i]))
 			{
 				continue;
 			}
 
-			var monsterId = i < monsterIds.Count ? monsterIds[i] : TakeMonsterId();
-			if (i < monsterIds.Count)
+			var monsterId = i < monsterIds.Count ? monsterIds[i] : TakeMonsterId ();
+			var rank = NamedBossRank.None;
+			if (ranks is not null)
 			{
-				monsterIds.RemoveAt(i);
+				rank = i < ranks.Count ? ranks[i] : NamedBossRank.RandomSpawn;
+				if (i < ranks.Count)
+				{
+					ranks.RemoveAt (i);
+				}
 			}
 
-			spawnedMonsters.RemoveAt(i);
+			if (i < monsterIds.Count)
+			{
+				monsterIds.RemoveAt (i);
+			}
+
+			spawnedMonsters.RemoveAt (i);
 			lock (TimerLock)
 			{
-				GlobalRespawnTimers.Add(new RespawnTimer
+				GlobalRespawnTimers.Add (new RespawnTimer
 				{
 					RemainingSeconds = respawnDelaySeconds,
-					IsNamed = isNamed,
+					Rank = rank,
 					MonsterId = monsterId,
 					Spawner = this,
 				});
@@ -894,7 +968,7 @@ public partial class MonsterSpawner : Node3D
 		}
 	}
 
-	private static void ProcessGlobalRespawnTimers(double delta)
+	private static void ProcessGlobalRespawnTimers (double delta)
 	{
 		List<RespawnTimer> expired;
 		lock (TimerLock)
@@ -911,8 +985,8 @@ public partial class MonsterSpawner : Node3D
 				timer.RemainingSeconds -= delta;
 				if (timer.RemainingSeconds <= 0)
 				{
-					expired.Add(timer);
-					GlobalRespawnTimers.RemoveAt(i);
+					expired.Add (timer);
+					GlobalRespawnTimers.RemoveAt (i);
 				}
 				else
 				{
@@ -923,36 +997,36 @@ public partial class MonsterSpawner : Node3D
 
 		foreach (var timer in expired)
 		{
-			if (!IsInstanceValid(timer.Spawner))
+			if (!IsInstanceValid (timer.Spawner))
 			{
 				continue;
 			}
 
-			timer.Spawner.EnqueueDeathRespawn(timer.MonsterId, timer.IsNamed);
+			timer.Spawner.EnqueueDeathRespawn (timer.MonsterId, timer.Rank);
 		}
 	}
 
-	public NavPathResult RequestOutdoorPath(Monster monster, Vector3 goalWorld)
+	public NavPathResult RequestOutdoorPath (Monster monster, Vector3 goalWorld)
 	{
-		var resolvedGoal = NavPathQuery.ClampGoalToLeash(goalWorld, LeashCenterWorld, LeashRadiusMeters);
-		return NavPathQuery.FindPath(
+		var resolvedGoal = NavPathQuery.ClampGoalToLeash (goalWorld, LeashCenterWorld, LeashRadiusMeters);
+		return NavPathQuery.FindPath (
 			this,
-			new NavPathRequest(monster.GlobalPosition, resolvedGoal, LeashCenterWorld, LeashRadiusMeters));
+			new NavPathRequest (monster.GlobalPosition, resolvedGoal, LeashCenterWorld, LeashRadiusMeters));
 	}
 
-	public bool TryNavigateMonster(Monster monster, Vector3 goalWorld, out NavPathFailReason reason)
+	public bool TryNavigateMonster (Monster monster, Vector3 goalWorld, out NavPathFailReason reason)
 	{
-		var result = RequestOutdoorPath(monster, goalWorld);
+		var result = RequestOutdoorPath (monster, goalWorld);
 		reason = result.Reason;
 		if (!result.Success)
 		{
 			return false;
 		}
 
-		return monster.TrySetNavPath(result.Waypoints);
+		return monster.TrySetNavPath (result.Waypoints);
 	}
 
-	private int ResolveSlotIndex(Vector3 spawnWorldPosition)
+	private int ResolveSlotIndex (Vector3 spawnWorldPosition)
 	{
 		for (var i = 0; i < BakedSpawnSlots.Count; i++)
 		{
@@ -970,22 +1044,22 @@ public partial class MonsterSpawner : Node3D
 		return index;
 	}
 
-	private void ResetBindSlotCounter()
+	private void ResetBindSlotCounter ()
 	{
 		_nextBindSlotIndex = 0;
 	}
 
-	private static int RollInclusiveLevel(int minLevel, int maxLevel)
+	private static int RollInclusiveLevel (int minLevel, int maxLevel)
 	{
 		if (minLevel > maxLevel)
 		{
 			(minLevel, maxLevel) = (maxLevel, minLevel);
 		}
 
-		return Random.Shared.Next(minLevel, maxLevel + 1);
+		return Random.Shared.Next (minLevel, maxLevel + 1);
 	}
 
-	private void EnsureRegularMonsterTypeCache()
+	private void EnsureRegularMonsterTypeCache ()
 	{
 		if (_regularMonsterTypesByLevel is not null
 			&& _cachedRegularMinLevel == RegularMonsterMinLevel
@@ -996,109 +1070,140 @@ public partial class MonsterSpawner : Node3D
 
 		_cachedRegularMinLevel = RegularMonsterMinLevel;
 		_cachedRegularMaxLevel = RegularMonsterMaxLevel;
-		_regularMonsterTypesByLevel = MonsterSpawnerMonsterTypeLookup.BuildLevelSubset(
+		_regularMonsterTypesByLevel = MonsterSpawnerMonsterTypeLookup.BuildLevelSubset (
 			RegularMonsterMinLevel,
 			RegularMonsterMaxLevel);
 	}
 
-	private MonsterType PickRegularMonsterType(int level)
+	private MonsterType PickRegularMonsterType (int level)
 	{
 		if (MobTypeOverrides.Count > 0
-			&& MonsterSpawnerMonsterTypeLookup.TryPickWeightedRandomMonsterType(
+			&& MonsterSpawnerMonsterTypeLookup.TryPickWeightedRandomMonsterType (
 				[.. MobTypeOverrides], out var overrideType))
 		{
 			return overrideType;
 		}
 
-		EnsureRegularMonsterTypeCache();
+		EnsureRegularMonsterTypeCache ();
 		if (_regularMonsterTypesByLevel is not null
-			&& MonsterSpawnerMonsterTypeLookup.TryPickRandomMonsterType(_regularMonsterTypesByLevel, level, out var monsterType))
+			&& MonsterSpawnerMonsterTypeLookup.TryPickRandomMonsterType (_regularMonsterTypesByLevel, level, out var monsterType))
 		{
 			return monsterType;
 		}
 
-		GD.PushWarning(
+		GD.PushWarning (
 			$"MonsterSpawner '{Name}': no monster type for regular level {level} (range {RegularMonsterMinLevel}-{RegularMonsterMaxLevel}); using {MonsterType.Палочник}.");
 		return MonsterType.Палочник;
 	}
 
-	private bool SpawnRegularMonsterAt(int monsterId, Vector3 spawnWorldPosition, int slotIndex)
+	private bool SpawnRegularMonsterAt (int monsterId, Vector3 spawnWorldPosition, int slotIndex)
 	{
-		var scene = GD.Load<PackedScene>(MonsterScenePath);
+		var scene = GD.Load<PackedScene> (MonsterScenePath);
 		if (scene is null)
 		{
-			GD.PushError($"MonsterSpawner: failed to load scene '{MonsterScenePath}'.");
+			GD.PushError ($"MonsterSpawner: failed to load scene '{MonsterScenePath}'.");
 			return false;
 		}
 
-		if (scene.Instantiate() is not Monster monster)
+		if (scene.Instantiate () is not Monster monster)
 		{
-			GD.PushError($"MonsterSpawner: '{MonsterScenePath}' is not a Monster scene.");
+			GD.PushError ($"MonsterSpawner: '{MonsterScenePath}' is not a Monster scene.");
 			return false;
 		}
 
-		var level = RollInclusiveLevel(RegularMonsterMinLevel, RegularMonsterMaxLevel);
-		var monsterType = PickRegularMonsterType(level);
-		const bool isNamed = false;
+		var level = RollInclusiveLevel (RegularMonsterMinLevel, RegularMonsterMaxLevel);
+		var monsterType = PickRegularMonsterType (level);
 
 		monster.MonsterType = monsterType;
 		monster.Level = level;
-		monster.IsNamed = isNamed;
-		monster.Name = BuildMonsterNodeName(monsterType, level, isNamed, monsterId);
+		monster.NamedBossRank = NamedBossRank.None;
+		monster.Name = BuildMonsterNodeName (monsterType, level, false, monsterId);
 
-		AddChild(monster);
-		var resolvedPosition = ResolveBakedSlotPosition(spawnWorldPosition);
-		monster.BindHome(
-			new MonsterHomeBinding(
+		AddChild (monster);
+		var resolvedPosition = ResolveBakedSlotPosition (spawnWorldPosition);
+		monster.BindHome (
+			new MonsterHomeBinding (
 				slotIndex,
 				resolvedPosition,
 				GlobalPosition,
 				LeashRadiusMeters,
-				GetPath(),
-				GetInstanceId(),
+				GetPath (),
+				GetInstanceId (),
 				atlasVerticalDelta: 0f),
 			this);
-		ApplySpawnTransform(monster, resolvedPosition);
-		SetMonsterOwnerForPersistence(monster);
-		RegularMonsters.Add(monster);
-		_regularMonsterIds.Add(monsterId);
+		ApplySpawnTransform (monster, resolvedPosition);
+		SetMonsterOwnerForPersistence (monster);
+		RegularMonsters.Add (monster);
+		_regularMonsterIds.Add (monsterId);
 		return true;
 	}
 
-	private static void ApplySpawnTransform(Monster monster, Vector3 spawnWorldPosition, bool randomizeAngle = true)
+	private static void ApplySpawnTransform (Monster monster, Vector3 spawnWorldPosition, bool randomizeAngle = true)
 	{
-		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset(spawnWorldPosition.Y);
+		spawnWorldPosition.Y += monster.GetSpawnOriginYOffset (spawnWorldPosition.Y);
 		monster.GlobalPosition = spawnWorldPosition;
 		if (randomizeAngle)
 		{
-			monster.Angle = WorldObject.CreateRandomSpawnAngle();
+			monster.Angle = WorldObject.CreateRandomSpawnAngle ();
 		}
 
-		// _Ready registered visibility at the pre-placement pose; refresh after the final slot Y.
-		WorldObjectVisibilityManager.Unregister(monster);
-		WorldObjectVisibilityManager.Register(monster);
-		monster.RegisterMultiMeshVisualDeferred();
+		// _Ready registered visibility at the pre-placement pose; refresh after the final slot Y
+		WorldObjectVisibilityManager.Unregister (monster);
+		WorldObjectVisibilityManager.Register (monster);
+		monster.RegisterMultiMeshVisualDeferred ();
 	}
 
-	private Vector3 ResolveBakedSlotPosition(Vector3 bakedSlot)
+	private Vector3 ResolveBakedSlotPosition (Vector3 bakedSlot)
 	{
-		// BakedSpawnSlots already store navmesh-snapped Y from OutdoorSpawnSlotValidator.
-		// Do not re-resolve via physics/terrain raycasts: buildings often have no roof colliders, so
-		// those queries hit bare ground and pull roof-navmesh slots down onto terrain.
+		// BakedSpawnSlots already store navmesh-snapped Y. Roof buildings often have no roof
+		// collider, so a physics ray hits bare ground and pulls the slot down
 		return bakedSlot;
 	}
 
-	private bool TrySpawnNamedMonster(int monsterId)
+	private bool TrySpawnNamedMonsterAt (int monsterId, Vector3 spawnWorldPosition, int slotIndex, NamedBossRank rank)
 	{
-		return false;
+		var scene = GD.Load<PackedScene> (MonsterScenePath);
+		if (scene is null)
+		{
+			GD.PushError ($"MonsterSpawner: failed to load scene '{MonsterScenePath}'.");
+			return false;
+		}
+
+		if (scene.Instantiate () is not Monster monster)
+		{
+			GD.PushError ($"MonsterSpawner: '{MonsterScenePath}' is not a Monster scene.");
+			return false;
+		}
+
+		var level = RollInclusiveLevel (NamedMonsterMinLevel, NamedMonsterMaxLevel);
+		var monsterType = PickRegularMonsterType (level);
+
+		monster.MonsterType = monsterType;
+		monster.Level = level;
+		monster.NamedBossRank = rank == NamedBossRank.None ? NamedBossRank.RandomSpawn : rank;
+		monster.Name = BuildMonsterNodeName (monsterType, level, true, monsterId);
+
+		AddChild (monster);
+		var resolvedPosition = ResolveBakedSlotPosition (spawnWorldPosition);
+		monster.BindHome (
+			new MonsterHomeBinding (
+				slotIndex,
+				resolvedPosition,
+				GlobalPosition,
+				LeashRadiusMeters,
+				GetPath (),
+				GetInstanceId (),
+				atlasVerticalDelta: 0f),
+			this);
+		ApplySpawnTransform (monster, resolvedPosition);
+		SetMonsterOwnerForPersistence (monster);
+		NamedMonsters.Add (monster);
+		_namedMonsterIds.Add (monsterId);
+		_namedMonsterRanks.Add (monster.NamedBossRank);
+		return true;
 	}
 
-	private bool TrySpawnNamedMonsterAt(int monsterId, Vector3 spawnWorldPosition)
-	{
-		return false;
-	}
-
-	private static int TakeMonsterId()
+	private static int TakeMonsterId ()
 	{
 		lock (MonsterIdLock)
 		{
@@ -1106,80 +1211,82 @@ public partial class MonsterSpawner : Node3D
 		}
 	}
 
-	private void RebuildMonsterIdLists()
+	private void RebuildMonsterIdLists ()
 	{
-		_regularMonsterIds.Clear();
+		_regularMonsterIds.Clear ();
 		foreach (var node in RegularMonsters)
 		{
-			if (!IsInstanceValid(node))
+			if (!IsInstanceValid (node))
 			{
 				continue;
 			}
 
-			_regularMonsterIds.Add(TryParseMonsterIdFromName(node.Name, out var id) ? id : TakeMonsterId());
+			_regularMonsterIds.Add (TryParseMonsterIdFromName (node.Name, out var id) ? id : TakeMonsterId ());
 		}
 
-		_namedMonsterIds.Clear();
+		_namedMonsterIds.Clear ();
+		_namedMonsterRanks.Clear ();
 		foreach (var node in NamedMonsters)
 		{
-			if (!IsInstanceValid(node))
+			if (!IsInstanceValid (node))
 			{
 				continue;
 			}
 
-			_namedMonsterIds.Add(TryParseMonsterIdFromName(node.Name, out var id) ? id : TakeMonsterId());
+			_namedMonsterIds.Add (TryParseMonsterIdFromName (node.Name, out var id) ? id : TakeMonsterId ());
+			_namedMonsterRanks.Add (node is Monster named ? named.NamedBossRank : NamedBossRank.RandomSpawn);
 		}
 
-		EnsureMonsterIdCounterAboveTakenIds();
+		EnsureMonsterIdCounterAboveTakenIds ();
 	}
 
-	private void EnsureMonsterIdCounterAboveTakenIds()
+	private void EnsureMonsterIdCounterAboveTakenIds ()
 	{
 		var minNextId = FirstMonsterId;
 		foreach (var id in _regularMonsterIds)
 		{
-			minNextId = Mathf.Max(minNextId, id + 1);
+			minNextId = Mathf.Max (minNextId, id + 1);
 		}
 
 		foreach (var id in _namedMonsterIds)
 		{
-			minNextId = Mathf.Max(minNextId, id + 1);
+			minNextId = Mathf.Max (minNextId, id + 1);
 		}
 
 		lock (MonsterIdLock)
 		{
-			_globalNextMonsterId = Mathf.Max(_globalNextMonsterId, minNextId);
+			_globalNextMonsterId = Mathf.Max (_globalNextMonsterId, minNextId);
 		}
 	}
 
-	private static bool TryParseMonsterIdFromName(StringName name, out int id)
+	private static bool TryParseMonsterIdFromName (StringName name, out int id)
 	{
 		id = 0;
-		var parts = name.ToString().Split('_');
+		var parts = name.ToString ().Split ('_');
 		if (parts.Length < 4)
 		{
 			return false;
 		}
 
-		return int.TryParse(parts[^1], out id);
+		return int.TryParse (parts[^1], out id);
 	}
 
-	private static string BuildMonsterNodeName(MonsterType type, int level, bool isNamed, int id)
+	private static string BuildMonsterNodeName (MonsterType type, int level, bool named, int id)
 	{
-		var prefix = isNamed ? "MonsterNamed" : "Monster";
+		var prefix = named ? "MonsterNamed" : "Monster";
 		return $"{prefix}_{type}_{level}_{id}";
 	}
 
-	private void SetMonsterOwnerForPersistence(Monster monster)
+	private void SetMonsterOwnerForPersistence (Monster monster)
 	{
-		WorldObjectDumpFillCommon.SetOwnerIfEditor(this, monster);
+		WorldObjectDumpFillCommon.SetOwnerIfEditor (this, monster);
 
-		if (!Engine.IsEditorHint() || monster.Owner != this)
+		if (!Engine.IsEditorHint () || monster.Owner != this)
 		{
 			return;
 		}
 
-		var sceneRoot = GetTree()?.EditedSceneRoot;
+		var sceneRoot = GetTree ()?.EditedSceneRoot;
 		if (sceneRoot is not null && sceneRoot != this)
 		{
 			monster.Owner = sceneRoot;

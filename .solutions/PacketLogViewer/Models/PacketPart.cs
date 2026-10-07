@@ -12,7 +12,7 @@ using SphServer.Helpers.Enums;
 
 namespace SpherePacketVisualEditor;
 
-public record PacketPartDisplayText(
+public record PacketPartDisplayText (
     string bitsStr,
     string bytesStr,
     string textStr,
@@ -51,7 +51,7 @@ public class PacketPart
     public PacketPartType PacketPartType { get; set; }
     public int BitOffset { get; set; }
     public long BitLength { get; set; }
-    [BsonIgnore] public PacketPartDisplayText DisplayText = new("", "", "", "", "", null, null, null);
+    [BsonIgnore] public PacketPartDisplayText DisplayText = new ("", "", "", "", "", null, null, null);
     [BsonIgnore] public Bit[] Value { get; set; } = [];
     [BsonIgnore] public string ListValuePrimary { get; set; } = string.Empty;
     [BsonIgnore] public string ListValueSecondary { get; set; } = string.Empty;
@@ -59,15 +59,15 @@ public class PacketPart
     [BsonIgnore] public bool HasCommentBanner { get; set; }
     [BsonIgnore]
     public SolidColorBrush HighlightBrush =>
-        PacketPartBrushes.Get(HighlightColorR, HighlightColorG, HighlightColorB, HighlightColorA);
+        PacketPartBrushes.Get (HighlightColorR, HighlightColorG, HighlightColorB, HighlightColorA);
     [BsonIgnore]
     public Brush CommentBannerBrush => Comment == "NEXT PACKET" ? Brushes.SlateGray : Brushes.Honeydew;
     public string Comment { get; set; } = string.Empty;
     public long? ActualLongValue { get; set; }
     public int SubpacketIndex { get; set; }
-    public int BitOffsetEnd => (int)(BitOffset + BitLength);
+    public int BitOffsetEnd => (int) (BitOffset + BitLength);
 
-    public PacketPart(int length, string name, string? enumName, bool lengthFromPreviousField,
+    public PacketPart (int length, string name, string? enumName, bool lengthFromPreviousField,
         PacketPartType packetPartType, int bitOffset, Bit[] value, byte r, byte g, byte b, byte a, string comment = "")
     {
         BitLength = length;
@@ -82,10 +82,10 @@ public class PacketPart
         Value = value;
         PacketPartType = packetPartType;
         Comment = comment;
-        UpdateValueDisplayText();
+        UpdateValueDisplayText ();
     }
 
-    public PacketPart()
+    public PacketPart ()
     {
         // required for litedb
     }
@@ -94,17 +94,17 @@ public class PacketPart
 
     public string Name { get; set; } = string.Empty;
 
-    public bool Overlaps(PacketPart other)
+    public bool Overlaps (PacketPart other)
     {
         return BitOffset <= other.BitOffset && BitOffsetEnd >= other.BitOffsetEnd;
     }
 
-    public bool ContainedWithin(PacketPart other)
+    public bool ContainedWithin (PacketPart other)
     {
         return BitOffset > other.BitOffset && BitOffsetEnd < other.BitOffsetEnd;
     }
 
-    public PacketPart GetPiece(int newOffset, int newLength, string? name = null)
+    public PacketPart GetPiece (int newOffset, int newLength, string? name = null)
     {
         if (newOffset < BitOffset || newOffset + newLength > BitOffsetEnd)
         {
@@ -114,13 +114,13 @@ public class PacketPart
         var skipStart = newOffset - BitOffset;
         var skipEnd = BitOffsetEnd - (newOffset + newLength);
 
-        var newValue = Value.Skip(skipEnd > 0 ? skipEnd : 0).SkipLast(skipStart > 0 ? skipStart : 0).ToArray();
+        var newValue = Value.Skip (skipEnd > 0 ? skipEnd : 0).SkipLast (skipStart > 0 ? skipStart : 0).ToArray ();
 
-        return new PacketPart(newLength, name ?? Name, EnumName, LengthFromPreviousField, PacketPartType,
+        return new PacketPart (newLength, name ?? Name, EnumName, LengthFromPreviousField, PacketPartType,
             newOffset, newValue, HighlightColorR, HighlightColorG, HighlightColorB, HighlightColorA);
     }
 
-    public string GetDisplayTextForValueType()
+    public string GetDisplayTextForValueType ()
     {
         switch (PacketPartType)
         {
@@ -143,24 +143,24 @@ public class PacketPart
         }
     }
 
-    public void UpdateValueDisplayText()
+    public void UpdateValueDisplayText ()
     {
-        var bits = new List<Bit>(Value ?? []);
-        bits.Reverse();
-        DisplayText = GetValueDisplayText(bits, EnumName);
+        var bits = new List<Bit> (Value ?? []);
+        bits.Reverse ();
+        DisplayText = GetValueDisplayText (bits, EnumName);
         PartListDisplayText =
             $"{Name} ({BitOffset / 8}, {BitOffset % 8}) to ({BitOffsetEnd / 8}, {BitOffsetEnd % 8})";
-        UpdateListDisplayFields();
+        UpdateListDisplayFields ();
     }
 
-    public static void RestoreDisplayFromBytes(IEnumerable<PacketPart> parts, byte[] bytes)
+    public static void RestoreDisplayFromBytes (IEnumerable<PacketPart> parts, byte[] bytes)
     {
         if (bytes.Length == 0)
         {
             return;
         }
 
-        var stream = new BitStream(bytes);
+        var stream = new BitStream (bytes);
         var totalBits = bytes.Length * 8L;
         foreach (var part in parts)
         {
@@ -169,10 +169,10 @@ public class PacketPart
                 continue;
             }
 
-            var length = (int)part.BitLength;
+            var length = (int) part.BitLength;
             if (part.BitOffset + length > totalBits)
             {
-                length = (int)(totalBits - part.BitOffset);
+                length = (int) (totalBits - part.BitOffset);
             }
 
             if (length <= 0)
@@ -180,41 +180,41 @@ public class PacketPart
                 continue;
             }
 
-            stream.SeekBitOffset(part.BitOffset);
-            part.Value = stream.ReadBits(length).Reverse().ToArray();
-            part.UpdateValueDisplayText();
+            stream.SeekBitOffset (part.BitOffset);
+            part.Value = stream.ReadBits (length).Reverse ().ToArray ();
+            part.UpdateValueDisplayText ();
         }
     }
 
-    private void UpdateListDisplayFields()
+    private void UpdateListDisplayFields ()
     {
-        HasCommentBanner = !string.IsNullOrEmpty(Comment) && Comment != UndefinedFieldValue;
+        HasCommentBanner = !string.IsNullOrEmpty (Comment) && Comment != UndefinedFieldValue;
         ListRangeDisplay =
-            $" [{Enum.GetName(PacketPartType) ?? string.Empty}] [({BitOffset / 8}, {BitOffset % 8}) to ({BitOffsetEnd / 8}, {BitOffsetEnd % 8}), {BitLength} bits] ";
-        var valueStr = GetDisplayTextForValueType();
+            $" [{Enum.GetName (PacketPartType) ?? string.Empty}] [({BitOffset / 8}, {BitOffset % 8}) to ({BitOffsetEnd / 8}, {BitOffsetEnd % 8}), {BitLength} bits] ";
+        var valueStr = GetDisplayTextForValueType ();
         if (EnumName is not null)
         {
-            var enumValue = DisplayText.EnumValue?.ToUpper() ?? string.Empty;
+            var enumValue = DisplayText.EnumValue?.ToUpper () ?? string.Empty;
             ListValuePrimary = enumValue;
-            var enumName = SnakeCaseToCamelCase(EnumName);
+            var enumName = SnakeCaseToCamelCase (EnumName);
             ListValueSecondary = $" ({enumName}::{enumValue} = {valueStr})";
             return;
         }
 
         var valueStrSplit = valueStr
-            .Split('=', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
+            .Split ('=', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList ();
         if (ActualLongValue is not null)
         {
             if (Name is PacketPartNames.Level or PacketPartNames.CurrentHP or PacketPartNames.MaxHP)
             {
-                ListValuePrimary = ActualLongValue.ToString() ?? string.Empty;
+                ListValuePrimary = ActualLongValue.ToString () ?? string.Empty;
                 ListValueSecondary = string.Empty;
             }
             else
             {
                 var actualValueStrHex = $"{ActualLongValue:X}";
                 var hexPaddingLength = actualValueStrHex.Length + actualValueStrHex.Length % 2;
-                ListValuePrimary = $"0x{actualValueStrHex.PadLeft(hexPaddingLength, '0')}";
+                ListValuePrimary = $"0x{actualValueStrHex.PadLeft (hexPaddingLength, '0')}";
                 ListValueSecondary = $" = {ActualLongValue}";
             }
 
@@ -234,18 +234,18 @@ public class PacketPart
         ListValueSecondary = string.Empty;
     }
 
-    private static string SnakeCaseToCamelCase(string? name)
+    private static string SnakeCaseToCamelCase (string? name)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty (name))
         {
             return string.Empty;
         }
 
-        return string.Concat(name.Split('_', StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.Length == 0 ? s : char.ToUpperInvariant(s[0]) + s[1..]));
+        return string.Concat (name.Split ('_', StringSplitOptions.RemoveEmptyEntries)
+            .Select (s => s.Length == 0 ? s : char.ToUpperInvariant (s[0]) + s[1..]));
     }
 
-    public static PacketPartDisplayText GetValueDisplayText(List<Bit> bits, string? enumName)
+    public static PacketPartDisplayText GetValueDisplayText (List<Bit> bits, string? enumName)
     {
         var remainingBitsToFullByte = bits.Count % 8;
         var bitsPadding = remainingBitsToFullByte == 0 ? 0 : 8 - remainingBitsToFullByte;
@@ -254,46 +254,47 @@ public class PacketPart
         {
             for (var i = 0; i < bitsPadding; i++)
             {
-                bits.Add(0);
+                bits.Add (0);
             }
         }
 
-        var bytes = BitStream.BitArrayToBytes(bits.ToArray());
-        var stream = new BitStream(bytes);
-        var textChars = PacketLogViewerMainWindow.Win1251.GetString(bytes).ToCharArray();
-        var visibleChars = textChars.Select(PacketLogViewerMainWindow.GetVisibleChar).ToArray();
-        var textString = new string(visibleChars);
-        Array.Reverse(bytes);
-        var bytesString = Convert.ToHexString(bytes);
-        var actualBits = bits.ToArray()[..^bitsPadding];
-        Array.Reverse(actualBits);
-        var bitsString = string.Join("", actualBits.Select(x => (int)x));
-        var longValue = stream.ReadInt64();
+        var bytes = BitStream.BitArrayToBytes (bits.ToArray ());
+        var stream = new BitStream (bytes);
+        var textChars = PacketLogViewerMainWindow.Win1251.GetString (bytes).ToCharArray ();
+        var visibleChars = textChars.Select (PacketLogViewerMainWindow.GetVisibleChar).ToArray ();
+        var textString = new string (visibleChars);
+        Array.Reverse (bytes);
+        var bytesString = Convert.ToHexString (bytes);
+        var actualBits = bits.ToArray ()[..^bitsPadding];
+        Array.Reverse (actualBits);
+        var bitsString = string.Join ("", actualBits.Select (x => (int) x));
+        var longValue = stream.ReadInt64 ();
         var longValueStr = bytes.Length > 8 ? "(too large)" : $"0x{bytesString} = {longValue}";
-        stream.Seek(0, 0);
-        var ulongValue = stream.ReadUInt64();
+        stream.Seek (0, 0);
+        var ulongValue = stream.ReadUInt64 ();
         var ulongValueStr = bytes.Length > 8 ? "(too large)" : $"0x{bytesString} = {ulongValue}";
-        stream.Seek(0, 0);
-        var coordsServer = bytes.Length >= 4 ? CoordsHelper.DecodeServerCoordinate(bytes) : (double?)null;
+        stream.Seek (0, 0);
+        var coordsServer = bytes.Length >= 4 ? CoordsHelper.DecodeServerCoordinate (bytes) : (double?) null;
         var coordsServerStr = coordsServer is null ? null : $"{coordsServer:F2}";
-        var coordsClient = bytes.Length >= 4 ? CoordsHelper.DecodeClientCoordinateWithoutShift(bytes) : (double?)null;
+        var coordsClient = bytes.Length >= 4 ? CoordsHelper.DecodeClientCoordinateWithoutShift (bytes) : (double?) null;
         var coordsClientStr = coordsClient is null ? null : $"{coordsClient:F2}";
 
         var enumValueStr = enumName is null ? null : "(undef)";
-        if (bytes.Length <= 8 && enumName is not null && PacketLogViewerMainWindow.DefinedEnums.ContainsKey(enumName) &&
-            PacketLogViewerMainWindow.DefinedEnums[enumName].ContainsKey((int)ulongValue))
+        if (bytes.Length <= 8 && enumName is not null && PacketLogViewerMainWindow.DefinedEnums.ContainsKey (enumName) &&
+            PacketLogViewerMainWindow.DefinedEnums[enumName].ContainsKey ((int) ulongValue))
         {
-            enumValueStr = PacketLogViewerMainWindow.DefinedEnums[enumName][(int)ulongValue];
+            enumValueStr = PacketLogViewerMainWindow.DefinedEnums[enumName][(int) ulongValue];
         }
         else if (bytes.Length <= 8 && enumName is not null &&
-                 PacketLogViewerMainWindow.DefinedEnums.ContainsKey(enumName) && enumName == "localizables" &&
+                 PacketLogViewerMainWindow.DefinedEnums.ContainsKey (enumName) && enumName == "localizables" &&
                  ulongValue != 2560)
         {
-            // try to find nearest defined value (armor would be put as 1000:something 1002:something_else, while
+            // try to find nearest defined value (armor would be put as 1000:something
+            // 1002:something_else, while
             // quest armor would have 1001 as index)
             var localizables = PacketLogViewerMainWindow.DefinedEnums[enumName];
-            var currentIndex = (int)ulongValue;
-            if (SphObjectDb.GameObjectDataDb.ContainsKey(currentIndex))
+            var currentIndex = (int) ulongValue;
+            if (SphObjectDb.GameObjectDataDb.ContainsKey (currentIndex))
             {
                 enumValueStr = SphObjectDb.GameObjectDataDb[currentIndex].Localisation[Locale.Russian];
             }
@@ -302,7 +303,7 @@ public class PacketPart
             {
                 while (currentIndex >= 0)
                 {
-                    if (localizables.ContainsKey(currentIndex))
+                    if (localizables.ContainsKey (currentIndex))
                     {
                         enumValueStr = localizables[currentIndex];
                         break;
@@ -313,29 +314,29 @@ public class PacketPart
             }
         }
         else if (bytes.Length <= 8 && enumName is not null &&
-                 PacketLogViewerMainWindow.DefinedEnums.ContainsKey(enumName) && enumName == "localizables" &&
+                 PacketLogViewerMainWindow.DefinedEnums.ContainsKey (enumName) && enumName == "localizables" &&
                  ulongValue == 2560)
         {
             enumValueStr = "NO_GAME_OBJECT";
         }
 
-        return new PacketPartDisplayText(bitsString, bytesString, textString, longValueStr, ulongValueStr,
+        return new PacketPartDisplayText (bitsString, bytesString, textString, longValueStr, ulongValueStr,
             enumValueStr, coordsClientStr, coordsServerStr);
     }
 
-    public static List<PacketPart> LoadFromFile(string filePath, string groupName, BitStream contentStream,
+    public static List<PacketPart> LoadFromFile (string filePath, string groupName, BitStream contentStream,
         int bitOffset, bool isMob = false, bool isItem = false, bool optionalPartsIncluded = false)
     {
         var initialOffset = contentStream.BitOffsetFromStart;
         if (groupName == "door_entrance")
         {
             // some doors desperately want to be teleports
-            contentStream.ReadBits(198);
-            var tpTest = contentStream.ReadUInt16(15);
+            contentStream.ReadBits (198);
+            var tpTest = contentStream.ReadUInt16 (15);
             if (tpTest == 0x7FFF)
             {
-                contentStream.ReadBits(64);
-                var shiftTest = contentStream.ReadByte();
+                contentStream.ReadBits (64);
+                var shiftTest = contentStream.ReadByte ();
                 var isNoShift = shiftTest == 0x0C;
                 var tpName = "door_entrance";
                 if (isNoShift)
@@ -344,8 +345,8 @@ public class PacketPart
                 }
                 else
                 {
-                    contentStream.SeekBack(10);
-                    var shiftTest2 = contentStream.ReadByte();
+                    contentStream.SeekBack (10);
+                    var shiftTest2 = contentStream.ReadByte ();
                     var isShift2 = shiftTest2 == 0x0C;
                     if (isShift2)
                     {
@@ -353,8 +354,8 @@ public class PacketPart
                     }
                     else
                     {
-                        contentStream.SeekBack(11);
-                        var shiftTest3 = contentStream.ReadByte();
+                        contentStream.SeekBack (11);
+                        var shiftTest3 = contentStream.ReadByte ();
                         var isShift3 = shiftTest3 == 0x0C;
                         if (isShift3)
                         {
@@ -362,68 +363,68 @@ public class PacketPart
                         }
                     }
                 }
-                filePath = filePath.Replace("door_entrance", tpName);
+                filePath = filePath.Replace ("door_entrance", tpName);
             }
 
-            contentStream.SeekBitOffset(initialOffset);
+            contentStream.SeekBitOffset (initialOffset);
         }
 
         if (groupName == "entity_monster")
         {
             // level 1 monsters are special
-            contentStream.ReadBits(141);
-            var hpSizeType = contentStream.ReadByte(5);
+            contentStream.ReadBits (141);
+            var hpSizeType = contentStream.ReadByte (5);
             var hpSize = hpSizeType == 0x11 ? 16 : 8;
-            contentStream.ReadBits(hpSize);
-            contentStream.ReadBits(hpSize == 8 ? 2 : 1);
-            contentStream.ReadBits(hpSize);
-            contentStream.ReadBits(hpSize == 8 ? 2 : 1);
-            var mobType = contentStream.ReadUInt32(14);
-            contentStream.ReadBits(3);
-            var lvlValue = contentStream.ReadUInt32(29);
+            contentStream.ReadBits (hpSize);
+            contentStream.ReadBits (hpSize == 8 ? 2 : 1);
+            contentStream.ReadBits (hpSize);
+            contentStream.ReadBits (hpSize == 8 ? 2 : 1);
+            var mobType = contentStream.ReadUInt32 (14);
+            contentStream.ReadBits (3);
+            var lvlValue = contentStream.ReadUInt32 (29);
             if (lvlValue == 0x104028)
             {
-                filePath = filePath.Replace("entity_monster", "monster_level_1");
+                filePath = filePath.Replace ("entity_monster", "monster_level_1");
             }
             else if (mobType > 2000)
             {
-                filePath = filePath.Replace("entity_monster", "monster_full");
+                filePath = filePath.Replace ("entity_monster", "monster_full");
             }
 
-            contentStream.SeekBitOffset(initialOffset);
+            contentStream.SeekBitOffset (initialOffset);
         }
 
         if (groupName == "new_player_dungeon_start")
         {
             // some of these are longer than others for whatever reason
-            contentStream.ReadBits(696);
-            var delimTest = contentStream.ReadByte();
+            contentStream.ReadBits (696);
+            var delimTest = contentStream.ReadByte ();
             if (delimTest != 0x7E)
             {
-                filePath = filePath.Replace("new_player_dungeon_start", "new_player_dungeon_start_long");
+                filePath = filePath.Replace ("new_player_dungeon_start", "new_player_dungeon_start_long");
             }
 
-            contentStream.SeekBitOffset(initialOffset);
+            contentStream.SeekBitOffset (initialOffset);
         }
 
-        var contents = File.ReadAllLines(filePath);
-        var parts = new List<PacketPart>();
+        var contents = File.ReadAllLines (filePath);
+        var parts = new List<PacketPart> ();
 
         foreach (var line in contents)
         {
-            var fieldValues = line.Split('\t', StringSplitOptions.RemoveEmptyEntries);
+            var fieldValues = line.Split ('\t', StringSplitOptions.RemoveEmptyEntries);
 
             if (fieldValues.Length < 9)
             {
-                Console.WriteLine($"Missing fields in {groupName}, line: {line}");
+                Console.WriteLine ($"Missing fields in {groupName}, line: {line}");
             }
 
             var partName = fieldValues[0];
 
-            var packetPartType = Enum.TryParse(fieldValues[1], out PacketPartType partType)
+            var packetPartType = Enum.TryParse (fieldValues[1], out PacketPartType partType)
                 ? partType
                 : PacketPartType.BITS;
-            var start = FileFormatCulture.ParseInt(fieldValues[2]);
+            var start = FileFormatCulture.ParseInt (fieldValues[2]);
             var length = 0;
             var lengthFromPrevious = false;
             if (fieldValues[3] == LengthFromPreviousFieldValue)
@@ -432,7 +433,7 @@ public class PacketPart
             }
             else
             {
-                length = FileFormatCulture.ParseInt(fieldValues[3]);
+                length = FileFormatCulture.ParseInt (fieldValues[3]);
             }
 
             var enumName = fieldValues[4];
@@ -441,41 +442,41 @@ public class PacketPart
                 enumName = null;
             }
 
-            var r = FileFormatCulture.ParseByte(fieldValues[5]);
-            var g = FileFormatCulture.ParseByte(fieldValues[6]);
-            var b = FileFormatCulture.ParseByte(fieldValues[7]);
-            var a = FileFormatCulture.ParseByte(fieldValues[8]);
+            var r = FileFormatCulture.ParseByte (fieldValues[5]);
+            var g = FileFormatCulture.ParseByte (fieldValues[6]);
+            var b = FileFormatCulture.ParseByte (fieldValues[7]);
+            var a = FileFormatCulture.ParseByte (fieldValues[8]);
 
-            var part = new PacketPart(length, partName, enumName, lengthFromPrevious, packetPartType,
+            var part = new PacketPart (length, partName, enumName, lengthFromPrevious, packetPartType,
                 start, [], r, g, b, a);
-            parts.Add(part);
+            parts.Add (part);
         }
 
-        UpdatePacketPartValues(parts, contentStream, bitOffset, isMob, isItem);
+        UpdatePacketPartValues (parts, contentStream, bitOffset, isMob, isItem);
 
         if (!optionalPartsIncluded)
         {
-            var countTestPart = parts.FirstOrDefault(x => x.Name == CountTestValue);
+            var countTestPart = parts.FirstOrDefault (x => x.Name == CountTestValue);
             if (countTestPart != null && countTestPart.ActualLongValue == 0)
             {
                 // should replace this with packet with count
-                var nameWithCount = Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty,
-                    Path.GetFileNameWithoutExtension(filePath) + "_counted" +
-                    Path.GetExtension(filePath));
-                contentStream.SeekBitOffset(initialOffset);
-                return LoadFromFile(nameWithCount, groupName, contentStream, bitOffset, isMob, isItem, true);
+                var nameWithCount = Path.Combine (Path.GetDirectoryName (filePath) ?? string.Empty,
+                    Path.GetFileNameWithoutExtension (filePath) + "_counted" +
+                    Path.GetExtension (filePath));
+                contentStream.SeekBitOffset (initialOffset);
+                return LoadFromFile (nameWithCount, groupName, contentStream, bitOffset, isMob, isItem, true);
             }
         }
 
         return parts;
     }
 
-    public static void UpdatePacketPartValues(List<PacketPart> parts, BitStream contentStream, int bitOffset,
+    public static void UpdatePacketPartValues (List<PacketPart> parts, BitStream contentStream, int bitOffset,
         bool isMob = false, bool isItem = false)
     {
         if (bitOffset != 0)
         {
-            contentStream.SeekBitOffset(bitOffset);
+            contentStream.SeekBitOffset (bitOffset);
         }
 
         var hasGameId = false;
@@ -486,19 +487,19 @@ public class PacketPart
         for (var i = 0; i < parts.Count; i++)
         {
             var packetPart = parts[i];
-            var currentOffset = (int)contentStream.BitOffsetFromStart;
+            var currentOffset = (int) contentStream.BitOffsetFromStart;
             packetPart.BitOffset = currentOffset;
             var length = packetPart.BitLength;
 
             if (packetPart.LengthFromPreviousField && i > 0)
             {
-                var byteValue = BitStream.BitArrayToBytes(parts[i - 1].Value.ToArray().Reverse().ToArray()) ??
+                var byteValue = BitStream.BitArrayToBytes (parts[i - 1].Value.ToArray ().Reverse ().ToArray ()) ??
                                 new byte[4];
-                Array.Resize(ref byteValue, 4);
-                length = Math.Max(BitConverter.ToInt32(byteValue) * 8, 0);
+                Array.Resize (ref byteValue, 4);
+                length = Math.Max (BitConverter.ToInt32 (byteValue) * 8, 0);
                 for (var j = i + 1; j < parts.Count; j++)
                 {
-                    parts[j].BitOffset += (int)length;
+                    parts[j].BitOffset += (int) length;
                 }
 
                 packetPart.BitLength = length;
@@ -506,20 +507,20 @@ public class PacketPart
 
             if (isMob && packetPart.Name == PacketPartNames.Skip && i > 0 && parts[i - 1].Name == PacketPartNames.Angle)
             {
-                var val = contentStream.ReadByte((int)length);
+                var val = contentStream.ReadByte ((int) length);
                 if (val <= 8)
                 {
                     length -= 1;
                     packetPart.BitLength = length;
                 }
 
-                contentStream.SeekBitOffset(currentOffset);
+                contentStream.SeekBitOffset (currentOffset);
                 // find 36 bit 0 after level and cut
             }
 
             if (packetPart.Name == PacketPartNames.HpSizeType && contentStream.ValidPosition)
             {
-                var val = contentStream.ReadByte(2);
+                var val = contentStream.ReadByte (2);
                 var hpLength = val switch
                 {
                     0 => 8,
@@ -534,7 +535,7 @@ public class PacketPart
                         var lengthDiff = hpLength - oldLength;
                         for (var j = i + 2; j < parts.Count; j++)
                         {
-                            parts[j].BitOffset += (int)lengthDiff;
+                            parts[j].BitOffset += (int) lengthDiff;
                         }
                     }
                 }
@@ -557,7 +558,7 @@ public class PacketPart
                         var lengthDiff = hpLength - oldLength;
                         for (var j = i + 4; j < parts.Count; j++)
                         {
-                            parts[j].BitOffset += (int)lengthDiff;
+                            parts[j].BitOffset += (int) lengthDiff;
                         }
                     }
                 }
@@ -571,20 +572,20 @@ public class PacketPart
                     }
                 }
 
-                contentStream.SeekBitOffset(currentOffset);
+                contentStream.SeekBitOffset (currentOffset);
             }
 
             if (packetPart.Name == HasGameIdValue && contentStream.ValidPosition)
             {
-                hasGameId = contentStream.ReadBit().AsBool();
-                contentStream.SeekBitOffset(currentOffset);
+                hasGameId = contentStream.ReadBit ().AsBool ();
+                contentStream.SeekBitOffset (currentOffset);
             }
 
             if (packetPart.Name == HasSuffixValue && hasGameId && contentStream.ValidPosition)
             {
-                hasSuffix = !contentStream.ReadBit().AsBool();
+                hasSuffix = !contentStream.ReadBit ().AsBool ();
 
-                var suffixLengthType = contentStream.ReadByte(2);
+                var suffixLengthType = contentStream.ReadByte (2);
                 if (!hasSuffix)
                 {
                     suffixLengthType = 0;
@@ -605,12 +606,12 @@ public class PacketPart
                         var lengthDiff = suffixLength - oldLength;
                         for (var j = i + 2; j < parts.Count; j++)
                         {
-                            parts[j].BitOffset += (int)lengthDiff;
+                            parts[j].BitOffset += (int) lengthDiff;
                         }
                     }
                 }
 
-                contentStream.SeekBitOffset(currentOffset);
+                contentStream.SeekBitOffset (currentOffset);
             }
 
             if (packetPart.Name == "skip_36_bits")
@@ -619,7 +620,7 @@ public class PacketPart
                 var bitsRead = 0;
                 while (contentStream.ValidPosition && zeroCount < 36)
                 {
-                    var curr = contentStream.ReadBit().AsInt();
+                    var curr = contentStream.ReadBit ().AsInt ();
                     if (curr == 0)
                     {
                         zeroCount++;
@@ -637,7 +638,7 @@ public class PacketPart
                         length = packetPart.BitLength;
                         for (var j = i + 1; j < parts.Count; j++)
                         {
-                            parts[j].BitOffset += (int)lengthDiff;
+                            parts[j].BitOffset += (int) lengthDiff;
                         }
                     }
                 }
@@ -645,7 +646,7 @@ public class PacketPart
                 // after this it's either a delimiter or named mob parts
                 try
                 {
-                    var bitTest = contentStream.ReadByte();
+                    var bitTest = contentStream.ReadByte ();
                     if (bitTest == 0x14)
                     {
                         // named
@@ -661,16 +662,16 @@ public class PacketPart
                 {
                 }
 
-                contentStream.SeekBitOffset(currentOffset);
+                contentStream.SeekBitOffset (currentOffset);
             }
 
             if (packetPart.PacketPartType is PacketPartType.INT64 or PacketPartType.UINT64)
             {
                 // should be good enough
-                packetPart.ActualLongValue = contentStream.ReadInt64(packetPart.BitLength);
+                packetPart.ActualLongValue = contentStream.ReadInt64 (packetPart.BitLength);
             }
 
-            contentStream.SeekBitOffset(currentOffset);
+            contentStream.SeekBitOffset (currentOffset);
 
             if (packetPart.Name == "level_last_3")
             {
@@ -679,7 +680,7 @@ public class PacketPart
 
             if (packetPart.Name == PacketPartNames.Level && contentStream.ValidPosition)
             {
-                var levelVal = contentStream.ReadInt64(packetPart.BitLength);
+                var levelVal = contentStream.ReadInt64 (packetPart.BitLength);
                 var levelVal1 = levelVal & 0b11111;
                 var levelVal2 = ((levelVal >> 17) & 0b11111) << 5;
                 var level = levelIsOne
@@ -690,15 +691,15 @@ public class PacketPart
                         0x3E840 => 64,
                         0x1F420 => 32,
                         0xFA10 => 16,
-                        _ => (int)(levelVal1 + levelVal2 + 1)
+                        _ => (int) (levelVal1 + levelVal2 + 1)
                     };
                 packetPart.ActualLongValue = level;
             }
 
-            contentStream.SeekBitOffset(currentOffset);
+            contentStream.SeekBitOffset (currentOffset);
 
-            packetPart.Value = contentStream.ReadBits(length).Reverse().ToArray();
-            packetPart.UpdateValueDisplayText();
+            packetPart.Value = contentStream.ReadBits (length).Reverse ().ToArray ();
+            packetPart.UpdateValueDisplayText ();
         }
 
         // if (morePartsToAppend.Any())

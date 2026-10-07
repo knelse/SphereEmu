@@ -8,8 +8,8 @@ public class Subpacket
     public string Name { get; set; } = string.Empty;
     public string FilePath { get; set; } = string.Empty;
 
-    public List<PacketPart> LoadFromFile(BitStream stream, int bitOffset, bool isMob = false, bool isItem = false)
+    public List<PacketPart> LoadFromFile (BitStream stream, int bitOffset, bool isMob = false, bool isItem = false)
     {
-        return PacketPart.LoadFromFile(FilePath, Name, stream, bitOffset, isMob, isItem);
+        return PacketPart.LoadFromFile (FilePath, Name, stream, bitOffset, isMob, isItem);
     }
 }

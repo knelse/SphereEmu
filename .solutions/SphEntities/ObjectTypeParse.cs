@@ -1,7 +1,7 @@
 public static class ObjectTypeParse
 {
     private static readonly Dictionary<string, ObjectType> Aliases =
-        new(StringComparer.OrdinalIgnoreCase)
+        new (StringComparer.OrdinalIgnoreCase)
         {
             ["_Main"] = ObjectType.Main,
             ["_Ambc"] = ObjectType.Ambc,
@@ -256,23 +256,23 @@ public static class ObjectTypeParse
             ["HerbalistSack"] = ObjectType.Herbalist_Sack,
         };
 
-    public static bool TryParse(string text, out ObjectType value)
+    public static bool TryParse (string text, out ObjectType value)
     {
-        if (Enum.TryParse(text, ignoreCase: true, out value))
+        if (Enum.TryParse (text, ignoreCase: true, out value))
         {
             return true;
         }
 
-        return !string.IsNullOrWhiteSpace(text) && Aliases.TryGetValue(text.Trim(), out value);
+        return !string.IsNullOrWhiteSpace (text) && Aliases.TryGetValue (text.Trim (), out value);
     }
 
-    public static ObjectType Parse(string text)
+    public static ObjectType Parse (string text)
     {
-        if (TryParse(text, out var value))
+        if (TryParse (text, out var value))
         {
             return value;
         }
 
-        throw new ArgumentException($"Unknown ObjectType '{text}'");
+        throw new ArgumentException ($"Unknown ObjectType '{text}'");
     }
 }

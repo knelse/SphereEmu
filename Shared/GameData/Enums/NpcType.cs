@@ -1,7 +1,7 @@
 namespace SphServer.Shared.GameData.Enums;
 
 /// <summary>
-/// Each member must have a unique underlying value so <c>switch</c> on <see cref="NpcType"/> is legal and runtime can tell members apart.
+/// Underlying values stay unique so a switch on NpcType stays legal
 /// </summary>
 public enum NpcType
 {

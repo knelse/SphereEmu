@@ -5,7 +5,7 @@ using SphServer.Helpers.Networking;
 
 namespace PacketLogViewer;
 
-public readonly record struct PacketEventClassification(
+public readonly record struct PacketEventClassification (
     string EventName,
     double Confidence,
     string Reason,
@@ -13,100 +13,100 @@ public readonly record struct PacketEventClassification(
 
 internal static class PacketEventClassifier
 {
-    public static PacketEventClassification ClassifyClientFrame(ReadOnlySpan<byte> frame)
+    public static PacketEventClassification ClassifyClientFrame (ReadOnlySpan<byte> frame)
     {
-        var classification = ClientPacketClassifier.ClassifyFrame(frame);
-        return ToPacketEventClassification(classification);
+        var classification = ClientPacketClassifier.ClassifyFrame (frame);
+        return ToPacketEventClassification (classification);
     }
 
-    public static PacketEventClassification ClassifyServerAck()
+    public static PacketEventClassification ClassifyServerAck ()
     {
-        return new PacketEventClassification("server.protocol.ack", 1.0, "no entity header", true);
+        return new PacketEventClassification ("server.protocol.ack", 1.0, "no entity header", true);
     }
 
-    public static PacketEventClassification ClassifyServerKeepalivePong()
+    public static PacketEventClassification ClassifyServerKeepalivePong ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.protocol.keepalive.pong",
             1.0,
             "PingHandler response to client 0x26 PositionStream keepalive",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerCurrentMpUpdatePing()
+    public static PacketEventClassification ClassifyServerCurrentMpUpdatePing ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.protocol.ping_current_mp_update",
             1.0,
             "0x13 08 C0 42, mp_current at bit 102",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerFifteenSecondPing()
+    public static PacketEventClassification ClassifyServerFifteenSecondPing ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.protocol.ping_15s",
             1.0,
             "CommonPackets.FifteenSecondPing",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerCharacterSelectInit()
+    public static PacketEventClassification ClassifyServerCharacterSelectInit ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.character_select.init",
             1.0,
             "CommonPackets.CharacterSelectStartData",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerCharacterListEntry()
+    public static PacketEventClassification ClassifyServerCharacterListEntry ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.character_select.entry",
             1.0,
             "0x6C charlist slot (ToCharacterListByteArray / CreateNewCharacterData)",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerStatUpdate()
+    public static PacketEventClassification ClassifyServerStatUpdate ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.stats.update",
             1.0,
             "08C0 stat field stream (NetworkedStatsUpdater)",
             true);
     }
 
-    public static PacketEventClassification ClassifyServerMoveEntity()
+    public static PacketEventClassification ClassifyServerMoveEntity ()
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.entity.position",
             1.0,
             "server_move_entity (coords then entity_id)",
             true);
     }
 
-    public static PacketEventClassification ClassifyFalseBoundary(int reservedLow, bool reservedBit28)
+    public static PacketEventClassification ClassifyFalseBoundary (int reservedLow, bool reservedBit28)
     {
         var reservedBit = reservedBit28 ? 1 : 0;
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.parser.false_boundary",
             1.0,
             $"reserved bits are {reservedLow}/{reservedBit}",
             false);
     }
 
-    public static PacketEventClassification ClassifyUnresolvedAction(byte actionType)
+    public static PacketEventClassification ClassifyUnresolvedAction (byte actionType)
     {
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.unresolved_header_candidate",
             0.15,
             $"reserved bits match, but action {actionType} is not identified",
             false);
     }
 
-    public static PacketEventClassification ClassifyServerEntity(
+    public static PacketEventClassification ClassifyServerEntity (
         ObjectType objectType,
         ushort objectTypeVal,
         EntityActionType actionType,
@@ -117,13 +117,13 @@ internal static class PacketEventClassifier
     {
         if (objectType == ObjectType.Despawn)
         {
-            return new PacketEventClassification("server.entity.despawn", 1.0, "despawn definition", true);
+            return new PacketEventClassification ("server.entity.despawn", 1.0, "despawn definition", true);
         }
 
         if (actionType == EntityActionType.ATTACK
             || (actionType == EntityActionType.INTERACT && interactionType == EntityInteractionType.DEAL_DAMAGE))
         {
-            return new PacketEventClassification("server.combat.damage", 1.0,
+            return new PacketEventClassification ("server.combat.damage", 1.0,
                 actionType == EntityActionType.ATTACK
                     ? "EntityActionType.ATTACK"
                     : "INTERACT + 0x050D deal-damage",
@@ -132,18 +132,18 @@ internal static class PacketEventClassifier
 
         if (actionType == EntityActionType.SET_POSITION)
         {
-            return new PacketEventClassification("server.entity.position", 1.0, "EntityActionType.SET_POSITION", true);
+            return new PacketEventClassification ("server.entity.position", 1.0, "EntityActionType.SET_POSITION", true);
         }
 
         if (actionType == EntityActionType.INTERACT)
         {
             if (objectTypeVal == 1)
             {
-                return new PacketEventClassification(
+                return new PacketEventClassification (
                     "server.system.interaction_type_1", 1.0, "object_type=1 action_type=10", true);
             }
 
-            return new PacketEventClassification(
+            return new PacketEventClassification (
                 "server.entity.interaction", 0.8, "EntityActionType.INTERACT", true);
         }
 
@@ -151,32 +151,32 @@ internal static class PacketEventClassifier
         {
             var spawnName = objectType == ObjectType.Unknown
                 ? $"server.entity.spawn.object_{objectTypeVal}"
-                : $"server.entity.spawn.{ToSnakeCase(objectType.ToString())}";
+                : $"server.entity.spawn.{ToSnakeCase (objectType.ToString ())}";
             var confidence = parseSuccess ? 1.0 : actionRecovered ? 0.95 : 0.5;
             var reason = actionRecovered
                 ? "action recovered from raw header"
                 : parseSuccess
                     ? "confirmed by existing PacketParts comment"
                     : "full spawn with partial definition";
-            return new PacketEventClassification(spawnName, confidence, reason, true);
+            return new PacketEventClassification (spawnName, confidence, reason, true);
         }
 
         if (actionType == EntityActionType.UNKNOWN)
         {
-            return new PacketEventClassification(
+            return new PacketEventClassification (
                 "server.entity.state_variant", 0.5, "EntityActionType.UNKNOWN (0x14)", true);
         }
 
         if (actionType == EntityActionType.UNDEF)
         {
-            return ClassifyUnresolvedAction(actionTypeVal);
+            return ClassifyUnresolvedAction (actionTypeVal);
         }
 
-        return new PacketEventClassification(
+        return new PacketEventClassification (
             "server.protocol_or_payload", 0.25, "no entity header", false);
     }
 
-    public static PacketTypes? ToPacketType(string eventName)
+    public static PacketTypes? ToPacketType (string eventName)
     {
         return eventName switch
         {
@@ -198,35 +198,35 @@ internal static class PacketEventClassifier
             "server.stats.update" => PacketTypes.SERVER_STAT_UPDATE,
             "server.entity.despawn" => PacketTypes.SERVER_DESPAWN_ENTITY,
             "server.entity.position" => PacketTypes.SERVER_MOVE_ENTITY,
-            _ when eventName.StartsWith("server.entity.spawn.", StringComparison.Ordinal)
+            _ when eventName.StartsWith ("server.entity.spawn.", StringComparison.Ordinal)
                 => PacketTypes.SERVER_NEW_OBJECT,
             _ => null
         };
     }
 
-    private static PacketEventClassification ToPacketEventClassification(
+    private static PacketEventClassification ToPacketEventClassification (
         ClientPacketClassification classification) =>
-        new(classification.EventName, classification.Confidence, classification.Reason, classification.IsEvent);
+        new (classification.EventName, classification.Confidence, classification.Reason, classification.IsEvent);
 
-    private static string ToSnakeCase(string name)
+    private static string ToSnakeCase (string name)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty (name))
         {
             return name;
         }
 
-        var sb = new StringBuilder(name.Length + 8);
+        var sb = new StringBuilder (name.Length + 8);
         for (var i = 0; i < name.Length; i++)
         {
             var c = name[i];
-            if (char.IsUpper(c) && i > 0)
+            if (char.IsUpper (c) && i > 0)
             {
-                sb.Append('_');
+                sb.Append ('_');
             }
 
-            sb.Append(char.ToLowerInvariant(c));
+            sb.Append (char.ToLowerInvariant (c));
         }
 
-        return sb.ToString();
+        return sb.ToString ();
     }
 }

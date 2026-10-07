@@ -24,7 +24,7 @@ public class PacketPart
     public int BitPositionStart;
     public List<Bit> Value;
 
-    public PacketPart(string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
+    public PacketPart (string name, PacketPartType partType, int bitPositionStart, int bitLength, string enumName,
         List<Bit> value)
     {
         Name = name;
@@ -36,20 +36,20 @@ public class PacketPart
         Value = value;
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile(ObjectType objectType)
+    public static List<PacketPart> LoadDefinedPartsFromFile (ObjectType objectType)
     {
-        var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault(objectType, "teleport");
+        var name = ObjectTypeToPacketNameMap.Mapping.GetValueOrDefault (objectType, "teleport");
         var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
-        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+        return LoadFromFile (Path.Combine (partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadDefinedWithOverride(string name)
+    public static List<PacketPart> LoadDefinedWithOverride (string name)
     {
         var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
-        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+        return LoadFromFile (Path.Combine (partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadDefinedPartsFromFile(NpcType npcType)
+    public static List<PacketPart> LoadDefinedPartsFromFile (NpcType npcType)
     {
         var name = npcType switch
         {
@@ -66,55 +66,55 @@ public class PacketPart
             _ => "npc_trade"
         };
         var partsPath = ServerConfig.AppConfig.PacketDefinitionPath;
-        return LoadFromFile(Path.Combine(partsPath, name + ".spdp"));
+        return LoadFromFile (Path.Combine (partsPath, name + ".spdp"));
     }
 
-    public static List<PacketPart> LoadFromFile(string filePath)
+    public static List<PacketPart> LoadFromFile (string filePath)
     {
-        var contents = File.ReadAllLines(filePath);
-        var parts = new List<PacketPart>();
+        var contents = File.ReadAllLines (filePath);
+        var parts = new List<PacketPart> ();
 
         foreach (var line in contents)
         {
-            var fieldValues = line.Split('\t', StringSplitOptions.RemoveEmptyEntries);
+            var fieldValues = line.Split ('\t', StringSplitOptions.RemoveEmptyEntries);
 
             if (fieldValues.Length < 9)
             {
-                Console.WriteLine($"Missing fields in {filePath}, line: {line}");
+                Console.WriteLine ($"Missing fields in {filePath}, line: {line}");
             }
 
             var partName = fieldValues[0];
 
-            var packetPartType = Enum.TryParse(fieldValues[1], out PacketPartType partType)
+            var packetPartType = Enum.TryParse (fieldValues[1], out PacketPartType partType)
                 ? partType
                 : PacketPartType.BITS;
-            var start = FileFormatCulture.ParseInt(fieldValues[2]);
+            var start = FileFormatCulture.ParseInt (fieldValues[2]);
             var length = 0;
             length = fieldValues[3] == LengthFromPreviousFieldValue
-                ? BitStreamExtensions.BitsToInt(parts.Last().Value)
-                : FileFormatCulture.ParseInt(fieldValues[3]);
+                ? BitStreamExtensions.BitsToInt (parts.Last ().Value)
+                : FileFormatCulture.ParseInt (fieldValues[3]);
 
             var enumName = fieldValues[4];
 
             // r g b a are fields 5 6 7 8
 
-            var value = length > 0 ? fieldValues[9].Select(x => (Bit)(x - '0')).Reverse().ToList() : [];
-            var part = new PacketPart(partName, packetPartType, start, length, enumName, value);
-            parts.Add(part);
+            var value = length > 0 ? fieldValues[9].Select (x => (Bit) (x - '0')).Reverse ().ToList () : [];
+            var part = new PacketPart (partName, packetPartType, start, length, enumName, value);
+            parts.Add (part);
         }
 
         return parts;
     }
 
-    public static void UpdateCoordinates(List<PacketPart> list, double X, double Y, double Z, int angle = 0)
+    public static void UpdateCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
     {
-        var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
-        var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
-        var yValueBytes = CoordsHelper.EncodeServerCoordinate(Y);
-        var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
-        var zValueBytes = CoordsHelper.EncodeServerCoordinate(Z);
-        var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();
-        var angleValue = BitStreamExtensions.IntToBits(angle, 8).ToList();
+        var xValueBytes = CoordsHelper.EncodeServerCoordinate (X);
+        var xValue = new BitStream (xValueBytes).ReadBits (int.MaxValue).ToList ();
+        var yValueBytes = CoordsHelper.EncodeServerCoordinate (Y);
+        var yValue = new BitStream (yValueBytes).ReadBits (int.MaxValue).ToList ();
+        var zValueBytes = CoordsHelper.EncodeServerCoordinate (Z);
+        var zValue = new BitStream (zValueBytes).ReadBits (int.MaxValue).ToList ();
+        var angleValue = BitStreamExtensions.IntToBits (angle, 8).ToList ();
         foreach (var part in list)
         {
             part.Value = part.Name switch
@@ -128,15 +128,15 @@ public class PacketPart
         }
     }
 
-    public static void UpdateTargetCoordinates(List<PacketPart> list, double X, double Y, double Z, int angle = 0)
+    public static void UpdateTargetCoordinates (List<PacketPart> list, double X, double Y, double Z, int angle = 0)
     {
-        var xValueBytes = CoordsHelper.EncodeServerCoordinate(X);
-        var xValue = new BitStream(xValueBytes).ReadBits(int.MaxValue).ToList();
-        var yValueBytes = CoordsHelper.EncodeServerCoordinate(Y);
-        var yValue = new BitStream(yValueBytes).ReadBits(int.MaxValue).ToList();
-        var zValueBytes = CoordsHelper.EncodeServerCoordinate(Z);
-        var zValue = new BitStream(zValueBytes).ReadBits(int.MaxValue).ToList();
-        var angleValue = BitStreamExtensions.IntToBits(angle, 8).ToList();
+        var xValueBytes = CoordsHelper.EncodeServerCoordinate (X);
+        var xValue = new BitStream (xValueBytes).ReadBits (int.MaxValue).ToList ();
+        var yValueBytes = CoordsHelper.EncodeServerCoordinate (Y);
+        var yValue = new BitStream (yValueBytes).ReadBits (int.MaxValue).ToList ();
+        var zValueBytes = CoordsHelper.EncodeServerCoordinate (Z);
+        var zValue = new BitStream (zValueBytes).ReadBits (int.MaxValue).ToList ();
+        var angleValue = BitStreamExtensions.IntToBits (angle, 8).ToList ();
         foreach (var part in list)
         {
             part.Value = part.Name switch
@@ -150,51 +150,51 @@ public class PacketPart
         }
     }
 
-    public static void UpdateValue(List<PacketPart> list, string name, int val, int length = 32)
+    public static void UpdateValue (List<PacketPart> list, string name, int val, int length = 32)
     {
-        var part = list.FirstOrDefault(x => x.Name == name);
+        var part = list.FirstOrDefault (x => x.Name == name);
         if (part is not null)
         {
-            part.Value = BitStreamExtensions.IntToBits(val, length).ToList();
+            part.Value = BitStreamExtensions.IntToBits (val, length).ToList ();
             part.BitLength = length;
         }
     }
 
-    public static void UpdateValue(List<PacketPart> list, string name, string val, bool alsoUpdateLengthField = false,
+    public static void UpdateValue (List<PacketPart> list, string name, string val, bool alsoUpdateLengthField = false,
         int nameLengthLength = 0)
     {
-        var part = list.FirstOrDefault(x => x.Name == name);
-        var valBytes = SphEncoding.Win1251.GetBytes(val);
-        var stream = new BitStream(valBytes);
-        var bits = stream.ReadBits(int.MaxValue);
+        var part = list.FirstOrDefault (x => x.Name == name);
+        var valBytes = SphEncoding.Win1251.GetBytes (val);
+        var stream = new BitStream (valBytes);
+        var bits = stream.ReadBits (int.MaxValue);
         if (part is not null)
         {
-            part.Value = bits.ToList();
+            part.Value = bits.ToList ();
         }
 
         if (alsoUpdateLengthField)
         {
-            UpdateValue(list, name + "_length", val.Length, nameLengthLength);
+            UpdateValue (list, name + "_length", val.Length, nameLengthLength);
         }
     }
 
-    public static void UpdateEntityId(List<PacketPart> list, ushort id)
+    public static void UpdateEntityId (List<PacketPart> list, ushort id)
     {
-        var idpart = list.FirstOrDefault(x => x.Name == "entity_id");
+        var idpart = list.FirstOrDefault (x => x.Name == "entity_id");
         if (idpart is not null)
         {
-            idpart.Value = BitStreamExtensions.IntToBits(id, 16).ToList();
+            idpart.Value = BitStreamExtensions.IntToBits (id, 16).ToList ();
         }
     }
 
-    public static byte[] GetBytesToWrite(List<PacketPart> list)
+    public static byte[] GetBytesToWrite (List<PacketPart> list)
     {
-        var stream = SphBitStream.GetWriteBitStream();
+        var stream = SphBitStream.GetWriteBitStream ();
         foreach (var part in list)
         {
-            stream.WriteBits(part.Value);
+            stream.WriteBits (part.Value);
         }
 
-        return Packet.ToByteArray(stream.GetStreamData(), 3);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 }

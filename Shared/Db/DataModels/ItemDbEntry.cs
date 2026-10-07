@@ -18,10 +18,10 @@ public class ItemDbEntry
     public ObjectType ObjectType { get; set; } = ObjectType.Unknown;
 
     /// <summary>
-    ///     Type written on the wire. Rows created before a mapping existed may still store Unknown.
+    /// Unknown still falls back to GameObjectType.GetPacketObjectType
     /// </summary>
     public ObjectType WireObjectType =>
-        ObjectType is ObjectType.Unknown ? GameObjectType.GetPacketObjectType() : ObjectType;
+        ObjectType is ObjectType.Unknown ? GameObjectType.GetPacketObjectType () : ObjectType;
 
     public string ModelNameGround { get; set; } = string.Empty;
     public string ModelNameInventory { get; set; } = string.Empty;
@@ -81,14 +81,14 @@ public class ItemDbEntry
     public int Duration { get; set; }
     public ItemSuffix Suffix { get; set; }
     public int ItemCount { get; set; }
-    public Dictionary<Locale, string> Localization { get; set; } = new();
+    public Dictionary<Locale, string> Localization { get; set; } = new ();
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
-    public Dictionary<string, object> ContentsData { get; set; } = new();
+    public Dictionary<string, object> ContentsData { get; set; } = new ();
     public Guild RequiredGuild { get; set; }
     public int RequiredGuildRankMinusOne { get; set; }
 
-    public bool IsTierVisible()
+    public bool IsTierVisible ()
     {
         return ObjectKind is GameObjectKind.Armor or GameObjectKind.Axe or GameObjectKind.Guild
                    or GameObjectKind.Magical or GameObjectKind.Powder or GameObjectKind.Quest or GameObjectKind.Sword
@@ -99,73 +99,73 @@ public class ItemDbEntry
                && GameObjectType is not GameObjectType.Ear;
     }
 
-    public static ItemDbEntry CreateFromGameObject(SphGameObject go)
+    public static ItemDbEntry CreateFromGameObject (SphGameObject go)
     {
-        var item = new ItemDbEntry();
-        foreach (var prop in go.GetType().GetFields())
+        var item = new ItemDbEntry ();
+        foreach (var prop in go.GetType ().GetFields ())
         {
-            item.GetType().GetField(prop.Name)?.SetValue(item, prop.GetValue(go));
+            item.GetType ().GetField (prop.Name)?.SetValue (item, prop.GetValue (go));
         }
 
-        foreach (var prop in go.GetType().GetProperties())
+        foreach (var prop in go.GetType ().GetProperties ())
         {
-            if (prop.GetIndexParameters().Length > 0)
+            if (prop.GetIndexParameters ().Length > 0)
             {
                 continue;
             }
 
-            var dest = item.GetType().GetProperty(prop.Name);
+            var dest = item.GetType ().GetProperty (prop.Name);
             if (dest?.SetMethod is null)
             {
                 continue;
             }
 
-            dest.SetValue(item, prop.GetValue(go));
+            dest.SetValue (item, prop.GetValue (go));
         }
 
         item.GameObjectDbId = go.GameObjectDbId;
 
-        // Spelled Localisation on the game object, so the copy above misses it.
+        // Game object property is Localisation, so it is not copied with the rest
         item.Localization = go.Localisation;
 
         if (item.Suffix != ItemSuffix.None)
         {
-            item.UpdateStatsForSuffix();
+            item.UpdateStatsForSuffix ();
         }
 
-        item.ObjectType = go.GameObjectType.GetPacketObjectType();
+        item.ObjectType = go.GameObjectType.GetPacketObjectType ();
 
         return item;
     }
 
-    public static ItemDbEntry Clone(ItemDbEntry source, bool insertIntoItemCollection = true)
+    public static ItemDbEntry Clone (ItemDbEntry source, bool insertIntoItemCollection = true)
     {
-        var item = new ItemDbEntry();
-        foreach (var prop in source.GetType().GetFields())
+        var item = new ItemDbEntry ();
+        foreach (var prop in source.GetType ().GetFields ())
         {
-            item.GetType().GetField(prop.Name)?.SetValue(item, prop.GetValue(source));
+            item.GetType ().GetField (prop.Name)?.SetValue (item, prop.GetValue (source));
         }
 
-        foreach (var prop in source.GetType().GetProperties())
+        foreach (var prop in source.GetType ().GetProperties ())
         {
-            if (prop.GetIndexParameters().Length > 0)
+            if (prop.GetIndexParameters ().Length > 0)
             {
                 continue;
             }
 
-            var dest = item.GetType().GetProperty(prop.Name);
+            var dest = item.GetType ().GetProperty (prop.Name);
             if (dest?.SetMethod is null)
             {
                 continue;
             }
 
-            dest.SetValue(item, prop.GetValue(source));
+            dest.SetValue (item, prop.GetValue (source));
         }
 
         if (insertIntoItemCollection)
         {
-            item.Id = WorldObjectIndex.NewItem();
-            DbConnection.Items.Insert(item.Id, item);
+            item.Id = WorldObjectIndex.NewItem ();
+            DbConnection.Items.Insert (item.Id, item);
         }
 
         return item;
@@ -173,9 +173,9 @@ public class ItemDbEntry
 
     public bool IsGuildMembershipEmblem =>
         GameObjectType is GameObjectType.Guild
-        && GuildCatalog.TryParseMembershipGameId(GameId, out _, out _);
+        && GuildCatalog.TryParseMembershipGameId (GameId, out _, out _);
 
-    public static bool IsInventorySlot(BelongingSlot slot)
+    public static bool IsInventorySlot (BelongingSlot slot)
     {
         return slot is BelongingSlot.Inventory_1 or BelongingSlot.Inventory_2 or BelongingSlot.Inventory_3
             or BelongingSlot.Inventory_4 or BelongingSlot.Inventory_5 or BelongingSlot.Inventory_6
@@ -214,10 +214,9 @@ public class ItemDbEntry
     ];
 
     /// <summary>
-    ///     Wear / persona slots each item type may occupy. Inventory cells accept everything
-    ///     and are not listed here. Guild-kind catalog items also use <see cref="BelongingSlot.Guild"/>.
+    /// Wear slots only: inventory accepts every type, and guild-kind catalog items also use Guild
     /// </summary>
-    private static readonly Dictionary<GameObjectType, BelongingSlot[]> TypeToSlots = new()
+    private static readonly Dictionary<GameObjectType, BelongingSlot[]> TypeToSlots = new ()
     {
         [GameObjectType.Helmet] = [BelongingSlot.Helmet],
         [GameObjectType.Helmet_Premium] = [BelongingSlot.Helmet],
@@ -285,61 +284,59 @@ public class ItemDbEntry
     };
 
     /// <summary>
-    ///     Whether the admin picker should hide types that cannot go in this slot.
-    ///     Inventory cells stay unfiltered; any other slot with no mapped types shows nothing.
+    /// Inventory stays unfiltered
     /// </summary>
-    public static bool HasSlotTypeFilter(BelongingSlot slot) => !IsInventorySlot(slot);
+    public static bool HasSlotTypeFilter (BelongingSlot slot) => !IsInventorySlot (slot);
 
-    public static bool IsTypeValidForSlot(GameObjectType type, BelongingSlot slot)
+    public static bool IsTypeValidForSlot (GameObjectType type, BelongingSlot slot)
     {
-        if (IsInventorySlot(slot))
+        if (IsInventorySlot (slot))
         {
             return true;
         }
 
-        if (InventoryOnlyTypes.Contains(type))
+        if (InventoryOnlyTypes.Contains (type))
         {
             return false;
         }
 
-        return TypeToSlots.TryGetValue(type, out var slots) && slots.Contains(slot);
+        return TypeToSlots.TryGetValue (type, out var slots) && slots.Contains (slot);
     }
 
-    public static bool IsAllowedInSlot(GameObjectType type, GameObjectKind kind, BelongingSlot slot)
+    public static bool IsAllowedInSlot (GameObjectType type, GameObjectKind kind, BelongingSlot slot)
     {
-        if (IsInventorySlot(slot))
+        if (IsInventorySlot (slot))
         {
             return true;
         }
 
-        if (InventoryOnlyTypes.Contains(type))
+        if (InventoryOnlyTypes.Contains (type))
         {
             return false;
         }
 
-        if (TypeToSlots.TryGetValue(type, out var slots))
+        if (TypeToSlots.TryGetValue (type, out var slots))
         {
-            return slots.Contains(slot);
+            return slots.Contains (slot);
         }
 
         return slot is BelongingSlot.Guild && kind is GameObjectKind.Guild;
     }
 
-    public bool IsValidForSlot(BelongingSlot slot) =>
-        IsAllowedInSlot(GameObjectType, ObjectKind, slot);
+    public bool IsValidForSlot (BelongingSlot slot) =>
+        IsAllowedInSlot (GameObjectType, ObjectKind, slot);
 
     /// <summary>
-    ///     Rebuild title/degree reqs from the base game object + suffix rules.
-    ///     Fixes items created before uniform 4-stat suffixes were filtered to existing reqs.
+    /// Reqs come from the base game object plus suffix rules, not the stored row
     /// </summary>
-    public void RecalculateStatReqsFromBase()
+    public void RecalculateStatReqsFromBase ()
     {
-        if (!SphObjectDb.GameObjectDataDb.TryGetValue(GameId, out var go))
+        if (!SphObjectDb.GameObjectDataDb.TryGetValue (GameId, out var go))
         {
             return;
         }
 
-        go.ApplyGuildRequirementFromSuffixSet();
+        go.ApplyGuildRequirementFromSuffixSet ();
         RequiredGuild = go.RequiredGuild;
         RequiredGuildRankMinusOne = go.RequiredGuildRankMinusOne;
         MinKarmaLevel = go.MinKarmaLevel;
@@ -359,29 +356,29 @@ public class ItemDbEntry
             return;
         }
 
-        var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
-        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs(
+        var suffixObj = SphObjectDbHelper.GetSuffixObject (GameObjectType, Suffix, Tier);
+        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs (
             suffixObj.StrengthReq, suffixObj.AgilityReq, suffixObj.AccuracyReq, suffixObj.EnduranceReq,
             StrengthReq, AgilityReq, AccuracyReq, EnduranceReq);
-        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs(
+        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs (
             suffixObj.EarthReq, suffixObj.AirReq, suffixObj.WaterReq, suffixObj.FireReq,
             EarthReq, AirReq, WaterReq, FireReq);
     }
 
-    private void UpdateStatsForSuffix()
+    private void UpdateStatsForSuffix ()
     {
-        var suffixObj = SphObjectDbHelper.GetSuffixObject(GameObjectType, Suffix, Tier);
+        var suffixObj = SphObjectDbHelper.GetSuffixObject (GameObjectType, Suffix, Tier);
         Durability *= (100 + suffixObj.Durability) / 100;
         Weight *= (100 + suffixObj.Weight) / 100;
         UseTime = UseTime * (100 + suffixObj.UseTime) / 100;
         VendorCost = VendorCost * (100 + suffixObj.VendorCost) / 100;
 
-        // Integrity / Dragon / Elements / etc. set all 4 title or degree reqs to the same
-        // value — those only apply to stats the base item already requires.
-        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs(
+        // A suffix that sets all 4 title or degree reqs equal only stacks onto stats the base item
+        // already requires
+        (StrengthReq, AgilityReq, AccuracyReq, EnduranceReq) = ApplyTitleOrDegreeReqs (
             suffixObj.StrengthReq, suffixObj.AgilityReq, suffixObj.AccuracyReq, suffixObj.EnduranceReq,
             StrengthReq, AgilityReq, AccuracyReq, EnduranceReq);
-        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs(
+        (EarthReq, AirReq, WaterReq, FireReq) = ApplyTitleOrDegreeReqs (
             suffixObj.EarthReq, suffixObj.AirReq, suffixObj.WaterReq, suffixObj.FireReq,
             EarthReq, AirReq, WaterReq, FireReq);
 
@@ -397,19 +394,18 @@ public class ItemDbEntry
         MaxMpUp += suffixObj.MaxMpUp;
         PDefUp += suffixObj.PDefUp;
         MDefUp += suffixObj.MDefUp;
-        // *UpNegative DB values are often positive meaning attack-up — normalize to negative.
-        // PAtkNegative / MAtkNegativeOrHeal already use negative=up, positive=down in the suffix DB.
-        PAtkUpNegative += NegateIfPositive(suffixObj.PAtkUpNegative);
+        // Positive *UpNegative means attack-up and is flipped; PAtkNegative and MAtkNegativeOrHeal
+        // already use negative as up
+        PAtkUpNegative += NegateIfPositive (suffixObj.PAtkUpNegative);
         PAtkNegative += suffixObj.PAtkNegative;
-        MAtkUpNegative += NegateIfPositive(suffixObj.MAtkUpNegative);
+        MAtkUpNegative += NegateIfPositive (suffixObj.MAtkUpNegative);
         MAtkNegativeOrHeal += suffixObj.MAtkNegativeOrHeal;
     }
 
     /// <summary>
-    ///     When suffix sets all four stats to the same positive req, only stack onto
-    ///     stats the base item already has; otherwise add each req normally.
+    /// Equal positive reqs on all four stats stack only onto stats the base item already has
     /// </summary>
-    private static (int, int, int, int) ApplyTitleOrDegreeReqs(
+    private static (int, int, int, int) ApplyTitleOrDegreeReqs (
         int s0, int s1, int s2, int s3,
         int r0, int r1, int r2, int r3)
     {
@@ -425,15 +421,15 @@ public class ItemDbEntry
         return (r0 + s0, r1 + s1, r2 + s2, r3 + s3);
     }
 
-    private static int NegateIfPositive(int value) => value > 0 ? -value : value;
+    private static int NegateIfPositive (int value) => value > 0 ? -value : value;
 
-    public string ToDebugString()
+    public string ToDebugString ()
     {
         var itemCountStr = ItemCount > 1 ? $" ({ItemCount})" : "";
         return
             "===============================================================================================================================\n" +
-            $"GO: {Enum.GetName(typeof(GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
-            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName(typeof(ItemSuffix), Suffix)} \n" +
+            $"GO: {Enum.GetName (typeof (GameObjectType), GameObjectType)} [{GameId}] T{Tier}" + itemCountStr +
+            $" Tit: {TitleMinusOne} Deg: {DegreeMinusOne} $HP: {HpCost} $MP: {MpCost} Of: {Enum.GetName (typeof (ItemSuffix), Suffix)} \n" +
             $"Str: {StrengthReq} Agi: {AgilityReq} Acc: {AccuracyReq} End: {EnduranceReq} Ear: {EarthReq} Air: {AirReq} Wat: {WaterReq} Fir: {FireReq}\n" +
             $"Str+: {StrengthUp} Agi+: {AgilityUp} Acc+: {AccuracyUp} End+: {EnduranceUp} Ear+: {EarthUp} Air+: {AirUp} Wat+: {WaterUp} Fir+: {FireUp}\n" +
             $"MaxHP+: {MaxHpUp} MaxMP+: {MaxMpUp} PD+: {PDefUp} MD+: {MDefUp} PA: {PAtkNegative} PA+: {PAtkUpNegative} MA: {MAtkNegativeOrHeal} MA+: {MAtkUpNegative} MP+: {MPHeal}";

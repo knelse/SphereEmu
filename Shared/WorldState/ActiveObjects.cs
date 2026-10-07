@@ -10,13 +10,13 @@ namespace SphServer.Shared.WorldState;
 
 internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, SphereClient>
 {
-    internal static ushort InsertAtFirstEmptyIndex(SphereClient value)
+    internal static ushort InsertAtFirstEmptyIndex (SphereClient value)
     {
         ushort? index = null;
-        for (var i = (int)0x4F6F; i <= ushort.MaxValue; i++)
+        for (var i = (int) 0x4F6F; i <= ushort.MaxValue; i++)
         {
-            var id = (ushort)i;
-            if (storage.ContainsKey(id) || WorldObjectIndex.IsInUse(id))
+            var id = (ushort) i;
+            if (storage.ContainsKey (id) || WorldObjectIndex.IsInUse (id))
             {
                 continue;
             }
@@ -27,36 +27,36 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 
         if (index is null)
         {
-            throw new ArgumentException("Reached max number of connections");
+            throw new ArgumentException ("Reached max number of connections");
         }
 
-        InsertAt(index.Value, value);
+        InsertAt (index.Value, value);
         return index.Value;
     }
 
-    internal static void InsertAt(ushort id, SphereClient value)
+    internal static void InsertAt (ushort id, SphereClient value)
     {
-        WorldObjectIndex.Reserve(id);
-        Add(id, value);
-        ClientStateEvents.RaiseRosterChanged();
+        WorldObjectIndex.Reserve (id);
+        Add (id, value);
+        ClientStateEvents.RaiseRosterChanged ();
     }
 
-    internal static SphereClient? FirstOrDefault()
+    internal static SphereClient? FirstOrDefault ()
     {
-        return storage.Values.FirstOrDefault();
+        return storage.Values.FirstOrDefault ();
     }
 
-    internal static ConcurrentDictionary<ushort, SphereClient> GetAll()
+    internal static ConcurrentDictionary<ushort, SphereClient> GetAll ()
     {
         return storage;
     }
 
-    public new static SphereClient? Remove(ushort key)
+    public new static SphereClient? Remove (ushort key)
     {
-        var removed = ActiveObjectCollectionBase<ushort, SphereClient>.Remove(key);
+        var removed = ActiveObjectCollectionBase<ushort, SphereClient>.Remove (key);
         if (removed is not null)
         {
-            ClientStateEvents.RaiseRosterChanged();
+            ClientStateEvents.RaiseRosterChanged ();
         }
 
         return removed;
@@ -67,7 +67,7 @@ internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
 internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>
 {
-    internal static ConcurrentDictionary<ushort, WorldObject> GetAll()
+    internal static ConcurrentDictionary<ushort, WorldObject> GetAll ()
     {
         return storage;
     }
@@ -75,23 +75,23 @@ internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, 
 
 internal abstract class ActiveObjectCollectionBase<Tk, Tv> where Tk : notnull
 {
-    protected static readonly ConcurrentDictionary<Tk, Tv> storage = new();
+    protected static readonly ConcurrentDictionary<Tk, Tv> storage = new ();
 
-    public static readonly ConcurrentDictionary<string, int> LoggedInClients = new();
+    public static readonly ConcurrentDictionary<string, int> LoggedInClients = new ();
 
-    public static Tv? Get(Tk key)
+    public static Tv? Get (Tk key)
     {
-        return storage.GetValueOrDefault(key);
+        return storage.GetValueOrDefault (key);
     }
 
-    public static void Add(Tk key, Tv value)
+    public static void Add (Tk key, Tv value)
     {
         storage[key] = value;
     }
 
-    public static Tv? Remove(Tk key)
+    public static Tv? Remove (Tk key)
     {
-        storage.TryRemove(key, out var value);
+        storage.TryRemove (key, out var value);
         return value;
     }
 }

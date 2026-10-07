@@ -5,7 +5,7 @@ namespace SphServer.Shared.Db.DataModels;
 public class MonsterDbEntry
 {
     private static readonly PackedScene MonsterScene =
-        (PackedScene)ResourceLoader.Load("res://Godot/Scenes/Monster.tscn");
+        (PackedScene) ResourceLoader.Load ("res://Godot/Scenes/Monster.tscn");
 
     public int Id { get; set; }
     public ushort TypeID { get; set; }

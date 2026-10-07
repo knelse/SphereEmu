@@ -28,35 +28,35 @@ public class ItemPacket : PacketAnalyzeData
 
     public readonly string OverrideType = string.Empty;
 
-    public override string DisplayValue => GetDisplayValue();
+    public override string DisplayValue => GetDisplayValue ();
 
-    public ItemPacket(List<PacketPart> parts) : base(parts)
+    public ItemPacket (List<PacketPart> parts) : base (parts)
     {
-        var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
+        var actionTypePart = Parts.FirstOrDefault (x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
         if (ActionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
         {
-            HasGameId = GetBitValue(PacketPartNames.HasGameId);
-            GameObjectId = GetIntValue(PacketPartNames.GameObjectId);
+            HasGameId = GetBitValue (PacketPartNames.HasGameId);
+            GameObjectId = GetIntValue (PacketPartNames.GameObjectId);
             // 0xFF00 = on the ground
-            ContainerId = GetIntValue(PacketPartNames.ContainerId);
-            Count = Math.Max(GetIntValue(PacketPartNames.Count), 1);
-            PALevel = GetIntValue(PacketPartNames.PALevel);
-            RemainingUses = GetIntValue(PacketPartNames.RemainingUses);
-            OwnerName = GetStringValue(PacketPartNames.OwnerName);
-            HasSuffix = !GetBitValue(PacketPart.HasSuffixValue);
-            Suffix = GetIntValue(PacketPartNames.Suffix);
-            X = GetClientCoordValue(PacketPartNames.CoordX);
-            Y = GetClientCoordValue(PacketPartNames.CoordY);
-            Z = GetClientCoordValue(PacketPartNames.CoordZ);
-            Angle = GetIntValue(PacketPartNames.Angle);
+            ContainerId = GetIntValue (PacketPartNames.ContainerId);
+            Count = Math.Max (GetIntValue (PacketPartNames.Count), 1);
+            PALevel = GetIntValue (PacketPartNames.PALevel);
+            RemainingUses = GetIntValue (PacketPartNames.RemainingUses);
+            OwnerName = GetStringValue (PacketPartNames.OwnerName);
+            HasSuffix = !GetBitValue (PacketPart.HasSuffixValue);
+            Suffix = GetIntValue (PacketPartNames.Suffix);
+            X = GetClientCoordValue (PacketPartNames.CoordX);
+            Y = GetClientCoordValue (PacketPartNames.CoordY);
+            Z = GetClientCoordValue (PacketPartNames.CoordZ);
+            Angle = GetIntValue (PacketPartNames.Angle);
 
             if (HasGameId)
             {
@@ -66,16 +66,16 @@ public class ItemPacket : PacketAnalyzeData
                 }
                 catch (KeyNotFoundException ex)
                 {
-                    ConsoleExtensions.WriteException(ex);
+                    ConsoleExtensions.WriteException (ex);
                 }
             }
 
-            var subtypeId = GetIntValue(PacketPartNames.SubtypeId);
+            var subtypeId = GetIntValue (PacketPartNames.SubtypeId);
 
             if (ObjectType is ObjectType.Scroll_Legend or ObjectType.Scroll_Recipe)
             {
                 var scrollName = $"scroll{subtypeId:000}";
-                if (SphObjectDb.LocalisationContent.ContainsKey(scrollName))
+                if (SphObjectDb.LocalisationContent.ContainsKey (scrollName))
                 {
                     var localized = SphObjectDb.LocalisationContent[scrollName][Locale.Russian];
                     if (localized.Length > 0)
@@ -88,8 +88,8 @@ public class ItemPacket : PacketAnalyzeData
             {
                 var keyLocales = SphObjectDb.LocalisationContent["st_key"][Locale.Russian];
                 var subtypeStr = $"{subtypeId}";
-                var text = keyLocales.FirstOrDefault(x => x.StartsWith(subtypeStr));
-                if (!string.IsNullOrEmpty(text))
+                var text = keyLocales.FirstOrDefault (x => x.StartsWith (subtypeStr));
+                if (!string.IsNullOrEmpty (text))
                 {
                     OverrideType = text[(subtypeStr.Length + 1)..];
                 }
@@ -98,8 +98,8 @@ public class ItemPacket : PacketAnalyzeData
             {
                 var keyLocales = SphObjectDb.LocalisationContent["_tokens"][Locale.Russian];
                 var subtypeStr = $"{subtypeId}";
-                var text = keyLocales.FirstOrDefault(x => x.StartsWith(subtypeStr));
-                if (!string.IsNullOrEmpty(text))
+                var text = keyLocales.FirstOrDefault (x => x.StartsWith (subtypeStr));
+                if (!string.IsNullOrEmpty (text))
                 {
                     var remainingStr = ObjectType is ObjectType.Token_Multiuse && RemainingUses > 0
                         ? $" ({RemainingUses})"
@@ -109,22 +109,22 @@ public class ItemPacket : PacketAnalyzeData
             }
             else if (ObjectType is ObjectType.Token_Island_Guest)
             {
-                var ownerStr = string.IsNullOrEmpty(OwnerName) ? string.Empty : $" ({OwnerName})";
+                var ownerStr = string.IsNullOrEmpty (OwnerName) ? string.Empty : $" ({OwnerName})";
                 OverrideType = "Гостевой жетон на ЛО" + ownerStr;
             }
         }
     }
 
-    private string GetDisplayValue()
+    private string GetDisplayValue ()
     {
-        var typeName = $"({Enum.GetName(ObjectType)!})";
+        var typeName = $"({Enum.GetName (ObjectType)!})";
         string tier;
         var displayName = HasGameId && GameObject is not null
             ? GameObject.Localisation[Locale.Russian]
             : HasGameId
                 ? $"#{GameObjectId}"
-                : string.IsNullOrEmpty(OverrideType)
-                    ? ObjectPacketTools.GetFriendlyNameByObjectType(ObjectType)
+                : string.IsNullOrEmpty (OverrideType)
+                    ? ObjectPacketTools.GetFriendlyNameByObjectType (ObjectType)
                     : OverrideType;
 
         if (GameObject is { GameObjectType: GameObjectType.Ring } ring)
@@ -133,11 +133,11 @@ public class ItemPacket : PacketAnalyzeData
                 ? $"{ring.TitleMinusOne + 1}т"
                 : ring.DegreeMinusOne > 0
                     ? $"{ring.DegreeMinusOne + 1}с"
-                    : ring.ToRomanTierLiteral();
+                    : ring.ToRomanTierLiteral ();
         }
         else
         {
-            tier = GameObject?.ToRomanTierLiteral() ?? string.Empty;
+            tier = GameObject?.ToRomanTierLiteral () ?? string.Empty;
         }
 
         var suffixLocale = string.Empty;
@@ -145,25 +145,25 @@ public class ItemPacket : PacketAnalyzeData
         {
             if (HasSuffix)
             {
-                if (GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.ContainsKey(GameObject!.GameObjectType) &&
+                if (GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.ContainsKey (GameObject!.GameObjectType) &&
                     GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[GameObject!.GameObjectType]
-                        .Any(x => x.Value.value == Suffix))
+                        .Any (x => x.Value.value == Suffix))
                 {
                     GameObject.Suffix = GameObjectDataHelper
                         .ObjectTypeToSuffixLocaleMapActual[GameObject!.GameObjectType]
-                        .First(x => x.Value.value == Suffix).Key;
+                        .First (x => x.Value.value == Suffix).Key;
                 }
                 else
                 {
-                    Console.WriteLine($"No suffix for {GameObject.GameObjectType} and ID {Suffix}");
+                    Console.WriteLine ($"No suffix for {GameObject.GameObjectType} and ID {Suffix}");
                 }
 
-                if (SphObjectDb.LocalisationContent.ContainsKey(GameObject.SphereType))
+                if (SphObjectDb.LocalisationContent.ContainsKey (GameObject.SphereType))
                 {
                     var localeEntries = SphObjectDb.LocalisationContent[GameObject.SphereType][Locale.Russian];
                     var suffixStr = $"2{Suffix:00}";
-                    var suffixLocaleStr = localeEntries.FirstOrDefault(x => x.StartsWith(suffixStr));
-                    if (!string.IsNullOrEmpty(suffixLocaleStr))
+                    var suffixLocaleStr = localeEntries.FirstOrDefault (x => x.StartsWith (suffixStr));
+                    if (!string.IsNullOrEmpty (suffixLocaleStr))
                     {
                         suffixLocale = $"{suffixLocaleStr[3..]}";
                     }
@@ -173,14 +173,14 @@ public class ItemPacket : PacketAnalyzeData
 
         var count = Count > 1 ? $" ({Count})" : string.Empty;
         var name = $"{displayName}" + suffixLocale +
-                   (string.IsNullOrEmpty(tier) ? tier : $" {tier}") + count;
+                   (string.IsNullOrEmpty (tier) ? tier : $" {tier}") + count;
         var pa = string.Empty;
         if (PALevel > 0)
         {
             pa = $" PA: {PALevel}";
         }
 
-        return $"{name,-44}ID: {Id:X4}  GMID: {GameObjectId.ToString(),5}  " +
-               $"Type: {(int)ObjectType,4} {typeName,-24} Suff: N/A  Bag: {ContainerId:X4}{pa}";
+        return $"{name,-44}ID: {Id:X4}  GMID: {GameObjectId.ToString (),5}  " +
+               $"Type: {(int) ObjectType,4} {typeName,-24} Suff: N/A  Bag: {ContainerId:X4}{pa}";
     }
 }

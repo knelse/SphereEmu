@@ -1,0 +1,23 @@
+---
+description: C# spacing — space before ( on calls and declarations, space after casts
+globs: "**/*.cs"
+alwaysApply: false
+---
+
+# C# parenthesis spacing
+
+Space before `(` on calls, declarations, and primary constructors. Space after a cast.
+
+```csharp
+// BAD
+public class SphMonsterData(SphGameObject sphGameObject)
+public int HpPerLevel { get; set; } = (int)sphGameObject.MaxKarmaLevel;
+monster.TakeDamage(amount);
+
+// GOOD
+public class SphMonsterData (SphGameObject sphGameObject)
+public int HpPerLevel { get; set; } = (int) sphGameObject.MaxKarmaLevel;
+monster.TakeDamage (amount);
+```
+
+Same spacing on methods, constructors, local functions, and `new`. Control-flow keywords stay as written (`if (`, `for (`, `while (`).

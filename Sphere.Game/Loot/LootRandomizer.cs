@@ -19,12 +19,12 @@ public static class LootRandomizer
         SphGameObject item;
         if (gameIdOverride != -1)
         {
-            item = DbConnection.GameObjects.FindById(gameIdOverride);
+            item = DbConnection.GameObjects.FindById (gameIdOverride);
         }
 
         else
         {
-            var tierFilter = Math.Min(titleLevelMinusOne, 74) / 5 + 1;
+            var tierFilter = Math.Min (titleLevelMinusOne, 74) / 5 + 1;
             var typeFilter = new HashSet<GameObjectType>
             {
                 GameObjectType.Flower,
@@ -84,15 +84,15 @@ public static class LootRandomizer
             };
 
             var lootPool = GameObjectDb.Db
-                .Where(x =>
-                    !gameIdsToRemove.Contains(x.Key) && kindFilter.Contains(x.Value.ObjectKind) &&
-                    typeFilter.Contains(x.Value.GameObjectType)
+                .Where (x =>
+                    !gameIdsToRemove.Contains (x.Key) && kindFilter.Contains (x.Value.ObjectKind) &&
+                    typeFilter.Contains (x.Value.GameObjectType)
                     && (x.Value.Tier == tierFilter
-                        || tierAgnosticTypes.Contains(x.Value.GameObjectType))).Select(x => x.Value)
-                .ToList();
-            var random = SphRng.Rng.Next(0, lootPool.Count);
-            item = lootPool.ElementAt(random);
-            var collectionItem = DbConnection.GameObjects.FindOne(x => x.GameId == item.GameId);
+                        || tierAgnosticTypes.Contains (x.Value.GameObjectType))).Select (x => x.Value)
+                .ToList ();
+            var random = SphRng.Rng.Next (0, lootPool.Count);
+            item = lootPool.ElementAt (random);
+            var collectionItem = DbConnection.GameObjects.FindOne (x => x.GameId == item.GameId);
             item.GameObjectDbId = collectionItem.GameObjectDbId;
         }
 
@@ -122,7 +122,7 @@ public static class LootRandomizer
                 ItemSuffix.Precision,
                 ItemSuffix.Ether
             ];
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -158,7 +158,7 @@ public static class LootRandomizer
                 ItemSuffix.Interdict
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -187,7 +187,7 @@ public static class LootRandomizer
                 ItemSuffix.Radiance
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -213,7 +213,7 @@ public static class LootRandomizer
                 ItemSuffix.Archmage
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -234,7 +234,7 @@ public static class LootRandomizer
                 ItemSuffix.Damage
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -253,7 +253,7 @@ public static class LootRandomizer
                 ItemSuffix.Ether
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
@@ -284,17 +284,17 @@ public static class LootRandomizer
                 ItemSuffix.Majesty
             ];
 
-            item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+            item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
             return item;
         }
 
         if (item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Elixir_Castle
             or GameObjectType.Elixir_Trap)
         {
-            item.ItemCount = SphRng.Rng.Next(3, 20);
+            item.ItemCount = SphRng.Rng.Next (3, 20);
         }
 
-        item.Suffix = suffixFilter.ElementAt(SphRng.Rng.Next(0, suffixFilter.Count));
+        item.Suffix = suffixFilter.ElementAt (SphRng.Rng.Next (0, suffixFilter.Count));
         return item;
     }
 }

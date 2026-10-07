@@ -9,89 +9,90 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Shared.Networking.WorldObject.Serializers;
 
-public class NpcInteractableSerializer(NpcInteractable npcInteractable)
+public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 {
-    public byte[] ShowItemList(ushort clientId)
+    public byte[] ShowItemList (ushort clientId)
     {
-        var localId = SphereClient.GetLocalObjectId(clientId, npcInteractable.ID);
-        var stream = SphBitStream.GetWriteBitStream();
+        var localId = SphereClient.GetLocalObjectId (clientId, npcInteractable.ID);
+        var stream = SphBitStream.GetWriteBitStream ();
 
-        stream.WriteUInt16(localId);
-        stream.WriteByte(0, 2);
-        stream.WriteUInt16((ushort)npcInteractable.ObjectType, 10);
-        stream.WriteByte(0, 1);
+        stream.WriteUInt16 (localId);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) npcInteractable.ObjectType, 10);
+        stream.WriteByte (0, 1);
         // interaction
-        stream.WriteByte(0x0A, 8);
+        stream.WriteByte (0x0A, 8);
         // open container
-        stream.WriteUInt16(0x0103, 16);
-        stream.WriteByte(0, 8);
+        stream.WriteUInt16 (0x0103, 16);
+        stream.WriteByte (0, 8);
 
-        var itemSeparator = (ushort)0b110000000001010;
+        var itemSeparator = (ushort) 0b110000000001010;
 
-        var packetBytes = new List<byte>();
-        for (var i = 0; i < npcInteractable.GetMaxItemsOnSale(); i++)
+        var packetBytes = new List<byte> ();
+        for (var i = 0; i < npcInteractable.GetMaxItemsOnSale (); i++)
         {
             var item = npcInteractable.ItemsOnSale[i];
             var slotId = i + 1;
-            stream.WriteUInt16(itemSeparator, 15);
-            stream.WriteByte((byte)slotId, 8);
+            stream.WriteUInt16 (itemSeparator, 15);
+            stream.WriteByte ((byte) slotId, 8);
 
-            var itemLocalId = SphereClient.GetLocalObjectId(clientId, item.Id);
-            stream.WriteUInt16(itemLocalId);
-            stream.WriteBytes([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
-            stream.WriteUInt32((uint)item.VendorCost, 32);
+            var itemLocalId = SphereClient.GetLocalObjectId (clientId, item.Id);
+            stream.WriteUInt16 (itemLocalId);
+            stream.WriteBytes ([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
+            stream.WriteUInt32 ((uint) item.VendorCost, 32);
             if (slotId % 28 != 0 && slotId != NpcInteractable.MaxDisplayedShopItems)
             {
                 continue;
             }
 
             // split
-            var packetPiece2 = Packet.ToByteArray(stream.GetStreamData(), 3);
-            packetBytes.AddRange(packetPiece2);
-            stream.CutStream(0, 0);
+            var packetPiece2 = Packet.ToByteArray (stream.GetStreamData (), 3);
+            packetBytes.AddRange (packetPiece2);
+            stream.CutStream (0, 0);
             if (i == npcInteractable.ItemsOnSale.Count - 1)
             {
                 break;
             }
 
-            stream.WriteUInt16(localId);
-            stream.WriteByte(0, 2);
-            stream.WriteUInt16((ushort)npcInteractable.ObjectType, 10);
-            stream.WriteByte(0, 2);
+            stream.WriteUInt16 (localId);
+            stream.WriteByte (0, 2);
+            stream.WriteUInt16 ((ushort) npcInteractable.ObjectType, 10);
+            stream.WriteByte (0, 2);
         }
 
-        stream.WriteByte(0x3F, 7);
-        stream.WriteUInt16(clientId);
-        stream.WriteUInt32(0x62A34008);
-        stream.WriteByte(0x0, 5);
-        stream.WriteUInt16(localId);
-        stream.WriteByte(0x0, 7);
-        var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
-        packetBytes.AddRange(packet);
-        return packetBytes.ToArray();
+        stream.WriteByte (0x3F, 7);
+        stream.WriteUInt16 (clientId);
+        stream.WriteUInt32 (0x62A34008);
+        stream.WriteByte (0x0, 5);
+        stream.WriteUInt16 (localId);
+        stream.WriteByte (0x0, 7);
+        var packet = Packet.ToByteArray (stream.GetStreamData (), 3);
+        packetBytes.AddRange (packet);
+        return packetBytes.ToArray ();
     }
 
-    public byte[] ShowItemContents(ushort clientId)
+    public byte[] ShowItemContents (ushort clientId)
     {
-        var stream = SphBitStream.GetWriteBitStream();
-        var packetList = new List<byte>();
-        for (var i = 0; i < npcInteractable.GetMaxItemsOnSale(); i++)
+        var stream = SphBitStream.GetWriteBitStream ();
+        var packetList = new List<byte> ();
+        for (var i = 0; i < npcInteractable.GetMaxItemsOnSale (); i++)
         {
             var item = npcInteractable.ItemsOnSale[i];
-            WriteItemPacketToStream(clientId, item, stream);
+            WriteItemPacketToStream (clientId, item, stream);
             // if (i > 0 && i % 5 == 0)
             // {
-            // live splits items into batches of 5 and client seems to break if we send more than 10 at a time
+            // live splits items into batches of 5 and client seems to break if we send more than 10
+            // at a time
             // but for now we'll send one at a time so we don't have to stitch them properly
             // if (stream.Bit != 0)
             // {
             //     // 1s would be left at the end if we don't fill
             //     stream.WriteByte(0, 8 - stream.Bit);
             // }
-            var packet = Packet.ToByteArray(stream.GetStreamData(), 3);
-            stream.CutStream(0, 0);
+            var packet = Packet.ToByteArray (stream.GetStreamData (), 3);
+            stream.CutStream (0, 0);
             // Client.TryFindClientByIdAndSendData(clientId, packet);
-            packetList.AddRange(packet);
+            packetList.AddRange (packet);
             // }
             //
             // if (i != ItemsOnSale.Count - 1)
@@ -106,7 +107,7 @@ public class NpcInteractableSerializer(NpcInteractable npcInteractable)
             // }
         }
 
-        return packetList.ToArray();
+        return packetList.ToArray ();
 
         // if (stream.Bit != 0)
         // {
@@ -118,47 +119,47 @@ public class NpcInteractableSerializer(NpcInteractable npcInteractable)
         // Client.TryFindClientByIdAndSendData(clientId, packet);
     }
 
-    private void WriteItemPacketToStream(ushort clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
+    private void WriteItemPacketToStream (ushort clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
     {
         var actualObjectType = itemDbEntry.WireObjectType;
-        var packetParts = PacketPart.LoadDefinedPartsFromFile(actualObjectType);
-        PacketPart.UpdateCoordinates(packetParts, 1000000, 0, 0);
-        var localId = SphereClient.GetLocalObjectId(clientId, itemDbEntry.Id);
-        PacketPart.UpdateEntityId(packetParts, localId);
-        PacketPart.UpdateValue(packetParts, "object_type", (int)actualObjectType, 10);
-        PacketPart.UpdateValue(packetParts, "game_object_id", itemDbEntry.GameId, 14);
-        PacketPart.UpdateValue(packetParts, "container_id", itemDbEntry.ParentContainerId ?? 0xFF00, 16);
+        var packetParts = PacketPart.LoadDefinedPartsFromFile (actualObjectType);
+        PacketPart.UpdateCoordinates (packetParts, 1000000, 0, 0);
+        var localId = SphereClient.GetLocalObjectId (clientId, itemDbEntry.Id);
+        PacketPart.UpdateEntityId (packetParts, localId);
+        PacketPart.UpdateValue (packetParts, "object_type", (int) actualObjectType, 10);
+        PacketPart.UpdateValue (packetParts, "game_object_id", itemDbEntry.GameId, 14);
+        PacketPart.UpdateValue (packetParts, "container_id", itemDbEntry.ParentContainerId ?? 0xFF00, 16);
         if (itemDbEntry.ItemCount > 1)
         {
-            PacketPart.UpdateValue(packetParts, "count", itemDbEntry.ItemCount, 15);
+            PacketPart.UpdateValue (packetParts, "count", itemDbEntry.ItemCount, 15);
         }
 
         if (itemDbEntry.Suffix != ItemSuffix.None)
         {
-            PacketPart.UpdateValue(packetParts, "__hasSuffix", 0, 1);
+            PacketPart.UpdateValue (packetParts, "__hasSuffix", 0, 1);
             var wire = GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual[itemDbEntry.GameObjectType][itemDbEntry.Suffix]
                 .value;
-            // Width follows the Actual locale id (0..N), not ItemSuffix ordinal.
+            // Width follows the Actual locale id (0-N), not the ItemSuffix ordinal
             var suffixLengthValue = wire > 7 ? 1 : 0;
-            PacketPart.UpdateValue(packetParts, "suffix_length", suffixLengthValue, 2);
+            PacketPart.UpdateValue (packetParts, "suffix_length", suffixLengthValue, 2);
             var suffixLength = suffixLengthValue == 0 ? 3 : 7;
-            PacketPart.UpdateValue(packetParts, "suffix", wire, suffixLength);
+            PacketPart.UpdateValue (packetParts, "suffix", wire, suffixLength);
         }
         else
         {
-            PacketPart.UpdateValue(packetParts, "__hasSuffix", 1, 1);
-            PacketPart.UpdateValue(packetParts, "suffix_length", 0, 2);
-            PacketPart.UpdateValue(packetParts, "suffix", 2, 3);
+            PacketPart.UpdateValue (packetParts, "__hasSuffix", 1, 1);
+            PacketPart.UpdateValue (packetParts, "suffix_length", 0, 2);
+            PacketPart.UpdateValue (packetParts, "suffix", 2, 3);
         }
 
-        if (itemDbEntry.ContentsData.TryGetValue("scroll_id", out var value))
+        if (itemDbEntry.ContentsData.TryGetValue ("scroll_id", out var value))
         {
-            PacketPart.UpdateValue(packetParts, "subtype_id", (int)value, 15);
+            PacketPart.UpdateValue (packetParts, "subtype_id", (int) value, 15);
         }
 
         foreach (var part in packetParts)
         {
-            stream.WriteBits(part.Value);
+            stream.WriteBits (part.Value);
         }
     }
 }

@@ -17,7 +17,7 @@ public enum NavPathFailReason
 
 public readonly struct NavPathRequest
 {
-    public NavPathRequest(
+    public NavPathRequest (
         Vector3 startWorld,
         Vector3 goalWorld,
         Vector3 leashCenterWorld,
@@ -42,14 +42,11 @@ public sealed class NavPathResult
     public List<Vector3> Waypoints { get; init; } = [];
 }
 
-/// <summary>
-///     Runtime pathfinding over <see cref="TerrainNavMeshRuntime" /> (outdoor tiles + indoor clusters).
-/// </summary>
 public static class NavPathQuery
 {
     private const float TileLoadMarginMeters = 8f;
 
-    public static Vector3 ClampGoalToLeash(Vector3 goalWorld, Vector3 leashCenterWorld, float leashRadiusMeters)
+    public static Vector3 ClampGoalToLeash (Vector3 goalWorld, Vector3 leashCenterWorld, float leashRadiusMeters)
     {
         var dx = goalWorld.X - leashCenterWorld.X;
         var dz = goalWorld.Z - leashCenterWorld.Z;
@@ -60,14 +57,14 @@ public static class NavPathQuery
             return goalWorld;
         }
 
-        var scale = leashRadiusMeters / Mathf.Sqrt(distSq);
-        return new Vector3(
+        var scale = leashRadiusMeters / Mathf.Sqrt (distSq);
+        return new Vector3 (
             leashCenterWorld.X + dx * scale,
             goalWorld.Y,
             leashCenterWorld.Z + dz * scale);
     }
 
-    public static bool IsInsideLeash(Vector3 worldPosition, Vector3 leashCenterWorld, float leashRadiusMeters)
+    public static bool IsInsideLeash (Vector3 worldPosition, Vector3 leashCenterWorld, float leashRadiusMeters)
     {
         var dx = worldPosition.X - leashCenterWorld.X;
         var dz = worldPosition.Z - leashCenterWorld.Z;
@@ -75,52 +72,51 @@ public static class NavPathQuery
     }
 
     /// <summary>
-    ///     Loads nearby outdoor/indoor nav, snaps endpoints onto the mesh, then queries Recast path.
-    ///     Positions are spawner / SOURCE_BASIS space (same as monster spawner GlobalPosition).
+    /// Positions are spawner / SOURCE_BASIS space (same as MonsterSpawner.GlobalPosition)
     /// </summary>
-    public static NavPathResult FindPath(Node3D context, NavPathRequest request)
+    public static NavPathResult FindPath (Node3D context, NavPathRequest request)
     {
-        if (!IsInsideLeash(request.GoalWorld, request.LeashCenterWorld, request.LeashRadiusMeters))
+        if (!IsInsideLeash (request.GoalWorld, request.LeashCenterWorld, request.LeashRadiusMeters))
         {
-            return Fail(NavPathFailReason.GoalOutsideLeash);
+            return Fail (NavPathFailReason.GoalOutsideLeash);
         }
 
-        if (!TerrainNavMeshRuntime.HasAnyTileFiles())
+        if (!TerrainNavMeshRuntime.HasAnyTileFiles ())
         {
-            return Fail(NavPathFailReason.NavDataMissing);
+            return Fail (NavPathFailReason.NavDataMissing);
         }
 
-        TerrainNavMeshRuntime.EnsureTilesLoaded(
+        TerrainNavMeshRuntime.EnsureTilesLoaded (
             context,
             request.LeashCenterWorld,
             request.LeashRadiusMeters + TileLoadMarginMeters);
-        TerrainNavMeshRuntime.TrySyncImmediate();
+        TerrainNavMeshRuntime.TrySyncImmediate ();
 
         if (!TerrainNavMeshRuntime.IsReadyForQueries)
         {
-            return Fail(NavPathFailReason.NavDataMissing);
+            return Fail (NavPathFailReason.NavDataMissing);
         }
 
-        if (!TerrainNavMeshRuntime.IsPointOnNavMesh(request.StartWorld, out var startSnap))
+        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.StartWorld, out var startSnap))
         {
-            return Fail(NavPathFailReason.StartUnwalkable);
+            return Fail (NavPathFailReason.StartUnwalkable);
         }
 
-        if (!TerrainNavMeshRuntime.IsPointOnNavMesh(request.GoalWorld, out var goalSnap))
+        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.GoalWorld, out var goalSnap))
         {
-            return Fail(NavPathFailReason.GoalUnwalkable);
+            return Fail (NavPathFailReason.GoalUnwalkable);
         }
 
-        var path = TerrainNavMeshRuntime.FindPath(startSnap, goalSnap, optimize: true);
+        var path = TerrainNavMeshRuntime.FindPath (startSnap, goalSnap, optimize: true);
         if (path.Length == 0)
         {
-            return Fail(NavPathFailReason.NoPath);
+            return Fail (NavPathFailReason.NoPath);
         }
 
-        var waypoints = new List<Vector3>(path.Length);
+        var waypoints = new List<Vector3> (path.Length);
         foreach (var point in path)
         {
-            waypoints.Add(point);
+            waypoints.Add (point);
         }
 
         return new NavPathResult
@@ -132,12 +128,12 @@ public static class NavPathQuery
     }
 
     /// <summary>
-    ///     Sample ground Y from the loaded navmesh at XZ (probe Y seeds the closest-point search).
+    /// probeY only seeds the closest-point search
     /// </summary>
-    public static bool TrySampleGroundY(float worldX, float worldZ, float probeY, out float groundY)
+    public static bool TrySampleGroundY (float worldX, float worldZ, float probeY, out float groundY)
     {
         groundY = default;
-        if (!TerrainNavMeshRuntime.TryClosestPoint(new Vector3(worldX, probeY, worldZ), out var closest))
+        if (!TerrainNavMeshRuntime.TryClosestPoint (new Vector3 (worldX, probeY, worldZ), out var closest))
         {
             return false;
         }
@@ -146,6 +142,6 @@ public static class NavPathQuery
         return true;
     }
 
-    private static NavPathResult Fail(NavPathFailReason reason)
-        => new() { Success = false, Reason = reason, Waypoints = [] };
+    private static NavPathResult Fail (NavPathFailReason reason)
+        => new () { Success = false, Reason = reason, Waypoints = [] };
 }

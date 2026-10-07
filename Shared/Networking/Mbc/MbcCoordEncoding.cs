@@ -3,8 +3,7 @@ using System;
 namespace SphServer.Shared.Networking.Mbc;
 
 /// <summary>
-///     Client <c>SferaMbcBitStream::encodeCoordinate</c> / angle format <c>'l'</c>
-///     (<c>semantic_classes.cpp</c>). Used for msg300 TransformUpdate (region 1).
+/// Client encodeCoordinate and angle format 'l', for msg300 TransformUpdate region 1
 /// </summary>
 public static class MbcCoordEncoding
 {
@@ -16,13 +15,13 @@ public static class MbcCoordEncoding
     private const double TwoPi = 6.2831854820251465;
 
     /// <summary>
-    ///     12-bit nonlinear delta from integer origin. Magnitude must be &lt; 120.
-    ///     Bit 11 set when coordinate &lt; origin.
+    /// 12-bit nonlinear delta from the integer origin; magnitude stays under 120, bit 11 when the
+    /// coordinate is below origin
     /// </summary>
-    public static ushort EncodeCoordinate(int origin, float coordinate)
+    public static ushort EncodeCoordinate (int origin, float coordinate)
     {
-        var magnitude = Math.Abs((double)coordinate - origin);
-        if (!double.IsFinite(magnitude) || magnitude >= 120.0)
+        var magnitude = Math.Abs ((double) coordinate - origin);
+        if (!double.IsFinite (magnitude) || magnitude >= 120.0)
         {
             // At-origin code: client decode of 2047 is distance 0
             return 2047;
@@ -30,7 +29,7 @@ public static class MbcCoordEncoding
 
         var inverse = 1.0 / (magnitude + 40.0);
         var normalized = (inverse - MinimumInverse) / (Inverse40 - MinimumInverse);
-        var code = (ushort)Math.Truncate(normalized * 2047.0);
+        var code = (ushort) Math.Truncate (normalized * 2047.0);
         if (coordinate < origin)
         {
             code |= 0x800;
@@ -40,21 +39,21 @@ public static class MbcCoordEncoding
     }
 
     /// <summary>
-    ///     Angle as raw u8: trunc(radians * 256 / 2π) &amp; 0xFF after wrapping negatives.
+    /// Raw u8: trunc(radians * 256 / 2pi) and 0xFF, after wrapping negatives
     /// </summary>
-    public static byte EncodeAngle(double angleRadians)
+    public static byte EncodeAngle (double angleRadians)
     {
-        var angle = (float)angleRadians;
-        if (!float.IsFinite(angle) || angle is < -1000f or > 1000f)
+        var angle = (float) angleRadians;
+        if (!float.IsFinite (angle) || angle is < -1000f or > 1000f)
         {
             angle = 0;
         }
 
         while (angle < 0)
         {
-            angle = (float)(angle + TwoPi);
+            angle = (float) (angle + TwoPi);
         }
 
-        return (byte)((uint)Math.Truncate(angle * AngleScale) & 0xFF);
+        return (byte) ((uint) Math.Truncate (angle * AngleScale) & 0xFF);
     }
 }

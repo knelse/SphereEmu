@@ -1,0 +1,10 @@
+---
+description: Load code-comment-style at session start and keep it on for file text and chat replies
+alwaysApply: true
+---
+
+# code-comment-style
+
+At the start of every conversation, read `.cursor/skills/code-comment-style/SKILL.md` and follow it for the rest of the session.
+
+A `sessionStart` hook also injects that skill. It stays on until the session ends. Invoke again with `/code-comment-style`.

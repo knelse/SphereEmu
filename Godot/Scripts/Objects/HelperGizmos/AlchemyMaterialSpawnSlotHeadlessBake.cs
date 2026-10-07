@@ -8,8 +8,7 @@ using SphServer.Godot.Scripts.World;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Headless bake of alchemy material spawn slots into MainServer.
-///     Run: <c>.\Tools\bake_alchemy_spawn_slots.ps1</c>
+/// Run .\Tools\bake_alchemy_spawn_slots.ps1
 /// </summary>
 public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
 {
@@ -19,29 +18,29 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
     private const int ExitFailure = 1;
 
     /// <summary>
-    ///     Set while this bake owns MainServer so alchemy / server runtime paths skip activation.
+    /// Set while this bake owns MainServer, so runtime activation is skipped
     /// </summary>
     public static bool IsActive { get; private set; }
 
-    public override async void _Ready()
+    public override async void _Ready ()
     {
-        var options = ParseOptions();
+        var options = ParseOptions ();
         if (options.ShowHelp)
         {
-            PrintHelp();
-            Quit(ExitSuccess);
+            PrintHelp ();
+            Quit (ExitSuccess);
             return;
         }
 
         IsActive = true;
         try
         {
-            Quit(await RunAsync(options));
+            Quit (await RunAsync (options));
         }
         catch (Exception ex)
         {
-            GD.PushError($"AlchemyMaterialSpawnSlotHeadlessBake: failed: {ex}");
-            Quit(ExitFailure);
+            GD.PushError ($"AlchemyMaterialSpawnSlotHeadlessBake: failed: {ex}");
+            Quit (ExitFailure);
         }
         finally
         {
@@ -49,48 +48,48 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
         }
     }
 
-    private async Task<int> RunAsync(Options options)
+    private async Task<int> RunAsync (Options options)
     {
-        if (!ResourceLoader.Exists(options.ScenePath))
+        if (!ResourceLoader.Exists (options.ScenePath))
         {
-            GD.PushError($"AlchemyMaterialSpawnSlotHeadlessBake: scene not found: {options.ScenePath}");
+            GD.PushError ($"AlchemyMaterialSpawnSlotHeadlessBake: scene not found: {options.ScenePath}");
             return ExitFailure;
         }
 
-        GD.Print($"AlchemyMaterialSpawnSlotHeadlessBake: loading {options.ScenePath}…");
-        var packed = ResourceLoader.Load<PackedScene>(options.ScenePath, cacheMode: ResourceLoader.CacheMode.Ignore);
+        GD.Print ($"AlchemyMaterialSpawnSlotHeadlessBake: loading {options.ScenePath}…");
+        var packed = ResourceLoader.Load<PackedScene> (options.ScenePath, cacheMode: ResourceLoader.CacheMode.Ignore);
         if (packed is null)
         {
-            GD.PushError("AlchemyMaterialSpawnSlotHeadlessBake: failed to load PackedScene.");
+            GD.PushError ("AlchemyMaterialSpawnSlotHeadlessBake: failed to load PackedScene.");
             return ExitFailure;
         }
 
-        var root = packed.Instantiate<Node>();
-        AddChild(root);
-        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        var root = packed.Instantiate<Node> ();
+        AddChild (root);
+        await ToSignal (GetTree (), SceneTree.SignalName.ProcessFrame);
 
-        var spawnersRoot = root.GetNodeOrNull<Node>("AlchemyMaterialSpawners");
+        var spawnersRoot = root.GetNodeOrNull<Node> ("AlchemyMaterialSpawners");
         if (spawnersRoot is null)
         {
-            GD.PushError("AlchemyMaterialSpawnSlotHeadlessBake: AlchemyMaterialSpawners node missing.");
+            GD.PushError ("AlchemyMaterialSpawnSlotHeadlessBake: AlchemyMaterialSpawners node missing.");
             return ExitFailure;
         }
 
-        if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute(
-                ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+        if (ResourceLoader.Exists (WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute (
+                ProjectSettings.GlobalizePath (WorldChunkCatalog.ChunksRoot)))
         {
             var streamer = new WorldChunkStreamer { Name = "WorldChunkStreamer" };
-            root.AddChild(streamer);
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            streamer.LoadAll();
-            GD.Print(
-                $"AlchemyMaterialSpawnSlotHeadlessBake: loaded chunks, spawners now={spawnersRoot.GetChildCount()}");
+            root.AddChild (streamer);
+            await ToSignal (GetTree (), SceneTree.SignalName.ProcessFrame);
+            streamer.LoadAll ();
+            GD.Print (
+                $"AlchemyMaterialSpawnSlotHeadlessBake: loaded chunks, spawners now={spawnersRoot.GetChildCount ()}");
         }
 
-        var terrain = FindTerrainGridMap(root);
+        var terrain = FindTerrainGridMap (root);
         if (terrain is null)
         {
-            GD.PushError(
+            GD.PushError (
                 "AlchemyMaterialSpawnSlotHeadlessBake: Terrain GridMap not found under TerrainScene — "
                 + "nav tile loading will fail.");
             return ExitFailure;
@@ -100,24 +99,23 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
         var bakedFail = 0;
         var skipped = 0;
         var totalSlots = 0;
-        var sw = Stopwatch.StartNew();
+        var sw = Stopwatch.StartNew ();
 
-        GD.Print(
-            $"AlchemyMaterialSpawnSlotHeadlessBake: terrain '{terrain.GetPath()}', "
-            + $"{spawnersRoot.GetChildCount()} spawner node(s). Baking…");
+        GD.Print (
+            $"AlchemyMaterialSpawnSlotHeadlessBake: terrain '{terrain.GetPath ()}', "
+            + $"{spawnersRoot.GetChildCount ()} spawner node(s). Baking…");
 
-        // Per-spawner tile load: registering the whole world into one nav map makes closest-point
-        // snap highland markers onto canyon mesh (WrongLevel). Keep loads local; bake path is the
-        // same shuffled BakeFast fill as the inspector button.
-        foreach (var child in spawnersRoot.GetChildren())
+        // One nav map for the whole world snaps highland markers onto canyon mesh (WrongLevel).
+        // Loads stay local to the spawner
+        foreach (var child in spawnersRoot.GetChildren ())
         {
             if (child is not AlchemyMaterialSpawner spawner)
             {
                 continue;
             }
 
-            if (!string.IsNullOrEmpty(options.NameContains)
-                && !spawner.Name.ToString().Contains(options.NameContains, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty (options.NameContains)
+                && !spawner.Name.ToString ().Contains (options.NameContains, StringComparison.OrdinalIgnoreCase))
             {
                 skipped++;
                 continue;
@@ -131,8 +129,8 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
             }
 
             // Keep only this spawner's neighborhood on the nav map (avoids WrongLevel snaps).
-            TerrainNavMeshRuntime.UnloadAllRegions();
-            var count = await AlchemyMaterialSpawnSlotBaker.BakeForSpawnerAsync(spawner);
+            TerrainNavMeshRuntime.UnloadAllRegions ();
+            var count = await AlchemyMaterialSpawnSlotBaker.BakeForSpawnerAsync (spawner);
             if (count > 0 && !spawner.HasBakeError)
             {
                 bakedOk++;
@@ -141,31 +139,31 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
             else
             {
                 bakedFail++;
-                GD.PushWarning(
+                GD.PushWarning (
                     $"AlchemyMaterialSpawnSlotHeadlessBake: '{spawner.Name}' failed "
                     + $"({spawner.BakeErrorDetail})");
             }
         }
 
-        GD.Print(
+        GD.Print (
             $"AlchemyMaterialSpawnSlotHeadlessBake: ok={bakedOk} fail={bakedFail} skipped={skipped} "
             + $"slots={totalSlots} in {sw.Elapsed.TotalSeconds:0.0}s");
 
         if (!options.SkipSceneSave)
         {
-            if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath)
-                || DirAccess.DirExistsAbsolute(ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+            if (ResourceLoader.Exists (WorldChunkCatalog.IndexPath)
+                || DirAccess.DirExistsAbsolute (ProjectSettings.GlobalizePath (WorldChunkCatalog.ChunksRoot)))
             {
-                GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: re-packing world chunks + index…");
-                var packResult = WorldChunkPacker.PackFromMainServer(root, clearParents: true, extractSlots: true);
-                GD.Print(
+                GD.Print ("AlchemyMaterialSpawnSlotHeadlessBake: re-packing world chunks + index…");
+                var packResult = WorldChunkPacker.PackFromMainServer (root, clearParents: true, extractSlots: true);
+                GD.Print (
                     $"AlchemyMaterialSpawnSlotHeadlessBake: chunks={packResult.ChunksWritten}, "
                     + $"nodes={packResult.NodesPacked}");
             }
             else
             {
-                GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: packing and saving scene…");
-                if (!TrySaveMainServer(root, options.ScenePath))
+                GD.Print ("AlchemyMaterialSpawnSlotHeadlessBake: packing and saving scene…");
+                if (!TrySaveMainServer (root, options.ScenePath))
                 {
                     return ExitFailure;
                 }
@@ -173,45 +171,45 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
         }
         else
         {
-            WorldContentIndex.GetOrLoad().SaveTo(WorldChunkCatalog.IndexPath);
-            GD.Print("AlchemyMaterialSpawnSlotHeadlessBake: skipped scene save (--skip-scene-save).");
+            WorldContentIndex.GetOrLoad ().SaveTo (WorldChunkCatalog.IndexPath);
+            GD.Print ("AlchemyMaterialSpawnSlotHeadlessBake: skipped scene save (--skip-scene-save).");
         }
 
         return bakedFail > 0 && bakedOk == 0 ? ExitFailure : ExitSuccess;
     }
 
-    private static bool TrySaveMainServer(Node root, string scenePath)
+    private static bool TrySaveMainServer (Node root, string scenePath)
     {
         try
         {
-            var packed = new PackedScene();
-            var packErr = packed.Pack(root);
+            var packed = new PackedScene ();
+            var packErr = packed.Pack (root);
             if (packErr != Error.Ok)
             {
-                GD.PushError($"AlchemyMaterialSpawnSlotHeadlessBake: Pack failed ({packErr}).");
+                GD.PushError ($"AlchemyMaterialSpawnSlotHeadlessBake: Pack failed ({packErr}).");
                 return false;
             }
 
-            var saveErr = ResourceSaver.Save(packed, scenePath);
+            var saveErr = ResourceSaver.Save (packed, scenePath);
             if (saveErr != Error.Ok)
             {
-                GD.PushError($"AlchemyMaterialSpawnSlotHeadlessBake: ResourceSaver.Save failed ({saveErr}).");
+                GD.PushError ($"AlchemyMaterialSpawnSlotHeadlessBake: ResourceSaver.Save failed ({saveErr}).");
                 return false;
             }
 
-            GD.Print($"AlchemyMaterialSpawnSlotHeadlessBake: saved {scenePath}");
+            GD.Print ($"AlchemyMaterialSpawnSlotHeadlessBake: saved {scenePath}");
             return true;
         }
         catch (Exception ex)
         {
-            GD.PushError($"AlchemyMaterialSpawnSlotHeadlessBake: scene save threw ({ex.Message}).");
+            GD.PushError ($"AlchemyMaterialSpawnSlotHeadlessBake: scene save threw ({ex.Message}).");
             return false;
         }
     }
 
-    private static GridMap? FindTerrainGridMap(Node root)
+    private static GridMap? FindTerrainGridMap (Node root)
     {
-        foreach (var node in root.FindChildren("*", nameof(GridMap), recursive: true, owned: false))
+        foreach (var node in root.FindChildren ("*", nameof (GridMap), recursive: true, owned: false))
         {
             if (node is GridMap grid && grid.Name == "Terrain")
             {
@@ -222,10 +220,10 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
         return null;
     }
 
-    private static Options ParseOptions()
+    private static Options ParseOptions ()
     {
-        var options = new Options();
-        var args = OS.GetCmdlineUserArgs();
+        var options = new Options ();
+        var args = OS.GetCmdlineUserArgs ();
         for (var i = 0; i < args.Length; i++)
         {
             switch (args[i])
@@ -253,9 +251,9 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
         return options;
     }
 
-    private static void PrintHelp()
+    private static void PrintHelp ()
     {
-        GD.Print(
+        GD.Print (
             """
             Alchemy material spawn-slot headless bake
 
@@ -273,14 +271,14 @@ public partial class AlchemyMaterialSpawnSlotHeadlessBake : Node
             """);
     }
 
-    private void Quit(int exitCode)
+    private void Quit (int exitCode)
     {
-        CallDeferred(nameof(QuitTree), exitCode);
+        CallDeferred (nameof (QuitTree), exitCode);
     }
 
-    private void QuitTree(int exitCode)
+    private void QuitTree (int exitCode)
     {
-        GetTree().Quit(exitCode);
+        GetTree ().Quit (exitCode);
     }
 
     private sealed class Options

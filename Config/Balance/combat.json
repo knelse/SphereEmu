@@ -30,5 +30,15 @@
     "minMeleeHit": 1,
 
     // invented: melee range sanity bound in Godot meters; 0 disables (client already enforces ~1.5).
-    "meleeRangeMeters": 10.0
+    "meleeRangeMeters": 10.0,
+
+    // invented: final multiplier on hp, patk, matk, pdef, mdef after level * per-level.
+    // 1.0 is no buff. 1.2 / 1.45 / 1.99 are the 20% / 45% / 99% named-boss buffs.
+    "namedBossRankStatMultiplier": {
+        "none": 1.0,
+        "randomSpawn": 1.2,
+        "fixedSpawnLootable": 1.45,
+        "fixedSpawnHobo": 1.45,
+        "event": 1.99
+    }
 }

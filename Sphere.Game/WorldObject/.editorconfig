@@ -4,6 +4,10 @@ root = true
 # must stay in SphServer.Sphere.Game.WorldObject — nested namespaces like
 # WorldObject.Monster would collide with the Monster type in the parent namespace.
 [*.cs]
+# Space before ( on calls and declarations; space after a cast. Parent .editorconfig does not apply here (root).
+csharp_space_between_method_call_name_and_opening_parenthesis = true
+csharp_space_between_method_declaration_name_and_open_parenthesis = true
+csharp_space_after_cast = true
 dotnet_style_namespace_match_folder = false
 csharp_style_namespace_match_folder = false
 resharper_check_namespace = false

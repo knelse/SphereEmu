@@ -14,3 +14,8 @@ resharper_async_method_without_await_highlighting = none
 resharper_async_override_method_without_await_highlighting = none
 resharper_async_void_method_without_await_highlighting = none
 resharper_async_void_override_method_without_await_highlighting = none
+
+# Space before ( on calls and declarations; space after a cast
+csharp_space_between_method_call_name_and_opening_parenthesis = true
+csharp_space_between_method_declaration_name_and_open_parenthesis = true
+csharp_space_after_cast = true

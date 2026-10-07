@@ -6,303 +6,298 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.Fill;
 
-/// <summary>
-/// Editor tool: rebuilds NPC nodes under the <c>NPCs</c> parent from the TSV file
-/// (<c>Sphere.Game/SpawnData/NPC/npc.txt</c>) and name list (<c>_rnms.txt</c>).
-/// Mirrors the old <c>NpcSpawnTscnWriter</c> flow but runs from a button on the NPCs node.
-/// </summary>
 [Tool]
 public partial class NpcsFill : Node3D
 {
-	[Export]
-	public string InputTsvPath { get; set; } = @"d:\SphereDev\SphereSource\SphereEmu\Sphere.Game\SpawnData\NPC\npc.txt";
+    [Export]
+    public string InputTsvPath { get; set; } = @"d:\SphereDev\SphereSource\SphereEmu\Sphere.Game\SpawnData\NPC\npc.txt";
 
-	[Export]
-	public string RnmsPath { get; set; } = @"d:\SphereDev\SphereSource\SphereEmu\Sphere.GameDataDecode\language\_rnms.txt";
+    [Export]
+    public string RnmsPath { get; set; } = @"d:\SphereDev\SphereSource\SphereEmu\Sphere.GameDataDecode\language\_rnms.txt";
 
-	[Export]
-	public string NpcInteractableScenePath { get; set; } = "res://Godot/Scenes/npc_interactable.tscn";
+    [Export]
+    public string NpcInteractableScenePath { get; set; } = "res://Godot/Scenes/npc_interactable.tscn";
 
-	[ExportToolButton("Rebuild NPCs")]
-	public Callable RebuildNpcsButton => Callable.From(RebuildNpcs);
+    [ExportToolButton ("Rebuild NPCs")]
+    public Callable RebuildNpcsButton => Callable.From (RebuildNpcs);
 
-	public void RebuildNpcs()
-	{
-		WorldObjectDumpFillCommon.ClearRebuildableChildren(this);
+    public void RebuildNpcs ()
+    {
+        WorldObjectDumpFillCommon.ClearRebuildableChildren (this);
 
-		if (!WorldObjectDumpFillCommon.TryLoadPackedScene(NpcInteractableScenePath, "NpcsFill", out var npcScene) || npcScene is null)
-		{
-			return;
-		}
+        if (!WorldObjectDumpFillCommon.TryLoadPackedScene (NpcInteractableScenePath, "NpcsFill", out var npcScene) || npcScene is null)
+        {
+            return;
+        }
 
-		if (!WorldObjectDumpFillCommon.TryReadTextFile(InputTsvPath, "NpcsFill", out var inputText))
-		{
-			return;
-		}
+        if (!WorldObjectDumpFillCommon.TryReadTextFile (InputTsvPath, "NpcsFill", out var inputText))
+        {
+            return;
+        }
 
-		Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-		string[] rnmsLines;
-		try
-		{
-			rnmsLines = File.ReadAllLines(RnmsPath, Encoding.GetEncoding(1251));
-		}
-		catch (Exception ex)
-		{
-			GD.PushError($"NpcsFill: failed to read rnms file '{RnmsPath}': {ex.Message}");
-			return;
-		}
+        Encoding.RegisterProvider (CodePagesEncodingProvider.Instance);
+        string[] rnmsLines;
+        try
+        {
+            rnmsLines = File.ReadAllLines (RnmsPath, Encoding.GetEncoding (1251));
+        }
+        catch (Exception ex)
+        {
+            GD.PushError ($"NpcsFill: failed to read rnms file '{RnmsPath}': {ex.Message}");
+            return;
+        }
 
-		var usedNames = new HashSet<string>(StringComparer.Ordinal);
-		WorldObjectDumpFillCommon.SeedUsedNodeNamesFromPreservedPlacements(this, usedNames);
-		var stats = new Stats();
+        var usedNames = new HashSet<string> (StringComparer.Ordinal);
+        WorldObjectDumpFillCommon.SeedUsedNodeNamesFromPreservedPlacements (this, usedNames);
+        var stats = new Stats ();
 
-		foreach (var (lineNumber, parts) in WorldObjectDumpFillCommon.EnumerateDataLines(inputText))
-		{
-			stats.RowsConsidered++;
+        foreach (var (lineNumber, parts) in WorldObjectDumpFillCommon.EnumerateDataLines (inputText))
+        {
+            stats.RowsConsidered++;
 
-			if (parts.Length < 8)
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: expected ≥8 columns, got {parts.Length}. Skipping.");
-				continue;
-			}
+            if (parts.Length < 8)
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: expected ≥8 columns, got {parts.Length}. Skipping.");
+                continue;
+            }
 
-			if (!FileFormatCulture.TryParseHexInt(parts[0], out var id) || id <= 0)
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad ID '{parts[0]}'. Skipping.");
-				continue;
-			}
+            if (!FileFormatCulture.TryParseHexInt (parts[0], out var id) || id <= 0)
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: bad ID '{parts[0]}'. Skipping.");
+                continue;
+            }
 
-			if (!ObjectTypeParse.TryParse(parts[1].Trim(), out var objectType))
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad ObjectType '{parts[1]}'. Skipping.");
-				continue;
-			}
+            if (!ObjectTypeParse.TryParse (parts[1].Trim (), out var objectType))
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: bad ObjectType '{parts[1]}'. Skipping.");
+                continue;
+            }
 
-			if (!WorldObjectDumpFillCommon.TryParseDouble(parts[3], out var x)
-				|| !WorldObjectDumpFillCommon.TryParseDouble(parts[4], out var y)
-				|| !WorldObjectDumpFillCommon.TryParseDouble(parts[5], out var z))
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad X/Y/Z. Skipping.");
-				continue;
-			}
+            if (!WorldObjectDumpFillCommon.TryParseDouble (parts[3], out var x)
+                || !WorldObjectDumpFillCommon.TryParseDouble (parts[4], out var y)
+                || !WorldObjectDumpFillCommon.TryParseDouble (parts[5], out var z))
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: bad X/Y/Z. Skipping.");
+                continue;
+            }
 
-			if (!WorldObjectDumpFillCommon.TryParseAngle(parts[6], out var angleEncoded))
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad Angle. Skipping.");
-				continue;
-			}
+            if (!WorldObjectDumpFillCommon.TryParseAngle (parts[6], out var angleEncoded))
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: bad Angle. Skipping.");
+                continue;
+            }
 
-			if (!FileFormatCulture.TryParseInt(parts[7], out var nameId))
-			{
-				stats.ParseErrors++;
-				GD.PushWarning($"NpcsFill: npc.txt line {lineNumber}: bad NameId '{parts[7]}'. Skipping.");
-				continue;
-			}
+            if (!FileFormatCulture.TryParseInt (parts[7], out var nameId))
+            {
+                stats.ParseErrors++;
+                GD.PushWarning ($"NpcsFill: npc.txt line {lineNumber}: bad NameId '{parts[7]}'. Skipping.");
+                continue;
+            }
 
-			var displayName = ResolveDisplayName(rnmsLines, nameId);
-			var nodeNameBase = $"NPC_{FileFormatCulture.FormatInt(id)}_{StripLeadingNpcPrefixes(displayName)}";
-			nodeNameBase = CollapseDuplicateNpcPrefix(nodeNameBase);
-			var nodeName = MakeUniqueNodeName(SanitizeNodeName(nodeNameBase), usedNames);
+            var displayName = ResolveDisplayName (rnmsLines, nameId);
+            var nodeNameBase = $"NPC_{FileFormatCulture.FormatInt (id)}_{StripLeadingNpcPrefixes (displayName)}";
+            nodeNameBase = CollapseDuplicateNpcPrefix (nodeNameBase);
+            var nodeName = MakeUniqueNodeName (SanitizeNodeName (nodeNameBase), usedNames);
 
-			var modelName = parts.Length > 9 ? (parts[9] ?? string.Empty).Trim() : string.Empty;
-			var iconName = parts.Length > 11 ? (parts[11] ?? string.Empty).Trim() : string.Empty;
-			var npcTypeRaw = 0;
-			if (parts.Length > 12
-				&& !FileFormatCulture.TryParseInt(parts[12], out npcTypeRaw))
-			{
-				npcTypeRaw = 0;
-			}
+            var modelName = parts.Length > 9 ? (parts[9] ?? string.Empty).Trim () : string.Empty;
+            var iconName = parts.Length > 11 ? (parts[11] ?? string.Empty).Trim () : string.Empty;
+            var npcTypeRaw = 0;
+            if (parts.Length > 12
+                && !FileFormatCulture.TryParseInt (parts[12], out npcTypeRaw))
+            {
+                npcTypeRaw = 0;
+            }
 
-			var npcType = (NpcType)npcTypeRaw;
+            var npcType = (NpcType) npcTypeRaw;
 
-			ApplyNpcTypeFixups(objectType, ref modelName, ref iconName, ref npcType);
+            ApplyNpcTypeFixups (objectType, ref modelName, ref iconName, ref npcType);
 
-			var instance = npcScene.Instantiate<Node3D>();
-			if (instance is not NpcInteractable npc)
-			{
-				stats.ParseErrors++;
-				GD.PushError($"NpcsFill: scene root is not NpcInteractable ({npcScene.ResourcePath}).");
-				return;
-			}
+            var instance = npcScene.Instantiate<Node3D> ();
+            if (instance is not NpcInteractable npc)
+            {
+                stats.ParseErrors++;
+                GD.PushError ($"NpcsFill: scene root is not NpcInteractable ({npcScene.ResourcePath}).");
+                return;
+            }
 
-			npc.Name = nodeName;
-			npc.Position = new Vector3((float)x, -(float)y, -(float)z);
-			npc.Angle = angleEncoded;
+            npc.Name = nodeName;
+            npc.Position = new Vector3 ((float) x, -(float) y, -(float) z);
+            npc.Angle = angleEncoded;
 
-			if (id is >= 0 and <= ushort.MaxValue)
-			{
-				npc.ID = (ushort)id;
-			}
+            if (id is >= 0 and <= ushort.MaxValue)
+            {
+                npc.ID = (ushort) id;
+            }
 
-			npc.ObjectType = objectType;
-			npc.NameID = 4000 + nameId;
-			npc.ModelName = modelName;
-			npc.IconName = iconName;
-			npc.NpcType = npcType;
-			npc.VendorItemTierMax = 15;
+            npc.ObjectType = objectType;
+            npc.NameID = 4000 + nameId;
+            npc.ModelName = modelName;
+            npc.IconName = iconName;
+            npc.NpcType = npcType;
+            npc.VendorItemTierMax = 15;
 
-			AddChild(npc);
-			WorldObjectDumpFillCommon.SetOwnerIfEditor(this, npc);
-			stats.Spawned++;
-		}
+            AddChild (npc);
+            WorldObjectDumpFillCommon.SetOwnerIfEditor (this, npc);
+            stats.Spawned++;
+        }
 
-		GD.Print($"NpcsFill: considered={stats.RowsConsidered}, spawned={stats.Spawned}, parseErrors={stats.ParseErrors}");
-	}
+        GD.Print ($"NpcsFill: considered={stats.RowsConsidered}, spawned={stats.Spawned}, parseErrors={stats.ParseErrors}");
+    }
 
-	private static void ApplyNpcTypeFixups(ObjectType objectType, ref string modelName, ref string iconName, ref NpcType npcType)
-	{
-		var modelNameTrimmed = modelName.Trim();
-		modelName = modelNameTrimmed.StartsWith("npc", StringComparison.OrdinalIgnoreCase) ? modelNameTrimmed : string.Empty;
+    private static void ApplyNpcTypeFixups (ObjectType objectType, ref string modelName, ref string iconName, ref NpcType npcType)
+    {
+        var modelNameTrimmed = modelName.Trim ();
+        modelName = modelNameTrimmed.StartsWith ("npc", StringComparison.OrdinalIgnoreCase) ? modelNameTrimmed : string.Empty;
 
-		var iconNameTrimmed = iconName.Trim();
-		iconName = iconNameTrimmed.StartsWith("npc_", StringComparison.OrdinalIgnoreCase) ? iconNameTrimmed : string.Empty;
+        var iconNameTrimmed = iconName.Trim ();
+        iconName = iconNameTrimmed.StartsWith ("npc_", StringComparison.OrdinalIgnoreCase) ? iconNameTrimmed : string.Empty;
 
-		if (objectType == ObjectType.Npc_Banker)
-		{
-			iconName = "npc_banker";
-		}
+        if (objectType == ObjectType.Npc_Banker)
+        {
+            iconName = "npc_banker";
+        }
 
-		switch (objectType)
-		{
-			case ObjectType.Npc_Quest_Title:
-				modelName = Random.Shared.Next(3) switch
-				{
-					0 => "npc06",
-					1 => "npc07",
-					_ => "npc08"
-				};
-				break;
-			case ObjectType.Npc_Banker:
-				modelName = "npc29d";
-				break;
-			case ObjectType.Npc_Quest_Karma:
-				modelName = "npc58";
-				break;
-			case ObjectType.Npc_Quest_Degree:
-				modelName = "npc59";
-				break;
-		}
+        switch (objectType)
+        {
+            case ObjectType.Npc_Quest_Title:
+                modelName = Random.Shared.Next (3) switch
+                {
+                    0 => "npc06",
+                    1 => "npc07",
+                    _ => "npc08"
+                };
+                break;
+            case ObjectType.Npc_Banker:
+                modelName = "npc29d";
+                break;
+            case ObjectType.Npc_Quest_Karma:
+                modelName = "npc58";
+                break;
+            case ObjectType.Npc_Quest_Degree:
+                modelName = "npc59";
+                break;
+        }
 
-		npcType = objectType switch
-		{
-			ObjectType.Npc_Banker => NpcType.Banker,
-			ObjectType.Npc_Tournament => NpcType.Tournament,
-			ObjectType.Npc_Guilder => NpcType.Guilder,
-			ObjectType.Npc_Quest_Degree => NpcType.QuestDegree,
-			ObjectType.Npc_Quest_Title => NpcType.QuestTitle,
-			ObjectType.Npc_Quest_Karma => NpcType.QuestKarma,
-			_ => npcType
-		};
-	}
+        npcType = objectType switch
+        {
+            ObjectType.Npc_Banker => NpcType.Banker,
+            ObjectType.Npc_Tournament => NpcType.Tournament,
+            ObjectType.Npc_Guilder => NpcType.Guilder,
+            ObjectType.Npc_Quest_Degree => NpcType.QuestDegree,
+            ObjectType.Npc_Quest_Title => NpcType.QuestTitle,
+            ObjectType.Npc_Quest_Karma => NpcType.QuestKarma,
+            _ => npcType
+        };
+    }
 
-	private static bool TryParseHexInt32(string s, out int value) =>
-		FileFormatCulture.TryParseHexInt(s ?? string.Empty, out value);
+    private static bool TryParseHexInt32 (string s, out int value) =>
+        FileFormatCulture.TryParseHexInt (s ?? string.Empty, out value);
 
-	private static string ResolveDisplayName(string[] rnmsLines, int nameId)
-	{
-		var key = FileFormatCulture.FormatInt(4000 + nameId);
-		foreach (var line in rnmsLines)
-		{
-			var trimmed = line.TrimStart();
-			if (trimmed.Length == 0 || trimmed.StartsWith("//", StringComparison.Ordinal))
-			{
-				continue;
-			}
+    private static string ResolveDisplayName (string[] rnmsLines, int nameId)
+    {
+        var key = FileFormatCulture.FormatInt (4000 + nameId);
+        foreach (var line in rnmsLines)
+        {
+            var trimmed = line.TrimStart ();
+            if (trimmed.Length == 0 || trimmed.StartsWith ("//", StringComparison.Ordinal))
+            {
+                continue;
+            }
 
-			var firstSpace = trimmed.IndexOf(' ');
-			string prefix;
-			string rest;
-			if (firstSpace < 0)
-			{
-				prefix = trimmed;
-				rest = string.Empty;
-			}
-			else
-			{
-				prefix = trimmed[..firstSpace];
-				rest = trimmed[(firstSpace + 1)..].TrimEnd();
-			}
+            var firstSpace = trimmed.IndexOf (' ');
+            string prefix;
+            string rest;
+            if (firstSpace < 0)
+            {
+                prefix = trimmed;
+                rest = string.Empty;
+            }
+            else
+            {
+                prefix = trimmed[..firstSpace];
+                rest = trimmed[(firstSpace + 1)..].TrimEnd ();
+            }
 
-			if (!prefix.Equals(key, StringComparison.Ordinal))
-			{
-				continue;
-			}
+            if (!prefix.Equals (key, StringComparison.Ordinal))
+            {
+                continue;
+            }
 
-			return string.IsNullOrEmpty(rest) ? FileFormatCulture.FormatInt(nameId) : rest;
-		}
+            return string.IsNullOrEmpty (rest) ? FileFormatCulture.FormatInt (nameId) : rest;
+        }
 
-		return FileFormatCulture.FormatInt(nameId);
-	}
+        return FileFormatCulture.FormatInt (nameId);
+    }
 
-	private static string SanitizeNodeName(string displayName)
-	{
-		var s = displayName.Replace(' ', '_');
-		var sb = new StringBuilder(s.Length);
-		foreach (var c in s)
-		{
-			if (char.IsLetterOrDigit(c) || c is '_' or '-' or '.')
-			{
-				sb.Append(c);
-			}
-			else
-			{
-				sb.Append('_');
-			}
-		}
+    private static string SanitizeNodeName (string displayName)
+    {
+        var s = displayName.Replace (' ', '_');
+        var sb = new StringBuilder (s.Length);
+        foreach (var c in s)
+        {
+            if (char.IsLetterOrDigit (c) || c is '_' or '-' or '.')
+            {
+                sb.Append (c);
+            }
+            else
+            {
+                sb.Append ('_');
+            }
+        }
 
-		var result = sb.ToString();
-		return string.IsNullOrEmpty(result) ? "NPC" : result;
-	}
+        var result = sb.ToString ();
+        return string.IsNullOrEmpty (result) ? "NPC" : result;
+    }
 
-	private static string MakeUniqueNodeName(string baseName, HashSet<string> usedNames)
-	{
-		if (usedNames.Add(baseName))
-		{
-			return baseName;
-		}
+    private static string MakeUniqueNodeName (string baseName, HashSet<string> usedNames)
+    {
+        if (usedNames.Add (baseName))
+        {
+            return baseName;
+        }
 
-		for (var i = 2; ; i++)
-		{
-			var candidate = $"{baseName}_{i}";
-			if (usedNames.Add(candidate))
-			{
-				return candidate;
-			}
-		}
-	}
+        for (var i = 2; ; i++)
+        {
+            var candidate = $"{baseName}_{i}";
+            if (usedNames.Add (candidate))
+            {
+                return candidate;
+            }
+        }
+    }
 
-	private static string StripLeadingNpcPrefixes(string s)
-	{
-		s = (s ?? string.Empty).TrimStart();
-		while (s.Length >= 4 && s.StartsWith("NPC_", StringComparison.OrdinalIgnoreCase))
-		{
-			s = s[4..].TrimStart();
-		}
+    private static string StripLeadingNpcPrefixes (string s)
+    {
+        s = (s ?? string.Empty).TrimStart ();
+        while (s.Length >= 4 && s.StartsWith ("NPC_", StringComparison.OrdinalIgnoreCase))
+        {
+            s = s[4..].TrimStart ();
+        }
 
-		return s;
-	}
+        return s;
+    }
 
-	private static string CollapseDuplicateNpcPrefix(string s)
-	{
-		s ??= string.Empty;
-		while (s.Length >= 8 && s.StartsWith("NPC_NPC_", StringComparison.OrdinalIgnoreCase))
-		{
-			s = "NPC_" + s[8..];
-		}
+    private static string CollapseDuplicateNpcPrefix (string s)
+    {
+        s ??= string.Empty;
+        while (s.Length >= 8 && s.StartsWith ("NPC_NPC_", StringComparison.OrdinalIgnoreCase))
+        {
+            s = "NPC_" + s[8..];
+        }
 
-		return s;
-	}
+        return s;
+    }
 
-	private struct Stats
-	{
-		public int RowsConsidered;
-		public int Spawned;
-		public int ParseErrors;
-	}
+    private struct Stats
+    {
+        public int RowsConsidered;
+        public int Spawned;
+        public int ParseErrors;
+    }
 }
 

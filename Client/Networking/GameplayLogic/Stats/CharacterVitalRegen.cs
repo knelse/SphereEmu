@@ -3,9 +3,7 @@ using SphServer.Shared.Db.DataModels;
 namespace SphServer.Client.Networking.GameplayLogic.Stats;
 
 /// <summary>
-///     Server-side mirror of <c>_player.Recalc</c> (CalcParamCli).
-///     Rates and tick scale are MBC data defaults at 0x53DC..0x53E8 / g_51E0.
-///     Caller owns the 6s cadence.
+/// Mirror of _player.Recalc; rates are the MBC defaults at 0x53DC..0x53E8 / g_51E0
 /// </summary>
 public sealed class CharacterVitalRegen
 {
@@ -20,9 +18,9 @@ public sealed class CharacterVitalRegen
     private float mpFrac;
 
     /// <summary>
-    ///     One Recalc step (6s batch). No-op when dead. Returns true if HP or MP changed.
+    /// Dead is a no-op, so a 6s step does not regen a corpse
     /// </summary>
-    public bool ApplyOnce(CharacterDbEntry character)
+    public bool ApplyOnce (CharacterDbEntry character)
     {
         if (character.CurrentHP <= 0)
         {
@@ -40,18 +38,18 @@ public sealed class CharacterVitalRegen
             hpFrac += ((character.MaxHP * HpPerMax) + HpFlat) * TickScale * satietyFactor;
             if (hpFrac >= 1f)
             {
-                var whole = (int)hpFrac;
+                var whole = (int) hpFrac;
                 hpFrac -= whole;
-                character.CurrentHP = (ushort)Math.Min(character.CurrentHP + whole, character.MaxHP);
+                character.CurrentHP = (ushort) Math.Min (character.CurrentHP + whole, character.MaxHP);
             }
         }
 
         mpFrac += ((character.MaxMP * MpPerMax) + MpFlat) * TickScale;
         if (mpFrac >= 1f)
         {
-            var whole = (int)mpFrac;
+            var whole = (int) mpFrac;
             mpFrac -= whole;
-            character.CurrentMP = (ushort)Math.Min(character.CurrentMP + whole, character.MaxMP);
+            character.CurrentMP = (ushort) Math.Min (character.CurrentMP + whole, character.MaxMP);
         }
 
         if (character.CurrentHP > character.MaxHP)

@@ -6,10 +6,7 @@ using SphServer.Godot.Scripts.World;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Headless entry point for baking outdoor spawn slots on MainServer.
-///     Run:
-///     <c>godot --headless --path &lt;project&gt; res://Godot/Scenes/monster_spawn_slot_bake.tscn</c>
-///     or <c>.\Tools\bake_spawn_slots.ps1</c>.
+/// Run .\Tools\bake_spawn_slots.ps1
 /// </summary>
 public partial class MonsterSpawnSlotHeadlessBake : Node
 {
@@ -20,31 +17,31 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
     private const int ExitFailure = 1;
 
     /// <summary>
-    ///     Set while the bake scene owns MainServer so <see cref="MonsterSpawner" /> skips runtime spawn
-    ///     activation in <c>_Ready</c>.
+    /// Set while the bake scene owns MainServer, so MonsterSpawner skips runtime activation in
+    /// _Ready
     /// </summary>
     public static bool IsActive { get; private set; }
 
-    public override async void _Ready()
+    public override async void _Ready ()
     {
-        var options = ParseOptions();
+        var options = ParseOptions ();
         if (options.ShowHelp)
         {
-            PrintHelp();
-            Quit(ExitSuccess);
+            PrintHelp ();
+            Quit (ExitSuccess);
             return;
         }
 
         IsActive = true;
         try
         {
-            var exit = await RunAsync(options);
-            Quit(exit);
+            var exit = await RunAsync (options);
+            Quit (exit);
         }
         catch (Exception ex)
         {
-            GD.PushError($"MonsterSpawnSlotHeadlessBake: failed: {ex}");
-            Quit(ExitFailure);
+            GD.PushError ($"MonsterSpawnSlotHeadlessBake: failed: {ex}");
+            Quit (ExitFailure);
         }
         finally
         {
@@ -52,58 +49,58 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
         }
     }
 
-    private async Task<int> RunAsync(Options options)
+    private async Task<int> RunAsync (Options options)
     {
-        if (!ResourceLoader.Exists(options.ScenePath))
+        if (!ResourceLoader.Exists (options.ScenePath))
         {
-            GD.PushError($"MonsterSpawnSlotHeadlessBake: scene not found: {options.ScenePath}");
+            GD.PushError ($"MonsterSpawnSlotHeadlessBake: scene not found: {options.ScenePath}");
             return ExitFailure;
         }
 
-        GD.Print($"MonsterSpawnSlotHeadlessBake: loading {options.ScenePath}…");
-        var packed = ResourceLoader.Load<PackedScene>(options.ScenePath, cacheMode: ResourceLoader.CacheMode.Ignore);
+        GD.Print ($"MonsterSpawnSlotHeadlessBake: loading {options.ScenePath}…");
+        var packed = ResourceLoader.Load<PackedScene> (options.ScenePath, cacheMode: ResourceLoader.CacheMode.Ignore);
         if (packed is null)
         {
-            GD.PushError("MonsterSpawnSlotHeadlessBake: failed to load PackedScene.");
+            GD.PushError ("MonsterSpawnSlotHeadlessBake: failed to load PackedScene.");
             return ExitFailure;
         }
 
-        // Keep the SphereServer script attached — clearing it disposes the C# wrapper and breaks
-        // AddChild. SphereServer._Ready no-ops while IsActive is true.
-        var root = packed.Instantiate<Node>();
-        AddChild(root);
-        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        // Clearing the SphereServer script disposes the C# wrapper and breaks AddChild. _Ready
+        // no-ops while IsActive is true
+        var root = packed.Instantiate<Node> ();
+        AddChild (root);
+        await ToSignal (GetTree (), SceneTree.SignalName.ProcessFrame);
 
-        var spawners = root.GetNodeOrNull<Node>("MonsterSpawners");
+        var spawners = root.GetNodeOrNull<Node> ("MonsterSpawners");
         if (spawners is null)
         {
-            GD.PushError("MonsterSpawnSlotHeadlessBake: MonsterSpawners node missing.");
+            GD.PushError ("MonsterSpawnSlotHeadlessBake: MonsterSpawners node missing.");
             return ExitFailure;
         }
 
         // Chunked MainServer: hydrate placement nodes before baking.
-        if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute(
-                ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+        if (ResourceLoader.Exists (WorldChunkCatalog.IndexPath) || DirAccess.DirExistsAbsolute (
+                ProjectSettings.GlobalizePath (WorldChunkCatalog.ChunksRoot)))
         {
             var streamer = new WorldChunkStreamer { Name = "WorldChunkStreamer" };
-            root.AddChild(streamer);
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            streamer.LoadAll();
-            GD.Print($"MonsterSpawnSlotHeadlessBake: loaded chunks, spawners now={spawners.GetChildCount()}");
+            root.AddChild (streamer);
+            await ToSignal (GetTree (), SceneTree.SignalName.ProcessFrame);
+            streamer.LoadAll ();
+            GD.Print ($"MonsterSpawnSlotHeadlessBake: loaded chunks, spawners now={spawners.GetChildCount ()}");
         }
 
-        var terrain = FindTerrainGridMap(root);
+        var terrain = FindTerrainGridMap (root);
         if (terrain is null)
         {
-            GD.PushError(
+            GD.PushError (
                 "MonsterSpawnSlotHeadlessBake: Terrain GridMap not found under TerrainScene — "
                 + "nav tile loading will fail.");
             return ExitFailure;
         }
 
-        GD.Print(
-            $"MonsterSpawnSlotHeadlessBake: terrain '{terrain.GetPath()}', "
-            + $"{spawners.GetChildCount()} spawner node(s). Baking…");
+        GD.Print (
+            $"MonsterSpawnSlotHeadlessBake: terrain '{terrain.GetPath ()}', "
+            + $"{spawners.GetChildCount ()} spawner node(s). Baking…");
 
         var settings = new SpawnSlotBakeAllSettings
         {
@@ -113,23 +110,23 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
             NameContains = options.NameContains,
         };
 
-        var slotCount = await MonsterSpawnSlotBaker.BakeAllUnderAsync(spawners, settings);
+        var slotCount = await MonsterSpawnSlotBaker.BakeAllUnderAsync (spawners, settings);
 
         if (!options.SkipSceneSave)
         {
-            if (ResourceLoader.Exists(WorldChunkCatalog.IndexPath)
-                || DirAccess.DirExistsAbsolute(ProjectSettings.GlobalizePath(WorldChunkCatalog.ChunksRoot)))
+            if (ResourceLoader.Exists (WorldChunkCatalog.IndexPath)
+                || DirAccess.DirExistsAbsolute (ProjectSettings.GlobalizePath (WorldChunkCatalog.ChunksRoot)))
             {
-                GD.Print("MonsterSpawnSlotHeadlessBake: re-packing world chunks + index…");
-                var packResult = WorldChunkPacker.PackFromMainServer(root, clearParents: true, extractSlots: true);
-                GD.Print(
+                GD.Print ("MonsterSpawnSlotHeadlessBake: re-packing world chunks + index…");
+                var packResult = WorldChunkPacker.PackFromMainServer (root, clearParents: true, extractSlots: true);
+                GD.Print (
                     $"MonsterSpawnSlotHeadlessBake: chunks={packResult.ChunksWritten}, "
                     + $"nodes={packResult.NodesPacked}, slots={packResult.SlotArraysExtracted}");
             }
             else
             {
-                GD.Print("MonsterSpawnSlotHeadlessBake: packing and saving scene…");
-                if (!TrySaveMainServer(root, options.ScenePath))
+                GD.Print ("MonsterSpawnSlotHeadlessBake: packing and saving scene…");
+                if (!TrySaveMainServer (root, options.ScenePath))
                 {
                     return ExitFailure;
                 }
@@ -137,48 +134,48 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
         }
         else
         {
-            WorldContentIndex.GetOrLoad().SaveTo(WorldChunkCatalog.IndexPath);
-            GD.Print(
+            WorldContentIndex.GetOrLoad ().SaveTo (WorldChunkCatalog.IndexPath);
+            GD.Print (
                 "MonsterSpawnSlotHeadlessBake: skipped scene save (--skip-scene-save); "
                 + "results are in the progress sidecar / index only.");
         }
 
-        GD.Print($"MonsterSpawnSlotHeadlessBake: done (baked slot count returned={slotCount}).");
+        GD.Print ($"MonsterSpawnSlotHeadlessBake: done (baked slot count returned={slotCount}).");
         return ExitSuccess;
     }
 
-    private static bool TrySaveMainServer(Node root, string scenePath)
+    private static bool TrySaveMainServer (Node root, string scenePath)
     {
         try
         {
-            var packed = new PackedScene();
-            var packErr = packed.Pack(root);
+            var packed = new PackedScene ();
+            var packErr = packed.Pack (root);
             if (packErr != Error.Ok)
             {
-                GD.PushError($"MonsterSpawnSlotHeadlessBake: Pack failed ({packErr}).");
+                GD.PushError ($"MonsterSpawnSlotHeadlessBake: Pack failed ({packErr}).");
                 return false;
             }
 
-            var saveErr = ResourceSaver.Save(packed, scenePath);
+            var saveErr = ResourceSaver.Save (packed, scenePath);
             if (saveErr != Error.Ok)
             {
-                GD.PushError($"MonsterSpawnSlotHeadlessBake: ResourceSaver.Save failed ({saveErr}).");
+                GD.PushError ($"MonsterSpawnSlotHeadlessBake: ResourceSaver.Save failed ({saveErr}).");
                 return false;
             }
 
-            GD.Print($"MonsterSpawnSlotHeadlessBake: saved {scenePath}");
+            GD.Print ($"MonsterSpawnSlotHeadlessBake: saved {scenePath}");
             return true;
         }
         catch (Exception ex)
         {
-            GD.PushError($"MonsterSpawnSlotHeadlessBake: scene save threw ({ex.Message}).");
+            GD.PushError ($"MonsterSpawnSlotHeadlessBake: scene save threw ({ex.Message}).");
             return false;
         }
     }
 
-    private static GridMap? FindTerrainGridMap(Node root)
+    private static GridMap? FindTerrainGridMap (Node root)
     {
-        foreach (var node in root.FindChildren("*", nameof(GridMap), recursive: true, owned: false))
+        foreach (var node in root.FindChildren ("*", nameof (GridMap), recursive: true, owned: false))
         {
             if (node is GridMap grid && grid.Name == "Terrain")
             {
@@ -189,10 +186,10 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
         return null;
     }
 
-    private static Options ParseOptions()
+    private static Options ParseOptions ()
     {
-        var options = new Options();
-        var args = OS.GetCmdlineUserArgs();
+        var options = new Options ();
+        var args = OS.GetCmdlineUserArgs ();
         for (var i = 0; i < args.Length; i++)
         {
             switch (args[i])
@@ -223,9 +220,9 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
         return options;
     }
 
-    private static void PrintHelp()
+    private static void PrintHelp ()
     {
-        GD.Print(
+        GD.Print (
             """
             Monster spawn-slot headless bake
 
@@ -246,14 +243,14 @@ public partial class MonsterSpawnSlotHeadlessBake : Node
             """);
     }
 
-    private void Quit(int exitCode)
+    private void Quit (int exitCode)
     {
-        CallDeferred(nameof(QuitTree), exitCode);
+        CallDeferred (nameof (QuitTree), exitCode);
     }
 
-    private void QuitTree(int exitCode)
+    private void QuitTree (int exitCode)
     {
-        GetTree().Quit(exitCode);
+        GetTree ().Quit (exitCode);
     }
 
     private sealed class Options

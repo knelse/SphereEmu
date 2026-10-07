@@ -4,9 +4,9 @@ namespace PacketLogViewer.Controls;
 
 public partial class PacketVisualizerPanelControl : UserControl
 {
-    public PacketVisualizerPanelControl()
+    public PacketVisualizerPanelControl ()
     {
-        InitializeComponent();
+        InitializeComponent ();
     }
 }
 

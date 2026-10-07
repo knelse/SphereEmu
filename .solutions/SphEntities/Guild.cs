@@ -27,10 +27,7 @@ public enum GuildRank : byte
     Expert = 5,
 }
 
-/// <summary>
-///     <c>group_guilds.cfg</c> extra column: <c>+A0</c> = Assassin rank 0, <c>+A</c> = same as <c>+A0</c>.
-///     Letters A–N follow client guild order, not the hex gaps in <see cref="Guild"/>.
-/// </summary>
+/// group_guilds.cfg +A0 and +A are Assassin rank 0; letters A-N follow client guild order
 public static class GuildCatalog
 {
     public static readonly Guild[] LetterOrder =
@@ -46,15 +43,15 @@ public static class GuildCatalog
     // Same rank digit as the emblem: 6104 (druid 5) -> 6114, 6124, 6134.
     private const int AbilityGameIdStride = 10;
 
-    public static bool TryGetMembershipGameId(Guild guild, int rankMinusOne, out int gameId)
+    public static bool TryGetMembershipGameId (Guild guild, int rankMinusOne, out int gameId)
     {
         gameId = 0;
-        if (guild == Guild.None || rankMinusOne is < 0 or > (int)GuildRank.Expert)
+        if (guild == Guild.None || rankMinusOne is < 0 or > (int) GuildRank.Expert)
         {
             return false;
         }
 
-        var index = Array.IndexOf(LetterOrder, guild);
+        var index = Array.IndexOf (LetterOrder, guild);
         if (index < 0)
         {
             return false;
@@ -64,7 +61,7 @@ public static class GuildCatalog
         return true;
     }
 
-    public static bool TryParseMembershipGameId(int gameId, out Guild guild, out int rankMinusOne)
+    public static bool TryParseMembershipGameId (int gameId, out Guild guild, out int rankMinusOne)
     {
         guild = Guild.None;
         rankMinusOne = 0;
@@ -76,7 +73,7 @@ public static class GuildCatalog
 
         var index = offset / MembershipGameIdStride;
         var rank = offset % MembershipGameIdStride;
-        if (index < 0 || index >= LetterOrder.Length || rank is < 0 or > (int)GuildRank.Expert)
+        if (index < 0 || index >= LetterOrder.Length || rank is < 0 or > (int) GuildRank.Expert)
         {
             return false;
         }
@@ -86,30 +83,26 @@ public static class GuildCatalog
         return true;
     }
 
-    /// <summary>
-    ///     Candidate ability game ids for a membership emblem (+10, +20, +30). Missing catalog
-    ///     entries are skipped by the caller; those slots stay empty.
-    /// </summary>
-    public static int[] AbilityGameIds(int membershipGameId) =>
+    public static int[] AbilityGameIds (int membershipGameId) =>
     [
         membershipGameId + AbilityGameIdStride,
         membershipGameId + AbilityGameIdStride * 2,
         membershipGameId + AbilityGameIdStride * 3
     ];
 
-    public static bool CanJoin(Guild guild, int titleMinusOne, int degreeMinusOne) =>
-        MeetsRankRequirements(guild, 0, titleMinusOne, degreeMinusOne);
+    public static bool CanJoin (Guild guild, int titleMinusOne, int degreeMinusOne) =>
+        MeetsRankRequirements (guild, 0, titleMinusOne, degreeMinusOne);
 
-    public static int HighestQualifyingRank(Guild guild, int titleMinusOne, int degreeMinusOne)
+    public static int HighestQualifyingRank (Guild guild, int titleMinusOne, int degreeMinusOne)
     {
         if (guild == Guild.None)
         {
             return 0;
         }
 
-        for (var rank = (int)GuildRank.Expert; rank >= 0; rank--)
+        for (var rank = (int) GuildRank.Expert; rank >= 0; rank--)
         {
-            if (MeetsRankRequirements(guild, rank, titleMinusOne, degreeMinusOne))
+            if (MeetsRankRequirements (guild, rank, titleMinusOne, degreeMinusOne))
             {
                 return rank;
             }
@@ -118,22 +111,22 @@ public static class GuildCatalog
         return -1;
     }
 
-    public static bool TryParseRequirement(string? token, out Guild guild, out int rankMinusOne)
+    public static bool TryParseRequirement (string? token, out Guild guild, out int rankMinusOne)
     {
         guild = Guild.None;
         rankMinusOne = 0;
-        if (string.IsNullOrWhiteSpace(token))
+        if (string.IsNullOrWhiteSpace (token))
         {
             return false;
         }
 
-        token = token.Trim();
+        token = token.Trim ();
         if (token is "-" || token[0] != '+' || token.Length is < 2 or > 3)
         {
             return false;
         }
 
-        var index = char.ToUpperInvariant(token[1]) - 'A';
+        var index = char.ToUpperInvariant (token[1]) - 'A';
         if (index < 0 || index >= LetterOrder.Length)
         {
             return false;
@@ -142,7 +135,7 @@ public static class GuildCatalog
         if (token.Length == 3)
         {
             var digit = token[2] - '0';
-            if (digit is < 0 or > (int)GuildRank.Expert)
+            if (digit is < 0 or > (int) GuildRank.Expert)
             {
                 return false;
             }
@@ -159,22 +152,22 @@ public static class GuildCatalog
     private const int OffTrackMaxDisplayLevel = 15;
     private const int LevelsPerCycle = 60;
 
-    public static bool MeetsRankRequirements(Guild guild, int rankMinusOne, int titleMinusOne, int degreeMinusOne)
+    public static bool MeetsRankRequirements (Guild guild, int rankMinusOne, int titleMinusOne, int degreeMinusOne)
     {
         if (guild == Guild.None)
         {
             return true;
         }
 
-        if (rankMinusOne is < 0 or > (int)GuildRank.Expert)
+        if (rankMinusOne is < 0 or > (int) GuildRank.Expert)
         {
             return false;
         }
 
         var need = RankMinDisplayLevel[rankMinusOne];
-        var title = DisplayLevelInCycle(titleMinusOne);
-        var degree = DisplayLevelInCycle(degreeMinusOne);
-        return LevelTrack(guild) switch
+        var title = DisplayLevelInCycle (titleMinusOne);
+        var degree = DisplayLevelInCycle (degreeMinusOne);
+        return LevelTrack (guild) switch
         {
             GuildLevelTrack.Title => title >= need && degree <= OffTrackMaxDisplayLevel,
             GuildLevelTrack.Degree => degree >= need && title <= OffTrackMaxDisplayLevel,
@@ -182,7 +175,7 @@ public static class GuildCatalog
         };
     }
 
-    public static GuildLevelTrack LevelTrack(Guild guild) => guild switch
+    public static GuildLevelTrack LevelTrack (Guild guild) => guild switch
     {
         Guild.Crusader or Guild.Hunter or Guild.MasterOfSteel or Guild.Armorer or Guild.Bandier
             => GuildLevelTrack.Title,
@@ -191,7 +184,7 @@ public static class GuildCatalog
         _ => GuildLevelTrack.Both
     };
 
-    private static int DisplayLevelInCycle(int minusOne) => minusOne % LevelsPerCycle + 1;
+    private static int DisplayLevelInCycle (int minusOne) => minusOne % LevelsPerCycle + 1;
 }
 
 public enum GuildLevelTrack : byte

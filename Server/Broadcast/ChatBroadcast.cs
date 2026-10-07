@@ -7,35 +7,35 @@ namespace SphServer.Server.Broadcast;
 
 public static class ChatBroadcast
 {
-    public static void MaybeScheduleBroadcastToClients(string fullMessage, string actualText, string characterName,
+    public static void MaybeScheduleBroadcastToClients (string fullMessage, string actualText, string characterName,
         int chatTypeVal,
         ClientConnection? clientOriginConnection = null)
     {
         // TODO logging for broadcast targets
-        var encodedMessage = MessageEncoder.EncodeToSendFromServer(fullMessage, characterName, chatTypeVal);
+        var encodedMessage = MessageEncoder.EncodeToSendFromServer (fullMessage, characterName, chatTypeVal);
 
-        if (actualText.StartsWith('/'))
+        if (actualText.StartsWith ('/'))
         {
             return;
         }
 
-        var originDbEntry = clientOriginConnection?.GetSelectedCharacter();
+        var originDbEntry = clientOriginConnection?.GetSelectedCharacter ();
 
         if (originDbEntry is null)
         {
             // assume max range
-            foreach (var sphereClient in ActiveClients.GetAll().Values.ToList())
+            foreach (var sphereClient in ActiveClients.GetAll ().Values.ToList ())
             {
-                sphereClient.MaybeQueueNetworkPacketSend(encodedMessage);
+                sphereClient.MaybeQueueNetworkPacketSend (encodedMessage);
             }
 
             return;
         }
 
         var origin = originDbEntry.Origin;
-        var maxRange = GetMaxChatRange(chatTypeVal);
+        var maxRange = GetMaxChatRange (chatTypeVal);
 
-        foreach (var sphereClient in ActiveClients.GetAll().Values.ToList())
+        foreach (var sphereClient in ActiveClients.GetAll ().Values.ToList ())
         {
             var dbEntry = sphereClient.CurrentCharacter;
             if (dbEntry is null)
@@ -44,17 +44,16 @@ public static class ChatBroadcast
             }
 
             var targetClientOrigin = sphereClient.CurrentCharacter!.Origin;
-            var distance = targetClientOrigin.DistanceTo(origin);
+            var distance = targetClientOrigin.DistanceTo (origin);
             if (distance <= maxRange)
             {
-                // Origin needs MessageEncoder for chat UI; the 08 40 43 triple alone does not
-                // render a line. Dedup in ClientChatHandler avoids resend duplicates.
-                sphereClient.MaybeQueueNetworkPacketSend(encodedMessage);
+                // The 08 40 43 triple does not render a chat line
+                sphereClient.MaybeQueueNetworkPacketSend (encodedMessage);
             }
         }
     }
 
-    public static int GetMaxChatRange(int chatTypeVal)
+    public static int GetMaxChatRange (int chatTypeVal)
     {
         return chatTypeVal switch
         {

@@ -17,16 +17,16 @@ public class CastleGate : PacketAnalyzeData
     public Castles Castle { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) {Castle} [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
+        $"{Id:X4} ({Enum.GetName (ObjectType) ?? string.Empty}) {Castle} [{ClanName}] at [{X:F2}, {Y:F2}, {Z:F2}]";
 
-    public CastleGate(List<PacketPart> parts) : base(parts)
+    public CastleGate (List<PacketPart> parts) : base (parts)
     {
-        var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
+        var actionTypePart = Parts.FirstOrDefault (x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
@@ -35,13 +35,13 @@ public class CastleGate : PacketAnalyzeData
             return;
         }
 
-        X = GetClientCoordValue(PacketPartNames.CoordX);
-        Y = GetClientCoordValue(PacketPartNames.CoordY);
-        Z = GetClientCoordValue(PacketPartNames.CoordZ);
-        Angle = GetIntValue(PacketPartNames.Angle);
-        ClanNameLength = GetIntValue(PacketPartNames.ClanNameLength);
-        ClanName = GetStringValue(PacketPartNames.ClanName);
+        X = GetClientCoordValue (PacketPartNames.CoordX);
+        Y = GetClientCoordValue (PacketPartNames.CoordY);
+        Z = GetClientCoordValue (PacketPartNames.CoordZ);
+        Angle = GetIntValue (PacketPartNames.Angle);
+        ClanNameLength = GetIntValue (PacketPartNames.ClanNameLength);
+        ClanName = GetStringValue (PacketPartNames.ClanName);
         // for gates, stored value is +8 from the actual castle id
-        Castle = (Castles)(GetIntValue(PacketPartNames.CastleId) - 8);
+        Castle = (Castles) (GetIntValue (PacketPartNames.CastleId) - 8);
     }
 }

@@ -9,36 +9,30 @@ using System.Threading;
 
 namespace PacketLogViewer;
 
-/// <summary>
-/// Periodically scans for sphereclient.exe and reads its established TCP connections
-/// to derive the local (incoming) and remote server (outgoing) ports used for capture filtering.
-/// </summary>
+/// sphereclient.exe TCP ports for the capture filter
 public sealed class SphereClientConnectionDiscovery : IDisposable
 {
-    private static readonly HashSet<IPAddress> PreferredServerAddresses = new()
+    private static readonly HashSet<IPAddress> PreferredServerAddresses = new ()
     {
-        IPAddress.Parse("77.223.107.68"),
-        IPAddress.Parse("77.223.107.69")
+        IPAddress.Parse ("77.223.107.68"),
+        IPAddress.Parse ("77.223.107.69")
     };
 
-    private static readonly HashSet<int> KnownSphereServerPorts = new() { 25860, 25861 };
+    private static readonly HashSet<int> KnownSphereServerPorts = new () { 25860, 25861 };
 
     private readonly Timer _scanTimer;
-    private readonly object _stateLock = new();
+    private readonly object _stateLock = new ();
     private int _clientLocalPort;
     private int _serverRemotePort;
     private bool _clientRunning;
     private bool _preferLocalConnections;
 
-    public SphereClientConnectionDiscovery(TimeSpan scanInterval)
+    public SphereClientConnectionDiscovery (TimeSpan scanInterval)
     {
-        _scanTimer = new Timer(_ => Scan(), null, TimeSpan.Zero, scanInterval);
+        _scanTimer = new Timer (_ => Scan (), null, TimeSpan.Zero, scanInterval);
     }
 
-    /// <summary>
-    /// When true, prefer loopback/private LAN connections (local emu / MITM).
-    /// When false, ignore those and prefer live Sphere servers.
-    /// </summary>
+    /// Loopback and private LAN when set, live servers when clear
     public bool PreferLocalConnections
     {
         get
@@ -60,12 +54,12 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
                 _preferLocalConnections = value;
             }
 
-            // Re-evaluate immediately so the UI/capture picks up the new mode.
-            Scan();
+            // A mode change scans again before the next timer tick
+            Scan ();
         }
     }
 
-    /// <summary>Local ephemeral TCP port on the game client (server sends packets here).</summary>
+    /// Port the server sends to
     public int ClientLocalPort
     {
         get
@@ -77,7 +71,7 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         }
     }
 
-    /// <summary>Remote TCP port on the game server (client sends packets here).</summary>
+    /// Port the client sends to
     public int ServerRemotePort
     {
         get
@@ -102,7 +96,7 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
 
     public bool HasActiveConnection => ClientLocalPort > 0 && ServerRemotePort > 0;
 
-    public string GetStatusSummary(int captureDeviceCount)
+    public string GetStatusSummary (int captureDeviceCount)
     {
         lock (_stateLock)
         {
@@ -134,9 +128,9 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         }
     }
 
-    private void Scan()
+    private void Scan ()
     {
-        var processIds = FindSphereClientProcessIds();
+        var processIds = FindSphereClientProcessIds ();
         TcpConnection? selectedConnection = null;
         bool preferLocal;
 
@@ -147,9 +141,9 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
 
         foreach (var processId in processIds)
         {
-            foreach (var connection in WindowsProcessTcpConnections.GetEstablishedConnectionsForProcess(processId))
+            foreach (var connection in WindowsProcessTcpConnections.GetEstablishedConnectionsForProcess (processId))
             {
-                if (!IsEligibleConnection(connection, preferLocal))
+                if (!IsEligibleConnection (connection, preferLocal))
                 {
                     continue;
                 }
@@ -160,7 +154,7 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
                     continue;
                 }
 
-                if (ScoreConnection(connection, preferLocal) > ScoreConnection(selectedConnection.Value, preferLocal))
+                if (ScoreConnection (connection, preferLocal) > ScoreConnection (selectedConnection.Value, preferLocal))
                 {
                     selectedConnection = connection;
                 }
@@ -182,13 +176,13 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         }
     }
 
-    private static bool IsEligibleConnection(TcpConnection connection, bool preferLocal)
+    private static bool IsEligibleConnection (TcpConnection connection, bool preferLocal)
     {
-        var remoteIsLocal = IsLocalCaptureAddress(connection.RemoteAddress);
+        var remoteIsLocal = IsLocalCaptureAddress (connection.RemoteAddress);
         if (preferLocal)
         {
             // Local mode: accept loopback/private, or known sphere ports on any host.
-            return remoteIsLocal || KnownSphereServerPorts.Contains(connection.RemotePort);
+            return remoteIsLocal || KnownSphereServerPorts.Contains (connection.RemotePort);
         }
 
         // Live mode: never track localhost/private targets.
@@ -197,25 +191,25 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             return false;
         }
 
-        return PreferredServerAddresses.Contains(connection.RemoteAddress) ||
-               KnownSphereServerPorts.Contains(connection.RemotePort);
+        return PreferredServerAddresses.Contains (connection.RemoteAddress) ||
+               KnownSphereServerPorts.Contains (connection.RemotePort);
     }
 
-    private static int ScoreConnection(TcpConnection connection, bool preferLocal)
+    private static int ScoreConnection (TcpConnection connection, bool preferLocal)
     {
         var score = 0;
 
-        if (PreferredServerAddresses.Contains(connection.RemoteAddress))
+        if (PreferredServerAddresses.Contains (connection.RemoteAddress))
         {
             score += preferLocal ? 10 : 100;
         }
 
-        if (KnownSphereServerPorts.Contains(connection.RemotePort))
+        if (KnownSphereServerPorts.Contains (connection.RemotePort))
         {
             score += 50;
         }
 
-        if (IsLocalCaptureAddress(connection.RemoteAddress))
+        if (IsLocalCaptureAddress (connection.RemoteAddress))
         {
             score += preferLocal ? 100 : -1000;
         }
@@ -223,9 +217,9 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         return score;
     }
 
-    internal static bool IsLocalCaptureAddress(IPAddress address)
+    internal static bool IsLocalCaptureAddress (IPAddress address)
     {
-        if (IPAddress.IsLoopback(address))
+        if (IPAddress.IsLoopback (address))
         {
             return true;
         }
@@ -235,7 +229,7 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             return false;
         }
 
-        var bytes = address.GetAddressBytes();
+        var bytes = address.GetAddressBytes ();
         // 10.0.0.0/8
         if (bytes[0] == 10)
         {
@@ -263,19 +257,19 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
         return false;
     }
 
-    private static List<int> FindSphereClientProcessIds()
+    private static List<int> FindSphereClientProcessIds ()
     {
-        var processIds = new List<int>();
-        foreach (var process in Process.GetProcesses())
+        var processIds = new List<int> ();
+        foreach (var process in Process.GetProcesses ())
         {
             try
             {
-                if (!IsSphereClientProcess(process))
+                if (!IsSphereClientProcess (process))
                 {
                     continue;
                 }
 
-                processIds.Add(process.Id);
+                processIds.Add (process.Id);
             }
             catch
             {
@@ -283,26 +277,26 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             }
             finally
             {
-                process.Dispose();
+                process.Dispose ();
             }
         }
 
         return processIds;
     }
 
-    private static bool IsSphereClientProcess(Process process)
+    private static bool IsSphereClientProcess (Process process)
     {
         var name = process.ProcessName;
-        return name.Equals("sphereclient", StringComparison.OrdinalIgnoreCase) ||
-               name.StartsWith("sphereclient", StringComparison.OrdinalIgnoreCase);
+        return name.Equals ("sphereclient", StringComparison.OrdinalIgnoreCase) ||
+               name.StartsWith ("sphereclient", StringComparison.OrdinalIgnoreCase);
     }
 
-    public void Dispose()
+    public void Dispose ()
     {
-        _scanTimer.Dispose();
+        _scanTimer.Dispose ();
     }
 
-    private readonly record struct TcpConnection(
+    private readonly record struct TcpConnection (
         IPAddress LocalAddress,
         int LocalPort,
         IPAddress RemoteAddress,
@@ -318,8 +312,8 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             TcpTableOwnerPidAll = 5
         }
 
-        [DllImport("iphlpapi.dll", SetLastError = true)]
-        private static extern uint GetExtendedTcpTable(
+        [DllImport ("iphlpapi.dll", SetLastError = true)]
+        private static extern uint GetExtendedTcpTable (
             IntPtr pTcpTable,
             ref int dwOutBufLen,
             bool sort,
@@ -327,7 +321,7 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             TcpTableClass tblClass,
             uint reserved);
 
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout (LayoutKind.Sequential)]
         private struct MibTcpRowOwnerPid
         {
             public uint State;
@@ -338,60 +332,60 @@ public sealed class SphereClientConnectionDiscovery : IDisposable
             public uint OwningProcess;
         }
 
-        public static IEnumerable<TcpConnection> GetEstablishedConnectionsForProcess(int processId)
+        public static IEnumerable<TcpConnection> GetEstablishedConnectionsForProcess (int processId)
         {
             var bufferSize = 0;
-            _ = GetExtendedTcpTable(IntPtr.Zero, ref bufferSize, true, AfInet, TcpTableClass.TcpTableOwnerPidAll, 0);
+            _ = GetExtendedTcpTable (IntPtr.Zero, ref bufferSize, true, AfInet, TcpTableClass.TcpTableOwnerPidAll, 0);
 
             if (bufferSize <= 0)
             {
                 yield break;
             }
 
-            var buffer = Marshal.AllocHGlobal(bufferSize);
+            var buffer = Marshal.AllocHGlobal (bufferSize);
             try
             {
-                var result = GetExtendedTcpTable(buffer, ref bufferSize, true, AfInet, TcpTableClass.TcpTableOwnerPidAll, 0);
+                var result = GetExtendedTcpTable (buffer, ref bufferSize, true, AfInet, TcpTableClass.TcpTableOwnerPidAll, 0);
                 if (result != 0)
                 {
                     yield break;
                 }
 
-                var rowCount = Marshal.ReadInt32(buffer);
+                var rowCount = Marshal.ReadInt32 (buffer);
                 var rowPtr = buffer + 4;
-                var rowSize = Marshal.SizeOf<MibTcpRowOwnerPid>();
+                var rowSize = Marshal.SizeOf<MibTcpRowOwnerPid> ();
 
                 for (var i = 0; i < rowCount; i++)
                 {
-                    var row = Marshal.PtrToStructure<MibTcpRowOwnerPid>(rowPtr);
+                    var row = Marshal.PtrToStructure<MibTcpRowOwnerPid> (rowPtr);
                     rowPtr += rowSize;
 
-                    if (row.OwningProcess != (uint)processId || row.State != MibTcpStateEstablished)
+                    if (row.OwningProcess != (uint) processId || row.State != MibTcpStateEstablished)
                     {
                         continue;
                     }
 
-                    yield return new TcpConnection(
-                        ConvertAddress(row.LocalAddr),
-                        ConvertPort(row.LocalPort),
-                        ConvertAddress(row.RemoteAddr),
-                        ConvertPort(row.RemotePort));
+                    yield return new TcpConnection (
+                        ConvertAddress (row.LocalAddr),
+                        ConvertPort (row.LocalPort),
+                        ConvertAddress (row.RemoteAddr),
+                        ConvertPort (row.RemotePort));
                 }
             }
             finally
             {
-                Marshal.FreeHGlobal(buffer);
+                Marshal.FreeHGlobal (buffer);
             }
         }
 
-        private static IPAddress ConvertAddress(uint address)
+        private static IPAddress ConvertAddress (uint address)
         {
-            return new IPAddress(BitConverter.GetBytes(address));
+            return new IPAddress (BitConverter.GetBytes (address));
         }
 
-        private static int ConvertPort(uint port)
+        private static int ConvertPort (uint port)
         {
-            var networkOrderPort = (ushort)(port & 0xFFFF);
+            var networkOrderPort = (ushort) (port & 0xFFFF);
             return (networkOrderPort >> 8) | ((networkOrderPort & 0xFF) << 8);
         }
     }

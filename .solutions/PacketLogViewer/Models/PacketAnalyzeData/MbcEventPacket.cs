@@ -19,30 +19,30 @@ public class MbcEventPacket : PacketAnalyzeData
         }
     }
 
-    public MbcEventPacket(List<PacketPart> parts) : base(parts)
+    public MbcEventPacket (List<PacketPart> parts) : base (parts)
     {
         if (Id == 0)
         {
-            Id = GetIntValue(PacketPartNames.ProcessId);
+            Id = GetIntValue (PacketPartNames.ProcessId);
         }
 
-        EventName = parts.FirstOrDefault(x => x.Name == PacketPartNames.ProcessId)?.Comment
-                    ?? parts.FirstOrDefault(x => x.Name == PacketPartNames.WireRegion)?.Comment
-                    ?? NamedCommand(parts)
-                    ?? parts.FirstOrDefault(x => x.Name == PacketPartNames.ModuleTag)?.Comment
+        EventName = parts.FirstOrDefault (x => x.Name == PacketPartNames.ProcessId)?.Comment
+                    ?? parts.FirstOrDefault (x => x.Name == PacketPartNames.WireRegion)?.Comment
+                    ?? NamedCommand (parts)
+                    ?? parts.FirstOrDefault (x => x.Name == PacketPartNames.ModuleTag)?.Comment
                     ?? "mbc";
-        Schema = parts.FirstOrDefault(x => x.Name == PacketPartNames.WireRegion)?.EnumName ?? "";
+        Schema = parts.FirstOrDefault (x => x.Name == PacketPartNames.WireRegion)?.EnumName ?? "";
     }
 
-    private static string? NamedCommand(List<PacketPart> parts)
+    private static string? NamedCommand (List<PacketPart> parts)
     {
-        var command = parts.FirstOrDefault(x => x.Name == PacketPartNames.Command);
-        if (command is null || string.IsNullOrEmpty(command.ListValuePrimary))
+        var command = parts.FirstOrDefault (x => x.Name == PacketPartNames.Command);
+        if (command is null || string.IsNullOrEmpty (command.ListValuePrimary))
         {
             return null;
         }
 
-        if (command.ListValuePrimary.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+        if (command.ListValuePrimary.StartsWith ("0x", StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }

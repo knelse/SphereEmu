@@ -52,19 +52,19 @@ public partial class PacketLogViewerMainWindow
 
     private static SolidColorBrush SelectionBrush = null!;
 
-    public static readonly Dictionary<string, Dictionary<int, string>> DefinedEnums = new();
-    private readonly List<string> DefinedEnumNames = new();
+    public static readonly Dictionary<string, Dictionary<int, string>> DefinedEnums = new ();
+    private readonly List<string> DefinedEnumNames = new ();
 
     public PacketCapture? PacketCapture;
 
     private SphereMitmProxy? _mitmProxy;
-    public static readonly ObservableCollection<PacketDefinition> PacketDefinitions = new();
+    public static readonly ObservableCollection<PacketDefinition> PacketDefinitions = new ();
 
-    public static readonly ResettableObservableCollection<PacketPart> PacketParts = new();
+    public static readonly ResettableObservableCollection<PacketPart> PacketParts = new ();
     public DispatcherTimer? SphereTimeUpdateTimer;
     private DispatcherTimer? _entityRadarRefreshTimer;
-    public static readonly ObservableCollection<Subpacket> Subpackets = new();
-    public static readonly ObservableCollection<PacketAnalyzeData> CurrentClientState = new();
+    public static readonly ObservableCollection<Subpacket> Subpackets = new ();
+    public static readonly ObservableCollection<PacketAnalyzeData> CurrentClientState = new ();
     private HashSet<ObjectType>? ClientStateObjectTypeFilter;
 
     private double _radarClientX;
@@ -80,75 +80,75 @@ public partial class PacketLogViewerMainWindow
 
     private bool _initialized;
 
-    static PacketLogViewerMainWindow()
+    static PacketLogViewerMainWindow ()
     {
-        RegisterBsonMapperForPacketTypes();
-        RegisterBsonMapperForObjectType();
-        AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
-        PacketDatabasePath = ResolvePacketDatabasePath();
-        PacketDatabase = new LiteDatabase($"Filename={PacketDatabasePath};Connection=shared;");
-        var clonedRepoPath = AppConfig.GetSection("Settings").GetValue<string>("ClonedRepoPath")
-                             ?? throw new InvalidOperationException("appconfig.json Settings:ClonedRepoPath is missing");
-        PacketDefinitionPath = Path.Combine(clonedRepoPath, "Sphere.PacketDefinitions");
-        Directory.CreateDirectory(PacketDefinitionPath);
-        PacketCollection = PacketDatabase.GetCollection<StoredPacket>("Packets");
+        RegisterBsonMapperForPacketTypes ();
+        RegisterBsonMapperForObjectType ();
+        AppConfig = new ConfigurationBuilder ().AddJsonFile ("appconfig.json").AddEnvironmentVariables ().Build ();
+        PacketDatabasePath = ResolvePacketDatabasePath ();
+        PacketDatabase = new LiteDatabase ($"Filename={PacketDatabasePath};Connection=shared;");
+        var clonedRepoPath = AppConfig.GetSection ("Settings").GetValue<string> ("ClonedRepoPath")
+                             ?? throw new InvalidOperationException ("appconfig.json Settings:ClonedRepoPath is missing");
+        PacketDefinitionPath = Path.Combine (clonedRepoPath, "Sphere.PacketDefinitions");
+        Directory.CreateDirectory (PacketDefinitionPath);
+        PacketCollection = PacketDatabase.GetCollection<StoredPacket> ("Packets");
     }
 
-    private static string ResolvePacketDatabasePath()
+    private static string ResolvePacketDatabasePath ()
     {
-        var fromArgs = App.ParseDatabasePath(Environment.GetCommandLineArgs().Skip(1).ToArray());
-        if (!string.IsNullOrWhiteSpace(fromArgs))
+        var fromArgs = App.ParseDatabasePath (Environment.GetCommandLineArgs ().Skip (1).ToArray ());
+        if (!string.IsNullOrWhiteSpace (fromArgs))
         {
-            App.PacketDatabaseOverride = Path.GetFullPath(fromArgs);
+            App.PacketDatabaseOverride = Path.GetFullPath (fromArgs);
             return App.PacketDatabaseOverride;
         }
 
-        var connection = AppConfig.GetConnectionString("LiteDbPacketCollection") ?? string.Empty;
+        var connection = AppConfig.GetConnectionString ("LiteDbPacketCollection") ?? string.Empty;
         const string filenameKey = "Filename=";
-        var start = connection.IndexOf(filenameKey, StringComparison.OrdinalIgnoreCase);
+        var start = connection.IndexOf (filenameKey, StringComparison.OrdinalIgnoreCase);
         if (start >= 0)
         {
             start += filenameKey.Length;
-            var end = connection.IndexOf(';', start);
+            var end = connection.IndexOf (';', start);
             var file = end >= 0 ? connection[start..end] : connection[start..];
-            return Path.GetFullPath(file.Trim());
+            return Path.GetFullPath (file.Trim ());
         }
 
-        return Path.GetFullPath(connection);
+        return Path.GetFullPath (connection);
     }
 
-    public PacketLogViewerMainWindow()
+    public PacketLogViewerMainWindow ()
     {
-        InitializeComponent();
-        RegisterBsonMapperForBrush();
-        Title = $"PacketLogViewer - {Path.GetFileName(PacketDatabasePath)}";
-        ApplyStartWindowDimensionsFromConfig();
-        ApplyStartWindowPosition();
+        InitializeComponent ();
+        RegisterBsonMapperForBrush ();
+        Title = $"PacketLogViewer - {Path.GetFileName (PacketDatabasePath)}";
+        ApplyStartWindowDimensionsFromConfig ();
+        ApplyStartWindowPosition ();
 
         Loaded += (_, _) =>
         {
             PacketDisplayScrollViewer = MainView.PacketVisualizerPanel.PacketVisualizerControlScrollViewer;
-            PacketDisplayScrollViewer.ScrollChanged += (sender, _) => { SynchronizeScrollValues(sender); };
+            PacketDisplayScrollViewer.ScrollChanged += (sender, _) => { SynchronizeScrollValues (sender); };
             MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollChanged += (sender, _) =>
             {
-                SynchronizeScrollValues(sender);
+                SynchronizeScrollValues (sender);
             };
             MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollChanged +=
-                (sender, _) => { SynchronizeScrollValues(sender); };
+                (sender, _) => { SynchronizeScrollValues (sender); };
 
-            RefreshEntityRadar();
+            RefreshEntityRadar ();
 
             // Run the rest of initialization after the window is shown,
             // so dialogs can safely set Owner = this.
-            InitializeAfterWindowShown();
+            InitializeAfterWindowShown ();
         };
     }
 
-    private void ApplyStartWindowDimensionsFromConfig()
+    private void ApplyStartWindowDimensionsFromConfig ()
     {
-        var settings = AppConfig.GetSection("Settings");
-        var startWidth = settings.GetValue<double?>("StartWidth");
-        var startHeight = settings.GetValue<double?>("StartHeight");
+        var settings = AppConfig.GetSection ("Settings");
+        var startWidth = settings.GetValue<double?> ("StartWidth");
+        var startHeight = settings.GetValue<double?> ("StartHeight");
 
         if (startWidth is > 0)
         {
@@ -161,14 +161,14 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void ApplyStartWindowPosition()
+    private void ApplyStartWindowPosition ()
     {
         var workArea = SystemParameters.WorkArea;
         Left = workArea.Left + (workArea.Width - Width) / 2;
-        Top = Math.Max(workArea.Top, workArea.Bottom - Height);
+        Top = Math.Max (workArea.Top, workArea.Bottom - Height);
     }
 
-    private void InitializeAfterWindowShown()
+    private void InitializeAfterWindowShown ()
     {
         if (_initialized)
         {
@@ -179,25 +179,25 @@ public partial class PacketLogViewerMainWindow
 
         try
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Win1251 = Encoding.GetEncoding(1251);
+            Encoding.RegisterProvider (CodePagesEncodingProvider.Instance);
+            Win1251 = Encoding.GetEncoding (1251);
 
-            InstallNewPacketCapture();
+            InstallNewPacketCapture ();
 
-            UpdateGameTime();
+            UpdateGameTime ();
 
             // prewarm
             _ = SphObjectDb.GameObjectDataDb;
 
             MainView.PacketLogList.LogListFullPackets.ItemsSource = LogRecords;
-            MainView.PacketLogList.LogListFullPackets.ContextMenu = new ContextMenu();
+            MainView.PacketLogList.LogListFullPackets.ContextMenu = new ContextMenu ();
             var menuItem = new MenuItem { Header = "Copy" };
             menuItem.Click += FullPacketsLog_MenuItem_OnClick;
-            MainView.PacketLogList.LogListFullPackets.ContextMenu.Items.Add(menuItem);
+            MainView.PacketLogList.LogListFullPackets.ContextMenu.Items.Add (menuItem);
 
             MainView.PacketLogList.LogListFullPackets.SelectionChanged += LogListOnSelectionChanged;
             MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource = CurrentClientState;
-            InitializeClientStateFilter();
+            InitializeClientStateFilter ();
 
             MainView.PacketLogList.LogListFullPackets.KeyDown += (_, args) =>
             {
@@ -206,15 +206,15 @@ public partial class PacketLogViewerMainWindow
                     return;
                 }
 
-                CopySelectedRowContent(MainView.PacketLogList.LogListFullPackets);
+                CopySelectedRowContent (MainView.PacketLogList.LogListFullPackets);
             };
 
-            LoadPacketDefinitions();
-            LoadEnums();
-            LoadContent();
+            LoadPacketDefinitions ();
+            LoadEnums ();
+            LoadContent ();
 
-            var fullPacketView = CollectionViewSource.GetDefaultView(MainView.PacketLogList.LogListFullPackets.ItemsSource);
-            var filterFunc = new Predicate<object>(o =>
+            var fullPacketView = CollectionViewSource.GetDefaultView (MainView.PacketLogList.LogListFullPackets.ItemsSource);
+            var filterFunc = new Predicate<object> (o =>
             {
                 if (ShowFavoritesOnly)
                 {
@@ -232,12 +232,12 @@ public partial class PacketLogViewerMainWindow
                     return false;
                 }
 
-                if (HideProtocolPackets && IsProtocolNoise(p))
+                if (HideProtocolPackets && IsProtocolNoise (p))
                 {
                     return false;
                 }
 
-                if (HideMovePackets && IsMovePacket(p))
+                if (HideMovePackets && IsMovePacket (p))
                 {
                     return false;
                 }
@@ -253,12 +253,12 @@ public partial class PacketLogViewerMainWindow
 
             MainView.PacketVisualizerPanel.PacketVisualizerControl.KeyDown += PacketVisualizerControlAddPacketPart;
             MainView.PacketVisualizerPanel.PacketVisualizerControl.KeyDown += PacketVisualizerControlHandlePartSelection;
-            MainView.PacketVisualizerPanel.PacketVisualizerControl.AddHandler(Keyboard.PreviewKeyDownEvent,
-                new KeyEventHandler(PacketVisualizerControlShiftSelectionOnArrowKeys), true);
+            MainView.PacketVisualizerPanel.PacketVisualizerControl.AddHandler (Keyboard.PreviewKeyDownEvent,
+                new KeyEventHandler (PacketVisualizerControlShiftSelectionOnArrowKeys), true);
             MainView.PacketVisualizerPanel.PacketVisualizerControl.BitSelectionChanged +=
                 PacketVisualizerControl_OnBitSelectionChanged;
-            SelectionBrush = new SolidColorBrush(Color.FromArgb(140, 51, 153, 255));
-            SelectionBrush.Freeze();
+            SelectionBrush = new SolidColorBrush (Color.FromArgb (140, 51, 153, 255));
+            SelectionBrush.Freeze ();
             MainView.PacketVisualizerPanel.PacketVisualizerControl.SelectionOverlayBrush = SelectionBrush;
 
             KeyUp += (_, e) =>
@@ -273,10 +273,10 @@ public partial class PacketLogViewerMainWindow
                     return;
                 }
 
-                SaveSelectedPacketDefinition();
+                SaveSelectedPacketDefinition ();
             };
 
-            CreateFlowDocumentWithHighlights(false, true);
+            CreateFlowDocumentWithHighlights (false, true);
 
             MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.ItemsSource = PacketParts;
             MainView.PacketVisualizerPanel.DefinedPacketPartsControl.ItemsSource = PacketParts;
@@ -327,71 +327,71 @@ public partial class PacketLogViewerMainWindow
 
             SphereTimeUpdateTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1.0 / 24)
+                Interval = TimeSpan.FromSeconds (1.0 / 24)
             };
-            SphereTimeUpdateTimer.Tick += (_, _) => UpdateGameTime();
-            SphereTimeUpdateTimer.Start();
+            SphereTimeUpdateTimer.Tick += (_, _) => UpdateGameTime ();
+            SphereTimeUpdateTimer.Start ();
 
             _entityRadarRefreshTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(100)
+                Interval = TimeSpan.FromMilliseconds (100)
             };
-            _entityRadarRefreshTimer.Tick += (_, _) => RefreshEntityRadar();
-            _entityRadarRefreshTimer.Start();
-            Closed += (_, _) => _entityRadarRefreshTimer?.Stop();
+            _entityRadarRefreshTimer.Tick += (_, _) => RefreshEntityRadar ();
+            _entityRadarRefreshTimer.Start ();
+            Closed += (_, _) => _entityRadarRefreshTimer?.Stop ();
             Closed += (_, _) =>
             {
-                _mitmProxy?.Dispose();
+                _mitmProxy?.Dispose ();
                 _mitmProxy = null;
             };
-            Closed += (_, _) => PacketCapture?.Dispose();
+            Closed += (_, _) => PacketCapture?.Dispose ();
 
-            TryStartMitmProxy();
+            TryStartMitmProxy ();
 
-            ScrollIntoViewIfSelectionExists();
+            ScrollIntoViewIfSelectionExists ();
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show (ex.ToString (), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void TryStartMitmProxy()
+    private void TryStartMitmProxy ()
     {
-        var settings = AppConfig.GetSection("Settings");
-        if (!settings.GetValue("MitmProxyEnabled", false))
+        var settings = AppConfig.GetSection ("Settings");
+        if (!settings.GetValue ("MitmProxyEnabled", false))
         {
             return;
         }
 
         try
         {
-            var listenAddr = settings.GetValue<string>("MitmProxyListenAddress") ?? "127.0.0.1";
-            var listenPort = settings.GetValue<int?>("MitmProxyListenPort") ?? 25861;
-            var upstreamHost = settings.GetValue<string>("MitmProxyUpstreamHost") ?? "77.223.107.68";
-            var upstreamPort = settings.GetValue<int?>("MitmProxyUpstreamPort") ?? 25860;
+            var listenAddr = settings.GetValue<string> ("MitmProxyListenAddress") ?? "127.0.0.1";
+            var listenPort = settings.GetValue<int?> ("MitmProxyListenPort") ?? 25861;
+            var upstreamHost = settings.GetValue<string> ("MitmProxyUpstreamHost") ?? "77.223.107.68";
+            var upstreamPort = settings.GetValue<int?> ("MitmProxyUpstreamPort") ?? 25860;
 
-            _mitmProxy = new SphereMitmProxy(listenAddr, listenPort, upstreamHost, upstreamPort);
-            _mitmProxy.Start();
+            _mitmProxy = new SphereMitmProxy (listenAddr, listenPort, upstreamHost, upstreamPort);
+            _mitmProxy.Start ();
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this,
+            MessageBox.Show (this,
                 $"MITM proxy could not start: {ex.Message}\n\nDisable MitmProxyEnabled or fix MitmProxyListenAddress / MitmProxyListenPort in appconfig.json.",
                 "MITM proxy",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-            _mitmProxy?.Dispose();
+            _mitmProxy?.Dispose ();
             _mitmProxy = null;
         }
     }
 
-    private void InstallNewPacketCapture()
+    private void InstallNewPacketCapture ()
     {
         var old = PacketCapture;
         try
         {
-            old?.Dispose();
+            old?.Dispose ();
         }
         catch
         {
@@ -403,21 +403,21 @@ public partial class PacketLogViewerMainWindow
             OnPacketProcessed = OnPacketProcessed,
             CaptureLocalTraffic = LocalCaptureEnabled
         };
-        PacketAnalyzer.ResetMbcSession();
+        PacketAnalyzer.ResetMbcSession ();
     }
 
-    private static void ReloadAppConfig()
+    private static void ReloadAppConfig ()
     {
-        AppConfig = new ConfigurationBuilder().AddJsonFile("appconfig.json").AddEnvironmentVariables().Build();
+        AppConfig = new ConfigurationBuilder ().AddJsonFile ("appconfig.json").AddEnvironmentVariables ().Build ();
     }
 
-    private void InitializeClientStateFilter()
+    private void InitializeClientStateFilter ()
     {
-        ClientStateObjectTypeFilter = Enum.GetValues<ObjectType>()
-            .Where(x => x != ObjectType.Unknown)
-            .ToHashSet();
+        ClientStateObjectTypeFilter = Enum.GetValues<ObjectType> ()
+            .Where (x => x != ObjectType.Unknown)
+            .ToHashSet ();
 
-        var view = CollectionViewSource.GetDefaultView(MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource);
+        var view = CollectionViewSource.GetDefaultView (MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource);
         view.Filter = o =>
         {
             if (o is not PacketAnalyzeData pad)
@@ -427,25 +427,25 @@ public partial class PacketLogViewerMainWindow
 
             return ClientStateObjectTypeFilter is null ||
                    ClientStateObjectTypeFilter.Count == 0 ||
-                   ClientStateObjectTypeFilter.Contains(pad.ObjectType);
+                   ClientStateObjectTypeFilter.Contains (pad.ObjectType);
         };
     }
 
-    private void RefreshClientStateFilter()
+    private void RefreshClientStateFilter ()
     {
-        CollectionViewSource.GetDefaultView(MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource).Refresh();
-        RefreshEntityRadar();
+        CollectionViewSource.GetDefaultView (MainView.ClientStatePanel.CurrentEntityStateForClient.ItemsSource).Refresh ();
+        RefreshEntityRadar ();
     }
 
-    private void RefreshEntityRadar()
+    private void RefreshEntityRadar ()
     {
-        var view = CollectionViewSource.GetDefaultView(CurrentClientState);
-        var items = view.Cast<PacketAnalyzeData>().ToList();
-        MainView.EntityRadar.SetEntities(items, _radarClientX, _radarClientZ, _radarClientTurn, _radarHasClientPosition);
+        var view = CollectionViewSource.GetDefaultView (CurrentClientState);
+        var items = view.Cast<PacketAnalyzeData> ().ToList ();
+        MainView.EntityRadar.SetEntities (items, _radarClientX, _radarClientZ, _radarClientTurn, _radarHasClientPosition);
     }
 
     public byte[]? CurrentContentBytes { get; set; }
-    public ObservableCollection<StoredPacket> LogRecords { get; } = new();
+    public ObservableCollection<StoredPacket> LogRecords { get; } = new ();
     public bool ShowFavoritesOnly { get; set; }
     public bool ListenerEnabled { get; set; } = true;
     public bool LocalCaptureEnabled { get; set; }
@@ -458,52 +458,52 @@ public partial class PacketLogViewerMainWindow
     private TrackXpSnapshot? _trackXpSnapshot;
     private bool _trackXpEnabled;
 
-    private void OnPacketProcessed(List<StoredPacket> storedPackets, bool forceProcess)
+    private void OnPacketProcessed (List<StoredPacket> storedPackets, bool forceProcess)
     {
         if (!ListenerEnabled && !forceProcess)
         {
             return;
         }
 
-        storedPackets.Sort((a, b) => a.NumberInSequence.CompareTo(b.NumberInSequence));
+        storedPackets.Sort ((a, b) => a.NumberInSequence.CompareTo (b.NumberInSequence));
 
         for (var i = 1; i < storedPackets.Count; i++)
         {
             // try fixing split packets
             var storedPacket = storedPackets[i];
 
-            var currentStream = new BitStream(storedPacket.ContentBytes);
+            var currentStream = new BitStream (storedPacket.ContentBytes);
             // header
-            currentStream.ReadBytes(7, true);
-            var entityId = currentStream.ReadUInt16();
-            currentStream.ReadByte(2);
-            var objectTypeVal = currentStream.ReadUInt16(10);
-            var objectType = Enum.IsDefined(typeof(ObjectType), objectTypeVal)
-                ? (ObjectType)objectTypeVal
+            currentStream.ReadBytes (7, true);
+            var entityId = currentStream.ReadUInt16 ();
+            currentStream.ReadByte (2);
+            var objectTypeVal = currentStream.ReadUInt16 (10);
+            var objectType = Enum.IsDefined (typeof (ObjectType), objectTypeVal)
+                ? (ObjectType) objectTypeVal
                 : ObjectType.Unknown;
             if (objectType is ObjectType.Stats)
             {
                 continue;
             }
 
-            currentStream.ReadByte(1);
-            var actionTypeVal = (int)currentStream.ReadByte();
-            var actionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            currentStream.ReadByte (1);
+            var actionTypeVal = (int) currentStream.ReadByte ();
+            var actionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
             if (actionType is EntityActionType.FULL_SPAWN or EntityActionType.FULL_SPAWN_2)
             {
                 continue;
             }
 
-            var previousStream = new BitStream(storedPackets[i - 1].ContentBytes);
-            previousStream.Seek(previousStream.Length, 0);
-            previousStream.SeekBack(16);
-            var entityIdTest = previousStream.ReadUInt16();
+            var previousStream = new BitStream (storedPackets[i - 1].ContentBytes);
+            previousStream.Seek (previousStream.Length, 0);
+            previousStream.SeekBack (16);
+            var entityIdTest = previousStream.ReadUInt16 ();
             while (entityIdTest != entityId && previousStream.BitOffsetFromStart > 72)
             {
-                previousStream.SeekBack(17);
-                entityIdTest = previousStream.ReadUInt16();
+                previousStream.SeekBack (17);
+                entityIdTest = previousStream.ReadUInt16 ();
             }
 
             var shouldStitchPackets = false;
@@ -519,8 +519,8 @@ public partial class PacketLogViewerMainWindow
             }
             else
             {
-                previousStream.SeekBack(24);
-                var dividerTest = previousStream.ReadByte();
+                previousStream.SeekBack (24);
+                var dividerTest = previousStream.ReadByte ();
                 shouldStitchPackets = dividerTest is 0x7F or 0x7E;
             }
 
@@ -531,13 +531,13 @@ public partial class PacketLogViewerMainWindow
 
             while (currentStream.ValidPosition)
             {
-                var splitTest = currentStream.ReadByte();
+                var splitTest = currentStream.ReadByte ();
                 if (!currentStream.ValidPosition || splitTest == 0x7E || splitTest == 0x7F)
                 {
                     break;
                 }
 
-                currentStream.SeekBack(7);
+                currentStream.SeekBack (7);
             }
 
             if (!currentStream.ValidPosition)
@@ -547,27 +547,27 @@ public partial class PacketLogViewerMainWindow
 
             var positionAfterDelimiter = currentStream.BitOffsetFromStart;
             var entityRemainderLength = positionAfterDelimiter - 72; // header (56) and ent id (16)
-            currentStream.SeekBitOffset(0);
-            var header = currentStream.ReadBytes(7, true);
+            currentStream.SeekBitOffset (0);
+            var header = currentStream.ReadBytes (7, true);
             // should be 9, 0 but skipping 2 more to align for sacks
-            currentStream.Seek(9, 0);
-            var remainderBits = currentStream.ReadBits(entityRemainderLength);
-            var newCurrentContent = new List<byte>();
-            newCurrentContent.AddRange(header);
-            newCurrentContent.AddRange(currentStream.GetStreamDataFromCurrentOffsetAndBit());
-            newCurrentContent[1] = (byte)(newCurrentContent.Count / 256);
-            newCurrentContent[0] = (byte)(newCurrentContent.Count % 256);
-            storedPacket.ContentBytes = newCurrentContent.ToArray();
-            previousStream.Seek(previousStream.Length, 0);
+            currentStream.Seek (9, 0);
+            var remainderBits = currentStream.ReadBits (entityRemainderLength);
+            var newCurrentContent = new List<byte> ();
+            newCurrentContent.AddRange (header);
+            newCurrentContent.AddRange (currentStream.GetStreamDataFromCurrentOffsetAndBit ());
+            newCurrentContent[1] = (byte) (newCurrentContent.Count / 256);
+            newCurrentContent[0] = (byte) (newCurrentContent.Count % 256);
+            storedPacket.ContentBytes = newCurrentContent.ToArray ();
+            previousStream.Seek (previousStream.Length, 0);
             // this is a hack, probably bit count varies
-            previousStream.SeekBack(3);
+            previousStream.SeekBack (3);
             previousStream.AutoIncreaseStream = true;
-            previousStream.WriteBits(remainderBits[16..]);
-            previousStream.SeekBitOffset(0);
+            previousStream.WriteBits (remainderBits[16..]);
+            previousStream.SeekBitOffset (0);
             // last one is the divider, first 2 are something random?
-            var previousContentBytes = previousStream.GetStreamDataFromCurrentOffsetAndBit()[..^1];
-            previousContentBytes[1] = (byte)(previousContentBytes.Length / 256);
-            previousContentBytes[0] = (byte)(previousContentBytes.Length % 256);
+            var previousContentBytes = previousStream.GetStreamDataFromCurrentOffsetAndBit ()[..^1];
+            previousContentBytes[1] = (byte) (previousContentBytes.Length / 256);
+            previousContentBytes[0] = (byte) (previousContentBytes.Length % 256);
             storedPackets[i - 1].ContentBytes = previousContentBytes;
         }
 
@@ -575,11 +575,11 @@ public partial class PacketLogViewerMainWindow
         {
             var storedPacket = storedPackets[i];
 
-            storedPacket.UpdatePacketPartsForContent();
+            storedPacket.UpdatePacketPartsForContent ();
 
             if (_trackXpEnabled && storedPacket.Source == PacketSource.SERVER)
             {
-                TryTrackDegreeXpFromServerPacket(storedPacket);
+                TryTrackDegreeXpFromServerPacket (storedPacket);
             }
 
             // if (i >= 1)
@@ -636,139 +636,139 @@ public partial class PacketLogViewerMainWindow
             //     }
             // }
 
-            storedPacket.Id = PacketCollection.Insert(storedPacket);
+            storedPacket.Id = PacketCollection.Insert (storedPacket);
 
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke (() =>
             {
-                if (PacketAnalyzer.IsClientPingPacket(storedPacket))
+                if (PacketAnalyzer.IsClientPingPacket (storedPacket))
                 {
-                    UpdateClientCoordsAndId(storedPacket);
+                    UpdateClientCoordsAndId (storedPacket);
                 }
 
-                UpdateClientState(storedPacket);
+                UpdateClientState (storedPacket);
                 if (ShowNewInUI)
                 {
-                    LogRecords.Add(storedPacket);
-                    MainView.PacketLogList.LogListFullPackets.UpdateLayout();
+                    LogRecords.Add (storedPacket);
+                    MainView.PacketLogList.LogListFullPackets.UpdateLayout ();
                 }
             });
         }
     }
 
-    public void UpdateGameTime()
+    public void UpdateGameTime ()
     {
-        var time = TimeHelper.GetCurrentSphereDateTime().AddYears(7800);
-        MainView.GameState.GameTime.Text = time.ToString("dd/MM/yyyy HH:mm");
+        var time = TimeHelper.GetCurrentSphereDateTime ().AddYears (7800);
+        MainView.GameState.GameTime.Text = time.ToString ("dd/MM/yyyy HH:mm");
         // TODO
         MainView.GameState.GameTimeBits.Text = "0";
     }
 
-    public void UpdateClientCoordsAndId(StoredPacket storedPacket)
+    public void UpdateClientCoordsAndId (StoredPacket storedPacket)
     {
         try
         {
-            var coords = CoordsHelper.GetCoordsFromPingBytes(storedPacket.ContentBytes);
+            var coords = CoordsHelper.GetCoordsFromPingBytes (storedPacket.ContentBytes);
             MainView.GameState.CoordsX.Text = $"{coords.x:F4}";
             MainView.GameState.CoordsY.Text = $"{coords.y:F4}";
             MainView.GameState.CoordsZ.Text = $"{coords.z:F4}";
             MainView.GameState.CoordsT.Text = $"{coords.turn:F4}";
 
-            var xBytes = CoordsHelper.EncodeServerCoordinate(coords.x);
-            var yBytes = CoordsHelper.EncodeServerCoordinate(coords.y);
-            var zBytes = CoordsHelper.EncodeServerCoordinate(coords.z);
-            var tBytes = CoordsHelper.EncodeServerCoordinate(coords.turn);
+            var xBytes = CoordsHelper.EncodeServerCoordinate (coords.x);
+            var yBytes = CoordsHelper.EncodeServerCoordinate (coords.y);
+            var zBytes = CoordsHelper.EncodeServerCoordinate (coords.z);
+            var tBytes = CoordsHelper.EncodeServerCoordinate (coords.turn);
 
-            MainView.GameState.CoordsXBits.Text = StringConvertHelpers.ByteArrayToBinaryString(xBytes, false, true);
-            MainView.GameState.CoordsYBits.Text = StringConvertHelpers.ByteArrayToBinaryString(yBytes, false, true);
-            MainView.GameState.CoordsZBits.Text = StringConvertHelpers.ByteArrayToBinaryString(zBytes, false, true);
-            MainView.GameState.CoordsTBits.Text = StringConvertHelpers.ByteArrayToBinaryString(tBytes, false, true);
+            MainView.GameState.CoordsXBits.Text = StringConvertHelpers.ByteArrayToBinaryString (xBytes, false, true);
+            MainView.GameState.CoordsYBits.Text = StringConvertHelpers.ByteArrayToBinaryString (yBytes, false, true);
+            MainView.GameState.CoordsZBits.Text = StringConvertHelpers.ByteArrayToBinaryString (zBytes, false, true);
+            MainView.GameState.CoordsTBits.Text = StringConvertHelpers.ByteArrayToBinaryString (tBytes, false, true);
 
-            var packedId = (ushort)((storedPacket.ContentBytes[16] >> 5) + (storedPacket.ContentBytes[17] << 3) +
+            var packedId = (ushort) ((storedPacket.ContentBytes[16] >> 5) + (storedPacket.ContentBytes[17] << 3) +
                                     ((storedPacket.ContentBytes[18] & 0b11111) << 11));
-            var id = BinaryPrimitives.ReverseEndianness(packedId);
+            var id = BinaryPrimitives.ReverseEndianness (packedId);
             MainView.GameState.ClientId.Text = $"{id:X4}";
-            PacketCapture?.SetClientId((short)id);
+            PacketCapture?.SetClientId ((short) id);
 
             _radarClientX = coords.x;
             _radarClientZ = coords.z;
             _radarClientTurn = coords.turn;
             _radarHasClientPosition = true;
-            RefreshEntityRadar();
+            RefreshEntityRadar ();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine (ex.Message);
         }
     }
 
-    public void LoadContent()
+    public void LoadContent ()
     {
-        PacketCollection.EnsureIndex(x => x.Source);
+        PacketCollection.EnsureIndex (x => x.Source);
         // might not be great
-        PacketCollection.EnsureIndex(x => x.Timestamp);
+        PacketCollection.EnsureIndex (x => x.Timestamp);
 
         List<StoredPacket> packets;
         if (App.PacketDatabaseOverride is not null)
         {
-            packets = PacketCollection.Query().OrderBy(x => x.Timestamp).ToList();
+            packets = PacketCollection.Query ().OrderBy (x => x.Timestamp).ToList ();
         }
         else
         {
-            packets = PacketCollection.Query().Where(x => x.Favorite).OrderByDescending(x => x.Timestamp)
-                .Limit(100).ToList();
-            packets.AddRange(PacketCollection.Query().OrderByDescending(x => x.Timestamp)
-                .Limit(100).ToList());
-            packets.Sort((a, b) => a.Timestamp.CompareTo(b.Timestamp));
+            packets = PacketCollection.Query ().Where (x => x.Favorite).OrderByDescending (x => x.Timestamp)
+                .Limit (100).ToList ();
+            packets.AddRange (PacketCollection.Query ().OrderByDescending (x => x.Timestamp)
+                .Limit (100).ToList ());
+            packets.Sort ((a, b) => a.Timestamp.CompareTo (b.Timestamp));
         }
 
-        if (!packets.Any())
+        if (!packets.Any ())
         {
-            MessageBox.Show("No full packets to load");
+            MessageBox.Show ("No full packets to load");
             return;
         }
 
-        PacketAnalyzer.ResetMbcSession();
+        PacketAnalyzer.ResetMbcSession ();
         for (var i = 0; i < packets.Count; i++)
         {
             var packet = packets[i];
-            packet = packet.UpdatePacketPartsForContent();
-            UpdateStoredPacket(packet);
-            LogRecords.Add(packet);
+            packet = packet.UpdatePacketPartsForContent ();
+            UpdateStoredPacket (packet);
+            LogRecords.Add (packet);
         }
 
-        MainView.PacketLogList.LogListFullPackets.UpdateLayout();
+        MainView.PacketLogList.LogListFullPackets.UpdateLayout ();
     }
 
-    public void UpdateContentPreview(StoredPacket selected)
+    public void UpdateContentPreview (StoredPacket selected)
     {
         try
         {
             var bytes = selected.ContentBytes;
             CurrentContentBytes = bytes;
-            CurrentContentBitStream = new BitStream(CurrentContentBytes);
-            selected.UpdatePacketPartsForContent();
+            CurrentContentBitStream = new BitStream (CurrentContentBytes);
+            selected.UpdatePacketPartsForContent ();
 
-            PacketParts.ReplaceAll(selected.PacketParts);
+            PacketParts.ReplaceAll (selected.PacketParts);
 
             LastVerticalOffset = 0;
-            ClearSelection();
-            CreateFlowDocumentWithHighlights(false, true);
-            UpdateDefinedPackets();
+            ClearSelection ();
+            CreateFlowDocumentWithHighlights (false, true);
+            UpdateDefinedPackets ();
             var packetContents = string.Empty;
             var knownAnalyzedParts = selected.AnalyzeResult
-                .Where(x => x.GetType() != typeof(DespawnPacket)
-                         && x.GetType() != typeof(PacketAnalyzeData))
-                .ToList();
-            if (knownAnalyzedParts.Any())
+                .Where (x => x.GetType () != typeof (DespawnPacket)
+                         && x.GetType () != typeof (PacketAnalyzeData))
+                .ToList ();
+            if (knownAnalyzedParts.Any ())
             {
-                packetContents = string.Join('\n', knownAnalyzedParts.Select(x => x.DisplayValue));
+                packetContents = string.Join ('\n', knownAnalyzedParts.Select (x => x.DisplayValue));
                 packetContents +=
                     "\n----------------------------------------------------------------------------------";
             }
 
-            var extraPreview = PacketAnalyzer.GetTextOutputForPacket(bytes);
-            if (string.IsNullOrWhiteSpace(extraPreview) ||
-                knownAnalyzedParts.Any(x => x.DisplayValue == extraPreview.Trim()))
+            var extraPreview = PacketAnalyzer.GetTextOutputForPacket (bytes);
+            if (string.IsNullOrWhiteSpace (extraPreview) ||
+                knownAnalyzedParts.Any (x => x.DisplayValue == extraPreview.Trim ()))
             {
                 MainView.ClientStatePanel.ContentPreview.Text = packetContents;
             }
@@ -777,33 +777,33 @@ public partial class PacketLogViewerMainWindow
                 MainView.ClientStatePanel.ContentPreview.Text = packetContents + "\n" + extraPreview +
                                       "----------------------------------------------------------------------------------\n";
             }
-            var sphObjects = ObjectPacketTools.GetObjectsFromPacket(bytes);
-            MainView.ClientStatePanel.ContentPreview.Text += sphObjects.Count > 0 ? ObjectPacketTools.GetTextOutput(sphObjects) : "";
+            var sphObjects = ObjectPacketTools.GetObjectsFromPacket (bytes);
+            MainView.ClientStatePanel.ContentPreview.Text += sphObjects.Count > 0 ? ObjectPacketTools.GetTextOutput (sphObjects) : "";
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine (ex.Message);
             MainView.ClientStatePanel.ContentPreview.Text = "Not an item packet";
         }
     }
 
-    public void UpdateClientState(StoredPacket storedPacket)
+    public void UpdateClientState (StoredPacket storedPacket)
     {
         foreach (var result in storedPacket.AnalyzeResult)
         {
             if (result is DespawnPacket)
             {
-                var entsToDespawn = CurrentClientState.Where(x => x.Id == result.Id).ToList();
+                var entsToDespawn = CurrentClientState.Where (x => x.Id == result.Id).ToList ();
                 foreach (var ent in entsToDespawn)
                 {
-                    CurrentClientState.Remove(ent);
+                    CurrentClientState.Remove (ent);
                 }
             }
             else if (result is MobPacket mob)
             {
-                if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is MobPacket previousState)
+                if (CurrentClientState.FirstOrDefault (x => x.Id == result.Id) is MobPacket previousState)
                 {
-                    var previousIndex = CurrentClientState.IndexOf(previousState);
+                    var previousIndex = CurrentClientState.IndexOf (previousState);
                     if (mob.ActionType == EntityActionType.SET_POSITION)
                     {
                         previousState.X = mob.X;
@@ -813,28 +813,28 @@ public partial class PacketLogViewerMainWindow
                     }
                     else if (mob.ActionType == EntityActionType.FULL_SPAWN)
                     {
-                        CurrentClientState.Remove(previousState);
-                        CurrentClientState.Insert(previousIndex, result);
+                        CurrentClientState.Remove (previousState);
+                        CurrentClientState.Insert (previousIndex, result);
                     }
                     else if (mob is
                     {
                         ActionType: EntityActionType.INTERACT, InteractionType: EntityInteractionType.DEATH
                     })
                     {
-                        CurrentClientState.Remove(previousState);
+                        CurrentClientState.Remove (previousState);
                     }
                 }
 
                 if (mob.ActionType == EntityActionType.FULL_SPAWN)
                 {
-                    CurrentClientState.Insert(0, result);
+                    CurrentClientState.Insert (0, result);
                 }
             }
             else if (result is NpcTradePacket npc)
             {
-                if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is NpcTradePacket previousState)
+                if (CurrentClientState.FirstOrDefault (x => x.Id == result.Id) is NpcTradePacket previousState)
                 {
-                    var previousIndex = CurrentClientState.IndexOf(previousState);
+                    var previousIndex = CurrentClientState.IndexOf (previousState);
                     if (npc.ActionType == EntityActionType.SET_POSITION)
                     {
                         previousState.X = npc.X;
@@ -844,29 +844,29 @@ public partial class PacketLogViewerMainWindow
                     }
                     else if (npc.ActionType == EntityActionType.FULL_SPAWN)
                     {
-                        CurrentClientState.Remove(previousState);
-                        CurrentClientState.Insert(previousIndex, result);
+                        CurrentClientState.Remove (previousState);
+                        CurrentClientState.Insert (previousIndex, result);
                     }
                     else if (npc is
                     {
                         ActionType: EntityActionType.INTERACT, InteractionType: EntityInteractionType.DEATH
                     })
                     {
-                        CurrentClientState.Remove(previousState);
+                        CurrentClientState.Remove (previousState);
                     }
                 }
 
                 else if (npc.ActionType == EntityActionType.FULL_SPAWN)
                 {
-                    CurrentClientState.Insert(0, result);
+                    CurrentClientState.Insert (0, result);
                 }
             }
             else if (result is CharacterPacket character)
             {
 
-                if (CurrentClientState.FirstOrDefault(x => x.Id == result.Id) is CharacterPacket previousState)
+                if (CurrentClientState.FirstOrDefault (x => x.Id == result.Id) is CharacterPacket previousState)
                 {
-                    var previousIndex = CurrentClientState.IndexOf(previousState);
+                    var previousIndex = CurrentClientState.IndexOf (previousState);
                     if (character.ActionType == EntityActionType.SET_POSITION)
                     {
                         previousState.X = character.X;
@@ -876,27 +876,27 @@ public partial class PacketLogViewerMainWindow
                     }
                     else if (character.ActionType == EntityActionType.FULL_SPAWN)
                     {
-                        CurrentClientState.Remove(previousState);
-                        CurrentClientState.Insert(previousIndex, result);
+                        CurrentClientState.Remove (previousState);
+                        CurrentClientState.Insert (previousIndex, result);
                     }
                     else if (character is
                     {
                         ActionType: EntityActionType.INTERACT, InteractionType: EntityInteractionType.DEATH
                     })
                     {
-                        CurrentClientState.Remove(previousState);
+                        CurrentClientState.Remove (previousState);
                     }
                 }
 
                 else if (character.ActionType == EntityActionType.FULL_SPAWN)
                 {
-                    CurrentClientState.Insert(0, result);
+                    CurrentClientState.Insert (0, result);
                 }
 
             }
             else if (result is EntityMovePacket move)
             {
-                ApplyEntityPosition(move.Id, move.X, move.Y, move.Z, move.Angle);
+                ApplyEntityPosition (move.Id, move.X, move.Y, move.Z, move.Angle);
             }
             else if (result is WorldObject { ActionType: EntityActionType.FULL_SPAWN }
                      or CastleTablet { ActionType: EntityActionType.FULL_SPAWN }
@@ -904,22 +904,22 @@ public partial class PacketLogViewerMainWindow
                      or CastleGate { ActionType: EntityActionType.FULL_SPAWN }
                      or CastleChest { ActionType: EntityActionType.FULL_SPAWN })
             {
-                CurrentClientState.Insert(0, result);
+                CurrentClientState.Insert (0, result);
             }
         }
 
-        MainView.ClientStatePanel.CurrentEntityStateForClient.UpdateLayout();
-        RefreshEntityRadar();
+        MainView.ClientStatePanel.CurrentEntityStateForClient.UpdateLayout ();
+        RefreshEntityRadar ();
     }
 
-    private static void ApplyEntityPosition(int id, double x, double y, double z, int angle)
+    private static void ApplyEntityPosition (int id, double x, double y, double z, int angle)
     {
         if (id == 0)
         {
             return;
         }
 
-        foreach (var ent in CurrentClientState.Where(e => e.Id == id))
+        foreach (var ent in CurrentClientState.Where (e => e.Id == id))
         {
             switch (ent)
             {
@@ -981,7 +981,7 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void LogListOnSelectionChanged(object sender, SelectionChangedEventArgs args)
+    private void LogListOnSelectionChanged (object sender, SelectionChangedEventArgs args)
     {
         try
         {
@@ -999,8 +999,8 @@ public partial class PacketLogViewerMainWindow
 
             MainView.PacketActionsBar.IsFavorite.IsChecked = selected.Favorite;
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = null;
-            MainView.PacketLogList.LogListFullPackets.ScrollIntoView(selected);
-            UpdateContentPreview(selected);
+            MainView.PacketLogList.LogListFullPackets.ScrollIntoView (selected);
+            UpdateContentPreview (selected);
         }
         catch
         {
@@ -1008,20 +1008,20 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void FullPacketsLog_MenuItem_OnClick(object sender, RoutedEventArgs e)
+    private void FullPacketsLog_MenuItem_OnClick (object sender, RoutedEventArgs e)
     {
-        CopySelectedRowContent(MainView.PacketLogList.LogListFullPackets);
+        CopySelectedRowContent (MainView.PacketLogList.LogListFullPackets);
     }
 
-    private void CopySelectedRowContent(ListView listView)
+    private void CopySelectedRowContent (ListView listView)
     {
-        var selectedRow = (StoredPacket)listView.SelectedItem;
+        var selectedRow = (StoredPacket) listView.SelectedItem;
         var text =
-            $"{Convert.ToHexString(selectedRow.ContentBytes)}";
-        Clipboard.SetText(text);
+            $"{Convert.ToHexString (selectedRow.ContentBytes)}";
+        Clipboard.SetText (text);
     }
 
-    private void FavoriteToggleButton_OnChecked(object sender, RoutedEventArgs e)
+    private void FavoriteToggleButton_OnChecked (object sender, RoutedEventArgs e)
     {
         var logList = MainView.PacketLogList.LogListFullPackets;
         if (logList.SelectedItem is null)
@@ -1029,12 +1029,12 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var item = (StoredPacket)logList.SelectedItem;
+        var item = (StoredPacket) logList.SelectedItem;
         item.Favorite = true;
-        UpdateStoredPacket(item);
+        UpdateStoredPacket (item);
     }
 
-    private void FavoriteToggleButton_OnUnchecked(object sender, RoutedEventArgs e)
+    private void FavoriteToggleButton_OnUnchecked (object sender, RoutedEventArgs e)
     {
         var logList = MainView.PacketLogList.LogListFullPackets;
         if (logList.SelectedItem is null)
@@ -1042,12 +1042,12 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var item = (StoredPacket)logList.SelectedItem;
+        var item = (StoredPacket) logList.SelectedItem;
         item.Favorite = false;
-        UpdateStoredPacket(item);
+        UpdateStoredPacket (item);
     }
 
-    private void ShowFavoritesOnlyToggleButton_OnChecked(object sender, RoutedEventArgs e)
+    private void ShowFavoritesOnlyToggleButton_OnChecked (object sender, RoutedEventArgs e)
     {
         if (ShowFavoritesOnly)
         {
@@ -1055,21 +1055,21 @@ public partial class PacketLogViewerMainWindow
         }
 
         ShowFavoritesOnly = true;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void UpdateStoredPacket(StoredPacket storedPacket)
+    private void UpdateStoredPacket (StoredPacket storedPacket)
     {
-        PacketCollection.Update(storedPacket);
+        PacketCollection.Update (storedPacket);
     }
 
-    private void ShowFavoritesOnlyToggleButton_OnUnchecked(object sender, RoutedEventArgs e)
+    private void ShowFavoritesOnlyToggleButton_OnUnchecked (object sender, RoutedEventArgs e)
     {
         ShowFavoritesOnly = false;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideClientPackets_OnChecked(object sender, RoutedEventArgs e)
+    private void HideClientPackets_OnChecked (object sender, RoutedEventArgs e)
     {
         if (HideClientPackets)
         {
@@ -1077,16 +1077,16 @@ public partial class PacketLogViewerMainWindow
         }
 
         HideClientPackets = true;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideClientPackets_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideClientPackets_OnUnchecked (object sender, RoutedEventArgs e)
     {
         HideClientPackets = false;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideProtocolPackets_OnChecked(object sender, RoutedEventArgs e)
+    private void HideProtocolPackets_OnChecked (object sender, RoutedEventArgs e)
     {
         if (HideProtocolPackets)
         {
@@ -1094,16 +1094,16 @@ public partial class PacketLogViewerMainWindow
         }
 
         HideProtocolPackets = true;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideProtocolPackets_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideProtocolPackets_OnUnchecked (object sender, RoutedEventArgs e)
     {
         HideProtocolPackets = false;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideMovePackets_OnChecked(object sender, RoutedEventArgs e)
+    private void HideMovePackets_OnChecked (object sender, RoutedEventArgs e)
     {
         if (HideMovePackets)
         {
@@ -1111,16 +1111,16 @@ public partial class PacketLogViewerMainWindow
         }
 
         HideMovePackets = true;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideMovePackets_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideMovePackets_OnUnchecked (object sender, RoutedEventArgs e)
     {
         HideMovePackets = false;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideUnknownPackets_OnChecked(object sender, RoutedEventArgs e)
+    private void HideUnknownPackets_OnChecked (object sender, RoutedEventArgs e)
     {
         if (HideUnknownPackets)
         {
@@ -1128,34 +1128,34 @@ public partial class PacketLogViewerMainWindow
         }
 
         HideUnknownPackets = true;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private void HideUnknownPackets_OnUnchecked(object sender, RoutedEventArgs e)
+    private void HideUnknownPackets_OnUnchecked (object sender, RoutedEventArgs e)
     {
         HideUnknownPackets = false;
-        ScrollIntoViewIfSelectionExists();
+        ScrollIntoViewIfSelectionExists ();
     }
 
-    private static bool IsProtocolNoise(StoredPacket packet)
+    private static bool IsProtocolNoise (StoredPacket packet)
     {
         var name = packet.EventName;
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty (name))
         {
             return false;
         }
 
-        if (name.Equals("client.position_keepalive", StringComparison.Ordinal)
-            || name.Contains("keepalive", StringComparison.OrdinalIgnoreCase))
+        if (name.Equals ("client.position_keepalive", StringComparison.Ordinal)
+            || name.Contains ("keepalive", StringComparison.OrdinalIgnoreCase))
         {
             return true;
         }
 
-        return name.StartsWith("client.protocol.", StringComparison.Ordinal)
-               || name.StartsWith("server.protocol.", StringComparison.Ordinal);
+        return name.StartsWith ("client.protocol.", StringComparison.Ordinal)
+               || name.StartsWith ("server.protocol.", StringComparison.Ordinal);
     }
 
-    private static bool IsMovePacket(StoredPacket packet)
+    private static bool IsMovePacket (StoredPacket packet)
     {
         if (packet.PacketType == PacketTypes.SERVER_MOVE_ENTITY)
         {
@@ -1163,11 +1163,11 @@ public partial class PacketLogViewerMainWindow
         }
 
         var name = packet.EventName;
-        return !string.IsNullOrEmpty(name)
-               && name.StartsWith("server.entity.position", StringComparison.Ordinal);
+        return !string.IsNullOrEmpty (name)
+               && name.StartsWith ("server.entity.position", StringComparison.Ordinal);
     }
 
-    private void ListenerEnabled_OnChecked(object sender, RoutedEventArgs e)
+    private void ListenerEnabled_OnChecked (object sender, RoutedEventArgs e)
     {
         if (ListenerEnabled)
         {
@@ -1177,12 +1177,12 @@ public partial class PacketLogViewerMainWindow
         ListenerEnabled = true;
     }
 
-    private void ListenerEnabled_OnUnchecked(object sender, RoutedEventArgs e)
+    private void ListenerEnabled_OnUnchecked (object sender, RoutedEventArgs e)
     {
         ListenerEnabled = false;
     }
 
-    private void LocalCapture_OnChecked(object sender, RoutedEventArgs e)
+    private void LocalCapture_OnChecked (object sender, RoutedEventArgs e)
     {
         LocalCaptureEnabled = true;
         if (PacketCapture is not null)
@@ -1191,7 +1191,7 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void LocalCapture_OnUnchecked(object sender, RoutedEventArgs e)
+    private void LocalCapture_OnUnchecked (object sender, RoutedEventArgs e)
     {
         LocalCaptureEnabled = false;
         if (PacketCapture is not null)
@@ -1200,106 +1200,107 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private void ScrollIntoViewIfSelectionExists()
+    private void ScrollIntoViewIfSelectionExists ()
     {
-        CollectionViewSource.GetDefaultView(MainView.PacketLogList.LogListFullPackets.ItemsSource).Refresh();
+        CollectionViewSource.GetDefaultView (MainView.PacketLogList.LogListFullPackets.ItemsSource).Refresh ();
         if (MainView.PacketLogList.LogListFullPackets.Items.Count < 1)
         {
             return;
         }
 
         var selected = MainView.PacketLogList.LogListFullPackets.SelectedItem ?? MainView.PacketLogList.LogListFullPackets.Items[^1];
-        if (!MainView.PacketLogList.LogListFullPackets.Items.PassesFilter(selected))
+        if (!MainView.PacketLogList.LogListFullPackets.Items.PassesFilter (selected))
         {
-            // should only happen when switching to a more restricted view with filtered out item selected
+            // should only happen when switching to a more restricted view with filtered out item
+            // selected
             selected = MainView.PacketLogList.LogListFullPackets.Items[^1];
         }
 
         MainView.PacketLogList.LogListFullPackets.SelectedItem = selected;
-        MainView.PacketLogList.LogListFullPackets.ScrollIntoView(selected);
+        MainView.PacketLogList.LogListFullPackets.ScrollIntoView (selected);
     }
 
-    private void LoadEnums()
+    private void LoadEnums ()
     {
-        var enumFiles = Directory.EnumerateFiles(PacketDefinitionPath, $"*{EnumExtension}");
+        var enumFiles = Directory.EnumerateFiles (PacketDefinitionPath, $"*{EnumExtension}");
         foreach (var enumFile in enumFiles)
         {
-            var enumName = Path.GetFileNameWithoutExtension(enumFile);
-            DefinedEnums.Add(enumName, new Dictionary<int, string>());
-            DefinedEnumNames.Add(enumName);
-            var enumEntryLines = File.ReadAllLines(enumFile).Select(x =>
-                x.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToList();
+            var enumName = Path.GetFileNameWithoutExtension (enumFile);
+            DefinedEnums.Add (enumName, new Dictionary<int, string> ());
+            DefinedEnumNames.Add (enumName);
+            var enumEntryLines = File.ReadAllLines (enumFile).Select (x =>
+                x.Split (':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToList ();
             foreach (var enumEntryLine in enumEntryLines)
             {
-                var id = FileFormatCulture.ParseInt(enumEntryLine[0]);
+                var id = FileFormatCulture.ParseInt (enumEntryLine[0]);
                 var name = enumEntryLine[1];
-                DefinedEnums[enumName].Add(id, name);
+                DefinedEnums[enumName].Add (id, name);
             }
         }
     }
 
-    private void LoadPacketDefinitions()
+    private void LoadPacketDefinitions ()
     {
         MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.ItemsSource = PacketDefinitions;
-        if (!Path.Exists(PacketDefinitionPath))
+        if (!Path.Exists (PacketDefinitionPath))
         {
-            MessageBox.Show($"Cannot load packet definitions.\nDirectory not found: {PacketDefinitionPath}");
+            MessageBox.Show ($"Cannot load packet definitions.\nDirectory not found: {PacketDefinitionPath}");
             return;
         }
 
-        var definitionFiles = Directory.EnumerateFiles(PacketDefinitionPath, $"*{PacketDefinitionExtension}");
+        var definitionFiles = Directory.EnumerateFiles (PacketDefinitionPath, $"*{PacketDefinitionExtension}");
         foreach (var definitionFile in definitionFiles)
         {
-            PacketDefinitions.Add(new PacketDefinition
+            PacketDefinitions.Add (new PacketDefinition
             {
-                Name = Path.GetFileNameWithoutExtension(definitionFile),
+                Name = Path.GetFileNameWithoutExtension (definitionFile),
                 FilePath = definitionFile
             });
         }
 
         MainView.PacketVisualizerPanel.DefinitionsPanel.SubpacketsListBox.ItemsSource = Subpackets;
 
-        var subpacketFiles = Directory.EnumerateFiles(PacketDefinitionPath, $"*{ExportedPartExtension}");
+        var subpacketFiles = Directory.EnumerateFiles (PacketDefinitionPath, $"*{ExportedPartExtension}");
         foreach (var subpacketFile in subpacketFiles)
         {
-            Subpackets.Add(new Subpacket
+            Subpackets.Add (new Subpacket
             {
-                Name = Path.GetFileNameWithoutExtension(subpacketFile),
+                Name = Path.GetFileNameWithoutExtension (subpacketFile),
                 FilePath = subpacketFile
             });
         }
 
-        if (Subpackets.Any())
+        if (Subpackets.Any ())
         {
-            MainView.PacketVisualizerPanel.DefinitionsPanel.SubpacketsListBox.SelectedItem = Subpackets.First();
+            MainView.PacketVisualizerPanel.DefinitionsPanel.SubpacketsListBox.SelectedItem = Subpackets.First ();
         }
     }
 
-    private void SynchronizeScrollValues(object source)
+    private void SynchronizeScrollValues (object source)
     {
-        var scrollViewer = (ScrollViewer)source;
+        var scrollViewer = (ScrollViewer) source;
         if (scrollViewer != MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer &&
-            Math.Abs(MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.VerticalOffset - scrollViewer.VerticalOffset) >
+            Math.Abs (MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.VerticalOffset - scrollViewer.VerticalOffset) >
             double.Epsilon)
         {
-            MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset);
+            MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset (scrollViewer.VerticalOffset);
         }
 
         if (scrollViewer != MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer &&
-            Math.Abs(MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.VerticalOffset - scrollViewer.VerticalOffset) >
+            Math.Abs (MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.VerticalOffset - scrollViewer.VerticalOffset) >
             double.Epsilon)
         {
-            MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset);
+            MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset (scrollViewer.VerticalOffset);
         }
 
         if (scrollViewer != PacketDisplayScrollViewer &&
-            Math.Abs(PacketDisplayScrollViewer!.VerticalOffset - scrollViewer.VerticalOffset) > double.Epsilon)
+            Math.Abs (PacketDisplayScrollViewer!.VerticalOffset - scrollViewer.VerticalOffset) > double.Epsilon)
         {
-            PacketDisplayScrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset);
+            PacketDisplayScrollViewer.ScrollToVerticalOffset (scrollViewer.VerticalOffset);
         }
     }
 
-    private void PacketVisualizerControlHandlePartSelection(object sender, KeyEventArgs e)
+    private void PacketVisualizerControlHandlePartSelection (object sender, KeyEventArgs e)
     {
         if (e.Key != Key.S && e.Key != Key.E && e.Key != Key.Escape)
         {
@@ -1312,8 +1313,8 @@ public partial class PacketLogViewerMainWindow
 
         if (e.Key == Key.Escape)
         {
-            ClearSelection();
-            ApplyBitSelection();
+            ClearSelection ();
+            ApplyBitSelection ();
             e.Handled = true;
             return;
         }
@@ -1328,21 +1329,21 @@ public partial class PacketLogViewerMainWindow
             SelectionEndBit = CaretBit;
         }
 
-        ApplyBitSelection();
+        ApplyBitSelection ();
         e.Handled = true;
     }
 
-    private void PacketVisualizerControl_OnBitSelectionChanged(object? sender, EventArgs e)
+    private void PacketVisualizerControl_OnBitSelectionChanged (object? sender, EventArgs e)
     {
         var visualizer = MainView.PacketVisualizerPanel.PacketVisualizerControl;
         SelectionStartBit = visualizer.SelectionStart;
         SelectionEndBit = visualizer.SelectionEnd;
         CaretBit = visualizer.CaretBit;
         LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
-        UpdateSelectedValueDisplayFromSelection();
+        UpdateSelectedValueDisplayFromSelection ();
     }
 
-    private void PacketVisualizerControlShiftSelectionOnArrowKeys(object sender, KeyEventArgs e)
+    private void PacketVisualizerControlShiftSelectionOnArrowKeys (object sender, KeyEventArgs e)
     {
         var isShiftDown = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
         if (!isShiftDown)
@@ -1382,14 +1383,14 @@ public partial class PacketLogViewerMainWindow
         var newStart = SelectionStartBit.Value + deltaBits;
         var newEnd = SelectionEndBit.Value + deltaBits;
 
-        var min = Math.Min(newStart, newEnd);
+        var min = Math.Min (newStart, newEnd);
         if (min < 0)
         {
             newStart -= min;
             newEnd -= min;
         }
 
-        var max = Math.Max(newStart, newEnd);
+        var max = Math.Max (newStart, newEnd);
         if (max > maxOffset)
         {
             var overshoot = max - maxOffset;
@@ -1397,53 +1398,53 @@ public partial class PacketLogViewerMainWindow
             newEnd -= overshoot;
         }
 
-        SelectionStartBit = Math.Clamp(newStart, 0, maxOffset);
-        SelectionEndBit = Math.Clamp(newEnd, 0, maxOffset);
+        SelectionStartBit = Math.Clamp (newStart, 0, maxOffset);
+        SelectionEndBit = Math.Clamp (newEnd, 0, maxOffset);
         CaretBit = SelectionEndBit.Value;
 
         e.Handled = true;
-        ApplyBitSelection();
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(CaretBit);
+        ApplyBitSelection ();
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView (CaretBit);
     }
 
-    private void ClearSelection()
+    private void ClearSelection ()
     {
         SelectionStartBit = null;
         SelectionEndBit = null;
         CaretBit = 0;
     }
 
-    private void ApplyBitSelection()
+    private void ApplyBitSelection ()
     {
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.SetSelection(SelectionStartBit, SelectionEndBit, CaretBit);
-        UpdateSelectedValueDisplayFromSelection();
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.SetSelection (SelectionStartBit, SelectionEndBit, CaretBit);
+        UpdateSelectedValueDisplayFromSelection ();
     }
 
-    private void UpdateSelectedValueDisplayFromSelection()
+    private void UpdateSelectedValueDisplayFromSelection ()
     {
-        var bits = new List<Bit>();
+        var bits = new List<Bit> ();
         if (SelectionStartBit is int start && SelectionEndBit is int end && PacketContentBits is { Length: > 0 })
         {
-            var min = Math.Clamp(Math.Min(start, end), 0, PacketContentBits.Length);
-            var max = Math.Clamp(Math.Max(start, end), 0, PacketContentBits.Length);
+            var min = Math.Clamp (Math.Min (start, end), 0, PacketContentBits.Length);
+            var max = Math.Clamp (Math.Max (start, end), 0, PacketContentBits.Length);
             for (var i = min; i < max; i++)
             {
-                bits.Add(PacketContentBits[i]);
+                bits.Add (PacketContentBits[i]);
             }
         }
 
-        UpdateSelectedValueDisplay(bits);
+        UpdateSelectedValueDisplay (bits);
     }
 
-    private void UpdateScrolling()
+    private void UpdateScrolling ()
     {
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(CaretBit);
-        PacketDisplayScrollViewer?.ScrollToVerticalOffset(LastVerticalOffset);
-        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
-        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView (CaretBit);
+        PacketDisplayScrollViewer?.ScrollToVerticalOffset (LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset (LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset (LastVerticalOffset);
     }
 
-    private void PacketVisualizerControlAddPacketPart(object sender, KeyEventArgs e)
+    private void PacketVisualizerControlAddPacketPart (object sender, KeyEventArgs e)
     {
         if (e.KeyboardDevice.Modifiers != ModifierKeys.Control || e.Key != Key.D)
         {
@@ -1458,16 +1459,16 @@ public partial class PacketLogViewerMainWindow
         var color = new Color
         {
             A = 150,
-            R = (byte)Random.Shared.Next(0, 255),
-            G = (byte)Random.Shared.Next(0, 255),
-            B = (byte)Random.Shared.Next(0, 255)
+            R = (byte) Random.Shared.Next (0, 255),
+            G = (byte) Random.Shared.Next (0, 255),
+            B = (byte) Random.Shared.Next (0, 255)
         };
 
-        var dialog = new CreatePacketPartDefinitionDialog(color, DefinedEnumNames)
+        var dialog = new CreatePacketPartDefinitionDialog (color, DefinedEnumNames)
         {
             Owner = this
         };
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog () == true)
         {
             var name = dialog.PartName;
             color = dialog.Color;
@@ -1476,49 +1477,49 @@ public partial class PacketLogViewerMainWindow
             var end = SelectionEndBit.Value;
             var enumName = dialog.EnumName;
             var lengthFromPrevious = dialog.PacketPartType == PacketPartType.STRING && dialog.LengthFromPreviousField;
-            AddNewDefinedPacketPart(CreatePacketPart(name, enumName, type, lengthFromPrevious, start, end,
-                new SolidColorBrush(color)));
+            AddNewDefinedPacketPart (CreatePacketPart (name, enumName, type, lengthFromPrevious, start, end,
+                new SolidColorBrush (color)));
         }
     }
 
-    public void CreateFlowDocumentWithHighlights(bool keepSelection = true, bool firstUpdateOnLoad = false)
+    public void CreateFlowDocumentWithHighlights (bool keepSelection = true, bool firstUpdateOnLoad = false)
     {
         if (CurrentContentBytes is null)
         {
             return;
         }
 
-        CurrentContentBitStream = new BitStream(CurrentContentBytes);
-        PacketContentBits = CurrentContentBitStream.ReadBits(int.MaxValue);
-        CurrentContentBitStream.Seek(0, 0);
+        CurrentContentBitStream = new BitStream (CurrentContentBytes);
+        PacketContentBits = CurrentContentBitStream.ReadBits (int.MaxValue);
+        CurrentContentBitStream.Seek (0, 0);
 
-        var linesSb = new StringBuilder(PacketContentBits.Length / 2);
+        var linesSb = new StringBuilder (PacketContentBits.Length / 2);
         var lineByte = 0;
         for (var i = 0; i < PacketContentBits.Length; i++)
         {
-            var bit = PacketContentBits[i].AsInt();
+            var bit = PacketContentBits[i].AsInt ();
             lineByte <<= 1;
             lineByte += bit;
 
             if (i % 8 == 7)
             {
-                lineByte = (int)((((ulong)lineByte * 0x0202020202UL) & 0x010884422010UL) % 1023);
-                linesSb.Append($"[{lineByte:X2} ")
-                    .Append($"{lineByte}".PadLeft(3, ' ')).Append("] ");
+                lineByte = (int) ((((ulong) lineByte * 0x0202020202UL) & 0x010884422010UL) % 1023);
+                linesSb.Append ($"[{lineByte:X2} ")
+                    .Append ($"{lineByte}".PadLeft (3, ' ')).Append ("] ");
                 if (i < PacketContentBits.Length - 1)
                 {
-                    linesSb.AppendLine($"{i / 8} ".PadLeft(5, ' '));
+                    linesSb.AppendLine ($"{i / 8} ".PadLeft (5, ' '));
                 }
                 else
                 {
-                    linesSb.Append($"{i / 8} ".PadLeft(5, ' '));
+                    linesSb.Append ($"{i / 8} ".PadLeft (5, ' '));
                 }
 
                 lineByte = 0;
             }
         }
 
-        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValues.Text = linesSb.ToString();
+        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValues.Text = linesSb.ToString ();
 
         if (!keepSelection)
         {
@@ -1527,90 +1528,90 @@ public partial class PacketLogViewerMainWindow
         }
 
         var visualizer = MainView.PacketVisualizerPanel.PacketVisualizerControl;
-        visualizer.SetContent(PacketContentBits, PacketParts);
-        visualizer.SetSelection(SelectionStartBit, SelectionEndBit, CaretBit);
-        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.SetContent(PacketContentBits.Length,
+        visualizer.SetContent (PacketContentBits, PacketParts);
+        visualizer.SetSelection (SelectionStartBit, SelectionEndBit, CaretBit);
+        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValues.SetContent (PacketContentBits.Length,
             PacketParts);
 
         if (firstUpdateOnLoad)
         {
-            MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Clear();
-            MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Add(Convert.ToHexString(BitStream.BitArrayToBytes(PacketContentBits)) +
+            MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Clear ();
+            MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Add (Convert.ToHexString (BitStream.BitArrayToBytes (PacketContentBits)) +
                                                   "\n");
-            var toShift = PacketContentBits.ToList();
+            var toShift = PacketContentBits.ToList ();
             for (var i = 0; i < 8; i++)
             {
-                var shiftedBytes = BitStream.BitArrayToBytes(toShift.ToArray());
-                var shiftedChars = Win1251.GetString(shiftedBytes).ToCharArray();
-                var shiftedString = new string(shiftedChars.Select(GetVisibleChar).ToArray());
-                MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Add(new Run($"\n[{i}] {shiftedString}")
+                var shiftedBytes = BitStream.BitArrayToBytes (toShift.ToArray ());
+                var shiftedChars = Win1251.GetString (shiftedBytes).ToCharArray ();
+                var shiftedString = new string (shiftedChars.Select (GetVisibleChar).ToArray ());
+                MainView.PacketVisualizerPanel.PacketReadableDisplayText.Inlines.Add (new Run ($"\n[{i}] {shiftedString}")
                 {
                     FontSize = 14
                 });
-                toShift.RemoveAt(0);
+                toShift.RemoveAt (0);
             }
         }
 
-        UpdateSelectedValueDisplayFromSelection();
-        UpdateScrolling();
+        UpdateSelectedValueDisplayFromSelection ();
+        UpdateScrolling ();
     }
 
-    private PacketPart CreatePacketPart(string name, string? enumName, PacketPartType packetPartType,
+    private PacketPart CreatePacketPart (string name, string? enumName, PacketPartType packetPartType,
         bool lengthFromPrevious, int startBit, int endBit, Brush highlightColor)
     {
-        var actualStart = Math.Min(startBit, endBit);
-        var bitLength = Math.Abs(endBit - startBit);
-        var color = ((SolidColorBrush)highlightColor).Color;
-        var part = new PacketPart(bitLength, name, enumName, lengthFromPrevious, packetPartType,
-            actualStart, Array.Empty<Bit>(), color.R, color.G, color.B, color.A);
+        var actualStart = Math.Min (startBit, endBit);
+        var bitLength = Math.Abs (endBit - startBit);
+        var color = ((SolidColorBrush) highlightColor).Color;
+        var part = new PacketPart (bitLength, name, enumName, lengthFromPrevious, packetPartType,
+            actualStart, Array.Empty<Bit> (), color.R, color.G, color.B, color.A);
         if (CurrentContentBitStream is not null)
         {
-            PacketPart.UpdatePacketPartValues(new List<PacketPart> { part }, CurrentContentBitStream, actualStart);
+            PacketPart.UpdatePacketPartValues (new List<PacketPart> { part }, CurrentContentBitStream, actualStart);
         }
         return part;
     }
 
-    private void UpdateDefinedPackets()
+    private void UpdateDefinedPackets ()
     {
-        var toSort = PacketParts.ToList();
-        toSort.Sort((a, b) => a.BitOffset.CompareTo(b.BitOffset));
-        PacketParts.ReplaceAll(toSort);
+        var toSort = PacketParts.ToList ();
+        toSort.Sort ((a, b) => a.BitOffset.CompareTo (b.BitOffset));
+        PacketParts.ReplaceAll (toSort);
     }
 
-    private void AddNewDefinedPacketPartBulk(List<PacketPart> packetParts, bool updateLayout = true)
+    private void AddNewDefinedPacketPartBulk (List<PacketPart> packetParts, bool updateLayout = true)
     {
-        packetParts.ForEach(x => AddNewDefinedPacketPart(x, true));
+        packetParts.ForEach (x => AddNewDefinedPacketPart (x, true));
 
-        UpdateDefinedPackets();
+        UpdateDefinedPackets ();
         if (updateLayout)
         {
-            CreateFlowDocumentWithHighlights(false);
-            ClearSelection();
+            CreateFlowDocumentWithHighlights (false);
+            ClearSelection ();
         }
     }
 
-    private void AddNewDefinedPacketPart(PacketPart packetPart, bool isBulk = false)
+    private void AddNewDefinedPacketPart (PacketPart packetPart, bool isBulk = false)
     {
-        var newPacketParts = new List<PacketPart>();
+        var newPacketParts = new List<PacketPart> ();
         foreach (var definedPacketPart in PacketParts)
         {
-            if (packetPart.Overlaps(definedPacketPart))
+            if (packetPart.Overlaps (definedPacketPart))
             {
                 // remove old one
                 continue;
             }
 
-            if (packetPart.ContainedWithin(definedPacketPart))
+            if (packetPart.ContainedWithin (definedPacketPart))
             {
                 var newLengthStart = packetPart.BitOffset - definedPacketPart.BitOffset;
                 // split old and make it: old_start new old_end
-                var oldStart = definedPacketPart.GetPiece(definedPacketPart.BitOffset, newLengthStart,
+                var oldStart = definedPacketPart.GetPiece (definedPacketPart.BitOffset, newLengthStart,
                     definedPacketPart.Name + "_1");
                 var newLengthEnd = packetPart.BitOffsetEnd - definedPacketPart.BitOffsetEnd;
-                var oldEnd = definedPacketPart.GetPiece(packetPart.BitOffsetEnd - newLengthEnd,
+                var oldEnd = definedPacketPart.GetPiece (packetPart.BitOffsetEnd - newLengthEnd,
                     newLengthEnd, definedPacketPart.Name + "_2");
-                newPacketParts.Add(oldStart);
-                newPacketParts.Add(oldEnd);
+                newPacketParts.Add (oldStart);
+                newPacketParts.Add (oldEnd);
                 continue;
             }
 
@@ -1618,9 +1619,9 @@ public partial class PacketLogViewerMainWindow
                 packetPart.BitLength < definedPacketPart.BitLength)
             {
                 // leave a chunk of old when new part intersects the beginning of old
-                var oldChunk = definedPacketPart.GetPiece(packetPart.BitOffsetEnd,
+                var oldChunk = definedPacketPart.GetPiece (packetPart.BitOffsetEnd,
                     definedPacketPart.BitOffsetEnd - packetPart.BitOffsetEnd);
-                newPacketParts.Add(oldChunk);
+                newPacketParts.Add (oldChunk);
                 continue;
             }
 
@@ -1629,29 +1630,29 @@ public partial class PacketLogViewerMainWindow
                 packetPart.BitOffsetEnd >= definedPacketPart.BitOffsetEnd)
             {
                 // leave a chunk of old when new part intersects the end of old
-                var oldChunk = definedPacketPart.GetPiece(definedPacketPart.BitOffset,
+                var oldChunk = definedPacketPart.GetPiece (definedPacketPart.BitOffset,
                     packetPart.BitOffset - definedPacketPart.BitOffset);
-                newPacketParts.Add(oldChunk);
+                newPacketParts.Add (oldChunk);
                 continue;
             }
 
-            newPacketParts.Add(definedPacketPart);
+            newPacketParts.Add (definedPacketPart);
         }
 
-        newPacketParts.Add(packetPart);
-        newPacketParts.Sort((a, b) => a.BitOffset.CompareTo(b.BitOffset));
-        PacketParts.ReplaceAll(newPacketParts);
+        newPacketParts.Add (packetPart);
+        newPacketParts.Sort ((a, b) => a.BitOffset.CompareTo (b.BitOffset));
+        PacketParts.ReplaceAll (newPacketParts);
         if (!isBulk)
         {
-            UpdateDefinedPackets();
-            CreateFlowDocumentWithHighlights(false);
-            ClearSelection();
+            UpdateDefinedPackets ();
+            CreateFlowDocumentWithHighlights (false);
+            ClearSelection ();
         }
     }
 
-    private void UpdateSelectedValueDisplay(List<Bit> bits)
+    private void UpdateSelectedValueDisplay (List<Bit> bits)
     {
-        if (!bits.Any())
+        if (!bits.Any ())
         {
             MainView.PacketVisualizerPanel.PacketSelectedValueDisplay.Text = "Select bits to show value preview\n\n" +
                                               "Key mappings for binary view:\n\n" +
@@ -1663,69 +1664,69 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var displayText = PacketPart.GetValueDisplayText(bits, null);
-        var sb = new StringBuilder();
-        sb.AppendLine($"Bits:\t {displayText.Bits} ({displayText.Bits.Length})");
-        sb.AppendLine($"Bytes:\t {displayText.Bytes}");
-        sb.AppendLine($"Text:\t {displayText.Text}");
-        sb.AppendLine($"Int64:\t {displayText.Long}");
-        sb.AppendLine($"UInt64: {displayText.Ulong}");
+        var displayText = PacketPart.GetValueDisplayText (bits, null);
+        var sb = new StringBuilder ();
+        sb.AppendLine ($"Bits:\t {displayText.Bits} ({displayText.Bits.Length})");
+        sb.AppendLine ($"Bytes:\t {displayText.Bytes}");
+        sb.AppendLine ($"Text:\t {displayText.Text}");
+        sb.AppendLine ($"Int64:\t {displayText.Long}");
+        sb.AppendLine ($"UInt64: {displayText.Ulong}");
         if (displayText.CoordsClient is not null)
         {
-            sb.AppendLine($"CLI coords:\t {displayText.CoordsClient}");
+            sb.AppendLine ($"CLI coords:\t {displayText.CoordsClient}");
         }
 
         if (displayText.CoordsServer is not null)
         {
-            sb.AppendLine($"SRV coords:\t {displayText.CoordsServer}");
+            sb.AppendLine ($"SRV coords:\t {displayText.CoordsServer}");
         }
 
-        MainView.PacketVisualizerPanel.PacketSelectedValueDisplay.Text = sb.ToString();
+        MainView.PacketVisualizerPanel.PacketSelectedValueDisplay.Text = sb.ToString ();
     }
 
-    public static char GetVisibleChar(char c)
+    public static char GetVisibleChar (char c)
     {
         return (c >= 0x20 && c <= 0x7E) || c is >= 'А' and <= 'я' ? c : '·';
     }
 
-    private void CreateNewPacketDefinitionButton_OnClick(object sender, RoutedEventArgs e)
+    private void CreateNewPacketDefinitionButton_OnClick (object sender, RoutedEventArgs e)
     {
-        CreatePacketDefinition();
+        CreatePacketDefinition ();
     }
 
-    private void CreatePacketDefinition()
+    private void CreatePacketDefinition ()
     {
         var dialog = new SaveNewPacketDefinitionDialog
         {
             Owner = this
         };
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog () == true)
         {
-            var path = Path.Combine(PacketDefinitionPath, dialog.DefinitionName + PacketDefinitionExtension);
+            var path = Path.Combine (PacketDefinitionPath, dialog.DefinitionName + PacketDefinitionExtension);
             var definition = new PacketDefinition
             {
                 Name = dialog.DefinitionName,
                 FilePath = path
             };
 
-            PacketDefinitions.Add(definition);
-            SavePacketDefinition(dialog.DefinitionName, 0, 0);
+            PacketDefinitions.Add (definition);
+            SavePacketDefinition (dialog.DefinitionName, 0, 0);
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = definition;
         }
     }
 
-    private void SavePacketDefinition_OnClick(object sender, RoutedEventArgs e)
+    private void SavePacketDefinition_OnClick (object sender, RoutedEventArgs e)
     {
-        SaveSelectedPacketDefinition();
+        SaveSelectedPacketDefinition ();
     }
 
-    private void SaveSelectedPacketDefinition()
+    private void SaveSelectedPacketDefinition ()
     {
         PacketDefinition? selectedDefinition =
             MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem as PacketDefinition;
         if (selectedDefinition is null)
         {
-            CreatePacketDefinition();
+            CreatePacketDefinition ();
             selectedDefinition =
                 MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem as PacketDefinition;
         }
@@ -1735,17 +1736,17 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        SavePacketDefinition(selectedDefinition.Name, 0, PacketContentBits.Length);
+        SavePacketDefinition (selectedDefinition.Name, 0, PacketContentBits.Length);
     }
 
-    private void SavePacketDefinition(string definitionName, int startBitOffset, int endBitOffset,
+    private void SavePacketDefinition (string definitionName, int startBitOffset, int endBitOffset,
         bool exportedPart = false)
     {
-        endBitOffset = Math.Min(endBitOffset, PacketContentBits.Length);
-        var fileContentsSb = new StringBuilder();
+        endBitOffset = Math.Min (endBitOffset, PacketContentBits.Length);
+        var fileContentsSb = new StringBuilder ();
         var currentIndex = startBitOffset;
         var nextPacketPartIndex =
-            PacketParts.ToList().FindIndex(x => x.BitOffset >= startBitOffset);
+            PacketParts.ToList ().FindIndex (x => x.BitOffset >= startBitOffset);
         var bitOffsetChangeFromVariableStrings = 0;
         while (currentIndex < endBitOffset)
         {
@@ -1773,7 +1774,7 @@ public partial class PacketLogViewerMainWindow
             else
             {
                 var nextPartStartIndex = nextPacketPart.BitOffset;
-                nextPartStartIndex = Math.Min(nextPartStartIndex, endBitOffset);
+                nextPartStartIndex = Math.Min (nextPartStartIndex, endBitOffset);
                 if (currentIndex < nextPartStartIndex)
                 {
                     // undef between packet parts
@@ -1785,10 +1786,11 @@ public partial class PacketLogViewerMainWindow
                     var nextPartEndIndex = nextPacketPart.BitOffsetEnd;
                     if (lengthFromPrevious)
                     {
-                        // previous part was a variable string, we treat everything after it as it its length was 0
+                        // previous part was a variable string, we treat everything after it as it
+                        // its length was 0
                     }
 
-                    nextPartEndIndex = Math.Min(nextPartEndIndex, endBitOffset);
+                    nextPartEndIndex = Math.Min (nextPartEndIndex, endBitOffset);
                     if (nextPartStartIndex > nextPartEndIndex)
                     {
                         (nextPartEndIndex, nextPartStartIndex) = (nextPartStartIndex, nextPartEndIndex);
@@ -1822,14 +1824,14 @@ public partial class PacketLogViewerMainWindow
             }
             else
             {
-                lengthText = FileFormatCulture.FormatInt(bits.Length);
+                lengthText = FileFormatCulture.FormatInt (bits.Length);
             }
 
-            var bitPattern = string.Join(null, bits.Reverse().Select(x => x.AsInt()));
-            fileContentsSb.AppendLine(
-                FileFormatCulture.JoinFields('\t',
+            var bitPattern = string.Join (null, bits.Reverse ().Select (x => x.AsInt ()));
+            fileContentsSb.AppendLine (
+                FileFormatCulture.JoinFields ('\t',
                     name,
-                    Enum.GetName(partType),
+                    Enum.GetName (partType),
                     startPosition,
                     lengthText,
                     enumName,
@@ -1844,13 +1846,13 @@ public partial class PacketLogViewerMainWindow
             }
         }
 
-        var fileName = Path.Combine(PacketDefinitionPath,
+        var fileName = Path.Combine (PacketDefinitionPath,
             definitionName + (exportedPart ? ExportedPartExtension : PacketDefinitionExtension));
 
-        File.WriteAllText(fileName, fileContentsSb.ToString());
+        File.WriteAllText (fileName, fileContentsSb.ToString ());
     }
 
-    private void DefinedPacketsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void DefinedPacketsListBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
     {
         if (MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem is not PacketDefinition packetDefinition)
         {
@@ -1862,20 +1864,20 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var parts = packetDefinition.LoadFromFile(CurrentContentBitStream, 0);
-        PacketParts.ReplaceAll(parts);
+        var parts = packetDefinition.LoadFromFile (CurrentContentBitStream, 0);
+        PacketParts.ReplaceAll (parts);
         LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
-        UpdateDefinedPackets();
-        CreateFlowDocumentWithHighlights();
+        UpdateDefinedPackets ();
+        CreateFlowDocumentWithHighlights ();
     }
 
-    private void ExportSubpacket_OnClick(object sender, RoutedEventArgs e)
+    private void ExportSubpacket_OnClick (object sender, RoutedEventArgs e)
     {
         var dialog = new ExportSubpacketDialog
         {
             Owner = this
         };
-        if (dialog.ShowDialog() != true)
+        if (dialog.ShowDialog () != true)
         {
             return;
         }
@@ -1886,44 +1888,44 @@ public partial class PacketLogViewerMainWindow
         var endOffset = dialog.EndOffset;
         var endBit = dialog.EndBit;
 
-        SavePacketDefinition(name, startOffset * 8 + startBit, endOffset * 8 + endBit, true);
-        if (Subpackets.All(x => x.Name != name))
+        SavePacketDefinition (name, startOffset * 8 + startBit, endOffset * 8 + endBit, true);
+        if (Subpackets.All (x => x.Name != name))
         {
-            Subpackets.Add(new Subpacket
+            Subpackets.Add (new Subpacket
             {
                 Name = name,
-                FilePath = Path.Combine(PacketDefinitionPath, name + ExportedPartExtension)
+                FilePath = Path.Combine (PacketDefinitionPath, name + ExportedPartExtension)
             });
         }
     }
 
-    private void DeletePacketPartInCurrentDefinition_OnClick(object sender, RoutedEventArgs e)
+    private void DeletePacketPartInCurrentDefinition_OnClick (object sender, RoutedEventArgs e)
     {
         if (MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.SelectedItems.Count == 0)
         {
             return;
         }
 
-        if (MessageBox.Show("Delete selected parts?", "Delete selected parts?",
+        if (MessageBox.Show ("Delete selected parts?", "Delete selected parts?",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) !=
             MessageBoxResult.Yes)
         {
             return;
         }
 
-        var listToRemove = MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.SelectedItems.Cast<PacketPart>().ToList();
-        MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.UnselectAll();
+        var listToRemove = MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.SelectedItems.Cast<PacketPart> ().ToList ();
+        MainView.PacketVisualizerPanel.DefinitionsPanel.PacketPartsInDefinitionListBox.UnselectAll ();
 
         foreach (var selectedItem in listToRemove)
         {
-            PacketParts.Remove(selectedItem);
+            PacketParts.Remove (selectedItem);
         }
 
-        UpdateDefinedPackets();
-        CreateFlowDocumentWithHighlights();
+        UpdateDefinedPackets ();
+        CreateFlowDocumentWithHighlights ();
     }
 
-    private void ImportFromSubpacket_OnClick(object sender, RoutedEventArgs e)
+    private void ImportFromSubpacket_OnClick (object sender, RoutedEventArgs e)
     {
         if (MainView.PacketVisualizerPanel.DefinitionsPanel.SubpacketsListBox.SelectedItem is not Subpacket subpacket)
         {
@@ -1934,7 +1936,7 @@ public partial class PacketLogViewerMainWindow
         {
             Owner = this
         };
-        if (dialog.ShowDialog() != true)
+        if (dialog.ShowDialog () != true)
         {
             return;
         }
@@ -1947,74 +1949,74 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var parts = subpacket.LoadFromFile(CurrentContentBitStream, startOffset * 8 + startBit);
+        var parts = subpacket.LoadFromFile (CurrentContentBitStream, startOffset * 8 + startBit);
 
-        AddNewDefinedPacketPartBulk(parts);
+        AddNewDefinedPacketPartBulk (parts);
     }
 
-    private void DeletePacketDefinition_OnClick(object sender, RoutedEventArgs e)
+    private void DeletePacketDefinition_OnClick (object sender, RoutedEventArgs e)
     {
         if (MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem is not PacketDefinition packetDefinition)
         {
             return;
         }
 
-        if (MessageBox.Show("Delete selected definition?", "Delete selected definition?",
+        if (MessageBox.Show ("Delete selected definition?", "Delete selected definition?",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
             MessageBoxResult.Yes)
         {
-            DeletePacketDefinition(packetDefinition);
+            DeletePacketDefinition (packetDefinition);
         }
     }
 
-    private void DeletePacketDefinition(PacketDefinition packetDefinition)
+    private void DeletePacketDefinition (PacketDefinition packetDefinition)
     {
-        PacketDefinitions.Remove(packetDefinition);
-        File.Delete(packetDefinition.FilePath);
-        if (PacketDefinitions.Any())
+        PacketDefinitions.Remove (packetDefinition);
+        File.Delete (packetDefinition.FilePath);
+        if (PacketDefinitions.Any ())
         {
-            MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = PacketDefinitions.First();
+            MainView.PacketVisualizerPanel.DefinitionsPanel.DefinedPacketsListBox.SelectedItem = PacketDefinitions.First ();
         }
     }
 
-    private void PacketPartsInDefinitionListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void PacketPartsInDefinitionListBox_OnSelectionChanged (object sender, SelectionChangedEventArgs e)
     {
     }
 
-    private void EditPacketPart_OnClick(object sender, RoutedEventArgs e)
+    private void EditPacketPart_OnClick (object sender, RoutedEventArgs e)
     {
     }
 
-    private void SearchInPacketTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    private void SearchInPacketTextBox_OnTextChanged (object sender, TextChangedEventArgs e)
     {
         SelectionStartBit = null;
         SelectionEndBit = null;
-        SearchText();
+        SearchText ();
     }
 
-    private int GetSearchContinueBit()
+    private int GetSearchContinueBit ()
     {
         if (SelectionStartBit is int start && SelectionEndBit is int end)
         {
-            return Math.Max(start, end);
+            return Math.Max (start, end);
         }
 
         return 0;
     }
 
-    private void ApplySearchHit(int startBit, int length)
+    private void ApplySearchHit (int startBit, int length)
     {
         SelectionStartBit = startBit;
         SelectionEndBit = startBit + length;
         CaretBit = SelectionEndBit.Value;
-        ApplyBitSelection();
-        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView(startBit);
+        ApplyBitSelection ();
+        MainView.PacketVisualizerPanel.PacketVisualizerControl.BringBitIntoView (startBit);
         LastVerticalOffset = PacketDisplayScrollViewer?.VerticalOffset ?? 0;
-        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
-        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset(LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerLineNumbersAndValuesScrollViewer.ScrollToVerticalOffset (LastVerticalOffset);
+        MainView.PacketVisualizerPanel.PacketVisualizerDefinedPacketValuesScrollViewer.ScrollToVerticalOffset (LastVerticalOffset);
     }
 
-    private void SearchText()
+    private void SearchText ()
     {
         var text = MainView.PacketActionsBar.SearchInPacketTextBox.Text;
         if (text.Length == 0 || CurrentContentBitStream is null)
@@ -2022,7 +2024,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        if (text.StartsWith("0"))
+        if (text.StartsWith ("0"))
         {
             if (text.Length < 3)
             {
@@ -2030,106 +2032,106 @@ public partial class PacketLogViewerMainWindow
             }
 
             var intBase = text[1] == 'x' ? 16 : text[1] == 'd' ? 10 : text[1] == 'b' ? 2 : 0;
-            if (intBase == 0 || text[2..].Any(x => !char.IsAsciiHexDigit(x)))
+            if (intBase == 0 || text[2..].Any (x => !char.IsAsciiHexDigit (x)))
             {
                 return;
             }
 
             try
             {
-                var value = Convert.ToInt64(text[2..], intBase);
-                var charPosition = GetSearchContinueBit();
+                var value = Convert.ToInt64 (text[2..], intBase);
+                var charPosition = GetSearchContinueBit ();
 
-                CurrentContentBitStream.Seek(charPosition / 8, charPosition % 8);
-                var bitsToRead = GetMinimumBitsToEncodeValue(value);
+                CurrentContentBitStream.Seek (charPosition / 8, charPosition % 8);
+                var bitsToRead = GetMinimumBitsToEncodeValue (value);
                 var startOffset = -1;
                 var startBit = 0;
                 while (CurrentContentBitStream.ValidPosition)
                 {
-                    var test = CurrentContentBitStream.ReadInt64(bitsToRead);
+                    var test = CurrentContentBitStream.ReadInt64 (bitsToRead);
                     if (!CurrentContentBitStream.ValidPosition)
                     {
                         break;
                     }
 
-                    CurrentContentBitStream.SeekBack(bitsToRead);
+                    CurrentContentBitStream.SeekBack (bitsToRead);
 
                     if (test == value)
                     {
-                        startOffset = (int)CurrentContentBitStream.Offset;
+                        startOffset = (int) CurrentContentBitStream.Offset;
                         startBit = CurrentContentBitStream.Bit;
                         break;
                     }
 
-                    CurrentContentBitStream.ReadBit();
+                    CurrentContentBitStream.ReadBit ();
                 }
 
                 if (startOffset != -1)
                 {
-                    ApplySearchHit(startOffset * 8 + startBit, bitsToRead);
+                    ApplySearchHit (startOffset * 8 + startBit, bitsToRead);
                 }
                 else
                 {
                     SelectionStartBit = null;
                     SelectionEndBit = null;
-                    ApplyBitSelection();
+                    ApplyBitSelection ();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine (ex.Message);
             }
         }
         else
         {
-            var bytesToFind = Win1251.GetBytes(text);
+            var bytesToFind = Win1251.GetBytes (text);
             var bitLength = bytesToFind.Length * 8;
             try
             {
-                var charPosition = GetSearchContinueBit();
+                var charPosition = GetSearchContinueBit ();
 
-                CurrentContentBitStream.Seek(charPosition / 8, charPosition % 8);
+                CurrentContentBitStream.Seek (charPosition / 8, charPosition % 8);
                 var startOffset = -1;
                 var startBit = 0;
                 while (CurrentContentBitStream.ValidPosition)
                 {
-                    var test = CurrentContentBitStream.ReadBytes(bitLength);
+                    var test = CurrentContentBitStream.ReadBytes (bitLength);
                     if (!CurrentContentBitStream.ValidPosition)
                     {
                         break;
                     }
 
-                    CurrentContentBitStream.SeekBack(bitLength);
+                    CurrentContentBitStream.SeekBack (bitLength);
 
-                    if (test.HasEqualElementsAs(bytesToFind))
+                    if (test.HasEqualElementsAs (bytesToFind))
                     {
-                        startOffset = (int)CurrentContentBitStream.Offset;
+                        startOffset = (int) CurrentContentBitStream.Offset;
                         startBit = CurrentContentBitStream.Bit;
                         break;
                     }
 
-                    CurrentContentBitStream.ReadBit();
+                    CurrentContentBitStream.ReadBit ();
                 }
 
                 if (startOffset != -1)
                 {
-                    ApplySearchHit(startOffset * 8 + startBit, bitLength);
+                    ApplySearchHit (startOffset * 8 + startBit, bitLength);
                 }
                 else
                 {
                     SelectionStartBit = null;
                     SelectionEndBit = null;
-                    ApplyBitSelection();
+                    ApplyBitSelection ();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine (ex.Message);
             }
         }
     }
 
-    private int GetMinimumBitsToEncodeValue(long value)
+    private int GetMinimumBitsToEncodeValue (long value)
     {
         if (value == 0)
         {
@@ -2147,32 +2149,32 @@ public partial class PacketLogViewerMainWindow
         return bitCount;
     }
 
-    private void SearchInPacketTextBox_OnKeyUp(object sender, KeyEventArgs e)
+    private void SearchInPacketTextBox_OnKeyUp (object sender, KeyEventArgs e)
     {
         if (e.Key != Key.Enter)
         {
             return;
         }
 
-        SearchText();
+        SearchText ();
     }
 
-    private async void SearchAllVisibleButton_OnClick(object sender, RoutedEventArgs e)
+    private async void SearchAllVisibleButton_OnClick (object sender, RoutedEventArgs e)
     {
         var query = MainView.PacketActionsBar.SearchInPacketTextBox.Text;
-        if (string.IsNullOrWhiteSpace(query))
+        if (string.IsNullOrWhiteSpace (query))
         {
             return;
         }
 
         var list = MainView.PacketLogList.LogListFullPackets;
-        var visible = list.Items.Cast<object>().OfType<StoredPacket>().ToList();
+        var visible = list.Items.Cast<object> ().OfType<StoredPacket> ().ToList ();
         if (visible.Count == 0)
         {
             return;
         }
 
-        bool SearchInCurrentPacket(bool resetToStart)
+        bool SearchInCurrentPacket (bool resetToStart)
         {
             if (resetToStart)
             {
@@ -2180,12 +2182,12 @@ public partial class PacketLogViewerMainWindow
                 SelectionEndBit = null;
             }
 
-            SearchText();
+            SearchText ();
             return SelectionStartBit is not null && SelectionEndBit is not null;
         }
 
         // 1) Continue search within the currently selected (visible) packet first
-        if (SearchInCurrentPacket(resetToStart: false))
+        if (SearchInCurrentPacket (resetToStart: false))
         {
             return;
         }
@@ -2194,21 +2196,21 @@ public partial class PacketLogViewerMainWindow
         var startIndex = 0;
         if (selected is not null)
         {
-            var currentIndex = visible.IndexOf(selected);
+            var currentIndex = visible.IndexOf (selected);
             startIndex = currentIndex >= 0 ? currentIndex + 1 : 0;
         }
 
         // 2) If not found, search all other visible packets concurrently,
         //    then jump to the earliest match in list order (wrapping once).
-        var searchOrder = new List<(int OrderIndex, int VisibleIndex, StoredPacket Packet)>(visible.Count);
+        var searchOrder = new List<(int OrderIndex, int VisibleIndex, StoredPacket Packet)> (visible.Count);
         var order = 0;
         for (var i = startIndex; i < visible.Count; i++)
         {
-            searchOrder.Add((order++, i, visible[i]));
+            searchOrder.Add ((order++, i, visible[i]));
         }
-        for (var i = 0; i < Math.Min(startIndex, visible.Count); i++)
+        for (var i = 0; i < Math.Min (startIndex, visible.Count); i++)
         {
-            searchOrder.Add((order++, i, visible[i]));
+            searchOrder.Add ((order++, i, visible[i]));
         }
 
         var btn = sender as Button;
@@ -2219,27 +2221,27 @@ public partial class PacketLogViewerMainWindow
 
         try
         {
-            var bestOrderIndex = await Task.Run(() =>
+            var bestOrderIndex = await Task.Run (() =>
             {
                 var best = int.MaxValue;
 
-                Parallel.ForEach(searchOrder, item =>
+                Parallel.ForEach (searchOrder, item =>
                 {
                     // Skip work if we already found an earlier match
-                    if (Volatile.Read(ref best) <= item.OrderIndex)
+                    if (Volatile.Read (ref best) <= item.OrderIndex)
                     {
                         return;
                     }
 
-                    if (!PacketHasContentMatch(item.Packet.ContentBytes, query))
+                    if (!PacketHasContentMatch (item.Packet.ContentBytes, query))
                     {
                         return;
                     }
 
-                    var current = Volatile.Read(ref best);
+                    var current = Volatile.Read (ref best);
                     while (item.OrderIndex < current)
                     {
-                        var prev = Interlocked.CompareExchange(ref best, item.OrderIndex, current);
+                        var prev = Interlocked.CompareExchange (ref best, item.OrderIndex, current);
                         if (prev == current)
                         {
                             break;
@@ -2249,7 +2251,7 @@ public partial class PacketLogViewerMainWindow
                     }
                 });
 
-                return best == int.MaxValue ? (int?)null : best;
+                return best == int.MaxValue ? (int?) null : best;
             });
 
             if (bestOrderIndex is null)
@@ -2257,14 +2259,14 @@ public partial class PacketLogViewerMainWindow
                 return;
             }
 
-            var target = searchOrder.First(x => x.OrderIndex == bestOrderIndex.Value).Packet;
+            var target = searchOrder.First (x => x.OrderIndex == bestOrderIndex.Value).Packet;
             list.SelectedItem = target; // triggers LogListOnSelectionChanged -> UpdateContentPreview -> updates bitstream
-            list.ScrollIntoView(target);
+            list.ScrollIntoView (target);
 
             // run the real highlighter search inside the newly selected packet
-            if (SearchInCurrentPacket(resetToStart: true))
+            if (SearchInCurrentPacket (resetToStart: true))
             {
-                list.Focus();
+                list.Focus ();
             }
         }
         finally
@@ -2276,14 +2278,14 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private bool PacketHasContentMatch(byte[] contentBytes, string query)
+    private bool PacketHasContentMatch (byte[] contentBytes, string query)
     {
         if (contentBytes.Length == 0)
         {
             return false;
         }
 
-        if (query.StartsWith("0"))
+        if (query.StartsWith ("0"))
         {
             // integers, 0x 0d 0b (same validation as SearchText())
             if (query.Length < 3)
@@ -2292,32 +2294,32 @@ public partial class PacketLogViewerMainWindow
             }
 
             var intBase = query[1] == 'x' ? 16 : query[1] == 'd' ? 10 : query[1] == 'b' ? 2 : 0;
-            if (intBase == 0 || query[2..].Any(x => !char.IsAsciiHexDigit(x)))
+            if (intBase == 0 || query[2..].Any (x => !char.IsAsciiHexDigit (x)))
             {
                 return false;
             }
 
             try
             {
-                var value = Convert.ToInt64(query[2..], intBase);
-                var bitsToRead = GetMinimumBitsToEncodeValue(value);
-                var bs = new BitStream(contentBytes);
-                bs.Seek(0, 0);
+                var value = Convert.ToInt64 (query[2..], intBase);
+                var bitsToRead = GetMinimumBitsToEncodeValue (value);
+                var bs = new BitStream (contentBytes);
+                bs.Seek (0, 0);
                 while (bs.ValidPosition)
                 {
-                    var test = bs.ReadInt64(bitsToRead);
+                    var test = bs.ReadInt64 (bitsToRead);
                     if (!bs.ValidPosition)
                     {
                         break;
                     }
 
-                    bs.SeekBack(bitsToRead);
+                    bs.SeekBack (bitsToRead);
                     if (test == value)
                     {
                         return true;
                     }
 
-                    bs.ReadBit();
+                    bs.ReadBit ();
                 }
             }
             catch
@@ -2329,7 +2331,7 @@ public partial class PacketLogViewerMainWindow
         }
 
         // assuming win1251 string
-        var bytesToFind = Win1251.GetBytes(query);
+        var bytesToFind = Win1251.GetBytes (query);
         var bitLength = bytesToFind.Length * 8;
         if (bitLength <= 0)
         {
@@ -2338,23 +2340,23 @@ public partial class PacketLogViewerMainWindow
 
         try
         {
-            var bs = new BitStream(contentBytes);
-            bs.Seek(0, 0);
+            var bs = new BitStream (contentBytes);
+            bs.Seek (0, 0);
             while (bs.ValidPosition)
             {
-                var test = bs.ReadBytes(bitLength);
+                var test = bs.ReadBytes (bitLength);
                 if (!bs.ValidPosition)
                 {
                     break;
                 }
 
-                bs.SeekBack(bitLength);
-                if (test.HasEqualElementsAs(bytesToFind))
+                bs.SeekBack (bitLength);
+                if (test.HasEqualElementsAs (bytesToFind))
                 {
                     return true;
                 }
 
-                bs.ReadBit();
+                bs.ReadBit ();
             }
         }
         catch
@@ -2365,37 +2367,37 @@ public partial class PacketLogViewerMainWindow
         return false;
     }
 
-    public static void RegisterBsonMapperForPacketTypes()
+    public static void RegisterBsonMapperForPacketTypes ()
     {
-        BsonMapper.Global.RegisterType<PacketTypes>(
-            type => type.ToString(),
-            bson => ParseStoredPacketType(bson.AsString));
-        BsonMapper.Global.RegisterType<PacketTypes?>(
-            type => type.HasValue ? type.Value.ToString() : BsonValue.Null,
-            bson => bson.IsNull ? null : ParseStoredPacketType(bson.AsString));
+        BsonMapper.Global.RegisterType<PacketTypes> (
+            type => type.ToString (),
+            bson => ParseStoredPacketType (bson.AsString));
+        BsonMapper.Global.RegisterType<PacketTypes?> (
+            type => type.HasValue ? type.Value.ToString () : BsonValue.Null,
+            bson => bson.IsNull ? null : ParseStoredPacketType (bson.AsString));
     }
 
-    public static void RegisterBsonMapperForObjectType()
+    public static void RegisterBsonMapperForObjectType ()
     {
-        BsonMapper.Global.RegisterType<ObjectType>(
-            type => type.ToString(),
+        BsonMapper.Global.RegisterType<ObjectType> (
+            type => type.ToString (),
             ParseStoredObjectType);
-        BsonMapper.Global.RegisterType<ObjectType?>(
-            type => type.HasValue ? type.Value.ToString() : BsonValue.Null,
-            bson => bson.IsNull ? null : ParseStoredObjectType(bson));
+        BsonMapper.Global.RegisterType<ObjectType?> (
+            type => type.HasValue ? type.Value.ToString () : BsonValue.Null,
+            bson => bson.IsNull ? null : ParseStoredObjectType (bson));
     }
 
-    private static PacketTypes ParseStoredPacketType(string? name)
+    private static PacketTypes ParseStoredPacketType (string? name)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty (name))
         {
             return PacketTypes.UNKNOWN;
         }
 
-        return Enum.TryParse<PacketTypes>(name, out var parsed) ? parsed : PacketTypes.UNKNOWN;
+        return Enum.TryParse<PacketTypes> (name, out var parsed) ? parsed : PacketTypes.UNKNOWN;
     }
 
-    private static ObjectType ParseStoredObjectType(BsonValue bson)
+    private static ObjectType ParseStoredObjectType (BsonValue bson)
     {
         if (bson is null || bson.IsNull)
         {
@@ -2404,28 +2406,28 @@ public partial class PacketLogViewerMainWindow
 
         if (bson.IsString)
         {
-            return ObjectTypeParse.TryParse(bson.AsString, out var parsed) ? parsed : ObjectType.Unknown;
+            return ObjectTypeParse.TryParse (bson.AsString, out var parsed) ? parsed : ObjectType.Unknown;
         }
 
         if (bson.IsNumber)
         {
             var n = bson.AsInt32;
-            return n is >= 0 and <= ushort.MaxValue && Enum.IsDefined(typeof(ObjectType), (ushort)n)
-                ? (ObjectType)n
+            return n is >= 0 and <= ushort.MaxValue && Enum.IsDefined (typeof (ObjectType), (ushort) n)
+                ? (ObjectType) n
                 : ObjectType.Unknown;
         }
 
         return ObjectType.Unknown;
     }
 
-    public static void RegisterBsonMapperForBrush()
+    public static void RegisterBsonMapperForBrush ()
     {
-        BsonMapper.Global.RegisterType<SolidColorBrush>(
-            brush => Dispatcher.CurrentDispatcher.Invoke(() =>
+        BsonMapper.Global.RegisterType<SolidColorBrush> (
+            brush => Dispatcher.CurrentDispatcher.Invoke (() =>
                 $"{brush.Color.R},{brush.Color.G},{brush.Color.B},{brush.Color.A}"),
             bson =>
             {
-                var colors = ((string)bson).Split(',').Select(byte.Parse).ToArray();
+                var colors = ((string) bson).Split (',').Select (byte.Parse).ToArray ();
                 return new SolidColorBrush
                 {
                     Color = new Color
@@ -2439,14 +2441,14 @@ public partial class PacketLogViewerMainWindow
             });
     }
 
-    private void AddPacketButton_OnClick(object sender, RoutedEventArgs e)
+    private void AddPacketButton_OnClick (object sender, RoutedEventArgs e)
     {
         var dialog = new AddPacketManuallyDialog
         {
             Owner = this
         };
 
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog () == true)
         {
             var packets = dialog.ProcessedPackets;
             foreach (var packet in packets)
@@ -2459,16 +2461,16 @@ public partial class PacketLogViewerMainWindow
                     WasProcessed = false,
                     Source = PacketSource.SERVER
                 };
-                PacketCapture?.ProcessPacketRawDataForce(rawData, true);
+                PacketCapture?.ProcessPacketRawDataForce (rawData, true);
             }
         }
     }
 
-    private void TeleportGoButton_OnClick(object sender, RoutedEventArgs e)
+    private void TeleportGoButton_OnClick (object sender, RoutedEventArgs e)
     {
-        if (!TryResolveTeleportClientIndex(out var clientIndex))
+        if (!TryResolveTeleportClientIndex (out var clientIndex))
         {
-            MessageBox.Show(this,
+            MessageBox.Show (this,
                 "No client ID available. Capture traffic until the Client ID field is filled, or ensure it shows a non-zero hex value.",
                 "Teleport",
                 MessageBoxButton.OK,
@@ -2476,35 +2478,35 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        static bool TryParseCoord(string? s, out double v)
+        static bool TryParseCoord (string? s, out double v)
         {
             v = 0;
-            return !string.IsNullOrWhiteSpace(s) &&
-                   double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
+            return !string.IsNullOrWhiteSpace (s) &&
+                   double.TryParse (s.Trim (), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
         }
 
         var bar = MainView.PacketActionsBar;
-        if (!TryParseCoord(bar.TeleportXTextBox.Text, out var cx) ||
-            !TryParseCoord(bar.TeleportYTextBox.Text, out var cy) ||
-            !TryParseCoord(bar.TeleportZTextBox.Text, out var cz) ||
-            !TryParseCoord(bar.TeleportTTextBox.Text, out var ct))
+        if (!TryParseCoord (bar.TeleportXTextBox.Text, out var cx) ||
+            !TryParseCoord (bar.TeleportYTextBox.Text, out var cy) ||
+            !TryParseCoord (bar.TeleportZTextBox.Text, out var cz) ||
+            !TryParseCoord (bar.TeleportTTextBox.Text, out var ct))
         {
-            MessageBox.Show(this, "Enter valid floating-point values for X, Y, Z, and T (use \".\" as decimal separator).",
+            MessageBox.Show (this, "Enter valid floating-point values for X, Y, Z, and T (use \".\" as decimal separator).",
                 "Teleport",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
             return;
         }
 
-        var settings = AppConfig.GetSection("Settings");
-        var coords = new WorldCoords(cx, cy, cz, ct);
-        var packet = TeleportPacketBuilder.BuildTeleportPacket(clientIndex, coords);
+        var settings = AppConfig.GetSection ("Settings");
+        var coords = new WorldCoords (cx, cy, cz, ct);
+        var packet = TeleportPacketBuilder.BuildTeleportPacket (clientIndex, coords);
 
-        if (settings.GetValue("MitmProxyEnabled", false))
+        if (settings.GetValue ("MitmProxyEnabled", false))
         {
             if (_mitmProxy is null)
             {
-                MessageBox.Show(this,
+                MessageBox.Show (this,
                     "MitmProxyEnabled is true but the proxy did not start. Check appconfig.json listen settings and restart PacketLogViewer.",
                     "Teleport",
                     MessageBoxButton.OK,
@@ -2512,12 +2514,12 @@ public partial class PacketLogViewerMainWindow
                 return;
             }
 
-            if (_mitmProxy.TryInjectTowardClient(packet))
+            if (_mitmProxy.TryInjectTowardClient (packet))
             {
                 return;
             }
 
-            MessageBox.Show(this,
+            MessageBox.Show (this,
                 $"No active connection through the MITM proxy. Configure the game client to connect to {_mitmProxy.ListenEndPoint} (see MitmProxyListenAddress / MitmProxyListenPort), then log in.",
                 "Teleport",
                 MessageBoxButton.OK,
@@ -2525,7 +2527,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        var configuredListenPort = settings.GetValue<int?>("ClientInjectionPort");
+        var configuredListenPort = settings.GetValue<int?> ("ClientInjectionPort");
         var observedGamePort = PacketCapture?.ObservedLocalClientTcpPort ?? 0;
 
         var injectionPort = configuredListenPort is > 0
@@ -2533,7 +2535,7 @@ public partial class PacketLogViewerMainWindow
             : observedGamePort;
         if (injectionPort == 0)
         {
-            MessageBox.Show(this,
+            MessageBox.Show (this,
                 "Set Settings.ClientInjectionPort in appconfig.json to the TCP port your injector listens on, " +
                 "or capture traffic so the game client local port is observed (used only if ClientInjectionPort is unset). " +
                 "Or enable MitmProxyEnabled and route the client through the built-in proxy.",
@@ -2543,7 +2545,7 @@ public partial class PacketLogViewerMainWindow
             return;
         }
 
-        if (!TrySendInjectionPacketToLoopback(injectionPort, packet, out var lastEx))
+        if (!TrySendInjectionPacketToLoopback (injectionPort, packet, out var lastEx))
         {
             var src = configuredListenPort is > 0
                 ? "appconfig ClientInjectionPort (injector listen port)"
@@ -2558,7 +2560,7 @@ public partial class PacketLogViewerMainWindow
                   "This attempt tried both 127.0.0.1 and ::1."
                 : string.Empty;
 
-            MessageBox.Show(this,
+            MessageBox.Show (this,
                 $"Could not send teleport packet to loopback:{injectionPort} ({src}).\n{lastEx?.Message ?? "Unknown error"}{refusedHint}",
                 "Teleport",
                 MessageBoxButton.OK,
@@ -2566,19 +2568,19 @@ public partial class PacketLogViewerMainWindow
         }
     }
 
-    private static bool TrySendInjectionPacketToLoopback(int port, byte[] packet, out Exception? lastEx)
+    private static bool TrySendInjectionPacketToLoopback (int port, byte[] packet, out Exception? lastEx)
     {
         lastEx = null;
         foreach (var address in new[] { IPAddress.Loopback, IPAddress.IPv6Loopback })
         {
             try
             {
-                using var tcp = new TcpClient();
+                using var tcp = new TcpClient ();
                 tcp.NoDelay = true;
-                tcp.Connect(address, port);
-                var stream = tcp.GetStream();
-                stream.Write(packet, 0, packet.Length);
-                stream.Flush();
+                tcp.Connect (address, port);
+                var stream = tcp.GetStream ();
+                stream.Write (packet, 0, packet.Length);
+                stream.Flush ();
                 return true;
             }
             catch (Exception ex)
@@ -2590,71 +2592,71 @@ public partial class PacketLogViewerMainWindow
         return false;
     }
 
-    private bool TryResolveTeleportClientIndex(out ushort clientIndex)
+    private bool TryResolveTeleportClientIndex (out ushort clientIndex)
     {
         clientIndex = 0;
         var fromCapture = PacketCapture?.ClientId ?? 0;
         if (fromCapture != 0)
         {
-            clientIndex = unchecked((ushort)fromCapture);
+            clientIndex = unchecked ((ushort) fromCapture);
             return true;
         }
 
-        var text = MainView.GameState.ClientId?.Text?.Trim();
-        if (string.IsNullOrEmpty(text))
+        var text = MainView.GameState.ClientId?.Text?.Trim ();
+        if (string.IsNullOrEmpty (text))
         {
             return false;
         }
 
-        return ushort.TryParse(text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out clientIndex) &&
+        return ushort.TryParse (text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out clientIndex) &&
                clientIndex != 0;
     }
 
-    private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
+    private void SettingsButton_OnClick (object sender, RoutedEventArgs e)
     {
-        var summary = PacketCapture?.GetCaptureStatusSummary() ??
+        var summary = PacketCapture?.GetCaptureStatusSummary () ??
                       "Packet capture is not initialized.";
-        MessageBox.Show(this, summary, "Capture status", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show (this, summary, "Capture status", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
-    private void ShowInUI_OnChecked(object sender, RoutedEventArgs e)
+    private void ShowInUI_OnChecked (object sender, RoutedEventArgs e)
     {
         ShowNewInUI = true;
     }
 
-    private void ShowInUI_OnUnchecked(object sender, RoutedEventArgs e)
+    private void ShowInUI_OnUnchecked (object sender, RoutedEventArgs e)
     {
         ShowNewInUI = false;
     }
 
-    private void ClearClientState_OnClick(object sender, RoutedEventArgs e)
+    private void ClearClientState_OnClick (object sender, RoutedEventArgs e)
     {
-        CurrentClientState.Clear();
+        CurrentClientState.Clear ();
     }
 
-    private void FilterClientState_OnClick(object sender, RoutedEventArgs e)
+    private void FilterClientState_OnClick (object sender, RoutedEventArgs e)
     {
-        var dialog = new ClientStateObjectTypeFilterDialog(ClientStateObjectTypeFilter)
+        var dialog = new ClientStateObjectTypeFilterDialog (ClientStateObjectTypeFilter)
         {
             Owner = this
         };
 
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog () == true)
         {
-            ClientStateObjectTypeFilter = dialog.SelectedObjectTypes.ToHashSet();
-            RefreshClientStateFilter();
+            ClientStateObjectTypeFilter = dialog.SelectedObjectTypes.ToHashSet ();
+            RefreshClientStateFilter ();
         }
     }
 
-    private void TrackXpButton_OnClick(object sender, RoutedEventArgs e)
+    private void TrackXpButton_OnClick (object sender, RoutedEventArgs e)
     {
-        var dialog = new TrackXpDialog(_trackXpSnapshot) { Owner = this };
-        if (dialog.ShowDialog() != true)
+        var dialog = new TrackXpDialog (_trackXpSnapshot) { Owner = this };
+        if (dialog.ShowDialog () != true)
         {
             return;
         }
 
-        _trackXpSnapshot = new TrackXpSnapshot(
+        _trackXpSnapshot = new TrackXpSnapshot (
             dialog.TitleLevel,
             dialog.TitleRebirth,
             dialog.TitleXp,
@@ -2670,7 +2672,7 @@ public partial class PacketLogViewerMainWindow
         _trackXpEnabled = true;
     }
 
-    private void TryTrackDegreeXpFromServerPacket(StoredPacket storedPacket)
+    private void TryTrackDegreeXpFromServerPacket (StoredPacket storedPacket)
     {
         if (_trackXpSnapshot is null)
         {
@@ -2684,7 +2686,7 @@ public partial class PacketLogViewerMainWindow
         }
 
         var (successDegree, successTitle, newDegreeXp, newTitleXp)
-            = XpExtractor.TryExtractAllXpFromPacket(storedPacket.ContentBytes, clientId);
+            = XpExtractor.TryExtractAllXpFromPacket (storedPacket.ContentBytes, clientId);
 
         if (!successDegree && !successTitle)
         {
@@ -2732,14 +2734,14 @@ public partial class PacketLogViewerMainWindow
         {
             var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
             var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
-            var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
-            earnedDegreeXp = (long)(xpToLevelUp - (ulong)oldDegreeXp + (ulong)newDegreeXp);
+            var xpToLevelUp = GetXpToLevelUp (titleMinusOne, degreeMinusOne);
+            earnedDegreeXp = (long) (xpToLevelUp - (ulong) oldDegreeXp + (ulong) newDegreeXp);
 
             nextDegreeLevel += 1;
             if (nextDegreeLevel > 60)
             {
                 nextDegreeLevel = 1;
-                nextDegreeRebirth = Math.Min(nextDegreeRebirth + 1, 3);
+                nextDegreeRebirth = Math.Min (nextDegreeRebirth + 1, 3);
             }
         }
         else if (successTitle && newTitleXp >= oldTitleXp)
@@ -2750,14 +2752,14 @@ public partial class PacketLogViewerMainWindow
         {
             var titleMinusOne = _trackXpSnapshot.TitleLevel - 1;
             var degreeMinusOne = _trackXpSnapshot.DegreeLevel - 1;
-            var xpToLevelUp = GetXpToLevelUp(titleMinusOne, degreeMinusOne);
-            earnedTitleXp = (long)(xpToLevelUp - (ulong)oldTitleXp + (ulong)newTitleXp);
+            var xpToLevelUp = GetXpToLevelUp (titleMinusOne, degreeMinusOne);
+            earnedTitleXp = (long) (xpToLevelUp - (ulong) oldTitleXp + (ulong) newTitleXp);
 
             nextTitleLevel += 1;
             if (nextTitleLevel > 60)
             {
                 nextTitleLevel = 1;
-                nextTitleRebirth = Math.Min(nextTitleRebirth + 1, 3);
+                nextTitleRebirth = Math.Min (nextTitleRebirth + 1, 3);
             }
         }
 
@@ -2768,9 +2770,9 @@ public partial class PacketLogViewerMainWindow
 
         int? mobType = null;
         int? mobLevel = null;
-        if (XpExtractor.TryFindMobKilledByClient(storedPacket.PacketParts, clientId, out var killedMobEntityId))
+        if (XpExtractor.TryFindMobKilledByClient (storedPacket.PacketParts, clientId, out var killedMobEntityId))
         {
-            if (CurrentClientState.FirstOrDefault(x => x.Id == killedMobEntityId) is MobPacket mob)
+            if (CurrentClientState.FirstOrDefault (x => x.Id == killedMobEntityId) is MobPacket mob)
             {
                 mobType = mob.Type;
                 mobLevel = mob.Level;
@@ -2779,12 +2781,12 @@ public partial class PacketLogViewerMainWindow
 
         if (earnedDegreeXp > 0)
         {
-            WriteDegreeXpLogLine(_trackXpSnapshot, (uint)earnedDegreeXp, mobType, mobLevel);
+            WriteDegreeXpLogLine (_trackXpSnapshot, (uint) earnedDegreeXp, mobType, mobLevel);
         }
 
         if (earnedTitleXp > 0)
         {
-            WriteTitleXpLogLine(_trackXpSnapshot, (uint)earnedTitleXp, mobType, mobLevel);
+            WriteTitleXpLogLine (_trackXpSnapshot, (uint) earnedTitleXp, mobType, mobLevel);
         }
 
         _trackXpSnapshot = _trackXpSnapshot with
@@ -2798,29 +2800,29 @@ public partial class PacketLogViewerMainWindow
         };
     }
 
-    private static ulong GetXpToLevelUp(int titleMinusOne, int degreeMinusOne)
+    private static ulong GetXpToLevelUp (int titleMinusOne, int degreeMinusOne)
     {
         if (titleMinusOne % 60 == 59 && degreeMinusOne % 60 == 59)
         {
             return 1;
         }
 
-        var minLevel = Math.Min(titleMinusOne, degreeMinusOne);
-        var maxLevel = Math.Max(titleMinusOne, degreeMinusOne);
-        return (ulong)(CharacterDataHelper.XpPerLevelBase[maxLevel] + CharacterDataHelper.XpPerLevelDelta[maxLevel] * minLevel);
+        var minLevel = Math.Min (titleMinusOne, degreeMinusOne);
+        var maxLevel = Math.Max (titleMinusOne, degreeMinusOne);
+        return (ulong) (CharacterDataHelper.XpPerLevelBase[maxLevel] + CharacterDataHelper.XpPerLevelDelta[maxLevel] * minLevel);
     }
 
-    private static void WriteDegreeXpLogLine(TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
+    private static void WriteDegreeXpLogLine (TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
     {
-        var outputPath = AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
-        if (string.IsNullOrWhiteSpace(outputPath))
+        var outputPath = AppConfig.GetSection ("Settings").GetValue<string> ("OutputFolder");
+        if (string.IsNullOrWhiteSpace (outputPath))
         {
             outputPath = AppContext.BaseDirectory;
         }
 
-        var filePath = Path.Combine(outputPath, "degree_xp.txt");
+        var filePath = Path.Combine (outputPath, "degree_xp.txt");
         var pill = snapshot.PillActive ? 1 : 0;
-        var line = FileFormatCulture.JoinFields('\t',
+        var line = FileFormatCulture.JoinFields ('\t',
             snapshot.TitleLevel,
             snapshot.TitleRebirth,
             snapshot.DegreeLevel,
@@ -2832,22 +2834,22 @@ public partial class PacketLogViewerMainWindow
 
         if (mobType.HasValue && mobLevel.HasValue)
         {
-            line += "\t" + FileFormatCulture.FormatInt(mobType.Value) + "\t" + FileFormatCulture.FormatInt(mobLevel.Value);
+            line += "\t" + FileFormatCulture.FormatInt (mobType.Value) + "\t" + FileFormatCulture.FormatInt (mobLevel.Value);
         }
-        File.AppendAllText(filePath, line + Environment.NewLine);
+        File.AppendAllText (filePath, line + Environment.NewLine);
     }
 
-    private static void WriteTitleXpLogLine(TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
+    private static void WriteTitleXpLogLine (TrackXpSnapshot snapshot, uint earnedXp, int? mobType, int? mobLevel)
     {
-        var outputPath = AppConfig.GetSection("Settings").GetValue<string>("OutputFolder");
-        if (string.IsNullOrWhiteSpace(outputPath))
+        var outputPath = AppConfig.GetSection ("Settings").GetValue<string> ("OutputFolder");
+        if (string.IsNullOrWhiteSpace (outputPath))
         {
             outputPath = AppContext.BaseDirectory;
         }
 
-        var filePath = Path.Combine(outputPath, "title_xp.txt");
+        var filePath = Path.Combine (outputPath, "title_xp.txt");
         var pill = snapshot.PillActive ? 1 : 0;
-        var line = FileFormatCulture.JoinFields('\t',
+        var line = FileFormatCulture.JoinFields ('\t',
             snapshot.TitleLevel,
             snapshot.TitleRebirth,
             snapshot.DegreeLevel,
@@ -2859,9 +2861,9 @@ public partial class PacketLogViewerMainWindow
 
         if (mobType.HasValue && mobLevel.HasValue)
         {
-            line += "\t" + FileFormatCulture.FormatInt(mobType.Value) + "\t" + FileFormatCulture.FormatInt(mobLevel.Value);
+            line += "\t" + FileFormatCulture.FormatInt (mobType.Value) + "\t" + FileFormatCulture.FormatInt (mobLevel.Value);
         }
-        File.AppendAllText(filePath, line + Environment.NewLine);
+        File.AppendAllText (filePath, line + Environment.NewLine);
     }
 
 }

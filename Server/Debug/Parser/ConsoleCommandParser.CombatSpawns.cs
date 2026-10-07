@@ -6,9 +6,8 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Server.Debug.Parser;
 
-// /mob spawns a REAL attackable Monster node at the character, unlike /clientmob which only
-// sends a client-local template with no server WorldObject (it vanishes on relog). Follows the
-// WorldObjectSpawner recipe so the node registers in ActiveWorldObjects and can be targeted.
+// /mob is a real Monster in ActiveWorldObjects; /clientmob is a client-local template with no
+// server node and vanishes on relog
 public partial class ConsoleCommandParser
 {
     private static class CombatSpawnTunables
@@ -21,48 +20,47 @@ public partial class ConsoleCommandParser
         public const string MonsterScenePath = "res://Godot/Scenes/Monster.tscn";
     }
 
-    // /mob [type] [level] [hp] — spawn a real attackable Monster at the character. The optional hp
-    // overrides Current/MaxHp for testing.
+    // Optional hp overrides CurrentHp and MaxHp
     private void SpawnRealMonster (string args)
     {
         const string usage =
             "Usage: /mob [<type: numeric id or Cyrillic name>] [<level 1-60>] [<hp>] - " +
             "default Палочник; e.g. /mob 1291 1 160 or /mob Палочник 2";
 
-        if (!TryParseMobRealArgs(args, out var monsterTypeId, out var level, out var hpOverride, out var error))
+        if (!TryParseMobRealArgs (args, out var monsterTypeId, out var level, out var hpOverride, out var error))
         {
-            SendFeedback($"{error} {usage}");
+            SendFeedback ($"{error} {usage}");
             return;
         }
 
         if (sphereClient is null)
         {
-            SendFeedback("/mob needs a connected client.");
+            SendFeedback ("/mob needs a connected client.");
             return;
         }
 
-        if (!GameObjectDb.Db.TryGetValue(monsterTypeId, out var gameObject))
+        if (!GameObjectDb.Db.TryGetValue (monsterTypeId, out var gameObject))
         {
-            SendFeedback($"Unknown monster type id {monsterTypeId}. {usage}");
+            SendFeedback ($"Unknown monster type id {monsterTypeId}. {usage}");
             return;
         }
 
-        if (!MonsterTypeMapping.MonsterTypeToMonsterNameMapping.TryGetValue(monsterTypeId, out var monsterType))
+        if (!MonsterTypeMapping.MonsterTypeToMonsterNameMapping.TryGetValue (monsterTypeId, out var monsterType))
         {
-            SendFeedback($"Game object {monsterTypeId} is not a spawnable monster type. {usage}");
+            SendFeedback ($"Game object {monsterTypeId} is not a spawnable monster type. {usage}");
             return;
         }
 
-        if (!ClientWorldPosition.TryGetGodotWorldPosition(sphereClient, out var spawnPosition))
+        if (!ClientWorldPosition.TryGetGodotWorldPosition (sphereClient, out var spawnPosition))
         {
-            SendFeedback("/mob could not resolve your world position - is a character selected?");
+            SendFeedback ("/mob could not resolve your world position - is a character selected?");
             return;
         }
 
-        var monsterScene = (PackedScene) ResourceLoader.Load(CombatSpawnTunables.MonsterScenePath);
-        var monsterNode = monsterScene.Instantiate<Monster>();
+        var monsterScene = (PackedScene) ResourceLoader.Load (CombatSpawnTunables.MonsterScenePath);
+        var monsterNode = monsterScene.Instantiate<Monster> ();
         monsterNode.MonsterType = monsterType;
-        var monsterInstance = new SphMonsterInstance(new SphMonsterData(gameObject), level, false);
+        var monsterInstance = new SphMonsterInstance (new SphMonsterData (gameObject), level, NamedBossRank.None);
         if (hpOverride is not null)
         {
             monsterInstance.MaxHp = hpOverride.Value;
@@ -70,13 +68,13 @@ public partial class ConsoleCommandParser
         }
 
         monsterNode.MonsterInstance = monsterInstance;
-        monsterNode.Angle = WorldObject.CreateRandomSpawnAngle();
-        monsterNode.Name = monsterType.ToString();
-        monsterNode.ID = WorldObjectIndex.New();
-        SphereServer.ServerNode.CallDeferred("add_child", monsterNode);
-        monsterNode.Transform = new Transform3D(Basis.Identity, spawnPosition);
+        monsterNode.Angle = WorldObject.CreateRandomSpawnAngle ();
+        monsterNode.Name = monsterType.ToString ();
+        monsterNode.ID = WorldObjectIndex.New ();
+        SphereServer.ServerNode.CallDeferred ("add_child", monsterNode);
+        monsterNode.Transform = new Transform3D (Basis.Identity, spawnPosition);
 
-        SendFeedback($"Spawned real {monsterNode.Name} - id 0x{monsterNode.ID:X4} ({monsterNode.ID}), " +
+        SendFeedback ($"Spawned real {monsterNode.Name} - id 0x{monsterNode.ID:X4} ({monsterNode.ID}), " +
                      $"type {monsterTypeId}, level {level}, HP {monsterInstance.CurrentHp}/{monsterInstance.MaxHp}.");
     }
 
@@ -92,7 +90,7 @@ public partial class ConsoleCommandParser
         hpOverride = null;
         error = null;
 
-        var tokens = (args ?? string.Empty).Split(' ',
+        var tokens = (args ?? string.Empty).Split (' ',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         if (tokens.Length > 3)
@@ -103,12 +101,12 @@ public partial class ConsoleCommandParser
 
         if (tokens.Length >= 1)
         {
-            if (int.TryParse(tokens[0], out var parsedTypeId))
+            if (int.TryParse (tokens[0], out var parsedTypeId))
             {
                 monsterTypeId = parsedTypeId;
             }
-            else if (Enum.TryParse<MonsterType>(tokens[0], true, out var parsedType) &&
-                     MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue(parsedType, out var mappedId))
+            else if (Enum.TryParse<MonsterType> (tokens[0], true, out var parsedType) &&
+                     MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue (parsedType, out var mappedId))
             {
                 monsterTypeId = mappedId;
             }
@@ -121,7 +119,7 @@ public partial class ConsoleCommandParser
 
         if (tokens.Length >= 2)
         {
-            if (!int.TryParse(tokens[1], out level) ||
+            if (!int.TryParse (tokens[1], out level) ||
                 level is < CombatSpawnTunables.MinLevel or > CombatSpawnTunables.MaxLevel)
             {
                 error = $"Level must be {CombatSpawnTunables.MinLevel}-{CombatSpawnTunables.MaxLevel}.";
@@ -131,7 +129,7 @@ public partial class ConsoleCommandParser
 
         if (tokens.Length == 3)
         {
-            if (!int.TryParse(tokens[2], out var parsedHp) ||
+            if (!int.TryParse (tokens[2], out var parsedHp) ||
                 parsedHp is < 1 or > CombatSpawnTunables.MaxHpOverride)
             {
                 error = $"HP override must be 1-{CombatSpawnTunables.MaxHpOverride}.";

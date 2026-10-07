@@ -6,8 +6,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class TeleportDungeonChoiceIsland : WorldObject
 {
-	public TeleportDungeonChoiceIsland()
-	{
-		ObjectType = ObjectType.Teleport_Dungeon_Choice_Island;
-	}
+    public TeleportDungeonChoiceIsland ()
+    {
+        ObjectType = ObjectType.Teleport_Dungeon_Choice_Island;
+    }
 }

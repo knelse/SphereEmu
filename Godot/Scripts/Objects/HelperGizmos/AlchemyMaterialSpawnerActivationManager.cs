@@ -9,43 +9,41 @@ using SphServer.Sphere.Game.WorldObject;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Activates <see cref="AlchemyMaterialSpawner" /> instances when an in-game client enters
-///     <see cref="ServerConfig.AppConfig.ObjectVisibilityDistance" />. Once activated, a spawner
-///     stays active for the rest of the session.
+/// Once activated, the spawner stays active for the session
 /// </summary>
 public static class AlchemyMaterialSpawnerActivationManager
 {
-    private static readonly object GridLock = new();
-    private static readonly Dictionary<(int CellX, int CellZ), List<AlchemyMaterialSpawner>> Grid = new();
+    private static readonly object GridLock = new ();
+    private static readonly Dictionary<(int CellX, int CellZ), List<AlchemyMaterialSpawner>> Grid = new ();
 
     public static float ActivationDistanceMeters => ServerConfig.AppConfig.ObjectVisibilityDistance;
 
-    public static void Register(AlchemyMaterialSpawner spawner)
+    public static void Register (AlchemyMaterialSpawner spawner)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        var cell = WorldToCell(spawner.GlobalPosition);
+        var cell = WorldToCell (spawner.GlobalPosition);
         lock (GridLock)
         {
-            if (!Grid.TryGetValue(cell, out var spawners))
+            if (!Grid.TryGetValue (cell, out var spawners))
             {
                 spawners = [];
                 Grid[cell] = spawners;
             }
 
-            if (!spawners.Contains(spawner))
+            if (!spawners.Contains (spawner))
             {
-                spawners.Add(spawner);
+                spawners.Add (spawner);
             }
         }
     }
 
-    public static void Unregister(AlchemyMaterialSpawner spawner)
+    public static void Unregister (AlchemyMaterialSpawner spawner)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
@@ -54,44 +52,44 @@ public static class AlchemyMaterialSpawnerActivationManager
         {
             foreach (var spawners in Grid.Values)
             {
-                spawners.Remove(spawner);
+                spawners.Remove (spawner);
             }
         }
     }
 
-    public static void NotifyClientPosition(SphereClient client)
+    public static void NotifyClientPosition (SphereClient client)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        ActivateSpawnersNearClient(client);
+        ActivateSpawnersNearClient (client);
     }
 
-    public static void CheckAllClients()
+    public static void CheckAllClients ()
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        foreach (var client in ActiveClients.GetAll().Values)
+        foreach (var client in ActiveClients.GetAll ().Values)
         {
-            ActivateSpawnersNearClient(client);
+            ActivateSpawnersNearClient (client);
         }
     }
 
-    private static void ActivateSpawnersNearClient(SphereClient client)
+    private static void ActivateSpawnersNearClient (SphereClient client)
     {
         if (client.CurrentCharacter is null)
         {
             return;
         }
 
-        var clientPosition = ClientWorldPosition.GetGodotWorldPosition(client);
+        var clientPosition = ClientWorldPosition.GetGodotWorldPosition (client);
         var activationRadiusSq = ActivationDistanceMeters * ActivationDistanceMeters;
-        var centerCell = WorldToCell(clientPosition);
+        var centerCell = WorldToCell (clientPosition);
 
         for (var dx = -1; dx <= 1; dx++)
         {
@@ -101,7 +99,7 @@ public static class AlchemyMaterialSpawnerActivationManager
                 List<AlchemyMaterialSpawner> spawners;
                 lock (GridLock)
                 {
-                    if (!Grid.TryGetValue(cell, out spawners!) || spawners.Count == 0)
+                    if (!Grid.TryGetValue (cell, out spawners!) || spawners.Count == 0)
                     {
                         continue;
                     }
@@ -111,27 +109,27 @@ public static class AlchemyMaterialSpawnerActivationManager
 
                 foreach (var spawner in spawners)
                 {
-                    if (!GodotObject.IsInstanceValid(spawner) || spawner.IsActivated)
+                    if (!GodotObject.IsInstanceValid (spawner) || spawner.IsActivated)
                     {
                         continue;
                     }
 
-                    if (spawner.GlobalPosition.DistanceSquaredTo(clientPosition) > activationRadiusSq)
+                    if (spawner.GlobalPosition.DistanceSquaredTo (clientPosition) > activationRadiusSq)
                     {
                         continue;
                     }
 
-                    spawner.ActivateFromProximity();
+                    spawner.ActivateFromProximity ();
                 }
             }
         }
     }
 
-    private static (int CellX, int CellZ) WorldToCell(Vector3 worldPosition)
+    private static (int CellX, int CellZ) WorldToCell (Vector3 worldPosition)
     {
         var cellSize = ActivationDistanceMeters;
         return (
-            (int)Math.Floor(worldPosition.X / cellSize),
-            (int)Math.Floor(worldPosition.Z / cellSize));
+            (int) Math.Floor (worldPosition.X / cellSize),
+            (int) Math.Floor (worldPosition.Z / cellSize));
     }
 }

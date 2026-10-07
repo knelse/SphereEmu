@@ -9,7 +9,7 @@ public class SphereTimer
     private double remainingTime;
     private Action onComplete;
 
-    public SphereTimer(double targetTime, bool autoRearm, Action onComplete)
+    public SphereTimer (double targetTime, bool autoRearm, Action onComplete)
     {
         rearmTargetTime = targetTime;
         this.autoRearm = autoRearm;
@@ -17,18 +17,18 @@ public class SphereTimer
         this.onComplete = onComplete;
     }
 
-    public void Arm(double targetTime, Action onComplete)
+    public void Arm (double targetTime, Action onComplete)
     {
         remainingTime = targetTime;
         this.onComplete = onComplete;
     }
 
-    public void Rearm(double targetTime)
+    public void Rearm (double targetTime)
     {
         remainingTime = targetTime;
     }
 
-    public bool Tick(double delta)
+    public bool Tick (double delta)
     {
         if (remainingTime <= 0)
         {
@@ -39,7 +39,7 @@ public class SphereTimer
         remainingTime -= delta;
         if (remainingTime <= 0)
         {
-            onComplete();
+            onComplete ();
         }
 
         var hasFinished = remainingTime <= 0;

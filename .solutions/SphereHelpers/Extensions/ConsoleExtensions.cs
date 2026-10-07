@@ -2,16 +2,16 @@
 
 public static class ConsoleExtensions
 {
-    public static void WriteLineColored(string text, ConsoleColor color)
+    public static void WriteLineColored (string text, ConsoleColor color)
     {
         var previousColor = Console.ForegroundColor;
         Console.ForegroundColor = color;
-        Console.WriteLine(text);
+        Console.WriteLine (text);
         Console.ForegroundColor = previousColor;
     }
 
-    public static void WriteException(Exception ex)
+    public static void WriteException (Exception ex)
     {
-        WriteLineColored($"ERROR: {ex}", ConsoleColor.Red);
+        WriteLineColored ($"ERROR: {ex}", ConsoleColor.Red);
     }
 }

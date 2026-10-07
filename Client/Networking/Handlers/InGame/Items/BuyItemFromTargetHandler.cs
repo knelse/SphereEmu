@@ -62,7 +62,8 @@ public class BuyItemFromTargetHandler
         // characterUpdateStream.WriteBytes(
         //     new byte[]
         //     {
-        //         0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08, 0x40, 0x41, 0x10
+        // 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08,
+        // 0x40, 0x41, 0x10
         //     }, 13, true);
         // characterUpdateStream.WriteBit(0);
         // characterUpdateStream.WriteByte((byte) clientSlotId);

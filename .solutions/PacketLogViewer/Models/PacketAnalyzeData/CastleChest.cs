@@ -14,16 +14,16 @@ public class CastleChest : PacketAnalyzeData
     public int Angle { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) at [{X:F2}, {Y:F2}, {Z:F2}]";
+        $"{Id:X4} ({Enum.GetName (ObjectType) ?? string.Empty}) at [{X:F2}, {Y:F2}, {Z:F2}]";
 
-    public CastleChest(List<PacketPart> parts) : base(parts)
+    public CastleChest (List<PacketPart> parts) : base (parts)
     {
-        var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
+        var actionTypePart = Parts.FirstOrDefault (x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
@@ -32,9 +32,9 @@ public class CastleChest : PacketAnalyzeData
             return;
         }
 
-        X = GetClientCoordValue(PacketPartNames.CoordX);
-        Y = GetClientCoordValue(PacketPartNames.CoordY);
-        Z = GetClientCoordValue(PacketPartNames.CoordZ);
-        Angle = GetIntValue(PacketPartNames.Angle);
+        X = GetClientCoordValue (PacketPartNames.CoordX);
+        Y = GetClientCoordValue (PacketPartNames.CoordY);
+        Z = GetClientCoordValue (PacketPartNames.CoordZ);
+        Angle = GetIntValue (PacketPartNames.Angle);
     }
 }

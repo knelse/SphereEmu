@@ -8,18 +8,18 @@ namespace SphServer.Godot.Scripts.World;
 /// </summary>
 public static class WorldChunkLaunchArgs
 {
-	public const string LoadAllWorldChunks = "--load-all-world-chunks";
+    public const string LoadAllWorldChunks = "--load-all-world-chunks";
 
-	public static bool WantsLoadAllWorldChunks()
-	{
-		foreach (var arg in OS.GetCmdlineUserArgs())
-		{
-			if (arg == LoadAllWorldChunks)
-			{
-				return true;
-			}
-		}
+    public static bool WantsLoadAllWorldChunks ()
+    {
+        foreach (var arg in OS.GetCmdlineUserArgs ())
+        {
+            if (arg == LoadAllWorldChunks)
+            {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

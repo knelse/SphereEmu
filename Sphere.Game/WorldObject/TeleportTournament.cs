@@ -6,8 +6,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class TeleportTournament : WorldObject
 {
-	public TeleportTournament()
-	{
-		ObjectType = ObjectType.Tournament_Teleport;
-	}
+    public TeleportTournament ()
+    {
+        ObjectType = ObjectType.Tournament_Teleport;
+    }
 }

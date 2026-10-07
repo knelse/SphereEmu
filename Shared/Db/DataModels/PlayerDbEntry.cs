@@ -9,5 +9,5 @@ public class PlayerDbEntry
     [BsonIgnore] public ushort Index { get; set; }
     public string Login { get; init; } = string.Empty;
     public string PasswordHash { get; init; } = string.Empty;
-    [BsonRef("Characters")] public List<CharacterDbEntry> Characters { get; init; } = [];
+    [BsonRef ("Characters")] public List<CharacterDbEntry> Characters { get; init; } = [];
 }

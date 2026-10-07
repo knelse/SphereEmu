@@ -34,21 +34,21 @@ public static class ItemsOnSaleGenerator
 
     public static List<ItemDbEntry> Weapons (int minTier, int maxTier)
     {
-        var itemsOnSale = new List<ItemDbEntry>();
+        var itemsOnSale = new List<ItemDbEntry> ();
         for (var i = minTier; i <= maxTier; i++)
         {
-            var weaponsForTier = SphObjectDb.GameObjectDataDb.Where(x =>
+            var weaponsForTier = SphObjectDb.GameObjectDataDb.Where (x =>
                 x.Value is
                 {
                     GameId: > 1000,
                     GameObjectType: GameObjectType.Sword or GameObjectType.Crossbow or GameObjectType.Axe,
                     SuffixSetName.Length: 1
                 } && x.Value.SuffixSetName != "-" &&
-                x.Value.Tier == i).GroupBy(x => x.Value.GameObjectType).ToList();
-            var output = new List<ItemDbEntry>();
-            foreach (var weapons in weaponsForTier.Select(weapons => weapons.ToList()))
+                x.Value.Tier == i).GroupBy (x => x.Value.GameObjectType).ToList ();
+            var output = new List<ItemDbEntry> ();
+            foreach (var weapons in weaponsForTier.Select (weapons => weapons.ToList ()))
             {
-                weapons.Sort((a, b) => GameObjectComparator(a.Value, b.Value));
+                weapons.Sort ((a, b) => GameObjectComparator (a.Value, b.Value));
                 if (weapons.Count == 0)
                 {
                     continue;
@@ -62,14 +62,14 @@ public static class ItemsOnSaleGenerator
                         continue;
                     }
 
-                    output.Add(GetItemForGameObject(weapons[j].Value, i));
+                    output.Add (GetItemForGameObject (weapons[j].Value, i));
                 }
             }
 
-            itemsOnSale.AddRange(output);
+            itemsOnSale.AddRange (output);
         }
 
-        itemsOnSale.Add(new ItemDbEntry
+        itemsOnSale.Add (new ItemDbEntry
         {
             ObjectType = ObjectType.Arrow,
             Weight = 75,
@@ -77,17 +77,17 @@ public static class ItemsOnSaleGenerator
             ItemCount = 1000
         });
 
-        itemsOnSale.Sort(ItemComparator);
+        itemsOnSale.Sort (ItemComparator);
 
         return itemsOnSale;
     }
 
     public static List<ItemDbEntry> Armor (int minTier, int maxTier)
     {
-        var itemsOnSale = new List<ItemDbEntry>();
+        var itemsOnSale = new List<ItemDbEntry> ();
         for (var i = minTier; i <= maxTier; i++)
         {
-            var armorForTier = SphObjectDb.GameObjectDataDb.Where(x =>
+            var armorForTier = SphObjectDb.GameObjectDataDb.Where (x =>
                 x.Value is
                 {
                     GameId: > 1000, GameObjectType: GameObjectType.Chestplate or GameObjectType.Pants
@@ -96,11 +96,11 @@ public static class ItemsOnSaleGenerator
                     or GameObjectType.Shield,
                     SuffixSetName.Length: 1
                 } && x.Value.SuffixSetName != "-" &&
-                x.Value.Tier == i).GroupBy(x => x.Value.GameObjectType).ToList();
-            var output = new List<ItemDbEntry>();
-            foreach (var armorTypeList in armorForTier.Select(armorType => armorType.ToList()))
+                x.Value.Tier == i).GroupBy (x => x.Value.GameObjectType).ToList ();
+            var output = new List<ItemDbEntry> ();
+            foreach (var armorTypeList in armorForTier.Select (armorType => armorType.ToList ()))
             {
-                armorTypeList.Sort((a, b) => GameObjectComparator(a.Value, b.Value));
+                armorTypeList.Sort ((a, b) => GameObjectComparator (a.Value, b.Value));
                 if (armorTypeList.Count == 0)
                 {
                     continue;
@@ -116,14 +116,14 @@ public static class ItemsOnSaleGenerator
                         continue;
                     }
 
-                    output.Add(GetItemForGameObject(armorTypeList[j].Value, i));
+                    output.Add (GetItemForGameObject (armorTypeList[j].Value, i));
                 }
             }
 
-            itemsOnSale.AddRange(output);
+            itemsOnSale.AddRange (output);
         }
 
-        itemsOnSale.Sort(ItemComparator);
+        itemsOnSale.Sort (ItemComparator);
 
         return itemsOnSale;
     }
@@ -151,13 +151,13 @@ public static class ItemsOnSaleGenerator
 
     public static List<ItemDbEntry> Alchemy (int minTier, int maxTier)
     {
-        var itemsOnSale = new List<ItemDbEntry>();
+        var itemsOnSale = new List<ItemDbEntry> ();
         foreach (var alchemyItemId in AlchemyItemsOnSale)
         {
             var go = SphObjectDb.GameObjectDataDb[alchemyItemId];
-            var item = GetItemForGameObject(go, 1);
+            var item = GetItemForGameObject (go, 1);
             item.ItemCount = 1000;
-            itemsOnSale.Add(item);
+            itemsOnSale.Add (item);
         }
 
         return itemsOnSale;
@@ -165,16 +165,16 @@ public static class ItemsOnSaleGenerator
 
     public static List<ItemDbEntry> Magic (int minTier, int maxTier)
     {
-        var itemsOnSale = new List<ItemDbEntry>();
+        var itemsOnSale = new List<ItemDbEntry> ();
         if (minTier == 1)
         {
-            itemsOnSale.Add(new ItemDbEntry
+            itemsOnSale.Add (new ItemDbEntry
             {
                 ObjectType = ObjectType.Alchemy_Pot,
                 Weight = 500,
                 VendorCost = 330
             });
-            itemsOnSale.Add(new ItemDbEntry
+            itemsOnSale.Add (new ItemDbEntry
             {
                 ObjectType = ObjectType.Recipe_Book,
                 Weight = 200,
@@ -184,19 +184,19 @@ public static class ItemsOnSaleGenerator
             {
                 var itemId = 570 + i - 1;
                 var go = SphObjectDb.GameObjectDataDb[itemId];
-                var item = GetItemForGameObject(go, i);
+                var item = GetItemForGameObject (go, i);
                 item.ItemCount = 1000;
-                itemsOnSale.Add(item);
+                itemsOnSale.Add (item);
             }
 
-            itemsOnSale.Add(new ItemDbEntry
+            itemsOnSale.Add (new ItemDbEntry
             {
                 ObjectType = ObjectType.Powder_Amilus,
                 Weight = 1,
                 VendorCost = 5,
                 ItemCount = 1000
             });
-            itemsOnSale.Add(new ItemDbEntry
+            itemsOnSale.Add (new ItemDbEntry
             {
                 ObjectType = ObjectType.Powder_Finale,
                 Weight = 1,
@@ -208,9 +208,9 @@ public static class ItemsOnSaleGenerator
         foreach (var magicId in MagicItemsOnSalePerMinTier[minTier])
         {
             var go = SphObjectDb.GameObjectDataDb[magicId];
-            var item = GetItemForGameObject(go, 1);
+            var item = GetItemForGameObject (go, 1);
             item.ItemCount = 1000;
-            itemsOnSale.Add(item);
+            itemsOnSale.Add (item);
         }
 
         return itemsOnSale;
@@ -229,28 +229,28 @@ public static class ItemsOnSaleGenerator
         };
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, i, true));
-            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, i, true));
+            itemsOnSale.Add (GetItemForTier (ObjectType.Ring, i, true));
+            itemsOnSale.Add (GetItemForTier (ObjectType.Ring, i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier(ObjectType.Ring, maxTier, true));
+        itemsOnSale.Add (GetItemForTier (ObjectType.Ring, maxTier, true));
         if (minTier != 1)
         {
-            itemsOnSale.Add(GetItemForTier(ObjectType.Ring, minTier, true));
+            itemsOnSale.Add (GetItemForTier (ObjectType.Ring, minTier, true));
         }
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
+            itemsOnSale.Add (GetItemForTier ([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
             if (i == minTier && i != 1)
             {
                 continue;
             }
 
-            itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
+            itemsOnSale.Add (GetItemForTier ([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], maxTier,
+        itemsOnSale.Add (GetItemForTier ([ObjectType.Armor_Amulet, ObjectType.Armor_Bracelet], maxTier,
             true));
         if (minTier == 1)
         {
@@ -267,17 +267,17 @@ public static class ItemsOnSaleGenerator
                         ["scroll_id"] = i
                     }
                 };
-                itemsOnSale.Add(scroll);
+                itemsOnSale.Add (scroll);
             }
         }
 
         for (var i = minTier; i < maxTier; i++)
         {
-            itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, i, true));
-            itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, i, true));
+            itemsOnSale.Add (GetItemForTier (ObjectType.Armor_Robe, i, true));
+            itemsOnSale.Add (GetItemForTier (ObjectType.Armor_Robe, i, true));
         }
 
-        itemsOnSale.Add(GetItemForTier(ObjectType.Armor_Robe, maxTier, true));
+        itemsOnSale.Add (GetItemForTier (ObjectType.Armor_Robe, maxTier, true));
 
         if (minTier != 1)
         {
@@ -293,9 +293,9 @@ public static class ItemsOnSaleGenerator
             {
                 var itemId = 570 + i - 1;
                 var go = SphObjectDb.GameObjectDataDb[itemId];
-                var item = GetItemForGameObject(go, i);
+                var item = GetItemForGameObject (go, i);
                 item.ItemCount = 1000;
-                itemsOnSale.Add(item);
+                itemsOnSale.Add (item);
             }
         }
 
@@ -309,7 +309,7 @@ public static class ItemsOnSaleGenerator
             return true;
         }
 
-        if (!LootData.ObjectTypesWithSuffixes.Contains(objectType))
+        if (!LootData.ObjectTypesWithSuffixes.Contains (objectType))
         {
             return false;
         }
@@ -321,37 +321,37 @@ public static class ItemsOnSaleGenerator
 
     private static ItemDbEntry GetItemForTier (ObjectType objectType, int tier, bool withSuffixMaybe = false)
     {
-        return GetItemForTier([objectType], tier, withSuffixMaybe);
+        return GetItemForTier ([objectType], tier, withSuffixMaybe);
     }
 
     private static ItemDbEntry GetItemForTier (HashSet<ObjectType> objectTypes, int tier, bool withSuffixMaybe = false)
     {
-        var candidates = SphObjectDb.GameObjectDataDb.Where(x =>
-                objectTypes.Contains(x.Value.GameObjectType.GetPacketObjectType()) && x.Value.Tier == tier
+        var candidates = SphObjectDb.GameObjectDataDb.Where (x =>
+                objectTypes.Contains (x.Value.GameObjectType.GetPacketObjectType ()) && x.Value.Tier == tier
                 && (!withSuffixMaybe || (x.Value.SuffixSetName.Length == 1 && x.Value.SuffixSetName != "-")))
-            .ToList();
-        var randomObjectId = SphRng.Rng.Next(candidates.Count);
-        var randomGameObject = candidates.ElementAt(randomObjectId).Value;
-        return GetItemForGameObject(randomGameObject, tier, withSuffixMaybe);
+            .ToList ();
+        var randomObjectId = SphRng.Rng.Next (candidates.Count);
+        var randomGameObject = candidates.ElementAt (randomObjectId).Value;
+        return GetItemForGameObject (randomGameObject, tier, withSuffixMaybe);
     }
 
     private static ItemDbEntry GetItemForGameObject (SphGameObject gameObject, int tier, bool withSuffixMaybe = false)
     {
-        var clone = SphGameObject.CreateFromGameObject(gameObject);
-        var withSuffix = withSuffixMaybe && ShouldHaveSuffix(clone.GameObjectType.GetPacketObjectType(), tier);
+        var clone = SphGameObject.CreateFromGameObject (gameObject);
+        var withSuffix = withSuffixMaybe && ShouldHaveSuffix (clone.GameObjectType.GetPacketObjectType (), tier);
         if (withSuffix)
         {
             var suffixes =
-                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.GetValueOrDefault(clone.GameObjectType, []);
-            if (suffixes.Any())
+                GameObjectDataHelper.ObjectTypeToSuffixLocaleMapActual.GetValueOrDefault (clone.GameObjectType, []);
+            if (suffixes.Any ())
             {
-                var randSuffixId = SphRng.Rng.Next(suffixes.Count);
-                var randSuffix = suffixes.ElementAt(randSuffixId);
+                var randSuffixId = SphRng.Rng.Next (suffixes.Count);
+                var randSuffix = suffixes.ElementAt (randSuffixId);
                 clone.Suffix = randSuffix.Key;
             }
         }
 
-        return ItemDbEntry.CreateFromGameObject(clone);
+        return ItemDbEntry.CreateFromGameObject (clone);
     }
 
     private static int GameObjectComparator (SphGameObject a, SphGameObject b)
@@ -388,17 +388,17 @@ public static class ItemsOnSaleGenerator
             [GameObjectType.Axe] = 10,
             [GameObjectType.Axe_Quest] = 10
         };
-        var sortOrderA = sortOrder.GetValueOrDefault(a.GameObjectType, int.MaxValue);
-        var sortOrderB = sortOrder.GetValueOrDefault(b.GameObjectType, int.MaxValue);
-        var typeCompare = sortOrderA.CompareTo(sortOrderB);
+        var sortOrderA = sortOrder.GetValueOrDefault (a.GameObjectType, int.MaxValue);
+        var sortOrderB = sortOrder.GetValueOrDefault (b.GameObjectType, int.MaxValue);
+        var typeCompare = sortOrderA.CompareTo (sortOrderB);
         if (typeCompare != 0)
         {
             return typeCompare;
         }
 
-        typeCompare = string.Compare(a.ModelNameInventory, b.ModelNameInventory,
+        typeCompare = string.Compare (a.ModelNameInventory, b.ModelNameInventory,
             StringComparison.OrdinalIgnoreCase);
-        return typeCompare != 0 ? typeCompare : a.GameId.CompareTo(b.GameId);
+        return typeCompare != 0 ? typeCompare : a.GameId.CompareTo (b.GameId);
     }
 
     private static int ItemComparator (ItemDbEntry a, ItemDbEntry b)
@@ -435,16 +435,16 @@ public static class ItemsOnSaleGenerator
             [GameObjectType.Crossbow] = 10,
             [GameObjectType.Crossbow_Quest] = 10
         };
-        var sortOrderA = sortOrder.GetValueOrDefault(a.GameObjectType, int.MaxValue);
-        var sortOrderB = sortOrder.GetValueOrDefault(b.GameObjectType, int.MaxValue);
-        var typeCompare = sortOrderA.CompareTo(sortOrderB);
+        var sortOrderA = sortOrder.GetValueOrDefault (a.GameObjectType, int.MaxValue);
+        var sortOrderB = sortOrder.GetValueOrDefault (b.GameObjectType, int.MaxValue);
+        var typeCompare = sortOrderA.CompareTo (sortOrderB);
         if (typeCompare != 0)
         {
             return typeCompare;
         }
 
-        typeCompare = string.Compare(a.ModelNameInventory, b.ModelNameInventory,
+        typeCompare = string.Compare (a.ModelNameInventory, b.ModelNameInventory,
             StringComparison.OrdinalIgnoreCase);
-        return typeCompare != 0 ? typeCompare : a.GameId.CompareTo(b.GameId);
+        return typeCompare != 0 ? typeCompare : a.GameId.CompareTo (b.GameId);
     }
 }

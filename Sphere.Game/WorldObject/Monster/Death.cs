@@ -8,77 +8,84 @@ namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class Monster
 {
-	/// <summary>Guards the kill pipeline against a second killing blow re-running it.</summary>
-	private bool _deathStarted;
+    /// <summary>
+    /// Guards the kill pipeline against a second killing blow re-running it.
+    /// </summary>
+    private bool _deathStarted;
 
-	/// <summary>Raised exactly once, on the 0-HP crossing, after <see cref="OnDamaged" />.</summary>
-	public event Action<Monster, DamageEvent, DamageOutcome>? MonsterKilled;
+    /// <summary>
+    /// Raised exactly once, on the 0-HP crossing, after <see cref="OnDamaged" />.
+    /// </summary>
+    public event Action<Monster, DamageEvent, DamageOutcome>? MonsterKilled;
 
-	/// <summary>Overrides must call base to keep subscribers and the despawn working.</summary>
-	protected virtual void OnMonsterKilled(in DamageEvent hit, in DamageOutcome outcome)
-	{
-		var client = hit.AttackerClient;
-		var character = client?.CurrentCharacter;
-		var credit = GetKillCredit();
-		var awardTitle = ExperienceBalance.AwardKillExperienceToTitle(
-			character?.Guild ?? Guild.None, credit.MajoritySchool == DamageSchool.Physical);
-		var xpAwarded = GetExperienceForKill(character, awardTitle);
-		var xpKind = awardTitle ? "title" : "degree";
+    /// <summary>
+    /// Overrides must call base to keep subscribers and the despawn working.
+    /// </summary>
+    protected virtual void OnMonsterKilled (in DamageEvent hit, in DamageOutcome outcome)
+    {
+        var client = hit.AttackerClient;
+        var character = client?.CurrentCharacter;
+        var credit = GetKillCredit ();
+        var awardTitle = ExperienceBalance.AwardKillExperienceToTitle (
+            character?.Guild ?? Guild.None, credit.MajoritySchool == DamageSchool.Physical);
+        var xpAwarded = GetExperienceForKill (character, awardTitle);
+        var xpKind = awardTitle ? "title" : "degree";
 
-		var xpApplied = false;
-		var karmaApplied = false;
-		var karmaTierChanged = false;
-		if (character is not null)
-		{
-			var mobKarma = InstanceKarmaType != default ? InstanceKarmaType : DataKarmaType;
-			karmaApplied = character.ApplyKillKarma(mobKarma, out karmaTierChanged);
-			xpApplied = xpAwarded > 0 && character.AwardExperience((uint)xpAwarded, awardTitle);
-		}
+        var xpApplied = false;
+        var karmaApplied = false;
+        var karmaTierChanged = false;
+        if (character is not null)
+        {
+            var mobKarma = InstanceKarmaType != default ? InstanceKarmaType : DataKarmaType;
+            karmaApplied = character.ApplyKillKarma (mobKarma, out karmaTierChanged);
+            xpApplied = xpAwarded > 0 && character.AwardExperience ((uint) xpAwarded, awardTitle);
+        }
 
-		SphLogger.Info(
-			$"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} {xpKind} XP " +
-			$"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}" +
-			(character is null ? ")" : $", karma {character.KarmaCount} {character.Karma})."));
+        SphLogger.Info (
+            $"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} {xpKind} XP " +
+            $"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}" +
+            (character is null ? ")" : $", karma {character.KarmaCount} {character.Karma})."));
 
-		if (client is not null && character is not null && (xpApplied || karmaApplied))
-		{
-			NetworkedStatsUpdater.Update(character, refreshPeers: xpApplied || karmaTierChanged);
-			client.SaveCharacter();
-		}
+        if (client is not null && character is not null && (xpApplied || karmaApplied))
+        {
+            NetworkedStatsUpdater.Update (character, refreshPeers: xpApplied || karmaTierChanged);
+            client.SaveCharacter ();
+        }
 
-		MonsterKilled?.Invoke(this, hit, outcome);
-		PerformDeath(hit.AttackerId);
-	}
+        MonsterKilled?.Invoke (this, hit, outcome);
+        PerformDeath (hit.AttackerId);
+    }
 
-	/// <summary>
-	///     Death pipeline: stop physics, entity_killed (client applies the killing blow itself),
-	///     then soft despawn next frame so the anim can start before remove.
-	/// </summary>
-	private void PerformDeath(ushort killerGlobalId)
-	{
-		if (_deathStarted)
-		{
-			return;
-		}
+    /// <summary>
+    /// entity_killed lets the client apply the killing blow, then a soft despawn so the anim can
+    /// start
+    /// </summary>
+    private void PerformDeath (ushort killerGlobalId)
+    {
+        if (_deathStarted)
+        {
+            return;
+        }
 
-		_deathStarted = true;
+        _deathStarted = true;
 
-		// Halt nav/AI/position broadcast so the corpse does not keep chasing while the client plays the death.
-		SetPhysicsProcess(false);
+        // Halt nav/AI/position broadcast so the corpse does not keep chasing while the client plays
+        // the death.
+        SetPhysicsProcess (false);
 
-		BroadcastDeathSignalToVisibleClients(killerGlobalId);
-		Callable.From(FinishDespawn).CallDeferred();
-	}
+        BroadcastDeathSignalToVisibleClients (killerGlobalId);
+        Callable.From (FinishDespawn).CallDeferred ();
+    }
 
-	private void FinishDespawn()
-	{
-		if (!IsInstanceValid(this))
-		{
-			return;
-		}
+    private void FinishDespawn ()
+    {
+        if (!IsInstanceValid (this))
+        {
+            return;
+        }
 
-		BroadcastDespawnToVisibleClients();
-		RemoveFromWorldRegistry();
-		QueueFree();
-	}
+        BroadcastDespawnToVisibleClients ();
+        RemoveFromWorldRegistry ();
+        QueueFree ();
+    }
 }

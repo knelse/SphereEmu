@@ -14,26 +14,28 @@ public partial class EntityRadarControl
 {
     public const double RadarRadiusMeters = 200;
 
-    private IReadOnlyList<PacketAnalyzeData> _items = Array.Empty<PacketAnalyzeData>();
+    private IReadOnlyList<PacketAnalyzeData> _items = Array.Empty<PacketAnalyzeData> ();
     private double _clientX;
     private double _clientZ;
-    /// <summary>Radians: 0 = north (+Z), counter-clockwise positive; east = -π/2.</summary>
+    /// <summary>
+    /// Radians: 0 = north (+Z), counter-clockwise positive; east = -π/2.
+    /// </summary>
     private double _clientTurn;
     private bool _hasClientPosition;
 
     private double _lastRingsLayoutWidth = double.NaN;
     private double _lastRingsLayoutHeight = double.NaN;
 
-    private readonly Dictionary<int, (Shape Shape, MarkerVisualKind Kind)> _markersByEntityId = new();
+    private readonly Dictionary<int, (Shape Shape, MarkerVisualKind Kind)> _markersByEntityId = new ();
 
-    public EntityRadarControl()
+    public EntityRadarControl ()
     {
-        InitializeComponent();
-        Loaded += (_, _) => Redraw();
-        SizeChanged += (_, _) => Redraw();
+        InitializeComponent ();
+        Loaded += (_, _) => Redraw ();
+        SizeChanged += (_, _) => Redraw ();
     }
 
-    public void SetEntities(IReadOnlyList<PacketAnalyzeData> items, double clientX, double clientZ, double clientTurnRad,
+    public void SetEntities (IReadOnlyList<PacketAnalyzeData> items, double clientX, double clientZ, double clientTurnRad,
         bool hasClientPosition)
     {
         _items = items;
@@ -41,73 +43,73 @@ public partial class EntityRadarControl
         _clientZ = clientZ;
         _clientTurn = clientTurnRad;
         _hasClientPosition = hasClientPosition;
-        Redraw();
+        Redraw ();
     }
 
-    private void Redraw()
+    private void Redraw ()
     {
         PlaceholderText.Visibility = _hasClientPosition ? Visibility.Collapsed : Visibility.Visible;
         if (!_hasClientPosition || ActualWidth < 4 || ActualHeight < 4)
         {
-            ClearEntityMarkers();
-            RingsCanvas.Children.Clear();
+            ClearEntityMarkers ();
+            RingsCanvas.Children.Clear ();
             _lastRingsLayoutWidth = double.NaN;
             return;
         }
 
         var cx = ActualWidth / 2;
         var cy = ActualHeight / 2;
-        var half = Math.Min(ActualWidth, ActualHeight) / 2;
+        var half = Math.Min (ActualWidth, ActualHeight) / 2;
         var pxPerMeter = half / RadarRadiusMeters;
 
-        if (double.IsNaN(_lastRingsLayoutWidth) ||
-            Math.Abs(_lastRingsLayoutWidth - ActualWidth) > 0.5 ||
-            Math.Abs(_lastRingsLayoutHeight - ActualHeight) > 0.5)
+        if (double.IsNaN (_lastRingsLayoutWidth) ||
+            Math.Abs (_lastRingsLayoutWidth - ActualWidth) > 0.5 ||
+            Math.Abs (_lastRingsLayoutHeight - ActualHeight) > 0.5)
         {
-            RingsCanvas.Children.Clear();
-            DrawRangeRings(cx, cy, pxPerMeter);
-            var clientMarker = CreateClientMarker();
+            RingsCanvas.Children.Clear ();
+            DrawRangeRings (cx, cy, pxPerMeter);
+            var clientMarker = CreateClientMarker ();
             clientMarker.IsHitTestVisible = false;
-            PositionShape(clientMarker, cx, cy);
-            RingsCanvas.Children.Add(clientMarker);
+            PositionShape (clientMarker, cx, cy);
+            RingsCanvas.Children.Add (clientMarker);
             _lastRingsLayoutWidth = ActualWidth;
             _lastRingsLayoutHeight = ActualHeight;
         }
 
-        var visibleIds = new HashSet<int>();
+        var visibleIds = new HashSet<int> ();
         foreach (var pad in _items)
         {
-            if (!TryGetMapPosition(pad, out var ex, out var ez))
+            if (!TryGetMapPosition (pad, out var ex, out var ez))
             {
                 continue;
             }
 
             var dx = ex - _clientX;
             var dz = ez - _clientZ;
-            var dist = Math.Sqrt(dx * dx + dz * dz);
+            var dist = Math.Sqrt (dx * dx + dz * dz);
             if (dist > RadarRadiusMeters)
             {
                 continue;
             }
 
-            WorldOffsetToRadarScreen(dx, dz, _clientTurn, cx, cy, pxPerMeter, out var px, out var py);
+            WorldOffsetToRadarScreen (dx, dz, _clientTurn, cx, cy, pxPerMeter, out var px, out var py);
 
-            visibleIds.Add(pad.Id);
-            UpsertEntityMarker(pad, px, py);
+            visibleIds.Add (pad.Id);
+            UpsertEntityMarker (pad, px, py);
         }
 
-        foreach (var id in _markersByEntityId.Keys.Where(id => !visibleIds.Contains(id)).ToList())
+        foreach (var id in _markersByEntityId.Keys.Where (id => !visibleIds.Contains (id)).ToList ())
         {
-            RemoveMarker(id);
+            RemoveMarker (id);
         }
     }
 
-    private void UpsertEntityMarker(PacketAnalyzeData pad, double px, double py)
+    private void UpsertEntityMarker (PacketAnalyzeData pad, double px, double py)
     {
-        var kind = GetMarkerVisualKind(pad);
-        if (_markersByEntityId.TryGetValue(pad.Id, out var existing) && existing.Kind == kind)
+        var kind = GetMarkerVisualKind (pad);
+        if (_markersByEntityId.TryGetValue (pad.Id, out var existing) && existing.Kind == kind)
         {
-            PositionShape(existing.Shape, px, py);
+            PositionShape (existing.Shape, px, py);
             var tip = pad.DisplayValue;
             if (existing.Shape.ToolTip as string != tip)
             {
@@ -117,54 +119,51 @@ public partial class EntityRadarControl
             return;
         }
 
-        if (_markersByEntityId.TryGetValue(pad.Id, out var old))
+        if (_markersByEntityId.TryGetValue (pad.Id, out var old))
         {
-            EntitiesCanvas.Children.Remove(old.Shape);
-            _markersByEntityId.Remove(pad.Id);
+            EntitiesCanvas.Children.Remove (old.Shape);
+            _markersByEntityId.Remove (pad.Id);
         }
 
-        var shape = CreateMarkerShape(pad);
+        var shape = CreateMarkerShape (pad);
         shape.ToolTip = pad.DisplayValue;
-        ToolTipService.SetInitialShowDelay(shape, 0);
-        ToolTipService.SetBetweenShowDelay(shape, 0);
-        PositionShape(shape, px, py);
-        EntitiesCanvas.Children.Add(shape);
+        ToolTipService.SetInitialShowDelay (shape, 0);
+        ToolTipService.SetBetweenShowDelay (shape, 0);
+        PositionShape (shape, px, py);
+        EntitiesCanvas.Children.Add (shape);
         _markersByEntityId[pad.Id] = (shape, kind);
     }
 
-    private void RemoveMarker(int id)
+    private void RemoveMarker (int id)
     {
-        if (!_markersByEntityId.TryGetValue(id, out var entry))
+        if (!_markersByEntityId.TryGetValue (id, out var entry))
         {
             return;
         }
 
-        EntitiesCanvas.Children.Remove(entry.Shape);
-        _markersByEntityId.Remove(id);
+        EntitiesCanvas.Children.Remove (entry.Shape);
+        _markersByEntityId.Remove (id);
     }
 
-    private void ClearEntityMarkers()
+    private void ClearEntityMarkers ()
     {
-        EntitiesCanvas.Children.Clear();
-        _markersByEntityId.Clear();
+        EntitiesCanvas.Children.Clear ();
+        _markersByEntityId.Clear ();
     }
 
-    /// <summary>
-    /// World offset (dx,dz) in meters; <paramref name="turnRad"/>: 0 = north (+Z), CCW+, east = -π/2.
-    /// Maps so player forward points to the top of the radar (negative canvas Y).
-    /// </summary>
-    private static void WorldOffsetToRadarScreen(double dx, double dz, double turnRad, double cx, double cy,
+    /// Player forward is negative canvas Y
+    private static void WorldOffsetToRadarScreen (double dx, double dz, double turnRad, double cx, double cy,
         double pxPerMeter, out double px, out double py)
     {
-        var sinT = Math.Sin(turnRad);
-        var cosT = Math.Cos(turnRad);
+        var sinT = Math.Sin (turnRad);
+        var cosT = Math.Cos (turnRad);
         var localForward = -dx * sinT + dz * cosT;
         var localRight = dx * cosT + dz * sinT;
         px = cx + localRight * pxPerMeter;
         py = cy - localForward * pxPerMeter;
     }
 
-    private void DrawRangeRings(double cx, double cy, double pxPerMeter)
+    private void DrawRangeRings (double cx, double cy, double pxPerMeter)
     {
         foreach (var r in new[] { 50, 100, 150, 200 })
         {
@@ -173,24 +172,24 @@ public partial class EntityRadarControl
             {
                 Width = d,
                 Height = d,
-                Stroke = new SolidColorBrush(Color.FromArgb(80, 160, 160, 160)),
+                Stroke = new SolidColorBrush (Color.FromArgb (80, 160, 160, 160)),
                 StrokeThickness = 1,
                 Fill = Brushes.Transparent,
                 IsHitTestVisible = false
             };
-            Canvas.SetLeft(ring, cx - d / 2);
-            Canvas.SetTop(ring, cy - d / 2);
-            RingsCanvas.Children.Add(ring);
+            Canvas.SetLeft (ring, cx - d / 2);
+            Canvas.SetTop (ring, cy - d / 2);
+            RingsCanvas.Children.Add (ring);
         }
     }
 
-    private static void PositionShape(Shape shape, double centerX, double centerY)
+    private static void PositionShape (Shape shape, double centerX, double centerY)
     {
-        Canvas.SetLeft(shape, centerX - shape.Width / 2);
-        Canvas.SetTop(shape, centerY - shape.Height / 2);
+        Canvas.SetLeft (shape, centerX - shape.Width / 2);
+        Canvas.SetTop (shape, centerY - shape.Height / 2);
     }
 
-    private static Shape CreateClientMarker()
+    private static Shape CreateClientMarker ()
     {
         return new Ellipse
         {
@@ -214,7 +213,7 @@ public partial class EntityRadarControl
         Default
     }
 
-    private static MarkerVisualKind GetMarkerVisualKind(PacketAnalyzeData pad)
+    private static MarkerVisualKind GetMarkerVisualKind (PacketAnalyzeData pad)
     {
         var ot = pad.ObjectType;
         if (pad is CharacterPacket)
@@ -222,12 +221,12 @@ public partial class EntityRadarControl
             return MarkerVisualKind.Character;
         }
 
-        if (IsChest(ot))
+        if (IsChest (ot))
         {
             return MarkerVisualKind.Chest;
         }
 
-        if (IsNpc(ot) || pad is NpcTradePacket)
+        if (IsNpc (ot) || pad is NpcTradePacket)
         {
             return MarkerVisualKind.Npc;
         }
@@ -237,7 +236,7 @@ public partial class EntityRadarControl
             return MarkerVisualKind.Monster;
         }
 
-        if (IsDoorOrTeleport(ot))
+        if (IsDoorOrTeleport (ot))
         {
             return MarkerVisualKind.DoorTeleport;
         }
@@ -255,16 +254,16 @@ public partial class EntityRadarControl
         return MarkerVisualKind.Default;
     }
 
-    private static Shape CreateMarkerShape(PacketAnalyzeData pad)
+    private static Shape CreateMarkerShape (PacketAnalyzeData pad)
     {
         var ot = pad.ObjectType;
 
         if (pad is CharacterPacket)
         {
-            return EllipseMarker(Brushes.DeepSkyBlue, 10);
+            return EllipseMarker (Brushes.DeepSkyBlue, 10);
         }
 
-        if (IsChest(ot))
+        if (IsChest (ot))
         {
             return new Rectangle
             {
@@ -276,35 +275,35 @@ public partial class EntityRadarControl
             };
         }
 
-        if (IsNpc(ot) || pad is NpcTradePacket)
+        if (IsNpc (ot) || pad is NpcTradePacket)
         {
-            return TriangleMarker(Brushes.LimeGreen, Brushes.DarkGreen, 12);
+            return TriangleMarker (Brushes.LimeGreen, Brushes.DarkGreen, 12);
         }
 
         if (ot is ObjectType.Monster or ObjectType.Monster_Flyer)
         {
-            return EllipseMarker(Brushes.OrangeRed, 10);
+            return EllipseMarker (Brushes.OrangeRed, 10);
         }
 
-        if (IsDoorOrTeleport(ot))
+        if (IsDoorOrTeleport (ot))
         {
-            return DiamondMarker(Brushes.Cyan, Brushes.DarkCyan, 12);
+            return DiamondMarker (Brushes.Cyan, Brushes.DarkCyan, 12);
         }
 
         if (pad is ItemPacket)
         {
-            return EllipseMarker(Brushes.SandyBrown, 7);
+            return EllipseMarker (Brushes.SandyBrown, 7);
         }
 
         if (pad is WorldObject)
         {
-            return EllipseMarker(Brushes.Gray, 8);
+            return EllipseMarker (Brushes.Gray, 8);
         }
 
-        return EllipseMarker(Brushes.LightGray, 7);
+        return EllipseMarker (Brushes.LightGray, 7);
     }
 
-    private static Shape EllipseMarker(Brush fill, double size)
+    private static Shape EllipseMarker (Brush fill, double size)
     {
         return new Ellipse
         {
@@ -316,17 +315,17 @@ public partial class EntityRadarControl
         };
     }
 
-    private static Polygon TriangleMarker(Brush fill, Brush stroke, double size)
+    private static Polygon TriangleMarker (Brush fill, Brush stroke, double size)
     {
         var h = size;
         var w = size;
         return new Polygon
         {
-            Points = new PointCollection(new[]
+            Points = new PointCollection (new[]
             {
-                new Point(w / 2, 0),
-                new Point(w, h),
-                new Point(0, h)
+                new Point (w / 2, 0),
+                new Point (w, h),
+                new Point (0, h)
             }),
             Fill = fill,
             Stroke = stroke,
@@ -336,18 +335,18 @@ public partial class EntityRadarControl
         };
     }
 
-    private static Polygon DiamondMarker(Brush fill, Brush stroke, double size)
+    private static Polygon DiamondMarker (Brush fill, Brush stroke, double size)
     {
         var h = size;
         var w = size;
         return new Polygon
         {
-            Points = new PointCollection(new[]
+            Points = new PointCollection (new[]
             {
-                new Point(w / 2, 0),
-                new Point(w, h / 2),
-                new Point(w / 2, h),
-                new Point(0, h / 2)
+                new Point (w / 2, 0),
+                new Point (w, h / 2),
+                new Point (w / 2, h),
+                new Point (0, h / 2)
             }),
             Fill = fill,
             Stroke = stroke,
@@ -357,10 +356,10 @@ public partial class EntityRadarControl
         };
     }
 
-    private static bool IsChest(ObjectType o) =>
+    private static bool IsChest (ObjectType o) =>
         o is ObjectType.Chest2 or ObjectType.Chest5 or ObjectType.Castle_Chest;
 
-    private static bool IsNpc(ObjectType o) => o switch
+    private static bool IsNpc (ObjectType o) => o switch
     {
         ObjectType.Npc_Trade_Random_Name or ObjectType.Npc_Quest_Title or ObjectType.Npc_Quest_Karma
             or ObjectType.Npc_Quest_Degree or ObjectType.Npc_Guide or ObjectType.Npc_Trade
@@ -368,7 +367,7 @@ public partial class EntityRadarControl
         _ => false
     };
 
-    private static bool IsDoorOrTeleport(ObjectType o) => o switch
+    private static bool IsDoorOrTeleport (ObjectType o) => o switch
     {
         ObjectType.Door_Entrance or ObjectType.Door_Entrance_With_Key or ObjectType.Door_Exit
             or ObjectType.Teleport_With_Target or ObjectType.Teleport_In_Dungeon
@@ -378,7 +377,7 @@ public partial class EntityRadarControl
         _ => false
     };
 
-    internal static bool TryGetMapPosition(PacketAnalyzeData pad, out double x, out double z)
+    internal static bool TryGetMapPosition (PacketAnalyzeData pad, out double x, out double z)
     {
         x = z = 0;
         switch (pad)

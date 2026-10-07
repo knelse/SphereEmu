@@ -1,7 +1,4 @@
-﻿/// <summary>
-/// Clan, group, PM and their say* versions 
-/// </summary>
-public enum PrivateChatType
+﻿public enum PrivateChatType
 {
     Clan = 4,
     Group = 5,
@@ -11,9 +8,6 @@ public enum PrivateChatType
     PM = 15
 }
 
-/// <summary>
-/// Everything but clan, group, PM and their say* versions 
-/// </summary>
 public enum PublicChatType
 {
     // Whisper = 0,

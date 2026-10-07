@@ -29,32 +29,32 @@ public static class BannedClients
 
     static BannedClients ()
     {
-        LoadBannedClients();
+        LoadBannedClients ();
     }
 
     private static void LoadBannedClients ()
     {
         try
         {
-            if (!File.Exists(BANNED_CLIENTS_FILE))
+            if (!File.Exists (BANNED_CLIENTS_FILE))
             {
-                SphLogger.Info("No banned clients file found. Creating new one.");
-                SaveBannedClients();
+                SphLogger.Info ("No banned clients file found. Creating new one.");
+                SaveBannedClients ();
                 return;
             }
 
-            var json = File.ReadAllText(BANNED_CLIENTS_FILE);
+            var json = File.ReadAllText (BANNED_CLIENTS_FILE);
             lock (lockObject)
             {
-                bannedClientsData = JsonSerializer.Deserialize<BannedClientsData>(json) ?? new BannedClientsData();
+                bannedClientsData = JsonSerializer.Deserialize<BannedClientsData> (json) ?? new BannedClientsData ();
             }
 
-            SphLogger.Info($"Loaded {bannedClientsData.BannedClients.Count} banned clients.");
+            SphLogger.Info ($"Loaded {bannedClientsData.BannedClients.Count} banned clients.");
         }
         catch (Exception ex)
         {
-            SphLogger.Error("Failed to load banned clients file.", ex);
-            bannedClientsData = new BannedClientsData();
+            SphLogger.Error ("Failed to load banned clients file.", ex);
+            bannedClientsData = new BannedClientsData ();
         }
     }
 
@@ -62,13 +62,13 @@ public static class BannedClients
     {
         try
         {
-            var json = JsonSerializer.Serialize(bannedClientsData, serializerOptions);
-            File.WriteAllText(BANNED_CLIENTS_FILE, json);
-            SphLogger.Info($"Saved {bannedClientsData.BannedClients.Count} banned clients.");
+            var json = JsonSerializer.Serialize (bannedClientsData, serializerOptions);
+            File.WriteAllText (BANNED_CLIENTS_FILE, json);
+            SphLogger.Info ($"Saved {bannedClientsData.BannedClients.Count} banned clients.");
         }
         catch (Exception ex)
         {
-            SphLogger.Error("Failed to save banned clients file.", ex);
+            SphLogger.Error ("Failed to save banned clients file.", ex);
         }
     }
 
@@ -76,7 +76,7 @@ public static class BannedClients
     {
         lock (lockObject)
         {
-            return bannedClientsData.BannedClients.Any(b => b.IpAddress == ipAddress);
+            return bannedClientsData.BannedClients.Any (b => b.IpAddress == ipAddress);
         }
     }
 
@@ -84,7 +84,7 @@ public static class BannedClients
     {
         lock (lockObject)
         {
-            return bannedClientsData.BannedClients.Any(b => b.Login == login);
+            return bannedClientsData.BannedClients.Any (b => b.Login == login);
         }
     }
 
@@ -92,9 +92,9 @@ public static class BannedClients
     {
         lock (lockObject)
         {
-            if (bannedClientsData.BannedClients.Any(b => b.Login == login && b.IpAddress == ipAddress))
+            if (bannedClientsData.BannedClients.Any (b => b.Login == login && b.IpAddress == ipAddress))
             {
-                SphLogger.Info($"Client already banned. Login: {login}, IP: {ipAddress}");
+                SphLogger.Info ($"Client already banned. Login: {login}, IP: {ipAddress}");
                 return;
             }
 
@@ -105,9 +105,9 @@ public static class BannedClients
                 BannedAt = DateTime.UtcNow
             };
 
-            bannedClientsData.BannedClients.Add(entry);
-            SaveBannedClients();
-            SphLogger.Info($"Banned client. Login: {login}, IP: {ipAddress}");
+            bannedClientsData.BannedClients.Add (entry);
+            SaveBannedClients ();
+            SphLogger.Info ($"Banned client. Login: {login}, IP: {ipAddress}");
         }
     }
 
@@ -115,14 +115,14 @@ public static class BannedClients
     {
         lock (lockObject)
         {
-            var removed = bannedClientsData.BannedClients.RemoveAll(b => b.Login == login);
+            var removed = bannedClientsData.BannedClients.RemoveAll (b => b.Login == login);
             if (removed <= 0)
             {
                 return;
             }
 
-            SaveBannedClients();
-            SphLogger.Info($"Unbanned client. Login: {login}");
+            SaveBannedClients ();
+            SphLogger.Info ($"Unbanned client. Login: {login}");
         }
     }
 }

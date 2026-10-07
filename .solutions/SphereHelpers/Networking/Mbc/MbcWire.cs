@@ -1,14 +1,12 @@
 namespace SphServer.Helpers.Networking;
 
-/// <summary>
-///     Msg300 body markers: 7-bit wire. 0 = TERM, 0x3F = NewProcessOrModule, else region = wire - 1.
-/// </summary>
+/// 7-bit msg300 markers: 0 is TERM, 0x3F is NewProcessOrModule, otherwise region is wire - 1
 public static class MbcWire
 {
     public const int Terminator = 0;
     public const int Switch = 0x3F;
 
-    public static string RegionType(int wire, int? region = null, string? recoveredName = null, int? command = null)
+    public static string RegionType (int wire, int? region = null, string? recoveredName = null, int? command = null)
     {
         if (wire == Terminator)
         {
@@ -37,9 +35,9 @@ public static class MbcWire
         }
 
         if (command is null &&
-            !string.IsNullOrEmpty(recoveredName) &&
-            !recoveredName.StartsWith("cmd", StringComparison.OrdinalIgnoreCase) &&
-            !recoveredName.StartsWith("r", StringComparison.Ordinal) &&
+            !string.IsNullOrEmpty (recoveredName) &&
+            !recoveredName.StartsWith ("cmd", StringComparison.OrdinalIgnoreCase) &&
+            !recoveredName.StartsWith ("r", StringComparison.Ordinal) &&
             recoveredName is not ("ContMan" or "TradeMan" or "CheckPing" or "Manager" or "SpawnSnapshot"))
         {
             return recoveredName;

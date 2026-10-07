@@ -16,34 +16,34 @@ public partial class ClientStateObjectTypeFilterDialog : Window
         public bool IsSelected { get; set; }
     }
 
-    public ObservableCollection<ObjectTypeFilterItem> Items { get; } = new();
+    public ObservableCollection<ObjectTypeFilterItem> Items { get; } = new ();
 
     public ObjectType[] SelectedObjectTypes =>
-        Items.Where(x => x.IsSelected).Select(x => x.ObjectType).ToArray();
+        Items.Where (x => x.IsSelected).Select (x => x.ObjectType).ToArray ();
 
-    public ClientStateObjectTypeFilterDialog(HashSet<ObjectType>? initiallySelected)
+    public ClientStateObjectTypeFilterDialog (HashSet<ObjectType>? initiallySelected)
     {
-        InitializeComponent();
+        InitializeComponent ();
         DataContext = this;
 
         var selected = initiallySelected ??
-                       Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).ToHashSet();
+                       Enum.GetValues<ObjectType> ().Where (x => x != ObjectType.Unknown).ToHashSet ();
 
-        foreach (var ot in Enum.GetValues<ObjectType>().Where(x => x != ObjectType.Unknown).OrderBy(x => (ushort)x))
+        foreach (var ot in Enum.GetValues<ObjectType> ().Where (x => x != ObjectType.Unknown).OrderBy (x => (ushort) x))
         {
-            Items.Add(new ObjectTypeFilterItem
+            Items.Add (new ObjectTypeFilterItem
             {
                 ObjectType = ot,
-                Label = $"{(ushort)ot}  {ot}",
-                IsSelected = selected.Contains(ot)
+                Label = $"{(ushort) ot}  {ot}",
+                IsSelected = selected.Contains (ot)
             });
         }
     }
 
-    private void Ok_OnClick(object sender, RoutedEventArgs e)
+    private void Ok_OnClick (object sender, RoutedEventArgs e)
     {
         DialogResult = true;
-        Close();
+        Close ();
     }
 }
 

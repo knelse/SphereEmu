@@ -11,22 +11,22 @@ internal class CapturedPacketRawData
     internal PacketSource Source;
     internal bool WasProcessed;
 
-    internal static int Compare(CapturedPacketRawData self, CapturedPacketRawData other)
+    internal static int Compare (CapturedPacketRawData self, CapturedPacketRawData other)
     {
         if (self.DecodedBuffer.Length < 7 || other.DecodedBuffer.Length < 7)
         {
             return 0;
         }
 
-        return GetPacketNumberInSequence(self.DecodedBuffer).CompareTo(GetPacketNumberInSequence(other.DecodedBuffer));
+        return GetPacketNumberInSequence (self.DecodedBuffer).CompareTo (GetPacketNumberInSequence (other.DecodedBuffer));
     }
 
-    internal int GetPacketNumberInSequence()
+    internal int GetPacketNumberInSequence ()
     {
-        return GetPacketNumberInSequence(DecodedBuffer);
+        return GetPacketNumberInSequence (DecodedBuffer);
     }
 
-    internal static int GetPacketNumberInSequence(byte[] buffer)
+    internal static int GetPacketNumberInSequence (byte[] buffer)
     {
         if (buffer.Length < 8)
         {
@@ -36,23 +36,23 @@ internal class CapturedPacketRawData
         return (buffer[7] << 8) + buffer[6];
     }
 
-    internal static List<CapturedPacketRawData> CombinePacketsInSequence(List<CapturedPacketRawData> input)
+    internal static List<CapturedPacketRawData> CombinePacketsInSequence (List<CapturedPacketRawData> input)
     {
-        var result = new List<CapturedPacketRawData>();
-        input.Sort(Compare);
+        var result = new List<CapturedPacketRawData> ();
+        input.Sort (Compare);
 
         for (var i = 0; i < input.Count; i++)
         {
-            var currentDecoded = new List<byte>(input[i].DecodedBuffer);
-            var current = new List<byte>(input[i].Buffer);
+            var currentDecoded = new List<byte> (input[i].DecodedBuffer);
+            var current = new List<byte> (input[i].Buffer);
             if (i == input.Count - 1 ||
-                input[i + 1].GetPacketNumberInSequence() != input[i].GetPacketNumberInSequence())
+                input[i + 1].GetPacketNumberInSequence () != input[i].GetPacketNumberInSequence ())
             {
-                result.Add(new CapturedPacketRawData
+                result.Add (new CapturedPacketRawData
                 {
                     ArrivalTime = input[i].ArrivalTime,
-                    DecodedBuffer = currentDecoded.ToArray(),
-                    Buffer = current.ToArray(),
+                    DecodedBuffer = currentDecoded.ToArray (),
+                    Buffer = current.ToArray (),
                     Source = input[i].Source,
                     WasProcessed = true
                 });
@@ -62,18 +62,18 @@ internal class CapturedPacketRawData
             var j = 1;
 
             while (i + j < input.Count &&
-                   input[i + j].GetPacketNumberInSequence() == input[i].GetPacketNumberInSequence())
+                   input[i + j].GetPacketNumberInSequence () == input[i].GetPacketNumberInSequence ())
             {
-                currentDecoded.AddRange(input[i + j].DecodedBuffer);
-                current.AddRange(input[i + j].Buffer);
+                currentDecoded.AddRange (input[i + j].DecodedBuffer);
+                current.AddRange (input[i + j].Buffer);
                 j++;
             }
 
-            result.Add(new CapturedPacketRawData
+            result.Add (new CapturedPacketRawData
             {
                 ArrivalTime = input[i].ArrivalTime,
-                DecodedBuffer = currentDecoded.ToArray(),
-                Buffer = current.ToArray(),
+                DecodedBuffer = currentDecoded.ToArray (),
+                Buffer = current.ToArray (),
                 Source = input[i].Source,
                 WasProcessed = true
             });
@@ -84,24 +84,24 @@ internal class CapturedPacketRawData
         return result;
     }
 
-    internal void ProcessPacketRawData()
+    internal void ProcessPacketRawData ()
     {
         switch (Source)
         {
             case PacketSource.CLIENT:
-                ProcessPacketRawDataClient();
+                ProcessPacketRawDataClient ();
                 return;
             case PacketSource.SERVER:
-                ProcessPacketRawDataServer();
+                ProcessPacketRawDataServer ();
                 return;
         }
     }
 
-    private void ProcessPacketRawDataServer()
+    private void ProcessPacketRawDataServer ()
     {
     }
 
-    private void ProcessPacketRawDataClient()
+    private void ProcessPacketRawDataClient ()
     {
     }
 }

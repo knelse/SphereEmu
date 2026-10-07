@@ -36,7 +36,7 @@ public sealed class MbcDecodedField
     public required string Kind { get; set; }
     public string Name { get; set; } = "";
     public long? IntValue { get; set; }
-    /// <summary>Wire bits before SignedMinus30000 (raw-30000) or other transforms.</summary>
+    /// Bits before SignedMinus30000 (raw - 30000) or another transform
     public long? RawWireValue { get; set; }
     public double? DoubleValue { get; set; }
     public long[]? ArrayValue { get; init; }
@@ -115,6 +115,6 @@ public sealed class MbcDecodeResult
             or "ignored_ekill_target";
 }
 
-public readonly record struct MbcContextSwitch(int StartBit, int ProcessId, int ModuleTag);
+public readonly record struct MbcContextSwitch (int StartBit, int ProcessId, int ModuleTag);
 
-public readonly record struct MbcTcpFrame(int Offset, int Size, ushort Message, byte[] Payload);
+public readonly record struct MbcTcpFrame (int Offset, int Size, ushort Message, byte[] Payload);

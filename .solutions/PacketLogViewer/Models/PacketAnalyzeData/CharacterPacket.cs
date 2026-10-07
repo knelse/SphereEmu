@@ -24,29 +24,29 @@ public class CharacterPacket : PacketAnalyzeData
         $"{Id:X4} (Player) {Name} [{ClanName}] ({ClanRank}), "
         + $"{TitleLevel} / {DegreeLevel}, {Guild} ({GuildLevel}) at [{X:F2}, {Y:F2}, {Z:F2}]";
 
-    public CharacterPacket(List<PacketPart> parts) : base(parts)
+    public CharacterPacket (List<PacketPart> parts) : base (parts)
     {
-        var actionTypePart = Parts.FirstOrDefault(x => x.Name == PacketPartNames.ActionType);
+        var actionTypePart = Parts.FirstOrDefault (x => x.Name == PacketPartNames.ActionType);
         if (actionTypePart is not null)
         {
-            var actionTypeVal = (int)(actionTypePart.ActualLongValue ?? int.MaxValue);
-            ActionType = Enum.IsDefined(typeof(EntityActionType), actionTypeVal)
-                ? (EntityActionType)actionTypeVal
+            var actionTypeVal = (int) (actionTypePart.ActualLongValue ?? int.MaxValue);
+            ActionType = Enum.IsDefined (typeof (EntityActionType), actionTypeVal)
+                ? (EntityActionType) actionTypeVal
                 : EntityActionType.UNDEF;
         }
 
         if (ActionType is EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN)
         {
-            X = GetClientCoordValue(PacketPartNames.CoordX);
-            Y = GetClientCoordValue(PacketPartNames.CoordY);
-            Z = GetClientCoordValue(PacketPartNames.CoordZ);
-            Angle = GetIntValue(PacketPartNames.Angle);
+            X = GetClientCoordValue (PacketPartNames.CoordX);
+            Y = GetClientCoordValue (PacketPartNames.CoordY);
+            Z = GetClientCoordValue (PacketPartNames.CoordZ);
+            Angle = GetIntValue (PacketPartNames.Angle);
         }
 
         if (ActionType is EntityActionType.FULL_SPAWN)
         {
-            Name = GetStringValue(PacketPartNames.CharacterName);
-            ClanName = GetStringValue(PacketPartNames.ClanName);
+            Name = GetStringValue (PacketPartNames.CharacterName);
+            ClanName = GetStringValue (PacketPartNames.ClanName);
             // TypeNameLength = GetIntValue(PacketPartNames.TypeNameLength);
             // TypeName = GetStringValue(PacketPartNames.TypeName);
             // IconNameLength = GetIntValue(PacketPartNames.IconNameLength);

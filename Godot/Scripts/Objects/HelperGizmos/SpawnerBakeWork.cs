@@ -12,30 +12,28 @@ public readonly record struct SpawnerBakeParams
     public int PoolCount { get; init; }
 
     /// <summary>
-    ///     Batch rebake: coarser XZ seeding and cheaper nav disc checks.
+    /// Batch rebake: coarser XZ seeding and a cheaper nav disc
     /// </summary>
     public bool FastCandidateGeneration { get; init; }
 
     /// <summary>
-    ///     Optional XZ seed grid spacing in meters. When &gt; 0, overrides the default
-    ///     <see cref="FastCandidateGeneration" /> spacing (1.4 m fast / 0.7 m full).
+    /// Above 0, overrides FastCandidateGeneration spacing (1.4 m fast, 0.7 m full)
     /// </summary>
     public float CandidateSampleSpacingMeters { get; init; }
 
     /// <summary>
-    ///     When true, shuffle the seed pool and validate in order (O(n)) instead of
-    ///     farthest-point picking (O(n²)). Used by alchemy material spawners.
+    /// Shuffle then validate in order, O(n), instead of farthest-point O(n^2). Alchemy material
+    /// spawners use this
     /// </summary>
     public bool UseShuffledCandidateFill { get; init; }
 
     /// <summary>
-    ///     Hard cap on validation attempts. 0 = try the whole sample pool.
+    /// 0 tries the whole sample pool
     /// </summary>
     public int MaxCandidateAttempts { get; init; }
 
     /// <summary>
-    ///     Optional min separation between accepted slots. 0 = use
-    ///     <see cref="OutdoorFieldConfig.MinSlotSeparationMeters" />.
+    /// 0 uses OutdoorFieldConfig.MinSlotSeparationMeters
     /// </summary>
     public float MinSlotSeparationMeters { get; init; }
 }

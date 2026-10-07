@@ -9,43 +9,41 @@ using SphServer.Sphere.Game.WorldObject;
 namespace SphServer.Godot.Scripts.Objects.HelperGizmos;
 
 /// <summary>
-///     Activates <see cref="MonsterSpawner" /> instances when an in-game client enters
-///     <see cref="ServerConfig.AppConfig.ObjectVisibilityDistance" />. Once activated, a spawner
-///     stays active for the rest of the session (no deactivation when clients leave).
+/// Once activated, the spawner stays active for the session. Clients leaving does not turn it off
 /// </summary>
 public static class MonsterSpawnerActivationManager
 {
-    private static readonly object GridLock = new();
-    private static readonly Dictionary<(int CellX, int CellZ), List<MonsterSpawner>> Grid = new();
+    private static readonly object GridLock = new ();
+    private static readonly Dictionary<(int CellX, int CellZ), List<MonsterSpawner>> Grid = new ();
 
     public static float ActivationDistanceMeters => ServerConfig.AppConfig.ObjectVisibilityDistance;
 
-    public static void Register(MonsterSpawner spawner)
+    public static void Register (MonsterSpawner spawner)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        var cell = WorldToCell(spawner.GlobalPosition);
+        var cell = WorldToCell (spawner.GlobalPosition);
         lock (GridLock)
         {
-            if (!Grid.TryGetValue(cell, out var spawners))
+            if (!Grid.TryGetValue (cell, out var spawners))
             {
                 spawners = [];
                 Grid[cell] = spawners;
             }
 
-            if (!spawners.Contains(spawner))
+            if (!spawners.Contains (spawner))
             {
-                spawners.Add(spawner);
+                spawners.Add (spawner);
             }
         }
     }
 
-    public static void Unregister(MonsterSpawner spawner)
+    public static void Unregister (MonsterSpawner spawner)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
@@ -54,44 +52,44 @@ public static class MonsterSpawnerActivationManager
         {
             foreach (var spawners in Grid.Values)
             {
-                spawners.Remove(spawner);
+                spawners.Remove (spawner);
             }
         }
     }
 
-    public static void NotifyClientPosition(SphereClient client)
+    public static void NotifyClientPosition (SphereClient client)
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        ActivateSpawnersNearClient(client);
+        ActivateSpawnersNearClient (client);
     }
 
-    public static void CheckAllClients()
+    public static void CheckAllClients ()
     {
-        if (Engine.IsEditorHint())
+        if (Engine.IsEditorHint ())
         {
             return;
         }
 
-        foreach (var client in ActiveClients.GetAll().Values)
+        foreach (var client in ActiveClients.GetAll ().Values)
         {
-            ActivateSpawnersNearClient(client);
+            ActivateSpawnersNearClient (client);
         }
     }
 
-    private static void ActivateSpawnersNearClient(SphereClient client)
+    private static void ActivateSpawnersNearClient (SphereClient client)
     {
         if (client.CurrentCharacter is null)
         {
             return;
         }
 
-        var clientPosition = ClientWorldPosition.GetGodotWorldPosition(client);
+        var clientPosition = ClientWorldPosition.GetGodotWorldPosition (client);
         var activationRadiusSq = ActivationDistanceMeters * ActivationDistanceMeters;
-        var centerCell = WorldToCell(clientPosition);
+        var centerCell = WorldToCell (clientPosition);
 
         for (var dx = -1; dx <= 1; dx++)
         {
@@ -101,7 +99,7 @@ public static class MonsterSpawnerActivationManager
                 List<MonsterSpawner> spawners;
                 lock (GridLock)
                 {
-                    if (!Grid.TryGetValue(cell, out spawners!) || spawners.Count == 0)
+                    if (!Grid.TryGetValue (cell, out spawners!) || spawners.Count == 0)
                     {
                         continue;
                     }
@@ -111,41 +109,40 @@ public static class MonsterSpawnerActivationManager
 
                 foreach (var spawner in spawners)
                 {
-                    if (!GodotObject.IsInstanceValid(spawner) || spawner.IsActivated)
+                    if (!GodotObject.IsInstanceValid (spawner) || spawner.IsActivated)
                     {
                         continue;
                     }
 
-                    if (spawner.GlobalPosition.DistanceSquaredTo(clientPosition) > activationRadiusSq)
+                    if (spawner.GlobalPosition.DistanceSquaredTo (clientPosition) > activationRadiusSq)
                     {
                         continue;
                     }
 
-                    spawner.ActivateFromProximity();
+                    spawner.ActivateFromProximity ();
                 }
             }
         }
     }
 
-    private static (int CellX, int CellZ) WorldToCell(Vector3 worldPosition)
+    private static (int CellX, int CellZ) WorldToCell (Vector3 worldPosition)
     {
         var cellSize = ActivationDistanceMeters;
         return (
-            (int)Math.Floor(worldPosition.X / cellSize),
-            (int)Math.Floor(worldPosition.Z / cellSize));
+            (int) Math.Floor (worldPosition.X / cellSize),
+            (int) Math.Floor (worldPosition.Z / cellSize));
     }
 }
 
 /// <summary>
-///     Server tick fallback: clients that have not moved recently still activate nearby spawners
-///     and world-object visibility areas.
+/// Clients that have not moved recently still activate nearby spawners
 /// </summary>
 public partial class MonsterSpawnerActivationManagerNode : Node
 {
     private const double CheckIntervalSeconds = 1.0;
     private double _elapsedSeconds;
 
-    public override void _Process(double delta)
+    public override void _Process (double delta)
     {
         _elapsedSeconds += delta;
         if (_elapsedSeconds < CheckIntervalSeconds)
@@ -156,16 +153,16 @@ public partial class MonsterSpawnerActivationManagerNode : Node
         _elapsedSeconds = 0;
         if (SphServer.Server.SphereServer.ServerNode?.WorldChunks is { } streamer)
         {
-            streamer.CheckAllClients();
+            streamer.CheckAllClients ();
         }
 
         if (SphServer.Server.SphereServer.ServerNode?.TerrainGround is { } ground)
         {
-            ground.CheckAllClients();
+            ground.CheckAllClients ();
         }
 
-        MonsterSpawnerActivationManager.CheckAllClients();
-        AlchemyMaterialSpawnerActivationManager.CheckAllClients();
-        WorldObjectVisibilityManager.CheckAllClients();
+        MonsterSpawnerActivationManager.CheckAllClients ();
+        AlchemyMaterialSpawnerActivationManager.CheckAllClients ();
+        WorldObjectVisibilityManager.CheckAllClients ();
     }
 }

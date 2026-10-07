@@ -3,30 +3,29 @@ using LiteDB;
 namespace SphServer.Shared.Db;
 
 /// <summary>
-///     LiteDB stores enums as names. ObjectType was renamed (WeaponSword -> Weapon_Sword) and a few
-///     names reused with new values (Chest, Firework). Without this, loading items throws and
-///     SphereServer._Ready never finishes, so the debug character is skipped and TCP accept never runs.
+/// LiteDB names Chest, Firework, and WeaponSword do not match ObjectType, and a throw here skips
+/// TCP accept
 /// </summary>
 public static class ObjectTypeBson
 {
     private static readonly Dictionary<string, ObjectType> OldStoredNames =
-        new(StringComparer.OrdinalIgnoreCase)
+        new (StringComparer.OrdinalIgnoreCase)
         {
             ["Chest"] = ObjectType.Chest2,
             ["Firework"] = ObjectType.Firework_Celebration,
         };
 
-    public static void Register()
+    public static void Register ()
     {
-        BsonMapper.Global.RegisterType<ObjectType>(
-            type => new BsonValue((int)type),
+        BsonMapper.Global.RegisterType<ObjectType> (
+            type => new BsonValue ((int) type),
             Parse);
-        BsonMapper.Global.RegisterType<ObjectType?>(
-            type => type.HasValue ? new BsonValue((int)type.Value) : BsonValue.Null,
-            bson => bson.IsNull ? null : Parse(bson));
+        BsonMapper.Global.RegisterType<ObjectType?> (
+            type => type.HasValue ? new BsonValue ((int) type.Value) : BsonValue.Null,
+            bson => bson.IsNull ? null : Parse (bson));
     }
 
-    public static ObjectType Parse(BsonValue bson)
+    public static ObjectType Parse (BsonValue bson)
     {
         if (bson is null || bson.IsNull)
         {
@@ -36,8 +35,8 @@ public static class ObjectTypeBson
         if (bson.IsNumber)
         {
             var n = bson.AsInt32;
-            return n is >= 0 and <= ushort.MaxValue && Enum.IsDefined(typeof(ObjectType), (ushort)n)
-                ? (ObjectType)n
+            return n is >= 0 and <= ushort.MaxValue && Enum.IsDefined (typeof (ObjectType), (ushort) n)
+                ? (ObjectType) n
                 : ObjectType.Unknown;
         }
 
@@ -47,11 +46,11 @@ public static class ObjectTypeBson
         }
 
         var name = bson.AsString;
-        if (OldStoredNames.TryGetValue(name, out var remapped))
+        if (OldStoredNames.TryGetValue (name, out var remapped))
         {
             return remapped;
         }
 
-        return ObjectTypeParse.TryParse(name, out var parsed) ? parsed : ObjectType.Unknown;
+        return ObjectTypeParse.TryParse (name, out var parsed) ? parsed : ObjectType.Unknown;
     }
 }

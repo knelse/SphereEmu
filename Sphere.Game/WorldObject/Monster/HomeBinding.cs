@@ -3,11 +3,11 @@ using Godot;
 namespace SphServer.Sphere.Game.WorldObject;
 
 /// <summary>
-///     Binds a monster to its spawner home slot and outdoor leash disk.
+/// Spawner home slot and outdoor leash disk
 /// </summary>
 public readonly struct MonsterHomeBinding
 {
-    public MonsterHomeBinding(
+    public MonsterHomeBinding (
         int slotIndex,
         Vector3 homeSlotWorld,
         Vector3 leashCenterWorld,
@@ -32,7 +32,7 @@ public readonly struct MonsterHomeBinding
     public NodePath OwnerSpawnerPath { get; }
     public ulong OwnerSpawnerInstanceId { get; }
     /// <summary>
-    ///     Legacy field (always 0). Pathing uses navmesh Y; kept for MonsterHomeBinding constructor shape.
+    /// Always 0; pathing uses navmesh Y and the constructor still takes this slot
     /// </summary>
     public float AtlasVerticalDelta { get; }
 }

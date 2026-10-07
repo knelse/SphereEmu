@@ -7,7 +7,7 @@ public class PlayerDbEntrySerializer (PlayerDbEntry playerDbEntry) : SphereDbEnt
 {
     public byte[] ToInitialDataByteArray ()
     {
-        var data = new List<byte>();
+        var data = new List<byte> ();
         foreach (var character in playerDbEntry.Characters)
         {
             character.ClientIndex = playerDbEntry.Index;
@@ -16,12 +16,12 @@ public class PlayerDbEntrySerializer (PlayerDbEntry playerDbEntry) : SphereDbEnt
         for (var i = 0; i < 3; i++)
         {
             var characterData = playerDbEntry.Characters.Count > i
-                ? new CharacterDbEntrySerializer(playerDbEntry.Characters[i]).ToCharacterListByteArray()
-                : CommonPackets.CreateNewCharacterData(playerDbEntry.Index);
+                ? new CharacterDbEntrySerializer (playerDbEntry.Characters[i]).ToCharacterListByteArray ()
+                : CommonPackets.CreateNewCharacterData (playerDbEntry.Index);
 
-            data.AddRange(characterData);
+            data.AddRange (characterData);
         }
 
-        return data.ToArray();
+        return data.ToArray ();
     }
 }

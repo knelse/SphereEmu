@@ -3,19 +3,19 @@ using static ItemSuffix;
 
 public static class SphObjectDbHelper
 {
-    public static SphGameObject GetSuffixObject(GameObjectType objectType, ItemSuffix suffix, int tier = 0)
+    public static SphGameObject GetSuffixObject (GameObjectType objectType, ItemSuffix suffix, int tier = 0)
     {
         // TODO: calc proper values
-        var prefType = GameObjectToPrefTypeMap.GetValueOrDefault(objectType, Unknown);
+        var prefType = GameObjectToPrefTypeMap.GetValueOrDefault (objectType, Unknown);
 
-        if (prefType == Unknown || !SphObjectDb.SuffixDataDb.TryGetValue(prefType, out Dictionary<ItemSuffix, SphGameObject>? value) ||
-            !value.ContainsKey(suffix))
+        if (prefType == Unknown || !SphObjectDb.SuffixDataDb.TryGetValue (prefType, out Dictionary<ItemSuffix, SphGameObject>? value) ||
+            !value.ContainsKey (suffix))
         {
-            return new SphGameObject();
+            return new SphGameObject ();
         }
 
         // TODO: if perf is impacted switch to direct field assignment instead of reflection
-        var suffixObj = SphGameObject.CreateFromGameObject(value[suffix]);
+        var suffixObj = SphGameObject.CreateFromGameObject (value[suffix]);
         var tierScale = tier >= 0 && tier < BaseItemStatScale.Length
             ? BaseItemStatScale[tier]
             : 0;
@@ -112,7 +112,7 @@ public static class SphObjectDbHelper
 
     public static readonly int[] BaseItemStatScale = { 0, 1, 2, 3, 5, 7, 9, 12, 15, 18, 23, 28, 34, 37, 42, 48 };
 
-    public static readonly Dictionary<GameObjectType, ItemSuffix[]> TypeToSuffixIdMap = new()
+    public static readonly Dictionary<GameObjectType, ItemSuffix[]> TypeToSuffixIdMap = new ()
     {
         [Pref_AxeSword] = AxeSwordSuffixes,
         [Pref_Crossbow] = CrossbowSuffixes,
@@ -126,7 +126,7 @@ public static class SphObjectDbHelper
         [Pref_Quest] = QuestSuffixes
     };
 
-    public static readonly Dictionary<GameObjectType, GameObjectType> GameObjectToPrefTypeMap = new()
+    public static readonly Dictionary<GameObjectType, GameObjectType> GameObjectToPrefTypeMap = new ()
     {
         // makes no sense for prefs themselves
         [Pref_AxeSword] = Unknown,

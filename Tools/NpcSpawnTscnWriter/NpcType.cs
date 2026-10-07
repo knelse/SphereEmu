@@ -1,6 +1,6 @@
 namespace SphServer.Tools.NpcSpawnTscnWriter;
 
-/// <summary>Keep in sync with <c>Shared/GameData/Enums/NpcType.cs</c> (unique underlying values).</summary>
+/// Same values as Shared/GameData/Enums/NpcType.cs
 public enum NpcType
 {
     TradeMagic = 9,

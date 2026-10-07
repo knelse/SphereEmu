@@ -5,7 +5,7 @@ using SphServer.Shared.Db.DataModels;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Ornate popup chrome around <see cref="AdminUiItemDetails"/> content.
+/// Popup chrome around AdminUiItemDetails
 /// </summary>
 public partial class ItemDetailsPopup : Control
 {
@@ -19,8 +19,8 @@ public partial class ItemDetailsPopup : Control
     private const float ContentMarginTop = 4f;
     private const float ContentMarginBottom = 4f;
 
-    // Solid underlay so popup_mid keeps its tint but blocks the scene behind it.
-    private static readonly Color MidUnderlay = new(0.06f, 0.07f, 0.09f, 0.92f);
+    // popup_mid keeps its tint and blocks the scene behind it
+    private static readonly Color MidUnderlay = new (0.06f, 0.07f, 0.09f, 0.92f);
 
     private Control? dragHandle;
     private TextureButton? closeButton;
@@ -34,24 +34,24 @@ public partial class ItemDetailsPopup : Control
     public int? ItemId { get; private set; }
     public BelongingSlot? Slot { get; private set; }
 
-    public override void _Ready()
+    public override void _Ready ()
     {
         MouseFilter = MouseFilterEnum.Stop;
         if (!shellBuilt)
         {
-            RebuildShell(midTileCount);
+            RebuildShell (midTileCount);
         }
 
-        SetPinned(IsPinned);
+        SetPinned (IsPinned);
     }
 
-    public void Bind(int? itemId, BelongingSlot? slot)
+    public void Bind (int? itemId, BelongingSlot? slot)
     {
         ItemId = itemId;
         Slot = slot;
     }
 
-    public void SetPinned(bool pinned)
+    public void SetPinned (bool pinned)
     {
         IsPinned = pinned;
         if (closeButton is not null)
@@ -67,25 +67,25 @@ public partial class ItemDetailsPopup : Control
         }
     }
 
-    public void Populate(ItemDbEntry item, CharacterDbEntry? character, Locale locale)
+    public void Populate (ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
         ItemId = item.Id;
-        midTileCount = EstimateMidTiles(item, locale);
+        midTileCount = EstimateMidTiles (item, locale);
         var wasPinned = IsPinned;
 
-        if (IsInsideTree())
+        if (IsInsideTree ())
         {
-            RebuildShell(midTileCount);
-            SetPinned(wasPinned);
-            FillContent(item, character, locale);
+            RebuildShell (midTileCount);
+            SetPinned (wasPinned);
+            FillContent (item, character, locale);
         }
         else
         {
-            // _Ready will build shell; stash fill for after.
+            // The shell is built in _Ready, so the fill is stashed until then
             pendingItem = item;
             pendingCharacter = character;
             pendingLocale = locale;
-            CallDeferred(nameof(ApplyPendingPopulate));
+            CallDeferred (nameof (ApplyPendingPopulate));
         }
     }
 
@@ -93,7 +93,7 @@ public partial class ItemDetailsPopup : Control
     private CharacterDbEntry? pendingCharacter;
     private Locale pendingLocale;
 
-    private void ApplyPendingPopulate()
+    private void ApplyPendingPopulate ()
     {
         if (pendingItem is null)
         {
@@ -102,34 +102,34 @@ public partial class ItemDetailsPopup : Control
 
         var item = pendingItem;
         pendingItem = null;
-        RebuildShell(midTileCount);
-        SetPinned(IsPinned);
-        FillContent(item, pendingCharacter, pendingLocale);
+        RebuildShell (midTileCount);
+        SetPinned (IsPinned);
+        FillContent (item, pendingCharacter, pendingLocale);
     }
 
-    private static int EstimateMidTiles(ItemDbEntry item, Locale locale)
+    private static int EstimateMidTiles (ItemDbEntry item, Locale locale)
     {
         var innerW = FrameWidth - ContentMarginLeft - ContentMarginRight;
-        var contentH = AdminUiItemDetails.EstimateContentHeight(
+        var contentH = AdminUiItemDetails.EstimateContentHeight (
             item, locale, innerW, ContentMarginTop, ContentMarginBottom);
-        return Mathf.Max(2, Mathf.CeilToInt(contentH / MidHeight));
+        return Mathf.Max (2, Mathf.CeilToInt (contentH / MidHeight));
     }
 
-    private void FillContent(ItemDbEntry item, CharacterDbEntry? character, Locale locale)
+    private void FillContent (ItemDbEntry item, CharacterDbEntry? character, Locale locale)
     {
         if (contentBox is null)
         {
             return;
         }
 
-        AdminUiItemDetails.Fill(contentBox, item, character, locale);
+        AdminUiItemDetails.Fill (contentBox, item, character, locale);
     }
 
-    private void RebuildShell(int midTiles)
+    private void RebuildShell (int midTiles)
     {
-        foreach (var child in GetChildren())
+        foreach (var child in GetChildren ())
         {
-            child.QueueFree();
+            child.QueueFree ();
         }
 
         dragHandle = null;
@@ -138,29 +138,29 @@ public partial class ItemDetailsPopup : Control
         midTileCount = midTiles;
         shellBuilt = true;
 
-        CustomMinimumSize = new Vector2(FrameWidth, TopHeight + midTiles * MidHeight + BottomHeight);
+        CustomMinimumSize = new Vector2 (FrameWidth, TopHeight + midTiles * MidHeight + BottomHeight);
         Size = CustomMinimumSize;
 
         var midBodyH = midTiles * MidHeight;
-        AddChild(new ColorRect
+        AddChild (new ColorRect
         {
             Color = MidUnderlay,
-            Position = new Vector2(0, TopHeight),
-            Size = new Vector2(FrameWidth, midBodyH),
+            Position = new Vector2 (0, TopHeight),
+            Size = new Vector2 (FrameWidth, midBodyH),
             MouseFilter = MouseFilterEnum.Ignore
         });
 
         var chromeStack = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
-        chromeStack.AddThemeConstantOverride("separation", 0);
-        chromeStack.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        AddChild(chromeStack);
+        chromeStack.AddThemeConstantOverride ("separation", 0);
+        chromeStack.SetAnchorsAndOffsetsPreset (LayoutPreset.FullRect);
+        AddChild (chromeStack);
 
         dragHandle = new Control
         {
-            CustomMinimumSize = new Vector2(FrameWidth, TopHeight),
+            CustomMinimumSize = new Vector2 (FrameWidth, TopHeight),
             MouseFilter = MouseFilterEnum.Stop
         };
-        chromeStack.AddChild(dragHandle);
+        chromeStack.AddChild (dragHandle);
 
         var top = new TextureRect
         {
@@ -168,15 +168,15 @@ public partial class ItemDetailsPopup : Control
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.Scale,
             TextureFilter = TextureFilterEnum.Nearest,
-            CustomMinimumSize = new Vector2(FrameWidth, TopHeight),
+            CustomMinimumSize = new Vector2 (FrameWidth, TopHeight),
             MouseFilter = MouseFilterEnum.Ignore
         };
-        top.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        dragHandle.AddChild(top);
+        top.SetAnchorsAndOffsetsPreset (LayoutPreset.FullRect);
+        dragHandle.AddChild (top);
 
         const float closeW = 20f;
         const float closeH = 20f;
-        // Sit just above the bottom of popup_top (1px inset).
+        // 1px above the bottom of popup_top
         var closeTop = TopHeight - closeH - 1f;
         closeButton = new TextureButton
         {
@@ -184,10 +184,10 @@ public partial class ItemDetailsPopup : Control
             IgnoreTextureSize = true,
             StretchMode = TextureButton.StretchModeEnum.Scale,
             TextureFilter = TextureFilterEnum.Nearest,
-            CustomMinimumSize = new Vector2(closeW, closeH),
+            CustomMinimumSize = new Vector2 (closeW, closeH),
             Visible = false
         };
-        closeButton.SetAnchorsPreset(LayoutPreset.TopRight);
+        closeButton.SetAnchorsPreset (LayoutPreset.TopRight);
         closeButton.AnchorLeft = 1;
         closeButton.AnchorRight = 1;
         closeButton.GrowHorizontal = GrowDirection.Begin;
@@ -196,54 +196,54 @@ public partial class ItemDetailsPopup : Control
         closeButton.OffsetRight = -4;
         closeButton.OffsetBottom = closeTop + closeH;
         closeButton.Pressed += OnClosePressed;
-        dragHandle.AddChild(closeButton);
+        dragHandle.AddChild (closeButton);
         dragHandle.GuiInput += OnDragHandleGuiInput;
 
         for (var i = 0; i < midTiles; i++)
         {
-            chromeStack.AddChild(new TextureRect
+            chromeStack.AddChild (new TextureRect
             {
                 Texture = AdminUiAtlas.PopupMid,
                 ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                 StretchMode = TextureRect.StretchModeEnum.Scale,
                 TextureFilter = TextureFilterEnum.Nearest,
-                CustomMinimumSize = new Vector2(FrameWidth, MidHeight),
+                CustomMinimumSize = new Vector2 (FrameWidth, MidHeight),
                 MouseFilter = MouseFilterEnum.Ignore
             });
         }
 
-        chromeStack.AddChild(new TextureRect
+        chromeStack.AddChild (new TextureRect
         {
             Texture = AdminUiAtlas.PopupBottom,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.Scale,
             TextureFilter = TextureFilterEnum.Nearest,
-            CustomMinimumSize = new Vector2(FrameWidth, BottomHeight),
+            CustomMinimumSize = new Vector2 (FrameWidth, BottomHeight),
             MouseFilter = MouseFilterEnum.Ignore
         });
 
         var contentMargin = new MarginContainer { MouseFilter = MouseFilterEnum.Ignore };
-        contentMargin.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        contentMargin.SetAnchorsAndOffsetsPreset (LayoutPreset.FullRect);
         contentMargin.OffsetTop = TopHeight + ContentMarginTop;
         contentMargin.OffsetBottom = -BottomHeight - ContentMarginBottom;
         contentMargin.OffsetLeft = ContentMarginLeft;
         contentMargin.OffsetRight = -ContentMarginRight;
-        AddChild(contentMargin);
+        AddChild (contentMargin);
 
         contentBox = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
-        contentBox.AddThemeConstantOverride("separation", 2);
-        contentMargin.AddChild(contentBox);
+        contentBox.AddThemeConstantOverride ("separation", 2);
+        contentMargin.AddChild (contentBox);
     }
 
-    private void OnClosePressed()
+    private void OnClosePressed ()
     {
         if (IsPinned)
         {
-            QueueFree();
+            QueueFree ();
         }
     }
 
-    private void OnDragHandleGuiInput(InputEvent inputEvent)
+    private void OnDragHandleGuiInput (InputEvent inputEvent)
     {
         if (!IsPinned)
         {
@@ -254,15 +254,15 @@ public partial class ItemDetailsPopup : Control
         {
             if (button.Pressed)
             {
-                if (closeButton is not null && closeButton.GetGlobalRect().HasPoint(button.GlobalPosition))
+                if (closeButton is not null && closeButton.GetGlobalRect ().HasPoint (button.GlobalPosition))
                 {
                     return;
                 }
 
-                BringToFront();
+                BringToFront ();
                 dragging = true;
                 dragOffset = GlobalPosition - button.GlobalPosition;
-                AcceptEvent();
+                AcceptEvent ();
             }
             else
             {
@@ -272,13 +272,13 @@ public partial class ItemDetailsPopup : Control
         else if (dragging && inputEvent is InputEventMouseMotion motion)
         {
             GlobalPosition = motion.GlobalPosition + dragOffset;
-            AcceptEvent();
+            AcceptEvent ();
         }
     }
 
-    public void BringToFront()
+    public void BringToFront ()
     {
-        var parent = GetParent();
-        parent?.MoveChild(this, parent.GetChildCount() - 1);
+        var parent = GetParent ();
+        parent?.MoveChild (this, parent.GetChildCount () - 1);
     }
 }

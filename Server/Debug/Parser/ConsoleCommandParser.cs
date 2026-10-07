@@ -24,42 +24,44 @@ public enum ConsoleCommandParseResult
 
 public partial class ConsoleCommandParser
 {
-    /// <summary>How many values /stats reads, one per indexed assignment below.</summary>
+    /// <summary>
+    /// How many values /stats reads, one per indexed assignment below.
+    /// </summary>
     private const int StatsArgumentCount = 26;
 
-    private static readonly Dictionary<ushort, ConsoleCommandParser> ParserCache = new();
+    private static readonly Dictionary<ushort, ConsoleCommandParser> ParserCache = new ();
     private CharacterDbEntry currentCharacterDbEntry;
-    private readonly Dictionary<string, Action<string>> RegisteredCommands = new();
+    private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
 
-    // Always resolve live: reconnect reuses ClientIndex but allocates a new SphereClient, and a
-    // cached reference would keep sending GM feedback / packets into the freed connection.
-    private SphereClient? sphereClient => ActiveClients.Get(currentCharacterDbEntry.ClientIndex);
+    // Reconnect reuses ClientIndex but allocates a new SphereClient; a cached reference sends into
+    // the freed connection
+    private SphereClient? sphereClient => ActiveClients.Get (currentCharacterDbEntry.ClientIndex);
 
-    private ConsoleCommandParser(CharacterDbEntry characterDbEntry)
+    private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
     {
         currentCharacterDbEntry = characterDbEntry;
     }
 
-    public static ConsoleCommandParser Get(CharacterDbEntry characterDbEntry)
+    public static ConsoleCommandParser Get (CharacterDbEntry characterDbEntry)
     {
-        if (!ParserCache.TryGetValue(characterDbEntry.ClientIndex, out var parser))
+        if (!ParserCache.TryGetValue (characterDbEntry.ClientIndex, out var parser))
         {
-            parser = new ConsoleCommandParser(characterDbEntry);
-            parser.InitCommands();
+            parser = new ConsoleCommandParser (characterDbEntry);
+            parser.InitCommands ();
             ParserCache[characterDbEntry.ClientIndex] = parser;
         }
         else
         {
-            // Character row is a new instance after reconnect / reselect; keep the cache in sync.
+            // The character row is a new instance after reconnect or reselect
             parser.currentCharacterDbEntry = characterDbEntry;
         }
 
         return parser;
     }
 
-    public static void Invalidate(ushort clientIndex) => ParserCache.Remove(clientIndex);
+    public static void Invalidate (ushort clientIndex) => ParserCache.Remove (clientIndex);
 
-    private void InitCommands()
+    private void InitCommands ()
     {
         RegisteredCommands["stats"] = UpdateStats;
         RegisteredCommands["money"] = UpdateMoney;
@@ -68,7 +70,7 @@ public partial class ConsoleCommandParser
         RegisteredCommands["packethex"] = SendPacketHex;
         RegisteredCommands["packet"] = SendPacket;
         RegisteredCommands["buff"] = Buff;
-        // /clientmob sends the client-only template (no server node); /mob spawns a real one.
+        // /clientmob is a client-only template; /mob is a server node
         RegisteredCommands["clientmob"] = Mob;
         RegisteredCommands["mob"] = SpawnRealMonster;
         RegisteredCommands["mobid"] = MobById;
@@ -80,287 +82,287 @@ public partial class ConsoleCommandParser
         RegisteredCommands["tp"] = Teleport;
     }
 
-    // Reports command output to the player in-game (a GM chat line), or to the server console
-    // when no client is attached.
-    private void SendFeedback(string text)
+    // A GM chat line when a client is attached, otherwise the server console
+    private void SendFeedback (string text)
     {
-        // Also to the log: a command that fails a guard is otherwise invisible server-side.
-        SphLogger.Info($"GM feedback: {text}");
+        // A failed guard is otherwise invisible server-side
+        SphLogger.Info ($"GM feedback: {text}");
 
         if (sphereClient is null)
         {
-            Console.WriteLine(text);
+            Console.WriteLine (text);
             return;
         }
 
-        var response = MessageEncoder.EncodeToSendFromServer("GM: " + text, "GM",
-            (int)PublicChatType.GM_Outgoing);
-        sphereClient.MaybeQueueNetworkPacketSend(response);
+        var response = MessageEncoder.EncodeToSendFromServer ("GM: " + text, "GM",
+            (int) PublicChatType.GM_Outgoing);
+        sphereClient.MaybeQueueNetworkPacketSend (response);
     }
 
-    public bool IsRegistered(string? input)
+    public bool IsRegistered (string? input)
     {
-        return TrySplitCommand(input, out var command, out _) && RegisteredCommands.ContainsKey(command);
+        return TrySplitCommand (input, out var command, out _) && RegisteredCommands.ContainsKey (command);
     }
 
-    public ConsoleCommandParseResult Parse(string? input)
+    public ConsoleCommandParseResult Parse (string? input)
     {
-        if (!TrySplitCommand(input, out var command, out var args) ||
-            !RegisteredCommands.TryGetValue(command, out var value))
+        if (!TrySplitCommand (input, out var command, out var args) ||
+            !RegisteredCommands.TryGetValue (command, out var value))
         {
             return ConsoleCommandParseResult.ERROR;
         }
 
         try
         {
-            value(args);
+            value (args);
         }
         catch (Exception ex)
         {
-            SendFeedback($"/{command} failed: {ex.Message}");
-            SphLogger.Error($"GM command /{command} threw", ex);
+            SendFeedback ($"/{command} failed: {ex.Message}");
+            SphLogger.Error ($"GM command /{command} threw", ex);
         }
 
         return ConsoleCommandParseResult.OK;
     }
 
-    private static bool TrySplitCommand(string? input, out string command, out string args)
+    private static bool TrySplitCommand (string? input, out string command, out string args)
     {
         command = string.Empty;
         args = string.Empty;
-        if (string.IsNullOrWhiteSpace(input) || !input.StartsWith('/'))
+        if (string.IsNullOrWhiteSpace (input) || !input.StartsWith ('/'))
         {
             return false;
         }
 
-        var split = input[1..].Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var split = input[1..].Split (' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         if (split.Length == 0)
         {
             return false;
         }
 
-        command = split[0].ToLowerInvariant();
+        command = split[0].ToLowerInvariant ();
         args = split.Length > 1 ? split[1] : string.Empty;
         return true;
     }
 
-    private void UpdateStats(string args)
+    private void UpdateStats (string args)
     {
-        var stats = args.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var stats = args.Split (' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         if (stats.Length < StatsArgumentCount)
         {
-            SendFeedback($"Usage: /stats takes {StatsArgumentCount} values, got {stats.Length}.");
+            SendFeedback ($"Usage: /stats takes {StatsArgumentCount} values, got {stats.Length}.");
             return;
         }
 
-        currentCharacterDbEntry.MaxHP = ushort.Parse(stats[0]);
-        currentCharacterDbEntry.MaxMP = ushort.Parse(stats[1]);
-        currentCharacterDbEntry.CurrentSatiety = ushort.Parse(stats[2]);
-        currentCharacterDbEntry.MaxSatiety = ushort.Parse(stats[3]);
-        currentCharacterDbEntry.CurrentStrength = ushort.Parse(stats[4]);
-        currentCharacterDbEntry.CurrentAgility = ushort.Parse(stats[5]);
-        currentCharacterDbEntry.CurrentAccuracy = ushort.Parse(stats[6]);
-        currentCharacterDbEntry.CurrentEndurance = ushort.Parse(stats[7]);
-        currentCharacterDbEntry.CurrentEarth = ushort.Parse(stats[8]);
-        currentCharacterDbEntry.CurrentAir = ushort.Parse(stats[9]);
-        currentCharacterDbEntry.CurrentWater = ushort.Parse(stats[10]);
-        currentCharacterDbEntry.CurrentFire = ushort.Parse(stats[11]);
-        currentCharacterDbEntry.PDef = ushort.Parse(stats[12]);
-        currentCharacterDbEntry.MDef = ushort.Parse(stats[13]);
-        currentCharacterDbEntry.TitleMinusOne = ushort.Parse(stats[14]);
-        currentCharacterDbEntry.DegreeMinusOne = ushort.Parse(stats[15]);
-        currentCharacterDbEntry.Karma = (KarmaTypes)ushort.Parse(stats[16]);
-        currentCharacterDbEntry.KarmaCount = ushort.Parse(stats[17]);
-        currentCharacterDbEntry.SyncKarmaFromCount();
-        currentCharacterDbEntry.TitleXP = uint.Parse(stats[18]);
-        currentCharacterDbEntry.DegreeXP = uint.Parse(stats[19]);
-        currentCharacterDbEntry.AvailableTitleStats = ushort.Parse(stats[20]);
-        currentCharacterDbEntry.AvailableDegreeStats = ushort.Parse(stats[21]);
-        currentCharacterDbEntry.ClanRank = (ClanRank)ushort.Parse(stats[22]);
-        currentCharacterDbEntry.Money = int.Parse(stats[23]);
-        currentCharacterDbEntry.PAtk = int.Parse(stats[24]);
-        currentCharacterDbEntry.MAtk = int.Parse(stats[25]);
-        NetworkedStatsUpdater.Update(currentCharacterDbEntry);
-        SendFeedback("Stats updated.");
+        currentCharacterDbEntry.MaxHP = ushort.Parse (stats[0]);
+        currentCharacterDbEntry.MaxMP = ushort.Parse (stats[1]);
+        currentCharacterDbEntry.CurrentSatiety = ushort.Parse (stats[2]);
+        currentCharacterDbEntry.MaxSatiety = ushort.Parse (stats[3]);
+        currentCharacterDbEntry.CurrentStrength = ushort.Parse (stats[4]);
+        currentCharacterDbEntry.CurrentAgility = ushort.Parse (stats[5]);
+        currentCharacterDbEntry.CurrentAccuracy = ushort.Parse (stats[6]);
+        currentCharacterDbEntry.CurrentEndurance = ushort.Parse (stats[7]);
+        currentCharacterDbEntry.CurrentEarth = ushort.Parse (stats[8]);
+        currentCharacterDbEntry.CurrentAir = ushort.Parse (stats[9]);
+        currentCharacterDbEntry.CurrentWater = ushort.Parse (stats[10]);
+        currentCharacterDbEntry.CurrentFire = ushort.Parse (stats[11]);
+        currentCharacterDbEntry.PDef = ushort.Parse (stats[12]);
+        currentCharacterDbEntry.MDef = ushort.Parse (stats[13]);
+        currentCharacterDbEntry.TitleMinusOne = ushort.Parse (stats[14]);
+        currentCharacterDbEntry.DegreeMinusOne = ushort.Parse (stats[15]);
+        currentCharacterDbEntry.Karma = (KarmaTypes) ushort.Parse (stats[16]);
+        currentCharacterDbEntry.KarmaCount = ushort.Parse (stats[17]);
+        currentCharacterDbEntry.SyncKarmaFromCount ();
+        currentCharacterDbEntry.TitleXP = uint.Parse (stats[18]);
+        currentCharacterDbEntry.DegreeXP = uint.Parse (stats[19]);
+        currentCharacterDbEntry.AvailableTitleStats = ushort.Parse (stats[20]);
+        currentCharacterDbEntry.AvailableDegreeStats = ushort.Parse (stats[21]);
+        currentCharacterDbEntry.ClanRank = (ClanRank) ushort.Parse (stats[22]);
+        currentCharacterDbEntry.Money = int.Parse (stats[23]);
+        currentCharacterDbEntry.PAtk = int.Parse (stats[24]);
+        currentCharacterDbEntry.MAtk = int.Parse (stats[25]);
+        NetworkedStatsUpdater.Update (currentCharacterDbEntry);
+        SendFeedback ("Stats updated.");
     }
 
-    private void UpdateMoney(string args)
+    private void UpdateMoney (string args)
     {
-        var stats = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        if (stats.Length < 1 || !int.TryParse(stats[0], out var money))
+        var stats = args.Split (" ", StringSplitOptions.RemoveEmptyEntries);
+        if (stats.Length < 1 || !int.TryParse (stats[0], out var money))
         {
-            SendFeedback("Usage: /money <amount>");
+            SendFeedback ("Usage: /money <amount>");
             return;
         }
 
         currentCharacterDbEntry.Money = money;
-        NetworkedStatsUpdater.Update(currentCharacterDbEntry);
-        SendFeedback($"Money set to {money}.");
+        NetworkedStatsUpdater.Update (currentCharacterDbEntry);
+        SendFeedback ($"Money set to {money}.");
     }
 
-    private void SendMessage(string args)
+    private void SendMessage (string args)
     {
-        var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        var chatData = args.Split (" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 3)
         {
-            SendFeedback("Usage: /msg <chat_type> <name> <message>");
+            SendFeedback ("Usage: /msg <chat_type> <name> <message>");
             return;
         }
 
-        var chatType = int.Parse(chatData[0]);
-        Console.WriteLine(chatType);
+        var chatType = int.Parse (chatData[0]);
+        Console.WriteLine (chatType);
 
-        var name = chatData[1].Replace("_", " ");
-        var message = string.Join(" ", chatData[2..]);
+        var name = chatData[1].Replace ("_", " ");
+        var message = string.Join (" ", chatData[2..]);
 
         message = name + ": " + message;
         // <l="player://Обычный мул\[br\]\[img=\"sep,mid,0,4,0,2\"\]\[br\]\[t=\"#UISTR_TT_IW32a\"\]\[img=\"inf_32,mid,0,2,6,2\"\] \[cl=EEEEEE\]странник (2)\[cl=EEEEEE\]\[/t\]\[br\]\[t=\"#UISTR_TT_IW33a\"\]\[img=\"inf_33,mid,0,2,6,2\"\] \[cl=EEEEEE\]неучёный (1) \[cl=EEEEEE\]\[/t\]\[br\]Клан разный шмот (Сеньор)\[br\]\[img=\"sep,mid,0,4,0,2\"\]">Обычный мул</l>: abc 
-        var response = MessageEncoder.EncodeToSendFromServer(message, name, chatType);
+        var response = MessageEncoder.EncodeToSendFromServer (message, name, chatType);
 
-        sphereClient?.MaybeQueueNetworkPacketSend(response);
+        sphereClient?.MaybeQueueNetworkPacketSend (response);
     }
 
-    private void UpdateClan(string args)
+    private void UpdateClan (string args)
     {
-        var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        if (chatData.Length < 2 || !int.TryParse(chatData[1], out var targetRank))
+        var chatData = args.Split (" ", StringSplitOptions.RemoveEmptyEntries);
+        if (chatData.Length < 2 || !int.TryParse (chatData[1], out var targetRank))
         {
-            SendFeedback("Usage: /clan <action> <value>");
+            SendFeedback ("Usage: /clan <action> <value>");
             return;
         }
 
-        var action = chatData[0].ToLowerInvariant();
+        var action = chatData[0].ToLowerInvariant ();
         switch (action)
         {
             case "rank":
                 var clan = currentCharacterDbEntry.Clan;
                 if (clan is null)
                 {
-                    Console.WriteLine("No clan");
+                    Console.WriteLine ("No clan");
                     return;
                 }
 
-                currentCharacterDbEntry.ClanRank = (ClanRank)targetRank;
-                NetworkedStatsUpdater.Update(currentCharacterDbEntry);
-                sphereClient?.BroadcastClanRefreshToVisibleClients();
+                currentCharacterDbEntry.ClanRank = (ClanRank) targetRank;
+                NetworkedStatsUpdater.Update (currentCharacterDbEntry);
+                sphereClient?.BroadcastClanRefreshToVisibleClients ();
                 break;
         }
     }
 
-    public static byte[] BuildClanRankPacket(ushort clientIndex, string clanName, int targetRank) =>
-        CommonPackets.BuildClanRankPacket(clientIndex, clanName, targetRank);
+    public static byte[] BuildClanRankPacket (ushort clientIndex, string clanName, int targetRank) =>
+        CommonPackets.BuildClanRankPacket (clientIndex, clanName, targetRank);
 
-    private void SendPacketHex(string args)
+    private void SendPacketHex (string args)
     {
-        var chatData = args.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        var chatData = args.Split (" ", StringSplitOptions.RemoveEmptyEntries);
         if (chatData.Length < 1)
         {
-            Console.WriteLine("usage: /sendpackethex packet");
+            Console.WriteLine ("usage: /sendpackethex packet");
         }
         else
         {
             try
             {
-                var content = Convert.FromHexString(chatData[1]);
-                sphereClient?.MaybeQueueNetworkPacketSend(content);
+                var content = Convert.FromHexString (chatData[1]);
+                sphereClient?.MaybeQueueNetworkPacketSend (content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Not a hex string: " + ex.Message);
+                Console.WriteLine ("Not a hex string: " + ex.Message);
             }
         }
     }
 
-    private void SendPacket(string args)
+    private void SendPacket (string args)
     {
-        SphLogger.Info($"Sending debug command: /packet {args}");
-        DebugConsole.SendSpherePacket($"/packet {args}", bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
+        SphLogger.Info ($"Sending debug command: /packet {args}");
+        DebugConsole.SendSpherePacket ($"/packet {args}", bytes => sphereClient?.MaybeQueueNetworkPacketSend (bytes));
     }
 
-    private void Buff(string args)
+    private void Buff (string args)
     {
         var jumpx4 =
             "3F002C01006AF6B98878800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF9994D83C00A0F07F70391E1004F6F";
-        //	 03C0120080DE7E0D8307F80048E8920000000000000000001459640028000C9430001C0000000000000000000040D49E9FD93408ACF070703F10F90D50C200
+        // 	
+        // 03C0120080DE7E0D8307F80048E8920000000000000000001459640028000C9430001C0000000000000000000040D49E9FD93408ACF070703F10F90D50C200
         var runSpeed =
             "3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
         //   3F002C01002CEF8F9578800F80842E090000000000000000409145068002C0400903C0010000000000000000000044EDF91C4E83800A0F0704046C2800250C
         // var test =
         // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
-        sphereClient?.MaybeQueueNetworkPacketSend(Convert.FromHexString(jumpx4));
-        sphereClient?.MaybeQueueNetworkPacketSend(Convert.FromHexString(runSpeed));
+        sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (jumpx4));
+        sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (runSpeed));
         // StreamPeer.PutData(Convert.FromHexString(test));
     }
 
-    private void Mob(string args)
+    private void Mob (string args)
     {
-        var split = args.Split(' ',
+        var split = args.Split (' ',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var mobPacketName = split.Length == 0
             ? "mob"
             : "mob_" + split[0];
-        DebugConsole.SendSpherePacket($"/packet {mobPacketName} onme",
-            bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes));
+        DebugConsole.SendSpherePacket ($"/packet {mobPacketName} onme",
+            bytes => sphereClient?.MaybeQueueNetworkPacketSend (bytes));
     }
 
-    private void MobById(string args)
+    private void MobById (string args)
     {
-        var split = args.Split(' ',
+        var split = args.Split (' ',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        if (split.Length != 1 || !int.TryParse(split[0], out var mobId))
+        if (split.Length != 1 || !int.TryParse (split[0], out var mobId))
         {
-            Console.WriteLine(
+            Console.WriteLine (
                 "Usage: /spawn_mob_id <id>. For the list of IDs check entityNamesCollected file");
         }
         else
         {
-            DebugConsole.SendSpherePacket("/packet mob_assassin onme",
-                bytes => sphereClient?.MaybeQueueNetworkPacketSend(bytes), true,
+            DebugConsole.SendSpherePacket ("/packet mob_assassin onme",
+                bytes => sphereClient?.MaybeQueueNetworkPacketSend (bytes), true,
                 list =>
                 {
-                    foreach (var idPart in list.Where(x => x.Name == "mob_type"))
+                    foreach (var idPart in list.Where (x => x.Name == "mob_type"))
                     {
-                        var bits = BitStreamExtensions.IntToBits(mobId, 16).ToList();
+                        var bits = BitStreamExtensions.IntToBits (mobId, 16).ToList ();
                         idPart.Value = bits;
                     }
                 });
         }
     }
 
-    private void Loot(string args)
+    private void Loot (string args)
     {
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
             currentCharacterDbEntry.Z + 1,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
             currentCharacterDbEntry.Z + 2,
             1,
             LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents(currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
+        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
             currentCharacterDbEntry.Z + 3,
             1,
             LootRatity.DEFAULT_MOB);
     }
 
-    private void Teleport(string args)
+    private void Teleport (string args)
     {
-        var split = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var split = args.Split (' ', StringSplitOptions.RemoveEmptyEntries);
         if (split.Length > 1)
         {
             try
             {
                 var coords = split
-                    .Select(double.Parse)
-                    .ToArray();
-                sphereClient?.MaybeQueueNetworkPacketSend(
-                    new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(new WorldCoords(
+                    .Select (double.Parse)
+                    .ToArray ();
+                sphereClient?.MaybeQueueNetworkPacketSend (
+                    new CharacterDbEntrySerializer (currentCharacterDbEntry).GetTeleportByteArray (new WorldCoords (
                         coords[0], coords[1], coords[2])));
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine (ex.Message);
             }
         }
         else
@@ -368,20 +370,20 @@ public partial class ConsoleCommandParser
             try
             {
                 // continent:type:point
-                var location = split[0].Split(':');
-                if (Enum.TryParse<Continents>(location[0], out var continent))
+                var location = split[0].Split (':');
+                if (Enum.TryParse<Continents> (location[0], out var continent))
                 {
-                    if (Enum.TryParse<PoiType>(location[1], out var poiType))
+                    if (Enum.TryParse<PoiType> (location[1], out var poiType))
                     {
                         var coords = SavedCoords.TeleportPoints[continent][poiType][location[2]];
-                        sphereClient?.MaybeQueueNetworkPacketSend(
-                            new CharacterDbEntrySerializer(currentCharacterDbEntry).GetTeleportByteArray(coords));
+                        sphereClient?.MaybeQueueNetworkPacketSend (
+                            new CharacterDbEntrySerializer (currentCharacterDbEntry).GetTeleportByteArray (coords));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine (ex.Message);
             }
         }
     }

@@ -6,7 +6,7 @@ using SphServer.Shared.WorldState;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-///     Right-click Clear / Change for inventory and persona slots.
+/// Right-click is Clear or Change
 /// </summary>
 public partial class AdminSlotItemTools : Node
 {
@@ -20,40 +20,40 @@ public partial class AdminSlotItemTools : Node
     private ushort pendingClientId;
     private BelongingSlot pendingSlot;
 
-    public void SetLocale(Locale newLocale)
+    public void SetLocale (Locale newLocale)
     {
         locale = newLocale;
-        selectWindow?.SetLocale(newLocale);
+        selectWindow?.SetLocale (newLocale);
     }
 
-    public override void _Ready()
+    public override void _Ready ()
     {
         menu = new PopupMenu { Name = "SlotContextMenu" };
-        menu.AddItem("Clear", ClearId);
-        menu.AddItem("Change", ChangeId);
+        menu.AddItem ("Clear", ClearId);
+        menu.AddItem ("Change", ChangeId);
         menu.IdPressed += OnMenuIdPressed;
-        AddChild(menu);
+        AddChild (menu);
 
         deleteDialog = new ConfirmationDialog
         {
             Name = "DeleteSlotItemDialog",
             Title = "Clear item",
-            MinSize = new Vector2I(360, 120),
+            MinSize = new Vector2I (360, 120),
             Exclusive = true,
             Unresizable = true,
             OkButtonText = "Confirm",
             CancelButtonText = "Cancel"
         };
         deleteDialog.Confirmed += OnDeleteConfirmed;
-        AddChild(deleteDialog);
-        deleteDialog.GetLabel().AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        AddChild (deleteDialog);
+        deleteDialog.GetLabel ().AutowrapMode = TextServer.AutowrapMode.WordSmart;
 
         selectWindow = new AdminItemSelectWindow { Name = "ItemSelectWindow" };
-        AddChild(selectWindow);
-        selectWindow.SetLocale(locale);
+        AddChild (selectWindow);
+        selectWindow.SetLocale (locale);
     }
 
-    public void OpenMenu(ushort clientId, BelongingSlot slot, Vector2 globalPos)
+    public void OpenMenu (ushort clientId, BelongingSlot slot, Vector2 globalPos)
     {
         if (menu is null)
         {
@@ -62,52 +62,52 @@ public partial class AdminSlotItemTools : Node
 
         pendingClientId = clientId;
         pendingSlot = slot;
-        var occupied = ActiveClients.Get(clientId)?.CurrentCharacter?.Items.ContainsKey(slot) == true;
-        var clearIndex = menu.GetItemIndex(ClearId);
+        var occupied = ActiveClients.Get (clientId)?.CurrentCharacter?.Items.ContainsKey (slot) == true;
+        var clearIndex = menu.GetItemIndex (ClearId);
         if (clearIndex >= 0)
         {
-            menu.SetItemDisabled(clearIndex, !occupied);
+            menu.SetItemDisabled (clearIndex, !occupied);
         }
 
-        menu.PopupOnParent(new Rect2I(new Vector2I((int)globalPos.X, (int)globalPos.Y), Vector2I.Zero));
+        menu.PopupOnParent (new Rect2I (new Vector2I ((int) globalPos.X, (int) globalPos.Y), Vector2I.Zero));
     }
 
-    private void OnMenuIdPressed(long id)
+    private void OnMenuIdPressed (long id)
     {
         if (id == ClearId)
         {
-            OpenDeleteConfirm();
+            OpenDeleteConfirm ();
             return;
         }
 
         if (id == ChangeId)
         {
-            selectWindow?.SetLocale(locale);
-            selectWindow?.OpenFor(pendingClientId, pendingSlot);
+            selectWindow?.SetLocale (locale);
+            selectWindow?.OpenFor (pendingClientId, pendingSlot);
         }
     }
 
-    private void OpenDeleteConfirm()
+    private void OpenDeleteConfirm ()
     {
         if (deleteDialog is null)
         {
             return;
         }
 
-        var character = ActiveClients.Get(pendingClientId)?.CurrentCharacter;
-        if (character is null || !character.Items.TryGetValue(pendingSlot, out var itemId))
+        var character = ActiveClients.Get (pendingClientId)?.CurrentCharacter;
+        if (character is null || !character.Items.TryGetValue (pendingSlot, out var itemId))
         {
             return;
         }
 
-        var item = DbConnection.Items.FindById(itemId);
-        var name = item is null ? "?" : ItemLocaleText.DisplayName(item, locale);
+        var item = DbConnection.Items.FindById (itemId);
+        var name = item is null ? "?" : ItemLocaleText.DisplayName (item, locale);
         deleteDialog.DialogText = $"Delete {name}?";
-        deleteDialog.PopupCentered();
+        deleteDialog.PopupCentered ();
     }
 
-    private void OnDeleteConfirmed()
+    private void OnDeleteConfirmed ()
     {
-        AdminClientActions.ClearSlotItem(pendingClientId, pendingSlot);
+        AdminClientActions.ClearSlotItem (pendingClientId, pendingSlot);
     }
 }

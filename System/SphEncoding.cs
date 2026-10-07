@@ -8,7 +8,7 @@ public static class SphEncoding
 
     static SphEncoding ()
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        Win1251 = Encoding.GetEncoding(1251);
+        Encoding.RegisterProvider (CodePagesEncodingProvider.Instance);
+        Win1251 = Encoding.GetEncoding (1251);
     }
 }

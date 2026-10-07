@@ -20,27 +20,27 @@ public static class DbConnection
     public static ILiteCollection<NpcInteractable> NpcInteractables { get; private set; } = null!;
     public static ILiteCollection<SphGameObject> GameObjects { get; private set; } = null!;
 
-    public static void Initialize(AppConfig config)
+    public static void Initialize (AppConfig config)
     {
-        SphLogger.Info("Initializing database connection...");
-        ObjectTypeBson.Register();
-        var connectionString = NormalizeLiteDbConnectionString(config.LiteDbConnectionString);
-        EnsureLiteDbFileExists(connectionString);
-        Db = new LiteDatabase(connectionString);
+        SphLogger.Info ("Initializing database connection...");
+        ObjectTypeBson.Register ();
+        var connectionString = NormalizeLiteDbConnectionString (config.LiteDbConnectionString);
+        EnsureLiteDbFileExists (connectionString);
+        Db = new LiteDatabase (connectionString);
 
-        SphLogger.Info("Setting up database collections...");
-        Clans = Db.GetCollection<ClanDbEntry>("Clans");
-        Players = Db.GetCollection<PlayerDbEntry>("Players");
-        Characters = Db.GetCollection<CharacterDbEntry>("Characters");
-        Items = Db.GetCollection<ItemDbEntry>("Items");
-        ItemContainers = Db.GetCollection<ItemContainerDbEntry>("ItemContainers");
-        Monsters = Db.GetCollection<MonsterDbEntry>("Monsters");
-        NpcInteractables = Db.GetCollection<NpcInteractable>("NpcInteractables");
-        GameObjects = Db.GetCollection<SphGameObject>("GameObjects");
+        SphLogger.Info ("Setting up database collections...");
+        Clans = Db.GetCollection<ClanDbEntry> ("Clans");
+        Players = Db.GetCollection<PlayerDbEntry> ("Players");
+        Characters = Db.GetCollection<CharacterDbEntry> ("Characters");
+        Items = Db.GetCollection<ItemDbEntry> ("Items");
+        ItemContainers = Db.GetCollection<ItemContainerDbEntry> ("ItemContainers");
+        Monsters = Db.GetCollection<MonsterDbEntry> ("Monsters");
+        NpcInteractables = Db.GetCollection<NpcInteractable> ("NpcInteractables");
+        GameObjects = Db.GetCollection<SphGameObject> ("GameObjects");
 
-        InitializeData();
-        CreateIndexes();
-        SphLogger.Info("Database initialization completed");
+        InitializeData ();
+        CreateIndexes ();
+        SphLogger.Info ("Database initialization completed");
         // LiveServerObjectPacketCollection.EnsureIndex(x => x.GameId);
 
         // if (VendorCollection.FindById(2837) is null)
@@ -66,79 +66,75 @@ public static class DbConnection
         // }
     }
 
-    private static string NormalizeLiteDbConnectionString(string? connectionString)
+    private static string NormalizeLiteDbConnectionString (string? connectionString)
     {
-        if (string.IsNullOrWhiteSpace(connectionString))
+        if (string.IsNullOrWhiteSpace (connectionString))
         {
-            throw new ArgumentException("LiteDbConnectionString is empty. Set it in appsettings.json.");
+            throw new ArgumentException ("LiteDbConnectionString is empty. Set it in appsettings.json.");
         }
 
-        // If the user already provided a proper connection string, keep it.
-        if (connectionString.Contains("filename=", StringComparison.OrdinalIgnoreCase))
+        // Already contains Filename=, so the string is left as given
+        if (connectionString.Contains ("filename=", StringComparison.OrdinalIgnoreCase))
         {
             return connectionString;
         }
 
-        // Common shorthand currently used in this repo: "sph.db;Connection=shared;"
-        // Treat the first segment as filename if it isn't a key=value pair.
-        var parts = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        // First segment without '=' is the filename ("sph.db;Connection=shared;")
+        var parts = connectionString.Split (';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (parts.Length == 0)
         {
-            throw new ArgumentException("LiteDbConnectionString is invalid/empty after parsing.");
+            throw new ArgumentException ("LiteDbConnectionString is invalid/empty after parsing.");
         }
 
         var first = parts[0];
-        if (first.Contains('=') || string.IsNullOrWhiteSpace(first))
+        if (first.Contains ('=') || string.IsNullOrWhiteSpace (first))
         {
-            // Not a simple filename; let LiteDB handle (and throw) so the message is meaningful.
+            // A '=' in the first segment is left for LiteDB to reject
             return connectionString;
         }
 
-        var rest = parts.Skip(1);
-        var normalized = "Filename=" + first + ";" + string.Join(';', rest) + ";";
-        SphLogger.Info($"Normalized LiteDB connection string to include Filename=... ({first})");
+        var rest = parts.Skip (1);
+        var normalized = "Filename=" + first + ";" + string.Join (';', rest) + ";";
+        SphLogger.Info ($"Normalized LiteDB connection string to include Filename=... ({first})");
         return normalized;
     }
 
-    private static void EnsureLiteDbFileExists(string connectionString)
+    private static void EnsureLiteDbFileExists (string connectionString)
     {
-        // LiteDB will create the file on open, but it will fail if the directory doesn't exist.
-        // We also proactively create the file so the failure mode is clearer (permissions, invalid path, etc.).
-        var filePath = TryGetLiteDbFilename(connectionString);
-        if (string.IsNullOrWhiteSpace(filePath))
+        // LiteDB creates the file but not a missing directory; an empty file fails here on
+        // permissions or a bad path
+        var filePath = TryGetLiteDbFilename (connectionString);
+        if (string.IsNullOrWhiteSpace (filePath))
         {
             return;
         }
 
-        var fullPath = Path.GetFullPath(filePath);
-        var dir = Path.GetDirectoryName(fullPath);
-        if (!string.IsNullOrWhiteSpace(dir))
+        var fullPath = Path.GetFullPath (filePath);
+        var dir = Path.GetDirectoryName (fullPath);
+        if (!string.IsNullOrWhiteSpace (dir))
         {
-            Directory.CreateDirectory(dir);
+            Directory.CreateDirectory (dir);
         }
 
-        if (!File.Exists(fullPath))
+        if (!File.Exists (fullPath))
         {
-            using var _ = File.Open(fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
+            using var _ = File.Open (fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
         }
     }
 
-    private static string? TryGetLiteDbFilename(string connectionString)
+    private static string? TryGetLiteDbFilename (string connectionString)
     {
-        // Expected forms:
-        // - "Filename=d:\\path\\file.db;Connection=shared;"
-        // - "FileName=\"d:\\path\\file.db\";..."
-        // - "filename=relative.db"
-        foreach (var part in connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries))
+        // Filename= value, optional quotes, any key casing
+        foreach (var part in connectionString.Split (';', StringSplitOptions.RemoveEmptyEntries))
         {
-            var trimmed = part.Trim();
+            var trimmed = part.Trim ();
             const string key = "filename=";
-            if (!trimmed.StartsWith(key, StringComparison.OrdinalIgnoreCase))
+            if (!trimmed.StartsWith (key, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            var value = trimmed[key.Length..].Trim();
+            var value = trimmed[key.Length..].Trim ();
             if (value.Length >= 2 && value[0] == '"' && value[^1] == '"')
             {
                 value = value[1..^1];
@@ -150,104 +146,110 @@ public static class DbConnection
         return null;
     }
 
-    private static void InitializeData()
+    private static void InitializeData ()
     {
-        // A character stores "slot -> item id", so the rows have to outlive a restart. Fists rows
-        // are the exception: nothing reads them, and a stored one only spends id space.
-        var staleFists = Items.DeleteMany(x => x.ObjectKind == GameObjectKind.Fists);
+        // Nothing reads a fists row, and a stored one only spends an id
+        var staleFists = Items.DeleteMany (x => x.ObjectKind == GameObjectKind.Fists);
         if (staleFists > 0)
         {
-            SphLogger.Info($"Cleared {staleFists} unused fists row(s) from the item collection");
+            SphLogger.Info ($"Cleared {staleFists} unused fists row(s) from the item collection");
         }
 
-        Monsters.DeleteAll();
-        WorldObjectIdCleanup.SeedAndRepair();
+        Monsters.DeleteAll ();
+        WorldObjectIdCleanup.SeedAndRepair ();
         // ItemContainers.DeleteAll();
         // Vendors.DeleteAll();
 
         var time = DateTime.Now;
-        if (GameObjects.Count() == 0)
+        if (GameObjects.Count () == 0)
         {
-            SphLogger.Info("Filling object collection");
-            var started = Db.BeginTrans();
+            SphLogger.Info ("Filling object collection");
+            var started = Db.BeginTrans ();
             try
             {
                 foreach (var dbEntry in GameObjectDb.Db)
                 {
-                    GameObjects.Insert(dbEntry.Key, dbEntry.Value);
+                    GameObjects.Insert (dbEntry.Key, dbEntry.Value);
                 }
 
                 if (started)
                 {
-                    Db.Commit();
+                    Db.Commit ();
                 }
             }
             catch
             {
                 if (started)
                 {
-                    Db.Rollback();
+                    Db.Rollback ();
                 }
 
                 throw;
             }
 
-            SphLogger.Info($"Object collection filled. Time elapsed: {(DateTime.Now - time).TotalMilliseconds} ms");
+            SphLogger.Info ($"Object collection filled. Time elapsed: {(DateTime.Now - time).TotalMilliseconds} ms");
         }
 
-        if (!Clans.Exists(x => x.Id == ClanDbEntry.DefaultClanDbEntry.Id))
+        if (!Clans.Exists (x => x.Id == ClanDbEntry.DefaultClanDbEntry.Id))
         {
-            Clans.Insert(ClanDbEntry.DefaultClanDbEntry.Id, ClanDbEntry.DefaultClanDbEntry);
+            Clans.Insert (ClanDbEntry.DefaultClanDbEntry.Id, ClanDbEntry.DefaultClanDbEntry);
         }
 
-        if (Items.FindById(2825) is null)
+        if (Items.FindById (2825) is null)
         {
-            var template = GameObjects.FindById(1);
-            if (template is null && SphObjectDb.GameObjectDataDb.TryGetValue(1, out var catalog))
+            var template = GameObjects.FindById (1);
+            if (template is null && SphObjectDb.GameObjectDataDb.TryGetValue (1, out var catalog))
             {
                 template = catalog;
-                GameObjects.Upsert(1, catalog);
+                GameObjects.Upsert (1, catalog);
             }
 
             if (template is null)
             {
-                SphLogger.Warning("Item 2825 was not seeded: game object 1 is not in the database");
+                SphLogger.Warning ("Item 2825 was not seeded: game object 1 is not in the database");
             }
             else
             {
-                Items.Insert(2825, ItemDbEntry.CreateFromGameObject(template));
+                Items.Insert (2825, ItemDbEntry.CreateFromGameObject (template));
             }
         }
 
-        WorldObjectIndex.Reserve(2825);
+        WorldObjectIndex.Reserve (2825);
     }
 
-    private static void CreateIndexes()
+    private static void CreateIndexes ()
     {
-        Items.EnsureIndex(x => x.GameObjectDbId);
-        Items.EnsureIndex(x => x.GameId);
-        GameObjects.EnsureIndex(x => x.GameId);
-        GameObjects.EnsureIndex(x => x.GameObjectDbId);
-        GameObjects.EnsureIndex(x => x.GameObjectType);
-        GameObjects.EnsureIndex(x => x.ObjectKind);
-        Players.EnsureIndex(x => x.Login);
+        Items.EnsureIndex (x => x.GameObjectDbId);
+        Items.EnsureIndex (x => x.GameId);
+        GameObjects.EnsureIndex (x => x.GameId);
+        GameObjects.EnsureIndex (x => x.GameObjectDbId);
+        GameObjects.EnsureIndex (x => x.GameObjectType);
+        GameObjects.EnsureIndex (x => x.ObjectKind);
+        Players.EnsureIndex (x => x.Login);
     }
 
-    /// <summary>Flush the WAL into the data file. Call on disconnect so a later crash does not drop the last writes.</summary>
-    public static void Checkpoint()
+    /// <summary>
+    /// Flush the WAL into the data file. Call on disconnect so a later crash does not drop the last
+    /// writes.
+    /// </summary>
+    public static void Checkpoint ()
     {
-        Db?.Checkpoint();
+        Db?.Checkpoint ();
     }
 
-    /// <summary>Write an item row and flush so a restart can FindById it from character slots.</summary>
-    public static void SaveItem(ItemDbEntry item)
+    /// <summary>
+    /// Write an item row and flush so a restart can FindById it from character slots.
+    /// </summary>
+    public static void SaveItem (ItemDbEntry item)
     {
-        Items.Upsert(item.Id, item);
-        Checkpoint();
+        Items.Upsert (item.Id, item);
+        Checkpoint ();
     }
 
-    /// <summary>Checkpoint and release the database. Safe to call more than once.</summary>
-    public static void Close()
+    /// <summary>
+    /// Checkpoint and release the database. Safe to call more than once.
+    /// </summary>
+    public static void Close ()
     {
         if (Db is null)
         {
@@ -256,11 +258,11 @@ public static class DbConnection
 
         try
         {
-            Db.Checkpoint();
+            Db.Checkpoint ();
         }
         finally
         {
-            Db.Dispose();
+            Db.Dispose ();
             Db = null!;
         }
     }

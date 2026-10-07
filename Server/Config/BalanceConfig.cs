@@ -8,70 +8,73 @@ using SphServer.Shared.Logger;
 namespace SphServer.Server.Config;
 
 /// <summary>
-///     Balance configs from <c>Config/Balance/&lt;name&gt;.json</c>, all loaded by
-///     <see cref="PreloadAll" /> at server startup; <see cref="Get{T}" /> is then a lookup, cheap per hit.
-///     Missing or invalid files never fall back to defaults — that would un-tune a mechanic invisibly.
+/// Missing or invalid files do not fall back to defaults: that would un-tune a mechanic with no
+/// signal
 /// </summary>
 public static class BalanceConfig
 {
     private static readonly (string Name, Type Type)[] KnownConfigs =
     [
-        ("combat", typeof(CombatBalance)),
-        ("experience", typeof(ExperienceBalance))
+        ("combat", typeof (CombatBalance)),
+        ("experience", typeof (ExperienceBalance))
     ];
 
-    private static readonly ConcurrentDictionary<(string Name, Type Type), object> Loaded = new();
+    private static readonly ConcurrentDictionary<(string Name, Type Type), object> Loaded = new ();
 
-    // Balance files carry provenance comments and trailing commas; keys match case-insensitively.
-    private static readonly JsonSerializerOptions JsonReadOptions = new()
+    // Comments and trailing commas are allowed; keys match case-insensitively
+    private static readonly JsonSerializerOptions JsonReadOptions = new ()
     {
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
         PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter () }
     };
 
-    /// <summary>Loads every known config once at startup; a broken file is logged, not thrown, so the rest still load.</summary>
-    public static void PreloadAll()
+    /// <summary>
+    /// A broken file is logged, not thrown, so the rest still load
+    /// </summary>
+    public static void PreloadAll ()
     {
         foreach (var (name, type) in KnownConfigs)
         {
             try
             {
-                Loaded[(name, type)] = Load(name, type);
+                Loaded[(name, type)] = Load (name, type);
             }
             catch (Exception ex)
             {
-                SphLogger.Error($"Failed to import balance config '{name}' as {type.Name}", ex);
+                SphLogger.Error ($"Failed to import balance config '{name}' as {type.Name}", ex);
             }
         }
     }
 
-    /// <summary>Null when the import failed at startup; callers log and skip rather than throwing per hit.</summary>
-    public static T? Get<T>(string name) where T : class
+    /// <summary>
+    /// Null when the import failed at startup; callers log and skip rather than throwing per hit.
+    /// </summary>
+    public static T? Get<T> (string name) where T : class
     {
-        if (Loaded.TryGetValue((name, typeof(T)), out var config))
+        if (Loaded.TryGetValue ((name, typeof (T)), out var config))
         {
-            return (T)config;
+            return (T) config;
         }
 
-        SphLogger.Error(
-            $"BalanceConfig.Get: '{name}' as {typeof(T).Name} is not available — either its import failed at " +
+        SphLogger.Error (
+            $"BalanceConfig.Get: '{name}' as {typeof (T).Name} is not available — either its import failed at " +
             "startup (see the log) or it is missing from BalanceConfig.KnownConfigs.");
         return null;
     }
 
-    private static object Load(string name, Type type)
+    private static object Load (string name, Type type)
     {
         var fileName = name + ".json";
-        var probedPaths = new List<string>();
-        var configPath = FindBalanceConfigPath(fileName, probedPaths);
+        var probedPaths = new List<string> ();
+        var configPath = FindBalanceConfigPath (fileName, probedPaths);
 
         if (configPath is null)
         {
-            throw new FileNotFoundException(
-                $"Balance config '{name}' not found (expected {Path.Combine("Config", "Balance", fileName)}). " +
-                $"Searched:{Environment.NewLine}  {string.Join($"{Environment.NewLine}  ", probedPaths)}{Environment.NewLine}" +
+            throw new FileNotFoundException (
+                $"Balance config '{name}' not found (expected {Path.Combine ("Config", "Balance", fileName)}). " +
+                $"Searched:{Environment.NewLine}  {string.Join ($"{Environment.NewLine}  ", probedPaths)}{Environment.NewLine}" +
                 "BalanceConfig has no silent defaults on purpose: a missing config must fail loudly " +
                 "instead of un-tuning the mechanic invisibly.",
                 fileName);
@@ -80,48 +83,47 @@ public static class BalanceConfig
         object? config;
         try
         {
-            using var configFile = File.OpenRead(configPath);
-            config = JsonSerializer.Deserialize(configFile, type, JsonReadOptions);
+            using var configFile = File.OpenRead (configPath);
+            config = JsonSerializer.Deserialize (configFile, type, JsonReadOptions);
         }
         catch (JsonException ex)
         {
-            throw new InvalidDataException(
+            throw new InvalidDataException (
                 $"Balance config '{configPath}' is not valid JSON for {type.Name}: {ex.Message}", ex);
         }
 
         if (config is null)
         {
-            throw new InvalidDataException(
+            throw new InvalidDataException (
                 $"Balance config '{configPath}' deserialized to null for {type.Name} — the file must contain a JSON object.");
         }
 
-        // PreloadAll catches and logs this, so a
-        // bad file fails once at startup instead of on every packet that reads the value.
+        // Validate throws here; PreloadAll logs it, so a bad file fails once at startup
         if (config is IValidatableBalanceConfig validatable)
         {
-            validatable.Validate(configPath);
+            validatable.Validate (configPath);
         }
 
-        SphLogger.Info($"Loaded balance config '{name}' as {type.Name} from: {configPath}");
+        SphLogger.Info ($"Loaded balance config '{name}' as {type.Name} from: {configPath}");
         return config;
     }
 
     /// <summary>
-    ///     Walks from the exe install dir, then BaseDirectory/CWD, probing <c>Config/Balance/<file></c>,
-    ///     then falls back to <c>RepositoryPath</c> — Godot embeds assemblies under AppData data_*.
+    /// Godot embeds assemblies under AppData data_*, so the walk starts at the exe install dir
+    /// before RepositoryPath
     /// </summary>
-    private static string? FindBalanceConfigPath(string fileName, List<string> probedPaths)
+    private static string? FindBalanceConfigPath (string fileName, List<string> probedPaths)
     {
-        var relativePath = Path.Combine("Config", "Balance", fileName);
-        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var relativePath = Path.Combine ("Config", "Balance", fileName);
+        var visited = new HashSet<string> (StringComparer.OrdinalIgnoreCase);
 
         string? exeDir = null;
         try
         {
             var processPath = Environment.ProcessPath;
-            if (!string.IsNullOrWhiteSpace(processPath))
+            if (!string.IsNullOrWhiteSpace (processPath))
             {
-                exeDir = Path.GetDirectoryName(Path.GetFullPath(processPath));
+                exeDir = Path.GetDirectoryName (Path.GetFullPath (processPath));
             }
         }
         catch
@@ -136,17 +138,17 @@ public static class BalanceConfig
                      Environment.CurrentDirectory
                  })
         {
-            if (string.IsNullOrWhiteSpace(startDir))
+            if (string.IsNullOrWhiteSpace (startDir))
             {
                 continue;
             }
 
-            var dir = new DirectoryInfo(startDir);
-            while (dir is not null && visited.Add(dir.FullName))
+            var dir = new DirectoryInfo (startDir);
+            while (dir is not null && visited.Add (dir.FullName))
             {
-                var candidate = Path.Combine(dir.FullName, relativePath);
-                probedPaths.Add(candidate);
-                if (File.Exists(candidate))
+                var candidate = Path.Combine (dir.FullName, relativePath);
+                probedPaths.Add (candidate);
+                if (File.Exists (candidate))
                 {
                     return candidate;
                 }
@@ -155,8 +157,8 @@ public static class BalanceConfig
             }
         }
 
-        var fallback = Path.Combine(ServerConfig.AppConfig.RepositoryPath, relativePath);
-        probedPaths.Add(fallback);
-        return File.Exists(fallback) ? fallback : null;
+        var fallback = Path.Combine (ServerConfig.AppConfig.RepositoryPath, relativePath);
+        probedPaths.Add (fallback);
+        return File.Exists (fallback) ? fallback : null;
     }
 }

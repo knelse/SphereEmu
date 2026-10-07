@@ -9,45 +9,45 @@ public static class BitStreamExtensions
     public static void SeekBack (this BitStream bitStream, int countBits)
     {
         var newBitOffset = bitStream.BitOffsetFromStart - countBits;
-        bitStream.SeekBitOffset(newBitOffset);
+        bitStream.SeekBitOffset (newBitOffset);
     }
 
     public static void SeekBitOffset (this BitStream bitStream, long bitOffset)
     {
         var newOffset = bitOffset / 8;
         var newBit = (int) bitOffset % 8;
-        bitStream.Seek(newOffset, newBit);
+        bitStream.Seek (newOffset, newBit);
     }
 
     public static void SeekForward (this BitStream bitStream, int countBits)
     {
         var newBitOffset = bitStream.BitOffsetFromStart + countBits;
-        bitStream.SeekBitOffset(newBitOffset);
+        bitStream.SeekBitOffset (newBitOffset);
     }
 
     public static ushort ReadUInt16 (this BitStream bitStream, int countBits)
     {
-        return (ushort) BitsToInt(bitStream.ReadBits(countBits));
+        return (ushort) BitsToInt (bitStream.ReadBits (countBits));
     }
 
     public static long ReadInt64 (this BitStream bitStream, long countBits)
     {
-        return BitsToInt64(bitStream.ReadBits(countBits));
+        return BitsToInt64 (bitStream.ReadBits (countBits));
     }
 
     public static void WriteUInt16 (this BitStream bitStream, ushort val, int countBits)
     {
-        bitStream.WriteBits(IntToBits(val, countBits));
+        bitStream.WriteBits (IntToBits (val, countBits));
     }
 
     public static uint ReadUInt32 (this BitStream bitStream, int countBits)
     {
-        return (uint) BitsToInt(bitStream.ReadBits(countBits));
+        return (uint) BitsToInt (bitStream.ReadBits (countBits));
     }
 
     public static void WriteUInt32 (this BitStream bitStream, uint val, int countBits)
     {
-        bitStream.WriteBits(IntToBits((int) val, countBits));
+        bitStream.WriteBits (IntToBits ((int) val, countBits));
     }
 
     public static string ReadZeroTerminatedString (this BitStream bitStream, Encoding encoding)
@@ -55,12 +55,12 @@ public static class BitStreamExtensions
         var length = 0;
         while (true)
         {
-            if (!bitStream.ValidPositionWhen(8))
+            if (!bitStream.ValidPositionWhen (8))
             {
                 break;
             }
 
-            var currentByte = bitStream.ReadByte();
+            var currentByte = bitStream.ReadByte ();
 
             length++;
 
@@ -75,11 +75,11 @@ public static class BitStreamExtensions
             return string.Empty;
         }
 
-        bitStream.SeekBack(length * 8);
+        bitStream.SeekBack (length * 8);
 
-        var bytes = bitStream.ReadBytes(length - 1, true);
+        var bytes = bitStream.ReadBytes (length - 1, true);
 
-        return encoding.GetString(bytes);
+        return encoding.GetString (bytes);
     }
 
     public static int BitsToInt (Bit[] bits)
@@ -123,25 +123,25 @@ public static class BitStreamExtensions
 
     public static Bit[] IntToBits (int val, int length)
     {
-        var result = new List<Bit>();
+        var result = new List<Bit> ();
 
         while (val > 0)
         {
-            result.Add(val & 0b1);
+            result.Add (val & 0b1);
             val >>= 1;
         }
 
         while (result.Count < length)
         {
-            result.Add(0);
+            result.Add (0);
         }
 
-        return result.ToArray();
+        return result.ToArray ();
     }
 
     public static string ToByteString (this Bit[]? bits)
     {
-        return Convert.ToHexString(BitStream.BitArrayToBytes(bits));
+        return Convert.ToHexString (BitStream.BitArrayToBytes (bits));
     }
 
     public static void RegisterBsonMapperForBit ()
@@ -149,12 +149,12 @@ public static class BitStreamExtensions
         BsonMapper.Global.RegisterType
         (
             bit => (int) bit,
-            bson => new Bit((int) bson)
+            bson => new Bit ((int) bson)
         );
         BsonMapper.Global.RegisterType<List<Bit>>
         (
-            list => new BsonArray(list.Select(x => new BsonValue(x.AsInt())).ToArray()),
-            bson => bson.AsArray.Select(x => new Bit((int) x)).ToList()
+            list => new BsonArray (list.Select (x => new BsonValue (x.AsInt ())).ToArray ()),
+            bson => bson.AsArray.Select (x => new Bit ((int) x)).ToList ()
         );
     }
 }

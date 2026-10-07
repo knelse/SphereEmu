@@ -13,19 +13,19 @@ public class DoorExitPacket : WorldObject
     public double ExitAngle { get; set; }
 
     public override string DisplayValue =>
-        $"{Id:X4} ({Enum.GetName(ObjectType) ?? string.Empty}) at [{X:F2}, {Y:F2}, {Z:F2}] "
+        $"{Id:X4} ({Enum.GetName (ObjectType) ?? string.Empty}) at [{X:F2}, {Y:F2}, {Z:F2}] "
         + $"to [{ExitX:F2}, {ExitY:F2}, {ExitZ:F2}]";
 
-    public DoorExitPacket(List<PacketPart> parts) : base(parts)
+    public DoorExitPacket (List<PacketPart> parts) : base (parts)
     {
         if (ActionType is not (EntityActionType.SET_POSITION or EntityActionType.FULL_SPAWN))
         {
             return;
         }
 
-        ExitX = GetClientCoordValue(PacketPartNames.ExitX);
-        ExitY = GetClientCoordValue(PacketPartNames.ExitY);
-        ExitZ = GetClientCoordValue(PacketPartNames.ExitZ);
-        ExitAngle = GetIntValue(PacketPartNames.ExitAngle);
+        ExitX = GetClientCoordValue (PacketPartNames.ExitX);
+        ExitY = GetClientCoordValue (PacketPartNames.ExitY);
+        ExitZ = GetClientCoordValue (PacketPartNames.ExitZ);
+        ExitAngle = GetIntValue (PacketPartNames.ExitAngle);
     }
 }

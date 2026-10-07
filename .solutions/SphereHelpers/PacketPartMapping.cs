@@ -316,7 +316,7 @@ public static class PacketPartMapping
         ObjectType.Quest_Weapon_Crossbow
     ];
 
-    public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new()
+    public static readonly Dictionary<ObjectType, string> WorldObjectsToTrack = new ()
     {
         [ObjectType.Teleport] = "teleports",
         [ObjectType.Castle_Teleport] = "castle_teleports",
@@ -342,13 +342,13 @@ public static class PacketPartMapping
         [ObjectType.Mob_Spawner] = "mob_spawner"
     };
 
-    public static Tuple<string, string, bool> GetPacketPartName(ObjectType objectType, EntityActionType actionType,
+    public static Tuple<string, string, bool> GetPacketPartName (ObjectType objectType, EntityActionType actionType,
         EntityInteractionType interactionType, ushort entId, bool hasGameId, List<OptionalPacketFields> optionalFields)
     {
-        var entityNameForComment = CamelCaseToUpperWithSpaces(objectType.ToString());
+        var entityNameForComment = CamelCaseToUpperWithSpaces (objectType.ToString ());
         var packetName = string.Empty;
         var success = true;
-        var comment = (string?)null;
+        var comment = (string?) null;
         var genericItemPacket = false;
         var shouldHaveOptionalFields = false;
         switch (actionType)
@@ -570,15 +570,15 @@ public static class PacketPartMapping
                             comment = $"NEW PLAYER -- [{entId:X4}]";
                             break;
                         default:
-                            if (ItemRecipeBagObjectTypes.Contains(objectType))
+                            if (ItemRecipeBagObjectTypes.Contains (objectType))
                             {
                                 packetName = "item_recipebook";
                             }
-                            else if (ItemBagObjectTypes.Contains(objectType))
+                            else if (ItemBagObjectTypes.Contains (objectType))
                             {
                                 packetName = "item_bag";
                             }
-                            else if (ItemObjectTypes.Contains(objectType))
+                            else if (ItemObjectTypes.Contains (objectType))
                             {
                                 packetName = "item";
                                 genericItemPacket = true;
@@ -629,29 +629,29 @@ public static class PacketPartMapping
 
         comment ??= $"NEW ENTITY -- {entityNameForComment} [{entId:X4}]";
 
-        return new Tuple<string, string, bool>(packetName, comment, success);
+        return new Tuple<string, string, bool> (packetName, comment, success);
     }
 
-    private static string CamelCaseToUpperWithSpaces(string s)
+    private static string CamelCaseToUpperWithSpaces (string s)
     {
-        var sb = new StringBuilder();
+        var sb = new StringBuilder ();
         foreach (var c in s)
         {
-            if (char.IsUpper(c))
+            if (char.IsUpper (c))
             {
-                sb.Append(' ');
+                sb.Append (' ');
             }
 
-            sb.Append(char.ToUpper(c));
+            sb.Append (char.ToUpper (c));
         }
 
-        return sb.ToString();
+        return sb.ToString ();
     }
 }
 
 public static class ObjectTypeToPacketNameMap
 {
-    public static Dictionary<ObjectType, string> Mapping = new()
+    public static Dictionary<ObjectType, string> Mapping = new ()
     {
         [ObjectType.Despawn] = "despawn",
         [ObjectType.Player] = "",

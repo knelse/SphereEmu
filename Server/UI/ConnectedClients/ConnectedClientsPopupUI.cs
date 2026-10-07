@@ -12,126 +12,126 @@ public partial class ConnectedClientsPopupUI : PopupMenu
     private const string BAN_MENU_LABEL = "Ban";
     public ushort currentClientId;
 
-    public override void _Ready()
+    public override void _Ready ()
     {
-        // Items are built in code; clear anything serialized into MainServer.tscn from a prior
-        // play+save (otherwise Kick/Ban/Teleport stack every time the scene is saved).
-        Clear();
-        foreach (var child in GetChildren())
+        // Kick, Ban, and Teleport are built in code; a saved MainServer.tscn would stack another
+        // copy on every save
+        Clear ();
+        foreach (var child in GetChildren ())
         {
             if (child is PopupMenu submenu)
             {
-                RemoveChild(submenu);
-                submenu.QueueFree();
+                RemoveChild (submenu);
+                submenu.QueueFree ();
             }
         }
 
-        AddKickMenuItem();
-        AddBanMenuItem();
-        CreateTeleportMenuHierarchy();
+        AddKickMenuItem ();
+        AddBanMenuItem ();
+        CreateTeleportMenuHierarchy ();
         IndexPressed += OnMenuIndexPressed;
     }
 
-    private void AddKickMenuItem()
+    private void AddKickMenuItem ()
     {
-        AddItem(KICK_MENU_LABEL);
+        AddItem (KICK_MENU_LABEL);
     }
 
-    private void AddBanMenuItem()
+    private void AddBanMenuItem ()
     {
-        AddItem(BAN_MENU_LABEL);
-        AddSeparator();
+        AddItem (BAN_MENU_LABEL);
+        AddSeparator ();
     }
 
-    private void OnMenuIndexPressed(long index)
+    private void OnMenuIndexPressed (long index)
     {
-        var itemText = GetItemText((int)index);
+        var itemText = GetItemText ((int) index);
 
         if (itemText == KICK_MENU_LABEL)
         {
-            HandleKickClient();
+            HandleKickClient ();
         }
         else if (itemText == BAN_MENU_LABEL)
         {
-            HandleBanClient();
+            HandleBanClient ();
         }
     }
 
-    private void HandleKickClient()
+    private void HandleKickClient ()
     {
-        AdminClientActions.Kick(currentClientId);
+        AdminClientActions.Kick (currentClientId);
     }
 
-    private void HandleBanClient()
+    private void HandleBanClient ()
     {
-        AdminClientActions.Ban(currentClientId);
+        AdminClientActions.Ban (currentClientId);
     }
 
-    private void CreateTeleportMenuHierarchy()
+    private void CreateTeleportMenuHierarchy ()
     {
-        var teleportMenu = new PopupMenu();
+        var teleportMenu = new PopupMenu ();
         teleportMenu.Name = "Teleport";
 
-        foreach (var continent in Enum.GetValues<Continents>())
+        foreach (var continent in Enum.GetValues<Continents> ())
         {
-            var submenu = CreateSubmenuForContinent(continent);
-            submenu.Name = continent.ToString();
-            teleportMenu.AddSubmenuNodeItem(continent.ToString(), submenu);
+            var submenu = CreateSubmenuForContinent (continent);
+            submenu.Name = continent.ToString ();
+            teleportMenu.AddSubmenuNodeItem (continent.ToString (), submenu);
         }
 
-        AddSubmenuNodeItem("Teleport", teleportMenu);
+        AddSubmenuNodeItem ("Teleport", teleportMenu);
     }
 
-    private PopupMenu CreateSubmenuForContinent(Continents continent)
+    private PopupMenu CreateSubmenuForContinent (Continents continent)
     {
-        var continentMenu = new PopupMenu();
-        continentMenu.Name = continent.ToString();
-        var respawnPoints = new PopupMenu();
+        var continentMenu = new PopupMenu ();
+        continentMenu.Name = continent.ToString ();
+        var respawnPoints = new PopupMenu ();
         respawnPoints.Name = "RespawnPoints";
 
-        var respawnsForContinent = SavedCoords.RespawnPoints.GetValueOrDefault(continent, []);
+        var respawnsForContinent = SavedCoords.RespawnPoints.GetValueOrDefault (continent, []);
 
         foreach (var respawnsForCity in respawnsForContinent)
         {
-            var cityMenu = new PopupMenu();
-            cityMenu.Name = respawnsForCity.Key.ToString();
+            var cityMenu = new PopupMenu ();
+            cityMenu.Name = respawnsForCity.Key.ToString ();
             foreach (var respawnPoint in respawnsForCity.Value)
             {
-                var label = $"{respawnPoint.Key.ToString()} [{respawnPoint.Value}]";
-                cityMenu.AddItem(label);
+                var label = $"{respawnPoint.Key.ToString ()} [{respawnPoint.Value}]";
+                cityMenu.AddItem (label);
             }
 
-            cityMenu.IndexPressed += GenerateOnIndexPressedForMenu(cityMenu);
+            cityMenu.IndexPressed += GenerateOnIndexPressedForMenu (cityMenu);
 
-            respawnPoints.AddSubmenuNodeItem(respawnsForCity.Key.ToString(), cityMenu);
+            respawnPoints.AddSubmenuNodeItem (respawnsForCity.Key.ToString (), cityMenu);
         }
 
-        continentMenu.AddSubmenuNodeItem("Respawn points", respawnPoints);
+        continentMenu.AddSubmenuNodeItem ("Respawn points", respawnPoints);
 
-        var poiForContinent = SavedCoords.TeleportPoints.GetValueOrDefault(continent, []);
+        var poiForContinent = SavedCoords.TeleportPoints.GetValueOrDefault (continent, []);
 
         foreach (var poiForCity in poiForContinent)
         {
-            var poiMenu = new PopupMenu();
-            poiMenu.Name = poiForCity.Key.ToString();
+            var poiMenu = new PopupMenu ();
+            poiMenu.Name = poiForCity.Key.ToString ();
             foreach (var poi in poiForCity.Value)
             {
-                poiMenu.AddItem($"{poi.Key} [{poi.Value}]");
+                poiMenu.AddItem ($"{poi.Key} [{poi.Value}]");
             }
 
-            poiMenu.IndexPressed += GenerateOnIndexPressedForMenu(poiMenu);
-            continentMenu.AddSubmenuNodeItem(poiForCity.Key.ToString(), poiMenu);
+            poiMenu.IndexPressed += GenerateOnIndexPressedForMenu (poiMenu);
+            continentMenu.AddSubmenuNodeItem (poiForCity.Key.ToString (), poiMenu);
         }
 
         return continentMenu;
     }
 
     // TODO: this is awful and relies on item text, but good enough for now
-    private IndexPressedEventHandler GenerateOnIndexPressedForMenu(PopupMenu popupMenu)
+    private IndexPressedEventHandler GenerateOnIndexPressedForMenu (PopupMenu popupMenu)
     {
         return index =>
         {
-            var itemText = popupMenu.GetItemText((int)index);
+            var itemText = popupMenu.GetItemText ((int) index);
 
             if (itemText is null)
             {
@@ -139,17 +139,17 @@ public partial class ConnectedClientsPopupUI : PopupMenu
             }
 
             var coordsString =
-                itemText.Split('[', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[1];
+                itemText.Split ('[', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[1];
 
             var coordsSplit = coordsString[..^1]
-                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            var x = float.Parse(coordsSplit[0]);
-            var y = float.Parse(coordsSplit[1]);
-            var z = float.Parse(coordsSplit[2]);
-            var angle = float.Parse(coordsSplit[3]);
+                .Split (',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var x = float.Parse (coordsSplit[0]);
+            var y = float.Parse (coordsSplit[1]);
+            var z = float.Parse (coordsSplit[2]);
+            var angle = float.Parse (coordsSplit[3]);
 
-            var worldCoords = new WorldCoords(x, y, z, angle);
-            AdminClientActions.Teleport(currentClientId, worldCoords, itemText);
+            var worldCoords = new WorldCoords (x, y, z, angle);
+            AdminClientActions.Teleport (currentClientId, worldCoords, itemText);
         };
     }
 }

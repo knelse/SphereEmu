@@ -31,7 +31,7 @@ public static class Packet
             mask3 = (byte) (current * i + 2 * mask3);
         }
 
-        Array.Copy(input, result, start);
+        Array.Copy (input, result, start);
         return result;
     }
 
@@ -44,60 +44,60 @@ public static class Packet
 
         var packetSize = (ushort) (content.Length + 4 + padZeros);
 
-        var result = new byte [content.Length + 4 + padZeros];
+        var result = new byte[content.Length + 4 + padZeros];
 
-        result[0] = SphereDbEntrySerializerBase.MinorByte(packetSize);
-        result[1] = SphereDbEntrySerializerBase.MajorByte(packetSize);
-        result[2] = SphereDbEntrySerializerBase.MajorByte(PacketValidationCodeOK);
-        result[3] = SphereDbEntrySerializerBase.MinorByte(PacketValidationCodeOK);
+        result[0] = SphereDbEntrySerializerBase.MinorByte (packetSize);
+        result[1] = SphereDbEntrySerializerBase.MajorByte (packetSize);
+        result[2] = SphereDbEntrySerializerBase.MajorByte (PacketValidationCodeOK);
+        result[3] = SphereDbEntrySerializerBase.MinorByte (PacketValidationCodeOK);
 
         for (var i = 0; i < padZeros; i++)
         {
             result[4 + i] = 0x00;
         }
 
-        content.CopyTo(result, 4 + padZeros);
+        content.CopyTo (result, 4 + padZeros);
 
         return result;
     }
 
     public static byte[] ItemsToPacket (ushort clientId, int bagId, List<ItemDbEntry> items)
     {
-        var stream = SphBitStream.GetWriteBitStream();
+        var stream = SphBitStream.GetWriteBitStream ();
 
         for (var i = 0; i < items.Count; i++)
         {
             var item = items[i];
-            var similarPacket = FindSimilarObjectPacketInDb(clientId, bagId, item);
+            var similarPacket = FindSimilarObjectPacketInDb (clientId, bagId, item);
             if (similarPacket is null)
             {
                 continue;
             }
 
-            similarPacket.Value.ToStream(stream);
+            similarPacket.Value.ToStream (stream);
             if (i >= items.Count - 1)
             {
                 break;
             }
 
-            if (GameObjectDataHelper.WeaponsAndArmor.Contains(similarPacket.Value.GameObject!.GameObjectType))
+            if (GameObjectDataHelper.WeaponsAndArmor.Contains (similarPacket.Value.GameObject!.GameObjectType))
             {
-                stream.WriteByte(0x7E >> 1, 7);
+                stream.WriteByte (0x7E >> 1, 7);
             }
             else
             {
-                var seekBack = GameObjectDataHelper.Mantras.Contains(similarPacket.Value.GameObject.GameObjectType)
-                               || GameObjectDataHelper.Powders.Contains(similarPacket.Value.GameObject.GameObjectType)
-                               || GameObjectDataHelper.AlchemyMaterials.Contains(
+                var seekBack = GameObjectDataHelper.Mantras.Contains (similarPacket.Value.GameObject.GameObjectType)
+                               || GameObjectDataHelper.Powders.Contains (similarPacket.Value.GameObject.GameObjectType)
+                               || GameObjectDataHelper.AlchemyMaterials.Contains (
                                    similarPacket.Value.GameObject.GameObjectType)
                     ? 1
                     : 0;
-                stream.SeekBack(seekBack);
-                stream.WriteByte(0x7E);
+                stream.SeekBack (seekBack);
+                stream.WriteByte (0x7E);
             }
         }
 
-        return ToByteArray(stream.GetStreamData(), 3);
+        return ToByteArray (stream.GetStreamData (), 3);
     }
 
     private static ObjectPacket? FindSimilarObjectPacketInDb (ushort clientId, int bagId, ItemDbEntry? item)
@@ -107,7 +107,7 @@ public static class Packet
             return null;
         }
 
-        Console.WriteLine(item.ToDebugString());
+        Console.WriteLine (item.ToDebugString ());
         var weaponArmorNotShiftedId = 243;
         var weaponArmorShiftedId = 153;
         var ringNotShiftedId = 666;
@@ -121,29 +121,29 @@ public static class Packet
         // var tokenId = 330;
         // var diamondRingId = 569;
 
-        var objectType = item.GameObjectType.GetPacketObjectType();
+        var objectType = item.GameObjectType.GetPacketObjectType ();
         // Console.WriteLine(Enum.GetName(objectType));
         var suffixMod = item.Suffix == ItemSuffix.None
             ? (ushort) 81
             : (ushort) GameObjectDataHelper.ObjectTypeToSuffixLocaleMap[item.GameObjectType][item.Suffix].value;
 
         var dbId = -1;
-        if (GameObjectDataHelper.WeaponsAndArmor.Contains(item.GameObjectType))
+        if (GameObjectDataHelper.WeaponsAndArmor.Contains (item.GameObjectType))
         {
             dbId = suffixMod > 1000 ? weaponArmorShiftedId : weaponArmorNotShiftedId;
         }
 
-        else if (GameObjectDataHelper.Mantras.Contains(item.GameObjectType))
+        else if (GameObjectDataHelper.Mantras.Contains (item.GameObjectType))
         {
             dbId = mantraId;
         }
 
-        else if (GameObjectDataHelper.Powders.Contains(item.GameObjectType))
+        else if (GameObjectDataHelper.Powders.Contains (item.GameObjectType))
         {
             dbId = powderId;
         }
 
-        else if (GameObjectDataHelper.AlchemyMaterials.Contains(item.GameObjectType))
+        else if (GameObjectDataHelper.AlchemyMaterials.Contains (item.GameObjectType))
         {
             dbId = alchemyId;
         }
@@ -160,8 +160,8 @@ public static class Packet
 
         if (dbId == -1)
         {
-            Console.WriteLine(
-                $"NOT FOUND: Type: {Enum.GetName(item.GameObjectType)} Suffix: {suffixMod} {Enum.GetName(item.Suffix)}");
+            Console.WriteLine (
+                $"NOT FOUND: Type: {Enum.GetName (item.GameObjectType)} Suffix: {suffixMod} {Enum.GetName (item.Suffix)}");
             dbId = 4;
         }
 

@@ -13,16 +13,16 @@ using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
+public class IngameAckHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
 
-    public async Task Handle(byte[] frame, double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
         if (WaitForClientTimer is not null)
         {
-            WaitForClientTimer.Tick(delta);
+            WaitForClientTimer.Tick (delta);
             return;
         }
 
@@ -31,19 +31,19 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        var character = clientConnection.GetSelectedCharacter();
+        var character = clientConnection.GetSelectedCharacter ();
 
         if (character is null)
         {
             // should never happen
-            SphLogger.Error($"SRV {localId:X4}: Selected character is null");
+            SphLogger.Error ($"SRV {localId:X4}: Selected character is null");
             return;
         }
 
         var missing = character.Items
-            .Where(x => DbConnection.Items.FindById(x.Value) is null)
-            .Select(x => x.Key)
-            .ToList();
+            .Where (x => DbConnection.Items.FindById (x.Value) is null)
+            .Select (x => x.Key)
+            .ToList ();
 
         var shouldSave = false;
 
@@ -51,60 +51,60 @@ public class IngameAckHandler(ushort localId, ClientConnection clientConnection)
         {
             foreach (var slot in missing)
             {
-                character.Items.Remove(slot);
+                character.Items.Remove (slot);
             }
             shouldSave = true;
-            SphLogger.Warning($"SRV {localId:X4}: Cleared {missing.Count} slot(s) whose item is gone: " +
-                              $"{string.Join(", ", missing.Select(x => Enum.GetName(x)))}");
+            SphLogger.Warning ($"SRV {localId:X4}: Cleared {missing.Count} slot(s) whose item is gone: " +
+                              $"{string.Join (", ", missing.Select (x => Enum.GetName (x)))}");
         }
 
-        character.SyncGuildFromWornEmblem();
+        character.SyncGuildFromWornEmblem ();
 
-        if (GuildAbilityLoadout.Sync(character, send: null))
+        if (GuildAbilityLoadout.Sync (character, send: null))
         {
             shouldSave = true;
         }
 
         if (shouldSave)
         {
-            clientConnection.SaveSelectedCharacter();
+            clientConnection.SaveSelectedCharacter ();
         }
 
-        character.RecalcCurrentStats();
+        character.RecalcCurrentStats ();
 
-        SphLogger.Info($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
+        SphLogger.Info ($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
 
-        var declared = new HashSet<int>();
+        var declared = new HashSet<int> ();
 
         foreach (var (slot, itemId) in character.Items)
         {
-            var item = DbConnection.Items.FindById(itemId);
-            if (item is null || !declared.Add(itemId))
+            var item = DbConnection.Items.FindById (itemId);
+            if (item is null || !declared.Add (itemId))
             {
                 continue;
             }
 
-            var record = ItemRecordEncoder.Encode(item, ByteSwap(localId));
+            var record = ItemRecordEncoder.Encode (item, ByteSwap (localId));
 
             if (slot == BelongingSlot.Helmet)
             {
-                clientConnection.MaybeScheduleNetworkPacketSend(record);
-                clientConnection.MaybeScheduleNetworkPacketSend(ItemSlotReserve.BuildSlotBinding(localId, slot, item.Id));
+                clientConnection.MaybeScheduleNetworkPacketSend (record);
+                clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildSlotBinding (localId, slot, item.Id));
                 continue;
             }
 
-            var reserve = ItemSlotReserve.Build(localId, slot, item.Id, item.ItemCount);
+            var reserve = ItemSlotReserve.Build (localId, slot, item.Id, item.ItemCount);
             if (reserve is not null)
             {
-                clientConnection.MaybeScheduleNetworkPacketSend(reserve);
+                clientConnection.MaybeScheduleNetworkPacketSend (reserve);
             }
 
-            clientConnection.MaybeScheduleNetworkPacketSend(record);
+            clientConnection.MaybeScheduleNetworkPacketSend (record);
         }
 
         // After items: GuildPlus64/rank and worn bonuses need the emblem process to exist first.
-        NetworkedStatsUpdater.Update(character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);
+        NetworkedStatsUpdater.Update (character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);
 
-        WaitForClientTimer = new(0.05f, false, clientConnection.MoveToNextBeforeGameStage);
+        WaitForClientTimer = new (0.05f, false, clientConnection.MoveToNextBeforeGameStage);
     }
 }

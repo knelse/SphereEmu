@@ -11,103 +11,99 @@ using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class UseItemHandler(ushort localId, ClientConnection clientConnection)
+public class UseItemHandler (ushort localId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    public async Task Handle(byte[] frame, double delta)
+    public async Task Handle (byte[] frame, double delta)
     {
-        var itemId = (ushort)(frame[11] + frame[12] * 0x100);
-        // Attack-wedge fix: item use arms the same client use-lock (g_6008) as an attack, so clear it here
-        // too. Without this the client wedges permanently after using an item. See CommonPackets.ClearUseToutAck.
-        clientConnection.MaybeScheduleNetworkPacketSend(CommonPackets.ClearUseToutAck(localId));
+        var itemId = (ushort) (frame[11] + frame[12] * 0x100);
+        // Item use arms g_6008, so this ack clears it or the client stays wedged
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
 
-        var character = clientConnection.GetSelectedCharacter();
-        var item = DbConnection.Items.FindById((int)itemId);
+        var character = clientConnection.GetSelectedCharacter ();
+        var item = DbConnection.Items.FindById ((int) itemId);
         if (character is null || item is null)
         {
-            Log(itemId, "?", "no character or no such item");
+            Log (itemId, "?", "no character or no such item");
             return;
         }
 
-        var name = item.Localization.GetValueOrDefault(Locale.Russian, "?");
-        if (!character.Items.Any(x => x.Value == item.Id))
+        var name = item.Localization.GetValueOrDefault (Locale.Russian, "?");
+        if (!character.Items.Any (x => x.Value == item.Id))
         {
             // Using something lying in the world is a pickup, which the client asks for separately.
-            Log(itemId, name, "not carried");
+            Log (itemId, name, "not carried");
             return;
         }
 
-        var from = character.Items.First(x => x.Value == item.Id).Key;
-        var wearing = !ItemDbEntry.IsInventorySlot(from);
-        var to = wearing ? character.FindEmptyInventorySlot() : WearSlotFor(character, item);
+        var from = character.Items.First (x => x.Value == item.Id).Key;
+        var wearing = !ItemDbEntry.IsInventorySlot (from);
+        var to = wearing ? character.FindEmptyInventorySlot () : WearSlotFor (character, item);
         if (to is null)
         {
-            Log(itemId, name, wearing ? "inventory is full" : "nowhere to wear it");
+            Log (itemId, name, wearing ? "inventory is full" : "nowhere to wear it");
             return;
         }
 
-        // Whatever is already in that slot takes the place this item is leaving, so the two trade
-        // squares rather than the displaced one landing in the first free cell it can find.
-        var displaced = character.Items.TryGetValue(to.Value, out var occupant) ? occupant : (int?)null;
+        // The occupant of the destination takes the slot this item is leaving
+        var displaced = character.Items.TryGetValue (to.Value, out var occupant) ? occupant : (int?) null;
 
-        var lookBefore = CharacterWornLook.Capture(character);
-        character.PlaceItemInSlot(to.Value, item.Id);
+        var lookBefore = CharacterWornLook.Capture (character);
+        character.PlaceItemInSlot (to.Value, item.Id);
 
-        // The square it came from still holds a handle to it either way: filled by the swap, or
-        // cleared, or it keeps drawing what is no longer there.
+        // The source slot still has a handle: the swap, or an explicit clear
         byte[]? vacated;
         if (displaced is { } displacedId)
         {
-            character.PlaceItemInSlot(from, displacedId);
-            vacated = ItemSlotReserve.Build(localId, from, displacedId);
+            character.PlaceItemInSlot (from, displacedId);
+            vacated = ItemSlotReserve.Build (localId, from, displacedId);
         }
         else
         {
-            vacated = ItemSlotReserve.Build(localId, from, ItemSlotReserve.NoItem);
+            vacated = ItemSlotReserve.Build (localId, from, ItemSlotReserve.NoItem);
         }
 
         if (vacated is not null)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend(vacated);
+            clientConnection.MaybeScheduleNetworkPacketSend (vacated);
         }
 
-        var claimed = ItemSlotReserve.Build(localId, to.Value, item.Id, item.ItemCount);
+        var claimed = ItemSlotReserve.Build (localId, to.Value, item.Id, item.ItemCount);
         if (claimed is not null)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend(claimed);
+            clientConnection.MaybeScheduleNetworkPacketSend (claimed);
         }
 
-        if (character.RecalcCurrentStats())
+        if (character.RecalcCurrentStats ())
         {
-            NetworkedStatsUpdater.Update(character);
+            NetworkedStatsUpdater.Update (character);
         }
 
-        clientConnection.SaveSelectedCharacter();
+        clientConnection.SaveSelectedCharacter ();
 
-        if (lookBefore != CharacterWornLook.Capture(character))
+        if (lookBefore != CharacterWornLook.Capture (character))
         {
-            ActiveClients.Get(localId)?.BroadcastAppearanceRefreshToVisibleClients();
+            ActiveClients.Get (localId)?.BroadcastAppearanceRefreshToVisibleClients ();
         }
 
-        Log(itemId, name, displaced is null
-            ? $"{Enum.GetName(from)} -> {Enum.GetName(to.Value)}"
-            : $"{Enum.GetName(from)} <-> {Enum.GetName(to.Value)}");
+        Log (itemId, name, displaced is null
+            ? $"{Enum.GetName (from)} -> {Enum.GetName (to.Value)}"
+            : $"{Enum.GetName (from)} <-> {Enum.GetName (to.Value)}");
     }
 
-    /// <summary>The first free slot this item may be worn in, or null when there is none.</summary>
-    private static BelongingSlot? WearSlotFor(CharacterDbEntry character, ItemDbEntry item)
+    private static BelongingSlot? WearSlotFor (CharacterDbEntry character, ItemDbEntry item)
     {
         BelongingSlot? fallback = null;
 
-        foreach (var slot in Enum.GetValues<BelongingSlot>())
+        foreach (var slot in Enum.GetValues<BelongingSlot> ())
         {
-            if (ItemDbEntry.IsInventorySlot(slot) || !item.IsValidForSlot(slot))
+            if (ItemDbEntry.IsInventorySlot (slot) || !item.IsValidForSlot (slot))
             {
                 continue;
             }
 
-            // An empty one first; otherwise the first that fits, whose occupant is swapped out.
-            if (!character.Items.ContainsKey(slot))
+            // Empty legal slot wins; an occupied one is only the fallback
+            if (!character.Items.ContainsKey (slot))
             {
                 return slot;
             }
@@ -118,8 +114,8 @@ public class UseItemHandler(ushort localId, ClientConnection clientConnection)
         return fallback;
     }
 
-    private void Log(ushort itemId, string name, string outcome)
+    private void Log (ushort itemId, string name, string outcome)
     {
-        SphLogger.Info($"UseItem: Source [{localId:X4}] - Target [{itemId:X4}] - Item [{name}] - [{outcome}]");
+        SphLogger.Info ($"UseItem: Source [{localId:X4}] - Target [{itemId:X4}] - Item [{name}] - [{outcome}]");
     }
 }
