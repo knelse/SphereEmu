@@ -15,11 +15,11 @@ public class PingHandler : ISphereClientNetworkingHandler
 {
     private const double MovementBroadcastDelta = 0.1;
     // msg300 keepalive with _player PositionStream (region 11): array4 count + 4 IEEE floats.
-    private const int PingFrameLength = 0x26;
-    private const int CoordPayloadOffset = 21;
+    private const int PingFrameLength = 0x34;
+    private const int CoordPayloadOffset = 35;
     private const int CoordPayloadLength = 17;
     private const int PongEchoOffset = 9;
-    private const int PongEchoLength = 21;
+    private const int PongEchoLength = 35;
 
     private readonly Guid entityId;
     private readonly ClientConnection clientConnection;
@@ -30,10 +30,8 @@ public class PingHandler : ISphereClientNetworkingHandler
     // CheckPing resets on region 11. WaitReinc stops client 0x26s, so this pong keeps going
     private readonly SphereTimer deadPositionStreamTimer;
 
-    private ushort counter;
     private byte[]? previousCoordPayload;
     private byte[]? lastPongEcho;
-    private bool pingShouldXorTopBit;
     private bool wasDead;
     private double deadSeconds;
 
@@ -151,35 +149,12 @@ public class PingHandler : ISphereClientNetworkingHandler
 
     private void SendPositionStreamPong (byte[] pongEcho)
     {
-        var xored = pongEcho[5];
-        if (pingShouldXorTopBit)
-        {
-            xored ^= 0b10000000;
-        }
-
-        if (counter == 0)
-        {
-            var first = (ushort) ((pongEcho[7] << 8) + pongEcho[6]);
-            first -= 0xE001;
-            counter = (ushort) (0xE001 + first / 12);
-        }
-
-        var pong = new byte[13];
-        pongEcho.AsSpan (0, 5).CopyTo (pong);
-        pong[5] = xored;
-        pong[6] = SphereDbEntrySerializerBase.MinorByte (counter);
-        pong[7] = SphereDbEntrySerializerBase.MajorByte (counter);
-        pongEcho.AsSpan (8, 4).CopyTo (pong.AsSpan (8));
-
-        clientConnection.MaybeScheduleNetworkPacketSend (Packet.ToByteArray (pong, 1));
-        pingShouldXorTopBit = !pingShouldXorTopBit;
-        counter++;
-
-        // overflow
-        if (counter < 0xE001)
-        {
-            counter = 0xE001;
-        }
+        var currentCharacter = clientConnection.GetSelectedCharacter ();
+        clientConnection.MaybeScheduleNetworkPacketSend (
+            CommonPackets.BuildPlayerEmptyPositionStream (entityId,
+                currentCharacter?.X ?? 0,
+                -(currentCharacter?.Y ?? 0),
+                -(currentCharacter?.Z ?? 0)));
     }
 
     private void SyncVitalsAfterRegen ()

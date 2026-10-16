@@ -26,7 +26,7 @@ public class IngameAckHandler (Guid entityId, ClientConnection clientConnection)
             return;
         }
 
-        if (frame.Length != 0x13)
+        if (frame.Length is not (0x13 or 0x1F))
         {
             return;
         }

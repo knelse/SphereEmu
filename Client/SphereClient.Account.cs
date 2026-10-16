@@ -54,7 +54,14 @@ public partial class SphereClient
 	{
 		try
 		{
-			var listed = playerDbEntry!.Characters[index];
+			if (playerDbEntry is null || playerDbEntry.Characters.Count == 0)
+			{
+				SphLogger.Error ($"Unable to select character at index: {index}. Client ID: {EntityID}.");
+				return;
+			}
+
+			index = Math.Clamp (index, 0, playerDbEntry.Characters.Count - 1);
+			var listed = playerDbEntry.Characters[index];
 			// BsonRef Include can return a stub, so reload the Characters row for Base* and Items
 			var character = listed.Id != 0
 				? DbConnection.Characters.Query ()
@@ -91,8 +98,9 @@ public partial class SphereClient
 		try
 		{
 			DbConnection.Characters.Insert (newCharacter);
-			playerDbEntry!.Characters.Insert (index, newCharacter);
-			DbConnection.Players.Update (playerDbEntry!);
+			var insertIndex = Math.Clamp (index, 0, playerDbEntry!.Characters.Count);
+			playerDbEntry.Characters.Insert (insertIndex, newCharacter);
+			DbConnection.Players.Update (playerDbEntry);
 		}
 		catch (Exception ex)
 		{

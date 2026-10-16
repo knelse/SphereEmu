@@ -58,12 +58,17 @@ sealed class SecureLoginServer (ConnectionHandler connectionHandler)
     {
         var now = DateTime.UtcNow;
         cookies.RemoveAll (cookie => now - cookie.Created > SecureLoginWire.CookieLifetime);
-        var stale = sessions.Where (pair => pair.Value.Client is null &&
-                                            now - pair.Value.Created > SecureLoginWire.ResumeLifetime)
+        // UDP has no close. A session that stops sending is the disconnect
+        var stale = sessions.Where (pair => now - pair.Value.LastActivity > SecureLoginWire.ResumeLifetime)
             .Select (pair => pair.Key).ToArray ();
         foreach (var sessionId in stale)
         {
-            sessions.Remove (sessionId);
+            if (!sessions.Remove (sessionId, out var session))
+            {
+                continue;
+            }
+
+            session.Client?.RemoveClient ();
         }
     }
 
@@ -203,6 +208,7 @@ sealed class SecureLoginServer (ConnectionHandler connectionHandler)
         }
 
         session.ReceiveCounter++;
+        session.LastActivity = DateTime.UtcNow;
         if (session.Client is null)
         {
             session.EarlyFrames.Add (plain);
@@ -268,6 +274,7 @@ sealed class SecureLoginServer (ConnectionHandler connectionHandler)
         public PacketPeerUdp PeerUdp { get; } = peerUdp;
         public string PeerKey { get; } = peerKey;
         public DateTime Created { get; } = created;
+        public DateTime LastActivity { get; set; } = created;
         public ulong SendCounter { get; set; } = 2;
         public ulong ReceiveCounter { get; set; } = 1;
         public SphereClient? Client { get; set; }

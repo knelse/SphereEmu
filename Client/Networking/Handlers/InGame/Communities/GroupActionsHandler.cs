@@ -12,14 +12,13 @@ public class GroupActionsHandler (ClientConnection clientConnection)
 {
     public async Task Handle (byte[] frame, double delta)
     {
-        // Action follows the guid at byte 11 and the 08 40 23 23 tail
-        if (frame.Length < 32)
+        if (frame.Length < 46)
         {
             return;
         }
 
         var entityId = new Guid (frame.AsSpan (11, 16));
-        var action = frame[31];
+        var action = SphServer.Helpers.Networking.ClientPacketClassifier.ShiftedByte (frame, 31);
         switch (action)
         {
             case 0x00:

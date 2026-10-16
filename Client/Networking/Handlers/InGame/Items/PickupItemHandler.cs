@@ -134,7 +134,7 @@ public class PickupItemHandler (Guid entityId, ClientConnection clientConnection
 
     public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
     {
-        var globalItemId = ReadGuid (frame, 21 * 8 + 1);
+        var globalItemId = ReadGuid (frame, 380);
         var item = DbConnection.Items.FindById (globalItemId);
 
         if (item is null)
@@ -145,8 +145,8 @@ public class PickupItemHandler (Guid entityId, ClientConnection clientConnection
 
         var character = clientConnection.GetSelectedCharacter ()!;
 
-        var clientSlot_raw = frame[24];
-        var targetSlotId = clientSlot_raw >> 1;
+        var targetSlotId = (int) SphServer.Helpers.Networking.GameplayRecord.ReadBits (frame, 508, 8);
+        var clientSlot_raw = (byte) (targetSlotId << 1);
         var targetSlot = Enum.IsDefined (typeof (BelongingSlot), targetSlotId)
             ? (BelongingSlot) targetSlotId
             : BelongingSlot.Unknown;

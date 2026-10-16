@@ -75,7 +75,7 @@ public static class ClientPacketClassifier
     }
 
     /// Shortest gameplay frame with a whole record header
-    private const int RecordHeaderMinimumLength = 16;
+    private const int RecordHeaderMinimumLength = 30;
 
     /// Null when the record does not name the frame and the byte signature decides
     private static ClientPacketClassification? ClassifyByRecord (
@@ -85,7 +85,7 @@ public static class ClientPacketClassifier
         var frameLength = frame.Length;
         if (IsStatsUpdateRequest (frame))
         {
-            return Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true);
+            return Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x40 08 40 23 02 action 17", true);
         }
 
         if (identity.Tag == GameplayRecord.TagObjectInteract)
@@ -124,7 +124,7 @@ public static class ClientPacketClassifier
             // Action 3 is several lengths the signature table already splits
 
             case GameplayAction.Telemetry:
-                // Character select is the 21-byte 08 40 80 05 form; other telemetry lengths have no
+                // Character select is the 35-byte 08 40 80 05 form; other telemetry lengths have no
                 // handler
                 return IsCharacterSelect (frame)
                     ? Result (ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason (frame), true)
@@ -141,13 +141,22 @@ public static class ClientPacketClassifier
         }
     }
 
-    /// Length 0x32, 08 40 23 02, action 17, eight i32 deltas from bit 141: str agi acc end earth
+    public static byte ShiftedByte (ReadOnlySpan<byte> frame, int legacyByteIndex)
+    {
+        var bit = legacyByteIndex * 8 + 110;
+        return frame.Length * 8 >= bit + 8 ? (byte) GameplayRecord.ReadBits (frame, bit, 8) : (byte) 0;
+    }
+
+    /// Length 0x40, 08 40 23 02, action 17, eight i32 deltas from bit 251: str agi acc end earth
     /// air water fire
     public static bool IsStatsUpdateRequest (ReadOnlySpan<byte> frame)
     {
         if (frame.Length != StatsUpdateRequestLength
             || (frame[0] | (frame[1] << 8)) != StatsUpdateRequestLength
-            || frame[13] != 0x08 || frame[14] != 0x40 || frame[15] != 0x23 || frame[16] != 0x02)
+            || ShiftedByte (frame, 13) != 0x08
+            || ShiftedByte (frame, 14) != 0x40
+            || ShiftedByte (frame, 15) != 0x23
+            || ShiftedByte (frame, 16) != 0x02)
         {
             return false;
         }
@@ -159,25 +168,31 @@ public static class ClientPacketClassifier
                && !identity.ActionFlag;
     }
 
-    /// Length 0x15, 08 40 80 05, slot byte 17 is 04/08/0C, tail 04 08 00
+    /// Length 0x23, 08 40 80 05, slot byte is 04/08/0C, tail 04 08 00
     public static bool IsCharacterSelect (ReadOnlySpan<byte> frame) =>
         frame.Length == CharacterSelectLength
         && (frame[0] | (frame[1] << 8)) == CharacterSelectLength
-        && frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x80 && frame[16] == 0x05
-        && frame[17] is 0x04 or 0x08 or 0x0C
-        && frame[18] == 0x04 && frame[19] == 0x08 && frame[20] == 0x00;
+        && ShiftedByte (frame, 13) == 0x08
+        && ShiftedByte (frame, 14) == 0x40
+        && ShiftedByte (frame, 15) == 0x80
+        && ShiftedByte (frame, 16) == 0x05
+        && ShiftedByte (frame, 17) is 0x04 or 0x08 or 0x0C
+        && ShiftedByte (frame, 18) == 0x04
+        && ShiftedByte (frame, 19) == 0x08
+        && ShiftedByte (frame, 20) == 0x00;
 
     private static string CharacterSelectReason (ReadOnlySpan<byte> frame) =>
-        $"0x15 08 40 80 05 slot {frame[17] / 4 - 1}";
+        $"0x23 08 40 80 05 slot {ShiftedByte (frame, 17) / 4 - 1}";
 
-    /// Byte 19 is 0x41; byte 18 is A1, A2, or A3; a swing does not have 41 here
+    /// Shifted byte 19 (or +14 after a 16-byte item guid) is 0x41; the preceding byte is A1/A2/A3
     public static bool IsHandChangeSignature (ReadOnlySpan<byte> frame) =>
-        frame.Length >= 20 && frame[18] is 0xA1 or 0xA2 or 0xA3 && frame[19] == 0x41;
+        frame.Length >= 34 && ShiftedByte (frame, 18) is 0xA1 or 0xA2 or 0xA3 && ShiftedByte (frame, 19) == 0x41
+        || frame.Length >= 48 && ShiftedByte (frame, 32) is 0xA1 or 0xA2 or 0xA3 && ShiftedByte (frame, 33) == 0x41;
 
     /// Take or put-down frames that share the attack action with a real swing
     private static bool LooksLikeTakeMainhand (ReadOnlySpan<byte> frame)
     {
-        if (frame.Length < 16)
+        if (frame.Length < 30)
         {
             return false;
         }
@@ -187,22 +202,25 @@ public static class ClientPacketClassifier
             return true;
         }
 
-        if (frame[13] != 0x08 || frame[14] != 0x40 || frame[15] is not (0xA3 or 0x83))
+        var b13 = ShiftedByte (frame, 13);
+        var b14 = ShiftedByte (frame, 14);
+        var b15 = ShiftedByte (frame, 15);
+        if (b13 != 0x08 || b14 != 0x40 || b15 is not (0xA3 or 0x83))
         {
             return false;
         }
 
         var declaredLength = frame[0] | (frame[1] << 8);
         return MainhandFrame.IsExclusiveTakeLength (declaredLength)
-               || declaredLength == 0x19 && frame[15] == 0x83;
+               || declaredLength == 0x41 && b15 == 0x83;
     }
 
-    private const int ChatTriggerLength = 26;
-    private const int CharacterSelectLength = 0x15;
-    private const int StatsUpdateRequestLength = 0x32;
+    private const int ChatTriggerLength = 40;
+    private const int CharacterSelectLength = 0x23;
+    private const int StatsUpdateRequestLength = 0x40;
 
-    /// Open-loot length from a labelled capture
-    private const int ConfirmedLootContainerLength = 0x1B;
+    /// Open-loot length with two 16-byte guids
+    private const int ConfirmedLootContainerLength = 0x37;
 
     private static ClientPacketClassification ClassifyBySignature (ReadOnlySpan<byte> frame)
     {
@@ -211,9 +229,10 @@ public static class ClientPacketClassifier
         if (declaredLength != frame.Length)
         {
             // Some NPC frames keep a non-canonical first-byte length
-            if (frame.Length >= 16 &&
-                frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0xA3 &&
-                declaredLength is 0x31 or 0x36)
+            if (frame.Length >= 30 &&
+                ShiftedByte (frame, 13) == 0x08 && ShiftedByte (frame, 14) == 0x40 &&
+                ShiftedByte (frame, 15) == 0xA3 &&
+                declaredLength is 0x31 or 0x36 or 0x5B or 0x60)
             {
                 return Result (
                     ClientPacketEvent.NpcInteract,
@@ -225,11 +244,12 @@ public static class ClientPacketClassifier
             return Result (ClientPacketEvent.InvalidOrTrailing, 0, "frame length is invalid", false);
         }
 
-        // 0x26 is also the equipment swap; 08 40 A3 has to miss before this is a keepalive
-        if (declaredLength == 0x26 &&
-            !(frame.Length > 15 && frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0xA3))
+        // 0x34 is the position keepalive; 08 40 A3 has to miss before this is a keepalive
+        if (declaredLength == 0x34 &&
+            !(frame.Length >= 30 && ShiftedByte (frame, 13) == 0x08 && ShiftedByte (frame, 14) == 0x40 &&
+              ShiftedByte (frame, 15) == 0xA3))
         {
-            return Result (ClientPacketEvent.PositionKeepalive, 1.0, "ClientConnection case 0x26", true);
+            return Result (ClientPacketEvent.PositionKeepalive, 1.0, "ClientConnection case 0x34", true);
         }
 
         if (declaredLength is 0x08 or 0x0C || frame.Length <= 12)
@@ -237,65 +257,62 @@ public static class ClientPacketClassifier
             return Result (ClientPacketEvent.ProtocolControl, 0.75, "short control frame", true);
         }
 
-        if (frame.Length < 16)
+        if (frame.Length < 30)
         {
             return Result (ClientPacketEvent.Unknown, 0, "no known handler signature", false);
         }
 
-        var b13 = frame[13];
-        var b14 = frame[14];
-        var b15 = frame[15];
+        var b13 = ShiftedByte (frame, 13);
+        var b14 = ShiftedByte (frame, 14);
+        var b15 = ShiftedByte (frame, 15);
 
         switch (declaredLength)
         {
-            case 0x21 when frame.Length > 30 && frame[27] == 0x08 && frame[28] == 0x40 &&
-                           frame[29] == 0x23 && frame[30] == 0x23:
+            case 0x3D when frame.Length >= 59 && ShiftedByte (frame, 41) == 0x08 &&
+                           ShiftedByte (frame, 42) == 0x40 &&
+                           ShiftedByte (frame, 43) == 0x23 && ShiftedByte (frame, 44) == 0x23:
                 return Result (ClientPacketEvent.GroupAction, 1.0, "handler signature 08 40 23", true);
 
-            case 0x16 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23:
+            case 0x24 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23:
                 return Result (ClientPacketEvent.ItemPickup, 1.0, "handler signature 08 40 23", true);
 
-            case 0x32 when IsStatsUpdateRequest (frame):
-                return Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true);
+            case 0x40 when IsStatsUpdateRequest (frame):
+                return Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x40 08 40 23 02 action 17", true);
 
-            case 0x18 when b13 == 0x08 && b14 == 0x40 && b15 == 0x81:
+            case 0x33 when b13 == 0x08 && b14 == 0x40 && b15 == 0x81:
                 return Result (ClientPacketEvent.ItemMove, 1.0, "handler signature 08 40 81", true);
 
-            case 0x18:
-                return Result (ClientPacketEvent.ItemUse, 1.0, "ClientConnection case 0x18 fallback", true);
-
-            case 0x1A when b13 == 0x08 && b14 == 0x40 && b15 == 0x43:
-                return Result (ClientPacketEvent.ChatSend, 1.0, "handler signature 08 40 43", true);
-
-            case 0x1A when b13 == 0x08 && b14 == 0x40 && b15 == 0xC1:
-                return Result (ClientPacketEvent.ItemPickupToSlot, 1.0, "handler signature 08 40 C1", true);
-
-            case 0x1A when b13 == 0x5C && b14 == 0x46 && b15 == 0xE1:
-                return Result (ClientPacketEvent.ContainerOpenLoot, 1.0, "handler signature 5C 46 E1", true);
-
-            // Opcode is the 12 bits at 116, always E14 (byte 15 plus the high nibble of byte 14);
-            // item id is bytes 11-12
-            case 0x15 when b15 == 0xE1 && (b14 & 0xF0) == 0x40:
-                return Result (ClientPacketEvent.ItemUse, 1.0, "use opcode E14", true);
-
-            case 0x15 when IsCharacterSelect (frame):
-                return Result (ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason (frame), true);
-
-            case 0x25 when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
-                // Same 08 40 63 as the drop; length 0x25 is the drag
+            case 0x33 when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
                 return Result (ClientPacketEvent.ItemDragOnGround, 1.0, "handler signature 08 40 63", true);
 
-            case 0x2D when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
+            case 0x32 or 0x33:
+                return Result (ClientPacketEvent.ItemUse, 1.0, "ClientConnection item use fallback", true);
+
+            case 0x28 when b13 == 0x08 && b14 == 0x40 && b15 == 0x43:
+                return Result (ClientPacketEvent.ChatSend, 1.0, "handler signature 08 40 43", true);
+
+            case 0x44 when b13 == 0x08 && b14 == 0x40 && b15 == 0xC1:
+                return Result (ClientPacketEvent.ItemPickupToSlot, 1.0, "handler signature 08 40 C1", true);
+
+            case 0x36 when b13 == 0x5C && b14 == 0x46 && b15 == 0xE1:
+                return Result (ClientPacketEvent.ContainerOpenLoot, 1.0, "handler signature 5C 46 E1", true);
+
+            case 0x2F when b15 == 0xE1 && (b14 & 0xF0) == 0x40:
+                return Result (ClientPacketEvent.ItemUse, 1.0, "use opcode E14", true);
+
+            case 0x23 when IsCharacterSelect (frame):
+                return Result (ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason (frame), true);
+
+            case 0x3B when b13 == 0x08 && b14 == 0x40 && b15 == 0x63:
                 return Result (ClientPacketEvent.ItemDrop, 1.0, "handler signature 08 40 63", true);
 
-            case 0x31 or 0x36 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
+            case 0x5B or 0x60 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
                 return Result (ClientPacketEvent.NpcInteract, 1.0, "NPC signature 08 40 A3", true);
 
-            case 0x26 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
-                // Occupied-slot drop; same length as the position frame
+            case 0x4C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
                 return Result (ClientPacketEvent.ItemSwap, 1.0, "swap signature 08 40 A3", true);
 
-            case 0x15 or 0x1B or 0x1F or 0x23
+            case 0x2F or 0x43 or 0x47 or 0x4B
                 when b13 == 0x08 && b14 == 0x40 && b15 is 0xA3 or 0x83:
                 return Result (
                     ClientPacketEvent.ItemTakeMainhand,
@@ -303,23 +320,21 @@ public static class ClientPacketClassifier
                     b15 == 0x83 ? "handler signature 08 40 83" : "handler signature 08 40 A3",
                     true);
 
-            case 0x19 when b13 == 0x08 && b14 == 0x40 && b15 == 0x83:
+            case 0x41 when b13 == 0x08 && b14 == 0x40 && b15 == 0x83:
                 // Switching to bare fists.
                 return Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true);
 
-            case 0x19 or 0x20 when b13 == 0x08 && b14 == 0x40 && b15 == 0x03:
+            case 0x35 or 0x3C when b13 == 0x08 && b14 == 0x40 && b15 == 0x03:
                 return Result (ClientPacketEvent.TradeBuy, 1.0, "handler signature 08 40 03", true);
 
-            case 0x19 or 0x20 or 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3 &&
+            case 0x41 or 0x48 or 0x62 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3 &&
                                            IsHandChangeSignature (frame):
-                // Take and put-down share this message; byte 18's low bits mark an emptied hand
                 return Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "hand-change signature 41", true);
 
-            case 0x2C when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
-                // Armed attack; the hand-change arm above is the A1 41 form
+            case 0x62 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA3:
                 return Result (ClientPacketEvent.CombatDamageTarget, 1.0, "armed attack 08 40 A3", true);
 
-            case 0x19 or 0x20:
+            case 0x41 or 0x48:
                 return Result (
                     ClientPacketEvent.CombatDamageTarget,
                     1.0,
@@ -338,7 +353,7 @@ public static class ClientPacketClassifier
                 0xA3 => Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
                 0x63 => Result (ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
                 0x23 => IsStatsUpdateRequest (frame)
-                    ? Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true)
+                    ? Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x40 08 40 23 02 action 17", true)
                     : Result (ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23", true),
                 0x81 => Result (ClientPacketEvent.ItemMove, 0.9, "handler signature 08 40 81", true),
                 0xC1 => Result (ClientPacketEvent.ItemPickupToSlot, 0.9, "handler signature 08 40 C1", true),

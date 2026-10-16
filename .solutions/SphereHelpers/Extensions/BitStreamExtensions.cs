@@ -56,7 +56,13 @@ public static class BitStreamExtensions
         stream.WriteGuid (guid);
         if (after.Length > 0)
         {
-            stream.WriteBytes (after, after.Length, true);
+            var tail = new BitStream (after);
+            var tailBits = after.Length * 8 - 2;
+            if (tailBits > 0)
+            {
+                tail.ReadBits (2);
+                stream.WriteBits (tail.ReadBits (tailBits));
+            }
         }
 
         while (stream.Bit != 0)

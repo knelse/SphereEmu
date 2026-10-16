@@ -1,13 +1,13 @@
-using System.Text;
+using System.Buffers.Binary;
 using System.Threading.Tasks;
 using BitStreams;
-using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Helpers.Networking;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
@@ -25,49 +25,36 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
                 return;
             }
 
-            // select existing
-            if (ClientPacketClassifier.IsCharacterSelect (frame))
+            if (!TryReadCharacterSelect (frame, out var slot, out var delete, out var createPayload,
+                    out var listRequest))
             {
-                selectedCharacterIndex = frame[17] / 4 - 1;
                 return;
             }
 
-            // Command 12 is the 1-based slot. Command 4 in that same frame deletes it.
-            // A length of 0x2A is only the old delete capture; enter-game is 42 bytes too
-            if (TryReadSlotCommand (frame, out var slot, out var delete))
+            if (listRequest)
             {
-                var index = slot - 1;
-                SphLogger.Info (
-                    $"SRV {entityId}: slot command {slot} index {index} delete {delete} len {frame.Length}");
-                if (delete)
-                {
-                    if (clientConnection.DeletePlayerCharacter (index))
-                    {
-                        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterDeleted (entityId));
-                    }
+                clientConnection.SendCharacterList ();
+                return;
+            }
 
-                    return;
+            var index = slot - 1;
+            if (delete)
+            {
+                if (clientConnection.DeletePlayerCharacter (index))
+                {
+                    clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterDeleted (entityId));
                 }
 
+                return;
+            }
+
+            if (createPayload is null)
+            {
                 selectedCharacterIndex = index;
                 return;
             }
 
-            SphLogger.Info (
-                $"SRV {entityId}: character select unrecognized len {frame.Length} " +
-                $"{Convert.ToHexString (frame.AsSpan (0, Math.Min (frame.Length, 32)))}");
-
-            // create
-            if (frame[0] < 0x1b ||
-                frame[13] != 0x08 ||
-                frame[14] != 0x40 ||
-                frame[15] != 0x80 ||
-                frame[16] != 0x05)
-            {
-                return;
-            }
-
-            selectedCharacterIndex = CreateNewCharacter (frame);
+            selectedCharacterIndex = CreateNewCharacter (index, createPayload);
         }
 
         if (selectedCharacterIndex == -1)
@@ -93,58 +80,17 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
         clientConnection.MoveToNextBeforeGameStage ();
     }
 
-    private int CreateNewCharacter (byte[] rcvBuffer)
+    private int CreateNewCharacter (int charIndex, byte[] payload)
     {
         SphLogger.Info ($"SRV {entityId}: Creating new character");
-        var len = rcvBuffer[0] - 20 - 5;
-        var charDataBytesStart = rcvBuffer[0] - 5;
-        var nameCheckBytes = rcvBuffer[20..];
-        var charDataBytes = rcvBuffer[charDataBytesStart..rcvBuffer[0]];
-        var sb = new StringBuilder ();
-        var firstLetterCharCode = ((nameCheckBytes[1] & 0b11111) << 3) + (nameCheckBytes[0] >> 5);
-        var firstLetterShouldBeRussian = false;
-
-        for (var i = 1; i < len; i++)
+        var nameLength = payload.Length - 5;
+        var terminator = Array.IndexOf (payload, (byte) 0, 0, nameLength);
+        if (terminator >= 0)
         {
-            var currentCharCode = ((nameCheckBytes[i] & 0b11111) << 3) + (nameCheckBytes[i - 1] >> 5);
-
-            if (currentCharCode % 2 == 0)
-            {
-                // English
-                var currentLetter = (char) (currentCharCode / 2);
-                sb.Append (currentLetter);
-            }
-            else
-            {
-                // Russian
-                var currentLetter = currentCharCode >= 193
-                    ? (char) ((currentCharCode - 192) / 2 + 'а')
-                    : (char) ((currentCharCode - 129) / 2 + 'А');
-                sb.Append (currentLetter);
-
-                if (i == 2)
-                {
-                    // we assume first letter was russian if second letter is, this is a hack
-                    firstLetterShouldBeRussian = true;
-                }
-            }
+            nameLength = terminator;
         }
 
-        string name;
-
-        if (firstLetterShouldBeRussian)
-        {
-            firstLetterCharCode += 1;
-            var firstLetter = firstLetterCharCode >= 193
-                ? (char) ((firstLetterCharCode - 192) / 2 + 'а')
-                : (char) ((firstLetterCharCode - 129) / 2 + 'А');
-            name = firstLetter + sb.ToString ()[1..];
-        }
-        else
-        {
-            name = sb.ToString ();
-        }
-
+        var name = SphEncoding.Win1251.GetString (payload, 0, nameLength);
         var isNameValid = true; // Login.IsNameValid(name);
 
         if (!isNameValid)
@@ -156,21 +102,13 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
 
         SphLogger.Info ($"SRV {entityId}: Name [{name}] OK");
 
-        var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
-        var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
-        var hairStyle = ((charDataBytes[2] & 0b111111) << 2) + (charDataBytes[1] >> 6);
-        var hairColor = ((charDataBytes[3] & 0b111111) << 2) + (charDataBytes[2] >> 6);
-        var tattoo = ((charDataBytes[4] & 0b111111) << 2) + (charDataBytes[3] >> 6);
-
-        if (isGenderFemale)
-        {
-            faceType = 256 - faceType;
-            hairStyle = 255 - hairStyle;
-            hairColor = 255 - hairColor;
-            tattoo = 255 - tattoo;
-        }
-
-        var charIndex = rcvBuffer[17] / 4 - 1;
+        var signedModel = BinaryPrimitives.ReadInt32LittleEndian (payload.AsSpan (payload.Length - 4, 4));
+        var isGenderFemale = signedModel < 0;
+        var model = isGenderFemale ? 0u - (uint) signedModel : (uint) signedModel;
+        var faceType = (int) (model & 0xFF);
+        var hairStyle = (int) ((model >> 8) & 0xFF);
+        var hairColor = (int) ((model >> 16) & 0xFF);
+        var tattoo = (int) ((model >> 24) & 0xFF);
 
         var newCharacterData =
             CharacterDbEntry.CreateNewCharacter (entityId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
@@ -185,12 +123,15 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
     }
 
     /// <summary>
-    /// Connection command 12 is the 1-based slot. Command 4 in that frame deletes it.
+    /// Region 0 commands: 12 + 4 enters the world, 12 + 7 registers a character, 13 deletes a slot
     /// </summary>
-    private static bool TryReadSlotCommand (byte[] frame, out int slot, out bool delete)
+    private static bool TryReadCharacterSelect (byte[] frame, out int slot, out bool delete,
+        out byte[]? createPayload, out bool listRequest)
     {
         slot = 0;
         delete = false;
+        createPayload = null;
+        listRequest = false;
         if (frame.Length < ClientFrame.HeaderLength ||
             (WireChannel) (frame[6] | (frame[7] << 8)) != WireChannel.Gameplay)
         {
@@ -217,7 +158,7 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
 
         stream.SeekForward (15 + 128 + 12);
         var wire = stream.ReadUInt16 (7);
-        var sawSlot = false;
+        var enterWorld = false;
         while (wire is 1 or 0x3F)
         {
             if (wire == 0x3F)
@@ -244,27 +185,35 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
                 break;
             }
 
+            var payload = new byte[count];
+            for (var i = 0; i < count; i++)
+            {
+                payload[i] = (byte) stream.ReadUInt16 (8);
+            }
+
             if (operation == 12 && count >= 1)
             {
-                slot = stream.ReadUInt16 (8);
-                for (var i = 1; i < count; i++)
-                {
-                    stream.ReadUInt16 (8);
-                }
-
-                sawSlot = true;
+                slot = payload[0];
             }
-            else
+            else if (operation == 4 && count == 0)
             {
-                if (operation == 4 && count == 0 && sawSlot)
+                if (slot > 0)
                 {
-                    delete = true;
+                    enterWorld = true;
                 }
-
-                for (var i = 0; i < count; i++)
+                else
                 {
-                    stream.ReadUInt16 (8);
+                    listRequest = true;
                 }
+            }
+            else if (operation == 7 && count >= 5 && slot > 0)
+            {
+                createPayload = payload;
+            }
+            else if (operation == 13 && count >= 4)
+            {
+                slot = BinaryPrimitives.ReadInt32LittleEndian (payload);
+                delete = true;
             }
 
             if (!Take (stream, frame, 7))
@@ -275,7 +224,7 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
             wire = stream.ReadUInt16 (7);
         }
 
-        return sawSlot;
+        return enterWorld || delete || createPayload is not null || listRequest;
     }
 
     private static bool Take (BitStream stream, byte[] frame, int bits)

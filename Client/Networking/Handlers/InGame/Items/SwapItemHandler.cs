@@ -20,7 +20,7 @@ public class SwapItemHandler (Guid entityId, ClientConnection clientConnection)
     /// <summary>
     /// Both item ids, then both slots, then a terminator, 32 bits each
     /// </summary>
-    private const int FirstFieldBit = 141;
+    private const int FirstFieldBit = 251;
 
     private const int FieldBits = 32;
 

@@ -125,9 +125,7 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
 
         if (MainhandFrame.TryRead (frame, out var take))
         {
-            // 0x19 A3 + 0xFFFF is put-down, A3 plus an owned item is a take, and a monster id there
-            // is a swing
-            return take.ItemId == MainhandFrame.NoItem || IsOwnedItemId (character, take.ItemId);
+            return take.IsUnequip || IsOwnedItemId (character, take.ItemId);
         }
 
         return IsOwnedItemId (character, combatTargetId);
@@ -153,12 +151,6 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
         return DbConnection.Items.FindById (id) is not null;
     }
 
-    private static bool IsOwnedItemId (CharacterDbEntry character, ushort id)
-    {
-        // The hand frame still carries a short item id. Owned rows are guids.
-        return false;
-    }
-
     private static void LogAction (Guid sourceEntityId, Guid targetEntityId, AttackFrameKind action, string result)
     {
         SphLogger.Info ($"DamageTargetHandler: Source [{sourceEntityId}] - Target [{targetEntityId}] - " +
@@ -168,22 +160,22 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     /// <summary>
     /// Fist / bare-hand layout: the clicked id sits here.
     /// </summary>
-    private const int FistTargetBit = 172;
+    private const int FistTargetBit = 282;
 
     /// <summary>
     /// AoE powder list: first (aimed) target. Single-target powder is not this slot.
     /// </summary>
-    private const int AoeTargetBit = 220;
+    private const int AoeTargetBit = 440;
 
     /// <summary>
-    /// Weapon swing slot; bit 172 on these frames is the 12-bit ObjectType, not a target
+    /// Weapon swing slot; bit 394 on these frames is the 12-bit ObjectType, not a target
     /// </summary>
-    private const int ArmedTargetBit = 233;
+    private const int ArmedTargetBit = 453;
 
     /// <summary>
     /// 12-bit ObjectType sitting next to the fist-target slot on item-use frames.
     /// </summary>
-    private const int ItemObjectTypeBit = 174;
+    private const int ItemObjectTypeBit = 394;
 
     /// <summary>
     /// Length is not identity; splash ids in the frame are ignored and AoE comes from the held item
@@ -195,7 +187,7 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
         out Guid localTargetId)
     {
         localTargetId = Guid.Empty;
-        if (receiveBuffer.Length < 16)
+        if (receiveBuffer.Length < 30)
         {
             return AttackFrameKind.NotAnAttack;
         }
@@ -205,14 +197,20 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
             return AttackFrameKind.NotAnAttack;
         }
 
-        if (receiveBuffer[13] == 0x54 && receiveBuffer[14] == 0x43 && receiveBuffer[15] == 0xC1)
+        var b13 = ClientPacketClassifier.ShiftedByte (receiveBuffer, 13);
+        var b14 = ClientPacketClassifier.ShiftedByte (receiveBuffer, 14);
+        var b15 = ClientPacketClassifier.ShiftedByte (receiveBuffer, 15);
+
+        if (b13 == 0x54 && b14 == 0x43 && b15 == 0xC1)
         {
             localTargetId = ReadGuidAtBit (receiveBuffer, FistTargetBit);
             return AttackFrameKind.SelfTargetedAction;
         }
 
-        if (receiveBuffer.Length >= 25 && receiveBuffer[22] == 0x7E && receiveBuffer[23] == 0x14 &&
-            receiveBuffer[24] == 0xCE)
+        if (receiveBuffer.Length >= 53
+            && (byte) GameplayRecord.ReadBits (receiveBuffer, 22 * 8 + 220, 8) == 0x7E
+            && (byte) GameplayRecord.ReadBits (receiveBuffer, 23 * 8 + 220, 8) == 0x14
+            && (byte) GameplayRecord.ReadBits (receiveBuffer, 24 * 8 + 220, 8) == 0xCE)
         {
             localTargetId = ReadMainTargetId (receiveBuffer, heldItem);
             return AttackFrameKind.WeaponAttack;
@@ -220,7 +218,7 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
 
         // 08 40 A3 is shared with take, swap, and NPC interact; GameplayAction.Attack is the
         // length-independent check
-        var attackSignature = receiveBuffer[13] == 0x08 && receiveBuffer[14] == 0x40 && receiveBuffer[15] == 0xA3;
+        var attackSignature = b13 == 0x08 && b14 == 0x40 && b15 == 0xA3;
         var attackRecord = GameplayRecord.ActionOf (GameplayRecord.ReadIdentity (receiveBuffer)) ==
                            GameplayAction.Attack;
         if (!attackSignature && !attackRecord)
@@ -233,8 +231,8 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     }
 
     /// <summary>
-    /// A 0x2C swing still has the weapon type at the item slot, so bit 172 is that type (501 as
-    /// 47D4), not the mob
+    /// A 0x62 swing still has the weapon type at the item slot, so bit 394 is that type, not the
+    /// mob
     /// </summary>
     private static Guid ReadMainTargetId (byte[] frame, ItemDbEntry? heldItem)
     {
@@ -258,12 +256,12 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     }
 
     /// <summary>
-    /// 0x2C is the armed swing; on 0x19 the type slot is two bits into the take id
+    /// 0x62 is the armed swing; on 0x41 the type slot is two bits into the take id
     /// </summary>
     private static bool IsArmedAttackLayout (byte[] frame)
     {
         var declaredLength = frame.Length >= 2 ? frame[0] | (frame[1] << 8) : 0;
-        return declaredLength == 0x2C;
+        return declaredLength == 0x62;
     }
 
     /// <summary>

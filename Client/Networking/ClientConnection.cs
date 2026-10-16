@@ -138,7 +138,9 @@ public class ClientConnection (SphereClient sphereClient)
             {
                 SphLogger.Debug (
                     $"C->S unrouted {frame.Length}B frame, signature " +
-                    $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
+                    $"{ClientPacketClassifier.ShiftedByte (frame, 13):X2} " +
+                    $"{ClientPacketClassifier.ShiftedByte (frame, 14):X2} " +
+                    $"{ClientPacketClassifier.ShiftedByte (frame, 15):X2} ({classification.Reason}): " +
                     // Identifying fields sit past the head, so the log keeps the whole frame
                     $"{Convert.ToHexString (frame)}. Client ID: {sphereClient.EntityID}");
             }
@@ -323,6 +325,11 @@ public class ClientConnection (SphereClient sphereClient)
     {
         MaybeScheduleNetworkPacketSend (CommonPackets.ServerCredentials (sphereClient.EntityID));
         MaybeScheduleNetworkPacketSend (CommonPackets.CharacterSelectStartData (sphereClient.EntityID));
+        SendCharacterList ();
+    }
+
+    public void SendCharacterList ()
+    {
         var player = sphereClient.PlayerAccount;
         if (player is null)
         {

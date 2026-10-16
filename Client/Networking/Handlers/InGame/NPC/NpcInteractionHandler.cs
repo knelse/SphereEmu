@@ -14,7 +14,7 @@ public class NpcInteractionHandler (Guid entityId)
     public async Task Handle (byte[] frame, double delta)
     {
         var stream = new BitStream (frame);
-        stream.ReadBits (364);
+        stream.ReadBits (474);
         var vendorId = stream.ReadGuid ();
         if (vendorId == Guid.Empty)
         {

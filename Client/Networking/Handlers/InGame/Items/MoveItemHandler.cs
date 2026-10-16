@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Helpers.Networking;
 using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -21,10 +22,10 @@ public class MoveItemHandler (Guid entityId, ClientConnection clientConnection)
         // occupied
         // var clientID_1 = ReceiveBuffer[11];
         // var clientID_2 = ReceiveBuffer[12];
-        var newSlotRaw = frame[21];
-        var oldSlotRaw = frame[22];
-        var oldSlotId = frame[22] >> 1;
-        var newSlotId = frame[21] >> 1;
+        var newSlotRaw = (byte) GameplayRecord.ReadBits (frame, 375, 8);
+        var oldSlotRaw = (byte) GameplayRecord.ReadBits (frame, 383, 8);
+        var oldSlotId = (int) GameplayRecord.ReadBits (frame, 384, 8);
+        var newSlotId = (int) GameplayRecord.ReadBits (frame, 376, 8);
 
         var character = clientConnection.GetSelectedCharacter ()!;
         SphLogger.Info (

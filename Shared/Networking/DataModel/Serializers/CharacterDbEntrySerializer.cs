@@ -254,9 +254,8 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
                 0x00, 0x04
             ], 7, true);
         stream.WriteGuid (characterDbEntry.EntityId);
-        stream.WriteBytes ([0x08, 0x00]);
-
-        stream.WriteByte (2, 5);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (8, 7);
         stream.WriteByte ((byte) nameLen, 8);
         stream.WriteBytes (nameEncoded, nameEncoded.Length, true);
 

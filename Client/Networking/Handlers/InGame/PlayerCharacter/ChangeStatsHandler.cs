@@ -9,7 +9,7 @@ namespace SphServer.Client.Networking.Handlers.InGame.PlayerCharacter;
 public class ChangeStatsHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
-    private const int FirstDeltaBit = 141;
+    private const int FirstDeltaBit = 251;
     private const int DeltaBits = 32;
 
     public async Task Handle (byte[] frame, double delta)

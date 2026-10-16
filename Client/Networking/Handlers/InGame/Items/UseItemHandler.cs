@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Helpers.Networking;
 using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -16,12 +17,12 @@ public class UseItemHandler (Guid entityId, ClientConnection clientConnection)
 {
     public async Task Handle (byte[] frame, double delta)
     {
-        var itemId = (ushort) (frame[11] + frame[12] * 0x100);
+        var itemId = GameplayRecord.ReadGuidBits (frame, 88);
         // Item use arms g_6008, so this ack clears it or the client stays wedged
         clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var character = clientConnection.GetSelectedCharacter ();
-        var item = DbConnection.Items.FindById ((int) itemId);
+        var item = DbConnection.Items.FindById (itemId);
         if (character is null || item is null)
         {
             Log (itemId, "?", "no character or no such item");
@@ -114,8 +115,8 @@ public class UseItemHandler (Guid entityId, ClientConnection clientConnection)
         return fallback;
     }
 
-    private void Log (ushort itemId, string name, string outcome)
+    private void Log (Guid itemId, string name, string outcome)
     {
-        SphLogger.Info ($"UseItem: Source [{entityId}] - Target [{itemId:X}] - Item [{name}] - [{outcome}]");
+        SphLogger.Info ($"UseItem: Source [{entityId}] - Target [{itemId}] - Item [{name}] - [{outcome}]");
     }
 }

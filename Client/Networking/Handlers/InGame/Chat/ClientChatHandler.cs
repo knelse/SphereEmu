@@ -1,5 +1,6 @@
 using Godot;
 using SphServer.Helpers;
+using SphServer.Helpers.Networking;
 using SphServer.Packets;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
@@ -84,7 +85,10 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
         clientConnection.MaybeScheduleNetworkPacketSend (reply.Ack);
         clientConnection.MaybeScheduleNetworkPacketSend (reply.NameBlock);
-        clientConnection.MaybeScheduleNetworkPacketSend (reply.Body);
+        if (reply.Body.Length > 0)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (reply.Body);
+        }
 
         if (reply.GmCommand is not null &&
             clientConnection.GetSelectedCharacter () is { } gmCharacter)
@@ -145,16 +149,15 @@ public class ClientChatHandler (ClientConnection clientConnection)
                 return;
             }
 
-            var chatTypeVal = ((firstPacket[18] & 0b11111) << 3) + (firstPacket[17] >> 5);
+            var chatTypeVal = (int) GameplayRecord.ReadBits (firstPacket, 254, 8);
 
             var msgBytes = new List<byte> ();
             foreach (var decoded in decodeList)
             {
-                var messagePart = decoded[21..];
-                for (var j = 0; j < messagePart.Length - 1; j++)
+                for (var bit = 286; bit + 8 <= decoded.Length * 8; bit += 8)
                 {
-                    var msgByte = ((messagePart[j + 1] & 0b11111) << 3) + (messagePart[j] >> 5);
-                    msgBytes.Add ((byte) msgByte);
+                    var msgByte = (byte) GameplayRecord.ReadBits (decoded, bit, 8);
+                    msgBytes.Add (msgByte);
                 }
             }
 
@@ -192,7 +195,9 @@ public class ClientChatHandler (ClientConnection clientConnection)
                 DateTime.UtcNow + ChatReplyDelay,
                 BuildChatSendAck (firstPacket[11..], serverSeq),
                 BuildChatEchoFromClientFrame (decodeList[0], serverSeq, patchNameDisplayFlag: true),
-                BuildChatEchoFromClientFrame (decodeList[1], serverSeq, patchNameDisplayFlag: false),
+                decodeList.Count > 1
+                    ? BuildChatEchoFromClientFrame (decodeList[1], serverSeq, patchNameDisplayFlag: false)
+                    : [],
                 chatString,
                 message,
                 name,
@@ -404,8 +409,10 @@ public class ClientChatHandler (ClientConnection clientConnection)
     }
 
     public static bool IsChatHeaderFrame (byte[] frame) =>
-        frame.Length == 0x1A && frame.Length >= 16 &&
-        frame[13] == 0x08 && frame[14] == 0x40 && frame[15] == 0x43;
+        frame.Length == 0x28
+        && ClientPacketClassifier.ShiftedByte (frame, 13) == 0x08
+        && ClientPacketClassifier.ShiftedByte (frame, 14) == 0x40
+        && ClientPacketClassifier.ShiftedByte (frame, 15) == 0x43;
 
     public static bool IsChatSendComplete (IReadOnlyList<byte> buffer)
     {
@@ -419,19 +426,19 @@ public class ClientChatHandler (ClientConnection clientConnection)
         decodeList = [];
         totalLength = 0;
 
-        if (buffer.Length < 26 || !IsChatHeaderFrame (buffer.AsSpan (0, 26).ToArray ()))
+        if (buffer.Length < 40 || !IsChatHeaderFrame (buffer.AsSpan (0, 40).ToArray ()))
         {
             return false;
         }
 
-        firstPacket = buffer[..26];
-        var packetCount = (firstPacket[23] >> 5) + ((firstPacket[24] & 0b11111) << 3);
-        if (packetCount < 2)
+        firstPacket = buffer[..40];
+        var packetCount = (int) GameplayRecord.ReadBits (firstPacket, 302, 16);
+        if (packetCount < 1)
         {
             return false;
         }
 
-        var packetStart = 26;
+        var packetStart = 40;
         for (var i = 0; i < packetCount; i++)
         {
             if (packetStart + 2 > buffer.Length)
@@ -441,7 +448,7 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
             var packetLength = buffer[packetStart] | (buffer[packetStart + 1] << 8);
             var packetEnd = packetStart + packetLength;
-            if (packetLength < 13 || packetEnd > buffer.Length)
+            if (packetLength < 27 || packetEnd > buffer.Length)
             {
                 return false;
             }

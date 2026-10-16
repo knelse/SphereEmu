@@ -1,5 +1,6 @@
 using BitStreams;
 using SphereHelpers.Extensions;
+using SphServer.Helpers.Networking;
 using static KarmaTypes;
 using static SphServer.Helpers.Continents;
 using static SphServer.Helpers.Cities;
@@ -578,9 +579,11 @@ public static class CoordsHelper
         return (1 + (float) fraction / 0b100000000000000000000000) * baseCoord * sign;
     }
 
-    /// Keepalive PositionStream marker: bytes 19-20 are 01 60
+    /// Keepalive PositionStream marker: shifted bytes 19-20 are 01 60
     public static bool HasPingCoordMarker (byte[] rcvBuffer) =>
-        rcvBuffer.Length >= 21 && rcvBuffer[19] == 0x01 && rcvBuffer[20] == 0x60;
+        rcvBuffer.Length >= 35
+        && ClientPacketClassifier.ShiftedByte (rcvBuffer, 19) == 0x01
+        && ClientPacketClassifier.ShiftedByte (rcvBuffer, 20) == 0x60;
 
     /// Client treats abs(x), abs(y), or abs(z) above 16000 as corrupt
     public static bool ArePingCoordsInWorldBounds (WorldCoords coords, double maxAbs = 16000.0) =>
@@ -591,14 +594,14 @@ public static class CoordsHelper
     /// After the marker: 2 alignment bits, array4 count 4, then x, y, z, angle as IEEE f32
     public static WorldCoords GetCoordsFromPingBytes (byte[] rcvBuffer)
     {
-        if (rcvBuffer.Length < 38)
+        if (rcvBuffer.Length < 52)
         {
             return new WorldCoords (0, 0, 0);
         }
 
-        // Byte 21: 2 bits align, 4-bit word_count, then floats at bit 21*8+6.
+        // Bit 280 (21*8 + 2 + 110): 4-bit word_count, then floats at bit 284.
         var stream = new BitStream (rcvBuffer);
-        stream.SeekBitOffset (21 * 8 + 2);
+        stream.SeekBitOffset (21 * 8 + 2 + 110);
         var wordCount = (int) stream.ReadUInt16 (4);
         if (wordCount < 4)
         {
@@ -615,8 +618,8 @@ public static class CoordsHelper
     /// 32-bit IEEE float, little-endian bit order
     public static double ReadIeeeFloat32 (BitStream stream)
     {
-        var bits = unchecked ((uint) stream.ReadInt64 (32));
-        return BitConverter.Int32BitsToSingle (unchecked ((int) bits));
+        var bits = unchecked((uint) stream.ReadInt64 (32));
+        return BitConverter.Int32BitsToSingle (unchecked((int) bits));
     }
 
     private static byte[] GetArrayWithoutBitShift (byte[] input, int shift = 0)

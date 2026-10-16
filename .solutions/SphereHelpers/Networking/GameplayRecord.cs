@@ -22,7 +22,7 @@ public enum GameplayAction
 }
 
 /// Bit 0 position flag; if set, x 1-16 +32768, y 17-29 +1200, z 30-45 +32768; then clock 15 (~24/s,
-/// wrap 32768), entity id 18 (byte-swapped), subject type 12, tag 7
+/// wrap 32768), entity id 128, subject type 12, tag 7
 /// Tag 13 is a 5-bit action plus a flag; tag 12 is a 4-bit field then four f32; later fields shift
 /// 45 when the flag is set.
 public readonly struct GameplayRecord
@@ -54,13 +54,13 @@ public readonly struct GameplayRecord
     public const int SubjectTypeNpcTrade = 213;
     public const int SubjectTypeSackMobLoot = 407;
 
-    /// Attack target at bit 172; an interaction frame holds the player's own record here
-    public const int TargetIdBit = 172;
+    /// Attack target at bit 282; an interaction frame holds the player's own record here
+    public const int TargetIdBit = 282;
 
     // Absolute bit offsets of the identity fields in the frame
     public const int PositionFlagBit = BodyBit;
     public const int EntityIdBit = BodyBit + 16;
-    public const int EntityIdWidth = 18;
+    public const int EntityIdWidth = 128;
 
     private readonly byte[] body;
 
@@ -81,7 +81,7 @@ public readonly struct GameplayRecord
     public readonly record struct Identity (
         bool PositionFlag,
         ushort ClientClock,
-        uint EntityId,
+        Guid EntityId,
         ushort SubjectType,
         byte Tag,
         byte ActionCode,
@@ -97,20 +97,20 @@ public readonly struct GameplayRecord
         return new Identity (
             positionFlag,
             (ushort) ReadBits (decodedFrame, BodyBit + 1 + shift, 15),
-            (uint) ReadBits (decodedFrame, EntityIdBit + shift, EntityIdWidth),
-            (ushort) ReadBits (decodedFrame, BodyBit + 34 + shift, 12),
-            (byte) ReadBits (decodedFrame, BodyBit + 46 + shift, 7),
+            ReadGuidBits (decodedFrame, EntityIdBit + shift),
+            (ushort) ReadBits (decodedFrame, BodyBit + 144 + shift, 12),
+            (byte) ReadBits (decodedFrame, BodyBit + 156 + shift, 7),
             // After the tag, a position record has a 4-bit sub-field and an action record has a
             // code plus a flag
-            positionFlag ? (byte) 0 : (byte) ReadBits (decodedFrame, BodyBit + 53, 5),
-            !positionFlag && ReadBits (decodedFrame, BodyBit + 58, 1) == 1);
+            positionFlag ? (byte) 0 : (byte) ReadBits (decodedFrame, BodyBit + 163, 5),
+            !positionFlag && ReadBits (decodedFrame, BodyBit + 168, 1) == 1);
     }
 
     public bool PositionFlag { get; }
 
     /// About 24 ticks per second, wraps at 32768, same rate with or without the position block
     public ushort ClientClock { get; }
-    public uint EntityId { get; }
+    public Guid EntityId { get; }
     /// ObjectType of the subject: 2 on the player's own records, otherwise the target type (213
     /// trade, 407 loot, 205 quest)
     public ushort SubjectType { get; }
@@ -137,7 +137,7 @@ public readonly struct GameplayRecord
                && CoarseZ == (int) Math.Truncate (z);
     }
 
-    public ushort TargetId => (ushort) ReadBits (body, TargetIdBit, 16);
+    public Guid TargetId => ReadGuidBits (body, TargetIdBit);
 
     public GameplayAction Action => ActionOf (PositionFlag, Tag, ActionCode, ActionFlag);
 
@@ -184,15 +184,26 @@ public readonly struct GameplayRecord
         };
     }
 
-    /// Entity id is the client id with its bytes swapped
-    public bool BelongsTo (ushort clientId)
+    public bool BelongsTo (Guid clientId) => EntityId == clientId;
+
+    public static Guid ReadGuidBits (ReadOnlySpan<byte> data, int startBit)
     {
-        var swapped = (uint) (((clientId & 0xFF) << 8) | ((clientId >> 8) & 0xFF));
-        return EntityId == swapped;
+        if (startBit + 128 > data.Length * 8)
+        {
+            return Guid.Empty;
+        }
+
+        Span<byte> bytes = stackalloc byte[16];
+        for (var i = 0; i < 16; i++)
+        {
+            bytes[i] = (byte) ReadBits (data, startBit + i * 8, 8);
+        }
+
+        return new Guid (bytes);
     }
 
     /// Bit 0 is the least significant bit of byte 0
-    private static ulong ReadBits (ReadOnlySpan<byte> data, int startBit, int width)
+    public static ulong ReadBits (ReadOnlySpan<byte> data, int startBit, int width)
     {
         ulong value = 0;
         for (var i = 0; i < width; i++)

@@ -27,7 +27,9 @@ public class MainhandTakeItemHandler (Guid entityId, ClientConnection clientConn
         {
             var frameLength = frame[0] | (frame[1] << 8);
             SphLogger.Debug ($"Main hand: no grammar for a {frameLength}B frame, signature " +
-                            $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2}. Client ID: {entityId}");
+                            $"{ClientPacketClassifier.ShiftedByte (frame, 13):X2} " +
+                            $"{ClientPacketClassifier.ShiftedByte (frame, 14):X2} " +
+                            $"{ClientPacketClassifier.ShiftedByte (frame, 15):X2}. Client ID: {entityId}");
             return;
         }
 
@@ -44,10 +46,10 @@ public class MainhandTakeItemHandler (Guid entityId, ClientConnection clientConn
             return;
         }
 
-        var item = DbConnection.Items.FindById ((int) take.ItemId);
+        var item = DbConnection.Items.FindById (take.ItemId);
         if (item is null)
         {
-            SphLogger.Warning ($"Hand: no item {take.ItemId:X} in a {take.FrameLength}B frame. " +
+            SphLogger.Warning ($"Hand: no item {take.ItemId} in a {take.FrameLength}B frame. " +
                               $"Client ID: {entityId}");
             return;
         }

@@ -13,8 +13,8 @@ public class DragItemOnGroundHandler (Guid entityId, ClientConnection clientConn
     : ISphereClientNetworkingHandler
 {
     // Item id is the spawned entity; the three floats track the player during the drag
-    private const int ItemIdBitOffset = 141;
-    private const int PositionBitOffset = 165;
+    private const int ItemIdBitOffset = 251;
+    private const int PositionBitOffset = 275;
 
     public async Task Handle (byte[] frame, double delta)
     {

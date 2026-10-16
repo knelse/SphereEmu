@@ -3,18 +3,16 @@ using SphereHelpers.Extensions;
 
 namespace SphServer.Helpers.Networking;
 
-/// Header is 128 bits; item id then state at 141/11 (0x15), 172/12 (0x19), 188/11 (0x1B), 219/12
-/// (0x1F), 250/12 (0x23); 0x19 with 08 40 A3 is a fist swing unless the item id is owned or 0xFFFF
-public readonly record struct MainhandFrame (ushort ItemId, MainhandSlotState State, int FrameLength)
+/// Header is 238 bits; item guid then state at 251/11 (0x2F), 392/12 (0x41), 408/11 (0x43), 439/12
+/// (0x47), 470/12 (0x4B)
+public readonly record struct MainhandFrame (Guid ItemId, MainhandSlotState State, int FrameLength)
 {
-    public const ushort NoItem = 0xFFFF;
-
-    /// 0x19 is also a fist swing
+    /// 0x41 is also a fist swing
     public static bool IsExclusiveTakeLength (int frameLength) =>
-        frameLength is 0x15 or 0x1B or 0x1F or 0x23;
+        frameLength is 0x2F or 0x43 or 0x47 or 0x4B;
 
     public bool IsUnequip =>
-        State is MainhandSlotState.Empty or MainhandSlotState.Fists || ItemId == NoItem;
+        State is MainhandSlotState.Empty or MainhandSlotState.Fists || ItemId == Guid.Empty;
 
     public static bool TryRead (byte[] frame, out MainhandFrame reading)
     {
@@ -30,14 +28,14 @@ public readonly record struct MainhandFrame (ushort ItemId, MainhandSlotState St
             return false;
         }
 
-        if (frame.Length * 8 < itemIdBit + 16 + stateBits)
+        if (frame.Length * 8 < itemIdBit + 128 + stateBits)
         {
             return false;
         }
 
         var stream = new BitStream (frame);
         stream.ReadBits (itemIdBit);
-        var itemId = stream.ReadUInt16 (16);
+        var itemId = stream.ReadGuid ();
         var state = (MainhandSlotState) stream.ReadUInt16 (stateBits);
         reading = new MainhandFrame (itemId, state, frameLength);
         return true;
@@ -47,24 +45,24 @@ public readonly record struct MainhandFrame (ushort ItemId, MainhandSlotState St
     {
         switch (frameLength)
         {
-            case 0x15:
-                itemIdBit = 141;
+            case 0x2F:
+                itemIdBit = 251;
                 stateBits = 11;
                 return true;
-            case 0x19:
-                itemIdBit = 172;
+            case 0x41:
+                itemIdBit = 392;
                 stateBits = 12;
                 return true;
-            case 0x1B:
-                itemIdBit = 188;
+            case 0x43:
+                itemIdBit = 408;
                 stateBits = 11;
                 return true;
-            case 0x1F:
-                itemIdBit = 219;
+            case 0x47:
+                itemIdBit = 439;
                 stateBits = 12;
                 return true;
-            case 0x23:
-                itemIdBit = 250;
+            case 0x4B:
+                itemIdBit = 470;
                 stateBits = 12;
                 return true;
             default:
