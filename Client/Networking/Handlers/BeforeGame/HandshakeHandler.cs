@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Godot;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class HandshakeHandler (ushort localId, ClientConnection clientConnection)
+public class HandshakeHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     // TODO make reconnect work
@@ -13,7 +13,14 @@ public class HandshakeHandler (ushort localId, ClientConnection clientConnection
 
     public async Task Handle (byte[] frame, double delta)
     {
-        SphLogger.Info ($"CLI {localId:X4}: Ready to load initial data");
+        if (clientConnection.IsSecureResume)
+        {
+            SphLogger.Info ($"SRV {entityId}: UDP session skips the handshake");
+            clientConnection.MoveToNextBeforeGameStage ();
+            return;
+        }
+
+        SphLogger.Info ($"CLI {entityId}: Ready to load initial data");
 
         clientConnection.MaybeScheduleNetworkPacketSend (reconnect
             ? CommonPackets.ReadyToLoadInitialDataReconnect

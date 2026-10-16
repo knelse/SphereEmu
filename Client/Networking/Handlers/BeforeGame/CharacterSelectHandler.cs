@@ -1,6 +1,8 @@
-﻿using System.Text;
+using System.Text;
 using System.Threading.Tasks;
+using BitStreams;
 using Godot;
+using SphereHelpers.Extensions;
 using SphServer.Helpers.Networking;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -9,7 +11,7 @@ using SphServer.Shared.Networking.DataModel.Serializers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class CharacterSelectHandler (ushort localId, ClientConnection clientConnection)
+public class CharacterSelectHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private int selectedCharacterIndex = -1;
@@ -30,13 +32,30 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
                 return;
             }
 
-            // delete
-            if (frame[0] == 0x2A)
+            // Command 12 is the 1-based slot. Command 4 in that same frame deletes it.
+            // A length of 0x2A is only the old delete capture; enter-game is 42 bytes too
+            if (TryReadSlotCommand (frame, out var slot, out var delete))
             {
-                var index = frame[17] / 4 - 1;
-                clientConnection.DeletePlayerCharacter (index);
+                var index = slot - 1;
+                SphLogger.Info (
+                    $"SRV {entityId}: slot command {slot} index {index} delete {delete} len {frame.Length}");
+                if (delete)
+                {
+                    if (clientConnection.DeletePlayerCharacter (index))
+                    {
+                        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterDeleted (entityId));
+                    }
+
+                    return;
+                }
+
+                selectedCharacterIndex = index;
                 return;
             }
+
+            SphLogger.Info (
+                $"SRV {entityId}: character select unrecognized len {frame.Length} " +
+                $"{Convert.ToHexString (frame.AsSpan (0, Math.Min (frame.Length, 32)))}");
 
             // create
             if (frame[0] < 0x1b ||
@@ -64,7 +83,7 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
         if (character is null)
         {
             // should never happen
-            SphLogger.Error ($"SRV {localId:X4}: Selected character is null");
+            SphLogger.Error ($"SRV {entityId}: Selected character is null");
             return;
         }
 
@@ -76,7 +95,7 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
 
     private int CreateNewCharacter (byte[] rcvBuffer)
     {
-        SphLogger.Info ($"SRV {localId:X4}: Creating new character");
+        SphLogger.Info ($"SRV {entityId}: Creating new character");
         var len = rcvBuffer[0] - 20 - 5;
         var charDataBytesStart = rcvBuffer[0] - 5;
         var nameCheckBytes = rcvBuffer[20..];
@@ -130,12 +149,12 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
 
         if (!isNameValid)
         {
-            SphLogger.Error ($"SRV {localId:X4}: Name [{name}] already exists!");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameAlreadyExists (localId));
+            SphLogger.Error ($"SRV {entityId}: Name [{name}] already exists!");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameAlreadyExists (entityId));
             return -1;
         }
 
-        SphLogger.Info ($"SRV {localId:X4}: Name [{name}] OK");
+        SphLogger.Info ($"SRV {entityId}: Name [{name}] OK");
 
         var isGenderFemale = (charDataBytes[1] >> 4) % 2 == 1;
         var faceType = ((charDataBytes[1] & 0b111111) << 2) + (charDataBytes[0] >> 6);
@@ -154,14 +173,113 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
         var charIndex = rcvBuffer[17] / 4 - 1;
 
         var newCharacterData =
-            CharacterDbEntry.CreateNewCharacter (localId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+            CharacterDbEntry.CreateNewCharacter (entityId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
 
         clientConnection.CreatePlayerCharacter (newCharacterData, charIndex);
 
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameCheckPassed (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameCheckPassed (entityId));
 
-        SphLogger.Info ($"SRV {localId:X4}: Successfully created character [{name}]");
+        SphLogger.Info ($"SRV {entityId}: Successfully created character [{name}]");
 
         return charIndex;
+    }
+
+    /// <summary>
+    /// Connection command 12 is the 1-based slot. Command 4 in that frame deletes it.
+    /// </summary>
+    private static bool TryReadSlotCommand (byte[] frame, out int slot, out bool delete)
+    {
+        slot = 0;
+        delete = false;
+        if (frame.Length < ClientFrame.HeaderLength ||
+            (WireChannel) (frame[6] | (frame[7] << 8)) != WireChannel.Gameplay)
+        {
+            return false;
+        }
+
+        var stream = new BitStream (frame);
+        var bodyBit = ClientFrame.BodyOffset * 8;
+        if (bodyBit >= frame.Length * 8)
+        {
+            return false;
+        }
+
+        stream.SeekBitOffset (bodyBit);
+        if (!Take (stream, frame, 1 + 15 + 128 + 12 + 7))
+        {
+            return false;
+        }
+
+        if (stream.ReadUInt16 (1) != 0)
+        {
+            stream.SeekForward (45);
+        }
+
+        stream.SeekForward (15 + 128 + 12);
+        var wire = stream.ReadUInt16 (7);
+        var sawSlot = false;
+        while (wire is 1 or 0x3F)
+        {
+            if (wire == 0x3F)
+            {
+                if (!Take (stream, frame, 128 + 12 + 7))
+                {
+                    break;
+                }
+
+                stream.SeekForward (128 + 12);
+                wire = stream.ReadUInt16 (7);
+                continue;
+            }
+
+            if (!Take (stream, frame, 5 + 8))
+            {
+                break;
+            }
+
+            var operation = stream.ReadUInt16 (5);
+            var count = stream.ReadUInt16 (8);
+            if (count > 64 || !Take (stream, frame, count * 8))
+            {
+                break;
+            }
+
+            if (operation == 12 && count >= 1)
+            {
+                slot = stream.ReadUInt16 (8);
+                for (var i = 1; i < count; i++)
+                {
+                    stream.ReadUInt16 (8);
+                }
+
+                sawSlot = true;
+            }
+            else
+            {
+                if (operation == 4 && count == 0 && sawSlot)
+                {
+                    delete = true;
+                }
+
+                for (var i = 0; i < count; i++)
+                {
+                    stream.ReadUInt16 (8);
+                }
+            }
+
+            if (!Take (stream, frame, 7))
+            {
+                break;
+            }
+
+            wire = stream.ReadUInt16 (7);
+        }
+
+        return sawSlot;
+    }
+
+    private static bool Take (BitStream stream, byte[] frame, int bits)
+    {
+        return stream.BitOffsetFromStart + bits <= frame.Length * 8L;
     }
 }

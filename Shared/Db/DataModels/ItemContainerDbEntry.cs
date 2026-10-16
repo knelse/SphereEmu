@@ -18,7 +18,7 @@ namespace SphServer.Shared.Db.DataModels;
 
 public class ItemContainerDbEntry
 {
-    [BsonId] public int Id { get; set; }
+    [BsonId] public Guid Id { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
     public double Z { get; set; }
@@ -30,7 +30,7 @@ public class ItemContainerDbEntry
     private static readonly PackedScene LootBagScene =
         (PackedScene) ResourceLoader.Load ("res://Godot/Scenes/LootBag.tscn");
 
-    public Dictionary<int, int> Contents { get; set; } = [];
+    public Dictionary<int, Guid> Contents { get; set; } = [];
     public ulong? ParentNodeId { get; set; }
 
     public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
@@ -57,7 +57,7 @@ public class ItemContainerDbEntry
             var randomObj = LootRandomizer.GetRandomLootObject (levelOverride > 0 ? levelOverride : level);
             var item = ItemDbEntry.CreateFromGameObject (randomObj);
             item.ParentContainerId = bag.ItemContainerDbEntry.Id;
-            item.Id = WorldObjectIndex.NewItem ();
+            item.Id = Guid.NewGuid ();
             DbConnection.Items.Insert (item.Id, item);
             bag.ItemContainerDbEntry.Contents[i] = item.Id;
         }
@@ -86,13 +86,13 @@ public class ItemContainerDbEntry
         return true;
     }
 
-    public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
+    public bool RemoveItemByIdAndDestroyContainerIfEmpty (Guid itemEntityId)
     {
-        if (Contents.ContainsValue (itemGlobalId))
+        if (Contents.ContainsValue (itemEntityId))
         {
-            var key = Contents.First (x => x.Value == itemGlobalId).Key;
+            var key = Contents.First (x => x.Value == itemEntityId).Key;
             Contents.Remove (key);
-            Console.WriteLine ($"Removed at {key} ID {itemGlobalId} from container {Id}");
+            Console.WriteLine ($"Removed at {key} ID {itemEntityId} from container {Id}");
         }
 
         DbConnection.ItemContainers.Update (Id, this);
@@ -138,14 +138,12 @@ public class ItemContainerDbEntry
     {
         // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.Sack_Mob_Loot);
         // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
-        // var localId = client.GetLocalObjectId(Id);
-        // PacketPart.UpdateEntityId(packetParts, localId);
+        // var entityId = client.GetLocalObjectId(Id);
+        // PacketPart.UpdateEntityId(packetParts, entityId);
         // var lootBagPacket = PacketPart.GetBytesToWrite(packetParts);
-
-        // client.StreamPeer.PutData(lootBagPacket);
     }
 
-    public void ShowItemListForClient (ushort clientId)
+    public void ShowItemListForClient (Guid clientId)
     {
         // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
         // we'll figure out weight for 3-4 slot containers later
@@ -181,14 +179,14 @@ public class ItemContainerDbEntry
         // var item3_1 = (byte) ((item_3_id & 0b111) << 5);
         // var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
         // var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
-        // var localId = global::Client.GetLocalObjectId(clientId, Id);
+        // var entityId = global::Client.GetLocalObjectId(clientId, Id);
         //
         // switch (Contents.Count)
         // {
         //     case 1:
         //         itemList =
         //         [
-        //             0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x5C,
         // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00,
         // 0x00, 0x00
         //         ];
@@ -197,7 +195,7 @@ public class ItemContainerDbEntry
         //     case 2:
         //         itemList =
         //         [
-        //             0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x5C,
         // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0,
         // 0x00, 0x00,
         // 0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00,
@@ -208,7 +206,7 @@ public class ItemContainerDbEntry
         //     case 3:
         //         itemList =
         //         [
-        //             0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x5C,
         // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
         // 0x00, 0x50,
         // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
@@ -220,7 +218,7 @@ public class ItemContainerDbEntry
         //     case 4:
         //         itemList =
         //         [
-        //             0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
+        //             0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(entityId), MajorByte(entityId), 0x5C,
         // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
         // 0x00, 0x50,
         // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
@@ -240,7 +238,7 @@ public class ItemContainerDbEntry
         // global::Client.TryFindClientByIdAndSendData(clientId, itemList);
     }
 
-    public byte[] GetContentsPacket (ushort clientId)
+    public byte[] GetContentsPacket (Guid clientId)
     {
         var items = Contents.Select (x => DbConnection.Items.FindById (x.Value)).ToList ();
         return Packet.ItemsToPacket (clientId, Id, items);

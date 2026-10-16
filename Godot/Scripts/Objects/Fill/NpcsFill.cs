@@ -129,10 +129,7 @@ public partial class NpcsFill : Node3D
             npc.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             npc.Angle = angleEncoded;
 
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                npc.ID = (ushort) id;
-            }
+            npc.EntityID = Guid.NewGuid ();
 
             npc.ObjectType = objectType;
             npc.NameID = 4000 + nameId;

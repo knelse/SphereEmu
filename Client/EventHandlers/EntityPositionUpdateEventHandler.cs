@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.EventHandlers;
 

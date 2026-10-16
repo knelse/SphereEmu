@@ -117,4 +117,4 @@ public sealed class MbcDecodeResult
 
 public readonly record struct MbcContextSwitch (int StartBit, int ProcessId, int ModuleTag);
 
-public readonly record struct MbcTcpFrame (int Offset, int Size, ushort Message, byte[] Payload);
+public readonly record struct MbcFrame (int Offset, int Size, ushort Message, byte[] Payload);

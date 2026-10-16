@@ -8,11 +8,11 @@
 [node name="TeleportDungeonChoiceIsland_1228_[1364]_[1500]_[100]_4648" type="Node3D" parent="." unique_id=912086378 instance=ExtResource("1_ceg8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1364.465, -1500.709, -100.036)
 script = ExtResource("2_gs0j8")
-ID = 4648
+EntityIdString = "1e0a965b-8fe0-4f9f-b762-0ff226605360"
 ObjectType = 103
 
 [node name="TeleportDungeonChoiceIsland_1225_[1359]_[1500]_[174]_4645" type="Node3D" parent="." unique_id=846613730 instance=ExtResource("1_ceg8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1359.962, -1500.974, -174.687)
 script = ExtResource("2_gs0j8")
-ID = 4645
+EntityIdString = "672b061b-c1c7-4014-bc16-1f2b9008b0f1"
 ObjectType = 103

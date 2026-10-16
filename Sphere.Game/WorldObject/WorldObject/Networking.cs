@@ -27,8 +27,7 @@ public partial class WorldObject
         var packetParts = GetPacketParts ();
         PacketPart.UpdateCoordinates (packetParts, GlobalTransform.Origin.X, -GlobalTransform.Origin.Y,
             -GlobalTransform.Origin.Z, Angle);
-        var localId = client.GetLocalObjectId (ID);
-        PacketPart.UpdateEntityId (packetParts, localId);
+        PacketPart.UpdateEntityId (packetParts, EntityID);
         return packetParts;
     }
 
@@ -38,9 +37,9 @@ public partial class WorldObject
         return packetParts;
     }
 
-    protected virtual void ClientInteract (ushort clientID,
+    protected virtual void ClientInteract (Guid clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
-        SphLogger.Info ($"Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+        SphLogger.Info ($"Client [{clientID}] interacts with [{EntityID}] {ObjectType} -- {interactionType}");
     }
 }

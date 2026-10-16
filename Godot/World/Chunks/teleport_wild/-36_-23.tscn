@@ -8,5 +8,5 @@
 [node name="TeleportWild_144A_[-3503]_[402]_[2276]_5194" type="Node3D" parent="." unique_id=874056112 instance=ExtResource("1_174lf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3502.17, -402.1096, -2276.577)
 script = ExtResource("2_02k4i")
-ID = 5194
+EntityIdString = "c0746171-89f4-43b7-a78f-896332ba2d87"
 ObjectType = 67

@@ -9,6 +9,7 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 495.08594, -401.52972, -2689.8318)
 script = ExtResource("2_mo6no")
 Castle = 24
-ID = 4159
+TargetEntityId = "10a67fc9-8c49-4acf-8210-fd671de8ec64"
+EntityIdString = "a530f395-46ec-4d9e-ae65-9cdb4ea5bd39"
 ObjectType = 98
 ModelName = "edoor"

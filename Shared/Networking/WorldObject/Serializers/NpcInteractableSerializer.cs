@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using SphereHelpers.Extensions;
 using SphServer.Client;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game;
 using SphServer.Sphere.Game.WorldObject;
 
@@ -11,13 +13,12 @@ namespace SphServer.Shared.Networking.WorldObject.Serializers;
 
 public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 {
-    public byte[] ShowItemList (ushort clientId)
+    public byte[] ShowItemList (Guid clientId)
     {
-        var localId = SphereClient.GetLocalObjectId (clientId, npcInteractable.ID);
+        var vendorId = npcInteractable.EntityID;
         var stream = SphBitStream.GetWriteBitStream ();
 
-        stream.WriteUInt16 (localId);
-        stream.WriteByte (0, 2);
+        stream.WriteGuid (vendorId);
         stream.WriteUInt16 ((ushort) npcInteractable.ObjectType, 10);
         stream.WriteByte (0, 1);
         // interaction
@@ -36,8 +37,12 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             stream.WriteUInt16 (itemSeparator, 15);
             stream.WriteByte ((byte) slotId, 8);
 
-            var itemLocalId = SphereClient.GetLocalObjectId (clientId, item.Id);
-            stream.WriteUInt16 (itemLocalId);
+            if (item.Id == Guid.Empty)
+            {
+                item.Id = Guid.NewGuid ();
+            }
+
+            stream.WriteGuid (item.Id);
             stream.WriteBytes ([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
             stream.WriteUInt32 ((uint) item.VendorCost, 32);
             if (slotId % 28 != 0 && slotId != NpcInteractable.MaxDisplayedShopItems)
@@ -54,24 +59,23 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
                 break;
             }
 
-            stream.WriteUInt16 (localId);
-            stream.WriteByte (0, 2);
+            stream.WriteGuid (vendorId);
             stream.WriteUInt16 ((ushort) npcInteractable.ObjectType, 10);
             stream.WriteByte (0, 2);
         }
 
         stream.WriteByte (0x3F, 7);
-        stream.WriteUInt16 (clientId);
+        stream.WriteGuid (clientId);
         stream.WriteUInt32 (0x62A34008);
         stream.WriteByte (0x0, 5);
-        stream.WriteUInt16 (localId);
+        stream.WriteGuid (vendorId);
         stream.WriteByte (0x0, 7);
         var packet = Packet.ToByteArray (stream.GetStreamData (), 3);
         packetBytes.AddRange (packet);
         return packetBytes.ToArray ();
     }
 
-    public byte[] ShowItemContents (ushort clientId)
+    public byte[] ShowItemContents (Guid clientId)
     {
         var stream = SphBitStream.GetWriteBitStream ();
         var packetList = new List<byte> ();
@@ -119,16 +123,20 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
         // Client.TryFindClientByIdAndSendData(clientId, packet);
     }
 
-    private void WriteItemPacketToStream (ushort clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
+    private void WriteItemPacketToStream (Guid clientId, ItemDbEntry itemDbEntry, BitStreams.BitStream stream)
     {
         var actualObjectType = itemDbEntry.WireObjectType;
         var packetParts = PacketPart.LoadDefinedPartsFromFile (actualObjectType);
         PacketPart.UpdateCoordinates (packetParts, 1000000, 0, 0);
-        var localId = SphereClient.GetLocalObjectId (clientId, itemDbEntry.Id);
-        PacketPart.UpdateEntityId (packetParts, localId);
+        if (itemDbEntry.Id == Guid.Empty)
+        {
+            itemDbEntry.Id = Guid.NewGuid ();
+        }
+
+        PacketPart.UpdateEntityId (packetParts, itemDbEntry.Id);
         PacketPart.UpdateValue (packetParts, "object_type", (int) actualObjectType, 10);
         PacketPart.UpdateValue (packetParts, "game_object_id", itemDbEntry.GameId, 14);
-        PacketPart.UpdateValue (packetParts, "container_id", itemDbEntry.ParentContainerId ?? 0xFF00, 16);
+        PacketPart.UpdateGuid (packetParts, "container_id", npcInteractable.EntityID);
         if (itemDbEntry.ItemCount > 1)
         {
             PacketPart.UpdateValue (packetParts, "count", itemDbEntry.ItemCount, 15);

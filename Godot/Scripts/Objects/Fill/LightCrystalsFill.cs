@@ -120,10 +120,7 @@ public partial class LightCrystalsFill : Node3D
             wo.Name = WorldObjectDumpFillCommon.BuildPlacementName (objectTypeNameForNaming, id, x, y, z);
             wo.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             wo.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                wo.ID = (ushort) id;
-            }
+            wo.EntityID = Guid.NewGuid ();
 
             wo.ObjectType = objectType;
             wo.ModelName = "mn_quartz";

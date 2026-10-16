@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
+using SphereHelpers.Extensions;
+using SphServer.Packets;
+using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
-using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Communities;
 
@@ -9,32 +12,44 @@ public class GroupActionsHandler (ClientConnection clientConnection)
 {
     public async Task Handle (byte[] frame, double delta)
     {
-        var clientlocalId = (ushort) ((frame[11] << 8) + frame[12]);
-        var action = frame[17];
+        // Action follows the guid at byte 11 and the 08 40 23 23 tail
+        if (frame.Length < 32)
+        {
+            return;
+        }
+
+        var entityId = new Guid (frame.AsSpan (11, 16));
+        var action = frame[31];
         switch (action)
         {
             case 0x00:
                 {
                     // create
-                    SphLogger.Info ($"[{clientlocalId:X}] Create group");
-                    var createResponse = new byte[]
-                    {
-                    0x13, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte (clientlocalId),
-                    MinorByte (clientlocalId), 0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
-                    };
-                    clientConnection.MaybeScheduleNetworkPacketSend (createResponse);
+                    SphLogger.Info ($"[{entityId}] Create group");
+                    clientConnection.MaybeScheduleNetworkPacketSend (BuildGroupPacket (entityId,
+                    [
+                        0x08, 0x40, 0x23, 0x23, 0xA0, 0xA0, 0x91, 0x11, 0x90, 0x00
+                    ]));
                     break;
                 }
             case 0x80:
                 // leave or disband
-                SphLogger.Info ($"[{clientlocalId:X}] Leave group");
-                var leaveResponse = new byte[]
-                {
-                    0x0F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte (clientlocalId),
-                    MinorByte (clientlocalId), 0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
-                };
-                clientConnection.MaybeScheduleNetworkPacketSend (leaveResponse);
+                SphLogger.Info ($"[{entityId}] Leave group");
+                clientConnection.MaybeScheduleNetworkPacketSend (BuildGroupPacket (entityId,
+                [
+                    0x08, 0x40, 0x23, 0x23, 0xA0, 0x01
+                ]));
                 break;
         }
+    }
+
+    private static byte[] BuildGroupPacket (Guid entityId, byte[] tail)
+    {
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (0, 15);
+        stream.WriteGuid (entityId);
+        stream.WriteBytes (tail, tail.Length, true);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 }

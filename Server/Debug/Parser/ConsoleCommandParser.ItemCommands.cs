@@ -74,7 +74,7 @@ public partial class ConsoleCommandParser
 
         var item = ItemDbEntry.CreateFromGameObject (gameObject);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem ();
+        item.Id = Guid.NewGuid ();
         DbConnection.Items.Insert (item.Id, item);
 
         var name = gameObject.Localisation.GetValueOrDefault (Locale.Russian, gameObject.SphereType);
@@ -83,8 +83,13 @@ public partial class ConsoleCommandParser
         // client rejected the record
         if (split.Any (x => x.Equals ("ground", StringComparison.OrdinalIgnoreCase)))
         {
-            var frame = ItemRecordEncoder.EncodeWithoutGameId ((ushort) item.Id, (int) item.WireObjectType,
-                GroundContainerId,
+            if (item.Id == Guid.Empty)
+            {
+                item.Id = Guid.NewGuid ();
+            }
+
+            var frame = ItemRecordEncoder.EncodeWithoutGameId (item.Id, (int) item.WireObjectType,
+                GroundContainer.Id,
                 (float) currentCharacterDbEntry.X,
                 (float) -currentCharacterDbEntry.Y,
                 (float) -(currentCharacterDbEntry.Z + GiveGroundDropOffset));
@@ -212,7 +217,7 @@ public partial class ConsoleCommandParser
         goWithSuffix.Suffix = chosen.Suffix;
         var item = ItemDbEntry.CreateFromGameObject (goWithSuffix);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem ();
+        item.Id = Guid.NewGuid ();
         DbConnection.Items.Insert (item.Id, item);
 
         var displayName = chosen.Go.Localisation.GetValueOrDefault (Locale.Russian, chosen.Go.SphereType);
@@ -235,8 +240,8 @@ public partial class ConsoleCommandParser
         currentCharacterDbEntry.Items[slot] = item.Id;
         sphereClient!.SaveCharacter ();
 
-        var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode (item, SphBitStream.ByteSwap (currentCharacterDbEntry.ClientIndex));
+        var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.EntityId, slot, item.Id, item.ItemCount);
+        var record = ItemRecordEncoder.Encode (item, sphereClient.EntityID);
 
         if (itemFirst)
         {
@@ -404,7 +409,7 @@ public partial class ConsoleCommandParser
 
         foreach (var slot in occupied)
         {
-            var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.ClientIndex, slot,
+            var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.EntityId, slot,
                 ItemSlotReserve.NoItem);
             if (reserve is not null)
             {
@@ -469,7 +474,7 @@ public partial class ConsoleCommandParser
 
         // The client id is the row id, from the world index: LiteDB auto-id starts at 1 and
         // collides with entities already on screen
-        item.Id = WorldObjectIndex.NewItem ();
+        item.Id = Guid.NewGuid ();
         DbConnection.Items.Insert (item.Id, item);
 
         DebugConsole.SendSpherePacket ($"/packet {definition}",
@@ -477,11 +482,15 @@ public partial class ConsoleCommandParser
             false,
             parts =>
             {
-                PacketPart.UpdateEntityId (parts, (ushort) item.Id);
+                if (item.Id == Guid.Empty)
+                {
+                    item.Id = Guid.NewGuid ();
+                }
 
-                // 0xFF00 is on the ground; captured definitions name a container that does not
-                // exist here
-                PacketPart.UpdateValue (parts, "container_id", item.ParentContainerId ?? 0xFF00, 16);
+                PacketPart.UpdateEntityId (parts, item.Id);
+
+                // Ground container is a stored guid, same value on the client
+                PacketPart.UpdateGuid (parts, "container_id", GroundContainer.Id);
 
                 // Object type is written only where the definition has a field for it; the fourth
                 // argument is which field the client draws from

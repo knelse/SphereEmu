@@ -1177,7 +1177,7 @@ internal static class PacketAnalyzer
             return [];
         }
 
-        var frames = MbcProtocolDecoder.SplitTcpFrames (storedPacket.ContentBytes, MbcDirection.Client);
+        var frames = MbcProtocolDecoder.SplitFrames (storedPacket.ContentBytes, MbcDirection.Client);
         if (frames.Count == 0)
         {
             return [];
@@ -1229,7 +1229,7 @@ internal static class PacketAnalyzer
         // MBC
 
         var direction = storedPacket.Source == PacketSource.CLIENT ? MbcDirection.Client : MbcDirection.Server;
-        var frames = MbcProtocolDecoder.SplitTcpFrames (storedPacket.ContentBytes, direction);
+        var frames = MbcProtocolDecoder.SplitFrames (storedPacket.ContentBytes, direction);
         if (frames.Count == 0)
         {
             return false;

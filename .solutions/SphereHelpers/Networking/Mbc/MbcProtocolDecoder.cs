@@ -92,11 +92,11 @@ public sealed class MbcProtocolDecoder
 
     public string ModuleName (int? tag) => catalog.ModuleName (tag);
 
-    public static List<MbcTcpFrame> SplitTcpFrames (byte[] content, MbcDirection direction)
+    public static List<MbcFrame> SplitFrames (byte[] content, MbcDirection direction)
     {
         var headerSize = direction == MbcDirection.Client ? 8 : 4;
         var offset = 0;
-        var frames = new List<MbcTcpFrame> ();
+        var frames = new List<MbcFrame> ();
         while (offset + headerSize <= content.Length)
         {
             var size = content[offset] | (content[offset + 1] << 8);
@@ -109,7 +109,7 @@ public sealed class MbcProtocolDecoder
 
             var raw = content.AsSpan (offset, size);
             var payload = direction == MbcDirection.Client ? raw[8..].ToArray () : raw[4..].ToArray ();
-            frames.Add (new MbcTcpFrame (offset, size, message, payload));
+            frames.Add (new MbcFrame (offset, size, message, payload));
             offset += size;
         }
 

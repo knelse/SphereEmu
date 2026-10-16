@@ -10,6 +10,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1322.4895, -1097.7888, -1086.
 script = ExtResource("2_1lct4")
 Castle = 31
 ClanName = "Зеленый Слоник"
-ID = 3985
+EntityIdString = "1d79a13d-b948-4eee-9277-7592d8562d78"
 ObjectType = 80
 ModelName = "cs_table"

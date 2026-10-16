@@ -8,5 +8,5 @@
 [node name="CastleTeleport_00_Льеж _1468_5224" type="Node3D" parent="." unique_id=823002327 instance=ExtResource("1_cp7p4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3320.6658, -1103.2643, 3903.017)
 script = ExtResource("2_ct22o")
-ID = 5224
+EntityIdString = "222bf71b-1b89-453e-b9fd-b9f84da1e5d7"
 ObjectType = 69

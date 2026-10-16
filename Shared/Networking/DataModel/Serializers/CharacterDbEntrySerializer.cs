@@ -1,9 +1,10 @@
-﻿using SphereHelpers.Extensions;
+using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 using SphServer.Shared.Networking.Mbc;
 using SphServer.System;
 using static SphServer.Shared.BitStream.SphBitStream;
@@ -171,8 +172,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
 
         var charDataBytes = new byte[]
         {
-            0x6C, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte (characterDbEntry.ClientIndex),
-            MinorByte (characterDbEntry.ClientIndex), 0x08, 0x40,
+            0x08, 0x40,
             0x60, lookType, hpMax1, hpMax2, mpMax1, mpMax2, strength1, strenth2, agility1, agility2, accuracy1,
             accuracy2, endurance1, endurance2, earth1, earth2, air1, air2, water1, water2, fire1, fire2, pdef1,
             pdef2, mdef1, mdef2, karma1, satietyMax1, satietyMax2, titleLvl1, titleLvl2, degreeLvl1, degreeLvl2,
@@ -186,7 +186,8 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
             0x00, 0x00
         };
 
-        return charDataBytes;
+        return Packet.ToByteArray (
+            BitStreamExtensions.StitchWithGuid ([0x00, 0x04], characterDbEntry.EntityId, charDataBytes), 1);
     }
 
     /// <summary>
@@ -252,7 +253,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
                 // Retail game-data has 0x02 0x16 here. Meaning unknown.
                 0x00, 0x04
             ], 7, true);
-        stream.WriteUInt16 (ByteSwap (characterDbEntry.ClientIndex), 16);
+        stream.WriteGuid (characterDbEntry.EntityId);
         stream.WriteBytes ([0x08, 0x00]);
 
         stream.WriteByte (2, 5);
@@ -330,23 +331,23 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         stream.WriteUInt16 (characterDbEntry.CurrentMP, 16);
         stream.WriteUInt16 (characterDbEntry.CurrentSatiety, 16);
         stream.WriteUInt16 (characterDbEntry.MaxSatiety, 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentStrength), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAgility), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAccuracy), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentEndurance), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentEarth), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAir), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentWater), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentFire), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentStrength), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentAgility), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentAccuracy), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentEndurance), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentEarth), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentAir), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentWater), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.CurrentFire), 16);
         stream.WriteUInt16 (characterDbEntry.PDef, 16);
         stream.WriteUInt16 (characterDbEntry.MDef, 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.PAtk), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.MAtk), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.PAtk), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.MAtk), 16);
         WriteUInt32Full (stream, characterDbEntry.TitleXP);
         WriteUInt32Full (stream, characterDbEntry.DegreeXP);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.KarmaCount), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.AvailableTitleStats), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.AvailableDegreeStats), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.KarmaCount), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.AvailableTitleStats), 16);
+        stream.WriteUInt16 (unchecked((ushort) characterDbEntry.AvailableDegreeStats), 16);
         while (stream.Offset - statsStart < 150)
         {
             stream.WriteByte (0x00, 8);
@@ -385,7 +386,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
     /// _player region 61: IEEE xyz, angle8, packed model, name, clan, nameplate; look is
     /// SetWornGear after this because User Image waits on region 6
     /// </summary>
-    public byte[] ToSpawnSnapshotByteArray (ushort entityId, float x, float y, float z, double angleRadians)
+    public byte[] ToSpawnSnapshotByteArray (Guid entityId, float x, float y, float z, double angleRadians)
     {
         var nameBytes = SphEncoding.Win1251.GetBytes (characterDbEntry.Name ?? string.Empty);
         if (nameBytes.Length > 255)
@@ -428,8 +429,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         var stream = GetWriteBitStream ();
         stream.WriteByte (0, 1); // has_position
         stream.WriteUInt16 (0, 15); // tick
-        stream.WriteUInt16 (entityId, 16);
-        stream.WriteByte (0, 2); // process_id high
+        stream.WriteGuid (entityId);
         stream.WriteUInt16 ((ushort) (playerModuleTag & 0xFFF), 12);
         stream.WriteByte (62, 7); // wire = region 61 + 1 (SpawnSnapshot)
 
@@ -515,13 +515,13 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
 
         var tpBytes = new byte[]
         {
-            0x1F, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte (characterDbEntry.ClientIndex),
-            MinorByte (characterDbEntry.ClientIndex), 0x08, 0x40, 0xE3,
+            0x08, 0x40, 0xE3,
             0x01,
             (byte) x_1, (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
             (byte) z_2, (byte) z_3, (byte) z_4, (byte) t_1, (byte) t_2, (byte) t_3, (byte) t_4, (byte) t_5, 0x00
         };
-        return tpBytes;
+        return Packet.ToByteArray (
+            BitStreamExtensions.StitchWithGuid ([0x00, 0x04], characterDbEntry.EntityId, tpBytes), 1);
     }
 
     public byte[] GetNewPlayerDungeonTeleportAndUpdateStatsByteArray (WorldCoords coords)
@@ -550,8 +550,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
 
         var tpBytes = new byte[]
         {
-            0xAB, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x04, MajorByte (characterDbEntry.ClientIndex),
-            MinorByte (characterDbEntry.ClientIndex), 0x08, 0x40, 0xE3,
+            0x08, 0x40, 0xE3,
             0x01,
             (byte) x_1, (byte) x_2, (byte) x_3, (byte) x_4, (byte) y_1, (byte) y_2, (byte) y_3, (byte) y_4, (byte) z_1,
             (byte) z_2, (byte) z_3, (byte) z_4, (byte) t_1, (byte) t_2, (byte) t_3, (byte) t_4, (byte) t_5, 0x20, 0x08,
@@ -566,6 +565,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
             0x02, 0xF6, 0x02
         };
 
-        return tpBytes;
+        return Packet.ToByteArray (
+            BitStreamExtensions.StitchWithGuid ([0x00, 0x04], characterDbEntry.EntityId, tpBytes), 1);
     }
 }

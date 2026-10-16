@@ -9,6 +9,6 @@
 transform = Transform3D(0.7572089, 0, -0.6531728, 0, 1, 0, 0.6531728, 0, 0.7572089, 1235.8433, -1501.1165, -67.07898)
 script = ExtResource("2_a0v4o")
 Angle = 227
-ID = 26647
+EntityIdString = "e7a34b50-8739-4a28-a5c4-1954d7fe40cd"
 ObjectType = 702
 ModelName = "mn_quartz"

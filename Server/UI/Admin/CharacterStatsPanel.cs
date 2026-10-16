@@ -20,7 +20,7 @@ public partial class CharacterStatsPanel : PanelContainer
     private static readonly Color GuildUnmetText = new (0.95f, 0.28f, 0.28f);
 
     private Locale locale = Locale.Russian;
-    private ushort? selectedClientId;
+    private Guid? selectedClientId;
     private Label? nameLabel;
     private Label? titleLabel;
     private ProgressBar? titleXpBar;
@@ -267,7 +267,7 @@ public partial class CharacterStatsPanel : PanelContainer
         RequestRefresh ();
     }
 
-    public void SetSelectedClient (ushort? clientId)
+    public void SetSelectedClient (Guid? clientId)
     {
         if (statEditSnapshot is not null && selectedClientId != clientId)
         {
@@ -294,7 +294,7 @@ public partial class CharacterStatsPanel : PanelContainer
         ClientStateEvents.RosterChanged -= OnRosterChanged;
     }
 
-    private void OnCharacterChanged (ushort clientId)
+    private void OnCharacterChanged (Guid clientId)
     {
         if (selectedClientId == clientId)
         {

@@ -61,7 +61,7 @@ public static class Packet
         return result;
     }
 
-    public static byte[] ItemsToPacket (ushort clientId, int bagId, List<ItemDbEntry> items)
+    public static byte[] ItemsToPacket (Guid clientId, Guid bagId, List<ItemDbEntry> items)
     {
         var stream = SphBitStream.GetWriteBitStream ();
 
@@ -100,7 +100,7 @@ public static class Packet
         return ToByteArray (stream.GetStreamData (), 3);
     }
 
-    private static ObjectPacket? FindSimilarObjectPacketInDb (ushort clientId, int bagId, ItemDbEntry? item)
+    private static ObjectPacket? FindSimilarObjectPacketInDb (Guid clientId, Guid bagId, ItemDbEntry? item)
     {
         if (item is null)
         {
@@ -180,8 +180,7 @@ public static class Packet
         //     result.SuffixMod = suffixMod;
         // }
         //
-        // var bagLocalId = Client.GetLocalObjectId(clientId, bagId);
-        // result.BagId = bagLocalId;
+        // result.BagId = bagId;
         // result.Count = (ushort) item.ItemCount;
         //
         // result.GameObject = MainServer.GameObjectCollection.FindById(item.GameObjectDbId);

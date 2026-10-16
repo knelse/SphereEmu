@@ -17,7 +17,7 @@ public partial class AdminSlotItemTools : Node
     private ConfirmationDialog? deleteDialog;
     private AdminItemSelectWindow? selectWindow;
     private Locale locale = Locale.Russian;
-    private ushort pendingClientId;
+    private Guid pendingClientId;
     private BelongingSlot pendingSlot;
 
     public void SetLocale (Locale newLocale)
@@ -53,7 +53,7 @@ public partial class AdminSlotItemTools : Node
         selectWindow.SetLocale (locale);
     }
 
-    public void OpenMenu (ushort clientId, BelongingSlot slot, Vector2 globalPos)
+    public void OpenMenu (Guid clientId, BelongingSlot slot, Vector2 globalPos)
     {
         if (menu is null)
         {

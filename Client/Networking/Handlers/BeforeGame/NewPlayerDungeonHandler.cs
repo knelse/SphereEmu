@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using SphServer.Helpers;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
@@ -17,7 +17,6 @@ public class NewPlayerDungeonHandler
                 return;
             case ClientState.INIT_NEW_DUNGEON_TELEPORT_READY_TO_INIT:
                 await MoveToNewPlayerDungeonAsync(CurrentCharacter);
-                // StreamPeer.PutData(CurrentCharacter.GetTeleportByteArray(new WorldCoords(2584, 160, 1426, -1.5)));
                 break;
      */
 
@@ -37,7 +36,7 @@ public class NewPlayerDungeonHandler
 
         // clientConnection.MaybeQueueNetworkPacketSend(CommonPackets.LoadNewPlayerDungeon);
         // ConsoleHelper.WriteLine(
-        // $"SRV: Teleported client [{MinorByte(selectedCharacter.ClientIndex) * 256 + MajorByte(selectedCharacter.ClientIndex)}] to default new player dungeon");
+        // $"SRV: Teleported client [{MinorByte(selectedCharacter.EntityId) * 256 + MajorByte(selectedCharacter.EntityId)}] to default new player dungeon");
 
         // currentState = ClientState.INGAME_DEFAULT;
         // var clientTransform = clientModel!.Transform;

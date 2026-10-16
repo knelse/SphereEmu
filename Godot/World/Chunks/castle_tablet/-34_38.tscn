@@ -10,6 +10,6 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -331
 script = ExtResource("2_g8dpa")
 ClanName = "Зеленый Слоник"
 Angle = 128
-ID = 3146
+EntityIdString = "bd71d55e-bf80-48aa-9bd8-05461c6987fa"
 ObjectType = 80
 ModelName = "cs_table"

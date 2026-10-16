@@ -8,16 +8,15 @@ public abstract record ClientQueuedEvent;
 public sealed record CurrentClientPositionChangedEvent : ClientQueuedEvent;
 
 public sealed record EntityPositionUpdateEvent (
-    ushort EntityId, ushort ModuleTag, double X, double Y, double Z, double Angle)
+    Guid EntityId, ushort ModuleTag, double X, double Y, double Z, double Angle)
     : ClientQueuedEvent;
 
 /// <summary>
 /// One damage application against a single resolved target (main hit or AoE splash).
 /// </summary>
 public sealed record CombatHitEvent (
-    ushort AttackerGlobalId,
-    ushort TargetGlobalId,
-    ushort TargetLocalId,
+    Guid AttackerEntityId,
+    Guid TargetEntityId,
     AttackFrameKind FrameKind) : ClientQueuedEvent;
 
 /// <summary>
@@ -25,8 +24,8 @@ public sealed record CombatHitEvent (
 /// above 3 is the attacker's process; 0 keeps the nameless death line
 /// </summary>
 public sealed record CharacterHealthChangeEvent (
-    ushort EntityId,
+    Guid EntityId,
     int HealthDiff,
-    ushort KillerProcessId = 0,
+    Guid KillerProcessId = default,
     DamageOriginSpecial? Origin = null)
     : ClientQueuedEvent;

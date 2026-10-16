@@ -9,6 +9,6 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1698.7449, -1097.7557, 3899.2036)
 script = ExtResource("2_kbxme")
 DoorID = 5020
-ID = 1510
+EntityIdString = "06761a68-506a-40a4-b2d7-81e7bacdae0a"
 ObjectType = 60
 ModelName = "edoor"

@@ -1,4 +1,4 @@
-﻿using SphereHelpers.Extensions;
+using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Server.Config;
 using SphServer.Shared.BitStream;
@@ -47,12 +47,7 @@ public static class DebugConsole
 
         if (generateNewId)
         {
-            foreach (var idPart in packetParts.Where (x => x.Name == "entity_id"))
-            {
-                var newIndex = WorldObjectIndex.New ();
-                var bits = BitStreamExtensions.IntToBits (newIndex, 16).ToList ();
-                idPart.Value = bits;
-            }
+            PacketPart.UpdateEntityId (packetParts, Guid.NewGuid ());
         }
 
         transformPacketPartValueAction?.Invoke (packetParts);

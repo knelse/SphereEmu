@@ -18,7 +18,7 @@ public static class AdminActionLog
         SphLogger.Warning (Format (client, action));
     }
 
-    public static void Info (ushort clientId, string? ip, string? characterName, string action)
+    public static void Info (Guid clientId, string? ip, string? characterName, string action)
     {
         SphLogger.Info (Format (clientId, ip, characterName, action));
     }
@@ -26,16 +26,16 @@ public static class AdminActionLog
     private static string Format (SphereClient client, string action)
     {
         return Format (
-            client.localId,
+            client.EntityID,
             client.GetIpAddressAndPort (),
             client.CurrentCharacter?.Name,
             action);
     }
 
-    private static string Format (ushort clientId, string? ip, string? characterName, string action)
+    private static string Format (Guid clientId, string? ip, string? characterName, string action)
     {
         var name = string.IsNullOrEmpty (characterName) ? "<no character>" : characterName;
         var address = string.IsNullOrEmpty (ip) ? "<unknown>" : ip;
-        return $"Admin action: player {clientId:X4}, IP {address}, char \"{name}\" — {action}";
+        return $"Admin action: player {clientId}, IP {address}, char \"{name}\" — {action}";
     }
 }

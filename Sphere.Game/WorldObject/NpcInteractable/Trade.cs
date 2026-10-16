@@ -9,10 +9,10 @@ namespace SphServer.Sphere.Game.WorldObject;
 
 public partial class NpcInteractable
 {
-    protected override void ClientInteract (ushort clientID,
+    protected override void ClientInteract (Guid clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
-        SphLogger.Info ($"FROM NPC: Client [{clientID:X4}] interacts with [{ID}] {ObjectType} -- {interactionType}");
+        SphLogger.Info ($"FROM NPC: Client [{clientID}] interacts with [{EntityID}] {ObjectType} -- {interactionType}");
         switch (interactionType)
         {
             case ClientInteractionType.OpenTrade:
@@ -63,8 +63,8 @@ public partial class NpcInteractable
 
         foreach (var item in itemsOnSale.Take (MaxDisplayedShopItems))
         {
-            item.ParentContainerId = ID;
-            item.Id = WorldObjectIndex.NewItem ();
+            item.ParentContainerId = EntityID;
+            item.Id = Guid.NewGuid ();
             ItemsOnSale.Add (item);
         }
     }
@@ -74,25 +74,25 @@ public partial class NpcInteractable
         return Math.Min (ItemsOnSale.Count, MaxDisplayedShopItems);
     }
 
-    private void ShowItemList (ushort clientId)
+    private void ShowItemList (Guid clientId)
     {
         var output = serializer!.ShowItemList (clientId);
         FindClientAndScheduleSend (output, clientId);
     }
 
-    private void FindClientAndScheduleSend (byte[] packet, ushort clientId)
+    private void FindClientAndScheduleSend (byte[] packet, Guid clientId)
     {
         var client = ActiveClients.Get (clientId);
         if (client is null)
         {
-            SphLogger.Warning ($"Unable to find client with ID: {clientId:X4} when trading with NPC ID: {ID:X4}");
+            SphLogger.Warning ($"Unable to find client with ID: {clientId} when trading with NPC ID: {EntityID}");
             return;
         }
 
         client.MaybeQueueNetworkPacketSend (packet);
     }
 
-    private void ShowItemContents (ushort clientId)
+    private void ShowItemContents (Guid clientId)
     {
         var output = serializer!.ShowItemContents (clientId);
         FindClientAndScheduleSend (output, clientId);

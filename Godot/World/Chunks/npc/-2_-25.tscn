@@ -13,6 +13,6 @@ IconName = "npc_trade_magic"
 NpcType = 15
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5139
+EntityIdString = "c2201ace-97ca-460c-af60-b2943ead4d6d"
 ObjectType = 208
 ModelName = "npc58"

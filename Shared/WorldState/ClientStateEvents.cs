@@ -8,13 +8,13 @@ namespace SphServer.Shared.WorldState;
 public static class ClientStateEvents
 {
     public static event Action? RosterChanged;
-    public static event Action<ushort>? CharacterChanged;
+    public static event Action<Guid>? CharacterChanged;
 
     public static void RaiseRosterChanged () => RosterChanged?.Invoke ();
 
-    public static void RaiseCharacterChanged (ushort clientId)
+    public static void RaiseCharacterChanged (Guid clientId)
     {
-        if (clientId == 0)
+        if (clientId == Guid.Empty)
         {
             return;
         }

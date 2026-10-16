@@ -9,5 +9,5 @@
 transform = Transform3D(0.53499776, 0, -0.84485346, 0, 1, 0, 0.84485346, 0, 0.53499776, 293.29483, -159.88808, 1391.238)
 script = ExtResource("2_4w6ty")
 Angle = 215
-ID = 5156
+EntityIdString = "4bcd74fc-4f8f-46c5-abd2-eed769cd59a4"
 ObjectType = 71

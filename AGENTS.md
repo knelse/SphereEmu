@@ -32,6 +32,7 @@ These rules apply to every AI agent working in this repository.
 ## Build verification
 
 - Before reporting work as done, run `dotnet build` and fix all errors.
+- After any change under `d:\SphereDev\SferaClientRecompiled`, rebuild x64 Debug before reporting it done: `sphereclient_patched_native.vcxproj` with `/p:Configuration=Debug /p:Platform=x64`. The post-build copies `sphereclient_patched.exe` and `.pdb` to `d:\Games\SphereEmuCurrentRecompile\`.
 - Repeat build → fix until the build succeeds.
 - Skip this only when the user explicitly says to skip the build.
 

@@ -13,7 +13,7 @@ IconName = "npc_trade_wpon"
 NpcType = 11
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5412
+EntityIdString = "a2dc87f1-2b13-413f-a958-79fb5266d2ec"
 ObjectType = 213
 ModelName = "npc08"
 
@@ -26,6 +26,6 @@ NpcType = 7
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 183
-ID = 5417
+EntityIdString = "0c9125c0-8ecc-4e87-b608-91d7761442eb"
 ObjectType = 213
 ModelName = "npc29c"

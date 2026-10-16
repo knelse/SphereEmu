@@ -22,7 +22,7 @@ public partial class ItemDetailsPopupHost : Control
 
     public void SetLocale (Locale newLocale) => locale = newLocale;
 
-    public void ShowHover (Vector2 globalAnchor, int itemId, BelongingSlot slot, CharacterDbEntry? character)
+    public void ShowHover (Vector2 globalAnchor, Guid itemId, BelongingSlot slot, CharacterDbEntry? character)
     {
         var item = DbConnection.Items.FindById (itemId);
         if (item is null)
@@ -72,7 +72,7 @@ public partial class ItemDetailsPopupHost : Control
         hoverPopup.Visible = false;
     }
 
-    public void Pin (Vector2 globalAnchor, int itemId, BelongingSlot slot, CharacterDbEntry? character)
+    public void Pin (Vector2 globalAnchor, Guid itemId, BelongingSlot slot, CharacterDbEntry? character)
     {
         var item = DbConnection.Items.FindById (itemId);
         if (item is null)

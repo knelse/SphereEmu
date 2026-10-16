@@ -14,6 +14,6 @@ NpcType = 9
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 146
-ID = 5334
+EntityIdString = "dffe860a-3c05-434d-9a23-c420d9fa9ecf"
 ObjectType = 213
 ModelName = "npc14b"

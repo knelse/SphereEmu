@@ -8,36 +8,16 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Shared.WorldState;
 
-internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, SphereClient>
+internal abstract class ActiveClients : ActiveObjectCollectionBase<Guid, SphereClient>
 {
-    internal static ushort InsertAtFirstEmptyIndex (SphereClient value)
+    internal static void Insert (SphereClient value)
     {
-        ushort? index = null;
-        for (var i = (int) 0x4F6F; i <= ushort.MaxValue; i++)
+        if (value.EntityID == Guid.Empty)
         {
-            var id = (ushort) i;
-            if (storage.ContainsKey (id) || WorldObjectIndex.IsInUse (id))
-            {
-                continue;
-            }
-
-            index = id;
-            break;
+            value.EntityID = Guid.NewGuid ();
         }
 
-        if (index is null)
-        {
-            throw new ArgumentException ("Reached max number of connections");
-        }
-
-        InsertAt (index.Value, value);
-        return index.Value;
-    }
-
-    internal static void InsertAt (ushort id, SphereClient value)
-    {
-        WorldObjectIndex.Reserve (id);
-        Add (id, value);
+        Add (value.EntityID, value);
         ClientStateEvents.RaiseRosterChanged ();
     }
 
@@ -46,14 +26,14 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
         return storage.Values.FirstOrDefault ();
     }
 
-    internal static ConcurrentDictionary<ushort, SphereClient> GetAll ()
+    internal static ConcurrentDictionary<Guid, SphereClient> GetAll ()
     {
         return storage;
     }
 
-    public new static SphereClient? Remove (ushort key)
+    public new static SphereClient? Remove (Guid key)
     {
-        var removed = ActiveObjectCollectionBase<ushort, SphereClient>.Remove (key);
+        var removed = ActiveObjectCollectionBase<Guid, SphereClient>.Remove (key);
         if (removed is not null)
         {
             ClientStateEvents.RaiseRosterChanged ();
@@ -65,9 +45,9 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<ushort, Spher
 
 internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
 
-internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<ushort, WorldObject>
+internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<Guid, WorldObject>
 {
-    internal static ConcurrentDictionary<ushort, WorldObject> GetAll ()
+    internal static ConcurrentDictionary<Guid, WorldObject> GetAll ()
     {
         return storage;
     }

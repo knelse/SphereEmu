@@ -10,5 +10,5 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -198
 script = ExtResource("2_vaoub")
 SubtypeID = 987
 Angle = 128
-ID = 5195
+EntityIdString = "568ca66f-c566-417c-ac4f-41ad1d70137c"
 ObjectType = 62

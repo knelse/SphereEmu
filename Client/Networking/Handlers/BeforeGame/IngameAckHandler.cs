@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
@@ -13,7 +13,7 @@ using static SphServer.Shared.BitStream.SphBitStream;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class IngameAckHandler (ushort localId, ClientConnection clientConnection)
+public class IngameAckHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
@@ -36,7 +36,7 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
         if (character is null)
         {
             // should never happen
-            SphLogger.Error ($"SRV {localId:X4}: Selected character is null");
+            SphLogger.Error ($"SRV {entityId}: Selected character is null");
             return;
         }
 
@@ -54,7 +54,7 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
                 character.Items.Remove (slot);
             }
             shouldSave = true;
-            SphLogger.Warning ($"SRV {localId:X4}: Cleared {missing.Count} slot(s) whose item is gone: " +
+            SphLogger.Warning ($"SRV {entityId}: Cleared {missing.Count} slot(s) whose item is gone: " +
                               $"{string.Join (", ", missing.Select (x => Enum.GetName (x)))}");
         }
 
@@ -72,9 +72,9 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
 
         character.RecalcCurrentStats ();
 
-        SphLogger.Info ($"SRV {localId:X4}: Declaring {character.Items.Count} carried item(s)");
+        SphLogger.Info ($"SRV {entityId}: Declaring {character.Items.Count} carried item(s)");
 
-        var declared = new HashSet<int> ();
+        var declared = new HashSet<Guid> ();
 
         foreach (var (slot, itemId) in character.Items)
         {
@@ -84,16 +84,16 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
                 continue;
             }
 
-            var record = ItemRecordEncoder.Encode (item, ByteSwap (localId));
+            var record = ItemRecordEncoder.Encode (item, entityId);
 
             if (slot == BelongingSlot.Helmet)
             {
                 clientConnection.MaybeScheduleNetworkPacketSend (record);
-                clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildSlotBinding (localId, slot, item.Id));
+                clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildSlotBinding (entityId, slot, item.Id));
                 continue;
             }
 
-            var reserve = ItemSlotReserve.Build (localId, slot, item.Id, item.ItemCount);
+            var reserve = ItemSlotReserve.Build (entityId, slot, item.Id, item.ItemCount);
             if (reserve is not null)
             {
                 clientConnection.MaybeScheduleNetworkPacketSend (reserve);

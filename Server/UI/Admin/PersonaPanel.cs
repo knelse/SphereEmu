@@ -79,7 +79,7 @@ public partial class PersonaPanel : PanelContainer
         (new (199, 318, 33, 32), BelongingSlot.SpeedhackMantra),
     ];
 
-    private ushort? selectedClientId;
+    private Guid? selectedClientId;
     private TextureRect? background;
     private ItemDetailsPopupHost? popupHost;
     private InventoryPanel? inventoryPanel;
@@ -87,7 +87,7 @@ public partial class PersonaPanel : PanelContainer
     private readonly Dictionary<BelongingSlot, Control> slotPanels = new ();
     private readonly Dictionary<BelongingSlot, TextureRect> slotIcons = new ();
     private readonly Dictionary<BelongingSlot, ColorRect> slotUnmetBgs = new ();
-    private readonly Dictionary<BelongingSlot, int?> lastItemIds = new ();
+    private readonly Dictionary<BelongingSlot, Guid?> lastItemIds = new ();
     private readonly Dictionary<BelongingSlot, bool> lastUnmet = new ();
 
     private static readonly Color UnmetSlotBg = new (0.72f, 0.08f, 0.08f, 0.55f);
@@ -226,7 +226,7 @@ public partial class PersonaPanel : PanelContainer
         ClientStateEvents.RosterChanged -= OnRosterChanged;
     }
 
-    private void OnCharacterChanged (ushort clientId)
+    private void OnCharacterChanged (Guid clientId)
     {
         if (selectedClientId == clientId)
         {
@@ -402,9 +402,9 @@ public partial class PersonaPanel : PanelContainer
         hit.AcceptEvent ();
     }
 
-    private bool TryGetSlotItemId (BelongingSlot slot, out int itemId)
+    private bool TryGetSlotItemId (BelongingSlot slot, out Guid itemId)
     {
-        itemId = 0;
+        itemId = Guid.Empty;
         var character = selectedClientId is null
             ? null
             : ActiveClients.Get (selectedClientId.Value)?.CurrentCharacter;
@@ -431,7 +431,7 @@ public partial class PersonaPanel : PanelContainer
     public Control? GetSlotPanel (BelongingSlot slot) =>
         slotPanels.TryGetValue (slot, out var panel) ? panel : null;
 
-    public void SetSelectedClient (ushort? clientId)
+    public void SetSelectedClient (Guid? clientId)
     {
         selectedClientId = clientId;
         lastItemIds.Clear ();
@@ -462,7 +462,7 @@ public partial class PersonaPanel : PanelContainer
     {
         foreach (var (slot, icon) in slotIcons)
         {
-            int? itemId = null;
+            Guid? itemId = null;
             if (character is not null && character.Items.TryGetValue (slot, out var id))
             {
                 itemId = id;
@@ -502,7 +502,7 @@ public partial class PersonaPanel : PanelContainer
         }
     }
 
-    private static Texture2D? ResolveSlotTexture (BelongingSlot slot, int? itemId)
+    private static Texture2D? ResolveSlotTexture (BelongingSlot slot, Guid? itemId)
     {
         var isMutator = slot is >= BelongingSlot.Mutator_1 and <= BelongingSlot.Mutator_10;
         if (itemId is null)

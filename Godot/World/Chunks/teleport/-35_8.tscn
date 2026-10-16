@@ -10,5 +10,5 @@ transform = Transform3D(0.53499776, 0, -0.84485346, 0, 1, 0, 0.84485346, 0, 0.53
 script = ExtResource("2_b7hsa")
 SubtypeID = 992
 Angle = 215
-ID = 5184
+EntityIdString = "9a27ec20-a84c-4067-8d53-42f365c38b96"
 ObjectType = 62

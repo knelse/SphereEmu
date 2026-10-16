@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -11,7 +12,7 @@ using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySeri
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
+public class MoveItemHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
@@ -52,7 +53,7 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
         if (item is null)
         {
             SphLogger.Warning ($"Move: slot [{Enum.GetName (oldSlot)}] points at item {globalOldItemId}, " +
-                              $"which is not in the database. Client ID: {localId:X4}");
+                              $"which is not in the database. Client ID: {entityId}");
             return;
         }
 
@@ -79,17 +80,8 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
         }
 
         SphLogger.Info ($"Item found: {globalOldItemId}");
-        var newSlot_1 = (byte) ((newSlotRaw & 0b11111) << 3);
-        var newSlot_2 = (byte) (((globalOldItemId & 0b1111) << 4) + (newSlotRaw >> 5));
-        var oldItem_1 = (byte) ((globalOldItemId >> 4) & 0b11111111);
-        var oldItem_2 = (byte) (globalOldItemId >> 12);
-
-        var moveResult = new byte[]
-        {
-            0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte (localId), MinorByte (localId), 0x08, 0x40, 0x41, 0x10,
-            oldSlotRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x82, newSlot_1, newSlot_2, oldItem_1,
-            oldItem_2, 0xC0, 0x44, 0x00, 0x00, 0x00
-        };
+        var destination = returnToOldSlot ? oldSlot : targetSlot;
+        var moveResult = ItemSlotReserve.BuildMove (entityId, oldSlot, destination, globalOldItemId);
         if (!returnToOldSlot)
         {
             var lookBefore = CharacterWornLook.Capture (character);
@@ -111,7 +103,7 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
 
             if (lookBefore != CharacterWornLook.Capture (character))
             {
-                ActiveClients.Get (localId)?.BroadcastAppearanceRefreshToVisibleClients ();
+                ActiveClients.Get (entityId)?.BroadcastAppearanceRefreshToVisibleClients ();
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Shared.Logger;
@@ -7,13 +7,30 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class ServerCredentialsHandler (ushort localId, ClientConnection clientConnection)
+public class ServerCredentialsHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
 
     public async Task Handle (byte[] frame, double delta)
     {
+        if (clientConnection.IsSecureResume)
+        {
+            if (WaitForClientTimer is not null)
+            {
+                WaitForClientTimer.Tick (delta);
+                return;
+            }
+
+            WaitForClientTimer = new (0.1, false, () =>
+            {
+                SphLogger.Info ($"SRV {entityId}: Secure resume, character select");
+                clientConnection.SendResumeCharacterList ();
+                clientConnection.EnterCharacterSelect ();
+            });
+            return;
+        }
+
         if (WaitForClientTimer is not null)
         {
             WaitForClientTimer.Tick (delta);
@@ -26,9 +43,9 @@ public class ServerCredentialsHandler (ushort localId, ClientConnection clientCo
 
         WaitForClientTimer = new (0.1, false, () =>
         {
-            SphLogger.Info ($"CLI {localId:X4}: Connection initialized");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ServerCredentials (localId));
-            Console.WriteLine ($"SRV {localId:X4}: Credentials sent");
+            SphLogger.Info ($"CLI {entityId}: Connection initialized");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ServerCredentials (entityId));
+            Console.WriteLine ($"SRV {entityId}: Credentials sent");
             clientConnection.MoveToNextBeforeGameStage ();
         });
 

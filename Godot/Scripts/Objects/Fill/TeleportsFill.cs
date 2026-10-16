@@ -117,10 +117,7 @@ public partial class TeleportsFill : Node3D
             wo.Name = WorldObjectDumpFillCommon.BuildPlacementName (objectTypeNameForNaming, id, x, y, z);
             wo.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             wo.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                wo.ID = (ushort) id;
-            }
+            wo.EntityID = Guid.NewGuid ();
 
             // Scene and script defaults can disagree on the type
             wo.ObjectType = objectType;
@@ -197,10 +194,7 @@ public partial class TeleportsFill : Node3D
             wo.Name = WorldObjectDumpFillCommon.BuildPlacementName ("TeleportWithTarget", id, x, y, z);
             wo.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             wo.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                wo.ID = (ushort) id;
-            }
+            wo.EntityID = Guid.NewGuid ();
 
             wo.ObjectType = ObjectType.Teleport_With_Target;
             if (wo is TeleportWithTarget tpt)

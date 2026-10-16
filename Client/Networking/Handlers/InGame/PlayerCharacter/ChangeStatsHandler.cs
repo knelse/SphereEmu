@@ -6,7 +6,7 @@ using SphServer.Shared.Logger;
 
 namespace SphServer.Client.Networking.Handlers.InGame.PlayerCharacter;
 
-public class ChangeStatsHandler (ushort localId, ClientConnection clientConnection)
+public class ChangeStatsHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private const int FirstDeltaBit = 141;
@@ -37,7 +37,7 @@ public class ChangeStatsHandler (ushort localId, ClientConnection clientConnecti
                 $"ChangeStats rejected STR+{strength} AGI+{agility} ACC+{accuracy} END+{endurance} " +
                 $"EAR+{earth} AIR+{air} WAT+{water} FIR+{fire} " +
                 $"(title {character.AvailableTitleStats}, degree {character.AvailableDegreeStats}). " +
-                $"Client ID: {localId:X4}");
+                $"Client ID: {entityId}");
             return;
         }
 
@@ -45,7 +45,7 @@ public class ChangeStatsHandler (ushort localId, ClientConnection clientConnecti
         clientConnection.SaveSelectedCharacter ();
         SphLogger.Info (
             $"ChangeStats STR+{strength} AGI+{agility} ACC+{accuracy} END+{endurance} " +
-            $"EAR+{earth} AIR+{air} WAT+{water} FIR+{fire}. Client ID: {localId:X4}");
+            $"EAR+{earth} AIR+{air} WAT+{water} FIR+{fire}. Client ID: {entityId}");
     }
 
     private static int ReadClampedDelta (BitStream stream)

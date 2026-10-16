@@ -4,7 +4,7 @@ namespace SphServer.Shared.Db;
 
 /// <summary>
 /// LiteDB names Chest, Firework, and WeaponSword do not match ObjectType, and a throw here skips
-/// TCP accept
+/// the row
 /// </summary>
 public static class ObjectTypeBson
 {

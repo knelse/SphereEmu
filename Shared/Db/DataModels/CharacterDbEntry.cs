@@ -40,7 +40,7 @@ public class CharacterDbEntry
     }
 
     public int Id { get; set; }
-    [BsonIgnore] public int ClientLocalId { get; set; }
+    public Guid EntityId { get; set; }
     public byte LookType { get; set; }
     public byte IsTurnedOff { get; set; }
     public ushort MaxMP { get; set; }
@@ -91,7 +91,6 @@ public class CharacterDbEntry
     public int GuildLevelMinusOne { get; set; }
     public Guild Guild { get; set; } = Guild.None;
     public ClanRank ClanRank { get; set; } = ClanRank.Neophyte;
-    public ushort ClientIndex { get; set; }
     public double X { get; set; }
     public double Y { get; set; } = 150;
     public double Z { get; set; }
@@ -103,7 +102,7 @@ public class CharacterDbEntry
     public ushort PDef { get; set; }
     public ushort MDef { get; set; }
     public KarmaTypes Karma { get; set; } = KarmaTypes.Нейтральная;
-    public Dictionary<BelongingSlot, int> Items { get; set; } = new ();
+    public Dictionary<BelongingSlot, Guid> Items { get; set; } = new ();
     public int PAtk { get; set; }
     public int MAtk { get; set; }
 
@@ -135,7 +134,7 @@ public class CharacterDbEntry
     /// MainHand is a second claim, so the item stays in a bag cell; a leftover bag claim comes back
     /// blank
     /// </summary>
-    public void PlaceItemInSlot (BelongingSlot slot, int itemId)
+    public void PlaceItemInSlot (BelongingSlot slot, Guid itemId)
     {
         var touchedGuild = slot == BelongingSlot.Guild;
         if (slot != BelongingSlot.MainHand)
@@ -154,7 +153,7 @@ public class CharacterDbEntry
             SyncGuildFromWornEmblem ();
         }
 
-        ClientStateEvents.RaiseCharacterChanged (ClientIndex);
+        ClientStateEvents.RaiseCharacterChanged (EntityId);
     }
 
     /// <summary>
@@ -288,7 +287,7 @@ public class CharacterDbEntry
         }
         else
         {
-            ClientStateEvents.RaiseCharacterChanged (ClientIndex);
+            ClientStateEvents.RaiseCharacterChanged (EntityId);
         }
 
         return true;
@@ -625,7 +624,7 @@ public class CharacterDbEntry
         }
     }
 
-    public static CharacterDbEntry CreateNewCharacter (ushort clientIndex, string name, bool isFemale, int face,
+    public static CharacterDbEntry CreateNewCharacter (Guid clientIndex, string name, bool isFemale, int face,
         int hairStyle, int hairColor, int tattoo)
     {
         return new CharacterDbEntry
@@ -636,7 +635,7 @@ public class CharacterDbEntry
             HairStyle = (byte) hairStyle,
             HairColor = (byte) hairColor,
             Tattoo = (byte) tattoo,
-            ClientIndex = clientIndex
+            EntityId = clientIndex
         };
     }
 
@@ -652,7 +651,7 @@ public class CharacterDbEntry
 
         Items.Clear ();
 
-        var fresh = CreateNewCharacter (ClientIndex, Name, IsGenderFemale, FaceType, HairStyle, HairColor, Tattoo);
+        var fresh = CreateNewCharacter (EntityId, Name, IsGenderFemale, FaceType, HairStyle, HairColor, Tattoo);
         Money = fresh.Money;
         TitleMinusOne = fresh.TitleMinusOne;
         DegreeMinusOne = fresh.DegreeMinusOne;
@@ -928,12 +927,12 @@ public class CharacterDbEntry
         MainHandMAtk = heldMAtk;
         HoldsItemInHand = holdsItem;
 
-        SphLogger.Info ($"Client {ClientLocalId} new stats after recalc: " +
+        SphLogger.Info ($"Client {EntityId} new stats after recalc: " +
                        $"STR {CurrentStrength} AGI {CurrentAgility} ACC {CurrentAccuracy} END {CurrentEndurance} EAR {CurrentEarth} " +
                        $"WAT {CurrentWater} AIR {CurrentAir} FIR {CurrentFire} HP {CurrentHP}/{MaxHP} MP {CurrentMP}/{MaxMP} " +
                        $"PD {PDef} MD {MDef} PA {PAtk} MA {MAtk} hand PA {MainHandPAtk} hand MA {MainHandMAtk}");
 
-        ClientStateEvents.RaiseCharacterChanged (ClientIndex);
+        ClientStateEvents.RaiseCharacterChanged (EntityId);
         return true;
     }
 }

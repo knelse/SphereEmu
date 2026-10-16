@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Server;
@@ -292,7 +292,6 @@ public class ClientChatHandler (ClientConnection clientConnection)
                 // var runSpeed =
                 // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
                 clientConnection.MaybeScheduleNetworkPacketSend (Convert.FromHexString (jumpx4));
-                // StreamPeer.PutData(Convert.FromHexString(runSpeed));
                 clientConnection.MaybeScheduleNetworkPacketSend (Convert.FromHexString (test));
             }
 
@@ -333,8 +332,6 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
             else if (message.StartsWith ("gates"))
             {
-                clientConnection.MaybeScheduleNetworkPacketSend (
-                    CommonPackets.DespawnEntity ((ushort) WorldObjectIndex.GetCurrentIndex));
                 // skip (char) 1 to make client think it has no owner
                 DebugConsole.SendSpherePacket ("/packet castle_gates_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend, true,
@@ -344,8 +341,6 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
             else if (message.StartsWith ("cdoor"))
             {
-                clientConnection.MaybeScheduleNetworkPacketSend (
-                    CommonPackets.DespawnEntity ((ushort) WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket ("/packet castle_entrance_aris",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
@@ -353,8 +348,6 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
             else if (message.StartsWith ("keydoor"))
             {
-                clientConnection.MaybeScheduleNetworkPacketSend (
-                    CommonPackets.DespawnEntity ((ushort) WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket ("/packet door_entrance_with_key_t onme",
                     clientConnection.MaybeScheduleNetworkPacketSend
                 );
@@ -369,8 +362,6 @@ public class ClientChatHandler (ClientConnection clientConnection)
 
             else if (message.StartsWith ("test"))
             {
-                // clientConnection.MaybeScheduleNetworkPacketSend(
-                //     CommonPackets.DespawnEntity((ushort) WorldObjectIndex.GetCurrentIndex));
                 DebugConsole.SendSpherePacket ("/packet dungeon_test", clientConnection.MaybeScheduleNetworkPacketSend);
                 // DebugConsole.SendSpherePacket("/packet container_test",
                 //     clientConnection.MaybeScheduleNetworkPacketSend

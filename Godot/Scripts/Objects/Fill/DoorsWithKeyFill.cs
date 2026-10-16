@@ -92,10 +92,7 @@ public partial class DoorsWithKeyFill : Node3D
             instance.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             instance.Angle = angleEncoded;
             instance.SubtypeID = subtypeId;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             instance.ObjectType = ObjectType.Door_Entrance_With_Key;
 

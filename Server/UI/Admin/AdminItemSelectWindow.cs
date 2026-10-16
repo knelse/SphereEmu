@@ -25,7 +25,7 @@ public partial class AdminItemSelectWindow : Window
     private Label? toastLabel;
     private Tween? toastTween;
     private Locale locale = Locale.Russian;
-    private ushort? targetClientId;
+    private Guid? targetClientId;
     private BelongingSlot targetSlot;
     private int? preselectGameId;
     private ItemSuffix preselectSuffix = ItemSuffix.None;
@@ -48,7 +48,7 @@ public partial class AdminItemSelectWindow : Window
         }
     }
 
-    public void OpenFor (ushort clientId, BelongingSlot slot)
+    public void OpenFor (Guid clientId, BelongingSlot slot)
     {
         targetClientId = clientId;
         targetSlot = slot;
@@ -201,7 +201,7 @@ public partial class AdminItemSelectWindow : Window
         return box;
     }
 
-    private void CapturePreselect (ushort clientId, BelongingSlot slot)
+    private void CapturePreselect (Guid clientId, BelongingSlot slot)
     {
         preselectGameId = null;
         preselectSuffix = ItemSuffix.None;

@@ -87,9 +87,9 @@ public static class NetworkedStatsUpdater
         Unk54,
     ];
 
-    private static readonly ConcurrentDictionary<ushort, Dictionary<Stat, int>> LastSentByClient = new ();
+    private static readonly ConcurrentDictionary<Guid, Dictionary<Stat, int>> LastSentByClient = new ();
 
-    public static void Clear (ushort clientIndex) => LastSentByClient.TryRemove (clientIndex, out _);
+    public static void Clear (Guid clientIndex) => LastSentByClient.TryRemove (clientIndex, out _);
 
     /// <summary>
     /// Marks a stat already sent so Update does not repeat it
@@ -97,7 +97,7 @@ public static class NetworkedStatsUpdater
     public static void MarkSent (CharacterDbEntry characterDbEntry, Stat stat)
     {
         var value = BuildFieldMap (characterDbEntry)[stat];
-        var lastSent = LastSentByClient.GetOrAdd (characterDbEntry.ClientIndex, _ => new Dictionary<Stat, int> ());
+        var lastSent = LastSentByClient.GetOrAdd (characterDbEntry.EntityId, _ => new Dictionary<Stat, int> ());
         lastSent[stat] = value;
     }
 
@@ -108,7 +108,7 @@ public static class NetworkedStatsUpdater
         bool refreshPeers = true, bool full = false, bool log = true)
     {
         var characterFieldMap = BuildFieldMap (characterDbEntry);
-        var clientIndex = characterDbEntry.ClientIndex;
+        var clientIndex = characterDbEntry.EntityId;
         var hasPrevious = LastSentByClient.TryGetValue (clientIndex, out var lastSent);
         var sendFull = full || !hasPrevious;
 
@@ -171,7 +171,7 @@ public static class NetworkedStatsUpdater
             return;
         }
 
-        var client = ActiveClients.Get (characterDbEntry.ClientIndex);
+        var client = ActiveClients.Get (characterDbEntry.EntityId);
         if (!SendStatFields (characterDbEntry, send, client, fieldsToSend, characterFieldMap,
                 includeHpCurrentHeader))
         {
@@ -200,7 +200,7 @@ public static class NetworkedStatsUpdater
         }
 
         SphLogger.Info (
-            $"Stat update for client ID: {characterDbEntry.ClientIndex} ({(sendFull ? "full" : "delta")}). " +
+            $"Stat update for client ID: {characterDbEntry.EntityId} ({(sendFull ? "full" : "delta")}). " +
             $"Values: {string.Join (", ", sent)}");
     }
 
@@ -304,7 +304,7 @@ public static class NetworkedStatsUpdater
 
         var stream = SphBitStream.GetWriteBitStream ();
 
-        stream.WriteUInt16 (SphBitStream.ByteSwap (characterDbEntry.ClientIndex));
+        stream.WriteGuid (characterDbEntry.EntityId);
         stream.WriteBytes ([0x08, 0xC0]);
 
         if (includeHpCurrentHeader)
@@ -371,7 +371,7 @@ public static class NetworkedStatsUpdater
 
         if (client is null)
         {
-            SphLogger.Warning ($"No client found by ID: {characterDbEntry.ClientIndex}");
+            SphLogger.Warning ($"No client found by ID: {characterDbEntry.EntityId}");
             return false;
         }
 

@@ -1,18 +1,29 @@
 using Godot;
 using SphServer.Client;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.WorldState;
 
 namespace SphServer.Server.Handlers;
 
 public class ConnectionHandler (PackedScene clientScene, Node parentNode)
 {
-    public void Handle (StreamPeerTcp streamPeer)
+    public SphereClient? HandleUdp (PlayerDbEntry player, string endpoint)
     {
-        streamPeer.SetNoDelay (true);
         var client = clientScene.Instantiate<SphereClient> ();
-        client.Setup (streamPeer, ActiveClients.InsertAtFirstEmptyIndex (client));
-        ActiveNodes.Add (client.GetInstanceId (), client);
+        ActiveClients.Insert (client);
+        client.SetupUdp (endpoint);
+        if (!client.TryBindResume (player))
+        {
+            client.RemoveClient ();
+            return null;
+        }
 
+        ActiveNodes.Add (client.GetInstanceId (), client);
+        return client;
+    }
+
+    public void Attach (SphereClient client)
+    {
         parentNode.AddChild (client);
     }
 }

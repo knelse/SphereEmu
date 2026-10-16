@@ -31,7 +31,7 @@ public partial class ItemDetailsPopup : Control
     private bool shellBuilt;
 
     public bool IsPinned { get; private set; }
-    public int? ItemId { get; private set; }
+    public Guid? ItemId { get; private set; }
     public BelongingSlot? Slot { get; private set; }
 
     public override void _Ready ()
@@ -45,7 +45,7 @@ public partial class ItemDetailsPopup : Control
         SetPinned (IsPinned);
     }
 
-    public void Bind (int? itemId, BelongingSlot? slot)
+    public void Bind (Guid? itemId, BelongingSlot? slot)
     {
         ItemId = itemId;
         Slot = slot;

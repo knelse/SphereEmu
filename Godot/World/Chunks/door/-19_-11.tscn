@@ -14,7 +14,7 @@ TargetX = -1875.6221
 TargetY = 1095.4717
 TargetZ = 1130.4227
 Angle = 64
-ID = 1238
+EntityIdString = "825e1208-6760-4165-b4bc-8fb842d5b0ed"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -26,6 +26,6 @@ HasTarget = true
 TargetX = 1148.6987
 TargetY = 157.75302
 TargetZ = -1754.575
-ID = 1236
+EntityIdString = "e8579fea-b76c-45eb-9fa5-9cdb86af74f6"
 ObjectType = 60
 ModelName = "edoor"

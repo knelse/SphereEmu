@@ -10,7 +10,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
 {
     private const string KICK_MENU_LABEL = "Kick";
     private const string BAN_MENU_LABEL = "Ban";
-    public ushort currentClientId;
+    public Guid currentClientId;
 
     public override void _Ready ()
     {

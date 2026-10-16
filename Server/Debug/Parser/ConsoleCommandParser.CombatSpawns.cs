@@ -70,11 +70,11 @@ public partial class ConsoleCommandParser
         monsterNode.MonsterInstance = monsterInstance;
         monsterNode.Angle = WorldObject.CreateRandomSpawnAngle ();
         monsterNode.Name = monsterType.ToString ();
-        monsterNode.ID = WorldObjectIndex.New ();
+        monsterNode.EntityID = Guid.NewGuid ();
         SphereServer.ServerNode.CallDeferred ("add_child", monsterNode);
         monsterNode.Transform = new Transform3D (Basis.Identity, spawnPosition);
 
-        SendFeedback ($"Spawned real {monsterNode.Name} - id 0x{monsterNode.ID:X4} ({monsterNode.ID}), " +
+        SendFeedback ($"Spawned real {monsterNode.Name} - id {monsterNode.EntityID}, " +
                      $"type {monsterTypeId}, level {level}, HP {monsterInstance.CurrentHp}/{monsterInstance.MaxHp}.");
     }
 

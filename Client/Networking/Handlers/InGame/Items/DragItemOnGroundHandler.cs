@@ -9,7 +9,7 @@ using SphServer.Shared.Networking;
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
 // 08 40 63 at bytes 13-15; the client retries about once a second until this is answered
-public class DragItemOnGroundHandler (ushort localId, ClientConnection clientConnection)
+public class DragItemOnGroundHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     // Item id is the spawned entity; the three floats track the player during the drag
@@ -19,7 +19,7 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
     public async Task Handle (byte[] frame, double delta)
     {
         // Dragging arms g_6008, so this ack clears it or the client stays wedged
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var buffer = frame;
         var stream = new BitStream (buffer);
@@ -35,7 +35,7 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
         var item = DbConnection.Items.FindById ((int) itemId);
         if (item is null)
         {
-            SphLogger.Warning ($"Drag on ground: no item {itemId:X4}. Client ID: {localId:X4}");
+            SphLogger.Warning ($"Drag on ground: no item {itemId:X}. Client ID: {entityId}");
             return;
         }
 
@@ -45,8 +45,8 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
         item.Z = -z;
         DbConnection.Items.Update (item);
 
-        SphLogger.Info ($"Drag on ground: {item.Localization.GetValueOrDefault (Locale.Russian, "?")} [{itemId:X4}] " +
-                       $"to ({x:F2}, {y:F2}, {z:F2}). Client ID: {localId:X4}");
+        SphLogger.Info ($"Drag on ground: {item.Localization.GetValueOrDefault (Locale.Russian, "?")} [{itemId:X}] " +
+                       $"to ({x:F2}, {y:F2}, {z:F2}). Client ID: {entityId}");
     }
 
     private static double ReadFloat (BitStream stream)

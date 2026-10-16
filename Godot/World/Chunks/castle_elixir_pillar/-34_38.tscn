@@ -8,6 +8,6 @@
 [node name="CastleElixirPillar_00_Льеж _0C24_3108" type="Node3D" parent="." unique_id=1649421021 instance=ExtResource("1_fgxb2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3321.8413, -1100.0015, 3885.1526)
 script = ExtResource("2_7ff5x")
-ID = 3108
+EntityIdString = "f0ab109a-589f-4733-a5d2-f26666087516"
 ObjectType = 83
 ModelName = "cs_knot"

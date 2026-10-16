@@ -19,9 +19,15 @@ public partial class Door
             return;
         }
 
+        if (Guid.TryParse (TargetEntityId, out var targetId)
+            && EditorSceneCamera.TryJumpToEntity (this, targetId))
+        {
+            return;
+        }
+
         if (!HasTarget)
         {
-            GD.PushWarning ($"{Name}: no target coordinates.");
+            GD.PushWarning ($"{Name}: no target.");
             return;
         }
 

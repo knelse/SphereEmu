@@ -13,6 +13,6 @@ HasTarget = true
 TargetX = 3758.1382
 TargetY = 157.55455
 TargetZ = 747.1553
-ID = 1228
+EntityIdString = "7811a65a-576c-4d0a-ae4c-f64748f76fb8"
 ObjectType = 60
 ModelName = "edoor"

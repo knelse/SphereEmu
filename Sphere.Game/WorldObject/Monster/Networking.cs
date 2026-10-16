@@ -38,12 +38,12 @@ public partial class Monster
 
         if (!MonsterTypeMapping.MonsterNameToMonsterTypeMapping.TryGetValue (MonsterType, out var gameId))
         {
-            SphLogger.Error ($"Monster spawn: no type id for {MonsterType}. Id: {ID:X4}");
+            SphLogger.Error ($"Monster spawn: no type id for {MonsterType}. Id: {EntityID}");
             return;
         }
 
         var origin = GlobalTransform.Origin;
-        var entityId = client.GetLocalObjectId (ID);
+        var entityId = EntityID;
         var packedLevel = Math.Max (0, GetMonsterLevel () - 1);
         var currentHp = MonsterInstance?.CurrentHp ?? 50;
         var maxHp = MonsterInstance?.MaxHp ?? 50;
@@ -76,15 +76,14 @@ public partial class Monster
     /// Region 61 spawn; packed level is 0-based (display is max(i37, i38)+1), and nameCode other
     /// than -1 appends TradeMan cmd 3
     /// </summary>
-    private static byte[] BuildSpawnSnapshot (ushort entityId, ushort moduleTag,
+    private static byte[] BuildSpawnSnapshot (Guid entityId, ushort moduleTag,
         float x, float y, float z, double angleRadians,
         int currentHp, int maxHp, int gameId, int packedLevel, int nameCode)
     {
         var stream = SphBitStream.GetWriteBitStream ();
         stream.WriteByte (0, 1); // has_position
         stream.WriteUInt16 (0, 15); // tick
-        stream.WriteUInt16 (entityId, 16);
-        stream.WriteByte (0, 2); // process_id high
+        stream.WriteGuid (entityId);
         stream.WriteUInt16 ((ushort) (moduleTag & 0xFFF), 12);
         stream.WriteByte (62, 7); // wire = region 61 + 1
         WriteIeeeFloat (stream, x);
@@ -103,7 +102,7 @@ public partial class Monster
             stream.WriteByte (4, 4); // payload length
                                      // IntToBits drops a negative int32, so the code goes out as
                                      // two u16s, low half first.
-            var bits = unchecked ((uint) nameCode);
+            var bits = unchecked((uint) nameCode);
             stream.WriteUInt16 ((ushort) bits, 16);
             stream.WriteUInt16 ((ushort) (bits >> 16), 16);
         }

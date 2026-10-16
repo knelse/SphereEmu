@@ -13,7 +13,7 @@ IconName = "npc_trade_alchm"
 NpcType = 6
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5420
+EntityIdString = "1c111d5f-6273-4ee0-80fc-bd1beb798c8f"
 ObjectType = 213
 ModelName = "npc14b"
 
@@ -26,6 +26,6 @@ NpcType = 9
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 78
-ID = 5425
+EntityIdString = "50c7742a-cdac-483c-a5af-bb2c8b4127e5"
 ObjectType = 213
 ModelName = "npc14"

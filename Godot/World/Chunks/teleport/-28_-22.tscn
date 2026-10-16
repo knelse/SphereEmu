@@ -9,5 +9,5 @@
 transform = Transform3D(0.9807853, 0, -0.19509023, 0, 1, 0, 0.19509023, 0, 0.9807853, -2702.554, -402.51642, -2118.449)
 script = ExtResource("2_wprtf")
 Angle = 248
-ID = 5190
+EntityIdString = "17f9e7fb-563f-4f3f-b4d0-cd72ad60f5e4"
 ObjectType = 63

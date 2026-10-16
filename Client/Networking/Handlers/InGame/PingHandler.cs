@@ -1,5 +1,4 @@
 using System;
-using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers;
 using SphServer.Packets;
@@ -14,7 +13,6 @@ namespace SphServer.Client.Networking.Handlers.InGame;
 
 public class PingHandler : ISphereClientNetworkingHandler
 {
-    public StreamPeerTcp _ { get; }
     private const double MovementBroadcastDelta = 0.1;
     // msg300 keepalive with _player PositionStream (region 11): array4 count + 4 IEEE floats.
     private const int PingFrameLength = 0x26;
@@ -23,7 +21,7 @@ public class PingHandler : ISphereClientNetworkingHandler
     private const int PongEchoOffset = 9;
     private const int PongEchoLength = 21;
 
-    private readonly ushort localId;
+    private readonly Guid entityId;
     private readonly ClientConnection clientConnection;
     private readonly CharacterVitalRegen vitalRegen = new ();
     private readonly SphereTimer fifteenSecondPing;
@@ -39,13 +37,12 @@ public class PingHandler : ISphereClientNetworkingHandler
     private bool wasDead;
     private double deadSeconds;
 
-    public PingHandler (StreamPeerTcp streamPeerTcp, ushort localId, ClientConnection clientConnection)
+    public PingHandler (Guid entityId, ClientConnection clientConnection)
     {
-        _ = streamPeerTcp;
-        this.localId = localId;
+        this.entityId = entityId;
         this.clientConnection = clientConnection;
         fifteenSecondPing = new (15, true,
-            () => clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.FifteenSecondPing (localId)));
+            () => clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.FifteenSecondPing (entityId)));
         vitalRegenTick = new (6, true, SyncVitalsAfterRegen);
         deadPositionStreamTimer = new (2, true, SendDeadPositionStream);
     }
@@ -75,7 +72,7 @@ public class PingHandler : ISphereClientNetworkingHandler
                     currentCharacter.Y = -coords.y;
                     currentCharacter.Z = -coords.z;
                     currentCharacter.Angle = coords.turn;
-                    ClientStateEvents.RaiseCharacterChanged (localId);
+                    ClientStateEvents.RaiseCharacterChanged (entityId);
 
                     if (moved)
                     {
@@ -148,7 +145,7 @@ public class PingHandler : ISphereClientNetworkingHandler
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend (
-            CommonPackets.BuildPlayerEmptyPositionStream (SphBitStream.ByteSwap (localId), character.X,
+            CommonPackets.BuildPlayerEmptyPositionStream (entityId, character.X,
                 -character.Y, -character.Z));
     }
 
@@ -198,7 +195,7 @@ public class PingHandler : ISphereClientNetworkingHandler
 
         // MP keepalive carries the (possibly regenerated) MP value.
         clientConnection.MaybeScheduleNetworkPacketSend (
-            CommonPackets.CurrentMpUpdatePing (localId, character.CurrentMP));
+            CommonPackets.CurrentMpUpdatePing (entityId, character.CurrentMP));
         NetworkedStatsUpdater.MarkSent (character, Stat.MpCurrent);
 
         if (character.CurrentHP != hpBefore)
@@ -208,7 +205,7 @@ public class PingHandler : ISphereClientNetworkingHandler
 
         if (changed)
         {
-            ClientStateEvents.RaiseCharacterChanged (localId);
+            ClientStateEvents.RaiseCharacterChanged (entityId);
         }
 
         // The 6s tick writes vitals even when they did not change

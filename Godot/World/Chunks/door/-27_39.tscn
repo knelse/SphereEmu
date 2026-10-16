@@ -13,7 +13,7 @@ HasTarget = true
 TargetX = 2645.1108
 TargetY = 157.77847
 TargetZ = -160.91951
-ID = 975
+EntityIdString = "15db739f-6dc5-4678-aafd-e3aca42248e2"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -25,6 +25,6 @@ HasTarget = true
 TargetX = 900.0715
 TargetY = 1701.4686
 TargetZ = -3498.2979
-ID = 509
+EntityIdString = "e33c88bc-8344-4715-b1f7-08cd09d3ddce"
 ObjectType = 60
 ModelName = "edoor"

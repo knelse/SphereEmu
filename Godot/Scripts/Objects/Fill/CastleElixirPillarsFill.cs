@@ -146,10 +146,7 @@ public partial class CastleElixirPillarsFill : Node3D
 
             instance.ModelName = PillarModelName;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             AddChild (instance);
             SetOwnerIfEditor (instance);

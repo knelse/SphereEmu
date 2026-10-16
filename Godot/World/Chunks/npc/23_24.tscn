@@ -14,7 +14,7 @@ NpcType = 14
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 61
-ID = 4983
+EntityIdString = "ffb30212-75bb-4bba-949d-f1085ea2b92e"
 ObjectType = 209
 ModelName = "npc59"
 
@@ -26,7 +26,7 @@ IconName = "npc_trade_jewel"
 NpcType = 8
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5155
+EntityIdString = "a841bd6b-d6f9-4f04-9c0e-d96a439abfaa"
 ObjectType = 213
 ModelName = "npc14b"
 
@@ -39,7 +39,7 @@ NpcType = 9
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 78
-ID = 5167
+EntityIdString = "65912806-4a90-482f-adfd-051f998ef701"
 ObjectType = 213
 ModelName = "npc14"
 
@@ -52,6 +52,6 @@ NpcType = 6
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 60
-ID = 5248
+EntityIdString = "bd31e2d9-7e0e-4b2c-ad55-a542491a28ea"
 ObjectType = 213
 ModelName = "npc14a"

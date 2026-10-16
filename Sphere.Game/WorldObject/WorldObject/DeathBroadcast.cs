@@ -41,10 +41,10 @@ public partial class WorldObject
     /// Classic entity_killed (INTERACT+0x040D); MBC EKill is not this frame, and despawn follows
     /// next frame
     /// </summary>
-    protected void BroadcastDeathSignalToVisibleClients (ushort killerGlobalId)
+    protected void BroadcastDeathSignalToVisibleClients (Guid killerEntityId)
     {
         BroadcastToVisibleClients (client =>
-            CommonPackets.EntityKilled (client.GetLocalObjectId (ID), client.GetLocalObjectId (killerGlobalId)));
+            CommonPackets.EntityKilled (EntityID, killerEntityId));
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public partial class WorldObject
     /// </summary>
     protected void BroadcastDespawnToVisibleClients ()
     {
-        BroadcastToVisibleClients (client => CommonPackets.DespawnEntity (client.GetLocalObjectId (ID)));
+        BroadcastToVisibleClients (client => CommonPackets.DespawnEntity (EntityID));
         _visibleClients.Clear ();
     }
 
@@ -61,7 +61,7 @@ public partial class WorldObject
     /// </summary>
     protected void RemoveFromWorldRegistry ()
     {
-        ActiveWorldObjects.Remove (ID);
+        ActiveWorldObjects.Remove (EntityID);
         ActiveNodes.Remove (GetInstanceId ());
     }
 }

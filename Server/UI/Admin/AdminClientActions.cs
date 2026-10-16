@@ -17,7 +17,7 @@ namespace SphServer.Server.UI.Admin;
 /// </summary>
 public static class AdminClientActions
 {
-    public static bool Kick (ushort clientId)
+    public static bool Kick (Guid clientId)
     {
         var client = ActiveClients.Get (clientId);
         if (client is null)
@@ -30,7 +30,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool Ban (ushort clientId)
+    public static bool Ban (Guid clientId)
     {
         var client = ActiveClients.Get (clientId);
         if (client is null)
@@ -52,7 +52,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool Teleport (ushort clientId, WorldCoords worldCoords, string destinationLabel)
+    public static bool Teleport (Guid clientId, WorldCoords worldCoords, string destinationLabel)
     {
         var client = ActiveClients.Get (clientId);
         if (client is null || client.CurrentCharacter is null)
@@ -67,7 +67,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool ResetCharacter (ushort clientId)
+    public static bool ResetCharacter (Guid clientId)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -81,7 +81,7 @@ public static class AdminClientActions
 
         foreach (var slot in occupied)
         {
-            var reserve = ItemSlotReserve.Build (character.ClientIndex, slot, ItemSlotReserve.NoItem);
+            var reserve = ItemSlotReserve.Build (character.EntityId, slot, ItemSlotReserve.NoItem);
             if (reserve is not null)
             {
                 client.MaybeQueueNetworkPacketSend (reserve);
@@ -94,7 +94,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetMoney (ushort clientId, int money)
+    public static bool SetMoney (Guid clientId, int money)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -116,7 +116,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetKarmaCount (ushort clientId, int karmaCount)
+    public static bool SetKarmaCount (Guid clientId, int karmaCount)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -138,7 +138,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetCurrentHp (ushort clientId, int currentHp)
+    public static bool SetCurrentHp (Guid clientId, int currentHp)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -161,7 +161,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetCurrentMp (ushort clientId, int currentMp)
+    public static bool SetCurrentMp (Guid clientId, int currentMp)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -184,7 +184,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetClanRank (ushort clientId, ClanRank rank)
+    public static bool SetClanRank (Guid clientId, ClanRank rank)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -212,7 +212,7 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool SetGuild (ushort clientId, Guild guild, int rankMinusOne)
+    public static bool SetGuild (Guid clientId, Guild guild, int rankMinusOne)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -259,7 +259,7 @@ public static class AdminClientActions
         return ok;
     }
 
-    public static bool ClearSlotItem (ushort clientId, BelongingSlot slot)
+    public static bool ClearSlotItem (Guid clientId, BelongingSlot slot)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -271,14 +271,14 @@ public static class AdminClientActions
         var lookBefore = CharacterWornLook.Capture (character);
         character.Items.Remove (slot);
         DbConnection.Items.Delete (itemId);
-        SendSlotBinding (client, character.ClientIndex, slot, item: null);
+        SendSlotBinding (client, character.EntityId, slot, item: null);
         MaybeSyncGuildFromSlot (client, character, slot);
         FinishItemMutation (client, character, lookBefore);
         AdminActionLog.Info (client, $"cleared [{slot}] (item {itemId})");
         return true;
     }
 
-    public static bool ReplaceSlotItem (ushort clientId, BelongingSlot slot, int gameId, ItemSuffix suffix)
+    public static bool ReplaceSlotItem (Guid clientId, BelongingSlot slot, int gameId, ItemSuffix suffix)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -293,25 +293,24 @@ public static class AdminClientActions
         {
             character.Items.Remove (slot);
             DbConnection.Items.Delete (oldId);
-            SendSlotBinding (client, character.ClientIndex, slot, item: null);
+            SendSlotBinding (client, character.EntityId, slot, item: null);
         }
 
         var go = SphGameObject.CreateFromGameObject (catalog);
         go.Suffix = suffix;
         var item = ItemDbEntry.CreateFromGameObject (go);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem ();
+        item.Id = Guid.NewGuid ();
         DbConnection.SaveItem (item);
         character.PlaceItemInSlot (slot, item.Id);
 
-        var reserve = ItemSlotReserve.Build (character.ClientIndex, slot, item.Id, item.ItemCount);
+        var reserve = ItemSlotReserve.Build (character.EntityId, slot, item.Id, item.ItemCount);
         if (reserve is not null)
         {
             client.MaybeQueueNetworkPacketSend (reserve);
         }
 
-        client.MaybeQueueNetworkPacketSend (ItemRecordEncoder.Encode (item,
-            SphBitStream.ByteSwap (character.ClientIndex)));
+        client.MaybeQueueNetworkPacketSend (ItemRecordEncoder.Encode (item, client.EntityID));
 
         MaybeSyncGuildFromSlot (client, character, slot);
         FinishItemMutation (client, character, lookBefore);
@@ -322,7 +321,7 @@ public static class AdminClientActions
     /// <summary>
     /// Wearing also requires CanUseItem; a swap needs both directions
     /// </summary>
-    public static bool CanMoveOrSwapItem (ushort clientId, BelongingSlot from, BelongingSlot to)
+    public static bool CanMoveOrSwapItem (Guid clientId, BelongingSlot from, BelongingSlot to)
     {
         if (from == to)
         {
@@ -346,7 +345,7 @@ public static class AdminClientActions
         return DbConnection.Items.FindById (toId) is { } toItem && MayGoIn (character, toItem, from);
     }
 
-    public static bool TryMoveOrSwapItem (ushort clientId, BelongingSlot from, BelongingSlot to)
+    public static bool TryMoveOrSwapItem (Guid clientId, BelongingSlot from, BelongingSlot to)
     {
         if (!CanMoveOrSwapItem (clientId, from, to))
         {
@@ -368,16 +367,16 @@ public static class AdminClientActions
         {
             character.Items[from] = toId;
             character.Items[to] = fromId;
-            SendSlotBinding (client, character.ClientIndex, from, toItem);
-            SendSlotBinding (client, character.ClientIndex, to, fromItem);
+            SendSlotBinding (client, character.EntityId, from, toItem);
+            SendSlotBinding (client, character.EntityId, to, fromItem);
             AdminActionLog.Info (client, $"swapped [{from}] <-> [{to}]");
         }
         else
         {
             character.Items[to] = fromId;
             character.Items.Remove (from);
-            SendSlotBinding (client, character.ClientIndex, from, item: null);
-            SendSlotBinding (client, character.ClientIndex, to, fromItem);
+            SendSlotBinding (client, character.EntityId, from, item: null);
+            SendSlotBinding (client, character.EntityId, to, fromItem);
             AdminActionLog.Info (client, $"moved [{from}] -> [{to}]");
         }
 
@@ -390,7 +389,7 @@ public static class AdminClientActions
     /// Persona moves to the first empty bag cell; inventory wears the first matching slot, swapping
     /// if it is occupied
     /// </summary>
-    public static bool TryDoubleClickSlot (ushort clientId, BelongingSlot slot)
+    public static bool TryDoubleClickSlot (Guid clientId, BelongingSlot slot)
     {
         var character = ActiveClients.Get (clientId)?.CurrentCharacter;
         if (character is null
@@ -519,7 +518,7 @@ public static class AdminClientActions
         }
     }
 
-    private static void SendSlotBinding (SphereClient client, ushort clientIndex,
+    private static void SendSlotBinding (SphereClient client, Guid clientIndex,
         BelongingSlot slot, ItemDbEntry? item)
     {
         var packet = item is null

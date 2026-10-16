@@ -14,7 +14,7 @@ TargetX = -2491.427
 TargetY = 402.11777
 TargetZ = 3099.4443
 Angle = 64
-ID = 1777
+EntityIdString = "c1362a56-41f1-428b-862f-6cdc14798e26"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -23,6 +23,6 @@ transform = Transform3D(0.40524107, 0, -0.9142098, 0, 1, 0, 0.9142098, 0, 0.4052
 script = ExtResource("2_buv6g")
 DoorID = 5460
 Angle = 209
-ID = 1776
+EntityIdString = "d4a27ca9-d6e3-4b4c-aee6-b08578725d14"
 ObjectType = 60
 ModelName = "edoor"

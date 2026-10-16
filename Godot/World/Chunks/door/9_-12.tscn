@@ -10,7 +10,7 @@ transform = Transform3D(0.6152315, 0, -0.7883463, 0, 1, 0, 0.7883463, 0, 0.61523
 script = ExtResource("2_s6rli")
 DoorID = 5481
 Angle = 219
-ID = 2065
+EntityIdString = "237c2ad5-85ae-4a67-b45b-673e4197e4a6"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -19,7 +19,7 @@ transform = Transform3D(0.59569925, 0, -0.8032076, 0, 1, 0, 0.8032076, 0, 0.5956
 script = ExtResource("2_s6rli")
 DoorID = 5480
 Angle = 218
-ID = 2064
+EntityIdString = "83ca5739-79a1-4544-b927-98ec85ec74eb"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -27,6 +27,6 @@ ModelName = "edoor"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 901.20605, -1094.6613, -1109.0676)
 script = ExtResource("2_s6rli")
 DoorID = 5479
-ID = 2063
+EntityIdString = "c5fb3dbc-2fdb-4e0f-8f9e-30b0735b004f"
 ObjectType = 60
 ModelName = "edoor"

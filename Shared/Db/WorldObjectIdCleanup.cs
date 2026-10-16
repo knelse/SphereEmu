@@ -1,140 +1,163 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiteDB;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
-using SphServer.Shared.WorldState;
 
 namespace SphServer.Shared.Db;
 
 /// <summary>
-/// Persisted item, container, and client-index values share one ushort wire id space
+/// Rewrites stored int ids to guids. A guid is not reused or reassigned
 /// </summary>
 public static class WorldObjectIdCleanup
 {
-    public static void SeedAndRepair ()
-    {
-        WorldObjectIndex.IsPersistedInUse = IsPersistedWireId;
-
-        var seed = CollectPersistedWireIds ();
-        WorldObjectIndex.Seed (seed);
-        SphLogger.Info ($"WorldObjectIndex: reserved {seed.Count} existing wire id(s) from the database");
-
-        var conflicts = Repair ();
-        if (conflicts.Count == 0)
-        {
-            SphLogger.Info ("WorldObjectIndex: no persisted id conflicts");
-            return;
-        }
-
-        SphLogger.Warning ($"WorldObjectIndex: repaired {conflicts.Count} id conflict(s):");
-        foreach (var line in conflicts)
-        {
-            SphLogger.Warning ($"  {line}");
-        }
-    }
-
-    private static bool IsPersistedWireId (ushort id)
+    public static void MigrateIntIds ()
     {
         if (DbConnection.Db is null)
         {
-            return false;
+            return;
         }
 
-        return DbConnection.Items.FindById ((int) id) is not null
-               || DbConnection.ItemContainers.FindById ((int) id) is not null;
+        var itemMap = RemapCollectionIds (DbConnection.Db.GetCollection ("Items"));
+        var containerMap = RemapCollectionIds (DbConnection.Db.GetCollection ("ItemContainers"));
+        RemapContainerContents (containerMap, itemMap);
+        RemapItemParents (containerMap);
+        RemapCharacters (itemMap);
     }
 
-    private static HashSet<ushort> CollectPersistedWireIds ()
+    public static void SeedAndRepair ()
     {
-        var ids = new HashSet<ushort> ();
-        foreach (var item in DbConnection.Items.FindAll ().ToList ())
+        ClearMissingItemSlots ();
+    }
+
+    private static Dictionary<int, Guid> RemapCollectionIds (ILiteCollection<BsonDocument> collection)
+    {
+        var map = new Dictionary<int, Guid> ();
+        foreach (var doc in collection.FindAll ().ToList ())
         {
-            AddWire (ids, item.Id);
+            if (doc["_id"].Type is not (BsonType.Int32 or BsonType.Int64))
+            {
+                continue;
+            }
+
+            var oldId = doc["_id"].AsInt32;
+            var id = Guid.NewGuid ();
+            map[oldId] = id;
+            collection.Delete (oldId);
+            doc["_id"] = id;
+            doc.Remove ("EntityGuid");
+            collection.Insert (doc);
         }
 
-        foreach (var bag in DbConnection.ItemContainers.FindAll ().ToList ())
+        return map;
+    }
+
+    private static void RemapContainerContents (Dictionary<int, Guid> containerMap, Dictionary<int, Guid> itemMap)
+    {
+        if (containerMap.Count == 0)
         {
-            AddWire (ids, bag.Id);
-            foreach (var itemId in bag.Contents.Values)
+            return;
+        }
+
+        var containers = DbConnection.Db.GetCollection ("ItemContainers");
+        foreach (var doc in containers.FindAll ().ToList ())
+        {
+            if (!doc.TryGetValue ("Contents", out var contents) || !contents.IsDocument)
             {
-                AddWire (ids, itemId);
+                continue;
+            }
+
+            var changed = false;
+            foreach (var key in contents.AsDocument.Keys.ToList ())
+            {
+                var value = contents[key];
+                if (value.IsNumber && itemMap.TryGetValue (value.AsInt32, out var itemId))
+                {
+                    contents[key] = itemId;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                containers.Update (doc);
             }
         }
+    }
 
-        foreach (var character in DbConnection.Characters.FindAll ().ToList ())
+    private static void RemapItemParents (Dictionary<int, Guid> containerMap)
+    {
+        if (containerMap.Count == 0)
         {
-            AddWire (ids, character.ClientIndex);
-            foreach (var itemId in character.Items.Values)
+            return;
+        }
+
+        var items = DbConnection.Db.GetCollection ("Items");
+        foreach (var doc in items.FindAll ().ToList ())
+        {
+            if (!doc.TryGetValue ("ParentContainerId", out var parent) || !parent.IsNumber)
             {
-                AddWire (ids, itemId);
+                continue;
+            }
+
+            if (!containerMap.TryGetValue (parent.AsInt32, out var parentId))
+            {
+                continue;
+            }
+
+            doc["ParentContainerId"] = parentId;
+            items.Update (doc);
+        }
+    }
+
+    private static void RemapCharacters (Dictionary<int, Guid> itemMap)
+    {
+        var characters = DbConnection.Db.GetCollection ("Characters");
+        foreach (var doc in characters.FindAll ().ToList ())
+        {
+            var changed = false;
+            if (doc.TryGetValue ("ClientIndex", out var index))
+            {
+                doc["EntityId"] = index.IsNumber ? new BsonValue (Guid.NewGuid ()) : index;
+                doc.Remove ("ClientIndex");
+                changed = true;
+            }
+
+            if (doc.TryGetValue ("Items", out var slots) && slots.IsDocument)
+            {
+                foreach (var key in slots.AsDocument.Keys.ToList ())
+                {
+                    var value = slots[key];
+                    if (value.IsNumber && itemMap.TryGetValue (value.AsInt32, out var itemId))
+                    {
+                        slots[key] = itemId;
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                characters.Update (doc);
             }
         }
-
-        return ids;
     }
 
-    private static void AddWire (HashSet<ushort> ids, int id)
-    {
-        if (id is > 0 and <= ushort.MaxValue)
-        {
-            ids.Add ((ushort) id);
-        }
-    }
-
-    private static List<string> Repair ()
-    {
-        var conflicts = new List<string> ();
-        RepairMissingAndDuplicateSlots (conflicts);
-        RemapItemsCollidingWithContainers (conflicts);
-        RemapItemsCollidingWithClientIndex (conflicts);
-        DbConnection.Checkpoint ();
-        return conflicts;
-    }
-
-    private static void RepairMissingAndDuplicateSlots (List<string> conflicts)
+    private static void ClearMissingItemSlots ()
     {
         foreach (var character in DbConnection.Characters.FindAll ().ToList ())
         {
             var changed = false;
-
             foreach (var (slot, itemId) in character.Items.ToList ())
             {
-                if (DbConnection.Items.FindById (itemId) is not null)
+                if (itemId == Guid.Empty || DbConnection.Items.FindById (itemId) is not null)
                 {
                     continue;
                 }
 
                 character.Items.Remove (slot);
                 changed = true;
-                conflicts.Add (
-                    $"{character.Name}: {slot} pointed at missing item {itemId} ({itemId:X4}), cleared");
-            }
-
-            var bagSlotsByItem = character.Items
-                .Where (kv => kv.Key is not BelongingSlot.MainHand)
-                .GroupBy (kv => kv.Value)
-                .Where (g => g.Count () > 1);
-
-            foreach (var group in bagSlotsByItem)
-            {
-                var slots = group.Select (kv => kv.Key).ToList ();
-                var keep = slots[0];
-                var source = DbConnection.Items.FindById (group.Key);
-                if (source is null)
-                {
-                    continue;
-                }
-
-                for (var i = 1; i < slots.Count; i++)
-                {
-                    var slot = slots[i];
-                    var clone = ItemDbEntry.Clone (source);
-                    character.Items[slot] = clone.Id;
-                    changed = true;
-                    conflicts.Add (
-                        $"{character.Name}: {keep} and {slot} both used item {group.Key} ({group.Key:X4}). " +
-                        $"{slot} cloned to {clone.Id} ({clone.Id:X4})");
-                }
+                SphLogger.Warning ($"{character.Name}: {slot} pointed at missing item {itemId}, cleared");
             }
 
             if (changed)
@@ -142,98 +165,5 @@ public static class WorldObjectIdCleanup
                 DbConnection.Characters.Update (character);
             }
         }
-    }
-
-    private static void RemapItemsCollidingWithContainers (List<string> conflicts)
-    {
-        var containerIds = DbConnection.ItemContainers.FindAll ().ToList ()
-            .Select (b => b.Id)
-            .Where (id => id is > 0 and <= ushort.MaxValue)
-            .ToHashSet ();
-
-        foreach (var item in DbConnection.Items.FindAll ().ToList ())
-        {
-            if (!containerIds.Contains (item.Id))
-            {
-                continue;
-            }
-
-            var oldId = item.Id;
-            var newId = RemapItem (item);
-            conflicts.Add ($"item {oldId} ({oldId:X4}) shared a wire id with a container, remapped to {newId} ({newId:X4})");
-        }
-    }
-
-    private static void RemapItemsCollidingWithClientIndex (List<string> conflicts)
-    {
-        var clientIds = DbConnection.Characters.FindAll ().ToList ()
-            .Select (c => (int) c.ClientIndex)
-            .Where (id => id > 0)
-            .ToHashSet ();
-
-        foreach (var item in DbConnection.Items.FindAll ().ToList ())
-        {
-            if (!clientIds.Contains (item.Id))
-            {
-                continue;
-            }
-
-            var oldId = item.Id;
-            var newId = RemapItem (item);
-            conflicts.Add (
-                $"item {oldId} ({oldId:X4}) shared a wire id with a character ClientIndex, remapped to {newId} ({newId:X4})");
-        }
-    }
-
-    private static int RemapItem (ItemDbEntry item)
-    {
-        var oldId = item.Id;
-        var newId = WorldObjectIndex.NewItem ();
-        DbConnection.Items.Delete (oldId);
-        WorldObjectIndex.Release ((ushort) oldId);
-        item.Id = newId;
-        DbConnection.Items.Insert ((int) newId, item);
-
-        foreach (var character in DbConnection.Characters.FindAll ().ToList ())
-        {
-            var changed = false;
-            foreach (var (slot, itemId) in character.Items.ToList ())
-            {
-                if (itemId != oldId)
-                {
-                    continue;
-                }
-
-                character.Items[slot] = newId;
-                changed = true;
-            }
-
-            if (changed)
-            {
-                DbConnection.Characters.Update (character);
-            }
-        }
-
-        foreach (var bag in DbConnection.ItemContainers.FindAll ().ToList ())
-        {
-            var changed = false;
-            foreach (var (slot, itemId) in bag.Contents.ToList ())
-            {
-                if (itemId != oldId)
-                {
-                    continue;
-                }
-
-                bag.Contents[slot] = newId;
-                changed = true;
-            }
-
-            if (changed)
-            {
-                DbConnection.ItemContainers.Update (bag);
-            }
-        }
-
-        return newId;
     }
 }

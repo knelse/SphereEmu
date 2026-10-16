@@ -57,7 +57,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
                 continue;
             }
 
-            var entityId = recipient.GetLocalObjectId (sphereClient.ID);
+            var entityId = recipient.GetLocalObjectId (sphereClient.EntityID);
             // Client lerps movement across ticks; one packet leaves them mid-path until the next
             // update.
             for (var i = 0; i < 4; i++)

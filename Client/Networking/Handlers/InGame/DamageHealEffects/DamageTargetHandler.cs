@@ -42,81 +42,75 @@ public enum AttackFrameKind
 }
 
 // 0x19/0x20 fallback: anything that is not a buy (08 40 03) lands here
-public class DamageTargetHandler (ushort localId, ClientConnection clientConnection)
+public class DamageTargetHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
     {
         // Ack first so g_6008 clears even when parse returns early
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var character = clientConnection.GetSelectedCharacter ();
-        var broadcastTarget = ActiveClients.Get (localId);
+        var broadcastTarget = ActiveClients.Get (entityId);
         if (character is null || broadcastTarget is null)
         {
             // Source is the raw local id: with no client there is nothing to resolve it against.
-            LogAction (localId, 0, AttackFrameKind.NotAnAttack,
+            LogAction (entityId, Guid.Empty, AttackFrameKind.NotAnAttack,
                 character is null ? "skip-no-character" : "skip-no-client");
             return;
         }
 
         SphLogger.Info ($"DamageTargetHandler: {Convert.ToHexString (frame)}");
 
-        var broadcastTargetGlobalId = broadcastTarget.GetGlobalObjectId (localId);
+        var attackerEntityId = entityId;
         var heldItem = character.GetHeldItem ();
         var frameKind = ParseAttackFrame (frame, heldItem, out var localTargetId);
 
         // 0x19 empty-to-sword shares 08 40 A3 with a fist swing, but the item id is the take
         if (IsTakeMainhand (character, frame, localTargetId))
         {
-            LogAction (broadcastTargetGlobalId, localTargetId, frameKind, "take-mainhand");
+            LogAction (attackerEntityId, localTargetId, frameKind, "take-mainhand");
             await clientConnection.HandleTakeMainhand (frame, delta);
             return;
         }
 
         if (frameKind is AttackFrameKind.NotAnAttack)
         {
-            LogAction (broadcastTargetGlobalId, localTargetId, frameKind, "skip");
+            LogAction (attackerEntityId, localTargetId, frameKind, "skip");
             return;
         }
 
         // 0 = no id in the frame, 0xFFFF = the client's no-target sentinel
         // (target despawned mid-click).
-        if (localTargetId is 0 or ushort.MaxValue)
+        if (localTargetId == Guid.Empty)
         {
-            LogAction (broadcastTargetGlobalId, localTargetId, frameKind, "skip");
+            LogAction (attackerEntityId, localTargetId, frameKind, "skip");
             return;
         }
 
-        var globalTargetId = broadcastTarget.GetGlobalObjectId (localTargetId);
+        var targetEntityId = localTargetId;
         // Fists have no Radius, so they never splash
         var aoeRadius = heldItem.GameObjectType is GameObjectType.Fists ? 0 : heldItem.Radius;
         // Self-aimed wire is often ByteSwap(clientId), and a blast on a mob still includes the
         // caster inside Radius
         var includeSelf = frameKind is AttackFrameKind.SelfTargetedAction
-                          || IsAttackerTargetId (broadcastTarget, globalTargetId);
-        var targets = CollectTargets (broadcastTarget, globalTargetId, aoeRadius, includeSelf).ToList ();
-        LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
+                          || IsAttackerTargetId (broadcastTarget, targetEntityId);
+        var targets = CollectTargets (broadcastTarget, targetEntityId, aoeRadius, includeSelf).ToList ();
+        LogAction (attackerEntityId, targetEntityId, frameKind,
             $"held={heldItem.GameId} radius={aoeRadius} includeSelf={includeSelf} targets={targets.Count}");
-        foreach (var (targetGlobalId, targetLocalId) in targets)
+        foreach (var hitTargetEntityId in targets)
         {
             clientConnection.EnqueueClientEvent (new CombatHitEvent (
-                broadcastTargetGlobalId, targetGlobalId, targetLocalId, frameKind));
+                attackerEntityId, hitTargetEntityId, frameKind));
         }
     }
 
-    /// <summary>
-    /// Live client id, WorldObject.ID, or the byte-swapped client id on self-aimed AoE
-    /// </summary>
-    private static bool IsAttackerTargetId (SphereClient attacker, ushort globalId)
+    private static bool IsAttackerTargetId (SphereClient attacker, Guid entityId)
     {
-        var clientId = attacker.GetGlobalObjectId (attacker.localId);
-        return globalId == clientId
-               || globalId == attacker.ID
-               || globalId == SphBitStream.ByteSwap (clientId);
+        return entityId == attacker.EntityID;
     }
 
-    private static bool IsTakeMainhand (CharacterDbEntry character, byte[] frame, ushort combatTargetId)
+    private static bool IsTakeMainhand (CharacterDbEntry character, byte[] frame, Guid combatTargetId)
     {
         if (ClientPacketClassifier.IsHandChangeSignature (frame))
         {
@@ -139,9 +133,9 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         return IsOwnedItemId (character, combatTargetId);
     }
 
-    private static bool IsOwnedItemId (CharacterDbEntry character, ushort id)
+    private static bool IsOwnedItemId (CharacterDbEntry character, Guid id)
     {
-        if (id is 0 or ushort.MaxValue)
+        if (id == Guid.Empty)
         {
             return false;
         }
@@ -156,13 +150,18 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             return false;
         }
 
-        // Hotkey take after the item left MainHand: still a catalog row, never a live combatant.
-        return DbConnection.Items.FindById ((int) id) is not null;
+        return DbConnection.Items.FindById (id) is not null;
     }
 
-    private static void LogAction (ushort sourceGlobalId, ushort targetGlobalId, AttackFrameKind action, string result)
+    private static bool IsOwnedItemId (CharacterDbEntry character, ushort id)
     {
-        SphLogger.Info ($"DamageTargetHandler: Source [{sourceGlobalId:X4}] - Target [{targetGlobalId:X4}] - " +
+        // The hand frame still carries a short item id. Owned rows are guids.
+        return false;
+    }
+
+    private static void LogAction (Guid sourceEntityId, Guid targetEntityId, AttackFrameKind action, string result)
+    {
+        SphLogger.Info ($"DamageTargetHandler: Source [{sourceEntityId}] - Target [{targetEntityId}] - " +
                        $"Action [{action}] - [{result}]");
     }
 
@@ -189,13 +188,13 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
     /// <summary>
     /// Length is not identity; splash ids in the frame are ignored and AoE comes from the held item
     /// </summary>
-    public static AttackFrameKind ParseAttackFrame (byte[] receiveBuffer, out ushort localTargetId) =>
+    public static AttackFrameKind ParseAttackFrame (byte[] receiveBuffer, out Guid localTargetId) =>
         ParseAttackFrame (receiveBuffer, null, out localTargetId);
 
     public static AttackFrameKind ParseAttackFrame (byte[] receiveBuffer, ItemDbEntry? heldItem,
-        out ushort localTargetId)
+        out Guid localTargetId)
     {
-        localTargetId = 0;
+        localTargetId = Guid.Empty;
         if (receiveBuffer.Length < 16)
         {
             return AttackFrameKind.NotAnAttack;
@@ -208,7 +207,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
 
         if (receiveBuffer[13] == 0x54 && receiveBuffer[14] == 0x43 && receiveBuffer[15] == 0xC1)
         {
-            localTargetId = ReadU16AtBit (receiveBuffer, FistTargetBit);
+            localTargetId = ReadGuidAtBit (receiveBuffer, FistTargetBit);
             return AttackFrameKind.SelfTargetedAction;
         }
 
@@ -237,25 +236,25 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
     /// A 0x2C swing still has the weapon type at the item slot, so bit 172 is that type (501 as
     /// 47D4), not the mob
     /// </summary>
-    private static ushort ReadMainTargetId (byte[] frame, ItemDbEntry? heldItem)
+    private static Guid ReadMainTargetId (byte[] frame, ItemDbEntry? heldItem)
     {
         var typeAtItemSlot = ReadU12AtBit (frame, ItemObjectTypeBit);
         if (IsAoePowderLayout (heldItem, typeAtItemSlot))
         {
-            return ReadU16AtBit (frame, AoeTargetBit);
+            return ReadGuidAtBit (frame, AoeTargetBit);
         }
 
         if (IsArmedAttackLayout (frame))
         {
-            return ReadU16AtBit (frame, ArmedTargetBit);
+            return ReadGuidAtBit (frame, ArmedTargetBit);
         }
 
         if (heldItem is null || heldItem.GameObjectType is GameObjectType.Fists)
         {
-            return ReadU16AtBit (frame, FistTargetBit);
+            return ReadGuidAtBit (frame, FistTargetBit);
         }
 
-        return ReadU16AtBit (frame, ArmedTargetBit);
+        return ReadGuidAtBit (frame, ArmedTargetBit);
     }
 
     /// <summary>
@@ -274,17 +273,13 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         typeAtItemSlot == (ushort) ObjectType.Powder_Ao_E ||
         heldItem is { Radius: > 0, GameObjectType: GameObjectType.Powder_Area };
 
-    private static IEnumerable<(ushort GlobalId, ushort LocalId)> CollectTargets (SphereClient attacker,
-        ushort mainGlobalId, int aoeRadius, bool includeSelf)
+    private static IEnumerable<Guid> CollectTargets (SphereClient attacker,
+        Guid mainTargetEntityId, int aoeRadius, bool includeSelf)
     {
-        var mainIsSelf = IsAttackerTargetId (attacker, mainGlobalId);
+        var mainIsSelf = IsAttackerTargetId (attacker, mainTargetEntityId);
         if (includeSelf || !mainIsSelf)
         {
-            // Self-aimed frames may carry ByteSwap(clientId), so this yields the live client id
-            var yieldGlobalId = mainIsSelf
-                ? attacker.GetGlobalObjectId (attacker.localId)
-                : mainGlobalId;
-            yield return (yieldGlobalId, attacker.GetLocalObjectId (yieldGlobalId));
+            yield return mainIsSelf ? attacker.EntityID : mainTargetEntityId;
         }
 
         if (aoeRadius <= 0)
@@ -292,7 +287,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             yield break;
         }
 
-        if (!TryResolveAoeCenter (attacker, mainGlobalId, out var center))
+        if (!TryResolveAoeCenter (attacker, mainTargetEntityId, out var center))
         {
             yield break;
         }
@@ -302,16 +297,12 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         if (!mainIsSelf && TryGetCombatWorldPosition (attacker, out var selfPosition) &&
             center.DistanceSquaredTo (selfPosition) <= radiusSquared)
         {
-            var selfId = attacker.GetGlobalObjectId (attacker.localId);
-            yield return (selfId, attacker.GetLocalObjectId (selfId));
+            yield return attacker.EntityID;
         }
-        var clientId = attacker.GetGlobalObjectId (attacker.localId);
-        var seen = new HashSet<ushort>
+        var seen = new HashSet<Guid>
         {
-            mainGlobalId,
-            clientId,
-            attacker.ID,
-            SphBitStream.ByteSwap (clientId)
+            mainTargetEntityId,
+            attacker.EntityID
         };
 
         foreach (var worldObject in ActiveWorldObjects.GetAll ().Values)
@@ -321,12 +312,12 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 continue;
             }
 
-            if (!GodotObject.IsInstanceValid (worldObject) || !seen.Add (worldObject.ID))
+            if (!GodotObject.IsInstanceValid (worldObject) || !seen.Add (worldObject.EntityID))
             {
                 continue;
             }
 
-            if (IsAttackerTargetId (attacker, worldObject.ID))
+            if (IsAttackerTargetId (attacker, worldObject.EntityID))
             {
                 continue;
             }
@@ -346,13 +337,13 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 continue;
             }
 
-            yield return (worldObject.ID, attacker.GetLocalObjectId (worldObject.ID));
+            yield return worldObject.EntityID;
         }
 
         foreach (var otherClient in ActiveClients.GetAll ().Values)
         {
-            if (otherClient is null || IsAttackerTargetId (attacker, otherClient.localId) ||
-                IsAttackerTargetId (attacker, otherClient.ID) || !seen.Add (otherClient.ID))
+            if (otherClient is null || IsAttackerTargetId (attacker, otherClient.EntityID) ||
+                IsAttackerTargetId (attacker, otherClient.EntityID) || !seen.Add (otherClient.EntityID))
             {
                 continue;
             }
@@ -367,21 +358,21 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
                 continue;
             }
 
-            yield return (otherClient.ID, attacker.GetLocalObjectId (otherClient.ID));
+            yield return otherClient.EntityID;
         }
     }
 
     /// <summary>
     /// Aimed object, or the attacker when the aim is self; a missing non-self aim aborts splash
     /// </summary>
-    private static bool TryResolveAoeCenter (SphereClient attacker, ushort mainGlobalId, out Vector3 center)
+    private static bool TryResolveAoeCenter (SphereClient attacker, Guid mainTargetEntityId, out Vector3 center)
     {
-        if (IsAttackerTargetId (attacker, mainGlobalId))
+        if (IsAttackerTargetId (attacker, mainTargetEntityId))
         {
             return TryGetCombatWorldPosition (attacker, out center);
         }
 
-        var mainObject = ActiveWorldObjects.Get (mainGlobalId);
+        var mainObject = ActiveWorldObjects.Get (mainTargetEntityId);
         if (mainObject is null || !GodotObject.IsInstanceValid (mainObject))
         {
             center = Vector3.Zero;
@@ -408,16 +399,16 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         return true;
     }
 
-    private static ushort ReadU16AtBit (byte[] frame, int bit)
+    private static Guid ReadGuidAtBit (byte[] frame, int bit)
     {
-        if (frame.Length * 8 < bit + 16)
+        if (frame.Length * 8 < bit + 128)
         {
-            return 0;
+            return Guid.Empty;
         }
 
         var stream = new BitStream (frame);
         stream.ReadBits (bit);
-        return stream.ReadUInt16 ();
+        return stream.ReadGuid ();
     }
 
     private static ushort ReadU12AtBit (byte[] frame, int bit)

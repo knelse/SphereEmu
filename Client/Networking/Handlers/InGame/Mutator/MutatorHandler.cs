@@ -93,29 +93,29 @@ public static class MutatorHandler
         [SpecialMutator.Свинка] = Convert.FromHexString ("44ED79BB4C83A00A0F07"), // 1039
     };
 
-    public static void SendSpecialMutator (ClientConnection clientConnection, ushort localId, SpecialMutator mutator,
+    public static void SendSpecialMutator (ClientConnection clientConnection, Guid entityId, SpecialMutator mutator,
         BelongingSlot slot)
     {
         var mutatorId = (ushort) mutator;
-        var itemId = WorldObjectIndex.NewItem ();
-        var playerId = ByteSwap (localId);
+        var itemGuid = Guid.NewGuid ();
+        var playerId = entityId;
 
         var reserveParts = PacketPart.LoadDefinedWithOverride ("new_item_reserve_slot_full");
         PacketPart.UpdateEntityId (reserveParts, playerId);
         PacketPart.UpdateValue (reserveParts, "slot_id", (int) slot, 8);
-        PacketPart.UpdateValue (reserveParts, "new_item_id", itemId, 16);
+        PacketPart.UpdateGuid (reserveParts, "new_item_id", itemGuid);
         clientConnection.MaybeScheduleNetworkPacketSend (PacketPart.GetBytesToWrite (reserveParts));
 
         var mutatorParts = PacketPart.LoadDefinedPartsFromFile (ObjectType.Mutator);
-        PacketPart.UpdateEntityId (mutatorParts, itemId);
+        PacketPart.UpdateEntityId (mutatorParts, itemGuid);
         PacketPart.UpdateValue (mutatorParts, "object_type", (int) ObjectType.Mutator, 10);
-        PacketPart.UpdateValue (mutatorParts, "to_id", playerId, 16);
+        PacketPart.UpdateGuid (mutatorParts, "to_id", playerId);
         ApplyMutatorBag (mutatorParts, mutator);
         PacketPart.UpdateValue (mutatorParts, "mutator_id", mutatorId, 16);
-        PacketPart.UpdateValue (mutatorParts, "from_id", playerId, 16);
+        PacketPart.UpdateGuid (mutatorParts, "from_id", playerId);
         clientConnection.MaybeScheduleNetworkPacketSend (PacketPart.GetBytesToWrite (mutatorParts));
 
-        SphLogger.Info ($"Sent mutator {mutator} ({mutatorId}) to slot {slot} as {itemId:X4}. Client ID: {localId:X4}");
+        SphLogger.Info ($"Sent mutator {mutator} ({mutatorId}) to slot {slot} as {itemGuid}. Client ID: {entityId}");
     }
 
     private static void ApplyMutatorBag (List<PacketPart> parts, SpecialMutator mutator)

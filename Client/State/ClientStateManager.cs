@@ -1,4 +1,4 @@
-﻿namespace SphServer.Client.State;
+namespace SphServer.Client.State;
 
 public class ClientStateManager (bool isNewPlayer)
 {
@@ -8,6 +8,11 @@ public class ClientStateManager (bool isNewPlayer)
     public bool IsInGameState ()
     {
         return currentState >= ClientState.INGAME_DEFAULT;
+    }
+
+    public void EnterCharacterSelect ()
+    {
+        currentState = ClientState.INIT_WAITING_FOR_CHARACTER_SELECT;
     }
 
     public void Transition ()

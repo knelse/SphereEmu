@@ -13,6 +13,6 @@ IconName = "npc_guilder"
 NpcType = 16
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 4562
+EntityIdString = "7e61f3f9-540e-46e5-9c78-787e8b8d152c"
 ObjectType = 216
 ModelName = "npc80"

@@ -8,27 +8,27 @@
 [node name="LightCrystal_D51A_[-3826]_[1301]_[-1930]_54554" type="Node3D" parent="." unique_id=1734775837 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3825.437, -1301.6215, 1929.5442)
 script = ExtResource("2_smiow")
-ID = 54554
+EntityIdString = "2905645e-6e43-4cfc-b125-aa7fb74a2bc2"
 ObjectType = 702
 ModelName = "mn_quartz"
 
 [node name="LightCrystal_D33B_[-3856]_[1301]_[-1931]_54075" type="Node3D" parent="." unique_id=815597237 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3855.063, -1301.6194, 1930.2661)
 script = ExtResource("2_smiow")
-ID = 54075
+EntityIdString = "18356294-31ad-4d06-90a8-3ef44cee3415"
 ObjectType = 702
 ModelName = "mn_quartz"
 
 [node name="LightCrystal_D33E_[-3888]_[1301]_[-1914]_54078" type="Node3D" parent="." unique_id=2084202947 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3887.1182, -1301.6198, 1913.4548)
 script = ExtResource("2_smiow")
-ID = 54078
+EntityIdString = "fb6c66bd-1ebb-4929-81ef-0348af5021d4"
 ObjectType = 702
 ModelName = "mn_quartz"
 
 [node name="LightCrystal_D34E_[-3883]_[1301]_[-1960]_54094" type="Node3D" parent="." unique_id=407011453 instance=ExtResource("1_woenu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3882.5767, -1301.6235, 1959.91)
 script = ExtResource("2_smiow")
-ID = 54094
+EntityIdString = "571bbca7-98a3-4654-8c80-ba9ac83c2e80"
 ObjectType = 702
 ModelName = "mn_quartz"

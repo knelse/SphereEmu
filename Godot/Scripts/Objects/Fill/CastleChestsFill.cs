@@ -152,10 +152,7 @@ public partial class CastleChestsFill : Node3D
 
             instance.ModelName = ChestModelName;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             AddChild (instance);
             SetOwnerIfEditor (instance);

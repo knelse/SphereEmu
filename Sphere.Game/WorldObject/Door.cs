@@ -13,6 +13,11 @@ public partial class Door : WorldObject
     [Export] public double TargetY { get; set; }
     [Export] public double TargetZ { get; set; }
 
+    /// <summary>
+    /// Other door's guid. Jump uses this when it is set
+    /// </summary>
+    [Export] public string TargetEntityId { get; set; } = "";
+
     [ExportToolButton ("Jump to target")]
     public Callable JumpToTargetButton => Callable.From (JumpToTarget);
 }

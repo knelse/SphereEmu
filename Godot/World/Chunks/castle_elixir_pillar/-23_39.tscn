@@ -9,6 +9,6 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2295.5405, -1100.089, 3900.9219)
 script = ExtResource("2_al571")
 Castle = 3
-ID = 3080
+EntityIdString = "aacf568e-72de-4432-91c9-6d848fd6a3d9"
 ObjectType = 83
 ModelName = "cs_knot"

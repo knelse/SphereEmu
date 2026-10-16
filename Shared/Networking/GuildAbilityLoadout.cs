@@ -33,7 +33,7 @@ public static class GuildAbilityLoadout
 
         if (changed)
         {
-            ClientStateEvents.RaiseCharacterChanged (character.ClientIndex);
+            ClientStateEvents.RaiseCharacterChanged (character.EntityId);
         }
 
         return changed;
@@ -63,7 +63,7 @@ public static class GuildAbilityLoadout
         Action<byte[]>? send)
     {
         character.Items.TryGetValue (slot, out var currentId);
-        var current = currentId != 0 ? DbConnection.Items.FindById (currentId) : null;
+        var current = currentId != Guid.Empty ? DbConnection.Items.FindById (currentId) : null;
         if (gameId is null)
         {
             if (!character.Items.ContainsKey (slot))
@@ -88,12 +88,12 @@ public static class GuildAbilityLoadout
         return PlaceCatalogItem (character, slot, gameId.Value, send);
     }
 
-    private static void ClearSlot (CharacterDbEntry character, BelongingSlot slot, int itemId,
+    private static void ClearSlot (CharacterDbEntry character, BelongingSlot slot, Guid itemId,
         Action<byte[]>? send)
     {
         character.Items.Remove (slot);
         DbConnection.Items.Delete (itemId);
-        Send (send, ItemSlotReserve.Build (character.ClientIndex, slot, ItemSlotReserve.NoItem));
+        Send (send, ItemSlotReserve.Build (character.EntityId, slot, ItemSlotReserve.NoItem));
     }
 
     private static bool PlaceCatalogItem (CharacterDbEntry character, BelongingSlot slot, int gameId,
@@ -108,12 +108,12 @@ public static class GuildAbilityLoadout
         go.Suffix = ItemSuffix.None;
         var item = ItemDbEntry.CreateFromGameObject (go);
         item.ItemCount = 1;
-        item.Id = WorldObjectIndex.NewItem ();
+        item.Id = Guid.NewGuid ();
         DbConnection.SaveItem (item);
         character.PlaceItemInSlot (slot, item.Id);
 
-        Send (send, ItemSlotReserve.Build (character.ClientIndex, slot, item.Id, item.ItemCount));
-        send?.Invoke (ItemRecordEncoder.Encode (item, SphBitStream.ByteSwap (character.ClientIndex)));
+        Send (send, ItemSlotReserve.Build (character.EntityId, slot, item.Id, item.ItemCount));
+        send?.Invoke (ItemRecordEncoder.Encode (item, character.EntityId));
         return true;
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using SphereHelpers.Extensions;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -8,6 +8,7 @@ using SphServer.Shared.BitStream;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
@@ -25,10 +26,8 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
             return Task.CompletedTask;
         }
 
-        var selfId = character.ClientIndex;
-        // Position stream process is the swapped client index
-        var playerProcess = SphBitStream.ByteSwap (selfId);
-        var entityId = clientEvent.EntityId == 0 ? selfId : clientEvent.EntityId;
+        var selfId = character.EntityId;
+        var entityId = clientEvent.EntityId == Guid.Empty ? selfId : clientEvent.EntityId;
         var hpBefore = character.CurrentHP;
         // Killing blow: apply/send exactly the remainder to 0 (never overshoot current HP).
         int hpAfter;
@@ -59,8 +58,7 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
 
         if (becameDead)
         {
-            // hit_type above 3 is the killer process; the client asks it for the name
-            var hitType = clientEvent.KillerProcessId > 3 ? clientEvent.KillerProcessId : (ushort) 0;
+            ushort hitType = 0;
             var hpDelta = -100000;
             var secondDelta = 0;
             if (air)
@@ -72,19 +70,20 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
             }
 
             sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerReceiveHit (playerProcess, hitType, hpDelta, secondDelta, flags: 7));
+                CommonPackets.BuildPlayerReceiveHit (sphereClient.EntityID, hitType, hpDelta, secondDelta, flags: 7));
         }
         else if (air)
         {
             sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerReceiveHit (playerProcess, 2, healthDiff, -1, 0));
+                CommonPackets.BuildPlayerReceiveHit (sphereClient.EntityID, 2, healthDiff, -1, 0));
         }
         else
         {
             // ATTACK echo is the UI hit; the ContMan delta keeps g_rec_0C48 aligned
-            sphereClient.MaybeQueueNetworkPacketSend (BuildHealthChangePacket (selfId, entityId, healthDiff));
+            sphereClient.MaybeQueueNetworkPacketSend (BuildHealthChangePacket (sphereClient.EntityID,
+                entityId == selfId ? sphereClient.EntityID : entityId, healthDiff));
             sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerApplyHpDelta (playerProcess, selfId, healthDiff));
+                CommonPackets.BuildPlayerApplyHpDelta (sphereClient.EntityID, sphereClient.EntityID, healthDiff));
         }
 
         NetworkedStatsUpdater.Update (character, refreshPeers: false);
@@ -107,19 +106,15 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
     /// <summary>
     /// Classic ATTACK health blob; omit origin and the damaged entity is the name in parentheses
     /// </summary>
-    public static byte[] BuildHealthChangePacket (ushort localId, ushort entityId, int healthDiff,
-        ushort? originEntityId = null)
+    public static byte[] BuildHealthChangePacket (Guid entityId, Guid targetEntityId, int healthDiff,
+        Guid? originEntityId = null)
     {
         var stream = SphBitStream.GetWriteBitStream ();
-        var playerId = SphBitStream.ByteSwap (localId);
-        // Mob id stays raw. A player origin uses the swapped id, same as playerId
-        var origin = originEntityId ?? entityId;
-        var originWire = origin == localId ? playerId : origin;
+        var origin = originEntityId ?? targetEntityId;
         var magnitude = Math.Abs (healthDiff);
         var hpMod = healthDiff < 0 ? 0b1110 : 0b1100;
 
-        stream.WriteUInt16 (entityId, 16);
-        stream.WriteByte (0, 2);
+        stream.WriteGuid (targetEntityId);
         stream.WriteUInt16 ((ushort) ObjectType.Monster, 10);
         stream.WriteByte (0, 1);
         stream.WriteByte ((byte) EntityActionType.ATTACK, 8);
@@ -128,16 +123,16 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
         stream.WriteBytes ([0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0]);
 
         stream.WriteByte (0b0111, 4);
-        stream.WriteUInt16 (playerId, 16);
+        stream.WriteGuid (entityId);
         stream.WriteByte (0, 3);
         stream.WriteByte (1, 1);
 
         stream.WriteBytes ([0x00, 0x24]);
 
         stream.WriteByte (0, 1);
-        stream.WriteUInt16 (originWire, 15);
+        stream.WriteGuid (origin);
 
-        stream.WriteByte ((byte) (hpMod | ((originWire >> 15) & 1)), 4);
+        stream.WriteByte ((byte) hpMod, 4);
         stream.WriteUInt32 ((uint) magnitude, 20);
 
         return Packet.ToByteArray (stream.GetStreamData (), 3);

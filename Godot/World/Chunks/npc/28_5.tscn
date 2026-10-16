@@ -14,7 +14,7 @@ NpcType = 14
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 192
-ID = 4978
+EntityIdString = "5b53f4d8-a30e-4629-b988-9e7a0f0ab796"
 ObjectType = 209
 ModelName = "npc59"
 
@@ -27,7 +27,7 @@ NpcType = 10
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 128
-ID = 5183
+EntityIdString = "e34a2687-1fd0-44c3-9ac0-39697c47bedb"
 ObjectType = 213
 ModelName = "npc29"
 
@@ -40,7 +40,7 @@ NpcType = 11
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 216
-ID = 5197
+EntityIdString = "e67c5d5c-03f8-4c53-8612-ecdc96e69fb0"
 ObjectType = 213
 ModelName = "npc08"
 
@@ -53,6 +53,6 @@ NpcType = 7
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 78
-ID = 5201
+EntityIdString = "a18684ab-924a-4072-921b-69083d314ca0"
 ObjectType = 213
 ModelName = "npc29a"

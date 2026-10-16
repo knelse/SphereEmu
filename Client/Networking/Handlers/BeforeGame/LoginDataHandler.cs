@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BitStreams;
 using System.Threading.Tasks;
 using Godot;
@@ -13,7 +13,7 @@ using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.BeforeGame;
 
-public class LoginDataHandler (ushort localId, ClientConnection clientConnection)
+public class LoginDataHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     private SphereTimer? WaitForClientTimer;
@@ -31,60 +31,60 @@ public class LoginDataHandler (ushort localId, ClientConnection clientConnection
             return;
         }
 
-        SphLogger.Info ($"CLI {localId:X4}: Login data sent");
+        SphLogger.Info ($"CLI {entityId}: Login data sent");
         var (login, password) = LoginDecoder.DecodeFromBuffer (frame, new BitStream (frame));
         if (string.IsNullOrEmpty (login) || string.IsNullOrEmpty (password))
         {
-            SphLogger.Error ($"SRV {localId:X4}: Invalid login.");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (localId));
+            SphLogger.Error ($"SRV {entityId}: Invalid login.");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (entityId));
             clientConnection.Close ();
             return;
         }
 
         if (BannedClients.IsLoginBanned (login))
         {
-            SphLogger.Error ($"SRV {localId:X4}: Login is banned. Login: {login}");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (localId));
+            SphLogger.Error ($"SRV {entityId}: Login is banned. Login: {login}");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (entityId));
             clientConnection.Close ();
             return;
         }
 
         var player =
-            LoginManager.CheckLoginAndGetPlayer (login, password, localId);
+            LoginManager.CheckLoginAndGetPlayer (login, password, entityId);
 
         if (player is null)
         {
-            SphLogger.Error ($"SRV {localId:X4}: Incorrect password");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (localId));
+            SphLogger.Error ($"SRV {entityId}: Incorrect password");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (entityId));
             clientConnection.Close ();
             return;
         }
 
         if (!ActiveWorldObjects.LoggedInClients.TryAdd (login, 1))
         {
-            SphLogger.Error ($"SRV {localId:X4}: Already logged in. Login: {login}");
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (localId));
+            SphLogger.Error ($"SRV {entityId}: Already logged in. Login: {login}");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CannotConnect (entityId));
             clientConnection.Close ();
             return;
         }
 
         clientConnection.SetPlayerDbEntry (player);
 
-        player.Index = localId;
+        player.Index = entityId;
 
-        SphLogger.Info ($"SRV {localId:X4}: Fetched char list data");
+        SphLogger.Info ($"SRV {entityId}: Fetched char list data");
 
         WaitForClientTimer = new (0.05, false, () =>
         {
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterSelectStartData (localId));
-            SphLogger.Info ($"SRV {localId:X4}: Character select screen data - initial");
+            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterSelectStartData (entityId));
+            SphLogger.Info ($"SRV {entityId}: Character select screen data - initial");
 
             // WaitForClientTimer.Arm(0.05, () =>
             // {
-            var playerInitialData = new PlayerDbEntrySerializer (player).ToInitialDataByteArray ();
+            var playerInitialData = new PlayerDbEntrySerializer (player).ToInitialDataByteArray (entityId);
 
             clientConnection.MaybeScheduleNetworkPacketSend (playerInitialData);
-            SphLogger.Info ($"SRV {localId:X4}: Character select screen data - player characters");
+            SphLogger.Info ($"SRV {entityId}: Character select screen data - player characters");
             clientConnection.MoveToNextBeforeGameStage ();
             // });
         });

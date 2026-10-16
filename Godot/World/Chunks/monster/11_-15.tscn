@@ -8,6 +8,7 @@
 [node name="MonsterSpawner_12BE_[1197]_[173]_[1401]" type="Node3D" parent="." unique_id=852208091 instance=ExtResource("1_55k0h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1197.8347, -173.14738, -1401.8085)
 script = ExtResource("2_4vy1j")
+EntityId = "9e3bf533-c2f2-410d-bb96-e873bb5fdcad"
 TargetRegularMonsterCount = 8
 SpawnRadiusMeters = 30.0
 OriginalDisplayName = "MonsterSpawner_12BE_[1197]_[173]_[1401]"
@@ -20,6 +21,7 @@ MobTypeOverrides = Array[int]([81])
 [node name="MonsterSpawner_0B39_[1197]_[172]_[1433]" type="Node3D" parent="." unique_id=-1294964423 instance=ExtResource("1_55k0h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1197.5111, -173.1284, -1433.3903)
 script = ExtResource("2_4vy1j")
+EntityId = "24188069-6cd4-47da-970c-bef19b9d42e5"
 TargetRegularMonsterCount = 5
 OriginalDisplayName = "MonsterSpawner_0B39_[1197]_[172]_[1433]"
 RegularMonsterMinLevel = 15

@@ -14,7 +14,7 @@ NpcType = 11
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 112
-ID = 5205
+EntityIdString = "d6ffd6f7-51f2-472d-96c2-d48883acf3c6"
 ObjectType = 213
 ModelName = "npc08"
 
@@ -27,6 +27,6 @@ NpcType = 7
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 25
-ID = 5209
+EntityIdString = "a3cdd769-f9fb-4989-b5c5-cfadae9880b1"
 ObjectType = 213
 ModelName = "npc29b"

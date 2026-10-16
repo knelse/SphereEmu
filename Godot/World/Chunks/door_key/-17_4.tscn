@@ -9,5 +9,5 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1618.13, 76.21, 405.48)
 script = ExtResource("2_pdaax")
 SubtypeID = 13210
-ID = 732
+EntityIdString = "712ad2d7-cd9b-491e-af92-66e68e410806"
 ObjectType = 101

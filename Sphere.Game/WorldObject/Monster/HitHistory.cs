@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
-public readonly record struct MonsterHitRecord (ushort ClientId, DamageSchool School, DateTime Utc);
+public readonly record struct MonsterHitRecord (Guid ClientId, DamageSchool School, DateTime Utc);
 
 /// <summary>
 /// Last minute of hits: majority school by count, kept so XP can be split by client
@@ -24,7 +24,7 @@ public sealed class MonsterHitHistory
 
     private readonly List<MonsterHitRecord> hits = [];
 
-    public void Record (ushort clientId, DamageSchool school, DateTime utcNow)
+    public void Record (Guid clientId, DamageSchool school, DateTime utcNow)
     {
         hits.Add (new MonsterHitRecord (clientId, school, utcNow));
         Prune (utcNow);
@@ -53,7 +53,7 @@ public sealed class MonsterHitHistory
             : hits.Count > 0 ? hits[^1].School
             : DamageSchool.Physical;
 
-        var clients = new HashSet<ushort> ();
+        var clients = new HashSet<Guid> ();
         foreach (var hit in hits)
         {
             clients.Add (hit.ClientId);

@@ -18,7 +18,7 @@ public partial class AdminUiRoot : Control
     private PersonaPanel? personaPanel;
     private Locale locale = Locale.Russian;
     private readonly Dictionary<Locale, Button> localeButtons = new ();
-    private ushort? selectedClientId;
+    private Guid? selectedClientId;
     private Button? changeGenderButton;
     private Button? kickButton;
     private Button? banButton;
@@ -223,7 +223,7 @@ public partial class AdminUiRoot : Control
         ClientStateEvents.RosterChanged -= OnClientStateRosterChanged;
     }
 
-    private void OnClientStateCharacterChanged (ushort clientId)
+    private void OnClientStateCharacterChanged (Guid clientId)
     {
         if (selectedClientId == clientId)
         {
@@ -288,10 +288,9 @@ public partial class AdminUiRoot : Control
         mobDataWindow?.SetLocale (locale);
     }
 
-    private void OnClientSelected (ushort clientId)
+    private void OnClientSelected (Guid clientId)
     {
-        // 0 is reserved as "cleared" (real client ids start at 0x4F6F)
-        selectedClientId = clientId == 0 ? null : clientId;
+        selectedClientId = clientId == Guid.Empty ? null : clientId;
         if (changeGenderButton is not null)
         {
             changeGenderButton.Disabled = selectedClientId is null

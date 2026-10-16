@@ -8,13 +8,13 @@
 [node name="LightCrystalYellow_6588_[3130]_[1501]_[40]_25992" type="Node3D" parent="." unique_id=1092670013 instance=ExtResource("1_m42mc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3130, -1501.6154, -40)
 script = ExtResource("2_xrvg5")
-ID = 25992
+EntityIdString = "d0fb501e-7027-4ea4-bf8e-e5e7a5093288"
 ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_405C_[3100]_[1501]_[10]_16476" type="Node3D" parent="." unique_id=1041575715 instance=ExtResource("1_m42mc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3100, -1501.6154, -10)
 script = ExtResource("2_xrvg5")
-ID = 16476
+EntityIdString = "36dfe119-b6c6-42c0-96dc-49e345836d7e"
 ObjectType = 711
 ModelName = "mn_quartz"

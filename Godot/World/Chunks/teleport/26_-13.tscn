@@ -13,13 +13,13 @@
 transform = Transform3D(0.63439333, 0, -0.77301043, 0, 1, 0, 0.77301043, 0, 0.63439333, 2686.3523, -159.81972, -1293.5206)
 script = ExtResource("2_s3hmr")
 Angle = 220
-ID = 5189
+EntityIdString = "27471ca2-7a05-43c8-9372-7de5959fbe6c"
 ObjectType = 63
 
 [node name="TournamentTeleport_145D_[2639]_[157]_[1241]_5213" type="Node3D" parent="." unique_id=1382976339 instance=ExtResource("8_mvbqx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2639.0454, -157.3127, -1241.6024)
 script = ExtResource("9_a0lm3")
-ID = 5213
+EntityIdString = "6f275a81-75d9-4dac-9965-14b531e544e5"
 ObjectType = 71
 
 [node name="TeleportWithTarget_1466_[2666]_[159]_[1215]_5222" type="Node3D" parent="." unique_id=1042523267 instance=ExtResource("10_rruda")]
@@ -27,5 +27,5 @@ transform = Transform3D(-0.122410536, 0, -0.99247956, 0, 1, 0, 0.99247956, 0, -0
 script = ExtResource("11_ob8uk")
 SubtypeID = 994
 Angle = 187
-ID = 5222
+EntityIdString = "e915b959-aa73-4d9f-a73b-a0f518a383c8"
 ObjectType = 62

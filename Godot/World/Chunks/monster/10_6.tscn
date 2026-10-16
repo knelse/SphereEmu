@@ -8,4 +8,5 @@
 [node name="MonsterSpawner_A244_[1041]_[171]_[-679]" type="Node3D" parent="." unique_id=1432730225 instance=ExtResource("1_u1fwg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1041.9167, -171.29848, 678.80896)
 script = ExtResource("2_pyvo7")
+EntityId = "01047dbe-8c55-4a10-823f-8ac2fb6cbab8"
 OriginalDisplayName = "MonsterSpawner_A244_[1041]_[171]_[-679]"

@@ -19,11 +19,6 @@ public static class AdminDebugDummyClient
     /// </summary>
     public static bool Enabled = true;
 
-    /// <summary>
-    /// Out of the live-client range so the first real player still gets 0x4F6F.
-    /// </summary>
-    public const ushort ClientId = 0xCDEF;
-
     private const string Login = "knelse1";
     private const string CharacterName = "Test";
 
@@ -81,8 +76,8 @@ public static class AdminDebugDummyClient
         player.Characters[characterIndex] = character;
 
         var client = clientScene.Instantiate<SphereClient> ();
-        ActiveClients.InsertAt (ClientId, client);
-        client.SetupAdminDebugDummy (ClientId);
+        ActiveClients.Insert (client);
+        client.SetupAdminDebugDummy ();
         client.SetPlayerDbEntry (player);
         client.SetSelectedCharacterIndex (characterIndex);
         client.CurrentCharacter?.RecalcCurrentStats ();
@@ -91,7 +86,7 @@ public static class AdminDebugDummyClient
         parent.AddChild (client);
 
         SphLogger.Info (
-            $"AdminDebugDummyClient: spawned {ClientId:X4} as {Login}/{CharacterName} " +
+            $"AdminDebugDummyClient: spawned {client.EntityID} as {Login}/{CharacterName} " +
             $"with {character.Items.Count} item slot(s) (debug only)");
     }
 }

@@ -194,10 +194,7 @@ public partial class DoorsFill : Node3D
 
             instance.ModelName = DoorModelName;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             instance.DoorID = hasTarget ? DoorHasTargetSentinel : doorIdOrSentinel;
             instance.HasTarget = hasTarget;
@@ -307,10 +304,7 @@ public partial class DoorsFill : Node3D
 
             instance.ModelName = DoorModelName;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             instance.DoorID = DoorHasTargetSentinel;
             instance.HasTarget = true;

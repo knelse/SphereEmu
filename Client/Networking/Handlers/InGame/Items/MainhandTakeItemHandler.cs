@@ -9,13 +9,13 @@ using SphServer.Shared.Networking;
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
 // Weapons sit on a hotkey, not a worn slot, and the key press is this frame
-public class MainhandTakeItemHandler (ushort localId, ClientConnection clientConnection)
+public class MainhandTakeItemHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
     {
         // Taking an item in hand arms g_6008, so this ack clears it or the client wedges
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var character = clientConnection.GetSelectedCharacter ();
         if (character is null)
@@ -27,7 +27,7 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
         {
             var frameLength = frame[0] | (frame[1] << 8);
             SphLogger.Debug ($"Main hand: no grammar for a {frameLength}B frame, signature " +
-                            $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2}. Client ID: {localId:X4}");
+                            $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2}. Client ID: {entityId}");
             return;
         }
 
@@ -35,11 +35,11 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
         {
             if (!character.Items.Remove (BelongingSlot.MainHand))
             {
-                SphLogger.Info ($"Hand emptied - nothing was held. Client ID: {localId:X4}");
+                SphLogger.Info ($"Hand emptied - nothing was held. Client ID: {entityId}");
                 return;
             }
 
-            SphLogger.Info ($"Hand emptied ({take.State}). Client ID: {localId:X4}");
+            SphLogger.Info ($"Hand emptied ({take.State}). Client ID: {entityId}");
             Persist (character);
             return;
         }
@@ -47,14 +47,14 @@ public class MainhandTakeItemHandler (ushort localId, ClientConnection clientCon
         var item = DbConnection.Items.FindById ((int) take.ItemId);
         if (item is null)
         {
-            SphLogger.Warning ($"Hand: no item {take.ItemId:X4} in a {take.FrameLength}B frame. " +
-                              $"Client ID: {localId:X4}");
+            SphLogger.Warning ($"Hand: no item {take.ItemId:X} in a {take.FrameLength}B frame. " +
+                              $"Client ID: {entityId}");
             return;
         }
 
         character.PlaceItemInSlot (BelongingSlot.MainHand, item.Id);
         SphLogger.Info ($"Took {item.Localization.GetValueOrDefault (Locale.Russian, "?")} [{item.Id}] " +
-                       $"in hand. Client ID: {localId:X4}");
+                       $"in hand. Client ID: {entityId}");
         Persist (character);
     }
 

@@ -25,7 +25,7 @@ public enum DamageSchool
 /// One damage application request; Amount is post-mitigation, >= 0 (0 == miss, still an event).
 /// </summary>
 public readonly record struct DamageEvent (
-    ushort AttackerId,
+    Guid AttackerId,
     SphereClient? AttackerClient,
     int Amount,
     DamageSchool School,
@@ -124,15 +124,10 @@ public partial class Monster
         var hpAfter = character.CurrentHP - applied;
         character.CurrentHP = (ushort) hpAfter;
         NetworkedStatsUpdater.MarkSent (character, HpCurrent);
-        // Position stream process is the swapped client index
-        var playerProcess = SphBitStream.ByteSwap (character.ClientIndex);
         if (hpAfter <= 0)
         {
-            var killer = target.GetLocalObjectId (ID);
-            // hit_type above 3 is this monster's process on that client
-            var hitType = killer > 3 ? killer : (ushort) 0;
             target.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerReceiveHit (playerProcess, hitType, hpDelta: -100000,
+                CommonPackets.BuildPlayerReceiveHit (target.EntityID, 0, hpDelta: -100000,
                     secondDelta: 0, flags: 7));
             target.SchedulePlayerRespawn ();
         }
@@ -140,9 +135,9 @@ public partial class Monster
         {
             target.MaybeQueueNetworkPacketSend (
                 ChangeCharacterHealthHandler.BuildHealthChangePacket (
-                    character.ClientIndex, character.ClientIndex, -applied, ID));
+                    target.EntityID, target.EntityID, -applied, EntityID));
             target.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerApplyHpDelta (playerProcess, ID, -applied));
+                CommonPackets.BuildPlayerApplyHpDelta (target.EntityID, EntityID, -applied));
         }
 
         target.SaveCharacter ();
@@ -180,8 +175,8 @@ public partial class Monster
     /// </summary>
     protected virtual void OnDamaged (in DamageEvent hit, in DamageOutcome outcome)
     {
-        var clientId = hit.AttackerClient?.localId ?? hit.AttackerId;
-        if (clientId != 0)
+        var clientId = hit.AttackerClient?.EntityID ?? hit.AttackerId;
+        if (clientId != Guid.Empty)
         {
             hitHistory.Record (clientId, hit.School, DateTime.UtcNow);
         }

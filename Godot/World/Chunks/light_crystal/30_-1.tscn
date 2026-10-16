@@ -8,6 +8,6 @@
 [node name="LightCrystalYellow_6598_[3068]_[1501]_[40]_26008" type="Node3D" parent="." unique_id=1918809983 instance=ExtResource("1_v2d8o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3068, -1501.6154, -40)
 script = ExtResource("2_ulfnr")
-ID = 26008
+EntityIdString = "e0cb47f8-2434-402b-9962-85be49efd40c"
 ObjectType = 711
 ModelName = "mn_quartz"

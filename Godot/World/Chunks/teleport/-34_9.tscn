@@ -11,12 +11,12 @@
 transform = Transform3D(0.8819213, 0, 0.4713967, 0, 1, 0, -0.4713967, 0, 0.8819213, -3384.3071, 333.251, 905.53503)
 script = ExtResource("2_dw1wi")
 Angle = 20
-ID = 5229
+EntityIdString = "7be88bd8-5aec-4a70-b6a0-df3533429b96"
 ObjectType = 63
 
 [node name="TeleportWithTarget_1454_[-3320]_[-340]_[-982]_5204" type="Node3D" parent="." unique_id=1311730818 instance=ExtResource("8_1quo6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3319.8884, 339.48486, 981.44855)
 script = ExtResource("9_bj2ca")
 SubtypeID = 993
-ID = 5204
+EntityIdString = "bbe8aeed-9bc5-4276-af20-a74783702199"
 ObjectType = 62

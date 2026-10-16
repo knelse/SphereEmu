@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 using BitStreams;
 using LiteDB;
@@ -38,6 +39,51 @@ public static class BitStreamExtensions
     public static void WriteUInt16 (this BitStream bitStream, ushort val, int countBits)
     {
         bitStream.WriteBits (IntToBits (val, countBits));
+    }
+
+    /// <summary>
+    /// Bytes that sat before the old id, the guid, then the bytes that followed it
+    /// </summary>
+    public static byte[] StitchWithGuid (byte[] before, Guid guid, byte[] after)
+    {
+        var stream = new BitStream (new MemoryStream ());
+        stream.AutoIncreaseStream = true;
+        if (before.Length > 0)
+        {
+            stream.WriteBytes (before, before.Length, true);
+        }
+
+        stream.WriteGuid (guid);
+        if (after.Length > 0)
+        {
+            stream.WriteBytes (after, after.Length, true);
+        }
+
+        while (stream.Bit != 0)
+        {
+            stream.WriteBit (0);
+        }
+
+        return stream.GetStreamData ();
+    }
+
+    public static void WriteGuid (this BitStream bitStream, Guid id)
+    {
+        foreach (var value in id.ToByteArray ())
+        {
+            bitStream.WriteByte (value, 8);
+        }
+    }
+
+    public static Guid ReadGuid (this BitStream bitStream)
+    {
+        var bytes = new byte[16];
+        for (var i = 0; i < bytes.Length; i++)
+        {
+            bytes[i] = (byte) bitStream.ReadUInt16 (8);
+        }
+
+        return new Guid (bytes);
     }
 
     public static uint ReadUInt32 (this BitStream bitStream, int countBits)

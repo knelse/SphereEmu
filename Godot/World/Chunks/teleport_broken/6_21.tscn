@@ -9,5 +9,5 @@
 transform = Transform3D(0.9996988, 0, -0.024541123, 0, 1, 0, 0.024541123, 0, 0.9996988, 657.8389, -159.77977, 2182.4656)
 script = ExtResource("2_dbfcq")
 Angle = 255
-ID = 5120
+EntityIdString = "94da5c3d-1167-4218-b96e-c7028cfe2054"
 ObjectType = 64

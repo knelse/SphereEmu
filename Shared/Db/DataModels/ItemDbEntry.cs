@@ -9,7 +9,7 @@ namespace SphServer.Shared.Db.DataModels;
 
 public class ItemDbEntry
 {
-    [BsonId] public int Id { get; set; }
+    [BsonId] public Guid Id { get; set; }
     public int GameObjectDbId { get; set; }
     public GameObjectKind ObjectKind { get; set; }
     public int GameId { get; set; }
@@ -83,7 +83,7 @@ public class ItemDbEntry
     public int ItemCount { get; set; }
     public Dictionary<Locale, string> Localization { get; set; } = new ();
     public int CurrentDurability { get; set; }
-    public int? ParentContainerId { get; set; }
+    public Guid? ParentContainerId { get; set; }
     public Dictionary<string, object> ContentsData { get; set; } = new ();
     public Guild RequiredGuild { get; set; }
     public int RequiredGuildRankMinusOne { get; set; }
@@ -164,7 +164,7 @@ public class ItemDbEntry
 
         if (insertIntoItemCollection)
         {
-            item.Id = WorldObjectIndex.NewItem ();
+            item.Id = Guid.NewGuid ();
             DbConnection.Items.Insert (item.Id, item);
         }
 

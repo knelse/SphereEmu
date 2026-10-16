@@ -15,16 +15,16 @@ public partial class TeleportDestinationWindow : Window
     private ItemList? poiTypeList;
     private ItemList? nameList;
     private Button? teleportButton;
-    private ushort? targetClientId;
+    private Guid? targetClientId;
 
     private readonly List<Continents> continents = [];
     private readonly List<PoiType> poiTypes = [];
     private readonly List<(string Name, WorldCoords Coords)> destinations = [];
 
-    public void OpenForClient (ushort clientId)
+    public void OpenForClient (Guid clientId)
     {
         targetClientId = clientId;
-        Title = $"Teleport — client {clientId:X4}";
+        Title = $"Teleport — client {clientId}";
         if (!Visible)
         {
             PopupCentered ();

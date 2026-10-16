@@ -14,7 +14,7 @@ NpcType = 17
 VendorItemTierMin = 1
 VendorItemTierMax = 15
 Angle = 82
-ID = 4176
+EntityIdString = "c2ede45b-3cfc-4996-b186-ffc1d7f7056e"
 ObjectType = 225
 ModelName = "npc29d"
 
@@ -26,6 +26,6 @@ IconName = "npc_trade_magic"
 NpcType = 13
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5134
+EntityIdString = "f375c2e7-f9a7-41e8-97a3-a27f5d0b23c2"
 ObjectType = 205
 ModelName = "npc07"

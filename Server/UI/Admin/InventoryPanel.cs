@@ -58,7 +58,7 @@ public partial class InventoryPanel : PanelContainer
         (new (162, 104, 34, 33), BelongingSlot.Inventory_10),
     ];
 
-    private ushort? selectedClientId;
+    private Guid? selectedClientId;
     private ItemDetailsPopupHost? popupHost;
     private AdminSlotItemTools? itemTools;
     private LineEdit? moneyEdit;
@@ -67,7 +67,7 @@ public partial class InventoryPanel : PanelContainer
     private readonly Dictionary<BelongingSlot, Control> slotPanels = new ();
     private readonly Dictionary<BelongingSlot, TextureRect> slotIcons = new ();
     private readonly Dictionary<BelongingSlot, ColorRect> slotUnmetBgs = new ();
-    private readonly Dictionary<BelongingSlot, int?> lastItemIds = new ();
+    private readonly Dictionary<BelongingSlot, Guid?> lastItemIds = new ();
     private readonly Dictionary<BelongingSlot, bool> lastUnmet = new ();
 
     private static readonly Color UnmetSlotBg = new (0.72f, 0.08f, 0.08f, 0.55f);
@@ -188,7 +188,7 @@ public partial class InventoryPanel : PanelContainer
         ClientStateEvents.RosterChanged -= OnRosterChanged;
     }
 
-    private void OnCharacterChanged (ushort clientId)
+    private void OnCharacterChanged (Guid clientId)
     {
         if (selectedClientId == clientId)
         {
@@ -340,9 +340,9 @@ public partial class InventoryPanel : PanelContainer
         hit.AcceptEvent ();
     }
 
-    private bool TryGetSlotItemId (BelongingSlot slot, out int itemId)
+    private bool TryGetSlotItemId (BelongingSlot slot, out Guid itemId)
     {
-        itemId = 0;
+        itemId = Guid.Empty;
         var character = selectedClientId is null
             ? null
             : ActiveClients.Get (selectedClientId.Value)?.CurrentCharacter;
@@ -367,7 +367,7 @@ public partial class InventoryPanel : PanelContainer
             OffsetBottom = -1
         };
 
-    public void SetSelectedClient (ushort? clientId)
+    public void SetSelectedClient (Guid? clientId)
     {
         selectedClientId = clientId;
         lastItemIds.Clear ();
@@ -490,7 +490,7 @@ public partial class InventoryPanel : PanelContainer
     {
         foreach (var (slot, icon) in slotIcons)
         {
-            int? itemId = null;
+            Guid? itemId = null;
             if (character is not null && character.Items.TryGetValue (slot, out var id))
             {
                 itemId = id;

@@ -10,7 +10,7 @@ namespace SphServer.Server.UI.Admin;
 public partial class AdminItemSlot : Control
 {
     public BelongingSlot Slot { get; set; }
-    public Func<ushort?>? GetClientId { get; set; }
+    public Func<Guid?>? GetClientId { get; set; }
     public ItemDetailsPopupHost? PopupHost { get; set; }
     public TextureRect? Icon { get; set; }
     public event Action<BelongingSlot, Vector2>? ContextRequested;
@@ -73,9 +73,9 @@ public partial class AdminItemSlot : Control
 
         return new global::Godot.Collections.Dictionary
         {
-            { "clientId", (int) clientId },
+            { "clientId", clientId.ToString () },
             { "fromSlot", (int) Slot },
-            { "itemId", itemId }
+            { "itemId", itemId.ToString () }
         };
     }
 
@@ -99,9 +99,9 @@ public partial class AdminItemSlot : Control
         AdminClientActions.TryMoveOrSwapItem (clientId, from, Slot);
     }
 
-    private static bool TryReadPayload (Variant data, out ushort clientId, out BelongingSlot from)
+    private static bool TryReadPayload (Variant data, out Guid clientId, out BelongingSlot from)
     {
-        clientId = 0;
+        clientId = Guid.Empty;
         from = BelongingSlot.Unknown;
         if (data.VariantType != Variant.Type.Dictionary)
         {
@@ -114,7 +114,10 @@ public partial class AdminItemSlot : Control
             return false;
         }
 
-        clientId = (ushort) dict["clientId"].AsInt32 ();
+        if (!Guid.TryParse (dict["clientId"].AsString (), out clientId))
+        {
+            return false;
+        }
         from = (BelongingSlot) dict["fromSlot"].AsInt32 ();
         return true;
     }

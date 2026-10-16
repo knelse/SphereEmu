@@ -42,7 +42,7 @@ public partial class Monster
         }
 
         SphLogger.Info (
-            $"Monster {Name} [{ID:X4}] killed by {hit.AttackerId:X4}, awarded {xpAwarded} {xpKind} XP " +
+            $"Monster {Name} [{EntityID}] killed by {hit.AttackerId}, awarded {xpAwarded} {xpKind} XP " +
             $"(phys={credit.PhysicalHits} magic={credit.MagicalHits} clients={credit.ClientCount}" +
             (character is null ? ")" : $", karma {character.KarmaCount} {character.Karma})."));
 
@@ -60,7 +60,7 @@ public partial class Monster
     /// entity_killed lets the client apply the killing blow, then a soft despawn so the anim can
     /// start
     /// </summary>
-    private void PerformDeath (ushort killerGlobalId)
+    private void PerformDeath (Guid killerEntityId)
     {
         if (_deathStarted)
         {
@@ -73,7 +73,7 @@ public partial class Monster
         // the death.
         SetPhysicsProcess (false);
 
-        BroadcastDeathSignalToVisibleClients (killerGlobalId);
+        BroadcastDeathSignalToVisibleClients (killerEntityId);
         Callable.From (FinishDespawn).CallDeferred ();
     }
 

@@ -111,7 +111,7 @@ public partial class WorldObject
             return;
         }
 
-        client.MaybeQueueNetworkPacketSend (CommonPackets.DespawnEntity (client.GetLocalObjectId (ID)));
+        client.MaybeQueueNetworkPacketSend (CommonPackets.DespawnEntity (EntityID));
     }
 
     private void FlushVisibilityOverlapsDeferred ()
@@ -186,7 +186,7 @@ public partial class WorldObject
                 continue;
             }
 
-            var entityId = client.GetLocalObjectId (ID);
+            var entityId = client.GetLocalObjectId (EntityID);
             for (var i = 0; i < sendCount; i++)
             {
                 client.EnqueueClientEvent (

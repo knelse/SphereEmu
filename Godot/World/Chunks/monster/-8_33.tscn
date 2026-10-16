@@ -8,11 +8,13 @@
 [node name="MonsterSpawner_08B6_[-761]_[1698]_[-3346]" type="Node3D" parent="." unique_id=1654307600 instance=ExtResource("1_c4cpf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -760.37695, -1698.6908, 3345.1726)
 script = ExtResource("2_4xvi6")
+EntityId = "08b28932-181e-4291-8095-882b4093cc5f"
 SpawnRadiusMeters = 4.0
 OriginalDisplayName = "MonsterSpawner_08B6_[-761]_[1698]_[-3346]"
 
 [node name="MonsterSpawner_08B7_[-701]_[1699]_[-3344]" type="Node3D" parent="." unique_id=1191181257 instance=ExtResource("1_c4cpf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -700.1904, -1699.2334, 3343.4746)
 script = ExtResource("2_4xvi6")
+EntityId = "597267ad-0bcb-4dab-95d1-8b0feb038dd4"
 SpawnRadiusMeters = 4.0
 OriginalDisplayName = "MonsterSpawner_08B7_[-701]_[1699]_[-3344]"

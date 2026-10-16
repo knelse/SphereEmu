@@ -9,6 +9,6 @@
 transform = Transform3D(0.40524107, 0, -0.9142098, 0, 1, 0, 0.9142098, 0, 0.40524107, 1063.5376, -408.64087, -2210.7239)
 script = ExtResource("2_i7fq3")
 Angle = 209
-ID = 4589
+EntityIdString = "66582bff-d718-4f12-8ccb-dcf649898d91"
 ObjectType = 65
 ModelName = "edoor"

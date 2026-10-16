@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SphServer.Helpers.Networking;
@@ -248,8 +248,8 @@ public static class ClientPacketClassifier
 
         switch (declaredLength)
         {
-            case 0x13 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23 &&
-                           frame.Length > 16 && frame[16] == 0x23:
+            case 0x21 when frame.Length > 30 && frame[27] == 0x08 && frame[28] == 0x40 &&
+                           frame[29] == 0x23 && frame[30] == 0x23:
                 return Result (ClientPacketEvent.GroupAction, 1.0, "handler signature 08 40 23", true);
 
             case 0x16 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23:

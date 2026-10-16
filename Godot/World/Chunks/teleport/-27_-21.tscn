@@ -11,7 +11,7 @@
 transform = Transform3D(0.7730105, 0, 0.6343933, 0, 1, 0, -0.6343933, 0, 0.7730105, -2673.6843, -405.0407, -2047.1001)
 script = ExtResource("2_ecbye")
 Angle = 28
-ID = 5191
+EntityIdString = "16eb1e31-f97f-4e96-9074-0f8a2f539aae"
 ObjectType = 63
 
 [node name="TeleportWithTarget_145A_[-2620]_[406]_[2059]_5210" type="Node3D" parent="." unique_id=752230768 instance=ExtResource("8_4i2t6")]
@@ -19,5 +19,5 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -261
 script = ExtResource("9_mxe6s")
 SubtypeID = 981
 Angle = 128
-ID = 5210
+EntityIdString = "61969837-c400-4a7d-ad57-d4c694ea8bcd"
 ObjectType = 62

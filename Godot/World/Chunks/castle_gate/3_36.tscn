@@ -11,6 +11,6 @@ script = ExtResource("2_qwcen")
 Castle = 16
 ClanName = "Зеленый Слоник"
 Angle = 149
-ID = 4113
+EntityIdString = "9608344a-037f-4614-a548-c6c79a269094"
 ObjectType = 81
 ModelName = "cc103"

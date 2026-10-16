@@ -8,6 +8,7 @@
 [node name="MonsterSpawner_B1F4_[-1742]_[549]_[3722]" type="Node3D" parent="." unique_id=1856358526 instance=ExtResource("1_pm5wh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1741.4009, -549.69763, -3722.5342)
 script = ExtResource("2_11a6d")
+EntityId = "4503cc80-53b0-4da6-8636-471f7351a36f"
 SpawnRadiusMeters = 4.0
 OriginalDisplayName = "MonsterSpawner_B1F4_[-1742]_[549]_[3722]"
 RegularMonsterMinLevel = 59

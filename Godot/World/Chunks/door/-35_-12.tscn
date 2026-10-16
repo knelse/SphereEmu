@@ -10,7 +10,7 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -346
 script = ExtResource("2_jra7b")
 DoorID = 5415
 Angle = 64
-ID = 996
+EntityIdString = "c08c6f3d-1f47-457f-83fd-92e11e544ccc"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -22,6 +22,6 @@ HasTarget = true
 TargetX = 2901.1458
 TargetY = 1701.1327
 TargetZ = -3499.9456
-ID = 521
+EntityIdString = "4f0b5d17-fa1b-455a-a2a3-fd0004bffe17"
 ObjectType = 60
 ModelName = "edoor"

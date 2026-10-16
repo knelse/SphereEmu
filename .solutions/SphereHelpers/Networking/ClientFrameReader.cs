@@ -13,7 +13,7 @@ public enum FrameReadResult
     Desynced
 }
 
-/// Holds leftover TCP bytes until a length-prefixed frame is complete
+/// Holds leftover bytes until a length-prefixed frame is complete
 public sealed class ClientFrameReader
 {
     /// Stall guard on a nonsense length; the checksum decides a real frame

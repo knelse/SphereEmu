@@ -88,10 +88,7 @@ public partial class CastleTeleportsFill : Node3D
             instance.Position = localPos;
             instance.Castle = castle;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             instance.ObjectType = ObjectType.Castle_Teleport;
 

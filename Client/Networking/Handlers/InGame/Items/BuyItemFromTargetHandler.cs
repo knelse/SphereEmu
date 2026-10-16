@@ -12,12 +12,12 @@ public class BuyItemFromTargetHandler
         // var slotId = (byte) packet.SlotId;
         // var clientId = packet.Header.ClientId;
         //
-        // var vendorGlobalId = GetGlobalObjectId((ushort) packet.VendorId);
-        // var vendor = DbConnectionProvider.VendorCollection.FindById(vendorGlobalId);
+        // var vendorEntityId = GetGlobalObjectId((ushort) packet.VendorId);
+        // var vendor = DbConnectionProvider.VendorCollection.FindById(vendorEntityId);
         //
         // if (vendor is null)
         // {
-        //     Console.WriteLine($"Unknown vendor [{vendorGlobalId}]");
+        //     Console.WriteLine($"Unknown vendor [{vendorEntityId}]");
         //     return;
         // }
         //
@@ -25,7 +25,7 @@ public class BuyItemFromTargetHandler
         //
         // if (item is null)
         // {
-        //     Console.WriteLine($"Vendor [{vendorGlobalId}] has nothing in slot [{slotId}]");
+        //     Console.WriteLine($"Vendor [{vendorEntityId}] has nothing in slot [{slotId}]");
         //     return;
         // }
         //
@@ -33,7 +33,7 @@ public class BuyItemFromTargetHandler
         //
         // Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {localization} " +
         //                   $"({packet.Quantity}) {packet.CostPerOne}t ea " +
-        //                   $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
+        //                   $"from {vendor.Name} {vendor.FamilyName} {vendorEntityId}");
         //
         // var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
         //
@@ -52,7 +52,7 @@ public class BuyItemFromTargetHandler
         //
         // var clone = Item.Clone(item);
         // clone.ItemCount = (int) packet.Quantity;
-        // clone.ParentContainerId = LocalId;
+        // clone.ParentContainerId = entityId;
         //
         // var characterUpdateStream = SphBitStream.GetWriteBitStream();
         //
@@ -62,7 +62,7 @@ public class BuyItemFromTargetHandler
         // characterUpdateStream.WriteBytes(
         //     new byte[]
         //     {
-        // 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08,
+        // 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(entityId), MinorByte(entityId), 0x08,
         // 0x40, 0x41, 0x10
         //     }, 13, true);
         // characterUpdateStream.WriteBit(0);
@@ -91,7 +91,7 @@ public class BuyItemFromTargetHandler
         // var characterUpdateResult = characterUpdateStream.GetStreamData();
         // clientConnection.MaybeQueueNetworkPacketSend(characterUpdateResult);
         //
-        // var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
+        // var buyResult = Packet.ItemsToPacket(entityId, clientId, new List<Item> { clone });
         // // buyResult[^1] = 0;
         // clientConnection.MaybeQueueNetworkPacketSend(buyResult);
     }

@@ -10,6 +10,6 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -309
 script = ExtResource("2_lqt0h")
 Castle = 23
 Angle = 64
-ID = 3102
+EntityIdString = "f52ce960-66ac-45d0-bed5-e7a835f77080"
 ObjectType = 82
 ModelName = "cs_chest"

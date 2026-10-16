@@ -1,4 +1,3 @@
-using System.Net.Sockets;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
@@ -6,6 +5,7 @@ using SphServer.Godot.Scripts.Terrain;
 using SphServer.Godot.Scripts.World;
 using SphServer.Server.Config;
 using SphServer.Server.Debug;
+using SphServer.Server.Login.Secure;
 using SphServer.Server.Handlers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
@@ -16,13 +16,12 @@ namespace SphServer.Server;
 // ReSharper disable once ClassNeverInstantiated.Global
 public partial class SphereServer : Node
 {
-	private static TcpServer tcpServer = null!;
-
 	private static readonly PackedScene ClientScene =
 		(PackedScene) ResourceLoader.Load ("res://Godot/Scenes/Client.tscn");
 
 	public static SphereServer ServerNode = null!;
 	private ConnectionHandler connectionHandler = null!;
+	private SecureLoginServer? secureLogin;
 	private WorldChunkStreamer? worldChunkStreamer;
 	private TerrainGroundStreamer? terrainGroundStreamer;
 
@@ -48,7 +47,7 @@ public partial class SphereServer : Node
 		BalanceConfig.PreloadAll ();
 		InitializeCollections ();
 
-		SetupTcpServer ();
+		BitStreamExtensions.RegisterBsonMapperForBit ();
 		ServerNode = this;
 
 		worldChunkStreamer = GetNodeOrNull<WorldChunkStreamer> ("WorldChunkStreamer");
@@ -68,6 +67,7 @@ public partial class SphereServer : Node
 		AddChild (new MonsterSpawnerActivationManagerNode ());
 
 		connectionHandler = new ConnectionHandler (ClientScene, this);
+		StartSecureLogin ();
 
 		// TEMP: admin UI dummy — delete AdminDebugDummyClient.cs + this call to remove.
 		AdminDebugDummyClient.TrySpawn (this, ClientScene);
@@ -75,25 +75,17 @@ public partial class SphereServer : Node
 		SphLogger.Info ("Server up, waiting for connections...");
 	}
 
-	public override void _Process (double delta)
+	public override void _PhysicsProcess (double delta)
 	{
 		if (MonsterSpawnSlotHeadlessBake.IsActive
 			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
 			|| WorldChunkSplitHeadless.IsActive
-			|| TerrainGroundPackHeadless.IsActive
-			|| tcpServer is null)
+			|| TerrainGroundPackHeadless.IsActive)
 		{
 			return;
 		}
 
-		if (!tcpServer.IsConnectionAvailable ())
-		{
-			return;
-		}
-
-		var streamPeer = tcpServer.TakeConnection ();
-
-		connectionHandler.Handle (streamPeer);
+		secureLogin?.Poll ();
 	}
 
 	private TerrainGroundStreamer? FindTerrainGroundStreamer ()
@@ -155,21 +147,22 @@ public partial class SphereServer : Node
 		SphLogger.Info ("Saved connected characters and closed the database");
 	}
 
-	private static void SetupTcpServer ()
+	private void StartSecureLogin ()
 	{
-		var port = ServerConfig.AppConfig.Port;
-
-		tcpServer = new TcpServer ();
-		BitStreamExtensions.RegisterBsonMapperForBit ();
-
-		try
+		var gamePort = ServerConfig.AppConfig.Port;
+		var udpPort = ServerConfig.AppConfig.UdpPort;
+		if (udpPort == 0 && gamePort > 65533)
 		{
-			tcpServer.Listen (port);
-			SphLogger.Info ($"TCP server listening on port {port}");
+			SphLogger.Error ($"Game port {gamePort} leaves no room for the UDP port");
+			return;
 		}
-		catch (SocketException se)
+
+		if (udpPort == 0)
 		{
-			SphLogger.Error ($"Failed to start TCP server on port {port}", se);
+			udpPort = (ushort) (gamePort + 2);
 		}
+
+		secureLogin = new SecureLoginServer (connectionHandler);
+		secureLogin.Start (udpPort);
 	}
 }

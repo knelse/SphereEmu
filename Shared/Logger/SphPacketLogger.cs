@@ -34,17 +34,17 @@ public static class SphPacketLogger
         }
     }
 
-    public static void LogIncoming (ushort clientId, byte[] packet)
+    public static void LogIncoming (Guid clientId, byte[] packet)
     {
         Log ("IN", clientId, packet);
     }
 
-    public static void LogOutgoing (ushort clientId, byte[] packet)
+    public static void LogOutgoing (Guid clientId, byte[] packet)
     {
         Log ("OUT", clientId, packet);
     }
 
-    private static void Log (string direction, ushort clientId, byte[] packet)
+    private static void Log (string direction, Guid clientId, byte[] packet)
     {
         if (!initialized || packet.Length == 0)
         {
@@ -53,7 +53,7 @@ public static class SphPacketLogger
 
         var timestamp = DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss.fff");
         var hex = Convert.ToHexString (packet);
-        var logMessage = $"[{timestamp}] [{direction}] CLI {clientId:X4} {hex}";
+        var logMessage = $"[{timestamp}] [{direction}] CLI {clientId} {hex}";
 
         lock (lockObject)
         {

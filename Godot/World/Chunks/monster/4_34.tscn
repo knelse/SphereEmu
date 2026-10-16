@@ -8,6 +8,7 @@
 [node name="MonsterSpawner_91D2_[412]_[156]_[-3451]" type="Node3D" parent="." unique_id=493526877 instance=ExtResource("1_pbd4g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 412.4646, -156.76997, 3450.0854)
 script = ExtResource("2_wylgi")
+EntityId = "3829789d-6507-4b1c-9d47-44b04b6e7c26"
 OriginalDisplayName = "MonsterSpawner_91D2_[412]_[156]_[-3451]"
 RegularMonsterMinLevel = 48
 RegularMonsterMaxLevel = 54
@@ -17,6 +18,7 @@ NamedMonsterMaxLevel = 54
 [node name="MonsterSpawner_0234_[488]_[1699]_[-3485]" type="Node3D" parent="." unique_id=264621676 instance=ExtResource("1_pbd4g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 488.3013, -1699.2649, 3484.001)
 script = ExtResource("2_wylgi")
+EntityId = "27a53eb7-39c7-4b15-b874-9d3c50ba4a6e"
 SpawnRadiusMeters = 4.0
 OriginalDisplayName = "MonsterSpawner_0234_[488]_[1699]_[-3485]"
 RegularMonsterMinLevel = 15
@@ -27,6 +29,7 @@ NamedMonsterMaxLevel = 15
 [node name="MonsterSpawner_0231_[469]_[1699]_[-3470]" type="Node3D" parent="." unique_id=1688589109 instance=ExtResource("1_pbd4g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 469.86414, -1699.2649, 3469.8313)
 script = ExtResource("2_wylgi")
+EntityId = "5c7a7b5e-d8a4-4932-afeb-56d9a38941d4"
 SpawnRadiusMeters = 4.0
 OriginalDisplayName = "MonsterSpawner_0231_[469]_[1699]_[-3470]"
 RegularMonsterMinLevel = 15

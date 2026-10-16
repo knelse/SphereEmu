@@ -84,10 +84,7 @@ public partial class TeleportWildFill : Node3D
             instance.Name = WorldObjectDumpFillCommon.BuildPlacementName ("TeleportWild", id, x, y, z);
             instance.Position = new Vector3 ((float) x, -(float) y, -(float) z);
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
 
             instance.ObjectType = ObjectType.Teleport_Wild;
 

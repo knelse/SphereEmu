@@ -9,14 +9,14 @@
 transform = Transform3D(0.9996988, 0, 0.024541229, 0, 1, 0, -0.024541229, 0, 0.9996988, -3722.9688, -1292.6166, 1840.0995)
 script = ExtResource("2_0wegd")
 Angle = 1
-ID = 56175
+EntityIdString = "fd388f8d-ce9f-4568-860b-aaae6123b0cf"
 ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_D687_[-3732]_[1302]_[-1875]_54919" type="Node3D" parent="." unique_id=662693006 instance=ExtResource("1_v7ec4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3731.6829, -1302.6187, 1874.1917)
 script = ExtResource("2_0wegd")
-ID = 54919
+EntityIdString = "f63dd091-a11f-4792-a4e6-bd2e6a35abf7"
 ObjectType = 711
 ModelName = "mn_quartz"
 
@@ -24,14 +24,14 @@ ModelName = "mn_quartz"
 transform = Transform3D(0.9891765, 0, 0.14673047, 0, 1, 0, -0.14673047, 0, 0.9891765, -3704.348, -1292.2878, 1884.8511)
 script = ExtResource("2_0wegd")
 Angle = 6
-ID = 54916
+EntityIdString = "97f10c79-1f16-4735-b713-4e8042ac88c0"
 ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_D67A_[-3745]_[1302]_[-1882]_54906" type="Node3D" parent="." unique_id=239689812 instance=ExtResource("1_v7ec4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3744.271, -1302.6206, 1881.8956)
 script = ExtResource("2_0wegd")
-ID = 54906
+EntityIdString = "cd0c9870-d381-4898-a562-8ed8a371de9f"
 ObjectType = 711
 ModelName = "mn_quartz"
 
@@ -39,7 +39,7 @@ ModelName = "mn_quartz"
 transform = Transform3D(0.19509035, 0, 0.98078525, 0, 1, 0, -0.98078525, 0, 0.19509035, -3710.4075, -1292.326, 1855.6035)
 script = ExtResource("2_0wegd")
 Angle = 56
-ID = 54921
+EntityIdString = "a818996f-e533-473f-983a-51d4c59c1dff"
 ObjectType = 711
 ModelName = "mn_quartz"
 
@@ -47,7 +47,7 @@ ModelName = "mn_quartz"
 transform = Transform3D(0.99729043, 0, 0.07356457, 0, 1, 0, -0.07356457, 0, 0.99729043, -3726.7817, -1292.1844, 1868.465)
 script = ExtResource("2_0wegd")
 Angle = 3
-ID = 54920
+EntityIdString = "71bc2564-2d93-4e8b-96ed-714e4b36e2bf"
 ObjectType = 711
 ModelName = "mn_quartz"
 
@@ -55,14 +55,14 @@ ModelName = "mn_quartz"
 transform = Transform3D(0.9329928, 0, 0.35989505, 0, 1, 0, -0.35989505, 0, 0.9329928, -3704.2969, -1292.2878, 1884.8511)
 script = ExtResource("2_0wegd")
 Angle = 15
-ID = 34917
+EntityIdString = "80a26846-5d33-48a3-8e7c-277494a10305"
 ObjectType = 711
 ModelName = "mn_quartz"
 
 [node name="LightCrystalYellow_89E4_[-3747]_[1292]_[-1867]_35300" type="Node3D" parent="." unique_id=145510209 instance=ExtResource("1_v7ec4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3746.3132, -1292.6116, 1866.0911)
 script = ExtResource("2_0wegd")
-ID = 35300
+EntityIdString = "02074a8a-8f55-4f96-9c50-1aaf2ac580fa"
 ObjectType = 711
 ModelName = "mn_quartz"
 
@@ -70,6 +70,6 @@ ModelName = "mn_quartz"
 transform = Transform3D(0.96377605, 0, -0.26671287, 0, 1, 0, 0.26671287, 0, 0.96377605, -3703.6992, -1292.1764, 1884.8511)
 script = ExtResource("2_0wegd")
 Angle = 245
-ID = 50797
+EntityIdString = "ea99f10a-c115-4d18-abb8-49bcb94da8d0"
 ObjectType = 711
 ModelName = "mn_quartz"

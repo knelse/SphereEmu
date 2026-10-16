@@ -23,6 +23,7 @@ using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
 using SphServer.Godot.Scripts.Objects.HelperGizmos;
 using SphServer.Godot.Scripts.World;
@@ -30,9 +31,10 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking;
 
-public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, SphereClient sphereClient)
+public class ClientConnection (SphereClient sphereClient)
 {
-    public ushort LocalId => localId;
+    private bool secureResume;
+    private Action<byte[]>? beforeGameSend;
 
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
     private ChangeStatsHandler? changeStatsHandler;
@@ -113,7 +115,6 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             // keepalive always happens - it's time-based instead of client input based
             await pingHandler!.Keepalive (delta);
             clientChatHandler?.FlushPendingReply ();
-            ReadFrames ();
 
             while (pendingFrames.Count > 0)
             {
@@ -123,7 +124,6 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
         else
         {
-            ReadFrames ();
             await currentHandler!.Handle (pendingFrames.Count > 0 ? pendingFrames.Dequeue () : [], delta);
         }
     }
@@ -140,7 +140,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
                     $"C->S unrouted {frame.Length}B frame, signature " +
                     $"{frame[13]:X2} {frame[14]:X2} {frame[15]:X2} ({classification.Reason}): " +
                     // Identifying fields sit past the head, so the log keeps the whole frame
-                    $"{Convert.ToHexString (frame)}. Client ID: {localId:X4}");
+                    $"{Convert.ToHexString (frame)}. Client ID: {sphereClient.EntityID}");
             }
 
             return;
@@ -214,37 +214,37 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     private void InitHandlers ()
     {
-        currentHandler ??= new HandshakeHandler (localId, this);
-        pingHandler ??= new (streamPeerTcp, localId, this);
-        npcInteractionHandler ??= new (localId);
+        currentHandler ??= new HandshakeHandler (sphereClient.EntityID, this);
+        pingHandler ??= new (sphereClient.EntityID, this);
+        npcInteractionHandler ??= new (sphereClient.EntityID);
         clanActionsHandler ??= new ();
         groupActionsHandler ??= new (this);
-        openLootContainerHandler ??= new (localId, this);
+        openLootContainerHandler ??= new (sphereClient.EntityID, this);
         clientChatHandler ??= new (this);
-        pickupItemHandler ??= new (localId, this);
-        dragItemOnGroundHandler ??= new (localId, this);
-        moveItemHandler ??= new (localId, this);
-        useItemHandler ??= new (localId, this);
+        pickupItemHandler ??= new (sphereClient.EntityID, this);
+        dragItemOnGroundHandler ??= new (sphereClient.EntityID, this);
+        moveItemHandler ??= new (sphereClient.EntityID, this);
+        useItemHandler ??= new (sphereClient.EntityID, this);
         dropItemToGroundHandler ??= new ();
-        mainhandTakeItemHandler ??= new (localId, this);
-        swapItemHandler ??= new (localId, this);
+        mainhandTakeItemHandler ??= new (sphereClient.EntityID, this);
+        swapItemHandler ??= new (sphereClient.EntityID, this);
         buyItemFromTargetHandler ??= new ();
-        damageTargetHandler ??= new (localId, this);
+        damageTargetHandler ??= new (sphereClient.EntityID, this);
         moveObjectForClientHandler ??= new (this);
-        changeStatsHandler ??= new (localId, this);
+        changeStatsHandler ??= new (sphereClient.EntityID, this);
     }
 
     public void MoveToNextBeforeGameStage ()
     {
         SphLogger.Info (
-            $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {localId:X4}");
+            $"Client moved from state: {sphereClient.ClientStateManager.CurrentState}. Client ID: {sphereClient.EntityID}");
         sphereClient.ClientStateManager.Transition ();
         currentHandler =
-            BeforeGameHandlers.GetHandlerForState (sphereClient.ClientStateManager.CurrentState, localId,
+            BeforeGameHandlers.GetHandlerForState (sphereClient.ClientStateManager.CurrentState, sphereClient.EntityID,
                 this);
         var handlerNameStr = currentHandler?.ToString () ?? "{none}";
         SphLogger.Info (
-            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {handlerNameStr}. Client ID: {localId:X4}");
+            $"New state: {sphereClient.ClientStateManager.CurrentState}. New handler: {handlerNameStr}. Client ID: {sphereClient.EntityID}");
     }
 
     public void Close ()
@@ -252,18 +252,27 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         sphereClient.RemoveClient ();
     }
 
-    /// <summary>
-    /// TCP has no message boundaries, so one read can split a frame or carry several
-    /// </summary>
-    private void ReadFrames ()
+    public void BindBeforeGameUdp (Action<byte[]> send)
     {
-        var temp = streamPeerTcp.GetPartialData (ServerConfig.AppConfig.ReceiveBufferSize);
-        var incoming = (byte[]?) temp[1];
-        if (incoming is { Length: > 0 })
+        beforeGameSend = send;
+    }
+
+    public void FeedBeforeGame (byte[] bytes)
+    {
+        if (bytes.Length == 0)
         {
-            frameReader.Append (incoming);
+            return;
         }
 
+        frameReader.Append (bytes);
+        DrainFrames ();
+    }
+
+    /// <summary>
+    /// One datagram can carry several frames, and the reader still splits on the length prefix
+    /// </summary>
+    private void DrainFrames ()
+    {
         while (true)
         {
             var result = frameReader.TryTake (out var frame);
@@ -278,7 +287,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
                 SphLogger.Error (
                     $"Lost the frame boundary: {frameReader.DesyncReason}. " +
                     $"{frameReader.Pending} bytes held, {pendingFrames.Count} frames read first. " +
-                    $"Closing. Client ID: {localId:X4}");
+                    $"Closing. Client ID: {sphereClient.EntityID}");
                 Close ();
 
                 // Frames already read stay valid, but this connection is closing
@@ -286,13 +295,13 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
                 return;
             }
 
-            SphPacketLogger.LogIncoming (localId, frame);
+            SphPacketLogger.LogIncoming (sphereClient.EntityID, frame);
             if (TryHandleTransportFrame (frame))
             {
                 continue;
             }
 
-            pendingFrames.Enqueue (ShouldDecodeClientSubpacket (frame, localId)
+            pendingFrames.Enqueue (ShouldDecodeClientSubpacket (frame, sphereClient.EntityID)
                 ? Packet.DecodeClientPacket (frame)
                 : frame);
         }
@@ -303,14 +312,40 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         sphereClient.SetPlayerDbEntry (entry);
     }
 
+    public void ArmResume ()
+    {
+        secureResume = true;
+    }
+
+    public bool IsSecureResume => secureResume;
+
+    public void SendResumeCharacterList ()
+    {
+        MaybeScheduleNetworkPacketSend (CommonPackets.ServerCredentials (sphereClient.EntityID));
+        MaybeScheduleNetworkPacketSend (CommonPackets.CharacterSelectStartData (sphereClient.EntityID));
+        var player = sphereClient.PlayerAccount;
+        if (player is null)
+        {
+            return;
+        }
+
+        MaybeScheduleNetworkPacketSend (new PlayerDbEntrySerializer (player).ToInitialDataByteArray (sphereClient.EntityID));
+    }
+
+    public void EnterCharacterSelect ()
+    {
+        sphereClient.ClientStateManager.EnterCharacterSelect ();
+        currentHandler = new CharacterSelectHandler (sphereClient.EntityID, this);
+    }
+
     public void SaveSelectedCharacter ()
     {
         sphereClient.SaveCharacter ();
     }
 
-    public void DeletePlayerCharacter (int index)
+    public bool DeletePlayerCharacter (int index)
     {
-        sphereClient.DeletePlayerCharacter (index);
+        return sphereClient.DeletePlayerCharacter (index);
     }
 
     public void CreatePlayerCharacter (CharacterDbEntry newCharacter, int index)
@@ -335,8 +370,8 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public void SendPacket (byte[] packet)
     {
-        SphPacketLogger.LogOutgoing (localId, packet);
-        streamPeerTcp.PutData (packet);
+        SphPacketLogger.LogOutgoing (sphereClient.EntityID, packet);
+        beforeGameSend?.Invoke (packet);
     }
 
     public void MaybeScheduleNetworkPacketSend (byte[] packet)
@@ -373,8 +408,8 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             return;
         }
 
-        MutatorHandler.SendSpecialMutator (this, localId, SpecialMutator.Прыг_х4, BelongingSlot.Mutator_1);
-        MutatorHandler.SendSpecialMutator (this, localId, SpecialMutator.СХ, BelongingSlot.Mutator_2);
+        MutatorHandler.SendSpecialMutator (this, sphereClient.EntityID, SpecialMutator.Прыг_х4, BelongingSlot.Mutator_1);
+        MutatorHandler.SendSpecialMutator (this, sphereClient.EntityID, SpecialMutator.СХ, BelongingSlot.Mutator_2);
         starterMutatorSent = true;
     }
 
@@ -385,57 +420,46 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public Task HandleTakeMainhand (byte[] frame, double delta)
     {
-        mainhandTakeItemHandler ??= new (localId, this);
+        mainhandTakeItemHandler ??= new (sphereClient.EntityID, this);
         return mainhandTakeItemHandler.Handle (frame, delta);
     }
 
-    private static bool ShouldDecodeClientSubpacket (byte[] subpacket, ushort localId)
+    private static bool ShouldDecodeClientSubpacket (byte[] subpacket, Guid id)
     {
         if (subpacket.Length <= 12)
         {
             return false;
         }
 
-        return !ClientSubpacketReferencesLocalPlayer (subpacket, localId);
+        return !ClientSubpacketReferencesLocalPlayer (subpacket, id);
     }
 
-    private static bool ClientSubpacketReferencesLocalPlayer (byte[] subpacket, ushort localId)
+    private static bool ClientSubpacketReferencesLocalPlayer (byte[] subpacket, Guid id)
     {
-        var localIdHigh = (byte) (localId >> 8);
-        var localIdLow = (byte) (localId & 0xFF);
-
-        if (subpacket[11] == localIdHigh && subpacket[12] == localIdLow)
-        {
-            return true;
-        }
-
-        if (subpacket.Length > 8 && subpacket[7] == localIdHigh && subpacket[8] == localIdLow)
-        {
-            return true;
-        }
-
-        // Main ping stores the client id at bytes 16-18, not 11-12
-        if (subpacket.Length == 0x26
-            && TryGetPingPackedClientId (subpacket, out var pingClientId)
-            && pingClientId == localId)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static bool TryGetPingPackedClientId (byte[] packet, out ushort clientId)
-    {
-        clientId = 0;
-        if (packet.Length <= 18)
+        var bytes = id.ToByteArray ();
+        if (subpacket.Length < bytes.Length)
         {
             return false;
         }
 
-        // Bit field yields major/minor swapped vs localId; reverse to match.
-        var packed = (ushort) ((packet[16] >> 5) + (packet[17] << 3) + ((packet[18] & 0b11111) << 11));
-        clientId = BinaryPrimitives.ReverseEndianness (packed);
-        return true;
+        for (var i = 0; i <= subpacket.Length - bytes.Length; i++)
+        {
+            var match = true;
+            for (var b = 0; b < bytes.Length; b++)
+            {
+                if (subpacket[i + b] != bytes[b])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -33,13 +33,6 @@ public partial class MobNode : CharacterBody3D
         // TODO: replace with signal later
         clientModel ??= GetNodeOrNull<Node3D> ("/root/MainServer/Client/ClientModel");
         client ??= GetNodeOrNull<SphereClient> ("/root/MainServer/Client");
-        // if ((client?.StreamPeer.GetStatus() ?? StreamPeerTcp.Status.None) != StreamPeerTcp.Status.Connected)
-        // {
-        //     clientModel = null;
-        //     client = null;
-        //     followActive = false;
-        //     lastKnownClientPosition = Vector3.Zero;
-        // }
 
         if (clientModel == null)
         {

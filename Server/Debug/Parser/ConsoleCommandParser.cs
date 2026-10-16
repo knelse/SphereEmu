@@ -29,13 +29,13 @@ public partial class ConsoleCommandParser
     /// </summary>
     private const int StatsArgumentCount = 26;
 
-    private static readonly Dictionary<ushort, ConsoleCommandParser> ParserCache = new ();
+    private static readonly Dictionary<Guid, ConsoleCommandParser> ParserCache = new ();
     private CharacterDbEntry currentCharacterDbEntry;
     private readonly Dictionary<string, Action<string>> RegisteredCommands = new ();
 
-    // Reconnect reuses ClientIndex but allocates a new SphereClient; a cached reference sends into
+    // Reconnect reuses EntityId but allocates a new SphereClient; a cached reference sends into
     // the freed connection
-    private SphereClient? sphereClient => ActiveClients.Get (currentCharacterDbEntry.ClientIndex);
+    private SphereClient? sphereClient => ActiveClients.Get (currentCharacterDbEntry.EntityId);
 
     private ConsoleCommandParser (CharacterDbEntry characterDbEntry)
     {
@@ -44,11 +44,11 @@ public partial class ConsoleCommandParser
 
     public static ConsoleCommandParser Get (CharacterDbEntry characterDbEntry)
     {
-        if (!ParserCache.TryGetValue (characterDbEntry.ClientIndex, out var parser))
+        if (!ParserCache.TryGetValue (characterDbEntry.EntityId, out var parser))
         {
             parser = new ConsoleCommandParser (characterDbEntry);
             parser.InitCommands ();
-            ParserCache[characterDbEntry.ClientIndex] = parser;
+            ParserCache[characterDbEntry.EntityId] = parser;
         }
         else
         {
@@ -59,7 +59,7 @@ public partial class ConsoleCommandParser
         return parser;
     }
 
-    public static void Invalidate (ushort clientIndex) => ParserCache.Remove (clientIndex);
+    public static void Invalidate (Guid clientIndex) => ParserCache.Remove (clientIndex);
 
     private void InitCommands ()
     {
@@ -249,7 +249,7 @@ public partial class ConsoleCommandParser
         }
     }
 
-    public static byte[] BuildClanRankPacket (ushort clientIndex, string clanName, int targetRank) =>
+    public static byte[] BuildClanRankPacket (Guid clientIndex, string clanName, int targetRank) =>
         CommonPackets.BuildClanRankPacket (clientIndex, clanName, targetRank);
 
     private void SendPacketHex (string args)
@@ -292,7 +292,6 @@ public partial class ConsoleCommandParser
         // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
         sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (jumpx4));
         sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (runSpeed));
-        // StreamPeer.PutData(Convert.FromHexString(test));
     }
 
     private void Mob (string args)

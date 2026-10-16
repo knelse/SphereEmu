@@ -142,10 +142,7 @@ public partial class CastleTabletsFill : Node3D
 
             instance.ModelName = TabletModelName;
             instance.Angle = angleEncoded;
-            if (id is >= 0 and <= ushort.MaxValue)
-            {
-                instance.ID = (ushort) id;
-            }
+            instance.EntityID = Guid.NewGuid ();
             instance.Castle = castle;
 
             AddChild (instance);

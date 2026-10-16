@@ -9,12 +9,12 @@
 transform = Transform3D(0.24298024, 0, 0.97003126, 0, 1, 0, -0.97003126, 0, 0.24298024, 408.8783, -153.48547, 1300.1201)
 script = ExtResource("2_p7fcp")
 Angle = 54
-ID = 5129
+EntityIdString = "f2264404-b51b-4da8-b85a-ebe81c7269e9"
 ObjectType = 63
 
 [node name="Teleport_1408_[401]_[153]_[-1308]_5128" type="Node3D" parent="." unique_id=1429986150 instance=ExtResource("1_lpb16")]
 transform = Transform3D(0.96377605, 0, 0.26671275, 0, 1, 0, -0.26671275, 0, 0.96377605, 401.59933, -153.47522, 1307.6298)
 script = ExtResource("2_p7fcp")
 Angle = 11
-ID = 5128
+EntityIdString = "74154ef4-90e6-476d-984f-f9464866d490"
 ObjectType = 63

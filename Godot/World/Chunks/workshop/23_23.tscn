@@ -9,6 +9,6 @@
 transform = Transform3D(0.3136817, 0, -0.9495282, 0, 1, 0, 0.9495282, 0, 0.3136817, 2324.712, -155.58434, 2379.661)
 script = ExtResource("2_pskov")
 Angle = 205
-ID = 1447
+EntityIdString = "105f33da-746b-4ce7-b24e-dba724e8fbb5"
 ObjectType = 805
 ModelName = "EDOOR"

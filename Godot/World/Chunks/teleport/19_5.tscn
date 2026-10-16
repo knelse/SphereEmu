@@ -9,5 +9,5 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1970.0001, -157.86967, 503.08072)
 script = ExtResource("2_m7qsj")
 SubtypeID = 986
-ID = 5194
+EntityIdString = "b87d0870-d537-445d-a9fd-4237da025ccb"
 ObjectType = 62

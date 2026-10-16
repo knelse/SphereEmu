@@ -13,6 +13,6 @@ IconName = "npc_trade_travl"
 NpcType = 10
 VendorItemTierMin = 1
 VendorItemTierMax = 15
-ID = 5262
+EntityIdString = "abb24e29-6085-4de3-ae0c-49057f799474"
 ObjectType = 213
 ModelName = "npc08"

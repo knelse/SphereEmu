@@ -14,7 +14,7 @@ using SphServer.Shared.WorldState;
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
 // The client waits for an answer and resends the same bytes if the swap is ignored
-public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
+public class SwapItemHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     /// <summary>
@@ -29,7 +29,7 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
     public async Task Handle (byte[] frame, double delta)
     {
         // Shares its signature with taking an item in hand, which arms the client's use-lock.
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var character = clientConnection.GetSelectedCharacter ();
         if (character is null)
@@ -39,8 +39,8 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
         var stream = new BitStream (frame);
         stream.ReadBits (FirstFieldBit);
-        var firstItemId = stream.ReadUInt32 (FieldBits);
-        var secondItemId = stream.ReadUInt32 (FieldBits);
+        var firstItemId = stream.ReadGuid ();
+        var secondItemId = stream.ReadGuid ();
         var firstSlotId = stream.ReadUInt32 (FieldBits);
         var secondSlotId = stream.ReadUInt32 (FieldBits);
         var terminator = stream.ReadUInt32 (FieldBits);
@@ -67,8 +67,8 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
             return;
         }
 
-        var firstItem = DbConnection.Items.FindById ((int) firstItemId);
-        var secondItem = DbConnection.Items.FindById ((int) secondItemId);
+        var firstItem = DbConnection.Items.FindById (firstItemId);
+        var secondItem = DbConnection.Items.FindById (secondItemId);
 
         if (firstItem is null || secondItem is null)
         {
@@ -103,14 +103,14 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
 
         if (lookBefore != CharacterWornLook.Capture (character))
         {
-            ActiveClients.Get (localId)?.BroadcastAppearanceRefreshToVisibleClients ();
+            ActiveClients.Get (entityId)?.BroadcastAppearanceRefreshToVisibleClients ();
         }
 
         // A second move would clear the slot the first one filled, so the return leg is a binding
         clientConnection.MaybeScheduleNetworkPacketSend (
-            ItemSlotReserve.BuildMove (localId, firstSlot, secondSlot, firstItem.Id));
+            ItemSlotReserve.BuildMove (entityId, firstSlot, secondSlot, firstItem.Id));
         clientConnection.MaybeScheduleNetworkPacketSend (
-            ItemSlotReserve.BuildSlotBinding (localId, firstSlot, secondItem.Id));
+            ItemSlotReserve.BuildSlotBinding (entityId, firstSlot, secondItem.Id));
 
         Log ($"[{firstSlot}] {Name (firstItem)} <-> [{secondSlot}] {Name (secondItem)}");
     }
@@ -142,13 +142,13 @@ public class SwapItemHandler (ushort localId, ClientConnection clientConnection)
     /// <summary>
     /// Tells the client the slot still holds what it held, so its picture matches ours.
     /// </summary>
-    private void RestateSlot (BelongingSlot slot, int itemId) =>
+    private void RestateSlot (BelongingSlot slot, Guid itemId) =>
         clientConnection.MaybeScheduleNetworkPacketSend (
-            ItemSlotReserve.BuildSlotBinding (localId, slot, itemId));
+            ItemSlotReserve.BuildSlotBinding (entityId, slot, itemId));
 
     private static string Name (ItemDbEntry item) =>
         item.Localization.GetValueOrDefault (Locale.Russian, "?");
 
     private void Log (string what) =>
-        SphLogger.Info ($"Swap: Source [{localId:X4}] - {what}");
+        SphLogger.Info ($"Swap: Source [{entityId}] - {what}");
 }

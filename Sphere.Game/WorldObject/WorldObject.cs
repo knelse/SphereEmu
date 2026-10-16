@@ -38,7 +38,26 @@ public partial class WorldObject : Node3D
         }
     }
 
-    [Export] public ushort ID { get; set; }
+    /// <summary>
+    /// Wire identity. A new node gets a guid; chunk scenes store EntityId
+    /// </summary>
+    public Guid EntityID { get; set; } = Guid.NewGuid ();
+
+    /// <summary>
+    /// Scene copy of ID. Godot exports a string
+    /// </summary>
+    [Export]
+    public string EntityIdString
+    {
+        get => EntityID.ToString ();
+        set
+        {
+            if (Guid.TryParse (value, out var parsed))
+            {
+                EntityID = parsed;
+            }
+        }
+    }
 
     /// <summary>
     /// Fill rebuild keeps this placement and treats its source coordinates as already occupied
@@ -116,12 +135,12 @@ public partial class WorldObject : Node3D
     /// </summary>
     public void CompactDuplicatedIdNameSuffix ()
     {
-        if (ID == 0)
+        if (EntityID == Guid.Empty)
         {
             return;
         }
 
-        var suffix = $"_{ID}";
+        var suffix = $"_{EntityID}";
         var current = Name.ToString ();
         while (current.EndsWith (suffix, StringComparison.Ordinal))
         {
@@ -154,23 +173,16 @@ public partial class WorldObject : Node3D
 
         if (!Engine.IsEditorHint ())
         {
-            if (ID == 0)
+            if (EntityID == Guid.Empty)
             {
-                ID = WorldObjectIndex.New ();
-            }
-            else if (!WorldObjectIndex.TryReserve (ID))
-            {
-                var previous = ID;
-                ID = WorldObjectIndex.New ();
-                SphLogger.Warning (
-                    $"World object {Name} baked id {previous:X4} already in use, reassigned to {ID:X4}");
+                EntityID = Guid.NewGuid ();
             }
 
             // Re-entering the tree stacks _{ID} onto names already baked into World/Chunks
             CompactDuplicatedIdNameSuffix ();
 
             ActiveNodes.Add (GetInstanceId (), this);
-            ActiveWorldObjects.Add (ID, this);
+            ActiveWorldObjects.Add (EntityID, this);
             WorldObjectVisibilityManager.Register (this);
         }
 

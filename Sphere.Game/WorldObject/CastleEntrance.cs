@@ -15,6 +15,11 @@ public partial class CastleEntrance : WorldObject
 
     [Export] public Castles Castle { get; set; }
 
+    /// <summary>
+    /// Tablet guid. The jump button looks this up, it does not search by castle
+    /// </summary>
+    [Export] public string TargetEntityId { get; set; } = "";
+
     [ExportToolButton ("Jump to tablet")]
     public Callable JumpToTabletButton => Callable.From (JumpToTablet);
 
@@ -25,6 +30,12 @@ public partial class CastleEntrance : WorldObject
             return;
         }
 
-        EditorSceneCamera.JumpToCastleTablet (this, Castle);
+        if (!Guid.TryParse (TargetEntityId, out var tabletId))
+        {
+            GD.PushWarning ($"{Name}: no tablet guid.");
+            return;
+        }
+
+        EditorSceneCamera.TryJumpToEntity (this, tabletId);
     }
 }

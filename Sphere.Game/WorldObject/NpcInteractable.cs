@@ -55,13 +55,13 @@ public partial class NpcInteractable : WorldObject
 
         if (IsTradeNpc () && (VendorItemTierMax == 0 || VendorItemTierMin == 0))
         {
-            SphLogger.Warning ($"Vendor [{ID}] ({NpcType}) has no item tiers set");
+            SphLogger.Warning ($"Vendor [{EntityID}] ({NpcType}) has no item tiers set");
         }
 
         serializer = new NpcInteractableSerializer (this);
     }
 
-    public void ClientInteraction (ushort clientID,
+    public void ClientInteraction (Guid clientID,
         ClientInteractionType interactionType = ClientInteractionType.Unknown)
     {
         ClientInteract (clientID, interactionType);

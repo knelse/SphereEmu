@@ -31,6 +31,23 @@ public partial class MonsterSpawner : Node3D
 	private int _cachedRegularMinLevel = int.MinValue;
 	private int _cachedRegularMaxLevel = int.MinValue;
 	private global::System.Collections.Generic.Dictionary<int, IReadOnlyList<MonsterType>>? _regularMonsterTypesByLevel;
+	private Guid _entityId = Guid.NewGuid ();
+
+	/// <summary>
+	/// Scene copy of this spawner's guid. Godot exports a string
+	/// </summary>
+	[Export]
+	public string EntityId
+	{
+		get => _entityId.ToString ();
+		set
+		{
+			if (Guid.TryParse (value, out var parsed))
+			{
+				_entityId = parsed;
+			}
+		}
+	}
 
 	[Export]
 	public int TargetNamedMonsterCount = 0;

@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using BitStreams;
+using SphereHelpers.Extensions;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -7,15 +8,15 @@ using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking.Handlers.InGame.NPC;
 
-public class NpcInteractionHandler (ushort localId)
+public class NpcInteractionHandler (Guid entityId)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
     {
         var stream = new BitStream (frame);
         stream.ReadBits (364);
-        var vendorLocalId = stream.ReadUInt16 ();
-        if (vendorLocalId == 0)
+        var vendorId = stream.ReadGuid ();
+        if (vendorId == Guid.Empty)
         {
             // first vendor open is 0x31, then client sends another 0x31 request to close the trade
             // window,
@@ -23,15 +24,14 @@ public class NpcInteractionHandler (ushort localId)
             return;
         }
 
-        // TODO: should use local to global id conversion
-        var vendorWorldObject = ActiveWorldObjects.Get (vendorLocalId);
+        var vendorWorldObject = ActiveWorldObjects.Get (vendorId);
         if (vendorWorldObject is not NpcInteractable interactable)
         {
             SphLogger.Warning (
-                $"Unable to interact with vendor [{vendorLocalId}]. Object not found. Client ID {localId:X4}");
+                $"Unable to interact with vendor [{vendorId}]. Object not found. Client ID {entityId}");
             return;
         }
 
-        interactable.ClientInteraction (localId, ClientInteractionType.OpenTrade);
+        interactable.ClientInteraction (entityId, ClientInteractionType.OpenTrade);
     }
 }

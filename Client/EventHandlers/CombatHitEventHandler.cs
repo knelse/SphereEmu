@@ -22,7 +22,7 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
         var character = sphereClient.CurrentCharacter;
         if (character is null)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 "skip-no-character");
             return Task.CompletedTask;
         }
@@ -30,7 +30,7 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
         var cfg = BalanceConfig.Get<CombatBalance> ("combat");
         if (cfg is null)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind, "skip");
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind, "skip");
             return Task.CompletedTask;
         }
 
@@ -39,20 +39,20 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
             return ApplySelfHit (clientEvent, character, cfg);
         }
 
-        var targetObject = ActiveWorldObjects.Get (clientEvent.TargetGlobalId);
+        var targetObject = ActiveWorldObjects.Get (clientEvent.TargetEntityId);
         if (targetObject is SphereClient)
         {
             sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.AttackTargetEcho (clientEvent.TargetLocalId, character.ClientIndex, 0, 0,
+                CommonPackets.AttackTargetEcho (clientEvent.TargetEntityId, sphereClient.EntityID, 0, 0,
                     ObjectType.Stats));
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 "player-stub");
             return Task.CompletedTask;
         }
 
         if (targetObject is not Monster monster)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 targetObject is null ? "skip-no-such-object" : $"skip-not-a-monster-{targetObject.GetType ().Name}");
             return Task.CompletedTask;
         }
@@ -61,20 +61,20 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
 
         if (monster.IsDead)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 "skip-already-dead");
             return Task.CompletedTask;
         }
 
         var roll = DamageCalc.RollAttack (character.MeleePAtk, character.MagicMAtk, !character.HoldsItemInHand,
             monster.CurrentPDef, monster.CurrentMDef, combatRng, cfg);
-        var damageEvent = new DamageEvent (clientEvent.AttackerGlobalId, sphereClient, roll.TotalDamage, roll.School,
+        var damageEvent = new DamageEvent (clientEvent.AttackerEntityId, sphereClient, roll.TotalDamage, roll.School,
             roll.IsCrit);
         // 0 HP broadcasts entity_killed, and the client applies the killing blow from that
         var outcome = monster.TakeDamage (in damageEvent);
         if (outcome.BecameDead)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind, "kill");
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind, "kill");
             return Task.CompletedTask;
         }
 
@@ -87,9 +87,9 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
 
         var damageToTarget = 30000 - damageApplied;
         sphereClient.MaybeQueueNetworkPacketSend (
-            CommonPackets.AttackTargetEcho (clientEvent.TargetLocalId, character.ClientIndex, damageToTarget,
+            CommonPackets.AttackTargetEcho (monster.EntityID, sphereClient.EntityID, damageToTarget,
                 outcome.RemainingHp, targetObjectType));
-        LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+        LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
             roll.IsMiss ? "miss" : outcome.Applied.ToString ());
         return Task.CompletedTask;
     }
@@ -101,7 +101,7 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
     {
         if (character.CurrentHP <= 0)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 "skip-already-dead");
             return Task.CompletedTask;
         }
@@ -112,7 +112,7 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
         var outcome = MonsterCombat.ComputeOutcome (character.CurrentHP, totalDamage);
         if (outcome.Applied == 0)
         {
-            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 roll.IsMiss ? "miss" : "0");
             return Task.CompletedTask;
         }
@@ -124,10 +124,9 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
 
         // Killing blow: enqueue exact remainder to 0, not the uncapped roll.
         var healthDiff = outcome.BecameDead ? -character.CurrentHP : -outcome.Applied;
-        var killerProcess = SphBitStream.ByteSwap (character.ClientIndex);
-        sphereClient.EnqueueClientEvent (new CharacterHealthChangeEvent (character.ClientIndex, healthDiff,
-            killerProcess));
-        LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+        sphereClient.EnqueueClientEvent (new CharacterHealthChangeEvent (character.EntityId, healthDiff,
+            sphereClient.EntityID));
+        LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
             outcome.BecameDead
                 ? $"self-kill karma={character.KarmaCount} dmg={-healthDiff}"
                 : outcome.Applied.ToString ());
@@ -136,9 +135,8 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
 
     private static bool IsSelfHit (CombatHitEvent clientEvent, SphereClient attacker)
     {
-        return clientEvent.TargetGlobalId == clientEvent.AttackerGlobalId
-               || clientEvent.TargetGlobalId == attacker.ID
-               || clientEvent.TargetGlobalId == SphBitStream.ByteSwap (clientEvent.AttackerGlobalId);
+        return clientEvent.TargetEntityId == clientEvent.AttackerEntityId
+               || clientEvent.TargetEntityId == attacker.EntityID;
     }
 
     Task IClientEventHandler.HandleAsync (ClientQueuedEvent clientEvent) =>
@@ -152,9 +150,9 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
             : ObjectType.Monster;
     }
 
-    private static void LogAction (ushort sourceGlobalId, ushort targetGlobalId, AttackFrameKind action, string result)
+    private static void LogAction (Guid sourceEntityId, Guid targetEntityId, AttackFrameKind action, string result)
     {
-        SphLogger.Info ($"DamageTargetHandler: Source [{sourceGlobalId:X4}] - Target [{targetGlobalId:X4}] - " +
+        SphLogger.Info ($"DamageTargetHandler: Source [{sourceEntityId}] - Target [{targetEntityId}] - " +
                        $"Action [{action}] - [{result}]");
     }
 }

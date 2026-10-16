@@ -178,13 +178,22 @@ public class PacketPart
         }
     }
 
-    public static void UpdateEntityId (List<PacketPart> list, ushort id)
+    public static void UpdateEntityId (List<PacketPart> list, Guid id)
     {
-        var idpart = list.FirstOrDefault (x => x.Name == "entity_id");
-        if (idpart is not null)
+        UpdateGuid (list, "entity_id", id);
+    }
+
+    public static void UpdateGuid (List<PacketPart> list, string name, Guid id)
+    {
+        var part = list.FirstOrDefault (x => x.Name == name);
+        if (part is null)
         {
-            idpart.Value = BitStreamExtensions.IntToBits (id, 16).ToList ();
+            return;
         }
+
+        var stream = new BitStream (id.ToByteArray ());
+        part.Value = stream.ReadBits (128).ToList ();
+        part.BitLength = 128;
     }
 
     public static byte[] GetBytesToWrite (List<PacketPart> list)

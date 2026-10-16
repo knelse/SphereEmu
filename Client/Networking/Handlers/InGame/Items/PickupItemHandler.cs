@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BitStreams;
@@ -9,12 +9,13 @@ using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 using static SphServer.Shared.BitStream.SphBitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class PickupItemHandler (ushort localId, ClientConnection clientConnection)
+public class PickupItemHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     // 0x2E reply: object type at bit 74, the three position floats at bits 93/125/157
@@ -27,20 +28,16 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
     }
 
     // LSB-first, and bits outside the field stay put because the fields share bytes
-    public static byte[] BuildPickupMoveResult (int clientItemID, ushort clientSyncOther, byte clientSync1,
+    public static byte[] BuildPickupMoveResult (Guid clientItemId, ushort clientSyncOther, byte clientSync1,
         byte clientSync2, byte clientSlotRaw, int objectType, double x, double y, double z)
     {
-        var serverItemID_1 = (clientItemID & 0b111111) << 2;
-        var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
-        var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
-
         var moveResult = new byte[]
         {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte ((ushort) clientItemID),
-            MajorByte ((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
+            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, 0x01,
+            0x00, 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
             0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte (clientSyncOther), MajorByte (clientSyncOther), 0x01, 0xFC,
-            clientSync1, clientSync2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlotRaw << 1), (byte) serverItemID_1,
-            (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
+            clientSync1, clientSync2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlotRaw << 1), 0x00,
+            0x00, 0x00, 0x20, 0x4E, 0x00, 0x00, 0x00
         };
 
         // The template is one captured item, so type and position are overwritten in place
@@ -51,7 +48,9 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         WriteFloatBits (stream, x);
         WriteFloatBits (stream, -y);
         WriteFloatBits (stream, -z);
-        return stream.GetStreamData ();
+        var moveBytes = stream.GetStreamData ();
+        return Packet.ToByteArray (
+            BitStreamExtensions.StitchWithGuid (moveBytes[5..7], clientItemId, moveBytes[9..]), 1);
     }
 
     private static void WriteFloatBits (BitStream stream, double value)
@@ -102,13 +101,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // var itemId_1 = (byte) ((clientItemID >> 6) & 0b11111111);
         // var itemId_2 = (byte) ((clientItemID >> 14) & 0b11);
         //
-        // var clientId_1 = (byte) ((ByteSwap(LocalId) & 0b1111111) << 1);
-        // var clientId_2 = (byte) ((ByteSwap(LocalId) >> 7) & 0b11111111);
-        // var clientId_3 = (byte) (((ByteSwap(LocalId) >> 15) & 0b1) + 0b00010000);
+        // var clientId_1 = (byte) ((ByteSwap(entityId) & 0b1111111) << 1);
+        // var clientId_2 = (byte) ((ByteSwap(entityId) >> 7) & 0b11111111);
+        // var clientId_3 = (byte) (((ByteSwap(entityId) >> 15) & 0b1) + 0b00010000);
         //
-        // var bagId_1 = (byte) ((ByteSwap(LocalId) & 0b111111) << 2);
-        // var bagId_2 = (byte) ((ByteSwap(LocalId) >> 6) & 0b11111111);
-        // var bagId_3 = (byte) ((ByteSwap(LocalId) >> 14) & 0b11);
+        // var bagId_1 = (byte) ((ByteSwap(entityId) & 0b111111) << 2);
+        // var bagId_2 = (byte) ((ByteSwap(entityId) >> 6) & 0b11111111);
+        // var bagId_3 = (byte) ((ByteSwap(entityId) >> 14) & 0b11);
         //
         // var pickupResult = new byte[]
         // {
@@ -129,25 +128,18 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         //
         // if (container.RemoveItemBySlotIdAndDestroyContainerIfEmpty(slotId >> 1))
         // {
-        //     RemoveEntity(GetLocalObjectId(LocalId, container.Id));
+        //     RemoveEntity(GetLocalObjectId(entityId, container.Id));
         // }
-        //
-        // StreamPeer.PutData(pickupResult);
     }
 
     public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
     {
-        var clientItemID_1 = frame[21] >> 1;
-        var clientItemID_2 = frame[22];
-        var clientItemID_3 = frame[23] % 2;
-        var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
-
-        var globalItemId = (ushort) clientItemID;
-        var item = DbConnection.Items.Find (x => x.Id == globalItemId).FirstOrDefault ();
+        var globalItemId = ReadGuid (frame, 21 * 8 + 1);
+        var item = DbConnection.Items.FindById (globalItemId);
 
         if (item is null)
         {
-            SphLogger.Warning ($"Unable to pickup item. Missing ID: {globalItemId:X4}. Client ID: {localId:X4}");
+            SphLogger.Warning ($"Unable to pickup item. Missing ID: {globalItemId}. Client ID: {entityId}");
             return;
         }
 
@@ -169,7 +161,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         }
 
         SphLogger.Info (
-            $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] " +
+            $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{globalItemId}] " +
             $"to slot raw [{clientSlot_raw}] [{Enum.GetName (targetSlot)}]");
 
         var clientSync_1 = frame[17];
@@ -180,7 +172,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         var clientSyncOther_3 = frame[12] & 0b111111;
         var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
 
-        var moveResult = BuildPickupMoveResult (clientItemID, clientSyncOther, clientSync_1, clientSync_2,
+        var moveResult = BuildPickupMoveResult (globalItemId, clientSyncOther, clientSync_1, clientSync_2,
             clientSlot_raw, (int) item.ObjectType, item.X, item.Y, item.Z);
 
         character.PlaceItemInSlot (targetSlot, globalItemId);
@@ -190,13 +182,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         clientConnection.MaybeScheduleNetworkPacketSend (moveResult);
 
         // The grant above does not fill the slot array, so the cell stays empty without these.
-        var reserve = ItemSlotReserve.Build (localId, targetSlot, item.Id, item.ItemCount);
+        var reserve = ItemSlotReserve.Build (entityId, targetSlot, item.Id, item.ItemCount);
         if (reserve is not null)
         {
             clientConnection.MaybeScheduleNetworkPacketSend (reserve);
         }
 
-        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.Encode (item, ByteSwap (localId)));
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.Encode (item, entityId));
 
         var oldContainer = item.ParentContainerId is null
             ? null
@@ -205,7 +197,8 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // TODO: check in next process in node instead of this
         if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId) ?? false)
         {
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.DespawnEntity ((ushort) oldContainer.Id));
+            clientConnection.MaybeScheduleNetworkPacketSend (
+                CommonPackets.DespawnEntity (oldContainer.Id));
         }
 
         if (!ItemDbEntry.IsInventorySlot (targetSlot))
@@ -218,5 +211,17 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
 
         // Recalc writes worn look and item stats, so a save before it would miss them
         clientConnection.SaveSelectedCharacter ();
+    }
+
+    private static Guid ReadGuid (byte[] frame, int bit)
+    {
+        if (frame.Length * 8 < bit + 128)
+        {
+            return Guid.Empty;
+        }
+
+        var stream = new BitStream (frame);
+        stream.ReadBits (bit);
+        return stream.ReadGuid ();
     }
 }

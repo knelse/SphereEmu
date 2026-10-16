@@ -18,6 +18,12 @@ public class AppConfig
         @"Filename=sph.db;Connection=shared;";
 
     public ushort Port { get; init; } = 25860;
+
+    // 0 keeps the listener at Port + 2
+    public ushort UdpPort { get; init; }
+
+    // 0 keeps the listener at Port + 1
+    public ushort ResumePort { get; init; }
     public string LogPath { get; init; } = @"logs\server.log";
     public bool DebugMode { get; init; } = true;
     public float ObjectVisibilityDistance { get; init; } = 100.0f;
@@ -147,6 +153,8 @@ public static class ServerConfig
                 LiteDbConnectionString = configDict.GetValueOrDefault ("LiteDbConnectionString",
                     @"Filename=sph.db;Connection=shared;"),
                 Port = FileFormatCulture.ParseUShort (configDict.GetValueOrDefault ("Port", "25860")),
+                UdpPort = FileFormatCulture.ParseUShort (configDict.GetValueOrDefault ("UdpPort", "0")),
+                ResumePort = FileFormatCulture.ParseUShort (configDict.GetValueOrDefault ("ResumePort", "0")),
                 LogPath = logPath,
                 DebugMode = bool.Parse (configDict.GetValueOrDefault ("DebugMode", "true")),
                 ObjectVisibilityDistance =
@@ -286,6 +294,8 @@ public static class ServerConfig
             // configs that cleared it
             ["LiteDbConnectionString"] = @"Filename=sph.db;Connection=shared;",
             ["Port"] = "25860",
+            ["UdpPort"] = "0",
+            ["ResumePort"] = "0",
             ["LogPath"] = @"logs\server.log",
             ["DebugMode"] = "true",
             ["ObjectVisibilityDistance"] = "100.0",

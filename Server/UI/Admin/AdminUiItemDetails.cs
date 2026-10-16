@@ -171,11 +171,11 @@ public static class AdminUiItemDetails
         return Math.Max (0, cost);
     }
 
-    private static Control BuildObjectIdLabel (int id)
+    private static Control BuildObjectIdLabel (Guid id)
     {
         var label = new Label
         {
-            Text = $"ObjectID: {id} [{id:X4}]",
+            Text = $"ObjectID: {id}",
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
             MouseFilter = Control.MouseFilterEnum.Ignore
         };

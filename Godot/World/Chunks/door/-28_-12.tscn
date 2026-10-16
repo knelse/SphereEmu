@@ -10,7 +10,7 @@ transform = Transform3D(0.9039893, 0, 0.42755508, 0, 1, 0, -0.42755508, 0, 0.903
 script = ExtResource("2_q2r05")
 DoorID = 5427
 Angle = 18
-ID = 1008
+EntityIdString = "2719d548-0a1d-4a22-94f6-ccb373d1d481"
 ObjectType = 60
 ModelName = "edoor"
 
@@ -19,6 +19,6 @@ transform = Transform3D(0.9039893, 0, 0.42755508, 0, 1, 0, -0.42755508, 0, 0.903
 script = ExtResource("2_q2r05")
 DoorID = 5426
 Angle = 18
-ID = 1007
+EntityIdString = "58b163dc-a5ef-4292-8534-00a2a6ecac52"
 ObjectType = 60
 ModelName = "edoor"

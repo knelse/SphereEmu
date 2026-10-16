@@ -8,6 +8,6 @@
 [node name="DungeonEntrance_11CD_[-629]_[406]_[1016]_4557" type="Node3D" parent="." unique_id=1727368674 instance=ExtResource("1_acvg1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -628.39667, -406.11716, -1016.7023)
 script = ExtResource("2_bp5bt")
-ID = 4557
+EntityIdString = "50e37a03-de98-4ee9-9596-b89d6e519c8b"
 ObjectType = 65
 ModelName = "edoor"

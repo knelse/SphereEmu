@@ -9,7 +9,7 @@ namespace SphServer.Server.Login.Auth;
 public static class LoginManager
 {
     public static PlayerDbEntry? CheckLoginAndGetPlayer (string login, string password,
-        ushort playerIndex, bool createOnNewLogin = true)
+        Guid playerIndex, bool createOnNewLogin = true)
     {
         var playerCollection = DbConnection.Players;
 

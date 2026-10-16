@@ -148,6 +148,8 @@ public static class DbConnection
 
     private static void InitializeData ()
     {
+        WorldObjectIdCleanup.MigrateIntIds ();
+
         // Nothing reads a fists row, and a stored one only spends an id
         var staleFists = Items.DeleteMany (x => x.ObjectKind == GameObjectKind.Fists);
         if (staleFists > 0)
@@ -195,7 +197,7 @@ public static class DbConnection
             Clans.Insert (ClanDbEntry.DefaultClanDbEntry.Id, ClanDbEntry.DefaultClanDbEntry);
         }
 
-        if (Items.FindById (2825) is null)
+        if (Items.Count () == 0)
         {
             var template = GameObjects.FindById (1);
             if (template is null && SphObjectDb.GameObjectDataDb.TryGetValue (1, out var catalog))
@@ -206,15 +208,15 @@ public static class DbConnection
 
             if (template is null)
             {
-                SphLogger.Warning ("Item 2825 was not seeded: game object 1 is not in the database");
+                SphLogger.Warning ("Starter item was not seeded: game object 1 is not in the database");
             }
             else
             {
-                Items.Insert (2825, ItemDbEntry.CreateFromGameObject (template));
+                var starter = ItemDbEntry.CreateFromGameObject (template);
+                starter.Id = Guid.NewGuid ();
+                Items.Insert (starter.Id, starter);
             }
         }
-
-        WorldObjectIndex.Reserve (2825);
     }
 
     private static void CreateIndexes ()

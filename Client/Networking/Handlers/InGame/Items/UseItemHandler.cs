@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -11,14 +11,14 @@ using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class UseItemHandler (ushort localId, ClientConnection clientConnection)
+public class UseItemHandler (Guid entityId, ClientConnection clientConnection)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
     {
         var itemId = (ushort) (frame[11] + frame[12] * 0x100);
         // Item use arms g_6008, so this ack clears it or the client stays wedged
-        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (entityId));
 
         var character = clientConnection.GetSelectedCharacter ();
         var item = DbConnection.Items.FindById ((int) itemId);
@@ -46,7 +46,7 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         }
 
         // The occupant of the destination takes the slot this item is leaving
-        var displaced = character.Items.TryGetValue (to.Value, out var occupant) ? occupant : (int?) null;
+        Guid? displaced = character.Items.TryGetValue (to.Value, out var occupant) ? occupant : null;
 
         var lookBefore = CharacterWornLook.Capture (character);
         character.PlaceItemInSlot (to.Value, item.Id);
@@ -56,11 +56,11 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         if (displaced is { } displacedId)
         {
             character.PlaceItemInSlot (from, displacedId);
-            vacated = ItemSlotReserve.Build (localId, from, displacedId);
+            vacated = ItemSlotReserve.Build (entityId, from, displacedId);
         }
         else
         {
-            vacated = ItemSlotReserve.Build (localId, from, ItemSlotReserve.NoItem);
+            vacated = ItemSlotReserve.Build (entityId, from, ItemSlotReserve.NoItem);
         }
 
         if (vacated is not null)
@@ -68,7 +68,7 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
             clientConnection.MaybeScheduleNetworkPacketSend (vacated);
         }
 
-        var claimed = ItemSlotReserve.Build (localId, to.Value, item.Id, item.ItemCount);
+        var claimed = ItemSlotReserve.Build (entityId, to.Value, item.Id, item.ItemCount);
         if (claimed is not null)
         {
             clientConnection.MaybeScheduleNetworkPacketSend (claimed);
@@ -83,7 +83,7 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
 
         if (lookBefore != CharacterWornLook.Capture (character))
         {
-            ActiveClients.Get (localId)?.BroadcastAppearanceRefreshToVisibleClients ();
+            ActiveClients.Get (entityId)?.BroadcastAppearanceRefreshToVisibleClients ();
         }
 
         Log (itemId, name, displaced is null
@@ -116,6 +116,6 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
 
     private void Log (ushort itemId, string name, string outcome)
     {
-        SphLogger.Info ($"UseItem: Source [{localId:X4}] - Target [{itemId:X4}] - Item [{name}] - [{outcome}]");
+        SphLogger.Info ($"UseItem: Source [{entityId}] - Target [{itemId:X}] - Item [{name}] - [{outcome}]");
     }
 }

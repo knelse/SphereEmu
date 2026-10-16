@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using SphereHelpers.Extensions;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
+using SphServer.Shared.WorldState;
 using static SphServer.Shared.BitStream.SphBitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
@@ -16,7 +18,7 @@ public static class ItemSlotReserve
     /// <summary>
     /// A handle that resolves to nothing, used when clearing a slot
     /// </summary>
-    public const int NoItem = 0;
+    public static readonly Guid NoItem = Guid.Empty;
 
     /// <summary>
     /// BelongingSlot numbers these from 1000, past the 8-bit field; ids follow the serializer slot
@@ -70,7 +72,7 @@ public static class ItemSlotReserve
         return (int) slot is >= 0 and <= 45 ? (int) slot : null;
     }
 
-    public static byte[]? Build (ushort clientIndex, BelongingSlot slot, int itemId, int count = 1)
+    public static byte[]? Build (Guid clientIndex, BelongingSlot slot, Guid itemId, int count = 1)
     {
         var wireSlot = WireSlotId (slot);
         if (wireSlot is null)
@@ -80,7 +82,7 @@ public static class ItemSlotReserve
             if (slot is not BelongingSlot.MainHand)
             {
                 SphLogger.Warning ($"ItemSlotReserve: no wire slot for {slot} - [skip]. " +
-                                  $"Client ID: {clientIndex:X4}");
+                                  $"Client ID: {clientIndex}");
             }
 
             return null;
@@ -92,41 +94,39 @@ public static class ItemSlotReserve
     /// <summary>
     /// slot_id cannot be 0 or a helmet is never drawn; no count, so stacks still need the reserve
     /// </summary>
-    public static byte[] BuildSlotBinding (ushort clientIndex, BelongingSlot slot, int itemId) =>
+    public static byte[] BuildSlotBinding (Guid clientIndex, BelongingSlot slot, Guid itemId) =>
         BuildMove (clientIndex, slot, slot, itemId);
 
     /// <summary>
     /// The client does not move or swap on its own, so the window follows this packet
     /// </summary>
-    public static byte[] BuildMove (ushort clientIndex, BelongingSlot from, BelongingSlot to, int itemId)
+    public static byte[] BuildMove (Guid clientIndex, BelongingSlot from, BelongingSlot to, Guid itemId)
     {
         var fromRaw = (byte) ((int) from << 1);
         var toRaw = (byte) ((int) to << 1);
-        var id = (ushort) itemId;
-
-        return
-        [
-            0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte (clientIndex), MinorByte (clientIndex),
-            0x08, 0x40, 0x41, 0x10,
-            fromRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-            0x0A, 0x82,
-            (byte) ((toRaw & 0b11111) << 3),
-            (byte) (((id & 0b1111) << 4) + (toRaw >> 5)),
-            (byte) ((id >> 4) & 0xFF),
-            (byte) (id >> 12),
-            0xC0, 0x44, 0x00, 0x00, 0x00
-        ];
+        var stream = GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (0, 15);
+        stream.WriteGuid (clientIndex);
+        stream.WriteBytes ([0x08, 0x40, 0x41, 0x10]);
+        stream.WriteByte (fromRaw, 8);
+        stream.WriteBytes ([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        stream.WriteBytes ([0x0A, 0x82]);
+        stream.WriteByte (toRaw, 8);
+        stream.WriteGuid (itemId);
+        stream.WriteBytes ([0xC0, 0x44, 0x00, 0x00, 0x00]);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
     /// <summary>
     /// Raw wire slot id for slots BelongingSlot does not name
     /// </summary>
-    public static byte[] BuildRaw (ushort clientIndex, int wireSlot, int itemId, int count = 1)
+    public static byte[] BuildRaw (Guid clientIndex, int wireSlot, Guid itemId, int count = 1)
     {
         var parts = PacketPart.LoadDefinedWithOverride ("new_item_reserve_slot_full");
-        PacketPart.UpdateEntityId (parts, ByteSwap (clientIndex));
+        PacketPart.UpdateEntityId (parts, clientIndex);
         PacketPart.UpdateValue (parts, "slot_id", wireSlot, 8);
-        PacketPart.UpdateValue (parts, "new_item_id", itemId, 16);
+        PacketPart.UpdateGuid (parts, "new_item_id", itemId);
         PacketPart.UpdateValue (parts, "count_if_present", count < 1 ? 1 : count, 8);
         return PacketPart.GetBytesToWrite (parts);
     }

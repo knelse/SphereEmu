@@ -8,5 +8,5 @@
 [node name="TeleportBroken_1403_[32]_[160]_[67]_5123" type="Node3D" parent="." unique_id=617050033 instance=ExtResource("1_jnf2w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.068825, -160.29855, -67.93484)
 script = ExtResource("2_e510x")
-ID = 5123
+EntityIdString = "22f366ab-618a-49dd-a664-f66bd0c14820"
 ObjectType = 64
