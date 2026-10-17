@@ -188,7 +188,7 @@ public partial class SphereClient
 		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (EntityID, (byte) MpCurrent, CurrentCharacter.CurrentMP));
 		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerPlayEffect (EntityID, 758));
 		NetworkedStatsUpdater.Update (CurrentCharacter, refreshPeers: false);
-		BroadcastHpToVisibleClients (respawnHp, respawnHp, includeMax: true);
+		BroadcastHpToVisibleClients (0, respawnHp, includeMax: true);
 		SaveCharacter ();
 		SyncUnderwaterBreath ();
 

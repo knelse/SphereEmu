@@ -305,7 +305,7 @@ public static class NetworkedStatsUpdater
         var stream = SphBitStream.GetWriteBitStream ();
 
         stream.WriteGuid (characterDbEntry.EntityId);
-        stream.WriteBytes ([0x08, 0xC0]);
+        stream.WriteUInt16 (0xC008 >> 2, 14);
 
         if (includeHpCurrentHeader)
         {

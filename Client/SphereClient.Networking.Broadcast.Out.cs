@@ -72,8 +72,17 @@ public partial class SphereClient
 		var maxHp = CurrentCharacter?.MaxHP ?? 0;
 		ForEachVisibleClient (viewer =>
 		{
-			viewer.MaybeQueueNetworkPacketSend (
-				CommonPackets.BuildPlayerApplyHpDelta (EntityID, EntityID, healthDiff));
+			if (viewer.GetInstanceId () == GetInstanceId ())
+			{
+				return;
+			}
+
+			if (healthDiff != 0)
+			{
+				viewer.MaybeQueueNetworkPacketSend (
+					CommonPackets.BuildPlayerApplyHpDelta (EntityID, EntityID, healthDiff));
+			}
+
 			viewer.MaybeQueueNetworkPacketSend (
 				CommonPackets.BuildPlayerWriteIndexedStat (EntityID, (byte) HpCurrent, absoluteHp));
 			if (includeMax)

@@ -34,9 +34,8 @@ public static class CommonPackets
         stream.WriteUInt16 ((ushort) objectType, 10);
         stream.WriteByte (0, 1);
         stream.WriteByte (0x0A, 8);
-        stream.WriteUInt16 (0x050D, 16);
+        stream.WriteUInt16 (0x120D, 16);
         stream.WriteGuid (sourceId);
-        stream.WriteByte (0, 8);
         stream.WriteUInt16 ((ushort) damagePlus30000, 16);
         stream.WriteBytes ([0, 0]);
         stream.WriteByte (0b111, 3);
@@ -55,7 +54,7 @@ public static class CommonPackets
         // interaction
         stream.WriteByte (0x0A, 8);
         // death
-        stream.WriteUInt16 (0x040D, 16);
+        stream.WriteUInt16 (0x110D, 16);
         stream.WriteGuid (clientLocalKillerId);
         stream.WriteByte (0, 8);
         stream.WriteByte (0, 7);
@@ -193,7 +192,7 @@ public static class CommonPackets
         var stream = SphBitStream.GetWriteBitStream ();
         stream.WriteByte (0x04);
         stream.WriteGuid (playerIndex);
-        stream.WriteBytes ([0x08, 0xC0, 0x42]);
+        stream.WriteUInt32 (0x42C008 >> 2, 22);
         stream.WriteByte (0b100000, 6);
         stream.WriteUInt16 ((ushort) Math.Clamp (currentMp, 0, 16383), 14);
         stream.WriteByte (0b1101, 4);
@@ -304,7 +303,7 @@ public static class CommonPackets
     }
 
     /// <summary>
-    /// ContMan cmd 9 len5: killer_id u24 plus hp_delta (raw-30000); sourceId == entityId is a
+    /// ContMan cmd 13 len 18: source guid plus hp_delta (raw-30000); sourceId == entityId is a
     /// self-change
     /// </summary>
     public static byte[] BuildPlayerApplyHpDelta (Guid entityId, Guid sourceId, int hpDelta)
@@ -314,11 +313,11 @@ public static class CommonPackets
         sourceId.ToByteArray ().CopyTo (payload, 0);
         payload[16] = (byte) (wireDelta & 0xFF);
         payload[17] = (byte) ((wireDelta >> 8) & 0xFF);
-        return BuildPlayerContManCommand (entityId, command: 9, payload);
+        return BuildPlayerContManCommand (entityId, command: 13, payload);
     }
 
     /// <summary>
-    /// ContMan cmd 9 len 2: u16 current HP. CycleSend leaves its HP&lt;=0 yield once this is above 0
+    /// ContMan cmd 13 len 2: u16 current HP. CycleSend leaves its HP&lt;=0 yield once this is above 0
     /// </summary>
     public static byte[] BuildPlayerSetCurrentHp (Guid entityId, ushort currentHp)
     {
@@ -327,7 +326,7 @@ public static class CommonPackets
             (byte) (currentHp & 0xFF),
             (byte) ((currentHp >> 8) & 0xFF)
         ];
-        return BuildPlayerContManCommand (entityId, command: 9, payload);
+        return BuildPlayerContManCommand (entityId, command: 13, payload);
     }
 
     /// <summary>
@@ -430,6 +429,31 @@ public static class CommonPackets
         stream.WriteUInt16 ((ushort) (playerModuleTag & 0xFFF), 12);
         stream.WriteByte (9, 7); // wire = region 8 + 1 (RcvInfo)
         stream.WriteUInt16 (hitType, 16);
+        WriteMbcVarint (stream, hpDelta);
+        WriteMbcVarint (stream, secondDelta);
+        stream.WriteByte ((byte) (flags & 0b111), 3);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
+    /// <summary>
+    /// Region 8 with an entity killer guid; empty killerId falls back to nameless hit_type 0
+    /// </summary>
+    public static byte[] BuildPlayerReceiveHit (Guid entityId, Guid killerId, int hpDelta, int secondDelta,
+        byte flags)
+    {
+        if (killerId == Guid.Empty)
+        {
+            return BuildPlayerReceiveHit (entityId, (ushort) 0, hpDelta, secondDelta, flags);
+        }
+
+        const ushort playerModuleTag = (ushort) ObjectType.Player;
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1); // has_position
+        stream.WriteUInt16 (0, 15); // tick
+        stream.WriteGuid (entityId);
+        stream.WriteUInt16 ((ushort) (playerModuleTag & 0xFFF), 12);
+        stream.WriteByte (9, 7); // wire = region 8 + 1 (RcvInfo)
+        stream.WriteGuid (killerId);
         WriteMbcVarint (stream, hpDelta);
         WriteMbcVarint (stream, secondDelta);
         stream.WriteByte ((byte) (flags & 0b111), 3);

@@ -184,10 +184,8 @@ public static class ClientPacketClassifier
     private static string CharacterSelectReason (ReadOnlySpan<byte> frame) =>
         $"0x23 08 40 80 05 slot {ShiftedByte (frame, 17) / 4 - 1}";
 
-    /// Shifted byte 19 (or +14 after a 16-byte item guid) is 0x41; the preceding byte is A1/A2/A3
     public static bool IsHandChangeSignature (ReadOnlySpan<byte> frame) =>
-        frame.Length >= 34 && ShiftedByte (frame, 18) is 0xA1 or 0xA2 or 0xA3 && ShiftedByte (frame, 19) == 0x41
-        || frame.Length >= 48 && ShiftedByte (frame, 32) is 0xA1 or 0xA2 or 0xA3 && ShiftedByte (frame, 33) == 0x41;
+        MainhandFrame.TryRead (frame, out _);
 
     /// Take or put-down frames that share the attack action with a real swing
     private static bool LooksLikeTakeMainhand (ReadOnlySpan<byte> frame)

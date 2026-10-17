@@ -9,6 +9,7 @@ using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
@@ -58,19 +59,18 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
 
         if (becameDead)
         {
-            ushort hitType = 0;
-            var hpDelta = -100000;
-            var secondDelta = 0;
             if (air)
             {
                 // hit_type 2, second -1: gMsg 752, death gMsg 753, and that second is the MP delta
-                hitType = 2;
-                hpDelta = healthDiff;
-                secondDelta = -1;
+                sphereClient.MaybeQueueNetworkPacketSend (
+                    CommonPackets.BuildPlayerReceiveHit (sphereClient.EntityID, 2, healthDiff, -1, flags: 7));
             }
-
-            sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerReceiveHit (sphereClient.EntityID, hitType, hpDelta, secondDelta, flags: 7));
+            else
+            {
+                sphereClient.MaybeQueueNetworkPacketSend (
+                    CommonPackets.BuildPlayerReceiveHit (sphereClient.EntityID, clientEvent.KillerProcessId,
+                        hpDelta: -100000, secondDelta: 0, flags: 7));
+            }
         }
         else if (air)
         {
@@ -79,11 +79,11 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
         }
         else
         {
-            // ATTACK echo is the UI hit; the ContMan delta keeps g_rec_0C48 aligned
-            sphereClient.MaybeQueueNetworkPacketSend (BuildHealthChangePacket (sphereClient.EntityID,
-                entityId == selfId ? sphereClient.EntityID : entityId, healthDiff));
+            var originId = clientEvent.KillerProcessId != Guid.Empty
+                ? clientEvent.KillerProcessId
+                : entityId == selfId ? sphereClient.EntityID : entityId;
             sphereClient.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerApplyHpDelta (sphereClient.EntityID, sphereClient.EntityID, healthDiff));
+                BuildHealthChangePacket (sphereClient.EntityID, originId, healthDiff, originId));
         }
 
         NetworkedStatsUpdater.Update (character, refreshPeers: false);
@@ -111,29 +111,26 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
     {
         var stream = SphBitStream.GetWriteBitStream ();
         var origin = originEntityId ?? targetEntityId;
-        var magnitude = Math.Abs (healthDiff);
-        var hpMod = healthDiff < 0 ? 0b1110 : 0b1100;
 
-        stream.WriteGuid (targetEntityId);
-        stream.WriteUInt16 ((ushort) ObjectType.Monster, 10);
-        stream.WriteByte (0, 1);
-        stream.WriteByte ((byte) EntityActionType.ATTACK, 8);
-        stream.WriteUInt16 (0x0003, 16);
-        stream.WriteByte (0, 3);
-        stream.WriteBytes ([0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0]);
+        if (targetEntityId != entityId && ActiveWorldObjects.Get (targetEntityId) is Monster)
+        {
+            stream.WriteGuid (targetEntityId);
+            stream.WriteUInt16 ((ushort) ObjectType.Monster, 10);
+            stream.WriteByte (0, 1);
+            stream.WriteByte ((byte) EntityActionType.ATTACK, 8);
+            stream.WriteUInt16 (0x0003, 16);
+            stream.WriteByte (0, 3);
+            stream.WriteBytes ([0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0]);
+            stream.WriteByte (0b0111, 4);
+        }
 
-        stream.WriteByte (0b0111, 4);
         stream.WriteGuid (entityId);
-        stream.WriteByte (0, 3);
-        stream.WriteByte (1, 1);
-
-        stream.WriteBytes ([0x00, 0x24]);
-
-        stream.WriteByte (0, 1);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (9, 7);
         stream.WriteGuid (origin);
-
-        stream.WriteByte ((byte) hpMod, 4);
-        stream.WriteUInt32 ((uint) magnitude, 20);
+        CommonPackets.WriteMbcVarint (stream, healthDiff);
+        CommonPackets.WriteMbcVarint (stream, 0);
+        stream.WriteByte (0, 3);
 
         return Packet.ToByteArray (stream.GetStreamData (), 3);
     }

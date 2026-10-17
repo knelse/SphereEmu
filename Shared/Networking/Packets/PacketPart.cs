@@ -180,20 +180,81 @@ public class PacketPart
 
     public static void UpdateEntityId (List<PacketPart> list, Guid id)
     {
-        UpdateGuid (list, "entity_id", id);
-    }
-
-    public static void UpdateGuid (List<PacketPart> list, string name, Guid id)
-    {
-        var part = list.FirstOrDefault (x => x.Name == name);
-        if (part is null)
+        var index = list.FindIndex (x => x.Name == "entity_id");
+        if (index < 0)
         {
             return;
         }
 
+        UpdateGuid (list, "entity_id", id);
+        if (index + 1 < list.Count && list[index + 1].BitPositionStart == 16 && list[index + 1].Value.Count >= 2)
+        {
+            list[index + 1].Value.RemoveRange (0, 2);
+            list[index + 1].BitLength = list[index + 1].Value.Count;
+        }
+    }
+
+    public static void UpdateGuid (List<PacketPart> list, string name, Guid id)
+    {
+        var index = list.FindIndex (x => x.Name == name);
+        if (index < 0)
+        {
+            return;
+        }
+
+        var part = list[index];
         var stream = new BitStream (id.ToByteArray ());
         part.Value = stream.ReadBits (128).ToList ();
         part.BitLength = 128;
+
+        if (name is "container_id" or "to_id")
+        {
+            if (index > 0 && list[index - 1].Value.Count >= 8)
+            {
+                var prev = list[index - 1].Value;
+                var countBits = BitStreamExtensions.IntToBits (16, 8);
+                for (var i = 0; i < 8; i++)
+                {
+                    prev[prev.Count - 8 + i] = countBits[i];
+                }
+            }
+
+            if (index + 1 < list.Count && list[index + 1].Value.Count >= 8)
+            {
+                list[index + 1].Value.RemoveRange (0, 8);
+                list[index + 1].BitLength = list[index + 1].Value.Count;
+            }
+        }
+        else if (name == "new_item_id")
+        {
+            if (index >= 2 && list[index - 2].Value.Count >= 8)
+            {
+                var prev = list[index - 2].Value;
+                var countBits = BitStreamExtensions.IntToBits (21, 8);
+                for (var i = 0; i < 8; i++)
+                {
+                    prev[prev.Count - 8 + i] = countBits[i];
+                }
+            }
+
+            if (index + 1 < list.Count && list[index + 1].Name == "zeroes")
+            {
+                list[index + 1].Value.Clear ();
+                list[index + 1].BitLength = 0;
+            }
+        }
+        else if (name == "from_id")
+        {
+            var bag = list.FirstOrDefault (x => x.Name == "mutator_bag");
+            if (bag is not null && bag.Value.Count >= 8)
+            {
+                var countBits = BitStreamExtensions.IntToBits (21, 8);
+                for (var i = 0; i < 8; i++)
+                {
+                    bag.Value[bag.Value.Count - 8 + i] = countBits[i];
+                }
+            }
+        }
     }
 
     public static byte[] GetBytesToWrite (List<PacketPart> list)

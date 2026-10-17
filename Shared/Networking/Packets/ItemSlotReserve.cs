@@ -102,19 +102,23 @@ public static class ItemSlotReserve
     /// </summary>
     public static byte[] BuildMove (Guid clientIndex, BelongingSlot from, BelongingSlot to, Guid itemId)
     {
-        var fromRaw = (byte) ((int) from << 1);
-        var toRaw = (byte) ((int) to << 1);
+        var fromWire = WireSlotId (from) ?? (int) from;
+        var toWire = WireSlotId (to) ?? (int) to;
         var stream = GetWriteBitStream ();
         stream.WriteByte (0, 1);
         stream.WriteUInt16 (0, 15);
         stream.WriteGuid (clientIndex);
-        stream.WriteBytes ([0x08, 0x40, 0x41, 0x10]);
-        stream.WriteByte (fromRaw, 8);
-        stream.WriteBytes ([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-        stream.WriteBytes ([0x0A, 0x82]);
-        stream.WriteByte (toRaw, 8);
-        stream.WriteGuid (itemId);
-        stream.WriteBytes ([0xC0, 0x44, 0x00, 0x00, 0x00]);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+
+        if (from != to)
+        {
+            stream.WriteByte (5, 7);
+            stream.WriteByte (2, 4);
+            stream.WriteByte (1, 8);
+            stream.WriteByte ((byte) fromWire, 8);
+        }
+
+        WriteSlotUpdate (stream, toWire, itemId, 1);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
@@ -123,11 +127,31 @@ public static class ItemSlotReserve
     /// </summary>
     public static byte[] BuildRaw (Guid clientIndex, int wireSlot, Guid itemId, int count = 1)
     {
-        var parts = PacketPart.LoadDefinedWithOverride ("new_item_reserve_slot_full");
-        PacketPart.UpdateEntityId (parts, clientIndex);
-        PacketPart.UpdateValue (parts, "slot_id", wireSlot, 8);
-        PacketPart.UpdateGuid (parts, "new_item_id", itemId);
-        PacketPart.UpdateValue (parts, "count_if_present", count < 1 ? 1 : count, 8);
-        return PacketPart.GetBytesToWrite (parts);
+        var stream = GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (0, 15);
+        stream.WriteGuid (clientIndex);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        WriteSlotUpdate (stream, wireSlot, itemId, count < 1 ? 1 : count);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
+    private static void WriteSlotUpdate (SphServer.Shared.BitStream.SphWriteStream stream, int wireSlot,
+        Guid itemId, int count)
+    {
+        stream.WriteByte (5, 7);
+        stream.WriteByte (2, 4);
+        if (itemId == Guid.Empty)
+        {
+            stream.WriteByte (1, 8);
+            stream.WriteByte ((byte) wireSlot, 8);
+            return;
+        }
+
+        stream.WriteByte (21, 8);
+        stream.WriteByte ((byte) wireSlot, 8);
+        stream.WriteGuid (itemId);
+        stream.WriteUInt16 ((ushort) count, 16);
+        stream.WriteUInt16 ((ushort) (count >> 16), 16);
     }
 }

@@ -127,7 +127,7 @@ public partial class Monster
         if (hpAfter <= 0)
         {
             target.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerReceiveHit (target.EntityID, 0, hpDelta: -100000,
+                CommonPackets.BuildPlayerReceiveHit (target.EntityID, EntityID, hpDelta: -100000,
                     secondDelta: 0, flags: 7));
             target.SchedulePlayerRespawn ();
         }
@@ -135,9 +135,8 @@ public partial class Monster
         {
             target.MaybeQueueNetworkPacketSend (
                 ChangeCharacterHealthHandler.BuildHealthChangePacket (
-                    target.EntityID, target.EntityID, -applied, EntityID));
-            target.MaybeQueueNetworkPacketSend (
-                CommonPackets.BuildPlayerApplyHpDelta (target.EntityID, EntityID, -applied));
+                    target.EntityID, EntityID, -applied, EntityID));
+            target.BroadcastHpToVisibleClients (-applied, character.CurrentHP);
         }
 
         target.SaveCharacter ();

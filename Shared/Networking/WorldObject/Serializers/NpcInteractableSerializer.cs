@@ -43,7 +43,7 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
             }
 
             stream.WriteGuid (item.Id);
-            stream.WriteBytes ([0x00, 0x00, 0x00, 0x00, 0x00], 5, true);
+            stream.WriteBytes ([0x01, 0x00, 0x00, 0x00], 4, true);
             stream.WriteUInt32 ((uint) item.VendorCost, 32);
             if (slotId % 28 != 0 && slotId != NpcInteractable.MaxDisplayedShopItems)
             {
@@ -66,8 +66,10 @@ public class NpcInteractableSerializer (NpcInteractable npcInteractable)
 
         stream.WriteByte (0x3F, 7);
         stream.WriteGuid (clientId);
-        stream.WriteUInt32 (0x62A34008);
-        stream.WriteByte (0x0, 5);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (5, 7);
+        stream.WriteByte (11, 4);
+        stream.WriteByte (16, 8);
         stream.WriteGuid (vendorId);
         stream.WriteByte (0x0, 7);
         var packet = Packet.ToByteArray (stream.GetStreamData (), 3);

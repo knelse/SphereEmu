@@ -1,74 +1,77 @@
-using BitStreams;
-using SphereHelpers.Extensions;
-
 namespace SphServer.Helpers.Networking;
 
-/// Header is 238 bits; item guid then state at 251/11 (0x2F), 392/12 (0x41), 408/11 (0x43), 439/12
-/// (0x47), 470/12 (0x4B)
+/// _player Manager command 4 (SendHand): 16-byte item guid, or Guid.Empty when emptying hand
 public readonly record struct MainhandFrame (Guid ItemId, MainhandSlotState State, int FrameLength)
 {
-    /// 0x41 is also a fist swing
     public static bool IsExclusiveTakeLength (int frameLength) =>
-        frameLength is 0x2F or 0x43 or 0x47 or 0x4B;
+        frameLength is 0x2F or 0x30 or 0x43 or 0x47 or 0x4B;
 
     public bool IsUnequip =>
         State is MainhandSlotState.Empty or MainhandSlotState.Fists || ItemId == Guid.Empty;
 
-    public static bool TryRead (byte[] frame, out MainhandFrame reading)
+    public static bool TryRead (ReadOnlySpan<byte> frame, out MainhandFrame reading)
     {
         reading = default;
-        if (frame.Length < 2)
+        if (frame.Length < 48)
         {
             return false;
         }
 
         var frameLength = frame[0] | (frame[1] << 8);
-        if (!TryGetGrammar (frameLength, out var itemIdBit, out var stateBits))
+        var bodyBit = ClientFrame.BodyOffset * 8;
+        if (GameplayRecord.ReadBits (frame, bodyBit, 1) != 0)
         {
             return false;
         }
 
-        if (frame.Length * 8 < itemIdBit + 128 + stateBits)
+        var bit = bodyBit + 1 + 15 + 128;
+        var subjectType = (int) GameplayRecord.ReadBits (frame, bit, 12);
+        bit += 12;
+        if (subjectType != GameplayRecord.SubjectTypePlayer)
         {
             return false;
         }
 
-        var stream = new BitStream (frame);
-        stream.ReadBits (itemIdBit);
-        var itemId = stream.ReadGuid ();
-        var state = (MainhandSlotState) stream.ReadUInt16 (stateBits);
-        reading = new MainhandFrame (itemId, state, frameLength);
-        return true;
-    }
-
-    private static bool TryGetGrammar (int frameLength, out int itemIdBit, out int stateBits)
-    {
-        switch (frameLength)
+        while (bit + 7 <= frame.Length * 8)
         {
-            case 0x2F:
-                itemIdBit = 251;
-                stateBits = 11;
-                return true;
-            case 0x41:
-                itemIdBit = 392;
-                stateBits = 12;
-                return true;
-            case 0x43:
-                itemIdBit = 408;
-                stateBits = 11;
-                return true;
-            case 0x47:
-                itemIdBit = 439;
-                stateBits = 12;
-                return true;
-            case 0x4B:
-                itemIdBit = 470;
-                stateBits = 12;
-                return true;
-            default:
-                itemIdBit = 0;
-                stateBits = 0;
-                return false;
+            var wire = (int) GameplayRecord.ReadBits (frame, bit, 7);
+            bit += 7;
+            if (wire == 0)
+            {
+                break;
+            }
+
+            if (wire == 4)
+            {
+                bit += 7;
+                continue;
+            }
+
+            if (wire == 13)
+            {
+                if (bit + 16 > frame.Length * 8)
+                {
+                    break;
+                }
+
+                var op = (int) GameplayRecord.ReadBits (frame, bit, 8);
+                var count = (int) GameplayRecord.ReadBits (frame, bit + 8, 8);
+                bit += 16;
+                if (op == 4 && count == 16 && bit + 128 <= frame.Length * 8)
+                {
+                    var itemId = GameplayRecord.ReadGuidBits (frame, bit);
+                    var state = itemId == Guid.Empty ? MainhandSlotState.Empty : MainhandSlotState.Full;
+                    reading = new MainhandFrame (itemId, state, frameLength);
+                    return true;
+                }
+
+                bit += count * 8;
+                continue;
+            }
+
+            break;
         }
+
+        return false;
     }
 }

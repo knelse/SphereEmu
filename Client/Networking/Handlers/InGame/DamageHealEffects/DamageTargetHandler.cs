@@ -63,7 +63,7 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
         SphLogger.Info ($"DamageTargetHandler: {Convert.ToHexString (frame)}");
 
         var attackerEntityId = entityId;
-        var heldItem = character.GetHeldItem ();
+        var heldItem = ResolveUsedOrHeldItem (character, frame);
         var frameKind = ParseAttackFrame (frame, heldItem, out var localTargetId);
 
         // 0x19 empty-to-sword shares 08 40 A3 with a fist swing, but the item id is the take
@@ -108,6 +108,21 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     private static bool IsAttackerTargetId (SphereClient attacker, Guid entityId)
     {
         return entityId == attacker.EntityID;
+    }
+
+    private static ItemDbEntry ResolveUsedOrHeldItem (CharacterDbEntry character, byte[] frame)
+    {
+        if (frame.Length * 8 >= 266 + 128 && GameplayRecord.ReadBits (frame, 259, 7) == 63)
+        {
+            var switchedEntityId = ReadGuidAtBit (frame, 266);
+            if (switchedEntityId != Guid.Empty && DbConnection.Items.FindById (switchedEntityId) is { } usedItem)
+            {
+                character.PlaceItemInSlot (BelongingSlot.MainHand, usedItem.Id);
+                return usedItem;
+            }
+        }
+
+        return character.GetHeldItem ();
     }
 
     private static bool IsTakeMainhand (CharacterDbEntry character, byte[] frame, Guid combatTargetId)
@@ -165,12 +180,12 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     /// <summary>
     /// AoE powder list: first (aimed) target. Single-target powder is not this slot.
     /// </summary>
-    private const int AoeTargetBit = 440;
+    private const int AoeTargetBit = 552;
 
     /// <summary>
     /// Weapon swing slot; bit 394 on these frames is the 12-bit ObjectType, not a target
     /// </summary>
-    private const int ArmedTargetBit = 453;
+    private const int ArmedTargetBit = 557;
 
     /// <summary>
     /// 12-bit ObjectType sitting next to the fist-target slot on item-use frames.
@@ -256,12 +271,20 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
     }
 
     /// <summary>
-    /// 0x62 is the armed swing; on 0x41 the type slot is two bits into the take id
+    /// Switch 2 at bit 259 + ContMan op 7 at bit 406 is the armed / item-use swing
     /// </summary>
     private static bool IsArmedAttackLayout (byte[] frame)
     {
+        if (frame.Length * 8 >= ArmedTargetBit + 128
+            && GameplayRecord.ReadBits (frame, 259, 7) == 63
+            && GameplayRecord.ReadBits (frame, 406, 7) == 5
+            && GameplayRecord.ReadBits (frame, 413, 8) == 7)
+        {
+            return true;
+        }
+
         var declaredLength = frame.Length >= 2 ? frame[0] | (frame[1] << 8) : 0;
-        return declaredLength == 0x62;
+        return declaredLength is 0x62 or 0x6F or 0x70;
     }
 
     /// <summary>

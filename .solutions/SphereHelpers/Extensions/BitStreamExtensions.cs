@@ -175,20 +175,14 @@ public static class BitStreamExtensions
 
     public static Bit[] IntToBits (int val, int length)
     {
-        var result = new List<Bit> ();
+        var result = new Bit[length];
 
-        while (val > 0)
+        for (var i = 0; i < length; i++)
         {
-            result.Add (val & 0b1);
-            val >>= 1;
+            result[i] = (val >> i) & 0b1;
         }
 
-        while (result.Count < length)
-        {
-            result.Add (0);
-        }
-
-        return result.ToArray ();
+        return result;
     }
 
     public static string ToByteString (this Bit[]? bits)

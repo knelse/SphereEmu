@@ -259,10 +259,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         stream.WriteByte ((byte) nameLen, 8);
         stream.WriteBytes (nameEncoded, nameEncoded.Length, true);
 
-        if (stream.Bit != 0)
-        {
-            stream.WriteByte (0, 8 - stream.Bit);
-        }
+        stream.WriteByte (0, 3);
 
         // Look starts in the top bit of the 0x6E rank byte, one bit out of step; numbering starts
         // at 48, the last byte's top two bits are gender (31-bit magnitude), and a negative word
@@ -358,7 +355,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         stream.WriteUInt16 (characterDbEntry.MaxHP, 14);
         stream.WriteByte ((byte) characterDbEntry.Karma, 4);
 
-        var toEncode = characterDbEntry.DegreeMinusOne * 100 + characterDbEntry.TitleMinusOne;
+        var toEncode = (characterDbEntry.DegreeMinusOne % 60) * 100 + characterDbEntry.TitleMinusOne % 60;
         stream.WriteByte (2, 2);
         stream.WriteUInt16 ((ushort) toEncode, 14);
 
@@ -378,6 +375,7 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
         }
 
         arr[0] = (byte) arr.Length;
+        arr[1] = (byte) (arr.Length >> 8);
         return arr;
     }
 
