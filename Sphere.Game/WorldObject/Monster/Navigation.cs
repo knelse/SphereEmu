@@ -394,6 +394,7 @@ public partial class Monster
             // A viewer that never got this mob's spawn would take hits from nothing
             if (!IsValidChaseClient (client, out var clientWorld)
                 || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || client.IsRespawnProtected
                 || !IsVisibleToClient (client)
                 || Mathf.Abs (clientWorld.Y - origin.Y) > MaxTargetVerticalDeltaMeters)
             {
@@ -441,6 +442,7 @@ public partial class Monster
         {
             if (!IsValidChaseClient (client, out var clientWorld)
                 || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || client.IsRespawnProtected
                 || Mathf.Abs (clientWorld.Y - monsterPosition.Y) > MaxTargetVerticalDeltaMeters)
             {
                 continue;
