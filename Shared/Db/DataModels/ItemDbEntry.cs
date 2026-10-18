@@ -324,7 +324,19 @@ public class ItemDbEntry
         return slot is BelongingSlot.Guild && kind is GameObjectKind.Guild;
     }
 
+    /// <summary>
+    /// Vendor goods like backpacks are built from the wire type alone, with no game object behind them
+    /// </summary>
+    private static readonly Dictionary<ObjectType, BelongingSlot[]> WireObjectTypeToSlots = new ()
+    {
+        [ObjectType.Backpack_Large] = [BelongingSlot.Backpack],
+        [ObjectType.Backpack_Small] = [BelongingSlot.Backpack],
+        [ObjectType.Backpack_Eternal] = [BelongingSlot.Backpack],
+        [ObjectType.Backpack_Great] = [BelongingSlot.Backpack]
+    };
+
     public bool IsValidForSlot (BelongingSlot slot) =>
+        (WireObjectTypeToSlots.TryGetValue (WireObjectType, out var slots) && slots.Contains (slot)) ||
         IsAllowedInSlot (GameObjectType, ObjectKind, slot);
 
     /// <summary>
