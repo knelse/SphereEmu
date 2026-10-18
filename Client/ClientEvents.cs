@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SphServer.Client.EventHandlers;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
+using SphServer.Client.Networking.Handlers.InGame.Items;
 
 namespace SphServer.Client;
 
@@ -51,6 +52,9 @@ public class ClientEvents (SphereClient sphereClient)
                 break;
             case CharacterHealthChangeEvent e:
                 await changeCharacterHealthHandler!.HandleAsync (e).ConfigureAwait (false);
+                break;
+            case ItemSpentEvent e:
+                ItemConsumption.ConsumeOne (sphereClient, e.Item);
                 break;
             default:
                 throw new ArgumentOutOfRangeException (

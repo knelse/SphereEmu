@@ -35,6 +35,16 @@ public static class ItemRecordEncoder
     private const uint PropertiesMessage = 9;
 
     /// <summary>
+    /// Item amount update with a two-byte payload
+    /// </summary>
+    private const uint CountMessage = 12;
+
+    /// <summary>
+    /// Region wires are region + 1: 4 is ContMan
+    /// </summary>
+    private const byte ContManRegionWire = 5;
+
+    /// <summary>
     /// Ground container 0xFF00 is not a process id, so MBC guild skips SetParent
     /// </summary>
     private const ushort GroundContainerSentinel = 0xFF00;
@@ -55,6 +65,26 @@ public static class ItemRecordEncoder
     {
         return Encode ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
             containerObjectId, x, y, z, item.CurrentDurability, item.Durability, item.GameObjectType);
+    }
+
+    /// <summary>
+    /// ContMan cmd 12 sets the item's amount; item scripts never lower it on their own
+    /// </summary>
+    public static byte[] EncodeCount (ItemDbEntry item) =>
+        EncodeCount ((ushort) item.Id, item.WireObjectType, item.ItemCount);
+
+    public static byte[] EncodeCount (ushort itemId, ObjectType wireObjectType, int count)
+    {
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 (itemId, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ((int) wireObjectType & 0xFFF), 12);
+        stream.WriteByte (ContManRegionWire, 7);
+        stream.WriteByte ((byte) CountMessage, 8);
+        stream.WriteByte (2, 8);
+        stream.WriteUInt16 ((ushort) Math.Max (1, count), 16);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 
     /// <summary>
