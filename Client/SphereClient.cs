@@ -64,6 +64,16 @@ public partial class SphereClient : WorldObject
 	// A CheckOwnImage pass is 8 yields
 	private const double OwnWornGearAfterChangeSeconds = 1;
 
+	private bool startNewPlayerDungeonOnEntry;
+
+	/// <summary>
+	/// Set by the 08 40 C0 frame the client sends once the world around it has loaded; a teleport
+	/// that arrives before it is dropped together with the loading screen
+	/// </summary>
+	public bool WorldLoaded { get; set; }
+
+	public bool EntersNewPlayerDungeon { get; private set; }
+
 	internal Area3D? BroadcastArea3D { get; private set; }
 
 	public override async void _PhysicsProcess (double delta)
@@ -330,6 +340,7 @@ public partial class SphereClient : WorldObject
 		Transform = transform;
 		UpdateUnderwater ();
 		WorldObjectVisibilityManager.RefreshRegistration (this);
+		NewPlayerDungeon.CheckExit (this);
 	}
 
 	/// <summary>
@@ -435,6 +446,12 @@ public partial class SphereClient : WorldObject
 		// Collision comes from base._Ready, which waits until the client is in game
 		base._Ready ();
 		SendMoney ();
+
+		if (startNewPlayerDungeonOnEntry)
+		{
+			startNewPlayerDungeonOnEntry = false;
+			NewPlayerDungeon.Start (this);
+		}
 	}
 
 	/// <summary>
@@ -764,6 +781,18 @@ public partial class SphereClient : WorldObject
 
 	private void UpdateCharacterForDebugMode ()
 	{
+		// Until the token takes a new character out, every login lands it in the dungeon again: logging
+		// in inside the maze hangs the client on loading, since the labyr geometry only comes with the
+		// entry teleport
+		if (ServerConfig.AppConfig.NewPlayerDungeon && CurrentCharacter is { InNewPlayerDungeon: true })
+		{
+			NewPlayerDungeon.PlaceCharacter (CurrentCharacter);
+			startNewPlayerDungeonOnEntry = true;
+			EntersNewPlayerDungeon = true;
+			SphLogger.Info ($"Entry: placed in the new player dungeon. Client ID: {localId:X4}");
+			return;
+		}
+
 		// TODO: move to db entry
 		if (!ServerConfig.AppConfig.DebugMode)
 		{

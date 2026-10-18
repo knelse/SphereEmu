@@ -25,6 +25,11 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
     public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
     {
         clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        if (TakeNewPlayerDungeonObject (ReadPickupItemId (frame)))
+        {
+            return;
+        }
+
         var stream = new BitStream (frame);
         stream.SeekBitOffset (141);
         var item = DbConnection.Items.FindById ((int) stream.ReadUInt16 (16));
@@ -32,6 +37,34 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         {
             PickUpFromGround (client, clientConnection, item);
         }
+    }
+
+    private static ushort ReadPickupItemId (byte[] frame)
+    {
+        var stream = new BitStream (frame);
+        stream.SeekBitOffset (141);
+        return stream.ReadUInt16 (16);
+    }
+
+    /// <summary>
+    /// The newbie dungeon sword and token are not DB items: no 0x2E reply, the dungeon swaps them
+    /// for real items itself
+    /// </summary>
+    private bool TakeNewPlayerDungeonObject (ushort itemId)
+    {
+        if (NewPlayerDungeon.StarterSwordIdFor (client) == itemId)
+        {
+            NewPlayerDungeon.TakeStarterSword (client);
+            return true;
+        }
+
+        if (NewPlayerDungeon.TokenIdFor (client) == itemId)
+        {
+            NewPlayerDungeon.TakeToken (client);
+            return true;
+        }
+
+        return false;
     }
 
     public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
@@ -43,6 +76,11 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         var clientItemID = (clientItemID_3 << 15) + (clientItemID_2 << 7) + clientItemID_1;
 
         var globalItemId = (ushort) clientItemID;
+        if (TakeNewPlayerDungeonObject (globalItemId))
+        {
+            return;
+        }
+
         var item = DbConnection.Items.Find (x => x.Id == globalItemId).FirstOrDefault ();
 
         if (item is null)

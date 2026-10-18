@@ -96,6 +96,12 @@ public class CharacterDbEntry
     public double Y { get; set; } = 150;
     public double Z { get; set; }
     public double Angle { get; set; }
+
+    /// <summary>
+    /// A new character starts in the new player dungeon and stays there until it leaves with the token
+    /// </summary>
+    public bool InNewPlayerDungeon { get; set; }
+
     public int TitleMinusOne { get; set; }
     public int DegreeMinusOne { get; set; }
     public ushort CurrentHP { get; set; } = 100;
