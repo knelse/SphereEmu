@@ -106,6 +106,8 @@ public partial class Monster
             return;
         }
 
+        PlayAttackAnimation ();
+
         // Not bare-handed: fistStatSheetDamage must not turn a 0-attack row into a hit.
         var roll = DamageCalc.RollAttack (CurrentPAtk, CurrentMAtk, false, character.PDef, character.MDef, attackRng,
             cfg);
@@ -146,6 +148,19 @@ public partial class Monster
         }
 
         target.SaveCharacter ();
+    }
+
+    /// <summary>
+    /// SHOOT1 and SHOOT2 fall back to SHOOT in _char.fillparam, so any of the three is safe
+    /// </summary>
+    private static readonly byte[] AttackAnimations = [4, 29, 30];
+
+    private void PlayAttackAnimation ()
+    {
+        var animation = AttackAnimations[attackRng.Next (AttackAnimations.Length)];
+        var moduleTag = MbcModuleTag ();
+        ForEachVisibleClient (viewer => viewer.MaybeQueueNetworkPacketSend (
+            CommonPackets.BuildAnimationStatePacket (viewer.GetLocalObjectId (ID), moduleTag, animation)));
     }
 
     /// <summary>

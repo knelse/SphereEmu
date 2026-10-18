@@ -651,6 +651,23 @@ public static class CommonPackets
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
+    /// <summary>
+    /// Monster region 3: RegionManager forwards the value to _char.Anim, an index into the
+    /// params cfg animations (4 SHOOT, 29 SHOOT1, 30 SHOOT2, 6 DIE)
+    /// </summary>
+    public static byte[] BuildAnimationStatePacket (ushort entityId, ushort moduleTag, byte animation)
+    {
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1); // has_position
+        stream.WriteUInt16 (0, 15); // tick
+        stream.WriteUInt16 (entityId, 16);
+        stream.WriteByte (0, 2); // process_id high
+        stream.WriteUInt16 ((ushort) (moduleTag & 0xFFF), 12);
+        stream.WriteByte (4, 7); // wire = region 3 + 1 (AnimationState)
+        stream.WriteByte ((byte) (animation & 0x7F), 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
     public static byte[] LoadNewPlayerDungeon =>
     [
         0xBF, 0x00, 0x2C, 0x01, 0x00, 0x06, 0x7A, 0x2C, 0x0C, 0x10, 0x80, 0x2F, 0x81, 0x1F, 0x01, 0x0B, 0xE2, 0xE0,
