@@ -485,6 +485,9 @@ public partial class SphereClient : WorldObject
 		}
 
 		var wear = CharacterWornLook.ToWearPattern (CurrentCharacter);
+		// Visible clients never include the wearer, whose own model would keep the old look
+		MaybeQueueNetworkPacketSend (
+			CommonPackets.BuildSetWornGearPacket (SphBitStream.ByteSwap (CurrentCharacter.ClientIndex), wear));
 		ForEachVisibleClient (viewer =>
 		{
 			var entityId = viewer.GetLocalObjectId (ID);
