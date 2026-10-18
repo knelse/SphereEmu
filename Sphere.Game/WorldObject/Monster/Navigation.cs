@@ -482,25 +482,14 @@ public partial class Monster
         return ClientWorldPosition.TryGetGodotWorldPosition (client, out clientWorld);
     }
 
+    /// <summary>
+    /// Runs every physics frame for every mob near a player, so no navmesh query here: FindPath
+    /// snaps the goal to the mesh itself when the chase repaths
+    /// </summary>
     private bool TryResolveOutdoorChaseGoalWorld (Vector3 clientWorld, out Vector3 goalWorld)
     {
-        goalWorld = new Vector3 (clientWorld.X, clientWorld.Y, clientWorld.Z);
-        if (TrySampleGodotGroundY (clientWorld.X, clientWorld.Z, out var groundY))
-        {
-            goalWorld.Y = groundY;
-        }
-
+        goalWorld = clientWorld;
         return true;
-    }
-
-    /// <summary>
-    /// Runs every physics frame for every mob near a player, so it only samples: FindPath already
-    /// loaded the tiles of this leash, and before the first path the caller keeps the client's Y
-    /// </summary>
-    private bool TrySampleGodotGroundY (float worldX, float worldZ, out float godotGroundY)
-    {
-        var probeY = GlobalPosition.Y;
-        return NavPathQuery.TrySampleGroundY (worldX, worldZ, probeY, out godotGroundY);
     }
 
     private void EnforceOutdoorLeash ()
@@ -575,32 +564,34 @@ public partial class Monster
             return;
         }
 
-        // No ground under the next step means the path left the walkable mesh (a wall, a hole or
-        // another storey): stop there rather than walk on at the old height through it
-        if (!TryResolveNavStandingY (next.X, next.Z, out var standingY))
-        {
-            ClearNavPath ();
-            return;
-        }
-
-        next.Y = standingY;
+        next.Y = ResolveNavStandingY (next, target);
         GlobalPosition = next;
         FaceToward (next + toTarget);
         RegisterMultiMeshVisualDeferred ();
     }
 
-    private bool TryResolveNavStandingY (float worldX, float worldZ, out float standingY)
+    /// <summary>
+    /// Waypoints lie on the navmesh and FindPath already rejected paths through walls, floors and
+    /// other storeys, so the ground between two of them is interpolated: a navmesh query costs
+    /// several milliseconds, too much for every frame of every walking mob
+    /// </summary>
+    private float ResolveNavStandingY (Vector3 next, Vector3 target)
     {
-        var currentY = GlobalPosition.Y;
-        standingY = currentY;
-        if (!TrySampleGodotGroundY (worldX, worldZ, out var groundY))
+        var groundY = target.Y;
+        if (navWaypointIndex > 0)
         {
-            return false;
+            var from = navWaypoints[navWaypointIndex - 1];
+            var segmentSq = HorizontalDistanceSquared (from, target);
+            if (segmentSq > 0.0001f)
+            {
+                var remaining = Mathf.Sqrt (HorizontalDistanceSquared (next, target) / segmentSq);
+                groundY = Mathf.Lerp (target.Y, from.Y, Mathf.Clamp (remaining, 0f, 1f));
+            }
         }
 
+        var currentY = GlobalPosition.Y;
         var targetY = groundY + GetSpawnOriginYOffset (groundY);
-        standingY = Mathf.Clamp (targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
-        return true;
+        return Mathf.Clamp (targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
     }
 
     private void FaceToward (Vector3 worldTarget)
