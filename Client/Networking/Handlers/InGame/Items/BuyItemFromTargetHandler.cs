@@ -44,13 +44,18 @@ public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientCo
             return;
         }
 
-        if (slot >= vendor.ItemsOnSale.Count)
+        // ShowItemList numbers the shop from 1; the cost check catches a list that changed since
+        var onSale = slot >= 1 && slot <= vendor.ItemsOnSale.Count ? vendor.ItemsOnSale[slot - 1] : null;
+        if (onSale is null || onSale.VendorCost != costPerOne)
+        {
+            onSale = vendor.ItemsOnSale.FirstOrDefault (x => x.VendorCost == costPerOne) ?? onSale;
+        }
+
+        if (onSale is null)
         {
             SphLogger.Warning ($"Buy: vendor {vendorId:X4} has nothing in slot {slot}. Client ID: {localId:X4}");
             return;
         }
-
-        var onSale = vendor.ItemsOnSale[slot];
         quantity = Math.Clamp (quantity, 1, 10000);
         var totalCost = (long) Math.Max (costPerOne, 0) * quantity;
         var name = onSale.Localization.GetValueOrDefault (Locale.Russian, onSale.GameObjectType.ToString ());
