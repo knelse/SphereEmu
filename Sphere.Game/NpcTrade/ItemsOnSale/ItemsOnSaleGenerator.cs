@@ -205,7 +205,9 @@ public static class ItemsOnSaleGenerator
             });
         }
 
-        foreach (var magicId in MagicItemsOnSalePerMinTier[minTier])
+        // Lists exist for tiers 1 and 4 only; higher bands sell the latest one
+        var magicListTier = MagicItemsOnSalePerMinTier.Keys.Where (x => x <= minTier).DefaultIfEmpty (1).Max ();
+        foreach (var magicId in MagicItemsOnSalePerMinTier[magicListTier])
         {
             var go = SphObjectDb.GameObjectDataDb[magicId];
             var item = GetItemForGameObject (go, 1);
