@@ -51,9 +51,9 @@ public static class GameObjectDb
             GameObjectType.Pants_Quest => ObjectType.Quest_Armor_Pants,
             GameObjectType.Pants_Unique => ObjectType.Armor_Pants,
             GameObjectType.Ring => ObjectType.Ring,
-            // TODO: change maybe
-            GameObjectType.Ring_Special => ObjectType.Ring_Diamond,
-            GameObjectType.Ring_Unique => ObjectType.Ring,
+            // Client modules ar_ring_s 762 and ar_ringu 780; the jewel ring tag drew a blank icon
+            GameObjectType.Ring_Special => ObjectType.Ring_Golem,
+            GameObjectType.Ring_Unique => ObjectType.Ring_Ringu,
             GameObjectType.Shield => ObjectType.Armor_Shield,
             GameObjectType.Shield_Quest => ObjectType.Quest_Armor_Shield,
             GameObjectType.Shield_Unique => ObjectType.Armor_Shield,
@@ -81,8 +81,9 @@ public static class GameObjectDb
             GameObjectType.Elixir_Trap => ObjectType.Elixir_Trap,
             GameObjectType.Powder => ObjectType.Powder_Single_Target,
             GameObjectType.Powder_Area => ObjectType.Powder_Ao_E,
-            GameObjectType.Powder_Event => ObjectType.Powder_Single_Target,
-            GameObjectType.Powder_Guild => ObjectType.Powder_Single_Target,
+            // Client modules pw_fb04 456 and pw_fb05 457
+            GameObjectType.Powder_Event => ObjectType.Powder,
+            GameObjectType.Powder_Guild => ObjectType.Powder_Group_Healing,
             GameObjectType.Scroll => ObjectType.Scroll_Legend,
             GameObjectType.Special => ObjectType.Special_Ability,
             GameObjectType.Special_Crusader_Gapclose => ObjectType.Guild_Specialization,
