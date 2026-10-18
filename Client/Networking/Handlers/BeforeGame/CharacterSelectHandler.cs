@@ -39,7 +39,7 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
             }
 
             // create
-            if (frame[0] < 0x1b ||
+            if (frame.Length < 17 ||
                 frame[13] != 0x08 ||
                 frame[14] != 0x40 ||
                 frame[15] != 0x80 ||
@@ -48,7 +48,24 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
                 return;
             }
 
-            selectedCharacterIndex = CreateNewCharacter (frame);
+            // The client waits on "name check" until it gets an answer, so a name we cannot take
+            // must be refused rather than dropped
+            if (frame[0] < 0x1b)
+            {
+                RefuseName ("empty name");
+                return;
+            }
+
+            try
+            {
+                selectedCharacterIndex = CreateNewCharacter (frame);
+            }
+            catch (Exception ex)
+            {
+                SphLogger.Error ($"SRV {localId:X4}: Character creation failed", ex);
+                RefuseName ("unreadable name");
+                return;
+            }
         }
 
         if (selectedCharacterIndex == -1)
@@ -72,6 +89,12 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
         // client wants game data here before it sends an ack, otherwise it will hang
         clientConnection.MaybeScheduleNetworkPacketSend (new CharacterDbEntrySerializer (character).ToGameDataByteArray ());
         clientConnection.MoveToNextBeforeGameStage ();
+    }
+
+    private void RefuseName (string reason)
+    {
+        SphLogger.Warning ($"SRV {localId:X4}: Refused new character name: {reason}");
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameAlreadyExists (localId));
     }
 
     private int CreateNewCharacter (byte[] rcvBuffer)
@@ -126,7 +149,7 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
             name = sb.ToString ();
         }
 
-        var isNameValid = true; // Login.IsNameValid(name);
+        var isNameValid = name.Length > 0; // Login.IsNameValid(name);
 
         if (!isNameValid)
         {
