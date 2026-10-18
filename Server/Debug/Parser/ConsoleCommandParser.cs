@@ -1,3 +1,4 @@
+using System.Globalization;
 using SphereHelpers.Extensions;
 using SphServer.Client;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -355,7 +356,7 @@ public partial class ConsoleCommandParser
             try
             {
                 var coords = split
-                    .Select (double.Parse)
+                    .Select (x => double.Parse (x.Replace (',', '.'), CultureInfo.InvariantCulture))
                     .ToArray ();
                 sphereClient?.MaybeQueueNetworkPacketSend (
                     new CharacterDbEntrySerializer (currentCharacterDbEntry).GetTeleportByteArray (new WorldCoords (
