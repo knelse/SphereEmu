@@ -572,6 +572,13 @@ public partial class SphereClient : WorldObject
 		return playerDbEntry?.Login;
 	}
 
+	/// <summary>
+	/// The newbie dungeon is a private instance: players inside it neither see nor are seen by others
+	/// </summary>
+	protected override bool IsHiddenFrom (SphereClient client) =>
+		base.IsHiddenFrom (client) || client != this
+		&& (NewPlayerDungeon.IsInside (CurrentCharacter) || NewPlayerDungeon.IsInside (client.CurrentCharacter));
+
 	protected override void ShowForClient (SphereClient client)
 	{
 		if (client.GetInstanceId () == GetInstanceId ())

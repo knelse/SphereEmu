@@ -36,6 +36,14 @@ public partial class WorldObject
     }
 
     /// <summary>
+    /// The character a private instance copy exists for (the newbie dungeon mob); null for everyone
+    /// </summary>
+    public int? PrivateToCharacterId { get; set; }
+
+    protected virtual bool IsHiddenFrom (SphereClient client) =>
+        PrivateToCharacterId is { } owner && client.CurrentCharacter?.Id != owner;
+
+    /// <summary>
     /// The Area3D is created on first proximity, not at startup
     /// </summary>
     internal void EnsureVisibilityArea ()
@@ -74,7 +82,7 @@ public partial class WorldObject
             return;
         }
 
-        if (_visibleClients.Contains (client))
+        if (_visibleClients.Contains (client) || IsHiddenFrom (client))
         {
             return;
         }
@@ -112,7 +120,7 @@ public partial class WorldObject
             return;
         }
 
-        if (!_visibleClients.Add (client))
+        if (IsHiddenFrom (client) || !_visibleClients.Add (client))
         {
             return;
         }

@@ -443,6 +443,7 @@ public partial class Monster
             if (!IsValidChaseClient (client, out var clientWorld)
                 || client.CurrentCharacter is not { CurrentHP: > 0 }
                 || client.IsRespawnProtected
+                || IsHiddenFrom (client)
                 || Mathf.Abs (clientWorld.Y - monsterPosition.Y) > MaxTargetVerticalDeltaMeters)
             {
                 continue;
