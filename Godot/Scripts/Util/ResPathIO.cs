@@ -131,7 +131,7 @@ public static class ResPathIO
 
         var absolute = dir.Replace ('/', IoPath.DirectorySeparatorChar);
         return IoDirectory.Exists (absolute)
-               && IoDirectory.GetFiles (absolute, "*" + suffix).Length > 0;
+               && IoDirectory.EnumerateFiles (absolute, "*" + suffix).Any ();
     }
 
     /// <summary>
