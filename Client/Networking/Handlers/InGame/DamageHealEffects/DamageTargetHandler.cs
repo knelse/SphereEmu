@@ -5,6 +5,7 @@ using BitStreams;
 using SphServer.Client.Networking.Handlers.InGame.Items;
 using Godot;
 using SphereHelpers.Extensions;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers.Networking;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db;
@@ -106,6 +107,14 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         var targets = CollectTargets (broadcastTarget, globalTargetId, aoeRadius, includeSelf).ToList ();
         LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
             $"held={heldItem.GameId} radius={aoeRadius} includeSelf={includeSelf} targets={targets.Count}");
+        // Paid once per use, before the hits, so a self-cast MP heal lands on the lowered value
+        if (IsPowder (heldItem) && targets.Count > 0 && !TryPayMpCost (broadcastTarget, character, heldItem))
+        {
+            LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
+                $"skip-no-mp cost={-heldItem.MpCost} mp={character.CurrentMP}");
+            return;
+        }
+
         foreach (var (targetGlobalId, targetLocalId) in targets)
         {
             clientConnection.EnqueueClientEvent (new CombatHitEvent (
@@ -123,6 +132,29 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
     private static bool IsPowder (ItemDbEntry item) =>
         item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Powder_Event
             or GameObjectType.Powder_Guild;
+
+    /// <summary>
+    /// The params MP column is negative for a cost (-20 = 20 MP); the client never lowers its own MP on use
+    /// </summary>
+    private static bool TryPayMpCost (SphereClient client, CharacterDbEntry character, ItemDbEntry powder)
+    {
+        var cost = -powder.MpCost;
+        if (cost <= 0)
+        {
+            return true;
+        }
+
+        if (character.CurrentMP < cost)
+        {
+            return false;
+        }
+
+        character.CurrentMP = (ushort) (character.CurrentMP - cost);
+        client.MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+            SphBitStream.ByteSwap (character.ClientIndex), (byte) Stat.MpCurrent, character.CurrentMP));
+        NetworkedStatsUpdater.Update (character, refreshPeers: false);
+        return true;
+    }
 
     /// <summary>
     /// Live client id, WorldObject.ID, or the byte-swapped client id on self-aimed AoE
