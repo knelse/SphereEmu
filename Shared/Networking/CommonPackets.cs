@@ -15,6 +15,19 @@ namespace SphServer.Shared.Networking;
 
 public static class CommonPackets
 {
+    public static byte[] DeleteCharacterResult (ushort playerIndex, bool deleted)
+    {
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (0, 15);
+        stream.WriteUInt16 (SphBitStream.ByteSwap (playerIndex), 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        WriteCredentialsManagerRegion (stream, 42, deleted ? [0, 0, 0, 0] : [1, 0, 0, 0]);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
     // Clears g_6008: the client sets it on every attack or use and blocks further ones until this
     // frame
     public static byte[] ClearUseToutAck (ushort playerIndex) =>

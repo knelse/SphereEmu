@@ -230,7 +230,11 @@ public partial class SphereClient : WorldObject
 
 	public void DeletePlayerCharacter (int index)
 	{
-		// TODO: move to db entry
+		if (playerDbEntry is null || index < 0 || index >= playerDbEntry.Characters.Count)
+		{
+			MaybeQueueNetworkPacketSend (CommonPackets.DeleteCharacterResult (localId, deleted: false));
+			return;
+		}
 		try
 		{
 			var characterToDelete = playerDbEntry!.Characters[index];
@@ -241,12 +245,17 @@ public partial class SphereClient : WorldObject
 			DbConnection.Players.Update (playerDbEntry);
 			DbConnection.Characters.Delete (id);
 
-			// TODO: reinit session after delete
-			RemoveClient ();
+			DbConnection.Checkpoint ();
+			// On SetDelCharRes(0) the stock client halts its selection screen and goes back to the login
+			// dialog itself (the list is built only at session start, _player.Owner -> SelectChar), so
+			// the connection stays up for the reply; dropping it here lost the reply and the deleted
+			// name stayed until a relog
+			MaybeQueueNetworkPacketSend (CommonPackets.DeleteCharacterResult (localId, deleted: true));
 		}
 		catch (Exception ex)
 		{
 			SphLogger.Error ($"Unable to delete character at index: {index}. Client ID: {localId:X4}.", ex);
+			MaybeQueueNetworkPacketSend (CommonPackets.DeleteCharacterResult (localId, deleted: false));
 		}
 	}
 
