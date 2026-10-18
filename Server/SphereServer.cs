@@ -164,7 +164,14 @@ public partial class SphereServer : Node
 
 		try
 		{
-			tcpServer.Listen (port);
+			// Godot reports a busy port through the return value, not an exception
+			var error = tcpServer.Listen (port);
+			if (error != Error.Ok)
+			{
+				SphLogger.Error ($"Failed to start TCP server on port {port}: {error}. Is another server running?");
+				return;
+			}
+
 			SphLogger.Info ($"TCP server listening on port {port}");
 		}
 		catch (SocketException se)
