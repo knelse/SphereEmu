@@ -62,6 +62,17 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             return;
         }
 
+        // Anything else must still lie in a sack: an id from someone's inventory or a vendor's list
+        // would otherwise be copied into the cell
+        var oldContainer = item.ParentContainerId is null
+            ? null
+            : DbConnection.ItemContainers.FindById (item.ParentContainerId);
+        if (oldContainer is null || !oldContainer.Contents.ContainsValue (item.Id))
+        {
+            SphLogger.Warning ($"Pickup to slot: item {item.Id:X4} is not in a sack. Client ID: {localId:X4}");
+            return;
+        }
+
         // Requirements gate wearing, not carrying: anything may sit in a cell.
         if (targetSlot is BelongingSlot.Unknown || !character.IsItemSlotEmpty (targetSlot) ||
             !item.IsValidForSlot (targetSlot) ||
@@ -89,12 +100,8 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             clientConnection.MaybeScheduleNetworkPacketSend (reserve);
         }
 
-        var oldContainer = item.ParentContainerId is null
-            ? null
-            : DbConnection.ItemContainers.FindById (item.ParentContainerId);
-
         // TODO: check in next process in node instead of this
-        if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId) ?? false)
+        if (oldContainer.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId))
         {
             clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.DespawnEntity ((ushort) oldContainer.Id));
         }
