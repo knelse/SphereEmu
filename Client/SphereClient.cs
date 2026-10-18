@@ -684,7 +684,8 @@ public partial class SphereClient : WorldObject
 
 		ForEachVisibleClient (viewer =>
 		{
-			var entityId = viewer.GetLocalObjectId (ID);
+			// BuildClanRankPacket swaps the id, and the local object id is already in wire order
+			var entityId = SphBitStream.ByteSwap (viewer.GetLocalObjectId (ID));
 			viewer.MaybeQueueNetworkPacketSend (
 				CommonPackets.BuildClanRankPacket (entityId, clanName, rank));
 		});

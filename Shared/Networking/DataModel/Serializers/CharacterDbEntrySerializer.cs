@@ -414,7 +414,8 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
             clanBytes = clanBytes.AsSpan (0, 15).ToArray ();
         }
 
-        var clanRank = string.IsNullOrEmpty (clanName) ? 0 : (int) characterDbEntry.ClanRank;
+        // s3 two's complement; the client reads rank >= 0 as "in a clan", so clanless is -1
+        var clanRank = string.IsNullOrEmpty (clanName) ? -1 : (int) characterDbEntry.ClanRank;
         var gender = GenderOverride ?? (characterDbEntry.IsGenderFemale ? 1 : 0);
         var modelPacked = (uint) (characterDbEntry.FaceType
                                  | (characterDbEntry.HairStyle << 8)
