@@ -15,7 +15,7 @@ public enum NavPathFailReason
     SearchBudgetExceeded,
 
     /// <summary>
-    /// The navmesh returned a path that leaves the leash, jumps floors or detours wildly: a bad
+    /// The navmesh returned a path that leaves the leash, jumps floors or climbs walls: a bad
     /// bake joining unrelated meshes, so the mob holds its ground instead of following it
     /// </summary>
     PathRejected,
@@ -77,12 +77,6 @@ public static class NavPathQuery
 
     private const float MinWaypointRiseMeters = 1.5f;
 
-    /// <summary>
-    /// Longer than this many times the straight line (plus slack) is a detour across joined meshes
-    /// </summary>
-    private const float MaxPathDetourFactor = 3f;
-
-    private const float PathDetourSlackMeters = 15f;
 
     public static Vector3 ClampGoalToLeash (Vector3 goalWorld, Vector3 leashCenterWorld, float leashRadiusMeters)
     {
@@ -160,7 +154,7 @@ public static class NavPathQuery
             return Fail (NavPathFailReason.NoPath);
         }
 
-        if (!IsPlausiblePath (path, startSnap, goalSnap, request))
+        if (!IsPlausiblePath (path, startSnap, request))
         {
             return Fail (NavPathFailReason.PathRejected);
         }
@@ -207,11 +201,10 @@ public static class NavPathQuery
     /// A bad bake can link polygons that are not walkable neighbours: the path then leaves the
     /// leash, climbs walls or crosses to another dungeon or continent
     /// </summary>
-    private static bool IsPlausiblePath (Vector3[] path, Vector3 start, Vector3 goal, NavPathRequest request)
+    private static bool IsPlausiblePath (Vector3[] path, Vector3 start, NavPathRequest request)
     {
         var indoor = IndoorAreaCriteria.IsIndoorDepth (start.Y);
         var leashRadius = request.LeashRadiusMeters + WaypointLeashMarginMeters;
-        var length = 0f;
         var previous = start;
         foreach (var point in path)
         {
@@ -228,12 +221,10 @@ public static class NavPathQuery
                 return false;
             }
 
-            length += horizontal;
             previous = point;
         }
 
-        var straight = new Vector2 (goal.X - start.X, goal.Z - start.Z).Length ();
-        return length <= straight * MaxPathDetourFactor + PathDetourSlackMeters;
+        return true;
     }
 
     private static NavPathResult Fail (NavPathFailReason reason)
