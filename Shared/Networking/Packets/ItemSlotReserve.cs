@@ -39,6 +39,9 @@ public static class ItemSlotReserve
         [BelongingSlot.Special_7] = 52,
         [BelongingSlot.Special_8] = 53,
         [BelongingSlot.Special_9] = 54,
+        [BelongingSlot.Ammo] = 55,
+        [BelongingSlot.SpeedhackMantra] = 56,
+        [BelongingSlot.TokenIsland] = 57,
     };
 
     /// <summary>
