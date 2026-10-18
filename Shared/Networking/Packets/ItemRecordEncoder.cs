@@ -275,8 +275,11 @@ public static class ItemRecordEncoder
 
     private static void WriteOwnershipProperties (SphWriteStream stream, int objectType)
     {
-        // Mantras read command 9 as a weight: the ownership payload becomes -256 and blocks dragging
-        if ((ObjectType) objectType is ObjectType.Mantra_White or ObjectType.Mantra_Black)
+        // These modules read command 9 as weight; the ownership payload becomes -256
+        if ((ObjectType) objectType is ObjectType.Mantra_White or ObjectType.Mantra_Black
+            or ObjectType.Sack or ObjectType.Recipe_Book or ObjectType.Mantra_Book_Large
+            or ObjectType.Mantra_Book_Great or ObjectType.Blueprint or ObjectType.Alchemy_Furnace
+            or ObjectType.Mutator)
         {
             return;
         }
@@ -413,7 +416,9 @@ public static class ItemRecordEncoder
             combined = Concat (combined, BuildGuildSetParent (entityId, moduleTag, containerObjectId));
         }
 
-        return Concat (combined, BuildGuildProperty0None (entityId, moduleTag));
+        return moduleTag == (ushort) ObjectType.Invisibility
+            ? combined
+            : Concat (combined, BuildGuildProperty0None (entityId, moduleTag));
     }
 
     private static byte[] BuildGuildSpawnSnapshot (ushort entityId, ushort moduleTag,
@@ -436,6 +441,7 @@ public static class ItemRecordEncoder
         CommonPackets.WriteMbcVarint (stream, maxDurability);
         CommonPackets.WriteMbcVarint (stream, gameId);
         CommonPackets.WriteMbcVarint (stream, suffixId);
+        stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
@@ -475,6 +481,7 @@ public static class ItemRecordEncoder
             stream.WriteByte (b, 8);
         }
 
+        stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
