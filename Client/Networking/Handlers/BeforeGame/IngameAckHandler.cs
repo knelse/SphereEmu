@@ -109,6 +109,7 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
             clientConnection.MaybeScheduleNetworkPacketSend (record);
         }
 
+        clientConnection.DeclareBank ();
         clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildUnlock (localId));
 
         // After items: GuildPlus64/rank and worn bonuses need the emblem process to exist first.

@@ -17,6 +17,7 @@ public enum ClientPacketEvent
     ChatSend,
     ItemPickupToSlot,
     ContainerOpenLoot,
+    BankRequest,
     ItemDrop,
     ItemDragOnGround,
     NpcInteract,
@@ -88,6 +89,12 @@ public static class ClientPacketClassifier
         if (IsStatsUpdateRequest (frame))
         {
             return Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true);
+        }
+
+        // The bank window sends region 12 from the bank's own process
+        if (identity.SubjectType == GameplayRecord.SubjectTypeBank && identity.Tag == 13)
+        {
+            return Result (ClientPacketEvent.BankRequest, 1.0, "record: bank window", true);
         }
 
         if (identity.Tag == GameplayRecord.TagObjectInteract)
@@ -386,6 +393,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.ChatSend => "client.chat.send",
             ClientPacketEvent.ItemPickupToSlot => "client.item.pickup_to_slot",
             ClientPacketEvent.ContainerOpenLoot => "client.container.open_loot",
+            ClientPacketEvent.BankRequest => "client.bank.request",
             ClientPacketEvent.ItemDrop => "client.item.drop",
             ClientPacketEvent.ItemDragOnGround => "client.item.drag_on_ground",
             ClientPacketEvent.NpcInteract => "client.npc.interact",

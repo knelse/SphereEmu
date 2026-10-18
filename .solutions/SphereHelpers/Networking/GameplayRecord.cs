@@ -53,6 +53,7 @@ public readonly struct GameplayRecord
     public const int SubjectTypeNpcQuestTitle = 205;
     public const int SubjectTypeNpcTrade = 213;
     public const int SubjectTypeSackMobLoot = 407;
+    public const int SubjectTypeBank = 226;
 
     /// Attack target at bit 172; an interaction frame holds the player's own record here
     public const int TargetIdBit = 172;
