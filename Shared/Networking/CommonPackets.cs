@@ -652,10 +652,10 @@ public static class CommonPackets
     }
 
     /// <summary>
-    /// Monster region 3: RegionManager forwards the value to _char.Anim, an index into the
-    /// params cfg animations (4 SHOOT, 29 SHOOT1, 30 SHOOT2, 6 DIE)
+    /// Monster region 20 RegionManager command 3: the u32 payload goes to _char.Anim, an index into
+    /// the params cfg animations (live mobs swing with 29 SHOOT1 and 30 SHOOT2)
     /// </summary>
-    public static byte[] BuildAnimationStatePacket (ushort entityId, ushort moduleTag, byte animation)
+    public static byte[] BuildMonsterPlayAnimationPacket (ushort entityId, ushort moduleTag, uint animation)
     {
         var stream = SphBitStream.GetWriteBitStream ();
         stream.WriteByte (0, 1); // has_position
@@ -663,8 +663,10 @@ public static class CommonPackets
         stream.WriteUInt16 (entityId, 16);
         stream.WriteByte (0, 2); // process_id high
         stream.WriteUInt16 ((ushort) (moduleTag & 0xFFF), 12);
-        stream.WriteByte (4, 7); // wire = region 3 + 1 (AnimationState)
-        stream.WriteByte ((byte) (animation & 0x7F), 7);
+        stream.WriteByte (21, 7); // wire = region 20 + 1 (RegionManager)
+        stream.WriteUInt32 (3, 32); // command 3: Anim
+        stream.WriteByte (4, 8); // payload_len_bytes
+        stream.WriteUInt32 (animation, 32);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
