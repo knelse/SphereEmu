@@ -154,6 +154,11 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         switch (packetEvent)
         {
             case ClientPacketEvent.PositionKeepalive:
+                if (!seenFirstPositionKeepalive)
+                {
+                    sphereClient.ScheduleOwnWornGear (SphereClient.OwnWornGearAfterEntrySeconds);
+                }
+
                 seenFirstPositionKeepalive = true;
                 await pingHandler!.Handle (frame, delta);
                 sphereClient.UpdateCoordinatesInWorld ();
