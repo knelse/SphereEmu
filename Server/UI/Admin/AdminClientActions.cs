@@ -64,6 +64,7 @@ public static class AdminClientActions
         var teleportPacket =
             new CharacterDbEntrySerializer (client.CurrentCharacter).GetTeleportByteArray (worldCoords);
         client.MaybeQueueNetworkPacketSend (teleportPacket);
+        client.GrantRespawnProtection ();
         return true;
     }
 
