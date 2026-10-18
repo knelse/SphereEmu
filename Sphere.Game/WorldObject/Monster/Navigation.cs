@@ -325,8 +325,8 @@ public partial class Monster
     }
 
     /// <summary>
-    /// Straight line when the navmesh has no path (indoor, unbaked tiles, no spawner), so the mob
-    /// still closes in
+    /// Navmesh only: with no path (indoor, unbaked tiles) the mob holds its ground rather than
+    /// walking through walls
     /// </summary>
     private bool TryPathTo (Vector3 goalWorld)
     {
@@ -335,7 +335,14 @@ public partial class Monster
             return true;
         }
 
-        return TrySetNavPath ([goalWorld]);
+        if (!TryGetHomeWorld (out var home))
+        {
+            return false;
+        }
+
+        var result = NavPathQuery.FindPath (this,
+            new NavPathRequest (GlobalPosition, goalWorld, home, ChaseGiveUpDistanceMeters));
+        return result.Success && TrySetNavPath (result.Waypoints);
     }
 
     private static float HorizontalDistanceSquared (Vector3 a, Vector3 b)
