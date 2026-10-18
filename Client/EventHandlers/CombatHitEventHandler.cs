@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
 using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Combat;
@@ -32,6 +33,12 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
         {
             LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind, "skip");
             return Task.CompletedTask;
+        }
+
+        var heldItem = character.GetHeldItem ();
+        if (IsHealPowder (heldItem))
+        {
+            return ApplyHealPowder (clientEvent, heldItem);
         }
 
         if (IsSelfHit (clientEvent, sphereClient))
@@ -131,6 +138,53 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
             outcome.BecameDead
                 ? $"self-kill karma={character.KarmaCount} dmg={-healthDiff}"
                 : outcome.Applied.ToString ());
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Healing powders carry positive HP/MP columns and no damage; they must not go through the attack roll
+    /// </summary>
+    private static bool IsHealPowder (ItemDbEntry item) =>
+        (item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area or GameObjectType.Powder_Event
+            or GameObjectType.Powder_Guild)
+        && item.PAtkNegative >= 0 && item.MAtkNegativeOrHeal >= 0
+        && (item.PAtkNegative > 0 || item.MAtkNegativeOrHeal > 0 || item.MPHeal > 0);
+
+    /// <summary>
+    /// HP goes through the target's own health handler, MP is set and pushed to the target's client
+    /// </summary>
+    private Task ApplyHealPowder (CombatHitEvent clientEvent, ItemDbEntry powder)
+    {
+        var target = IsSelfHit (clientEvent, sphereClient)
+            ? sphereClient
+            : ActiveWorldObjects.Get (clientEvent.TargetGlobalId) as SphereClient;
+        var targetCharacter = target?.CurrentCharacter;
+        if (target is null || targetCharacter is null || targetCharacter.CurrentHP <= 0)
+        {
+            LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+                "skip-heal-no-living-player");
+            return Task.CompletedTask;
+        }
+
+        // pw_w_tm rows put the heal in the magic column; the event powders repeat it in both
+        var hpHeal = Math.Max (powder.PAtkNegative, powder.MAtkNegativeOrHeal);
+        if (hpHeal > 0)
+        {
+            target.EnqueueClientEvent (new CharacterHealthChangeEvent (targetCharacter.ClientIndex, hpHeal));
+        }
+
+        if (powder.MPHeal > 0)
+        {
+            targetCharacter.CurrentMP =
+                (ushort) Math.Min (targetCharacter.MaxMP, targetCharacter.CurrentMP + powder.MPHeal);
+            target.MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+                SphBitStream.ByteSwap (targetCharacter.ClientIndex), (byte) Stat.MpCurrent,
+                targetCharacter.CurrentMP));
+            NetworkedStatsUpdater.Update (targetCharacter, refreshPeers: false);
+        }
+
+        LogAction (clientEvent.AttackerGlobalId, clientEvent.TargetGlobalId, clientEvent.FrameKind,
+            $"heal hp={hpHeal} mp={powder.MPHeal}");
         return Task.CompletedTask;
     }
 
