@@ -63,6 +63,23 @@ public static class NewPlayerDungeon
     private const int DungeonMobTypeId = 1010;
 
     /// <summary>
+    /// x000.mbd lays the maze out as one corridor of 15 m lbg_* cells, spawn first and exit last
+    /// (maze -3900 -3900 is world -1100 1900); there is no navmesh, so the mob walks cell centers
+    /// </summary>
+    private static readonly Vector2[] MazeCells =
+    [
+        new (-1100, 1900), new (-1115, 1900), new (-1130, 1900), new (-1145, 1900), new (-1145, 1915),
+        new (-1145, 1930), new (-1130, 1930), new (-1115, 1930), new (-1100, 1930), new (-1100, 1945)
+    ];
+
+    private const float MazeCellReach = 11f;
+
+    /// <summary>
+    /// How far off the line to the next cell the mob may stand and still skip its own cell center
+    /// </summary>
+    private const float MazeAxisTolerance = 1.5f;
+
+    /// <summary>
     /// x000 portal1 marker (maze -3899.59 1101.43 -3852.13), the dungeon exit
     /// </summary>
     private static readonly Vector3 ExitPortalWorld = new (-1099.59f, 4501.43f, 1947.87f);
@@ -396,12 +413,78 @@ public static class NewPlayerDungeon
         monster.Angle = WorldObject.CreateRandomSpawnAngle ();
         monster.Name = $"NewPlayerDungeon_{monsterType}";
         monster.PrivateToCharacterId = characterId;
+        // Waypoints are floor heights: the walk adds the model's origin offset on top of them, so a
+        // waypoint at the mob's own height would lift it by that offset on every repath
+        var spawnY = -DungeonMobWorld.Y;
+        var floorY = spawnY - monster.GetSpawnOriginYOffset (spawnY);
+        monster.PathOverride = (from, to) => FindMazePath (from, to, floorY);
         SphereServer.ServerNode.CallDeferred ("add_child", monster);
         // Godot space keeps Y and Z negated, like CharacterDbEntry.Origin
         monster.Transform = new Transform3D (Basis.Identity,
             new Vector3 (DungeonMobWorld.X, -DungeonMobWorld.Y, -DungeonMobWorld.Z));
         dungeonMobs[characterId] = monster;
         SphLogger.Info ($"New player dungeon: spawned {monsterType} for character {characterId}");
+    }
+
+    /// <summary>
+    /// Godot-space waypoints through the corridor cells; within one cell the walk is straight
+    /// </summary>
+    private static IReadOnlyList<Vector3>? FindMazePath (Vector3 from, Vector3 to, float floorY)
+    {
+        var start = FindMazeCell (from);
+        var goal = FindMazeCell (to);
+        if (start < 0 || goal < 0)
+        {
+            return null;
+        }
+
+        var path = new List<Vector3> ();
+        if (start != goal)
+        {
+            var step = Math.Sign (goal - start);
+            // Going back to its own center first would make each repath pull the mob backwards
+            var first = IsOnMazeAxis (from, start, start + step) ? start + step : start;
+            for (var i = first; i != goal; i += step)
+            {
+                path.Add (new Vector3 (MazeCells[i].X, floorY, -MazeCells[i].Y));
+            }
+
+            // Likewise its target's center only matters when the target is round the cell's corner
+            if (!IsOnMazeAxis (to, goal, goal - step))
+            {
+                path.Add (new Vector3 (MazeCells[goal].X, floorY, -MazeCells[goal].Y));
+            }
+        }
+
+        path.Add (new Vector3 (to.X, floorY, to.Z));
+        return path;
+    }
+
+    private static int FindMazeCell (Vector3 godot)
+    {
+        var world = new Vector2 (godot.X, -godot.Z);
+        var best = -1;
+        var bestDistance = MazeCellReach;
+        for (var i = 0; i < MazeCells.Length; i++)
+        {
+            var distance = world.DistanceTo (MazeCells[i]);
+            if (distance < bestDistance)
+            {
+                best = i;
+                bestDistance = distance;
+            }
+        }
+
+        return best;
+    }
+
+    private static bool IsOnMazeAxis (Vector3 godot, int cell, int next)
+    {
+        var world = new Vector2 (godot.X, -godot.Z);
+        var axis = MazeCells[next] - MazeCells[cell];
+        var along = (world - MazeCells[cell]).Dot (axis.Normalized ());
+        var off = (world - MazeCells[cell] - axis.Normalized () * along).Length ();
+        return along >= 0 && off <= MazeAxisTolerance;
     }
 
     private static void EnsureTutorialVendor ()
