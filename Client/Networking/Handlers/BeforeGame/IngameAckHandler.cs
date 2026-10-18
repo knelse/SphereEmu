@@ -110,6 +110,10 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildUnlock (localId));
+        if (SphServer.Shared.WorldState.ActiveClients.Get (localId) is { } client)
+        {
+            SphServer.Client.Networking.Handlers.InGame.Mutator.ActiveMutators.Restore (client);
+        }
 
         // After items: GuildPlus64/rank and worn bonuses need the emblem process to exist first.
         NetworkedStatsUpdater.Update (character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);

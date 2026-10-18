@@ -98,6 +98,15 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         }
 
         var globalTargetId = broadcastTarget.GetGlobalObjectId (localTargetId);
+        if (SphServer.Client.Networking.Handlers.InGame.Mutator.ActiveMutators.HandsBound (character))
+        {
+            InquisitorAbilities.Tell (broadcastTarget, "Оковы не дают использовать предмет в руке.");
+            return;
+        }
+        if (InquisitorAbilities.TryUse (broadcastTarget, heldItem, globalTargetId))
+        {
+            return;
+        }
         // Fists have no Radius, so they never splash
         var aoeRadius = heldItem.GameObjectType is GameObjectType.Fists ? 0 : heldItem.Radius;
         // Self-aimed wire is often ByteSwap(clientId), and a blast on a mob still includes the

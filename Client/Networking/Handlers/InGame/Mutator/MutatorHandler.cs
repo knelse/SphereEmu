@@ -91,6 +91,8 @@ public static class MutatorHandler
         [SpecialMutator.Перо] = Convert.FromHexString ("44EDB9D94C83000A0F07"), // 1019
         [SpecialMutator.СХ] = Convert.FromHexString ("44EDF91C4E83E00B0F07"), // 1028
         [SpecialMutator.Свинка] = Convert.FromHexString ("44ED79BB4C83A00A0F07"), // 1039
+        // No capture: the Яд bag, whose region 6 record gives virus.RG the harmful-effect icon
+        [SpecialMutator.Оковы] = Convert.FromHexString ("426D317CCE82400B0F07"), // 1036
     };
 
     public static void SendSpecialMutator (ClientConnection clientConnection, ushort localId, SpecialMutator mutator,
@@ -98,24 +100,38 @@ public static class MutatorHandler
     {
         var mutatorId = (ushort) mutator;
         var itemId = WorldObjectIndex.NewItem ();
+        foreach (var packet in BuildSpecialMutatorPackets (localId, itemId, mutator, slot))
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (packet);
+        }
+        ActiveMutators.Register (localId, itemId, mutatorId, slot, 2592000, beneficial: true);
+
+        SphLogger.Info ($"Sent mutator {mutator} ({mutatorId}) to slot {slot} as {itemId:X4}. Client ID: {localId:X4}");
+    }
+
+    /// <summary>
+    /// Slot reserve, then the mutator spawn; its region 6 record is what makes the client draw the
+    /// slot icon
+    /// </summary>
+    internal static List<byte[]> BuildSpecialMutatorPackets (ushort localId, ushort itemId, SpecialMutator mutator,
+        BelongingSlot slot)
+    {
         var playerId = ByteSwap (localId);
 
         var reserveParts = PacketPart.LoadDefinedWithOverride ("new_item_reserve_slot_full");
         PacketPart.UpdateEntityId (reserveParts, playerId);
         PacketPart.UpdateValue (reserveParts, "slot_id", (int) slot, 8);
         PacketPart.UpdateValue (reserveParts, "new_item_id", itemId, 16);
-        clientConnection.MaybeScheduleNetworkPacketSend (PacketPart.GetBytesToWrite (reserveParts));
 
         var mutatorParts = PacketPart.LoadDefinedPartsFromFile (ObjectType.Mutator);
         PacketPart.UpdateEntityId (mutatorParts, itemId);
         PacketPart.UpdateValue (mutatorParts, "object_type", (int) ObjectType.Mutator, 10);
         PacketPart.UpdateValue (mutatorParts, "to_id", playerId, 16);
         ApplyMutatorBag (mutatorParts, mutator);
-        PacketPart.UpdateValue (mutatorParts, "mutator_id", mutatorId, 16);
+        PacketPart.UpdateValue (mutatorParts, "mutator_id", (ushort) mutator, 16);
         PacketPart.UpdateValue (mutatorParts, "from_id", playerId, 16);
-        clientConnection.MaybeScheduleNetworkPacketSend (PacketPart.GetBytesToWrite (mutatorParts));
 
-        SphLogger.Info ($"Sent mutator {mutator} ({mutatorId}) to slot {slot} as {itemId:X4}. Client ID: {localId:X4}");
+        return [PacketPart.GetBytesToWrite (reserveParts), PacketPart.GetBytesToWrite (mutatorParts)];
     }
 
     private static void ApplyMutatorBag (List<PacketPart> parts, SpecialMutator mutator)

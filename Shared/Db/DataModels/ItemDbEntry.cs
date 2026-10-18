@@ -69,6 +69,7 @@ public class ItemDbEntry
     public int MutatorId { get; set; }
     public int _duration { get; set; }
     public int ReuseDelayHours { get; set; }
+    public DateTime? NextAbilityUseAt { get; set; }
     public int t2 { get; set; }
     public int t3 { get; set; }
     public int t4 { get; set; }
