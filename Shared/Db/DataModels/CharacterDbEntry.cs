@@ -96,6 +96,12 @@ public class CharacterDbEntry
     public double Y { get; set; } = 150;
     public double Z { get; set; }
     public double Angle { get; set; }
+
+    /// <summary>
+    /// False until the first world entry, so debug spawn and money apply once per character
+    /// </summary>
+    public bool HasEnteredWorld { get; set; }
+
     public int TitleMinusOne { get; set; }
     public int DegreeMinusOne { get; set; }
     public ushort CurrentHP { get; set; } = 100;

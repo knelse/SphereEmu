@@ -644,6 +644,13 @@ public partial class SphereClient : WorldObject
 			return;
 		}
 
+		if (CurrentCharacter.HasEnteredWorld)
+		{
+			SphLogger.Info ($"Skipping debug mode update (character already entered world). Client ID: {localId:X4}");
+			return;
+		}
+
+		CurrentCharacter.HasEnteredWorld = true;
 		CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
 		CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
 		CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
