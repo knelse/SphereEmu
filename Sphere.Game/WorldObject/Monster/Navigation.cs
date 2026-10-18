@@ -493,14 +493,12 @@ public partial class Monster
         return true;
     }
 
+    /// <summary>
+    /// Runs every physics frame for every mob near a player, so it only samples: FindPath already
+    /// loaded the tiles of this leash, and before the first path the caller keeps the client's Y
+    /// </summary>
     private bool TrySampleGodotGroundY (float worldX, float worldZ, out float godotGroundY)
     {
-        if (TryGetHomeSpawner (out var spawner) && TryGetLeashDisk (out var leashCenter, out var leashRadius))
-        {
-            TerrainNavMeshRuntime.EnsureTilesLoaded (spawner, leashCenter, leashRadius + 8f);
-            TerrainNavMeshRuntime.TrySyncImmediate ();
-        }
-
         var probeY = GlobalPosition.Y;
         return NavPathQuery.TrySampleGroundY (worldX, worldZ, probeY, out godotGroundY);
     }
