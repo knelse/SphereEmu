@@ -13,6 +13,12 @@ public enum NavPathFailReason
     GoalOutsideLeash,
     NoPath,
     SearchBudgetExceeded,
+
+    /// <summary>
+    /// The navmesh returned a path that leaves the leash, jumps floors or detours wildly: a bad
+    /// bake joining unrelated meshes, so the mob holds its ground instead of following it
+    /// </summary>
+    PathRejected,
 }
 
 public readonly struct NavPathRequest
@@ -46,6 +52,37 @@ public static class NavPathQuery
 {
     private const float TileLoadMarginMeters = 8f;
     private const float GroundSampleHorizontalToleranceMeters = 1f;
+
+    /// <summary>
+    /// The closest point is a 3D nearest neighbour; farther than this above or below the probe it
+    /// is another floor (or a ceiling), not the ground under it
+    /// </summary>
+    private const float GroundSampleVerticalToleranceMeters = 3f;
+
+    /// <summary>
+    /// A snap this far off the asked height lands on another storey or mesh
+    /// </summary>
+    private const float SnapVerticalToleranceMeters = 2.5f;
+
+    /// <summary>
+    /// Waypoints may sit just past the leash edge where the mesh corner rounds it
+    /// </summary>
+    private const float WaypointLeashMarginMeters = 2f;
+
+    /// <summary>
+    /// The bake walks slopes up to 70 degrees (rise 2.75 per metre); steeper than 3:1 between
+    /// waypoints is a wall or a drop, not a slope or stairs
+    /// </summary>
+    private const float MaxWaypointSlope = 3f;
+
+    private const float MinWaypointRiseMeters = 1.5f;
+
+    /// <summary>
+    /// Longer than this many times the straight line (plus slack) is a detour across joined meshes
+    /// </summary>
+    private const float MaxPathDetourFactor = 3f;
+
+    private const float PathDetourSlackMeters = 15f;
 
     public static Vector3 ClampGoalToLeash (Vector3 goalWorld, Vector3 leashCenterWorld, float leashRadiusMeters)
     {
@@ -98,20 +135,34 @@ public static class NavPathQuery
             return Fail (NavPathFailReason.NavDataMissing);
         }
 
-        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.StartWorld, out var startSnap))
+        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.StartWorld, out var startSnap)
+            || Mathf.Abs (startSnap.Y - request.StartWorld.Y) > SnapVerticalToleranceMeters)
         {
             return Fail (NavPathFailReason.StartUnwalkable);
         }
 
-        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.GoalWorld, out var goalSnap))
+        if (!TerrainNavMeshRuntime.IsPointOnNavMesh (request.GoalWorld, out var goalSnap)
+            || Mathf.Abs (goalSnap.Y - request.GoalWorld.Y) > SnapVerticalToleranceMeters)
         {
             return Fail (NavPathFailReason.GoalUnwalkable);
+        }
+
+        // Dungeon clusters are remapped into the same navigation map as the outdoor tiles, so a
+        // query crossing between them joins meshes that are far apart in the world
+        if (IndoorAreaCriteria.IsIndoorDepth (startSnap.Y) != IndoorAreaCriteria.IsIndoorDepth (goalSnap.Y))
+        {
+            return Fail (NavPathFailReason.PathRejected);
         }
 
         var path = TerrainNavMeshRuntime.FindPath (startSnap, goalSnap, optimize: true);
         if (path.Length == 0)
         {
             return Fail (NavPathFailReason.NoPath);
+        }
+
+        if (!IsPlausiblePath (path, startSnap, goalSnap, request))
+        {
+            return Fail (NavPathFailReason.PathRejected);
         }
 
         var waypoints = new List<Vector3> (path.Length);
@@ -142,13 +193,47 @@ public static class NavPathQuery
 
         var dx = closest.X - worldX;
         var dz = closest.Z - worldZ;
-        if (dx * dx + dz * dz > GroundSampleHorizontalToleranceMeters * GroundSampleHorizontalToleranceMeters)
+        if (dx * dx + dz * dz > GroundSampleHorizontalToleranceMeters * GroundSampleHorizontalToleranceMeters
+            || Mathf.Abs (closest.Y - probeY) > GroundSampleVerticalToleranceMeters)
         {
             return false;
         }
 
         groundY = closest.Y;
         return true;
+    }
+
+    /// <summary>
+    /// A bad bake can link polygons that are not walkable neighbours: the path then leaves the
+    /// leash, climbs walls or crosses to another dungeon or continent
+    /// </summary>
+    private static bool IsPlausiblePath (Vector3[] path, Vector3 start, Vector3 goal, NavPathRequest request)
+    {
+        var indoor = IndoorAreaCriteria.IsIndoorDepth (start.Y);
+        var leashRadius = request.LeashRadiusMeters + WaypointLeashMarginMeters;
+        var length = 0f;
+        var previous = start;
+        foreach (var point in path)
+        {
+            if (!IsInsideLeash (point, request.LeashCenterWorld, leashRadius)
+                || IndoorAreaCriteria.IsIndoorDepth (point.Y) != indoor)
+            {
+                return false;
+            }
+
+            var horizontal = new Vector2 (point.X - previous.X, point.Z - previous.Z).Length ();
+            var rise = Mathf.Abs (point.Y - previous.Y);
+            if (rise > Mathf.Max (MinWaypointRiseMeters, horizontal * MaxWaypointSlope))
+            {
+                return false;
+            }
+
+            length += horizontal;
+            previous = point;
+        }
+
+        var straight = new Vector2 (goal.X - start.X, goal.Z - start.Z).Length ();
+        return length <= straight * MaxPathDetourFactor + PathDetourSlackMeters;
     }
 
     private static NavPathResult Fail (NavPathFailReason reason)

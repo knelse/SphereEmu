@@ -577,22 +577,32 @@ public partial class Monster
             return;
         }
 
-        next.Y = ResolveNavStandingY (next.X, next.Z);
+        // No ground under the next step means the path left the walkable mesh (a wall, a hole or
+        // another storey): stop there rather than walk on at the old height through it
+        if (!TryResolveNavStandingY (next.X, next.Z, out var standingY))
+        {
+            ClearNavPath ();
+            return;
+        }
+
+        next.Y = standingY;
         GlobalPosition = next;
         FaceToward (next + toTarget);
         RegisterMultiMeshVisualDeferred ();
     }
 
-    private float ResolveNavStandingY (float worldX, float worldZ)
+    private bool TryResolveNavStandingY (float worldX, float worldZ, out float standingY)
     {
         var currentY = GlobalPosition.Y;
+        standingY = currentY;
         if (!TrySampleGodotGroundY (worldX, worldZ, out var groundY))
         {
-            return currentY;
+            return false;
         }
 
         var targetY = groundY + GetSpawnOriginYOffset (groundY);
-        return Mathf.Clamp (targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
+        standingY = Mathf.Clamp (targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
+        return true;
     }
 
     private void FaceToward (Vector3 worldTarget)
