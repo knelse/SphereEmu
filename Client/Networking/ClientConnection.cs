@@ -190,6 +190,9 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             case ClientPacketEvent.ItemDragOnGround:
                 await dragItemOnGroundHandler!.Handle (frame, delta);
                 break;
+            case ClientPacketEvent.ItemLeftCell:
+                await moveItemHandler!.HandleLeftCell (frame, delta);
+                break;
             case ClientPacketEvent.NpcInteract:
                 await npcInteractionHandler!.Handle (frame, delta);
                 break;
@@ -230,11 +233,11 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         groupActionsHandler ??= new (this);
         openLootContainerHandler ??= new (localId, this);
         clientChatHandler ??= new (this);
-        pickupItemHandler ??= new (localId, this);
+        pickupItemHandler ??= new (localId, this, sphereClient);
         dragItemOnGroundHandler ??= new (localId, this);
         moveItemHandler ??= new (localId, this);
-        useItemHandler ??= new (localId, this);
-        dropItemToGroundHandler ??= new ();
+        useItemHandler ??= new (localId, this, sphereClient);
+        dropItemToGroundHandler ??= new (localId, this, sphereClient);
         mainhandTakeItemHandler ??= new (localId, this);
         swapItemHandler ??= new (localId, this);
         buyItemFromTargetHandler ??= new (localId, this, sphereClient);

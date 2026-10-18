@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Packets;
 using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.System;
@@ -78,6 +79,12 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
 
         foreach (var (slot, itemId) in character.Items)
         {
+            // MainHand is a reference to a carried item, not its inventory cell
+            if (slot == BelongingSlot.MainHand)
+            {
+                continue;
+            }
+
             var item = DbConnection.Items.FindById (itemId);
             if (item is null || !declared.Add (itemId))
             {
@@ -101,6 +108,8 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
 
             clientConnection.MaybeScheduleNetworkPacketSend (record);
         }
+
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildUnlock (localId));
 
         // After items: GuildPlus64/rank and worn bonuses need the emblem process to exist first.
         NetworkedStatsUpdater.Update (character, clientConnection.MaybeScheduleNetworkPacketSend, full: true);

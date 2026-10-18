@@ -63,12 +63,13 @@ public static class ItemRecordEncoder
     public static byte[] Encode (ItemDbEntry item, ushort containerObjectId,
         float x = ContainedX, float y = 0f, float z = 0f)
     {
-        return Encode ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
+        var record = Encode ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
             containerObjectId, x, y, z, item.CurrentDurability, item.Durability, item.GameObjectType);
+        return IsGuildFamily ((ObjectType) item.WireObjectType) ? record : Concat (record, EncodeCount (item));
     }
 
     /// <summary>
-    /// ContMan cmd 12 sets the item's amount; item scripts never lower it on their own
+    /// The client divides weight by amount when dropping into a cell; an unset amount is zero
     /// </summary>
     public static byte[] EncodeCount (ItemDbEntry item) =>
         EncodeCount ((ushort) item.Id, item.WireObjectType, item.ItemCount);
@@ -83,6 +84,102 @@ public static class ItemRecordEncoder
         stream.WriteByte ((byte) CountMessage, 8);
         stream.WriteByte (2, 8);
         stream.WriteUInt16 ((ushort) Math.Max (1, count), 16);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
+    }
+
+    /// <summary>
+    /// Ground placement after the angle (alchemy_resource_ground.spdp); the low bits are the
+    /// contain state, 1 on the ground where a contained item has 2
+    /// </summary>
+    private const uint GroundPlacement = 0x322C89;
+
+    /// <summary>
+    /// An item lying in the world, as the captured ground template has it: world position and
+    /// angle, ground placement, then only properties and count, with 8-bit message types and no
+    /// parent
+    /// </summary>
+    public static byte[] EncodeOnGround (ItemDbEntry item, float x, float y, float z, byte angle)
+    {
+        var stream = GetWriteBitStream ();
+        WriteItemHeader (stream, (ushort) item.Id, (int) item.WireObjectType);
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (x));
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (y));
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (z));
+        stream.WriteByte (angle, 8);
+        stream.WriteUInt32 (GroundPlacement, 24);
+        stream.WriteByte (1, 1);
+        stream.WriteUInt16 ((ushort) (item.GameId & 0x3FFF), 14);
+        WriteSuffix (stream, SuffixWireFor (item));
+
+        WriteOwnershipProperties (stream, (int) item.WireObjectType);
+
+        stream.WriteByte ((byte) FollowOnRecord, 7);
+        stream.WriteByte ((byte) CountMessage, 8);
+        stream.WriteByte (2, 8);
+        stream.WriteUInt16 ((ushort) Math.Max (1, item.ItemCount), 16);
+
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
+    }
+
+    /// <summary>
+    /// Region wires are region + 1: 2 places an object, 4 is ContMan
+    /// </summary>
+    private const byte PlaceRegionWire = 3;
+
+    /// <summary>
+    /// The item half of the live pickup reply: region 2 at the contained position with contain
+    /// state 2, then ContMan cmd 0 naming the new parent
+    /// </summary>
+    public static byte[] EncodePutInto (ItemDbEntry item, ushort parentWireId) =>
+        EncodePutInto ((ushort) item.Id, item.WireObjectType, parentWireId);
+
+    /// <summary>
+    /// Moves an existing item process without redeclaring it
+    /// </summary>
+    public static byte[] EncodePutInto (ushort itemId, ObjectType wireObjectType, ushort parentWireId)
+    {
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 (itemId, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ((int) wireObjectType & 0xFFF), 12);
+        stream.WriteByte (PlaceRegionWire, 7);
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (ContainedX));
+        WriteUInt32Full (stream, 0);
+        WriteUInt32Full (stream, 0);
+        stream.WriteByte (0, 8);
+        stream.WriteByte (2, 2);
+        stream.WriteByte (ContManRegionWire, 7);
+        stream.WriteByte ((byte) PutHereMessage, 8);
+        stream.WriteByte (3, 8);
+        stream.WriteUInt32 (parentWireId, 24);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
+    }
+
+    public static byte[] EncodeDropToGround (ItemDbEntry item, float x, float y, float z, byte angle)
+    {
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 ((ushort) item.Id, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ((int) item.WireObjectType & 0xFFF), 12);
+        stream.WriteByte (PlaceRegionWire, 7);
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (x));
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (y));
+        WriteUInt32Full (stream, BitConverter.SingleToUInt32Bits (z));
+        stream.WriteByte (angle, 8);
+        stream.WriteByte (1, 2);
+        stream.WriteByte (ContManRegionWire, 7);
+        stream.WriteByte (1, 8);
+        stream.WriteByte (0, 8);
+
+        // The amount stays 0 until a count message sets it, and the client's cell check divides the
+        // weight by it: without this the item can never be dragged back into a cell
+        stream.WriteByte (ContManRegionWire, 7);
+        stream.WriteByte ((byte) CountMessage, 8);
+        stream.WriteByte (2, 8);
+        stream.WriteUInt16 ((ushort) Math.Max (1, item.ItemCount), 16);
         stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
@@ -143,16 +240,28 @@ public static class ItemRecordEncoder
         stream.WriteByte (3, 8);
         stream.WriteUInt32 (containerObjectId, 24);
 
-        // Property 0 stays -1: any other value that is not the player's id is a second refusal,
-        // apart from the parent check
+        WriteOwnershipProperties (stream, objectType);
+
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
+    }
+
+    private static void WriteOwnershipProperties (SphWriteStream stream, int objectType)
+    {
+        // These modules read command 9 as weight; the ownership payload becomes -256
+        if ((ObjectType) objectType is ObjectType.Mantra_White or ObjectType.Mantra_Black
+            or ObjectType.Sack or ObjectType.Recipe_Book or ObjectType.Mantra_Book_Large
+            or ObjectType.Mantra_Book_Great or ObjectType.Blueprint or ObjectType.Alchemy_Furnace
+            or ObjectType.Mutator)
+        {
+            return;
+        }
+
         stream.WriteByte ((byte) FollowOnRecord, 7);
         stream.WriteByte ((byte) PropertiesMessage, 8);
         stream.WriteByte (5, 8);
         stream.WriteByte (0, 8);
         WriteUInt32Full (stream, uint.MaxValue);
-
-        stream.WriteByte (0, 7);
-        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 
     /// <summary>
@@ -280,7 +389,9 @@ public static class ItemRecordEncoder
             combined = Concat (combined, BuildGuildSetParent (entityId, moduleTag, containerObjectId));
         }
 
-        return Concat (combined, BuildGuildProperty0None (entityId, moduleTag));
+        return moduleTag == (ushort) ObjectType.Invisibility
+            ? combined
+            : Concat (combined, BuildGuildProperty0None (entityId, moduleTag));
     }
 
     private static byte[] BuildGuildSpawnSnapshot (ushort entityId, ushort moduleTag,
@@ -303,6 +414,7 @@ public static class ItemRecordEncoder
         CommonPackets.WriteMbcVarint (stream, maxDurability);
         CommonPackets.WriteMbcVarint (stream, gameId);
         CommonPackets.WriteMbcVarint (stream, suffixId);
+        stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
@@ -342,6 +454,7 @@ public static class ItemRecordEncoder
             stream.WriteByte (b, 8);
         }
 
+        stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 

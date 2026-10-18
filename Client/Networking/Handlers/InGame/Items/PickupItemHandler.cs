@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BitStreams;
+using SphServer.Sphere.Game.WorldObject;
 using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -14,129 +15,28 @@ using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySeri
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class PickupItemHandler (ushort localId, ClientConnection clientConnection)
+public class PickupItemHandler (ushort localId, ClientConnection clientConnection, SphereClient client)
     : ISphereClientNetworkingHandler
 {
-    // 0x2E reply: object type at bit 74, the three position floats at bits 93/125/157
-    private const int ObjectTypeBitOffset = 74;
-    private const int PositionBitOffset = 93;
-
-    private static uint FloatBits (double value)
-    {
-        return BitConverter.SingleToUInt32Bits ((float) value);
-    }
-
-    // LSB-first, and bits outside the field stay put because the fields share bytes
-    public static byte[] BuildPickupMoveResult (int clientItemID, ushort clientSyncOther, byte clientSync1,
-        byte clientSync2, byte clientSlotRaw, int objectType, double x, double y, double z)
-    {
-        var serverItemID_1 = (clientItemID & 0b111111) << 2;
-        var serverItemID_2 = (clientItemID & 0b11111111000000) >> 6;
-        var serverItemID_3 = (clientItemID & 0b1100000000000000) >> 14;
-
-        var moveResult = new byte[]
-        {
-            0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte ((ushort) clientItemID),
-            MajorByte ((ushort) clientItemID), 0xE8, 0xC7, 0xA0, 0xB0, 0x6E, 0xA6, 0x88, 0x98, 0x95, 0xB1, 0x28, 0x09,
-            0xDC, 0x85, 0xC8, 0xDF, 0x02, 0x0C, MinorByte (clientSyncOther), MajorByte (clientSyncOther), 0x01, 0xFC,
-            clientSync1, clientSync2, 0x10, 0x80, 0x82, 0x20, (byte) (clientSlotRaw << 1), (byte) serverItemID_1,
-            (byte) serverItemID_2, (byte) serverItemID_3, 0x20, 0x4E, 0x00, 0x00, 0x00
-        };
-
-        // The template is one captured item, so type and position are overwritten in place
-        var stream = new BitStream (moveResult);
-        stream.SeekBitOffset (ObjectTypeBitOffset);
-        stream.WriteUInt16 ((ushort) objectType, 12);
-        stream.SeekBitOffset (PositionBitOffset);
-        WriteFloatBits (stream, x);
-        WriteFloatBits (stream, -y);
-        WriteFloatBits (stream, -z);
-        return stream.GetStreamData ();
-    }
-
-    private static void WriteFloatBits (BitStream stream, double value)
-    {
-        var bits = FloatBits (value);
-        stream.WriteUInt16 ((ushort) bits, 16);
-        stream.WriteUInt16 ((ushort) (bits >> 16), 16);
-    }
-
     public async Task Handle (byte[] frame, double delta)
     {
     }
 
     public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
     {
-        // TODO: remove kaitai
-        // var packet = new PickupItemRequest(kaitaiStream);
-        // var clientItemID = (ushort) packet.ItemId;
-        // Console.WriteLine($"Pickup request: {clientItemID}");
-        //
-        // var itemId = GetGlobalObjectId(clientItemID);
-        //
-        // var item = DbConnectionProvider.ItemCollection.FindById(itemId);
-        // var parentId = item?.ParentContainerId;
-        // if (parentId is null)
-        // {
-        //     Console.WriteLine($"Item local [{clientItemID}] global [{itemId}] not found or has no parent container");
-        //     return;
-        // }
-        //
-        // var container = DbConnectionProvider.ItemContainerCollection.FindById(parentId);
-        //
-        // if (container is null)
-        // {
-        //     Console.WriteLine($"Container [{parentId}] not found");
-        //     return;
-        // }
-        //
-        // var slotId = container.Contents.First(x => x.Value == itemId).Key << 1;
-        // var packetObjectType = (int) item.ObjectType.GetPacketObjectType();
-        // var type_1 = (byte) ((packetObjectType & 0b111111) << 2);
-        // var type_2 = (byte) (0b11000000 + (packetObjectType >> 6));
-        //
-        // var targetSlot = CurrentCharacter.FindEmptyInventorySlot();
-        //
-        // var targetSlot_1 = (byte) (((int) targetSlot & 0b111111) << 2);
-        // var targetSlot_2 = (byte) ((((int) targetSlot >> 6) & 0b11) + ((clientItemID & 0b111111) << 2));
-        // var itemId_1 = (byte) ((clientItemID >> 6) & 0b11111111);
-        // var itemId_2 = (byte) ((clientItemID >> 14) & 0b11);
-        //
-        // var clientId_1 = (byte) ((ByteSwap(LocalId) & 0b1111111) << 1);
-        // var clientId_2 = (byte) ((ByteSwap(LocalId) >> 7) & 0b11111111);
-        // var clientId_3 = (byte) (((ByteSwap(LocalId) >> 15) & 0b1) + 0b00010000);
-        //
-        // var bagId_1 = (byte) ((ByteSwap(LocalId) & 0b111111) << 2);
-        // var bagId_2 = (byte) ((ByteSwap(LocalId) >> 6) & 0b11111111);
-        // var bagId_3 = (byte) ((ByteSwap(LocalId) >> 14) & 0b11);
-        //
-        // var pickupResult = new byte[]
-        // {
-        // 0x36, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte((ushort) parentId),
-        // MajorByte((ushort) parentId), 0x5c,
-        // 0x46, 0x41, 0x02, (byte) slotId, 0x7e, MinorByte(clientItemID), MajorByte(clientItemID),
-        // type_1, type_2,
-        // 0x00, 0x80, 0x84, 0x2E, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x02,
-        // 0x0C, bagId_1,
-        //     bagId_2,
-        // bagId_3, 0xFC, clientId_1, clientId_2, clientId_3, 0x80, 0x82, 0x20, targetSlot_1,
-        // targetSlot_2, itemId_1,
-        //     itemId_2, 0xC8, 0x00,
-        //     0x00, 0x00, 0x00
-        // };
-        //
-        // CurrentCharacter.Items[targetSlot.Value] = itemId;
-        //
-        // if (container.RemoveItemBySlotIdAndDestroyContainerIfEmpty(slotId >> 1))
-        // {
-        //     RemoveEntity(GetLocalObjectId(LocalId, container.Id));
-        // }
-        //
-        // StreamPeer.PutData(pickupResult);
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+        var stream = new BitStream (frame);
+        stream.SeekBitOffset (141);
+        var item = DbConnection.Items.FindById ((int) stream.ReadUInt16 (16));
+        if (item?.DroppedOnGroundBy is not null)
+        {
+            PickUpFromGround (client, clientConnection, item);
+        }
     }
 
     public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
     {
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
         var clientItemID_1 = frame[21] >> 1;
         var clientItemID_2 = frame[22];
         var clientItemID_3 = frame[23] % 2;
@@ -155,12 +55,27 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
 
         var clientSlot_raw = frame[24];
         var targetSlotId = clientSlot_raw >> 1;
-        var targetSlot = Enum.IsDefined (typeof (BelongingSlot), targetSlotId)
-            ? (BelongingSlot) targetSlotId
-            : BelongingSlot.Unknown;
+        var targetSlot = ItemSlotReserve.SlotForWireId (targetSlotId) ?? BelongingSlot.Unknown;
+        if (item.DroppedOnGroundBy is not null)
+        {
+            PickUpFromGround (client, clientConnection, item, targetSlot);
+            return;
+        }
+
+        // Anything else must still lie in a sack: an id from someone's inventory or a vendor's list
+        // would otherwise be copied into the cell
+        var oldContainer = item.ParentContainerId is null
+            ? null
+            : DbConnection.ItemContainers.FindById (item.ParentContainerId);
+        if (oldContainer is null || !oldContainer.Contents.ContainsValue (item.Id))
+        {
+            SphLogger.Warning ($"Pickup to slot: item {item.Id:X4} is not in a sack. Client ID: {localId:X4}");
+            return;
+        }
 
         // Requirements gate wearing, not carrying: anything may sit in a cell.
-        if (targetSlot is BelongingSlot.Unknown || !item.IsValidForSlot (targetSlot) ||
+        if (targetSlot is BelongingSlot.Unknown || !character.IsItemSlotEmpty (targetSlot) ||
+            !item.IsValidForSlot (targetSlot) ||
             (!ItemDbEntry.IsInventorySlot (targetSlot) && !character.CanUseItem (item)))
         {
             SphLogger.Info (
@@ -172,22 +87,11 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             $"CLI: Move item {item.Localization[Locale.Russian]} ({item.ItemCount}) [{clientItemID}] " +
             $"to slot raw [{clientSlot_raw}] [{Enum.GetName (targetSlot)}]");
 
-        var clientSync_1 = frame[17];
-        var clientSync_2 = frame[18];
-
-        var clientSyncOther_1 = (frame[10] & 0b11000000) >> 4;
-        var clientSyncOther_2 = frame[11];
-        var clientSyncOther_3 = frame[12] & 0b111111;
-        var clientSyncOther = (ushort) ((clientSyncOther_3 << 10) + (clientSyncOther_2 << 2) + clientSyncOther_1);
-
-        var moveResult = BuildPickupMoveResult (clientItemID, clientSyncOther, clientSync_1, clientSync_2,
-            clientSlot_raw, (int) item.ObjectType, item.X, item.Y, item.Z);
-
         character.PlaceItemInSlot (targetSlot, globalItemId);
         SphLogger.Info ($"{Enum.GetName ((BelongingSlot) targetSlotId)} now has " +
                        $"{item.Localization.GetValueOrDefault (Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
-        clientConnection.MaybeScheduleNetworkPacketSend (moveResult);
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.EncodePutInto (item, ByteSwap (localId)));
 
         // The grant above does not fill the slot array, so the cell stays empty without these.
         var reserve = ItemSlotReserve.Build (localId, targetSlot, item.Id, item.ItemCount);
@@ -196,17 +100,14 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             clientConnection.MaybeScheduleNetworkPacketSend (reserve);
         }
 
-        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.Encode (item, ByteSwap (localId)));
-
-        var oldContainer = item.ParentContainerId is null
-            ? null
-            : DbConnection.ItemContainers.FindById (item.ParentContainerId);
-
         // TODO: check in next process in node instead of this
-        if (oldContainer?.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId) ?? false)
+        if (oldContainer.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId))
         {
             clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.DespawnEntity ((ushort) oldContainer.Id));
         }
+
+        item.ParentContainerId = null;
+        DbConnection.Items.Update (item);
 
         if (!ItemDbEntry.IsInventorySlot (targetSlot))
         {
@@ -219,4 +120,48 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         // Recalc writes worn look and item stats, so a save before it would miss them
         clientConnection.SaveSelectedCharacter ();
     }
+
+    /// <summary>
+    /// A dropped item into the picker's inventory: the wanted cell if it is a free inventory cell,
+    /// otherwise the first free one. The reply is the live sack pickup without the sack: the item
+    /// takes the player as parent and the player's cell gets the item
+    /// </summary>
+    public static bool PickUpFromGround (SphereClient client, ClientConnection clientConnection, ItemDbEntry item,
+        BelongingSlot? wanted = null)
+    {
+        var localId = clientConnection.LocalId;
+        if (item.DroppedOnGroundBy is null || client.CurrentCharacter is not { } character ||
+            GroundItem.Find (item.Id) is not { } groundItem ||
+            groundItem.GlobalPosition.DistanceTo (character.Origin) > 10f)
+        {
+            return false;
+        }
+
+        var slot = wanted is { } cell && ItemDbEntry.IsInventorySlot (cell) && character.IsItemSlotEmpty (cell)
+            ? cell
+            : character.FindEmptyInventorySlot ();
+        if (slot is null)
+        {
+            SphLogger.Info ($"Pickup off the ground: inventory full. Client ID: {localId:X4}");
+            return false;
+        }
+
+        character.Items[slot.Value] = item.Id;
+        clientConnection.SaveSelectedCharacter ();
+
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.EncodePutInto (item, ByteSwap (localId)));
+        if (ItemSlotReserve.Build (localId, slot.Value, item.Id, item.ItemCount) is { } reserve)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (reserve);
+        }
+
+        item.DroppedOnGroundBy = null;
+        DbConnection.Items.Update (item);
+        groundItem.PickedUp (client);
+
+        SphLogger.Info ($"Picked up {item.Localization.GetValueOrDefault (Locale.Russian, "?")} [{item.Id:X4}] " +
+                        $"off the ground into {Enum.GetName (slot.Value)}. Client ID: {localId:X4}");
+        return true;
+    }
+
 }
