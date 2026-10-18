@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -38,6 +39,12 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
             }
 
             Log (itemId, name, "not carried");
+            return;
+        }
+
+        if (FoodSatiety.TryGetValue (item.WireObjectType, out var satiety))
+        {
+            Eat (character, item, satiety, itemId, name);
             return;
         }
 
@@ -94,6 +101,48 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
         Log (itemId, name, displaced is null
             ? $"{Enum.GetName (from)} -> {Enum.GetName (to.Value)}"
             : $"{Enum.GetName (from)} <-> {Enum.GetName (to.Value)}");
+    }
+
+    /// <summary>
+    /// Satiety per bite out of the usual 100. No original values survived, so they follow the price.
+    /// Raw fish (Food_Fish) never sends a use: its script refuses to be eaten
+    /// </summary>
+    private static readonly Dictionary<ObjectType, int> FoodSatiety = new ()
+    {
+        [ObjectType.Food_Apple] = 10,
+        [ObjectType.Food_Pear] = 10,
+        [ObjectType.Food_Bread] = 20,
+        [ObjectType.Food_Fish2] = 25,
+        [ObjectType.Food_Meat] = 30
+    };
+
+    // One double click in the bag sends the same use twice ~250 ms apart
+    private const long RepeatedUseMs = 400;
+    private int lastEatenItemId = -1;
+    private long lastEatenAt;
+
+    /// <summary>
+    /// The food script prints "you ate" on its own and only waits for the new count; satiety reaches
+    /// the client through the stats
+    /// </summary>
+    private void Eat (CharacterDbEntry character, ItemDbEntry item, int satiety, ushort itemId, string name)
+    {
+        var now = Environment.TickCount64;
+        if (item.Id == lastEatenItemId && now - lastEatenAt < RepeatedUseMs)
+        {
+            Log (itemId, name, "repeat of the same click");
+            return;
+        }
+
+        lastEatenItemId = item.Id;
+        lastEatenAt = now;
+
+        character.CurrentSatiety = (ushort) Math.Min (character.CurrentSatiety + satiety, character.MaxSatiety);
+        NetworkedStatsUpdater.Update (character);
+        ItemConsumption.ConsumeOne (client, item);
+        clientConnection.SaveSelectedCharacter ();
+
+        Log (itemId, name, $"eaten, satiety {character.CurrentSatiety}/{character.MaxSatiety}");
     }
 
     private static BelongingSlot? WearSlotFor (CharacterDbEntry character, ItemDbEntry item)
