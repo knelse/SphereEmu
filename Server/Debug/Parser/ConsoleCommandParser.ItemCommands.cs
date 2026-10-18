@@ -72,8 +72,13 @@ public partial class ConsoleCommandParser
             return;
         }
 
+        // Optional stack size after the id, so stacked consumables can be tested
+        var count = split.Length >= 2 && int.TryParse (split[1], out var requestedCount)
+            ? Math.Clamp (requestedCount, 1, 255)
+            : 1;
+
         var item = ItemDbEntry.CreateFromGameObject (gameObject);
-        item.ItemCount = 1;
+        item.ItemCount = count;
         item.Id = WorldObjectIndex.NewItem ();
         DbConnection.Items.Insert (item.Id, item);
 
