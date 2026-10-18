@@ -346,9 +346,13 @@ public static class ClientPacketClassifier
                 0x83 => Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true),
                 0xA3 => Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
                 0x63 => Result (ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
-                0x23 => IsStatsUpdateRequest (frame)
-                    ? Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true)
-                    : Result (ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23", true),
+                // Group requests carry 23 at byte 16; the client also sends an 0x12 08 40 23 08 00
+                // frame by itself, and reading its byte 17 as "create" gave every player a group of one
+                0x23 when IsStatsUpdateRequest (frame) =>
+                    Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true),
+                0x23 when frame.Length > 17 && frame[16] == 0x23 =>
+                    Result (ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23 23", true),
+                0x23 => Result (ClientPacketEvent.Unknown, 0, "08 40 23 without the group tag", false),
                 0x81 => Result (ClientPacketEvent.ItemMove, 0.9, "handler signature 08 40 81", true),
                 0xC1 => Result (ClientPacketEvent.ItemPickupToSlot, 0.9, "handler signature 08 40 C1", true),
                 0x03 => Result (ClientPacketEvent.TradeBuy, 0.9, "handler signature 08 40 03", true),
