@@ -45,6 +45,7 @@ public sealed class NavPathResult
 public static class NavPathQuery
 {
     private const float TileLoadMarginMeters = 8f;
+    private const float GroundSampleHorizontalToleranceMeters = 1f;
 
     public static Vector3 ClampGoalToLeash (Vector3 goalWorld, Vector3 leashCenterWorld, float leashRadiusMeters)
     {
@@ -128,12 +129,20 @@ public static class NavPathQuery
     }
 
     /// <summary>
-    /// probeY only seeds the closest-point search
+    /// probeY only seeds the closest-point search; a hit off to the side is another mesh (or none
+    /// loaded here), not the ground under this point
     /// </summary>
     public static bool TrySampleGroundY (float worldX, float worldZ, float probeY, out float groundY)
     {
         groundY = default;
         if (!TerrainNavMeshRuntime.TryClosestPoint (new Vector3 (worldX, probeY, worldZ), out var closest))
+        {
+            return false;
+        }
+
+        var dx = closest.X - worldX;
+        var dz = closest.Z - worldZ;
+        if (dx * dx + dz * dz > GroundSampleHorizontalToleranceMeters * GroundSampleHorizontalToleranceMeters)
         {
             return false;
         }
