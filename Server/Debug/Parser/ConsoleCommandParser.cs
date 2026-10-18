@@ -155,20 +155,19 @@ public partial class ConsoleCommandParser
             return;
         }
 
-        currentCharacterDbEntry.MaxHP = ushort.Parse (stats[0]);
-        currentCharacterDbEntry.MaxMP = ushort.Parse (stats[1]);
+        // Max HP/MP, PD/MD and PA/MA (0, 1, 12, 13, 24, 25) come from levels and worn items in
+        // RecalcCurrentStats, so those slots are read past
         currentCharacterDbEntry.CurrentSatiety = ushort.Parse (stats[2]);
         currentCharacterDbEntry.MaxSatiety = ushort.Parse (stats[3]);
-        currentCharacterDbEntry.CurrentStrength = ushort.Parse (stats[4]);
-        currentCharacterDbEntry.CurrentAgility = ushort.Parse (stats[5]);
-        currentCharacterDbEntry.CurrentAccuracy = ushort.Parse (stats[6]);
-        currentCharacterDbEntry.CurrentEndurance = ushort.Parse (stats[7]);
-        currentCharacterDbEntry.CurrentEarth = ushort.Parse (stats[8]);
-        currentCharacterDbEntry.CurrentAir = ushort.Parse (stats[9]);
-        currentCharacterDbEntry.CurrentWater = ushort.Parse (stats[10]);
-        currentCharacterDbEntry.CurrentFire = ushort.Parse (stats[11]);
-        currentCharacterDbEntry.PDef = ushort.Parse (stats[12]);
-        currentCharacterDbEntry.MDef = ushort.Parse (stats[13]);
+        // Recalc rebuilds current stats from base, so writing current ones would not stick
+        currentCharacterDbEntry.BaseStrength = int.Parse (stats[4]);
+        currentCharacterDbEntry.BaseAgility = int.Parse (stats[5]);
+        currentCharacterDbEntry.BaseAccuracy = int.Parse (stats[6]);
+        currentCharacterDbEntry.BaseEndurance = int.Parse (stats[7]);
+        currentCharacterDbEntry.BaseEarth = int.Parse (stats[8]);
+        currentCharacterDbEntry.BaseAir = int.Parse (stats[9]);
+        currentCharacterDbEntry.BaseWater = int.Parse (stats[10]);
+        currentCharacterDbEntry.BaseFire = int.Parse (stats[11]);
         currentCharacterDbEntry.TitleMinusOne = ushort.Parse (stats[14]);
         currentCharacterDbEntry.DegreeMinusOne = ushort.Parse (stats[15]);
         currentCharacterDbEntry.Karma = (KarmaTypes) ushort.Parse (stats[16]);
@@ -180,9 +179,10 @@ public partial class ConsoleCommandParser
         currentCharacterDbEntry.AvailableDegreeStats = ushort.Parse (stats[21]);
         currentCharacterDbEntry.ClanRank = (ClanRank) ushort.Parse (stats[22]);
         currentCharacterDbEntry.Money = int.Parse (stats[23]);
-        currentCharacterDbEntry.PAtk = int.Parse (stats[24]);
-        currentCharacterDbEntry.MAtk = int.Parse (stats[25]);
-        NetworkedStatsUpdater.Update (currentCharacterDbEntry);
+        currentCharacterDbEntry.RecalcCurrentStats ();
+        NetworkedStatsUpdater.Update (currentCharacterDbEntry, full: true);
+        sphereClient?.SendMoney ();
+        sphereClient?.SaveCharacter ();
         SendFeedback ("Stats updated.");
     }
 
@@ -196,7 +196,8 @@ public partial class ConsoleCommandParser
         }
 
         currentCharacterDbEntry.Money = money;
-        NetworkedStatsUpdater.Update (currentCharacterDbEntry);
+        sphereClient?.SendMoney ();
+        sphereClient?.SaveCharacter ();
         SendFeedback ($"Money set to {money}.");
     }
 

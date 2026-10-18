@@ -414,6 +414,21 @@ public partial class SphereClient : WorldObject
 
 		// Collision comes from base._Ready, which waits until the client is in game
 		base._Ready ();
+		SendMoney ();
+	}
+
+	/// <summary>
+	/// Money (stat 57) is outside the classic 08 C0 sync, so it goes as its own SetStat
+	/// </summary>
+	public void SendMoney ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+			SphBitStream.ByteSwap (CurrentCharacter.ClientIndex), (byte) Money, CurrentCharacter.Money));
 	}
 
 	/// <summary>
