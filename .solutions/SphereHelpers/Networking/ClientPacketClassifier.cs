@@ -25,7 +25,8 @@ public enum ClientPacketEvent
     CombatDamageTarget,
     ItemSwap,
     CharacterSelect,
-    StatsUpdateRequest
+    StatsUpdateRequest,
+    NpcInteractClose
 }
 
 public readonly record struct ClientPacketClassification (
@@ -90,6 +91,14 @@ public static class ClientPacketClassifier
 
         if (identity.Tag == GameplayRecord.TagObjectInteract)
         {
+            if (identity.SubjectType is GameplayRecord.SubjectTypeNpcTrade
+                or GameplayRecord.SubjectTypeNpcQuestTitle)
+            {
+                // Closing an NPC window is a 0x20 frame with the player's own id at bit 172, so the
+                // damage fallback below read it as a self-hit
+                return Result (ClientPacketEvent.NpcInteractClose, 1.0, "record: NPC window close", true);
+            }
+
             // Only the loot sack at the confirmed length is routed here
             return identity.SubjectType == GameplayRecord.SubjectTypeSackMobLoot &&
                    frameLength == ConfirmedLootContainerLength
@@ -378,6 +387,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.ItemSwap => "client.item.swap",
             ClientPacketEvent.CharacterSelect => "client.character_select",
             ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",
+            ClientPacketEvent.NpcInteractClose => "client.npc.interact_close",
             _ => "client.none"
         };
 

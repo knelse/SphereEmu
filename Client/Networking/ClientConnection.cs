@@ -200,6 +200,10 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             case ClientPacketEvent.CombatDamageTarget:
                 await damageTargetHandler!.Handle (frame, delta);
                 break;
+            case ClientPacketEvent.NpcInteractClose:
+                // The damage fallback used to send this ack; without it g_6008 stays set
+                MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+                break;
             case ClientPacketEvent.ProtocolControl:
                 // Keepalive is already echoed; other transport frames have no gameplay handler
                 break;
