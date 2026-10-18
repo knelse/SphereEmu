@@ -33,6 +33,16 @@ public class LoginDataHandler (ushort localId, ClientConnection clientConnection
 
         SphLogger.Info ($"CLI {localId:X4}: Login data sent");
         var (login, password) = LoginDecoder.DecodeFromBuffer (frame, new BitStream (frame));
+        // Started with /gamexp_sid (the GameXP launcher mode), the client logs in by itself with that
+        // token instead of a login and a password, and logs in again the same way after deleting a
+        // character, which is what brings it back to a fresh character list. Here the token is
+        // "login:password"
+        if (string.IsNullOrEmpty (password) && login.IndexOf (':') is > 0 and var separator)
+        {
+            password = login[(separator + 1)..];
+            login = login[..separator];
+        }
+
         if (string.IsNullOrEmpty (login) || string.IsNullOrEmpty (password))
         {
             SphLogger.Error ($"SRV {localId:X4}: Invalid login.");
