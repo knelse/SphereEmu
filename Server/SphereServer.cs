@@ -146,13 +146,21 @@ public partial class SphereServer : Node
 		}
 
 		databaseClosed = true;
-		foreach (var client in ActiveClients.GetAll ().Values)
+		var clients = ActiveClients.GetAll ().Values.ToList ();
+		foreach (var client in clients)
 		{
 			client.SaveCharacter ();
 		}
 
 		DbConnection.Close ();
 		SphLogger.Info ("Saved connected characters and closed the database");
+
+		foreach (var client in clients)
+		{
+			client.DisconnectSocket ();
+		}
+
+		SphLogger.Info ($"Disconnected {clients.Count} client(s)");
 	}
 
 	private static void SetupTcpServer ()
