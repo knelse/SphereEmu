@@ -651,6 +651,25 @@ public static class CommonPackets
         return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
+    /// <summary>
+    /// Monster region 20 RegionManager command 3: the u32 payload goes to _char.Anim, an index into
+    /// the params cfg animations (live mobs swing with 29 SHOOT1 and 30 SHOOT2)
+    /// </summary>
+    public static byte[] BuildMonsterPlayAnimationPacket (ushort entityId, ushort moduleTag, uint animation)
+    {
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1); // has_position
+        stream.WriteUInt16 (0, 15); // tick
+        stream.WriteUInt16 (entityId, 16);
+        stream.WriteByte (0, 2); // process_id high
+        stream.WriteUInt16 ((ushort) (moduleTag & 0xFFF), 12);
+        stream.WriteByte (21, 7); // wire = region 20 + 1 (RegionManager)
+        stream.WriteUInt32 (3, 32); // command 3: Anim
+        stream.WriteByte (4, 8); // payload_len_bytes
+        stream.WriteUInt32 (animation, 32);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
     public static byte[] LoadNewPlayerDungeon =>
     [
         0xBF, 0x00, 0x2C, 0x01, 0x00, 0x06, 0x7A, 0x2C, 0x0C, 0x10, 0x80, 0x2F, 0x81, 0x1F, 0x01, 0x0B, 0xE2, 0xE0,
