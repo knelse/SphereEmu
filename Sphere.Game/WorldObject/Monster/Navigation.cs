@@ -16,6 +16,33 @@ public partial class Monster
     private const float ChaseGoalMoveThresholdMeters = 1.5f;
     private const float MaxNavVerticalStepMeters = 2f;
     private const double PositionBroadcastDelta = 0.1;
+    private const float DefaultAggroRadiusMeters = 12f;
+
+    /// <summary>
+    /// Well inside the 100m spawner leash, so a kited mob walks back instead of following to the
+    /// leash teleport
+    /// </summary>
+    private const float ChaseGiveUpDistanceMeters = 30f;
+
+    /// <summary>
+    /// Origins differ by body height; a larger gap is another floor or a cliff
+    /// </summary>
+    private const float MaxTargetVerticalDeltaMeters = 4f;
+
+    /// <summary>
+    /// Idle drift past this sends the mob home; a nav path end can sit off the exact slot
+    /// </summary>
+    private const float HomeDriftMeters = 2f;
+
+    /// <summary>
+    /// Each sync repeats 4 packets per viewer, so a running mob is capped well below the tick rate
+    /// </summary>
+    private const float PositionBroadcastIntervalSeconds = 0.25f;
+
+    /// <summary>
+    /// Chase stops this far inside Range so a small player step does not break the swing
+    /// </summary>
+    private const float ChaseStopRangeFactor = 0.8f;
 
     private MonsterHomeBinding? homeBinding;
     private MonsterSpawner? homeSpawner;
@@ -27,6 +54,12 @@ public partial class Monster
     private Vector3 lastBroadcastPosition;
     private double lastBroadcastAngleRadians;
     private bool hasBroadcastPosition;
+    private float positionBroadcastCooldown;
+
+    /// <summary>
+    /// /mob and other unbound monsters chase and return around where they first ticked
+    /// </summary>
+    private Vector3? unboundHomeWorld;
 
     public bool HasActiveNavPath => navWaypointIndex < navWaypoints.Count;
 
@@ -36,6 +69,7 @@ public partial class Monster
     {
         homeBinding = binding;
         homeSpawner = ownerSpawner;
+        unboundHomeWorld = null;
         navMode = MonsterNavMode.Idle;
         navWaypoints.Clear ();
         navWaypointIndex = 0;
@@ -46,6 +80,7 @@ public partial class Monster
     {
         homeBinding = null;
         homeSpawner = null;
+        unboundHomeWorld = null;
         navMode = MonsterNavMode.Idle;
         navWaypoints.Clear ();
         navWaypointIndex = 0;
@@ -83,12 +118,7 @@ public partial class Monster
 
     public bool TryNavigateTo (Vector3 goalWorld)
     {
-        if (!TryGetHomeSpawner (out var spawner))
-        {
-            return false;
-        }
-
-        if (!spawner.TryNavigateMonster (this, goalWorld, out _))
+        if (!TryPathTo (goalWorld))
         {
             return false;
         }
@@ -100,14 +130,13 @@ public partial class Monster
 
     public bool NavigateHome ()
     {
-        if (!homeBinding.HasValue || !TryGetHomeSpawner (out var spawner))
+        if (!TryGetHomeWorld (out var home))
         {
             StopNavigation ();
             return false;
         }
 
-        var home = homeBinding.Value.HomeSlotWorld;
-        if (!spawner.TryNavigateMonster (this, home, out _))
+        if (!TryPathTo (home))
         {
             StopNavigation ();
             return false;
@@ -123,6 +152,11 @@ public partial class Monster
         if (!Engine.IsEditorHint ())
         {
             var deltaSeconds = (float) delta;
+            if (!homeBinding.HasValue && unboundHomeWorld is null)
+            {
+                unboundHomeWorld = GlobalPosition;
+            }
+
             EnforceOutdoorLeash ();
             if (OutdoorFieldConfig.NavigationMobMovementEnabled)
             {
@@ -131,7 +165,11 @@ public partial class Monster
             }
 
             TryAttackNearbyPlayer (deltaSeconds);
-            SyncPositionToVisibleClients ();
+            positionBroadcastCooldown = Mathf.Max (0f, positionBroadcastCooldown - deltaSeconds);
+            if (positionBroadcastCooldown <= 0f)
+            {
+                SyncPositionToVisibleClients ();
+            }
         }
 
         base._PhysicsProcess (delta);
@@ -153,6 +191,7 @@ public partial class Monster
         }
 
         hasBroadcastPosition = true;
+        positionBroadcastCooldown = PositionBroadcastIntervalSeconds;
         lastBroadcastPosition = position;
         lastBroadcastAngleRadians = angleRadians;
         BroadcastEntityPositionToVisibleClients (gameX, gameY, gameZ, angleRadians);
@@ -166,39 +205,60 @@ public partial class Monster
 
     private void UpdateOutdoorChaseAi (float deltaSeconds)
     {
-        if (!TryGetHomeSpawner (out var spawner) || !spawner.OutdoorChaseEnabled)
+        var hasSpawner = TryGetHomeSpawner (out var spawner);
+        if (hasSpawner && !spawner.OutdoorChaseEnabled)
         {
             return;
         }
 
         navRepathCooldown = Mathf.Max (0f, navRepathCooldown - deltaSeconds);
 
-        if (TryFindNearestChaseTarget (this, spawner, out var chaseTarget))
+        // Walking back ignores players, or a kited mob turns around at the give-up line forever
+        if (navMode == MonsterNavMode.Returning)
         {
-            BeginOrRefreshChase (spawner, chaseTarget);
+            if (!HasActiveNavPath)
+            {
+                navMode = MonsterNavMode.Idle;
+            }
+
             return;
         }
 
-        if (navMode == MonsterNavMode.Chasing)
+        if (navMode == MonsterNavMode.Chasing && IsBeyondChaseGiveUp ())
         {
             BeginReturnHome ();
             return;
         }
 
-        if (navMode == MonsterNavMode.Returning && !HasActiveNavPath && IsNearHome ())
+        var aggroRadius = hasSpawner ? spawner.AggroRadiusMeters : DefaultAggroRadiusMeters;
+        if (TryFindNearestChaseTarget (aggroRadius, out var chaseTarget))
         {
-            navMode = MonsterNavMode.Idle;
+            BeginOrRefreshChase (chaseTarget);
+            return;
         }
-        else if (navMode == MonsterNavMode.Idle && ShouldReturnHome ())
+
+        if (navMode == MonsterNavMode.Chasing || ShouldReturnHome ())
         {
             BeginReturnHome ();
         }
     }
 
-    private void BeginOrRefreshChase (MonsterSpawner spawner, Vector3 chaseTarget)
+    private void BeginOrRefreshChase (Vector3 chaseTarget)
     {
         navMode = MonsterNavMode.Chasing;
-        if (navRepathCooldown > 0f && HasActiveNavPath)
+        if (IsWithinChaseStopRange (chaseTarget))
+        {
+            ClearNavPath ();
+            FaceToward (chaseTarget);
+            return;
+        }
+
+        if (navRepathCooldown > 0f)
+        {
+            return;
+        }
+
+        if (HasActiveNavPath)
         {
             var goalDelta = navGoalWorld - chaseTarget;
             goalDelta.Y = 0f;
@@ -208,23 +268,17 @@ public partial class Monster
             }
         }
 
-        if (IsWithinAttackRange (chaseTarget))
-        {
-            ClearNavPath ();
-            FaceToward (chaseTarget);
-            return;
-        }
-
-        if (spawner.TryNavigateMonster (this, chaseTarget, out _))
+        if (TryPathTo (chaseTarget))
         {
             navGoalWorld = chaseTarget;
-            navRepathCooldown = PathRepathIntervalSeconds;
         }
+
+        navRepathCooldown = PathRepathIntervalSeconds;
     }
 
     private void BeginReturnHome ()
     {
-        if (!homeBinding.HasValue || IsNearHome ())
+        if (!TryGetHomeWorld (out _) || IsNearHome ())
         {
             StopNavigation ();
             return;
@@ -236,42 +290,82 @@ public partial class Monster
 
     private bool ShouldReturnHome ()
     {
-        return homeBinding.HasValue && !IsNearHome ();
+        return TryGetHomeWorld (out var home)
+               && HorizontalDistanceSquared (GlobalPosition, home) > HomeDriftMeters * HomeDriftMeters;
     }
 
     private bool IsNearHome ()
     {
-        if (!homeBinding.HasValue)
+        if (!TryGetHomeWorld (out var home))
         {
             return true;
         }
 
-        var home = homeBinding.Value.HomeSlotWorld;
-        var delta = GlobalPosition - home;
-        delta.Y = 0f;
-        return delta.LengthSquared () <= HomeArrivalDistanceMeters * HomeArrivalDistanceMeters;
+        return HorizontalDistanceSquared (GlobalPosition, home)
+               <= HomeArrivalDistanceMeters * HomeArrivalDistanceMeters;
+    }
+
+    private bool IsBeyondChaseGiveUp ()
+    {
+        return TryGetHomeWorld (out var home)
+               && HorizontalDistanceSquared (GlobalPosition, home)
+               > ChaseGiveUpDistanceMeters * ChaseGiveUpDistanceMeters;
+    }
+
+    private bool TryGetHomeWorld (out Vector3 homeWorld)
+    {
+        if (homeBinding.HasValue)
+        {
+            homeWorld = homeBinding.Value.HomeSlotWorld;
+            return true;
+        }
+
+        homeWorld = unboundHomeWorld ?? default;
+        return unboundHomeWorld.HasValue;
     }
 
     /// <summary>
-    /// Horizontal disk of Range: the origin sits 1m off the ground, so a 3D check stays just
-    /// outside
+    /// Navmesh only: with no path (indoor, unbaked tiles) the mob holds its ground rather than
+    /// walking through walls
     /// </summary>
-    private bool IsWithinAttackRange (Vector3 targetWorld)
+    private bool TryPathTo (Vector3 goalWorld)
+    {
+        if (TryGetHomeSpawner (out var spawner) && spawner.TryNavigateMonster (this, goalWorld, out _))
+        {
+            return true;
+        }
+
+        if (!TryGetHomeWorld (out var home))
+        {
+            return false;
+        }
+
+        var result = NavPathQuery.FindPath (this,
+            new NavPathRequest (GlobalPosition, goalWorld, home, ChaseGiveUpDistanceMeters));
+        return result.Success && TrySetNavPath (result.Waypoints);
+    }
+
+    private static float HorizontalDistanceSquared (Vector3 a, Vector3 b)
+    {
+        var delta = a - b;
+        delta.Y = 0f;
+        return delta.LengthSquared ();
+    }
+
+    private bool IsWithinChaseStopRange (Vector3 targetWorld)
     {
         if (DataRange <= 0)
         {
             return false;
         }
 
-        var delta = GlobalPosition - targetWorld;
-        delta.Y = 0f;
-        var attackRange = DataRange;
-        return delta.LengthSquared () <= attackRange * attackRange;
+        var stopRange = DataRange * ChaseStopRangeFactor;
+        return HorizontalDistanceSquared (GlobalPosition, targetWorld) <= stopRange * stopRange;
     }
 
     private void TryAttackNearbyPlayer (float deltaSeconds)
     {
-        if (!TryFindNearestAttackTarget (out var target, out var targetWorld))
+        if (navMode == MonsterNavMode.Returning || !TryFindNearestAttackTarget (out var target, out var targetWorld))
         {
             return;
         }
@@ -297,15 +391,16 @@ public partial class Monster
 
         foreach (var client in ActiveClients.GetAll ().Values)
         {
+            // A viewer that never got this mob's spawn would take hits from nothing
             if (!IsValidChaseClient (client, out var clientWorld)
-                || client.CurrentCharacter is not { CurrentHP: > 0 })
+                || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || !IsVisibleToClient (client)
+                || Mathf.Abs (clientWorld.Y - origin.Y) > MaxTargetVerticalDeltaMeters)
             {
                 continue;
             }
 
-            var delta = clientWorld - origin;
-            delta.Y = 0f;
-            var distanceSq = delta.LengthSquared ();
+            var distanceSq = HorizontalDistanceSquared (clientWorld, origin);
             if (distanceSq > rangeSq || distanceSq >= bestDistanceSq)
             {
                 continue;
@@ -326,38 +421,39 @@ public partial class Monster
         return true;
     }
 
-    private static bool TryFindNearestChaseTarget (Monster monster, MonsterSpawner spawner, out Vector3 targetWorld)
+    private bool TryFindNearestChaseTarget (float aggroRadius, out Vector3 targetWorld)
     {
         targetWorld = default;
-        if (!monster.TryGetLeashDisk (out var leashCenter, out var leashRadius))
+        if (!TryGetLeashDisk (out var leashCenter, out var leashRadius) || !TryGetHomeWorld (out var home))
         {
             return false;
         }
 
-        var aggroRadius = Mathf.Max (1f, spawner.AggroRadiusMeters);
+        aggroRadius = Mathf.Max (1f, aggroRadius);
         var aggroRadiusSq = aggroRadius * aggroRadius;
-        var monsterPosition = monster.GlobalTransform.Origin;
+        var monsterPosition = GlobalPosition;
         var leashRadiusSq = leashRadius * leashRadius;
+        var giveUpSq = ChaseGiveUpDistanceMeters * ChaseGiveUpDistanceMeters;
         var bestDistanceSq = float.MaxValue;
         Vector3? bestClientWorld = null;
 
         foreach (var client in ActiveClients.GetAll ().Values)
         {
-            if (!IsValidChaseClient (client, out var clientWorld))
+            if (!IsValidChaseClient (client, out var clientWorld)
+                || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || Mathf.Abs (clientWorld.Y - monsterPosition.Y) > MaxTargetVerticalDeltaMeters)
             {
                 continue;
             }
 
-            var toClientFromLeash = clientWorld - leashCenter;
-            toClientFromLeash.Y = 0f;
-            if (toClientFromLeash.LengthSquared () > leashRadiusSq)
+            // Past the give-up line the chase would end as soon as it starts
+            if (HorizontalDistanceSquared (clientWorld, leashCenter) > leashRadiusSq
+                || HorizontalDistanceSquared (clientWorld, home) > giveUpSq)
             {
                 continue;
             }
 
-            var toMonster = clientWorld - monsterPosition;
-            toMonster.Y = 0f;
-            var distanceSq = toMonster.LengthSquared ();
+            var distanceSq = HorizontalDistanceSquared (clientWorld, monsterPosition);
             if (distanceSq > aggroRadiusSq || distanceSq >= bestDistanceSq)
             {
                 continue;
@@ -372,7 +468,7 @@ public partial class Monster
             return false;
         }
 
-        return monster.TryResolveOutdoorChaseGoalWorld (bestClientWorld.Value, out targetWorld);
+        return TryResolveOutdoorChaseGoalWorld (bestClientWorld.Value, out targetWorld);
     }
 
     private static bool IsValidChaseClient (SphereClient client, out Vector3 clientWorld)
@@ -386,27 +482,14 @@ public partial class Monster
         return ClientWorldPosition.TryGetGodotWorldPosition (client, out clientWorld);
     }
 
+    /// <summary>
+    /// Runs every physics frame for every mob near a player, so no navmesh query here: FindPath
+    /// snaps the goal to the mesh itself when the chase repaths
+    /// </summary>
     private bool TryResolveOutdoorChaseGoalWorld (Vector3 clientWorld, out Vector3 goalWorld)
     {
-        goalWorld = new Vector3 (clientWorld.X, clientWorld.Y, clientWorld.Z);
-        if (TrySampleGodotGroundY (clientWorld.X, clientWorld.Z, out var groundY))
-        {
-            goalWorld.Y = groundY;
-        }
-
+        goalWorld = clientWorld;
         return true;
-    }
-
-    private bool TrySampleGodotGroundY (float worldX, float worldZ, out float godotGroundY)
-    {
-        if (TryGetHomeSpawner (out var spawner) && TryGetLeashDisk (out var leashCenter, out var leashRadius))
-        {
-            TerrainNavMeshRuntime.EnsureTilesLoaded (spawner, leashCenter, leashRadius + 8f);
-            TerrainNavMeshRuntime.TrySyncImmediate ();
-        }
-
-        var probeY = GlobalPosition.Y;
-        return NavPathQuery.TrySampleGroundY (worldX, worldZ, probeY, out godotGroundY);
     }
 
     private void EnforceOutdoorLeash ()
@@ -427,9 +510,17 @@ public partial class Monster
 
     private void TeleportToHomeSlot ()
     {
-        var home = homeBinding!.Value.HomeSlotWorld;
-        var spawnPosition = home;
-        spawnPosition.Y += GetSpawnOriginYOffset (spawnPosition.Y);
+        if (!TryGetHomeWorld (out var spawnPosition))
+        {
+            return;
+        }
+
+        // The unbound home is a live origin that already carries the offset
+        if (homeBinding.HasValue)
+        {
+            spawnPosition.Y += GetSpawnOriginYOffset (spawnPosition.Y);
+        }
+
         GlobalPosition = spawnPosition;
         navMode = MonsterNavMode.Idle;
         Angle = WorldObject.CreateRandomSpawnAngle ();
@@ -444,7 +535,7 @@ public partial class Monster
             return;
         }
 
-        if (navMode == MonsterNavMode.Chasing && IsWithinAttackRange (navGoalWorld))
+        if (navMode == MonsterNavMode.Chasing && IsWithinChaseStopRange (navGoalWorld))
         {
             ClearNavPath ();
             FaceToward (navGoalWorld);
@@ -473,20 +564,32 @@ public partial class Monster
             return;
         }
 
-        next.Y = ResolveNavStandingY (next.X, next.Z);
+        next.Y = ResolveNavStandingY (next, target);
         GlobalPosition = next;
         FaceToward (next + toTarget);
         RegisterMultiMeshVisualDeferred ();
     }
 
-    private float ResolveNavStandingY (float worldX, float worldZ)
+    /// <summary>
+    /// Waypoints lie on the navmesh and FindPath already rejected paths through walls, floors and
+    /// other storeys, so the ground between two of them is interpolated: a navmesh query costs
+    /// several milliseconds, too much for every frame of every walking mob
+    /// </summary>
+    private float ResolveNavStandingY (Vector3 next, Vector3 target)
     {
-        var currentY = GlobalPosition.Y;
-        if (!TrySampleGodotGroundY (worldX, worldZ, out var groundY))
+        var groundY = target.Y;
+        if (navWaypointIndex > 0)
         {
-            return currentY;
+            var from = navWaypoints[navWaypointIndex - 1];
+            var segmentSq = HorizontalDistanceSquared (from, target);
+            if (segmentSq > 0.0001f)
+            {
+                var remaining = Mathf.Sqrt (HorizontalDistanceSquared (next, target) / segmentSq);
+                groundY = Mathf.Lerp (target.Y, from.Y, Mathf.Clamp (remaining, 0f, 1f));
+            }
         }
 
+        var currentY = GlobalPosition.Y;
         var targetY = groundY + GetSpawnOriginYOffset (groundY);
         return Mathf.Clamp (targetY, currentY - MaxNavVerticalStepMeters, currentY + MaxNavVerticalStepMeters);
     }
@@ -593,6 +696,13 @@ public partial class Monster
         {
             leashCenter = spawner.LeashCenterWorld;
             leashRadius = spawner.LeashRadiusMeters;
+            return true;
+        }
+
+        if (unboundHomeWorld.HasValue)
+        {
+            leashCenter = unboundHomeWorld.Value;
+            leashRadius = OutdoorFieldConfig.DefaultLeashRadiusMeters;
             return true;
         }
 

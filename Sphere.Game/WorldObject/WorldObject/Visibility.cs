@@ -137,6 +137,8 @@ public partial class WorldObject
     {
     }
 
+    protected bool IsVisibleToClient (SphereClient client) => _visibleClients.Contains (client);
+
     protected void ForEachVisibleClient (Action<SphereClient> send)
     {
         if (_visibleClients.Count == 0)

@@ -28,9 +28,9 @@ public static class OutdoorFieldConfig
     public const int PathRequestsPerTick = 48;
 
     /// <summary>
-    /// False keeps monsters off nav paths
+    /// False keeps monsters rooted at their slot
     /// </summary>
-    public static readonly bool NavigationMobMovementEnabled = false;
+    public static readonly bool NavigationMobMovementEnabled = true;
 
     public static int ComputeBakedSlotPoolCount (int mobCount, float spawnRadiusMeters)
     {
