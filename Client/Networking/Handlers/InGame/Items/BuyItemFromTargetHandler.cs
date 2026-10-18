@@ -1,98 +1,87 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using BitStreams;
+using SphereHelpers.Extensions;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.Logger;
+using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class BuyItemFromTargetHandler
+// 08 40 03 at bytes 13-15; layout from the SphereTools vendorTrade.txt live captures
+public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientConnection, SphereClient client)
     : ISphereClientNetworkingHandler
 {
+    private const int VendorIdBitOffset = 141;
+    private const int SlotBitOffset = 165;
+    private const int CostPerOneBitOffset = 189;
+    private const int QuantityBitOffset = 221;
+
     public async Task Handle (byte[] frame, double delta)
     {
-        // TODO: remove kaitai
-        // var packet = new BuyItemRequest(kaitaiStream);
-        // var slotId = (byte) packet.SlotId;
-        // var clientId = packet.Header.ClientId;
-        //
-        // var vendorGlobalId = GetGlobalObjectId((ushort) packet.VendorId);
-        // var vendor = DbConnectionProvider.VendorCollection.FindById(vendorGlobalId);
-        //
-        // if (vendor is null)
-        // {
-        //     Console.WriteLine($"Unknown vendor [{vendorGlobalId}]");
-        //     return;
-        // }
-        //
-        // var item = vendor.ItemsOnSale.Count > slotId ? vendor.ItemsOnSale[slotId] : null;
-        //
-        // if (item is null)
-        // {
-        //     Console.WriteLine($"Vendor [{vendorGlobalId}] has nothing in slot [{slotId}]");
-        //     return;
-        // }
-        //
-        // var localization = item.ObjectType is GameObjectType.FoodApple ? "Apple" : item.Localisation[Locale.Russian];
-        //
-        // Console.WriteLine($"Buy request: [{clientId}] slot [{slotId}] {localization} " +
-        //                   $"({packet.Quantity}) {packet.CostPerOne}t ea " +
-        //                   $"from {vendor.Name} {vendor.FamilyName} {vendorGlobalId}");
-        //
-        // var clientSlotId = CurrentCharacter.FindEmptyInventorySlot();
-        //
-        // if (clientSlotId is null)
-        // {
-        //     Console.WriteLine("No empty slots!");
-        //     return;
-        // }
-        //
-        // var totalCost = (int) (packet.Quantity * packet.CostPerOne);
-        // if (CurrentCharacter.Money < totalCost)
-        // {
-        //     Console.WriteLine("Not enough money!");
-        //     return;
-        // }
-        //
-        // var clone = Item.Clone(item);
-        // clone.ItemCount = (int) packet.Quantity;
-        // clone.ParentContainerId = LocalId;
-        //
-        // var characterUpdateStream = SphBitStream.GetWriteBitStream();
-        //
-        // CurrentCharacter.Money -= totalCost;
-        // CurrentCharacter.Items[clientSlotId.Value] = clone.Id;
-        //
-        // characterUpdateStream.WriteBytes(
-        //     new byte[]
-        //     {
-        // 0x2B, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte(LocalId), MinorByte(LocalId), 0x08,
-        // 0x40, 0x41, 0x10
-        //     }, 13, true);
-        // characterUpdateStream.WriteBit(0);
-        // characterUpdateStream.WriteByte((byte) clientSlotId);
-        // characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
-        // characterUpdateStream.WriteByte(0);
-        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        // characterUpdateStream.WriteByte(0, 7);
-        // characterUpdateStream.WriteBytes(new byte[] { 0x0, 0x1A, 0x38, 0x04 }, 4, true);
-        // characterUpdateStream.WriteInt32(CurrentCharacter.Money);
-        // characterUpdateStream.WriteByte(0x0D);
-        // characterUpdateStream.WriteByte(0x04);
-        // characterUpdateStream.WriteByte(0b110, 7);
-        // characterUpdateStream.WriteUInt16(GetLocalObjectId(clone.Id));
-        // characterUpdateStream.WriteByte(0);
-        // characterUpdateStream.WriteByte(0, 1);
-        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        // characterUpdateStream.WriteByte(0);
-        // characterUpdateStream.WriteByte(0, 7);
-        // characterUpdateStream.WriteUInt16((ushort) packet.Quantity);
-        // characterUpdateStream.WriteByte(0, 1);
-        // characterUpdateStream.WriteByte(0);
-        // characterUpdateStream.WriteByte(0);
-        // characterUpdateStream.WriteByte(0x32);
-        //
-        // var characterUpdateResult = characterUpdateStream.GetStreamData();
-        // clientConnection.MaybeQueueNetworkPacketSend(characterUpdateResult);
-        //
-        // var buyResult = Packet.ItemsToPacket(LocalId, clientId, new List<Item> { clone });
-        // // buyResult[^1] = 0;
-        // clientConnection.MaybeQueueNetworkPacketSend(buyResult);
+        // The trade window arms the use timeout the same way a drag does
+        clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
+
+        var vendorId = (ushort) ReadBits (frame, VendorIdBitOffset, 16);
+        var slot = (int) ReadBits (frame, SlotBitOffset, 8);
+        var costPerOne = (int) ReadBits (frame, CostPerOneBitOffset, 32);
+        // The 25-byte variant ends before the quantity field and buys one
+        var quantity = frame.Length * 8 >= QuantityBitOffset + 32
+            ? (int) ReadBits (frame, QuantityBitOffset, 32)
+            : 1;
+
+        var character = client.CurrentCharacter;
+        if (character is null)
+        {
+            return;
+        }
+
+        if (ActiveWorldObjects.Get (vendorId) is not NpcInteractable vendor)
+        {
+            SphLogger.Warning ($"Buy: no vendor {vendorId:X4}. Client ID: {localId:X4}");
+            return;
+        }
+
+        if (slot >= vendor.ItemsOnSale.Count)
+        {
+            SphLogger.Warning ($"Buy: vendor {vendorId:X4} has nothing in slot {slot}. Client ID: {localId:X4}");
+            return;
+        }
+
+        var onSale = vendor.ItemsOnSale[slot];
+        quantity = Math.Clamp (quantity, 1, 10000);
+        var totalCost = (long) Math.Max (costPerOne, 0) * quantity;
+        var name = onSale.Localization.GetValueOrDefault (Locale.Russian, onSale.GameObjectType.ToString ());
+
+        if (character.Money < totalCost)
+        {
+            SphLogger.Info ($"Buy: {name} x{quantity} costs {totalCost}, has {character.Money}. Client ID: {localId:X4}");
+            return;
+        }
+
+        var item = ItemDbEntry.Clone (onSale);
+        item.ItemCount = quantity;
+
+        if (client.PutItemInInventoryAndDeclare (item) is not { } inventorySlot)
+        {
+            SphLogger.Info ($"Buy: inventory full for {name} x{quantity}. Client ID: {localId:X4}");
+            return;
+        }
+
+        character.Money -= (int) totalCost;
+        client.SendMoney ();
+        client.SaveCharacter ();
+
+        SphLogger.Info ($"Buy: {name} x{quantity} for {totalCost} from vendor {vendorId:X4} slot {slot} " +
+                       $"into {inventorySlot}, money left {character.Money}. Client ID: {localId:X4}");
+    }
+
+    private static uint ReadBits (byte[] frame, int bitOffset, int count)
+    {
+        var stream = new BitStream (frame);
+        stream.ReadBits (bitOffset);
+        return stream.ReadUInt32 (count);
     }
 }
