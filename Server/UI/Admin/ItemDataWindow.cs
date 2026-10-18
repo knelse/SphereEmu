@@ -18,6 +18,8 @@ public partial class ItemDataWindow : Window
     private LineEdit? searchEdit;
     private ItemList? itemList;
     private ModelPreview? preview;
+    private TextureRect? iconRect;
+    private Label? lookLabel;
     private VBoxContainer? detailsBox;
     private Tree? fieldsTree;
     private Locale locale = Locale.Russian;
@@ -80,14 +82,7 @@ public partial class ItemDataWindow : Window
 
         MakeTypeList (columns);
         MakeItemList (columns);
-        preview = new ModelPreview
-        {
-            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
-            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
-            SizeFlagsStretchRatio = 1.3f,
-            CustomMinimumSize = new Vector2 (360, 0)
-        };
-        columns.AddChild (preview);
+        MakePreview (columns);
         MakeDetails (columns);
 
         var buttons = new HBoxContainer
@@ -131,6 +126,45 @@ public partial class ItemDataWindow : Window
         };
         itemList.ItemSelected += OnItemSelected;
         column.AddChild (itemList);
+    }
+
+    private void MakePreview (Control parent)
+    {
+        var column = new VBoxContainer
+        {
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+            SizeFlagsStretchRatio = 1.3f,
+            CustomMinimumSize = new Vector2 (360, 0)
+        };
+        column.AddThemeConstantOverride ("separation", 6);
+        parent.AddChild (column);
+
+        var lookRow = new HBoxContainer ();
+        lookRow.AddThemeConstantOverride ("separation", 10);
+        iconRect = new TextureRect
+        {
+            CustomMinimumSize = new Vector2 (96, 96),
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+            StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            TextureFilter = CanvasItem.TextureFilterEnum.Nearest
+        };
+        lookRow.AddChild (iconRect);
+        lookLabel = new Label
+        {
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            VerticalAlignment = VerticalAlignment.Center,
+            AutowrapMode = TextServer.AutowrapMode.WordSmart
+        };
+        lookRow.AddChild (lookLabel);
+        column.AddChild (lookRow);
+
+        preview = new ModelPreview
+        {
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            SizeFlagsVertical = Control.SizeFlags.ExpandFill
+        };
+        column.AddChild (preview);
     }
 
     private void MakeDetails (Control parent)
@@ -298,6 +332,7 @@ public partial class ItemDataWindow : Window
         }
 
         FillFields (go);
+        FillLook (go);
 
         var model = GroundModelFile (go.ModelNameGround);
         if (model == shownModel && preview?.HasModel == true)
@@ -308,6 +343,49 @@ public partial class ItemDataWindow : Window
         shownModel = model;
         preview?.LoadModel (model);
     }
+
+    /// <summary>
+    /// Gear has no model of its own: the ground model is one bag per class, and the worn look is
+    /// a code the client applies to the character
+    /// </summary>
+    private void FillLook (SphGameObject go)
+    {
+        if (iconRect is not null)
+        {
+            iconRect.Texture = AdminUiAtlas.ItemIcon (go.ModelNameInventory);
+        }
+
+        if (lookLabel is null)
+        {
+            return;
+        }
+
+        var lines = new List<string> { $"Inventory icon: {go.ModelNameInventory?.Trim ()}" };
+        var ground = go.ModelNameGround?.Trim () ?? string.Empty;
+        if (ground.Length > 3 && ground[0] == '@' && ground[3] == '@')
+        {
+            lines.Add ($"Worn look: {WearClassName (ground[1])} {ground[2]} (drawn on the character by the client)");
+            lines.Add ($"Ground model below is shared by the whole class: {GroundModelFile (ground)}");
+        }
+        else
+        {
+            lines.Add ($"Ground model: {ground}");
+        }
+
+        lookLabel.Text = string.Join ('\n', lines);
+    }
+
+    private static string WearClassName (char wearClass) => wearClass switch
+    {
+        'c' => "armor",
+        'v' => "robe",
+        'h' => "helmet",
+        't' => "pants",
+        'g' => "gloves",
+        'b' => "boots",
+        's' => "shield",
+        _ => $"class '{wearClass}'"
+    };
 
     /// <summary>
     /// Wearables carry a <c>@xy@</c> wear code in front of the model file name
