@@ -6,12 +6,13 @@ using SphServer.Shared.WorldState;
 namespace SphServer.Server.UI.Admin;
 
 /// <summary>
-/// Right-click is Clear or Change
+/// Right-click is Clear, Change, or Give to bag
 /// </summary>
 public partial class AdminSlotItemTools : Node
 {
     private const int ClearId = 0;
     private const int ChangeId = 1;
+    private const int GiveId = 2;
 
     private PopupMenu? menu;
     private ConfirmationDialog? deleteDialog;
@@ -31,6 +32,8 @@ public partial class AdminSlotItemTools : Node
         menu = new PopupMenu { Name = "SlotContextMenu" };
         menu.AddItem ("Clear", ClearId);
         menu.AddItem ("Change", ChangeId);
+        menu.AddSeparator ();
+        menu.AddItem ("Give to bag", GiveId);
         menu.IdPressed += OnMenuIdPressed;
         AddChild (menu);
 
@@ -84,6 +87,13 @@ public partial class AdminSlotItemTools : Node
         {
             selectWindow?.SetLocale (locale);
             selectWindow?.OpenFor (pendingClientId, pendingSlot);
+            return;
+        }
+
+        if (id == GiveId)
+        {
+            selectWindow?.SetLocale (locale);
+            selectWindow?.OpenForGive (pendingClientId);
         }
     }
 

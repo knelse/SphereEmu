@@ -278,7 +278,31 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool ReplaceSlotItem (ushort clientId, BelongingSlot slot, int gameId, ItemSuffix suffix)
+    // count_if_present in new_item_reserve_slot_full is 8 bits
+    public const int MaxItemCount = 255;
+
+    /// <summary>
+    /// Puts a new item into the first empty bag cell
+    /// </summary>
+    public static bool GiveItem (ushort clientId, int gameId, ItemSuffix suffix, int count)
+    {
+        var client = ActiveClients.Get (clientId);
+        var slot = client?.CurrentCharacter?.FindEmptyInventorySlot ();
+        if (client is null || slot is null)
+        {
+            if (client is not null)
+            {
+                AdminActionLog.Warning (client, $"give game id {gameId} failed (inventory is full)");
+            }
+
+            return false;
+        }
+
+        return ReplaceSlotItem (clientId, slot.Value, gameId, suffix, count);
+    }
+
+    public static bool ReplaceSlotItem (ushort clientId, BelongingSlot slot, int gameId, ItemSuffix suffix,
+        int count = 1)
     {
         var client = ActiveClients.Get (clientId);
         var character = client?.CurrentCharacter;
@@ -299,7 +323,7 @@ public static class AdminClientActions
         var go = SphGameObject.CreateFromGameObject (catalog);
         go.Suffix = suffix;
         var item = ItemDbEntry.CreateFromGameObject (go);
-        item.ItemCount = 1;
+        item.ItemCount = ItemDbEntry.IsInventorySlot (slot) ? Math.Clamp (count, 1, MaxItemCount) : 1;
         item.Id = WorldObjectIndex.NewItem ();
         DbConnection.SaveItem (item);
         character.PlaceItemInSlot (slot, item.Id);
@@ -315,7 +339,7 @@ public static class AdminClientActions
 
         MaybeSyncGuildFromSlot (client, character, slot);
         FinishItemMutation (client, character, lookBefore);
-        AdminActionLog.Info (client, $"set [{slot}] to game id {gameId} suffix {suffix}");
+        AdminActionLog.Info (client, $"set [{slot}] to game id {gameId} suffix {suffix} count {item.ItemCount}");
         return true;
     }
 

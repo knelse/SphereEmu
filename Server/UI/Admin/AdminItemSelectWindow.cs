@@ -21,12 +21,15 @@ public partial class AdminItemSelectWindow : Window
     private Control? suffixColumn;
     private VBoxContainer? previewBox;
     private Button? applyButton;
+    private SpinBox? countSpin;
     private PanelContainer? toastPanel;
     private Label? toastLabel;
     private Tween? toastTween;
     private Locale locale = Locale.Russian;
     private ushort? targetClientId;
     private BelongingSlot targetSlot;
+    // Bag cell is picked on apply, so the window stays open for repeated gives
+    private bool giveMode;
     private int? preselectGameId;
     private ItemSuffix preselectSuffix = ItemSuffix.None;
 
@@ -52,8 +55,10 @@ public partial class AdminItemSelectWindow : Window
     {
         targetClientId = clientId;
         targetSlot = slot;
+        giveMode = false;
         Title = $"Change item - {slot}";
         CapturePreselect (clientId, slot);
+        ResetCount ();
         if (!Visible)
         {
             PopupCentered ();
@@ -61,6 +66,33 @@ public partial class AdminItemSelectWindow : Window
 
         RefreshTypes (keepSelection: false);
         ApplyPreselect ();
+    }
+
+    public void OpenForGive (ushort clientId)
+    {
+        targetClientId = clientId;
+        // Any bag cell, only for the slot filter
+        targetSlot = BelongingSlot.Inventory_1;
+        giveMode = true;
+        var name = ActiveClients.Get (clientId)?.CurrentCharacter?.Name;
+        Title = $"Give item - {name}";
+        preselectGameId = null;
+        preselectSuffix = ItemSuffix.None;
+        ResetCount ();
+        if (!Visible)
+        {
+            PopupCentered ();
+        }
+
+        RefreshTypes (keepSelection: true);
+    }
+
+    private void ResetCount ()
+    {
+        if (countSpin is not null)
+        {
+            countSpin.Value = 1;
+        }
     }
 
     public override void _Ready ()
@@ -140,6 +172,18 @@ public partial class AdminItemSelectWindow : Window
         toastLabel.AddThemeColorOverride ("font_color", UnmetText);
         toastPanel.AddChild (toastLabel);
         buttons.AddChild (toastPanel);
+
+        buttons.AddChild (new Label { Text = "Count", VerticalAlignment = VerticalAlignment.Center });
+        countSpin = new SpinBox
+        {
+            MinValue = 1,
+            MaxValue = AdminClientActions.MaxItemCount,
+            Step = 1,
+            Rounded = true,
+            Value = 1,
+            CustomMinimumSize = new Vector2 (90, 0)
+        };
+        buttons.AddChild (countSpin);
 
         applyButton = new Button { Text = "Apply", Disabled = true };
         applyButton.Pressed += () => TryApply ();
@@ -479,7 +523,7 @@ public partial class AdminItemSelectWindow : Window
 
     private void OnNameActivated (long _)
     {
-        if (TryApply ())
+        if (TryApply () && !giveMode)
         {
             Hide ();
         }
@@ -499,7 +543,20 @@ public partial class AdminItemSelectWindow : Window
         }
 
         HideToast ();
-        AdminClientActions.ReplaceSlotItem (targetClientId.Value, targetSlot, go.GameId, SelectedSuffix ());
+        var count = (int) (countSpin?.Value ?? 1);
+        if (giveMode)
+        {
+            if (!AdminClientActions.GiveItem (targetClientId.Value, go.GameId, SelectedSuffix (), count))
+            {
+                ShowToast ("Inventory is full");
+                return false;
+            }
+
+            return true;
+        }
+
+        AdminClientActions.ReplaceSlotItem (targetClientId.Value, targetSlot, go.GameId, SelectedSuffix (),
+            count);
         return true;
     }
 
@@ -509,6 +566,11 @@ public partial class AdminItemSelectWindow : Window
         if (applyButton is not null)
         {
             applyButton.Disabled = targetClientId is null || SelectedGameObject () is null;
+        }
+
+        if (countSpin is not null)
+        {
+            countSpin.Editable = ItemDbEntry.IsInventorySlot (targetSlot);
         }
     }
 
