@@ -11,6 +11,15 @@ public partial class WorldObject
 {
     protected virtual void ShowForClient (SphereClient client)
     {
+        // A yellow light crystal (st_light3) spawned from the generic crystal template takes the
+        // client down: its gMsg lookup gets a -1 container and the native call dereferences it.
+        // Phoebe dungeon 4 streams ~40 of them, so entering it always crashed. They are only
+        // lights, so they stay server-side until the original spawn payload is known
+        if (ObjectType == ObjectType.Light_Crystal_Yellow)
+        {
+            return;
+        }
+
         var packetParts = GetPacketPartsAndUpdateCoordsAndID (client);
         packetParts = ModifyPacketParts (packetParts);
         var packet = PacketPart.GetBytesToWrite (packetParts);
