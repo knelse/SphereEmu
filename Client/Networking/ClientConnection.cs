@@ -250,6 +250,8 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     public void Close ()
     {
         sphereClient.RemoveClient ();
+        // Without a FIN the client keeps drawing the world on a dead connection
+        streamPeerTcp.DisconnectFromHost ();
     }
 
     /// <summary>

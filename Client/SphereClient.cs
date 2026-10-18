@@ -416,6 +416,17 @@ public partial class SphereClient : WorldObject
 		base._Ready ();
 	}
 
+	/// <summary>
+	/// Server shutdown path; the admin debug dummy has no socket
+	/// </summary>
+	public void DisconnectSocket ()
+	{
+		if (!IsAdminDebugDummy)
+		{
+			streamPeerTcp?.DisconnectFromHost ();
+		}
+	}
+
 	public string GetIpAddressAndPort ()
 	{
 		if (IsAdminDebugDummy)
