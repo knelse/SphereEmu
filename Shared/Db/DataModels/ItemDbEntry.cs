@@ -329,10 +329,12 @@ public class ItemDbEntry
     /// </summary>
     private static readonly Dictionary<ObjectType, BelongingSlot[]> WireObjectTypeToSlots = new ()
     {
+        // The client's bag slot (category B) takes these; ct_ibag 425 is inventory-only there
         [ObjectType.Backpack_Large] = [BelongingSlot.Backpack],
         [ObjectType.Backpack_Small] = [BelongingSlot.Backpack],
-        [ObjectType.Backpack_Eternal] = [BelongingSlot.Backpack],
-        [ObjectType.Backpack_Great] = [BelongingSlot.Backpack]
+        [ObjectType.Backpack_Great] = [BelongingSlot.Backpack],
+        [ObjectType.Sack] = [BelongingSlot.Backpack],
+        [ObjectType.Sac_M] = [BelongingSlot.Backpack]
     };
 
     public bool IsValidForSlot (BelongingSlot slot) =>
