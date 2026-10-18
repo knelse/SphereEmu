@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
@@ -46,6 +47,11 @@ public partial class WorldChunkStreamer : Node
 
         index = WorldContentIndex.GetOrLoad ();
         mainServerRoot = FindMainServerRoot ();
+
+        if (!Engine.IsEditorHint ())
+        {
+            SeedBakedWorldObjectIds (index);
+        }
 
         if (!Engine.IsEditorHint () && WorldChunkLaunchArgs.WantsLoadAllWorldChunks ())
         {
@@ -128,6 +134,27 @@ public partial class WorldChunkStreamer : Node
         {
             NotifyClientPosition (client);
         }
+    }
+
+    /// <summary>
+    /// Placement names end in _{ID} (see WorldObject.CompactDuplicatedIdNameSuffix), so the resident
+    /// index covers chunks that are not loaded yet
+    /// </summary>
+    private static void SeedBakedWorldObjectIds (WorldContentIndex contentIndex)
+    {
+        var ids = new HashSet<ushort> ();
+        foreach (var entry in contentIndex.Entries)
+        {
+            var name = entry.NodeName;
+            var separator = name.LastIndexOf ('_');
+            if (separator >= 0 && ushort.TryParse (name.AsSpan (separator + 1), out var id) && id != 0)
+            {
+                ids.Add (id);
+            }
+        }
+
+        WorldObjectIndex.SeedBaked (ids);
+        GD.Print ($"WorldChunkStreamer: kept {ids.Count} baked world object id(s) out of runtime allocation");
     }
 
     private Node? FindMainServerRoot ()
