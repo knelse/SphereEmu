@@ -9,7 +9,6 @@ using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.ClientEvents;
 using SphServer.Shared.Networking;
 using SphServer.Shared.WorldState;
-using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
 
 namespace SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
@@ -111,18 +110,6 @@ public sealed class ChangeCharacterHealthHandler (SphereClient sphereClient) : I
     {
         var stream = SphBitStream.GetWriteBitStream ();
         var origin = originEntityId ?? targetEntityId;
-
-        if (targetEntityId != entityId && ActiveWorldObjects.Get (targetEntityId) is Monster)
-        {
-            stream.WriteGuid (targetEntityId);
-            stream.WriteUInt16 ((ushort) ObjectType.Monster, 10);
-            stream.WriteByte (0, 1);
-            stream.WriteByte ((byte) EntityActionType.ATTACK, 8);
-            stream.WriteUInt16 (0x0003, 16);
-            stream.WriteByte (0, 3);
-            stream.WriteBytes ([0x00, 0x80, 0xA0, 0x03, 0x00, 0x00, 0xE0]);
-            stream.WriteByte (0b0111, 4);
-        }
 
         stream.WriteGuid (entityId);
         stream.WriteUInt16 ((ushort) ObjectType.Player, 12);

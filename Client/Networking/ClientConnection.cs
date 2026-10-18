@@ -202,6 +202,10 @@ public class ClientConnection (SphereClient sphereClient)
             case ClientPacketEvent.CombatDamageTarget:
                 await damageTargetHandler!.Handle (frame, delta);
                 break;
+            case ClientPacketEvent.NpcInteractClose:
+                // The damage fallback used to send this ack; without it g_6008 stays set
+                MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (sphereClient.EntityID));
+                break;
             case ClientPacketEvent.ProtocolControl:
                 // Keepalive is already echoed; other transport frames have no gameplay handler
                 break;
