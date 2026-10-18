@@ -354,7 +354,6 @@ public partial class ConsoleCommandParser
         {
             try
             {
-                // The server runs under ru-RU, so both '.' and ',' are accepted as the decimal mark
                 var coords = split
                     .Select (x => double.Parse (x.Replace (',', '.'), CultureInfo.InvariantCulture))
                     .ToArray ();
