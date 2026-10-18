@@ -158,7 +158,8 @@ public partial class WorldObject : Node3D
             {
                 ID = WorldObjectIndex.New ();
             }
-            else if (!WorldObjectIndex.TryReserve (ID))
+            // A client reserves its id at connect, so its own reservation is not a conflict
+            else if (!WorldObjectIndex.TryReserve (ID) && !ReferenceEquals (ActiveClients.Get (ID), this))
             {
                 var previous = ID;
                 ID = WorldObjectIndex.New ();
