@@ -12,6 +12,8 @@ namespace SphServer.Sphere.Game.WorldObject;
 [Tool]
 public partial class WorldObject : Node3D
 {
+    private const float BakedDuplicateRadius = 4f;
+
     private int _angle;
 
     private string _modelName = string.Empty;
@@ -158,8 +160,16 @@ public partial class WorldObject : Node3D
             {
                 ID = WorldObjectIndex.New ();
             }
-            else if (!WorldObjectIndex.TryReserve (ID))
+            // A client reserves its id at connect, so its own reservation is not a conflict
+            else if (!WorldObjectIndex.TryReserve (ID) && !ReferenceEquals (ActiveClients.Get (ID), this))
             {
+                if (IsBakedDuplicateOf (ActiveWorldObjects.Get (ID)))
+                {
+                    SphLogger.Info ($"World object {Name} repeats baked id {ID:X4} at the same spot, dropped");
+                    QueueFree ();
+                    return;
+                }
+
                 var previous = ID;
                 ID = WorldObjectIndex.New ();
                 SphLogger.Warning (
@@ -180,6 +190,20 @@ public partial class WorldObject : Node3D
         {
             CallDeferred (nameof (RefreshModelVisualDeferred));
         }
+    }
+
+    /// <summary>
+    /// Chunk bakes hold a few copies of one placement under one id about a metre apart, so the
+    /// copy is dropped rather than shown as a second object under a new id
+    /// </summary>
+    private bool IsBakedDuplicateOf (WorldObject? other)
+    {
+        return other is not null
+               && !ReferenceEquals (other, this)
+               && IsInstanceValid (other)
+               && other.GetType () == GetType ()
+               && other.ObjectType == ObjectType
+               && other.GlobalPosition.DistanceTo (GlobalPosition) < BakedDuplicateRadius;
     }
 
     /// <summary>

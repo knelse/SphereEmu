@@ -10,6 +10,7 @@ public static class WorldObjectIndex
 
     private static readonly object Gate = new ();
     private static readonly HashSet<ushort> Taken = [];
+    private static readonly HashSet<ushort> Baked = [];
     private static ushort lastAllocated;
 
     /// <summary>
@@ -46,6 +47,14 @@ public static class WorldObjectIndex
         if (IsTaken (id))
         {
             return true;
+        }
+
+        lock (Gate)
+        {
+            if (Baked.Contains (id))
+            {
+                return true;
+            }
         }
 
         if (ActiveWorldObjects.Get (id) is not null || ActiveClients.Get (id) is not null)
@@ -102,6 +111,24 @@ public static class WorldObjectIndex
     }
 
     /// <summary>
+    /// Ids placed in World/Chunks, skipped by <see cref="New"/> and <see cref="NewItem"/> so a runtime
+    /// object never takes the id of a placement whose chunk is not streamed in yet
+    /// </summary>
+    public static void SeedBaked (IEnumerable<ushort> ids)
+    {
+        lock (Gate)
+        {
+            foreach (var id in ids)
+            {
+                if (id != 0)
+                {
+                    Baked.Add (id);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Lowest unused wire id from <see cref="FirstUsableId"/>, skipping reserved and live
     /// occupants.
     /// </summary>
@@ -120,7 +147,7 @@ public static class WorldObjectIndex
             for (var raw = (uint) minId; raw <= ushort.MaxValue; raw++)
             {
                 var id = (ushort) raw;
-                if (Taken.Contains (id))
+                if (Taken.Contains (id) || Baked.Contains (id))
                 {
                     continue;
                 }
