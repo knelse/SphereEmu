@@ -17,7 +17,7 @@ public partial class NpcInteractable
         var modelName = ModelNameSph;
         if (NpcType is NpcType.Guilder)
         {
-            modelName = modelName.PadRight (16, '\0');
+            modelName = modelName.PadRight (15, '\0');
         }
 
         PacketPart.UpdateValue (packetParts, "entity_type_name_length", modelName.Length, 8);
