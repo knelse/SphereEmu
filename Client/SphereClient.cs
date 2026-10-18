@@ -9,6 +9,7 @@ using SphServer.Shared.Db;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Godot.Scripts.Terrain;
+using SphServer.Packets;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
@@ -421,6 +422,48 @@ public partial class SphereClient : WorldObject
 		// Collision comes from base._Ready, which waits until the client is in game
 		base._Ready ();
 		SendMoney ();
+	}
+
+	/// <summary>
+	/// Null when the inventory is full; the slot reserve and the item record are both required
+	/// for the client to show it
+	/// </summary>
+	public BelongingSlot? PutItemInInventoryAndDeclare (ItemDbEntry item, bool itemFirst = false)
+	{
+		if (CurrentCharacter is null)
+		{
+			return null;
+		}
+
+		var emptySlot = CurrentCharacter.FindEmptyInventorySlot ();
+		if (emptySlot is null)
+		{
+			return null;
+		}
+
+		var slot = emptySlot.Value;
+		CurrentCharacter.Items[slot] = item.Id;
+		SaveCharacter ();
+
+		var reserve = ItemSlotReserve.Build (CurrentCharacter.ClientIndex, slot, item.Id, item.ItemCount);
+		var record = ItemRecordEncoder.Encode (item, SphBitStream.ByteSwap (CurrentCharacter.ClientIndex));
+
+		if (itemFirst)
+		{
+			MaybeQueueNetworkPacketSend (record);
+		}
+
+		if (reserve is not null)
+		{
+			MaybeQueueNetworkPacketSend (reserve);
+		}
+
+		if (!itemFirst)
+		{
+			MaybeQueueNetworkPacketSend (record);
+		}
+
+		return slot;
 	}
 
 	/// <summary>

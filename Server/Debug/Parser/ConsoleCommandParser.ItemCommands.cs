@@ -224,36 +224,14 @@ public partial class ConsoleCommandParser
 
     private void PutItemInInventoryAndDeclare (ItemDbEntry item, string feedbackName, bool itemFirst)
     {
-        var emptySlot = currentCharacterDbEntry.FindEmptyInventorySlot ();
-        if (emptySlot is null)
+        var slot = sphereClient!.PutItemInInventoryAndDeclare (item, itemFirst);
+        if (slot is null)
         {
             SendFeedback ("Inventory is full.");
             return;
         }
 
-        var slot = emptySlot.Value;
-        currentCharacterDbEntry.Items[slot] = item.Id;
-        sphereClient!.SaveCharacter ();
-
-        var reserve = ItemSlotReserve.Build (currentCharacterDbEntry.ClientIndex, slot, item.Id, item.ItemCount);
-        var record = ItemRecordEncoder.Encode (item, SphBitStream.ByteSwap (currentCharacterDbEntry.ClientIndex));
-
-        if (itemFirst)
-        {
-            sphereClient.MaybeQueueNetworkPacketSend (record);
-        }
-
-        if (reserve is not null)
-        {
-            sphereClient.MaybeQueueNetworkPacketSend (reserve);
-        }
-
-        if (!itemFirst)
-        {
-            sphereClient.MaybeQueueNetworkPacketSend (record);
-        }
-
-        SendFeedback ($"{feedbackName} [game id {item.GameId}, item id {item.Id}] put in {Enum.GetName (slot)} and declared" +
+        SendFeedback ($"{feedbackName} [game id {item.GameId}, item id {item.Id}] put in {Enum.GetName (slot.Value)} and declared" +
                      (itemFirst ? ", item before slot." : "."));
     }
 
