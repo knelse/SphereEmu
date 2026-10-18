@@ -37,7 +37,8 @@ public partial class NpcInteractable : WorldObject
     public override void _Ready ()
     {
         base._Ready ();
-        if (Engine.IsEditorHint ())
+        // Base drops a baked duplicate
+        if (Engine.IsEditorHint () || IsQueuedForDeletion ())
         {
             return;
         }
