@@ -1,4 +1,5 @@
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Client;
@@ -19,6 +20,11 @@ public sealed record CombatHitEvent (
     ushort TargetGlobalId,
     ushort TargetLocalId,
     AttackFrameKind FrameKind) : ClientQueuedEvent;
+
+/// <summary>
+/// One stack unit used up; queued after the hits so their handlers still see the item in the hand
+/// </summary>
+public sealed record ItemSpentEvent (ItemDbEntry Item) : ClientQueuedEvent;
 
 /// <summary>
 /// Signed self HP delta, negative for damage and positive for heal. KillerProcessId
