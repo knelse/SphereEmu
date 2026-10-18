@@ -51,13 +51,6 @@ public sealed class NavPathResult
 public static class NavPathQuery
 {
     private const float TileLoadMarginMeters = 8f;
-    private const float GroundSampleHorizontalToleranceMeters = 1f;
-
-    /// <summary>
-    /// The closest point is a 3D nearest neighbour; farther than this above or below the probe it
-    /// is another floor (or a ceiling), not the ground under it
-    /// </summary>
-    private const float GroundSampleVerticalToleranceMeters = 3f;
 
     /// <summary>
     /// A snap this far off the asked height lands on another storey or mesh
@@ -174,21 +167,12 @@ public static class NavPathQuery
     }
 
     /// <summary>
-    /// probeY only seeds the closest-point search; a hit off to the side is another mesh (or none
-    /// loaded here), not the ground under this point
+    /// probeY only seeds the closest-point search
     /// </summary>
     public static bool TrySampleGroundY (float worldX, float worldZ, float probeY, out float groundY)
     {
         groundY = default;
         if (!TerrainNavMeshRuntime.TryClosestPoint (new Vector3 (worldX, probeY, worldZ), out var closest))
-        {
-            return false;
-        }
-
-        var dx = closest.X - worldX;
-        var dz = closest.Z - worldZ;
-        if (dx * dx + dz * dz > GroundSampleHorizontalToleranceMeters * GroundSampleHorizontalToleranceMeters
-            || Mathf.Abs (closest.Y - probeY) > GroundSampleVerticalToleranceMeters)
         {
             return false;
         }
