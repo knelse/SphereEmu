@@ -52,6 +52,12 @@ public partial class SphereClient : WorldObject
 	private StreamPeerTcp streamPeerTcp = null!;
 	// SceneTreeTimer is refcounted; a local dies before Timeout
 	private SceneTreeTimer? playerRespawnTimer;
+	private SceneTreeTimer? ownWornGearTimer;
+
+	// The model appears after the first keepalive, once _pcontrol ControlMove runs
+	public const double OwnWornGearAfterEntrySeconds = 2;
+	// A CheckOwnImage pass is 8 yields
+	private const double OwnWornGearAfterChangeSeconds = 1;
 
 	internal Area3D? BroadcastArea3D { get; private set; }
 
@@ -432,6 +438,32 @@ public partial class SphereClient : WorldObject
 	}
 
 	/// <summary>
+	/// Own Image applies the shared g_rec_0898 only once the model exists, and CheckOwnImage
+	/// rewrites it from the slot items every pass, so a SetWornGear that lands earlier is lost
+	/// </summary>
+	public void ScheduleOwnWornGear (double delaySeconds = OwnWornGearAfterChangeSeconds)
+	{
+		if (IsAdminDebugDummy || GetTree () is null)
+		{
+			return;
+		}
+
+		ownWornGearTimer = GetTree ().CreateTimer (delaySeconds);
+		ownWornGearTimer.Timeout += SendOwnWornGear;
+	}
+
+	private void SendOwnWornGear ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (
+			SphBitStream.ByteSwap (CurrentCharacter.ClientIndex), CharacterWornLook.ToWearPattern (CurrentCharacter)));
+	}
+
+	/// <summary>
 	/// Server shutdown path; the admin debug dummy has no socket
 	/// </summary>
 	public void DisconnectSocket ()
@@ -500,6 +532,9 @@ public partial class SphereClient : WorldObject
 		}
 
 		var wear = CharacterWornLook.ToWearPattern (CurrentCharacter);
+		// Visible clients never include the wearer; it goes after the slot change has run
+		// CheckOwnImage, which would overwrite it
+		ScheduleOwnWornGear ();
 		ForEachVisibleClient (viewer =>
 		{
 			var entityId = viewer.GetLocalObjectId (ID);
