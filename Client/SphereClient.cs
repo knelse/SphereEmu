@@ -414,6 +414,22 @@ public partial class SphereClient : WorldObject
 
 		// Collision comes from base._Ready, which waits until the client is in game
 		base._Ready ();
+		SendOwnWornGear ();
+	}
+
+	/// <summary>
+	/// Character select draws the worn look, but the in-world model keeps the default shirt until
+	/// its own SetWornGear arrives
+	/// </summary>
+	private void SendOwnWornGear ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (
+			SphBitStream.ByteSwap (CurrentCharacter.ClientIndex), CharacterWornLook.ToWearPattern (CurrentCharacter)));
 	}
 
 	/// <summary>
