@@ -128,8 +128,6 @@ public static class ItemRecordEncoder
     /// </summary>
     private const byte PlaceRegionWire = 3;
 
-    private const byte ContManRegionWire = 5;
-
     /// <summary>
     /// The item half of the live pickup reply: region 2 at the contained position with contain
     /// state 2, then ContMan cmd 0 naming the new parent
@@ -187,26 +185,6 @@ public static class ItemRecordEncoder
     }
 
     /// <summary>
-    /// ContMan cmd 12 sets the item's amount; item scripts never lower it on their own
-    /// </summary>
-    public static byte[] EncodeCount (ItemDbEntry item) =>
-        EncodeCount ((ushort) item.Id, item.WireObjectType, item.ItemCount);
-
-    public static byte[] EncodeCount (ushort itemId, ObjectType wireObjectType, int count)
-    {
-        var stream = GetWriteBitStream ();
-        stream.WriteUInt16 (itemId, 16);
-        stream.WriteByte (0, 2);
-        stream.WriteUInt16 ((ushort) ((int) wireObjectType & 0xFFF), 12);
-        stream.WriteByte (ContManRegionWire, 7);
-        stream.WriteByte ((byte) CountMessage, 8);
-        stream.WriteByte (2, 8);
-        stream.WriteUInt16 ((ushort) Math.Max (1, count), 16);
-        stream.WriteByte (0, 7);
-        return Packet.ToByteArray (stream.GetStreamData (), 3);
-    }
-
-    /// <summary>
     /// No game object id: object type alone, so every item of a type shares one icon
     /// </summary>
     public static byte[] EncodeWithoutGameId (ushort entityId, int objectType, ushort containerObjectId,
@@ -239,11 +217,6 @@ public static class ItemRecordEncoder
 
         return EncodeClassic (entityId, objectType, gameObjectId, suffix, containerObjectId, x, y, z);
     }
-
-    /// <summary>
-    /// Item amount update with a two-byte payload
-    /// </summary>
-    private const uint CountMessage = 12;
 
     private static byte[] EncodeClassic (ushort entityId, int objectType, int gameObjectId, int suffix,
         ushort containerObjectId, float x, float y, float z)
