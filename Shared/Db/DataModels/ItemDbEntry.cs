@@ -261,10 +261,6 @@ public class ItemDbEntry
         [GameObjectType.Crossbow] = WeaponSlots,
         [GameObjectType.Crossbow_Quest] = WeaponSlots,
         [GameObjectType.Fists] = WeaponSlots,
-        [GameObjectType.Map] = [BelongingSlot.MapBook],
-        [GameObjectType.Scroll] = [BelongingSlot.RecipeBook],
-        [GameObjectType.MantraBlack] = [BelongingSlot.MantraBook],
-        [GameObjectType.MantraWhite] = [BelongingSlot.MantraBook],
         [GameObjectType.Key] = KeySlots,
         [GameObjectType.Castle_Crystal] = CrystalSlots,
         [GameObjectType.Crystal] = CrystalSlots,
@@ -325,7 +321,9 @@ public class ItemDbEntry
     }
 
     /// <summary>
-    /// Vendor goods like backpacks are built from the wire type alone, with no game object behind them
+    /// Vendor goods like backpacks are built from the wire type alone, with no game object behind them.
+    /// Thematic slots follow the client's own accept list (_player openSlot categories): books, not
+    /// the maps, recipes and mantras that go inside them
     /// </summary>
     private static readonly Dictionary<ObjectType, BelongingSlot[]> WireObjectTypeToSlots = new ()
     {
@@ -334,7 +332,36 @@ public class ItemDbEntry
         [ObjectType.Backpack_Small] = [BelongingSlot.Backpack],
         [ObjectType.Backpack_Great] = [BelongingSlot.Backpack],
         [ObjectType.Sack] = [BelongingSlot.Backpack],
-        [ObjectType.Sac_M] = [BelongingSlot.Backpack]
+        [ObjectType.Sac_M] = [BelongingSlot.Backpack],
+        [ObjectType.Map_Book] = [BelongingSlot.MapBook],
+        [ObjectType.Recipe_Book] = [BelongingSlot.RecipeBook],
+        [ObjectType.Mantra_Book_Small] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Large] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Great] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Greatest] = [BelongingSlot.MantraBook],
+        [ObjectType.Mutator_Book_Small] = [BelongingSlot.MantraBook],
+        [ObjectType.Mutator_Book_Medium] = [BelongingSlot.MantraBook],
+        [ObjectType.Inkpot] = [BelongingSlot.Inkpot],
+        [ObjectType.Key] = KeySlots,
+        [ObjectType.Key_Barn] = KeySlots,
+        [ObjectType.Mission] = [BelongingSlot.Mission],
+        [ObjectType.Quest2] = [BelongingSlot.Mission],
+        [ObjectType.Scroll_October] = [BelongingSlot.Mission],
+        // The cell drawn as money holds only the herbalist's sack; money itself is a character stat
+        [ObjectType.Herbalist_Sack] = [BelongingSlot.Money],
+        // One attribute crystal per cell, plain crystals fit any of the four
+        [ObjectType.Castle_Crystal_Strength] = [BelongingSlot.Special_1],
+        [ObjectType.Castle_Crystal_Energy] = [BelongingSlot.Special_2],
+        [ObjectType.Castle_Crystal_Fortitude] = [BelongingSlot.Special_3],
+        [ObjectType.Castle_Crystal_Reflection] = [BelongingSlot.Special_4],
+        [ObjectType.Crystal] = CrystalSlots,
+        [ObjectType.Crystal_C] = CrystalSlots,
+        [ObjectType.Crystal_Attr] = CrystalSlots,
+        // Wire slots 55-57 are named Ammo, SpeedhackMantra and TokenIsland, but the client fills them
+        // with the vulnerability powder, the invisibility ability and the small bag
+        [ObjectType.Powder_Vulnerability] = [BelongingSlot.Ammo],
+        [ObjectType.Invisibility] = [BelongingSlot.SpeedhackMantra],
+        [ObjectType.Sbag] = [BelongingSlot.TokenIsland]
     };
 
     public bool IsValidForSlot (BelongingSlot slot) =>
