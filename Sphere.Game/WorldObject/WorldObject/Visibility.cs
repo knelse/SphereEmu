@@ -19,6 +19,23 @@ public partial class WorldObject
     private Area3D? _visibilityArea;
 
     /// <summary>
+    /// The client keeps the entity: a despawn broadcast after this skips it
+    /// </summary>
+    protected void ForgetVisibleClient (SphereClient client) => _visibleClients.Remove (client);
+
+    private bool _visibilityStopped;
+
+    /// <summary>
+    /// After the final despawn: until the node is freed, a body entering or the fallback would add a
+    /// client again, and the exit on free would despawn the id once more
+    /// </summary>
+    protected void StopVisibility ()
+    {
+        _visibilityStopped = true;
+        _visibleClients.Clear ();
+    }
+
+    /// <summary>
     /// The Area3D is created on first proximity, not at startup
     /// </summary>
     internal void EnsureVisibilityArea ()
@@ -51,7 +68,8 @@ public partial class WorldObject
     /// </summary>
     internal void EnsureVisibleToClient (SphereClient client)
     {
-        if (Engine.IsEditorHint () || !GodotObject.IsInstanceValid (client) || client.CurrentCharacter is null)
+        if (_visibilityStopped || Engine.IsEditorHint () || !GodotObject.IsInstanceValid (client) ||
+            client.CurrentCharacter is null)
         {
             return;
         }
@@ -82,6 +100,11 @@ public partial class WorldObject
 
     private void OnVisibilityBodyEntered (Node3D body)
     {
+        if (_visibilityStopped)
+        {
+            return;
+        }
+
         var clientNode = body.GetParent ();
         if (clientNode is not SphereClient client)
         {
@@ -99,6 +122,11 @@ public partial class WorldObject
 
     private void OnVisibilityBodyExited (Node3D body)
     {
+        if (_visibilityStopped)
+        {
+            return;
+        }
+
         var clientNode = body.GetParent ();
         if (clientNode is not SphereClient client)
         {

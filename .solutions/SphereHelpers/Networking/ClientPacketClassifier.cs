@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SphServer.Helpers.Networking;
@@ -26,7 +26,8 @@ public enum ClientPacketEvent
     ItemSwap,
     CharacterSelect,
     StatsUpdateRequest,
-    NpcInteractClose
+    NpcInteractClose,
+    ItemLeftCell
 }
 
 public readonly record struct ClientPacketClassification (
@@ -261,6 +262,9 @@ public static class ClientPacketClassifier
                            frame.Length > 16 && frame[16] == 0x23:
                 return Result (ClientPacketEvent.GroupAction, 1.0, "handler signature 08 40 23", true);
 
+            case 0x13 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA1:
+                return Result (ClientPacketEvent.ItemLeftCell, 1.0, "handler signature 08 40 A1", true);
+
             case 0x16 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23:
                 return Result (ClientPacketEvent.ItemPickup, 1.0, "handler signature 08 40 23", true);
 
@@ -392,6 +396,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.CharacterSelect => "client.character_select",
             ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",
             ClientPacketEvent.NpcInteractClose => "client.npc.interact_close",
+            ClientPacketEvent.ItemLeftCell => "client.item.left_cell",
             _ => "client.none"
         };
 

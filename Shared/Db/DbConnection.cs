@@ -156,6 +156,7 @@ public static class DbConnection
         }
 
         Monsters.DeleteAll ();
+        SphServer.Sphere.Game.WorldObject.GroundItem.ReturnGroundItemsFromLastRun ();
         WorldObjectIdCleanup.SeedAndRepair ();
         // ItemContainers.DeleteAll();
         // Vendors.DeleteAll();

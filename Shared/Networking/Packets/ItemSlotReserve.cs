@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SphereHelpers.Extensions;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using static SphServer.Shared.BitStream.SphBitStream;
@@ -90,31 +91,37 @@ public static class ItemSlotReserve
     }
 
     /// <summary>
-    /// slot_id cannot be 0 or a helmet is never drawn; no count, so stacks still need the reserve
+    /// The player's inventory starts locked; slot updates alone do not enable TestIt
     /// </summary>
+    public static byte[] BuildUnlock (ushort clientIndex)
+    {
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 (ByteSwap (clientIndex), 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (5, 7);
+        stream.WriteByte (3, 4);
+        stream.WriteByte (1, 8);
+        stream.WriteByte (0, 8);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
+    }
+
     public static byte[] BuildSlotBinding (ushort clientIndex, BelongingSlot slot, int itemId) =>
         BuildMove (clientIndex, slot, slot, itemId);
 
     /// <summary>
     /// The client does not move or swap on its own, so the window follows this packet
     /// </summary>
-    public static byte[] BuildMove (ushort clientIndex, BelongingSlot from, BelongingSlot to, int itemId)
+    public static byte[] BuildMove (ushort clientIndex, BelongingSlot from, BelongingSlot to, int itemId, int count = 1)
     {
-        var fromRaw = (byte) ((int) from << 1);
-        var toRaw = (byte) ((int) to << 1);
-        var id = (ushort) itemId;
+        var fromWire = WireSlotId (from) ?? throw new ArgumentOutOfRangeException (nameof (from));
+        var toWire = WireSlotId (to) ?? throw new ArgumentOutOfRangeException (nameof (to));
 
         return
         [
-            0x20, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MajorByte (clientIndex), MinorByte (clientIndex),
-            0x08, 0x40, 0x41, 0x10,
-            fromRaw, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-            0x0A, 0x82,
-            (byte) ((toRaw & 0b11111) << 3),
-            (byte) (((id & 0b1111) << 4) + (toRaw >> 5)),
-            (byte) ((id >> 4) & 0xFF),
-            (byte) (id >> 12),
-            0xC0, 0x44, 0x00, 0x00, 0x00
+            .. BuildRaw (clientIndex, fromWire, NoItem),
+            .. BuildRaw (clientIndex, toWire, itemId, count)
         ];
     }
 
@@ -123,11 +130,20 @@ public static class ItemSlotReserve
     /// </summary>
     public static byte[] BuildRaw (ushort clientIndex, int wireSlot, int itemId, int count = 1)
     {
-        var parts = PacketPart.LoadDefinedWithOverride ("new_item_reserve_slot_full");
-        PacketPart.UpdateEntityId (parts, ByteSwap (clientIndex));
-        PacketPart.UpdateValue (parts, "slot_id", wireSlot, 8);
-        PacketPart.UpdateValue (parts, "new_item_id", itemId, 16);
-        PacketPart.UpdateValue (parts, "count_if_present", count < 1 ? 1 : count, 8);
-        return PacketPart.GetBytesToWrite (parts);
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 (ByteSwap (clientIndex), 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (5, 7);
+        stream.WriteByte (2, 4);
+        stream.WriteByte (8, 8);
+        stream.WriteByte ((byte) wireSlot, 8);
+        stream.WriteUInt16 ((ushort) itemId, 16);
+        stream.WriteByte ((byte) (itemId >> 16), 8);
+        var value = itemId == NoItem ? 0 : Math.Max (1, count);
+        stream.WriteUInt16 ((ushort) value, 16);
+        stream.WriteUInt16 ((ushort) (value >> 16), 16);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 }

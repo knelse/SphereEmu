@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SphServer.Client.Networking.GameplayLogic.Stats;
@@ -11,7 +11,7 @@ using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
-public class UseItemHandler (ushort localId, ClientConnection clientConnection)
+public class UseItemHandler (ushort localId, ClientConnection clientConnection, SphereClient client)
     : ISphereClientNetworkingHandler
 {
     public async Task Handle (byte[] frame, double delta)
@@ -31,7 +31,12 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection)
         var name = item.Localization.GetValueOrDefault (Locale.Russian, "?");
         if (!character.Items.Any (x => x.Value == item.Id))
         {
-            // Using something lying in the world is a pickup, which the client asks for separately.
+            if (item.DroppedOnGroundBy is not null)
+            {
+                PickupItemHandler.PickUpFromGround (client, clientConnection, item);
+                return;
+            }
+
             Log (itemId, name, "not carried");
             return;
         }

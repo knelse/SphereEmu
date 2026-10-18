@@ -1,4 +1,4 @@
-﻿using SphereHelpers.Extensions;
+using SphereHelpers.Extensions;
 using SphServer.Helpers;
 using SphServer.Packets;
 using SphServer.Shared.BitStream;
@@ -325,34 +325,15 @@ public class CharacterDbEntrySerializer (CharacterDbEntry characterDbEntry) : Sp
 
         stream.WriteByte (0xF0, 8);
 
-        var statsStart = stream.Offset;
-        stream.WriteUInt16 (characterDbEntry.MaxMP, 16);
-        stream.WriteUInt16 (characterDbEntry.CurrentMP, 16);
-        stream.WriteUInt16 (characterDbEntry.CurrentSatiety, 16);
-        stream.WriteUInt16 (characterDbEntry.MaxSatiety, 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentStrength), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAgility), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAccuracy), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentEndurance), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentEarth), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentAir), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentWater), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.CurrentFire), 16);
-        stream.WriteUInt16 (characterDbEntry.PDef, 16);
-        stream.WriteUInt16 (characterDbEntry.MDef, 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.PAtk), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.MAtk), 16);
-        WriteUInt32Full (stream, characterDbEntry.TitleXP);
-        WriteUInt32Full (stream, characterDbEntry.DegreeXP);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.KarmaCount), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.AvailableTitleStats), 16);
-        stream.WriteUInt16 (unchecked ((ushort) characterDbEntry.AvailableDegreeStats), 16);
-        while (stream.Offset - statsStart < 150)
+        // Region 7 expects 60 slot weights after the flags; stats here overrun the inventory lock
+        stream.WriteByte (0, 2);
+        for (var i = 0; i < GameDataWireSlots.Length; i++)
         {
-            stream.WriteByte (0x00, 8);
+            stream.WriteUInt32 (0, 20);
         }
 
-        stream.WriteByte (0b10011, 5);
+        // Header of the varint that carries the current HP
+        stream.WriteByte (0b100, 3);
         stream.WriteUInt16 (characterDbEntry.CurrentHP, 14);
         stream.WriteByte (0b100, 3);
         stream.WriteUInt16 (characterDbEntry.MaxHP, 14);

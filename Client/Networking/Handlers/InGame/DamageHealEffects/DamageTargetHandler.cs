@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BitStreams;
+using SphServer.Client.Networking.Handlers.InGame.Items;
 using Godot;
 using SphereHelpers.Extensions;
 using SphServer.Helpers.Networking;
@@ -65,6 +66,13 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         var broadcastTargetGlobalId = broadcastTarget.GetGlobalObjectId (localId);
         var heldItem = character.GetHeldItem ();
         var frameKind = ParseAttackFrame (frame, heldItem, out var localTargetId);
+
+        var clickedItemId = broadcastTarget.GetGlobalObjectId (localTargetId);
+        if (DbConnection.Items.FindById ((int) clickedItemId) is { DroppedOnGroundBy: not null } groundItem)
+        {
+            PickupItemHandler.PickUpFromGround (broadcastTarget, clientConnection, groundItem);
+            return;
+        }
 
         // 0x19 empty-to-sword shares 08 40 A3 with a fist swing, but the item id is the take
         if (IsTakeMainhand (character, frame, localTargetId))
@@ -157,18 +165,7 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             return false;
         }
 
-        if (character.Items.ContainsValue (id))
-        {
-            return true;
-        }
-
-        if (ActiveWorldObjects.Get (id) is Monster or SphereClient)
-        {
-            return false;
-        }
-
-        // Hotkey take after the item left MainHand: still a catalog row, never a live combatant.
-        return DbConnection.Items.FindById ((int) id) is not null;
+        return character.Items.ContainsValue (id);
     }
 
     private static void LogAction (ushort sourceGlobalId, ushort targetGlobalId, AttackFrameKind action, string result)

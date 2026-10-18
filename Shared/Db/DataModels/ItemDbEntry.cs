@@ -84,6 +84,7 @@ public class ItemDbEntry
     public Dictionary<Locale, string> Localization { get; set; } = new ();
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
+    public int? DroppedOnGroundBy { get; set; }
     public Dictionary<string, object> ContentsData { get; set; } = new ();
     public Guild RequiredGuild { get; set; }
     public int RequiredGuildRankMinusOne { get; set; }
