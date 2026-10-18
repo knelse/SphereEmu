@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BitStreams;
 using SphereHelpers.Extensions;
+using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
@@ -57,7 +58,8 @@ public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientCo
             return;
         }
         quantity = Math.Clamp (quantity, 1, 10000);
-        var totalCost = (long) Math.Max (costPerOne, 0) * quantity;
+        // The client's price only picks the row; the vendor's own price is charged
+        var totalCost = (long) Math.Max (onSale.VendorCost, 0) * quantity;
         var name = onSale.Localization.GetValueOrDefault (Locale.Russian, onSale.GameObjectType.ToString ());
 
         if (character.Money < totalCost)
@@ -66,11 +68,12 @@ public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientCo
             return;
         }
 
-        var item = ItemDbEntry.Clone (onSale);
-        item.ItemCount = quantity;
+        var item = CreatePurchasedItem (onSale, quantity);
 
         if (client.PutItemInInventoryAndDeclare (item) is not { } inventorySlot)
         {
+            DbConnection.Items.Delete (item.Id);
+            WorldObjectIndex.Release ((ushort) item.Id);
             SphLogger.Info ($"Buy: inventory full for {name} x{quantity}. Client ID: {localId:X4}");
             return;
         }
@@ -88,5 +91,19 @@ public class BuyItemFromTargetHandler (ushort localId, ClientConnection clientCo
         var stream = new BitStream (frame);
         stream.ReadBits (bitOffset);
         return stream.ReadUInt32 (count);
+    }
+
+    /// <summary>
+    /// The stored copy gets the bought amount and no parent before it is inserted, otherwise the
+    /// record keeps the vendor's count and container
+    /// </summary>
+    private static ItemDbEntry CreatePurchasedItem (ItemDbEntry onSale, int quantity)
+    {
+        var item = ItemDbEntry.Clone (onSale, insertIntoItemCollection: false);
+        item.Id = WorldObjectIndex.NewItem ();
+        item.ItemCount = quantity;
+        item.ParentContainerId = null;
+        DbConnection.Items.Insert (item.Id, item);
+        return item;
     }
 }
