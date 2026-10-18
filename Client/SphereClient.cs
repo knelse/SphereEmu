@@ -9,6 +9,7 @@ using SphServer.Shared.Db;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Godot.Scripts.Terrain;
+using SphServer.Helpers;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Logger;
@@ -552,11 +553,44 @@ public partial class SphereClient : WorldObject
 		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerPlayEffect (selfId, 758));
 		NetworkedStatsUpdater.Update (CurrentCharacter, refreshPeers: false);
 		BroadcastHpToVisibleClients (respawnHp, respawnHp, includeMax: true);
+
+		var (city, respawn) = FindRespawnPoint (CurrentCharacter);
+		MaybeQueueNetworkPacketSend (new CharacterDbEntrySerializer (CurrentCharacter).GetTeleportByteArray (respawn));
+		// DB keeps Y and Z negated relative to world coords
+		CurrentCharacter.X = respawn.x;
+		CurrentCharacter.Y = -respawn.y;
+		CurrentCharacter.Z = -respawn.z;
+		CurrentCharacter.Angle = respawn.turn;
+
 		SaveCharacter ();
 		SyncUnderwaterBreath ();
 
 		SphLogger.Info (
-			$"Player respawn after death. Client ID: {localId:X4}, SetCoordinates, effect 758, HP={respawnHp}.");
+			$"Player respawn after death. Client ID: {localId:X4}, effect 758, HP={respawnHp}, city {city} " +
+			$"({respawn.x:F1}, {respawn.y:F1}, {respawn.z:F1}).");
+	}
+
+	/// <summary>
+	/// Nearest Hyperion city by center; karma respawn point when recorded, else the city center
+	/// </summary>
+	private static (Cities City, WorldCoords Coords) FindRespawnPoint (CharacterDbEntry character)
+	{
+		var centers = SavedCoords.TeleportPoints[Continents.Гиперион][PoiType.CityCenter];
+		var worldX = character.X;
+		var worldZ = -character.Z;
+
+		var (nearestName, center) = centers
+			.OrderBy (c => Math.Pow (c.Value.x - worldX, 2) + Math.Pow (c.Value.z - worldZ, 2))
+			.First ();
+		var city = Enum.Parse<Cities> (nearestName);
+
+		if (SavedCoords.RespawnPoints[Continents.Гиперион].TryGetValue (city, out var byKarma)
+		    && byKarma.TryGetValue (character.Karma, out var karmaPoint))
+		{
+			return (city, karmaPoint);
+		}
+
+		return (city, center);
 	}
 
 	/// <summary>
