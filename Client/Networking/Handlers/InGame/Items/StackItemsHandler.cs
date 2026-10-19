@@ -23,9 +23,9 @@ public class StackItemsHandler (ushort localId, ClientConnection clientConnectio
     : ISphereClientNetworkingHandler
 {
     /// <summary>
-    /// The client sets no limit; this matches the admin give limit
+    /// The client sets no limit; the server's count message (ContMan cmd 12) carries 16 bits
     /// </summary>
-    public const int MaxStackSize = 255;
+    public const int MaxStackSize = ushort.MaxValue;
 
     private const int PlayerIdWidth = 24;
 
