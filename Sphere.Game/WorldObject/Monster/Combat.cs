@@ -146,8 +146,6 @@ public partial class Monster
             target.MaybeQueueNetworkPacketSend (
                 CommonPackets.BuildPlayerApplyHpDelta (playerProcess, ID, -applied));
         }
-
-        target.SaveCharacter ();
     }
 
     /// <summary>
