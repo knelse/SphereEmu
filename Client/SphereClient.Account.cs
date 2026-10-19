@@ -120,6 +120,7 @@ public partial class SphereClient
 			playerDbEntry!.Characters.RemoveAt (index);
 			DbConnection.Players.Update (playerDbEntry);
 			DbConnection.Characters.Delete (id);
+			DbConnection.Checkpoint ();
 			return true;
 		}
 		catch (Exception ex)

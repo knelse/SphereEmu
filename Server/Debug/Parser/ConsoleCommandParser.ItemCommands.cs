@@ -72,8 +72,18 @@ public partial class ConsoleCommandParser
             return;
         }
 
+        var count = 1;
+        foreach (var token in split.Skip (1))
+        {
+            if (int.TryParse (token, out var requestedCount))
+            {
+                count = Math.Clamp (requestedCount, 1, 255);
+                break;
+            }
+        }
+
         var item = ItemDbEntry.CreateFromGameObject (gameObject);
-        item.ItemCount = 1;
+        item.ItemCount = count;
         item.Id = Guid.NewGuid ();
         DbConnection.Items.Insert (item.Id, item);
 

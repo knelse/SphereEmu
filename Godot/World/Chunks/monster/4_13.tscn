@@ -1,16 +1,17 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://di2ql2xbdfwrv"]
 
-[ext_resource type="PackedScene" path="res://Godot/Scenes/monster_spawner.tscn" id="1_1yf5t"]
-[ext_resource type="Script" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_es62k"]
+[ext_resource type="PackedScene" uid="uid://byemmdrth0vex" path="res://Godot/Scenes/monster_spawner.tscn" id="1_1yf5t"]
+[ext_resource type="Script" uid="uid://bryaftasu8lox" path="res://Godot/Scripts/Objects/HelperGizmos/MonsterSpawner.cs" id="2_es62k"]
 
-[node name="Chunk_monster_4_13" type="Node3D" unique_id=1311353093]
+[node name="__WriteBack_monster_4_13" type="Node3D" unique_id=2092678472]
 
-[node name="MonsterSpawner_19D3_[409]_[150]_[-1309]" type="Node3D" parent="." unique_id=1575374565 instance=ExtResource("1_1yf5t")]
+[node name="MonsterSpawner_19D3_[409]_[150]_[-1309]" type="Node3D" parent="." unique_id=2119273892 instance=ExtResource("1_1yf5t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 409.77432, -150.2571, 1308.0491)
 script = ExtResource("2_es62k")
 EntityId = "627a97f0-fef6-4d8f-874d-077af1df30cd"
-TargetRegularMonsterCount = 5
+TargetRegularMonsterCount = 10
 OriginalDisplayName = "MonsterSpawner_19D3_[409]_[150]_[-1309]"
+BakedSpawnSlots = Array[Vector3]([Vector3(409.77432, -154.08253, 1301.0491), Vector3(416.77432, -154.28253, 1308.0491), Vector3(409.77432, -154.24754, 1315.0491), Vector3(403.47433, -153.81372, 1305.249), Vector3(405.5743, -154.28253, 1311.5491), Vector3(414.67432, -154.13016, 1312.9491), Vector3(413.97433, -154.28253, 1303.8491), Vector3(407.67432, -154.07094, 1304.5491), Vector3(413.27432, -154.28253, 1309.4491), Vector3(403.47433, -154.17488, 1308.749)])
 RegularMonsterMaxLevel = 1
 NamedMonsterMaxLevel = 1
 MobTypeOverrides = Array[int]([87])

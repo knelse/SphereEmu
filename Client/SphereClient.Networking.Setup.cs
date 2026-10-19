@@ -29,6 +29,21 @@ public partial class SphereClient
 		clientConnection.FeedBeforeGame (frame);
 	}
 
+	public bool TryAcceptChannelDatagram (byte[] plain)
+	{
+		return clientConnection.TryAcceptChannelDatagram (plain);
+	}
+
+	public void SendSessionPacket (byte[] packet)
+	{
+		if (clientConnection is null)
+		{
+			return;
+		}
+
+		clientConnection.SendSessionPacket (packet);
+	}
+
 	public bool TryBindResume (PlayerDbEntry player)
 	{
 		if (!ActiveWorldObjects.LoggedInClients.TryAdd (player.Login, 1))

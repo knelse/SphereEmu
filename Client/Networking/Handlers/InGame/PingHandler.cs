@@ -13,7 +13,6 @@ namespace SphServer.Client.Networking.Handlers.InGame;
 
 public class PingHandler : ISphereClientNetworkingHandler
 {
-    private const double MovementBroadcastDelta = 0.1;
     // msg300 keepalive with _player PositionStream (region 11): array4 count + 4 IEEE floats.
     private const int PingFrameLength = 0x34;
     private const int CoordPayloadOffset = 35;
@@ -59,26 +58,7 @@ public class PingHandler : ISphereClientNetworkingHandler
 
         if (coordsChanged)
         {
-            if (CoordsHelper.HasPingCoordMarker (buffer))
-            {
-                var coords = CoordsHelper.GetCoordsFromPingBytes (buffer);
-                var currentCharacter = clientConnection.GetSelectedCharacter ();
-                if (currentCharacter is not null && CoordsHelper.ArePingCoordsInWorldBounds (coords))
-                {
-                    var moved = MovementDeltaExceedsThreshold (coords, currentCharacter);
-                    currentCharacter.X = coords.x;
-                    currentCharacter.Y = -coords.y;
-                    currentCharacter.Z = -coords.z;
-                    currentCharacter.Angle = coords.turn;
-                    ClientStateEvents.RaiseCharacterChanged (entityId);
-
-                    if (moved)
-                    {
-                        clientConnection.EnqueueClientEvent (new CurrentClientPositionChangedEvent ());
-                    }
-                }
-            }
-
+            // Pose is the simulation. The ping used to overwrite it
             previousCoordPayload = [.. coordPayload];
         }
 
@@ -187,12 +167,4 @@ public class PingHandler : ISphereClientNetworkingHandler
         character.PersistVitals ();
     }
 
-    private static bool MovementDeltaExceedsThreshold (WorldCoords coords, CharacterDbEntry character)
-    {
-        // Y and Z coords are negated for Godot
-        return Math.Abs (coords.x - character.X) > MovementBroadcastDelta
-               || Math.Abs (coords.y + character.Y) > MovementBroadcastDelta
-               || Math.Abs (coords.z + character.Z) > MovementBroadcastDelta
-               || Math.Abs (coords.turn - character.Angle) > MovementBroadcastDelta;
-    }
 }

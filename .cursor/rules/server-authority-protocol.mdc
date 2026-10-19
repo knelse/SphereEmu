@@ -1,0 +1,16 @@
+---
+description: Skip pre-rework networking unless the user asks for it
+alwaysApply: true
+---
+
+# Server-authority protocol
+
+The server-authoritative rework replaces the wire. Do not extend, match, or debug pre-rework networking unless the user asks for that code.
+
+Skip it:
+
+- Packet builders, decoders, and `PacketPart` layouts from before this rework
+- In-game handlers that parse those frames (`PingHandler`, attack, item, vendor, move)
+- MBC region formats as the thing to reproduce on the wire
+
+New sessions live under `Server/Simulation/` on the server and `core/gameplay` plus `core/network` (`GameChannels`, `DtlsSession`) on the client. Presentation scripts may call into those. They do not own the protocol.

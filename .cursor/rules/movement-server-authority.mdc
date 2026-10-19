@@ -1,0 +1,14 @@
+---
+description: Movement pose is server authority
+alwaysApply: true
+---
+
+# Movement is server authority
+
+The server integrates movement. The pose on screen is that result.
+
+- The client sends a wish: direction, yaw, buttons. It does not own position, yaw, or velocity.
+- Apply channel 2 to the controlled actor whenever it arrives. Do not stop applying it so the local step stays visible.
+- A local `moveGround` step can run under that pose. It does not replace the pose.
+- A stuck direction or a late pose is a bug in the wish or the integrator. The fix keeps the server pose on the actor.
+- Game Y is flipped. Ingame Y = -Godot Y, and +game Y is down. Raising the body on screen adds to Godot Y.

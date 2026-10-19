@@ -40,11 +40,9 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
             var index = slot - 1;
             if (delete)
             {
-                if (clientConnection.DeletePlayerCharacter (index))
-                {
-                    clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.CharacterDeleted (entityId));
-                }
-
+                var deleted = clientConnection.DeletePlayerCharacter (index);
+                clientConnection.MaybeScheduleNetworkPacketSend (
+                    CommonPackets.CharacterDeleted (entityId, deleted));
                 return;
             }
 
@@ -54,7 +52,16 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
                 return;
             }
 
-            selectedCharacterIndex = CreateNewCharacter (index, createPayload);
+            try
+            {
+                selectedCharacterIndex = CreateNewCharacter (index, createPayload);
+            }
+            catch (Exception ex)
+            {
+                SphLogger.Error ($"SRV {entityId}: Character creation failed", ex);
+                clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.NameAlreadyExists (entityId));
+                return;
+            }
         }
 
         if (selectedCharacterIndex == -1)
@@ -91,7 +98,7 @@ public class CharacterSelectHandler (Guid entityId, ClientConnection clientConne
         }
 
         var name = SphEncoding.Win1251.GetString (payload, 0, nameLength);
-        var isNameValid = true; // Login.IsNameValid(name);
+        var isNameValid = name.Length > 0;
 
         if (!isNameValid)
         {

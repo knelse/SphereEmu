@@ -552,6 +552,12 @@ public partial class MonsterSpawner : Node3D
 
 	private void BeginBulkSpawnPlan (bool enableSpawningOnApply)
 	{
+		// A camp with no baked slots cannot place its target count
+		if (BakedSpawnSlots.Count < TargetRegularMonsterCount + EffectiveNamedTarget ())
+		{
+			MonsterSpawnSlotBaker.BakeForSpawner (this);
+		}
+
 		var occupied = CaptureOccupiedWorldPositions ();
 		if (TryPlanPopulation (occupied, out var plan))
 		{

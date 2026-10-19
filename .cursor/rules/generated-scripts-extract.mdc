@@ -1,0 +1,14 @@
+---
+description: Audit GeneratedScripts for extractable code whenever it is analyzed or edited
+alwaysApply: true
+---
+
+# Pull client logic out of GeneratedScripts
+
+Any analysis or edit that reads or changes `GeneratedScripts.cpp`, `GeneratedScripts.h`, or a caller of those functions includes an extract audit in the same reply.
+
+The audit is the whole feature, not only the function that was asked about. Include the callers, the callees, and the other functions on that screen or flow.
+
+For each chunk, name the functions and one existing destination (`core/gameplay`, `core/network`, `core/ui`, `core/world`). A refactor or a rewrite is fine. Say what stays in the generated file. That should be a call into the new code, or nothing.
+
+New behavior is not added to the generated file. The generated file stays the interpreter.

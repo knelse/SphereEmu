@@ -2,6 +2,7 @@ using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Godot.Scripts.Terrain;
 using SphServer.Shared.BitStream;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.Logger;
@@ -14,6 +15,14 @@ namespace SphServer.Client;
 public partial class SphereClient
 {
 	private CharacterBody3D? clientModel;
+	private ulong respawnProtectionEndsMsec;
+	private SceneTreeTimer? ownWornGearTimer;
+
+	public const double RespawnProtectionSeconds = 5;
+	public const double OwnWornGearAfterEntrySeconds = 2;
+	private const double OwnWornGearAfterChangeSeconds = 1;
+
+	public bool IsRespawnProtected => Time.GetTicksMsec () < respawnProtectionEndsMsec;
 
 	/// <summary>
 	/// g_ground code 5: the water plane is at or below the feet, and within 30 units
@@ -191,8 +200,51 @@ public partial class SphereClient
 		BroadcastHpToVisibleClients (0, respawnHp, includeMax: true);
 		SaveCharacter ();
 		SyncUnderwaterBreath ();
+		GrantRespawnProtection ();
 
 		SphLogger.Info (
 			$"Player respawn after death. Client ID: {EntityID}, SetCoordinates, effect 758, HP={respawnHp}.");
+	}
+
+	public void SendMoney ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+			EntityID, (byte) Money, CurrentCharacter.Money));
+	}
+
+	public void GrantRespawnProtection ()
+	{
+		respawnProtectionEndsMsec = Time.GetTicksMsec () + (ulong) (RespawnProtectionSeconds * 1000);
+		if (CurrentCharacter is not null)
+		{
+			MaybeQueueNetworkPacketSend (CommonPackets.ClientInvulnerableEffect (EntityID));
+		}
+	}
+
+	public void ScheduleOwnWornGear (double delaySeconds = OwnWornGearAfterChangeSeconds)
+	{
+		if (IsAdminDebugDummy || GetTree () is null)
+		{
+			return;
+		}
+
+		ownWornGearTimer = GetTree ().CreateTimer (delaySeconds);
+		ownWornGearTimer.Timeout += SendOwnWornGear;
+	}
+
+	private void SendOwnWornGear ()
+	{
+		if (CurrentCharacter is null)
+		{
+			return;
+		}
+
+		MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (
+			EntityID, CharacterWornLook.ToWearPattern (CurrentCharacter)));
 	}
 }

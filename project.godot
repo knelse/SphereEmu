@@ -25,6 +25,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/initial_position_type=0
 window/size/initial_position=Vector2i(1600, 300)
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -58,6 +59,8 @@ project/assembly_name="SphServer"
 
 [physics]
 
+common/max_physics_steps_per_frame=3
+common/physics_jitter_fix=0.0
 common/enable_pause_aware_picking=true
 
 [rendering]

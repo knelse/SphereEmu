@@ -58,6 +58,7 @@ public partial class SphereClient
 		}
 
 		var wear = CharacterWornLook.ToWearPattern (CurrentCharacter);
+		ScheduleOwnWornGear ();
 		ForEachVisibleClient (viewer =>
 		{
 			viewer.MaybeQueueNetworkPacketSend (CommonPackets.BuildSetWornGearPacket (EntityID, wear));

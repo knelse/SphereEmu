@@ -18,8 +18,10 @@ using SphServer.Client.Networking.Handlers.InGame.ObjectMovement;
 using SphServer.Client.Networking.Handlers.InGame.PlayerCharacter;
 using SphServer.Helpers.Networking;
 using SphServer.Packets;
+using SphServer.Server;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
+using SphServer.Server.Simulation;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
@@ -156,6 +158,11 @@ public class ClientConnection (SphereClient sphereClient)
         switch (packetEvent)
         {
             case ClientPacketEvent.PositionKeepalive:
+                if (!seenFirstPositionKeepalive)
+                {
+                    sphereClient.ScheduleOwnWornGear (SphereClient.OwnWornGearAfterEntrySeconds);
+                }
+
                 seenFirstPositionKeepalive = true;
                 await pingHandler!.Handle (frame, delta);
                 sphereClient.UpdateCoordinatesInWorld ();
@@ -231,10 +238,10 @@ public class ClientConnection (SphereClient sphereClient)
         dragItemOnGroundHandler ??= new (sphereClient.EntityID, this);
         moveItemHandler ??= new (sphereClient.EntityID, this);
         useItemHandler ??= new (sphereClient.EntityID, this);
-        dropItemToGroundHandler ??= new ();
+        dropItemToGroundHandler ??= new (sphereClient.EntityID, this, sphereClient);
         mainhandTakeItemHandler ??= new (sphereClient.EntityID, this);
         swapItemHandler ??= new (sphereClient.EntityID, this);
-        buyItemFromTargetHandler ??= new ();
+        buyItemFromTargetHandler ??= new (sphereClient.EntityID, this, sphereClient);
         damageTargetHandler ??= new (sphereClient.EntityID, this);
         moveObjectForClientHandler ??= new (this);
         changeStatsHandler ??= new (sphereClient.EntityID, this);
@@ -383,6 +390,77 @@ public class ClientConnection (SphereClient sphereClient)
     {
         SphPacketLogger.LogOutgoing (sphereClient.EntityID, packet);
         beforeGameSend?.Invoke (packet);
+    }
+
+    public void SendSessionPacket (byte[] packet)
+    {
+        if (beforeGameSend is null)
+        {
+            return;
+        }
+
+        SendPacket (packet);
+    }
+
+    public bool TryAcceptChannelDatagram (byte[] plain)
+    {
+        if (plain.Length == 0)
+        {
+            return false;
+        }
+
+        var channel = plain[0];
+        if (channel != CommandDatagram.Channel && channel != WorldDatagram.Channel &&
+            channel != ReliableDatagram.Channel)
+        {
+            return false;
+        }
+
+        // An old frame's length prefix equals the buffer size. Channel 3's second byte is the seq.
+        if (plain.Length >= 2 && BinaryPrimitives.ReadUInt16LittleEndian (plain) == plain.Length)
+        {
+            return false;
+        }
+
+        if (channel == WorldDatagram.Channel)
+        {
+            return true;
+        }
+
+        if (channel == CommandDatagram.Channel)
+        {
+            // Count lives in byte 1. Above 8 is not an old frame either
+            if (plain.Length < 2 || plain[1] > 8 ||
+                plain.Length < 2 + plain[1] * CommandDatagram.CommandBytes)
+            {
+                return true;
+            }
+
+            var body = plain.AsSpan (1).ToArray ();
+            SphereServer.ServerNode.Simulation.AcceptCommandDatagram (sphereClient.EntityID, body);
+            return true;
+        }
+
+        // Channel 3: byte 1 is the seq low byte, not a count
+        if (plain.Length < 1 + ReliableDatagram.HeaderBytes)
+        {
+            return true;
+        }
+
+        var reliableBody = plain.AsSpan (1).ToArray ();
+        if (!ReliableDatagram.TryDecode (reliableBody, out _, out _, out var command, out _))
+        {
+            return true;
+        }
+
+        switch (command)
+        {
+            case ConnectionCommand.NameCheck:
+            case ConnectionCommand.EnterWorld:
+                break;
+        }
+
+        return true;
     }
 
     public void MaybeScheduleNetworkPacketSend (byte[] packet)

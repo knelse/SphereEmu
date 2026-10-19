@@ -32,6 +32,8 @@ public static class ItemRecordEncoder
     /// </summary>
     private const uint FollowOnRecord = 5;
 
+    private const byte ContManRegionWire = 5;
+    private const uint CountMessage = 12;
     private const uint PutHereMessage = 0;
     private const uint PropertiesMessage = 9;
 
@@ -134,6 +136,24 @@ public static class ItemRecordEncoder
     /// <summary>
     /// id 16, reserved 2, object_type 10, bit 28, FULL_SPAWN 8; bit 28 is 1 for Token
     /// </summary>
+    /// <summary>
+    /// ContMan command 12 sets the stack amount. Item scripts wait for this
+    /// </summary>
+    public static byte[] EncodeCount (ItemDbEntry item)
+    {
+        var stream = GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (0, 15);
+        stream.WriteGuid (item.Id);
+        stream.WriteUInt16 ((ushort) ((int) item.WireObjectType & 0xFFF), 12);
+        stream.WriteByte (ContManRegionWire, 7);
+        stream.WriteByte ((byte) CountMessage, 8);
+        stream.WriteByte (2, 8);
+        stream.WriteUInt16 ((ushort) Math.Max (1, item.ItemCount), 16);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
+    }
+
     private static void WriteItemHeader (SphWriteStream stream, Guid entityId, int objectType)
     {
         stream.WriteGuid (entityId);

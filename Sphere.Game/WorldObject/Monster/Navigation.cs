@@ -298,7 +298,10 @@ public partial class Monster
         foreach (var client in ActiveClients.GetAll ().Values)
         {
             if (!IsValidChaseClient (client, out var clientWorld)
-                || client.CurrentCharacter is not { CurrentHP: > 0 })
+                || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || client.IsRespawnProtected
+                || !IsVisibleToClient (client)
+                || Mathf.Abs (clientWorld.Y - origin.Y) > 4f)
             {
                 continue;
             }
@@ -343,7 +346,10 @@ public partial class Monster
 
         foreach (var client in ActiveClients.GetAll ().Values)
         {
-            if (!IsValidChaseClient (client, out var clientWorld))
+            if (!IsValidChaseClient (client, out var clientWorld)
+                || client.IsRespawnProtected
+                || client.CurrentCharacter is not { CurrentHP: > 0 }
+                || Mathf.Abs (clientWorld.Y - monsterPosition.Y) > 4f)
             {
                 continue;
             }
@@ -358,7 +364,7 @@ public partial class Monster
             var toMonster = clientWorld - monsterPosition;
             toMonster.Y = 0f;
             var distanceSq = toMonster.LengthSquared ();
-            if (distanceSq > aggroRadiusSq || distanceSq >= bestDistanceSq)
+            if (distanceSq > aggroRadiusSq || distanceSq > 30f * 30f || distanceSq >= bestDistanceSq)
             {
                 continue;
             }

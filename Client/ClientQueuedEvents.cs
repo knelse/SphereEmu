@@ -1,4 +1,5 @@
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
 
 namespace SphServer.Client;
@@ -14,6 +15,11 @@ public sealed record EntityPositionUpdateEvent (
 /// <summary>
 /// One damage application against a single resolved target (main hit or AoE splash).
 /// </summary>
+/// <summary>
+/// One stack unit used up, queued after the hits so they still see the item in the hand
+/// </summary>
+public sealed record ItemSpentEvent (ItemDbEntry Item) : ClientQueuedEvent;
+
 public sealed record CombatHitEvent (
     Guid AttackerEntityId,
     Guid TargetEntityId,

@@ -126,7 +126,7 @@ public partial class TerrainGroundStreamer : Node
 			cellNode.AddChild (new MeshInstance3D { Mesh = mesh });
 			if (shape is not null)
 			{
-				var body = new StaticBody3D ();
+				var body = new StaticBody3D { CollisionLayer = 1, CollisionMask = 1 };
 				var collision = new CollisionShape3D { Shape = shape };
 				body.AddChild (collision);
 				cellNode.AddChild (body);

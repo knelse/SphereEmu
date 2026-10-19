@@ -149,26 +149,20 @@ public static class CommonPackets
 
     public static byte[] NameAlreadyExists (Guid playerIndex)
     {
-        return Packet.ToByteArray (BitStreamExtensions.StitchWithGuid (
-            [0x00, 0x04],
-            playerIndex,
-            [0x08, 0x40, 0x00, 0x01, 0x00]), 1);
+        return RosterResult (playerIndex, 8);
     }
 
     /// <summary>
     /// Manager command 42, int32 0, on the byte-swapped client id
     /// </summary>
-    public static byte[] CharacterDeleted (Guid playerIndex)
+    public static byte[] CharacterDeleted (Guid playerIndex, bool deleted = true)
     {
-        return BuildPlayerManagerCommand (playerIndex, 42, [0, 0, 0, 0]);
+        return BuildPlayerManagerCommand (playerIndex, 42, deleted ? [0, 0, 0, 0] : [1, 0, 0, 0]);
     }
 
     public static byte[] NameCheckPassed (Guid playerIndex)
     {
-        return Packet.ToByteArray (BitStreamExtensions.StitchWithGuid (
-            [0x00, 0x04],
-            playerIndex,
-            [0x08, 0x40, 0x80, 0x00, 0x00]), 1);
+        return RosterResult (playerIndex, 4);
     }
 
     public static byte[] AccountAlreadyInUse (Guid playerIndex)
@@ -608,6 +602,22 @@ public static class CommonPackets
         responseStream.WriteByte (0x0, 4);
         responseStream.WriteByte (0x0);
         return responseStream.GetStreamData ();
+    }
+
+    /// <summary>
+    /// Region 0 result. 4 accepts a new character, 8 rejects the name
+    /// </summary>
+    private static byte[] RosterResult (Guid playerIndex, byte operation)
+    {
+        var stream = SphBitStream.GetWriteBitStream ();
+        stream.WriteByte (0, 1);
+        stream.WriteUInt16 (512, 15);
+        stream.WriteGuid (playerIndex);
+        stream.WriteUInt16 ((ushort) ObjectType.Player, 12);
+        stream.WriteByte (1, 7);
+        stream.WriteByte (operation, 5);
+        stream.WriteByte (0, 8);
+        return Packet.ToByteArray (stream.GetStreamData (), 1);
     }
 
     private static void WriteCredentialsManagerRegion (SphWriteStream stream, byte command,

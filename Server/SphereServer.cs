@@ -7,6 +7,7 @@ using SphServer.Server.Config;
 using SphServer.Server.Debug;
 using SphServer.Server.Login.Secure;
 using SphServer.Server.Handlers;
+using SphServer.Server.Simulation;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -24,12 +25,18 @@ public partial class SphereServer : Node
 	private SecureLoginServer? secureLogin;
 	private WorldChunkStreamer? worldChunkStreamer;
 	private TerrainGroundStreamer? terrainGroundStreamer;
+	private readonly WorldSimulation worldSimulation = new WorldSimulation ();
 
 	public WorldChunkStreamer? WorldChunks => worldChunkStreamer;
 	public TerrainGroundStreamer? TerrainGround => terrainGroundStreamer;
+	public WorldSimulation Simulation => worldSimulation;
 
 	public override void _Ready ()
 	{
+		// Ticks stay on real time
+		Engine.PhysicsJitterFix = 0.0;
+		Engine.MaxPhysicsStepsPerFrame = 3;
+
 		// Headless bakes stop after terrain and placements
 		if (MonsterSpawnSlotHeadlessBake.IsActive
 			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
@@ -86,6 +93,33 @@ public partial class SphereServer : Node
 		}
 
 		secureLogin?.Poll ();
+		// Godot already repeats _PhysicsProcess up to max_physics_steps_per_frame
+		worldSimulation.Step ();
+		SendWorldDatagrams ();
+		// LiteDB stays on this thread, after the tick
+		worldSimulation.DrainWriter ();
+	}
+
+	private void SendWorldDatagrams ()
+	{
+		foreach (var client in ActiveClients.GetAll ().Values)
+		{
+			if (!PlayerMotion.IsInGame (client))
+			{
+				continue;
+			}
+
+			if (!worldSimulation.TryGetWorldDatagram (client.EntityID, out var datagram))
+			{
+				continue;
+			}
+
+			// Snapshot plaintext starts with channel 2
+			var wire = new byte[1 + datagram.Length];
+			wire[0] = WorldDatagram.Channel;
+			datagram.CopyTo (wire, 1);
+			client.SendSessionPacket (wire);
+		}
 	}
 
 	private TerrainGroundStreamer? FindTerrainGroundStreamer ()
@@ -138,13 +172,28 @@ public partial class SphereServer : Node
 		}
 
 		databaseClosed = true;
-		foreach (var client in ActiveClients.GetAll ().Values)
+		var clients = ActiveClients.GetAll ().Values.ToList ();
+		foreach (var client in clients)
 		{
 			client.SaveCharacter ();
 		}
 
 		DbConnection.Close ();
 		SphLogger.Info ("Saved connected characters and closed the database");
+
+		var dropped = 0;
+		foreach (var client in clients)
+		{
+			if (client.IsAdminDebugDummy)
+			{
+				continue;
+			}
+
+			SecureLoginServer.Active?.DropClient (client);
+			dropped++;
+		}
+
+		SphLogger.Info ($"Dropped {dropped} session(s)");
 	}
 
 	private void StartSecureLogin ()

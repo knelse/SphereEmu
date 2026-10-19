@@ -11,6 +11,12 @@ public partial class WorldObject
 {
     protected virtual void ShowForClient (SphereClient client)
     {
+        // st_light3 takes the client down: gMsg gets a -1 container. Phoebe 4 streams dozens
+        if (ObjectType == ObjectType.Light_Crystal_Yellow)
+        {
+            return;
+        }
+
         var packetParts = GetPacketPartsAndUpdateCoordsAndID (client);
         packetParts = ModifyPacketParts (packetParts);
         var packet = PacketPart.GetBytesToWrite (packetParts);

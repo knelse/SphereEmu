@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using BitStreams;
 using Godot;
 using SphereHelpers.Extensions;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Helpers.Networking;
+using static Stat;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -98,11 +100,47 @@ public class DamageTargetHandler (Guid entityId, ClientConnection clientConnecti
         var targets = CollectTargets (broadcastTarget, targetEntityId, aoeRadius, includeSelf).ToList ();
         LogAction (attackerEntityId, targetEntityId, frameKind,
             $"held={heldItem.GameId} radius={aoeRadius} includeSelf={includeSelf} targets={targets.Count}");
+        if (IsPowder (heldItem) && targets.Count > 0 && !TryPayMpCost (broadcastTarget, character, heldItem))
+        {
+            LogAction (attackerEntityId, targetEntityId, frameKind,
+                $"skip-no-mp cost={-heldItem.MpCost} mp={character.CurrentMP}");
+            return;
+        }
+
         foreach (var hitTargetEntityId in targets)
         {
             clientConnection.EnqueueClientEvent (new CombatHitEvent (
                 attackerEntityId, hitTargetEntityId, frameKind));
         }
+
+        if (IsPowder (heldItem) && targets.Count > 0)
+        {
+            clientConnection.EnqueueClientEvent (new ItemSpentEvent (heldItem));
+        }
+    }
+
+    private static bool IsPowder (ItemDbEntry item) =>
+        item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area
+            or GameObjectType.Powder_Event or GameObjectType.Powder_Guild;
+
+    private static bool TryPayMpCost (SphereClient client, CharacterDbEntry character, ItemDbEntry powder)
+    {
+        var cost = -powder.MpCost;
+        if (cost <= 0)
+        {
+            return true;
+        }
+
+        if (character.CurrentMP < cost)
+        {
+            return false;
+        }
+
+        character.CurrentMP = (ushort) (character.CurrentMP - cost);
+        client.MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+            client.EntityID, (byte) MpCurrent, character.CurrentMP));
+        NetworkedStatsUpdater.Update (character, refreshPeers: false);
+        return true;
     }
 
     private static bool IsAttackerTargetId (SphereClient attacker, Guid entityId)

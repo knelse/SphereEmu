@@ -169,7 +169,10 @@ sealed class SecureLoginServer (ConnectionHandler connectionHandler)
         client.BindBeforeGameUdp (packet => SendSealed (session, SecureLoginWire.BeforeGame, packet));
         foreach (var frame in session.EarlyFrames)
         {
-            client.FeedBeforeGameUdp (frame);
+            if (!client.TryAcceptChannelDatagram (frame))
+            {
+                client.FeedBeforeGameUdp (frame);
+            }
         }
 
         session.EarlyFrames.Clear ();
@@ -215,7 +218,10 @@ sealed class SecureLoginServer (ConnectionHandler connectionHandler)
             return;
         }
 
-        session.Client.FeedBeforeGameUdp (plain);
+        if (!session.Client.TryAcceptChannelDatagram (plain))
+        {
+            session.Client.FeedBeforeGameUdp (plain);
+        }
     }
 
     private void SendSealed (ResumeSession session, byte type, byte[] plain)

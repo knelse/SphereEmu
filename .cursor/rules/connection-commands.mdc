@@ -1,0 +1,10 @@
+---
+description: Connection command ids stay the same ushort enum on client and server
+alwaysApply: true
+---
+
+# Connection command ids
+
+`ConnectionCommand` is a `ushort` (`uint16`). One list, two copies: the C# server and the C++ client.
+
+Adding or renaming a command updates both enums in the same change. Do not give the new command a number on only one side. Do not reuse `ConfirmRoster` (4) for a different action. A new action gets the next value.

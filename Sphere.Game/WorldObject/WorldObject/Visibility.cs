@@ -14,6 +14,8 @@ public partial class WorldObject
     private const int DefaultPositionBroadcastRepeatCount = 4;
 
     private readonly HashSet<SphereClient> _visibleClients = [];
+
+    public bool IsVisibleToClient (SphereClient client) => _visibleClients.Contains (client);
     private const string VisibilityAreaNodeName = "ClientVisibilityArea";
 
     private Area3D? _visibilityArea;

@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Client.Networking.Handlers.InGame.DamageHealEffects;
+using static Stat;
 using SphServer.Server.Config;
 using SphServer.Server.GameplayLogic.Combat;
 using SphServer.Shared.BitStream;
@@ -25,6 +27,12 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
             LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
                 "skip-no-character");
             return Task.CompletedTask;
+        }
+
+        var heldItem = character.GetHeldItem ();
+        if (IsHealPowder (heldItem))
+        {
+            return ApplyHealPowder (clientEvent, heldItem);
         }
 
         var cfg = BalanceConfig.Get<CombatBalance> ("combat");
@@ -130,6 +138,45 @@ public sealed class CombatHitEventHandler (SphereClient sphereClient) : IClientE
             outcome.BecameDead
                 ? $"self-kill karma={character.KarmaCount} dmg={-healthDiff}"
                 : outcome.Applied.ToString ());
+        return Task.CompletedTask;
+    }
+
+    private static bool IsHealPowder (ItemDbEntry item) =>
+        (item.GameObjectType is GameObjectType.Powder or GameObjectType.Powder_Area
+            or GameObjectType.Powder_Event or GameObjectType.Powder_Guild)
+        && item.PAtkNegative >= 0 && item.MAtkNegativeOrHeal >= 0
+        && (item.PAtkNegative > 0 || item.MAtkNegativeOrHeal > 0 || item.MPHeal > 0);
+
+    private Task ApplyHealPowder (CombatHitEvent clientEvent, ItemDbEntry powder)
+    {
+        var target = IsSelfHit (clientEvent, sphereClient)
+            ? sphereClient
+            : ActiveWorldObjects.Get (clientEvent.TargetEntityId) as SphereClient;
+        var targetCharacter = target?.CurrentCharacter;
+        if (target is null || targetCharacter is null || targetCharacter.CurrentHP <= 0)
+        {
+            LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
+                "skip-heal-no-living-player");
+            return Task.CompletedTask;
+        }
+
+        var hpHeal = Math.Max (powder.PAtkNegative, powder.MAtkNegativeOrHeal);
+        if (hpHeal > 0)
+        {
+            target.EnqueueClientEvent (new CharacterHealthChangeEvent (targetCharacter.EntityId, hpHeal));
+        }
+
+        if (powder.MPHeal > 0)
+        {
+            targetCharacter.CurrentMP =
+                (ushort) Math.Min (targetCharacter.MaxMP, targetCharacter.CurrentMP + powder.MPHeal);
+            target.MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+                target.EntityID, (byte) MpCurrent, targetCharacter.CurrentMP));
+            NetworkedStatsUpdater.Update (targetCharacter, refreshPeers: false);
+        }
+
+        LogAction (clientEvent.AttackerEntityId, clientEvent.TargetEntityId, clientEvent.FrameKind,
+            $"heal hp={hpHeal} mp={powder.MPHeal}");
         return Task.CompletedTask;
     }
 

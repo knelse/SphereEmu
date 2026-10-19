@@ -284,6 +284,43 @@ public class ItemDbEntry
     };
 
     /// <summary>
+    /// Thematic slots follow the client's accept list: the books, not the maps and recipes inside them
+    /// </summary>
+    private static readonly Dictionary<ObjectType, BelongingSlot[]> WireObjectTypeToSlots = new ()
+    {
+        [ObjectType.Backpack_Large] = [BelongingSlot.Backpack],
+        [ObjectType.Backpack_Small] = [BelongingSlot.Backpack],
+        [ObjectType.Backpack_Great] = [BelongingSlot.Backpack],
+        [ObjectType.Sack] = [BelongingSlot.Backpack],
+        [ObjectType.Sac_M] = [BelongingSlot.Backpack],
+        [ObjectType.Map_Book] = [BelongingSlot.MapBook],
+        [ObjectType.Recipe_Book] = [BelongingSlot.RecipeBook],
+        [ObjectType.Mantra_Book_Small] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Large] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Great] = [BelongingSlot.MantraBook],
+        [ObjectType.Mantra_Book_Greatest] = [BelongingSlot.MantraBook],
+        [ObjectType.Mutator_Book_Small] = [BelongingSlot.MantraBook],
+        [ObjectType.Mutator_Book_Medium] = [BelongingSlot.MantraBook],
+        [ObjectType.Inkpot] = [BelongingSlot.Inkpot],
+        [ObjectType.Key] = KeySlots,
+        [ObjectType.Key_Barn] = KeySlots,
+        [ObjectType.Mission] = [BelongingSlot.Mission],
+        [ObjectType.Quest2] = [BelongingSlot.Mission],
+        [ObjectType.Scroll_October] = [BelongingSlot.Mission],
+        [ObjectType.Herbalist_Sack] = [BelongingSlot.Money],
+        [ObjectType.Castle_Crystal_Strength] = [BelongingSlot.Special_1],
+        [ObjectType.Castle_Crystal_Energy] = [BelongingSlot.Special_2],
+        [ObjectType.Castle_Crystal_Fortitude] = [BelongingSlot.Special_3],
+        [ObjectType.Castle_Crystal_Reflection] = [BelongingSlot.Special_4],
+        [ObjectType.Crystal] = CrystalSlots,
+        [ObjectType.Crystal_C] = CrystalSlots,
+        [ObjectType.Crystal_Attr] = CrystalSlots,
+        [ObjectType.Powder_Vulnerability] = [BelongingSlot.Ammo],
+        [ObjectType.Invisibility] = [BelongingSlot.SpeedhackMantra],
+        [ObjectType.Sbag] = [BelongingSlot.TokenIsland]
+    };
+
+    /// <summary>
     /// Inventory stays unfiltered
     /// </summary>
     public static bool HasSlotTypeFilter (BelongingSlot slot) => !IsInventorySlot (slot);
@@ -324,7 +361,8 @@ public class ItemDbEntry
     }
 
     public bool IsValidForSlot (BelongingSlot slot) =>
-        IsAllowedInSlot (GameObjectType, ObjectKind, slot);
+        IsAllowedInSlot (GameObjectType, ObjectKind, slot)
+        || (WireObjectTypeToSlots.TryGetValue (WireObjectType, out var wireSlots) && wireSlots.Contains (slot));
 
     /// <summary>
     /// Reqs come from the base game object plus suffix rules, not the stored row
