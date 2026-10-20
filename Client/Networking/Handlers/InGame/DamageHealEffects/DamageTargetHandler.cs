@@ -107,12 +107,25 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
         var targets = CollectTargets (broadcastTarget, globalTargetId, aoeRadius, includeSelf).ToList ();
         LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
             $"held={heldItem.GameId} radius={aoeRadius} includeSelf={includeSelf} targets={targets.Count}");
+        // HP is checked first so a refused use does not spend MP; a cost that would leave no HP refuses
+        if (IsPowder (heldItem) && targets.Count > 0 && character.CurrentHP <= -heldItem.HpCost)
+        {
+            LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
+                $"skip-no-hp cost={-heldItem.HpCost} hp={character.CurrentHP}");
+            return;
+        }
+
         // Paid once per use, before the hits, so a self-cast MP heal lands on the lowered value
         if (IsPowder (heldItem) && targets.Count > 0 && !TryPayMpCost (broadcastTarget, character, heldItem))
         {
             LogAction (broadcastTargetGlobalId, globalTargetId, frameKind,
                 $"skip-no-mp cost={-heldItem.MpCost} mp={character.CurrentMP}");
             return;
+        }
+
+        if (IsPowder (heldItem) && targets.Count > 0)
+        {
+            PayHpCost (broadcastTarget, character, heldItem);
         }
 
         foreach (var (targetGlobalId, targetLocalId) in targets)
@@ -154,6 +167,24 @@ public class DamageTargetHandler (ushort localId, ClientConnection clientConnect
             SphBitStream.ByteSwap (character.ClientIndex), (byte) Stat.MpCurrent, character.CurrentMP));
         NetworkedStatsUpdater.Update (character, refreshPeers: false);
         return true;
+    }
+
+    /// <summary>
+    /// The params HP column is negative for a cost, like MP (guild powders 6455, 6557, 6558: -100, -500,
+    /// -1000); the caller refuses a use that would leave no HP
+    /// </summary>
+    private static void PayHpCost (SphereClient client, CharacterDbEntry character, ItemDbEntry powder)
+    {
+        var cost = -powder.HpCost;
+        if (cost <= 0)
+        {
+            return;
+        }
+
+        character.CurrentHP = (ushort) (character.CurrentHP - cost);
+        client.MaybeQueueNetworkPacketSend (CommonPackets.BuildPlayerSetStat (
+            SphBitStream.ByteSwap (character.ClientIndex), (byte) Stat.HpCurrent, character.CurrentHP));
+        NetworkedStatsUpdater.Update (character, refreshPeers: false);
     }
 
     /// <summary>
