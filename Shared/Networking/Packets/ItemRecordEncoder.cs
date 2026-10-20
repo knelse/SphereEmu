@@ -89,6 +89,21 @@ public static class ItemRecordEncoder
     }
 
     /// <summary>
+    /// Live sack records (itemDrops) carry the amount as the item record's last message, not as a
+    /// separate record
+    /// </summary>
+    public static byte[] EncodeInLootBag (ItemDbEntry item, ushort bagId)
+    {
+        if (IsGuildFamily ((ObjectType) item.WireObjectType))
+        {
+            return Encode (item, bagId);
+        }
+
+        return EncodeClassic ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
+            bagId, ContainedX, 0f, 0f, item.ItemCount);
+    }
+
+    /// <summary>
     /// Ground placement after the angle (alchemy_resource_ground.spdp); the low bits are the
     /// contain state, 1 on the ground where a contained item has 2
     /// </summary>
@@ -219,7 +234,7 @@ public static class ItemRecordEncoder
     }
 
     private static byte[] EncodeClassic (ushort entityId, int objectType, int gameObjectId, int suffix,
-        ushort containerObjectId, float x, float y, float z)
+        ushort containerObjectId, float x, float y, float z, int? count = null)
     {
         var stream = GetWriteBitStream ();
         WriteItemHeader (stream, entityId, objectType);
@@ -241,6 +256,14 @@ public static class ItemRecordEncoder
         stream.WriteUInt32 (containerObjectId, 24);
 
         WriteOwnershipProperties (stream, objectType);
+
+        if (count is { } itemCount)
+        {
+            stream.WriteByte ((byte) FollowOnRecord, 7);
+            stream.WriteByte ((byte) CountMessage, 8);
+            stream.WriteByte (2, 8);
+            stream.WriteUInt16 ((ushort) Math.Max (1, itemCount), 16);
+        }
 
         stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 3);

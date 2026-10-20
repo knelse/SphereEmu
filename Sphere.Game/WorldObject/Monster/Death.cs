@@ -2,7 +2,10 @@ using System;
 using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Server.GameplayLogic.Experience;
+using SphServer.Shared.Db.DataModels;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
+using SphServer.System;
 
 namespace SphServer.Sphere.Game.WorldObject;
 
@@ -52,8 +55,31 @@ public partial class Monster
             client.SaveCharacter ();
         }
 
+        if (character is not null)
+        {
+            MaybeDropLoot ();
+        }
+
         MonsterKilled?.Invoke (this, hit, outcome);
         PerformDeath (hit.AttackerId);
+    }
+
+    private const double LootDropChance = 0.5;
+    private const int MaxLootItems = 2;
+
+    /// <summary>
+    /// The sack sits where the corpse falls, with loot of the mob's own level
+    /// </summary>
+    private void MaybeDropLoot ()
+    {
+        if (SphRng.Rng.NextDouble () >= LootDropChance)
+        {
+            return;
+        }
+
+        var count = SphRng.Rng.Next (1, MaxLootItems + 1);
+        var titleMinusOne = Math.Max (0, GetMonsterLevel () - 1);
+        ItemContainerDbEntry.SpawnRandomLoot (GlobalPosition, titleMinusOne, LootRatity.DEFAULT_MOB, count);
     }
 
     /// <summary>

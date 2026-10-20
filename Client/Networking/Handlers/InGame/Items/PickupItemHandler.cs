@@ -22,6 +22,9 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
     {
     }
 
+    /// <summary>
+    /// Double-click on the ground or in an open sack: the item goes to the first free cell
+    /// </summary>
     public async Task HandlePickupToNextAvailableEmptySlot (byte[] frame, double delta)
     {
         clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
@@ -31,7 +34,42 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         if (item?.DroppedOnGroundBy is not null)
         {
             PickUpFromGround (client, clientConnection, item);
+            return;
         }
+
+        var container = item?.ParentContainerId is { } containerId
+            ? DbConnection.ItemContainers.FindById (containerId)
+            : null;
+        var sackSlot = container?.Contents.FirstOrDefault (x => x.Value == item!.Id);
+        if (item is null || container is null || sackSlot?.Value != item.Id)
+        {
+            SphLogger.Warning ($"Pickup to free slot: item {item?.Id:X4} is not in a sack. Client ID: {localId:X4}");
+            return;
+        }
+
+        var character = client.CurrentCharacter!;
+        if (character.FindEmptyInventorySlot () is not { } slot)
+        {
+            SphLogger.Info ($"Pickup to free slot: inventory full. Client ID: {localId:X4}");
+            return;
+        }
+
+        character.Items[slot] = item.Id;
+        clientConnection.SaveSelectedCharacter ();
+
+        // The live reply (itemPickup.txt): the sack clears its cell, the item takes the player as
+        // parent, the player's cell gets the item
+        clientConnection.MaybeScheduleNetworkPacketSend (container.BuildClearSlotPacket (sackSlot.Value.Key));
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.EncodePutInto (item, ByteSwap (localId)));
+        if (ItemSlotReserve.Build (localId, slot, item.Id, item.ItemCount) is { } reserve)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (reserve);
+        }
+
+        SphLogger.Info (
+            $"CLI: Picked up {item.Localization.GetValueOrDefault (Locale.Russian, "?")} [{item.Id:X4}] " +
+            $"from sack {container.Id:X4} cell {sackSlot.Value.Key} into {Enum.GetName (slot)}. Client ID: {localId:X4}");
+        TakeOutOfLootBag (item, container);
     }
 
     public async Task HandlePickupToTargetSlot (byte[] frame, double delta)
@@ -67,7 +105,8 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         var oldContainer = item.ParentContainerId is null
             ? null
             : DbConnection.ItemContainers.FindById (item.ParentContainerId);
-        if (oldContainer is null || !oldContainer.Contents.ContainsValue (item.Id))
+        var sackSlot = oldContainer?.Contents.FirstOrDefault (x => x.Value == item.Id);
+        if (oldContainer is null || sackSlot?.Value != item.Id)
         {
             SphLogger.Warning ($"Pickup to slot: item {item.Id:X4} is not in a sack. Client ID: {localId:X4}");
             return;
@@ -91,6 +130,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         SphLogger.Info ($"{Enum.GetName ((BelongingSlot) targetSlotId)} now has " +
                        $"{item.Localization.GetValueOrDefault (Locale.Russian, "?")} " +
                        $"({item.ItemCount}) [{globalItemId}]");
+        clientConnection.MaybeScheduleNetworkPacketSend (oldContainer.BuildClearSlotPacket (sackSlot.Value.Key));
         clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.EncodePutInto (item, ByteSwap (localId)));
 
         // The grant above does not fill the slot array, so the cell stays empty without these.
@@ -100,14 +140,7 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
             clientConnection.MaybeScheduleNetworkPacketSend (reserve);
         }
 
-        // TODO: check in next process in node instead of this
-        if (oldContainer.RemoveItemByIdAndDestroyContainerIfEmpty (globalItemId))
-        {
-            clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.DespawnEntity ((ushort) oldContainer.Id));
-        }
-
-        item.ParentContainerId = null;
-        DbConnection.Items.Update (item);
+        TakeOutOfLootBag (item, oldContainer);
 
         if (!ItemDbEntry.IsInventorySlot (targetSlot))
         {
@@ -164,4 +197,13 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         return true;
     }
 
+    /// <summary>
+    /// The emptied sack despawns for everyone who sees it, the picker included
+    /// </summary>
+    private static void TakeOutOfLootBag (ItemDbEntry item, ItemContainerDbEntry container)
+    {
+        item.ParentContainerId = null;
+        DbConnection.Items.Update (item);
+        container.RemoveItemByIdAndDestroyContainerIfEmpty (item.Id);
+    }
 }

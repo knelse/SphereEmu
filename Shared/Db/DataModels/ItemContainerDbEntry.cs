@@ -1,23 +1,28 @@
-// TODO: not yet refactored properly
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using LiteDB;
-using SphServer.Client;
+using SphereHelpers.Extensions;
 using SphServer.Packets;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.Loot;
+using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
-using SphereServer = SphServer.Server.SphereServer;
 
 namespace SphServer.Shared.Db.DataModels;
 
+/// <summary>
+/// A ground sack's contents; the id doubles as the sack's wire id
+/// </summary>
 public class ItemContainerDbEntry
 {
+    /// <summary>
+    /// The captured list frames stop at four entries
+    /// </summary>
+    public const int MaxItems = 4;
+
     [BsonId] public int Id { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
@@ -26,64 +31,88 @@ public class ItemContainerDbEntry
     public int TitleMinusOne { get; set; }
     public int DegreeMinusOne { get; set; }
 
-    [BsonIgnore]
-    private static readonly PackedScene LootBagScene =
-        (PackedScene) ResourceLoader.Load ("res://Godot/Scenes/LootBag.tscn");
-
     public Dictionary<int, int> Contents { get; set; } = [];
-    public ulong? ParentNodeId { get; set; }
 
-    public static ItemContainerDbEntry CreateHierarchyWithContents (double x, double y, double z,
-        int level, //int sourceTypeId,
+    /// <summary>
+    /// Random loot for a title level, 1-4 items unless a count is given
+    /// </summary>
+    public static ItemContainerDbEntry SpawnRandomLoot (Vector3 godotPosition, int titleMinusOne,
         LootRatity ratity, int count = -1)
     {
-        var bag = LootBagScene.Instantiate<SphServer.Godot.Nodes.LootBagNode> ();
-        ActiveNodes.Add (bag.GetInstanceId (), bag);
-        var levelOverride = SphRng.Rng.Next (0, 61);
-        bag.ItemContainerDbEntry = new ItemContainerDbEntry
-        {
-            TitleMinusOne = (byte) level,
-            X = x,
-            Y = y,
-            Z = z,
-            ParentNodeId = bag.GetInstanceId ()
-        };
-        bag.ItemContainerDbEntry.Id = DbConnection.ItemContainers.Insert (bag.ItemContainerDbEntry);
-
-        var itemCount = count == -1 ? SphRng.Rng.Next (1, 5) : count;
-
+        var itemCount = count == -1 ? SphRng.Rng.Next (1, MaxItems + 1) : Mathf.Clamp (count, 1, MaxItems);
+        var items = new List<ItemDbEntry> ();
         for (var i = 0; i < itemCount; i++)
         {
-            var randomObj = LootRandomizer.GetRandomLootObject (levelOverride > 0 ? levelOverride : level);
-            var item = ItemDbEntry.CreateFromGameObject (randomObj);
-            item.ParentContainerId = bag.ItemContainerDbEntry.Id;
+            var item = ItemDbEntry.CreateFromGameObject (LootRandomizer.GetRandomLootObject (titleMinusOne));
             item.Id = WorldObjectIndex.NewItem ();
             DbConnection.Items.Insert (item.Id, item);
-            bag.ItemContainerDbEntry.Contents[i] = item.Id;
+            items.Add (item);
         }
 
-        bag.Transform = bag.Transform.Translated (new Vector3 ((float) x, (float) y, (float) z));
-        SphereServer.ServerNode.CallDeferred ("add_child", bag);
-        DbConnection.ItemContainers.Update (bag.ItemContainerDbEntry);
-
-        SphLogger.Info ($"Added item container ID: {bag.ItemContainerDbEntry.Id} at: ({x:F2}, {y: F2}, {z: F2})");
-
-        return bag.ItemContainerDbEntry;
+        return SpawnWithItems (godotPosition, items, titleMinusOne);
     }
 
-    private bool RemoveIfEmpty ()
+    /// <summary>
+    /// Items must already be in the item collection
+    /// </summary>
+    public static ItemContainerDbEntry SpawnWithItems (Vector3 godotPosition, IReadOnlyList<ItemDbEntry> items,
+        int titleMinusOne = 0)
     {
-        if (Contents.Count != 0)
+        var container = new ItemContainerDbEntry
         {
-            return false;
+            Id = WorldObjectIndex.New (),
+            TitleMinusOne = titleMinusOne,
+            X = godotPosition.X,
+            Y = -godotPosition.Y,
+            Z = -godotPosition.Z
+        };
+
+        for (var i = 0; i < items.Count && i < MaxItems; i++)
+        {
+            items[i].ParentContainerId = container.Id;
+            DbConnection.Items.Update (items[i]);
+            container.Contents[i] = items[i].Id;
         }
 
-        if (ParentNodeId != null)
+        DbConnection.ItemContainers.Insert (container.Id, container);
+        LootBag.Spawn (container, godotPosition);
+
+        SphLogger.Info (
+            $"Added loot bag {container.Id:X4} with {container.Contents.Count} item(s) at " +
+            $"({container.X:F2}, {container.Y:F2}, {container.Z:F2})");
+
+        return container;
+    }
+
+    /// <summary>
+    /// Sacks live only in memory, so any left in the database lost their world object on restart
+    /// </summary>
+    public static int DeleteOrphans ()
+    {
+        var containers = DbConnection.ItemContainers.FindAll ().ToList ();
+        foreach (var container in containers)
         {
-            ActiveNodes.Get (ParentNodeId.Value)?.QueueFree ();
+            Delete (container, deleteItems: true);
         }
 
-        return true;
+        return containers.Count;
+    }
+
+    public static void Delete (ItemContainerDbEntry container, bool deleteItems)
+    {
+        if (deleteItems)
+        {
+            var carried = DbConnection.Characters.FindAll ()
+                .SelectMany (x => x.Items.Values)
+                .ToHashSet ();
+            foreach (var itemId in container.Contents.Values.Where (x => !carried.Contains (x)))
+            {
+                DbConnection.Items.Delete (itemId);
+                WorldObjectIndex.Release ((ushort) itemId);
+            }
+        }
+
+        DbConnection.ItemContainers.Delete (container.Id);
     }
 
     public bool RemoveItemByIdAndDestroyContainerIfEmpty (int itemGlobalId)
@@ -92,157 +121,137 @@ public class ItemContainerDbEntry
         {
             var key = Contents.First (x => x.Value == itemGlobalId).Key;
             Contents.Remove (key);
-            Console.WriteLine ($"Removed at {key} ID {itemGlobalId} from container {Id}");
+            SphLogger.Info ($"Removed item {itemGlobalId:X4} at {key} from loot bag {Id:X4}");
         }
 
-        DbConnection.ItemContainers.Update (Id, this);
-
-        return RemoveIfEmpty ();
+        return SaveOrDespawnIfEmpty ();
     }
 
     public bool RemoveItemBySlotIdAndDestroyContainerIfEmpty (int slotId)
     {
-        if (Contents.TryGetValue (slotId, out var value))
+        if (Contents.Remove (slotId, out var itemId))
         {
-            Console.WriteLine ($"Removed at {slotId} ID {value} from container {Id}");
-            Contents.Remove (slotId);
+            SphLogger.Info ($"Removed item {itemId:X4} at {slotId} from loot bag {Id:X4}");
         }
 
-        DbConnection.ItemContainers.Update (Id, this);
-
-        return RemoveIfEmpty ();
+        return SaveOrDespawnIfEmpty ();
     }
 
-    public void ShowForEveryClientInRadius ()
+    private bool SaveOrDespawnIfEmpty ()
     {
-        // foreach (var client in SphereServer.ActiveClients.Values)
-        // {
-        //     // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-        //     // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-        //     ShowForClient(client);
-        // }
+        if (Contents.Count != 0)
+        {
+            DbConnection.ItemContainers.Update (this);
+            return false;
+        }
+
+        var bag = LootBag.Find (Id);
+        if (bag is not null)
+        {
+            bag.DespawnEmpty ();
+        }
+        else
+        {
+            Delete (this, deleteItems: false);
+        }
+
+        return true;
     }
 
-    public void UpdatePositionForEveryClientInRadius ()
+    /// <summary>
+    /// Item processes must exist before the sack's cells bind to them
+    /// </summary>
+    public List<byte[]> GetContentsPackets ()
     {
-        // foreach (var client in SphereServer.ActiveClients.Values)
-        // {
-        //     // TODO: proper load/unload for client
-        //     // && charData.Client.DistanceTo(ParentNode.GlobalTransform.origin) <=
-        //     // MainServer.CLIENT_OBJECT_VISIBILITY_DISTANCE)
-        //     client.MoveEntity(X, -Y, Z, Angle, client.GetLocalObjectId(Id));
-        // }
+        var items = GetItems ();
+        var packets = items.Select (x => ItemRecordEncoder.EncodeInLootBag (x, (ushort) Id)).ToList ();
+        var itemList = BuildItemListPacket (items);
+        if (itemList is not null)
+        {
+            packets.Add (itemList);
+        }
+
+        return packets;
     }
 
-    public void ShowForClient (SphereClient client)
+    /// <summary>
+    /// The sack half of the live pickup reply: ContMan cmd 2 with only a slot byte empties it
+    /// </summary>
+    public byte[] BuildClearSlotPacket (int slot)
     {
-        // var packetParts = PacketPart.LoadDefinedPartsFromFile(ObjectType.Sack_Mob_Loot);
-        // PacketPart.UpdateCoordinates(packetParts, X, Y, Z);
-        // var localId = client.GetLocalObjectId(Id);
-        // PacketPart.UpdateEntityId(packetParts, localId);
-        // var lootBagPacket = PacketPart.GetBytesToWrite(packetParts);
-
-        // client.StreamPeer.PutData(lootBagPacket);
+        var stream = SphServer.Shared.BitStream.SphBitStream.GetWriteBitStream ();
+        stream.WriteUInt16 ((ushort) Id, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ObjectType.Sack_Mob_Loot, 12);
+        WriteMessageHeader (stream, SlotMessage, 1);
+        stream.WriteByte ((byte) slot, 8);
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 
-    public void ShowItemListForClient (ushort clientId)
-    {
-        // 25 and 30 bits should be enough for every item in game, we're not going to use it for now
-        // we'll figure out weight for 3-4 slot containers later
-        // var weight = 1234;
-        // var weight2 = 5678;
-        // var weight_1 = (byte) (weight % 2 == 1 ? 0b10000000 : 0);
-        // var weight_2 = (byte) ((weight & 0b111111110) >> 1);
-        // var weight_3 = (byte) ((weight & 0b11111111000000000) >> 9);
-        // var weight_4 = (byte) ((weight & 0b1111111100000000000000000) >> 17);
-        //
-        // var weight_5 = (byte) ((weight2 & 0b111111) << 2);
-        // var weight_6 = (byte) ((weight2 & 0b11111111000000) >> 6);
-        // var weight_7 = (byte) ((weight2 & 0b1111111100000000000000) >> 14);
-        // var weight_8 = (byte) ((weight2 & 0b111111110000000000000000000000) >> 22);
+    private List<ItemDbEntry> GetItems () =>
+        Contents.OrderBy (x => x.Key)
+            .Select (x => DbConnection.Items.FindById (x.Value))
+            .Where (x => x is not null)
+            .ToList ();
 
-        // var item_0_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(0, 0));
-        // var item_1_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(1, 0));
-        // var item_2_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(2, 0));
-        // var item_3_id = global::Client.GetLocalObjectId(clientId, Contents.GetValueOrDefault(3, 0));
-        //
-        // var item0_1 = (byte) ((item_0_id & 0b1111) << 4);
-        // var item0_2 = (byte) ((item_0_id >> 4) & 0b11111111);
-        // var item0_3 = (byte) ((item_0_id >> 12) & 0b1111);
-        //
-        // var item1_1 = (byte) ((item_1_id & 0b1) << 7);
-        // var item1_2 = (byte) ((item_1_id >> 1) & 0b11111111);
-        // var item1_3 = (byte) ((item_1_id >> 9) & 0b1111111);
-        //
-        // var item2_1 = (byte) ((item_2_id & 0b111111) << 2);
-        // var item2_2 = (byte) ((item_2_id >> 6) & 0b11111111);
-        // var item2_3 = (byte) ((item_2_id >> 14) & 0b11);
-        //
-        // var item3_1 = (byte) ((item_3_id & 0b111) << 5);
-        // var item3_2 = (byte) ((item_3_id >> 3) & 0b11111111);
-        // var item3_3 = (byte) ((item_3_id >> 11) & 0b11111);
-        // var localId = global::Client.GetLocalObjectId(clientId, Id);
-        //
-        // switch (Contents.Count)
-        // {
-        //     case 1:
-        //         itemList =
-        //         [
-        //             0x19, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x70, 0x0D, 0x00,
-        // 0x00, 0x00
-        //         ];
-        //
-        //         break;
-        //     case 2:
-        //         itemList =
-        //         [
-        //             0x23, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, /*weight*/ 0xC0,
-        // 0x00, 0x00,
-        // 0x00, 0x50, 0x10, 0x84, item1_1, item1_2, item1_3, /*weight*/ 0x00, 0x4B, 0x00, 0x00,
-        // 0x00
-        //         ];
-        //
-        //         break;
-        //     case 3:
-        //         itemList =
-        //         [
-        //             0x2E, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
-        // 0x00, 0x50,
-        // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
-        // item2_1,
-        //             item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x00
-        //         ];
-        //
-        //         break;
-        //     case 4:
-        //         itemList =
-        //         [
-        //             0x38, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x00, MinorByte(localId), MajorByte(localId), 0x5C,
-        // 0x46, 0x61, 0x02, 0x00, 0x0A, 0x82, 0x00, item0_1, item0_2, item0_3, 0x30, 0x00, 0x00,
-        // 0x00, 0x50,
-        // 0x10, 0x84, item1_1, item1_2, item1_3, 0x00, 0x08, 0x00, 0x00, 0x80, 0x82, 0x20, 0x08,
-        // item2_1,
-        // item2_2, item2_3, 0x2C, 0x00, 0x00, 0x00, 0x14, 0x04, 0x61, item3_1, item3_2, item3_3,
-        // 0x80, 0x19,
-        //             0x00, 0x00, 0x00
-        //         ];
-        //
-        //         break;
-        //     default:
-        //         Console.WriteLine($"Item list for count {Contents.Count} not implemented");
-        //
-        //         return;
-        // }
-        //
-        // global::Client.TryFindClientByIdAndSendData(clientId, itemList);
+    /// <summary>
+    /// Region 4 carries the sack's slot updates
+    /// </summary>
+    private const byte FollowOnMarker = 5;
+    private const byte LockMessage = 3;
+    private const byte SlotMessage = 2;
+
+    /// <summary>
+    /// Live list frames (mobSpawnAndDrops): unlock (type 3, one byte 0), then per slot type 2 with
+    /// slot, 24-bit item id and 32-bit weight, framed like the item records. ct_mbag starts
+    /// locked, and without the unlock its items cannot be taken out
+    /// </summary>
+    private byte[]? BuildItemListPacket (IReadOnlyList<ItemDbEntry> items)
+    {
+        if (items.Count == 0)
+        {
+            return null;
+        }
+
+        var stream = SphServer.Shared.BitStream.SphBitStream.GetWriteBitStream ();
+        stream.WriteUInt16 ((ushort) Id, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ObjectType.Sack_Mob_Loot, 12);
+
+        WriteMessageHeader (stream, LockMessage, 1);
+        stream.WriteByte (0, 8);
+
+        var itemsById = items.ToDictionary (x => x.Id);
+        for (var slot = 0; slot < MaxItems; slot++)
+        {
+            if (!Contents.TryGetValue (slot, out var itemId) || !itemsById.TryGetValue (itemId, out var item))
+            {
+                WriteMessageHeader (stream, SlotMessage, 1);
+                stream.WriteByte ((byte) slot, 8);
+                continue;
+            }
+
+            WriteMessageHeader (stream, SlotMessage, 8);
+            stream.WriteByte ((byte) slot, 8);
+            stream.WriteUInt16 ((ushort) item.Id, 16);
+            stream.WriteByte ((byte) (item.Id >> 16), 8);
+            var weight = (uint) global::System.Math.Clamp (
+                (long) item.Weight * global::System.Math.Max (1, item.ItemCount), 0, int.MaxValue);
+            stream.WriteUInt16 ((ushort) weight, 16);
+            stream.WriteUInt16 ((ushort) (weight >> 16), 16);
+        }
+
+        stream.WriteByte (0, 7);
+        return Packet.ToByteArray (stream.GetStreamData (), 3);
     }
 
-    public byte[] GetContentsPacket (ushort clientId)
+    private static void WriteMessageHeader (SphServer.Shared.BitStream.SphWriteStream stream, byte type, byte length)
     {
-        var items = Contents.Select (x => DbConnection.Items.FindById (x.Value)).ToList ();
-        return Packet.ItemsToPacket (clientId, Id, items);
+        // ct_mbag's ContMan reads an 8-bit command (sfera_protocol_schema: u8, array8<u8>); the
+        // 4-bit form of the 2022 captures is what the player module takes, not the sack
+        stream.WriteByte (FollowOnMarker, 7);
+        stream.WriteByte (type, 8);
+        stream.WriteByte (length, 8);
     }
 }
