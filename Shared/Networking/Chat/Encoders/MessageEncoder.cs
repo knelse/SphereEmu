@@ -8,7 +8,8 @@ public static class MessageEncoder
 {
     public static byte[] EncodeToSendFromServer (string messageContent, string name, int chatTypeVal)
     {
-        if (Enum.IsDefined (typeof (PrivateChatType), chatTypeVal))
+        // Group chat goes out in the public form; ChatBroadcast sends it to the group only
+        if (Enum.IsDefined (typeof (PrivateChatType), chatTypeVal) && chatTypeVal != (int) PrivateChatType.Group)
         {
             // todo
             return [];
