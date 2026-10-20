@@ -72,6 +72,15 @@ public partial class ConsoleCommandParser
             return;
         }
 
+        // Guild abilities sit in Special_5/6/7 and follow the worn emblem (GuildAbilityLoadout), so
+        // one dropped into the bag is invisible to the client and lost on the next sync
+        if (gameObject.SphereType.StartsWith ("specab", StringComparison.OrdinalIgnoreCase))
+        {
+            var emblemId = gameObjectId - gameObjectId % 100 / 10 * 10;
+            SendFeedback ($"{gameObjectId} is a guild ability: give and wear the guild emblem {emblemId} instead.");
+            return;
+        }
+
         // Optional stack size after the id, so stacked consumables can be tested
         var count = split.Length >= 2 && int.TryParse (split[1], out var requestedCount)
             ? Math.Clamp (requestedCount, 1, 255)
