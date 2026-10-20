@@ -194,14 +194,22 @@ public class PingHandler : ISphereClientNetworkingHandler
         }
 
         var hpBefore = character.CurrentHP;
-        var changed = vitalRegen.ApplyOnce (character);
+        var bonusBefore = character.SatietyMaxHpBonusPercent;
+        var hungrier = vitalRegen.ApplyHunger (character);
+        if (hungrier && character.SatietyMaxHpBonusPercent != bonusBefore)
+        {
+            // Crossing a third of satiety changes the max HP bonus
+            character.RecalcCurrentStats ();
+        }
+
+        var changed = vitalRegen.ApplyOnce (character) || hungrier;
 
         // MP keepalive carries the (possibly regenerated) MP value.
         clientConnection.MaybeScheduleNetworkPacketSend (
             CommonPackets.CurrentMpUpdatePing (localId, character.CurrentMP));
         NetworkedStatsUpdater.MarkSent (character, Stat.MpCurrent);
 
-        if (character.CurrentHP != hpBefore)
+        if (character.CurrentHP != hpBefore || hungrier)
         {
             NetworkedStatsUpdater.Update (character, log: false);
         }
