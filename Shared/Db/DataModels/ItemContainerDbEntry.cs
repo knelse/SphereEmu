@@ -164,7 +164,7 @@ public class ItemContainerDbEntry
     public List<byte[]> GetContentsPackets ()
     {
         var items = GetItems ();
-        var packets = items.Select (x => ItemRecordEncoder.EncodeInLootBag (x, (ushort) Id)).ToList ();
+        var packets = items.Select (ItemRecordEncoder.EncodeInLootBag).ToList ();
         var itemList = BuildItemListPacket (items);
         if (itemList is not null)
         {
@@ -203,9 +203,9 @@ public class ItemContainerDbEntry
     private const byte SlotMessage = 2;
 
     /// <summary>
-    /// Live list frames (mobSpawnAndDrops): unlock (type 3, one byte 0), then per slot type 2 with
-    /// slot, 24-bit item id and 32-bit weight, framed like the item records. ct_mbag starts
-    /// locked, and without the unlock its items cannot be taken out
+    /// Live list frames (mobSpawnAndDrops): unlock (type 3), then per slot type 2 with slot, 24-bit
+    /// item id and 32-bit weight, framed like the item records. ct_mbag starts locked, and without
+    /// the unlock its items cannot be taken out
     /// </summary>
     private byte[]? BuildItemListPacket (IReadOnlyList<ItemDbEntry> items)
     {
@@ -219,8 +219,11 @@ public class ItemContainerDbEntry
         stream.WriteByte (0, 2);
         stream.WriteUInt16 ((ushort) ObjectType.Sack_Mob_Loot, 12);
 
-        WriteMessageHeader (stream, LockMessage, 1);
-        stream.WriteByte (0, 8);
+        // ct_mbag reads the lock flag as an int from its message buffer: a one-byte payload left the
+        // other three bytes from the previous message, so a resent list locked the sack and
+        // emptied its cells
+        WriteMessageHeader (stream, LockMessage, 4);
+        stream.WriteUInt32 (0, 32);
 
         var itemsById = items.ToDictionary (x => x.Id);
         for (var slot = 0; slot < MaxItems; slot++)

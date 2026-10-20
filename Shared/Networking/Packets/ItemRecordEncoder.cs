@@ -90,17 +90,20 @@ public static class ItemRecordEncoder
 
     /// <summary>
     /// Live sack records (itemDrops) carry the amount as the item record's last message, not as a
-    /// separate record
+    /// separate record. The sack is not named as the parent: ct_mbag accepts nothing put into it
+    /// (TestIt is -1) and tries to stack a newcomer onto what it holds, so an item arriving with the
+    /// sack as parent was lost and only the first cell, if any, was drawn. The sack's cells come
+    /// from its list frame alone, which only needs the item processes to exist
     /// </summary>
-    public static byte[] EncodeInLootBag (ItemDbEntry item, ushort bagId)
+    public static byte[] EncodeInLootBag (ItemDbEntry item)
     {
         if (IsGuildFamily ((ObjectType) item.WireObjectType))
         {
-            return Encode (item, bagId);
+            return Encode (item, GroundContainerSentinel);
         }
 
         return EncodeClassic ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
-            bagId, ContainedX, 0f, 0f, item.ItemCount);
+            GroundContainerSentinel, ContainedX, 0f, 0f, item.ItemCount);
     }
 
     /// <summary>
