@@ -130,6 +130,12 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     private async Task DispatchFrame (byte[] frame, double delta)
     {
+        // The help request heads the NPC use frame, which still goes on to its own handler below
+        if (ClientPacketClassifier.IsActionHelpRequest (frame))
+        {
+            ActionHelpHandler.Handle (frame, sphereClient);
+        }
+
         var classification = ClientPacketClassifier.ClassifyFrame (frame);
         if (!classification.IsEvent)
         {

@@ -153,6 +153,26 @@ public static class ClientPacketClassifier
 
     /// Length 0x32, 08 40 23 02, action 17, eight i32 deltas from bit 141: str agi acc end earth
     /// air water fire
+    /// <summary>
+    /// _player.CheckActionHelp: region 12 cmd 37 with a u32 help number, sent by an NPC's UseOwner. It
+    /// leads the frame that also carries the NPC use, so it is not an event of its own
+    /// </summary>
+    public static bool IsActionHelpRequest (ReadOnlySpan<byte> frame)
+    {
+        if (frame.Length < RecordHeaderMinimumLength)
+        {
+            return false;
+        }
+
+        var identity = GameplayRecord.ReadIdentity (frame);
+        return !identity.PositionFlag
+               && identity.Tag == GameplayRecord.TagPlayerAction
+               && GameplayRecord.ManagerCommand (frame) == ActionHelpCommand
+               && GameplayRecord.ManagerLength (frame) == 4;
+    }
+
+    public const byte ActionHelpCommand = 37;
+
     public static bool IsStatsUpdateRequest (ReadOnlySpan<byte> frame)
     {
         if (frame.Length != StatsUpdateRequestLength

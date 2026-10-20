@@ -64,6 +64,11 @@ public class CharacterDbEntry
     public uint TitleXP { get; set; }
     public uint DegreeXP { get; set; }
     public ushort CurrentSatiety { get; set; }
+
+    /// <summary>
+    /// One bit per 1stusagehelp page the character has already been shown
+    /// </summary>
+    public uint ShownActionHelp { get; set; }
     public ushort CurrentMP { get; set; }
     public int AvailableTitleStats { get; set; }
     public int AvailableDegreeStats { get; set; }
