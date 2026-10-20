@@ -29,6 +29,11 @@ public partial class SphereClient : WorldObject
 
 	private CharacterBody3D? clientModel;
 	public CharacterDbEntry? CurrentCharacter;
+
+	/// <summary>
+	/// The vendor whose trade window was opened last; selling to it goes through the player's sell window
+	/// </summary>
+	public ushort TradeVendorId;
 	private ClientState currentState = ClientState.I_AM_BREAD;
 	private bool isExiting;
 	public ushort localId;
