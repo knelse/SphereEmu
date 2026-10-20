@@ -72,6 +72,15 @@ public readonly struct GameplayRecord
     public static int ObjectPayloadBit (ReadOnlySpan<byte> decodedFrame) =>
         ObjectCommandBit + 16 + ShiftOf (decodedFrame);
 
+    // What the bag slot takes: ct_bag 400, ct_ubag 401, ct_sac_s 405, ct_sac_m 419, ct_gbag 426
+    public static bool IsBackpackType (int subjectType) => subjectType is 400 or 401 or 405 or 419 or 426;
+
+    public const int BackpackUseCommand = ObjectUseCommand;
+
+    public static int ReadBackpackCommand (ReadOnlySpan<byte> decodedFrame) => ReadObjectCommand (decodedFrame);
+
+    public static int BackpackPayloadBit (ReadOnlySpan<byte> decodedFrame) => ObjectPayloadBit (decodedFrame);
+
     private static int ShiftOf (ReadOnlySpan<byte> decodedFrame) =>
         ReadBits (decodedFrame, PositionFlagBit, 1) == 1 ? PositionBlockWidth : 0;
 

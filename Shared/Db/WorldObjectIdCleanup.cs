@@ -234,6 +234,26 @@ public static class WorldObjectIdCleanup
             }
         }
 
+        // Backpack cells name their items, and the items name their backpack
+        foreach (var other in DbConnection.Items.Find (x => x.ParentBackpackId == oldId).ToList ())
+        {
+            other.ParentBackpackId = newId;
+            DbConnection.Items.Update (other);
+        }
+
+        if (item.ParentBackpackId is { } backpackId && DbConnection.Items.FindById (backpackId) is { } backpack)
+        {
+            foreach (var (cell, itemId) in backpack.BackpackContents.ToList ())
+            {
+                if (itemId == oldId)
+                {
+                    backpack.BackpackContents[cell] = newId;
+                }
+            }
+
+            DbConnection.Items.Update (backpack);
+        }
+
         return newId;
     }
 }

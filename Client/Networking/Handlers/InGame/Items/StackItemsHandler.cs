@@ -60,8 +60,8 @@ public class StackItemsHandler (ushort localId, ClientConnection clientConnectio
     {
         var character = client.CurrentCharacter;
         var clientId = character?.ClientIndex ?? 0;
-        var sourceCell = character is null ? null : CellOf (character, source);
-        var targetCell = character is null ? null : CellOf (character, target);
+        var sourceCell = character is null ? null : PlaceOf (character, source);
+        var targetCell = character is null ? null : PlaceOf (character, target);
         string? refusal = null;
         if (sourceCell is null || targetCell is null)
         {
@@ -108,16 +108,43 @@ public class StackItemsHandler (ushort localId, ClientConnection clientConnectio
     }
 
     /// <summary>
+    /// A player cell, or a cell of the worn backpack
+    /// </summary>
+    private readonly record struct Place (BelongingSlot? Slot, ItemDbEntry? Bag, int BagCell);
+
+    /// <summary>
     /// MainHand only references an inventory item, so it is never the item's own cell
     /// </summary>
-    private static BelongingSlot? CellOf (CharacterDbEntry character, ItemDbEntry item) =>
-        character.Items.Where (x => x.Value == item.Id && x.Key != BelongingSlot.MainHand)
+    private static Place? PlaceOf (CharacterDbEntry character, ItemDbEntry item)
+    {
+        var slot = character.Items.Where (x => x.Value == item.Id && x.Key != BelongingSlot.MainHand)
             .Select (x => (BelongingSlot?) x.Key).FirstOrDefault ();
+        if (slot is not null)
+        {
+            return new Place (slot, null, 0);
+        }
 
-    private static void SendCount (SphereClient client, ItemDbEntry item, BelongingSlot cell)
+        if (item.ParentBackpackId is not { } bagId ||
+            !character.Items.TryGetValue (BelongingSlot.Backpack, out var wornBagId) || wornBagId != bagId ||
+            DbConnection.Items.FindById (bagId) is not { } bag)
+        {
+            return null;
+        }
+
+        var cell = bag.BackpackContents.FirstOrDefault (x => x.Value == item.Id);
+        return cell.Value == item.Id ? new Place (null, bag, cell.Key) : null;
+    }
+
+    private static void SendCount (SphereClient client, ItemDbEntry item, Place place)
     {
         client.MaybeQueueNetworkPacketSend (ItemRecordEncoder.EncodeCount (item));
-        if (ItemSlotReserve.Build (client.CurrentCharacter!.ClientIndex, cell, item.Id, item.ItemCount) is { } reserve)
+        if (place.Bag is { } bag)
+        {
+            // The bag's cells carry each item's weight, which follows its amount
+            client.MaybeQueueNetworkPacketSend (Backpack.BuildCellsPacket (DbConnection.Items.FindById (bag.Id) ?? bag));
+        }
+        else if (ItemSlotReserve.Build (client.CurrentCharacter!.ClientIndex, place.Slot!.Value, item.Id,
+                     item.ItemCount) is { } reserve)
         {
             client.MaybeQueueNetworkPacketSend (reserve);
         }
@@ -126,8 +153,20 @@ public class StackItemsHandler (ushort localId, ClientConnection clientConnectio
     /// <summary>
     /// The same way out as the last use of a consumable: every slot, the cell, the hand and the id
     /// </summary>
-    private static void Remove (SphereClient client, CharacterDbEntry character, ItemDbEntry item, BelongingSlot cell)
+    private static void Remove (SphereClient client, CharacterDbEntry character, ItemDbEntry item, Place place)
     {
+        if (place.Bag is { } stored && DbConnection.Items.FindById (stored.Id) is { } bag)
+        {
+            bag.BackpackContents.Remove (place.BagCell);
+            DbConnection.Items.Update (bag);
+            client.MaybeQueueNetworkPacketSend (Backpack.BuildCellsPacket (bag));
+            client.MaybeQueueNetworkPacketSend (CommonPackets.DespawnEntity (client.GetLocalObjectId ((ushort) item.Id)));
+            DbConnection.Items.Delete (item.Id);
+            WorldObjectIndex.Release ((ushort) item.Id);
+            return;
+        }
+
+        var cell = place.Slot!.Value;
         var held = character.Items.TryGetValue (BelongingSlot.MainHand, out var heldId) && heldId == item.Id;
         foreach (var slot in character.Items.Where (x => x.Value == item.Id).Select (x => x.Key).ToList ())
         {

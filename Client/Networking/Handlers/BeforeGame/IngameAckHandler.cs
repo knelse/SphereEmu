@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
+using SphServer.Client.Networking.Handlers.InGame.Items;
 using SphServer.Packets;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -107,6 +108,14 @@ public class IngameAckHandler (ushort localId, ClientConnection clientConnection
             }
 
             clientConnection.MaybeScheduleNetworkPacketSend (record);
+
+            if (Backpack.IsBackpack (item))
+            {
+                foreach (var packet in Backpack.GetContentsPackets (item))
+                {
+                    clientConnection.MaybeScheduleNetworkPacketSend (packet);
+                }
+            }
         }
 
         clientConnection.MaybeScheduleNetworkPacketSend (ItemSlotReserve.BuildUnlock (localId));

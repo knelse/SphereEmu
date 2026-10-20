@@ -28,6 +28,7 @@ public enum ClientPacketEvent
     StatsUpdateRequest,
     NpcInteractClose,
     ItemLeftCell,
+    BackpackContMan,
     ItemStack
 }
 
@@ -99,6 +100,14 @@ public static class ClientPacketClassifier
                 // Closing an NPC window is a 0x20 frame with the player's own id at bit 172, so the
                 // damage fallback below read it as a self-hit
                 return Result (ClientPacketEvent.NpcInteractClose, 1.0, "record: NPC window close", true);
+            }
+
+            // A backpack's own ContMan: cmd 7 is the use that follows opening it, the rest are its cells
+            if (GameplayRecord.IsBackpackType (identity.SubjectType))
+            {
+                return GameplayRecord.ReadBackpackCommand (frame) == GameplayRecord.BackpackUseCommand
+                    ? Result (ClientPacketEvent.ItemUse, 1.0, "record: backpack use", true)
+                    : Result (ClientPacketEvent.BackpackContMan, 1.0, "record: backpack cells", true);
             }
 
             // Only the loot sack at the confirmed length is routed here
@@ -405,6 +414,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",
             ClientPacketEvent.NpcInteractClose => "client.npc.interact_close",
             ClientPacketEvent.ItemLeftCell => "client.item.left_cell",
+            ClientPacketEvent.BackpackContMan => "client.item.backpack",
             ClientPacketEvent.ItemStack => "client.item.stack",
             _ => "client.none"
         };

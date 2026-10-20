@@ -18,6 +18,21 @@ namespace SphServer.Client.Networking.Handlers.InGame.Items;
 public class PickupItemHandler (ushort localId, ClientConnection clientConnection, SphereClient client)
     : ISphereClientNetworkingHandler
 {
+    /// <summary>
+    /// Player ContMan cmd 6: a split drag sends 11 bytes instead of 8, the amount after the slot
+    /// </summary>
+    private const int SlotPickupLengthBit = 129;
+
+    private const int SlotPickupSplitLength = 11;
+    private const int SlotPickupCountBit = 201;
+
+    private static int ReadSplitCount (byte[] frame)
+    {
+        var stream = new BitStream (frame);
+        stream.SeekBitOffset (SlotPickupCountBit);
+        return (int) stream.ReadUInt32 (24);
+    }
+
     public async Task Handle (byte[] frame, double delta)
     {
     }
@@ -28,6 +43,12 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         var stream = new BitStream (frame);
         stream.SeekBitOffset (141);
         var item = DbConnection.Items.FindById ((int) stream.ReadUInt16 (16));
+        if (item?.ParentBackpackId is not null)
+        {
+            Backpack.TakeOut (clientConnection, item, null);
+            return;
+        }
+
         if (item?.DroppedOnGroundBy is not null)
         {
             PickUpFromGround (client, clientConnection, item);
@@ -59,6 +80,17 @@ public class PickupItemHandler (ushort localId, ClientConnection clientConnectio
         if (item.DroppedOnGroundBy is not null)
         {
             PickUpFromGround (client, clientConnection, item, targetSlot);
+            return;
+        }
+
+        if (item.ParentBackpackId is not null)
+        {
+            var stream = new BitStream (frame);
+            stream.SeekBitOffset (SlotPickupLengthBit);
+            var count = stream.ReadByte (8) >= SlotPickupSplitLength && frame.Length * 8 >= SlotPickupCountBit + 24
+                ? ReadSplitCount (frame)
+                : 0;
+            Backpack.TakeOut (clientConnection, item, targetSlot, count);
             return;
         }
 

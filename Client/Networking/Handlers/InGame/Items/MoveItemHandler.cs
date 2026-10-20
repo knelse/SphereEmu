@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using SphereHelpers.Extensions;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Packets;
 using SphServer.Server;
@@ -9,6 +10,7 @@ using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
 using SphServer.Shared.WorldState;
+using static SphServer.Shared.BitStream.SphBitStream;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
@@ -25,6 +27,15 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
     /// Long enough for a real move's own request to land first
     /// </summary>
     private const double RestoreCellAfterSeconds = 0.5;
+
+    /// <summary>
+    /// Player ContMan cmd 4: _inv appends the amount only when the drag splits a stack, growing
+    /// the payload from 6 to 9 bytes (player id u32, target cell, source cell, amount u24)
+    /// </summary>
+    private const int MoveLengthBitOffset = 129;
+
+    private const int MoveSplitLength = 9;
+    private const int MoveSplitCountBitOffset = 185;
 
     /// <summary>
     /// The inventory window empties a cell on its own when a drag from it ends elsewhere (_inv
@@ -99,6 +110,12 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
             return;
         }
 
+        if (ReadSplitCount (frame) is var count && count > 0 && count < item.ItemCount)
+        {
+            SplitStack (character, item, oldSlot, targetSlot, count);
+            return;
+        }
+
         // Requirements gate wearing, not carrying: anything may sit in a cell.
         if (targetSlot == BelongingSlot.Unknown ||
             (targetSlot != oldSlot && !character.IsItemSlotEmpty (targetSlot)) ||
@@ -151,5 +168,74 @@ public class MoveItemHandler (ushort localId, ClientConnection clientConnection)
         {
             clientConnection.MaybeScheduleNetworkPacketSend (moveResult);
         }
+
+        // The window opens from the cells it already has, so they go out as soon as the bag is worn
+        if (!returnToOldSlot && targetSlot == BelongingSlot.Backpack && Backpack.IsBackpack (item))
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (Backpack.BuildCellsPacket (item));
+        }
+    }
+
+    private static int ReadSplitCount (byte[] frame)
+    {
+        if (frame.Length * 8 < MoveSplitCountBitOffset + 24)
+        {
+            return 0;
+        }
+
+        var stream = new BitStreams.BitStream (frame);
+        stream.ReadBits (MoveLengthBitOffset);
+        if (stream.ReadByte (8) < MoveSplitLength)
+        {
+            return 0;
+        }
+
+        stream.ReadBits (MoveSplitCountBitOffset - MoveLengthBitOffset - 8);
+        return (int) stream.ReadUInt32 (24);
+    }
+
+    /// <summary>
+    /// Only into a free cell: the moved part gets its own item and record, the source keeps the rest
+    /// </summary>
+    private void SplitStack (CharacterDbEntry character, ItemDbEntry item, BelongingSlot oldSlot,
+        BelongingSlot targetSlot, int count)
+    {
+        if (targetSlot == BelongingSlot.Unknown || targetSlot == oldSlot || !character.IsItemSlotEmpty (targetSlot) ||
+            !item.IsValidForSlot (targetSlot) ||
+            (!ItemDbEntry.IsInventorySlot (targetSlot) && !character.CanUseItem (item)))
+        {
+            SphLogger.Warning ($"Split of {count} from [{Enum.GetName (oldSlot)}] couldn't go to slot " +
+                               $"[{Enum.GetName (targetSlot)}]. Client ID: {localId:X4}");
+            if (ItemSlotReserve.Build (localId, oldSlot, item.Id, item.ItemCount) is { } kept)
+            {
+                clientConnection.MaybeScheduleNetworkPacketSend (kept);
+            }
+
+            return;
+        }
+
+        var part = item.SplitOff (count);
+        character.Items[targetSlot] = part.Id;
+        if (!ItemDbEntry.IsInventorySlot (targetSlot) && character.RecalcCurrentStats ())
+        {
+            NetworkedStatsUpdater.Update (character);
+        }
+
+        clientConnection.SaveSelectedCharacter ();
+
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.EncodeCount (item));
+        if (ItemSlotReserve.Build (localId, oldSlot, item.Id, item.ItemCount) is { } source)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (source);
+        }
+
+        clientConnection.MaybeScheduleNetworkPacketSend (ItemRecordEncoder.Encode (part, ByteSwap (localId)));
+        if (ItemSlotReserve.Build (localId, targetSlot, part.Id, part.ItemCount) is { } claimed)
+        {
+            clientConnection.MaybeScheduleNetworkPacketSend (claimed);
+        }
+
+        SphLogger.Info ($"Split {count} of {item.ItemCount + count} from [{Enum.GetName (oldSlot)}] {item.Id:X4} " +
+                        $"to [{Enum.GetName (targetSlot)}] as {part.Id:X4}. Client ID: {localId:X4}");
     }
 }
