@@ -137,7 +137,14 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
         lastEatenItemId = item.Id;
         lastEatenAt = now;
 
+        var bonusBefore = character.SatietyMaxHpBonusPercent;
         character.CurrentSatiety = (ushort) Math.Min (character.CurrentSatiety + satiety, character.MaxSatiety);
+        if (character.SatietyMaxHpBonusPercent != bonusBefore)
+        {
+            // Crossing a third of satiety changes the max HP bonus
+            character.RecalcCurrentStats ();
+        }
+
         NetworkedStatsUpdater.Update (character);
         ItemConsumption.ConsumeOne (client, item);
         clientConnection.SaveSelectedCharacter ();
