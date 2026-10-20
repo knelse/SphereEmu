@@ -62,6 +62,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
     private PickupItemHandler? pickupItemHandler;
     private PingHandler? pingHandler;
     private UseItemHandler? useItemHandler;
+    private MapMarkHandler? mapMarkHandler;
 
     /// <summary>
     /// Holds the byte stream between reads, so a frame split across two of them survives.
@@ -175,6 +176,9 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             case ClientPacketEvent.ItemUse:
                 await useItemHandler!.Handle (frame, delta);
                 break;
+            case ClientPacketEvent.MapMark:
+                await mapMarkHandler!.Handle (frame, delta);
+                break;
             case ClientPacketEvent.ChatSend:
                 await clientChatHandler!.Accept (frame, delta);
                 break;
@@ -237,6 +241,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         dragItemOnGroundHandler ??= new (localId, this);
         moveItemHandler ??= new (localId, this);
         useItemHandler ??= new (localId, this, sphereClient);
+        mapMarkHandler ??= new (localId, this);
         dropItemToGroundHandler ??= new (localId, this, sphereClient);
         mainhandTakeItemHandler ??= new (localId, this);
         swapItemHandler ??= new (localId, this);

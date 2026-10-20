@@ -14,6 +14,7 @@ public enum ClientPacketEvent
     ItemPickup,
     ItemMove,
     ItemUse,
+    MapMark,
     ChatSend,
     ItemPickupToSlot,
     ContainerOpenLoot,
@@ -92,6 +93,11 @@ public static class ClientPacketClassifier
 
         if (identity.Tag == GameplayRecord.TagObjectInteract)
         {
+            if (IsMapMark (identity, frame))
+            {
+                return Result (ClientPacketEvent.MapMark, 1.0, "record: map mark", true);
+            }
+
             if (identity.SubjectType is GameplayRecord.SubjectTypeNpcTrade
                 or GameplayRecord.SubjectTypeNpcQuestTitle)
             {
@@ -213,6 +219,24 @@ public static class ClientPacketClassifier
 
     /// Open-loot length from a labelled capture
     private const int ConfirmedLootContainerLength = 0x1B;
+
+    // ObjectType.Map; st_map SndUser and RcvUser use ContMan cmd 15 for a mark or its label
+    private const int SubjectTypeMap = 703;
+    public const int MapMarkCommand = 15;
+
+    /// Item modules read an 8-bit ContMan command after the tag
+    private static bool IsMapMark (in GameplayRecord.Identity identity, ReadOnlySpan<byte> frame)
+    {
+        var commandBit = ClientFrame.BodyOffset * 8 + 53 +
+                         (identity.PositionFlag ? GameplayRecord.PositionBlockWidth : 0);
+        if (identity.SubjectType != SubjectTypeMap || frame.Length * 8 < commandBit + 16)
+        {
+            return false;
+        }
+
+        var command = (frame[commandBit / 8] | frame[commandBit / 8 + 1] << 8) >> (commandBit % 8);
+        return (byte) command == MapMarkCommand;
+    }
 
     private static ClientPacketClassification ClassifyBySignature (ReadOnlySpan<byte> frame)
     {
@@ -383,6 +407,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.ItemPickup => "client.item.pickup",
             ClientPacketEvent.ItemMove => "client.item.move",
             ClientPacketEvent.ItemUse => "client.item.use",
+            ClientPacketEvent.MapMark => "client.item.map_mark",
             ClientPacketEvent.ChatSend => "client.chat.send",
             ClientPacketEvent.ItemPickupToSlot => "client.item.pickup_to_slot",
             ClientPacketEvent.ContainerOpenLoot => "client.container.open_loot",

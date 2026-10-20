@@ -65,7 +65,8 @@ public static class ItemRecordEncoder
     {
         var record = Encode ((ushort) item.Id, (int) item.WireObjectType, item.GameId, SuffixWireFor (item),
             containerObjectId, x, y, z, item.CurrentDurability, item.Durability, item.GameObjectType);
-        return IsGuildFamily ((ObjectType) item.WireObjectType) ? record : Concat (record, EncodeCount (item));
+        var encoded = IsGuildFamily ((ObjectType) item.WireObjectType) ? record : Concat (record, EncodeCount (item));
+        return item.WireObjectType is ObjectType.Map ? Concat (encoded, EncodeMapMarks (item)) : encoded;
     }
 
     /// <summary>
@@ -118,6 +119,66 @@ public static class ItemRecordEncoder
         stream.WriteByte ((byte) CountMessage, 8);
         stream.WriteByte (2, 8);
         stream.WriteUInt16 ((ushort) Math.Max (1, item.ItemCount), 16);
+
+        stream.WriteByte (0, 7);
+        var record = Packet.ToByteArray (stream.GetStreamData (), 3);
+        return item.WireObjectType is ObjectType.Map ? Concat (record, EncodeMapMarks (item)) : record;
+    }
+
+    /// <summary>
+    /// st_map ContMan cmd 15, as SndUser sends it
+    /// </summary>
+    private const uint MapMarkMessage = 15;
+
+    /// <summary>
+    /// The map process keeps its marks in memory only and never asks for them, so they follow
+    /// every record that creates it: pic first, then the label, which RcvUser clears on a pic
+    /// </summary>
+    public static byte[] EncodeMapMarks (ItemDbEntry item)
+    {
+        var marks = MapMarks.Copy (item);
+        var stream = GetWriteBitStream ();
+        stream.WriteUInt16 ((ushort) item.Id, 16);
+        stream.WriteByte (0, 2);
+        stream.WriteUInt16 ((ushort) ((int) item.WireObjectType & 0xFFF), 12);
+        var any = false;
+        for (var cell = 0; cell < MapMarks.CellCount; cell++)
+        {
+            var pic = MapMarks.Pic (marks, cell);
+            if (pic == 0)
+            {
+                continue;
+            }
+
+            any = true;
+            stream.WriteByte (ContManRegionWire, 7);
+            stream.WriteByte ((byte) MapMarkMessage, 8);
+            stream.WriteByte (6, 8);
+            stream.WriteByte ((byte) cell, 8);
+            stream.WriteByte (pic, 8);
+            stream.WriteUInt16 (MapMarks.X (marks, cell), 16);
+            stream.WriteUInt16 (MapMarks.Y (marks, cell), 16);
+
+            var label = MapMarks.Label (marks, cell);
+            if (label.IsEmpty)
+            {
+                continue;
+            }
+
+            stream.WriteByte (ContManRegionWire, 7);
+            stream.WriteByte ((byte) MapMarkMessage, 8);
+            stream.WriteByte ((byte) (label.Length + 1), 8);
+            stream.WriteByte ((byte) (cell + MapMarks.LabelCellOffset), 8);
+            foreach (var b in label)
+            {
+                stream.WriteByte (b, 8);
+            }
+        }
+
+        if (!any)
+        {
+            return [];
+        }
 
         stream.WriteByte (0, 7);
         return Packet.ToByteArray (stream.GetStreamData (), 3);
