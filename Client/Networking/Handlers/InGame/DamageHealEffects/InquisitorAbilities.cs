@@ -80,7 +80,7 @@ public static class InquisitorAbilities
         }
         else if (ability.GameId is >= 5720 and <= 5725)
         {
-            var seconds = Math.Max (1, ability._duration) * 10;
+            var seconds = EffectDurationSeconds (ability._duration);
             success = target switch
             {
                 SphereClient { CurrentCharacter.CurrentHP: > 0 } player =>
@@ -91,7 +91,7 @@ public static class InquisitorAbilities
         }
         else
         {
-            var count = Math.Clamp (ability._duration - 95, 1, 6);
+            var count = PurifyCount (ability.MutatorId);
             var removed = target is SphereClient player ? ActiveMutators.Purify (player, count) : 0;
             Tell (caster, $"Очищение: снято положительных эффектов: {removed}.");
             success = true;
@@ -105,6 +105,27 @@ public static class InquisitorAbilities
         }
         return true;
     }
+
+    /// <summary>
+    /// Effect duration column of the params cfg tables, as the specab info card prints it: below 100 hours, 100..1000 minutes
+    /// over 100, above 1000 seconds over 1000. Shackles 104..120 are 4..20 minutes
+    /// </summary>
+    public static int EffectDurationSeconds (int raw) => raw switch
+    {
+        > 1000 => raw - 1000,
+        >= 100 => (raw - 100) * 60,
+        _ => Math.Max (1, raw) * 3600
+    };
+
+    /// <summary>
+    /// Purification ranks carry mutator 1024, 1025 or 1026, which virus describes as removing 2, 4 or 6 effects
+    /// </summary>
+    private static int PurifyCount (int mutatorId) => mutatorId switch
+    {
+        1026 => 6,
+        1025 => 4,
+        _ => 2
+    };
 
     /// <summary>
     /// Nearest Hyperion city by center; its respawn point for the character's karma when recorded,
