@@ -16,32 +16,39 @@ public sealed class CharacterVitalRegen
 
     /// <summary>
     /// The client never lowers satiety itself (_player.DHunger has no caller), so the server does.
-    /// No original rate survived: one point every 20 ticks, 2 minutes, empties the usual 100 in
-    /// about 3.3 hours online
+    /// No original rate survived: one point every 2 minutes empties the usual 100 in about 3.3 hours
+    /// online. Counted in wall time, so a server frame that runs late does not slow hunger down
     /// </summary>
-    private const int TicksPerSatietyPoint = 20;
+    private const long MsPerSatietyPoint = 120_000;
 
     private float hpFrac;
     private float mpFrac;
-    private int hungerTicks;
 
     /// <summary>
-    /// One 6s step of hunger; true when satiety went down. A corpse does not get hungry
+    /// 0 until the first step in the world, so the character select screen is not counted
+    /// </summary>
+    private long hungerSince;
+
+    /// <summary>
+    /// Called on the 6s step; true when satiety went down. A corpse does not get hungry
     /// </summary>
     public bool ApplyHunger (CharacterDbEntry character)
     {
-        if (character.CurrentHP <= 0 || character.CurrentSatiety == 0)
+        var now = Environment.TickCount64;
+        if (hungerSince == 0 || character.CurrentHP <= 0 || character.CurrentSatiety == 0)
+        {
+            hungerSince = now;
+            return false;
+        }
+
+        var points = (now - hungerSince) / MsPerSatietyPoint;
+        if (points == 0)
         {
             return false;
         }
 
-        if (++hungerTicks < TicksPerSatietyPoint)
-        {
-            return false;
-        }
-
-        hungerTicks = 0;
-        character.CurrentSatiety--;
+        hungerSince += points * MsPerSatietyPoint;
+        character.CurrentSatiety = (ushort) Math.Max (character.CurrentSatiety - points, 0);
         return true;
     }
 
