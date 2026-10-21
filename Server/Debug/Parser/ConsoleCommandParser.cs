@@ -334,18 +334,11 @@ public partial class ConsoleCommandParser
 
     private void Loot (string args)
     {
-        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
-            currentCharacterDbEntry.Z + 1,
-            1,
-            LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
-            currentCharacterDbEntry.Z + 2,
-            1,
-            LootRatity.DEFAULT_MOB);
-        ItemContainerDbEntry.CreateHierarchyWithContents (currentCharacterDbEntry.X, currentCharacterDbEntry.Y,
-            currentCharacterDbEntry.Z + 3,
-            1,
-            LootRatity.DEFAULT_MOB);
+        for (var i = 1; i <= 3; i++)
+        {
+            ItemContainerDbEntry.SpawnRandomLoot (currentCharacterDbEntry.Origin + new global::Godot.Vector3 (0, 0, i),
+                1, LootRatity.DEFAULT_MOB);
+        }
     }
 
     private void Teleport (string args)

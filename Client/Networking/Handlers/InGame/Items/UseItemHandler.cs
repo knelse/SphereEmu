@@ -20,6 +20,18 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
         // Item use arms g_6008, so this ack clears it or the client stays wedged
         clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
 
+        // This client opens a loot sack with the use request, naming the sack instead of an item
+        if (DbConnection.ItemContainers.FindById ((int) itemId) is { } bag)
+        {
+            foreach (var packet in bag.GetContentsPackets ())
+            {
+                clientConnection.MaybeScheduleNetworkPacketSend (packet);
+            }
+
+            Log (itemId, "loot bag", $"opened, {bag.Contents.Count} item(s)");
+            return;
+        }
+
         var character = clientConnection.GetSelectedCharacter ();
         var item = DbConnection.Items.FindById ((int) itemId);
         if (character is null || item is null)
