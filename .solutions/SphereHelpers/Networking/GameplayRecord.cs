@@ -54,6 +54,27 @@ public readonly struct GameplayRecord
     public const int SubjectTypeNpcTrade = 213;
     public const int SubjectTypeSackMobLoot = 407;
 
+    /// Item modules read an 8-bit ContMan command after the tag, where the player reads 4
+    private const int ObjectCommandBit = BodyBit + 53;
+
+    /// cmd 7 is an item's use; with 9 bytes (player u24, target u24, amount u24) it is a use on
+    /// another item, which is how _inv merges a stack dropped on a stack of the same item
+    public const int ObjectUseCommand = 7;
+    public const int ObjectUseOnTargetLength = 9;
+
+    public static int ReadObjectCommand (ReadOnlySpan<byte> decodedFrame) =>
+        (int) ReadBits (decodedFrame, ObjectCommandBit + ShiftOf (decodedFrame), 8);
+
+    public static int ReadObjectCommandLength (ReadOnlySpan<byte> decodedFrame) =>
+        (int) ReadBits (decodedFrame, ObjectCommandBit + 8 + ShiftOf (decodedFrame), 8);
+
+    /// After the command and its length byte
+    public static int ObjectPayloadBit (ReadOnlySpan<byte> decodedFrame) =>
+        ObjectCommandBit + 16 + ShiftOf (decodedFrame);
+
+    private static int ShiftOf (ReadOnlySpan<byte> decodedFrame) =>
+        ReadBits (decodedFrame, PositionFlagBit, 1) == 1 ? PositionBlockWidth : 0;
+
     /// Attack target at bit 172; an interaction frame holds the player's own record here
     public const int TargetIdBit = 172;
 

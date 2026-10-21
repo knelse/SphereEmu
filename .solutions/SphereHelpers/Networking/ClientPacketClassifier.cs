@@ -27,7 +27,8 @@ public enum ClientPacketEvent
     CharacterSelect,
     StatsUpdateRequest,
     NpcInteractClose,
-    ItemLeftCell
+    ItemLeftCell,
+    ItemStack
 }
 
 public readonly record struct ClientPacketClassification (
@@ -101,9 +102,16 @@ public static class ClientPacketClassifier
             }
 
             // Only the loot sack at the confirmed length is routed here
-            return identity.SubjectType == GameplayRecord.SubjectTypeSackMobLoot &&
-                   frameLength == ConfirmedLootContainerLength
-                ? Result (ClientPacketEvent.ContainerOpenLoot, 1.0, "record: loot sack interaction", true)
+            if (identity.SubjectType == GameplayRecord.SubjectTypeSackMobLoot &&
+                frameLength == ConfirmedLootContainerLength)
+            {
+                return Result (ClientPacketEvent.ContainerOpenLoot, 1.0, "record: loot sack interaction", true);
+            }
+
+            // A stack dropped on a stack of the same item is that item's use on the other one
+            return GameplayRecord.ReadObjectCommand (frame) == GameplayRecord.ObjectUseCommand &&
+                   GameplayRecord.ReadObjectCommandLength (frame) == GameplayRecord.ObjectUseOnTargetLength
+                ? Result (ClientPacketEvent.ItemStack, 1.0, "record: item used on another item", true)
                 : null;
         }
 
@@ -397,6 +405,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.StatsUpdateRequest => "client.stats.update.request",
             ClientPacketEvent.NpcInteractClose => "client.npc.interact_close",
             ClientPacketEvent.ItemLeftCell => "client.item.left_cell",
+            ClientPacketEvent.ItemStack => "client.item.stack",
             _ => "client.none"
         };
 
