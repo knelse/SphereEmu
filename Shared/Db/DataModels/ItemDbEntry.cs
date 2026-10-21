@@ -163,6 +163,9 @@ public class ItemDbEntry
             dest.SetValue (item, prop.GetValue (source));
         }
 
+        // Copied by reference above, so two maps would share their marks
+        item.ContentsData = new (source.ContentsData);
+
         if (insertIntoItemCollection)
         {
             item.Id = WorldObjectIndex.NewItem ();
