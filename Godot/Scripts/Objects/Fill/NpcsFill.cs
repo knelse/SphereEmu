@@ -2,6 +2,7 @@ using System.Text;
 using Godot;
 using SphServer.Helpers;
 using SphServer.Shared.GameData.Enums;
+using SphServer.Sphere.Game.NpcTrade.ItemsOnSale;
 using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Godot.Scripts.Objects.Fill;
@@ -139,7 +140,7 @@ public partial class NpcsFill : Node3D
             npc.ModelName = modelName;
             npc.IconName = iconName;
             npc.NpcType = npcType;
-            npc.VendorItemTierMax = 15;
+            (npc.VendorItemTierMin, npc.VendorItemTierMax) = VendorTiers.ForPosition (x, y, z);
 
             AddChild (npc);
             WorldObjectDumpFillCommon.SetOwnerIfEditor (this, npc);
