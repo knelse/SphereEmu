@@ -44,6 +44,22 @@ public class DropItemToGroundHandler (ushort localId, ClientConnection clientCon
             return;
         }
 
+        // Ground items carry no cells, so a backpack goes down only empty
+        if (Backpack.IsBackpack (item) && item.BackpackContents.Count > 0)
+        {
+            foreach (var slot in slots)
+            {
+                if (ItemSlotReserve.Build (localId, slot, item.Id, item.ItemCount) is { } kept)
+                {
+                    clientConnection.MaybeScheduleNetworkPacketSend (kept);
+                }
+            }
+
+            SphLogger.Info ($"Drop to ground: backpack {itemId:X4} still holds {item.BackpackContents.Count} " +
+                            $"item(s). Client ID: {localId:X4}");
+            return;
+        }
+
         // Live keeps a dropped item in the world as itself, sent with the ground placement
         var wasWorn = slots.Any (slot => !ItemDbEntry.IsInventorySlot (slot));
         foreach (var slot in slots)

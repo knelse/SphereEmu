@@ -85,6 +85,16 @@ public class ItemDbEntry
     public int CurrentDurability { get; set; }
     public int? ParentContainerId { get; set; }
     public int? DroppedOnGroundBy { get; set; }
+
+    /// <summary>
+    /// Set while the item sits in a backpack cell: the backpack item it went into
+    /// </summary>
+    public int? ParentBackpackId { get; set; }
+
+    /// <summary>
+    /// A backpack's own cells: cell number to item id
+    /// </summary>
+    public Dictionary<int, int> BackpackContents { get; set; } = new ();
     public Dictionary<string, object> ContentsData { get; set; } = new ();
     public Guild RequiredGuild { get; set; }
     public int RequiredGuildRankMinusOne { get; set; }
@@ -170,6 +180,21 @@ public class ItemDbEntry
         }
 
         return item;
+    }
+
+    /// <summary>
+    /// The part of a stack a split drag moves becomes an item of its own; this one keeps the rest
+    /// </summary>
+    public ItemDbEntry SplitOff (int count)
+    {
+        var part = Clone (this, insertIntoItemCollection: false);
+        part.Id = WorldObjectIndex.NewItem ();
+        part.ItemCount = count;
+        DbConnection.Items.Insert (part.Id, part);
+
+        ItemCount -= count;
+        DbConnection.Items.Update (this);
+        return part;
     }
 
     public bool IsGuildMembershipEmblem =>
