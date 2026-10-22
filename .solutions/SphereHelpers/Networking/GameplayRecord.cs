@@ -184,6 +184,18 @@ public readonly struct GameplayRecord
         };
     }
 
+    /// _player region 12 on tag 13 without the position block: u8 command, u8 length, then the payload
+    public const int ManagerCommandBit = BodyBit + 53;
+
+    public static byte ManagerCommand (ReadOnlySpan<byte> frame) =>
+        (byte) ReadBits (frame, ManagerCommandBit, 8);
+
+    public static byte ManagerLength (ReadOnlySpan<byte> frame) =>
+        (byte) ReadBits (frame, ManagerCommandBit + 8, 8);
+
+    public static uint ManagerPayloadUInt32 (ReadOnlySpan<byte> frame) =>
+        (uint) ReadBits (frame, ManagerCommandBit + 16, 32);
+
     /// Entity id is the client id with its bytes swapped
     public bool BelongsTo (ushort clientId)
     {
