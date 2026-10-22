@@ -5,6 +5,7 @@ using SphServer.Client.State;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
 using SphServer.Server.Debug.Parser;
+using SphServer.Server.GameplayLogic.Groups;
 using SphServer.Shared.Db;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Db.DataModels;
@@ -291,6 +292,7 @@ public partial class SphereClient : WorldObject
 		}
 
 		PlayerCountBroadcast.OnClientLeftWorld ();
+		PlayerGroups.OnClientLeftWorld (this);
 
 		QueueFree ();
 	}

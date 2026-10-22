@@ -395,6 +395,84 @@ public static class CommonPackets
     }
 
     /// <summary>
+    /// Manager cmd 9 mode 0: gMsg(id) to chat as is
+    /// </summary>
+    public static byte[] BuildPlayerSystemChatText (ushort entityId, ushort gmsgId, uint rgbColor) =>
+        BuildPlayerSystemChat (entityId, 0, gmsgId, rgbColor, null);
+
+    /// <summary>
+    /// Manager cmd 9 mode 4: sprintf gMsg(id) with one string, for the %s texts
+    /// </summary>
+    public static byte[] BuildPlayerSystemChatWithName (ushort entityId, ushort gmsgId, uint rgbColor,
+        string name) =>
+        BuildPlayerSystemChat (entityId, 4, gmsgId, rgbColor, name);
+
+    private static byte[] BuildPlayerSystemChat (ushort entityId, byte mode, ushort gmsgId, uint rgbColor,
+        string? text)
+    {
+        var payload = new List<byte>
+        {
+            mode,
+            (byte) (gmsgId & 0xFF),
+            (byte) ((gmsgId >> 8) & 0xFF),
+            (byte) (rgbColor & 0xFF),
+            (byte) ((rgbColor >> 8) & 0xFF),
+            (byte) ((rgbColor >> 16) & 0xFF),
+            (byte) ((rgbColor >> 24) & 0xFF)
+        };
+        if (text is not null)
+        {
+            payload.AddRange (SphEncoding.Win1251.GetBytes (text));
+            payload.Add (0);
+        }
+
+        return BuildPlayerManagerCommand (entityId, command: 9, payload.ToArray ());
+    }
+
+    /// <summary>
+    /// Manager cmd 25 (mgrSetGroup) with nothing after the subcode: 5 new list, 9 group created, 11 and
+    /// 13 list destroyed
+    /// </summary>
+    public static byte[] BuildPlayerGroupCommand (ushort entityId, byte subcode) =>
+        BuildPlayerManagerCommand (entityId, command: 25, [subcode]);
+
+    /// <summary>
+    /// Manager cmd 25 row: 6 and 8 are u32 group state, u32 online state, name; 12 has no online
+    /// state; 10 is the name alone. Group state is 2 leader, 1 member, 0 candidate
+    /// </summary>
+    public static byte[] BuildPlayerGroupRow (ushort entityId, byte subcode, string name, uint? groupState = null,
+        uint? onlineState = null)
+    {
+        var payload = new List<byte> { subcode };
+        if (groupState is { } state)
+        {
+            payload.AddRange (BitConverter.GetBytes (state));
+        }
+
+        if (onlineState is { } online)
+        {
+            payload.AddRange (BitConverter.GetBytes (online));
+        }
+
+        payload.AddRange (SphEncoding.Win1251.GetBytes (name));
+        payload.Add (0);
+        return BuildPlayerManagerCommand (entityId, command: 25, payload.ToArray ());
+    }
+
+    /// <summary>
+    /// Manager cmd 46 (receiveInvite2Group): u32 key the client returns with cmd 50/51, then the
+    /// leader's name
+    /// </summary>
+    public static byte[] BuildPlayerGroupInvite (ushort entityId, uint key, string leaderName)
+    {
+        var payload = new List<byte> ();
+        payload.AddRange (BitConverter.GetBytes (key));
+        payload.AddRange (SphEncoding.Win1251.GetBytes (leaderName));
+        payload.Add (0);
+        return BuildPlayerManagerCommand (entityId, command: 46, payload.ToArray ());
+    }
+
+    /// <summary>
     /// _player region 12: u8 command plus an array8 of u8 payload
     /// </summary>
     public static byte[] BuildPlayerManagerCommand (ushort entityId, byte command, ReadOnlySpan<byte> payload)

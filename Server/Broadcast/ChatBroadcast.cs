@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SphServer.Client.Networking;
+using SphServer.Server.GameplayLogic.Groups;
 using SphServer.Shared.Networking.Chat.Encoders;
 using SphServer.Shared.WorldState;
 
@@ -16,6 +17,18 @@ public static class ChatBroadcast
 
         if (actualText.StartsWith ('/'))
         {
+            return;
+        }
+
+        if (chatTypeVal == (int) PrivateChatType.Group)
+        {
+            // Group chat reaches the sender's group only, at any range
+            var originClient = clientOriginConnection is null ? null : ActiveClients.Get (clientOriginConnection.LocalId);
+            foreach (var member in originClient is null ? [] : PlayerGroups.GetMembers (originClient))
+            {
+                member.MaybeQueueNetworkPacketSend (encodedMessage);
+            }
+
             return;
         }
 

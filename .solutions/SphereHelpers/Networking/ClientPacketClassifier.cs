@@ -140,6 +140,9 @@ public static class ClientPacketClassifier
                     ? Result (ClientPacketEvent.CharacterSelect, 1.0, CharacterSelectReason (frame), true)
                     : Result (ClientPacketEvent.Unknown, 0, "record: client telemetry", false);
 
+            case GameplayAction.Unknown when IsGroupCommand (identity, frame):
+                return Result (ClientPacketEvent.GroupAction, 1.0, "record: group command", true);
+
             case GameplayAction.Unknown when identity.Tag == GameplayRecord.TagPlayerAction
                                              && identity.ActionCode == 0:
                 // Same bytes as trade-buy, but a purchase is action 8
@@ -207,6 +210,23 @@ public static class ClientPacketClassifier
                || declaredLength == 0x19 && frame[15] == 0x83;
     }
 
+    /// <summary>
+    /// The player's own region 12 cmd 25 (group) or 46/50/51 (invite, accept, decline); the data
+    /// after the command can be a name of any length, so no byte of it is a signature
+    /// </summary>
+    private static bool IsGroupCommand (in GameplayRecord.Identity identity, ReadOnlySpan<byte> frame)
+    {
+        const int commandBit = ClientFrame.BodyOffset * 8 + 53;
+        if (identity.PositionFlag || identity.SubjectType != GameplayRecord.SubjectTypePlayer ||
+            identity.Tag != GameplayRecord.TagPlayerAction || frame.Length * 8 < commandBit + 16)
+        {
+            return false;
+        }
+
+        var command = (byte) (frame[commandBit / 8] >> (commandBit % 8) | frame[commandBit / 8 + 1] << (8 - commandBit % 8));
+        return command is 25 or 46 or 50 or 51;
+    }
+
     private const int ChatTriggerLength = 26;
     private const int CharacterSelectLength = 0x15;
     private const int StatsUpdateRequestLength = 0x32;
@@ -258,10 +278,6 @@ public static class ClientPacketClassifier
 
         switch (declaredLength)
         {
-            case 0x13 when b13 == 0x08 && b14 == 0x40 && b15 == 0x23 &&
-                           frame.Length > 16 && frame[16] == 0x23:
-                return Result (ClientPacketEvent.GroupAction, 1.0, "handler signature 08 40 23", true);
-
             case 0x13 when b13 == 0x08 && b14 == 0x40 && b15 == 0xA1:
                 return Result (ClientPacketEvent.ItemLeftCell, 1.0, "handler signature 08 40 A1", true);
 
@@ -350,12 +366,10 @@ public static class ClientPacketClassifier
                 0x83 => Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 83", true),
                 0xA3 => Result (ClientPacketEvent.ItemTakeMainhand, 1.0, "handler signature 08 40 A3", true),
                 0x63 => Result (ClientPacketEvent.ItemDrop, 0.9, "handler signature 08 40 63", true),
-                // Group requests carry 23 at byte 16; the client also sends an 0x12 08 40 23 08 00
+                // Group requests are named by the record; the client also sends an 0x12 08 40 23 08 00
                 // frame by itself, and reading its byte 17 as "create" gave every player a group of one
                 0x23 when IsStatsUpdateRequest (frame) =>
                     Result (ClientPacketEvent.StatsUpdateRequest, 1.0, "0x32 08 40 23 02 action 17", true),
-                0x23 when frame.Length > 17 && frame[16] == 0x23 =>
-                    Result (ClientPacketEvent.GroupAction, 0.9, "handler signature 08 40 23 23", true),
                 0x23 => Result (ClientPacketEvent.Unknown, 0, "08 40 23 without the group tag", false),
                 0x81 => Result (ClientPacketEvent.ItemMove, 0.9, "handler signature 08 40 81", true),
                 0xC1 => Result (ClientPacketEvent.ItemPickupToSlot, 0.9, "handler signature 08 40 C1", true),
