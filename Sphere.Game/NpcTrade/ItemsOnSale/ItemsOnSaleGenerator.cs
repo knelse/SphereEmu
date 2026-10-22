@@ -149,6 +149,29 @@ public static class ItemsOnSaleGenerator
         return itemsOnSale;
     }
 
+    public static List<ItemDbEntry> Tavernkeeper ()
+    {
+        // Client tips: food is sold in every tavern. Raw fish (654) can't be eaten, so it isn't on sale.
+        // Prices are not known from the original
+        var food = new (GameObjectType GameObjectType, ObjectType ObjectType, int VendorCost)[]
+        {
+            (GameObjectType.FoodApple, ObjectType.Food_Apple, 3),
+            (GameObjectType.FoodPear, ObjectType.Food_Pear, 3),
+            (GameObjectType.FoodBread, ObjectType.Food_Bread, 5),
+            (GameObjectType.FoodFish, ObjectType.Food_Fish2, 6),
+            (GameObjectType.FoodMeat, ObjectType.Food_Meat, 8)
+        };
+
+        return food.Select (x => new ItemDbEntry
+        {
+            GameObjectType = x.GameObjectType,
+            ObjectType = x.ObjectType,
+            Weight = 10,
+            VendorCost = x.VendorCost,
+            ItemCount = 1000
+        }).ToList ();
+    }
+
     public static List<ItemDbEntry> Alchemy (int minTier, int maxTier)
     {
         var itemsOnSale = new List<ItemDbEntry> ();

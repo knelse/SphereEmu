@@ -50,15 +50,13 @@ public partial class NpcInteractable
             NpcType.TradeArmor => ItemsOnSaleGenerator.Armor (VendorItemTierMin, VendorItemTierMax),
             NpcType.TradeAlchemy => ItemsOnSaleGenerator.Alchemy (VendorItemTierMin, VendorItemTierMax),
             NpcType.TradeMagic => ItemsOnSaleGenerator.Magic (VendorItemTierMin, VendorItemTierMax),
+            NpcType.TradeTavernkeeper => ItemsOnSaleGenerator.Tavernkeeper (),
             _ => []
         };
 
         if (itemsOnSale.Count == 0)
         {
-            for (var i = 0; i < 20; i++)
-            {
-                itemsOnSale.Add (ItemDbEntry.CreateFromGameObject (SphObjectDb.GameObjectDataDb[3400 + i]));
-            }
+            SphLogger.Warning ($"Vendor [{ID}] ({NpcType}) has nothing to sell");
         }
 
         foreach (var item in itemsOnSale.Take (MaxDisplayedShopItems))
