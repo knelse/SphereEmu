@@ -14,8 +14,43 @@ public sealed class CharacterVitalRegen
     private const float MpPerMax = 5.6e-5f;
     private const int TickScale = 6; // g_51E0
 
+    /// <summary>
+    /// The client never lowers satiety itself (_player.DHunger has no caller), so the server does.
+    /// No original rate survived: one point every 2 minutes empties the usual 100 in about 3.3 hours
+    /// online. Counted in wall time, so a server frame that runs late does not slow hunger down
+    /// </summary>
+    private const long MsPerSatietyPoint = 120_000;
+
     private float hpFrac;
     private float mpFrac;
+
+    /// <summary>
+    /// 0 until the first step in the world, so the character select screen is not counted
+    /// </summary>
+    private long hungerSince;
+
+    /// <summary>
+    /// Called on the 6s step; true when satiety went down. A corpse does not get hungry
+    /// </summary>
+    public bool ApplyHunger (CharacterDbEntry character)
+    {
+        var now = Environment.TickCount64;
+        if (hungerSince == 0 || character.CurrentHP <= 0 || character.CurrentSatiety == 0)
+        {
+            hungerSince = now;
+            return false;
+        }
+
+        var points = (now - hungerSince) / MsPerSatietyPoint;
+        if (points == 0)
+        {
+            return false;
+        }
+
+        hungerSince += points * MsPerSatietyPoint;
+        character.CurrentSatiety = (ushort) Math.Max (character.CurrentSatiety - points, 0);
+        return true;
+    }
 
     /// <summary>
     /// Dead is a no-op, so a 6s step does not regen a corpse
