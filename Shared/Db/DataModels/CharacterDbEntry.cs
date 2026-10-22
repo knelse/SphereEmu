@@ -186,10 +186,11 @@ public class CharacterDbEntry
     public int MaxMPBase => MpAtTitle[TitleMinusOne % 60] + MpAtDegree[DegreeMinusOne % 60] - 100;
 
     /// <summary>
-    /// 0-33 is +5% max HP, 34-66 is +10%, 67+ is +15%
+    /// 0 is no bonus (i_charact.hts: only a non-zero satiety adds HP), 1-33 is +5% max HP, 34-66 is +10%, 67+ is +15%
     /// </summary>
     public int SatietyMaxHpBonusPercent => CurrentSatiety switch
     {
+        0 => 0,
         <= 33 => 5,
         <= 66 => 10,
         _ => 15
