@@ -81,6 +81,7 @@ public partial class ConsoleCommandParser
         RegisteredCommands["giveinvns"] = GiveToInventoryByNameWithSuffix;
         RegisteredCommands["clearinv"] = ClearInventory;
         RegisteredCommands["tp"] = Teleport;
+        RegisteredCommands["npd"] = EnterNewPlayerDungeon;
     }
 
     // A GM chat line when a client is attached, otherwise the server console
@@ -390,5 +391,30 @@ public partial class ConsoleCommandParser
                 Console.WriteLine (ex.Message);
             }
         }
+    }
+
+    /// <summary>
+    /// /npd: teleport plus dungeon geometry only; /npd full also replays the captured objects;
+    /// /npd x y z jumps to a point inside the maze, where a plain /tp loses the geometry
+    /// </summary>
+    private void EnterNewPlayerDungeon (string args)
+    {
+        if (sphereClient is not { } client)
+        {
+            SendFeedback ("/npd: no client attached");
+            return;
+        }
+
+        var parts = args.Split (' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 3)
+        {
+            // Same coordinate form as /tp
+            var c = parts.Take (3).Select (x => double.Parse (x.Replace (',', '.'), CultureInfo.InvariantCulture)).ToArray ();
+            NewPlayerDungeon.EnterAt (client, c[0], c[1], c[2]);
+            return;
+        }
+
+        var full = args.Trim ().Equals ("full", StringComparison.OrdinalIgnoreCase);
+        NewPlayerDungeon.Enter (client, replayCapturedObjects: full);
     }
 }

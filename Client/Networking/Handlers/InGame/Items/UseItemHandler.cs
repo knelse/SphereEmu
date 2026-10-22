@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SphereHelpers.Extensions;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Packets;
 using SphServer.Shared.Db;
@@ -21,6 +22,20 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
         clientConnection.MaybeScheduleNetworkPacketSend (CommonPackets.ClearUseToutAck (localId));
 
         var character = clientConnection.GetSelectedCharacter ();
+
+        // The newbie dungeon sword and token are not DB items
+        if (NewPlayerDungeon.StarterSwordIdFor (client) == itemId)
+        {
+            NewPlayerDungeon.TakeStarterSword (client);
+            return;
+        }
+
+        if (NewPlayerDungeon.TokenIdFor (client) == itemId)
+        {
+            NewPlayerDungeon.TakeToken (client);
+            return;
+        }
+
         var item = DbConnection.Items.FindById ((int) itemId);
         if (character is null || item is null)
         {
@@ -44,6 +59,22 @@ public class UseItemHandler (ushort localId, ClientConnection clientConnection, 
         var from = character.Items.First (x => x.Value == item.Id).Key;
         var wearing = !ItemDbEntry.IsInventorySlot (from);
         var to = wearing ? character.FindEmptyInventorySlot () : WearSlotFor (character, item);
+
+        // tokenst Use sends the telep1 process the player stands on as a u24 after the item id
+        if (item.WireObjectType == ObjectType.Token_Tutorial_Torweal)
+        {
+            var identity = SphServer.Helpers.Networking.GameplayRecord.ReadIdentity (frame);
+            var targetBit = 165 + (identity.PositionFlag ? 45 : 0);
+            if (frame.Length * 8 >= targetBit + 24)
+            {
+                var stream = new BitStreams.BitStream (frame);
+                stream.ReadBits (targetBit);
+                NewPlayerDungeon.UseExitToken (client, item, (ushort) stream.ReadUInt32 (24));
+            }
+
+            return;
+        }
+
         if (to is null)
         {
             Log (itemId, name, wearing ? "inventory is full" : "nowhere to wear it");

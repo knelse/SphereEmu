@@ -5,6 +5,7 @@ using SphereHelpers.Extensions;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
+using SphServer.Shared.WorldState;
 
 namespace SphServer.Client.Networking.Handlers.InGame.Items;
 
@@ -31,6 +32,22 @@ public class DragItemOnGroundHandler (ushort localId, ClientConnection clientCon
         var x = ReadFloat (stream);
         var y = ReadFloat (stream);
         var z = ReadFloat (stream);
+
+        // The pedestal sword and the exit token are not DB items; grabbing one is how the client takes it
+        if (ActiveClients.Get (localId) is { } client)
+        {
+            if (NewPlayerDungeon.StarterSwordIdFor (client) == itemId)
+            {
+                NewPlayerDungeon.TakeStarterSword (client);
+                return;
+            }
+
+            if (NewPlayerDungeon.TokenIdFor (client) == itemId)
+            {
+                NewPlayerDungeon.TakeToken (client);
+                return;
+            }
+        }
 
         var item = DbConnection.Items.FindById ((int) itemId);
         if (item is null)

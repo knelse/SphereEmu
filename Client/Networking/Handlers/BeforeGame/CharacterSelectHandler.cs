@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Godot;
 using SphServer.Helpers.Networking;
+using SphServer.Server.Config;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
@@ -178,6 +179,10 @@ public class CharacterSelectHandler (ushort localId, ClientConnection clientConn
 
         var newCharacterData =
             CharacterDbEntry.CreateNewCharacter (localId, name, isGenderFemale, faceType, hairStyle, hairColor, tattoo);
+        if (ServerConfig.AppConfig.NewPlayerDungeon)
+        {
+            NewPlayerDungeon.PrepareNewCharacter (newCharacterData);
+        }
 
         clientConnection.CreatePlayerCharacter (newCharacterData, charIndex);
 

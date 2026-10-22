@@ -20,6 +20,11 @@ public class AppConfig
     public ushort Port { get; init; } = 25860;
     public string LogPath { get; init; } = @"logs\server.log";
     public bool DebugMode { get; init; } = true;
+
+    /// <summary>
+    /// New characters start in the new player dungeon instead of the debug spawn
+    /// </summary>
+    public bool NewPlayerDungeon { get; init; } = true;
     public float ObjectVisibilityDistance { get; init; } = 100.0f;
     public int ReceiveBufferSize { get; init; } = 1024;
     public int CurrentCharacterInventoryId { get; init; } = 0xA001;
@@ -149,6 +154,7 @@ public static class ServerConfig
                 Port = FileFormatCulture.ParseUShort (configDict.GetValueOrDefault ("Port", "25860")),
                 LogPath = logPath,
                 DebugMode = bool.Parse (configDict.GetValueOrDefault ("DebugMode", "true")),
+                NewPlayerDungeon = bool.Parse (configDict.GetValueOrDefault ("NewPlayerDungeon", "true")),
                 ObjectVisibilityDistance =
                     FileFormatCulture.ParseFloat (configDict.GetValueOrDefault ("ObjectVisibilityDistance", "100.0")),
                 ReceiveBufferSize = FileFormatCulture.ParseInt (configDict.GetValueOrDefault ("ReceiveBufferSize", "1024")),
@@ -288,6 +294,7 @@ public static class ServerConfig
             ["Port"] = "25860",
             ["LogPath"] = @"logs\server.log",
             ["DebugMode"] = "true",
+            ["NewPlayerDungeon"] = "true",
             ["ObjectVisibilityDistance"] = "100.0",
             ["ReceiveBufferSize"] = "1024",
             ["CurrentCharacterInventoryId"] = "40961",
