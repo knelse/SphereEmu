@@ -22,6 +22,7 @@ public enum ClientPacketEvent
     NpcInteract,
     ItemTakeMainhand,
     TradeBuy,
+    TradeSell,
     CombatDamageTarget,
     ItemSwap,
     CharacterSelect,
@@ -107,6 +108,11 @@ public static class ClientPacketClassifier
                 : null;
         }
 
+        if (IsTradeSell (identity, frame))
+        {
+            return Result (ClientPacketEvent.TradeSell, 1.0, "record: sell window", true);
+        }
+
         switch (GameplayRecord.ActionOf (identity))
         {
             case GameplayAction.PositionUpdate:
@@ -183,6 +189,28 @@ public static class ClientPacketClassifier
     /// Byte 19 is 0x41; byte 18 is A1, A2, or A3; a swing does not have 41 here
     public static bool IsHandChangeSignature (ReadOnlySpan<byte> frame) =>
         frame.Length >= 20 && frame[18] is 0xA1 or 0xA2 or 0xA3 && frame[19] == 0x41;
+
+    /// <summary>
+    /// The player's sell window: region 12 cmd 6 (sell slot) and cmd 21 (trade partner), region 9
+    /// cmd 2 (offer reset), all from the player's own record
+    /// </summary>
+    private static bool IsTradeSell (in GameplayRecord.Identity identity, ReadOnlySpan<byte> frame)
+    {
+        const int commandBit = ClientFrame.BodyOffset * 8 + 53;
+        if (identity.PositionFlag || identity.SubjectType != GameplayRecord.SubjectTypePlayer ||
+            frame.Length * 8 < commandBit + 16)
+        {
+            return false;
+        }
+
+        var command = frame[commandBit / 8] >> (commandBit % 8) | frame[commandBit / 8 + 1] << (8 - commandBit % 8);
+        return identity.Tag switch
+        {
+            GameplayRecord.TagPlayerAction => (byte) command is 6 or 21,
+            GameplayRecord.TagTradeMan => (command & 0x0F) == 2,
+            _ => false
+        };
+    }
 
     /// Take or put-down frames that share the attack action with a real swing
     private static bool LooksLikeTakeMainhand (ReadOnlySpan<byte> frame)
@@ -391,6 +419,7 @@ public static class ClientPacketClassifier
             ClientPacketEvent.NpcInteract => "client.npc.interact",
             ClientPacketEvent.ItemTakeMainhand => "client.item.take_mainhand",
             ClientPacketEvent.TradeBuy => "client.trade.buy",
+            ClientPacketEvent.TradeSell => "client.trade.sell",
             ClientPacketEvent.CombatDamageTarget => "client.combat.damage_and_send_animation",
             ClientPacketEvent.ItemSwap => "client.item.swap",
             ClientPacketEvent.CharacterSelect => "client.character_select",

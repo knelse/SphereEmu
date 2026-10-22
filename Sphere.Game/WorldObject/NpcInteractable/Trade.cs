@@ -16,6 +16,11 @@ public partial class NpcInteractable
         switch (interactionType)
         {
             case ClientInteractionType.OpenTrade:
+                if (ActiveClients.Get (clientID) is { } client)
+                {
+                    client.TradeVendorId = ID;
+                }
+
                 EnsureShopStock ();
                 ShowItemList (clientID);
                 ShowItemContents (clientID);

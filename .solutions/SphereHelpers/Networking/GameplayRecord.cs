@@ -48,6 +48,9 @@ public readonly struct GameplayRecord
 
     public const int TagObjectInteract = 5;
 
+    /// Region 9 (TradeMan): u4 command and u4 length
+    public const int TagTradeMan = 10;
+
     // ObjectType values as literals so this layer does not reference game data
     public const int SubjectTypePlayer = 2;        // ObjectType.Other
     public const int SubjectTypeNpcQuestTitle = 205;
