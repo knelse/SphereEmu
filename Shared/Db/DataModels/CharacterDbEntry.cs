@@ -772,17 +772,7 @@ public class CharacterDbEntry
 
         if (itemDbEntry.IsGuildMembershipEmblem)
         {
-            if (TitleMinusOne < itemDbEntry.TitleMinusOne)
-            {
-                return $"Титул {TitleMinusOne}<{itemDbEntry.TitleMinusOne}";
-            }
-
-            if (DegreeMinusOne < itemDbEntry.DegreeMinusOne)
-            {
-                return $"Степень {DegreeMinusOne}<{itemDbEntry.DegreeMinusOne}";
-            }
-
-            return null;
+            return UnmetLevel (itemDbEntry);
         }
 
         if (!MeetsItemGuildRequirement (itemDbEntry))
@@ -801,9 +791,7 @@ public class CharacterDbEntry
             (CurrentEarth, itemDbEntry.EarthReq, "Земля"),
             (CurrentAir, itemDbEntry.AirReq, "Воздух"),
             (CurrentWater, itemDbEntry.WaterReq, "Вода"),
-            (CurrentFire, itemDbEntry.FireReq, "Огонь"),
-            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Титул"),
-            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Степень")
+            (CurrentFire, itemDbEntry.FireReq, "Огонь")
         ];
 
         foreach (var (have, need, name) in checks)
@@ -811,6 +799,46 @@ public class CharacterDbEntry
             if (need > 0 && have < need)
             {
                 return $"{name} {have}<{need}";
+            }
+        }
+
+        if (UnmetLevel (itemDbEntry) is { } level)
+        {
+            return level;
+        }
+
+        // _player.CalcRequirs: karma type from the minimum, up to the maximum unless it is 0
+        if (itemDbEntry.MinKarmaLevel != 0 && Karma < itemDbEntry.MinKarmaLevel
+            || itemDbEntry.MaxKarmaLevel != 0 && Karma > itemDbEntry.MaxKarmaLevel)
+        {
+            return $"Карма {(int) Karma} вне {(int) itemDbEntry.MinKarmaLevel}-{(int) itemDbEntry.MaxKarmaLevel}";
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// _player.CalcRequirs: a level column n &gt; 0 needs at least n (as TitleMinusOne), n &lt; 0 allows at
+    /// most -n. Magic guild gear is "-14 59": title up to 15, degree 60
+    /// </summary>
+    private string? UnmetLevel (ItemDbEntry itemDbEntry)
+    {
+        (int have, int need, string name)[] levels =
+        [
+            (TitleMinusOne, itemDbEntry.TitleMinusOne, "Титул"),
+            (DegreeMinusOne, itemDbEntry.DegreeMinusOne, "Степень")
+        ];
+
+        foreach (var (have, need, name) in levels)
+        {
+            if (need > 0 && have < need)
+            {
+                return $"{name} {have}<{need}";
+            }
+
+            if (need < 0 && have > -need)
+            {
+                return $"{name} {have}>{-need}";
             }
         }
 
