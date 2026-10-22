@@ -88,6 +88,11 @@ public class CharacterDbEntry
     public byte GlovesModelId { get; set; }
     public bool IsNotQueuedForDeletion { get; set; } = true;
     public int Money { get; set; }
+
+    /// <summary>
+    /// Money put in the bank; the client keeps the account as a 64-bit sum
+    /// </summary>
+    public long BankMoney { get; set; }
     public int GuildLevelMinusOne { get; set; }
     public Guild Guild { get; set; } = Guild.None;
     public ClanRank ClanRank { get; set; } = ClanRank.Neophyte;

@@ -7,6 +7,7 @@ using Godot;
 using SphServer.Client.Networking.Handlers;
 using SphServer.Client.Networking.Handlers.BeforeGame;
 using SphServer.Client.Networking.Handlers.InGame;
+using SphServer.Client.Networking.Handlers.InGame.Bank;
 using SphServer.Client.Networking.Handlers.InGame.Chat;
 using SphServer.Client.Networking.Handlers.InGame.Communities;
 using SphServer.Client.Networking.Handlers.InGame.Containers;
@@ -34,6 +35,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 {
     public ushort LocalId => localId;
 
+    private BankHandler? bankHandler;
     private BuyItemFromTargetHandler? buyItemFromTargetHandler;
     private ChangeStatsHandler? changeStatsHandler;
     private ClanActionsHandler? clanActionsHandler;
@@ -184,6 +186,9 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
             case ClientPacketEvent.ContainerOpenLoot:
                 await openLootContainerHandler!.Handle (frame, delta);
                 break;
+            case ClientPacketEvent.BankRequest:
+                await bankHandler!.Handle (frame, delta);
+                break;
             case ClientPacketEvent.ItemDrop:
                 await dropItemToGroundHandler!.Handle (frame, delta);
                 break;
@@ -232,6 +237,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         clanActionsHandler ??= new ();
         groupActionsHandler ??= new (this);
         openLootContainerHandler ??= new (localId, this);
+        bankHandler ??= new (localId, sphereClient);
         clientChatHandler ??= new (this);
         pickupItemHandler ??= new (localId, this, sphereClient);
         dragItemOnGroundHandler ??= new (localId, this);
@@ -244,6 +250,14 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
         damageTargetHandler ??= new (localId, this);
         moveObjectForClientHandler ??= new (this);
         changeStatsHandler ??= new (localId, this);
+    }
+
+    /// <summary>
+    /// The bank process goes out with the carried items on entering the world
+    /// </summary>
+    public void DeclareBank ()
+    {
+        bankHandler!.Declare ();
     }
 
     public void MoveToNextBeforeGameStage ()
@@ -261,6 +275,7 @@ public class ClientConnection (StreamPeerTcp streamPeerTcp, ushort localId, Sphe
 
     public void Close ()
     {
+        bankHandler?.Release ();
         sphereClient.RemoveClient ();
         // Without a FIN the client keeps drawing the world on a dead connection
         streamPeerTcp.DisconnectFromHost ();
