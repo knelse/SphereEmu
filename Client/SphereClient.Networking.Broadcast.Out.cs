@@ -42,7 +42,7 @@ public partial class SphereClient
 		var origin = GlobalTransform.Origin;
 		client.MaybeQueueNetworkPacketSend (
 			new CharacterDbEntrySerializer (CurrentCharacter).ToSpawnSnapshotByteArray (
-				EntityID, origin.X, -origin.Y, -origin.Z, CurrentCharacter.Angle));
+				EntityID, origin.X, (float) ClientGameY (origin.Y), -origin.Z, CurrentCharacter.Angle));
 		client.MaybeQueueNetworkPacketSend (
 			CommonPackets.BuildSetWornGearPacket (EntityID, CharacterWornLook.ToWearPattern (CurrentCharacter)));
 	}

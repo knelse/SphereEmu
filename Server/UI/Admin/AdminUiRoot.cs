@@ -27,6 +27,7 @@ public partial class AdminUiRoot : Control
     private TeleportDestinationWindow? teleportWindow;
     private MobDataWindow? mobDataWindow;
     private ItemDataWindow? itemDataWindow;
+    private WorldPreviewWindow? worldPreviewWindow;
     private ConfirmationDialog? resetCharacterDialog;
     private ItemDetailsPopupHost? itemDetailsHost;
     private AdminSlotItemTools? slotItemTools;
@@ -168,6 +169,9 @@ public partial class AdminUiRoot : Control
         var itemDataButton = new Button { Text = "Item Data" };
         itemDataButton.Pressed += () => itemDataWindow?.Open (locale);
         adminActions.AddChild (itemDataButton);
+        var worldPreviewButton = new Button { Text = "World Preview" };
+        worldPreviewButton.Pressed += () => worldPreviewWindow?.Open ();
+        adminActions.AddChild (worldPreviewButton);
 
         layout.AddChild (adminActions);
 
@@ -178,6 +182,11 @@ public partial class AdminUiRoot : Control
         AddChild (mobDataWindow);
         itemDataWindow = new ItemDataWindow { Name = "ItemDataWindow" };
         AddChild (itemDataWindow);
+
+        worldPreviewWindow = new WorldPreviewWindow { Name = "WorldPreviewWindow" };
+        AddChild (worldPreviewWindow);
+        // A 1920x1080 window on its own, and the world is only streamable once the tree is up
+        worldPreviewWindow.CallDeferred (nameof (WorldPreviewWindow.Open));
 
         resetCharacterDialog = new ConfirmationDialog
         {
@@ -308,6 +317,7 @@ public partial class AdminUiRoot : Control
         statsPanel?.SetSelectedClient (selectedClientId);
         statsPanel?.SetLocale (locale);
         personaPanel?.SetSelectedClient (selectedClientId);
+        worldPreviewWindow?.FocusClient (clientId);
     }
 
     private void UpdateActionButtons ()

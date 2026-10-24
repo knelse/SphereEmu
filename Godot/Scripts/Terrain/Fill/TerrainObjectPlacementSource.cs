@@ -12,7 +12,45 @@ public static class TerrainObjectPlacementSource
 {
     private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
 
-    public static IReadOnlyList<TerrainObjectPlacement> LoadAll (string objectDataDirectory)
+    /// <summary>
+    /// ObjectData placeholder record. Its model ships a trimesh that would block players
+    /// </summary>
+    public const string PlaceholderObjectName = "empty";
+
+    /// <summary>
+    /// Placements the object-collision bake can build a shape from: named, not the empty placeholder,
+    /// not a decorative mesh
+    /// </summary>
+    public static bool IsBakePlacement (TerrainObjectPlacement placement) =>
+        !string.IsNullOrWhiteSpace (placement.ObjectName)
+        && placement.ObjectName != PlaceholderObjectName
+        && !TerrainObjectsFill.ShouldSkipMeshObstruction (placement.ObjectName);
+
+    /// <summary>
+    /// Placements the bake builds and the checks that compare against it expect. One the client
+    /// spawns no object for bakes nothing: a marker-only model, or a marker position
+    /// (params/sst*.mbd code >= 10000)
+    /// </summary>
+    public static bool IsCollidablePlacement (TerrainObjectPlacement placement) =>
+        IsBakePlacement (placement)
+        && !ClientPlacementMarkers.IsMarkerOnly (placement.ObjectName, placement.WorldTransform.Origin);
+
+    /// <summary>
+    /// Seasonal placement files, sst_88_halloween.json. The server runs the permanent world, so the
+    /// bake and the checks skip these, and the editor includes them on request
+    /// </summary>
+    public const string SeasonalFileSuffix = "_halloween";
+
+    public static bool IsSeasonalFile (string fileName) =>
+        fileName.Contains (SeasonalFileSuffix, StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Server load. Seasonal files stay out, so the shipped world has no halloween props
+    /// </summary>
+    public static IReadOnlyList<TerrainObjectPlacement> LoadAll (string objectDataDirectory) =>
+        LoadAll (objectDataDirectory, includeSeasonal: false);
+
+    public static IReadOnlyList<TerrainObjectPlacement> LoadAll (string objectDataDirectory, bool includeSeasonal)
     {
         var results = new List<TerrainObjectPlacement> ();
         var dir = objectDataDirectory.TrimEnd ('/') + "/";
@@ -39,13 +77,17 @@ public static class TerrainObjectPlacementSource
 
             if (!da.CurrentIsDir () && name.EndsWith (".json", StringComparison.OrdinalIgnoreCase))
             {
-                AppendRecordsFromJson (dir + name, TerrainObjectWalkCategory.Other, results);
+                if (includeSeasonal || !IsSeasonalFile (name))
+                {
+                    AppendRecordsFromJson (dir + name, TerrainObjectWalkCategory.Other, results);
+                }
+
                 continue;
             }
 
             if (da.CurrentIsDir ())
             {
-                AppendRecordsFromFolder (dir + name + "/", TerrainObjectWalkCategory.ExtraInstanced, results);
+                AppendRecordsFromFolder (dir + name + "/", TerrainObjectWalkCategory.ExtraInstanced, results, includeSeasonal);
             }
         }
 
@@ -53,7 +95,8 @@ public static class TerrainObjectPlacementSource
         return results;
     }
 
-    private static void AppendRecordsFromFolder (string folderPath, TerrainObjectWalkCategory category, List<TerrainObjectPlacement> results)
+    private static void AppendRecordsFromFolder (string folderPath, TerrainObjectWalkCategory category,
+        List<TerrainObjectPlacement> results, bool includeSeasonal)
     {
         using var da = DirAccess.Open (folderPath);
         if (da is null)
@@ -75,7 +118,8 @@ public static class TerrainObjectPlacementSource
                 continue;
             }
 
-            if (!da.CurrentIsDir () && name.EndsWith (".json", StringComparison.OrdinalIgnoreCase))
+            if (!da.CurrentIsDir () && name.EndsWith (".json", StringComparison.OrdinalIgnoreCase)
+                && (includeSeasonal || !IsSeasonalFile (name)))
             {
                 AppendRecordsFromJson (folderPath + name, category, results);
             }

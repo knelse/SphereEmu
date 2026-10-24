@@ -965,9 +965,15 @@ public static class MonsterMultiMeshVisuals
             return _typeRoot.GlobalTransform.AffineInverse () * monsterGlobal * ApplyVisualYOffset (monster, meshLocalToMonster);
         }
 
+        /// <summary>
+        /// The monster node sits at the network anchor, a metre over the ground it stands over, so the
+        /// model grounded at the node origin floats that far. The probe drops it onto that ground
+        /// </summary>
         private Transform3D ApplyVisualYOffset (Monster monster, Transform3D meshLocalToMonster)
         {
-            var yOffset = Engine.IsEditorHint () ? monster.GetEditorVisualExtraYOffset () : 0f;
+            var yOffset = Engine.IsEditorHint ()
+                ? monster.GetEditorVisualExtraYOffset ()
+                : monster.GetVisualGroundYOffset ();
             if (Mathf.Abs (yOffset) < 0.0001f)
             {
                 return meshLocalToMonster;

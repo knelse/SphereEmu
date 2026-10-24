@@ -49,6 +49,8 @@ public static class TerrainBakePaths
     public static string GroundChunksDir => Combine ("GroundChunks");
     public static string GroundMeshesDir => Combine ("GroundMeshes");
     public static string GroundShapesDir => Combine ("GroundShapes");
+    public static string ObjectShapesDir => Combine ("ObjectShapes");
+    public static string ObjectChunksDir => Combine ("ObjectChunks");
     public static string GeneratedNavMeshesDir => Combine ("GeneratedNavMeshes");
     public static string GeneratedMultiMeshesDir => Combine ("GeneratedMultiMeshes");
     public static string GeneratedIndoorNavMeshesDir => Combine ("GeneratedIndoorNavMeshes");
@@ -92,6 +94,18 @@ public static class TerrainBakePaths
 
     public static string GroundMeshRes (string masterName) =>
         Combine ("GroundMeshes", $"{masterName}.res");
+
+    public static string ObjectShapeRes (string modelName) =>
+        Combine ("ObjectShapes", $"{modelName}.res");
+
+    public static string ModelBoundsIndexJson =>
+        Combine ("ModelBounds", "index.json");
+
+    public static string ObjectChunkScene (int gx, int gz) =>
+        Combine ("ObjectChunks", $"{gx}_{gz}.tscn");
+
+    public static string ObjectChunkIndexJson =>
+        Combine ("ObjectChunks", "index.json");
 
     public static string GroundShapeRes (string masterName) =>
         Combine ("GroundShapes", $"{masterName}.res");

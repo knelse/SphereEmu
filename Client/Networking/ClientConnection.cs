@@ -106,6 +106,7 @@ public class ClientConnection (SphereClient sphereClient)
                 WorldObjectVisibilityManager.NotifyClientPosition (sphereClient);
                 SphServer.Server.SphereServer.ServerNode?.WorldChunks?.NotifyClientPosition (sphereClient);
                 SphServer.Server.SphereServer.ServerNode?.TerrainGround?.NotifyClientPosition (sphereClient);
+                SphServer.Server.SphereServer.ServerNode?.ObjectCollision?.NotifyClientPosition (sphereClient);
             }
 
             if (seenFirstPositionKeepalive)

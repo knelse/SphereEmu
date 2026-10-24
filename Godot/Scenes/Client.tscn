@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://dgnwpy1raisjd"]
 
 [ext_resource type="Script" uid="uid://cg6buhiqkg43s" path="res://Client/SphereClient.cs" id="1_dsyj5"]
-[ext_resource type="PackedScene" path="res://Godot/Models/pump1.scn" id="2_jc1om"]
+[ext_resource type="PackedScene" path="res://Godot/Models/char23.scn" id="2_jc1om"]
 
-[sub_resource type="CapsuleShape3D" id="1"]
+[sub_resource type="BoxShape3D" id="1"]
+// char23.mdl box, the one the client sweeps: 0.6 x 1.8 x 0.6
+size = Vector3(0.6, 1.8, 0.6)
 
 [node name="Client" type="Node3D" unique_id=1652023596]
 script = ExtResource("1_dsyj5")
@@ -18,3 +20,6 @@ collision_mask = 2147483648
 shape = SubResource("1")
 
 [node name="Glb" parent="." unique_id=706815144 instance=ExtResource("2_jc1om")]
+// char23_Armature's body AABB center sits 0.0702 under the root, past the box's 0.004, so the
+// visual's feet clear the floor line the swept box rests on
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0662, 0)

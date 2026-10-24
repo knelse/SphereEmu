@@ -161,6 +161,11 @@ public partial class MonsterSpawnerActivationManagerNode : Node
             ground.CheckAllClients ();
         }
 
+        if (SphServer.Server.SphereServer.ServerNode?.ObjectCollision is { } objectCollision)
+        {
+            objectCollision.CheckAllClients ();
+        }
+
         MonsterSpawnerActivationManager.CheckAllClients ();
         AlchemyMaterialSpawnerActivationManager.CheckAllClients ();
         WorldObjectVisibilityManager.CheckAllClients ();

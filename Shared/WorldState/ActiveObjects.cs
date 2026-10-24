@@ -43,7 +43,13 @@ internal abstract class ActiveClients : ActiveObjectCollectionBase<Guid, SphereC
     }
 }
 
-internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>;
+internal abstract class ActiveNodes : ActiveObjectCollectionBase<ulong, Node>
+{
+    internal static ConcurrentDictionary<ulong, Node> GetAll ()
+    {
+        return storage;
+    }
+}
 
 internal abstract class ActiveWorldObjects : ActiveObjectCollectionBase<Guid, WorldObject>
 {

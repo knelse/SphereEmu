@@ -236,7 +236,9 @@ public sealed class WorldSimulation
 			var owner = new WorldOwner
 			{
 				PosX = origin.X,
-				PosY = origin.Y,
+				// The client draws the glb 0.065 lower than the swept box base, so the pose it
+				// receives is lifted and the box it never draws keeps the floor line
+				PosY = SphereClient.ClientGodotY (origin.Y),
 				PosZ = origin.Z,
 				Yaw = body.Rotation.Y,
 				VelX = velocity.X,

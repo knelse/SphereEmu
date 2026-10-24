@@ -94,4 +94,6 @@ public partial class Monster
     {
         return GlbVisualGrounding.GetEditorVisualExtraYOffset (GetVisualModelName ());
     }
+
+    public float GetVisualGroundYOffset () => VisualGroundYOffset;
 }

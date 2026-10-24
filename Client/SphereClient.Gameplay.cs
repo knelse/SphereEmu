@@ -183,7 +183,7 @@ public partial class SphereClient
 		CurrentCharacter.CurrentHP = respawnHp;
 
 		var x = (float) CurrentCharacter.X;
-		var y = (float) -CurrentCharacter.Y;
+		var y = (float) ClientGameY (CurrentCharacter.Y);
 		var z = (float) -CurrentCharacter.Z;
 		var yaw = (float) CurrentCharacter.Angle;
 

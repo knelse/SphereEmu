@@ -17,12 +17,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="SphServer"
 run/main_scene="res://Godot/Scenes/AssetBootstrap.tscn"
 config/features=PackedStringArray("4.7", "C#")
+run/max_fps=120
 config/icon="res://icon.png"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=2
 window/size/initial_position_type=0
 window/size/initial_position=Vector2i(1600, 300)
 window/vsync/vsync_mode=0
@@ -43,6 +45,7 @@ import/fbx/enabled=false
 
 3d_physics/layer_1="world_objects"
 3d_physics/layer_2="clients"
+3d_physics/layer_3="visual_pick"
 3d_physics/layer_31="empty"
 3d_physics/layer_32="clients_inactive"
 

@@ -2,10 +2,6 @@
 
 These rules apply to every AI agent working in this repository.
 
-## Networking
-
-- At the start of every conversation, read `.cursor/skills/sphere-networking-live/SKILL.md` and follow it.
-
 ## Comment style
 
 - At the start of every conversation, read `.cursor/skills/code-comment-style/SKILL.md` and follow it for the rest of the session.
@@ -23,6 +19,11 @@ These rules apply to every AI agent working in this repository.
 - Prefer explaining non-obvious intent, constraints, or tradeoffs, not restating the next few lines.
 - Break comment lines at about 100 characters. A wrap is the same thought, not a new one.
 - XML doc tags sit on their own lines (`<summary>`, then the text, then `</summary>`). Same for `<param>`, `<returns>`, `<remarks>`. Not `<summary>text</summary>`.
+
+## Fixes
+
+- When a fix has been identified, implement it. Do not stop to ask for a go ahead.
+- Report the fix and the build result, and offer the next step, not permission.
 
 ## Commits
 

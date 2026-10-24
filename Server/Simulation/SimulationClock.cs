@@ -6,6 +6,9 @@ public static class SimulationClock
 
 	public const double SecondsPerTick = 1.0 / TickHz;
 
+	// The float tick step, for the motion code that stays in float
+	public const float SecondsPerTickF = 1f / TickHz;
+
 	// 200 ms at 60 Hz
 	public const int WishTimeoutTicks = 12;
 

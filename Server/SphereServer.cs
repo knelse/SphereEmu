@@ -25,10 +25,12 @@ public partial class SphereServer : Node
 	private SecureLoginServer? secureLogin;
 	private WorldChunkStreamer? worldChunkStreamer;
 	private TerrainGroundStreamer? terrainGroundStreamer;
+	private WorldObjectCollisionStreamer? objectCollisionStreamer;
 	private readonly WorldSimulation worldSimulation = new WorldSimulation ();
 
 	public WorldChunkStreamer? WorldChunks => worldChunkStreamer;
 	public TerrainGroundStreamer? TerrainGround => terrainGroundStreamer;
+	public WorldObjectCollisionStreamer? ObjectCollision => objectCollisionStreamer;
 	public WorldSimulation Simulation => worldSimulation;
 
 	public override void _Ready ()
@@ -41,7 +43,9 @@ public partial class SphereServer : Node
 		if (MonsterSpawnSlotHeadlessBake.IsActive
 			|| AlchemyMaterialSpawnSlotHeadlessBake.IsActive
 			|| WorldChunkSplitHeadless.IsActive
-			|| TerrainGroundPackHeadless.IsActive)
+			|| TerrainGroundPackHeadless.IsActive
+			|| ObjectCollisionPackHeadless.IsActive
+			|| ModelBoundsPackHeadless.IsActive)
 		{
 			ServerNode = this;
 			return;
@@ -69,6 +73,20 @@ public partial class SphereServer : Node
 		{
 			terrainGroundStreamer = new TerrainGroundStreamer { Name = "TerrainGroundStreamer" };
 			AddChild (terrainGroundStreamer);
+		}
+
+		objectCollisionStreamer = FindObjectCollisionStreamer ();
+		if (objectCollisionStreamer is null)
+		{
+			objectCollisionStreamer = new WorldObjectCollisionStreamer { Name = "WorldObjectCollisionStreamer" };
+			AddChild (objectCollisionStreamer);
+		}
+
+		if (terrainGroundStreamer is not null
+			&& objectCollisionStreamer is not null
+			&& terrainGroundStreamer.LoadRadiusMeters > 0f)
+		{
+			objectCollisionStreamer.LoadRadiusMeters = terrainGroundStreamer.LoadRadiusMeters;
 		}
 
 		AddChild (new MonsterSpawnerActivationManagerNode ());
@@ -132,6 +150,24 @@ public partial class SphereServer : Node
 		foreach (var node in FindChildren ("*", recursive: true))
 		{
 			if (node is TerrainGroundStreamer streamer)
+			{
+				return streamer;
+			}
+		}
+
+		return null;
+	}
+
+	private WorldObjectCollisionStreamer? FindObjectCollisionStreamer ()
+	{
+		if (GetNodeOrNull<WorldObjectCollisionStreamer> ("WorldObjectCollisionStreamer") is { } direct)
+		{
+			return direct;
+		}
+
+		foreach (var node in FindChildren ("*", recursive: true))
+		{
+			if (node is WorldObjectCollisionStreamer streamer)
 			{
 				return streamer;
 			}

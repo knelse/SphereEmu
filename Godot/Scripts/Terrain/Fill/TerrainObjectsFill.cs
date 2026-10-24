@@ -13,6 +13,7 @@ namespace SphServer.Godot.Scripts.Terrain.Fill;
 [Tool]
 public partial class TerrainObjectsFill : Node3D
 {
+    public const string NodeName = "TerrainObjects";
     public const string PlantsNodeName = "TerrainPlants";
     public const string RocksNodeName = "TerrainRocks";
     public const string OtherNodeName = "TerrainOther";
@@ -30,6 +31,13 @@ public partial class TerrainObjectsFill : Node3D
     private static readonly Basis SourceWorldToGodotWorldBasis = new (Vector3.Right, Vector3.Down, Vector3.Forward);
 
     [Export] public string ObjectDataDirectory { get; set; } = "res://Godot/Terrain/ObjectDataJson/";
+
+    /// <summary>
+    /// Seasonal placement files, sst_88_halloween.json. Off matches the server world, which has no
+    /// halloween props
+    /// </summary>
+    [Export]
+    public bool IncludeSeasonalPlacements { get; set; }
 
     [Export] public string ModelsDirectory { get; set; } = "res://Godot/Models/";
 
@@ -154,7 +162,8 @@ public partial class TerrainObjectsFill : Node3D
             }
 
             // Top-level .json files stay on the multimesh batch path
-            if (!da.CurrentIsDir () && name.EndsWith (".json", StringComparison.OrdinalIgnoreCase))
+            if (!da.CurrentIsDir () && name.EndsWith (".json", StringComparison.OrdinalIgnoreCase)
+                && (IncludeSeasonalPlacements || !TerrainObjectPlacementSource.IsSeasonalFile (name)))
             {
                 var path = dir + name;
                 ProcessJsonForBatches (path, plants, rocks, other, batches, objectPartsCache, colliderState);
@@ -515,6 +524,11 @@ public partial class TerrainObjectsFill : Node3D
             }
 
             if (name is "." or ".." || da.CurrentIsDir () || !name.EndsWith (".json", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (!IncludeSeasonalPlacements && TerrainObjectPlacementSource.IsSeasonalFile (name))
             {
                 continue;
             }
@@ -1109,7 +1123,7 @@ public partial class TerrainObjectsFill : Node3D
     /// <summary>
     /// Same skip list as Tools/generate_colliders.py. These meshes do not block nav
     /// </summary>
-    private static bool ShouldSkipMeshObstruction (string objectName)
+    internal static bool ShouldSkipMeshObstruction (string objectName)
     {
         var lower = objectName.ToLowerInvariant ();
         return lower.Contains ("bush")

@@ -114,6 +114,13 @@ public partial class WorldObject : Node3D
     protected virtual bool AutoGroundGlbVisual => false;
 
     /// <summary>
+    /// How far the surface under this node sits under the node, so a model grounded at the node
+    /// origin stays on that surface. A monster node rides the network anchor and an NPC node sits at
+    /// the model center, and the probe answers both
+    /// </summary>
+    protected float VisualGroundYOffset => GlbVisualGrounding.GroundOffsetUnderNode (this);
+
+    /// <summary>
     /// MBC module tag for region 1 TransformUpdate, the same tag used at spawn
     /// </summary>
     protected virtual ushort GetMoveModuleTag () => (ushort) ObjectType;

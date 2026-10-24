@@ -64,7 +64,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
             {
                 recipient.EnqueueClientEvent (
                     new EntityPositionUpdateEvent (entityId, (ushort) ObjectType.Player,
-                        character.X, -character.Y, -character.Z, character.Angle));
+                        character.X, SphereClient.ClientGameY (character.Y), -character.Z, character.Angle));
             }
         }
 
@@ -73,6 +73,7 @@ public sealed class CurrentClientPositionChangedEventHandler : IClientEventHandl
         WorldObjectVisibilityManager.NotifyClientPosition (sphereClient);
         SphServer.Server.SphereServer.ServerNode?.WorldChunks?.NotifyClientPosition (sphereClient);
         SphServer.Server.SphereServer.ServerNode?.TerrainGround?.NotifyClientPosition (sphereClient);
+        SphServer.Server.SphereServer.ServerNode?.ObjectCollision?.NotifyClientPosition (sphereClient);
 
         return Task.CompletedTask;
     }

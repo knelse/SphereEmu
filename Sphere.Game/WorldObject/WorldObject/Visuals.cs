@@ -1,4 +1,6 @@
 using Godot;
+using SphServer.Godot.Scripts.Terrain;
+using SphServer.Godot.Scripts.World;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Sphere.Game.Converters;
 
@@ -18,6 +20,15 @@ public partial class WorldObject
     private const string GlbModelMetaKeyGrounded = "_world_object_glb_grounded";
     private const string PlaceholderCheckerDdsPath = "res://Godot/Textures/npc_placeholder_checker.dds";
     private const string PlaceholderMeshNodeName = "MeshInstance3D";
+
+    /// <summary>
+    /// Model .scn files ship authored StaticBody3D colliders on layer 1. The player capsule masks
+    /// layer 1, so a body inside the visual pushes the capsule out and the player slides with no
+    /// wish. Layer 3 keeps them for picking, for the GM view
+    /// </summary>
+    public const uint VisualPickCollisionLayer = 1u << 2;
+
+    private const string GlbModelMetaKeyPickLayer = "_world_object_glb_pick_layer";
 
     /// <summary>
     /// Used when <see cref="ModelName" /> is empty and <see cref="ObjectType" /> has no mapped GLB.
@@ -114,6 +125,7 @@ public partial class WorldObject
         if (TryGetExistingGlbVisual (glbPath, out var existingGlb))
         {
             RemovePlaceholderMeshChild ();
+            ApplyVisualPickLayerOnce (existingGlb);
             if (AutoGroundGlbVisual)
             {
                 TryAutoGroundGlbVisualOnce (existingGlb);
@@ -153,6 +165,7 @@ public partial class WorldObject
         root.SetMeta (GlbModelMetaKeyModelPath, glbPath);
         AddChild (root);
         SetOwnerForEditedScene (root);
+        ApplyVisualPickLayerOnce (root);
 
         if (AutoGroundGlbVisual)
         {
@@ -202,6 +215,53 @@ public partial class WorldObject
         return false;
     }
 
+    /// <summary>
+    /// Turns the model root alone, in Godot Y yaw. The Angle setter turns this node, and a node that
+    /// sweeps with a body of its own, the player, writes that body's yaw for the physics frame, so
+    /// turning this node would turn the body twice
+    /// </summary>
+    public void ApplyVisualYaw (float yawRadians)
+    {
+        foreach (var child in GetChildren ())
+        {
+            if (child is not Node3D n3
+                || (!child.HasMeta (GlbModelMetaKey) && child.Name != GlbModelChildName))
+            {
+                continue;
+            }
+
+            if (Mathf.Abs (n3.Rotation.Y - yawRadians) < 0.001f)
+            {
+                return;
+            }
+
+            n3.Rotation = new Vector3 (0f, yawRadians, 0f);
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Model-authored StaticBody3D nodes move to the pick layer, once per visual root
+    /// </summary>
+    private static void ApplyVisualPickLayerOnce (Node3D glbRoot)
+    {
+        if (glbRoot.HasMeta (GlbModelMetaKeyPickLayer))
+        {
+            return;
+        }
+
+        foreach (var child in glbRoot.FindChildren ("*", nameof (StaticBody3D), recursive: true, owned: false))
+        {
+            if (child is StaticBody3D body)
+            {
+                body.CollisionLayer = VisualPickCollisionLayer;
+                body.CollisionMask = 0;
+            }
+        }
+
+        glbRoot.SetMeta (GlbModelMetaKeyPickLayer, true);
+    }
+
     private void TryAutoGroundGlbVisualOnce (Node3D glbRoot)
     {
         if (glbRoot.HasMeta (GlbModelMetaKeyGrounded))
@@ -217,6 +277,36 @@ public partial class WorldObject
     {
         // Only the GLB child moves, so this node's network transform stays put
         GlbVisualGrounding.ApplyGroundOffset (glbRoot);
+    }
+
+    /// <summary>
+    /// The model visual AABB in this node's frame, from ModelBounds/index.json. The client gates an
+    /// actor on it by the model's .mdl collision_kind and the render-group matrix (typesInteract), so
+    /// the box is not always the wall: a collision_kind 2 model blocks on the mesh, and the mesh is
+    /// baked into ObjectChunks
+    /// </summary>
+    public bool TryGetModelBoundsBox (out Vector3 size, out Vector3 center)
+    {
+        size = Vector3.Zero;
+        center = Vector3.Zero;
+        var modelName = GetEffectiveModelNameForVisual ();
+        if (string.IsNullOrEmpty (modelName))
+        {
+            return false;
+        }
+
+        var bounds = ModelBoundsIndex.GetOrLoad ().Get (modelName);
+        size = bounds.SizeVector;
+        if (size.X <= 0f || size.Y <= 0f || size.Z <= 0f)
+        {
+            return false;
+        }
+
+        // ApplyGroundOffset lifts the model by AboveFeet, so the box base sits on the node origin,
+        // and a node at the network anchor rides VisualGroundYOffset to the ground it stands over
+        var baseY = AutoGroundGlbVisual ? VisualGroundYOffset : bounds.MinVector.Y;
+        center = new Vector3 (bounds.MinVector.X + size.X * 0.5f, baseY + size.Y * 0.5f, bounds.MinVector.Z + size.Z * 0.5f);
+        return true;
     }
 
     /// <summary>
