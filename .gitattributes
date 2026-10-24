@@ -36,6 +36,9 @@ project.godot text eol=lf
 export_presets.cfg text eol=lf
 
 # Binary / opaque (do not touch line endings)
+*.lnd binary
+*.mdl binary
+*.mbd binary
 *.res binary
 *.tres filter=lfs diff=lfs merge=lfs -text
 *.dds binary

@@ -9,14 +9,16 @@ namespace SphServer.Godot.Scripts.Terrain;
 /// The client's collision rule per model, read from the .mdl header. collision_kind u32 at 26: 0
 /// axis-aligned box from min 30 / max 42, 1 oriented box from 8 corners at 54, 2 triangles, 3
 /// nothing. The box axes match the .scn model frame, checked on cci11: corners 2.4, 3.0, 0.1 against
-/// ModelBounds 2.378, 3.078, 0.0. Client data is outside the repo, the same root TerrainWater reads
+/// ModelBounds 2.378, 3.078, 0.0
 /// </summary>
 public static class ClientModelCollision
 {
     /// <summary>
-    /// The installed client data root, shared by the .mdl scan and the params/sst*.mbd placement scan
+    /// The vendored client data root (Godot/Models/original), shared by the .mdl scan and the
+    /// params/sst*.mbd placement scan. GlobalizePath so System.IO reads the repo tree
     /// </summary>
-    public const string ClientDataRoot = @"d:\Games\Sfera_std";
+    public static string ClientDataRoot =>
+        ProjectSettings.GlobalizePath ("res://Godot/Models/original");
 
     public const int AxisAlignedBounds = 0;
     public const int OrientedBounds = 1;

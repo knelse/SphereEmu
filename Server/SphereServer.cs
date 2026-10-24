@@ -8,6 +8,7 @@ using SphServer.Server.Debug;
 using SphServer.Server.Login.Secure;
 using SphServer.Server.Handlers;
 using SphServer.Server.Simulation;
+using SphServer.Server.Simulation.Motion;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -26,11 +27,13 @@ public partial class SphereServer : Node
 	private WorldChunkStreamer? worldChunkStreamer;
 	private TerrainGroundStreamer? terrainGroundStreamer;
 	private WorldObjectCollisionStreamer? objectCollisionStreamer;
+	private MotionWorldStream? motionStream;
 	private readonly WorldSimulation worldSimulation = new WorldSimulation ();
 
 	public WorldChunkStreamer? WorldChunks => worldChunkStreamer;
 	public TerrainGroundStreamer? TerrainGround => terrainGroundStreamer;
 	public WorldObjectCollisionStreamer? ObjectCollision => objectCollisionStreamer;
+	public MotionWorldStream? Motion => motionStream;
 	public WorldSimulation Simulation => worldSimulation;
 
 	public override void _Ready ()
@@ -81,6 +84,9 @@ public partial class SphereServer : Node
 			objectCollisionStreamer = new WorldObjectCollisionStreamer { Name = "WorldObjectCollisionStreamer" };
 			AddChild (objectCollisionStreamer);
 		}
+
+		motionStream = new MotionWorldStream { Name = "MotionWorldStream" };
+		AddChild (motionStream);
 
 		if (terrainGroundStreamer is not null
 			&& objectCollisionStreamer is not null

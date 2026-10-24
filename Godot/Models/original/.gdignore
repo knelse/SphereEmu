@@ -1,0 +1,1 @@
+Raw .mdl from the client install, read as bytes by the motion solver. Kept out of the Godot import scan.

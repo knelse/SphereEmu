@@ -27,8 +27,13 @@ These rules apply to every AI agent working in this repository.
 
 ## Commits
 
-- Commit messages describe **why** the change exists (motivation, constraint, tradeoff), not an inventory of what files or lines changed.
-- Do not commit unless the user explicitly asks.
+- NEVER RUN `git commit`. Not for checkpoints, not for "safe" states, not after a green build. Leave
+  changes in the working tree and report them. Commit only when the user explicitly asks, in this
+  session, for that commit.
+- An agent that was told "do not commit" and committed anyway checkpointing its own work is the
+  failure this rule exists to stop. It happened; do not repeat it.
+- When the user does ask, commit messages describe **why** the change exists (motivation,
+  constraint, tradeoff), not an inventory of what files or lines changed.
 
 ## Build verification
 
