@@ -16,7 +16,11 @@ public sealed class MotionCollisionMesh
 	// Node index while the pre-order split appends
 	private int nextNode;
 
-	public static MotionCollisionMesh? Build (Vector3[] vertices, List<int> indices)
+	/// <summary>
+	///     directions and materials, when given, hold one byte per input triangle
+	/// </summary>
+	public static MotionCollisionMesh? Build (Vector3[] vertices, List<int> indices, byte[]? directions = null,
+		byte[]? materials = null)
 	{
 		if (indices.Count == 0)
 		{
@@ -34,7 +38,14 @@ public sealed class MotionCollisionMesh
 				continue;
 			}
 
-			var triangle = new MotionTriangle { A = vertices[ia], B = vertices[ib], C = vertices[ic] };
+			var triangle = new MotionTriangle
+			{
+				A = vertices[ia],
+				B = vertices[ib],
+				C = vertices[ic],
+				Direction = directions is not null && offset / 3 < directions.Length ? directions[offset / 3] : (byte) 0,
+				Material = materials is not null && offset / 3 < materials.Length ? materials[offset / 3] : (byte) 0,
+			};
 			var normal = MotionMath.Cross (
 				MotionMath.Subtract (triangle.B, triangle.A), MotionMath.Subtract (triangle.C, triangle.A));
 			if (MotionMath.Dot (normal, normal) <= 0.0000001f)

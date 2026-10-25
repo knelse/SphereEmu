@@ -72,15 +72,10 @@ public partial class MotionWorldStream : Node
 		}
 
 		var total = 0;
-		foreach (var file in Directory.EnumerateFiles (directory, "sst*.mbd", SearchOption.TopDirectoryOnly))
+		foreach (var file in MotionAssetSource.StaticGroupFiles (directory))
 		{
 			foreach (var placement in MotionAssetSource.ParsePlacements (file))
 			{
-				if (!MotionAssetSource.IsBlockingPlacement (placement.ModelName))
-				{
-					continue;
-				}
-
 				var key = ((int) Math.Floor (placement.Position.X / MotionConfig.TileSize),
 					(int) Math.Floor (placement.Position.Z / MotionConfig.TileSize));
 				if (!placementsByCell.TryGetValue (key, out var list))
@@ -214,6 +209,22 @@ public partial class MotionWorldStream : Node
 					MotionMatrix.Placement (placement.Position, placement.Rotation));
 			}
 		}
+	}
+
+	/// <summary>
+	///     A model by its client name, parsed once and shared with the placements that use it
+	/// </summary>
+	public MotionModelResource? Model (string modelName)
+	{
+		var key = modelName.ToLowerInvariant ();
+		if (!modelCache.TryGetValue (key, out var resource))
+		{
+			var path = assets.FindMdl (key);
+			resource = path is null ? null : MotionModelResource.Build (path);
+			modelCache[key] = resource;
+		}
+
+		return resource;
 	}
 
 	public void UnloadAll ()

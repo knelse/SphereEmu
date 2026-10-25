@@ -93,6 +93,14 @@ public struct MotionTriangle
 	public Vector3 C;
 	public Vector3 Center;
 	public MotionBounds Bounds;
+
+	// A kind-2 prepared triangle's surface direction, (collision_flags >> 8) & 255: the old client's
+	// support_direction, which picks the slide friction. Faces and terrain carry 0
+	public byte Direction;
+
+	// A kind-2 prepared triangle's material, collision_flags & 255. Non-zero (a tree canopy, a bush)
+	// blocks nothing and only slows the body, as the old client's contact query has it
+	public byte Material;
 }
 
 /// <summary>

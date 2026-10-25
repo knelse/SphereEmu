@@ -99,15 +99,23 @@ public sealed class MotionPlayer
 	///     below to GroundSnapHeight above the feet, the lowest Y kept, which is the highest surface
 	/// </summary>
 	public bool SupportHeightAt (MotionTerrainField terrain, MotionStaticField statics,
-		float x, float z, float feetY, out float outY, out Vector3 outNormal)
+		float x, float z, float feetY, out float outY, out Vector3 outNormal) =>
+		SupportHeightAt (terrain, statics, x, z, feetY, out outY, out outNormal, out _);
+
+	/// <summary>
+	///     outDirection is the supporting surface's direction, 0 for terrain
+	/// </summary>
+	public bool SupportHeightAt (MotionTerrainField terrain, MotionStaticField statics,
+		float x, float z, float feetY, out float outY, out Vector3 outNormal, out int outDirection)
 	{
 		var minY = feetY - MotionConfig.MaxStepHeight;
 		var maxY = feetY + MotionConfig.GroundSnapHeight;
 		var found = false;
 		var bestY = maxY;
 		var bestNormal = new Vector3 (0f, 1f, 0f);
+		var bestDirection = 0;
 
-		void ConsiderSupport (float height, Vector3 normal)
+		void ConsiderSupport (float height, Vector3 normal, int direction)
 		{
 			if (found && height >= bestY)
 			{
@@ -117,19 +125,22 @@ public sealed class MotionPlayer
 			found = true;
 			bestY = height;
 			bestNormal = normal;
+			bestDirection = direction;
 		}
 
 		if (terrain.SurfaceNearAt (x, z, feetY, out var terrainY, out var terrainNormal)
 			&& terrainY >= minY && terrainY <= maxY)
 		{
-			ConsiderSupport (terrainY, terrainNormal);
+			ConsiderSupport (terrainY, terrainNormal, 0);
 		}
 
-		if (statics.StaticFloorHeightAt (x, z, minY, maxY, out var staticY, out var staticNormal))
+		if (statics.StaticFloorHeightAt (x, z, minY, maxY, out var staticY, out var staticNormal,
+			out var staticDirection))
 		{
-			ConsiderSupport (staticY, staticNormal);
+			ConsiderSupport (staticY, staticNormal, staticDirection);
 		}
 
+		outDirection = bestDirection;
 		if (!found)
 		{
 			outY = maxY;
@@ -149,52 +160,137 @@ public sealed class MotionPlayer
 	{
 		if (Grounded)
 		{
-			VelocityY = MotionConfig.JumpImpulse;
+			VelocityY = JumpImpulse ();
 			Grounded = false;
 		}
 	}
 
+	// The jump effects the caller sent the client, and its sphere state (effect 600), which the
+	// jump reads
+	public bool JumpX2;
+	public bool JumpX4;
+	public bool IsJumpProhibited;
+
+	// Surface 1037 holds jump x4 to x2
+	private static bool IsJumpHeightRestrictedToX2 (int surface) => surface == MotionContours.ReducedJumpSurface;
+
 	/// <summary>
-	///     The old client's dampMotion, the slide the live game has: a face steeper than 0.766 pushes
-	///     downhill at sine * 4.0 per second, accumulating momentum, and friction bleeds it, so a
-	///     steep slope settles at sine*4 / 0.2. A per-step push, as the reference slides, caps at 4.47
-	///     and a running player never reaches the speed the live game does
+	///     The client's MBC jump: -20 under x4, -10 under x2 or under x4 on a surface restricted to
+	///     x2, and back to -5 when prohibited on any jump surface. The surface is the contour under
+	///     the feet
 	/// </summary>
-	public void AccumulateSlopeSlide (MotionTerrainField terrain, float deltaSeconds)
+	private float JumpImpulse ()
+	{
+		var impulse = JumpX4 ? MotionConfig.JumpImpulseX4 : MotionConfig.JumpImpulse;
+		var surface = MotionContours.Shared.TypeAt (SpawnX, SpawnZ, MotionContours.JumpSurfaceFirst,
+			MotionContours.JumpSurfaceLast);
+		if (JumpX2 || (JumpX4 && IsJumpHeightRestrictedToX2 (surface)))
+		{
+			impulse = MotionConfig.JumpImpulseX2;
+		}
+
+		if (IsJumpProhibited && surface > 0)
+		{
+			impulse = MotionConfig.JumpImpulse;
+		}
+
+		return impulse;
+	}
+
+	/// <summary>
+	///     The supporting surface's normal and friction, the old client's support query: the flat
+	///     default and direction 0 when nothing is under the feet
+	/// </summary>
+	private void SupportSurface (MotionTerrainField terrain, MotionStaticField statics, out Vector3 normal,
+		out float friction)
+	{
+		if (!SupportHeightAt (terrain, statics, SpawnX, SpawnZ, SpawnY, out _, out normal, out var direction))
+		{
+			normal = new Vector3 (0f, 1f, 0f);
+			direction = 0;
+		}
+
+		friction = MotionConfig.SurfaceFriction[Math.Clamp (direction, 0, MotionConfig.SurfaceFriction.Length - 1)];
+	}
+
+	/// <summary>
+	///     A normal's XZ pointed down the face. Terrain and floor normals point either way in this
+	///     Y-down frame, so the side the normal faces sets the sign
+	/// </summary>
+	private static Vector2 Downhill (Vector3 normal) =>
+		normal.Y > 0f ? new Vector2 (-normal.X, -normal.Z) : new Vector2 (normal.X, normal.Z);
+
+	/// <summary>
+	///     The old client's dampMotion: a face steeper than 0.766 pushes downhill at sine * 4.0 per
+	///     second, and the supporting surface's friction bleeds the momentum, so a slope settles at
+	///     sine*4 / friction
+	/// </summary>
+	public void AccumulateSlopeSlide (MotionTerrainField terrain, MotionStaticField statics, float deltaSeconds)
 	{
 		if (!Grounded || deltaSeconds <= 0f)
 		{
 			return;
 		}
 
-		if (!terrain.SurfaceNearAt (SpawnX, SpawnZ, SpawnY, out _, out var normal))
-		{
-			return;
-		}
-
+		SupportSurface (terrain, statics, out var normal, out var friction);
 		var normalY = MathF.Abs (normal.Y);
 		if (normalY < MotionConfig.SlopeSteepNormalY)
 		{
 			var sine = MathF.Sqrt (Math.Max (0f, 1f - normalY * normalY));
-			var downhill = new Vector2 (normal.X, normal.Z);
+			var downhill = Downhill (normal);
 			var length = downhill.Length ();
 			if (length > 0.0001f)
 			{
-				// The reference's downhill is -normal over normal.y, which points down the face
-				SlideX += -downhill.X / length * (sine * MotionConfig.SlopeAcceleration) * deltaSeconds;
-				SlideZ += -downhill.Y / length * (sine * MotionConfig.SlopeAcceleration) * deltaSeconds;
+				SlideX += downhill.X / length * (sine * MotionConfig.SlopeAcceleration) * deltaSeconds;
+				SlideZ += downhill.Y / length * (sine * MotionConfig.SlopeAcceleration) * deltaSeconds;
 			}
 		}
 
-		// Friction, the old client's surface_friction weight, so the accumulation reaches its
-		// equilibrium instead of growing without bound
 		var speed = MathF.Sqrt (SlideX * SlideX + SlideZ * SlideZ);
-		var reduction = deltaSeconds * MotionConfig.SlopeFrictionWeight;
+		var reduction = deltaSeconds * friction;
 		if (speed > reduction && speed > 0.0001f)
 		{
 			var remaining = speed - reduction;
 			SlideX = SlideX / speed * remaining;
 			SlideZ = SlideZ / speed * remaining;
+		}
+		else
+		{
+			SlideX = 0f;
+			SlideZ = 0f;
+		}
+	}
+
+	/// <summary>
+	///     The old client's fall() landing: the slide keeps motionDamping of itself and gains the
+	///     impact speed along the face it lands on, so a fall onto a slope carries into a slide
+	/// </summary>
+	private void LandingSlide (MotionTerrainField terrain, MotionStaticField statics, float impactSpeed)
+	{
+		if (impactSpeed <= 0f)
+		{
+			return;
+		}
+
+		SupportSurface (terrain, statics, out var normal, out _);
+		var downhill = Downhill (normal);
+		var along = MathF.Abs (normal.Y) * impactSpeed * MotionConfig.LandingSlideFactor;
+		SlideX = SlideX * MotionConfig.SlopeDamping + downhill.X * along;
+		SlideZ = SlideZ * MotionConfig.SlopeDamping + downhill.Y * along;
+	}
+
+	/// <summary>
+	///     UpdateVertical, and the landing slide when it lands the body. The impact speed is the
+	///     step's velocity after gravity, as fall() reads it
+	/// </summary>
+	private void UpdateVerticalAndLand (MotionTerrainField terrain, MotionStaticField statics, float stepSeconds)
+	{
+		var wasGrounded = Grounded;
+		var impactSpeed = Math.Min (VelocityY + MotionConfig.JumpGravity * stepSeconds, MotionConfig.TerminalFallSpeed);
+		UpdateVertical (terrain, statics, stepSeconds);
+		if (!wasGrounded && Grounded)
+		{
+			LandingSlide (terrain, statics, impactSpeed);
 		}
 	}
 
@@ -681,6 +777,88 @@ public sealed class MotionPlayer
 	public void Update (MotionTerrainField terrain, MotionStaticField statics, Vector2 wish,
 		bool jump, float deltaSeconds)
 	{
+		var startX = SpawnX;
+		var startY = SpawnY;
+		var startZ = SpawnZ;
+		Step (terrain, statics, wish, jump, deltaSeconds);
+		ResolveStuck (terrain, statics, startX, startY, startZ);
+	}
+
+	// Updates a body may end inside geometry, or airborne with no way to move or fall, before it is
+	// freed. The client's ReferenceMotion uses the same count
+	private const int StuckUpdates = 3;
+
+	// How far below the feet a wedge escape checks for room to fall
+	private const float WedgeDropProbe = 0.05f;
+
+	private int stuckUpdates;
+
+	/// <summary>
+	///     The reference recovers only at spawn, so a body pushed into a wall, or lifted by a step
+	///     probe into a gap where every move overlaps and the fall is blocked, stays there for good
+	/// </summary>
+	private void ResolveStuck (MotionTerrainField terrain, MotionStaticField statics, float startX, float startY,
+		float startZ)
+	{
+		var embedded = statics.CapsuleOverlapsStatic (SpawnX, SpawnY, SpawnZ, out _);
+		var wedged = !Grounded && VelocityY == 0f && MathF.Abs (SpawnX - startX) < 0.0005f
+			&& MathF.Abs (SpawnY - startY) < 0.0005f && MathF.Abs (SpawnZ - startZ) < 0.0005f;
+		stuckUpdates = embedded || wedged ? stuckUpdates + 1 : 0;
+		if (stuckUpdates < StuckUpdates)
+		{
+			return;
+		}
+
+		stuckUpdates = 0;
+		if (embedded)
+		{
+			RecoverFromPenetration (terrain, statics);
+		}
+		else
+		{
+			EscapeWedge (terrain, statics);
+		}
+	}
+
+	/// <summary>
+	///     RecoverFromPenetration's ring search, for a body that overlaps nothing but cannot move or
+	///     fall: the nearest spot that is free and either stands on support or has room below
+	/// </summary>
+	private bool EscapeWedge (MotionTerrainField terrain, MotionStaticField statics)
+	{
+		const int directionCount = 12;
+		for (var ring = 1; ring <= 5; ++ring)
+		{
+			var distance = MotionConfig.PlayerCollisionRadius * 0.5f * ring;
+			for (var direction = 0; direction < directionCount; ++direction)
+			{
+				var angle = direction * (2f * MathF.PI / directionCount);
+				var candidateX = SpawnX + MathF.Cos (angle) * distance;
+				var candidateZ = SpawnZ + MathF.Sin (angle) * distance;
+				var hasSupport = SupportHeightAt (terrain, statics, candidateX, candidateZ, SpawnY,
+					out var candidateY, out _);
+				if (statics.CapsuleOverlapsStatic (candidateX, candidateY, candidateZ, out _)
+					|| (!hasSupport && statics.CapsuleOverlapsStatic (candidateX, candidateY + WedgeDropProbe,
+						candidateZ, out _, false)))
+				{
+					continue;
+				}
+
+				SpawnX = candidateX;
+				SpawnY = candidateY;
+				SpawnZ = candidateZ;
+				Grounded = hasSupport;
+				VelocityY = 0f;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private void Step (MotionTerrainField terrain, MotionStaticField statics, Vector2 wish, bool jump,
+		float deltaSeconds)
+	{
 		deltaSeconds = Math.Clamp (deltaSeconds, 0f, Math.Max (0.01f, MotionConfig.MaxMovementDeltaSeconds));
 		if (jump)
 		{
@@ -698,11 +876,23 @@ public sealed class MotionPlayer
 		var simulationStepSeconds = Math.Max (0.005f, MotionConfig.MaxSimulationStepSeconds);
 		if (moving)
 		{
-			// The wish plus the slide momentum, the old client's commanded + physical
-			VelocityX = wish.X + SlideX;
-			VelocityZ = wish.Y + SlideZ;
-			var displacementX = VelocityX * deltaSeconds;
-			var displacementZ = VelocityZ * deltaSeconds;
+			// The wish plus the slide momentum, the old client's commanded + physical. moveGround
+			// scales the wish by |n.y| of the surface under the feet, so a steep face is walked
+			// slower; in the air moveFree takes it whole
+			var slope = 1f;
+			if (Grounded)
+			{
+				SupportSurface (terrain, statics, out var supportNormal, out _);
+				var normalLength = supportNormal.Length ();
+				slope = normalLength > 0.0001f ? Math.Min (1f, MathF.Abs (supportNormal.Y) / normalLength) : 1f;
+			}
+
+			VelocityX = wish.X * slope + SlideX;
+			VelocityZ = wish.Y * slope + SlideZ;
+			// moveGround and moveFree both scale the move by the surface material the body touches
+			var materialScale = MaterialScale (statics);
+			var displacementX = VelocityX * deltaSeconds * materialScale;
+			var displacementZ = VelocityZ * deltaSeconds * materialScale;
 			var distance = MathF.Sqrt (displacementX * displacementX + displacementZ * displacementZ);
 			var collisionStep = Math.Max (0.05f,
 				Math.Min (MotionConfig.MovementCollisionStep, MotionConfig.PlayerCollisionRadius * 0.5f));
@@ -769,12 +959,12 @@ public sealed class MotionPlayer
 					}
 				}
 
-				UpdateVertical (terrain, statics, stepSeconds);
+				UpdateVerticalAndLand (terrain, statics, stepSeconds);
 			}
 
 			// The slide grows after the move, the old client's dampMotion at the end of moveGround,
 			// so a slope run carries momentum into the next tick
-			AccumulateSlopeSlide (terrain, deltaSeconds);
+			AccumulateSlopeSlide (terrain, statics, deltaSeconds);
 		}
 		else
 		{
@@ -782,8 +972,9 @@ public sealed class MotionPlayer
 			// the accumulated slide, and friction bleeds it the same way
 			VelocityX = SlideX;
 			VelocityZ = SlideZ;
-			var slideX = SlideX * deltaSeconds;
-			var slideZ = SlideZ * deltaSeconds;
+			var idleMaterialScale = MaterialScale (statics);
+			var slideX = SlideX * deltaSeconds * idleMaterialScale;
+			var slideZ = SlideZ * deltaSeconds * idleMaterialScale;
 			var slideDistance = MathF.Sqrt (slideX * slideX + slideZ * slideZ);
 			var idleCollisionStep = Math.Max (0.05f,
 				Math.Min (MotionConfig.MovementCollisionStep, MotionConfig.PlayerCollisionRadius * 0.5f));
@@ -792,12 +983,17 @@ public sealed class MotionPlayer
 			for (var step = 0; step < idleStepCount; ++step)
 			{
 				TryMoveTo (terrain, statics, SpawnX + slideX / idleStepCount, SpawnZ + slideZ / idleStepCount);
-				UpdateVertical (terrain, statics, idleStepSeconds);
+				UpdateVerticalAndLand (terrain, statics, idleStepSeconds);
 			}
 
-			AccumulateSlopeSlide (terrain, deltaSeconds);
+			AccumulateSlopeSlide (terrain, statics, deltaSeconds);
 		}
 	}
+
+	// The old client's motionMaterialScale: material_scale[m] = m / 6 for the material the body
+	// touches at the start of the move
+	private float MaterialScale (MotionStaticField statics) =>
+		statics.SurfaceMaterialAt (SpawnX, SpawnY, SpawnZ) / (float) MotionConfig.NoSurfaceMaterial;
 
 	/// <summary>
 	///     Reference RotateView, the yaw the pose reports back. Angle is the game-space heading, the

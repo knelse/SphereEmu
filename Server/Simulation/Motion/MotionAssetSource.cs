@@ -9,9 +9,9 @@ using SphServer.Shared.Logger;
 namespace SphServer.Server.Simulation.Motion;
 
 /// <summary>
-///     The raw vendored assets the solver streams: map.bin tile stems, Landscape lnd lookup,
-///     sst*.mbd placements, and the mdl a placement names. Paths are the reference's, rooted in the
-///     repo instead of the client install
+///     The raw vendored assets the solver streams: map.bin tile stems, Landscape lnd lookup, the
+///     sst*.mbd placements the client instantiates, and the mdl a placement names. Paths are the
+///     reference's, rooted in the repo instead of the client install
 /// </summary>
 public sealed class MotionAssetSource
 {
@@ -23,12 +23,16 @@ public sealed class MotionAssetSource
 	public const int MapRecordBytes = 0x16;
 	public const int PlacementRecordBytes = 44;
 
-	// The reference's ClassifyStaticPlacement: char19 and the edoor markers are actor placeholders,
-	// and these are technical markers, so none of them blocks anything
-	private static readonly string[] TechnicalMarkerPrefixes =
-		["m_way", "pyram", "tn3_light", "start"];
+	// Client StaticPlacementLoader: a code at or past this is a special point, never created as a
+	// static. Chests, tables, portals and NPC bodies carry such codes and do not block there
+	private const int SpecialPlacementCode = 10000;
 
-	private static readonly string[] DoorMarkerNames = ["edoor", "edoor2", "edoor_i", "edoor2_i"];
+	// Client loadStaticObjectGroups and instantiateStaticGroups: ids 0..499, group 99 never, and
+	// each continent's hundred only when its landscape directory exists
+	private const int StaticGroupCount = 500;
+	private const int SkippedStaticGroup = 99;
+	private static readonly (int First, string Landscape)[] ContinentStaticGroups =
+		[(200, "Landscape_hr"), (300, "Landscape_ph"), (400, "Landscape_rd")];
 
 	private static readonly string[] LandscapeDirs = ["Landscape", "Landscape_ph", "Landscape_hr", "Landscape_rd"];
 	private static readonly string[] ModelDirs = ["models", "Models_hr", "Models_ph", "Models_rd"];
@@ -152,23 +156,56 @@ public sealed class MotionAssetSource
 	}
 
 	/// <summary>
-	///     Reference ParseStaticPlacementFile: u16 count, u16 zero, 44-byte records. The reference
-	///     reorders the rotation floats to X at 36, Y at 32; the client's own placement decoder
-	///     (WorldPlacement.cpp) reads them in file order, 32/36/40, and that is the matrix its
-	///     renderer draws with, so they are kept in file order here
+	///     The static group files the client instantiates, in its id order: params\sst_NN.mbd below
+	///     100, params\sstNNN.mbd from 100
+	/// </summary>
+	public static IEnumerable<string> StaticGroupFiles (string paramsDirectory)
+	{
+		var landscapeRoot = Absolute (LandscapeRoot);
+		for (var id = 0; id < StaticGroupCount; ++id)
+		{
+			if (id == SkippedStaticGroup || !ContinentLoaded (landscapeRoot, id))
+			{
+				continue;
+			}
+
+			var file = Path.Combine (paramsDirectory, id < 100 ? $"sst_{id:00}.mbd" : $"sst{id:000}.mbd");
+			if (File.Exists (file))
+			{
+				yield return file;
+			}
+		}
+	}
+
+	private static bool ContinentLoaded (string landscapeRoot, int id)
+	{
+		foreach (var (first, landscape) in ContinentStaticGroups)
+		{
+			if (id >= first && id < first + 100)
+			{
+				return Directory.Exists (Path.Combine (landscapeRoot, landscape));
+			}
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	///     Client WorldObjectPlacement::decode: i32 count, 44-byte records, and a file whose body is
+	///     not whole records is skipped. Rotation is read as X at 36, Y at 32, Z at 40, which
+	///     PlacementMatrix consumes. Special-code records are skipped, as the client loader skips them
 	/// </summary>
 	public static List<MotionPlacement> ParsePlacements (string mbdPath)
 	{
 		var placements = new List<MotionPlacement> ();
 		var bytes = File.ReadAllBytes (mbdPath);
-		if (bytes.Length < 4)
+		if (bytes.Length < 4 || (bytes.Length - 4) % PlacementRecordBytes != 0)
 		{
 			return placements;
 		}
 
-		var count = BinaryPrimitives.ReadUInt16LittleEndian (bytes.AsSpan (0, 2));
-		if (BinaryPrimitives.ReadUInt16LittleEndian (bytes.AsSpan (2, 2)) != 0
-			|| bytes.Length < 4 + count * PlacementRecordBytes)
+		var count = BinaryPrimitives.ReadInt32LittleEndian (bytes.AsSpan (0, 4));
+		if (count < 0 || count > (bytes.Length - 4) / PlacementRecordBytes)
 		{
 			SphLogger.Info ($"MotionAssetSource: bad MBD header {Path.GetFileName (mbdPath)}");
 			return placements;
@@ -177,58 +214,23 @@ public sealed class MotionAssetSource
 		for (var index = 0; index < count; ++index)
 		{
 			var off = 4 + index * PlacementRecordBytes;
-			var name = ReadAsciiName (bytes.AsSpan (off, 20));
-			if (name.Length == 0)
+			// 18-byte name, then the u16 code, the client WorldPlacement record
+			var name = ReadAsciiName (bytes.AsSpan (off, 18));
+			var code = BinaryPrimitives.ReadUInt16LittleEndian (bytes.AsSpan (off + 18, 2));
+			if (name.Length == 0 || code >= SpecialPlacementCode)
 			{
 				continue;
 			}
 
 			var position = ReadVector3 (bytes, off + 20);
-			var angleX = ReadSingle (bytes, off + 32);
-			var angleY = ReadSingle (bytes, off + 36);
+			var angleX = ReadSingle (bytes, off + 36);
+			var angleY = ReadSingle (bytes, off + 32);
 			var angleZ = ReadSingle (bytes, off + 40);
 			placements.Add (new MotionPlacement (name.ToLowerInvariant (), position,
 				new Vector3 (angleX, angleY, angleZ)));
 		}
 
 		return placements;
-	}
-
-	/// <summary>
-	///     A placement that blocks: char19, the edoor markers, the numbered technical markers, and
-	///     the empty placeholder all spawn nothing to collide with
-	/// </summary>
-	public static bool IsBlockingPlacement (string key)
-	{
-		if (key == "char19" || key == "empty")
-		{
-			return false;
-		}
-
-		foreach (var marker in DoorMarkerNames)
-		{
-			if (key == marker)
-			{
-				return false;
-			}
-		}
-
-		if (key == "m_enter" || key == "finish")
-		{
-			return false;
-		}
-
-		foreach (var prefix in TechnicalMarkerPrefixes)
-		{
-			// Reference StartsWithNumberedPlacementName: the prefix, then a digit
-			if (key.Length > prefix.Length && key.StartsWith (prefix, StringComparison.Ordinal)
-				&& char.IsAsciiDigit (key[prefix.Length]))
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	public static string Absolute (string resPath) =>

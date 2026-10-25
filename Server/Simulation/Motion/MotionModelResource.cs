@@ -8,9 +8,9 @@ using SphServer.Shared.Logger;
 namespace SphServer.Server.Simulation.Motion;
 
 /// <summary>
-///     Reference StaticModelResource, collision only: the model bounds, the triangle BVH built from
-///     the faces without the non-collision flag, and the cylinder proxy a skinned model uses
-///     instead of triangles
+///     The client's static collision model: the bounds over every vertex and prepared triangle, a
+///     BVH over the kind-2 prepared triangles or else the faces without the non-collision flag,
+///     and the cylinder proxy a skinned model with no triangles uses
 /// </summary>
 public sealed class MotionModelResource
 {
@@ -18,11 +18,66 @@ public sealed class MotionModelResource
 	public const int VertexStride = 0x20;
 	public const int TriangleStride = 0x0a;
 	public const int SurfaceStride = 0x0f;
+	public const int CollisionTriangleStride = 0x50;
+	public const int CollisionKindAxisAligned = 0;
+	public const int CollisionKindOriented = 1;
+	public const int CollisionKindTriangles = 2;
+	public const int CollisionKindNone = 3;
 
+	// Client fromExtents corner order, which the header oriented box also follows. Two triangles
+	// per face of the box
+	private static readonly int[] BoxIndices =
+	[
+		0, 1, 2, 0, 2, 3, 5, 6, 7, 5, 7, 4, 0, 1, 6, 0, 6, 5,
+		3, 2, 7, 3, 7, 4, 0, 3, 4, 0, 4, 5, 1, 2, 7, 1, 7, 6,
+	];
+
+	public string Name = "";
 	public MotionBounds Bounds = MotionBounds.Empty ();
 	public bool IsSkinned;
 	public float ProxyRadius;
 	public MotionCollisionMesh? CollisionMesh;
+
+	// A dynamic object (mob, NPC, chest, another player) collides as the client's contact query
+	// has it: kind 0 the header box with no rotation, kind 1 the header oriented box, kind 2 the
+	// prepared triangles, kind 3 nothing
+	public int CollisionKind;
+	public MotionCollisionMesh? DynamicMesh;
+	public MotionBounds DynamicBounds = MotionBounds.Empty ();
+	public bool DynamicAxisAligned => CollisionKind == CollisionKindAxisAligned;
+
+	/// <summary>
+	///     A kind-0 box with no model file behind it, the other players' character box
+	/// </summary>
+	public static MotionModelResource AxisAlignedBox (string name, Vector3 min, Vector3 max)
+	{
+		var resource = new MotionModelResource { Name = name, CollisionKind = CollisionKindAxisAligned };
+		resource.SetDynamicBox (BoxCorners (min, max));
+		return resource;
+	}
+
+	private static Vector3[] BoxCorners (Vector3 min, Vector3 max) =>
+	[
+		new (min.X, min.Y, min.Z), new (max.X, min.Y, min.Z), new (max.X, max.Y, min.Z),
+		new (min.X, max.Y, min.Z), new (min.X, max.Y, max.Z), new (min.X, min.Y, max.Z),
+		new (max.X, min.Y, max.Z), new (max.X, max.Y, max.Z),
+	];
+
+	private void SetDynamicBox (Vector3[] corners)
+	{
+		DynamicMesh = MotionCollisionMesh.Build (corners, [.. BoxIndices]);
+		DynamicBounds = MotionBounds.Empty ();
+		foreach (var corner in corners)
+		{
+			DynamicBounds.Expand (corner);
+		}
+	}
+
+	private static Vector3 ReadPoint (byte[] data, int at) =>
+		new (
+			BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at, 4)),
+			BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at + 4, 4)),
+			BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at + 8, 4)));
 
 	/// <summary>
 	///     Reference ParseInfo: the header counts, then the section table walked in the same order.
@@ -98,10 +153,19 @@ public sealed class MotionModelResource
 			offset = SectionEnd (offset, indexCount, 0x06);
 		}
 
-		if (extraMode == 2)
+		// The client rejects a collision kind past None (3), so such a model is never placed there
+		if (extraMode < 0 || extraMode > CollisionKindNone)
+		{
+			SphLogger.Info ($"MDL collision kind invalid: {name} {extraMode}");
+			return null;
+		}
+
+		var collisionTrianglesOffset = -1;
+		if (extraMode == CollisionKindTriangles)
 		{
 			offset = SectionEnd (offset, extraRecordCount, 0x0c);
-			offset = SectionEnd (offset, extraBlockCount, 0x50);
+			collisionTrianglesOffset = offset;
+			offset = SectionEnd (offset, extraBlockCount, CollisionTriangleStride);
 		}
 
 		if (offset < 0 || offset != data.Length)
@@ -123,17 +187,78 @@ public sealed class MotionModelResource
 			bounds.Expand (position);
 		}
 
-		var resource = new MotionModelResource { Bounds = bounds };
-
-		// Reference WillSkin: SkinWeightCount, Objects (strip_groups_0x27) and TransformKeys
-		// (skin_records_0x1c) all present. A skinned model gets no triangle collision at all, only
-		// the proxy, so its rest pose never reaches the solver
-		var willSkin = skinWeightCount != 0 && stripGroupCount != 0 && skinRecordCount != 0;
-		resource.IsSkinned = willSkin;
-		if (willSkin)
+		// Client ModelResources kind 2: 80-byte records, the three corners at +24, +36 and +48
+		var hasCollisionTriangles = collisionTrianglesOffset >= 0 && extraBlockCount > 0;
+		var collisionVertices = new Vector3[hasCollisionTriangles ? extraBlockCount * 3 : 0];
+		var collisionDirections = new byte[hasCollisionTriangles ? extraBlockCount : 0];
+		var collisionMaterials = new byte[collisionDirections.Length];
+		for (var index = 0; index < collisionDirections.Length; ++index)
 		{
-			resource.ProxyRadius = MotionConfig.SkinnedProxyRadius (
-				bounds.Max.X - bounds.Min.X, bounds.Max.Z - bounds.Min.Z);
+			var flags = BinaryPrimitives.ReadUInt32LittleEndian (
+				data.AsSpan (collisionTrianglesOffset + index * CollisionTriangleStride + 76, 4));
+			collisionDirections[index] = (byte) ((flags >> 8) & 0xFF);
+			collisionMaterials[index] = (byte) (flags & 0xFF);
+		}
+
+		for (var index = 0; index < collisionVertices.Length; ++index)
+		{
+			var at = collisionTrianglesOffset + index / 3 * CollisionTriangleStride + 24 + index % 3 * 12;
+			collisionVertices[index] = new Vector3 (
+				BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at, 4)),
+				BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at + 4, 4)),
+				BinaryPrimitives.ReadSingleLittleEndian (data.AsSpan (at + 8, 4)));
+			bounds.Expand (collisionVertices[index]);
+		}
+
+		var resource = new MotionModelResource { Name = name, Bounds = bounds, CollisionKind = extraMode };
+		// Client ModelResources header: min at 30, max at 42, the eight oriented corners from 54
+		if (extraMode == CollisionKindAxisAligned)
+		{
+			resource.SetDynamicBox (BoxCorners (ReadPoint (data, 30), ReadPoint (data, 42)));
+		}
+		else if (extraMode == CollisionKindOriented)
+		{
+			var corners = new Vector3[8];
+			for (var corner = 0; corner < corners.Length; ++corner)
+			{
+				corners[corner] = ReadPoint (data, 54 + corner * 12);
+			}
+
+			resource.SetDynamicBox (corners);
+		}
+
+		// The client's skinned test: bones, keyframes and animation frames all present. Those
+		// models still keep their bind-pose triangles; the proxy is only the fallback when the
+		// mesh has no collision triangles
+		var willSkin = skinWeightCount != 0 && stripGroupCount != 0 && skinRecordCount != 0
+			&& skinIndexCount != 0;
+
+		// Client ReferenceField: a kind-2 model collides its prepared triangles, every one, and
+		// only the other kinds fall back to the faces without the non-collision flag
+		if (hasCollisionTriangles)
+		{
+			var prepared = new List<int> (collisionVertices.Length);
+			for (var index = 0; index < collisionVertices.Length; ++index)
+			{
+				prepared.Add (index);
+			}
+
+			resource.CollisionMesh = MotionCollisionMesh.Build (collisionVertices, prepared, collisionDirections,
+				collisionMaterials);
+			resource.DynamicMesh = resource.CollisionMesh;
+			resource.DynamicBounds = MotionBounds.Empty ();
+			foreach (var vertex in collisionVertices)
+			{
+				resource.DynamicBounds.Expand (vertex);
+			}
+
+			if (resource.CollisionMesh is null && willSkin)
+			{
+				resource.IsSkinned = true;
+				resource.ProxyRadius = MotionConfig.SkinnedProxyRadius (
+					bounds.Max.X - bounds.Min.X, bounds.Max.Z - bounds.Min.Z);
+			}
+
 			return resource;
 		}
 
@@ -168,7 +293,16 @@ public sealed class MotionModelResource
 			}
 		}
 
+		// Build drops degenerate triangles, the same filter the client applies before it picks the
+		// proxy, so the fallback keys on the built mesh and not on the raw index count
 		resource.CollisionMesh = MotionCollisionMesh.Build (vertices, collision);
+		if (resource.CollisionMesh is null && willSkin)
+		{
+			resource.IsSkinned = true;
+			resource.ProxyRadius = MotionConfig.SkinnedProxyRadius (
+				bounds.Max.X - bounds.Min.X, bounds.Max.Z - bounds.Min.Z);
+		}
+
 		return resource;
 	}
 

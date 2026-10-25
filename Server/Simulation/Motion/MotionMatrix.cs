@@ -35,34 +35,17 @@ public struct MotionMatrix
 	};
 
 	/// <summary>
-	///     The client's own placement matrix, recompile Math.cpp fromEuler, which is the matrix its
-	///     renderer draws the model with (Collision.cpp:183). The reference composes
-	///     RotationY(-rot.Y) * RotationX(rot.X) * RotationZ(rot.Z) from swapped axis floats, and over
-	///     223427 placements 35541 rotate on pitch/roll, where the two orders diverge (worst
-	///     Frobenius 3.39), so a server collision box would sit rotated off the drawn mesh. The
-	///     yaw-only 91.4% agree either way; the angles here are the .mbd floats in file order
+	///     Reference PlacementMatrix: RotationY(-rot.Y) * RotationX(rot.X) * RotationZ(rot.Z).
+	///     angles are the reference Rotation, X from file offset 36, Y from 32, Z from 40
 	/// </summary>
 	public static MotionMatrix Placement (Vector3 position, Vector3 angles)
 	{
-		var (sa, ca) = (MathF.Sin (angles.X), MathF.Cos (angles.X));
-		var (sb, cb) = (MathF.Sin (angles.Y), MathF.Cos (angles.Y));
-		var (sc, cc) = (MathF.Sin (angles.Z), MathF.Cos (angles.Z));
-		return new MotionMatrix
-		{
-			M11 = cc * ca - sb * sa * sc,
-			M12 = -sc * cb,
-			M13 = -sa * cc - sb * ca * sc,
-			M21 = sc * ca + cc * sb * sa,
-			M22 = cc * cb,
-			M23 = cc * sb * ca - sc * sa,
-			M31 = cb * sa,
-			M32 = -sb,
-			M33 = cb * ca,
-			M41 = position.X,
-			M42 = position.Y,
-			M43 = position.Z,
-			M44 = 1f,
-		};
+		var matrix = Multiply (Multiply (RotationY (-angles.Y), RotationX (angles.X)), RotationZ (angles.Z));
+		matrix.M41 = position.X;
+		matrix.M42 = position.Y;
+		matrix.M43 = position.Z;
+		matrix.M44 = 1f;
+		return matrix;
 	}
 
 	/// <summary>

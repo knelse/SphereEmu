@@ -4,7 +4,10 @@ using Godot;
 using SphServer.Client;
 using SphServer.Godot.Scripts.World;
 using SphServer.Server.Simulation.Motion;
+using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Godot.Tools;
+using SphServer.Shared.WorldState;
+using SphServer.Sphere.Game.WorldObject;
 
 namespace SphServer.Server.Simulation;
 
@@ -50,6 +53,44 @@ public static class PlayerMotion
 		NodeChildTools.FindFirstChildOfType<CharacterBody3D> (client, "ClientModel");
 
 	private static readonly HashSet<Guid> seeded = [];
+
+	// The jump mutators and the sphere effect this server sent the player, which the client's jump
+	// reads. Kept apart from the integrator so a reseed keeps them
+	private static readonly Dictionary<Guid, (bool X2, bool X4, bool IsJumpProhibited)> jumpEffects = [];
+
+	/// <summary>
+	///     Call when sending the client a jump mutator: x2 (1014, effect 5) or x4 (1015, effect 6)
+	/// </summary>
+	public static void AddJumpEffect (Guid entityId, bool x2)
+	{
+		var effects = jumpEffects.GetValueOrDefault (entityId);
+		jumpEffects[entityId] = x2 ? effects with { X2 = true } : effects with { X4 = true };
+		ApplyJumpEffects (entityId);
+	}
+
+	/// <summary>
+	///     Call when sending the client's _player.mgrEffect: effect 600 (the sphere) sets it, the
+	///     one-byte form clears it
+	/// </summary>
+	public static void SetJumpProhibited (Guid entityId, bool isJumpProhibited)
+	{
+		var effects = jumpEffects.GetValueOrDefault (entityId);
+		jumpEffects[entityId] = effects with { IsJumpProhibited = isJumpProhibited };
+		ApplyJumpEffects (entityId);
+	}
+
+	private static void ApplyJumpEffects (Guid entityId)
+	{
+		if (!players.TryGetValue (entityId, out var player))
+		{
+			return;
+		}
+
+		var effects = jumpEffects.GetValueOrDefault (entityId);
+		player.JumpX2 = effects.X2;
+		player.JumpX4 = effects.X4;
+		player.IsJumpProhibited = effects.IsJumpProhibited;
+	}
 
 	// One integrator per player, the reference's per-scene Impl fields
 	private static readonly Dictionary<Guid, MotionPlayer> players = [];
@@ -100,6 +141,7 @@ public static class PlayerMotion
 			}
 
 			players[client.EntityID] = player;
+			ApplyJumpEffects (client.EntityID);
 			// A seed pose recorded under the old rules can be in the air, on a slope, or inside a
 			// wall, so drop it, walk it out, and settle it, all with the geometry loaded for it
 			stream.EnsureAroundWorldPosition (game);
@@ -149,6 +191,7 @@ public static class PlayerMotion
 		motion.RotateView (yaw);
 
 		var step = ToRaw (client.GlobalPosition);
+		PlaceDynamicObstacles (client, stream, step);
 		motion.SpawnX = step.X;
 		motion.SpawnZ = step.Z;
 		// A pose the store recorded in the old frame can bury the body, so recovery runs before the
@@ -161,8 +204,20 @@ public static class PlayerMotion
 
 		motion.SpawnY = step.Y;
 		stream.EnsureAroundWorldPosition (step);
+		var groundedBefore = motion.Grounded;
 		motion.Update (stream.Terrain, stream.Statics, new Vector2 (wishX, wishZ), jump,
 			SimulationClock.SecondsPerTickF);
+		if (jump)
+		{
+			// MOTRACE J: every tick the Jump bit is held, whether the body could take it
+			SphServer.Shared.Logger.SphLogger.Info (
+				$"MOTRACE J ms={(global::System.Environment.TickCount64)} pos=({step.X:0.000},{step.Y:0.000},{step.Z:0.000}) "
+				+ $"groundedBefore={groundedBefore} vy={motion.VelocityY:0.00} grounded={motion.Grounded} "
+				+ $"x2={motion.JumpX2} x4={motion.JumpX4} prohibited={motion.IsJumpProhibited} "
+				+ $"surface={MotionContours.Shared.TypeAt (step.X, step.Z, MotionContours.JumpSurfaceFirst, MotionContours.JumpSurfaceLast)}");
+		}
+		TraceStep (client.EntityID, stream.Statics, motion, step, wishX, wishZ);
+		stream.Statics.ClearDynamic ();
 
 		// A body that falls past the world has nothing to land on and no way back, the live client's
 		// own respawn arm at y 8000. It returns to the last pose that sat on geometry
@@ -233,6 +288,190 @@ public static class PlayerMotion
 		}
 	}
 
+	// Client ReferenceField: the dynamic objects are gathered out to 64 m once a second or after a
+	// 16 m move, and each step places them from their live poses
+	private const int DynamicRegatherTicks = 60;
+	private const float DynamicGatherMeters = 64f;
+	private const float DynamicRegatherMeters = 16f;
+
+	private sealed class DynamicGather
+	{
+		public int Age = DynamicRegatherTicks;
+		public Vector3 Center;
+		public readonly List<WorldObject> Objects = [];
+	}
+
+	private static readonly Dictionary<Guid, DynamicGather> dynamicGathers = [];
+
+	// Every character model's header box, the kind-0 shape the client gives another player
+	private static readonly MotionModelResource PlayerBox = MotionModelResource.AxisAlignedBox ("player",
+		new Vector3 (-0.3f, -1.8f, -0.3f), new Vector3 (0.3f, 0f, 0.3f));
+
+	/// <summary>
+	///     The mobs, NPCs, chests, doors, portals and other players around this player, as the
+	///     client's contact query blocks on them. The client draws a spawned object at the spawn
+	///     packet's (x, -y, -z) and yaw Angle * pi / 128, so the same pose places it here
+	/// </summary>
+	private static void PlaceDynamicObstacles (SphereClient client, MotionWorldStream stream, Vector3 raw)
+	{
+		var statics = stream.Statics;
+		statics.ClearDynamic ();
+		if (!dynamicGathers.TryGetValue (client.EntityID, out var gather))
+		{
+			gather = new DynamicGather ();
+			dynamicGathers[client.EntityID] = gather;
+		}
+
+		var center = ToGodot (raw);
+		if (++gather.Age >= DynamicRegatherTicks
+			|| gather.Center.DistanceSquaredTo (center) > DynamicRegatherMeters * DynamicRegatherMeters)
+		{
+			gather.Age = 0;
+			gather.Center = center;
+			gather.Objects.Clear ();
+			foreach (var obj in ActiveWorldObjects.GetAll ().Values)
+			{
+				// Players come from ActiveClients; a yellow crystal is never shown to the client
+				if (obj is SphereClient || !GodotObject.IsInstanceValid (obj) || !obj.IsInsideTree ()
+					|| obj.ObjectType == ObjectType.Light_Crystal_Yellow
+					|| obj.GlobalPosition.DistanceSquaredTo (center) > DynamicGatherMeters * DynamicGatherMeters)
+				{
+					continue;
+				}
+
+				gather.Objects.Add (obj);
+			}
+
+			TraceGather (client.EntityID, stream, gather, center);
+		}
+
+		foreach (var obj in gather.Objects)
+		{
+			if (!GodotObject.IsInstanceValid (obj) || !obj.IsInsideTree () || obj is Monster { IsDead: true })
+			{
+				continue;
+			}
+
+			var modelName = obj.ClientModelName;
+			if (modelName.Length == 0 || stream.Model (modelName) is not { } resource)
+			{
+				continue;
+			}
+
+			statics.AddDynamic (resource, DynamicWorld (resource, ToRaw (obj.GlobalPosition),
+				WorldObject.DecodeAngleToYawRadians (obj.Angle)));
+		}
+
+		foreach (var other in ActiveClients.GetAll ().Values)
+		{
+			if (other.EntityID == client.EntityID || !IsInGame (other))
+			{
+				continue;
+			}
+
+			var otherBody = FindModel (other);
+			var position = ToRaw (otherBody?.GlobalPosition ?? other.GlobalPosition);
+			if (position.DistanceSquaredTo (raw) > DynamicGatherMeters * DynamicGatherMeters)
+			{
+				continue;
+			}
+
+			statics.AddDynamic (PlayerBox, MotionMatrix.Placement (position, Vector3.Zero));
+		}
+	}
+
+	// MOTRACE G: per regather, how many registry objects exist near the player and, for the closest
+	// few, the model name, whether it resolves to a collision shape, and the pose it would take
+	private static void TraceGather (Guid id, MotionWorldStream stream, DynamicGather gather, Vector3 center)
+	{
+		var total = 0;
+		var near = new List<(float Distance, WorldObject Obj)> ();
+		foreach (var obj in ActiveWorldObjects.GetAll ().Values)
+		{
+			if (obj is SphereClient || !GodotObject.IsInstanceValid (obj))
+			{
+				continue;
+			}
+
+			++total;
+			if (!obj.IsInsideTree ())
+			{
+				continue;
+			}
+
+			var distance = obj.GlobalPosition.DistanceTo (center);
+			if (distance < 10f)
+			{
+				near.Add ((distance, obj));
+			}
+		}
+
+		near.Sort ((a, b) => a.Distance.CompareTo (b.Distance));
+		var parts = new List<string> ();
+		foreach (var (distance, obj) in near)
+		{
+			if (parts.Count >= 6)
+			{
+				break;
+			}
+
+			var model = obj.ClientModelName;
+			var resource = model.Length == 0 ? null : stream.Model (model);
+			var raw = ToRaw (obj.GlobalPosition);
+			parts.Add ($"{obj.GetType ().Name}:{obj.ObjectType}:'{model}' d={distance:0.0} "
+				+ $"raw=({raw.X:0.0},{raw.Y:0.0},{raw.Z:0.0}) kind={resource?.CollisionKind.ToString () ?? "none"} "
+				+ $"mesh={resource?.DynamicMesh is not null} gathered={gather.Objects.Contains (obj)}");
+		}
+
+		SphServer.Shared.Logger.SphLogger.Info (
+			$"MOTRACE G {id:N} registry={total} gathered={gather.Objects.Count} "
+			+ $"center=({center.X:0.0},{center.Y:0.0},{center.Z:0.0}) near: {string.Join (" | ", parts)}");
+	}
+
+	// Client updateBounds: a kind-0 box sits at the position with no rotation; the other kinds take
+	// fromEuler of the object's yaw, which for a yaw-only pose is the placement matrix
+	private static MotionMatrix DynamicWorld (MotionModelResource resource, Vector3 position, float yaw) =>
+		resource.DynamicAxisAligned
+			? MotionMatrix.Placement (position, Vector3.Zero)
+			: MotionMatrix.Placement (position, new Vector3 (0f, yaw, 0f));
+
+	private static readonly Dictionary<Guid, long> traceAt = [];
+
+	// MOTRACE S: one line per 100 ms while the wish moves, and one per 50 ms while the body sits
+	// inside static geometry. ms is Environment.TickCount64, the same uptime clock the client
+	// stamps with GetTickCount, so the two logs line up. Positions are the raw game frame
+	private static void TraceStep (Guid id, MotionStaticField statics, MotionPlayer motion, Vector3 before,
+		float wishX, float wishZ)
+	{
+		var blockModel = statics.LastOverlapModel;
+		var inside = statics.CapsuleOverlapsStatic (motion.SpawnX, motion.SpawnY, motion.SpawnZ,
+			out var insideHit);
+		var moving = wishX != 0f || wishZ != 0f;
+		if (!moving && !inside)
+		{
+			return;
+		}
+
+		var now = global::System.Environment.TickCount64;
+		traceAt.TryGetValue (id, out var last);
+		if (now - last < (inside ? 50 : 100))
+		{
+			return;
+		}
+
+		traceAt[id] = now;
+		var movedX = motion.SpawnX - before.X;
+		var movedZ = motion.SpawnZ - before.Z;
+		var moved = MathF.Sqrt (movedX * movedX + movedZ * movedZ);
+		var expected = MathF.Sqrt (wishX * wishX + wishZ * wishZ) * SimulationClock.SecondsPerTickF;
+		SphServer.Shared.Logger.SphLogger.Info (
+			$"MOTRACE S ms={now} pos=({motion.SpawnX:0.000},{motion.SpawnY:0.000},{motion.SpawnZ:0.000}) "
+			+ $"wish=({wishX:0.00},{wishZ:0.00}) moved={moved:0.000}/{expected:0.000} "
+			+ $"grounded={motion.Grounded} hit={motion.LastHitValid} "
+			+ $"n=({motion.LastHit.Normal.X:0.00},{motion.LastHit.Normal.Z:0.00}) pen={motion.LastHit.Penetration:0.000} "
+			+ $"block={blockModel} inside={(inside ? $"{statics.LastOverlapModel}:{insideHit.Penetration:0.000}" : "-")}");
+	}
+
 	public static float ApproachYaw (float current, float target, float maxStep)
 	{
 		var delta = Mathf.Wrap (target - current, -Mathf.Pi, Mathf.Pi);
@@ -248,5 +487,8 @@ public static class PlayerMotion
 	{
 		seeded.Remove (entityId);
 		players.Remove (entityId);
+		traceAt.Remove (entityId);
+		dynamicGathers.Remove (entityId);
+		jumpEffects.Remove (entityId);
 	}
 }

@@ -14,6 +14,7 @@ public sealed class MotionStaticField
 	private struct Instance
 	{
 		public MotionModelResource Resource;
+		public MotionCollisionMesh? Mesh;
 		public MotionMatrix World;
 		public MotionMatrix InverseWorld;
 		public MotionBounds Bounds;
@@ -26,6 +27,7 @@ public sealed class MotionStaticField
 	// Reference StaticCollisionCells, StaticCollisionInstances and the large-instance overflow list
 	private readonly Dictionary<long, List<int>> cells = [];
 	private readonly List<Instance> instances = [];
+	private readonly List<Instance> dynamicInstances = [];
 	private readonly List<int> largeInstances = [];
 	private readonly HashSet<string> missingModels = new (StringComparer.OrdinalIgnoreCase);
 
@@ -38,6 +40,9 @@ public sealed class MotionStaticField
 
 	public int LoadedCount => instances.Count;
 	public int LoadedCellCount => cells.Count;
+
+	// The model behind the deepest hit of the last CapsuleOverlapsStatic, for the motion trace
+	public string LastOverlapModel { get; private set; } = "";
 
 	public bool HasMissingModel (string modelName) => missingModels.Contains (modelName);
 
@@ -67,6 +72,7 @@ public sealed class MotionStaticField
 		var instance = new Instance
 		{
 			Resource = resource,
+			Mesh = resource.CollisionMesh,
 			World = world,
 			Bounds = bounds,
 			Capsule = resource.IsSkinned,
@@ -118,10 +124,37 @@ public sealed class MotionStaticField
 		}
 	}
 
+	/// <summary>
+	///     The dynamic objects around the player being stepped, replaced each step. They take the
+	///     resource's DynamicMesh, the client contact query's shape, not the static collision mesh
+	/// </summary>
+	public void ClearDynamic () => dynamicInstances.Clear ();
+
+	public void AddDynamic (MotionModelResource resource, in MotionMatrix world)
+	{
+		if (resource.DynamicMesh is not { } mesh || !MotionMatrix.TryInvert (world, out var inverse))
+		{
+			return;
+		}
+
+		dynamicInstances.Add (new Instance
+		{
+			Resource = resource,
+			Mesh = mesh,
+			World = world,
+			InverseWorld = inverse,
+			Bounds = resource.DynamicBounds.Transform (world),
+		});
+	}
+
+	// Dynamic instances ride the same scratch as statics under a complemented index
+	private Instance InstanceAt (int index) => index >= 0 ? instances[index] : dynamicInstances[~index];
+
 	public void Clear ()
 	{
 		cells.Clear ();
 		instances.Clear ();
+		dynamicInstances.Clear ();
 		largeInstances.Clear ();
 		visitMarks = [];
 		visitGeneration = 0;
@@ -152,7 +185,20 @@ public sealed class MotionStaticField
 	private void QueryInstances (MotionBounds area)
 	{
 		instanceScratch.Clear ();
-		if (instances.Count == 0 || !area.IsValid)
+		if (!area.IsValid)
+		{
+			return;
+		}
+
+		for (var index = 0; index < dynamicInstances.Count; ++index)
+		{
+			if (dynamicInstances[index].Bounds.Intersects (area))
+			{
+				instanceScratch.Add (~index);
+			}
+		}
+
+		if (instances.Count == 0)
 		{
 			return;
 		}
@@ -217,7 +263,7 @@ public sealed class MotionStaticField
 	private void QueryTriangles (in Instance instance, in MotionBounds area)
 	{
 		triangleScratch.Clear ();
-		var mesh = instance.Resource.CollisionMesh;
+		var mesh = instance.Mesh;
 		if (mesh is null || mesh.Nodes.Length == 0)
 		{
 			return;
@@ -273,6 +319,7 @@ public sealed class MotionStaticField
 		bool ignoreSupportingFloor = true)
 	{
 		hit = default;
+		LastOverlapModel = "";
 		var skin = Math.Clamp (MotionConfig.CollisionSkin, 0f, MotionConfig.PlayerCollisionRadius * 0.5f);
 		var radius = Math.Max (0.05f, MotionConfig.PlayerCollisionRadius - skin);
 		var topY = feetY - MotionConfig.PlayerCollisionHeight;
@@ -296,7 +343,7 @@ public sealed class MotionStaticField
 		var best = default (MotionCollisionHit);
 		foreach (var instanceIndex in instanceScratch)
 		{
-			var instance = instances[instanceIndex];
+			var instance = InstanceAt (instanceIndex);
 			if (instance.Capsule)
 			{
 				if (feetY < instance.Bounds.Min.Y || topY > instance.Bounds.Max.Y)
@@ -319,6 +366,7 @@ public sealed class MotionStaticField
 				{
 					best.Normal = new Vector3 (deltaX / distance, 0f, deltaZ / distance);
 					best.Penetration = penetration;
+					LastOverlapModel = instance.Resource.Name;
 				}
 
 				overlap = true;
@@ -326,10 +374,15 @@ public sealed class MotionStaticField
 			}
 
 			QueryTriangles (instance, area);
-			var mesh = instance.Resource.CollisionMesh!;
+			var mesh = instance.Mesh!;
 			foreach (var triangleIndex in triangleScratch)
 			{
 				var local = mesh.Triangles[triangleIndex];
+				if (local.Material != 0)
+				{
+					continue;
+				}
+
 				var a = MotionMath.TransformPoint (local.A, instance.World);
 				var b = MotionMath.TransformPoint (local.B, instance.World);
 				var c = MotionMath.TransformPoint (local.C, instance.World);
@@ -389,6 +442,7 @@ public sealed class MotionStaticField
 				{
 					best.Normal = normal;
 					best.Penetration = trianglePenetration;
+					LastOverlapModel = instance.Resource.Name;
 				}
 
 				overlap = true;
@@ -403,11 +457,67 @@ public sealed class MotionStaticField
 	///     Reference StaticFloorHeightAt: the lowest surface Y (highest surface) whose XZ triangle
 	///     covers the point, its plane evaluated at the point, inside the Y window
 	/// </summary>
+	/// <summary>
+	///     The old client's Material query: the lowest material among the material triangles the
+	///     body touches, NoSurfaceMaterial when it touches none. Movement scales by material / 6
+	/// </summary>
+	public int SurfaceMaterialAt (float x, float feetY, float z)
+	{
+		var skin = Math.Clamp (MotionConfig.CollisionSkin, 0f, MotionConfig.PlayerCollisionRadius * 0.5f);
+		var radius = Math.Max (0.05f, MotionConfig.PlayerCollisionRadius - skin);
+		var topY = feetY - MotionConfig.PlayerCollisionHeight;
+		var segmentStart = new Vector3 (x, Math.Min (topY + radius, (topY + feetY) * 0.5f), z);
+		var segmentEnd = new Vector3 (x, Math.Max (feetY - radius, (topY + feetY) * 0.5f), z);
+		var area = new MotionBounds (new Vector3 (x - radius, topY, z - radius), new Vector3 (x + radius, feetY, z + radius));
+		QueryInstances (area);
+
+		var material = MotionConfig.NoSurfaceMaterial;
+		foreach (var instanceIndex in instanceScratch)
+		{
+			var instance = InstanceAt (instanceIndex);
+			if (instance.Capsule)
+			{
+				continue;
+			}
+
+			QueryTriangles (instance, area);
+			var mesh = instance.Mesh!;
+			foreach (var triangleIndex in triangleScratch)
+			{
+				var local = mesh.Triangles[triangleIndex];
+				if (local.Material == 0 || local.Material >= material)
+				{
+					continue;
+				}
+
+				var a = MotionMath.TransformPoint (local.A, instance.World);
+				var b = MotionMath.TransformPoint (local.B, instance.World);
+				var c = MotionMath.TransformPoint (local.C, instance.World);
+				if (MotionGeometry.SegmentTriangleDistanceSquared (segmentStart, segmentEnd, a, b, c, out _, out _)
+					< radius * radius)
+				{
+					material = local.Material;
+				}
+			}
+		}
+
+		return material;
+	}
+
 	public bool StaticFloorHeightAt (float x, float z, float minY, float maxY, out float outY,
-		out Vector3 outNormal)
+		out Vector3 outNormal) =>
+		StaticFloorHeightAt (x, z, minY, maxY, out outY, out outNormal, out _);
+
+	/// <summary>
+	///     outDirection is the floor triangle's surface direction, the slide friction index
+	/// </summary>
+	public bool StaticFloorHeightAt (float x, float z, float minY, float maxY, out float outY,
+		out Vector3 outNormal, out int outDirection)
 	{
 		outY = maxY;
 		outNormal = new Vector3 (0f, 1f, 0f);
+		outDirection = 0;
+		var bestDirection = 0;
 		const float probeRadius = 0.02f;
 		var area = new MotionBounds (
 			new Vector3 (x - probeRadius, minY - MotionConfig.CollisionSkin, z - probeRadius),
@@ -419,17 +529,22 @@ public sealed class MotionStaticField
 		var bestNormal = new Vector3 (0f, 1f, 0f);
 		foreach (var instanceIndex in instanceScratch)
 		{
-			var instance = instances[instanceIndex];
+			var instance = InstanceAt (instanceIndex);
 			if (instance.Capsule)
 			{
 				continue;
 			}
 
 			QueryTriangles (instance, area);
-			var mesh = instance.Resource.CollisionMesh!;
+			var mesh = instance.Mesh!;
 			foreach (var triangleIndex in triangleScratch)
 			{
 				var local = mesh.Triangles[triangleIndex];
+				if (local.Material != 0)
+				{
+					continue;
+				}
+
 				var a = MotionMath.TransformPoint (local.A, instance.World);
 				var b = MotionMath.TransformPoint (local.B, instance.World);
 				var c = MotionMath.TransformPoint (local.C, instance.World);
@@ -460,6 +575,7 @@ public sealed class MotionStaticField
 				found = true;
 				bestY = surfaceY;
 				bestNormal = normal;
+				bestDirection = local.Direction;
 			}
 		}
 
@@ -470,6 +586,7 @@ public sealed class MotionStaticField
 
 		outY = bestY;
 		outNormal = bestNormal;
+		outDirection = bestDirection;
 		return true;
 	}
 }

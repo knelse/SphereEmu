@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BitStreams;
 using SphServer.Packets;
+using SphServer.Server.Simulation;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -114,6 +115,12 @@ public static class MutatorHandler
         PacketPart.UpdateValue (mutatorParts, "mutator_id", mutatorId, 16);
         PacketPart.UpdateGuid (mutatorParts, "from_id", playerId);
         clientConnection.MaybeScheduleNetworkPacketSend (PacketPart.GetBytesToWrite (mutatorParts));
+
+        // The client's MBC jump reads these, so the server body has to jump the same height
+        if (mutator is SpecialMutator.Прыг_х2 or SpecialMutator.Прыг_х4)
+        {
+            PlayerMotion.AddJumpEffect (entityId, mutator == SpecialMutator.Прыг_х2);
+        }
 
         SphLogger.Info ($"Sent mutator {mutator} ({mutatorId}) to slot {slot} as {itemGuid}. Client ID: {entityId}");
     }

@@ -292,6 +292,10 @@ public partial class ConsoleCommandParser
         // 	"3F002C010012DF127E78800F80842E090000000000000000409145068002C0C0DB13C0010000000000000000000044ED799B4D83000A0F07E80304AF044F6F";
         sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (jumpx4));
         sphereClient?.MaybeQueueNetworkPacketSend (Convert.FromHexString (runSpeed));
+        if (sphereClient is not null)
+        {
+            SphServer.Server.Simulation.PlayerMotion.AddJumpEffect (sphereClient.EntityID, false);
+        }
     }
 
     private void Mob (string args)

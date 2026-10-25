@@ -323,6 +323,19 @@ public partial class WorldObject
         return ResolveModelNameFromObjectTypeFallback ();
     }
 
+    /// <summary>
+    /// The .mdl the client draws this object with, or empty when only the server's stand-in model
+    /// resolves, which the client never draws
+    /// </summary>
+    internal string ClientModelName
+    {
+        get
+        {
+            var name = GetEffectiveModelNameForVisual ();
+            return name == DefaultModelNameForVisual ? string.Empty : name;
+        }
+    }
+
     protected virtual string ResolveModelNameFromObjectTypeFallback ()
     {
         if (TryGetMappedModelName (ObjectType, out var mappedName))

@@ -298,6 +298,10 @@ public class ClientChatHandler (ClientConnection clientConnection)
                 // 	"3F002C0100720A2EC278800F80842E0900000000000000004091450680020C3CBD011C0000000000000000000040D49ECFE13408A8F00704046C28004F6F00";
                 clientConnection.MaybeScheduleNetworkPacketSend (Convert.FromHexString (jumpx4));
                 clientConnection.MaybeScheduleNetworkPacketSend (Convert.FromHexString (test));
+                if (clientConnection.GetSelectedCharacter () is { } buffed)
+                {
+                    SphServer.Server.Simulation.PlayerMotion.AddJumpEffect (buffed.EntityId, false);
+                }
             }
 
             else if (message.StartsWith ("/fire"))
