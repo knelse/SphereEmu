@@ -19,6 +19,11 @@ public partial class NpcInteractable
         {
             modelName = modelName.PadRight (16, '\0');
         }
+        else if (NpcType is NpcType.Banker)
+        {
+            // npc_banker RcvUser takes the model only after a leading 0 byte
+            modelName = "\0" + modelName;
+        }
 
         PacketPart.UpdateValue (packetParts, "entity_type_name_length", modelName.Length, 8);
         PacketPart.UpdateValue (packetParts, "entity_type_name", modelName);

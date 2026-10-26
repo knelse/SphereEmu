@@ -23,6 +23,8 @@ public sealed class WorldSimulation
 
 	private readonly List<CombatResult> combatResults = new ();
 
+	private readonly List<(Guid PlayerId, byte[] Payload)> pendingUses = new ();
+
 	private readonly PersistenceQueue writer = new ();
 
 	private readonly MonsterActivity monsters = new ();
@@ -64,6 +66,14 @@ public sealed class WorldSimulation
 		return true;
 	}
 
+	/// <summary>
+	/// Applied at the next step, before the integrator, so that step moves from the exit
+	/// </summary>
+	public void EnqueueUse (Guid playerId, byte[] payload)
+	{
+		pendingUses.Add ((playerId, payload));
+	}
+
 	public bool TryGetWorldDatagram (Guid playerId, out byte[] datagram)
 	{
 		if (worldDatagrams.TryGetValue (playerId, out var stored) && stored is not null)
@@ -94,6 +104,7 @@ public sealed class WorldSimulation
 			PlayerInputBuffer.Step (slot, Tick);
 		}
 
+		StepUses ();
 		StepPlayers ();
 		StepRegen ();
 		monsters.Step ();
@@ -108,6 +119,21 @@ public sealed class WorldSimulation
 		var actions = writer.Take ();
 		var hits = TakeCombatResults ();
 		PersistenceQueue.ApplyBatch (actions, hits, Tick);
+	}
+
+	private void StepUses ()
+	{
+		if (pendingUses.Count == 0)
+		{
+			return;
+		}
+
+		foreach (var (playerId, payload) in pendingUses)
+		{
+			ObjectUse.Apply (playerId, payload);
+		}
+
+		pendingUses.Clear ();
 	}
 
 	private void StepPlayers ()

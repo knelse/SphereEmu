@@ -260,6 +260,64 @@ public static class PlayerMotion
 	}
 
 	/// <summary>
+	///     Moves the body to a game-frame pose and settles it as the seed does, so the next step
+	///     integrates from there. A body not seeded yet takes the pose through the store record
+	/// </summary>
+	public static bool Place (SphereClient client, Vector3 raw, float? yaw, out Vector3 placed)
+	{
+		placed = raw;
+		if (client.CurrentCharacter is not { } character)
+		{
+			return false;
+		}
+
+		var body = FindModel (client);
+		if (body is null || !players.TryGetValue (client.EntityID, out var motion)
+			|| SphServer.Server.SphereServer.ServerNode?.Motion is not { } stream)
+		{
+			var origin = ToGodot (raw);
+			character.X = origin.X;
+			character.Y = origin.Y;
+			character.Z = origin.Z;
+			if (yaw is { } seedYaw)
+			{
+				character.Angle = seedYaw;
+			}
+
+			return true;
+		}
+
+		if (yaw is { } heading)
+		{
+			body.Rotation = new Vector3 (0f, heading, 0f);
+			client.ApplyVisualYaw (heading);
+			motion.RotateView (heading);
+		}
+
+		stream.EnsureAroundWorldPosition (raw);
+		motion.SpawnX = raw.X;
+		motion.SpawnY = raw.Y;
+		motion.SpawnZ = raw.Z;
+		motion.VelocityX = 0f;
+		motion.VelocityY = 0f;
+		motion.VelocityZ = 0f;
+		motion.SlideX = 0f;
+		motion.SlideZ = 0f;
+		motion.SnapToGround (stream.Terrain, stream.Statics, motion.SpawnY);
+		if (!motion.Grounded)
+		{
+			motion.SettleToSupportBelow (stream.Terrain, stream.Statics, SeedSettleMeters);
+		}
+
+		motion.RecoverFromPenetration (stream.Terrain, stream.Statics);
+		motion.Grounded = true;
+		placed = new Vector3 (motion.SpawnX, motion.SpawnY, motion.SpawnZ);
+		lastGood[client.EntityID] = placed;
+		WritePose (client, character, body, motion);
+		return true;
+	}
+
+	/// <summary>
 	///     Pose out through the Y and Z negation. The node, the record and the wire all stay Godot
 	///     space, which is what the client's receive path converts back
 	/// </summary>

@@ -27,6 +27,9 @@ public sealed class MotionAssetSource
 	// static. Chests, tables, portals and NPC bodies carry such codes and do not block there
 	private const int SpecialPlacementCode = 10000;
 
+	// Client specialPoints_ is std::array<WorldSpecialPoint, 15000>, so a higher index never lands
+	private const int SpecialPointCount = 15000;
+
 	// Client loadStaticObjectGroups and instantiateStaticGroups: ids 0..499, group 99 never, and
 	// each continent's hundred only when its landscape directory exists
 	private const int StaticGroupCount = 500;
@@ -233,6 +236,46 @@ public sealed class MotionAssetSource
 		return placements;
 	}
 
+	/// <summary>
+	///     Client instantiateStaticGroups: a record at code 10000 + n is special point n, its rotation
+	///     X (offset 32) the heading. A point at y 0 is unset, as GetSpecial rejects it
+	/// </summary>
+	public static List<MotionSpecialPoint> ParseSpecialPoints (string mbdPath)
+	{
+		var points = new List<MotionSpecialPoint> ();
+		var bytes = File.ReadAllBytes (mbdPath);
+		if (bytes.Length < 4 || (bytes.Length - 4) % PlacementRecordBytes != 0)
+		{
+			return points;
+		}
+
+		var count = BinaryPrimitives.ReadInt32LittleEndian (bytes.AsSpan (0, 4));
+		if (count < 0 || count > (bytes.Length - 4) / PlacementRecordBytes)
+		{
+			return points;
+		}
+
+		for (var index = 0; index < count; ++index)
+		{
+			var off = 4 + index * PlacementRecordBytes;
+			var code = BinaryPrimitives.ReadUInt16LittleEndian (bytes.AsSpan (off + 18, 2));
+			if (code < SpecialPlacementCode || code - SpecialPlacementCode >= SpecialPointCount)
+			{
+				continue;
+			}
+
+			var position = ReadVector3 (bytes, off + 20);
+			if (position.Y == 0f)
+			{
+				continue;
+			}
+
+			points.Add (new MotionSpecialPoint (code - SpecialPlacementCode, position, ReadSingle (bytes, off + 32)));
+		}
+
+		return points;
+	}
+
 	public static string Absolute (string resPath) =>
 		resPath.Contains ("://", StringComparison.Ordinal)
 			? ProjectSettings.GlobalizePath (resPath)
@@ -264,3 +307,8 @@ public sealed class MotionAssetSource
 ///     roll), which is the order MotionMatrix.Placement expects
 /// </summary>
 public readonly record struct MotionPlacement (string ModelName, Vector3 Position, Vector3 Rotation);
+
+/// <summary>
+///     A client special point: its index, game-space position and heading
+/// </summary>
+public readonly record struct MotionSpecialPoint (int Index, Vector3 Position, float Heading);

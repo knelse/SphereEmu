@@ -11,4 +11,6 @@ public enum ConnectionCommand : ushort
 	DeleteCharacter = 13,
 	NameCheck = 14,
 	EnterWorld = 15,
+	UseObject = 16,
+	Teleport = 17,
 }

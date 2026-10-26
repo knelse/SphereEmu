@@ -9,6 +9,8 @@ Any analysis or edit that reads or changes `GeneratedScripts.cpp`, `GeneratedScr
 
 The audit is the whole feature, not only the function that was asked about. Include the callers, the callees, and the other functions on that screen or flow.
 
-For each chunk, name the functions and one existing destination (`core/gameplay`, `core/network`, `core/ui`, `core/world`). A refactor or a rewrite is fine. Say what stays in the generated file. That should be a call into the new code, or nothing.
+For each chunk, name the functions and one existing destination (`core/gameplay`, `core/network`, `core/ui`, `core/world`). A refactor or a rewrite is fine.
+
+Removing a chunk deletes it from `GeneratedScripts.cpp`. Do not leave a forwarding call there. Define the function in the destination file. A caller that only exists to reach that function moves with it. The audit names any call that remains, and that call is the interpreter dispatching a virtual or a tick. It is not a wrapper.
 
 New behavior is not added to the generated file. The generated file stays the interpreter.

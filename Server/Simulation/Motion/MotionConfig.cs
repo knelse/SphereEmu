@@ -9,6 +9,10 @@ namespace SphServer.Server.Simulation.Motion;
 public static class MotionConfig
 {
 	public const float TileSize = 100f;
+
+	// Client roomIndex and advanceTeleport: past game y 1000 are the dungeon rooms, under the
+	// FILL_EMPT filler tiles, so terrain there is a surface thousands of metres above the room
+	public const float DungeonDepth = 1000f;
 	public const int OriginRow = 40;
 	public const int OriginColumn = 39;
 	public const int VisibleRadius = 3;

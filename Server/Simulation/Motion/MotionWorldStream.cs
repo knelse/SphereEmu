@@ -31,6 +31,9 @@ public partial class MotionWorldStream : Node
 	private readonly Dictionary<(int Gx, int Gz), List<MotionPlacement>> placementsByCell = [];
 	private bool placementsBuilt;
 
+	// Later groups overwrite an index, as the client's specialPoints_ fill does
+	private readonly Dictionary<int, MotionSpecialPoint> specialPoints = [];
+
 	private int terrainLoadFailures;
 	private int staticLoadFailures;
 
@@ -87,10 +90,22 @@ public partial class MotionWorldStream : Node
 				list.Add (placement);
 				total++;
 			}
+
+			foreach (var point in MotionAssetSource.ParseSpecialPoints (file))
+			{
+				specialPoints[point.Index] = point;
+			}
 		}
 
-		SphLogger.Info ($"MotionWorldStream: {total} placements in {placementsByCell.Count} cells");
+		SphLogger.Info ($"MotionWorldStream: {total} placements in {placementsByCell.Count} cells, "
+			+ $"{specialPoints.Count} special points");
 	}
+
+	/// <summary>
+	///     Client GetSpecial: the game-space pose of special point index
+	/// </summary>
+	public bool TryGetSpecialPoint (int index, out MotionSpecialPoint point) =>
+		specialPoints.TryGetValue (index, out point);
 
 	/// <summary>
 	///     Load the collision a player at this pose needs: tiles within TerrainRadiusTiles, statics

@@ -7,7 +7,7 @@ using SphServer.Shared.BitStream;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Networking;
-using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Server.Simulation;
 using SphServer.Shared.WorldState;
 
 namespace SphServer.Server.UI.Admin;
@@ -60,10 +60,12 @@ public static class AdminClientActions
             return false;
         }
 
+        if (!PlayerTeleport.Move (client, worldCoords))
+        {
+            return false;
+        }
+
         AdminActionLog.Info (client, $"teleported to [{worldCoords}] via \"{destinationLabel}\"");
-        var teleportPacket =
-            new CharacterDbEntrySerializer (client.CurrentCharacter).GetTeleportByteArray (worldCoords);
-        client.MaybeQueueNetworkPacketSend (teleportPacket);
         client.GrantRespawnProtection ();
         return true;
     }

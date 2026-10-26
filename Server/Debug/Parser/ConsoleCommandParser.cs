@@ -10,7 +10,7 @@ using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
 using SphServer.Shared.Networking.Chat.Encoders;
-using SphServer.Shared.Networking.DataModel.Serializers;
+using SphServer.Server.Simulation;
 using SphServer.Shared.WorldState;
 using SphServer.System;
 using static SphServer.Shared.Networking.DataModel.Serializers.SphereDbEntrySerializerBase;
@@ -359,10 +359,11 @@ public partial class ConsoleCommandParser
                 var coords = split
                     .Select (x => double.Parse (x.Replace (',', '.'), CultureInfo.InvariantCulture))
                     .ToArray ();
-                sphereClient?.MaybeQueueNetworkPacketSend (
-                    new CharacterDbEntrySerializer (currentCharacterDbEntry).GetTeleportByteArray (new WorldCoords (
-                        coords[0], coords[1], coords[2])));
-                sphereClient?.GrantRespawnProtection ();
+                if (sphereClient is { } client)
+                {
+                    PlayerTeleport.Move (client, new WorldCoords (coords[0], coords[1], coords[2]));
+                    client.GrantRespawnProtection ();
+                }
             }
             catch (Exception ex)
             {
@@ -380,9 +381,11 @@ public partial class ConsoleCommandParser
                     if (Enum.TryParse<PoiType> (location[1], out var poiType))
                     {
                         var coords = SavedCoords.TeleportPoints[continent][poiType][location[2]];
-                        sphereClient?.MaybeQueueNetworkPacketSend (
-                            new CharacterDbEntrySerializer (currentCharacterDbEntry).GetTeleportByteArray (coords));
-                        sphereClient?.GrantRespawnProtection ();
+                        if (sphereClient is { } client)
+                        {
+                            PlayerTeleport.Move (client, coords);
+                            client.GrantRespawnProtection ();
+                        }
                     }
                 }
             }

@@ -287,6 +287,11 @@ public sealed class MotionTerrainField
 	{
 		outHeight = referenceY;
 		outNormal = Vector3.Zero;
+		if (referenceY > MotionConfig.DungeonDepth)
+		{
+			return false;
+		}
+
 		var bestHeight = referenceY;
 		var bestDistance = float.MaxValue;
 		var bestNormal = Vector3.Zero;

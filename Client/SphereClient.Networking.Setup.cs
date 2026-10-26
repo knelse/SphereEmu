@@ -1,5 +1,6 @@
 using SphServer.Client.Networking;
 using SphServer.Server.Login.Secure;
+using SphServer.Server.Simulation;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -42,6 +43,11 @@ public partial class SphereClient
 		}
 
 		clientConnection.SendSessionPacket (packet);
+	}
+
+	public void SendReliable (ConnectionCommand command, ReadOnlySpan<byte> payload)
+	{
+		clientConnection?.SendReliable (command, payload);
 	}
 
 	public bool TryBindResume (PlayerDbEntry player)

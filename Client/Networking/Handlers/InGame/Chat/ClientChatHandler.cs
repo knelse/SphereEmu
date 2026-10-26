@@ -9,7 +9,6 @@ using SphServer.Server.Debug;
 using SphServer.Server.Debug.Parser;
 using SphServer.Shared.Logger;
 using SphServer.Shared.Networking;
-using SphServer.Shared.Networking.DataModel.Serializers;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
 using SphServer.System;
@@ -260,9 +259,7 @@ public class ClientChatHandler (ClientConnection clientConnection)
                         return;
                     }
 
-                    clientConnection.MaybeScheduleNetworkPacketSend (
-                        new CharacterDbEntrySerializer (clientConnection.GetSelectedCharacter ()!).GetTeleportByteArray (
-                            tpCoords));
+                    clientConnection.TeleportTo (tpCoords);
                     return;
                 }
 
@@ -275,9 +272,7 @@ public class ClientChatHandler (ClientConnection clientConnection)
                 var teleportCoords =
                     new WorldCoords (double.Parse (coords[1]), double.Parse (coords[2]), double.Parse (coords[3]));
 
-                clientConnection.MaybeScheduleNetworkPacketSend (
-                    new CharacterDbEntrySerializer (clientConnection.GetSelectedCharacter ()!).GetTeleportByteArray (
-                        teleportCoords));
+                clientConnection.TeleportTo (teleportCoords);
             }
 
             else if (message.StartsWith ("/buff"))

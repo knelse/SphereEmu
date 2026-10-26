@@ -21,6 +21,7 @@ using SphServer.Packets;
 using SphServer.Server;
 using SphServer.Server.Broadcast;
 using SphServer.Server.Config;
+using SphServer.Helpers;
 using SphServer.Server.Simulation;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
@@ -52,6 +53,8 @@ public class ClientConnection (SphereClient sphereClient)
     private double timeSinceFirstPositionKeepalive;
     private bool starterMutatorSent;
     private bool playerCountPublished;
+    private uint reliableSendSeq;
+    private uint reliableReceivedSeq;
 
     /// <summary>
     /// True after the client has sent its first in-world position keepalive.
@@ -393,6 +396,11 @@ public class ClientConnection (SphereClient sphereClient)
         beforeGameSend?.Invoke (packet);
     }
 
+    public bool TeleportTo (WorldCoords coords)
+    {
+        return PlayerTeleport.Move (sphereClient, coords);
+    }
+
     public void SendSessionPacket (byte[] packet)
     {
         if (beforeGameSend is null)
@@ -449,19 +457,35 @@ public class ClientConnection (SphereClient sphereClient)
         }
 
         var reliableBody = plain.AsSpan (1).ToArray ();
-        if (!ReliableDatagram.TryDecode (reliableBody, out _, out _, out var command, out _))
+        if (!ReliableDatagram.TryDecode (reliableBody, out var seq, out _, out var command, out var payload))
         {
             return true;
         }
 
+        reliableReceivedSeq = seq;
         switch (command)
         {
             case ConnectionCommand.NameCheck:
             case ConnectionCommand.EnterWorld:
                 break;
+            case ConnectionCommand.UseObject:
+                SphereServer.ServerNode.Simulation.EnqueueUse (sphereClient.EntityID, payload);
+                break;
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Channel 3 to this client, acking the last channel 3 seq it sent
+    /// </summary>
+    public void SendReliable (ConnectionCommand command, ReadOnlySpan<byte> payload)
+    {
+        var body = ReliableDatagram.Encode (++reliableSendSeq, reliableReceivedSeq, command, payload);
+        var wire = new byte[1 + body.Length];
+        wire[0] = ReliableDatagram.Channel;
+        body.CopyTo (wire, 1);
+        SendSessionPacket (wire);
     }
 
     public void MaybeScheduleNetworkPacketSend (byte[] packet)

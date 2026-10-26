@@ -53,7 +53,8 @@ public partial class WorldObject
     /// </summary>
     internal void EnsureVisibleToClient (SphereClient client)
     {
-        if (Engine.IsEditorHint () || !GodotObject.IsInstanceValid (client) || client.CurrentCharacter is null)
+        if (Engine.IsEditorHint () || !GodotObject.IsInstanceValid (client) || client.CurrentCharacter is null
+            || ReferenceEquals (client, this))
         {
             return;
         }
@@ -91,7 +92,7 @@ public partial class WorldObject
             return;
         }
 
-        if (!_visibleClients.Add (client))
+        if (ReferenceEquals (client, this) || !_visibleClients.Add (client))
         {
             return;
         }
@@ -108,7 +109,9 @@ public partial class WorldObject
             return;
         }
 
-        if (!_visibleClients.Remove (client))
+        // A player's own body sits in its own area, and a teleport reports it leaving, which
+        // despawned the player on its own client
+        if (ReferenceEquals (client, this) || !_visibleClients.Remove (client))
         {
             return;
         }
