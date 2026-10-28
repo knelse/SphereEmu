@@ -1,3 +1,13 @@
+⚠️ WARNING ⚠️: This repo is archived to prevent donation-based servers forked from it. You're welcome to use any part of it as you wish as long as you adhere to the license.
+
+Project itself is alive and well -- come join us at https://discord.gg/dyuctMnkyr to check out new releases and chat.
+
+-----------------------
+
+⚠️ ВНИМАНИЕ ⚠️: репозиторий архивирован, чтобы предотвратить появление форков с донатом. Разрешается пользоваться любыми его частями, если вы соблюдаете лицензию.
+
+Проект жив и здоров -- приходите в дискорд https://discord.gg/dyuctMnkyr  за новыми релизами и просто поболтать.
+
 # SphereEmu
 Early WIP Sphere (old Russian MMORPG) server emulator
 
