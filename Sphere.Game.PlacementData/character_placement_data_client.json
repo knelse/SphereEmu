@@ -327,7 +327,7 @@
   "z": -3253.98,
   "heading": -4.695,
   "target_for_id": "c65dd3ec-1eb9-4017-a365-5bc791fb083c",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Йонг"
  },
  {
   "index": 1099,
@@ -349,7 +349,7 @@
   "z": 106.71,
   "heading": 3.142,
   "target_for_id": "3e977ec3-6255-4f19-a425-2d3d0b5febe0",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/Cemetery/Шипстоун"
  },
  {
   "index": 1101,
@@ -371,7 +371,7 @@
   "z": 99.9,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/Cemetery/Бангвиль"
  },
  {
   "index": 1103,
@@ -415,7 +415,7 @@
   "z": 106.3,
   "heading": 3.142,
   "target_for_id": "7cf7123e-c16f-41e1-8525-3e97aa423e22",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/Cemetery/Торвил"
  },
  {
   "index": 1107,
@@ -459,7 +459,7 @@
   "z": 106.34,
   "heading": 3.142,
   "target_for_id": "4e5091c9-b8c3-426b-bbdd-467ed80e3b7a",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/Cemetery/Санпул"
  },
  {
   "index": 1111,
@@ -503,7 +503,7 @@
   "z": 105.21,
   "heading": 3.142,
   "target_for_id": "f904df88-a632-424b-a92f-31a7ae9cfe25",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Шипстоун_Север"
  },
  {
   "index": 1115,
@@ -547,7 +547,7 @@
   "z": 100.06,
   "heading": 4.712,
   "target_for_id": "4d7d22d3-2f58-4cc6-9113-caece68e4eaa",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Санпул_Карма_Север"
  },
  {
   "index": 1119,
@@ -569,7 +569,7 @@
   "z": 99.83,
   "heading": 1.571,
   "target_for_id": "7ad1d341-ebfb-4203-bdde-07e77b7bf051",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Хортонский_Лес"
  },
  {
   "index": 1121,
@@ -591,7 +591,7 @@
   "z": 100.16,
   "heading": 4.712,
   "target_for_id": "3b54644f-7078-4439-8124-69d405524a11",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Горы_Дорога_Санпул_Торвил"
  },
  {
   "index": 1123,
@@ -613,7 +613,7 @@
   "z": 105.85,
   "heading": 3.142,
   "target_for_id": "d477f9b8-b458-4345-9e49-e624c3fd8f3d",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Бангвиль"
  },
  {
   "index": 1125,
@@ -635,7 +635,7 @@
   "z": 100.02,
   "heading": 1.571,
   "target_for_id": "5c346ccb-d018-4502-95b1-2e6aa99bea1e",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Каре_Рояль_Север"
  },
  {
   "index": 1127,
@@ -657,7 +657,7 @@
   "z": 100.08,
   "heading": 4.712,
   "target_for_id": "d24eb68d-e3b2-4d18-920e-534aa353d8cf",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Каре_Рояль_Юг"
  },
  {
   "index": 1129,
@@ -701,7 +701,7 @@
   "z": 100.01,
   "heading": 4.712,
   "target_for_id": "f1d95c8c-1ddb-4193-9abb-c2ea148c9c9c",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Блессендор"
  },
  {
   "index": 1133,
@@ -723,7 +723,7 @@
   "z": 106.58,
   "heading": 3.142,
   "target_for_id": "17cbee2f-2298-44cf-946a-369689c478b5",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Латор_Каблак"
  },
  {
   "index": 1135,
@@ -745,7 +745,7 @@
   "z": 33.66,
   "heading": 0.0,
   "target_for_id": "b673a962-7d63-4615-94dc-4236fc41efaf",
-  "target_for_point_path": "Гиперион/SharedDungeon/Фьеф_Респ_Меди_1136"
+  "target_for_point_path": "Гиперион/SharedDungeon/Фьеф_Респ_Меди"
  },
  {
   "index": 1137,
@@ -767,7 +767,7 @@
   "z": 145.05,
   "heading": 4.712,
   "target_for_id": "a6599447-e746-48f0-8d42-ac8073471cde",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Аммалаэль"
  },
  {
   "index": 1139,
@@ -789,7 +789,7 @@
   "z": 54.87,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/SharedDungeon/Санпул_Лес_1140"
+  "target_for_point_path": "Гиперион/SharedDungeon/Санпул_Лес"
  },
  {
   "index": 1141,
@@ -811,7 +811,7 @@
   "z": 100.01,
   "heading": 4.712,
   "target_for_id": "4a1243a8-bc71-43fe-a3bd-22d103ed10ed",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/SharedDungeon/Торвил_Кладб"
  },
  {
   "index": 1143,
@@ -833,7 +833,7 @@
   "z": -3499.93,
   "heading": 1.571,
   "target_for_id": "e7cb792a-233e-40c3-aa7d-9d3bacc09080",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Льеж"
  },
  {
   "index": 1145,
@@ -855,7 +855,7 @@
   "z": -3498.3,
   "heading": 3.142,
   "target_for_id": "e33c88bc-8344-4715-b1f7-08cd09d3ddce",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Фьеф"
  },
  {
   "index": 1147,
@@ -877,7 +877,7 @@
   "z": -3500.08,
   "heading": 4.712,
   "target_for_id": "6cee78f5-6b22-4113-acac-0f1601505b07",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Арис"
  },
  {
   "index": 1149,
@@ -899,7 +899,7 @@
   "z": -3437.19,
   "heading": 3.142,
   "target_for_id": "30491a67-50fc-439b-8ad5-d4189efdf1de",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Латор"
  },
  {
   "index": 1151,
@@ -921,7 +921,7 @@
   "z": -3565.28,
   "heading": 0.0,
   "target_for_id": "4308e88e-82fa-40d5-ad55-84a5e835195f",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Эйкум_Кас"
  },
  {
   "index": 1153,
@@ -943,7 +943,7 @@
   "z": -3454.77,
   "heading": 4.712,
   "target_for_id": "5556f2fb-0568-417e-81f3-acfe31728858",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Гедеон"
  },
  {
   "index": 1155,
@@ -965,7 +965,7 @@
   "z": -3497.64,
   "heading": 3.142,
   "target_for_id": "9d2595f3-4241-45bc-9fee-21b586263739",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Шателье"
  },
  {
   "index": 1157,
@@ -987,7 +987,7 @@
   "z": -3499.95,
   "heading": 1.571,
   "target_for_id": "4f0b5d17-fa1b-455a-a2a3-fd0004bffe17",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Туанод"
  },
  {
   "index": 1159,
@@ -1009,7 +1009,7 @@
   "z": -3499.07,
   "heading": 3.142,
   "target_for_id": "dfd55807-5ba6-4fc4-bb7b-6a1dcdbc6a17",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Пельтье"
  },
  {
   "index": 1161,
@@ -1031,7 +1031,7 @@
   "z": -3499.99,
   "heading": 4.712,
   "target_for_id": "8e2a174c-1a13-4db7-a9d7-447163dca203",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Каре_Рояль"
  },
  {
   "index": 1163,
@@ -1053,7 +1053,7 @@
   "z": -3469.97,
   "heading": 4.712,
   "target_for_id": "6d93340b-cf16-4c45-bc3f-db1968fa8dea",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Блессендор"
  },
  {
   "index": 1165,
@@ -1075,7 +1075,7 @@
   "z": -3495.89,
   "heading": 3.142,
   "target_for_id": "936d7f7f-1700-4039-81d4-3e2c2f43f65d",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Терноваль"
  },
  {
   "index": 1167,
@@ -1097,7 +1097,7 @@
   "z": -3501.81,
   "heading": 0.0,
   "target_for_id": "04022684-72ac-443d-bd72-824e2448a373",
-  "target_for_point_path": "Гиперион/CastleDungeon/Аммалаэль_1168"
+  "target_for_point_path": "Гиперион/CastleDungeon/Аммалаэль"
  },
  {
   "index": 1169,
@@ -1119,7 +1119,7 @@
   "z": -3544.76,
   "heading": 4.712,
   "target_for_id": "e39797dc-5ef5-4f8d-b7b2-f5f9f68e5680",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Каблак"
  },
  {
   "index": 1171,
@@ -1163,7 +1163,7 @@
   "z": -3455.03,
   "heading": 1.571,
   "target_for_id": "863559e1-d390-4cec-95e6-8938c3d9dcd8",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Сабулат"
  },
  {
   "index": 1175,
@@ -1185,7 +1185,7 @@
   "z": -3500.03,
   "heading": 4.712,
   "target_for_id": "db846dc1-7e1a-424c-b7cb-600321a2baad",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Деффенсат"
  },
  {
   "index": 1177,
@@ -1207,7 +1207,7 @@
   "z": -3499.99,
   "heading": 4.712,
   "target_for_id": "c4c1ef2b-db43-423d-a3b6-9817385fe9dd",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Айонат"
  },
  {
   "index": 1179,
@@ -1229,7 +1229,7 @@
   "z": -3501.81,
   "heading": 0.0,
   "target_for_id": "32f3e5f8-a843-4231-9e95-6bef03c0a263",
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleDungeon/Триумфалер"
  },
  {
   "index": 1181,
@@ -1251,7 +1251,7 @@
   "z": -3299.07,
   "heading": 1.168,
   "target_for_id": "dff77a5c-debd-4bad-b9d2-01b08b209425",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Багарнак"
  },
  {
   "index": 1183,
@@ -1273,7 +1273,7 @@
   "z": -3254.85,
   "heading": 1.571,
   "target_for_id": "9f3fc868-afb8-4ff6-b748-3caa18421bdb",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Кабрад"
  },
  {
   "index": 1185,
@@ -1317,7 +1317,7 @@
   "z": -3299.04,
   "heading": 1.507,
   "target_for_id": "c16752ed-fe23-42c9-b794-2f4791ea6f01",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Лендер"
  },
  {
   "index": 1189,
@@ -1339,7 +1339,7 @@
   "z": -3315.88,
   "heading": -1.555,
   "target_for_id": "b86eeae0-4004-4a31-b126-cbe2be398e2d",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Келес"
  },
  {
   "index": 1191,
@@ -1361,7 +1361,7 @@
   "z": -3284.97,
   "heading": 4.712,
   "target_for_id": "90fa4855-f3c8-4426-9e01-70631d16db80",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Шепростан"
  },
  {
   "index": 1193,
@@ -1383,7 +1383,7 @@
   "z": -3300.8,
   "heading": 1.283,
   "target_for_id": "5806c0e6-d094-4c3a-8cfe-3f3ae44d714d",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Оркобьен"
  },
  {
   "index": 1195,
@@ -1405,7 +1405,7 @@
   "z": -3499.04,
   "heading": 1.354,
   "target_for_id": "ebbf59bb-1bdd-49f3-ae34-3197a18a8f3a",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Кануак"
  },
  {
   "index": 1197,
@@ -1427,7 +1427,7 @@
   "z": -3305.45,
   "heading": 0.0,
   "target_for_id": "9fb12762-3837-440b-b68a-c18e87fc96d0",
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleDungeon/Алдарнон"
  },
  {
   "index": 1199,
@@ -5453,7 +5453,7 @@
   "z": -3314.97,
   "heading": -4.579,
   "target_for_id": "6620a956-1b68-4fcf-b683-b54dce038222",
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/CastleDungeon/Элек"
  },
  {
   "index": 1585,
@@ -5475,7 +5475,7 @@
   "z": -3218.55,
   "heading": -3.065,
   "target_for_id": "9e4dc134-59b9-4f86-9844-f799447d1b95",
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/CastleDungeon/Гавот"
  },
  {
   "index": 1587,
@@ -5618,7 +5618,7 @@
   "z": 2095.32,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Северная_Дорога_1850"
+  "target_for_point_path": "Гиперион/TeleportPoint/Северная_Дорога"
  },
  {
   "index": 1851,
@@ -5629,7 +5629,7 @@
   "z": 1132.38,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Северо_Западный_Край"
  },
  {
   "index": 1852,
@@ -5640,7 +5640,7 @@
   "z": 1161.43,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Шипстоун_Санпул"
  },
  {
   "index": 1853,
@@ -5651,7 +5651,7 @@
   "z": 933.39,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Шипстоун_Бангвиль_1853"
+  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Шипстоун_Бангвиль"
  },
  {
   "index": 1854,
@@ -5662,7 +5662,7 @@
   "z": 918.86,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Северо_Запад_1854"
+  "target_for_point_path": "Гиперион/TeleportPoint/Северо_Запад"
  },
  {
   "index": 1855,
@@ -5673,7 +5673,7 @@
   "z": 614.49,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Умрадский_Лес"
  },
  {
   "index": 1856,
@@ -5684,7 +5684,7 @@
   "z": 504.55,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Серебряный_Лес_1856"
+  "target_for_point_path": "Гиперион/TeleportPoint/Серебряный_Лес"
  },
  {
   "index": 1857,
@@ -5695,7 +5695,7 @@
   "z": 544.81,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Шипстоун_Торвил_1857"
+  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Шипстоун_Торвил"
  },
  {
   "index": 1858,
@@ -5706,7 +5706,7 @@
   "z": 364.32,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Горы_Шипстоун_Бангвиль_1858"
+  "target_for_point_path": "Гиперион/TeleportPoint/Горы_Шипстоун_Бангвиль"
  },
  {
   "index": 1859,
@@ -5717,7 +5717,7 @@
   "z": -57.16,
   "heading": 1.261,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Озеро_Темер"
  },
  {
   "index": 1860,
@@ -5728,7 +5728,7 @@
   "z": -285.09,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Санпул_Шипстоун_Озеро_Вортекс"
  },
  {
   "index": 1861,
@@ -5739,7 +5739,7 @@
   "z": -355.68,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Дорога_Санпул_Бангвиль_Озеро_Вортекс"
  },
  {
   "index": 1862,
@@ -5750,7 +5750,7 @@
   "z": -374.27,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Остров_Гебер_Озеро_Темер"
  },
  {
   "index": 1863,
@@ -5761,7 +5761,7 @@
   "z": -653.57,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Остров_Форос_Озеро_Вортекс"
  },
  {
   "index": 1864,
@@ -5772,7 +5772,7 @@
   "z": -692.39,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Устье_Реки_Нерей_1864"
+  "target_for_point_path": "Гиперион/TeleportPoint/Устье_Реки_Нерей"
  },
  {
   "index": 1865,
@@ -5783,7 +5783,7 @@
   "z": -1525.45,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Остров_Дейрос_Озеро_Вортекс"
  },
  {
   "index": 1866,
@@ -5794,7 +5794,7 @@
   "z": -1533.03,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Восточный_Лес"
  },
  {
   "index": 1877,
@@ -5805,7 +5805,7 @@
   "z": -1684.39,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/TeleportPoint/Устье_Реки_Диомы_1877"
+  "target_for_point_path": "Гиперион/TeleportPoint/Устье_Реки_Диомы"
  },
  {
   "index": 1878,
@@ -5816,7 +5816,7 @@
   "z": -1945.26,
   "heading": -0.848,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Хортонский_Лес"
  },
  {
   "index": 1879,
@@ -5827,7 +5827,7 @@
   "z": -2729.79,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Горы_Дорога_Санпул_Торвил"
  },
  {
   "index": 1880,
@@ -5838,7 +5838,7 @@
   "z": -2825.39,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Остров_Патрос_Озеро_Атласное"
  },
  {
   "index": 1881,
@@ -5849,7 +5849,7 @@
   "z": -2860.9,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Юго_Восточный_Горный_Карман"
  },
  {
   "index": 1882,
@@ -5860,7 +5860,7 @@
   "z": -3308.64,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Койтонский_Лес_Север"
  },
  {
   "index": 1883,
@@ -5871,7 +5871,7 @@
   "z": -3737.08,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Юго_Западный_Край"
  },
  {
   "index": 1884,
@@ -5882,7 +5882,7 @@
   "z": 1315.2,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Мост_Тантал"
  },
  {
   "index": 1885,
@@ -5893,7 +5893,7 @@
   "z": 1632.75,
   "heading": -0.77,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Обол"
  },
  {
   "index": 1890,
@@ -5926,7 +5926,7 @@
   "z": 47.1,
   "heading": 1.503,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Льеж"
  },
  {
   "index": 1901,
@@ -5948,7 +5948,7 @@
   "z": 1054.17,
   "heading": -1.566,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Арис"
  },
  {
   "index": 1903,
@@ -5959,7 +5959,7 @@
   "z": 1444.99,
   "heading": -4.702,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Латор"
  },
  {
   "index": 1904,
@@ -5970,7 +5970,7 @@
   "z": 382.03,
   "heading": -2.764,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Эйкум_Кас"
  },
  {
   "index": 1905,
@@ -5981,7 +5981,7 @@
   "z": -2193.8,
   "heading": -0.223,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Гедеон"
  },
  {
   "index": 1906,
@@ -6003,7 +6003,7 @@
   "z": 2405.22,
   "heading": -0.045,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Туанод"
  },
  {
   "index": 1908,
@@ -6014,7 +6014,7 @@
   "z": -841.95,
   "heading": -1.574,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Пельтье"
  },
  {
   "index": 1909,
@@ -6025,7 +6025,7 @@
   "z": -1285.06,
   "heading": 0.93,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Каре_Рояль"
  },
  {
   "index": 1910,
@@ -6036,7 +6036,7 @@
   "z": -3463.27,
   "heading": -1.272,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Блессендор"
  },
  {
   "index": 1911,
@@ -6047,7 +6047,7 @@
   "z": 791.7,
   "heading": -3.713,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Терноваль"
  },
  {
   "index": 1912,
@@ -6069,7 +6069,7 @@
   "z": 950.74,
   "heading": -4.706,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Каблак"
  },
  {
   "index": 1914,
@@ -6080,7 +6080,7 @@
   "z": -1683.31,
   "heading": -0.688,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Дэванагари"
  },
  {
   "index": 1915,
@@ -6091,7 +6091,7 @@
   "z": -1792.7,
   "heading": 0.018,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Сабулат"
  },
  {
   "index": 1916,
@@ -6102,7 +6102,7 @@
   "z": -3609.5,
   "heading": -2.634,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Деффенсат"
  },
  {
   "index": 1917,
@@ -6113,7 +6113,7 @@
   "z": -2349.12,
   "heading": 1.547,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleTeleportPointEnemy/Айонат"
  },
  {
   "index": 1918,
@@ -6344,7 +6344,7 @@
   "z": 1982.19,
   "heading": 0.42,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/Other/Черная_Башня"
  },
  {
   "index": 1980,
@@ -6366,7 +6366,7 @@
   "z": 1630.66,
   "heading": -1.531,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/TeleportPoint/Обратно_С_Харона"
  },
  {
   "index": 1982,
@@ -10392,7 +10392,7 @@
   "z": -3898.72,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Льеж"
  },
  {
   "index": 9401,
@@ -10403,7 +10403,7 @@
   "z": -3907.45,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Фьеф"
  },
  {
   "index": 9402,
@@ -10414,7 +10414,7 @@
   "z": -3897.06,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Арис"
  },
  {
   "index": 9403,
@@ -10425,7 +10425,7 @@
   "z": -3910.14,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Латор"
  },
  {
   "index": 9404,
@@ -10436,7 +10436,7 @@
   "z": -3889.87,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Эйкум_Кас"
  },
  {
   "index": 9405,
@@ -10447,7 +10447,7 @@
   "z": 1092.86,
   "heading": 0.015,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Гедеон"
  },
  {
   "index": 9406,
@@ -10458,7 +10458,7 @@
   "z": 1097.04,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Шателье"
  },
  {
   "index": 9407,
@@ -10469,7 +10469,7 @@
   "z": 1098.49,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Туанод"
  },
  {
   "index": 9408,
@@ -10480,7 +10480,7 @@
   "z": 1099.94,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Пельтье"
  },
  {
   "index": 9409,
@@ -10491,7 +10491,7 @@
   "z": 1091.78,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Каре_Рояль"
  },
  {
   "index": 9410,
@@ -10502,7 +10502,7 @@
   "z": 1096.98,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Блессендор"
  },
  {
   "index": 9411,
@@ -10513,7 +10513,7 @@
   "z": 1108.17,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Терноваль"
  },
  {
   "index": 9412,
@@ -10524,7 +10524,7 @@
   "z": 1104.42,
   "heading": -2.01,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Аммалаэль"
  },
  {
   "index": 9413,
@@ -10535,7 +10535,7 @@
   "z": 1108.18,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Каблак"
  },
  {
   "index": 9414,
@@ -10546,7 +10546,7 @@
   "z": 1104.25,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Дэванагари"
  },
  {
   "index": 9415,
@@ -10557,7 +10557,7 @@
   "z": 1084.39,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Сабулат"
  },
  {
   "index": 9416,
@@ -10568,7 +10568,7 @@
   "z": 1108.73,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Деффенсат"
  },
  {
   "index": 9417,
@@ -10579,7 +10579,7 @@
   "z": 1092.55,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Айонат"
  },
  {
   "index": 9418,
@@ -10590,7 +10590,7 @@
   "z": 1094.57,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/CastleInnerArea/Триумфалер"
  },
  {
   "index": 9419,
@@ -10601,7 +10601,7 @@
   "z": 1092.86,
   "heading": 0.015,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Багарнак"
  },
  {
   "index": 9420,
@@ -10612,7 +10612,7 @@
   "z": 1125.14,
   "heading": -3.995,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Кабрад"
  },
  {
   "index": 9421,
@@ -10623,7 +10623,7 @@
   "z": 1098.49,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Сет"
  },
  {
   "index": 9422,
@@ -10634,7 +10634,7 @@
   "z": 1099.94,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Лендер"
  },
  {
   "index": 9423,
@@ -10645,7 +10645,7 @@
   "z": 1091.78,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Келес"
  },
  {
   "index": 9424,
@@ -10656,7 +10656,7 @@
   "z": 1096.98,
   "heading": 4.712,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Шепростан"
  },
  {
   "index": 9425,
@@ -10667,7 +10667,7 @@
   "z": 1108.17,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Оркобьен"
  },
  {
   "index": 9426,
@@ -10678,7 +10678,7 @@
   "z": 1104.42,
   "heading": -2.01,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Кануак"
  },
  {
   "index": 9427,
@@ -10689,7 +10689,7 @@
   "z": 1108.18,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Алдарнон"
  },
  {
   "index": 9428,
@@ -10700,7 +10700,7 @@
   "z": 1104.25,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Харон/CastleInnerArea/Йонг"
  },
  {
   "index": 9429,
@@ -10711,7 +10711,7 @@
   "z": 1092.86,
   "heading": 0.015,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/CastleInnerArea/Элек"
  },
  {
   "index": 9430,
@@ -10722,7 +10722,7 @@
   "z": 1125.14,
   "heading": -3.995,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/CastleInnerArea/Гавот"
  },
  {
   "index": 9431,
@@ -10733,7 +10733,7 @@
   "z": 1098.49,
   "heading": 1.571,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/CastleInnerArea/Кандур"
  },
  {
   "index": 9432,
@@ -10744,7 +10744,7 @@
   "z": 1093.25,
   "heading": 0.0,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Родос/CastleInnerArea/Иммертель"
  },
  {
   "index": 9433,
@@ -10755,7 +10755,7 @@
   "z": 1097.22,
   "heading": -1.548,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Родос/CastleInnerArea/Нарцисс"
  },
  {
   "index": 9434,
@@ -10766,7 +10766,7 @@
   "z": 1098.64,
   "heading": -4.687,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Родос/CastleInnerArea/Ранден"
  },
  {
   "index": 9435,
@@ -10777,7 +10777,7 @@
   "z": 1100.05,
   "heading": -1.466,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Родос/CastleInnerArea/Ниргун"
  },
  {
   "index": 9436,
@@ -10788,7 +10788,7 @@
   "z": 1098.65,
   "heading": -1.492,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Родос/CastleInnerArea/Гелгивинн"
  },
  {
   "index": 9437,
@@ -14528,7 +14528,7 @@
   "z": -1894.27,
   "heading": -2.868,
   "target_for_id": null,
-  "target_for_point_path": "Феб/SharedDungeon/Фебоданж_2_13200"
+  "target_for_point_path": "Феб/SharedDungeon/Фебоданж_2"
  },
  {
   "index": 13201,
@@ -14539,7 +14539,7 @@
   "z": -1900.11,
   "heading": -4.565,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/SharedDungeon/Фебоданж_3"
  },
  {
   "index": 13202,
@@ -14550,7 +14550,7 @@
   "z": -1884.86,
   "heading": -1.473,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Феб/SharedDungeon/Фебоданж_4"
  },
  {
   "index": 13203,
@@ -14638,7 +14638,7 @@
   "z": 29.79,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": null
+  "target_for_point_path": "Гиперион/Event/Белая_комната_Воды"
  },
  {
   "index": 13211,
@@ -14671,6 +14671,6 @@
   "z": 29.29,
   "heading": 3.142,
   "target_for_id": null,
-  "target_for_point_path": "Гиперион/Event/Белая_комната_Воздуха_13213"
+  "target_for_point_path": "Гиперион/Event/Белая_комната_Воздуха"
  }
 ]
