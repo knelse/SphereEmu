@@ -222,15 +222,16 @@ public partial class TeleportDestinationWindow : Window
         var (name, coords) = destinations[nameIndex];
         var continentIndex = continentList is null ? -1 : GetSelectedIndex (continentList);
         var poiIndex = poiTypeList is null ? -1 : GetSelectedIndex (poiTypeList);
-        var continentLabel = continentIndex >= 0 && continentIndex < continents.Count
-            ? continents[continentIndex].ToString ()
-            : "?";
+        Continents? continent = continentIndex >= 0 && continentIndex < continents.Count
+            ? continents[continentIndex]
+            : null;
+        var continentLabel = continent?.ToString () ?? "?";
         var poiLabel = poiIndex >= 0 && poiIndex < poiTypes.Count
             ? poiTypes[poiIndex].ToString ()
             : "?";
         var label = $"{continentLabel}/{poiLabel}/{name}";
 
-        AdminClientActions.Teleport (targetClientId.Value, coords, label);
+        AdminClientActions.Teleport (targetClientId.Value, coords, label, continent);
         // The window stays open after a teleport
     }
 

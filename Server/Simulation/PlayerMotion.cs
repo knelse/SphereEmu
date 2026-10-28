@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using SphServer.Client;
+using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Godot.Scripts.World;
+using SphServer.Helpers;
 using SphServer.Server.Simulation.Motion;
+using SphServer.Shared.Networking;
 using SphServer.Shared.GameData.Enums;
 using SphServer.Shared.Godot.Tools;
 using SphServer.Shared.WorldState;
@@ -145,17 +148,6 @@ public static class PlayerMotion
 			// A seed pose recorded under the old rules can be in the air, on a slope, or inside a
 			// wall, so drop it, walk it out, and settle it, all with the geometry loaded for it
 			stream.EnsureAroundWorldPosition (game);
-			var supportFound = player.SupportHeightAt (stream.Terrain, stream.Statics, player.SpawnX,
-				player.SpawnZ, player.SpawnY, out var seedSupportY, out _);
-			// One line per spawn, and it names the frame the solver streams in against the store
-			// record: support True and supportY near spawnY means the record lands on a raw .lnd
-			// tile; support False, or a Y hundreds of metres off, means the boundary is wrong
-			SphServer.Shared.Logger.SphLogger.Info (
-				$"SEED {client.EntityID:N}: origin=({character.X:0.0},{character.Y:0.0},{character.Z:0.0}) "
-				+ $"raw=({game.X:0.0},{game.Y:0.0},{game.Z:0.0}) "
-				+ $"node=({client.GlobalPosition.X:0.0},{client.GlobalPosition.Y:0.0},{client.GlobalPosition.Z:0.0}) "
-				+ $"support={supportFound} supportY={seedSupportY:0.0} spawnY={player.SpawnY:0.0} "
-				+ $"tiles={stream.LoadedTileCount} instances={stream.LoadedInstanceCount}");
 			player.SnapToGround (stream.Terrain, stream.Statics, player.SpawnY);
 			if (!player.Grounded)
 			{
@@ -204,19 +196,26 @@ public static class PlayerMotion
 
 		motion.SpawnY = step.Y;
 		stream.EnsureAroundWorldPosition (step);
-		var groundedBefore = motion.Grounded;
-		motion.Update (stream.Terrain, stream.Statics, new Vector2 (wishX, wishZ), jump,
-			SimulationClock.SecondsPerTickF);
-		if (jump)
+		if (character.CurrentHP > 0)
 		{
-			// MOTRACE J: every tick the Jump bit is held, whether the body could take it
-			SphServer.Shared.Logger.SphLogger.Info (
-				$"MOTRACE J ms={(global::System.Environment.TickCount64)} pos=({step.X:0.000},{step.Y:0.000},{step.Z:0.000}) "
-				+ $"groundedBefore={groundedBefore} vy={motion.VelocityY:0.00} grounded={motion.Grounded} "
-				+ $"x2={motion.JumpX2} x4={motion.JumpX4} prohibited={motion.IsJumpProhibited} "
-				+ $"surface={MotionContours.Shared.TypeAt (step.X, step.Z, MotionContours.JumpSurfaceFirst, MotionContours.JumpSurfaceLast)}");
+			motion.Update (stream.Terrain, stream.Statics, new Vector2 (wishX, wishZ), jump,
+				SimulationClock.SecondsPerTickF);
+			var landed = new Vector3 (motion.SpawnX, motion.SpawnY, motion.SpawnZ);
+			if (KillPlane.Crossed (step, landed))
+			{
+				motion.SpawnX = step.X;
+				motion.SpawnY = step.Y;
+				motion.SpawnZ = step.Z;
+				motion.VelocityX = 0f;
+				motion.VelocityY = 0f;
+				motion.VelocityZ = 0f;
+				motion.SlideX = 0f;
+				motion.SlideZ = 0f;
+				motion.Grounded = true;
+				KillByPlane (client, character);
+			}
 		}
-		TraceStep (client.EntityID, stream.Statics, motion, step, wishX, wishZ);
+
 		stream.Statics.ClearDynamic ();
 
 		// A body that falls past the world has nothing to land on and no way back, the live client's
@@ -244,9 +243,6 @@ public static class PlayerMotion
 			motion.SlideZ = 0f;
 			motion.Grounded = false;
 			motion.PlayerCollisionNeedsRecovery = true;
-			SphServer.Shared.Logger.SphLogger.Info (
-				$"FALLRESCUE {client.EntityID:N}: past {FallOutWorldMeters} to {step.Y:0.0}, "
-				+ $"restored ({motion.SpawnX:0.0},{motion.SpawnY:0.0},{motion.SpawnZ:0.0})");
 		}
 		else if (MathF.Abs (motion.SpawnX) < SeedMaxWorldMeters
 			&& MathF.Abs (motion.SpawnZ) < SeedMaxWorldMeters
@@ -279,6 +275,12 @@ public static class PlayerMotion
 			character.X = origin.X;
 			character.Y = origin.Y;
 			character.Z = origin.Z;
+			if (SavedCoords.TryContinent (raw.Y, raw.Z, out var continent)
+				&& character.LastContinent != continent)
+			{
+				character.LastContinent = continent;
+			}
+
 			if (yaw is { } seedYaw)
 			{
 				character.Angle = seedYaw;
@@ -332,6 +334,11 @@ public static class PlayerMotion
 		character.Y = pose.Y;
 		character.Z = pose.Z;
 		character.Angle = body.Rotation.Y;
+		if (SavedCoords.TryContinent (-character.Y, -character.Z, out var continent)
+			&& character.LastContinent != continent)
+		{
+			character.LastContinent = continent;
+		}
 		body.Position = Vector3.Zero;
 		if (client.IsInsideTree ())
 		{
@@ -399,8 +406,6 @@ public static class PlayerMotion
 
 				gather.Objects.Add (obj);
 			}
-
-			TraceGather (client.EntityID, stream, gather, center);
 		}
 
 		foreach (var obj in gather.Objects)
@@ -438,54 +443,6 @@ public static class PlayerMotion
 		}
 	}
 
-	// MOTRACE G: per regather, how many registry objects exist near the player and, for the closest
-	// few, the model name, whether it resolves to a collision shape, and the pose it would take
-	private static void TraceGather (Guid id, MotionWorldStream stream, DynamicGather gather, Vector3 center)
-	{
-		var total = 0;
-		var near = new List<(float Distance, WorldObject Obj)> ();
-		foreach (var obj in ActiveWorldObjects.GetAll ().Values)
-		{
-			if (obj is SphereClient || !GodotObject.IsInstanceValid (obj))
-			{
-				continue;
-			}
-
-			++total;
-			if (!obj.IsInsideTree ())
-			{
-				continue;
-			}
-
-			var distance = obj.GlobalPosition.DistanceTo (center);
-			if (distance < 10f)
-			{
-				near.Add ((distance, obj));
-			}
-		}
-
-		near.Sort ((a, b) => a.Distance.CompareTo (b.Distance));
-		var parts = new List<string> ();
-		foreach (var (distance, obj) in near)
-		{
-			if (parts.Count >= 6)
-			{
-				break;
-			}
-
-			var model = obj.ClientModelName;
-			var resource = model.Length == 0 ? null : stream.Model (model);
-			var raw = ToRaw (obj.GlobalPosition);
-			parts.Add ($"{obj.GetType ().Name}:{obj.ObjectType}:'{model}' d={distance:0.0} "
-				+ $"raw=({raw.X:0.0},{raw.Y:0.0},{raw.Z:0.0}) kind={resource?.CollisionKind.ToString () ?? "none"} "
-				+ $"mesh={resource?.DynamicMesh is not null} gathered={gather.Objects.Contains (obj)}");
-		}
-
-		SphServer.Shared.Logger.SphLogger.Info (
-			$"MOTRACE G {id:N} registry={total} gathered={gather.Objects.Count} "
-			+ $"center=({center.X:0.0},{center.Y:0.0},{center.Z:0.0}) near: {string.Join (" | ", parts)}");
-	}
-
 	// Client updateBounds: a kind-0 box sits at the position with no rotation; the other kinds take
 	// fromEuler of the object's yaw, which for a yaw-only pose is the placement matrix
 	private static MotionMatrix DynamicWorld (MotionModelResource resource, Vector3 position, float yaw) =>
@@ -493,41 +450,28 @@ public static class PlayerMotion
 			? MotionMatrix.Placement (position, Vector3.Zero)
 			: MotionMatrix.Placement (position, new Vector3 (0f, yaw, 0f));
 
-	private static readonly Dictionary<Guid, long> traceAt = [];
-
-	// MOTRACE S: one line per 100 ms while the wish moves, and one per 50 ms while the body sits
-	// inside static geometry. ms is Environment.TickCount64, the same uptime clock the client
-	// stamps with GetTickCount, so the two logs line up. Positions are the raw game frame
-	private static void TraceStep (Guid id, MotionStaticField statics, MotionPlayer motion, Vector3 before,
-		float wishX, float wishZ)
+	/// <summary>
+	///     Holds the body on the near side of the plane and writes HP 0 before the pose is saved,
+	///     so a drop in the same moment cannot reload them alive past it
+	/// </summary>
+	private static void KillByPlane (SphereClient client, Shared.Db.DataModels.CharacterDbEntry character)
 	{
-		var blockModel = statics.LastOverlapModel;
-		var inside = statics.CapsuleOverlapsStatic (motion.SpawnX, motion.SpawnY, motion.SpawnZ,
-			out var insideHit);
-		var moving = wishX != 0f || wishZ != 0f;
-		if (!moving && !inside)
+		if (character.CurrentHP <= 0)
 		{
 			return;
 		}
 
-		var now = global::System.Environment.TickCount64;
-		traceAt.TryGetValue (id, out var last);
-		if (now - last < (inside ? 50 : 100))
-		{
-			return;
-		}
-
-		traceAt[id] = now;
-		var movedX = motion.SpawnX - before.X;
-		var movedZ = motion.SpawnZ - before.Z;
-		var moved = MathF.Sqrt (movedX * movedX + movedZ * movedZ);
-		var expected = MathF.Sqrt (wishX * wishX + wishZ * wishZ) * SimulationClock.SecondsPerTickF;
-		SphServer.Shared.Logger.SphLogger.Info (
-			$"MOTRACE S ms={now} pos=({motion.SpawnX:0.000},{motion.SpawnY:0.000},{motion.SpawnZ:0.000}) "
-			+ $"wish=({wishX:0.00},{wishZ:0.00}) moved={moved:0.000}/{expected:0.000} "
-			+ $"grounded={motion.Grounded} hit={motion.LastHitValid} "
-			+ $"n=({motion.LastHit.Normal.X:0.00},{motion.LastHit.Normal.Z:0.00}) pen={motion.LastHit.Penetration:0.000} "
-			+ $"block={blockModel} inside={(inside ? $"{statics.LastOverlapModel}:{insideHit.Penetration:0.000}" : "-")}");
+		var hp = character.CurrentHP;
+		character.CurrentHP = 0;
+		client.DisarmUnderwaterBreath ();
+		// hit_type 1, second 0: the client reads that as DeathOriginSpecial.Падение (gMsg 751)
+		client.MaybeQueueNetworkPacketSend (
+			CommonPackets.BuildPlayerReceiveHit (client.EntityID, hitType: 1, hpDelta: -hp, secondDelta: 0,
+				flags: 7));
+		NetworkedStatsUpdater.Update (character, refreshPeers: false);
+		client.BroadcastHpToVisibleClients (-hp, 0);
+		client.SchedulePlayerRespawn ();
+		client.SaveCharacter ();
 	}
 
 	public static float ApproachYaw (float current, float target, float maxStep)
@@ -545,7 +489,6 @@ public static class PlayerMotion
 	{
 		seeded.Remove (entityId);
 		players.Remove (entityId);
-		traceAt.Remove (entityId);
 		dynamicGathers.Remove (entityId);
 		jumpEffects.Remove (entityId);
 	}

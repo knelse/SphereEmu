@@ -1,6 +1,7 @@
 using System.Linq;
 using Godot;
 using LiteDB;
+using SphServer.Helpers;
 using SphServer.Shared.Db;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
@@ -95,6 +96,11 @@ public class CharacterDbEntry
     public double Y { get; set; } = 150;
     public double Z { get; set; }
     public double Angle { get; set; }
+
+    /// <summary>
+    /// Last continent this character stood on. A dungeon pose leaves it unchanged
+    /// </summary>
+    public Continents LastContinent { get; set; } = Continents.Гиперион;
     public int TitleMinusOne { get; set; }
     public int DegreeMinusOne { get; set; }
     public ushort CurrentHP { get; set; } = 100;
@@ -486,7 +492,7 @@ public class CharacterDbEntry
     private static readonly object PersistGate = new ();
 
     /// <summary>
-    /// Insert or replace this character, then patch vitals and the slot map under one lock.
+    /// Insert or replace this character, then patch vitals, slots, and the pose under one lock.
     /// </summary>
     public void PersistAll ()
     {
@@ -503,7 +509,39 @@ public class CharacterDbEntry
 
             PatchVitalsUnlocked ();
             PatchSlotMapUnlocked ();
+            PatchCoordsUnlocked ();
             DbConnection.Checkpoint ();
+        }
+    }
+
+    /// <summary>
+    /// Writes the live pose onto each row, then checkpoints once. X, Y, and Z are the stored
+    /// Godot frame, the same numbers spawn reads back
+    /// </summary>
+    public static bool PersistPoses (List<CharacterDbEntry> characters)
+    {
+        if (characters.Count == 0 || DbConnection.Db is null)
+        {
+            return false;
+        }
+
+        lock (PersistGate)
+        {
+            var wrote = false;
+            foreach (var character in characters)
+            {
+                if (character.PatchCoordsUnlocked ())
+                {
+                    wrote = true;
+                }
+            }
+
+            if (wrote)
+            {
+                DbConnection.Checkpoint ();
+            }
+
+            return wrote;
         }
     }
 
@@ -575,6 +613,29 @@ public class CharacterDbEntry
 
         doc["Items"] = items;
         col.Update (doc);
+    }
+
+    private bool PatchCoordsUnlocked ()
+    {
+        if (Id == 0 || DbConnection.Db is null)
+        {
+            return false;
+        }
+
+        var col = DbConnection.Db.GetCollection ("Characters");
+        var doc = col.FindById (Id);
+        if (doc is null)
+        {
+            return false;
+        }
+
+        doc["X"] = X;
+        doc["Y"] = Y;
+        doc["Z"] = Z;
+        doc["Angle"] = Angle;
+        doc["LastContinent"] = (int) LastContinent;
+        col.Update (doc);
+        return true;
     }
 
     public static bool IsTitleStat (Stat stat) =>

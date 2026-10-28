@@ -125,7 +125,8 @@ public static class SavedCoords
                             new WorldCoords (2598.04, 159.85, 1395.37, -3.947),
 
                         ],
-                        [Хорошая] = [new WorldCoords (2517.25, 159.71, 1282.07, -0.857)]
+                        [Хорошая] = [new WorldCoords (2517.25, 159.71, 1282.07, -0.857)],
+                        [Благая] = [new WorldCoords (2609.36, 157.39, 1291.10, 0.498)]
                     },
                     [Бангвиль] = new ()
                     {
@@ -135,7 +136,8 @@ public static class SavedCoords
                         [
                             new WorldCoords (1821.50, 159.40, -414.93, -2.277),
                         ],
-                        [Хорошая] = [new WorldCoords (1909.46, 159.18, -476.22, -0.625)]
+                        [Хорошая] = [new WorldCoords (1909.46, 159.18, -476.22, -0.625)],
+                        [Благая] = [new WorldCoords (1872.20, 155.37, -406.19, -1.734)]
                     },
                     [Санпул] = new ()
                     {
@@ -145,7 +147,8 @@ public static class SavedCoords
                         [
                             new WorldCoords (492.29, 159.79, -1335.35, 0.774),
                         ],
-                        [Хорошая] = [new WorldCoords (482.58, 159.81, -1228.56, -3.981)]
+                        [Хорошая] = [new WorldCoords (482.58, 159.81, -1228.56, -3.981)],
+                        [Благая] = [new WorldCoords (427.74, 153.20, -1278.08, -4.144)]
                     },
                     [Торвил] = new ()
                     {
@@ -155,7 +158,8 @@ public static class SavedCoords
                         [
                             new WorldCoords (2376.74, 158.48, -2368.31, -3.929)
                         ],
-                        [Хорошая] = [new WorldCoords (2277.15, 157.36, -2346.60, -2.124)]
+                        [Хорошая] = [new WorldCoords (2277.15, 157.36, -2346.60, -2.124)],
+                        [Благая] = [new WorldCoords (2290.30, 155.29, -2388.89, -0.889)]
                     }
                 },
                 [Харон] = new Dictionary<Cities, Dictionary<KarmaTypes, List<WorldCoords>>>
@@ -170,7 +174,8 @@ public static class SavedCoords
                         [
                             new WorldCoords (-2623.26, 405.90, 2131.69, -3.929),
                         ],
-                        [Хорошая] = [new WorldCoords (-2722.85, 404.78, 2153.40, -2.124)]
+                        [Хорошая] = [new WorldCoords (-2722.85, 404.78, 2153.40, -2.124)],
+                        [Благая] = [new WorldCoords (-2723.59, 404.54, 2110.18, -1.317)]
                     },
                     [Гифес] = new ()
                     {
@@ -184,7 +189,8 @@ public static class SavedCoords
                             new WorldCoords (1821.50, 406.60, 3285.07, -2.277),
 
                         ],
-                        [Хорошая] = [new WorldCoords (1909.46, 405.93, 3223.78, -0.625)]
+                        [Хорошая] = [new WorldCoords (1909.46, 405.93, 3223.78, -0.625)],
+                        [Благая] = [new WorldCoords (1872.20, 402.57, 3293.81, -1.734)]
                     }
                 },
                 [Феб] = new Dictionary<Cities, Dictionary<KarmaTypes, List<WorldCoords>>>
@@ -200,7 +206,8 @@ public static class SavedCoords
                         [
                             new WorldCoords (-2132.77, -91.91, 551.01, -2.437),
                         ],
-                        [Хорошая] = [new WorldCoords (-2034.10, -92.54, 375.97, -0.450)]
+                        [Хорошая] = [new WorldCoords (-2034.10, -92.54, 375.97, -0.450)],
+                        [Благая] = [new WorldCoords (-1997.38, -104.41, 453.74, -0.547)]
                     }
                 },
                 [Родос] = new Dictionary<Cities, Dictionary<KarmaTypes, List<WorldCoords>>>
@@ -211,6 +218,13 @@ public static class SavedCoords
                             new WorldCoords (-3561.77, -340.58, 1190.51, -2.764),
                             new WorldCoords (-3403.40, -346.02, -2460.19, -1.481)
                         ],
+                        [Плохая] = [new WorldCoords (-3397.44, -340.22, -813.00, -3.093),],
+                        [Нейтральная] =
+                        [
+                            new WorldCoords (-3397.44, -340.22, -813.00, -3.093),
+                        ],
+                        [Хорошая] = [new WorldCoords (-3397.44, -340.22, -813.00, -3.093)],
+                        [Благая] = [new WorldCoords (-3397.44, -340.22, -813.00, -3.093)]
                         // [Нейтральная] =
                         // [
                         //     new WorldCoords (-3090.62, -341.24, 371.74, 3.142),
@@ -593,6 +607,159 @@ public static class SavedCoords
                 }
             }
         };
+
+    /// <summary>
+    ///     Nearest respawn on the death continent for this karma. Very bad karma uses the bad
+    ///     list while both shown levels are 10 or under. The city's list contributes its first
+    ///     point. A dungeon uses the stored continent. An empty karma list uses the next lower
+    ///     karma that has a point
+    /// </summary>
+    public static bool TryPickRespawn (double gameX, double gameY, double gameZ, KarmaTypes karma,
+        int titleMinusOne, int degreeMinusOne, Continents storedContinent, out WorldCoords point)
+    {
+        point = null!;
+        if (!TryContinent (gameY, gameZ, out var continent))
+        {
+            continent = storedContinent;
+        }
+
+        if (!RespawnPoints.TryGetValue (continent, out var cities))
+        {
+            return false;
+        }
+
+        var start = (int) RespawnKarma (karma, titleMinusOne, degreeMinusOne);
+        for (var karmaValue = start; karmaValue >= (int) Очень_Плохая; karmaValue--)
+        {
+            var bucket = (KarmaTypes) karmaValue;
+            WorldCoords? best = null;
+            var bestDist = double.MaxValue;
+            foreach (var (city, byKarma) in cities)
+            {
+                if (!byKarma.TryGetValue (bucket, out var list) || list.Count == 0)
+                {
+                    continue;
+                }
+
+                var anchor = CityAnchor (continent, city) ?? list[0];
+                var dx = anchor.x - gameX;
+                var dz = anchor.z - gameZ;
+                var dist = dx * dx + dz * dz;
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    best = list[0];
+                }
+            }
+
+            if (best is null)
+            {
+                continue;
+            }
+
+            point = best;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    ///     Shown level is the stored value plus one, so 9 is level 10
+    /// </summary>
+    private static KarmaTypes RespawnKarma (KarmaTypes karma, int titleMinusOne, int degreeMinusOne)
+    {
+        if (karma == Очень_Плохая && titleMinusOne <= 9 && degreeMinusOne <= 9)
+        {
+            return Плохая;
+        }
+
+        return karma;
+    }
+
+    /// <summary>
+    ///     Continent of the nearest city center on XZ. Dungeon landings use this because
+    ///     WhatContinent returns nothing above Y 1000
+    /// </summary>
+    public static bool TryNearestCityContinent (double gameX, double gameZ, out Continents continent)
+    {
+        continent = default;
+        var best = double.MaxValue;
+        var found = false;
+        foreach (var (candidate, byPoi) in TeleportPoints)
+        {
+            if (!byPoi.TryGetValue (CityCenter, out var centers))
+            {
+                continue;
+            }
+
+            foreach (var center in centers.Values)
+            {
+                var dx = center.x - gameX;
+                var dz = center.z - gameZ;
+                var dist = dx * dx + dz * dz;
+                if (dist < best)
+                {
+                    best = dist;
+                    continent = candidate;
+                    found = true;
+                }
+            }
+        }
+
+        return found;
+    }
+
+    /// <summary>
+    ///     Client WhatContinent on game Y and Z. Y above 1000 is a dungeon. The two southern
+    ///     bands have no city lists here
+    /// </summary>
+    public static bool TryContinent (double gameY, double gameZ, out Continents continent)
+    {
+        continent = default;
+        if (gameY > 1000)
+        {
+            return false;
+        }
+
+        if (gameY > 260)
+        {
+            continent = Харон;
+            return true;
+        }
+
+        if (gameY > 10 || (gameY > -240 && gameZ < -1100))
+        {
+            continent = Гиперион;
+            return true;
+        }
+
+        if (gameY > -240)
+        {
+            continent = Феб;
+            return true;
+        }
+
+        if (gameY > -490)
+        {
+            continent = Родос;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static WorldCoords? CityAnchor (Continents continent, Cities city)
+    {
+        if (TeleportPoints.TryGetValue (continent, out var byPoi)
+            && byPoi.TryGetValue (CityCenter, out var centers)
+            && centers.TryGetValue (city.ToString (), out var center))
+        {
+            return center;
+        }
+
+        return null;
+    }
 }
 
 public class WorldCoords

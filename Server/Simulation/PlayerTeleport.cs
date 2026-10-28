@@ -13,19 +13,37 @@ public static class PlayerTeleport
 	public const int PayloadBytes = 16;
 
 	/// <summary>
-	/// Places the body, then tells the client, whose own Teleport runs the fade and the room load
+	///     Places the body, then tells the client, whose own Teleport runs the fade and the room
+	///     load. A known continent is stored as given. A dungeon destination with none takes the
+	///     nearest city
 	/// </summary>
-	/// <summary>
-	/// SavedCoords and /tp are the game frame, the same numbers the old teleport packet carried
-	/// </summary>
-	public static bool Move (SphereClient client, WorldCoords coords) =>
-		Move (client, new Vector3 ((float) coords.x, (float) coords.y, (float) coords.z), (float) coords.turn);
+	public static bool Move (SphereClient client, WorldCoords coords, Continents? known = null) =>
+		Move (client, new Vector3 ((float) coords.x, (float) coords.y, (float) coords.z), (float) coords.turn,
+			known, trackContinent: true);
 
-	public static bool Move (SphereClient client, Vector3 raw, float? yaw)
+	/// <summary>
+	///     trackContinent writes a known continent, or the nearest city when the destination is a
+	///     dungeon. Doors leave it false so a castle interior does not replace the surface continent
+	/// </summary>
+	public static bool Move (SphereClient client, Vector3 raw, float? yaw, Continents? known = null,
+		bool trackContinent = false)
 	{
 		if (!PlayerMotion.Place (client, raw, yaw, out var placed))
 		{
 			return false;
+		}
+
+		if (trackContinent && client.CurrentCharacter is { } character)
+		{
+			if (known is { } continent)
+			{
+				character.LastContinent = continent;
+			}
+			else if (!SavedCoords.TryContinent (raw.Y, raw.Z, out _)
+				&& SavedCoords.TryNearestCityContinent (raw.X, raw.Z, out var inferred))
+			{
+				character.LastContinent = inferred;
+			}
 		}
 
 		var heading = PlayerMotion.FindModel (client)?.Rotation.Y ?? yaw ?? 0f;

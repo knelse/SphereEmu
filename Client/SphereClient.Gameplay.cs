@@ -1,6 +1,8 @@
 using Godot;
 using SphServer.Client.Networking.GameplayLogic.Stats;
 using SphServer.Godot.Scripts.Terrain;
+using SphServer.Helpers;
+using SphServer.Server.Simulation;
 using SphServer.Shared.BitStream;
 using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.GameData.Enums;
@@ -182,6 +184,15 @@ public partial class SphereClient
 
 		CurrentCharacter.CurrentHP = respawnHp;
 
+		if (SavedCoords.TryPickRespawn (CurrentCharacter.X, -CurrentCharacter.Y, -CurrentCharacter.Z,
+				CurrentCharacter.Karma, CurrentCharacter.TitleMinusOne, CurrentCharacter.DegreeMinusOne,
+				CurrentCharacter.LastContinent, out var respawn))
+		{
+			PlayerMotion.Place (this,
+				new Vector3 ((float) respawn.x, (float) respawn.y, (float) respawn.z),
+				(float) respawn.turn, out _);
+		}
+
 		var x = (float) CurrentCharacter.X;
 		var y = (float) ClientGameY (CurrentCharacter.Y);
 		var z = (float) -CurrentCharacter.Z;
@@ -203,7 +214,7 @@ public partial class SphereClient
 		GrantRespawnProtection ();
 
 		SphLogger.Info (
-			$"Player respawn after death. Client ID: {EntityID}, SetCoordinates, effect 758, HP={respawnHp}.");
+			$"Player respawn after death. Client ID: {EntityID}, SetCoordinates {x} {y} {z}, karma {CurrentCharacter.Karma}, effect 758, HP={respawnHp}.");
 	}
 
 	public void SendMoney ()

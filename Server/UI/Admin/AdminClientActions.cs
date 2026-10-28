@@ -52,7 +52,8 @@ public static class AdminClientActions
         return true;
     }
 
-    public static bool Teleport (Guid clientId, WorldCoords worldCoords, string destinationLabel)
+    public static bool Teleport (Guid clientId, WorldCoords worldCoords, string destinationLabel,
+        Continents? continent = null)
     {
         var client = ActiveClients.Get (clientId);
         if (client is null || client.CurrentCharacter is null)
@@ -60,7 +61,7 @@ public static class AdminClientActions
             return false;
         }
 
-        if (!PlayerTeleport.Move (client, worldCoords))
+        if (!PlayerTeleport.Move (client, worldCoords, continent))
         {
             return false;
         }

@@ -259,7 +259,7 @@ public class ClientChatHandler (ClientConnection clientConnection)
                         return;
                     }
 
-                    clientConnection.TeleportTo (tpCoords);
+                    clientConnection.TeleportTo (tpCoords, Гиперион);
                     return;
                 }
 

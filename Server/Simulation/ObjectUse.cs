@@ -1,5 +1,6 @@
 using Godot;
 using SphServer.Client;
+using SphServer.Helpers;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 using SphServer.Sphere.Game.WorldObject;
@@ -88,6 +89,13 @@ public static class ObjectUse
 		{
 			Reject (playerId, $"{obj.ObjectType} {target:N} placement failed");
 			return;
+		}
+
+		if (obj is TeleportWithTarget
+			&& client.CurrentCharacter is { } character
+			&& SavedCoords.TryNearestCityContinent (exit.X, exit.Z, out var continent))
+		{
+			character.LastContinent = continent;
 		}
 
 		SphLogger.Info ($"USE {playerId:N}: {obj.ObjectType} {target:N} to ({exit.X:0.0},{exit.Y:0.0},{exit.Z:0.0})");

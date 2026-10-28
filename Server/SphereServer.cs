@@ -9,7 +9,9 @@ using SphServer.Server.Login.Secure;
 using SphServer.Server.Handlers;
 using SphServer.Server.Simulation;
 using SphServer.Server.Simulation.Motion;
+using SphServer.Client;
 using SphServer.Shared.Db;
+using SphServer.Shared.Db.DataModels;
 using SphServer.Shared.Logger;
 using SphServer.Shared.WorldState;
 
@@ -122,6 +124,46 @@ public partial class SphereServer : Node
 		SendWorldDatagrams ();
 		// LiteDB stays on this thread, after the tick
 		worldSimulation.DrainWriter ();
+		SaveLivePoses ();
+	}
+
+	/// <summary>
+	/// Once a second, write poses that moved. Exit still saves through SaveCharacter
+	/// </summary>
+	private void SaveLivePoses ()
+	{
+		if (worldSimulation.Tick % SimulationClock.TickHz != 0)
+		{
+			return;
+		}
+
+		var pending = new List<CharacterDbEntry> ();
+		var clients = new List<SphereClient> ();
+		foreach (var client in ActiveClients.GetAll ().Values)
+		{
+			if (client.IsAdminDebugDummy || !PlayerMotion.IsInGame (client) || !client.HasUnsavedPose ())
+			{
+				continue;
+			}
+
+			if (client.CurrentCharacter is not { } character)
+			{
+				continue;
+			}
+
+			pending.Add (character);
+			clients.Add (client);
+		}
+
+		if (!CharacterDbEntry.PersistPoses (pending))
+		{
+			return;
+		}
+
+		foreach (var client in clients)
+		{
+			client.MarkPoseWritten ();
+		}
 	}
 
 	private void SendWorldDatagrams ()

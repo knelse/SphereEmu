@@ -1,3 +1,4 @@
+using SphServer.Helpers;
 using SphServer.Server.Config;
 using SphServer.Shared.Db;
 using SphServer.Shared.Db.DataModels;
@@ -10,6 +11,47 @@ public partial class SphereClient
 {
 	public CharacterDbEntry? CurrentCharacter;
 	private PlayerDbEntry? playerDbEntry;
+	private bool poseWritten;
+	private double poseWrittenX;
+	private double poseWrittenY;
+	private double poseWrittenZ;
+	private double poseWrittenAngle;
+	private Continents poseWrittenContinent;
+
+	/// <summary>
+	/// The live pose differs from the last row written by the one-second save
+	/// </summary>
+	public bool HasUnsavedPose ()
+	{
+		var character = CurrentCharacter;
+		if (character is null || character.Id == 0)
+		{
+			return false;
+		}
+
+		return !poseWritten
+			|| character.X != poseWrittenX
+			|| character.Y != poseWrittenY
+			|| character.Z != poseWrittenZ
+			|| character.Angle != poseWrittenAngle
+			|| character.LastContinent != poseWrittenContinent;
+	}
+
+	public void MarkPoseWritten ()
+	{
+		var character = CurrentCharacter;
+		if (character is null)
+		{
+			return;
+		}
+
+		poseWritten = true;
+		poseWrittenX = character.X;
+		poseWrittenY = character.Y;
+		poseWrittenZ = character.Z;
+		poseWrittenAngle = character.Angle;
+		poseWrittenContinent = character.LastContinent;
+	}
 
 	public void SetPlayerDbEntry (PlayerDbEntry? entry)
 	{
@@ -97,6 +139,10 @@ public partial class SphereClient
 	{
 		try
 		{
+			newCharacter.X = ServerConfig.AppConfig.Spawn_X;
+			newCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
+			newCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
+			newCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
 			DbConnection.Characters.Insert (newCharacter);
 			var insertIndex = Math.Clamp (index, 0, playerDbEntry!.Characters.Count);
 			playerDbEntry.Characters.Insert (insertIndex, newCharacter);
@@ -145,10 +191,6 @@ public partial class SphereClient
 			return;
 		}
 
-		CurrentCharacter.X = ServerConfig.AppConfig.Spawn_X;
-		CurrentCharacter.Y = -ServerConfig.AppConfig.Spawn_Y;
-		CurrentCharacter.Z = -ServerConfig.AppConfig.Spawn_Z;
-		CurrentCharacter.Angle = ServerConfig.AppConfig.Spawn_Angle;
 		CurrentCharacter.Money = ServerConfig.AppConfig.Spawn_Money;
 	}
 }

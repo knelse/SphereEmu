@@ -132,6 +132,19 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         return continentMenu;
     }
 
+    private static Continents? ContinentOf (Node menu)
+    {
+        for (Node? node = menu; node is not null; node = node.GetParent ())
+        {
+            if (Enum.TryParse (node.Name.ToString (), out Continents continent))
+            {
+                return continent;
+            }
+        }
+
+        return null;
+    }
+
     // TODO: this is awful and relies on item text, but good enough for now
     private IndexPressedEventHandler GenerateOnIndexPressedForMenu (PopupMenu popupMenu)
     {
@@ -155,7 +168,7 @@ public partial class ConnectedClientsPopupUI : PopupMenu
             var angle = float.Parse (coordsSplit[3]);
 
             var worldCoords = new WorldCoords (x, y, z, angle);
-            AdminClientActions.Teleport (currentClientId, worldCoords, itemText);
+            AdminClientActions.Teleport (currentClientId, worldCoords, itemText, ContinentOf (popupMenu));
         };
     }
 }

@@ -396,9 +396,9 @@ public class ClientConnection (SphereClient sphereClient)
         beforeGameSend?.Invoke (packet);
     }
 
-    public bool TeleportTo (WorldCoords coords)
+    public bool TeleportTo (WorldCoords coords, Continents? continent = null)
     {
-        return PlayerTeleport.Move (sphereClient, coords);
+        return PlayerTeleport.Move (sphereClient, coords, continent);
     }
 
     public void SendSessionPacket (byte[] packet)
