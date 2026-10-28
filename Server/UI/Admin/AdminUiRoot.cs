@@ -185,8 +185,6 @@ public partial class AdminUiRoot : Control
 
         worldPreviewWindow = new WorldPreviewWindow { Name = "WorldPreviewWindow" };
         AddChild (worldPreviewWindow);
-        // A 1920x1080 window on its own, and the world is only streamable once the tree is up
-        worldPreviewWindow.CallDeferred (nameof (WorldPreviewWindow.Open));
 
         resetCharacterDialog = new ConfirmationDialog
         {

@@ -14,6 +14,12 @@ public partial class Door : WorldObject
     [Export] public double TargetZ { get; set; }
 
     /// <summary>
+    /// Exit facing in radians, from the char19 that supplies this target
+    /// </summary>
+    [Export] public bool HasTargetAngle { get; set; }
+    [Export] public double TargetAngle { get; set; }
+
+    /// <summary>
     /// Other door's guid. Jump uses this when it is set
     /// </summary>
     [Export] public string TargetEntityId { get; set; } = "";

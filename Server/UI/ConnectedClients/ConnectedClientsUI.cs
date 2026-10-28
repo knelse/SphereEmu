@@ -92,7 +92,13 @@ public partial class ConnectedClientsUI : Tree
     private void DeferredRefresh ()
     {
         refreshPending = false;
-        UpdateClientList ();
+        var connectedId = UpdateClientList ();
+        if (selectedClientId is not null || connectedId is not Guid id)
+        {
+            return;
+        }
+
+        FindRowByClientId (id)?.Select (0);
     }
 
     public override void _GuiInput (InputEvent inputEvent)
@@ -160,7 +166,7 @@ public partial class ConnectedClientsUI : Tree
         ClientSelected?.Invoke (Guid.Empty);
     }
 
-    private static void UpdateClientList ()
+    private static Guid? UpdateClientList ()
     {
         var actualClients = ActiveClients.GetAll ();
 
@@ -171,6 +177,7 @@ public partial class ConnectedClientsUI : Tree
             DeleteClientRow (disconnectedClientData.Key);
         }
 
+        Guid? connectedId = null;
         foreach (var clientData in actualClients)
         {
             if (clients.ContainsKey (clientData.Key))
@@ -181,7 +188,13 @@ public partial class ConnectedClientsUI : Tree
 
             clients.Add (clientData.Key, clientData.Value);
             AddClientRow (clientData.Key, clientData.Value);
+            if (connectedId is null && !clientData.Value.IsAdminDebugDummy)
+            {
+                connectedId = clientData.Key;
+            }
         }
+
+        return connectedId;
     }
 
     private static void AddClientRow (Guid id, SphereClient client)

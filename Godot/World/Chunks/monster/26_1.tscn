@@ -61,3 +61,50 @@ RegularMonsterMinLevel = 11
 RegularMonsterMaxLevel = 17
 NamedMonsterMinLevel = 11
 NamedMonsterMaxLevel = 17
+[node name="NifonSpawner_10004_[2643]_[145]_[-178]" type="Node3D" parent="." unique_id=1646028774 instance=ExtResource("1_nyt1d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2643.29, -145.77, 178.73)
+script = ExtResource("2_3dygx")
+EntityId = "d1e91441-5dab-42b9-9ae1-3e9079f7d696"
+TargetNamedMonsterCount = 0
+TargetRegularMonsterCount = 1
+AggroRadiusMeters = 30
+OriginalDisplayName = "NifonSpawner_10004_[2643]_[145]_[-178]"
+BakedSpawnSlots = Array[Vector3]([Vector3(2643.29, -145.77, 178.73)])
+RegularMonsterMinLevel = 1
+RegularMonsterMaxLevel = 1
+NamedMonsterMinLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([81])
+SpawningEnabled = true
+
+[node name="NifonSpawner_10005_[2617]_[146]_[-137]" type="Node3D" parent="." unique_id=1615709630 instance=ExtResource("1_nyt1d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2617.49, -146.36, 137.33)
+script = ExtResource("2_3dygx")
+EntityId = "15199f7a-add4-4657-87f2-110b38e72c5a"
+TargetNamedMonsterCount = 0
+TargetRegularMonsterCount = 1
+AggroRadiusMeters = 30
+OriginalDisplayName = "NifonSpawner_10005_[2617]_[146]_[-137]"
+BakedSpawnSlots = Array[Vector3]([Vector3(2617.49, -146.36, 137.33)])
+RegularMonsterMinLevel = 1
+RegularMonsterMaxLevel = 1
+NamedMonsterMinLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([81])
+SpawningEnabled = true
+
+[node name="NifonSpawner_10006_[2673]_[146]_[-141]" type="Node3D" parent="." unique_id=998901869 instance=ExtResource("1_nyt1d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2673.54, -146.21, 141.99)
+script = ExtResource("2_3dygx")
+EntityId = "d8407171-29f7-41ac-925f-eca767af8523"
+TargetNamedMonsterCount = 0
+TargetRegularMonsterCount = 1
+AggroRadiusMeters = 30
+OriginalDisplayName = "NifonSpawner_10006_[2673]_[146]_[-141]"
+BakedSpawnSlots = Array[Vector3]([Vector3(2673.54, -146.21, 141.99)])
+RegularMonsterMinLevel = 1
+RegularMonsterMaxLevel = 1
+NamedMonsterMinLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([81])
+SpawningEnabled = true

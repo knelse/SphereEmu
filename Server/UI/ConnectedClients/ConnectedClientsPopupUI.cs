@@ -89,16 +89,22 @@ public partial class ConnectedClientsPopupUI : PopupMenu
         var respawnPoints = new PopupMenu ();
         respawnPoints.Name = "RespawnPoints";
 
-        var respawnsForContinent = SavedCoords.RespawnPoints.GetValueOrDefault (continent, []);
+        if (!SavedCoords.RespawnPoints.TryGetValue (continent, out var respawnsForContinent))
+        {
+            respawnsForContinent = [];
+        }
 
         foreach (var respawnsForCity in respawnsForContinent)
         {
             var cityMenu = new PopupMenu ();
             cityMenu.Name = respawnsForCity.Key.ToString ();
-            foreach (var respawnPoint in respawnsForCity.Value)
+            foreach (var (karma, points) in respawnsForCity.Value)
             {
-                var label = $"{respawnPoint.Key.ToString ()} [{respawnPoint.Value}]";
-                cityMenu.AddItem (label);
+                for (var i = 0; i < points.Count; i++)
+                {
+                    var suffix = points.Count == 1 ? "" : $" {i + 1}";
+                    cityMenu.AddItem ($"{karma}{suffix} [{points[i]}]");
+                }
             }
 
             cityMenu.IndexPressed += GenerateOnIndexPressedForMenu (cityMenu);

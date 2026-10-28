@@ -33,3 +33,34 @@ RegularMonsterMinLevel = 34
 RegularMonsterMaxLevel = 44
 NamedMonsterMinLevel = 34
 NamedMonsterMaxLevel = 44
+[node name="NifonSpawner_10140_[2674]_[358]_[3288]" type="Node3D" parent="." unique_id=943428935 instance=ExtResource("1_426te")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2674.82, -358.49, -3288.55)
+script = ExtResource("2_cu0ag")
+EntityId = "749d1414-bda5-49d1-968f-25cdd1ce7e66"
+TargetNamedMonsterCount = 0
+TargetRegularMonsterCount = 1
+AggroRadiusMeters = 30
+OriginalDisplayName = "NifonSpawner_10140_[2674]_[358]_[3288]"
+BakedSpawnSlots = Array[Vector3]([Vector3(2674.82, -358.49, -3288.55)])
+RegularMonsterMinLevel = 1
+RegularMonsterMaxLevel = 1
+NamedMonsterMinLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([81])
+SpawningEnabled = true
+
+[node name="NifonSpawner_10141_[2697]_[354]_[3292]" type="Node3D" parent="." unique_id=1866898840 instance=ExtResource("1_426te")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2697.59, -354.24, -3292.4)
+script = ExtResource("2_cu0ag")
+EntityId = "074f2d82-5cb9-42fe-94b4-251622d40164"
+TargetNamedMonsterCount = 0
+TargetRegularMonsterCount = 1
+AggroRadiusMeters = 30
+OriginalDisplayName = "NifonSpawner_10141_[2697]_[354]_[3292]"
+BakedSpawnSlots = Array[Vector3]([Vector3(2697.59, -354.24, -3292.4)])
+RegularMonsterMinLevel = 1
+RegularMonsterMaxLevel = 1
+NamedMonsterMinLevel = 1
+NamedMonsterMaxLevel = 1
+MobTypeOverrides = Array[int]([81])
+SpawningEnabled = true

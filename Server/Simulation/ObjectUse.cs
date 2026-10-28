@@ -94,8 +94,8 @@ public static class ObjectUse
 	}
 
 	/// <summary>
-	/// The exit in the game frame. Door targets are already game frame; a door without one and a
-	/// portal land on their special point, heading included
+	/// The exit in the game frame. A door target uses its angle when one is set, and a door without
+	/// a target and a portal land on their special point, heading included
 	/// </summary>
 	private static bool TryExit (WorldObject obj, out Vector3 exit, out float? yaw)
 	{
@@ -105,6 +105,11 @@ public static class ObjectUse
 		{
 			case Door { HasTarget: true } door:
 				exit = new Vector3 ((float) door.TargetX, (float) door.TargetY, (float) door.TargetZ);
+				if (door.HasTargetAngle)
+				{
+					yaw = (float) door.TargetAngle;
+				}
+
 				return true;
 			case Door door:
 				return TryLanding (door.DoorID, out exit, out yaw);

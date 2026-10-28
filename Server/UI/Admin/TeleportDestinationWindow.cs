@@ -248,7 +248,7 @@ public partial class TeleportDestinationWindow : Window
         }
 
         return SavedCoords.RespawnPoints.TryGetValue (continent, out var respawns)
-               && respawns.Values.Any (city => city.Count > 0);
+               && respawns.Values.Any (city => city.Values.Any (points => points.Count > 0));
     }
 
     private static IEnumerable<PoiType> EnumeratePoiTypes (Continents continent)
@@ -267,7 +267,7 @@ public partial class TeleportDestinationWindow : Window
         }
 
         if (SavedCoords.RespawnPoints.TryGetValue (continent, out var respawns)
-            && respawns.Values.Any (city => city.Count > 0)
+            && respawns.Values.Any (city => city.Values.Any (points => points.Count > 0))
             && (byType is null || !byType.ContainsKey (PoiType.RespawnPoint)))
         {
             yield return PoiType.RespawnPoint;
@@ -282,9 +282,13 @@ public partial class TeleportDestinationWindow : Window
         {
             foreach (var (city, byKarma) in respawns.OrderBy (x => x.Key.ToString ()))
             {
-                foreach (var (karma, coords) in byKarma.OrderBy (x => x.Key.ToString ()))
+                foreach (var (karma, points) in byKarma.OrderBy (x => x.Key.ToString ()))
                 {
-                    yield return ($"{city}/{karma}", coords);
+                    for (var i = 0; i < points.Count; i++)
+                    {
+                        var suffix = points.Count == 1 ? "" : $" {i + 1}";
+                        yield return ($"{city}/{karma}{suffix}", points[i]);
+                    }
                 }
             }
 
